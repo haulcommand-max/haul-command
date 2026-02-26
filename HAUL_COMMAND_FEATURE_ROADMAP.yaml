@@ -1,0 +1,228 @@
+haul_command_feature_roadmap:
+  version: "1.0.0"
+  goal: "Category dominance on 5 axes: speed-to-match, trust clarity, mobile convenience, market visibility, data gravity."
+
+  tier_0_truth:
+    win_on: ["Speed to match", "Trust clarity", "Mobile convenience", "Market visibility", "Data gravity"]
+    everything_below_compounds_these_five: true
+
+  # ============================================================
+  # TIER 1 — MUST-WIN FEATURES (competitors don't have these)
+  # ============================================================
+  tier_1:
+    feature_1_command_map:
+      name: "Live Market Command Map"
+      why: "Bloomberg Terminal moment for heavy haul."
+      layers:
+        - "escort density heatmap"
+        - "available-now overlay"
+        - "hot load lanes (active loads by corridor)"
+        - "hard-fill alert zones"
+        - "police/high-pole requirement zones"
+        - "permit complexity overlay"
+      github_repos:
+        - repo: "maplibre/maplibre-gl-js"
+          use: "vector tiles, heatmaps, clustering — open-source Mapbox replacement"
+        - repo: "visgl/deck.gl"
+          use: "density heatmaps, animated corridor flows, high-performance geospatial layers"
+      verdict: "Competitors showing static maps will look outdated overnight."
+
+    feature_2_real_time_presence:
+      name: "True Real-Time Presence"
+      why: "Most directories fake 'active'. We show actual heartbeat."
+      signals:
+        - "last heartbeat age badge (e.g., '2 min ago')"
+        - "available-now count per county (live)"
+        - "live radius rings on map"
+        - "ghost mode (privacy toggle for escort)"
+        - "idle detection (auto-offline after X min no heartbeat)"
+      github_repos:
+        - repo: "supabase/realtime"
+          use: "Already using Supabase — lean into realtime channels for presence"
+        - repo: "socketio/socket.io"
+          use: "Ultra-low-latency presence if Supabase Realtime latency is insufficient"
+
+    feature_3_one_tap_accept:
+      name: "One-Tap Accept Flow"
+      why: "Uber moment for heavy haul. Push → accept in ≤ 2 taps."
+      flow:
+        1: "Push notification arrives"
+        2: "Tap notification"
+        3: "Accept button shown full-screen"
+        4: "Done — no forms, no friction"
+      github_repos:
+        - repo: "ionic-team/capacitor-plugins"
+          plugin: "push-notifications"
+          use: "Capacitor native push"
+        - repo: "invertase/notifee"
+          use: "Pro-level Android/iOS notification control (custom layouts, actions)"
+
+    feature_4_trust_card_v2:
+      name: "Trust Card 2.0"
+      why: "Stars are primitive. We show verified behavioral signals."
+      for_escorts:
+        - "lane-specific reliability score"
+        - "median response time (percentile)"
+        - "on-time delivery score"
+        - "incident rate"
+        - "repeat broker rate"
+        - "insurance freshness indicator"
+      for_brokers:
+        - "payment reliability score"
+        - "dispute rate"
+        - "median fill time"
+        - "escort repeat rate (% of repeat partnerships)"
+      github_repos:
+        - repo: "tremorlabs/tremor"
+          use: "React dashboard components — excellent for trust card visualizations"
+
+  # ============================================================
+  # TIER 2 — GROWTH WEAPONS (massive leverage)
+  # ============================================================
+  tier_2:
+    feature_5_territory_gamification:
+      name: "Claim Your Territory — Gamification Engine"
+      add_on_top_of_existing:
+        - "county scarcity counters (X of 3 slots remaining)"
+        - "corridor ownership badges"
+        - "streak bonuses (claimed + active 7 days → bonus boost credits)"
+        - "defense alerts ('someone entered your zone')"
+        - "seasonal leaderboards (quarterly reset)"
+      github_repos:
+        - repo: "pmndrs/zustand"
+          use: "Lightweight state management for territory UI (real-time slot counters)"
+        - repo: "alampros/react-confetti"
+          use: "Milestone dopamine — fires on territory claim, rank-up, first fill"
+
+    feature_6_smart_alerts_engine:
+      name: "Smart Alerts Engine"
+      why: "Most apps spam. We send signal-aware alerts only."
+      escort_alerts:
+        - "Nearby hot load in preferred lane"
+        - "Preferred load type posted"
+        - "Broker you've worked with before posted a load"
+        - "Rate above your lane median"
+      broker_alerts:
+        - "Supply shortage in your corridor"
+        - "Hard-fill risk on posted load"
+        - "Rate too low vs. current competition"
+        - "Competitor fill speed benchmark for your lane"
+      github_repos:
+        - repo: "novuhq/novu"
+          use: "Multi-channel notification orchestration (in-app, push, SMS, email)"
+
+    feature_7_programmatic_seo:
+      name: "Programmatic SEO at Scale"
+      existing: "country/state routes with SchemaGenerator, GeoMeshLinks already built"
+      missing:
+        - "corridor pages (I-75, I-10, I-90 Florida→Georgia etc.)"
+        - "county pages with live escort counts"
+        - "'available now near [city]' pages"
+        - "'high pole escorts in [state]' pages"
+        - "broker landing pages by company type"
+      github_repos:
+        - repo: "iamvishnusankar/next-sitemap"
+          use: "Auto-generate sitemap for all programmatic routes"
+        - repo: "garmeeh/next-seo"
+          use: "Per-page OG/Twitter/canonical meta tags in Next.js (already exists, extend it)"
+
+  # ============================================================
+  # TIER 3 — ADVANCED DIFFERENTIATORS (hard moat)
+  # ============================================================
+  tier_3:
+    feature_8_hard_fill_predictor:
+      name: "Hard-Fill Predictor"
+      why: "Beyond fill probability — detect loads likely to struggle before they do."
+      output:
+        badge: "Hard fill risk: HIGH / MEDIUM / LOW"
+        suggested_fixes:
+          - "Raise rate to market median"
+          - "Widen pickup window"
+          - "Add police escort requirement removed"
+          - "Promote to invite-only to top-trust escorts"
+      notes: "Saves brokers pain before it happens → builds confidence → compounding loyalty."
+
+    feature_9_supply_radar:
+      name: "Supply Radar (for escorts)"
+      why: "Makes escorts open your app daily — routes their planning around your platform."
+      shows:
+        - "demand heat forecast (where loads are likely to come from tomorrow)"
+        - "best counties for tomorrow"
+        - "lane momentum indicators (volume trending up/down)"
+      github_repos:
+        - repo: "apache/echarts"
+          use: "Time-series forecasting visuals, heatmap calendars, momentum charts"
+
+    feature_10_fraud_quality_shield:
+      name: "Fraud & Quality Shield"
+      why: "As you scale, spam will come. Prepare early."
+      signals:
+        - "device fingerprinting (link accounts to devices)"
+        - "phone reputation scoring"
+        - "velocity checks (signups, accepts, posts)"
+        - "duplicate listing detection"
+        - "abnormal acceptance patterns (too fast = bot)"
+      github_repos:
+        - repo: "fingerprintjs/fingerprintjs"
+          use: "Browser-side device fingerprinting"
+        - repo: "sindresorhus/is"
+          use: "Type/value validation helpers for fraud signal processing"
+
+  # ============================================================
+  # MOBILE POLISH — Final 10% most teams miss
+  # ============================================================
+  mobile_polish:
+    must_have:
+      - "offline cache for rural areas (escorts in dead zones)"
+      - "low-signal mode (minimal data, text-only)"
+      - "dark-mode first (already leaning this way)"
+      - "haptic feedback on accept (Capacitor Haptics plugin)"
+      - "large tap targets (glove-friendly — min 48px)"
+      - "voice quick actions (future — Siri Shortcuts / Google Assistant)"
+    github_repos:
+      - repo: "streamich/react-use"
+        use: "Utility hooks: useNetwork, useBattery, useGeolocation — all critical for escort UX"
+      - repo: "GoogleChrome/workbox"
+        use: "PWA offline caching strategy — service worker for offline load board access"
+
+  # ============================================================
+  # GITHUB REPO MASTER LIST (all referenced above)
+  # ============================================================
+  github_repos_master:
+    mapping:
+      - { repo: "maplibre/maplibre-gl-js",         install: "npm install maplibre-gl",           use: "Command Map base layer" }
+      - { repo: "visgl/deck.gl",                    install: "npm install deck.gl @deck.gl/react", use: "Heatmaps + animated flows" }
+      - { repo: "ionic-team/capacitor-plugins",     install: "npm install @capacitor/push-notifications", use: "Native push in Capacitor" }
+      - { repo: "invertase/notifee",                install: "npm install @notifee/react-native",  use: "Advanced push control (if going RN)" }
+      - { repo: "tremorlabs/tremor",                install: "npm install @tremor/react",          use: "Trust card components" }
+      - { repo: "pmndrs/zustand",                   install: "npm install zustand",               use: "Territory UI state" }
+      - { repo: "alampros/react-confetti",          install: "npm install react-confetti",        use: "Milestone celebrations" }
+      - { repo: "novuhq/novu",                      install: "npm install @novu/api",             use: "Alert orchestration" }
+      - { repo: "iamvishnusankar/next-sitemap",     install: "npm install next-sitemap",          use: "SEO sitemap generation" }
+      - { repo: "garmeeh/next-seo",                 install: "npm install next-seo",              use: "Per-page OG/meta tags" }
+      - { repo: "apache/echarts",                   install: "npm install echarts echarts-for-react", use: "Supply Radar charts" }
+      - { repo: "fingerprintjs/fingerprintjs",      install: "npm install @fingerprintjs/fingerprintjs", use: "Device fingerprinting" }
+      - { repo: "streamich/react-use",              install: "npm install react-use",             use: "Network/battery/geo hooks" }
+      - { repo: "GoogleChrome/workbox",             install: "npx workbox-cli wizard",            use: "PWA offline caching" }
+
+  # ============================================================
+  # EXECUTION PRIORITY WITHIN NEW TIERS
+  # ============================================================
+  execution_priority:
+    do_with_tier_1_ship_blockers:
+      - "next-seo (already partially implemented, extend)"
+      - "next-sitemap (add corridor + county pages)"
+      - "Supabase Realtime channels (presence — already in V2 spec)"
+    do_with_tier_2_liquidity_activation:
+      - "maplibre-gl-js (Command Map MVP — heatmap only)"
+      - "deck.gl density layers"
+      - "Capacitor push (one-tap accept)"
+      - "Novu (smart alerts)"
+      - "zustand (territory state)"
+      - "react-confetti (milestone moments)"
+    do_with_tier_3_distribution:
+      - "Hard-Fill Predictor (extension of fill probability model)"
+      - "Supply Radar (echarts)"
+      - "fingerprintjs (fraud shield)"
+      - "workbox (offline PWA)"
+      - "react-use hooks (offline/battery/network detection)"

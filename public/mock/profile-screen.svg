@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#090909"/>
+
+  <!-- Status bar -->
+  <rect x="0" y="0" width="390" height="44" fill="#0c0c0c"/>
+  <text x="16" y="28" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#fff">9:41</text>
+
+  <!-- Avatar area -->
+  <rect x="0" y="44" width="390" height="160" fill="#0c0c0c"/>
+  <circle cx="195" cy="104" r="44" fill="#1a1a1a" stroke="#F1A91B" stroke-width="2"/>
+  <text x="195" y="112" font-family="system-ui,sans-serif" font-size="32" font-weight="800" fill="#F1A91B" text-anchor="middle">T</text>
+
+  <!-- Name + verified -->
+  <text x="195" y="218" font-family="system-ui,sans-serif" font-size="22" font-weight="800" fill="#fff" text-anchor="middle">Texas Heavy Haul</text>
+  <rect x="152" y="228" width="86" height="22" rx="11" fill="#22c55e18" stroke="#22c55e40" stroke-width="1"/>
+  <text x="195" y="243" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#22c55e" text-anchor="middle">✓ VERIFIED</text>
+
+  <!-- Compliance score -->
+  <rect x="16" y="268" width="358" height="80" rx="16" fill="#111" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="32" y="296" font-family="system-ui,sans-serif" font-size="11" fill="#555" font-weight="700" letter-spacing="1">COMPLIANCE SCORE</text>
+  <text x="32" y="330" font-family="system-ui,sans-serif" font-size="34" font-weight="900" fill="#F1A91B">97</text>
+  <text x="76" y="330" font-family="system-ui,sans-serif" font-size="14" fill="#555">/100</text>
+  <rect x="148" y="316" width="200" height="8" rx="4" fill="#1e1e1e"/>
+  <rect x="148" y="316" width="194" height="8" rx="4" fill="#F1A91B"/>
+
+  <!-- Capability tags -->
+  <text x="20" y="376" font-family="system-ui,sans-serif" font-size="11" fill="#555" font-weight="700" letter-spacing="1">CAPABILITIES</text>
+  <rect x="16" y="388" width="88" height="28" rx="8" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="60" y="406" font-family="system-ui,sans-serif" font-size="11" fill="#ccc" text-anchor="middle">Lead car</text>
+  <rect x="112" y="388" width="100" height="28" rx="8" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="162" y="406" font-family="system-ui,sans-serif" font-size="11" fill="#ccc" text-anchor="middle">Height pole</text>
+  <rect x="220" y="388" width="100" height="28" rx="8" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="270" y="406" font-family="system-ui,sans-serif" font-size="11" fill="#ccc" text-anchor="middle">Multi-state</text>
+
+  <rect x="16" y="424" width="96" height="28" rx="8" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="64" y="442" font-family="system-ui,sans-serif" font-size="11" fill="#ccc" text-anchor="middle">Night moves</text>
+  <rect x="120" y="424" width="80" height="28" rx="8" fill="#F1A91B18" stroke="#F1A91B30" stroke-width="1"/>
+  <text x="160" y="442" font-family="system-ui,sans-serif" font-size="11" fill="#F1A91B" text-anchor="middle">Weekend</text>
+
+  <!-- Stats row -->
+  <rect x="16" y="472" width="358" height="72" rx="16" fill="#111" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="80" y="502" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">142</text>
+  <text x="80" y="524" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Runs</text>
+  <rect x="178" y="482" width="1" height="48" fill="#1e1e1e"/>
+  <text x="216" y="502" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">4.9</text>
+  <text x="216" y="524" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Rating</text>
+  <rect x="306" y="482" width="1" height="48" fill="#1e1e1e"/>
+  <text x="345" y="502" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#22c55e" text-anchor="middle">97%</text>
+  <text x="345" y="524" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">On-time</text>
+
+  <!-- Rank badge -->
+  <rect x="16" y="562" width="358" height="48" rx="14" fill="#F1A91B12" stroke="#F1A91B25" stroke-width="1"/>
+  <text x="195" y="592" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#F1A91B" text-anchor="middle">🏆 Elite Tier · Rank #3 in Texas</text>
+
+  <!-- Bottom nav -->
+  <rect x="0" y="780" width="390" height="64" fill="#0c0c0c"/>
+  <text x="50" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Map</text>
+  <text x="140" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Loads</text>
+  <text x="250" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Earnings</text>
+  <text x="340" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#F1A91B" text-anchor="middle">Profile</text>
+</svg>

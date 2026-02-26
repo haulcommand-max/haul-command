@@ -1,0 +1,110 @@
+{
+    "name": "loads",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "status",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "equipment_type",
+            "type": "string",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "is_oversize",
+            "type": "bool",
+            "facet": true
+        },
+        {
+            "name": "origin_country",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "origin_state_province",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "origin_city",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "origin_location",
+            "type": "geopoint",
+            "optional": true
+        },
+        {
+            "name": "dest_country",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "dest_state_province",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "dest_city",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "dest_location",
+            "type": "geopoint",
+            "optional": true
+        },
+        {
+            "name": "corridor_slug",
+            "type": "string",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "price_total",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "rate_per_mile_est",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "distance_miles_est",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "predicted_fill_minutes",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "pickup_date_epoch",
+            "type": "int64",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "created_at",
+            "type": "int64"
+        }
+    ],
+    "default_sorting_field": "created_at",
+    "token_separators": [
+        "-",
+        "_"
+    ]
+}

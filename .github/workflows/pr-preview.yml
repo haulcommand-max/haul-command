@@ -1,0 +1,69 @@
+name: PR Preview Deploy
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel
+
+      - name: Pull Vercel Env (Preview)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Build (Vercel)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=$VERCEL_TOKEN
+
+      - name: Deploy (Preview)
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          url=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
+          echo "Deployed to: $url"
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = `${{ steps.deploy.outputs.preview_url }}`;
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ **Haul Command Preview:** ${url}\n\n🔍 [Open Preview](${url}) | 📊 [Directory](${url}/directory) | 🗺️ [Map](${url}/map)`
+            });
+
+      - name: Smoke check
+        run: |
+          set -e
+          url="${{ steps.deploy.outputs.preview_url }}"
+          echo "Checking $url/api/health"
+          curl -fsS "$url/api/health" >/dev/null || (echo "❌ Smoke check failed" && exit 1)
+          echo "✅ Smoke check passed"

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Haul Command">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E0B05C"/>
+      <stop offset="100%" stop-color="#8A6428"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="#121212"/>
+  <path d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z" fill="none" stroke="url(#g)" stroke-width="1.5"/>
+  <polygon points="16,4.5 17.2,8.3 21.2,8.3 17.9,10.5 19.1,14.3 16,12.1 12.9,14.3 14.1,10.5 10.8,8.3 14.8,8.3" fill="url(#g)"/>
+  <path d="M8 16.5 L16 12 L24 16.5" fill="none" stroke="url(#g)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 20.5 L16 16 L24 20.5" fill="none" stroke="url(#g)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 24.5 L16 20 L24 24.5" fill="none" stroke="url(#g)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

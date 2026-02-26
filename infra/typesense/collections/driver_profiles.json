@@ -1,0 +1,127 @@
+{
+    "name": "driver_profiles",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "display_name",
+            "type": "string"
+        },
+        {
+            "name": "company_name",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "phone_e164",
+            "type": "string",
+            "optional": true,
+            "index": false
+        },
+        {
+            "name": "email",
+            "type": "string",
+            "optional": true,
+            "index": false
+        },
+        {
+            "name": "country",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "state_province",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "city",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "postal_code",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "home_location",
+            "type": "geopoint",
+            "optional": true
+        },
+        {
+            "name": "coverage_radius_miles",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "is_seeded",
+            "type": "bool",
+            "facet": true
+        },
+        {
+            "name": "is_claimed",
+            "type": "bool",
+            "facet": true
+        },
+        {
+            "name": "verification_status",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "has_insurance",
+            "type": "bool",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "has_twic",
+            "type": "bool",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "has_height_pole",
+            "type": "bool",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "trust_score",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "response_time_min",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "acceptance_rate",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "on_time_rate",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "updated_at",
+            "type": "int64"
+        }
+    ],
+    "default_sorting_field": "updated_at",
+    "token_separators": [
+        "-",
+        "_"
+    ]
+}

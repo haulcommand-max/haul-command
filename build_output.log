@@ -1,0 +1,221 @@
+
+> haul-command-bots@1.0.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Found 1 warning while optimizing generated CSS:
+
+[2m│   }[22m
+[2m│ }[22m
+[2m│[22m @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+[2m┆[22m        [33m[2m^--[22m @import rules must precede all rules aside from @charset and @layer statements[39m
+[2m┆[22m
+[2m│ :root {[22m
+[2m│   --hc-gold-600: #8A6428;[22m
+
+
+> Build error occurred
+Error: Turbopack build failed with 9 errors:
+./app/leaderboards
+You cannot have two parallel pages that resolve to the same path. Please check /(public)/leaderboards and /leaderboards.
+
+./app/(public)/tools/permit-calculator/page.tsx:96:111
+Parsing ecmascript source code failed
+[0m [90m 94 |[39m                                 [33m<[39m[33mdiv[39m className[33m=[39m[32m"flex justify-between items-center py-3 border-b border-white/5"[39m[33m>[39m
+ [90m 95 |[39m                                     [33m<[39m[33mspan[39m className[33m=[39m[32m"text-slate-400"[39m[33m>[39m[33mPolice[39m [33mEscort[39m [33mTrigger[39m[33m<[39m[33m/[39m[33mspan[39m[33m>[39m
+[31m[1m>[22m[39m[90m 96 |[39m                                     [33m<[39m[33mspan[39m className[33m=[39m[32m"text-amber-500 font-mono font-bold text-lg"[39m[33m>[39m[33mCLEARED[39m ([33mW[39m [33m<[39m [35m16[39m[32m')</span>[39m
+ [90m    |[39m                                                                                                               [31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 97 |[39m                                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 98 |[39m                                 [33m<[39m[33mdiv[39m className[33m=[39m[32m"flex justify-between items-center py-3 border-b border-white/5"[39m[33m>[39m
+ [90m 99 |[39m                                     [33m<[39m[33mspan[39m className[33m=[39m[32m"text-slate-400"[39m[33m>[39m[33mBucket[39m [33mTruck[39m [33m/[39m [33mPole[39m[33m<[39m[33m/[39m[33mspan[39m[33m>[39m[0m
+
+Expected '</', got 'numeric literal'
+
+
+./app/(app)/referral/page.tsx:4:1
+Module not found: Can't resolve '@/utils/supabase/client'
+[0m [90m 2 |[39m
+ [90m 3 |[39m [36mimport[39m [33mReact[39m[33m,[39m { useState[33m,[39m useEffect } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { createClient } [36mfrom[39m [32m'@/utils/supabase/client'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { [33mReferralShareCard[39m } [36mfrom[39m [32m'@/components/psychology/GrowthHooks'[39m[33m;[39m
+ [90m 6 |[39m
+ [90m 7 |[39m [36mconst[39m supabase [33m=[39m createClient()[33m;[39m[0m
+
+Import map: aliased to relative './utils/supabase/client' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./app/(app)/referral/page.tsx [Client Component Browser]
+    ./app/(app)/referral/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(app)/referral/page.tsx [Client Component SSR]
+    ./app/(app)/referral/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/escrow/checkout/page.tsx:4:1
+Module not found: Can't resolve '@/utils/supabase/client'
+[0m [90m 2 |[39m
+ [90m 3 |[39m [36mimport[39m { useState[33m,[39m useEffect[33m,[39m useCallback } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { createClient } [36mfrom[39m [32m'@/utils/supabase/client'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m
+ [90m 6 |[39m [36minterface[39m [33mEscrowState[39m {
+ [90m 7 |[39m     escrow_required[33m:[39m boolean[33m;[39m[0m
+
+Import map: aliased to relative './utils/supabase/client' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./app/escrow/checkout/page.tsx [Client Component Browser]
+    ./app/escrow/checkout/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/escrow/checkout/page.tsx [Client Component SSR]
+    ./app/escrow/checkout/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/loads/page.tsx:5:1
+Module not found: Can't resolve '@/utils/supabase/client'
+[0m [90m 3 |[39m [36mimport[39m [33mReact[39m[33m,[39m { useState[33m,[39m useEffect[33m,[39m useMemo[33m,[39m useRef[33m,[39m useCallback } [36mfrom[39m [32m'react'[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m [33mLink[39m [36mfrom[39m [32m'next/link'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { createClient } [36mfrom[39m [32m'@/utils/supabase/client'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m
+ [90m 7 |[39m [90m// ══════════════════════════════════════════════════════════════[39m
+ [90m 8 |[39m [90m// MAP-FIRST LOADBOARD — Clustering, Heat, Density, Radius[39m[0m
+
+Import map: aliased to relative './utils/supabase/client' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./app/loads/page.tsx [Client Component Browser]
+    ./app/loads/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/loads/page.tsx [Client Component SSR]
+    ./app/loads/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/county/[county-slug]/pilot-car/page.tsx:3:1
+Module not found: Can't resolve '@/utils/supabase/server'
+[0m [90m 1 |[39m [36mimport[39m [33mLink[39m [36mfrom[39m [32m'next/link'[39m[33m;[39m
+ [90m 2 |[39m [36mimport[39m { [33mChevronRight[39m[33m,[39m [33mAlertTriangle[39m[33m,[39m [33mClock[39m[33m,[39m [33mZap[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { createClient [36mas[39m createServer } [36mfrom[39m [32m'@/utils/supabase/server'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m [36mimport[39m { [33mProgrammaticFAQ[39m[33m,[39m getCountyFAQs } [36mfrom[39m [32m'@/components/seo/ProgrammaticFAQ'[39m[33m;[39m
+ [90m 5 |[39m [36mimport[39m { [33mHubLinks[39m[33m,[39m [33mAuthorityLinks[39m } [36mfrom[39m [32m'@/lib/seo/internal-links'[39m[33m;[39m
+ [90m 6 |[39m [36mimport[39m type { [33mMetadata[39m } [36mfrom[39m [32m'next'[39m[33m;[39m[0m
+
+Import map: aliased to relative './utils/supabase/server' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/loads/post/page.tsx:4:1
+Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
+[0m [90m 2 |[39m
+ [90m 3 |[39m [36mimport[39m [33mReact[39m[33m,[39m { useState } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { createClientComponentClient } [36mfrom[39m [32m'@supabase/auth-helpers-nextjs'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { useRouter } [36mfrom[39m [32m'next/navigation'[39m[33m;[39m
+ [90m 6 |[39m
+ [90m 7 |[39m [36minterface[39m [33mCandidate[39m {[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/loads/post/page.tsx [Client Component Browser]
+    ./app/loads/post/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/loads/post/page.tsx [Client Component SSR]
+    ./app/loads/post/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/offers/inbox/page.tsx:4:1
+Module not found: Can't resolve '@supabase/auth-helpers-nextjs'
+[0m [90m 2 |[39m
+ [90m 3 |[39m [36mimport[39m [33mReact[39m[33m,[39m { useEffect[33m,[39m useState[33m,[39m useCallback } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { createClientComponentClient } [36mfrom[39m [32m'@supabase/auth-helpers-nextjs'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m
+ [90m 6 |[39m [36minterface[39m [33mOffer[39m {
+ [90m 7 |[39m     id[33m:[39m string[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/offers/inbox/page.tsx [Client Component Browser]
+    ./app/offers/inbox/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/offers/inbox/page.tsx [Client Component SSR]
+    ./app/offers/inbox/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./node_modules/recharts/es6/util/ReactUtils.js:3:1
+Module not found: Can't resolve 'react-is'
+[0m [90m 1 |[39m [36mimport[39m [36mget[39m [36mfrom[39m [32m'es-toolkit/compat/get'[39m[33m;[39m
+ [90m 2 |[39m [36mimport[39m { [33mChildren[39m } [36mfrom[39m [32m'react'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { isFragment } [36mfrom[39m [32m'react-is'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m [36mimport[39m { isNullish } [36mfrom[39m [32m'./DataUtils'[39m[33m;[39m
+ [90m 5 |[39m [36mexport[39m [36mvar[39m [33mSCALE_TYPES[39m [33m=[39m [[32m'auto'[39m[33m,[39m [32m'linear'[39m[33m,[39m [32m'pow'[39m[33m,[39m [32m'sqrt'[39m[33m,[39m [32m'log'[39m[33m,[39m [32m'identity'[39m[33m,[39m [32m'time'[39m[33m,[39m [32m'band'[39m[33m,[39m [32m'point'[39m[33m,[39m [32m'ordinal'[39m[33m,[39m [32m'quantile'[39m[33m,[39m [32m'quantize'[39m[33m,[39m [32m'utc'[39m[33m,[39m [32m'sequential'[39m[33m,[39m [32m'threshold'[39m][33m;[39m
+ [90m 6 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./node_modules/recharts/es6/util/ReactUtils.js [Client Component Browser]
+    ./node_modules/recharts/es6/cartesian/Area.js [Client Component Browser]
+    ./components/dashboard/LiquidityDashboard.tsx [Client Component Browser]
+    ./app/(command)/dashboard/page.tsx [Client Component Browser]
+    ./app/(command)/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./node_modules/recharts/es6/util/ReactUtils.js [Client Component SSR]
+    ./node_modules/recharts/es6/cartesian/Area.js [Client Component SSR]
+    ./components/dashboard/LiquidityDashboard.tsx [Client Component SSR]
+    ./app/(command)/dashboard/page.tsx [Client Component SSR]
+    ./app/(command)/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./app/(public)/tools/permit-calculator/page.tsx:96:111)
+    at <unknown> (./app/(app)/referral/page.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/escrow/checkout/page.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/loads/page.tsx:5:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/county/[county-slug]/pilot-car/page.tsx:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/loads/post/page.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/offers/inbox/page.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

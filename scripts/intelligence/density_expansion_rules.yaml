@@ -1,0 +1,130 @@
+# HAUL COMMAND — SMART DENSITY EXPANSION ENGINE
+strategy: "concentrated_dominance_before_blanket"
+
+priority_weights:
+  port_regions: 1.40
+  energy_regions: 1.50
+  wind_regions: 1.45
+  mobile_home_regions: 1.35
+  major_freight_hubs: 1.30
+  rural_corridors: 1.15
+  low_density_regions: 0.80
+
+clustering_rules:
+  - name: "metro_gravity"
+    description: "High-demand metros spawn nearby support cities"
+    logic: "if city.HeatIndex >= 75: add_surrounding_cities(radius_miles=120, max_add=8)"
+
+  - name: "corridor_string"
+    description: "Build chains along major freight interstates"
+    highways_focus:
+      - I-10
+      - I-20
+      - I-40
+      - I-70
+      - I-75
+      - I-80
+      - I-95
+    logic: "if corridor.load_density_high: seed_every_120_miles()"
+
+  - name: "energy_bloom"
+    description: "Energy basins get rural over-seeding"
+    logic: "if region.tag in ['oil_gas','wind','mining']: increase_city_density(multiplier=1.6)"
+
+  - name: "home_field_advantage"
+    description: "Florida gets intentional over-coverage"
+    logic: "if state == 'Florida': increase_city_density(multiplier=1.8)"
+
+  - name: "cross_border_pressure"
+    description: "Boost border freight crossings"
+    logic: "if city.near_major_border_crossing: priority_boost(+20)"
+
+florida_density_boost:
+  tier_1_must_have:
+    - Tampa
+    - Orlando
+    - Jacksonville
+    - Miami
+    - Fort Lauderdale
+    - West Palm Beach
+    - Ocala
+    - Gainesville
+    - Lakeland
+  tier_2_mobile_home_corridor:
+    - Wildwood
+    - Bushnell
+    - Crystal River
+    - Homosassa
+    - Brooksville
+    - Palatka
+    - Lake City
+    - Live Oak
+    - Perry
+    - Clewiston
+    - Sebring
+    - Okeechobee
+  tier_3_panhandle_energy_wind:
+    - Pensacola
+    - Crestview
+    - DeFuniak Springs
+    - Marianna
+    - Panama City
+    - Tallahassee
+
+texas_density_boost:
+  tier_1_energy_ports:
+    - Houston
+    - Beaumont
+    - Port Arthur
+    - Corpus Christi
+    - Freeport
+    - Galveston
+  tier_2_permit_heavy:
+    - Odessa
+    - Midland
+    - San Angelo
+    - Abilene
+    - Lubbock
+    - Amarillo
+    - Wichita Falls
+  tier_3_wind_panhandle:
+    - Plainview
+    - Pampa
+    - Hereford
+    - Dalhart
+    - Snyder
+
+wind_belt_boost:
+  colorado:
+    - Greeley
+    - Fort Morgan
+    - Sterling
+    - Lamar
+  wyoming:
+    - Cheyenne
+    - Casper
+    - Gillette
+    - Rock Springs
+  kansas:
+    - Dodge City
+    - Garden City
+    - Hutchinson
+    - Liberal
+  iowa:
+    - Sioux City
+    - Mason City
+    - Waterloo
+
+seo_long_tail:
+  patterns:
+    - "pilot car [city]"
+    - "oversize escort [city]"
+    - "wide load escort [city]"
+    - "pilot car near [county]"
+    - "escort service [region]"
+    - "high pole escort [city]"
+    - "mobile home escort [city]"
+    - "wind turbine escort [city]"
+    - "bucket truck escort [city]"
+    - "pilot car jobs [city]"
+    - "escort load board [state]"

@@ -1,0 +1,23 @@
+[
+    {
+        "company_type": "Escort",
+        "states_operating_in": [
+            "TX",
+            "LA",
+            "OK"
+        ],
+        "certifications": [
+            "P/EVO",
+            "TWIC"
+        ],
+        "insurance_verified": true,
+        "equipment_inventory": [
+            "High Pole",
+            "Amber Beacons"
+        ],
+        "height_pole_certified": true,
+        "rating_score": 98,
+        "compliance_score": 100,
+        "last_verified": "2026-02-13"
+    }
+]

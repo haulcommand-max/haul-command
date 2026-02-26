@@ -1,0 +1,165 @@
+[
+  {
+    "city": "Houston",
+    "state_or_province": "TX",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "energy",
+      "port"
+    ],
+    "base_score": 100
+  },
+  {
+    "city": "Miami",
+    "state_or_province": "FL",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "port"
+    ],
+    "base_score": 95
+  },
+  {
+    "city": "Los Angeles",
+    "state_or_province": "CA",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "port"
+    ],
+    "base_score": 95
+  },
+  {
+    "city": "Atlanta",
+    "state_or_province": "GA",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "freight_hub"
+    ],
+    "base_score": 90
+  },
+  {
+    "city": "Chicago",
+    "state_or_province": "IL",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "freight_hub"
+    ],
+    "base_score": 90
+  },
+  {
+    "city": "Toronto",
+    "state_or_province": "ON",
+    "country": "CA",
+    "tier": 0,
+    "reason_tags": [
+      "province_anchor",
+      "freight_hub"
+    ],
+    "base_score": 90
+  },
+  {
+    "city": "Calgary",
+    "state_or_province": "AB",
+    "country": "CA",
+    "tier": 0,
+    "reason_tags": [
+      "province_anchor",
+      "energy"
+    ],
+    "base_score": 88
+  },
+  {
+    "city": "Columbus",
+    "state_or_province": "OH",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor"
+    ],
+    "base_score": 85
+  },
+  {
+    "city": "Charlotte",
+    "state_or_province": "NC",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor"
+    ],
+    "base_score": 85
+  },
+  {
+    "city": "Vancouver",
+    "state_or_province": "BC",
+    "country": "CA",
+    "tier": 0,
+    "reason_tags": [
+      "province_anchor",
+      "port"
+    ],
+    "base_score": 85
+  },
+  {
+    "city": "Detroit",
+    "state_or_province": "MI",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "border"
+    ],
+    "base_score": 80
+  },
+  {
+    "city": "Philadelphia",
+    "state_or_province": "PA",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor",
+      "port"
+    ],
+    "base_score": 80
+  },
+  {
+    "city": "Indianapolis",
+    "state_or_province": "IN",
+    "country": "US",
+    "tier": 0,
+    "reason_tags": [
+      "state_anchor"
+    ],
+    "base_score": 80
+  },
+  {
+    "city": "Midland",
+    "state_or_province": "TX",
+    "country": "US",
+    "tier": 2,
+    "reason_tags": [
+      "rural_anchor",
+      "energy"
+    ],
+    "base_score": 80
+  },
+  {
+    "city": "Williston",
+    "state_or_province": "ND",
+    "country": "US",
+    "tier": 3,
+    "reason_tags": [
+      "rural_anchor",
+      "energy"
+    ],
+    "base_score": 75
+  }
+]

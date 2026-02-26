@@ -1,0 +1,54 @@
+name: Supply Chain Security
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 6am UTC
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+
+      - name: NPM Audit (known vulnerabilities)
+        run: |
+          npm audit --audit-level=high --omit=dev 2>&1 || true
+          echo "---"
+          npm audit --json --omit=dev > /tmp/audit.json 2>&1 || true
+          CRITICAL=$(cat /tmp/audit.json | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const a=JSON.parse(d);console.log(a.metadata?.vulnerabilities?.critical||0)}catch{console.log(0)}")
+          HIGH=$(cat /tmp/audit.json | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');try{const a=JSON.parse(d);console.log(a.metadata?.vulnerabilities?.high||0)}catch{console.log(0)}")
+          echo "Critical: $CRITICAL, High: $HIGH"
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "❌ Critical vulnerabilities found"
+            exit 1
+          fi
+          echo "✅ No critical vulnerabilities"
+
+      - name: Check for suspicious packages
+        run: |
+          # Flag packages with install scripts (common attack vector)
+          echo "Checking for suspicious install scripts..."
+          node -e "
+            const pkg = require('./package-lock.json');
+            const suspicious = [];
+            for (const [name, info] of Object.entries(pkg.packages || {})) {
+              if (info.hasInstallScript && !name.includes('node_modules/esbuild') && !name.includes('node_modules/@swc') && !name.includes('node_modules/sharp') && !name.includes('node_modules/playwright')) {
+                suspicious.push(name.replace('node_modules/', ''));
+              }
+            }
+            if (suspicious.length > 0) {
+              console.log('⚠️  Packages with install scripts:');
+              suspicious.forEach(s => console.log('  - ' + s));
+            } else {
+              console.log('✅ No suspicious install scripts');
+            }
+          "

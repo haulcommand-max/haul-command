@@ -1,0 +1,216 @@
+{
+    "$schema": "https://raw.githubusercontent.com/amzn/style-dictionary/main/types/DesignToken.d.ts",
+    "meta": {
+        "brand": "Haul Command",
+        "version": "4.0.0",
+        "updated": "2026-02-21",
+        "sourceOfTruth": "/public/brand/design-tokens.json",
+        "masterLogo": "/public/brand/logo.svg",
+        "note": "All hex values extracted from master logo. Never hardcode these — use Tailwind token classes."
+    },
+    "color": {
+        "gold": {
+            "700": {
+                "value": "#6B4A1C",
+                "comment": "Deep shadow gold"
+            },
+            "600": {
+                "value": "#8A6428",
+                "comment": "Command Gold — hover/depth states"
+            },
+            "500": {
+                "value": "#C6923A",
+                "comment": "PRIMARY GOLD — CTAs, authority elements, brand anchor"
+            },
+            "400": {
+                "value": "#E0B05C",
+                "comment": "Light gold — highlights"
+            },
+            "300": {
+                "value": "#F1C27B",
+                "comment": "Pale gold — subtle accents"
+            },
+            "200": {
+                "value": "#F8DFB0",
+                "comment": "Near-white gold — very subtle"
+            }
+        },
+        "surface": {
+            "bg": {
+                "value": "#121212",
+                "comment": "Command Black — primary background"
+            },
+            "surface": {
+                "value": "#1E1E1E",
+                "comment": "Card / panel surface"
+            },
+            "elevated": {
+                "value": "#2A2A2A",
+                "comment": "Industrial Charcoal — elevated panels"
+            },
+            "high": {
+                "value": "#363636",
+                "comment": "Highest elevation (modals, dropdowns)"
+            }
+        },
+        "text": {
+            "primary": {
+                "value": "#D6D6D6",
+                "comment": "Steel Text — body copy"
+            },
+            "muted": {
+                "value": "#8A8A8A",
+                "comment": "Labels, captions"
+            },
+            "subtle": {
+                "value": "#555555",
+                "comment": "Ghost text, placeholders"
+            },
+            "inverse": {
+                "value": "#121212",
+                "comment": "Text on gold buttons"
+            }
+        },
+        "border": {
+            "default": {
+                "value": "rgba(198,146,58,0.18)",
+                "comment": "Subtle gold-tinted border"
+            },
+            "hover": {
+                "value": "rgba(198,146,58,0.38)",
+                "comment": "Active/hover border"
+            },
+            "bare": {
+                "value": "rgba(255,255,255,0.06)",
+                "comment": "Neutral minimal border"
+            }
+        },
+        "status": {
+            "success": {
+                "value": "#2D9B5C",
+                "comment": "Verified, on-time, available"
+            },
+            "warning": {
+                "value": "#D4870A",
+                "comment": "Urgent, at-risk, staged"
+            },
+            "danger": {
+                "value": "#C53030",
+                "comment": "Critical, rejected, error"
+            },
+            "info": {
+                "value": "#2B6CB0",
+                "comment": "Informational"
+            }
+        },
+        "identity": {
+            "escort": {
+                "value": "#C6923A",
+                "comment": "Escort operator identity color"
+            },
+            "broker": {
+                "value": "#4299E1",
+                "comment": "Broker identity color"
+            },
+            "corridor": {
+                "value": "#9F7AEA",
+                "comment": "Corridor intelligence accent"
+            }
+        }
+    },
+    "typography": {
+        "fontFamily": {
+            "sans": {
+                "value": "'Inter', system-ui, -apple-system, sans-serif"
+            },
+            "mono": {
+                "value": "'JetBrains Mono', Menlo, monospace"
+            },
+            "display": {
+                "value": "'Space Grotesk', Inter, sans-serif"
+            }
+        },
+        "fontSize": {
+            "min": {
+                "value": "14px",
+                "comment": "Absolute floor for UI text"
+            },
+            "body": {
+                "value": "16px",
+                "comment": "Body text minimum (truck cab readable)"
+            },
+            "lg": {
+                "value": "18px"
+            },
+            "xl": {
+                "value": "20px"
+            }
+        }
+    },
+    "spacing": {
+        "touchMin": {
+            "value": "44px",
+            "comment": "Minimum touch target (glove-friendly)"
+        },
+        "touchLg": {
+            "value": "52px",
+            "comment": "Large touch target"
+        },
+        "bottomNav": {
+            "value": "60px",
+            "comment": "Mobile bottom navigation height"
+        }
+    },
+    "radius": {
+        "sm": {
+            "value": "6px"
+        },
+        "md": {
+            "value": "10px"
+        },
+        "lg": {
+            "value": "14px"
+        },
+        "xl": {
+            "value": "18px"
+        },
+        "2xl": {
+            "value": "24px"
+        },
+        "pill": {
+            "value": "9999px"
+        }
+    },
+    "shadow": {
+        "gold-sm": {
+            "value": "0 0 8px rgba(198,146,58,0.25)"
+        },
+        "gold-md": {
+            "value": "0 0 20px rgba(198,146,58,0.20)"
+        },
+        "dispatch": {
+            "value": "0 4px 24px rgba(198,146,58,0.35), 0 0 0 1px rgba(198,146,58,0.2)"
+        },
+        "card-hover": {
+            "value": "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(198,146,58,0.12)"
+        }
+    },
+    "animation": {
+        "fast": {
+            "value": "150ms",
+            "comment": "Button feedback"
+        },
+        "standard": {
+            "value": "200ms",
+            "comment": "Standard transitions"
+        },
+        "deliberate": {
+            "value": "250ms",
+            "comment": "Panel reveals"
+        },
+        "easing": {
+            "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+            "comment": "Premium ease"
+        }
+    }
+}

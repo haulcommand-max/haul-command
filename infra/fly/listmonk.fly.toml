@@ -1,0 +1,42 @@
+# hc-listmonk — listmonk on Fly.io (campaign engine + admin UI)
+app = "hc-listmonk"
+primary_region = "iad"
+
+[build]
+  image = "listmonk/listmonk:latest"
+
+[env]
+  LISTMONK_app__address = "0.0.0.0:9000"
+  LISTMONK_db__host = "hc-listmonk-db.internal"
+  LISTMONK_db__port = "5432"
+  LISTMONK_db__user = "listmonk"
+  LISTMONK_db__database = "listmonk"
+  LISTMONK_db__ssl_mode = "disable"
+  # LISTMONK_db__password set via `fly secrets`
+
+  # SMTP via SES
+  LISTMONK_smtp__enabled = "true"
+  LISTMONK_smtp__host = "email-smtp.us-east-1.amazonaws.com"
+  LISTMONK_smtp__port = "587"
+  LISTMONK_smtp__tls_enabled = "true"
+  # LISTMONK_smtp__username + LISTMONK_smtp__password set via `fly secrets`
+
+[http_service]
+  internal_port = 9000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+
+# Postgres setup (run once):
+# fly postgres create --name hc-listmonk-db --region iad --initial-cluster-size 1
+# fly postgres attach --app hc-listmonk hc-listmonk-db
+#
+# First run init:
+# fly ssh console --app hc-listmonk -C "./listmonk --install --idempotent --yes"
+# fly ssh console --app hc-listmonk -C "./listmonk --upgrade --yes"

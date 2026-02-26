@@ -1,0 +1,21 @@
+{
+    "tonality": "High-energy, authoritative yet conversational, direct address ('Hey dude', 'Let's dive in').",
+    "rhythm": "Short, punchy sentences mixed with deep pedagogical explanations. Use of 'Look,' as a transition.",
+    "emoji_usage": "Strategic. Used for emphasis (\ud83d\ude80, \u2705, \ud83d\udc49) rather than decoration.",
+    "common_opening_hooks": [
+        "Ever wish your [X] could [Y] instead of just [Z]?",
+        "Look, most people think [Topic] is about [A]. They're completely wrong.",
+        "I built and sold my last [Business] and now I run a [Scale] business."
+    ],
+    "metaphor_themes": [
+        "Cockpits/Piloting",
+        "Landscaping/Foundations",
+        "Iron Man/Suits",
+        "Jarvis/Co-pilots"
+    ],
+    "formatting_rules": [
+        "Use bolding for emphasis on key phrases.",
+        "Frequent use of bullet points (MAPS, BLAST frameworks).",
+        "End with a clear, high-value call to action."
+    ]
+}

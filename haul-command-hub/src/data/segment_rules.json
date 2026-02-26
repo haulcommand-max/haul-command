@@ -1,0 +1,14 @@
+[
+    {
+        "segment": "Wind",
+        "special_escort_requirements": "High-pole required for all blades > 16' height",
+        "typical_dimensions": "Length 200'+, Width 14'+",
+        "police_likelihood_score": 5,
+        "height_survey_likelihood": 5,
+        "utility_coordination_likelihood": 4,
+        "twic_required": "Conditional",
+        "port_escort_required": "Yes",
+        "night_movement_feasibility": "Low",
+        "risk_multiplier": 3
+    }
+]

@@ -1,0 +1,121 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients for the Signature Gold Look -->
+    <linearGradient id="goldGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C99846" />
+      <stop offset="50%" stop-color="#FDE08B" />
+      <stop offset="100%" stop-color="#A87B2E" />
+    </linearGradient>
+
+    <linearGradient id="goldGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EDC987" />
+      <stop offset="50%" stop-color="#FFF2C8" />
+      <stop offset="100%" stop-color="#C69E55" />
+    </linearGradient>
+
+    <linearGradient id="goldGradient3" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#B38133" />
+      <stop offset="50%" stop-color="#E6C174" />
+      <stop offset="100%" stop-color="#7E5616" />
+    </linearGradient>
+
+    <!-- Drop shadow for depth -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <g transform="translate(125, 40)" filter="url(#dropShadow)">
+    <!-- Outer Hexagon Shield Border -->
+    <path
+      d="M125 0 L250 50 L250 200 L125 250 L0 200 L0 50 Z"
+      fill="none"
+      stroke="url(#goldGradient3)"
+      stroke-width="12"
+      stroke-linejoin="miter"
+    />
+
+    <!-- Inner Shield Background -->
+    <path
+      d="M125 10 L240 56 L240 196 L125 242 L10 196 L10 56 Z"
+      fill="#111111"
+    />
+
+    <!-- Inner Hexagon Outline -->
+    <path
+      d="M125 16 L234 60 L234 192 L125 236 L16 192 L16 60 Z"
+      fill="none"
+      stroke="url(#goldGradient2)"
+      stroke-width="4"
+    />
+
+    <!-- 5-Point Star -->
+    <polygon
+      points="125,25 137,60 175,60 145,82 156,118 125,95 94,118 105,82 75,60 113,60"
+      fill="url(#goldGradient1)"
+      transform="scale(0.85) translate(22, 10)"
+    />
+
+    <!-- Three Command Chevrons -->
+    <!-- Top Chevron -->
+    <path
+      d="M40 100 L125 135 L210 100 L210 120 L125 155 L40 120 Z"
+      fill="url(#goldGradient1)"
+    />
+    <!-- Middle Chevron -->
+    <path
+      d="M40 135 L125 170 L210 135 L210 155 L125 190 L40 155 Z"
+      fill="url(#goldGradient1)"
+    />
+    <!-- Bottom Chevron -->
+    <path
+      d="M40 170 L125 205 L210 170 L210 190 L125 225 L40 190 Z"
+      fill="url(#goldGradient1)"
+    />
+  </g>
+
+  <g transform="translate(250, 360)">
+    <!-- HAUL -->
+    <text
+      x="0"
+      y="0"
+      font-family="'Impact', 'Arial Black', sans-serif"
+      font-size="72"
+      font-weight="bold"
+      text-anchor="middle"
+      fill="url(#goldGradient1)"
+      letter-spacing="2"
+      filter="url(#dropShadow)"
+    >
+      HAUL
+    </text>
+    
+    <!-- COMMAND -->
+    <text
+      x="0"
+      y="65"
+      font-family="'Impact', 'Arial Black', sans-serif"
+      font-size="64"
+      font-weight="bold"
+      text-anchor="middle"
+      fill="url(#goldGradient2)"
+      letter-spacing="4"
+      filter="url(#dropShadow)"
+    >
+      COMMAND
+    </text>
+
+    <!-- Bottom decorative underline/chevron pointer -->
+    <g transform="translate(-140, 90)">
+      <path 
+        d="M0 5 L120 5 L140 15 L160 5 L280 5" 
+        fill="none" 
+        stroke="url(#goldGradient3)" 
+        stroke-width="4" 
+      />
+      <!-- Small double chevron at the bottom center -->
+      <path d="M130 15 L140 25 L150 15" fill="none" stroke="url(#goldGradient1)" stroke-width="4" />
+      <path d="M130 22 L140 32 L150 22" fill="none" stroke="url(#goldGradient1)" stroke-width="4" />
+    </g>
+  </g>
+</svg>

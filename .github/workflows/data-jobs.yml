@@ -1,0 +1,115 @@
+name: Haul Command Data Jobs
+
+on:
+  schedule:
+    - cron: "0 7 * * *"   # Daily: corridor + supply refresh
+    - cron: "0 8 * * 1"   # Monday: SEO page regeneration
+    - cron: "0 9 * * 3"   # Wednesday: port data ingest
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Job to run (corridor|supply|seo|ports|all)"
+        required: false
+        default: "all"
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  corridor:
+    name: Corridor Liquidity Refresh
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'schedule' ||
+      github.event.inputs.job == 'corridor' ||
+      github.event.inputs.job == 'all'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Run corridor refresh
+        run: node scripts/data-jobs/corridor_liquidity_refresh.mjs
+      - name: Alert on failure
+        if: failure()
+        run: |
+          node scripts/ops/notify.mjs \
+            --status=fail \
+            --title="Data Job Failed: corridor-liquidity-refresh" \
+            --details="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  supply:
+    name: Escort Supply Scan
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'schedule' ||
+      github.event.inputs.job == 'supply' ||
+      github.event.inputs.job == 'all'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Run supply scan
+        run: node scripts/data-jobs/escort_supply_scan.mjs
+      - name: Alert on failure
+        if: failure()
+        run: |
+          node scripts/ops/notify.mjs \
+            --status=fail \
+            --title="Data Job Failed: escort-supply-scan" \
+            --details="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  seo:
+    name: SEO Regenerator
+    runs-on: ubuntu-latest
+    if: >
+      (github.event.schedule == '0 8 * * 1') ||
+      github.event.inputs.job == 'seo' ||
+      github.event.inputs.job == 'all'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Run SEO regenerator
+        run: node scripts/data-jobs/seo_regenerator.mjs
+      - name: Alert on failure
+        if: failure()
+        run: |
+          node scripts/ops/notify.mjs \
+            --status=fail \
+            --title="Data Job Failed: seo-regenerator" \
+            --details="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  ports:
+    name: Port Data Ingest
+    runs-on: ubuntu-latest
+    if: >
+      (github.event.schedule == '0 9 * * 3') ||
+      github.event.inputs.job == 'ports' ||
+      github.event.inputs.job == 'all'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Run port ingest
+        run: node scripts/data-jobs/port_ingest.mjs
+      - name: Alert on failure
+        if: failure()
+        run: |
+          node scripts/ops/notify.mjs \
+            --status=fail \
+            --title="Data Job Failed: port-ingest" \
+            --details="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

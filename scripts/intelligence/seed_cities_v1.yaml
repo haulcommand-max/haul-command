@@ -1,0 +1,93 @@
+# HAUL COMMAND — SEED CITIES LIST v1
+# Free-plan optimized nationwide coverage anchors (US + Canada + territories)
+# Fields: city, state_or_province, country, tier, reason_tags, lat, lng
+
+seed_cities_v1:
+  # -------------------------
+  # UNITED STATES — TIER 0 ANCHORS (All states + DC)
+  # -------------------------
+  - {city: "Birmingham", state_or_province: "Alabama", country: "USA", tier: "tier_0_anchor", reason_tags: ["state_anchor","freight"], lat: 33.5186, lng: -86.8104}
+  - {city: "Anchorage", state_or_province: "Alaska", country: "USA", tier: "tier_0_anchor", reason_tags: ["state_anchor","remote"], lat: 61.2181, lng: -149.9003}
+  - {city: "Phoenix", state_or_province: "Arizona", country: "USA", tier: "tier_0_anchor", reason_tags: ["state_anchor","sunbelt"], lat: 33.4484, lng: -112.0740}
+  - {city: "Little Rock", state_or_province: "Arkansas", country: "USA", tier: "tier_0_anchor", reason_tags: ["state_anchor"], lat: 34.7465, lng: -92.2896}
+  - {city: "Los Angeles", state_or_province: "California", country: "USA", tier: "tier_0_anchor", reason_tags: ["port","mega_freight"], lat: 34.0522, lng: -118.2437}
+  - {city: "Denver", state_or_province: "Colorado", country: "USA", tier: "tier_0_anchor", reason_tags: ["mountain_corridor"], lat: 39.7392, lng: -104.9903}
+  - {city: "Hartford", state_or_province: "Connecticut", country: "USA", tier: "tier_0_anchor", reason_tags: ["state_anchor"], lat: 41.7658, lng: -72.6734}
+  - {city: "Wilmington", state_or_province: "Delaware", country: "USA", tier: "tier_0_anchor", reason_tags: ["mid_atlantic"], lat: 39.7391, lng: -75.5398}
+  - {city: "Miami", state_or_province: "Florida", country: "USA", tier: "tier_0_anchor", reason_tags: ["port","priority_home"], lat: 25.7617, lng: -80.1918}
+  - {city: "Atlanta", state_or_province: "Georgia", country: "USA", tier: "tier_0_anchor", reason_tags: ["mega_freight","i75"], lat: 33.7490, lng: -84.3880}
+  - {city: "Honolulu", state_or_province: "Hawaii", country: "USA", tier: "tier_0_anchor", reason_tags: ["island"], lat: 21.3069, lng: -157.8583}
+  - {city: "Boise", state_or_province: "Idaho", country: "USA", tier: "tier_0_anchor", reason_tags: ["rural_corridor"], lat: 43.6150, lng: -116.2023}
+  - {city: "Chicago", state_or_province: "Illinois", country: "USA", tier: "tier_0_anchor", reason_tags: ["rail_hub","mega_freight"], lat: 41.8781, lng: -87.6298}
+  - {city: "Indianapolis", state_or_province: "Indiana", country: "USA", tier: "tier_0_anchor", reason_tags: ["crossroads"], lat: 39.7684, lng: -86.1581}
+  - {city: "Des Moines", state_or_province: "Iowa", country: "USA", tier: "tier_0_anchor", reason_tags: ["ag_corridor"], lat: 41.5868, lng: -93.6250}
+  - {city: "Wichita", state_or_province: "Kansas", country: "USA", tier: "tier_0_anchor", reason_tags: ["wind_ag"], lat: 37.6872, lng: -97.3301}
+  - {city: "Louisville", state_or_province: "Kentucky", country: "USA", tier: "tier_0_anchor", reason_tags: ["ohio_valley"], lat: 38.2527, lng: -85.7585}
+  - {city: "Baton Rouge", state_or_province: "Louisiana", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy"], lat: 30.4515, lng: -91.1871}
+  - {city: "Portland", state_or_province: "Maine", country: "USA", tier: "tier_0_anchor", reason_tags: ["northeast"], lat: 43.6591, lng: -70.2568}
+  - {city: "Baltimore", state_or_province: "Maryland", country: "USA", tier: "tier_0_anchor", reason_tags: ["port"], lat: 39.2904, lng: -76.6122}
+  - {city: "Boston", state_or_province: "Massachusetts", country: "USA", tier: "tier_0_anchor", reason_tags: ["port","northeast"], lat: 42.3601, lng: -71.0589}
+  - {city: "Detroit", state_or_province: "Michigan", country: "USA", tier: "tier_0_anchor", reason_tags: ["auto","border"], lat: 42.3314, lng: -83.0458}
+  - {city: "Minneapolis", state_or_province: "Minnesota", country: "USA", tier: "tier_0_anchor", reason_tags: ["upper_midwest"], lat: 44.9778, lng: -93.2650}
+  - {city: "Jackson", state_or_province: "Mississippi", country: "USA", tier: "tier_0_anchor", reason_tags: ["south"], lat: 32.2988, lng: -90.1848}
+  - {city: "Kansas City", state_or_province: "Missouri", country: "USA", tier: "tier_0_anchor", reason_tags: ["central_hub"], lat: 39.0997, lng: -94.5786}
+  - {city: "Billings", state_or_province: "Montana", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy_rural"], lat: 45.7833, lng: -108.5007}
+  - {city: "Omaha", state_or_province: "Nebraska", country: "USA", tier: "tier_0_anchor", reason_tags: ["midwest"], lat: 41.2565, lng: -95.9345}
+  - {city: "Las Vegas", state_or_province: "Nevada", country: "USA", tier: "tier_0_anchor", reason_tags: ["sunbelt"], lat: 36.1699, lng: -115.1398}
+  - {city: "Manchester", state_or_province: "New Hampshire", country: "USA", tier: "tier_0_anchor", reason_tags: ["northeast"], lat: 42.9956, lng: -71.4548}
+  - {city: "Newark", state_or_province: "New Jersey", country: "USA", tier: "tier_0_anchor", reason_tags: ["port"], lat: 40.7357, lng: -74.1724}
+  - {city: "Albuquerque", state_or_province: "New Mexico", country: "USA", tier: "tier_0_anchor", reason_tags: ["southwest"], lat: 35.0844, lng: -106.6504}
+  - {city: "New York", state_or_province: "New York", country: "USA", tier: "tier_0_anchor", reason_tags: ["mega_port"], lat: 40.7128, lng: -74.0060}
+  - {city: "Charlotte", state_or_province: "North Carolina", country: "USA", tier: "tier_0_anchor", reason_tags: ["i85"], lat: 35.2271, lng: -80.8431}
+  - {city: "Fargo", state_or_province: "North Dakota", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy_rural"], lat: 46.8772, lng: -96.7898}
+  - {city: "Columbus", state_or_province: "Ohio", country: "USA", tier: "tier_0_anchor", reason_tags: ["midwest"], lat: 39.9612, lng: -82.9988}
+  - {city: "Oklahoma City", state_or_province: "Oklahoma", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy"], lat: 35.4676, lng: -97.5164}
+  - {city: "Portland", state_or_province: "Oregon", country: "USA", tier: "tier_0_anchor", reason_tags: ["port"], lat: 45.5152, lng: -122.6784}
+  - {city: "Philadelphia", state_or_province: "Pennsylvania", country: "USA", tier: "tier_0_anchor", reason_tags: ["northeast"], lat: 39.9526, lng: -75.1652}
+  - {city: "Providence", state_or_province: "Rhode Island", country: "USA", tier: "tier_0_anchor", reason_tags: ["northeast"], lat: 41.8240, lng: -71.4128}
+  - {city: "Columbia", state_or_province: "South Carolina", country: "USA", tier: "tier_0_anchor", reason_tags: ["south"], lat: 34.0007, lng: -81.0348}
+  - {city: "Sioux Falls", state_or_province: "South Dakota", country: "USA", tier: "tier_0_anchor", reason_tags: ["plains"], lat: 43.5446, lng: -96.7311}
+  - {city: "Nashville", state_or_province: "Tennessee", country: "USA", tier: "tier_0_anchor", reason_tags: ["i40"], lat: 36.1627, lng: -86.7816}
+  - {city: "Houston", state_or_province: "Texas", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy","mega_port"], lat: 29.7604, lng: -95.3698}
+  - {city: "Salt Lake City", state_or_province: "Utah", country: "USA", tier: "tier_0_anchor", reason_tags: ["mountain"], lat: 40.7608, lng: -111.8910}
+  - {city: "Burlington", state_or_province: "Vermont", country: "USA", tier: "tier_0_anchor", reason_tags: ["northeast"], lat: 44.4759, lng: -73.2121}
+  - {city: "Richmond", state_or_province: "Virginia", country: "USA", tier: "tier_0_anchor", reason_tags: ["mid_atlantic"], lat: 37.5407, lng: -77.4360}
+  - {city: "Seattle", state_or_province: "Washington", country: "USA", tier: "tier_0_anchor", reason_tags: ["port","tech"], lat: 47.6062, lng: -122.3321}
+  - {city: "Charleston", state_or_province: "West Virginia", country: "USA", tier: "tier_0_anchor", reason_tags: ["appalachia"], lat: 38.3498, lng: -81.6326}
+  - {city: "Milwaukee", state_or_province: "Wisconsin", country: "USA", tier: "tier_0_anchor", reason_tags: ["great_lakes"], lat: 43.0389, lng: -87.9065}
+  - {city: "Cheyenne", state_or_province: "Wyoming", country: "USA", tier: "tier_0_anchor", reason_tags: ["energy_rural"], lat: 41.1400, lng: -104.8202}
+  - {city: "Washington", state_or_province: "District of Columbia", country: "USA", tier: "tier_0_anchor", reason_tags: ["federal"], lat: 38.9072, lng: -77.0369}
+
+  # -------------------------
+  # US TERRITORIES
+  # -------------------------
+  - {city: "San Juan", state_or_province: "Puerto Rico", country: "USA Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 18.4655, lng: -66.1057}
+  - {city: "Charlotte Amalie", state_or_province: "U.S. Virgin Islands", country: "USA Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 18.3419, lng: -64.9307}
+  - {city: "Hagåtña", state_or_province: "Guam", country: "USA Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 13.4757, lng: 144.7489}
+  - {city: "Pago Pago", state_or_province: "American Samoa", country: "USA Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: -14.2756, lng: -170.7020}
+  - {city: "Saipan", state_or_province: "Northern Mariana Islands", country: "USA Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 15.1778, lng: 145.7500}
+
+  # -------------------------
+  # CANADA — PROVINCES
+  # -------------------------
+  - {city: "Toronto", state_or_province: "Ontario", country: "Canada", tier: "tier_0_anchor", reason_tags: ["mega_freight","border"], lat: 43.6532, lng: -79.3832}
+  - {city: "Ottawa", state_or_province: "Ontario", country: "Canada", tier: "tier_1_secondary", reason_tags: ["capital"], lat: 45.4215, lng: -75.6972}
+  - {city: "Montreal", state_or_province: "Quebec", country: "Canada", tier: "tier_0_anchor", reason_tags: ["port"], lat: 45.5017, lng: -73.5673}
+  - {city: "Quebec City", state_or_province: "Quebec", country: "Canada", tier: "tier_1_secondary", reason_tags: ["capital"], lat: 46.8139, lng: -71.2080}
+  - {city: "Calgary", state_or_province: "Alberta", country: "Canada", tier: "tier_0_anchor", reason_tags: ["energy"], lat: 51.0447, lng: -114.0719}
+  - {city: "Edmonton", state_or_province: "Alberta", country: "Canada", tier: "tier_1_secondary", reason_tags: ["energy"], lat: 53.5461, lng: -113.4938}
+  - {city: "Vancouver", state_or_province: "British Columbia", country: "Canada", tier: "tier_0_anchor", reason_tags: ["port"], lat: 49.2827, lng: -123.1207}
+  - {city: "Prince George", state_or_province: "British Columbia", country: "Canada", tier: "tier_1_secondary", reason_tags: ["resource_corridor"], lat: 53.9171, lng: -122.7497}
+  - {city: "Winnipeg", state_or_province: "Manitoba", country: "Canada", tier: "tier_0_anchor", reason_tags: ["central"], lat: 49.8951, lng: -97.1384}
+  - {city: "Saskatoon", state_or_province: "Saskatchewan", country: "Canada", tier: "tier_0_anchor", reason_tags: ["ag_energy"], lat: 52.1579, lng: -106.6702}
+  - {city: "Halifax", state_or_province: "Nova Scotia", country: "Canada", tier: "tier_0_anchor", reason_tags: ["port"], lat: 44.6488, lng: -63.5752}
+  - {city: "Fredericton", state_or_province: "New Brunswick", country: "Canada", tier: "tier_0_anchor", reason_tags: ["regional"], lat: 45.9636, lng: -66.6431}
+  - {city: "Charlottetown", state_or_province: "Prince Edward Island", country: "Canada", tier: "tier_0_anchor", reason_tags: ["regional"], lat: 46.2382, lng: -63.1311}
+  - {city: "St. John's", state_or_province: "Newfoundland and Labrador", country: "Canada", tier: "tier_0_anchor", reason_tags: ["atlantic"], lat: 47.5615, lng: -52.7126}
+
+  # -------------------------
+  # CANADA — TERRITORIES
+  # -------------------------
+  - {city: "Whitehorse", state_or_province: "Yukon", country: "Canada Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 60.7212, lng: -135.0568}
+  - {city: "Yellowknife", state_or_province: "Northwest Territories", country: "Canada Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 62.4540, lng: -114.3718}
+  - {city: "Iqaluit", state_or_province: "Nunavut", country: "Canada Territory", tier: "tier_territory", reason_tags: ["territory_anchor"], lat: 63.7467, lng: -68.5170}

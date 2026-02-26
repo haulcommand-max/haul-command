@@ -1,0 +1,84 @@
+{
+    "app_name": "Haul Command",
+    "tagline": "El sistema operativo para transporte pesado",
+    "nav": {
+        "home": "Inicio",
+        "loads": "Tablero de cargas",
+        "directory": "Directorio",
+        "leaderboard": "Clasificación",
+        "tools": "Herramientas",
+        "login": "Iniciar sesión",
+        "signup": "Registrarse",
+        "dashboard": "Panel de control",
+        "settings": "Configuración",
+        "logout": "Cerrar sesión"
+    },
+    "loads": {
+        "title": "Tablero de cargas en vivo",
+        "search_placeholder": "Buscar cargas por origen, destino o palabra clave…",
+        "filter_urgency": "Urgencia",
+        "filter_pay_min": "Pago mínimo",
+        "filter_boosted": "Solo destacadas",
+        "filter_cross_border": "Transfronterizo",
+        "no_results": "Ninguna carga coincide con sus filtros.",
+        "post_load": "Publicar una carga",
+        "view_map": "Vista de mapa",
+        "view_list": "Vista de lista"
+    },
+    "directory": {
+        "title": "Directorio de vehículos de escolta",
+        "search_placeholder": "Buscar operadores por nombre, ciudad o provincia…",
+        "claim_profile": "Reclama este perfil gratis",
+        "unclaimed_notice": "¿Es este su negocio de vehículo piloto? Reclame su perfil para mostrar su número de teléfono y recibir ofertas de despacho directas.",
+        "verified": "Verificado",
+        "unclaimed": "Sin reclamar"
+    },
+    "leaderboard": {
+        "title": "Clasificación",
+        "rank": "Rango",
+        "operator": "Operador",
+        "score": "Puntuación",
+        "jobs_completed": "Trabajos completados",
+        "season_ends": "Fin de temporada"
+    },
+    "onboarding": {
+        "welcome": "Bienvenido a Haul Command",
+        "step_claim": "Reclama tu perfil",
+        "step_territory": "Define tu territorio",
+        "step_verify": "Verifica tu identidad",
+        "complete": "¡Todo listo!"
+    },
+    "common": {
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "submit": "Enviar",
+        "loading": "Cargando…",
+        "error": "Algo salió mal.",
+        "success": "¡Éxito!",
+        "back": "Atrás",
+        "next": "Siguiente",
+        "report": "Reportar",
+        "block": "Bloquear usuario",
+        "share": "Compartir"
+    },
+    "push": {
+        "permission_title": "Mantente informado",
+        "permission_body": "Recibe notificaciones cuando las cargas coincidan con tu territorio.",
+        "allow": "Permitir notificaciones",
+        "deny": "Ahora no"
+    },
+    "footer": {
+        "terms": "Términos de servicio",
+        "privacy": "Política de privacidad",
+        "content_policy": "Política de contenido",
+        "contact": "Contáctenos"
+    },
+    "language_selector": {
+        "label": "Idioma",
+        "en_US": "English (US)",
+        "en_CA": "English (Canada)",
+        "fr_CA": "Français (Canada)",
+        "es_US": "Español (US)",
+        "es_CA": "Español (Canada)"
+    }
+}

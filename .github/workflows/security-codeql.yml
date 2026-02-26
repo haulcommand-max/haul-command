@@ -1,0 +1,22 @@
+name: CodeQL Security Scan
+
+on:
+  schedule:
+    - cron: "0 10 * * 1" # Mondays 10am UTC
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+
+      - uses: github/codeql-action/analyze@v3

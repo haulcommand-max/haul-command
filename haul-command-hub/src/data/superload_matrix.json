@@ -1,0 +1,26 @@
+[
+    {
+        "state_province": "Florida",
+        "superload_definition": "Width > 16', Weight > 199,000 lbs",
+        "police_mandatory": "Yes",
+        "engineering_review_required": "Yes",
+        "utility_escort_required": "Conditional",
+        "typical_lead_time": "14-21 days",
+        "fee_structure": "Permit cost + $100 per bridge analysis",
+        "movement_restrictions": "Weekday daylight only",
+        "notes": "Route survey must include all turns",
+        "source_url": "https://www.fdot.gov/maintenance/owod/"
+    },
+    {
+        "state_province": "Texas",
+        "superload_definition": "Width > 20', Weight > 254,000 lbs",
+        "police_mandatory": "Conditional",
+        "engineering_review_required": "Yes",
+        "utility_escort_required": "No",
+        "typical_lead_time": "10-14 days",
+        "fee_structure": "Variable based on axle weight",
+        "movement_restrictions": "Varies by county",
+        "notes": "Fastest superload processing in the US",
+        "source_url": "https://www.txdmv.gov/motor-carriers/oversize-and-overweight-permits"
+    }
+]

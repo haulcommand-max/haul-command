@@ -1,0 +1,102 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "framework": "nextjs",
+    "regions": [
+        "iad1"
+    ],
+    "functions": {
+        "app/api/**": {
+            "maxDuration": 30
+        },
+        "app/api/cron/**": {
+            "maxDuration": 60
+        }
+    },
+    "crons": [
+        {
+            "path": "/api/cron/escort-supply-radar",
+            "schedule": "*/15 * * * *"
+        },
+        {
+            "path": "/api/cron/broker-intent-radar",
+            "schedule": "*/30 * * * *"
+        },
+        {
+            "path": "/api/cron/match-health-monitor",
+            "schedule": "*/10 * * * *"
+        },
+        {
+            "path": "/api/cron/autonomous-supply-mover",
+            "schedule": "0 * * * *"
+        },
+        {
+            "path": "/api/cron/control-tower-scan",
+            "schedule": "*/30 * * * *"
+        },
+        {
+            "path": "/api/cron/listmonk-weekly-digest",
+            "schedule": "0 14 * * 1"
+        },
+        {
+            "path": "/api/cron/county-intelligence-refresh",
+            "schedule": "0 2 * * 0"
+        },
+        {
+            "path": "/api/cron/content-enqueue",
+            "schedule": "0 * * * *"
+        },
+        {
+            "path": "/api/cron/content-pipeline",
+            "schedule": "*/15 * * * *"
+        },
+        {
+            "path": "/api/cron/directory-rehydrate",
+            "schedule": "0 3 * * *"
+        },
+        {
+            "path": "/api/cron/directory-incremental",
+            "schedule": "*/15 * * * *"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-XSS-Protection",
+                    "value": "1; mode=block"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "strict-origin-when-cross-origin"
+                }
+            ]
+        },
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "no-store, max-age=0"
+                }
+            ]
+        },
+        {
+            "source": "/_next/static/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=31536000, immutable"
+                }
+            ]
+        }
+    ]
+}

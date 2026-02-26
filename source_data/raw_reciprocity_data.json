@@ -1,0 +1,113 @@
+[
+    {
+        "state": "FL",
+        "accepted_certs": [
+            "GA",
+            "NC",
+            "WA",
+            "OK",
+            "UT",
+            "CO",
+            "MN",
+            "VA"
+        ],
+        "notes": "Must carry physical card from issuing state. FL is widely reciprocal."
+    },
+    {
+        "state": "GA",
+        "accepted_certs": [
+            "FL",
+            "NC",
+            "OK",
+            "WA",
+            "UT",
+            "CO",
+            "VA"
+        ],
+        "notes": "Accepts most valid certifications. Amber lights must be SAE J845 Class 1 or 2."
+    },
+    {
+        "state": "NC",
+        "accepted_certs": [
+            "FL",
+            "GA",
+            "OK",
+            "WA",
+            "UT",
+            "VA"
+        ],
+        "notes": "NC requires an 8-hour defensive driving course equivalent."
+    },
+    {
+        "state": "WA",
+        "accepted_certs": [
+            "FL",
+            "OK",
+            "UT",
+            "NC",
+            "GA",
+            "CO",
+            "MN"
+        ],
+        "notes": "Washington Pilot Car Certification is the 'Gold Standard' for Western states."
+    },
+    {
+        "state": "OK",
+        "accepted_certs": [
+            "FL",
+            "WA",
+            "UT",
+            "NC",
+            "GA",
+            "CO",
+            "MN",
+            "VA"
+        ],
+        "notes": "Oklahoma accepts most states but requires specific insurance minimums."
+    },
+    {
+        "state": "NY",
+        "accepted_certs": [],
+        "notes": "New York DOES NOT accept any other state certification. Drivers must have a NY-specific certification. 'The NY Wall'."
+    },
+    {
+        "state": "VA",
+        "accepted_certs": [
+            "FL",
+            "NC",
+            "GA",
+            "OK",
+            "WA"
+        ],
+        "notes": "Virginia accepts states with substantially similar training requirements."
+    },
+    {
+        "state": "PA",
+        "accepted_certs": [],
+        "notes": "Pennsylvania generally requires its own certification program, though exceptions exist. Treated as non-reciprocal for safety baseline."
+    },
+    {
+        "state": "CA",
+        "accepted_certs": [
+            "FL",
+            "WA",
+            "UT",
+            "OK",
+            "NC",
+            "GA"
+        ],
+        "notes": "California accepts most valid certifications but enforces strict equipment rules (Chief's signs)."
+    },
+    {
+        "state": "TX",
+        "accepted_certs": [
+            "FL",
+            "OK",
+            "UT",
+            "WA",
+            "NC",
+            "GA"
+        ],
+        "notes": "Texas accepts valid certifications from most states. Requires specific insurance filings for operators."
+    }
+]

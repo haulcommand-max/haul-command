@@ -1,0 +1,53 @@
+{
+    "quote_id": "Q-ELITE_HEAVY_77-20260212185807",
+    "timestamp": "2026-02-12 18:58:07.788237",
+    "carrier": "ELITE_HEAVY_77",
+    "unit": "TRK-101",
+    "vehicle_type": "9-Axle Lowboy",
+    "route": "Dallas, TX -> Atlanta, GA",
+    "states": [
+        "TX",
+        "LA",
+        "GA"
+    ],
+    "load_dimensions": {
+        "height": 12.8,
+        "width": 8.5,
+        "length": 53.0,
+        "weight": 182000
+    },
+    "pricing": {
+        "haul_command_fees": {
+            "platform_fee": "$49.00",
+            "per_state_fees": "$105.00 (3 states)",
+            "route_analysis": "$25.00",
+            "superload_surcharge": "$150.00",
+            "escort_coordination": null,
+            "le_coordination": null,
+            "rush_processing": null,
+            "subtotal": "$329.00"
+        },
+        "passthrough_costs": {
+            "state_permit_fees": "$485.00",
+            "escort_services": null,
+            "law_enforcement": null,
+            "subtotal": "$485.00"
+        },
+        "total_quote": "$814.00",
+        "haul_command_margin": "$329.00"
+    },
+    "feasibility": {
+        "permit_probability": "70%",
+        "risk_grade": "A (LOW RISK)",
+        "routes_evaluated": 3,
+        "viable_routes": 1,
+        "recommended_route": "Route B (I-45 to I-10 to I-16)"
+    },
+    "timeline": {
+        "estimated_hours": 36,
+        "bottleneck_state": "LA",
+        "rush_available": true
+    },
+    "decision": "QUOTABLE",
+    "valid_for": "24 hours"
+}

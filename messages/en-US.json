@@ -1,0 +1,84 @@
+{
+    "app_name": "Haul Command",
+    "tagline": "The Operating System for Heavy Haul",
+    "nav": {
+        "home": "Home",
+        "loads": "Load Board",
+        "directory": "Directory",
+        "leaderboard": "Leaderboard",
+        "tools": "Tools",
+        "login": "Log In",
+        "signup": "Sign Up",
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "logout": "Log Out"
+    },
+    "loads": {
+        "title": "Live Load Board",
+        "search_placeholder": "Search loads by origin, destination, or keyword…",
+        "filter_urgency": "Urgency",
+        "filter_pay_min": "Min Pay",
+        "filter_boosted": "Boosted Only",
+        "filter_cross_border": "Cross-Border",
+        "no_results": "No loads match your filters.",
+        "post_load": "Post a Load",
+        "view_map": "Map View",
+        "view_list": "List View"
+    },
+    "directory": {
+        "title": "Pilot Car Directory",
+        "search_placeholder": "Search operators by name, city, or state…",
+        "claim_profile": "Claim This Profile Free",
+        "unclaimed_notice": "Is this your pilot car business? Claim your profile to display your full phone number and receive direct dispatch offers.",
+        "verified": "Verified",
+        "unclaimed": "Unclaimed"
+    },
+    "leaderboard": {
+        "title": "Leaderboard",
+        "rank": "Rank",
+        "operator": "Operator",
+        "score": "Score",
+        "jobs_completed": "Jobs Completed",
+        "season_ends": "Season Ends"
+    },
+    "onboarding": {
+        "welcome": "Welcome to Haul Command",
+        "step_claim": "Claim Your Profile",
+        "step_territory": "Set Your Territory",
+        "step_verify": "Verify Identity",
+        "complete": "You're all set!"
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "loading": "Loading…",
+        "error": "Something went wrong.",
+        "success": "Success!",
+        "back": "Back",
+        "next": "Next",
+        "report": "Report",
+        "block": "Block User",
+        "share": "Share"
+    },
+    "push": {
+        "permission_title": "Stay in the Loop",
+        "permission_body": "Get notified when loads match your territory.",
+        "allow": "Allow Notifications",
+        "deny": "Not Now"
+    },
+    "footer": {
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "content_policy": "Content Policy",
+        "contact": "Contact Us"
+    },
+    "language_selector": {
+        "label": "Language",
+        "en_US": "English (US)",
+        "en_CA": "English (Canada)",
+        "fr_CA": "Français (Canada)",
+        "es_US": "Español (US)",
+        "es_CA": "Español (Canada)"
+    }
+}

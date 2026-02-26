@@ -1,0 +1,84 @@
+{
+    "app_name": "Haul Command",
+    "tagline": "Le système d'exploitation pour le transport lourd",
+    "nav": {
+        "home": "Accueil",
+        "loads": "Tableau des charges",
+        "directory": "Répertoire",
+        "leaderboard": "Classement",
+        "tools": "Outils",
+        "login": "Connexion",
+        "signup": "Inscription",
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "logout": "Déconnexion"
+    },
+    "loads": {
+        "title": "Tableau des charges en direct",
+        "search_placeholder": "Rechercher par origine, destination ou mot-clé…",
+        "filter_urgency": "Urgence",
+        "filter_pay_min": "Paiement min.",
+        "filter_boosted": "Boostées seulement",
+        "filter_cross_border": "Transfrontalier",
+        "no_results": "Aucune charge ne correspond à vos filtres.",
+        "post_load": "Publier une charge",
+        "view_map": "Vue carte",
+        "view_list": "Vue liste"
+    },
+    "directory": {
+        "title": "Répertoire des véhicules d'escorte",
+        "search_placeholder": "Rechercher par nom, ville ou province…",
+        "claim_profile": "Réclamez ce profil gratuitement",
+        "unclaimed_notice": "C'est votre entreprise de véhicule d'escorte? Réclamez votre profil pour afficher votre numéro de téléphone et recevoir des offres de répartition.",
+        "verified": "Vérifié",
+        "unclaimed": "Non réclamé"
+    },
+    "leaderboard": {
+        "title": "Classement",
+        "rank": "Rang",
+        "operator": "Opérateur",
+        "score": "Score",
+        "jobs_completed": "Missions complétées",
+        "season_ends": "Fin de la saison"
+    },
+    "onboarding": {
+        "welcome": "Bienvenue sur Haul Command",
+        "step_claim": "Réclamez votre profil",
+        "step_territory": "Définissez votre territoire",
+        "step_verify": "Vérifiez votre identité",
+        "complete": "Vous êtes prêt!"
+    },
+    "common": {
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "submit": "Soumettre",
+        "loading": "Chargement…",
+        "error": "Quelque chose s'est mal passé.",
+        "success": "Succès!",
+        "back": "Retour",
+        "next": "Suivant",
+        "report": "Signaler",
+        "block": "Bloquer l'utilisateur",
+        "share": "Partager"
+    },
+    "push": {
+        "permission_title": "Restez informé",
+        "permission_body": "Recevez des notifications lorsque des charges correspondent à votre territoire.",
+        "allow": "Autoriser les notifications",
+        "deny": "Pas maintenant"
+    },
+    "footer": {
+        "terms": "Conditions d'utilisation",
+        "privacy": "Politique de confidentialité",
+        "content_policy": "Politique de contenu",
+        "contact": "Contactez-nous"
+    },
+    "language_selector": {
+        "label": "Langue",
+        "en_US": "English (US)",
+        "en_CA": "English (Canada)",
+        "fr_CA": "Français (Canada)",
+        "es_US": "Español (US)",
+        "es_CA": "Español (Canada)"
+    }
+}

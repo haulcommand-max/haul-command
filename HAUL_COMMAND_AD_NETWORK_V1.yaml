@@ -1,0 +1,231 @@
+haul_command_ads_advanced:
+  version: "1.1"
+  goal: "maximize_long_term_revenue_with_industry_fairness"
+
+# =========================================================
+# 1) TRUST SCORE MATHEMATICAL MODEL
+# Tables in codebase: trust_edges, incidents, escort_profiles, matches
+# =========================================================
+trust_score_model:
+  name: "HaulCommand_TrustScore"
+  scale: "0_to_100"
+  interpretation:
+    90_100: "Elite / preferred"
+    75_89: "Trusted"
+    60_74: "Standard"
+    40_59: "Watchlist"
+    0_39: "Restricted"
+
+  inputs:
+    reliability:
+      components:
+        on_time_rate:       { source: matches.complete_at/accepted_at,      normalize: minmax_0_1, target: higher_is_better }
+        completion_rate:    { source: matches.status=completed/total,        normalize: minmax_0_1, target: higher_is_better }
+        cancellation_rate:  { source: matches.status=canceled/total,         normalize: minmax_0_1, target: lower_is_better }
+        no_show_rate:       { source: incidents.category=no_show/total,      normalize: minmax_0_1, target: lower_is_better }
+
+    responsiveness:
+      components:
+        median_first_response_seconds: { source: match_offers.viewed_at-offered_at, normalize: logistic_0_1, target: lower_is_better }
+        acceptance_rate:               { source: match_offers.status=accepted/viewed, normalize: minmax_0_1, target: higher_is_better }
+
+    integrity:
+      components:
+        dispute_rate:       { source: incidents.category IN (fraud,harassment,route_violation)/total, normalize: minmax_0_1, target: lower_is_better }
+        fraud_flags_rate:   { source: incidents.severity=critical/total, normalize: minmax_0_1, target: lower_is_better }
+
+    customer_signal:
+      components:
+        review_rating_avg:     { source: trust_edges.rating, normalize: map_1_5_to_0_1, target: higher_is_better }
+        review_volume_log:     { source: COUNT(trust_edges), normalize: logistic_0_1,    target: higher_is_better }
+        repeat_customer_rate:  { source: trust_edges.edge_type=repeat_partner/total,    normalize: minmax_0_1, target: higher_is_better }
+
+    compliance:
+      components:
+        insurance_verified:          { source: escort_profiles.insurance_status=verified, normalize: binary_0_1, target: higher_is_better }
+        compliance_verified:         { source: escort_profiles.compliance_status=verified, normalize: binary_0_1, target: higher_is_better }
+        required_equipment_verified: { source: escort_profiles.certifications_json fields, normalize: binary_0_1, target: higher_is_better }
+
+    market_fit:
+      components:
+        geo_relevance_score:       { source: escort_territory_claims active in load corridor, normalize: minmax_0_1, target: higher_is_better }
+        role_specialization_score: { source: escort_profiles.vehicle_type match demand,      normalize: minmax_0_1, target: higher_is_better }
+
+  subscores:
+    reliability_score:
+      weights: { on_time_rate: 0.32, completion_rate: 0.32, cancellation_rate: -0.18, no_show_rate: -0.18 }
+    responsiveness_score:
+      weights: { median_first_response_seconds: -0.45, acceptance_rate: 0.55 }
+    integrity_score:
+      weights: { dispute_rate: -0.45, fraud_flags_rate: -0.55 }
+    customer_signal_score:
+      weights: { review_rating_avg: 0.55, review_volume_log: 0.20, repeat_customer_rate: 0.25 }
+    compliance_score:
+      weights: { insurance_verified: 0.45, compliance_verified: 0.35, required_equipment_verified: 0.20 }
+    market_fit_score:
+      weights: { geo_relevance_score: 0.70, role_specialization_score: 0.30 }
+
+  overall_score:
+    weights:
+      reliability_score:    0.28
+      responsiveness_score: 0.18
+      integrity_score:      0.18
+      customer_signal_score: 0.16
+      compliance_score:     0.12
+      market_fit_score:     0.08
+    equation: |
+      TrustScoreRaw01 = clamp01(0.28*R + 0.18*Rs + 0.18*I + 0.16*CS + 0.12*C + 0.08*MF)
+      TrustScore = round(100 * TrustScoreRaw01)
+
+  confidence_adjustments:
+    bayesian_shrinkage:
+      enabled: true
+      prior_mean: 0.72
+      prior_strength_n: 30
+      equation: "Adjusted = (n/(n+k))*Observed + (k/(n+k))*Prior  where k=30"
+    review_volume_floor:
+      enabled: true
+      floor_reviews: 5
+      penalty_if_below_floor: 0.06
+
+  trust_score_effects:
+    ad_rank_multiplier:
+      90_100: 1.18
+      75_89:  1.10
+      60_74:  1.00
+      40_59:  0.88
+      0_39:   0.70
+    lead_price_multiplier:
+      90_100: 0.92   # Elite pays less per lead (incentivized quality)
+      75_89:  0.96
+      60_74:  1.00
+      40_59:  1.08
+      0_39:   1.22   # Risky pays premium
+    auto_review_if_integrity_subscore_below: 0.55
+
+# =========================================================
+# 2) ADVERTISER LTV MODEL
+# =========================================================
+advertiser_ltv_model:
+  inputs:
+    arpa_monthly:
+      equation: "ARPA = subscription_mrr + lead_spend + corridor_fees + add_ons"
+    gross_margin: 0.85
+    churn_monthly:
+      baseline_by_tier:
+        starter_visibility: 0.10
+        pro_priority:       0.07
+        dominance_tier:     0.05
+      modifiers:
+        roi_positive_last_30d:   -0.02
+        low_lead_quality_flags:  +0.03
+        trust_score_below_60:    +0.02
+        account_age_under_60d:   +0.02
+    expansion_monthly:
+      baseline_by_tier:
+        starter_visibility: 0.03
+        pro_priority:       0.04
+        dominance_tier:     0.05
+
+  math:
+    closed_form: "LTV_Approx = (ARPA * 0.85) / max(ChurnMonthly, 0.01)"
+    cohort_simulation: |
+      For t in 1..12:
+        Active_t = Active_{t-1} * (1 - Churn_t)
+        ARPA_t = ARPA_{t-1} * (1 + expansion)
+        Cashflow_t = Active_t * ARPA_t * 0.85
+      LTV = sum(Cashflow) - CAC
+
+  cac_model:
+    sales_cost_per_account: 80
+    onboarding_cost_per_account: 20
+    support_cost_first_60d: 25
+    equation: "CAC = 80 + 20 + 25 = $125"
+
+  payback: "PaybackMonths = ceil(CAC / (ARPA * GrossMargin))"
+
+  retention_levers:
+    - "roi_negative_14d → offer budget rebalance + targeting fix"
+    - "churn_risk_high → grant temp 7d boost + route to support"
+    - "trust_score_rising → unlock corridor features"
+
+# =========================================================
+# 3) REAL-TIME BIDDING PSEUDO-CODE ENGINE
+# =========================================================
+rtb_engine:
+  auction_types:
+    - first_price_with_quality_and_fairness_adjustment
+    - ppl_priority_override_for_high_intent_events
+
+  pseudocode: |
+    function select_ad(request):
+      ctx = build_context(request)   # role, geo, corridor, intent_tier, time
+      candidates = fetch_eligible_advertisers(ctx)
+
+      # 1) Eligibility filter
+      candidates = candidates.filter(a =>
+        a.budget_remaining > 0
+        && matches_geo(a, ctx.geo)
+        && matches_corridor(a, ctx.corridor)
+        && passes_frequency_caps(a, ctx.user_id)
+        && trust_score(a) >= 40          # integrity gate
+        && dispute_rate(a) <= 0.12
+      )
+      if candidates.empty: return fallback_house_ad()
+
+      # 2) Intent weight
+      intent_weight = { tier_1: 2.5, tier_2: 1.4, tier_3: 1.0 }[ctx.intent_tier]
+
+      # 3) Predict outcomes per candidate
+      for a in candidates:
+        a.pCTR = predict_ctr(a, ctx)
+        a.pCVR = predict_conversion(a, ctx)
+        a.pLQ  = predict_lead_quality(a, ctx)   # avoids refund/dispute leads
+
+      # 4) Expected value with fairness controls
+      for a in candidates:
+        trust_mult = { 90: 1.18, 75: 1.10, 60: 1.00, 40: 0.88, 0: 0.70 }[bucket(a.trust_score)]
+        fair_mult  = 0.82 if impression_share_7d(a) > 0.35 else (1.06 if small_operator(a) else 1.00)
+        if ctx.event_is_ppl:
+          a.EV = ppl_price(ctx.lead_type) * a.pCVR * a.pLQ * trust_mult * fair_mult
+        else:
+          a.EV = a.bid * a.pCTR * a.pCVR * a.pLQ * intent_weight * trust_mult * fair_mult
+
+      # 5) Winner
+      winner = argmax(candidates, key=EV)
+
+      # 6) Pricing
+      if ctx.event_is_ppl:
+        charge = ppl_price * dynamic_multiplier(ctx, winner)
+      else:
+        charge = clamp(winner.bid, floor_price[ctx.placement], ceil_price[ctx])
+
+      # 7) Record + serve
+      debit_budget(winner, charge)
+      log_impression(request, winner, charge)
+      return render_ad(winner)
+
+  guardrails:
+    floor_by_placement:
+      load_board_top:    6
+      escort_search_top: 5
+      permit_tools:      4
+      dashboard_idle:    2
+    ceil_by_intent_tier:
+      tier_1: 40
+      tier_2: 22
+      tier_3: 12
+
+  accelerators:
+    10x: [corridor_heatmap_dynamic_pricing, role_based_autocopy, auto_budget_allocator_by_roi]
+    50x: [closed_loop_outcomes, network_effect_cheaper_cpl, cross_role_graph]
+    200x: [predictive_dispatch_signals_marketplace, real_time_corridor_surge_exchange, trust_score_global_index]
+
+  schema_hookups_in_codebase:
+    - "trust_edges → reviews, repeat_partner rating, lane-specific trust"
+    - "incidents → dispute_rate, fraud_flags_rate, no_show_rate"
+    - "escort_profiles → compliance_score inputs (insurance, certifications)"
+    - "match_offers → responsiveness (viewed_at - offered_at), acceptance_rate"
+    - "matches → completion_rate, on_time_rate"
+    - "escort_territory_claims → geo_relevance_score"
+    - "New tables needed for PR #5: ad_slots, lead_events, impression_log, advertiser_accounts, advertiser_budgets, quality_score_snapshots"

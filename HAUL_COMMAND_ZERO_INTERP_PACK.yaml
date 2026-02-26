@@ -1,0 +1,316 @@
+haul_command_zero_interpretation_pack:
+  version: "1.0.0"
+  generated_at: "2026-02-19"
+  scope:
+    - "Normalized feature formulas + scaling rules [0..1]"
+    - "Fill Probability model (logistic + calibration hooks)"
+    - "match_generate ranking formula (candidate scoring equation)"
+    - "Offer wave logic (W1/W2/W3) + guardrails"
+    - "Anti-Gravity skill upgrades (existing + missing)"
+    - "Dev-fix: Supabase Edge Functions TS/Deno types"
+
+  # ============================================================
+  # A) NORMALIZATION LIBRARY
+  # ============================================================
+  normalization_library:
+    invariants:
+      - "All model features x_i MUST be normalized to [0,1]"
+      - "All normalized values MUST be clamped to [0,1]"
+      - "All raw values MUST be clamped BEFORE normalization"
+      - "If missing raw input -> use default + set feature_missing_flag = 1"
+
+    helpers:
+      clamp: "min(max(x, lo), hi)"
+      minmax_01: "clamp((clamp(x,lo,hi) - lo) / (hi - lo), 0, 1)"
+      inv_minmax_01: "1 - minmax_01(x, lo, hi)"
+      log1p_minmax_01: "clamp(ln(1+(clamp(x,lo,hi)-lo)) / ln(1+(hi-lo)), 0, 1)"
+      sigmoid_01: "1 / (1 + exp(-z))"
+      safe_div: "if b == 0 then default else a/b"
+      ema_decay_weight: "2 ^ (-days_ago / half_life_days)"
+
+  # ============================================================
+  # B) CANONICAL DERIVED FIELDS (no ambiguity)
+  # ============================================================
+  canonical_derivations:
+    lane_key: "concat(origin_country,'-',origin_state,'->',dest_country,'-',dest_state,['-',primary_corridor if present])"
+    geo_key: "concat(origin_country,'-',origin_state,['-',county_fips if present])"
+    urgency_numeric_raw:
+      hot: 1.0
+      warm: 0.7
+      planned: 0.4
+      flex: 0.2
+    lead_time_hours_raw: "max(0, hours_between(now(), pickup_earliest_at)), clamped [0,168]"
+    requirement_complexity_raw:
+      formula: "(lead?1:0)+(chase?1:0)+(high_pole?2:0)+(bucket_support?2:0)+(police?3:0)+(night_move?1.5:0)+(route_survey?1.5:0)"
+      clamp: "[0, 12]"
+    similar_bucket_key: "concat(lane_key,'|C',round(complexity),'|T',load_type,'|U',urgency)"
+
+  # ============================================================
+  # C) FILL PROBABILITY FEATURES (exact formulas)
+  # ============================================================
+  fill_probability_features:
+    windowing:
+      similarity_lookback_days: 30
+      incident_lookback_days: 90
+      min_samples:
+        accept_rate: 25
+        response_time: 25
+        incident_rate: 25
+        lane_frequency: 10
+    defaults_if_insufficient:
+      acceptance_rate_similar_raw: 0.18
+      median_response_time_min_raw: 18
+      incident_rate_similar_raw: 0.06
+      lane_frequency_loads_30d_raw: 5
+      confidence_raw: 0.35
+
+    features:
+      x_supply_demand_ratio:
+        raw: "safe_div(available_supply_count, max(1, open_loads_same_geo_lane), 0.0), clamped [0,10]"
+        normalize: "minmax_01(raw, 0.0, 3.0)"
+      x_accept_rate_similar:
+        raw: "accepts/offers for similar_bucket_key [0..1]"
+        normalize: "minmax_01(raw, 0.0, 0.6)"
+      x_rate_fit:
+        raw: "safe_div(offered_rate, median_lane_rate_30d, 0), clamped [0.25,2.0]"
+        normalize: "minmax_01(raw, 0.6, 1.3)"
+      x_simplicity:
+        raw: "requirement_complexity_raw"
+        normalize: "inv_minmax_01(raw, 0, 6)"
+      x_short_notice:
+        raw: "lead_time_hours_raw"
+        normalize: "inv_minmax_01(raw, 0, 48)"
+      x_response_speed:
+        raw: "median_response_time_min_raw, clamped [1,180]"
+        normalize: "inv_minmax_01(raw, 1, 60)"
+      x_broker_trust:
+        raw: "0.60*minmax_01(trust_base,0,100) + 0.40*lane_edge_norm"
+        normalize: "clamp(raw, 0, 1)"
+      x_lane_frequency:
+        raw: "count(loads in lane_key last 30d), clamped [0,500]"
+        normalize: "log1p_minmax_01(raw, 0, 200)"
+      x_supply_proximity:
+        raw: "distance_miles(origin, centroid_of_supply), clamped [0,600]"
+        normalize: "inv_minmax_01(raw, 0, 250)"
+      x_escort_fit:
+        raw: "mean(topK(10) candidate fit scores)"
+        normalize: "clamp(raw, 0, 1)"
+      x_top_trust:
+        raw: "max(topK(10) candidate lane trust)"
+        normalize: "clamp(raw, 0, 1)"
+      x_top_accept:
+        raw: "max(topK(10) candidate accept propensity)"
+        normalize: "clamp(raw, 0, 1)"
+      x_safety:
+        raw: "incidents_high_or_worse / completed_matches (90d), clamped [0,0.5]"
+        normalize: "inv_minmax_01(raw, 0, 0.15)"
+      x_urgency:
+        raw: "urgency_numeric_raw"
+        normalize: "minmax_01(raw, 0.2, 1.0)"
+      x_confidence:
+        raw: "min(1, 0.25 + 0.25*minmax_01(offers_30d,0,100) + 0.25*minmax_01(matches_90d,0,100) + 0.25*minmax_01(supply_7d,0,100))"
+        normalize: "clamp(raw, 0, 1)"
+
+  # ============================================================
+  # D) FILL PROBABILITY MODEL
+  # ============================================================
+  fill_probability_model:
+    type: "logistic_regression_v1"
+    coefficients:
+      b0: -0.75
+      w_supply_demand_ratio: 1.35
+      w_accept_rate_similar: 1.10
+      w_rate_fit: 0.95
+      w_simplicity: 0.85
+      w_short_notice: -0.35
+      w_response_speed: 0.65
+      w_broker_trust: 0.75
+      w_lane_frequency: 0.35
+      w_supply_proximity: 0.45
+      w_top_trust: 0.55
+      w_escort_fit: 0.70
+      w_top_accept: 0.55
+      w_safety: 0.80
+
+    probability:
+      base: "p = sigmoid_01(b0 + sum(w_i * x_i))"
+      p_60m: "clamp(p * (0.55 + 0.45*x_urgency) * (0.65 + 0.35*x_response_speed), 0, 1)"
+      p_4h: "clamp(p * (0.70 + 0.30*x_urgency) * (0.75 + 0.25*x_response_speed), 0, 1)"
+      p_24h: "clamp(p * (0.85 + 0.15*x_urgency), 0, 1)"
+
+    time_estimators:
+      time_to_first_offer_min: "clamp(2 + 25*(1-x_supply_demand_ratio) + 18*(1-x_response_speed), 2, 90)"
+      time_to_accept_min: "clamp(5 + 60*(1-p_4h) + 20*(1-x_rate_fit) + 15*(1-x_broker_trust), 5, 240)"
+      time_to_fill_min: "clamp(time_to_accept_min + 10 + 40*(1-p_24h), 10, 720)"
+
+    badge_rules:
+      fill_speed_label:
+        - "p_60m >= 0.70 => Fast-fill"
+        - "p_4h >= 0.70 => Likely today"
+        - "p_24h >= 0.70 => Likely this week"
+        - "else => Hard-fill"
+      quality_grade:
+        - "A: x_broker_trust>=0.7 AND x_rate_fit>=0.7 AND x_simplicity>=0.7"
+        - "B: 2 of 3 conditions"
+        - "C: otherwise"
+
+    explanation_top_factors: "top3_by(abs(w_i * x_i)) for each feature"
+
+    calibration:
+      platt_scaling_threshold: 1000
+      isotonic_regression_threshold: 5000
+      params_table: "model_calibration_params"
+
+  # ============================================================
+  # E) MATCH_GENERATE: MUST-PASS + CANDIDATE SCORING
+  # ============================================================
+  match_generate:
+    must_pass_filters:
+      F1: "No block in escort_blocklists (either direction)"
+      F2: "status in [online,available] OR (invite_only AND status != offline)"
+      F3: "availability_window overlaps load pickup window OR (urgency=hot AND status=available)"
+      F4: "for each required flag in escort_requirements_json: capabilities_json[flag] = true"
+      F5: "distance(escort_location_or_base, load.origin) <= effective_radius_miles"
+      F5_effective_radius: "clamp(max(default_radius, window.radius) * (1.0 + 0.35*x_urgency), 25, 500)"
+      F6: "if load requires verified insurance/cert: escort insurance_status=verified AND compliance=verified"
+
+    candidate_components:
+      c_distance_01: "inv_minmax_01(distance_miles, 0, effective_radius_miles)"
+      c_trust_lane_01: "clamp(0.55*minmax_01(trust_base,0,100) + 0.45*lane_edge_norm, 0, 1)"
+      c_accept_propensity_01: "clamp(0.60*accept_rate_norm + 0.25*response_speed_norm + 0.15*completion_rate_norm, 0, 1)"
+      c_rate_fit_01: "minmax_01(safe_div(offered_rate, escort_min_rate, 0), 0.9, 1.2)"
+      c_schedule_fit_01: "minmax_01(minutes_to_pickup, 0, 720)"
+      c_territory_boost_01: "1.0 if active territory claim matches geo_key/corridor; else 0.0"
+      c_fatigue_penalty_01: "1.0 if status in [busy,resting,do_not_disturb]; else 0.0"
+
+    scoring_equation:
+      weights:
+        w_distance: 0.22
+        w_trust: 0.20
+        w_accept_propensity: 0.18
+        w_rate_fit: 0.14
+        w_schedule_fit: 0.10
+        w_territory: 0.04
+        w_capability: 0.02
+        w_penalty_fatigue: 0.10
+      formula: >
+        score = clamp(
+          w_distance*c_distance_01 + w_trust*c_trust_lane_01 + w_accept_propensity*c_accept_propensity_01
+          + w_rate_fit*c_rate_fit_01 + w_schedule_fit*c_schedule_fit_01 + w_territory*c_territory_boost_01
+          + w_capability*1.0 - w_penalty_fatigue*c_fatigue_penalty_01,
+          0, 1
+        )
+      tiebreakers: ["c_trust_lane_01 desc", "c_accept_propensity_01 desc", "c_distance_01 desc", "last_heartbeat_at desc"]
+
+    waves:
+      W1: { size: 10, ttl_min: 7, statuses: [available, online] }
+      W2: { size: 25, ttl_min: 10, radius_expand: "+25%", also_allow: "online with 1-tap prompt" }
+      W3: { size: 60, ttl_min: 12, radius_expand: "+50%", sms_fallback: "top 15 if push not viewed in 3 min", allow_busy_if_hot: true }
+
+    stop_conditions:
+      - "Any offer accepted -> stop waves, mark load=matched"
+      - "p_24h < 0.25 AND confidence > 0.6 -> suggest broker actions"
+
+    broker_auto_suggestions:
+      trigger: "p_24h < 0.25 AND confidence >= 0.5"
+      actions:
+        - "Increase rate to median_lane_rate * 1.15"
+        - "Allow chase-only instead of lead+chase"
+        - "Shift pickup window +12h"
+        - "Invite-only to top-trust escorts"
+
+  # ============================================================
+  # F) SKILLS UPGRADE MAP
+  # ============================================================
+  skills:
+    upgrade_principles:
+      - "Each skill MUST output: decisions + deterministic steps + file diffs + validation checks + rollback plan"
+      - "Each skill MUST include No-Mock-Data rule"
+      - "Each skill MUST be runnable as a copy-paste playbook"
+
+    existing_upgrades:
+      branding-identity: "Add font system, brand token contract, app icon/splash gen, OG meta gen, a11y checks"
+      developing-dashboards: "Add liquidity KPIs, activation funnels, alerting rules for low-supply zones"
+      writing-plans: "Add spec format with explicit normalizations, clamps, schemas, acceptance criteria"
+      executing-plans: "Add parallel branches, DoD checklist, release train (web->PWA->Capacitor)"
+      subagent-driven-development: "Add roles: UI, Mobile, Data/SQL, EdgeFunctions, Growth, AppStore"
+
+    missing_to_create:
+      capacitor-mobile-deployment:
+        codename: "The App Builder"
+        must_include:
+          - "Capacitor wrapping plan for Next.js"
+          - "Native permissions matrix (GPS, camera, push)"
+          - ".aab (Android) and .ipa (iOS) build steps"
+          - "Deep link map"
+          - "Offline caching strategy"
+        hard_rules:
+          - "End-to-end push notifications (token storage + test send)"
+          - "Background presence heartbeat opt-in"
+
+      app-store-optimization:
+        codename: "The Approval Pass"
+        must_include:
+          - "App Store listing copy + keyword stack"
+          - "Screenshot storyboard (6.5 + 5.5 inches)"
+          - "Privacy nutrition labels"
+          - "Apple rejection risk checklist for wrapper apps"
+        hard_rules:
+          - "No claims implying law enforcement or guaranteed earnings"
+
+      plai-campaign-architect:
+        codename: "The Traffic Engine"
+        must_include:
+          - "Audience segmentation: escorts vs brokers vs carriers"
+          - "Creative angles + hooks + landing page variants"
+          - "Geo rollout (start FL/GA)"
+          - "Retargeting events + conversion tracking"
+        hard_rules:
+          - "Optimize for activation (install -> availability toggle < 2 min), not raw installs"
+
+      affiliate-growth-engine:
+        codename: "The Viral Loop"
+        must_include:
+          - "Referral schema + anti-fraud rules"
+          - "Reward logic (credits, territory, boosts)"
+          - "Lago/Stripe webhook logic + email/SMS sequence"
+          - "Share-card generation spec"
+        hard_rules:
+          - "Full reward unlocks only after first completed match"
+
+  # ============================================================
+  # G) DEV FIXES: Deno/TS errors in supabase/functions
+  # ============================================================
+  dev_fixes:
+    errors:
+      - "Cannot find type definition file for 'npm:@supabase/functions-js/edge-runtime.d.ts'"
+      - "Cannot find name 'Deno' in supabase/functions/**/*.ts"
+    fix:
+      step1: "supabase/functions/deno.json sets compilerOptions.lib + importMap for Deno runtime awareness"
+      step2: "supabase/functions/tsconfig.json scoped to that folder; excluded from root Next.js tsconfig"
+      step3: "Each entry file uses: /// <reference types='npm:@supabase/functions-js/edge-runtime.d.ts' />"
+      step4: "VSCode Deno extension must be enabled + deno.json auto-detected"
+    validation:
+      - "VSCode Problems panel: 0 errors for supabase/functions/*"
+      - "supabase functions serve works locally"
+
+  # ============================================================
+  # H) SCALE MOVES
+  # ============================================================
+  scale_moves:
+    x10:
+      - "No-mock intelligence: every badge must reference load_intelligence.computed_at"
+      - "2-tap accept + push-first matching"
+      - "Offer waves + SLA counters visible on every load card"
+    x50:
+      - "Lane-specific trust graph with recency decay"
+      - "Territory race with expiry for retention"
+      - "Liquidity dashboards to steer market seeding"
+    x100:
+      - "Auto-suggestions when p_24h is low (raise rate, relax requirements)"
+      - "Referral + share-card viral loop tied to real fill-time outcomes"
+      - "Command Map Mode (supply/demand heatmap layers) as category-defining UI"
+    x200:
+      - "Weekly model retraining + calibration once outcomes hit thresholds"
+      - "Dynamic wave sizing from confidence + supply_demand_ratio"
+      - "Fraud/reliability scoring gating boosts and featured placement"

@@ -1,0 +1,69 @@
+name: 🐛 Bug Report
+description: Report a bug in Haul Command
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please fill out the details below.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear description of the bug.
+      placeholder: When I click X, Y happens instead of Z.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      value: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "Low — cosmetic issue"
+        - "Medium — broken feature, workaround exists"
+        - "High — broken feature, no workaround"
+        - "Critical — data loss or security issue"
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: URL where the bug occurs
+      placeholder: https://haulcommand.com/directory
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - Desktop (Chrome)
+        - Desktop (Firefox)
+        - Desktop (Safari)
+        - Mobile (iOS)
+        - Mobile (Android)
+        - Tablet
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Attach screenshots if applicable.

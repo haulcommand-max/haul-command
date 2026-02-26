@@ -1,0 +1,14 @@
+[
+    {
+        "port_name": "Port of Houston",
+        "state": "Texas",
+        "twic_required": "Yes",
+        "escort_required": "Yes",
+        "facility_escort_required": "Yes",
+        "appointment_scheduling_required": "Yes (24hr Notice)",
+        "common_delay_issues": "Gate congestion, TWIC reader failures",
+        "access_hours": "07:00 - 17:00",
+        "contact": "Port Operations Desk",
+        "notes": "Strict adherence to gate codes"
+    }
+]

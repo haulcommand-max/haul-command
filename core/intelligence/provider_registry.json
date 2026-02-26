@@ -1,0 +1,168 @@
+{
+    "networks": {
+        "pilot_cars": [
+            {
+                "name": "ODS North America",
+                "reach": "Nationwide",
+                "verified_vehicles": 6000,
+                "source_id": "ods-001"
+            },
+            {
+                "name": "WCS Permits & Pilot Cars",
+                "reach": "Nationwide",
+                "verified_vehicles": "unknown",
+                "source_id": "wcs-001"
+            },
+            {
+                "name": "Heavy Haulers",
+                "reach": "Nationwide",
+                "verified_vehicles": "unknown",
+                "source_id": "hh-001"
+            },
+            {
+                "name": "NTS Logistics",
+                "reach": "Nationwide",
+                "verified_vehicles": "unknown",
+                "source_id": "nts-001"
+            },
+            {
+                "name": "My PEVO",
+                "reach": "Nationwide",
+                "verified_vehicles": "unknown",
+                "source_id": "pevo-001"
+            },
+            {
+                "name": "Donald's Rigging",
+                "reach": "Canada",
+                "specialty": "Heavy Lift",
+                "source_id": "dr-001"
+            }
+        ],
+        "permit_providers": [
+            {
+                "name": "WCS Permits",
+                "authority": 1.0,
+                "source_id": "perm-wcs"
+            },
+            {
+                "name": "J.J. Keller",
+                "authority": 0.95,
+                "source_id": "perm-jjk"
+            },
+            {
+                "name": "Coast 2 Coast",
+                "authority": 0.9,
+                "source_id": "perm-c2c"
+            },
+            {
+                "name": "Permit America",
+                "authority": 0.85,
+                "source_id": "perm-pa"
+            }
+        ],
+        "bucket_truck_rentals": [
+            {
+                "name": "United Rentals",
+                "category": "Giant",
+                "source_id": "rent-ur"
+            },
+            {
+                "name": "Sunbelt Rentals",
+                "category": "Giant",
+                "source_id": "rent-sun"
+            },
+            {
+                "name": "Herc Rentals",
+                "category": "Giant",
+                "source_id": "rent-herc"
+            },
+            {
+                "name": "Custom Truck One Source",
+                "category": "Specialist",
+                "source_id": "rent-ctos"
+            },
+            {
+                "name": "Altec",
+                "category": "OEM",
+                "source_id": "rent-altec"
+            }
+        ],
+        "state_portals": {
+            "US": {
+                "federal": "https://ops.fhwa.dot.gov/freight/sw/permit_report/index.htm",
+                "TX": "https://www.txdmv.gov/motor-carriers/oversize-overweight-permits",
+                "UT": "https://connect.udot.utah.gov/business/motor-carriers/size-weight-permitting/oversize-overweight-provisions/",
+                "GA": "https://www.dot.ga.gov/GDOT/Pages/OversizePermits.aspx",
+                "CA": "https://dot.ca.gov/programs/traffic-operations/transportation-permits",
+                "IL": "https://webapps1.dot.illinois.gov/ITAP/",
+                "IA": "https://iowadot.gov/motor-carriers/how-do-i-get-oversize-overweight-permits",
+                "LA": "https://dotd.la.gov/about/office-of-operations/oversized-and-overweight-truck-permits/",
+                "WV": "http://wv.gotpermits.com",
+                "PA-PHILA": "https://stsweb.phila.gov/haulingpermit/"
+            },
+            "Canada": {
+                "ON": "https://www.ontario.ca/page/get-oversizeoverweight-permit",
+                "BC": "https://www2.gov.bc.ca/gov/content/transportation/vehicle-safety-enforcement/services/permitting/commercial-transport-permits",
+                "AB": "https://www.alberta.ca/commercial-vehicle-oversize-and-overweight-permits"
+            }
+        }
+    },
+    "canonical_mapping": {
+        "ods_vehicle_count": "fleet_size",
+        "wcs_division": "org_unit",
+        "jjk_permit_service": "authority_relay",
+        "united_bucket_lift": "asset_class_bucket"
+    },
+    "technical_integrations": {
+        "crm": {
+            "provider": "GoHighLevel",
+            "connector_path": "core/integrations/GHLConnector.ts",
+            "env_key": "GHL_API_KEY"
+        },
+        "permitting_engine": {
+            "provider": "Bentley Superload",
+            "connector_path": "core/integrations/BentleyConnector.ts",
+            "env_key": "BENTLEY_CLIENT_ID"
+        },
+        "telematics": {
+            "provider": "Navixy",
+            "connector_path": "core/integrations/NavixyConnector.ts",
+            "env_key": "NAVIXY_API_KEY"
+        },
+        "ad_management": {
+            "provider": "Plai",
+            "connector_path": "core/integrations/PlaiConnector.ts",
+            "env_key": "PLAI_API_KEY"
+        },
+        "financial_rail": {
+            "provider": "Rapid! PayCard",
+            "connector_path": "core/integrations/RapidPayConnector.ts",
+            "env_key": "RAPID_API_KEY"
+        },
+        "voice_tech": {
+            "provider": "Vapi",
+            "connector_path": "core/intelligence/VoiceBot.ts",
+            "env_key": "VAPI_PRIVATE_KEY"
+        },
+        "physical_fulfillment": {
+            "provider": "BuildASign",
+            "connector_path": "core/integrations/BuildASignConnector.ts",
+            "env_key": "BAS_API_KEY"
+        },
+        "compliance_automation": {
+            "provider": "J.J. Keller",
+            "connector_path": "core/integrations/JJKConnector.ts",
+            "env_key": "JJK_VAULT_ID"
+        },
+        "affiliate_network": {
+            "provider": "WCS Permits",
+            "connector_path": "core/integrations/WCSConnector.ts",
+            "env_key": "WCS_AFFILIATE_ID"
+        },
+        "enterprise_injection": {
+            "provider": "ATS (Anderson Trucking)",
+            "connector_path": "core/integrations/ATSConnector.ts",
+            "env_key": "ATS_ENTERPRISE_KEY"
+        }
+    }
+}

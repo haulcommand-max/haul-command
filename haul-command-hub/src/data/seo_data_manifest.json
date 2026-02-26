@@ -1,0 +1,2062 @@
+[
+    {
+        "service": "High Pole Pilot Car",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "high-pole-pilot-car-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "high-pole-pilot-car-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "high-pole-pilot-car-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "high-pole-pilot-car-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "high-pole-pilot-car-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "high-pole-pilot-car-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "high-pole-pilot-car-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "high-pole-pilot-car-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "high-pole-pilot-car-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "high-pole-pilot-car-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "high-pole-pilot-car-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "high-pole-pilot-car-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "high-pole-pilot-car-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "high-pole-pilot-car-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "steerman-escort-for-superloads-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "steerman-escort-for-superloads-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "steerman-escort-for-superloads-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "steerman-escort-for-superloads-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "steerman-escort-for-superloads-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "steerman-escort-for-superloads-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "steerman-escort-for-superloads-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "steerman-escort-for-superloads-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "steerman-escort-for-superloads-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "steerman-escort-for-superloads-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "steerman-escort-for-superloads-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "steerman-escort-for-superloads-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "steerman-escort-for-superloads-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "steerman-escort-for-superloads-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "route-survey-services-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "route-survey-services-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "route-survey-services-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "route-survey-services-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "route-survey-services-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "route-survey-services-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "route-survey-services-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "route-survey-services-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "route-survey-services-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "route-survey-services-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "route-survey-services-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "route-survey-services-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "route-survey-services-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Route Survey Services",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "route-survey-services-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "oversize-load-escorts-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "oversize-load-escorts-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "oversize-load-escorts-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "oversize-load-escorts-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "oversize-load-escorts-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "oversize-load-escorts-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "oversize-load-escorts-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "oversize-load-escorts-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "oversize-load-escorts-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "oversize-load-escorts-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "oversize-load-escorts-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "oversize-load-escorts-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "oversize-load-escorts-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "oversize-load-escorts-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "night/weekend-permit-support-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "night/weekend-permit-support-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "night/weekend-permit-support-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "night/weekend-permit-support-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "night/weekend-permit-support-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "night/weekend-permit-support-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "night/weekend-permit-support-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "night/weekend-permit-support-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "night/weekend-permit-support-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "night/weekend-permit-support-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "night/weekend-permit-support-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "night/weekend-permit-support-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "night/weekend-permit-support-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "night/weekend-permit-support-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "tillerman-steering-specialist-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "tillerman-steering-specialist-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "tillerman-steering-specialist-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "tillerman-steering-specialist-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "tillerman-steering-specialist-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "tillerman-steering-specialist-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "tillerman-steering-specialist-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "tillerman-steering-specialist-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "tillerman-steering-specialist-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "tillerman-steering-specialist-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "tillerman-steering-specialist-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "tillerman-steering-specialist-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "tillerman-steering-specialist-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "tillerman-steering-specialist-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "superload-transport-escort-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "superload-transport-escort-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "superload-transport-escort-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "superload-transport-escort-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "superload-transport-escort-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "superload-transport-escort-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "superload-transport-escort-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "superload-transport-escort-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "superload-transport-escort-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "superload-transport-escort-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "superload-transport-escort-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "superload-transport-escort-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "superload-transport-escort-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "superload-transport-escort-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "mobile-crane-pilot-car-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "mobile-crane-pilot-car-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "mobile-crane-pilot-car-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "mobile-crane-pilot-car-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "mobile-crane-pilot-car-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "mobile-crane-pilot-car-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "mobile-crane-pilot-car-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "mobile-crane-pilot-car-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "mobile-crane-pilot-car-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "mobile-crane-pilot-car-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "mobile-crane-pilot-car-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "mobile-crane-pilot-car-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "mobile-crane-pilot-car-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "mobile-crane-pilot-car-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "blade-transport-escort-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "blade-transport-escort-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "blade-transport-escort-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "blade-transport-escort-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "blade-transport-escort-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "blade-transport-escort-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "blade-transport-escort-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "blade-transport-escort-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "blade-transport-escort-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "blade-transport-escort-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "blade-transport-escort-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "blade-transport-escort-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "blade-transport-escort-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "blade-transport-escort-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 10,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "El Paso",
+        "state": "TX",
+        "slug": "transformer-move-escort-el-paso-tx",
+        "local_intelligence": "Strategically located on the I-10 corridor, El Paso serves as a critical junction for cross-border Superload moves.",
+        "availability": 11,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Savannah",
+        "state": "GA",
+        "slug": "transformer-move-escort-savannah-ga",
+        "local_intelligence": "The Port of Savannah requires specialized over-height escort coordination for industrial turbine transport.",
+        "availability": 12,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Gary",
+        "state": "IN",
+        "slug": "transformer-move-escort-gary-in",
+        "local_intelligence": "Steel corridor logistics in Gary often involve complex height obstruction routing near Lake Michigan.",
+        "availability": 13,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Dallas",
+        "state": "TX",
+        "slug": "transformer-move-escort-dallas-tx",
+        "local_intelligence": "The central logistics hub of the DFW metroplex, Dallas requires precise coordination for high-value tech infrastructure transport.",
+        "availability": 14,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Mobile",
+        "state": "AL",
+        "slug": "transformer-move-escort-mobile-al",
+        "local_intelligence": "Port-based industrial freight in Mobile demands expert route surveys for coastal bridge clearances.",
+        "availability": 15,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Cleveland",
+        "state": "OH",
+        "slug": "transformer-move-escort-cleveland-oh",
+        "local_intelligence": "The rust belt corridor in Cleveland presents unique challenges for wide-load steering around legacy infrastructure.",
+        "availability": 16,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Seattle",
+        "state": "WA",
+        "slug": "transformer-move-escort-seattle-wa",
+        "local_intelligence": "Pacific Northwest terrain requires specialized Tillerman support for tight mountain-pass radii and urban port moves.",
+        "availability": 17,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Charleston",
+        "state": "SC",
+        "slug": "transformer-move-escort-charleston-sc",
+        "local_intelligence": "Maritime industrial components leaving Charleston often require 24/7 lead and chase car coordination.",
+        "availability": 18,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Denver",
+        "state": "CO",
+        "slug": "transformer-move-escort-denver-co",
+        "local_intelligence": "High-altitude route surveys are essential for Denver-bound freight to ensure engine-break and clearance safety.",
+        "availability": 19,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Phoenix",
+        "state": "AZ",
+        "slug": "transformer-move-escort-phoenix-az",
+        "local_intelligence": "Climate-controlled specialized moves in the desert corridor rely on Haul Command for real-time hazard sync.",
+        "availability": 5,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Toronto",
+        "state": "ON",
+        "slug": "transformer-move-escort-toronto-on",
+        "local_intelligence": "The Golden Horseshoe requires meticulous planning for superloads bypassing urban congestion on the 401.",
+        "availability": 6,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Vancouver",
+        "state": "BC",
+        "slug": "transformer-move-escort-vancouver-bc",
+        "local_intelligence": "Mountainous terrain and strict BC Ministry of Transportation permits require expert local escort knowledge.",
+        "availability": 7,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Houston",
+        "state": "TX",
+        "slug": "transformer-move-escort-houston-tx",
+        "local_intelligence": "Energy sector heavy haul in Houston often involves modular plant components requiring multi-car convoys.",
+        "availability": 8,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "city": "Jacksonville",
+        "state": "FL",
+        "slug": "transformer-move-escort-jacksonville-fl",
+        "local_intelligence": "A gateway to the Southeast, Jacksonville requires adherence to strict Florida night-travel curfews.",
+        "availability": 9,
+        "type": "CITY_LANDING"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "high-pole-pilot-car-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Port of Houston",
+        "slug": "high-pole-pilot-car-near-port-of-houston",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Port of Savannah",
+        "slug": "high-pole-pilot-car-near-port-of-savannah",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "high-pole-pilot-car-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "high-pole-pilot-car-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "high-pole-pilot-car-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "high-pole-pilot-car-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "high-pole-pilot-car-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "high-pole-pilot-car-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "High Pole Pilot Car",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "high-pole-pilot-car-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized High Pole Pilot Car support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "steerman-escort-for-superloads-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Port of Houston",
+        "slug": "steerman-escort-for-superloads-near-port-of-houston",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Port of Savannah",
+        "slug": "steerman-escort-for-superloads-near-port-of-savannah",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "steerman-escort-for-superloads-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "steerman-escort-for-superloads-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "steerman-escort-for-superloads-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "steerman-escort-for-superloads-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "steerman-escort-for-superloads-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "steerman-escort-for-superloads-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Steerman Escort for Superloads",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "steerman-escort-for-superloads-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Steerman Escort for Superloads support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "route-survey-services-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Port of Houston",
+        "slug": "route-survey-services-near-port-of-houston",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Port of Savannah",
+        "slug": "route-survey-services-near-port-of-savannah",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "route-survey-services-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "route-survey-services-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "route-survey-services-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "route-survey-services-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "route-survey-services-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "route-survey-services-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Route Survey Services",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "route-survey-services-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Route Survey Services support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "oversize-load-escorts-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Port of Houston",
+        "slug": "oversize-load-escorts-near-port-of-houston",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Port of Savannah",
+        "slug": "oversize-load-escorts-near-port-of-savannah",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "oversize-load-escorts-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "oversize-load-escorts-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "oversize-load-escorts-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "oversize-load-escorts-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "oversize-load-escorts-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "oversize-load-escorts-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Oversize Load Escorts",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "oversize-load-escorts-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Oversize Load Escorts support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "night/weekend-permit-support-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Port of Houston",
+        "slug": "night/weekend-permit-support-near-port-of-houston",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Port of Savannah",
+        "slug": "night/weekend-permit-support-near-port-of-savannah",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "night/weekend-permit-support-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "night/weekend-permit-support-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "night/weekend-permit-support-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "night/weekend-permit-support-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "night/weekend-permit-support-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "night/weekend-permit-support-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Night/Weekend Permit Support",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "night/weekend-permit-support-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Night/Weekend Permit Support support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "tillerman-steering-specialist-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Port of Houston",
+        "slug": "tillerman-steering-specialist-near-port-of-houston",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Port of Savannah",
+        "slug": "tillerman-steering-specialist-near-port-of-savannah",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "tillerman-steering-specialist-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "tillerman-steering-specialist-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "tillerman-steering-specialist-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "tillerman-steering-specialist-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "tillerman-steering-specialist-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "tillerman-steering-specialist-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Tillerman Steering Specialist",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "tillerman-steering-specialist-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Tillerman Steering Specialist support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "superload-transport-escort-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Port of Houston",
+        "slug": "superload-transport-escort-near-port-of-houston",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Port of Savannah",
+        "slug": "superload-transport-escort-near-port-of-savannah",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "superload-transport-escort-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "superload-transport-escort-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "superload-transport-escort-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "superload-transport-escort-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "superload-transport-escort-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "superload-transport-escort-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Superload Transport Escort",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "superload-transport-escort-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Superload Transport Escort support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "mobile-crane-pilot-car-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Port of Houston",
+        "slug": "mobile-crane-pilot-car-near-port-of-houston",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Port of Savannah",
+        "slug": "mobile-crane-pilot-car-near-port-of-savannah",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "mobile-crane-pilot-car-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "mobile-crane-pilot-car-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "mobile-crane-pilot-car-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "mobile-crane-pilot-car-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "mobile-crane-pilot-car-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "mobile-crane-pilot-car-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Mobile Crane Pilot Car",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "mobile-crane-pilot-car-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Mobile Crane Pilot Car support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "blade-transport-escort-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Port of Houston",
+        "slug": "blade-transport-escort-near-port-of-houston",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Port of Savannah",
+        "slug": "blade-transport-escort-near-port-of-savannah",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "blade-transport-escort-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "blade-transport-escort-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "blade-transport-escort-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "blade-transport-escort-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "blade-transport-escort-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "blade-transport-escort-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Blade Transport Escort",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "blade-transport-escort-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Blade Transport Escort support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "I-10/I-75 Interchange",
+        "slug": "transformer-move-escort-near-i-10-i-75-interchange",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the I-10/I-75 Interchange.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Port of Houston",
+        "slug": "transformer-move-escort-near-port-of-houston",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Port of Houston.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Port of Savannah",
+        "slug": "transformer-move-escort-near-port-of-savannah",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Port of Savannah.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "JFK Airport Cargo Area",
+        "slug": "transformer-move-escort-near-jfk-airport-cargo-area",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the JFK Airport Cargo Area.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "I-80/I-90 Crossroads",
+        "slug": "transformer-move-escort-near-i-80-i-90-crossroads",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the I-80/I-90 Crossroads.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Mackinac Bridge Northbound",
+        "slug": "transformer-move-escort-near-mackinac-bridge-northbound",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Mackinac Bridge Northbound.",
+        "availability": 2,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Delaware Memorial Bridge",
+        "slug": "transformer-move-escort-near-delaware-memorial-bridge",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Delaware Memorial Bridge.",
+        "availability": 3,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "I-5 Corridor Industrial Zone",
+        "slug": "transformer-move-escort-near-i-5-corridor-industrial-zone",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the I-5 Corridor Industrial Zone.",
+        "availability": 4,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Peace Bridge Border Crossing",
+        "slug": "transformer-move-escort-near-peace-bridge-border-crossing",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Peace Bridge Border Crossing.",
+        "availability": 5,
+        "type": "LANDMARK_OVERLAY"
+    },
+    {
+        "service": "Transformer Move Escort",
+        "landmark": "Ambassador Bridge Border Crossing",
+        "slug": "transformer-move-escort-near-ambassador-bridge-border-crossing",
+        "local_intelligence": "Specialized Transformer Move Escort support for operations directly servicing or transiting the Ambassador Bridge Border Crossing.",
+        "availability": 6,
+        "type": "LANDMARK_OVERLAY"
+    }
+]

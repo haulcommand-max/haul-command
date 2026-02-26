@@ -1,0 +1,477 @@
+haul_command:
+  meta:
+    audit_date: "2026-02-19"
+    objective:
+      - "Ship a dominant directory + load board + lead board with real liquidity loops"
+      - "Reach 100,000 downloads fast"
+      - "Reach 100,000 directory users fast"
+    principles:
+      - "Never ship mocked intelligence: every badge/grade must be derivable from stored signals"
+      - "Liquidity > features: optimize time-to-fill and time-to-first-win for both sides"
+      - "Mobile-first: presence + push + 2-tap accept is non-negotiable"
+      - "Trust is lane-specific, not global"
+
+  fix_pack:
+    blockers:
+      - id: fix.mobile_app_shell
+        severity: fatal
+        deliverable: "Capacitor app wrapper for existing Next.js + Supabase"
+        steps:
+          - "Add Capacitor config + iOS/Android projects"
+          - "Enable deep links: /loads/:id, /vendors/:id, /claim, /onboarding"
+          - "Push notifications: FCM (Android) + APNs via FCM (iOS)"
+          - "Background presence heartbeat (opt-in) for escorts"
+        acceptance:
+          - "iOS/Android builds install and run"
+          - "Push tokens stored + test push works"
+          - "Deep link opens correct route"
+
+      - id: fix.homepage
+        severity: fatal
+        deliverable: "Real marketing homepage instead of redirect"
+        requirements:
+          sections:
+            - "Hero: value prop + primary CTA"
+            - "Social proof counters (real-time): escorts, brokers, loads, avg fill time"
+            - "How it works: 3 steps for brokers + 3 steps for escorts"
+            - "Feature tiles: trust, compliance, fast-fill, territory"
+            - "Testimonials placeholder + logos"
+            - "Footer with legal + contact"
+          seo:
+            - "Open Graph + Twitter cards"
+            - "Favicon + app icons"
+            - "Schema.org Organization + SoftwareApplication"
+        acceptance:
+          - "Root route renders homepage"
+          - "CTA routes work: /onboarding/start, /directory, /loads"
+
+      - id: fix.typography_layout
+        severity: high
+        deliverable: "Premium layout + fonts + header/footer"
+        requirements:
+          fonts:
+            recommended: ["Inter", "Outfit"]
+          header:
+            includes:
+              - "Global nav"
+              - "Search (directory + loads)"
+              - "User menu avatar when logged in"
+              - "Primary CTA (List company / Post load)"
+          footer:
+            includes:
+              - "Terms, Privacy, Contact, About"
+              - "Trust badges (verification, insurance, compliance)"
+        acceptance:
+          - "No Arial fallback as primary"
+          - "No inline style hacks for core layout"
+
+      - id: fix.leaderboard_real_data
+        severity: high
+        deliverable: "Wire leaderboard to real Supabase view + snapshots"
+        requirements:
+          - "Replace fetchLeaderboard() TODO with query to public_leaderboards"
+          - "Hourly snapshots already exist -> ensure populated"
+        acceptance:
+          - "Leaderboard shows rows for seeded accounts"
+          - "Filters work: country, state, lane category"
+          - "Renders within 300ms from cache"
+
+      - id: fix.loads_real_intelligence
+        severity: fatal
+        deliverable: "Remove mocked intelligence from loads and compute from signals"
+        requirements:
+          remove:
+            - "charCodeAt()%2 grade"
+            - "hardcoded fill-speed"
+            - "arbitrary lane_badges"
+            - "hardcoded trust_score"
+          replace_with:
+            - "fill_probability model output"
+            - "lane_badges derived from load attributes + lane history"
+            - "trust_score from lane-specific trust graph"
+            - "risk score from compliance + incident signals"
+        acceptance:
+          - "Every intelligence field includes source + timestamp"
+          - "Fields recompute on signal changes"
+
+    moderate:
+      - id: fix.search
+        severity: medium
+        deliverable: "Typesense (or Meilisearch) search + autocomplete"
+        acceptance:
+          - "Directory search by name, city, corridor, capability"
+          - "Loads search by lane, date, attributes"
+
+      - id: fix.maps
+        severity: medium
+        deliverable: "MapLibre map layer for directory + loads"
+        acceptance:
+          - "Heatmap layers: escort density, load density"
+          - "Click pin -> vendor card / load card"
+
+      - id: fix.analytics
+        severity: medium
+        deliverable: "Event tracking + funnels"
+        provider:
+          recommended: ["PostHog", "Plausible"]
+        core_events:
+          - "signup_started"
+          - "signup_completed"
+          - "vendor_claim_started"
+          - "vendor_claim_verified"
+          - "load_posted"
+          - "load_viewed"
+          - "match_offered"
+          - "match_accepted"
+          - "fill_completed"
+          - "push_opt_in"
+          - "availability_toggled"
+        acceptance:
+          - "Dashboard shows: CAC proxies, activation rate, time-to-first-win"
+
+  liquidity_engine:
+    goals:
+      - "Minimize time-to-fill for brokers"
+      - "Minimize time-to-first-win for escorts"
+      - "Create visible market activity (density) without fakery"
+      - "Convert presence + availability into matching advantage"
+
+    tables:
+      - name: profiles
+        purpose: "All users"
+        fields:
+          id: "uuid pk"
+          role: "enum('escort','broker','carrier','admin')"
+          display_name: "text"
+          phone_e164: "text unique"
+          email: "text"
+          photo_url: "text"
+          created_at: "timestamptz"
+          last_active_at: "timestamptz"
+          home_country: "text"
+          home_state: "text"
+          marketing_opt_in: "bool default true"
+
+      - name: escort_profiles
+        fields:
+          escort_id: "uuid pk fk->profiles.id"
+          base_lat: "double precision"
+          base_lng: "double precision"
+          default_radius_miles: "int default 150"
+          vehicle_type: "enum('pilot','chase','lead','high_pole','bucket_support','police_coord','survey')"
+          capabilities_json: "jsonb"
+          certifications_json: "jsonb"
+          insurance_status: "enum('unknown','pending','verified','expired')"
+          insurance_expires_at: "timestamptz"
+          compliance_status: "enum('unknown','pending','verified','flagged')"
+          trust_base: "numeric(5,2) default 50.00"
+          created_at: "timestamptz"
+
+      - name: broker_profiles
+        fields:
+          broker_id: "uuid pk fk->profiles.id"
+          company_name: "text"
+          company_domain: "text"
+          verified_company: "bool default false"
+          payout_terms: "text"
+          trust_base: "numeric(5,2) default 50.00"
+          created_at: "timestamptz"
+
+      - name: escort_presence
+        purpose: "Realtime presence & device heartbeats"
+        fields:
+          escort_id: "uuid pk fk->escort_profiles.escort_id"
+          status: "enum('offline','online','available','busy','resting','do_not_disturb')"
+          device_platform: "enum('ios','android','web')"
+          push_token: "text"
+          last_heartbeat_at: "timestamptz"
+          last_lat: "double precision"
+          last_lng: "double precision"
+          last_speed_mph: "numeric(6,2)"
+          last_heading: "numeric(6,2)"
+          location_accuracy_m: "numeric(8,2)"
+          battery_pct: "int"
+          network_quality: "enum('unknown','poor','ok','good')"
+          updated_at: "timestamptz"
+
+      - name: escort_availability_windows
+        fields:
+          id: "uuid pk"
+          escort_id: "uuid fk->escort_profiles.escort_id"
+          start_at: "timestamptz"
+          end_at: "timestamptz"
+          mode: "enum('instant','scheduled')"
+          radius_miles: "int"
+          preferred_states: "text[]"
+          preferred_corridors: "text[]"
+          min_rate: "numeric(10,2)"
+          notes: "text"
+          created_at: "timestamptz"
+          updated_at: "timestamptz"
+
+      - name: escort_territory_claims
+        fields:
+          id: "uuid pk"
+          escort_id: "uuid fk->escort_profiles.escort_id"
+          country: "text"
+          state: "text"
+          county_fips: "text"
+          corridor_id: "uuid null"
+          claim_tier: "enum('free','pro','elite')"
+          claimed_at: "timestamptz"
+          expires_at: "timestamptz"
+          is_active: "bool default true"
+
+      - name: escort_blocklists
+        fields:
+          id: "uuid pk"
+          blocker_user_id: "uuid fk->profiles.id"
+          blocked_user_id: "uuid fk->profiles.id"
+          reason: "text"
+          created_at: "timestamptz"
+
+      - name: loads
+        fields:
+          id: "uuid pk"
+          broker_id: "uuid fk->broker_profiles.broker_id"
+          title: "text"
+          load_type: "enum('mobile_home','heavy_equipment','steel','precast','transformer','wind','boat','misc')"
+          origin_city: "text"
+          origin_state: "text"
+          origin_country: "text"
+          origin_lat: "double precision"
+          origin_lng: "double precision"
+          dest_city: "text"
+          dest_state: "text"
+          dest_country: "text"
+          dest_lat: "double precision"
+          dest_lng: "double precision"
+          pickup_earliest_at: "timestamptz"
+          pickup_latest_at: "timestamptz"
+          delivery_latest_at: "timestamptz"
+          dimensions_json: "jsonb"
+          escort_requirements_json: "jsonb"
+          route_corridors: "text[]"
+          est_miles: "int"
+          rate_amount: "numeric(10,2)"
+          rate_type: "enum('flat','per_mile','tbd')"
+          urgency: "enum('hot','warm','planned','flex')"
+          visibility: "enum('public','invite_only','private')"
+          status: "enum('open','matched','in_transit','completed','canceled','expired')"
+          created_at: "timestamptz"
+          updated_at: "timestamptz"
+          expires_at: "timestamptz"
+
+      - name: load_invites
+        fields:
+          id: "uuid pk"
+          load_id: "uuid fk->loads.id"
+          broker_id: "uuid fk->broker_profiles.broker_id"
+          escort_id: "uuid fk->escort_profiles.escort_id"
+          invited_at: "timestamptz"
+          channel: "enum('push','sms','email')"
+          status: "enum('sent','viewed','accepted','declined','expired')"
+
+      - name: match_offers
+        fields:
+          id: "uuid pk"
+          load_id: "uuid fk->loads.id"
+          broker_id: "uuid fk->broker_profiles.broker_id"
+          escort_id: "uuid fk->escort_profiles.escort_id"
+          offer_rank: "int"
+          offer_reason_json: "jsonb"
+          offered_rate: "numeric(10,2)"
+          offered_at: "timestamptz"
+          expires_at: "timestamptz"
+          status: "enum('offered','viewed','accepted','declined','expired','rescinded')"
+          viewed_at: "timestamptz"
+          responded_at: "timestamptz"
+          decline_reason: "enum('rate','distance','schedule','requirements','broker_trust','other')"
+          decline_notes: "text"
+
+      - name: matches
+        fields:
+          id: "uuid pk"
+          load_id: "uuid fk->loads.id unique"
+          broker_id: "uuid fk->broker_profiles.broker_id"
+          escort_id: "uuid fk->escort_profiles.escort_id"
+          accepted_offer_id: "uuid fk->match_offers.id"
+          accepted_at: "timestamptz"
+          start_at: "timestamptz"
+          complete_at: "timestamptz"
+          status: "enum('accepted','in_progress','completed','canceled','disputed')"
+          payout_status: "enum('none','pending','paid','failed')"
+          created_at: "timestamptz"
+
+      - name: trust_edges
+        fields:
+          id: "uuid pk"
+          from_user_id: "uuid fk->profiles.id"
+          to_user_id: "uuid fk->profiles.id"
+          lane_key: "text"
+          edge_type: "enum('broker_rates_escort','escort_rates_broker','repeat_partner')"
+          rating: "int"
+          weight: "numeric(8,4)"
+          notes: "text"
+          created_at: "timestamptz"
+          updated_at: "timestamptz"
+
+      - name: incidents
+        fields:
+          id: "uuid pk"
+          load_id: "uuid fk->loads.id null"
+          match_id: "uuid fk->matches.id null"
+          subject_user_id: "uuid fk->profiles.id"
+          reporter_user_id: "uuid fk->profiles.id"
+          category: "enum('late','no_show','unsafe','route_violation','paperwork','fraud','harassment','other')"
+          severity: "enum('low','medium','high','critical')"
+          details: "text"
+          created_at: "timestamptz"
+          resolved_at: "timestamptz"
+          resolution: "text"
+
+      - name: liquidity_metrics_daily
+        fields:
+          id: "uuid pk"
+          date: "date"
+          geo_key: "text"
+          segment: "enum('escort','broker','market')"
+          loads_posted: "int"
+          offers_sent: "int"
+          accepts: "int"
+          fills: "int"
+          median_time_to_first_offer_min: "numeric(10,2)"
+          median_time_to_accept_min: "numeric(10,2)"
+          median_time_to_fill_min: "numeric(10,2)"
+          active_escorts: "int"
+          available_escorts: "int"
+          supply_demand_ratio: "numeric(10,4)"
+          created_at: "timestamptz"
+
+      - name: load_intelligence
+        purpose: "Fill probability model outputs + intelligence per load"
+        fields:
+          load_id: "uuid pk fk->loads.id"
+          computed_at: "timestamptz"
+          lane_key: "text"
+          fill_probability_60m: "numeric(6,4)"
+          fill_probability_4h: "numeric(6,4)"
+          fill_probability_24h: "numeric(6,4)"
+          expected_time_to_accept_min: "numeric(10,2)"
+          expected_time_to_fill_min: "numeric(10,2)"
+          confidence: "numeric(6,4)"
+          supply_demand_ratio: "numeric(10,4)"
+          recommended_offer_waves: "jsonb"
+          explanation_top_factors: "jsonb"
+          fill_speed_label: "text"
+          quality_grade: "text"
+
+  fill_probability_model:
+    type: "Logistic regression (interpretable) + calibration"
+    coefficients:
+      b0: -0.8
+      w_supply_demand_ratio: 1.4
+      w_acceptance_rate_similar: 1.1
+      w_rate_competitiveness: 0.9
+      w_requirement_complexity: -0.8
+      w_lead_time_hours: 0.5
+      w_median_response_time_min: -0.6
+      w_broker_trust_score: 0.7
+      w_lane_frequency_score: 0.4
+      w_top_candidate_trust: 0.5
+      w_escort_fit_score: 0.6
+      w_incident_rate_similar: -0.7
+      w_distance_to_supply_centroid_miles: -0.4
+    badge_rules:
+      fill_speed_label:
+        - "fill_probability_60m >= 0.70 => Fast-fill"
+        - "fill_probability_4h >= 0.70 => Likely today"
+        - "fill_probability_24h >= 0.70 => Likely this week"
+        - "else => Hard-fill"
+      quality_grade:
+        - "Grade A: broker_trust high AND rate_competitiveness high AND complexity low"
+        - "Grade B: 2 of 3"
+        - "Grade C: otherwise"
+
+  pricing:
+    strategy:
+      - "Freemium to ignite liquidity"
+      - "Charge brokers for acceleration, escort entry near-zero friction"
+    escorts:
+      free: { price: 0, territory_claims: 0, radius_miles_max: 100 }
+      pro: { price: 19, billing: monthly, territory_claims: 3, radius_miles_max: 200 }
+      elite: { price: 49, billing: monthly, territory_claims: 10, radius_miles_max: 400 }
+    brokers:
+      free: { price: 0, loads_per_month: 5 }
+      pro: { price: 99, billing: monthly, team_seats: 3 }
+      enterprise: { price: 399, billing: monthly, team_seats: 15 }
+    boosts:
+      broker_boost_fill: { price: 29, unit: "per load" }
+      escort_featured_geo: { price: 9, unit: "per geo per month" }
+
+  growth_loops:
+    - "referral_dual_sided: escort->escort, broker->broker with verified-completion lock"
+    - "territory_race: FOMO-driven county/corridor claiming with expiry"
+    - "fast_fill_scoreboard: public top lanes/escorts/brokers"
+    - "viral_share_cards: auto-generated on every win event"
+
+  seeding_rules:
+    allowed:
+      - "Anonymized aggregates with source tag"
+      - "Historical loads labeled clearly"
+    disallowed:
+      - "Fake escorts"
+      - "Fake acceptances"
+      - "Fake trust scores"
+    launch_markets:
+      - "Florida core"
+      - "Georgia"
+      - "2 additional high-volume corridors on supply readiness"
+    incentives:
+      - "First 10,000 escorts: free Pro 60 days"
+      - "First 1,000 brokers: 10 boost credits"
+
+  execution_order:
+    tier_1_ship_blockers:
+      - "fix.homepage"
+      - "fix.typography_layout"
+      - "fix.leaderboard_real_data"
+      - "fix.loads_real_intelligence"
+      - "liquidity_engine schema + core edge functions"
+    tier_2_liquidity_activation:
+      - "escort presence + availability system"
+      - "match_generate waves"
+      - "fill_probability wired to UI"
+      - "push notifications"
+    tier_3_distribution:
+      - "Capacitor mobile shell"
+      - "referrals + territory race + share cards"
+      - "maps + search"
+      - "pricing + boosts"
+
+  ui_contract:
+    loads_page:
+      must_show:
+        - "fill_speed_label (from model)"
+        - "fill_probability_60m/4h/24h"
+        - "confidence + computed_at"
+        - "top 3 explanation factors"
+        - "requirements badges (derived)"
+        - "broker trust card (lane-specific)"
+    directory_page:
+      must_show:
+        - "live available now count"
+        - "territory claimed badges"
+        - "capability filters"
+        - "map layer toggle"
+    escort_profile:
+      must_show:
+        - "availability toggle"
+        - "response time percentile"
+        - "acceptance rate (lane-specific)"
+        - "trust card (lane-specific)"
+    broker_profile:
+      must_show:
+        - "median fill time"
+        - "dispute rate"
+        - "payment reliability score"

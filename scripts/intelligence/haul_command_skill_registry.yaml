@@ -1,0 +1,854 @@
+manifest_version: 1
+skill_registry:
+  # ------------------------------------------------------------
+  # GOVERNANCE / CONTROL (you are the switch-flipper)
+  # ------------------------------------------------------------
+  - skill_id: governance.feature_flag_controller
+    domain: governance
+    name: "Feature Flag Controller"
+    purpose: "Central switchboard: enable/disable skills, rollout %, dry-run, kill switches."
+    flag_key: governance.feature_flag_controller
+    triggers: { events: [admin.flags.updated] }
+    inputs: { entities: [admin], required_fields: [] }
+    outputs: { writes: [feature_flags_cache], emits_events: [flags.changed] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: governance.permissions_roles
+    domain: governance
+    name: "Permissions + Roles"
+    purpose: "Role-based access: who can unlock manual miles, flip flags, view PII, export evidence."
+    flag_key: governance.permissions_roles
+    triggers: { events: [admin.user.updated, admin.role.updated] }
+    inputs: { entities: [users, roles], required_fields: [] }
+    outputs: { writes: [rbac_policies], emits_events: [rbac.changed] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: governance.audit_ledger
+    domain: governance
+    name: "Audit Ledger"
+    purpose: "Immutable event log for disputes: what changed, who changed it, and why."
+    flag_key: governance.audit_ledger
+    triggers: { events: [any.write] }
+    inputs: { entities: [events], required_fields: [] }
+    outputs: { writes: [audit_log], emits_events: [] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: governance.policy_engine
+    domain: governance
+    name: "Policy Engine"
+    purpose: "Central rules: manual fallback rules, publish gates, safety rules, dispute rules."
+    flag_key: governance.policy_engine
+    triggers: { events: [flags.changed, policy.updated] }
+    inputs: { entities: [policies], required_fields: [] }
+    outputs: { writes: [policy_cache], emits_events: [policy.changed] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: governance.evidence_vault
+    domain: governance
+    name: "Evidence Vault"
+    purpose: "Stores route snapshots + proofs at time-of-quote for broker disputes."
+    flag_key: governance.evidence_vault
+    triggers: { events: [routing.completed, quote.created] }
+    inputs: { entities: [loads, routes, quotes], required_fields: [load_id] }
+    outputs: { writes: [evidence_records], emits_events: [] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: governance.alert_router
+    domain: governance
+    name: "Alert Router"
+    purpose: "Routes important failures to your chosen channel (UI banner, SMS, email, webhook)."
+    flag_key: governance.alert_router
+    triggers: { events: [skill.failed, gate.blocked, cost.spike] }
+    inputs: { entities: [alerts], required_fields: [] }
+    outputs: { writes: [alert_log], emits_events: [notify.send] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # DATA QUALITY (clean inputs; no routing on trash)
+  # ------------------------------------------------------------
+  - skill_id: data_quality.schema_validator
+    domain: data_quality
+    name: "Schema Validator"
+    purpose: "Hard-validates required fields per workflow stage (create → quote → dispatch)."
+    flag_key: data_quality.schema_validator
+    triggers: { events: [loads.upsert, brokers.upsert] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [validation_errors], emits_events: [validation.updated] }
+    dependencies: { skills: [governance.policy_engine], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: data_quality.address_canonicalization_engine
+    domain: data_quality
+    name: "Address Canonicalization Engine"
+    purpose: "Standardizes messy addresses for better geocode + dedupe + reporting."
+    flag_key: data_quality.address_canonicalization_engine
+    triggers: { events: [loads.address.updated] }
+    inputs: { entities: [loads], required_fields: [origin_address_raw, dest_address_raw] }
+    outputs: { writes: [origin_address_norm, dest_address_norm], emits_events: [address.normalized] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: data_quality.geocode_confidence_guardian
+    domain: data_quality
+    name: "Geocode Confidence Guardian"
+    purpose: "Blocks bad geocodes (centroid/low confidence/state mismatch) before routing."
+    flag_key: data_quality.geocode_confidence_guardian
+    triggers: { events: [geocode.completed] }
+    inputs: { entities: [loads], required_fields: [origin_lat, origin_lng, dest_lat, dest_lng] }
+    outputs: { writes: [coords_validated, coords_issue_reason], emits_events: [coords.validated] }
+    dependencies: { skills: [data_quality.coordinate_sanity_checker], external_apis: [] }
+    failure_policy: { on_fail: prompt_manual, max_retries: 0 }
+
+  - skill_id: data_quality.coordinate_sanity_checker
+    domain: data_quality
+    name: "Coordinate Sanity Checker"
+    purpose: "Catches lat/lng swap, oceans, impossible jumps, origin≈destination."
+    flag_key: data_quality.coordinate_sanity_checker
+    triggers: { events: [loads.coords.updated] }
+    inputs: { entities: [loads], required_fields: [origin_lat, origin_lng, dest_lat, dest_lng] }
+    outputs: { writes: [coords_sanity_ok], emits_events: [coords.sanity_ok] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: prompt_manual, max_retries: 0 }
+
+  - skill_id: data_quality.duplicate_load_detector
+    domain: data_quality
+    name: "Duplicate Load Detector"
+    purpose: "Prevents double-posted loads using normalized address + window + broker fingerprint."
+    flag_key: data_quality.duplicate_load_detector
+    triggers: { events: [loads.create, loads.upsert] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [duplicate_score, duplicate_of_load_id], emits_events: [load.duplicate_flag] }
+    dependencies: { skills: [data_quality.address_canonicalization_engine], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: data_quality.pii_redaction_guard
+    domain: data_quality
+    name: "PII Redaction Guard"
+    purpose: "Redacts sensitive strings from logs/export (phone/email/payment identifiers)."
+    flag_key: data_quality.pii_redaction_guard
+    triggers: { events: [audit.write, export.requested] }
+    inputs: { entities: [texts], required_fields: [] }
+    outputs: { writes: [sanitized_text], emits_events: [] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: data_quality.source_quality_score
+    domain: data_quality
+    name: "Source Quality Score"
+    purpose: "Scores inputs by trust tier (broker portal > email > text screenshot > rumor)."
+    flag_key: data_quality.source_quality_score
+    triggers: { events: [data.ingested] }
+    inputs: { entities: [ingestions], required_fields: [] }
+    outputs: { writes: [sqs_score], emits_events: [sqs.updated] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: data_quality.conflict_resolution_laws
+    domain: data_quality
+    name: "Conflict Resolution Laws"
+    purpose: "Deterministic rules when two sources disagree (manual miles vs API, etc.)."
+    flag_key: data_quality.conflict_resolution_laws
+    triggers: { events: [conflict.detected] }
+    inputs: { entities: [conflicts], required_fields: [] }
+    outputs: { writes: [conflict_resolution], emits_events: [conflict.resolved] }
+    dependencies: { skills: [governance.policy_engine], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: data_quality.data_ingestion_smash
+    domain: data_quality
+    name: "Data Ingestion Smash"
+    purpose: "Canonicalizes incoming PDFs/emails/forms into one clean load object."
+    flag_key: data_quality.data_ingestion_smash
+    triggers: { events: [ingestion.new] }
+    inputs: { entities: [raw_payloads], required_fields: [] }
+    outputs: { writes: [canonical_load_fields], emits_events: [loads.upsert] }
+    dependencies: { skills: [data_quality.schema_validator], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # ROUTING + MILES (your 25 core list expanded + supporting pieces)
+  # ------------------------------------------------------------
+  - skill_id: routing.heavy_haul_constraint_normalizer
+    domain: routing
+    name: "Heavy Haul Constraint Normalizer"
+    purpose: "Normalizes dimensions/weights/axles into HERE units (cm/kg) + fills safe defaults when allowed."
+    flag_key: routing.heavy_haul_constraint_normalizer
+    triggers: { events: [loads.upsert] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [effective_vehicle_profile], emits_events: [vehicle.profile_ready] }
+    dependencies: { skills: [governance.policy_engine], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: routing.here_route_runner
+    domain: routing
+    name: "HERE Route Runner"
+    purpose: "Calls HERE truck routing and returns distance meters + summary; never overwrites manual lock."
+    flag_key: routing.here_route_runner
+    triggers: { events: [coords.validated, vehicle.profile_ready, loads.route_options.updated] }
+    inputs: { entities: [loads], required_fields: [origin_lat, origin_lng, dest_lat, dest_lng] }
+    outputs: { writes: [miles_value_here, miles_status, here_request_hash, route_summary_json], emits_events: [routing.completed, routing.failed] }
+    dependencies: { skills: [routing.api_cost_governor, routing.routing_queue_optimizer], external_apis: [here_routing_v8] }
+    failure_policy: { on_fail: prompt_manual, max_retries: 2 }
+
+  - skill_id: routing.smart_avoid_tuner
+    domain: routing
+    name: "Smart Avoid Tuner"
+    purpose: "If routing fails, retries with tuned avoid profiles (light→medium→minimal) under your flag control."
+    flag_key: routing.smart_avoid_tuner
+    triggers: { events: [routing.failed] }
+    inputs: { entities: [loads, routing_errors], required_fields: [] }
+    outputs: { writes: [route_avoid_profile], emits_events: [routing.retry_requested] }
+    dependencies: { skills: [routing.here_route_runner], external_apis: [] }
+    failure_policy: { on_fail: prompt_manual, max_retries: 0 }
+
+  - skill_id: routing.api_cost_governor
+    domain: routing
+    name: "API Cost Governor"
+    purpose: "Caps calls, dedupes by request hash, throttles, and trips kill switch on spikes."
+    flag_key: routing.api_cost_governor
+    triggers: { events: [routing.requested] }
+    inputs: { entities: [requests], required_fields: [] }
+    outputs: { writes: [cost_counters], emits_events: [cost.spike, routing.allowed, routing.blocked] }
+    dependencies: { skills: [governance.feature_flag_controller], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: routing.routing_queue_optimizer
+    domain: routing
+    name: "Routing Queue Optimizer"
+    purpose: "Prioritizes routing jobs: active broker session > new loads > stale refresh > analytics."
+    flag_key: routing.routing_queue_optimizer
+    triggers: { events: [routing.requested, system.load] }
+    inputs: { entities: [queue], required_fields: [] }
+    outputs: { writes: [queue_priority], emits_events: [queue.reordered] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.route_anomaly_detector
+    domain: routing
+    name: "Route Anomaly Detector"
+    purpose: "Flags weird results (too short/long, zig-zag, non-truck corridors) before publish."
+    flag_key: routing.route_anomaly_detector
+    triggers: { events: [routing.completed] }
+    inputs: { entities: [routes, loads], required_fields: [miles_value_here] }
+    outputs: { writes: [route_anomaly_flags], emits_events: [route.anomaly_flag] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.route_feasibility_analyzer
+    domain: routing
+    name: "Route Feasibility Analyzer"
+    purpose: "Evaluates operational feasibility beyond 'a route exists' (urban choke points, detours, ferries)."
+    flag_key: routing.route_feasibility_analyzer
+    triggers: { events: [routing.completed] }
+    inputs: { entities: [routes], required_fields: [] }
+    outputs: { writes: [feasibility_score, feasibility_notes], emits_events: [route.feasibility_scored] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.corridor_confidence_scorer
+    domain: routing
+    name: "Corridor Confidence Scorer"
+    purpose: "0–100 confidence score for routing outcome using road class mix + failure history + anomaly flags."
+    flag_key: routing.corridor_confidence_scorer
+    triggers: { events: [route.feasibility_scored, route.anomaly_flag] }
+    inputs: { entities: [loads, routes], required_fields: [] }
+    outputs: { writes: [corridor_confidence], emits_events: [corridor.confidence_updated] }
+    dependencies: { skills: [routing.route_anomaly_detector], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.route_risk_heatmap
+    domain: routing
+    name: "Route Risk Heatmap"
+    purpose: "Tags segments by risk (urban density, grades, bridge density zones) for ops review."
+    flag_key: routing.route_risk_heatmap
+    triggers: { events: [routing.completed] }
+    inputs: { entities: [routes], required_fields: [] }
+    outputs: { writes: [risk_segments_json], emits_events: [route.risk_tagged] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.stale_route_detector
+    domain: routing
+    name: "Stale Route Detector"
+    purpose: "Marks miles stale based on time/spec changes and requests refresh (without forcing it)."
+    flag_key: routing.stale_route_detector
+    triggers: { events: [loads.upsert, scheduler.nightly] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [miles_status], emits_events: [routing.refresh_requested] }
+    dependencies: { skills: [routing.api_cost_governor], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.miles_discrepancy_investigator
+    domain: routing
+    name: "Miles Discrepancy Investigator"
+    purpose: "Explains manual vs HERE miles differences; flags review or hard-block by thresholds."
+    flag_key: routing.miles_discrepancy_investigator
+    triggers: { events: [miles.manual_entered, routing.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [discrepancy_ratio, discrepancy_flags], emits_events: [miles.discrepancy_flag] }
+    dependencies: { skills: [governance.policy_engine], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # DISPATCH / OPERATIONS (separate from routing; no overlap)
+  # ------------------------------------------------------------
+  - skill_id: dispatch.dispatch_readiness_scorer
+    domain: dispatch
+    name: "Dispatch Readiness Scorer"
+    purpose: "Scores whether a load is ready to dispatch (miles ok, confidence ok, requirements known)."
+    flag_key: dispatch.dispatch_readiness_scorer
+    triggers: { events: [corridor.confidence_updated, validation.updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [dispatch_ready_score, dispatch_ready_reasons], emits_events: [dispatch.readiness_updated] }
+    dependencies: { skills: [routing.corridor_confidence_scorer, data_quality.schema_validator], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.escort_requirement_predictor
+    domain: dispatch
+    name: "Escort Requirement Predictor"
+    purpose: "Predicts escort roles needed from dimensions + lane + rules library; used for quoting speed."
+    flag_key: dispatch.escort_requirement_predictor
+    triggers: { events: [vehicle.profile_ready, routing.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [predicted_escort_roles], emits_events: [escort.requirements_predicted] }
+    dependencies: { skills: [compliance.rules_library_us_canada], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.route_survey_tasker
+    domain: dispatch
+    name: "Route Survey Tasker"
+    purpose: "Creates route-survey tasks when confidence below your threshold."
+    flag_key: dispatch.route_survey_tasker
+    triggers: { events: [corridor.confidence_updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [tasks], emits_events: [task.created] }
+    dependencies: { skills: [routing.corridor_confidence_scorer], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.eta_alerts
+    domain: dispatch
+    name: "ETA Alerts"
+    purpose: "Pre-roll / mid-roll / post-roll ETA notifications (you control thresholds)."
+    flag_key: dispatch.eta_alerts
+    triggers: { events: [dispatch.started, telematics.eta_changed, dispatch.completed] }
+    inputs: { entities: [loads, drivers], required_fields: [] }
+    outputs: { writes: [alert_log], emits_events: [notify.send] }
+    dependencies: { skills: [governance.alert_router], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.comms_orchestrator
+    domain: dispatch
+    name: "Comms Orchestrator"
+    purpose: "Standardizes broker/driver/escort comms templates; logs all sends."
+    flag_key: dispatch.comms_orchestrator
+    triggers: { events: [task.created, dispatch.readiness_updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [comms_log], emits_events: [notify.send] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.incident_reporting
+    domain: dispatch
+    name: "Incident Reporting"
+    purpose: "Captures incidents with evidence attachments; routes to Evidence Vault."
+    flag_key: dispatch.incident_reporting
+    triggers: { events: [incident.created] }
+    inputs: { entities: [incidents], required_fields: [] }
+    outputs: { writes: [incident_records], emits_events: [evidence.capture] }
+    dependencies: { skills: [governance.evidence_vault], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: dispatch.cancellation_recovery
+    domain: dispatch
+    name: "Cancellation Recovery"
+    purpose: "Creates salvage workflow (replacement escorts, re-quote, reschedule) when a job drops."
+    flag_key: dispatch.cancellation_recovery
+    triggers: { events: [dispatch.cancelled] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [recovery_plan], emits_events: [task.created] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # COMPLIANCE / PERMITS (rules & planning; separate from dispatch)
+  # ------------------------------------------------------------
+  - skill_id: compliance.rules_library_us_canada
+    domain: compliance
+    name: "Rules Library US/Canada"
+    purpose: "Central library of escort triggers/curfews/signage basics by jurisdiction."
+    flag_key: compliance.rules_library_us_canada
+    triggers: { events: [rules.updated] }
+    inputs: { entities: [rules], required_fields: [] }
+    outputs: { writes: [rules_cache], emits_events: [rules.changed] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: compliance.permit_likelihood_estimator
+    domain: compliance
+    name: "Permit Likelihood Estimator"
+    purpose: "Estimates permit complexity/likelihood from dimensions + lane + known restrictions."
+    flag_key: compliance.permit_likelihood_estimator
+    triggers: { events: [vehicle.profile_ready, routing.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [permit_likelihood_score], emits_events: [permit.likelihood_scored] }
+    dependencies: { skills: [compliance.rules_library_us_canada], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: compliance.curfew_restriction_planner
+    domain: compliance
+    name: "Curfew + Restriction Planner"
+    purpose: "Suggests legal movement windows based on jurisdiction/time (your rules)."
+    flag_key: compliance.curfew_restriction_planner
+    triggers: { events: [permit.likelihood_scored] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [movement_windows], emits_events: [movement.windows_ready] }
+    dependencies: { skills: [compliance.rules_library_us_canada], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: compliance.escorts_required_by_state
+    domain: compliance
+    name: "Escorts Required By State"
+    purpose: "Converts rules → specific escort role requirements by state/province along the lane."
+    flag_key: compliance.escorts_required_by_state
+    triggers: { events: [routing.completed] }
+    inputs: { entities: [routes], required_fields: [] }
+    outputs: { writes: [jurisdiction_escort_matrix], emits_events: [escort.matrix_ready] }
+    dependencies: { skills: [compliance.rules_library_us_canada], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: compliance.doc_generator
+    domain: compliance
+    name: "Doc Generator"
+    purpose: "Generates route pack: checklist, escort plan, comms sheet, evidence cover sheet."
+    flag_key: compliance.doc_generator
+    triggers: { events: [dispatch.readiness_updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [generated_docs], emits_events: [docs.ready] }
+    dependencies: { skills: [governance.evidence_vault], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: compliance.compliance_spine_enforcer
+    domain: compliance
+    name: "Compliance Spine Enforcer"
+    purpose: "Hard gates publish/dispatch if non-negotiables fail (manual miles fallback rules included)."
+    flag_key: compliance.compliance_spine_enforcer
+    triggers: { events: [publish.requested, dispatch.requested] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [gate_decisions], emits_events: [gate.blocked, gate.allowed] }
+    dependencies: { skills: [governance.policy_engine], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # MARKET / BROKERS (separate from compliance; no overlap)
+  # ------------------------------------------------------------
+  - skill_id: market.broker_friction_monitor
+    domain: market
+    name: "Broker Friction Monitor"
+    purpose: "Tracks drop-offs + manual miles frequency + routing failures to improve onboarding."
+    flag_key: market.broker_friction_monitor
+    triggers: { events: [ui.session.ended, gate.blocked, routing.failed] }
+    inputs: { entities: [sessions], required_fields: [] }
+    outputs: { writes: [friction_metrics], emits_events: [insight.friction] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: market.lead_quality_scorer
+    domain: market
+    name: "Lead Quality Scorer"
+    purpose: "Scores lead completeness + lane desirability + history signals; not pricing."
+    flag_key: market.lead_quality_scorer
+    triggers: { events: [loads.create] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [lead_quality_score], emits_events: [lead.quality_scored] }
+    dependencies: { skills: [data_quality.source_quality_score], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: market.load_pricing_sanity_check
+    domain: market
+    name: "Load Pricing Sanity Check"
+    purpose: "Flags unrealistic rates vs miles and lane norms (doesn't set price)."
+    flag_key: market.load_pricing_sanity_check
+    triggers: { events: [quote.created, loads.rate.updated] }
+    inputs: { entities: [quotes, loads], required_fields: [] }
+    outputs: { writes: [pricing_flags], emits_events: [pricing.flagged] }
+    dependencies: { skills: [routing.corridor_confidence_scorer], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: market.broker_trust_score
+    domain: market
+    name: "Broker Trust Score"
+    purpose: "Reputation score from cancellations, disputes, payment speed, review signals."
+    flag_key: market.broker_trust_score
+    triggers: { events: [broker.event, payment.event, dispute.event] }
+    inputs: { entities: [brokers], required_fields: [] }
+    outputs: { writes: [broker_trust_score], emits_events: [broker.trust_updated] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: market.lane_intelligence
+    domain: market
+    name: "Lane Intelligence"
+    purpose: "Builds lane stats (volumes, cancellation rate, avg miles, seasonality)."
+    flag_key: market.lane_intelligence
+    triggers: { events: [dispatch.completed, nightly.aggregate] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [lane_stats], emits_events: [lane.stats_updated] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: market.fraud_signal_detector
+    domain: market
+    name: "Fraud Signal Detector"
+    purpose: "Flags spammy brokers/leads using pattern rules + velocity + mismatched contact details."
+    flag_key: market.fraud_signal_detector
+    triggers: { events: [loads.create, brokers.upsert] }
+    inputs: { entities: [loads, brokers], required_fields: [] }
+    outputs: { writes: [fraud_flags], emits_events: [fraud.flagged] }
+    dependencies: { skills: [data_quality.pii_redaction_guard], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # FINANCE / PAYMENTS (separate from market signals)
+  # ------------------------------------------------------------
+  - skill_id: finance.rate_override_matrix
+    domain: finance
+    name: "Rate Override Matrix"
+    purpose: "Deterministic quoting overrides by priority rules; never mixes with trust scoring."
+    flag_key: finance.rate_override_matrix
+    triggers: { events: [quote.requested] }
+    inputs: { entities: [loads, broker_profiles], required_fields: [] }
+    outputs: { writes: [quote_components], emits_events: [quote.proposed] }
+    dependencies: { skills: [routing.corridor_confidence_scorer], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: finance.invoice_engine
+    domain: finance
+    name: "Invoice Engine"
+    purpose: "Creates invoices from completed dispatch + agreed rates; logs revisions."
+    flag_key: finance.invoice_engine
+    triggers: { events: [dispatch.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [invoices], emits_events: [invoice.created] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: finance.payout_reconciliation
+    domain: finance
+    name: "Payout Reconciliation"
+    purpose: "Matches payouts to jobs; flags missing docs, short pays, duplicates."
+    flag_key: finance.payout_reconciliation
+    triggers: { events: [payment.received, dispatch.completed] }
+    inputs: { entities: [payments, loads], required_fields: [] }
+    outputs: { writes: [recon_status], emits_events: [recon.flagged] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: finance.chargeback_dispute_kit
+    domain: finance
+    name: "Chargeback + Dispute Kit"
+    purpose: "Auto-assembles evidence pack (route snapshot, comms, timestamps) for disputes."
+    flag_key: finance.chargeback_dispute_kit
+    triggers: { events: [dispute.opened] }
+    inputs: { entities: [disputes], required_fields: [] }
+    outputs: { writes: [dispute_packets], emits_events: [docs.ready] }
+    dependencies: { skills: [governance.evidence_vault], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: finance.tax_1099_prep
+    domain: finance
+    name: "1099 Prep"
+    purpose: "Aggregates contractor payouts; exports year-end summaries."
+    flag_key: finance.tax_1099_prep
+    triggers: { events: [year_end.run] }
+    inputs: { entities: [payments], required_fields: [] }
+    outputs: { writes: [tax_exports], emits_events: [export.ready] }
+    dependencies: { skills: [data_quality.pii_redaction_guard], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # DIRECTORY / LEADERBOARD (separate from dispatch + finance)
+  # ------------------------------------------------------------
+  - skill_id: directory.directory_verification
+    domain: directory
+    name: "Directory Verification"
+    purpose: "Verifies escort/vendor listings with proof steps; assigns verification tier."
+    flag_key: directory.directory_verification
+    triggers: { events: [listing.submitted] }
+    inputs: { entities: [listings], required_fields: [] }
+    outputs: { writes: [listing_verification_status], emits_events: [listing.verified] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: directory.reputation_engine
+    domain: directory
+    name: "Reputation Engine"
+    purpose: "Aggregates ratings + job completions + flags into a public-facing reputation score."
+    flag_key: directory.reputation_engine
+    triggers: { events: [dispatch.completed, review.created] }
+    inputs: { entities: [vendors], required_fields: [] }
+    outputs: { writes: [reputation_score], emits_events: [reputation.updated] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: directory.leaderboard_points_engine
+    domain: directory
+    name: "Leaderboard Points Engine"
+    purpose: "Calculates points without mixing in pricing/trust logic; purely gamification."
+    flag_key: directory.leaderboard_points_engine
+    triggers: { events: [dispatch.completed, store.purchase] }
+    inputs: { entities: [events], required_fields: [] }
+    outputs: { writes: [leaderboard_points], emits_events: [leaderboard.updated] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: directory.review_harvester
+    domain: directory
+    name: "Review Harvester"
+    purpose: "Post-job review requests + keyword prompts; logs requests + responses."
+    flag_key: directory.review_harvester
+    triggers: { events: [dispatch.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [review_requests], emits_events: [notify.send] }
+    dependencies: { skills: [governance.alert_router], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: directory.seo_location_pages
+    domain: directory
+    name: "SEO Location Pages"
+    purpose: "Generates structured city/route pages from verified data (no PII leakage)."
+    flag_key: directory.seo_location_pages
+    triggers: { events: [nightly.publish] }
+    inputs: { entities: [listings], required_fields: [] }
+    outputs: { writes: [published_pages], emits_events: [seo.published] }
+    dependencies: { skills: [data_quality.pii_redaction_guard], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ------------------------------------------------------------
+  # EXPANSION: FULL ECOSYSTEM (additional non-overlapping skills)
+  # NOTE: these are intentionally granular to avoid cannibalizing.
+  # ------------------------------------------------------------
+
+  # --- Routing/Miles add-ons (distinct scopes) ---
+  - skill_id: routing.multi_stop_waypoint_manager
+    domain: routing
+    name: "Multi-Stop Waypoint Manager"
+    purpose: "Supports route computation with waypoints; separates deadhead vs loaded miles."
+    flag_key: routing.multi_stop_waypoint_manager
+    triggers: { events: [loads.waypoints.updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [waypoint_plan], emits_events: [routing.requested] }
+    dependencies: { skills: [routing.here_route_runner], external_apis: [] }
+    failure_policy: { on_fail: prompt_manual, max_retries: 0 }
+
+  - skill_id: routing.deadhead_miles_estimator
+    domain: routing
+    name: "Deadhead Miles Estimator"
+    purpose: "Computes escort deadhead miles separately from loaded miles."
+    flag_key: routing.deadhead_miles_estimator
+    triggers: { events: [dispatch.assigned] }
+    inputs: { entities: [assignments], required_fields: [] }
+    outputs: { writes: [deadhead_miles], emits_events: [miles.deadhead_ready] }
+    dependencies: { skills: [routing.here_route_runner], external_apis: [here_routing_v8] }
+    failure_policy: { on_fail: ignore, max_retries: 1 }
+
+  - skill_id: routing.route_snapshot_pdf
+    domain: routing
+    name: "Route Snapshot PDF"
+    purpose: "Creates a PDF snapshot of route summary at quote time for evidence."
+    flag_key: routing.route_snapshot_pdf
+    triggers: { events: [quote.created] }
+    inputs: { entities: [quotes], required_fields: [] }
+    outputs: { writes: [route_snapshot_files], emits_events: [evidence.capture] }
+    dependencies: { skills: [governance.evidence_vault], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: routing.route_option_recommender
+    domain: routing
+    name: "Route Option Recommender"
+    purpose: "Suggests best avoid profile and vehicle params completeness to improve success rate."
+    flag_key: routing.route_option_recommender
+    triggers: { events: [routing.failed, validation.updated] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [routing_recommendations], emits_events: [ui.hint] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: routing.hash_dedupe_guard
+    domain: routing
+    name: "Hash Dedupe Guard"
+    purpose: "Strictly prevents duplicate HERE calls across workers with distributed locks."
+    flag_key: routing.hash_dedupe_guard
+    triggers: { events: [routing.requested] }
+    inputs: { entities: [requests], required_fields: [] }
+    outputs: { writes: [locks], emits_events: [routing.allowed, routing.blocked] }
+    dependencies: { skills: [routing.api_cost_governor], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  # --- Dispatch add-ons ---
+  - skill_id: dispatch.assignment_optimizer
+    domain: dispatch
+    name: "Assignment Optimizer"
+    purpose: "Matches loads to escorts based on proximity, rating tier, equipment, availability."
+    flag_key: dispatch.assignment_optimizer
+    triggers: { events: [dispatch.requested] }
+    inputs: { entities: [loads, escorts], required_fields: [] }
+    outputs: { writes: [assignment_recommendations], emits_events: [dispatch.assignment_ready] }
+    dependencies: { skills: [directory.reputation_engine], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: dispatch.availability_calendar
+    domain: dispatch
+    name: "Availability Calendar"
+    purpose: "Availability + blackout windows (including your short-day rules) as a resource layer."
+    flag_key: dispatch.availability_calendar
+    triggers: { events: [escort.updated, calendar.updated] }
+    inputs: { entities: [escorts], required_fields: [] }
+    outputs: { writes: [availability_matrix], emits_events: [availability.updated] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  - skill_id: dispatch.pod_capture
+    domain: dispatch
+    name: "Proof of Delivery Capture"
+    purpose: "Collects POD, photos, signatures; stores to Evidence Vault."
+    flag_key: dispatch.pod_capture
+    triggers: { events: [dispatch.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [pod_files], emits_events: [evidence.capture] }
+    dependencies: { skills: [governance.evidence_vault], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: dispatch.safety_brief_generator
+    domain: dispatch
+    name: "Safety Brief Generator"
+    purpose: "Creates a quick safety brief from lane + risks + escort roles."
+    flag_key: dispatch.safety_brief_generator
+    triggers: { events: [dispatch.assignment_ready] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [safety_brief], emits_events: [docs.ready] }
+    dependencies: { skills: [routing.route_risk_heatmap], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # --- Compliance add-ons ---
+  - skill_id: compliance.rule_override_console
+    domain: compliance
+    name: "Rule Override Console"
+    purpose: "Admin-only overrides to rules library (with audit) without code deploys."
+    flag_key: compliance.rule_override_console
+    triggers: { events: [admin.rules.override] }
+    inputs: { entities: [rules], required_fields: [] }
+    outputs: { writes: [rules_overrides], emits_events: [rules.changed] }
+    dependencies: { skills: [governance.audit_ledger], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  - skill_id: compliance.jurisdiction_sequence_builder
+    domain: compliance
+    name: "Jurisdiction Sequence Builder"
+    purpose: "Extracts state/province sequence from route; feeds escort and curfew planners."
+    flag_key: compliance.jurisdiction_sequence_builder
+    triggers: { events: [routing.completed] }
+    inputs: { entities: [routes], required_fields: [] }
+    outputs: { writes: [jurisdiction_sequence], emits_events: [jurisdiction.sequence_ready] }
+    dependencies: { skills: [], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # --- Finance add-ons ---
+  - skill_id: finance.miles_based_billing_builder
+    domain: finance
+    name: "Miles-Based Billing Builder"
+    purpose: "Builds line-items using miles_final, deadhead, fees; does not set rate policy."
+    flag_key: finance.miles_based_billing_builder
+    triggers: { events: [quote.proposed, dispatch.completed] }
+    inputs: { entities: [loads], required_fields: [] }
+    outputs: { writes: [billing_line_items], emits_events: [billing.ready] }
+    dependencies: { skills: [routing.deadhead_miles_estimator], external_apis: [] }
+    failure_policy: { on_fail: fallback, max_retries: 0 }
+
+  # --- Directory/Leaderboard add-ons ---
+  - skill_id: directory.vendor_onboarding_checklist
+    domain: directory
+    name: "Vendor Onboarding Checklist"
+    purpose: "Step-by-step onboarding with verification, documents, equipment, coverage area."
+    flag_key: directory.vendor_onboarding_checklist
+    triggers: { events: [vendor.created] }
+    inputs: { entities: [vendors], required_fields: [] }
+    outputs: { writes: [onboarding_tasks], emits_events: [task.created] }
+    dependencies: { skills: [directory.directory_verification], external_apis: [] }
+    failure_policy: { on_fail: ignore, max_retries: 0 }
+
+  # ======================
+  # DATA QUALITY (more)
+  # ======================
+  - { skill_id: data_quality.phone_email_validator, domain: data_quality, name: "Phone/Email Validator", purpose: "Validates contact fields; flags disposable/email typos.", flag_key: data_quality.phone_email_validator, triggers: {events: [brokers.upsert, vendors.upsert]}, outputs: {writes: [contact_validity_flags]} }
+  - { skill_id: data_quality.entity_deduper_brokers, domain: data_quality, name: "Broker Entity Deduper", purpose: "Merges duplicate broker profiles safely with audit trail.", flag_key: data_quality.entity_deduper_brokers, triggers: {events: [brokers.upsert]}, outputs: {writes: [broker_merge_suggestions]} }
+  - { skill_id: data_quality.entity_deduper_vendors, domain: data_quality, name: "Vendor Entity Deduper", purpose: "Detects duplicate vendor listings across regions.", flag_key: data_quality.entity_deduper_vendors, triggers: {events: [listing.submitted]}, outputs: {writes: [vendor_merge_suggestions]} }
+  - { skill_id: data_quality.outlier_field_detector, domain: data_quality, name: "Outlier Field Detector", purpose: "Flags impossible dimensions/weights/rates before they poison systems.", flag_key: data_quality.outlier_field_detector, triggers: {events: [loads.upsert]}, outputs: {writes: [outlier_flags]} }
+  - { skill_id: data_quality.ingestion_lineage_tracker, domain: data_quality, name: "Ingestion Lineage Tracker", purpose: "Tracks provenance from raw source → canonical field mapping.", flag_key: data_quality.ingestion_lineage_tracker, triggers: {events: [ingestion.new]}, outputs: {writes: [lineage_graph]} }
+
+  # ======================
+  # ROUTING / MILES (more)
+  # ======================
+  - { skill_id: routing.distance_cache_layer, domain: routing, name: "Distance Cache Layer", purpose: "Caches common lanes and city-pairs to reduce HERE calls.", flag_key: routing.distance_cache_layer, triggers: {events: [routing.completed]}, outputs: {writes: [distance_cache]} }
+  - { skill_id: routing.avoid_profile_policy, domain: routing, name: "Avoid Profile Policy", purpose: "Defines allowed avoid profiles per tenant and per workflow stage.", flag_key: routing.avoid_profile_policy, triggers: {events: [flags.changed]}, outputs: {writes: [avoid_policy]} }
+  - { skill_id: routing.route_health_monitor, domain: routing, name: "Route Health Monitor", purpose: "Tracks success rate, latency, failure codes by region and settings.", flag_key: routing.route_health_monitor, triggers: {events: [routing.completed, routing.failed]}, outputs: {writes: [routing_health_metrics]} }
+  - { skill_id: routing.alt_route_sampler, domain: routing, name: "Alt Route Sampler", purpose: "Optionally requests multiple routes and picks best by your scoring.", flag_key: routing.alt_route_sampler, triggers: {events: [routing.requested]}, outputs: {writes: [alt_routes]} }
+  - { skill_id: routing.manual_miles_gatekeeper, domain: routing, name: "Manual Miles Gatekeeper", purpose: "Enforces manual miles required when API missing/failed/pending.", flag_key: routing.manual_miles_gatekeeper, triggers: {events: [publish.requested]}, outputs: {writes: [gate_decisions]} }
+
+  # ======================
+  # DISPATCH / OPS (more)
+  # ======================
+  - { skill_id: dispatch.role_pack_builder, domain: dispatch, name: "Escort Role Pack Builder", purpose: "Builds role pack (lead/chase/high-pole/bucket/police) from requirement outputs.", flag_key: dispatch.role_pack_builder, triggers: {events: [escort.matrix_ready]}, outputs: {writes: [escort_role_pack]} }
+  - { skill_id: dispatch.multi_party_contact_sheet, domain: dispatch, name: "Multi-Party Contact Sheet", purpose: "Generates one sheet: broker + driver + escorts + emergency.", flag_key: dispatch.multi_party_contact_sheet, triggers: {events: [dispatch.assignment_ready]}, outputs: {writes: [contact_sheet]} }
+  - { skill_id: dispatch.check_in_scheduler, domain: dispatch, name: "Check-in Scheduler", purpose: "Schedules check-ins (start/mid/end) and logs compliance.", flag_key: dispatch.check_in_scheduler, triggers: {events: [dispatch.started]}, outputs: {writes: [checkins]} }
+  - { skill_id: dispatch.no_show_escalation, domain: dispatch, name: "No-Show Escalation", purpose: "Escalates when escorts/drivers miss check-ins.", flag_key: dispatch.no_show_escalation, triggers: {events: [checkin.missed]}, outputs: {writes: [escalations]} }
+  - { skill_id: dispatch.after_action_recap, domain: dispatch, name: "After-Action Recap", purpose: "Auto recap: miles, timeline, issues, evidence links.", flag_key: dispatch.after_action_recap, triggers: {events: [dispatch.completed]}, outputs: {writes: [after_action_report]} }
+
+  # ======================
+  # MARKET / SALES (more)
+  # ======================
+  - { skill_id: market.broker_onboarding_wizard, domain: market, name: "Broker Onboarding Wizard", purpose: "Guided broker onboarding with required fields and friction minimization.", flag_key: market.broker_onboarding_wizard, triggers: {events: [broker.created]}, outputs: {writes: [onboarding_state]} }
+  - { skill_id: market.broker_segmenter, domain: market, name: "Broker Segmenter", purpose: "Segments brokers by volume, trust, lane types for outreach.", flag_key: market.broker_segmenter, triggers: {events: [nightly.aggregate]}, outputs: {writes: [broker_segments]} }
+  - { skill_id: market.followup_orchestrator, domain: market, name: "Follow-up Orchestrator", purpose: "Follow-up tasks for unbooked quotes; logs outcomes.", flag_key: market.followup_orchestrator, triggers: {events: [quote.expiring]}, outputs: {writes: [followup_tasks]} }
+  - { skill_id: market.win_loss_tracker, domain: market, name: "Win/Loss Tracker", purpose: "Tracks why deals won/lost to improve quoting.", flag_key: market.win_loss_tracker, triggers: {events: [quote.accepted, quote.rejected]}, outputs: {writes: [win_loss_reasons]} }
+  - { skill_id: market.referral_engine, domain: market, name: "Referral Engine", purpose: "Tracks referrals without mixing with reputation scoring.", flag_key: market.referral_engine, triggers: {events: [referral.created]}, outputs: {writes: [referral_records]} }
+
+  # ======================
+  # COMPLIANCE / PERMITS (more)
+  # ======================
+  - { skill_id: compliance.permit_checklist_builder, domain: compliance, name: "Permit Checklist Builder", purpose: "Checklist per jurisdiction; does not file permits.", flag_key: compliance.permit_checklist_builder, triggers: {events: [jurisdiction.sequence_ready]}, outputs: {writes: [permit_checklist]} }
+  - { skill_id: compliance.permit_doc_intake, domain: compliance, name: "Permit Doc Intake", purpose: "Stores permits, links them to dispatch, verifies required fields.", flag_key: compliance.permit_doc_intake, triggers: {events: [permit.uploaded]}, outputs: {writes: [permit_records]} }
+  - { skill_id: compliance.signage_requirements_generator, domain: compliance, name: "Signage Requirements Generator", purpose: "Generates signage/flag/light requirements by jurisdiction and load.", flag_key: compliance.signage_requirements_generator, triggers: {events: [escort.matrix_ready]}, outputs: {writes: [signage_requirements]} }
+  - { skill_id: compliance.police_escort_likelihood, domain: compliance, name: "Police Escort Likelihood", purpose: "Estimates probability of police escort need by lane + dims + rules.", flag_key: compliance.police_escort_likelihood, triggers: {events: [permit.likelihood_scored]}, outputs: {writes: [police_escort_probability]} }
+  - { skill_id: compliance.restriction_exception_tracker, domain: compliance, name: "Restriction Exception Tracker", purpose: "Tracks exceptions/waivers with audit and expiry.", flag_key: compliance.restriction_exception_tracker, triggers: {events: [exception.created]}, outputs: {writes: [exceptions]} }
+
+  # ======================
+  # FINANCE (more)
+  # ======================
+  - { skill_id: finance.fee_catalog, domain: finance, name: "Fee Catalog", purpose: "Central fee definitions (after-hours, high-pole, bucket support, etc.).", flag_key: finance.fee_catalog, triggers: {events: [fees.updated]}, outputs: {writes: [fee_cache]} }
+  - { skill_id: finance.fee_applier, domain: finance, name: "Fee Applier", purpose: "Applies fees based on escort roles + movement windows; not rate setting.", flag_key: finance.fee_applier, triggers: {events: [escort.requirements_predicted]}, outputs: {writes: [applied_fees]} }
+  - { skill_id: finance.margin_guardrails, domain: finance, name: "Margin Guardrails", purpose: "Warns when margin drops below your set threshold.", flag_key: finance.margin_guardrails, triggers: {events: [quote.proposed]}, outputs: {writes: [margin_warnings]} }
+  - { skill_id: finance.payment_terms_enforcer, domain: finance, name: "Payment Terms Enforcer", purpose: "Enforces net terms and deposit requirements by broker tier.", flag_key: finance.payment_terms_enforcer, triggers: {events: [invoice.created]}, outputs: {writes: [terms_applied]} }
+  - { skill_id: finance.financial_dashboard_builder, domain: finance, name: "Financial Dashboard Builder", purpose: "Aggregates revenue, margin, AR, payout stats; read-only analytics.", flag_key: finance.financial_dashboard_builder, triggers: {events: [nightly.aggregate]}, outputs: {writes: [finance_kpis]} }
+
+  # ======================
+  # DIRECTORY / COMMUNITY (more)
+  # ======================
+  - { skill_id: directory.coverage_area_mapper, domain: directory, name: "Coverage Area Mapper", purpose: "Stores vendor coverage polygons/lanes for matching.", flag_key: directory.coverage_area_mapper, triggers: {events: [vendor.updated]}, outputs: {writes: [coverage_maps]} }
+  - { skill_id: directory.red_flag_keyword_scanner, domain: directory, name: "Red-Flag Keyword Scanner", purpose: "Scans reviews for red-flag keywords; feeds reputation flags.", flag_key: directory.red_flag_keyword_scanner, triggers: {events: [review.created]}, outputs: {writes: [review_flags]} }
+  - { skill_id: directory.tier_badge_allocator, domain: directory, name: "Tier Badge Allocator", purpose: "Assigns tiers (verified/pro/elite) by rules you set.", flag_key: directory.tier_badge_allocator, triggers: {events: [reputation.updated]}, outputs: {writes: [tier_badges]} }
+  - { skill_id: directory.claim_listing_flow, domain: directory, name: "Claim Listing Flow", purpose: "Claim + verify listing ownership; logs all steps.", flag_key: directory.claim_listing_flow, triggers: {events: [listing.claimed]}, outputs: {writes: [claim_status]} }
+  - { skill_id: directory.public_profile_generator, domain: directory, name: "Public Profile Generator", purpose: "Builds public profiles from verified data; no PII leakage.", flag_key: directory.public_profile_generator, triggers: {events: [listing.verified]}, outputs: {writes: [public_profiles]} }
+
+  # ======================
+  # OBSERVABILITY / RELIABILITY (more)
+  # ======================
+  - { skill_id: ops.metric_collector, domain: governance, name: "Metric Collector", purpose: "Collects metrics from all skills; feeds dashboards.", flag_key: ops.metric_collector, triggers: {events: [skill.succeeded, skill.failed]}, outputs: {writes: [metrics]} }
+  - { skill_id: ops.sla_monitor, domain: governance, name: "SLA Monitor", purpose: "Monitors uptime/latency for routing/quote flows; alerts on breaches.", flag_key: ops.sla_monitor, triggers: {events: [metrics.updated]}, outputs: {writes: [sla_events]} }
+  - { skill_id: ops.backup_exporter, domain: governance, name: "Backup Exporter", purpose: "Exports critical tables + evidence index; admin-controlled.", flag_key: ops.backup_exporter, triggers: {events: [admin.backup.requested]}, outputs: {writes: [backup_artifacts]} }
+  - { skill_id: ops.data_retention_manager, domain: governance, name: "Data Retention Manager", purpose: "Enforces retention windows for logs and PII; admin-controlled.", flag_key: ops.data_retention_manager, triggers: {events: [nightly.run]}, outputs: {writes: [retention_actions]} }

@@ -1,0 +1,16 @@
+[
+    {
+        "state": "Texas",
+        "city_county": "Houston",
+        "metro_zone_name": "Greater Houston",
+        "escort_override": "No",
+        "police_override": "Yes (Night)",
+        "night_ban": "Conditional",
+        "special_event_blackouts": "Houston Livestock Show & Rodeo",
+        "bridge_restrictions": "Ship Channel Bridge Height Limits",
+        "contact": "Houston PD Permitting",
+        "notes": "Extremely strict on night movement through downtown",
+        "source_url": "https://www.houstontx.gov/police/permits/",
+        "risk_score_override": 5
+    }
+]

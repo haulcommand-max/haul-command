@@ -1,0 +1,217 @@
+haul_command_probability_engine_upgrade:
+  version: "2.0.0"
+  goal: "Stage-based, Bayesian-smoothed, calibrated fill probability — the most trustworthy signal in the niche."
+  non_negotiables:
+    - "No naked probabilities without uncertainty + sample size context."
+    - "No single-model lie: p_fill = p_offer * p_view * p_accept."
+    - "Cold-start safe: priors + smoothing so small samples don't swing wildly."
+    - "Every low probability produces a broker fix suggestion."
+
+  # ============================================================
+  # 1) STAGE MODEL (best-in-class vs single logistic)
+  # ============================================================
+  stage_probability_model:
+    stages:
+      p_offer_T: "P(at least 1 qualified offer delivered within T)"
+      p_view_T: "P(at least 1 escort views within T | offer sent)"
+      p_accept_T: "P(at least 1 escort accepts within T | viewed)"
+      p_fill_T: "p_offer_T * p_view_T * p_accept_T"
+    output_horizons:
+      p_fill_15m: "p_offer_15m * p_view_15m * p_accept_15m"
+      p_fill_60m: "p_offer_60m * p_view_60m * p_accept_60m"
+      p_fill_4h:  "p_offer_4h  * p_view_4h  * p_accept_4h"
+      p_fill_24h: "p_offer_24h * p_view_24h * p_accept_24h"
+    diagnostic_value:
+      - "p_offer high + p_accept low = rate or trust problem"
+      - "p_offer low = supply problem (relax radius or requirements)"
+      - "p_view low = push delivery issue or wrong audience wave"
+
+  # ============================================================
+  # 2) BAYESIAN SMOOTHING + HIERARCHICAL PRIORS
+  # ============================================================
+  bayesian_smoothing:
+    formula: "rate_smoothed = (successes + alpha) / (trials + alpha + beta)"
+    apply_to:
+      - "acceptance_rate_similar"
+      - "view_rate_similar"
+      - "completion_rate_similar"
+      - "incident_rate_similar"
+    priors:
+      global:
+        view_rate:     { alpha: 12, beta: 18, prior_mean: 0.40 }
+        accept_rate:   { alpha: 6,  beta: 24, prior_mean: 0.20 }
+        completion_rate: { alpha: 30, beta: 3, prior_mean: 0.91 }
+      segment_overrides:
+        mobile_home:        { accept_rate: { alpha: 8, beta: 20 } }
+        high_pole_complex:  { accept_rate: { alpha: 4, beta: 26 } }
+
+  # ============================================================
+  # 3) CONFIDENCE SCORE + GATING
+  # ============================================================
+  confidence:
+    formula: >
+      confidence =
+        clamp(
+          0.20
+          + 0.40 * minmax_01(trials_similar_30d, 0, 200)
+          + 0.20 * minmax_01(matches_lane_90d, 0, 200)
+          + 0.20 * minmax_01(available_supply_count, 0, 75),
+          0, 1
+        )
+    gates:
+      full_display:   "confidence >= 0.35 → show p_fill range (p_low to p_high)"
+      range_only:     "confidence 0.20–0.35 → show range + 'Low data' label"
+      qualitative:    "confidence < 0.20 → show label only (Fast/Likely/Hard) + top factors"
+    uncertainty_bands:
+      p_low:  "max(0, p - 0.20*(1-confidence))"
+      p_high: "min(1, p + 0.20*(1-confidence))"
+      ui_rule: "Display as 'Likely: 55–70%' never '63%' at low confidence"
+
+  # ============================================================
+  # 4) NORMALIZATION UPGRADE
+  # ============================================================
+  normalization_upgrade:
+    problem: "Global minmax distorts markets (FL vs ND have different medians)."
+    fix: "Rolling quantile normalization per geo_key + lane_family."
+    apply_quantile_to:
+      - "rate_competitiveness_raw"
+      - "median_response_time_min_raw"
+      - "distance_to_supply_centroid_miles_raw"
+    fallback: "If <50 samples in geo/lane bucket, use global minmax from Zero Interp Pack."
+
+  # ============================================================
+  # 5) MATCH_GENERATE V2 — STAGE-AWARE CANDIDATE SCORING
+  # ============================================================
+  match_generate_v2:
+    candidate_components:
+      c_accept_rate_01_smoothed:
+        formula: "(accepts + 6) / (offers + 30)"
+        normalize: "minmax_01(result, 0.05, 0.55)"
+        note: "Alpha=6, Beta=24 from global prior"
+      c_response_speed_01: "inv_minmax_01(escort_median_response_min_similar, 1, 30)"
+      c_trust_lane_01: "0.55*minmax_01(trust_base,0,100) + 0.45*lane_edge_norm"
+      c_distance_01: "inv_minmax_01(distance_miles, 0, effective_radius_miles)"
+      c_rate_fit_01: "minmax_01(safe_div(offered_rate, escort_min_rate, 0), 0.9, 1.2)"
+      c_compliance_01: "1.0 if verified; 0.5 if pending; 0.0 if expired"
+
+    scoring_equation_v2:
+      weights:
+        w_accept:     0.26
+        w_response:   0.18
+        w_trust:      0.18
+        w_distance:   0.16
+        w_rate_fit:   0.12
+        w_compliance: 0.10
+      formula: >
+        clamp(
+          0.26*c_accept_rate_01_smoothed + 0.18*c_response_speed_01
+          + 0.18*c_trust_lane_01 + 0.16*c_distance_01
+          + 0.12*c_rate_fit_01 + 0.10*c_compliance_01,
+          0, 1
+        )
+      tiebreakers:
+        - "c_accept_rate_01_smoothed desc"
+        - "c_response_speed_01 desc"
+        - "c_trust_lane_01 desc"
+        - "c_distance_01 desc"
+
+    dynamic_wave_sizing:
+      wave_1_size:   "clamp(round(8  + 12*(1 - p_offer_60m)), 8, 20)"
+      wave_1_ttl:    "clamp(round(6  + 6*(1 - confidence)), 6, 12) minutes"
+      wave_2_size:   "clamp(round(20 + 20*(1 - p_offer_4h)), 20, 50)"
+      wave_3_size:   "clamp(round(40 + 30*(1 - p_offer_24h)), 40, 80)"
+      note: "Tight markets get small fast waves. Thin markets get wide waves with SMS fallback."
+
+  # ============================================================
+  # 6) MODEL QUALITY + CALIBRATION SYSTEM
+  # ============================================================
+  model_quality:
+    offline_metrics:
+      - "Brier score per stage (p_offer, p_view, p_accept)"
+      - "Log loss per stage"
+      - "Calibration curve (bucket model_predicted vs actual rate)"
+      - "AUC — ranking quality for match candidate ordering"
+    online_metrics:
+      - "time_to_first_offer_actual"
+      - "time_to_accept_actual"
+      - "time_to_fill_actual"
+      - "offer->view rate"
+      - "offer->accept rate"
+      - "broker_repost_rate (if broker reposts same load = fill failed)"
+    drift_detection:
+      watch: ["supply_demand_ratio_raw", "median_response_time_min_raw", "rate_competitiveness_raw"]
+      rule: "PSI > 0.2 OR median shift >25% WoW → trigger retrain"
+    retraining:
+      daily: "Refresh aggregates + priors + quantiles"
+      weekly: "Refit logistic weights using last 60d outcomes"
+    calibration:
+      per_stage: true
+      platt_threshold: 1000
+      isotonic_threshold: 5000
+      params_table: "model_calibration_params"
+
+  # ============================================================
+  # 7) UI CONTRACT — TERMINAL-GRADE PROBABILITY PANEL
+  # ============================================================
+  ui_probability_panel:
+    components:
+      fill_range_header:
+        content: "p_fill_60m range (or qualitative label)"
+        gated_by: "confidence"
+        example: "LIKELY FILL   55 – 70%"
+      stage_breakdown_bars:
+        - "Offer: {p_offer_60m}%  ▓▓▓▓▓▓░░"
+        - "View:  {p_view_60m}%   ▓▓▓▓░░░░"
+        - "Accept:{p_accept_60m}% ▓▓░░░░░░"
+      metadata_row: "Based on {offers_similar_30d} similar offers · Updated {computed_at_relative}"
+      confidence_badge: "{'HIGH' | 'MEDIUM' | 'LOW'} CONFIDENCE — {explanation}"
+      top_factors: "Top 3 weighted factors (e.g., High supply ratio · Competitive rate · Low complexity)"
+      action_buttons:
+        when_p_accept_low:
+          - label: "Raise Rate → ${suggested_rate}"
+            action: "pre-fill rate field"
+          - label: "Invite Top Escorts"
+            action: "direct invite modal"
+          - label: "Widen Window +12h"
+            action: "shift pickup_latest_at"
+        when_p_offer_low:
+          - label: "Expand Radius +25%"
+            action: "update radius"
+          - label: "Relax Requirements"
+            action: "open requirements editor"
+          - label: "Boost (SMS Fallback)"
+            action: "purchase boost"
+    rules:
+      - "Never show exact % when confidence < 0.35"
+      - "Never show a probability without at least 1 action button"
+      - "Always show computed_at (trust erodes if data looks stale)"
+
+  # ============================================================
+  # 8) NEW MICRO-SKILLS TO CREATE
+  # ============================================================
+  new_micro_skills:
+    probability-engine-calibration:
+      purpose: "Owns Brier/logloss/calibration curves + calibrator params + drift alarms."
+      outputs:
+        - "SQL for model_calibration_params + model_quality_metrics tables"
+        - "Edge function: daily evaluation + PSI computation"
+        - "Calibration param storage + application in intelligence_recompute_load"
+    market-aggregates-and-priors:
+      purpose: "Owns rolling aggregates, priors, quantiles, smoothing — zero noise."
+      outputs:
+        - "Materialized views: v_similar_bucket_aggregates, v_lane_quantiles"
+        - "Priors YAML + update rules (segment overrides)"
+        - "Edge function: daily_aggregates_refresh"
+    match-ranking-and-waves:
+      purpose: "Owns candidate scoring V2, tiebreakers, and dynamic wave sizing."
+      outputs:
+        - "Deterministic scoring function (TypeScript, tested)"
+        - "Wave generator code + stop conditions"
+        - "Stage p_offer computation for wave size inputs"
+    terminal-grade-probability-ui:
+      purpose: "Owns stage breakdown UI + confidence gating + action buttons."
+      outputs:
+        - "Component: <FillProbabilityPanel /> (React)"
+        - "Component: <StageBars /> with confidence gating"
+        - "Component: <BrokerFixButtons /> driven by failure stage"
+        - "Acceptance criteria: 0 mocked values, confidence badge always visible"

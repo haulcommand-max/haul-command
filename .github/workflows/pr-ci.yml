@@ -1,0 +1,84 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: pr-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: "PR / Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm run lint
+
+  typecheck:
+    name: "PR / Typecheck"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm run typecheck
+
+  tests:
+    name: "PR / Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm test --if-present
+
+  build:
+    name: "PR / Build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  migration_safety:
+    name: "PR / Migration Safety"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect risky SQL patterns
+        run: |
+          set -e
+          if ls supabase/migrations/*.sql >/dev/null 2>&1; then
+            echo "Found Supabase migrations. Running safety checks..."
+            if grep -RIn "DROP TABLE" supabase/migrations; then
+              echo "❌ DROP TABLE detected in migrations. Blocked."
+              exit 1
+            fi
+            if grep -RIn "CREATE POLICY IF NOT EXISTS" supabase/migrations; then
+              echo "❌ CREATE POLICY IF NOT EXISTS detected (invalid in Postgres)."
+              exit 1
+            fi
+            echo "✅ Migration safety checks passed."
+          else
+            echo "No migrations found. Skipping."
+          fi

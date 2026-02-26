@@ -1,0 +1,217 @@
+
+> haul-command-bots@1.0.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.6s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/131) ...
+  Generating static pages using 7 workers (32/131) 
+(node:2037524) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2037468) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2037624) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 7 workers (65/131) 
+(node:2033616) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 7 workers (98/131) 
+✓ Generating static pages using 7 workers (131/131) in 2.7s
+  Finalizing page optimization ...
+
+Route (app)                                      Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /[country]
+├ ƒ /[country]/[state]
+├ ƒ /[country]/[state]/[city]
+├ ƒ /[country]/[state]/[city]/[service]
+├ ○ /admin
+├ ○ /admin/abuse
+├ ○ /admin/ads
+├ ○ /admin/ads/fraud
+├ ○ /admin/approvals
+├ ○ /admin/corridors
+├ ○ /admin/directory
+├ ○ /admin/directory/seeds
+├ ○ /admin/feature-flags
+├ ○ /admin/heat
+├ ○ /admin/leaderboard
+├ ○ /admin/moderation
+├ ○ /admin/pricing
+├ ○ /admin/settings
+├ ○ /admin/sponsors
+├ ○ /admin/vendors/applications
+├ ƒ /admin/vendors/applications/[id]
+├ ○ /admin/vendors/placements
+├ ƒ /admin/vendors/placements/[id]
+├ ○ /admin/vendors/placements/new
+├ ƒ /alternatives/[competitor]
+├ ƒ /api/activity
+├ ƒ /api/admin/abuse
+├ ƒ /api/admin/abuse/resolve
+├ ƒ /api/admin/corridors/nudge
+├ ƒ /api/admin/directory/seeds
+├ ƒ /api/admin/directory/seeds/process
+├ ƒ /api/ads/click
+├ ƒ /api/ads/serve
+├ ƒ /api/ai/chat
+├ ƒ /api/ai/reporter
+├ ƒ /api/claim
+├ ƒ /api/claim/approve
+├ ƒ /api/claim/start
+├ ƒ /api/claim/verify
+├ ƒ /api/corridors/stress
+├ ƒ /api/crowd-intel
+├ ○ /api/directory/region-stats                          5m      1y
+├ ƒ /api/directory/reviews
+├ ƒ /api/directory/search
+├ ƒ /api/directory/view
+├ ƒ /api/email/preferences
+├ ƒ /api/email/unsubscribe
+├ ƒ /api/enterprise/corridors/liquidity
+├ ƒ /api/enterprise/fill/probability
+├ ƒ /api/export/state-packet
+├ ƒ /api/heartbeat
+├ ƒ /api/invites/convert
+├ ƒ /api/invites/escort
+├ ƒ /api/liquidity
+├ ƒ /api/loads/[id]/boost
+├ ƒ /api/loads/[id]/shortlist
+├ ƒ /api/loads/live
+├ ƒ /api/loads/match-generate
+├ ƒ /api/loads/urgency-score
+├ ƒ /api/locale
+├ ƒ /api/map/corridors
+├ ƒ /api/map/escorts
+├ ƒ /api/map/export
+├ ƒ /api/map/liquidity
+├ ƒ /api/map/liquidity-prompt
+├ ƒ /api/map/loads
+├ ƒ /api/map/prefetch
+├ ƒ /api/map/presence
+├ ƒ /api/map/repositioning
+├ ƒ /api/me
+├ ƒ /api/offers/[offerId]/accept
+├ ƒ /api/offers/[offerId]/decline
+├ ƒ /api/onboarding/update
+├ ƒ /api/placements
+├ ƒ /api/profile/featured
+├ ƒ /api/public/pricing/benchmarks
+├ ƒ /api/public/services
+├ ƒ /api/push/register
+├ ƒ /api/push/send
+├ ƒ /api/push/subscribe
+├ ƒ /api/recently-filled
+├ ƒ /api/report
+├ ƒ /api/report-cards/broker
+├ ƒ /api/report-cards/corridor
+├ ƒ /api/report-cards/driver
+├ ƒ /api/search/profiles
+├ ƒ /api/seo/pages
+├ ƒ /api/settings/alerts
+├ ƒ /api/trust/corridors/[profileId]
+├ ƒ /api/trust/profile/[profileId]
+├ ƒ /api/users/[id]/block
+├ ƒ /api/v1/broker/[resource]
+├ ƒ /api/v1/broker/corridor-stress
+├ ƒ /api/v1/broker/exposure
+├ ƒ /api/v1/intel/[product]
+├ ƒ /api/v1/intel/surge/[corridor]
+├ ƒ /api/v1/intel/trust-score/[id]
+├ ƒ /api/v1/public/[resource]
+├ ○ /app
+├ ○ /app/profile
+├ ƒ /border/[crossing-name]/escort-services
+├ ○ /broker
+├ ○ /canada
+├ ○ /chambers
+├ ƒ /chambers/[state_code]
+├ ○ /chat
+├ ○ /claim
+├ ƒ /claim/[profileId]
+├ ƒ /claim/[profileId]/success
+├ ƒ /claim/[profileId]/verify
+├ ƒ /claim/invite/[hash]
+├ ƒ /compare/[topic]
+├ ○ /content-policy
+├ ƒ /corridors/[corridor]
+├ ƒ /county/[county-slug]/pilot-car
+├ ○ /dashboard
+├ ○ /dev/screenshots
+├ ○ /directory
+├ ƒ /directory/[country]
+├ ƒ /directory/[country]/[region]
+├ ƒ /directory/[country]/[region]/[city]
+├ ƒ /directory/[country]/[region]/[city]/[slug]
+├ ƒ /directory/profile/[id]
+├ ƒ /emergency/[service]
+├ ○ /emergency/nearby
+├ ƒ /escort/corridor/[corridor]
+├ ○ /escrow/checkout
+├ ○ /gear
+├ ƒ /industry/[vertical]/pilot-car
+├ ƒ /leaderboards
+├ ○ /loads
+├ ƒ /loads/[slug]
+├ ƒ /loads/[slug]/boost
+├ ○ /loads/new
+├ ○ /loads/post
+├ ○ /login
+├ ƒ /logout
+├ ○ /map
+├ ƒ /near/[slug]
+├ ƒ /offers/[offerId]
+├ ○ /offers/inbox
+├ ○ /onboarding
+├ ƒ /port/[port-name]/escort-services
+├ ○ /post-a-load
+├ ○ /privacy
+├ ○ /profile/featured
+├ ƒ /providers/[slug]
+├ ○ /quote
+├ ƒ /rates/[state]/pilot-car-cost
+├ ○ /referral
+├ ○ /regulatory-db                                       1d      1y
+├ ƒ /requirements/[state]/escort-vehicle-rules
+├ ○ /robots.txt
+├ ƒ /routes/[highway]/[state]
+├ ƒ /rules/[region]/[topic]
+├ ƒ /services/[slug]
+├ ○ /services/marketplace
+├ ○ /settings/alerts
+├ ƒ /sitemap-seo.xml
+├ ○ /sitemap.xml
+├ ○ /sponsor/checkout
+├ ○ /sponsor/success
+├ ○ /start
+├ ○ /success
+├ ○ /terms
+├ ○ /territory
+├ ○ /tools
+├ ○ /tools/heavy-haul-index
+├ ○ /tools/permit-calculator
+├ ○ /tools/permit-checker
+├ ○ /tools/rate-lookup
+├ ○ /tools/route-complexity
+├ ○ /tools/route-iq
+├ ○ /tools/route-survey
+├ ○ /tools/state-requirements
+├ ○ /united-states
+├ ƒ /vendors/[vendorId]
+├ ƒ /vendors/[vendorId]/upgrade
+├ ○ /vendors/apply
+├ ○ /vendors/apply/thanks
+└ ○ /verify
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

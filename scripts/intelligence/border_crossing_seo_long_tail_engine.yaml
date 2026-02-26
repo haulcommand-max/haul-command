@@ -1,0 +1,168 @@
+version: "HC-USCA-BORDER-SEO-001"
+
+border_crossing_seo_long_tail_engine:
+  purpose: "Programmatic SEO domination for border crossings + conversion into Port Relief + Lane Profit cards"
+  prerequisites:
+    requires_tables:
+      - border_crossings_table
+      - Escorts
+      - Loads
+      - LaneProfitAI_outputs
+      - port_master_list
+      - police_trigger_db_optional
+
+  page_types:
+    crossing_hub_page:
+      url_pattern: "/border-crossing/[crossing-slug]/"
+      sections:
+        - crossing_overview
+        - commercial_hours_block
+        - commercial_processing_block
+        - fast_nexus_block
+        - documents_and_rules_block
+        - live_availability_widget
+        - nearby_services_block
+        - lane_profit_cards_block
+        - faq_block
+        - internal_links_block
+
+    commercial_hours_page:
+      url_pattern: "/border-crossing/[crossing-slug]/commercial-hours/"
+      sections:
+        - today_hours
+        - week_hours_table
+        - holiday_notes_if_available
+        - last_checked_timestamp
+        - citation_block
+        - nearby_escort_cta
+        - lane_profit_cards_block
+
+    fast_lane_page:
+      url_pattern: "/border-crossing/[crossing-slug]/fast-lane/"
+      sections:
+        - fast_overview
+        - eligibility_notes
+        - operational_notes
+        - citation_block
+        - lane_profit_cards_block
+        - nearby_escort_cta
+
+    nearby_escort_services_page:
+      url_pattern: "/border-crossing/[crossing-slug]/nearby-escort-services/"
+      sections:
+        - escort_map_radius_60
+        - top_verified_operators
+        - positions_supported
+        - response_time_metric
+        - quick_book_cta
+        - lane_profit_cards_block
+
+    nearby_ports_page:
+      url_pattern: "/border-crossing/[crossing-slug]/nearby-ports/"
+      sections:
+        - nearest_ports_list
+        - port_relief_cta
+        - twic_or_equivalent_notice
+        - citation_block_optional
+
+  long_tail_keyword_patterns:
+    # These become title tags, H1s, FAQs, and internal link anchors
+    templates:
+      - "[crossing name] commercial hours"
+      - "[crossing name] truck crossing hours"
+      - "[crossing name] freight crossing"
+      - "[crossing name] commercial processing"
+      - "[crossing name] FAST lane"
+      - "[crossing name] NEXUS lane"
+      - "escort services near [crossing name]"
+      - "pilot car near [crossing name]"
+      - "oversize escort near [crossing name]"
+      - "wide load escort near [crossing name]"
+      - "TWIC escort near [crossing name] (US side ports only)"
+      - "nearby ports from [crossing name]"
+      - "best route from [us city] to [canada city] escort"
+      - "oversize escort [state] to [province]"
+
+  structured_data_schema:
+    include:
+      - BreadcrumbList
+      - FAQPage
+      - LocalBusiness
+      - Service
+    notes:
+      - "Do not fabricate facts. If hours/FAST/NEXUS details are unknown, show 'Check official listing' with citations and last_checked."
+
+  citation_and_freshness_rules:
+    - "Any claim about hours, commercial availability, FAST/NEXUS must include source_url + last_checked."
+    - "Auto-refresh stale pages when last_checked > 30 days or when user requests 'today' info."
+    - "If official source fails: show degraded mode with disclaimers."
+
+  conversion_widgets:
+    live_availability_widget:
+      purpose: "Show escorts near the crossing (radius 60–120 miles)"
+      inputs:
+        - crossing.geo
+        - escort_availability_status
+        - positions_supported
+      outputs:
+        - "top 10 available escorts"
+        - "median response time"
+        - "book now"
+
+    port_relief_cta:
+      auto_link_rule: |
+        if nearest_ports within 200 miles OR crossing.tags includes "major":
+          show PortRelief CTA
+      content:
+        - "Need port-certified help? Port Relief matches TWIC/port-ready operators."
+
+    lane_profit_cards_block:
+      purpose: "Instant profitability cards for common lanes across the crossing"
+      generation_rule: |
+        generate top 6 lanes:
+          - 3 lanes: US metro -> CA metro
+          - 3 lanes: CA metro -> US metro
+        rank by (HeatIndex + BrokerPressureIndex) and show profit range.
+      card_fields:
+        - lane_name
+        - estimated_net_profit
+        - suggested_rate
+        - deadhead_ratio
+        - time_estimate
+        - confidence
+        - risk_flags
+      actions:
+        - "Accept"
+        - "Counter"
+        - "Book Escort"
+
+  internal_linking_graph:
+    auto_links:
+      - from: "crossing_hub_page"
+        to:
+          - "commercial_hours_page"
+          - "fast_lane_page"
+          - "nearby_escort_services_page"
+          - "nearby_ports_page"
+          - "/port-escort/[nearest-port-slug]/"
+          - "/pilot-car/[state]/[nearest-county]/"
+      - from: "nearby_ports_page"
+        to:
+          - "port_relief_network landing"
+          - "TWIC/port compliance pages"
+      - from: "lane_profit_cards_block"
+        to:
+          - "earnings_calculator_widget page"
+          - "LaneProfitAI details page"
+
+  build_tasks:
+    - "Create page generator templates for each page_type"
+    - "Generate slugs for all crossings"
+    - "Generate pages for seed crossings immediately; expand to full registry after ingestion"
+    - "Add sitemap + internal link automation"
+    - "Add caching + refresh jobs (weekly); immediate refresh on user query for 'hours today'"
+
+  rollout_plan:
+    phase_0: "seed crossings (15–25) + 4 page types each"
+    phase_1: "all crossings (from CBP/CBSA ingestion) hub pages + nearby escort pages"
+    phase_2: "commercial hours + FAST/NEXUS pages where data is available + lane profit cards at scale"

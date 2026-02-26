@@ -1,0 +1,26 @@
+{
+    "carrier_id": "ELITE_HEAVY_77",
+    "vehicle": {
+        "unit_number": "TRK-202",
+        "type": "Blade Trailer",
+        "make": "Goldhofer",
+        "year": 2023,
+        "vin": "GH2BT8834PK789012",
+        "plate": "TX-BLADE-202",
+        "plate_state": "TX",
+        "dimensions": {
+            "height": 14.5,
+            "width": 12.0,
+            "length": 120.0,
+            "empty_weight": 55000
+        },
+        "axle_config": "6-axle",
+        "max_payload": 120000,
+        "insurance_expiry": "2026-06-15",
+        "registration_expiry": "2026-08-01"
+    },
+    "created": "2026-02-12 18:58:07.176186",
+    "last_used": "2026-02-12 18:58:07.176186",
+    "permit_count": 0,
+    "total_savings_vs_manual": 0.0
+}

@@ -1,0 +1,365 @@
+# ============================================================
+# HAUL COMMAND — ESCORT REQUIREMENT AUTO-DETECTION ENGINE (STATE-AWARE)
+# Data-driven rules engine (NOT hardcoded). Built to ingest + version state rules.
+# ============================================================
+
+spec:
+  name: haul-command-escort-auto-detection-engine
+  version: 1.0.0
+  doctrine:
+    - always_upgrade_never_downgrade
+    - state_rules_are_data_not_code
+    - never_silently_reduce_required_escorts
+    - compute_requirements_per_state_segment_then_merge_to_strictest
+    - output_is_explainable_with_citations_and_rule_ids
+
+# ============================================================
+# 0) WHAT THIS ENGINE DOES
+# ============================================================
+behavior:
+  inputs:
+    load_dimensions:
+      width_ft: number
+      height_ft: number
+      length_ft: number
+      gross_weight_lb: number|null
+      front_overhang_ft: number|null
+      rear_overhang_ft: number|null
+    route:
+      origin_latlng: [lat,lng]
+      dest_latlng: [lat,lng]
+      route_polyline: string|null
+      route_states: [state_code] # computed from route or provided
+      road_class_hints: ["2_lane","4_lane","interstate"] # optional
+    load_meta:
+      commodity: string|null
+      is_house: boolean|null
+      hazmat_categories: [string] # optional
+      movement_time_local: datetime|null
+
+  outputs:
+    per_state_requirements:  # computed for each state encountered
+      - state: "GA"
+        required_positions:
+          - { role: "lead_escort", count: 1 }
+          - { role: "rear_escort", count: 1 }
+          - { role: "height_pole", count: 0|1 }
+          - { role: "police_escort", count: 0|1|2, notes: "if mandated" }
+        equipment_requirements:
+          - "oversize_load_signs"
+          - "amber_beacon_360"
+          - "two_way_comms"
+        operating_rules:
+          - "spacing_rules"
+          - "lane_control_rules"
+        explanation:
+          - { rule_id: "GA.WIDTH.12_14_8.2LANE", reason: "width band triggers escorts on 2-lane" }
+
+    merged_requirement:       # strictest / safest merged output
+      required_positions: [...]
+      equipment_requirements: [...]
+      confidence: 0.0-1.0
+      flags:
+        - "needs_human_review"
+        - "rule_data_missing_for_state"
+        - "case_by_case_threshold_crossed"
+
+# ============================================================
+# 1) DATABASE SCHEMA (RULES ARE DATA)
+# ============================================================
+db:
+  tables:
+
+    escort_rulesets:
+      purpose: "Versioned rulesets per state/province with metadata + sources"
+      fields:
+        id: uuid pk
+        jurisdiction: enum ["US_STATE","CA_PROVINCE"]
+        code: string        # e.g., "GA", "FL", "ON"
+        version: string     # e.g., "2026.02"
+        status: enum ["active","staged","deprecated"]
+        effective_date: date
+        last_verified_at: datetime
+        source_bundle_id: uuid
+        notes: text null
+
+    escort_rule_sources:
+      purpose: "Source links + citations used to justify rules"
+      fields:
+        id: uuid pk
+        source_bundle_id: uuid index
+        title: string
+        url: text
+        publisher: string
+        retrieved_at: datetime
+        reliability_tier: enum ["primary","secondary","community"]
+        citation_key: string # e.g., "GA_DOT_OVERSIZE_TAB"
+        excerpt_hash: string null
+
+    escort_rules:
+      purpose: "Atomic rule blocks evaluated by engine"
+      fields:
+        id: uuid pk
+        ruleset_id: uuid index
+        rule_id: string unique_within_ruleset  # e.g., "GA.WIDTH.14_8_16.2LANE"
+        priority: int default 100              # lower = earlier/stronger
+        applies_when: json                     # DSL condition tree (see below)
+        outputs: json                          # positions/equipment/notes
+        severity: enum ["must","should","case_by_case","unknown"]
+        confidence: decimal(3,2)               # 0..1 for the rule quality
+        citations: json                        # list of citation_keys
+
+    escort_rule_overrides:
+      purpose: "Emergency hotfixes / ops overrides without redeploying"
+      fields:
+        id: uuid pk
+        jurisdiction_code: string
+        rule_id: string
+        enabled: boolean
+        override_outputs: json null
+        override_applies_when: json null
+        reason: text
+        expires_at: datetime null
+
+    route_state_segments:
+      purpose: "Cache state segmentation for polylines for speed"
+      fields:
+        id: uuid pk
+        route_hash: string index
+        states: json     # ["GA","FL"...]
+        segments: json   # optional: polyline slices + state boundaries
+        created_at: datetime
+
+# ============================================================
+# 2) RULE DSL (CONDITIONS + OUTPUTS)
+# ============================================================
+dsl:
+  condition_operators:
+    - all: [cond...]
+    - any: [cond...]
+    - not: {cond}
+    - gte: { field: string, value: number|string }
+    - gt:  { field: string, value: number|string }
+    - lte: { field: string, value: number|string }
+    - lt:  { field: string, value: number|string }
+    - eq:  { field: string, value: any }
+    - in:  { field: string, values: [any...] }
+    - between: { field: string, min: number, max: number, inclusive: true|false }
+    - exists: { field: string }
+
+  fields_catalog:
+    - "load.width_ft"
+    - "load.height_ft"
+    - "load.length_ft"
+    - "load.gross_weight_lb"
+    - "load.front_overhang_ft"
+    - "load.rear_overhang_ft"
+    - "route.road_class"        # "2_lane"|"4_lane"|"interstate"|null
+    - "route.state"             # current evaluation state
+    - "meta.is_house"
+    - "meta.hazmat_categories"
+    - "meta.movement_time_local"
+
+  output_schema:
+    required_positions:
+      - role: enum
+        count: int
+        notes: string|null
+    equipment_requirements:
+      - string
+    operating_rules:
+      - string
+    flags:
+      - string
+
+# ============================================================
+# 3) ENGINE EVALUATION ALGORITHM
+# ============================================================
+engine:
+  steps:
+    - name: derive_route_states
+      rule: >
+        If route.route_states is empty and polyline exists, compute states encountered.
+        Else use provided route_states.
+
+    - name: evaluate_rules_per_state
+      rule: >
+        For each state encountered, load ACTIVE ruleset for state. Evaluate all rules
+        whose applies_when matches. Collect outputs + explanations.
+
+    - name: merge_per_state_to_strictest
+      rule: >
+        Merge positions by taking MAX count per role across states. Merge equipment
+        as union. Preserve any "case_by_case" flags and require human review.
+
+    - name: confidence_scoring
+      rule: >
+        confidence = weighted average of matched rule confidences,
+        penalized if any state lacks ruleset, or if any matched rule has severity case_by_case.
+
+  merge_policy:
+    positions:
+      strategy: max_per_role
+      roles:
+        - lead_escort
+        - rear_escort
+        - height_pole
+        - police_escort
+        - advance_route_survey
+        - traffic_control
+        - bucket_truck_line_crew
+        - utility_coordination
+        - chase_support
+    flags:
+      if_any_state_missing_ruleset: "rule_data_missing_for_state"
+      if_any_case_by_case_triggered: "needs_human_review"
+
+# ============================================================
+# 4) MINIMUM STARTER RULESETS (EXAMPLES YOU CAN EXPAND)
+# NOTE: These are examples to prove the engine + ingestion. Build out all states via data pipeline.
+# ============================================================
+starter_rules:
+
+  GA:
+    ruleset:
+      jurisdiction: US_STATE
+      code: GA
+      version: "2026.02"
+      sources:
+        - citation_key: "GA_DOT_OVERSIZE_TAB"
+          url: "https://www.dot.ga.gov/partnersmart/permits/pages/oversize-tab.html"
+          reliability_tier: primary
+          notes: "Georgia DOT oversize tab includes width bands + escort requirements." # :contentReference[oaicite:0]{index=0}
+        - citation_key: "GA_RULE_681_13_02"
+          url: "https://rules.sos.ga.gov/gac/681-13-.02"
+          reliability_tier: primary
+          notes: "Georgia administrative rule with width band requirements." # :contentReference[oaicite:1]{index=1}
+
+    rules:
+      - rule_id: "GA.WIDTH.12_14_8.2LANE"
+        priority: 10
+        severity: must
+        confidence: 0.90
+        citations: ["GA_DOT_OVERSIZE_TAB","GA_RULE_681_13_02"]
+        applies_when:
+          all:
+            - between: { field: "load.width_ft", min: 12.000, max: 14.666, inclusive: false } # >12 up to 14'8"
+            - eq: { field: "route.road_class", value: "2_lane" }
+        outputs:
+          required_positions:
+            - { role: "lead_escort", count: 1, notes: "front escort on 2-lane" }
+            - { role: "rear_escort", count: 1, notes: "rear escort on 2-lane" }
+          equipment_requirements: ["oversize_load_signs","amber_beacon_360","two_way_comms"]
+          flags: []
+
+      - rule_id: "GA.WIDTH.14_8_16.2LANE"
+        priority: 9
+        severity: must
+        confidence: 0.90
+        citations: ["GA_DOT_OVERSIZE_TAB"]
+        applies_when:
+          all:
+            - between: { field: "load.width_ft", min: 14.666, max: 16.000, inclusive: true } # >14'8" up to 16'
+            - eq: { field: "route.road_class", value: "2_lane" }
+        outputs:
+          required_positions:
+            - { role: "lead_escort", count: 1, notes: "front escort on 2-lane" }
+            - { role: "rear_escort", count: 1, notes: "rear escort on 2-lane" }
+          equipment_requirements: ["oversize_load_signs","amber_beacon_360","two_way_comms"]
+          flags: []
+
+      - rule_id: "GA.WIDTH.GT_16.CASE_BY_CASE"
+        priority: 1
+        severity: case_by_case
+        confidence: 0.80
+        citations: ["GA_DOT_OVERSIZE_TAB"]
+        applies_when:
+          all:
+            - gt: { field: "load.width_ft", value: 16.000 }
+        outputs:
+          required_positions:
+            - { role: "lead_escort", count: 2, notes: "placeholder—requires DOT determination" }
+            - { role: "rear_escort", count: 2, notes: "placeholder—requires DOT determination" }
+          equipment_requirements: ["oversize_load_signs","amber_beacon_360","two_way_comms"]
+          flags: ["needs_human_review","case_by_case_threshold_crossed"]
+
+  UNIVERSAL:
+    ruleset:
+      jurisdiction: US_STATE
+      code: "UNIVERSAL"
+      version: "2026.02"
+      sources:
+        - citation_key: "OVERWEIGHTPERMITS_ESCORT_VEHICLE"
+          url: "https://www.overweightpermits.com/what-is-an-escort-vehicle/"
+          reliability_tier: secondary
+          notes: "General escort concepts like lead escort distance + height pole guidance." # :contentReference[oaicite:2]{index=2}
+        - citation_key: "FHWA_ESCORT_EQUIPMENT"
+          url: "https://ops.fhwa.dot.gov/publications/fhwahop16050/m2.htm"
+          reliability_tier: primary
+          notes: "FHWA discussion of common escort signage requirements." # :contentReference[oaicite:3]{index=3}
+
+    rules:
+      - rule_id: "UNIV.HEIGHT_POLE.GUIDANCE"
+        priority: 200
+        severity: should
+        confidence: 0.60
+        citations: ["OVERWEIGHTPERMITS_ESCORT_VEHICLE"]
+        applies_when:
+          all:
+            - gte: { field: "load.height_ft", value: 14.5 }
+        outputs:
+          required_positions:
+            - { role: "height_pole", count: 1, notes: "height pole guidance (verify by state ruleset)" }
+          equipment_requirements: ["two_way_comms"]
+          flags: ["needs_human_review"]
+
+# ============================================================
+# 5) ROUTE ↔ STATE SEGMENTATION (REQUIRED)
+# ============================================================
+route_state_detection:
+  method_order:
+    - if_route_polyline_present: "polyline_intersect_state_polygons"
+    - else: "origin_dest_reverse_geocode_states + assume_direct (low confidence)"
+  caching:
+    key: "sha256(polyline + route_options_version)"
+    table: "route_state_segments"
+
+# ============================================================
+# 6) INTEGRATION POINTS
+# ============================================================
+integration:
+  when_to_run:
+    - on_load_create_or_update_dimensions
+    - on_route_compute_success
+    - on_state_ruleset_update (re-evaluate affected loads)
+  publish_gate:
+    rule: >
+      If any state has no active ruleset OR any case_by_case rule matched,
+      require ops acknowledgement before publish for broker coverage plan.
+
+# ============================================================
+# 7) DATA PIPELINE (HOW YOU SCALE TO ALL STATES)
+# ============================================================
+rules_data_pipeline:
+  steps:
+    - discover_sources: "DOT permit pages, admin rules, official PDFs"
+    - extract_rules: "manual or semi-automated into escort_rules DSL"
+    - attach_citations: "each rule must cite at least one source"
+    - validate: "unit tests on known scenarios per state"
+    - publish: "promote ruleset status staged -> active"
+  quality:
+    source_quality_score:
+      primary: 1.0
+      secondary: 0.7
+      community: 0.4
+    minimum_per_rule:
+      citations: 1
+      confidence: 0.5
+
+# ============================================================
+# 8) NOTE TO ANTI-GRAVITY (MERGE POLICY)
+# ============================================================
+note_to_antigravity: >
+  If any compliance engine or escort trigger logic already exists,
+  DO NOT add a second system. Merge into this ruleset-driven DSL engine,
+  preserving existing coverage and adding explainability + state versioning.

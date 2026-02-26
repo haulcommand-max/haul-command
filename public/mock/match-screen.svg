@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#090909"/>
+
+  <!-- Status bar -->
+  <rect x="0" y="0" width="390" height="44" fill="#0c0c0c"/>
+  <text x="16" y="28" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#fff">9:41</text>
+
+  <!-- Header -->
+  <rect x="0" y="44" width="390" height="60" fill="#0c0c0c"/>
+  <text x="20" y="82" font-family="system-ui,sans-serif" font-size="18" font-weight="800" fill="#fff">Incoming Offer</text>
+
+  <!-- Load card -->
+  <rect x="16" y="124" width="358" height="180" rx="16" fill="#111" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="32" y="160" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#F1A91B">URGENT · OPEN</text>
+  <text x="32" y="186" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#fff">Transformer Haul</text>
+  <text x="32" y="210" font-family="system-ui,sans-serif" font-size="14" fill="#888">Houston, TX  →  Dallas, TX</text>
+  <rect x="32" y="228" width="294" height="1" fill="#1e1e1e"/>
+  <text x="32" y="256" font-family="system-ui,sans-serif" font-size="13" fill="#666">Pickup: Today at 06:00</text>
+  <rect x="32" y="272" width="80" height="20" rx="6" fill="#ff3c3c22"/>
+  <text x="44" y="286" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#ff3c3c">Urgency 87</text>
+
+  <!-- Match badge -->
+  <rect x="16" y="320" width="358" height="64" rx="16" fill="#22c55e12" stroke="#22c55e30" stroke-width="1"/>
+  <text x="36" y="346" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#22c55e">⚡ MATCHED IN 2m 14s</text>
+  <text x="36" y="368" font-family="system-ui,sans-serif" font-size="12" fill="#555">Smart routing found the best fit</text>
+
+  <!-- Accept button -->
+  <rect x="16" y="408" width="358" height="60" rx="16" fill="#F1A91B"/>
+  <text x="195" y="445" font-family="system-ui,sans-serif" font-size="16" font-weight="800" fill="#000" text-anchor="middle">ACCEPT THIS OFFER</text>
+
+  <!-- Decline button -->
+  <rect x="16" y="480" width="358" height="48" rx="14" fill="none" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="195" y="510" font-family="system-ui,sans-serif" font-size="14" fill="#555" text-anchor="middle">Decline</text>
+
+  <!-- Bottom nav -->
+  <rect x="0" y="780" width="390" height="64" fill="#0c0c0c" stroke="#1a1a1a" stroke-width="0"/>
+  <text x="50" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#F1A91B" text-anchor="middle">Map</text>
+  <text x="140" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Loads</text>
+  <text x="250" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Offers</text>
+  <text x="340" y="820" font-family="system-ui,sans-serif" font-size="10" fill="#555" text-anchor="middle">Profile</text>
+</svg>

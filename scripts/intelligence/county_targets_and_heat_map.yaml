@@ -1,0 +1,113 @@
+version: "HC-USCA-GROWTH-50X-PORTS-001"
+
+top_50_counties_priority:
+  selection_logic:
+    - port_heavy_weight: 1.5
+    - energy_weight: 1.5
+    - wind_weight: 1.4
+    - freight_crossroads: 1.3
+    - florida_home_field_bonus: 1.4
+
+  counties:
+    - {county: "Harris County", state: "Texas", reason: ["Houston port","energy"]}
+    - {county: "Jefferson County", state: "Texas", reason: ["Beaumont/Port Arthur"]}
+    - {county: "Nueces County", state: "Texas", reason: ["Corpus Christi port"]}
+    - {county: "Galveston County", state: "Texas", reason: ["major port"]}
+    - {county: "Ector County", state: "Texas", reason: ["Permian Basin"]}
+    - {county: "Midland County", state: "Texas", reason: ["Permian Basin"]}
+
+    - {county: "Miami-Dade County", state: "Florida", reason: ["major port","home_field"]}
+    - {county: "Broward County", state: "Florida", reason: ["port"]}
+    - {county: "Palm Beach County", state: "Florida", reason: ["freight"]}
+    - {county: "Hillsborough County", state: "Florida", reason: ["Tampa port"]}
+    - {county: "Duval County", state: "Florida", reason: ["Jacksonville port"]}
+    - {county: "Polk County", state: "Florida", reason: ["mobile home corridor"]}
+    - {county: "Marion County", state: "Florida", reason: ["I-75 corridor"]}
+    - {county: "Pasco County", state: "Florida", reason: ["growth corridor"]}
+
+    - {county: "Los Angeles County", state: "California", reason: ["mega port"]}
+    - {county: "Orange County", state: "California", reason: ["port overflow"]}
+    - {county: "Alameda County", state: "California", reason: ["Oakland port"]}
+    - {county: "San Bernardino County", state: "California", reason: ["inland freight"]}
+
+    - {county: "Chatham County", state: "Georgia", reason: ["Savannah port"]}
+    - {county: "Fulton County", state: "Georgia", reason: ["Atlanta hub"]}
+    - {county: "Mecklenburg County", state: "North Carolina", reason: ["Charlotte freight"]}
+    - {county: "Charleston County", state: "South Carolina", reason: ["Charleston port"]}
+
+    - {county: "Cook County", state: "Illinois", reason: ["Chicago rail hub"]}
+    - {county: "Wayne County", state: "Michigan", reason: ["Detroit border"]}
+    - {county: "Marion County", state: "Indiana", reason: ["crossroads"]}
+    - {county: "Franklin County", state: "Ohio", reason: ["Columbus hub"]}
+    - {county: "Milwaukee County", state: "Wisconsin", reason: ["Great Lakes"]}
+
+    - {county: "Weld County", state: "Colorado", reason: ["wind + energy"]}
+    - {county: "Laramie County", state: "Wyoming", reason: ["wind"]}
+    - {county: "Natrona County", state: "Wyoming", reason: ["energy"]}
+    - {county: "Ford County", state: "Kansas", reason: ["wind/ag"]}
+    - {county: "Woodbury County", state: "Iowa", reason: ["wind"]}
+
+    - {county: "Caddo Parish", state: "Louisiana", reason: ["energy"]}
+    - {county: "East Baton Rouge Parish", state: "Louisiana", reason: ["energy"]}
+    - {county: "Oklahoma County", state: "Oklahoma", reason: ["energy hub"]}
+    - {county: "Tulsa County", state: "Oklahoma", reason: ["energy"]}
+
+    - {county: "Kings County", state: "New York", reason: ["NYC port"]}
+    - {county: "Essex County", state: "New Jersey", reason: ["Newark port"]}
+    - {county: "Suffolk County", state: "Massachusetts", reason: ["Boston port"]}
+    - {county: "Philadelphia County", state: "Pennsylvania", reason: ["port"]}
+
+    - {county: "King County", state: "Washington", reason: ["Seattle port"]}
+    - {county: "Multnomah County", state: "Oregon", reason: ["Portland freight"]}
+
+    - {county: "Metro Vancouver", state: "British Columbia", reason: ["mega port"]}
+    - {county: "Greater Toronto Area", state: "Ontario", reason: ["industrial"]}
+    - {county: "Montreal Region", state: "Quebec", reason: ["port"]}
+    - {county: "Calgary Region", state: "Alberta", reason: ["energy"]}
+    - {county: "Edmonton Region", state: "Alberta", reason: ["energy"]}
+
+escort_recruiter_heat_map:
+  purpose: "Show where to recruit escorts FIRST"
+  heat_formula: |
+    RecruitHeat = 0.35 * Z(HeatIndex_demand) + 0.25 * Z(coverage_gap_minutes) + 0.20 * Z(load_post_growth_30d) + 0.20 * Z(broker_searches_30d)
+  color_bands:
+    red_urgent: ">= 80"
+    orange_hot: "65-79"
+    yellow_warm: "50-64"
+    green_stable: "< 50"
+
+broker_desperation_model:
+  name: "BrokerPressureIndex"
+  interpretation:
+    85_plus: "BROKERS IN PAIN — immediate sales push"
+    70_84: "high opportunity"
+    50_69: "normal market"
+
+state_density_targets:
+  methodology: "freight + population + oversize activity"
+  targets:
+    Texas: 320
+    California: 260
+    Florida: 220
+    Georgia: 140
+    Pennsylvania: 140
+    Ohio: 140
+    Illinois: 130
+    North_Carolina: 120
+    Michigan: 110
+    Indiana: 100
+    New_York: 120
+
+port_relief_network:
+  name: "Haul Command Port Relief"
+  positioning: "first call for certified port escort & support coverage"
+  operator_requirements:
+    badges:
+      - TWIC_Verified
+      - Port_Ready
+      - Rapid_Port_Response
+      - High_Security_Cleared
+  seo_strategy:
+    page_patterns:
+      - "port escort [port_name]"
+      - "TWIC escort [city]"

@@ -1,0 +1,275 @@
+haul_command_ultimate_upgrade_pack:
+  version: "2026.02-ULTIMATE"
+  mission: >
+    Maximize competitive advantage, perceived enterprise scale,
+    monetization readiness, routing intelligence, and marketplace
+    defensibility using disciplined open-source components.
+    Only high-ROI systems included. No vanity installs.
+
+  ############################################
+  # CORE PLATFORM HARDENING (FOUNDATION)
+  ############################################
+  foundation_upgrades:
+    - name: api_gateway
+      repo: "kong/kong"
+      reason: >
+        Centralized API control, rate limiting, auth enforcement.
+        Makes platform look enterprise and prevents service sprawl.
+      pain_killed:
+        - uncontrolled internal traffic
+        - inconsistent auth enforcement
+        - lack of enterprise credibility
+
+    - name: background_job_runner
+      repo: "temporalio/temporal"
+      reason: >
+        Durable workflows for dispatch flows, billing events,
+        notifications, and retries. Prevents silent job failures.
+      priority: high
+
+    - name: message_bus
+      repo: "nats-io/nats-server"
+      reason: >
+        Lightweight event streaming for load events, GPS ingestion,
+        and real-time updates without Kafka complexity.
+      when_to_enable: "after initial MVP stabilizes"
+
+    - name: feature_flags
+      repo: "Unleash/unleash"
+      reason: >
+        Enables controlled rollout of premium features,
+        A/B tests, and enterprise toggles without redeploys.
+      monetization_impact: high
+
+  ############################################
+  # DATA & ANALYTICS DOMINANCE
+  ############################################
+  data_intelligence:
+    - name: clickhouse
+      repo: "ClickHouse/ClickHouse"
+      role: "high-volume event warehouse"
+      reason: >
+        Tracks every search, view, quote, dispatch, and conversion.
+        Powers market intelligence dashboards competitors lack.
+      unlocks:
+        - funnel analytics
+        - demand heatmaps
+        - broker behavior insights
+        - pricing intelligence
+
+    - name: dbt
+      repo: "dbt-labs/dbt-core"
+      reason: >
+        Structured analytics transformations for trust scores,
+        leaderboard metrics, and corridor intelligence pipelines.
+
+    - name: data_quality_checks
+      repo: "great-expectations/great_expectations"
+      reason: >
+        Prevents dirty load data and broken geo records
+        from poisoning marketplace trust.
+
+  ############################################
+  # GEO & ROUTING SUPERCHARGE
+  ############################################
+  geo_supercharge:
+    - name: openrouteservice_optional
+      repo: "GIScience/openrouteservice"
+      enable_if: "need additional routing redundancy"
+      reason: >
+        Secondary routing fallback and specialized services.
+
+    - name: elevation_service
+      repo: "Jorl17/open-elevation"
+      reason: >
+        Enables grade analysis for heavy haul risk modeling.
+      competitive_edge: medium_high
+
+    - name: osm_update_pipeline
+      repo: "osmcode/osmium-tool"
+      reason: >
+        Keeps OpenStreetMap extracts continuously fresh.
+        Prevents routing drift over time.
+
+    - name: tile_pre_generation
+      repo: "mapbox/tippecanoe"
+      reason: >
+        Precompute vector tiles for lightning-fast map loads
+        at national scale.
+
+  ############################################
+  # TRUST, SAFETY & COMPLIANCE LAYER
+  ############################################
+  trust_and_safety:
+    - name: fraud_detection_rules
+      repo: "apache/incubator-superset"  # uses internal rules + analytics
+      note: "implemented via analytics + rules engine"
+      reason: >
+        Detect suspicious escort behavior, fake listings,
+        and abnormal routing patterns.
+
+    - name: document_verification_pipeline
+      repo: "tesseract-ocr/tesseract"
+      reason: >
+        OCR for insurance certs, permits, TWIC cards.
+        Automates verification workflows.
+      monetization_impact: high
+
+    - name: image_moderation_optional
+      repo: "openai/CLIP"
+      reason: >
+        Detect inappropriate uploads in directory listings.
+      priority: optional
+
+  ############################################
+  # MARKETPLACE POWER FEATURES
+  ############################################
+  marketplace_powerups:
+    - name: real_time_presence
+      repo: "socketio/socket.io"
+      reason: >
+        Live escort availability indicators and load activity.
+      perceived_value: very_high
+
+    - name: notification_engine
+      repo: "novuhq/novu"
+      reason: >
+        Multi-channel notifications (email/SMS/push)
+        for load matches and broker alerts.
+      conversion_impact: high
+
+    - name: email_infrastructure
+      repo: "postalserver/postal"
+      reason: >
+        Self-hosted transactional email for alerts,
+        invoices, and verification flows.
+
+    - name: file_storage_layer
+      repo: "minio/minio"
+      reason: >
+        S3-compatible storage for documents, proofs,
+        and evidence vault artifacts.
+
+  ############################################
+  # SEO & PROGRAMMATIC GROWTH ENGINE
+  ############################################
+  seo_dominance:
+    - name: sitemap_generator
+      repo: "lightspeedhq/sitemap-generator"
+      reason: >
+        Automatically generates massive geo sitemap coverage.
+
+    - name: structured_data_pipeline
+      repo: "schemaorg/schemaorg"
+      implementation: "JSON-LD generation service"
+      reason: >
+        Rich results for directory listings and services.
+
+    - name: prerender_service
+      repo: "prerender/prerender"
+      reason: >
+        Ensures bots fully index JS-heavy marketplace pages.
+
+  ############################################
+  # OBSERVABILITY & RELIABILITY ELITE MODE
+  ############################################
+  reliability_elite:
+    - name: uptime_monitor
+      repo: "betterstack-community/betteruptime"
+      alternative: "use existing monitoring if preferred"
+      reason: >
+        External uptime checks for credibility and SLA tracking.
+
+    - name: error_tracking
+      repo: "getsentry/sentry"
+      reason: >
+        Production error visibility across services.
+
+    - name: load_testing
+      repo: "grafana/k6"
+      reason: >
+        Stress-test marketplace before traffic spikes.
+
+  ############################################
+  # MONETIZATION EXPANSION PACK
+  ############################################
+  monetization_expansion:
+    primary_billing: "getlago/lago"
+    payment_processor: "Stripe"
+
+    revenue_features:
+      - verified_listing_subscriptions
+      - priority_search_boosts
+      - lead_unlock_credits
+      - broker_pro_tools
+      - dispatch_assist_usage
+      - lane_intelligence_premium
+      - api_usage_metering
+      - enterprise_team_accounts
+
+    future_optional:
+      - escrow_module_placeholder
+      - dynamic_pricing_engine
+      - surge_zone_pricing_via_h3
+
+  ############################################
+  # AI & PREDICTIVE EDGE (SAFE TO ADD NOW)
+  ############################################
+  ai_edge:
+    - name: embeddings_search_optional
+      repo: "qdrant/qdrant"
+      enable_when: "semantic search needed"
+      reason: >
+        Enables semantic load search and intelligent matching.
+
+    - name: demand_forecasting_pipeline
+      repo: "facebook/prophet"
+      reason: >
+        Predicts lane demand and seasonal spikes.
+
+    - name: anomaly_detection
+      repo: "linkedin/isolation-forest"
+      reason: >
+        Detect unusual delays, fraud, or routing anomalies.
+
+  ############################################
+  # DEPLOYMENT & INFRASTRUCTURE DISCIPLINE
+  ############################################
+  deployment_rules:
+    - containerize_every_service: true
+    - enforce_health_checks: true
+    - centralized_env_management: true
+    - routing_request_deduplication: true
+    - redis_matrix_cache: true
+    - lago_event_logging: true
+    - h3_index_all_geo_events: true
+    - design_for_us_canada_scale: true
+    - enable_blue_green_deployments: true
+
+  ############################################
+  # STOP CONDITIONS (DO NOT ADD MORE YET)
+  ############################################
+  do_not_add_until_scale:
+    - kubernetes_complexity
+    - kafka_heavy_stack
+    - multi_region_active_active
+    - custom_ml_models_from_scratch
+    - blockchain_anything
+
+  ############################################
+  # FINAL SUCCESS DEFINITION
+  ############################################
+  success_state:
+    mvp_ready_when:
+      - subsecond_search
+      - smart_escort_matching
+      - proof_based_leaderboard
+      - working_usage_billing
+      - corridor_confidence_visible
+
+    dominance_signals:
+      - national_heatmaps
+      - predictive_lane_intelligence
+      - automated_dispatch_recommendations
+      - enterprise_grade_dashboards
+      - measurable_conversion_lift

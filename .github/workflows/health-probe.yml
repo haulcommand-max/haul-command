@@ -1,0 +1,24 @@
+name: Health Probe
+
+on:
+  schedule:
+    - cron: "*/15 * * * *" # Every 15 minutes
+  workflow_dispatch:
+
+env:
+  PROD_BASE_URL: "https://haulcommand.com"
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  probe:
+    name: Production Health Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Probe Health Endpoint
+        run: node scripts/ops/health_probe.mjs

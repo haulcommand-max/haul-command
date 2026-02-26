@@ -1,0 +1,13 @@
+[
+    {
+        "state": "Florida",
+        "utility_company": "Florida Power & Light (FPL)",
+        "height_threshold_requiring_coordination": 18.5,
+        "contact_department": "Transmission Operations",
+        "advance_notice_required_days": 10,
+        "escort_required": "Yes",
+        "fee_range": "$500 - $5,000",
+        "seasonal_restrictions": "Hurricane Season Priority",
+        "notes": "Requires physical survey before commitment"
+    }
+]

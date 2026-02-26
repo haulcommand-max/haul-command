@@ -1,0 +1,9 @@
+{
+    "load_id": "LOAD-SIEMENS_WIND-Por-Swe",
+    "shipper_id": "SIEMENS_WIND",
+    "origin": "Port of Houston",
+    "destination": "Sweetwater, TX",
+    "equipment": "Blade Trailer",
+    "weight": 110000,
+    "status": "AVAILABLE"
+}

@@ -1,0 +1,239 @@
+haul_command_build_pack:
+  version: "3.0.0"
+  generated_at: "2026-02-19"
+  purpose:
+    - "Ship Command Map + One-Tap Accept flow + Hard-Fill Predictor"
+    - "Define math + risk controls for: 'Fastest match or boost refunded'"
+    - "Confirm Carvenum-style green/red value adjustment status"
+
+  # =====================================================================
+  # 0) CARVENUM VALUE ADJUSTMENT — STATUS CONFIRMED
+  # =====================================================================
+  carvenum_value_adjustment:
+    status: "ACTIVE — confirmed in master spec under load board UI layer"
+    formula:
+      inputs:
+        - lane_key
+        - rate_amount
+        - p25_lane_rate_30d
+        - p50_lane_rate_30d
+        - p75_lane_rate_30d
+      value_color:
+        green:  "rate_amount >= p75"
+        yellow: "p50 <= rate_amount < p75"
+        orange: "p25 <= rate_amount < p50"
+        red:    "rate_amount < p25"
+      value_score_01: "clamp((rate_amount - p25) / max(1, p75 - p25), 0, 1)"
+      low_data_fallback: "If lane samples < 30: show 'Value: Unknown (Low data)' — no color"
+    ui_placement:
+      - "loads list: color badge inline with rate"
+      - "load detail: large colored header tag"
+      - "push offer card: colored dot next to rate"
+    data_source: "feature_quantile_bounds table (refreshed daily by market_aggregates_refresh)"
+
+  # =====================================================================
+  # 1) FASTEST MATCH OR BOOST REFUNDED — MATH + 13 BACKUPS
+  # =====================================================================
+  boost_guarantee:
+    scope: "Boosted loads only, inside supported geos, passing eligibility gates."
+    safe_copy: >
+      "If your Boosted load does not receive an accepted escort match within the
+       Guaranteed Window, we'll refund your Boost — as long as eligibility
+       requirements are met."
+
+    guaranteed_window_formula:
+      formula: >
+        clamp(
+          15
+          + 45*(1 - p_fill_60m)
+          + 20*(1 - confidence)
+          + 25*(1 - x_supply_demand_ratio)
+          + 20*(1 - x_rate_fit)
+          + 15*(1 - x_simplicity),
+          15, 120
+        )
+      unit: minutes
+      example_hot_load: "p_fill_60m=0.88, confidence=0.80 → ~22 min window"
+      example_hard_load: "p_fill_60m=0.58, confidence=0.51 → ~79 min window"
+
+    eligibility_gates:
+      probability: "p_fill_60m >= 0.55 AND confidence >= 0.50"
+      supply: "available_supply_count >= 12 AND x_supply_demand_ratio >= 0.70"
+      rate: "x_rate_fit >= 0.70"
+      broker_trust: "broker friction score >= threshold"
+      geo: "load origin in geo whitelist (FL/GA launch markets first)"
+
+    backups:
+      B01_telemetry_proof: "Every boosted load logs full SLA timeline. Missing telemetry = auto-refund."
+      B02_hard_gates: "Boost button physically disabled if eligibility fails."
+      B03_dynamic_window: "Window computed + shown to broker at checkout. Accepted by checkbox."
+      B04_autofix_gate: "If ineligible, show 1-click fixes first (raise rate, widen window, relax reqs)."
+      B05_wave_escalation: "Boost activates expanded waves + earlier radius expansion. All logged."
+      B06_sms_fallback: "If push not viewed in 3 min, top candidates get SMS."
+      B07_dispatcher_failover: "If no accept by T/2, VAPI agent calls top 10. Calls logged."
+      B08_rapid_response_pool: "Vetted escort pool opts into emergency offers. Pool offers flagged."
+      B09_exploit_prevention: "Max refunds per broker per week; cancel early = void; rate-floor trap = partial credit."
+      B10_fraud_gate: "Low-trust brokers can buy Boost but no refund guarantee."
+      B11_geo_lock: "Guarantee only in supported geos. Auto-expands once metrics hit targets."
+      B12_legal_terms: "Terms published; checkout has acceptance checkbox. Exclusions documented."
+      B13_copy_guard: "Marketing says 'fastest on Haul Command for Boosted loads' — never 'fastest in industry'."
+
+    required_tables:
+      - loads_v2
+      - match_offers
+      - matches
+      - load_intelligence
+      - liquidity_metrics_daily
+      - boost_sla_log (NEW)
+
+  # =====================================================================
+  # 2) COMMAND MAP LAYER SPEC
+  # =====================================================================
+  command_map:
+    stack:
+      primary: "maplibre-gl-js (vector tiles, base map)"
+      high_perf_layers: "deck.gl (HeatmapLayer, ArcLayer, GridCellLayer)"
+    theme: "Dark; metallic gold accents"
+
+    live_layers:
+      escort_presence_points:
+        source: "escort_presence WHERE status IN ('available','online')"
+        style: "color by status; size by trust tier"
+        click: "escort mini-card (trust, response time, capabilities)"
+      escort_density_heatmap:
+        source: "v_active_escort_supply"
+        metric: "count per cell, weighted by availability"
+      load_points_open:
+        source: "v_open_loads_enriched JOIN load_intelligence"
+        style: "color by hard_fill_risk; outline by urgency"
+        click: "load card with fill probability panel"
+      lane_flow_arcs:
+        source: "active loads origin→dest"
+        metric: "lane_frequency + urgency weight"
+        visibility: "only at zoom < 9"
+      shortage_alert_cells:
+        source: "supply_demand_ratio < 0.5 AND open_loads > 1 per cell"
+        style: "red glow grid cells"
+    overlays:
+      permit_complexity: "choropleth from regulatory_moat, metric 0..1 green→red"
+      requirement_zones: "high-pole zones, police corridors (data-permitting)"
+
+    filters:
+      escort: ["capability toggles", "trust tier", "available now only"]
+      load: ["urgency", "hard_fill_risk", "value_color (Carvenum)", "rate range"]
+
+    api_views_required:
+      - "v_active_escort_supply (lat/lng + fit score)"
+      - "v_open_loads_enriched (with load_intelligence joined)"
+      - "hard_fill_intelligence"
+      - "liquidity_metrics_grid (precomputed grid, refreshed every 60s)"
+
+    performance_rules:
+      - "Bbox server-side queries only: minLat/maxLat/minLng/maxLng"
+      - "Grid aggregation: never query raw points for entire state"
+      - "Layer cache: 60 seconds"
+
+  # =====================================================================
+  # 3) ONE-TAP ACCEPT FLOW
+  # =====================================================================
+  one_tap_accept:
+    target: "Push → accept in ≤ 2 taps"
+    platform: "Capacitor (@capacitor/push-notifications + @capacitor/haptics)"
+
+    screens:
+      push_notification:
+        title: "Hot load offer"
+        body: "{miles}mi {origin}→{dest} • ${rate} • Tap to accept"
+        deep_link: "app://offers/{offer_id}"
+
+      offer_card_fullscreen:
+        elements:
+          - "Countdown bar (TTL remaining)"
+          - "Lane + distance + pickup time"
+          - "Requirement chips"
+          - "Broker trust card (compact)"
+          - "Your fit: distance, response score, rate-fit badge"
+          - "Carvenum value color on rate"
+          - "ACCEPT (primary, full-width gold) + DECLINE (ghost)"
+        accept_behavior:
+          - "Optimistic UI: 'Accepted…' shown instantly"
+          - "POST /offers/{offer_id}/accept → on success: navigate to Match Confirmed"
+          - "On conflict (already matched): show 'Taken — you get priority credit'"
+          - "On network fail: retry 3× / 30s → fallback 'Call broker' if policy allows"
+        haptics: "@capacitor/haptics: MEDIUM on accept, LIGHT on decline"
+
+      match_confirmed:
+        - "Confirmation strip"
+        - "Broker contact link (per trust policy)"
+        - "Start navigation button → Google Maps deeplink"
+        - "Auto-toggle escort status to busy"
+
+    offer_states:
+      offered: "→ viewed when screen opened"
+      viewed: "→ accepted | declined | expired"
+      accepted: "Locks offer; marks load matched; stops all waves"
+      conflict: "First-write-wins; second escort gets priority credit + notification"
+
+  # =====================================================================
+  # 4) HARD-FILL PREDICTOR
+  # =====================================================================
+  hard_fill_predictor:
+    purpose: "Detect struggling loads before they fail. Give brokers fixes."
+    output_labels:
+      "0.00-0.30": "Low"
+      "0.30-0.60": "Medium"
+      "0.60-0.80": "High"
+      "0.80-1.00": "Critical"
+
+    features_01:
+      f_low_supply:          "1 - x_supply_demand_ratio"
+      f_low_rate:            "1 - x_rate_fit"
+      f_high_complexity:     "1 - x_simplicity"
+      f_slow_response:       "1 - x_response_speed"
+      f_far_from_supply:     "1 - x_supply_proximity"
+      f_low_broker_trust:    "1 - x_broker_trust"
+      f_lane_rare:           "1 - x_lane_frequency"
+      f_short_notice:        "x_short_notice"
+
+    scoring:
+      weights:
+        w_low_supply:       0.22
+        w_low_rate:         0.18
+        w_high_complexity:  0.14
+        w_slow_response:    0.12
+        w_far_from_supply:  0.10
+        w_low_broker_trust: 0.10
+        w_lane_rare:        0.08
+        w_short_notice:     0.06
+      formula: "clamp(sum of w*f, 0, 1)"
+
+    fix_triggers:
+      low_supply:      { gate: "f_low_supply > 0.5",      fixes: ["Boost/expand radius", "Invite Rapid Response Pool"] }
+      low_rate:        { gate: "f_low_rate > 0.4",        fixes: ["Raise rate → median*1.15"] }
+      high_complexity: { gate: "f_high_complexity > 0.4", fixes: ["Relax requirements if legal", "Split escort roles"] }
+      low_broker_trust:{ gate: "f_low_broker_trust > 0.4",fixes: ["Offer escrow/faster pay", "Invite-only to repeat escorts"] }
+      short_notice:    { gate: "f_short_notice > 0.7",    fixes: ["Widen pickup window +12h"] }
+
+    storage:
+      table: "hard_fill_intelligence"
+      fields:
+        - "load_id uuid"
+        - "computed_at timestamptz"
+        - "hard_fill_risk_score_01 numeric(6,4)"
+        - "hard_fill_label text"
+        - "top_reasons jsonb"
+        - "recommended_fixes jsonb"
+
+  # =====================================================================
+  # 5) BUILD ORDER
+  # =====================================================================
+  build_now:
+    approved:
+      - "Command Map layers + API views + grid performance"
+      - "One-tap accept mobile flow + deep links + Capacitor push"
+      - "Hard-fill predictor + UI badges + fix buttons"
+      - "Stage probability UI (offer/view/accept bars + confidence bands)"
+      - "Carvenum green/red value adjustment (feature_quantile_bounds already being built)"
+    hold:
+      - "Public 'fastest match' marketing copy until 30-day FL/GA telemetry confirms SLA"
+      - "Cash refunds — start with boost credits until stable"

@@ -1,0 +1,88 @@
+{
+    "name": "Haul Command Dispatcher",
+    "voice": {
+        "provider": "11labs",
+        "voiceId": "flq6f7yk4E4fJM7XtyuZ",
+        "stability": 0.5,
+        "similarityBoost": 0.75
+    },
+    "transcriber": {
+        "provider": "deepgram",
+        "model": "nova-2",
+        "language": "en-US"
+    },
+    "model": {
+        "provider": "openai",
+        "model": "gpt-4-turbo",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are the AI Dispatcher for Haul Command. Your goal is to intake a load offer from a Broker or Shipper as efficiently as possible.\n\n**CORE PROTOCOL:**\n1. Identify the caller (Broker Name, Company).\n2. Extract LOAD DETAILS: Origin (City/State), Destination (City/State), Dimensions (L/W/H/Weight), Pickup Date.\n3. Extract REQUIREMENTS: High Pole? Chase? Route Survey? Bucket Truck? Police?\n4. Extract RATE: What is the offer? (Flat or Per Mile).\n5. Confirm details back to the caller.\n\n**SCRIPT:**\n- \"Haul Command Dispatch. Are you calling to book a pilot car?\"\n- if YES: \"Great. What's the pickup city and state?\"\n- \"And the destination?\"\n- \"What are the dimensions of the load? Height, Width, Length?\"\n- \"Does this require a High Pole, Chase, or Bucket Truck?\"\n- \"What is the rate you are offering?\"\n- \"Got it. I have the load from [Origin] to [Dest] at [Rate]. I am broadcasting this to our verified network now. We will call you back when a driver accepts. Goodbye.\"\n\n**BEHAVIOR:**\n- Be concise. 'Speed Kills'.\n- Do not hallucinate drivers. Say 'broadcasting to network'.\n- If they ask for a price, ask 'What is your target rate?'\n\n**OUTPUT:**\n- You must output tool calls to `capture_offer` with the structured data."
+            }
+        ],
+        "tools": [
+            {
+                "type": "function",
+                "function": {
+                    "name": "capture_offer",
+                    "description": "Save the captured load offer details to the system.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "broker_name": {
+                                "type": "string"
+                            },
+                            "pickup_city": {
+                                "type": "string"
+                            },
+                            "pickup_state": {
+                                "type": "string"
+                            },
+                            "dropoff_city": {
+                                "type": "string"
+                            },
+                            "dropoff_state": {
+                                "type": "string"
+                            },
+                            "pickup_date": {
+                                "type": "string"
+                            },
+                            "load_dims": {
+                                "type": "string",
+                                "description": "L x W x H"
+                            },
+                            "requirements": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "HIGH_POLE",
+                                        "CHASE",
+                                        "BUCKET_TRUCK",
+                                        "ROUTE_SURVEY",
+                                        "POLICE"
+                                    ]
+                                }
+                            },
+                            "rate_offer": {
+                                "type": "number"
+                            },
+                            "rate_type": {
+                                "type": "string",
+                                "enum": [
+                                    "FLAT",
+                                    "PER_MILE"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "pickup_city",
+                            "dropoff_city",
+                            "rate_offer"
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

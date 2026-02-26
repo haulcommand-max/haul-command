@@ -1,0 +1,398 @@
+TITLE: Telematics, GPS Tracking & Fleet Management Platform | Navixy
+ID: 434caa26-55fe-44f3-9618-4f026268941d
+
+Pricing
+
+Login
+
+Get started
+
+0
+
+White Label GPS Tracking Platform
+
+Become An Owner
+
+Benefit from a state-of-the-art GPS and Telematics platform that offers incredible white-label capabilities, allowing you to manage fleets and track assets on both mobile devices and web platforms — all while proudly displaying your brand.
+
+BUILD YOUR WHITE LABEL
+
+Why Join the Navixy White-Label Partner Program?
+
+Own Your Customer's Experience
+
+Be in charge of customer experience, grow brand loyalty, and expand your business with your own reseller programs.
+
+50%+ Margins
+
+Maximize profits and drive operational efficiency with the latest GPS and Video telematics technology.
+
+Advanced capabilities to help you make better decisions, increase efficiency, reduce costs, and provide a competitive edge in today's market.
+
+Device & Connectivity Independent
+
+2,200+ solidly-integrated devices
+
+1
+
+Simple device activation
+
+2
+
+User-friendly Over-the-Air configuration
+
+3
+
+Seamless operation with global mobile networks
+
+4
+
+Your team is equipped with a comprehensive suite of tools to simplify your backend operations, from managing user accounts and providing technical assistance, to managing customer subscriptions.
+
+Exceptional Reliability
+
+Achieve 99.99% uptime with Cloud, On-premise, or PaaS.
+
+We designed our platform to be rapidly scalable and adaptable, allowing users to modify and improve it using APIs or third-party integrations.
+
+Benefits of White-Label Telematics & Asset Tracking
+
+Entrepreneurs can trust our 18+ years of industry experience developing and delivering white-label telematics and asset-tracking solutions.
+
+Customized Look and Experience
+
+Fully control your company's service and communication brandings
+
+Domain Name
+
+Any domain with an SSL certificate, configured with A or CNAME records
+
+Your Logo
+
+As a favicon, on the login screen, in the main application, and in printable reports
+
+Color Scheme
+
+Based on a variety of themes or a fully customizable palette
+
+Email
+
+Templates directly from the company's email address and SMTP for high deliverability rates
+
+SMS
+
+Send text messages with your SenderID through either SMSC or SMPP protocols
+
+Branded Mobile Apps
+
+Adjust the branding and graphic design of mobile applications to meet the purpose, needs, or brand requirements of your business.
+
+Enable or disable specific features that you choose.
+
+How to Brand and Customize Your Platform
+
+Explore how to brand and customize the Navixy platform using options available in the Navixy Admin Panel.
+
+Navixy's Walkthrough Videos
+
+Explore More of Navixy's White-Label Capabilities
+
+Entrepreneurs can trust our 18+ years of industry experience developing and delivering white-label telematics and asset-tracking solutions.
+
+Localization
+
+30+ languages
+
+1
+
+Currency customization
+
+2
+
+Date formatting
+
+3
+
+Measurement units
+
+4
+
+Customizable layered maps
+
+5
+
+Fast configuration
+
+6
+
+Resources & Support
+
+Integrate your web and mobile apps with your website, terms of use, and contact details
+
+1
+
+Utilize helpdesk systems and knowledge base
+
+2
+
+Provide users with information quickly and easily
+
+3
+
+Improve customer service with helpful support tools
+
+4
+
+Billing and Payments
+
+Navixy offers robust subscription management capabilities, providing multi-currency plan options and support for the most widely used payment methods. It also allows integration with custom billing solutions to further optimize your process flows.
+
+What Our Partners Say
+
+" It is for sure the platform with the most modern interface - intuitive and easy to use - Easy to implement and add trackers - A lot of features, advanced telematics reports and alerts - Fast response time from support department. "
+
+Gelu I. • IT Manager • Telecommunications, 51-200 employees The most intuitive and user friendly GPS tracking solutions
+
+Control Over Which Devices You Want to Use
+
+You decide exactly which devices and connectivity options to enable on your platform. By choosing your own SIM cards, configuring device profiles, and tailoring data ingestion, your users get a true "plug-and-play" experience with minimal effort.
+
+Explore supported devices
+
+Have your own hardware lineup? No problem — Navixy integrates smoothly with third-party devices, letting you keep your current fleet configuration.
+
+Connectivity Control
+
+Global IoT connectivity with full control over how each device communicates.
+
+Choose your own SIMs and connectivity providers
+
+1
+
+Private APN & VPN support
+
+2
+
+Configurable data routing, forwarding, and encryption
+
+3
+
+Flexible Activation
+
+Flexible activation workflows designed to match your operational model.
+
+Automatic or manual device activation
+
+1
+
+Zero-touch provisioning when you need speed
+
+2
+
+Customizable onboarding flows and configuration profiles
+
+3
+
+IoT Logic
+
+Adaptable processing engine that lets you shape how telemetry becomes insight.
+
+Real-time, configurable rule engine
+
+1
+
+Flexible data normalization and parsing for any device protocol
+
+2
+
+Smart event processing tailored to your use case
+
+3
+
+OTA Settings & Control
+
+Harsh driving
+
+You have unsaved changes
+
+Low Moderate Significant Low Moderate Significant Low Moderate Significant
+
+Odometer
+
+GPS data 651884.58 km 0 %
+
+Connection state
+
+If the device fails to connect to the server within the set timeframe, the device will be deemed offline.
+
+10 minutes
+
+Sensors and buttons
+
+Discrete sensors: (1)
+
+Ignition Reseller Network
+
+Ready to Expand Your Business Through a Reseller Network?
+
+If you're looking beyond just serving end customers, Navixy's Subaccounts allow you to create your own channel network. Your regional partners can white-label and tailor their services just like yours, but you remain in control and can manage them in our Admin Panel feature.
+
+Questions and Answers
+
+Want to learn more about the Navixy White-Label platform? Contact our experts.
+
+Start Growing and Optimizing Business Today
+
+Find a Partner
+
+Reap the benefits of productive and compliant fleet. Cut maintenance and fuel costs. Make your vehicles safer, greener and more reliable.
+
+FIND A PARTNER
+
+Become a Partner
+
+Provide smart and intuitive fleet management. Win and impress your customers with the most user-friendly telematics platform.
+
+BECOME A PARTNER
+
+Platform
+
+Location Intelligence
+
+1
+
+IoT Logic
+
+2
+
+IoT Query
+
+3
+
+GPS & IoT devices
+
+4
+
+Dashcams & MDVR
+
+5
+
+Developer hub
+
+6
+
+Marketplace
+
+7
+
+Pricing
+
+8
+
+Solutions
+
+Fleet management
+
+1
+
+Field service
+
+2
+
+Asset GPS tracking
+
+3
+
+Resources
+
+Blog
+
+1
+
+Support center
+
+2
+
+Find a partner
+
+3
+
+API & Docs
+
+4
+
+Marketing collateral
+
+5
+
+Roadmap
+
+6
+
+Platform status
+
+7
+
+Company
+
+Mission
+
+1
+
+Careers
+
+2
+
+Contacts
+
+3
+
+Learn more
+
+GPS tracking software
+
+1
+
+White label
+
+2
+
+What is telematics
+
+3
+
+Legal
+
+Data residency
+
+1
+
+Security
+
+2
+
+Support regulations
+
+3
+
+Data processing agreement
+
+4
+
+© 2005–2025 Navixy by SquareGPS Inc. GPS tracking and telematics platform. All rights reserved.
+
+Privacy policy
+
+|
+
+Terms of service
+
+https://www.navixy.com/legal/terms-of-service/
+
+|
+
+Legal center
+
+https://www.navixy.com/legal/
+
+|  

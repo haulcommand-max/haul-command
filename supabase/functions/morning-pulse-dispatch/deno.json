@@ -1,0 +1,13 @@
+{
+    "tasks": [
+        {
+            "name": "morning-pulse-dispatch",
+            "entrypoint": "index.ts"
+        }
+    ],
+    "imports": {
+        "web-push": "npm:web-push@3.6.7",
+        "@supabase/supabase-js": "jsr:@supabase/supabase-js@2",
+        "google-auth": "https://deno.land/x/google_auth@0.5.1/mod.ts"
+    }
+}

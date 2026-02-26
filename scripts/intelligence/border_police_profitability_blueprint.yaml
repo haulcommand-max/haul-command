@@ -1,0 +1,235 @@
+version: "HC-USCA-BORDER-POLICE-EARNINGS-PROFIT-001"
+
+scope:
+  countries: ["United States", "Canada"]
+  include_territories: true
+  products: ["Directory", "Load Board", "Leaderboard", "Mobile App", "Broker Portal"]
+non_negotiables:
+  - always_upgrade_never_downgrade
+  - do_not_bypass_access_controls
+  - citations_for_external_rules
+  - privacy_by_default
+  - no_legal_advice_claims
+
+# ============================================================
+# A) US + CANADA BORDER CROSSINGS (LAND) — FULL LIST GENERATOR + SEED LIST
+# ============================================================
+border_crossings:
+  goal: "Maintain an always-current registry of US–Canada border crossings and expose them as SEO pages + operational filters."
+  source_of_truth_connectors:
+    us_cbp_ports_locator:
+      name: "CBP Locate a Port of Entry"
+      url: "https://www.cbp.gov/about/contact/ports"
+      freshness: "authoritative"
+    ca_cbsa_directory:
+      name: "CBSA Directory of Offices and Services (cloud)"
+      url: "https://do-rb.cbsa-asfc.cloud-nuage.canada.ca/?id=713&lang=en_CA"
+      freshness: "authoritative"
+
+  ingestion_rules:
+    - "Use connectors or approved fetchers only. Do not scrape behind paywalls or bypass access controls."
+    - "Normalize crossings to a canonical BorderCrossing object; dedupe by crossing_name + nearest towns + province/state."
+    - "Track hours, commercial availability, FAST/NEXUS notes (if available), and last_checked timestamps."
+
+  object_schema:
+    BorderCrossing:
+      fields:
+        - crossing_name
+        - country_pair: ["USA","Canada"]
+        - us_side:
+            state
+            nearest_city
+        - canada_side:
+            province_or_territory
+            nearest_city
+        - mode: ["road","bridge","tunnel","rail_optional"]
+        - commercial_processing: ["yes","no","unknown"]
+        - hours: "string_or_struct"
+        - geo:
+            lat
+            lng
+        - tags: ["major","regional","remote","truck_priority","fast_lane_possible"]
+        - source_urls: ["array"]
+        - last_checked: "iso_datetime"
+
+  seed_crossings_major:
+    # Seed only = fast launch. Generator fills the full registry from sources above.
+    # West → East ordering for UX.
+    - {crossing_name: "Peace Arch / Douglas–Blaine", us_side: {state: "Washington", nearest_city: "Blaine"}, canada_side: {province_or_territory: "British Columbia", nearest_city: "Surrey"}, mode: "road", tags: ["major","truck_priority"]}
+    - {crossing_name: "Pacific Highway–Blaine", us_side: {state: "Washington", nearest_city: "Blaine"}, canada_side: {province_or_territory: "British Columbia", nearest_city: "Surrey"}, mode: "road", tags: ["major","commercial"]}
+    - {crossing_name: "Sumas–Abbotsford (Huntingdon)", us_side: {state: "Washington", nearest_city: "Sumas"}, canada_side: {province_or_territory: "British Columbia", nearest_city: "Abbotsford"}, mode: "road", tags: ["major"]}
+    - {crossing_name: "Eastport–Kingsgate", us_side: {state: "Idaho", nearest_city: "Eastport"}, canada_side: {province_or_territory: "British Columbia", nearest_city: "Kingsgate"}, mode: "road", tags: ["regional","commercial"]}
+    - {crossing_name: "Sweetgrass–Coutts", us_side: {state: "Montana", nearest_city: "Sweetgrass"}, canada_side: {province_or_territory: "Alberta", nearest_city: "Coutts"}, mode: "road", tags: ["major","commercial"]}
+    - {crossing_name: "Portal–North Portal", us_side: {state: "North Dakota", nearest_city: "Portal"}, canada_side: {province_or_territory: "Saskatchewan", nearest_city: "North Portal"}, mode: "road", tags: ["major","commercial"]}
+    - {crossing_name: "Pembina–Emerson", us_side: {state: "North Dakota", nearest_city: "Pembina"}, canada_side: {province_or_territory: "Manitoba", nearest_city: "Emerson"}, mode: "road", tags: ["major","commercial"]}
+    - {crossing_name: "International Falls–Fort Frances", us_side: {state: "Minnesota", nearest_city: "International Falls"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Fort Frances"}, mode: "bridge", tags: ["regional","commercial"]}
+    - {crossing_name: "Sault Ste. Marie–Sault Ste. Marie", us_side: {state: "Michigan", nearest_city: "Sault Ste. Marie"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Sault Ste. Marie"}, mode: "bridge", tags: ["regional","commercial"]}
+    - {crossing_name: "Detroit–Windsor (Ambassador Bridge)", us_side: {state: "Michigan", nearest_city: "Detroit"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Windsor"}, mode: "bridge", tags: ["major","commercial"]}
+    - {crossing_name: "Port Huron–Sarnia (Blue Water Bridge)", us_side: {state: "Michigan", nearest_city: "Port Huron"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Sarnia"}, mode: "bridge", tags: ["major","commercial"]}
+    - {crossing_name: "Buffalo–Fort Erie (Peace Bridge)", us_side: {state: "New York", nearest_city: "Buffalo"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Fort Erie"}, mode: "bridge", tags: ["major","commercial"]}
+    - {crossing_name: "Lewiston–Queenston Bridge", us_side: {state: "New York", nearest_city: "Lewiston"}, canada_side: {province_or_territory: "Ontario", nearest_city: "Queenston/Niagara-on-the-Lake"}, mode: "bridge", tags: ["major","commercial"]}
+    - {crossing_name: "Champlain–Lacolle", us_side: {state: "New York", nearest_city: "Champlain"}, canada_side: {province_or_territory: "Quebec", nearest_city: "Saint-Bernard-de-Lacolle"}, mode: "road", tags: ["major","commercial"]}
+    - {crossing_name: "Derby Line–Stanstead", us_side: {state: "Vermont", nearest_city: "Derby Line"}, canada_side: {province_or_territory: "Quebec", nearest_city: "Stanstead"}, mode: "road", tags: ["regional"]}
+    - {crossing_name: "Calais–St. Stephen", us_side: {state: "Maine", nearest_city: "Calais"}, canada_side: {province_or_territory: "New Brunswick", nearest_city: "St. Stephen"}, mode: "bridge", tags: ["major","commercial"]}
+
+  outputs:
+    - "border_crossings_table (full, generated)"
+    - "border_crossings_search_api"
+    - "seo_pages: /border-crossing/[crossing-slug]/"
+    - "filters: near_crossing, commercial_ok, hours_open_now"
+
+# ============================================================
+# B) POLICE ESCORT TRIGGER DATABASE (BY STATE) — SCHEMA + INGESTION PIPELINE
+# NOTE: This is intentionally source-driven to avoid wrong rules. Reporter cites sources.
+# ============================================================
+police_escort_triggers:
+  goal: "State-by-state and province-by-province police escort trigger rules + contact pointers"
+  rule_sources:
+    - "state DOT permit manuals / escort requirements pages"
+    - "state permit portals help pages"
+    - "official bulletins / special permits docs"
+  object_schema:
+    EscortTriggerRule:
+      fields:
+        - jurisdiction: {country, state_or_province}
+        - effective_date: "iso_date"
+        - last_checked: "iso_datetime"
+        - source_url
+        - rule_type: ["police_required","police_possible","police_by_exception"]
+        - triggers:
+            # each trigger is structured so it can power an app validator:
+            - dimension: ["width_ft","height_ft","length_ft","weight_lbs","overhang_ft","axles","route_specific","time_of_day","superload"]
+              operator: [">",">=","==","between","in"]
+              value: "number_or_range_or_list"
+              notes: "string"
+        - notes: "string"
+        - enforcement_notes: "string"
+        - contacts:
+            - {type: "permit_office", name: "string", phone: "string_optional", url: "string_optional"}
+            - {type: "state_patrol", name: "string", phone: "string_optional", url: "string_optional"}
+
+  ingestion_workflow:
+    - "Build JurisdictionIndex: all US states + DC + territories + CA provinces/territories"
+    - "For each jurisdiction: fetch official escort requirement source URL(s)"
+    - "Parse into structured triggers; if parsing uncertain, store as 'rule_type: police_by_exception' + keep raw excerpt for review"
+    - "Reporter must cite source_url + last_checked whenever presenting a rule"
+
+  outputs:
+    - "police_trigger_db"
+    - "route_validator: given load dims + jurisdiction → flags police escort possibility/requirement"
+    - "seo pages: /police-escort/[state]/ and /police-escort/[province]/ with citations"
+
+# ============================================================
+# C) ESCORT EARNINGS CALCULATOR WIDGET (IN-APP + WEB)
+# ============================================================
+escort_earnings_calculator:
+  widget_name: "EarningsCalc"
+  placements: ["mobile_app", "escort_profile", "public_calculator_page", "broker_quote_view_optional"]
+  inputs:
+    - trip_miles_loaded
+    - trip_miles_deadhead
+    - base_rate_per_mile
+    - day_rate_optional
+    - surge_multiplier (default: 1.0)
+    - tolls_reimbursed
+    - fuel_price_per_gallon
+    - escort_vehicle_mpg
+    - per_diem_optional
+    - fixed_cost_per_day_optional
+    - time_hours_optional
+  formulas:
+    gross_pay: |
+      gross = (trip_miles_loaded * base_rate_per_mile * surge_multiplier)
+              + day_rate_optional
+              + tolls_reimbursed
+              + per_diem_optional
+    fuel_cost: |
+      fuel_gallons = (trip_miles_loaded + trip_miles_deadhead) / escort_vehicle_mpg
+      fuel_cost = fuel_gallons * fuel_price_per_gallon
+    net_estimate: |
+      net = gross - fuel_cost - fixed_cost_per_day_optional
+    effective_hourly_optional: |
+      hourly = net / max(time_hours_optional, 1)
+    effective_per_loaded_mile: |
+      per_loaded = net / max(trip_miles_loaded, 1)
+
+  outputs:
+    - "gross_pay"
+    - "fuel_cost"
+    - "net_estimate"
+    - "effective_hourly_optional"
+    - "effective_per_loaded_mile"
+    - "insights":
+        - "deadhead_penalty_percent"
+        - "surge_impact_dollars"
+        - "break_even_rate_per_mile"
+
+  ui_notes:
+    - "Show sliders + quick presets (Chase / Lead / High Pole / Bucket Support)."
+    - "Show 'what to quote' suggestion based on target net and typical deadhead."
+
+# ============================================================
+# D) AI LANE PROFITABILITY PREDICTOR (BROKER + ESCORT VIEW)
+# ============================================================
+lane_profitability_predictor:
+  name: "LaneProfitAI"
+  purpose: "Predict profitability for an escort on a specific lane and recommend accept/decline + rate target"
+  prediction_targets:
+    - net_profit_estimate
+    - confidence_0_1
+    - accept_recommendation: ["accept","counter","decline"]
+    - suggested_rate_per_mile
+    - risk_flags
+
+  feature_inputs:
+    lane_features:
+      - origin_geo
+      - destination_geo
+      - loaded_miles
+      - expected_deadhead_miles
+      - expected_time_hours
+      - escort_type_required
+      - surge_multiplier_current
+      - HeatIndex_current
+      - BrokerPressureIndex_current
+      - seasonality_index
+      - port_security_required_optional
+      - police_trigger_risk_optional
+    operator_features:
+      - operator_cost_profile (mpg, fixed costs, preferred min net)
+      - operator_reliability_score
+      - operator_region_familiarity
+    market_features:
+      - recent_accept_rate_by_lane
+      - median_paid_rate_by_lane
+      - cancellation_rate_by_lane
+
+  model_logic_v1:
+    hybrid:
+      - "rules + regression baseline"
+      - "upgrade path: gradient boosted trees or similar once enough history exists"
+    baseline_net_calc: "reuse earnings_calculator formulas with lane-specific estimates"
+    suggested_rate_solver: |
+      target_net = operator_min_net
+      solve for base_rate_per_mile such that net_estimate >= target_net
+      apply caps from surge guardrails
+
+  risk_flags_rules:
+    - "if police_trigger_risk == high: flag 'possible police escort requirement'"
+    - "if port_security_required: flag 'port badging/TWIC-equivalent may be required'"
+    - "if deadhead_ratio > 0.6: flag 'heavy deadhead'"
+    - "if cancellation_rate_by_lane high: flag 'lane instability'"
+
+  outputs:
+    - "LaneCard (profit, risk, rate, confidence)"
+    - "Auto-counter offer generator (message + rate + availability window)"
+
+# ============================================================
+# BUILD ORDER
+# ============================================================
+build_order:
+  - "border_crossings_generator + seed list"
+  - "earnings_calculator_widget"
+  - "LaneProfitAI v1"
+  - "police_escort_triggers ingestion scaffolding + reporter citation enforcement"
+  - "SEO pages: border + police + calculator"

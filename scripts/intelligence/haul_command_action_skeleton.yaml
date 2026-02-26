@@ -1,0 +1,290 @@
+# ============================================================
+# HAUL COMMAND — ACTION CODE SKELETON (Escort Auto-Detection)
+# Functions + Handlers + Workers (clean Anti-Gravity ingest format)
+# ============================================================
+
+actions:
+  namespace: haul_command.compliance.escort
+  language: typescript_like_pseudocode
+
+types:
+  EscortRequirement:
+    state: string
+    required_positions: { role: string, count: number, notes?: string }[]
+    equipment_requirements: string[]
+    operating_rules: string[]
+    flags: string[]
+    explanation: { rule_id: string, reason: string, citations: string[] }[]
+
+  EngineOutput:
+    per_state: EscortRequirement[]
+    merged:
+      required_positions: { role: string, count: number, notes?: string }[]
+      equipment_requirements: string[]
+      operating_rules: string[]
+      flags: string[]
+      confidence: number
+
+adapters:
+  db:
+    getLoad: "async (id) => db.loads.findById(id)"
+    updateLoad: "async (id, patch) => db.loads.update(id, patch)"
+    getActiveRuleset: "async (jurisdiction, code) => db.escort_rulesets.findActive(jurisdiction, code)"
+    getRulesForRuleset: "async (ruleset_id) => db.escort_rules.findAll({ruleset_id})"
+    getSourcesForBundle: "async (source_bundle_id) => db.escort_rule_sources.findAll({source_bundle_id})"
+    getRouteStateSegmentsByHash: "async (route_hash) => db.route_state_segments.findByHash(route_hash)"
+    upsertRouteStateSegments: "async (obj) => db.route_state_segments.upsert(obj)"
+  geo:
+    statesFromPolyline: "async (polyline) => geo.polylineIntersectStates(polyline)"  # implement with state polygons
+  audit:
+    log: "async (entry) => db.routing_audit_log.insert(entry)"
+
+functions:
+
+  evalCondition:
+    params: [cond, ctx]
+    body: |
+      // ctx = { load: {...}, route: {...}, meta: {...} }
+      // Support: all/any/not + comparisons + between + in + exists
+      if (!cond) return true
+      if (cond.all) return cond.all.every(c => functions.evalCondition(c, ctx))
+      if (cond.any) return cond.any.some(c => functions.evalCondition(c, ctx))
+      if (cond.not) return !functions.evalCondition(cond.not, ctx)
+
+      const get = (path) => path.split('.').reduce((o,k)=> (o?o[k]:undefined), ctx)
+
+      if (cond.exists) return get(cond.exists.field) !== undefined && get(cond.exists.field) !== null
+
+      const cmp = (op, field, value) => {
+        const v = get(field)
+        if (v === undefined || v === null) return false
+        if (op === 'eq') return v === value
+        if (op === 'gt') return v > value
+        if (op === 'gte') return v >= value
+        if (op === 'lt') return v < value
+        if (op === 'lte') return v <= value
+        return false
+      }
+
+      if (cond.eq)  return cmp('eq', cond.eq.field, cond.eq.value)
+      if (cond.gt)  return cmp('gt', cond.gt.field, cond.gt.value)
+      if (cond.gte) return cmp('gte', cond.gte.field, cond.gte.value)
+      if (cond.lt)  return cmp('lt', cond.lt.field, cond.lt.value)
+      if (cond.lte) return cmp('lte', cond.lte.field, cond.lte.value)
+
+      if (cond.in) {
+        const v = get(cond.in.field)
+        return cond.in.values.includes(v)
+      }
+
+      if (cond.between) {
+        const v = get(cond.between.field)
+        if (v === undefined || v === null) return false
+        const min = cond.between.min
+        const max = cond.between.max
+        const inc = (cond.between.inclusive !== false)
+        return inc ? (v >= min && v <= max) : (v > min && v < max)
+      }
+
+      return false
+
+  mergeRequirementsStrictest:
+    params: [perStateReqs]
+    body: |
+      // max-per-role + union equipment + union flags
+      const roleMax = new Map()
+      const equip = new Set()
+      const ops = new Set()
+      const flags = new Set()
+
+      for (const r of perStateReqs) {
+        for (const p of (r.required_positions ?? [])) {
+          const cur = roleMax.get(p.role) ?? 0
+          roleMax.set(p.role, Math.max(cur, p.count))
+        }
+        for (const e of (r.equipment_requirements ?? [])) equip.add(e)
+        for (const o of (r.operating_rules ?? [])) ops.add(o)
+        for (const f of (r.flags ?? [])) flags.add(f)
+      }
+
+      const required_positions = Array.from(roleMax.entries()).map(([role,count])=>({role,count}))
+      return {
+        required_positions,
+        equipment_requirements: Array.from(equip),
+        operating_rules: Array.from(ops),
+        flags: Array.from(flags)
+      }
+
+  computeConfidence:
+    params: [matchedRuleMeta, missingStatesCount, caseByCaseCount]
+    body: |
+      // matchedRuleMeta: [{confidence, severity}]
+      if (!matchedRuleMeta || matchedRuleMeta.length === 0) return 0.2
+      const base = matchedRuleMeta.reduce((s,x)=>s + (x.confidence ?? 0.5), 0) / matchedRuleMeta.length
+      let penalty = 0
+      penalty += Math.min(0.5, missingStatesCount * 0.15)
+      penalty += Math.min(0.4, caseByCaseCount * 0.20)
+      const conf = Math.max(0, Math.min(1, base - penalty))
+      return conf
+
+handlers:
+
+  onLoadOrRouteChange_RunEscortEngine:
+    trigger: ["loads.create","loads.update","route.compute.success"]
+    params: [load_id, actor]
+    body: |
+      const load = await adapters.db.getLoad(load_id)
+      if (!load) return
+
+      // Build route states
+      let states = load.route_states
+      if ((!states || states.length === 0) && load.route_polyline) {
+        const routeHash = crypto.sha256Hex(load.route_polyline + '|' + (load.route_options_version ?? 1))
+        const cached = await adapters.db.getRouteStateSegmentsByHash(routeHash)
+        if (cached?.states?.length) {
+          states = cached.states
+        } else {
+          states = await adapters.geo.statesFromPolyline(load.route_polyline)
+          await adapters.db.upsertRouteStateSegments({ route_hash: routeHash, states, segments: null, created_at: new Date().toISOString() })
+        }
+      }
+
+      // If still missing, flag and exit with low confidence
+      if (!states || states.length === 0) {
+        await adapters.db.updateLoad(load.id, {
+          compliance_json: {
+            escort_engine: {
+              status: "no_route_states",
+              per_state: [],
+              merged: { required_positions: [], equipment_requirements: [], operating_rules: [], flags: ["rule_data_missing_for_state"], confidence: 0.1 }
+            }
+          }
+        })
+        return
+      }
+
+      const perState: EscortRequirement[] = []
+      const matchedRuleMeta: any[] = []
+      let missingStatesCount = 0
+      let caseByCaseCount = 0
+
+      for (const st of states) {
+        const ruleset = await adapters.db.getActiveRuleset("US_STATE", st)
+        if (!ruleset) {
+          missingStatesCount++
+          perState.push({
+            state: st,
+            required_positions: [],
+            equipment_requirements: [],
+            operating_rules: [],
+            flags: ["rule_data_missing_for_state","needs_human_review"],
+            explanation: []
+          })
+          continue
+        }
+
+        const rules = await adapters.db.getRulesForRuleset(ruleset.id)
+
+        const ctx = {
+          load: {
+            width_ft: load.load_width_ft,
+            height_ft: load.load_height_ft,
+            length_ft: load.load_length_ft,
+            gross_weight_lb: load.load_gross_weight_lb,
+            front_overhang_ft: load.front_overhang_ft,
+            rear_overhang_ft: load.rear_overhang_ft
+          },
+          route: {
+            state: st,
+            road_class: load.road_class ?? null
+          },
+          meta: {
+            is_house: load.is_house ?? null,
+            hazmat_categories: load.hazmat_categories ?? [],
+            movement_time_local: load.movement_time_local ?? null
+          }
+        }
+
+        const matched = []
+        for (const rule of rules.sort((a,b)=>(a.priority??100)-(b.priority??100))) {
+          if (functions.evalCondition(rule.applies_when, ctx)) matched.push(rule)
+        }
+
+        const req: EscortRequirement = {
+          state: st,
+          required_positions: [],
+          equipment_requirements: [],
+          operating_rules: [],
+          flags: [],
+          explanation: []
+        }
+
+        for (const rule of matched) {
+          const out = rule.outputs ?? {}
+          for (const p of (out.required_positions ?? [])) {
+            // merge within-state by max
+            const idx = req.required_positions.findIndex(x=>x.role===p.role)
+            if (idx === -1) req.required_positions.push({ role: p.role, count: p.count, notes: p.notes })
+            else req.required_positions[idx].count = Math.max(req.required_positions[idx].count, p.count)
+          }
+          for (const e of (out.equipment_requirements ?? [])) if (!req.equipment_requirements.includes(e)) req.equipment_requirements.push(e)
+          for (const o of (out.operating_rules ?? [])) if (!req.operating_rules.includes(o)) req.operating_rules.push(o)
+          for (const f of (out.flags ?? [])) if (!req.flags.includes(f)) req.flags.push(f)
+
+          req.explanation.push({
+            rule_id: rule.rule_id,
+            reason: "matched applies_when conditions",
+            citations: rule.citations ?? []
+          })
+
+          matchedRuleMeta.push({ confidence: rule.confidence, severity: rule.severity })
+          if (rule.severity === "case_by_case") caseByCaseCount++
+        }
+
+        // If nothing matched, still keep state record (helps explain gaps)
+        if (matched.length === 0) req.flags.push("no_rules_matched_needs_review")
+
+        perState.push(req)
+      }
+
+      const merged = functions.mergeRequirementsStrictest(perState)
+      const confidence = functions.computeConfidence(matchedRuleMeta, missingStatesCount, caseByCaseCount)
+
+      // Gate logic flags
+      if (missingStatesCount > 0) merged.flags.push("rule_data_missing_for_state")
+      if (caseByCaseCount > 0) merged.flags.push("needs_human_review")
+
+      const complianceJson = {
+        escort_engine: {
+          status: "computed",
+          states,
+          per_state: perState,
+          merged: { ...merged, confidence }
+        }
+      }
+
+      await adapters.db.updateLoad(load.id, { compliance_json: complianceJson })
+
+      await adapters.audit.log({
+        load_id: load.id,
+        action: "escort_engine_compute",
+        actor: actor ?? "system",
+        response_meta_json: { states, confidence, missingStatesCount, caseByCaseCount }
+      })
+
+jobs:
+  reEvaluateLoadsOnRulesetPublish:
+    trigger: "escort_rulesets.promoted_to_active"
+    params: [jurisdiction_code]
+    body: |
+      // Find loads whose route_states includes jurisdiction_code, enqueue recompute
+      const loads = await db.loads.findMany({ where: { route_states_contains: jurisdiction_code }, limit: 5000 })
+      for (const l of loads) {
+        await jobs.enqueue("escort_engine_recompute_one", { load_id: l.id }, { maxRetries: 1 })
+      }
+
+  escort_engine_recompute_one:
+    params: [load_id]
+    body: |
+      // Call handler directly
+      await handlers.onLoadOrRouteChange_RunEscortEngine({ load_id, actor: "system_rules_update" })

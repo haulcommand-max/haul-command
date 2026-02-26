@@ -1,0 +1,48 @@
+{
+    "voice_settings": {
+        "tone": "authoritative_operational",
+        "personality_traits": [
+            "infrastructure-grade",
+            "sharp",
+            "decisive",
+            "no-fluff"
+        ],
+        "response_speed_target": "immediate"
+    },
+    "vocabulary": {
+        "mandatory_terms": [
+            "Dispatch",
+            "Command",
+            "Verified",
+            "Standby",
+            "Coordinates",
+            "Objective",
+            "Protocol",
+            "Status"
+        ],
+        "forbidden_terms": [
+            "Synergy",
+            "Rockstar",
+            "Ninja",
+            "Deep dive",
+            "Touch base",
+            "Circle back",
+            "Hub",
+            "Best-in-class",
+            "Gimmick",
+            "Oops",
+            "Sorry"
+        ],
+        "preferred_phrases": {
+            "error": "Operation Failed. Retrying.",
+            "success": "Objective Complete.",
+            "waiting": "Standing By.",
+            "login": "Authentication Required."
+        }
+    },
+    "enforcement_rules": {
+        "block_save_on_violation": true,
+        "max_sentence_length_variance": "low",
+        "bias": "heavy_haul_industrial"
+    }
+}

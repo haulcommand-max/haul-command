@@ -1,0 +1,31 @@
+# Jurisdiction Map Control Surface Plan
+
+- [ ] 1. Write plan + findings skeleton + update gemini.md memory (Done)
+- [ ] 2. Create SQL migrations + RLS policies
+  - [ ] Create `jurisdictions`, `operator_listings`, `jurisdiction_rulepacks`, `jurisdiction_support_contacts`, `jurisdiction_content_cache` tables.
+  - [ ] Apply constraints and indexes as defined.
+  - [ ] Configure RLS policies for read/write.
+- [ ] 3. Implement RPC + caching
+  - [ ] Postgres function `get_jurisdiction_drawer`.
+  - [ ] Edge function/RPC `export_state_packet`.
+  - [ ] RPC `set_home_jurisdiction`.
+  - [ ] Edge function / Handler `map_prefetch_home_and_neighbors` (with JSON adjacency lookup).
+- [ ] 4. Build UI (web + mobile)
+  - [ ] Create `/map` and `app://map` routes.
+  - [ ] Integrate lightweight SVG/GeoJSON vector map.
+  - [ ] Handle pinch-zoom, pan, highlight, and drawer toggle.
+  - [ ] Implement Bottom Sheet Drawer with Operators, Rules, Support, and Export tabs.
+  - [ ] Micro-hint text handling ("pinch to zoom • tap a state").
+- [ ] 5. Implement analytics
+  - [ ] Track events: map_opened, jurisdiction_selected, drawer_opened, operator_called, operator_texted, rulepack_opened, support_contact_opened, state_packet_exported.
+- [ ] 6. Write tests + seed data for tests
+  - [ ] Insert US and CA jurisdictions.
+  - [ ] Insert US-FL and US-WY mock `operator_listings` and `jurisdiction_rulepacks`.
+  - [ ] Write integration test verifying US-FL data does not bleed into US-WY payload.
+  - [ ] Test missing/invalid jurisdiction handling.
+  - [ ] Test cache TTL formatting and JSON serialization.
+- [ ] 7. Run tests + fix until green
+- [ ] 8. Produce final artifacts
+  - [ ] Capture web and mobile drawer screenshots.
+  - [ ] Capture browser video demonstrating interaction.
+  - [ ] Submit test reports and artifact summaries.

@@ -1,0 +1,26 @@
+{
+    "carrier_id": "ELITE_HEAVY_77",
+    "vehicle": {
+        "unit_number": "TRK-101",
+        "type": "9-Axle Lowboy",
+        "make": "Trail King",
+        "year": 2022,
+        "vin": "1TK9X4528NF123456",
+        "plate": "TX-HEAVY-101",
+        "plate_state": "TX",
+        "dimensions": {
+            "height": 12.8,
+            "width": 8.5,
+            "length": 53.0,
+            "empty_weight": 42000
+        },
+        "axle_config": "9-axle",
+        "max_payload": 180000,
+        "insurance_expiry": "2026-03-01",
+        "registration_expiry": "2026-02-15"
+    },
+    "created": "2026-02-12 18:58:07.176186",
+    "last_used": "2026-02-12 18:58:07.787242",
+    "permit_count": 2,
+    "total_savings_vs_manual": 25.0
+}

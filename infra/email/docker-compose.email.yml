@@ -1,0 +1,50 @@
+# listmonk Email Engine
+# Self-hosted newsletter + campaign manager with swappable SMTP provider.
+#
+# Usage:
+#   cp .env.email.example .env.email
+#   docker compose -f infra/email/docker-compose.email.yml --env-file .env.email up -d
+#   # First run: docker compose ... run --rm listmonk ./listmonk --install
+
+version: "3.9"
+
+services:
+  listmonk:
+    image: listmonk/listmonk:latest
+    container_name: hc-listmonk
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      - LISTMONK_app__address=0.0.0.0:9000
+      - LISTMONK_db__host=listmonk-db
+      - LISTMONK_db__port=5432
+      - LISTMONK_db__user=listmonk
+      - LISTMONK_db__password=${LISTMONK_DB_PASSWORD}
+      - LISTMONK_db__database=listmonk
+      - LISTMONK_app__admin_username=${LISTMONK_ADMIN_USER}
+      - LISTMONK_app__admin_password=${LISTMONK_ADMIN_PASS}
+    depends_on:
+      listmonk-db:
+        condition: service_healthy
+
+  listmonk-db:
+    image: postgres:16-alpine
+    container_name: hc-listmonk-db
+    restart: unless-stopped
+    ports:
+      - "5439:5432"
+    environment:
+      - POSTGRES_USER=listmonk
+      - POSTGRES_PASSWORD=${LISTMONK_DB_PASSWORD}
+      - POSTGRES_DB=listmonk
+    volumes:
+      - listmonk_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U listmonk"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  listmonk_pg:

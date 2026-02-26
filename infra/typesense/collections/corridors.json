@@ -1,0 +1,72 @@
+{
+    "name": "corridors",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "slug",
+            "type": "string"
+        },
+        {
+            "name": "display_name",
+            "type": "string"
+        },
+        {
+            "name": "country",
+            "type": "string",
+            "facet": true
+        },
+        {
+            "name": "primary_states_provinces",
+            "type": "string[]",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "corridor_type",
+            "type": "string",
+            "facet": true,
+            "optional": true
+        },
+        {
+            "name": "center",
+            "type": "geopoint",
+            "optional": true
+        },
+        {
+            "name": "length_miles_est",
+            "type": "float",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "domination_score",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "risk_score",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "liquidity_score",
+            "type": "int32",
+            "optional": true,
+            "facet": true
+        },
+        {
+            "name": "updated_at",
+            "type": "int64"
+        }
+    ],
+    "default_sorting_field": "updated_at",
+    "token_separators": [
+        "-",
+        "_"
+    ]
+}

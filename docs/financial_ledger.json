@@ -1,0 +1,18 @@
+[
+    {
+        "carrier_id": "CARRIER_77",
+        "type": "FACTORING",
+        "load_amount": 15000.0,
+        "fee": 450.0,
+        "net_payout": 14550.0,
+        "timestamp": "2026-02-12 18:44:43.592343"
+    },
+    {
+        "carrier_id": "CARRIER_77",
+        "type": "FUEL_ADVANCE",
+        "advance_amount": 2000.0,
+        "fee": 20.0,
+        "total_debt": 2020.0,
+        "timestamp": "2026-02-12 18:44:43.592343"
+    }
+]

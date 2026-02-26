@@ -1,0 +1,167 @@
+{
+    "timestamp": "2026-02-12 18:53:21.387702",
+    "load_request": {
+        "shipper": "SIEMENS GAMESA RENEWABLES",
+        "origin": "Port of Houston, TX",
+        "destination": "Savannah, GA",
+        "equipment": "9-Axle Specialized Lowboy",
+        "dimensions": {
+            "height": 14.2,
+            "width": 13.8,
+            "length": 95.0,
+            "weight": 145000
+        }
+    },
+    "feasibility": {
+        "permit_probability": "85%",
+        "risk_score": 0.04,
+        "risk_grade": "A (LOW RISK)",
+        "total_cost_estimate": "$6,935.00",
+        "estimated_processing_time": "12 hours (bottleneck: LA)"
+    },
+    "regulatory": {
+        "states_analyzed": 3,
+        "escort_required": true,
+        "law_enforcement_required": false,
+        "total_permit_fees": "$185.00",
+        "state_details": {
+            "TX": {
+                "permit_type": "STANDARD",
+                "requirements": {
+                    "escort_required": false,
+                    "law_enforcement_required": false,
+                    "travel_restrictions": [
+                        "30 min before sunrise to 30 min after sunset",
+                        "No Sunday/Holiday travel for superloads"
+                    ],
+                    "portal": "TxDMV OSOW Online",
+                    "est_processing_hours": 4,
+                    "base_cost": 60.0
+                }
+            },
+            "LA": {
+                "permit_type": "STANDARD",
+                "requirements": {
+                    "escort_required": true,
+                    "law_enforcement_required": false,
+                    "travel_restrictions": [
+                        "Daylight only",
+                        "No travel during adverse weather warnings"
+                    ],
+                    "portal": "LA DOTD Permit Office",
+                    "est_processing_hours": 12,
+                    "base_cost": 75.0
+                }
+            },
+            "GA": {
+                "permit_type": "STANDARD",
+                "requirements": {
+                    "escort_required": true,
+                    "law_enforcement_required": false,
+                    "travel_restrictions": [
+                        "Daylight only for loads > 12ft wide",
+                        "No holiday travel"
+                    ],
+                    "portal": "GA OSOW Permit System",
+                    "est_processing_hours": 8,
+                    "base_cost": 50.0
+                }
+            }
+        }
+    },
+    "routing": {
+        "routes_evaluated": 3,
+        "viable_routes_found": 2,
+        "recommended_route": "Route C (I-45 to I-16)",
+        "recommended_viable": true,
+        "route_details": [
+            {
+                "route_name": "Route C (I-45 to I-16)",
+                "viable": true,
+                "avg_risk": 0.0,
+                "segments": [
+                    {
+                        "segment": "I-45 S (TX)",
+                        "passable": true,
+                        "risk_score": 0.0,
+                        "issues": []
+                    },
+                    {
+                        "segment": "Hwy 59 (TX)",
+                        "passable": true,
+                        "risk_score": 0.0,
+                        "issues": []
+                    },
+                    {
+                        "segment": "I-16 E (GA)",
+                        "passable": true,
+                        "risk_score": 0.0,
+                        "issues": []
+                    }
+                ]
+            },
+            {
+                "route_name": "Route A (I-10 Gulf Coast)",
+                "viable": true,
+                "avg_risk": 0.367,
+                "segments": [
+                    {
+                        "segment": "I-10 E (TX)",
+                        "passable": true,
+                        "risk_score": 0.0,
+                        "issues": []
+                    },
+                    {
+                        "segment": "I-10 E (LA)",
+                        "passable": true,
+                        "risk_score": 0.7,
+                        "issues": [
+                            "HEIGHT WARNING: Only 0.8ft clearance margin",
+                            "WIDTH WARNING: Only 0.2ft margin"
+                        ]
+                    },
+                    {
+                        "segment": "I-95 N (GA)",
+                        "passable": true,
+                        "risk_score": 0.4,
+                        "issues": [
+                            "HEIGHT WARNING: Only 0.4ft clearance margin"
+                        ]
+                    }
+                ]
+            },
+            {
+                "route_name": "Route B (I-20 Northern)",
+                "viable": false,
+                "avg_risk": 0.467,
+                "segments": [
+                    {
+                        "segment": "I-20 W (TX)",
+                        "passable": true,
+                        "risk_score": 0.4,
+                        "issues": [
+                            "HEIGHT WARNING: Only 0.6ft clearance margin"
+                        ]
+                    },
+                    {
+                        "segment": "I-20 W (LA)",
+                        "passable": false,
+                        "risk_score": 1.0,
+                        "issues": [
+                            "HEIGHT WARNING: Only 0.3ft clearance margin",
+                            "WIDTH WARNING: Only 0.2ft margin",
+                            "ACTIVE RESTRICTION: WEIGHT_RESTRICTION until 2026-04-15"
+                        ]
+                    },
+                    {
+                        "segment": "I-75 S (GA)",
+                        "passable": true,
+                        "risk_score": 0.0,
+                        "issues": []
+                    }
+                ]
+            }
+        ]
+    },
+    "decision": "GO - HIGH CONFIDENCE. Accept freight."
+}

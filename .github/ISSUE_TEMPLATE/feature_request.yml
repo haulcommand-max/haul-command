@@ -1,0 +1,61 @@
+name: 🚀 Feature Request
+description: Suggest a feature for Haul Command
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us build the default pilot car infrastructure layer.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the pain point or opportunity.
+      placeholder: Dispatchers currently have to call 5 escorts to find availability...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should Haul Command solve this?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - "Escort Operations"
+        - "Broker Tools"
+        - "Load Board / EJQE"
+        - "Directory / SEO"
+        - "Map / Navigation"
+        - "Mobile App"
+        - "Data / Intelligence"
+        - "Revenue / AdGrid"
+        - "Infrastructure"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Expected impact
+      options:
+        - "Low — nice to have"
+        - "Medium — improves workflow"
+        - "High — competitive advantage"
+        - "Critical — blocks growth"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you think about?

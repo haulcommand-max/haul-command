@@ -1,0 +1,30 @@
+[
+    {
+        "state": "Florida",
+        "front_sign_required": "Yes",
+        "rear_sign_required": "Yes",
+        "sign_size": "7' x 18\"",
+        "reflectivity_standard": "High Intensity Prismatic",
+        "flag_size": "18\" x 18\"",
+        "flag_color": "Red or Orange",
+        "amber_beacon_visibility": "500 ft",
+        "roof_mount_required": "Yes",
+        "dash_mount_allowed": "No",
+        "mutcd_reference": "Part 6",
+        "citation_risk_score": 3
+    },
+    {
+        "state": "Georgia",
+        "front_sign_required": "Yes",
+        "rear_sign_required": "Yes",
+        "sign_size": "6' x 12\"",
+        "reflectivity_standard": "Engineering Grade",
+        "flag_size": "18\" x 18\"",
+        "flag_color": "Fluorescent Orange",
+        "amber_beacon_visibility": "1000 ft",
+        "roof_mount_required": "Yes",
+        "dash_mount_allowed": "No",
+        "mutcd_reference": "Official Code 32-6-28",
+        "citation_risk_score": 2
+    }
+]
