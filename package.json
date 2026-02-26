@@ -75,7 +75,7 @@
         "@capacitor/haptics": "^8.0.0",
         "@capacitor/push-notifications": "^8.0.1",
         "@playwright/test": "^1.58.2",
-        "@types/next": "^8.0.7",
+        "@types/next": "^9.0.0",
         "@types/node": "^25.3.0",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
