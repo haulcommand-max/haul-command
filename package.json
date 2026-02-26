@@ -45,7 +45,7 @@
         "jspdf": "^4.2.0",
         "jspdf-autotable": "^5.0.7",
         "leaflet": "^1.9.4",
-        "libphonenumber-js": "^1.12.37",
+        "libphonenumber-js": "^1.12.38",
         "lucide-react": "^0.574.0",
         "luxon": "^3.7.2",
         "maplibre-gl": "^5.18.0",
