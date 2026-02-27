@@ -58,6 +58,7 @@
         "react-leaflet": "^5.0.0",
         "react-simple-maps": "^3.0.0",
         "recharts": "^3.7.0",
+        "server-only": "^0.0.1",
         "sharp": "^0.33.5",
         "supercluster": "^8.0.1",
         "swr": "^2.4.0",

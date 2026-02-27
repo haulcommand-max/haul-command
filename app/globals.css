@@ -1073,3 +1073,9 @@ textarea {
   border: 1px solid var(--hc-border-mid);
   box-shadow: var(--shadow-depth);
 }
+
+/* ── Amber Sweep — Landing page ambient glow (night highway feel) ── */
+@keyframes amberSweep {
+  0% { opacity: 0.4; transform: translateX(-5%); }
+  100% { opacity: 1; transform: translateX(5%); }
+}

@@ -11,6 +11,12 @@ const config: Config = {
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
+        // Explicit paths for route groups — Windows glob can miss parenthesized dirs
+        "./app/(landing)/**/*.{js,ts,jsx,tsx,mdx}",
+        "./app/(public)/**/*.{js,ts,jsx,tsx,mdx}",
+        "./app/(app)/**/*.{js,ts,jsx,tsx,mdx}",
+        "./app/(auth)/**/*.{js,ts,jsx,tsx,mdx}",
+        "./app/(onboarding)/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
         extend: {

@@ -1,0 +1,5 @@
+# Broker Confidence Engine (BCE) Master Spec v1.0
+# Drives broker conversion, posting confidence, and marketplace trust signals
+# P0: confidence_score, pre_post_panel, match_time_estimator, escort_quality_layer
+# P1: smart_posting_assistant, corridor_risk_engine, payment_confidence
+# P2: broker_retention_system, social_proof_engine, advanced_monetization

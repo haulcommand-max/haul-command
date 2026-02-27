@@ -1,0 +1,394 @@
+haul_command_directory_intel_stack:
+  version: "v1.0"
+  purpose: >
+    Turn raw contacts (phone/email/name/company) into a ranked, geo-aware, role-classified
+    directory dataset with confidence scoring and coverage heatmaps for supply density.
+
+  inputs:
+    primary_table: "contacts_raw"
+    required_fields:
+      - contact_id
+      - phone_e164_or_raw
+    optional_fields:
+      - name
+      - company
+      - email
+      - website
+      - state
+      - city
+      - address
+      - notes
+      - source_file
+      - source_row
+      - tags
+
+  core_outputs:
+    tables:
+      - contacts_enriched
+      - contact_roles
+      - contact_confidence
+      - coverage_cells
+      - coverage_rollups
+    artifacts:
+      - geojson_tiles
+      - heatmap_pngs
+      - coverage_gap_report
+
+  ############################
+  # 15X UPGRADES (THE IDEA)
+  ############################
+  fifteen_x_upgrades:
+    - "Use multi-signal geo inference (phone NPA/NXX + email domain + company tokens + address fragments + nearest city priors)."
+    - "Role classifier is multi-label (escort, broker, mobile_home_mover, vendor/support) not single-choice."
+    - "Confidence score is compositional (source reliability + field completeness + geo certainty + role certainty + duplicate risk)."
+    - "Coverage heatmap supports multiple grids (county, ZIP3/ZIP5 approx, geohash H6/H7) with rollups by state/metro/corridor."
+    - "Detect ‘hot supply’ vs ‘coverage gaps’ by comparing supply density against corridor/port/metro demand priors."
+    - "Auto-normalize companies (LLC/Inc removal, punctuation, alias collapse) + phone canonicalization to prevent hidden duplicates."
+    - "Entity resolution merges contacts into organizations and people (one company can have multiple phones/emails)."
+    - "Explainability: every inferred field stores provenance + why (signals used, weights, thresholds)."
+    - "Staleness model: mark records stale if no corroborating signals; queue for verification later."
+    - "Quality gates: quarantine low-confidence geo/role records instead of polluting the directory."
+    - "Regional specialization detection (keywords: escort, pilot, flag, chaser, permits, mobile home, modular, manufactured)."
+    - "Brokers get a separate scoring rubric (responsiveness signals later, but now: business email, domain, website, company markers)."
+    - "Mobile home movers get lane affinity tags (FL-heavy, Sunbelt, coastal, etc.) inferred from signals."
+    - "Heatmap can be filtered by role (escort-only supply vs mover-only supply) and by confidence tier."
+    - "Export packs: Anti-Gravity-ready inserts for Supabase + sitemap-ready geo pages list (state/city/category)."
+
+  ########################################
+  # MODULE 1: ENRICHMENT PASS (CITY/STATE)
+  ########################################
+  enrichment_pass:
+    name: "city_state_inference"
+    goals:
+      - infer_state
+      - infer_city
+      - infer_lat_lon_if_possible
+      - preserve_source_fields
+      - produce explainable provenance
+    steps:
+      - id: normalize_phone
+        logic:
+          - "Parse phone to E.164 when possible."
+          - "Extract country, area_code (NPA), exchange (NXX) when NANP."
+      - id: parse_email
+        logic:
+          - "Extract domain, TLD, free_vs_business flag."
+          - "Domain reputation hints (business domain -> higher location certainty if domain matches locale tokens)."
+      - id: parse_company_name
+        logic:
+          - "Normalize company string (strip LLC/Inc, punctuation)."
+          - "Tokenize (escort, pilot, permits, movers, transport, logistics, towing)."
+      - id: infer_state_from_phone
+        logic:
+          - "Map NANP area code -> candidate states/provinces list."
+          - "If multiple states possible, keep distribution."
+      - id: infer_state_from_text
+        logic:
+          - "Regex scan: 'AL', 'Alabama', 'Phoenix', 'Ontario', etc."
+          - "Website TLD (.ca) -> Canada prior."
+      - id: infer_city_from_address_or_text
+        logic:
+          - "If address exists, parse city/state/zip."
+          - "Else use city tokens in company/name/notes."
+      - id: infer_city_from_area_code_priors
+        logic:
+          - "For a given area code, use top metros as priors."
+          - "Select metro that best matches any tokens found (domain, company, notes)."
+      - id: choose_final_geo
+        logic:
+          - "Compute geo_confidence from agreement between signals."
+          - "If geo_confidence < threshold, set geo_status='unknown' and keep candidates array."
+    outputs:
+      contacts_enriched_fields:
+        - state_inferred
+        - city_inferred
+        - lat
+        - lon
+        - geo_candidates_json
+        - geo_confidence
+        - geo_provenance_json
+
+  #######################################
+  # MODULE 2: ESCORT VS BROKER CLASSIFIER
+  #######################################
+  escort_vs_broker_classifier:
+    name: "contact_role_classifier"
+    type: "multi_label"
+    labels:
+      - escort
+      - broker
+      - mobile_home_mover
+      - vendor_support
+      - unknown
+    features:
+      lexical_keywords:
+        escort:
+          - "pilot"
+          - "escort"
+          - "flag"
+          - "chaser"
+          - "lead car"
+          - "chase car"
+          - "oversize"
+          - "wide load"
+        broker:
+          - "broker"
+          - "dispatch"
+          - "logistics"
+          - "freight"
+          - "carrier"
+          - "load board"
+        mobile_home_mover:
+          - "mobile home"
+          - "manufactured"
+          - "modular"
+          - "single-wide"
+          - "double-wide"
+          - "triple-wide"
+          - "setup"
+          - "transport"
+          - "homes"
+        vendor_support:
+          - "training"
+          - "insurance"
+          - "permits"
+          - "equipment"
+          - "signs"
+          - "lights"
+          - "cones"
+          - "compliance"
+      structural_signals:
+        - "business_email_domain"
+        - "website_present"
+        - "company_present"
+        - "role_words_in_company"
+      source_signals:
+        - "source_file_category: brokers/vendors/support/mobile_home_movers/pilotcars"
+    scoring:
+      method: "weighted_rules_then_calibration"
+      thresholds:
+        assign_label_if_score_gte: 0.62
+        mark_unknown_if_all_scores_lt: 0.45
+      tie_breaks:
+        - "If mobile_home_mover >= threshold, keep it even if escort also present (multi-label allowed)."
+        - "If broker and escort both high, set primary_role = broker if dispatch/logistics dominates."
+    outputs:
+      contact_roles_fields:
+        - role_primary
+        - roles_multi_json
+        - role_scores_json
+        - role_confidence
+        - role_provenance_json
+
+  #################################
+  # MODULE 3: CONFIDENCE SCORING
+  #################################
+  confidence_scoring:
+    name: "composite_confidence"
+    score_range: [0, 100]
+    components:
+      completeness_score:
+        weights:
+          phone: 25
+          name: 10
+          company: 15
+          email: 10
+          website: 10
+          city_or_state: 15
+          address: 15
+      source_reliability_score:
+        rules:
+          - "If source_file_category == 'brokers' then +10"
+          - "If source_file_category == 'vendors/support' then +8"
+          - "If source_file_category == 'pilotcars' then +7"
+          - "If row has missing critical fields then -10"
+      geo_certainty_score:
+        formula: "geo_confidence * 20"   # geo_confidence in [0,1]
+      role_certainty_score:
+        formula: "role_confidence * 20"  # role_confidence in [0,1]
+      duplicate_risk_penalty:
+        rules:
+          - "If normalized_phone duplicates found then -100 (dedupe out)"
+          - "If company+email duplicates across many then -10 (possible alias spam)"
+    final_formula:
+      expression: >
+        clamp_0_100(
+          completeness_score
+          + source_reliability_score
+          + geo_certainty_score
+          + role_certainty_score
+          - duplicate_risk_penalty
+        )
+    tiers:
+      A: ">= 85"
+      B: "70-84"
+      C: "55-69"
+      D: "< 55"
+    outputs:
+      contact_confidence_fields:
+        - confidence_score
+        - confidence_tier
+        - score_breakdown_json
+
+  #################################
+  # MODULE 4: COVERAGE HEATMAP
+  #################################
+  coverage_heatmap:
+    name: "supply_density_map"
+    grids:
+      - id: geohash_h6
+        approx_km: 1.2
+      - id: geohash_h7
+        approx_km: 0.15
+      - id: county_rollup
+        key: "state + county"
+      - id: metro_rollup
+        key: "state + metro"
+    measures:
+      - total_contacts
+      - escorts_count
+      - brokers_count
+      - movers_count
+      - avg_confidence
+      - A_tier_count
+      - coverage_score
+    coverage_score:
+      idea: >
+        A weighted supply score that favors escorts and high-confidence records,
+        used for "coverage gaps" and "hot zones".
+      formula:
+        expression: >
+          (escorts_count*3 + movers_count*1.5 + brokers_count*1)
+          * (1 + (avg_confidence/100))
+          + (A_tier_count*2)
+    outputs:
+      coverage_cells_fields:
+        - grid_id
+        - cell_key
+        - cell_center_lat
+        - cell_center_lon
+        - measures_json
+      coverage_rollups_fields:
+        - rollup_type
+        - rollup_key
+        - measures_json
+        - top_companies_json
+    artifacts:
+      - geojson_tiles:
+          by: "grid_id"
+          include_properties:
+            - coverage_score
+            - escorts_count
+            - avg_confidence
+      - heatmap_pngs:
+          variants:
+            - "all_contacts"
+            - "escorts_only"
+            - "mobile_home_movers_only"
+            - "brokers_only"
+            - "A_tier_only"
+      - coverage_gap_report:
+          logic:
+            - "Find cells with low coverage_score but high demand priors (corridors/metros/ports)."
+            - "Output ranked list of gaps to recruit into."
+
+  #################################
+  # DATA MODEL (SUPABASE-READY)
+  #################################
+  schema:
+    contacts_enriched:
+      primary_key: contact_id
+      columns:
+        - phone_e164
+        - phone_raw
+        - name
+        - company
+        - email
+        - website
+        - address
+        - city_inferred
+        - state_inferred
+        - lat
+        - lon
+        - geo_confidence
+        - geo_candidates_json
+        - geo_provenance_json
+        - source_file
+        - source_row
+        - created_at
+        - updated_at
+
+    contact_roles:
+      primary_key: contact_id
+      columns:
+        - role_primary
+        - roles_multi_json
+        - role_scores_json
+        - role_confidence
+        - role_provenance_json
+        - updated_at
+
+    contact_confidence:
+      primary_key: contact_id
+      columns:
+        - confidence_score
+        - confidence_tier
+        - score_breakdown_json
+        - updated_at
+
+    coverage_cells:
+      primary_key: "grid_id + cell_key"
+      columns:
+        - grid_id
+        - cell_key
+        - cell_center_lat
+        - cell_center_lon
+        - measures_json
+        - updated_at
+
+    coverage_rollups:
+      primary_key: "rollup_type + rollup_key"
+      columns:
+        - rollup_type
+        - rollup_key
+        - measures_json
+        - top_companies_json
+        - updated_at
+
+  #################################
+  # QUALITY GATES
+  #################################
+  quality_gates:
+    dedupe:
+      primary_key: "phone_e164"
+      secondary_keys:
+        - "email_lower"
+        - "company_normalized + city_inferred"
+      actions:
+        - "merge_if_same_phone"
+        - "keep_all_phones_per_company_but_link_to_org_entity"
+    publish_rules:
+      publish_if:
+        - "confidence_score >= 55"
+      quarantine_if:
+        - "geo_confidence < 0.35 AND missing state"
+        - "role_confidence < 0.40 AND no keywords"
+      flags:
+        - "mixed_language_or_garbled_text"
+        - "suspected_spam_alias"
+        - "missing_identity_fields"
+
+  #################################
+  # EXECUTION (ANTI-GRAVITY TASKS)
+  #################################
+  antigravity_tasks:
+    - "Load contacts_raw from all source files into staging."
+    - "Run normalization + dedupe -> contacts_enriched."
+    - "Run role classifier -> contact_roles."
+    - "Run confidence scoring -> contact_confidence."
+    - "Generate coverage grids -> coverage_cells + coverage_rollups."
+    - "Export geojson tiles + heatmaps + gap report for ops + recruiting."
+
+  notes:
+    - "This spec is model-agnostic: rules-first works immediately; can be upgraded to ML later."
+    - "All inference writes provenance so you can audit or override per record."
