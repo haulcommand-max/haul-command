@@ -1,0 +1,161 @@
+# =========================================================
+# HAUL COMMAND — GLOBAL SEO KEYWORD MAP v1.0
+# 52 Countries • Localized Terminology • Commercial Intent
+# =========================================================
+
+master_rule:
+  patterns:
+    pilot_car:        [US, CA, AU]
+    escort_vehicle:   [GB, IE, NZ, ZA, AE, QA, SA, SG, MY, KW, OM, BH]
+    abnormal_load:    [GB, ZA, IE, BE, SE, NO, DK, FI]
+    special_transport: [DE, AT, CH, NL, FR, IT, ES, PT, Eastern_Europe]
+    escolta:          [BR, MX, ES, PT, CL, AR, CO, PE, UY, PA, CR]
+
+  global_king_terms:
+    - oversize load escort
+    - pilot car services
+    - abnormal load escort
+
+tier_a_gold:
+  US:
+    money_keywords: [pilot car services, oversize load escort, wide load escort near me]
+    fast_wins: [pilot car near me, chase car service, pole car service, superload escort]
+    semantics: [pilot car company, escort vehicle service, heavy haul escort, oversize load pilot car]
+
+  CA:
+    money_keywords: [pilot car services, oversize load escort, wide load escort]
+    semantics: [escort vehicle Canada, pilot truck service, heavy haul escort, oversize transport escort]
+
+  AU:
+    money_keywords: [pilot vehicle services, oversize escort vehicle, wide load pilot]
+    fast_wins: [pilot ute escort, oversize escort vehicle, wide load pilot Australia]
+    semantics: [escort vehicle Australia, heavy haul escort, over dimensional escort]
+
+  GB:
+    money_keywords: [abnormal load escort, escort vehicle services, wide load escort UK]
+    fast_wins: [STGO escort, abnormal load escort near me, escort vehicle hire]
+    semantics: [heavy haul escort UK, abnormal transport escort]
+
+  NZ:
+    money_keywords: [pilot vehicle services, oversize load escort, overdimension escort]
+    semantics: [pilot vehicle NZ, heavy haul escort, wide load pilot, escort truck service]
+
+  ZA:
+    money_keywords: [abnormal load escort, escort vehicle services, oversize load escort]
+    semantics: [heavy haul escort, abnormal transport escort, pilot vehicle SA]
+
+  DE:
+    money_keywords: [Schwertransport Begleitfahrzeug, Schwertransport Eskorte, Großraumtransport Begleitung]
+    fast_wins: [BF3 Begleitfahrzeug, Schwertransport Eskorte, Transportbegleitung]
+    semantics: [Schwerlast Eskorte, Sondertransport Eskorte]
+
+  NL:
+    money_keywords: [exceptioneel transport begeleiding, transport escort voertuig, zwaar transport begeleiding]
+    semantics: [pilot voertuig, exceptioneel vervoer escort, begeleidingsvoertuig]
+
+  AE:
+    money_keywords: [oversized load escort UAE, pilot car service UAE, heavy transport escort]
+    semantics: [abnormal load escort, escort vehicle Dubai, heavy haul escort UAE]
+
+  BR:
+    money_keywords: [escolta para cargas especiais, veículo batedor escolta, escolta de carga oversized]
+    fast_wins: [batedor carga pesada, escolta rodoviária, escolta carga especial]
+    semantics: [escolta rodoviária, transporte especial escolta]
+
+tier_b_blue:
+  IE: [abnormal load escort, escort vehicle Ireland, wide load escort]
+  SE: [special transport escort, tung transport eskort, abnormal load escort]
+  "NO": [spesialtransport eskorte, følgebil transport, abnormal load escort]
+  DK: [særtransport eskorte, følgebil service, special transport escort]
+  FI: [erikoiskuljetus saattopalvelu, special transport escort, escort vehicle Finland]
+  BE: [convoi exceptionnel escorte, escort voertuig zwaar transport, abnormal load escort]
+  AT: [Schwertransport Begleitung, Sondertransport Eskorte, Begleitfahrzeug Schwertransport]
+  CH: [Schwertransport Begleitfahrzeug, Sondertransport Eskorte, escort vehicle Switzerland]
+  ES: [escolta transporte especial, vehículo piloto transporte, escolta carga sobredimensionada]
+  FR: [convoi exceptionnel escorte, véhicule pilote transport, escorte transport exceptionnel]
+  IT: [scorta trasporti eccezionali, veicolo pilota trasporti, scorta carichi eccezionali]
+  PT: [escolta transporte especial, veículo piloto carga, escolta carga pesada]
+  SA: [oversized load escort Saudi, pilot car service Saudi, heavy transport escort]
+  QA: [oversize load escort Qatar, pilot vehicle service, heavy haul escort]
+  MX: [escolta carga sobredimensionada, vehículo piloto carga, escolta transporte pesado]
+
+tier_c_silver:
+  eastern_europe_template: [special transport escort, abnormal load escort, heavy transport escort]
+  countries: [PL, CZ, SK, HU, SI, EE, LV, LT, HR, RO, BG, GR, TR]
+  gulf_se_asia: [KW, OM, BH, SG, MY]
+  gulf_template: [oversized load escort, pilot car service, heavy haul escort]
+  JP: [特殊輸送 警備車, 重量物 輸送 escort, oversized load escort Japan]
+  KR: [특수 운송 에스코트, 파일럿 차량 서비스, oversized load escort Korea]
+  latam_cluster: [CL, AR, CO, PE]
+  latam_template: [escolta carga sobredimensionada, vehículo piloto carga, escolta transporte especial]
+
+tier_d_slate:
+  countries: [UY, PA, CR]
+  template: [escolta carga sobredimensionada, vehículo piloto carga, escolta transporte especial]
+
+# ─────────────────────────────────────────────────────────
+# PROGRAMMATIC PAGE FACTORY
+# ─────────────────────────────────────────────────────────
+programmatic_pages:
+  layer_1_country_hubs:
+    patterns:
+      - "/pilot-car-services-{country}"
+      - "/oversize-load-escort-{country}"
+      - "/abnormal-load-escort-{country}"
+    total: 156
+
+  layer_2_city_pages:
+    tier_a: 100  # cities per country
+    tier_b: 50
+    tier_c: 30
+    tier_d: 20
+    total: 2530
+
+  layer_3_service_modifiers:
+    multiply_by: [pilot car, escort vehicle, heavy haul escort, abnormal load escort, superload escort]
+    total: 12650
+
+  layer_4_intent_pages:
+    modifiers: [near me, emergency escort, same day escort, 24 hour escort]
+    total: 208
+
+  grand_total: 15544
+
+# ─────────────────────────────────────────────────────────
+# BROKER vs CARRIER INTENT SPLIT
+# ─────────────────────────────────────────────────────────
+intent_split:
+  broker_shipper:
+    share_of_revenue: 0.70
+    keywords: [oversize load escort, pilot car services, heavy haul escort, escort vehicle company]
+    behavior: hiring
+
+  carrier_driver:
+    share_of_traffic: 0.30
+    share_of_revenue: 0.15
+    keywords: [pilot car jobs, escort driver jobs, pilot car certification, escort vehicle requirements]
+    behavior: seeking_work_or_info
+
+# ─────────────────────────────────────────────────────────
+# TOPICAL AUTHORITY CLUSTERS
+# ─────────────────────────────────────────────────────────
+topical_clusters:
+  pillar_1_hire_services:
+    priority: highest
+    pages: [pilot car services, oversize load escort, heavy haul escort, abnormal load escort, escort vehicle near me]
+
+  pillar_2_compliance:
+    priority: high
+    pages: [when is a pilot car required, oversize permit rules by country, escort vehicle requirements, STGO rules, BF3 requirements]
+
+  pillar_3_equipment:
+    priority: medium
+    pages: [pilot car equipment list, escort vehicle lighting requirements, pole car guide, chase car vs pilot car]
+
+  pillar_4_corridors:
+    priority: very_high
+    pages: [port to site escorts, wind farm transport routes, refinery heavy haul routes, mining corridor escorts]
+
+  pillar_5_driver_ecosystem:
+    priority: medium
+    pages: [pilot car jobs, escort certification, PEVO training, how to become pilot car, escort pay rates]

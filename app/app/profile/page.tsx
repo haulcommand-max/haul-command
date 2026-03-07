@@ -11,6 +11,7 @@ import { ComplianceLocker } from "@/components/compliance/ComplianceLocker";
 
 export default function MobileProfilePage() {
     const [profile, setProfile] = useState<any>(null);
+    const [completion, setCompletion] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
 
@@ -22,12 +23,16 @@ export default function MobileProfilePage() {
                 setLoading(false);
                 return;
             }
-            const { data } = await supabase
-                .from("profiles")
-                .select("*, onboarding_events(*), verification_artifacts(*)")
-                .eq("id", user.id)
-                .single();
-            setProfile(data);
+            const [profileRes, completionRes] = await Promise.all([
+                supabase
+                    .from("profiles")
+                    .select("*, onboarding_events(*), verification_artifacts(*)")
+                    .eq("id", user.id)
+                    .single(),
+                fetch("/api/profile/completion").then(r => r.ok ? r.json() : null).catch(() => null),
+            ]);
+            setProfile(profileRes.data);
+            setCompletion(completionRes);
             setLoading(false);
         }
         load();
@@ -41,9 +46,11 @@ export default function MobileProfilePage() {
         </div>
     );
 
-    // Provide default fallback strength calculation if not updated via RPC yet
-    const strength = profile.profile_strength || 15;
-    const tier = profile.visibility_tier || "limited";
+    const strength = completion?.score ?? profile.profile_strength ?? 15;
+    const tier = completion?.tier ?? profile.visibility_tier ?? "limited";
+    const nextStep = completion?.next_step
+        ? { step: completion.next_step.field, reason: completion.next_step.label, seconds: completion.next_step.seconds_estimate }
+        : { step: "loading", reason: "Calculating your next step...", seconds: 0 };
 
     return (
         <main className="min-h-screen bg-hc-bg pb-24">
@@ -61,11 +68,7 @@ export default function MobileProfilePage() {
                 <ProfileStrengthMeter
                     strength={strength}
                     tier={tier}
-                    nextStep={{
-                        step: "insurance",
-                        reason: "Upload insurance to hit Standard Tier",
-                        seconds: 120
-                    }}
+                    nextStep={nextStep}
                 />
 
                 {/* Quick Info Card */}

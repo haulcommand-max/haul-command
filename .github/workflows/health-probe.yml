@@ -2,7 +2,7 @@ name: Health Probe
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # Every 15 minutes
+    - cron: "0 */6 * * *" # Every 6 hours (saves Actions minutes)
   workflow_dispatch:
 
 env:
@@ -15,10 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-      - run: npm ci --legacy-peer-deps
+          sparse-checkout: |
+            scripts/ops
+          sparse-checkout-cone-mode: false
       - name: Probe Health Endpoint
         run: node scripts/ops/health_probe.mjs

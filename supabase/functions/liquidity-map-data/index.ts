@@ -13,17 +13,24 @@ serve(async (req) => {
             Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
         );
 
-        // Parse viewport from query params if needed
-        // const url = new URL(req.url);
-        // const minLat = parseFloat(url.searchParams.get("minLat") ?? "-90");
-        // ...
+        // Parse viewport from request body
+        let minLat = -90, maxLat = 90, minLng = -180, maxLng = 180;
+        try {
+            const body = await req.json();
+            if (body?.viewport) {
+                minLat = body.viewport.minLat ?? minLat;
+                maxLat = body.viewport.maxLat ?? maxLat;
+                minLng = body.viewport.minLng ?? minLng;
+                maxLng = body.viewport.maxLng ?? maxLng;
+            }
+        } catch { /* no body or invalid JSON — use global defaults */ }
 
-        // Call the RPC
+        // Call the RPC with viewport bounds
         const { data, error } = await supabase.rpc("get_live_map_data", {
-            viewport_min_lat: -90,
-            viewport_min_lng: -180,
-            viewport_max_lat: 90,
-            viewport_max_lng: 180
+            viewport_min_lat: minLat,
+            viewport_min_lng: minLng,
+            viewport_max_lat: maxLat,
+            viewport_max_lng: maxLng
         });
 
         if (error) throw error;

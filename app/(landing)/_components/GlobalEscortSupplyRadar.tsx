@@ -2,11 +2,35 @@
 
 import React, { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Globe, Radio, TrendingUp, AlertTriangle } from "lucide-react";
+import { Globe, Radio, TrendingUp, AlertTriangle, Loader2 } from "lucide-react";
+import { fitToDots } from "@/components/radar/fitToDots";
+import {
+    fetchRadarCountries,
+    fetchRadarUsStates,
+    fetchRadarSignals,
+    fetchRadarStats,
+    SIGNAL_TYPE_DISPLAY,
+    type RadarCountryRow,
+    type RadarUsStateRow,
+    type RadarSignalRow,
+    type RadarStats,
+} from "@/lib/supabase/radar";
 
 // ═══════════════════════════════════════════════════════════════
 // GLOBAL ESCORT SUPPLY RADAR + STATE LIQUIDITY SCORE SYSTEM
-// Phase 1: country dots, corridor glow, canvas heat, state tinting,
+// LIVE DATA — powered by hc_rm_radar_geo + hc_csn_signals
+// ⚠️ DEMO_MODE_BLOCKED: hardcoded data MUST NOT ship in production
+// ═══════════════════════════════════════════════════════════════
+
+// Kill switch: if true in production, throw. Must be false.
+const DEMO_MODE_BLOCKED = false;
+if (DEMO_MODE_BLOCKED && process.env.NODE_ENV === "production") {
+    throw new Error("[HAUL COMMAND] Radar demo mode is BLOCKED in production. Set DEMO_MODE_BLOCKED = false.");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GLOBAL ESCORT SUPPLY RADAR + STATE LIQUIDITY SCORE SYSTEM
+// Phase 2: LIVE DATA from Supabase, country dots, corridor glow,
 // liquidity tooltips, trend arrows, shortage detection.
 // ═══════════════════════════════════════════════════════════════
 
@@ -72,51 +96,53 @@ function trendArrow(trend: "up" | "down" | "stable") {
     }
 }
 
-// ── US state positions (relative % inside US zone on world map) ──
-// These map to positions within the US region (roughly cx 10-30, cy 32-50)
-const US_STATES: StateNode[] = [
-    { abbr: "TX", name: "Texas", cx: 18, cy: 47, activeEscorts: 182, openLoads: 28, medianMatchMin: 11, fillRate: 0.87, trend: "up", href: "/directory/us/tx" },
-    { abbr: "CA", name: "California", cx: 11, cy: 42, activeEscorts: 124, openLoads: 15, medianMatchMin: 14, fillRate: 0.82, trend: "stable", href: "/directory/us/ca" },
-    { abbr: "FL", name: "Florida", cx: 27, cy: 48, activeEscorts: 89, openLoads: 12, medianMatchMin: 13, fillRate: 0.79, trend: "up", href: "/directory/us/fl" },
-    { abbr: "OH", name: "Ohio", cx: 25, cy: 39, activeEscorts: 68, openLoads: 10, medianMatchMin: 16, fillRate: 0.74, trend: "stable", href: "/directory/us/oh" },
-    { abbr: "PA", name: "Pennsylvania", cx: 27, cy: 38, activeEscorts: 55, openLoads: 8, medianMatchMin: 18, fillRate: 0.71, trend: "stable", href: "/directory/us/pa" },
-    { abbr: "LA", name: "Louisiana", cx: 22, cy: 48, activeEscorts: 62, openLoads: 14, medianMatchMin: 12, fillRate: 0.84, trend: "up", href: "/directory/us/la" },
-    { abbr: "OK", name: "Oklahoma", cx: 19, cy: 44, activeEscorts: 45, openLoads: 9, medianMatchMin: 15, fillRate: 0.76, trend: "stable", href: "/directory/us/ok" },
-    { abbr: "GA", name: "Georgia", cx: 26, cy: 46, activeEscorts: 48, openLoads: 7, medianMatchMin: 17, fillRate: 0.72, trend: "down", href: "/directory/us/ga" },
-    { abbr: "IL", name: "Illinois", cx: 22, cy: 39, activeEscorts: 52, openLoads: 11, medianMatchMin: 14, fillRate: 0.78, trend: "stable", href: "/directory/us/il" },
-    { abbr: "NC", name: "North Carolina", cx: 27, cy: 43, activeEscorts: 38, openLoads: 6, medianMatchMin: 19, fillRate: 0.69, trend: "down", href: "/directory/us/nc" },
-    { abbr: "WA", name: "Washington", cx: 12, cy: 34, activeEscorts: 32, openLoads: 5, medianMatchMin: 20, fillRate: 0.68, trend: "stable", href: "/directory/us/wa" },
-    { abbr: "AZ", name: "Arizona", cx: 13, cy: 45, activeEscorts: 28, openLoads: 6, medianMatchMin: 22, fillRate: 0.65, trend: "down", href: "/directory/us/az" },
-    { abbr: "IN", name: "Indiana", cx: 24, cy: 39, activeEscorts: 41, openLoads: 8, medianMatchMin: 16, fillRate: 0.73, trend: "stable", href: "/directory/us/in" },
-    { abbr: "MO", name: "Missouri", cx: 21, cy: 42, activeEscorts: 35, openLoads: 7, medianMatchMin: 18, fillRate: 0.71, trend: "stable", href: "/directory/us/mo" },
-    { abbr: "CO", name: "Colorado", cx: 16, cy: 41, activeEscorts: 22, openLoads: 4, medianMatchMin: 24, fillRate: 0.62, trend: "up", href: "/directory/us/co" },
-];
+// ── Map positions (projection-only — NOT data, just where dots go on the map) ──
+const COUNTRY_POSITIONS: Record<string, { cx: number; cy: number }> = {
+    US: { cx: 22, cy: 42 }, CA: { cx: 22, cy: 28 }, MX: { cx: 18, cy: 50 },
+    AU: { cx: 82, cy: 72 }, GB: { cx: 47, cy: 28 }, NZ: { cx: 90, cy: 80 },
+    DE: { cx: 51, cy: 30 }, FR: { cx: 48, cy: 33 }, NL: { cx: 49, cy: 30 },
+    IT: { cx: 52, cy: 36 }, ES: { cx: 46, cy: 36 }, NO: { cx: 50, cy: 20 },
+    SE: { cx: 53, cy: 22 }, DK: { cx: 51, cy: 25 }, FI: { cx: 56, cy: 20 },
+    CH: { cx: 50, cy: 32 }, AT: { cx: 52, cy: 32 }, BE: { cx: 49, cy: 31 },
+    IE: { cx: 45, cy: 28 }, PT: { cx: 45, cy: 36 },
+    BR: { cx: 32, cy: 68 }, AR: { cx: 28, cy: 78 }, CL: { cx: 26, cy: 76 },
+    CO: { cx: 26, cy: 55 }, PE: { cx: 24, cy: 62 }, UY: { cx: 30, cy: 76 },
+    CR: { cx: 20, cy: 53 }, PA: { cx: 22, cy: 54 },
+    ZA: { cx: 55, cy: 78 }, NG: { cx: 50, cy: 52 },
+    AE: { cx: 62, cy: 45 }, SA: { cx: 60, cy: 43 }, QA: { cx: 62, cy: 44 },
+    KW: { cx: 61, cy: 42 }, BH: { cx: 61, cy: 43 }, OM: { cx: 63, cy: 46 },
+    IN: { cx: 68, cy: 48 }, ID: { cx: 76, cy: 60 }, TH: { cx: 72, cy: 52 },
+    MY: { cx: 74, cy: 56 }, SG: { cx: 74, cy: 58 }, PH: { cx: 78, cy: 52 },
+    VN: { cx: 74, cy: 50 }, JP: { cx: 84, cy: 36 }, KR: { cx: 82, cy: 38 },
+    TR: { cx: 58, cy: 36 }, PL: { cx: 54, cy: 29 }, GR: { cx: 55, cy: 36 },
+    HU: { cx: 54, cy: 32 }, RO: { cx: 56, cy: 32 }, BG: { cx: 56, cy: 34 },
+    CZ: { cx: 53, cy: 30 }, SK: { cx: 54, cy: 31 }, HR: { cx: 53, cy: 33 },
+    SI: { cx: 52, cy: 33 }, EE: { cx: 56, cy: 24 }, LV: { cx: 56, cy: 25 },
+    LT: { cx: 55, cy: 26 },
+};
 
-const COUNTRY_NODES: CountryNode[] = [
-    { iso2: "US", name: "United States", wave: 1, cx: 22, cy: 42, escortCount: 896, demandLevel: "high", href: "/directory/us" },
-    { iso2: "CA", name: "Canada", wave: 1, cx: 22, cy: 28, escortCount: 42, demandLevel: "medium", href: "/directory/ca" },
-    { iso2: "AU", name: "Australia", wave: 1, cx: 82, cy: 72, escortCount: 18, demandLevel: "low", href: "/directory/au" },
-    { iso2: "GB", name: "United Kingdom", wave: 2, cx: 47, cy: 28, demandLevel: "low" },
-    { iso2: "NZ", name: "New Zealand", wave: 2, cx: 90, cy: 80, demandLevel: "none" },
-    { iso2: "DE", name: "Germany", wave: 2, cx: 51, cy: 30, demandLevel: "low" },
-    { iso2: "SE", name: "Sweden", wave: 3, cx: 53, cy: 22, demandLevel: "none" },
-    { iso2: "NO", name: "Norway", wave: 3, cx: 50, cy: 20, demandLevel: "none" },
-    { iso2: "NL", name: "Netherlands", wave: 3, cx: 49, cy: 30, demandLevel: "none" },
-    { iso2: "IE", name: "Ireland", wave: 3, cx: 45, cy: 28, demandLevel: "none" },
-    { iso2: "DK", name: "Denmark", wave: 3, cx: 51, cy: 25, demandLevel: "none" },
-    { iso2: "FI", name: "Finland", wave: 3, cx: 56, cy: 20, demandLevel: "none" },
-    { iso2: "AE", name: "UAE", wave: 4, cx: 62, cy: 45, demandLevel: "none" },
-    { iso2: "SA", name: "Saudi Arabia", wave: 4, cx: 60, cy: 43, demandLevel: "none" },
-    { iso2: "ZA", name: "South Africa", wave: 4, cx: 55, cy: 78, demandLevel: "none" },
-    { iso2: "PL", name: "Poland", wave: 4, cx: 54, cy: 29, demandLevel: "none" },
-    { iso2: "BE", name: "Belgium", wave: 4, cx: 49, cy: 31, demandLevel: "none" },
-    { iso2: "MX", name: "Mexico", wave: 5, cx: 18, cy: 50, demandLevel: "none" },
-    { iso2: "BR", name: "Brazil", wave: 5, cx: 32, cy: 68, demandLevel: "none" },
-    { iso2: "CL", name: "Chile", wave: 5, cx: 28, cy: 78, demandLevel: "none" },
-    { iso2: "ES", name: "Spain", wave: 5, cx: 46, cy: 36, demandLevel: "none" },
-    { iso2: "CH", name: "Switzerland", wave: 5, cx: 50, cy: 32, demandLevel: "none" },
-    { iso2: "AT", name: "Austria", wave: 5, cx: 52, cy: 32, demandLevel: "none" },
-];
+const US_STATE_POSITIONS: Record<string, { cx: number; cy: number; name: string }> = {
+    TX: { cx: 18, cy: 47, name: "Texas" }, CA: { cx: 11, cy: 42, name: "California" },
+    FL: { cx: 27, cy: 48, name: "Florida" }, OH: { cx: 25, cy: 39, name: "Ohio" },
+    PA: { cx: 27, cy: 38, name: "Pennsylvania" }, LA: { cx: 22, cy: 48, name: "Louisiana" },
+    OK: { cx: 19, cy: 44, name: "Oklahoma" }, GA: { cx: 26, cy: 46, name: "Georgia" },
+    IL: { cx: 22, cy: 39, name: "Illinois" }, NC: { cx: 27, cy: 43, name: "North Carolina" },
+    WA: { cx: 12, cy: 34, name: "Washington" }, AZ: { cx: 13, cy: 45, name: "Arizona" },
+    IN: { cx: 24, cy: 39, name: "Indiana" }, MO: { cx: 21, cy: 42, name: "Missouri" },
+    CO: { cx: 16, cy: 41, name: "Colorado" }, NY: { cx: 28, cy: 37, name: "New York" },
+    MI: { cx: 24, cy: 37, name: "Michigan" }, TN: { cx: 24, cy: 44, name: "Tennessee" },
+    AL: { cx: 24, cy: 46, name: "Alabama" }, MS: { cx: 23, cy: 47, name: "Mississippi" },
+    AR: { cx: 21, cy: 45, name: "Arkansas" }, KS: { cx: 18, cy: 42, name: "Kansas" },
+    MN: { cx: 20, cy: 35, name: "Minnesota" }, WI: { cx: 22, cy: 36, name: "Wisconsin" },
+    IA: { cx: 21, cy: 39, name: "Iowa" }, SC: { cx: 27, cy: 44, name: "South Carolina" },
+    KY: { cx: 25, cy: 42, name: "Kentucky" }, OR: { cx: 11, cy: 36, name: "Oregon" },
+    NM: { cx: 15, cy: 46, name: "New Mexico" }, NV: { cx: 12, cy: 41, name: "Nevada" },
+    ID: { cx: 13, cy: 36, name: "Idaho" }, WV: { cx: 26, cy: 40, name: "West Virginia" },
+    ND: { cx: 18, cy: 34, name: "North Dakota" }, NE: { cx: 18, cy: 39, name: "Nebraska" },
+    UT: { cx: 14, cy: 41, name: "Utah" }, WY: { cx: 15, cy: 38, name: "Wyoming" },
+    MT: { cx: 14, cy: 35, name: "Montana" }, SD: { cx: 18, cy: 37, name: "South Dakota" },
+    VA: { cx: 27, cy: 41, name: "Virginia" }, MD: { cx: 28, cy: 40, name: "Maryland" },
+};
 
 interface CorridorLine {
     name: string;
@@ -167,16 +193,116 @@ export function GlobalEscortSupplyRadar() {
     const [tooltip, setTooltip] = useState<TooltipState>({ visible: false, x: 0, y: 0, content: null });
     const [pulseRings, setPulseRings] = useState<PulseRing[]>([]);
     const pulseIdRef = useRef(0);
+    const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
+
+    // ── LIVE DATA STATE ──
+    const [countries, setCountries] = useState<RadarCountryRow[]>([]);
+    const [usStates, setUsStates] = useState<RadarUsStateRow[]>([]);
+    const [signals, setSignals] = useState<RadarSignalRow[]>([]);
+    const [stats, setStats] = useState<RadarStats | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    // ── Fetch live data from Supabase ──
+    useEffect(() => {
+        let cancelled = false;
+        async function load() {
+            setLoading(true);
+            const [cRes, sRes, sigRes, stRes] = await Promise.all([
+                fetchRadarCountries(),
+                fetchRadarUsStates(),
+                fetchRadarSignals(5),
+                fetchRadarStats(),
+            ]);
+            if (cancelled) return;
+            if (cRes.error) setError(cRes.error);
+            setCountries(cRes.rows);
+            setUsStates(sRes.rows);
+            setSignals(sigRes.rows);
+            setStats(stRes.stats);
+            setLastUpdated(cRes.lastUpdatedAt);
+            setLoading(false);
+        }
+        load();
+        return () => { cancelled = true; };
+    }, []);
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const ob = new ResizeObserver((entries) => {
+            if (!entries[0]) return;
+            const { width, height } = entries[0].contentRect;
+            setContainerSize({ w: width, h: height });
+        });
+        ob.observe(containerRef.current);
+        return () => ob.disconnect();
+    }, []);
+
+    // ── Build country nodes from live data ──
+    const COUNTRY_NODES: CountryNode[] = useMemo(() => {
+        return countries.map((c) => {
+            const pos = COUNTRY_POSITIONS[c.country_code] || { cx: 50, cy: 50 };
+            const wave: WaveLevel = c.is_active_market ? 1
+                : c.launch_wave && c.launch_wave <= 2 ? 2
+                    : c.launch_wave && c.launch_wave <= 3 ? 3
+                        : c.tier === "A" || c.tier === "B" ? 4
+                            : 5;
+            const demandLevel = c.demand_level === "high" ? "high"
+                : c.demand_level === "medium" || c.demand_level === "med" ? "medium"
+                    : c.demand_level === "low" ? "low" : "none";
+            return {
+                iso2: c.country_code,
+                name: c.country_name,
+                wave,
+                cx: pos.cx,
+                cy: pos.cy,
+                escortCount: c.operator_count || undefined,
+                demandLevel: demandLevel as CountryNode["demandLevel"],
+                href: `/directory/${c.country_code.toLowerCase()}`,
+            };
+        });
+    }, [countries]);
+
+    // ── Build US state nodes from live data ──
+    const US_STATES: StateNode[] = useMemo(() => {
+        return usStates
+            .filter((s) => US_STATE_POSITIONS[s.state_abbr])
+            .map((s) => {
+                const pos = US_STATE_POSITIONS[s.state_abbr]!;
+                return {
+                    abbr: s.state_abbr,
+                    name: pos.name,
+                    cx: pos.cx,
+                    cy: pos.cy,
+                    activeEscorts: s.operator_count,
+                    openLoads: s.load_count_24h,
+                    medianMatchMin: 15, // computed from future data
+                    fillRate: Math.min(1, s.liquidity_score / 100),
+                    trend: "stable" as const,
+                    href: `/directory/us/${s.state_abbr.toLowerCase()}`,
+                };
+            });
+    }, [usStates]);
 
     // Pre-compute liquidity scores
     const stateLiquidity = useMemo(() =>
         US_STATES.map((s) => ({ ...s, liquidity: computeLiquidity(s) }))
-        , []);
+        , [US_STATES]);
 
-    // Shortage states (< 40 liquidity + demand rising or stable-high loads)
+    // Shortage states (< 40 liquidity)
     const shortageStates = useMemo(() =>
         stateLiquidity.filter((s) => s.liquidity < 40)
         , [stateLiquidity]);
+
+    const activeNodes = useMemo(() => [
+        ...stateLiquidity,
+        ...COUNTRY_NODES.filter((n) => n.wave <= 2)
+    ], [stateLiquidity, COUNTRY_NODES]);
+
+    const mapTransform = useMemo(() => {
+        return fitToDots(activeNodes, containerSize.w, containerSize.h, 0.15);
+    }, [activeNodes, containerSize.w, containerSize.h]);
 
     // Canvas heat + state tint painting
     useEffect(() => {
@@ -235,10 +361,11 @@ export function GlobalEscortSupplyRadar() {
         resize();
         window.addEventListener("resize", resize);
         return () => window.removeEventListener("resize", resize);
-    }, [stateLiquidity]);
+    }, [stateLiquidity, COUNTRY_NODES]);
 
     // Liquidity pulses: fire from random active states
     useEffect(() => {
+        if (stateLiquidity.length === 0) return;
         const interval = setInterval(() => {
             const pick = stateLiquidity[Math.floor(Math.random() * stateLiquidity.length)];
             if (!pick) return;
@@ -258,49 +385,64 @@ export function GlobalEscortSupplyRadar() {
     }, []);
 
     // Mousemove: check states first, then countries
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const rect = containerRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        const mx = ((e.clientX - rect.left) / rect.width) * 100;
-        const my = ((e.clientY - rect.top) / rect.height) * 100;
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const rawX = e.clientX - rect.left;
+        const rawY = e.clientY - rect.top;
+        const w = containerSize.w || rect.width;
+        const h = containerSize.h || rect.height;
 
-        // Check states first (higher priority, tighter threshold)
+        let mouseX = rawX;
+        let mouseY = rawY;
+
+        // Apply inverse transform to map screen coordinates to unscaled component coordinates
+        if (mapTransform.scale !== undefined && mapTransform.scale !== 1) {
+            const { scale, tx, ty, originX, originY } = mapTransform as any;
+            mouseX = originX + (rawX - tx - originX) / scale;
+            mouseY = originY + (rawY - ty - originY) / scale;
+        }
+
+        let closestCountry: CountryNode | null = null;
         let closestState: (StateNode & { liquidity: number }) | null = null;
-        let minStateDist = 3;
-        stateLiquidity.forEach((s) => {
-            const d = Math.sqrt((mx - s.cx) ** 2 + (my - s.cy) ** 2);
-            if (d < minStateDist) { minStateDist = d; closestState = s; }
+        let minDist = 400; // max acceptable distance squared = 20px * 20px
+
+        // Find nearest state (US)
+        stateLiquidity.forEach((node) => {
+            const cx = (node.cx / 100) * w;
+            const cy = (node.cy / 100) * h;
+            const d = (cx - mouseX) ** 2 + (cy - mouseY) ** 2;
+            if (d < minDist) { minDist = d; closestState = node; }
+        });
+
+        // Find nearest country
+        COUNTRY_NODES.forEach((node) => {
+            if (node.wave > 3) return; // Only interact with active expansion regions
+            const cx = (node.cx / 100) * w;
+            const cy = (node.cy / 100) * h;
+            const d = (cx - mouseX) ** 2 + (cy - mouseY) ** 2;
+            // Overrides state interaction if exactly matching country 
+            if (d < minDist) { minDist = d; closestState = null; closestCountry = node; }
         });
 
         if (closestState) {
             setTooltip({
                 visible: true,
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top,
-                content: { type: "state", data: closestState, liquidity: (closestState as any).liquidity },
+                x: rawX,
+                y: rawY,
+                content: { type: "state", data: closestState as any, liquidity: (closestState as any).liquidity },
             });
-            return;
-        }
-
-        // Check countries
-        let closestCountry: CountryNode | null = null;
-        let minDist = 4;
-        COUNTRY_NODES.forEach((node) => {
-            const d = Math.sqrt((mx - node.cx) ** 2 + (my - node.cy) ** 2);
-            if (d < minDist) { minDist = d; closestCountry = node; }
-        });
-
-        if (closestCountry) {
+        } else if (closestCountry) {
             setTooltip({
                 visible: true,
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top,
+                x: rawX,
+                y: rawY,
                 content: { type: "country", data: closestCountry },
             });
         } else {
             setTooltip((prev) => prev.visible ? { ...prev, visible: false } : prev);
         }
-    }, [stateLiquidity]);
+    }, [stateLiquidity, COUNTRY_NODES, mapTransform, containerSize]);
 
     return (
         <section className="relative z-10 py-12">
@@ -325,7 +467,12 @@ export function GlobalEscortSupplyRadar() {
                         Escort Coverage Intelligence
                     </h2>
                     <p className="text-sm text-[#8fa3b8] mt-3 max-w-lg mx-auto font-medium">
-                        Live escort density, corridor pressure, and market liquidity across 25+ countries.
+                        Rolling coverage across {stats?.total_countries ?? "—"} countries — {COUNTRY_NODES.length} tracked.
+                        {lastUpdated && (
+                            <span style={{ opacity: 0.6, marginLeft: 8, fontSize: 11 }}>
+                                Updated {new Date(lastUpdated).toLocaleTimeString()}
+                            </span>
+                        )}
                     </p>
                 </motion.div>
 
@@ -352,167 +499,177 @@ export function GlobalEscortSupplyRadar() {
                             boxShadow: "0 0 80px rgba(198,146,58,0.04), inset 0 1px 0 rgba(255,255,255,0.03), inset 0 -1px 0 rgba(0,0,0,0.3)",
                         }}
                     >
-                        {/* Subtle grid backdrop */}
+                        {/* ── Transform Wrapper for Auto-Zoom ── */}
                         <div style={{
-                            position: "absolute", inset: 0,
-                            backgroundImage: "linear-gradient(rgba(198,146,58,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(198,146,58,0.015) 1px, transparent 1px)",
-                            backgroundSize: "80px 80px",
-                            pointerEvents: "none",
-                        }} />
-
-                        {/* Canvas: heatmap + state liquidity tint */}
-                        <canvas
-                            ref={canvasRef}
-                            style={{
+                            position: "absolute",
+                            inset: 0,
+                            transform: mapTransform?.transform ?? "none",
+                            transformOrigin: mapTransform?.transformOrigin ?? "center",
+                            transition: "transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)",
+                            willChange: "transform",
+                        }}>
+                            {/* Subtle grid backdrop */}
+                            <div style={{
                                 position: "absolute", inset: 0,
+                                backgroundImage: "linear-gradient(rgba(198,146,58,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(198,146,58,0.015) 1px, transparent 1px)",
+                                backgroundSize: "80px 80px",
                                 pointerEvents: "none",
-                                opacity: 0.85,
-                                mixBlendMode: "screen",
-                            }}
-                        />
+                            }} />
 
-                        {/* SVG overlay */}
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"
-                            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-                            <defs>
-                                <filter id="corridorGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                    <feGaussianBlur stdDeviation="0.3" result="blur" />
-                                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                                </filter>
-                            </defs>
+                            {/* Canvas: heatmap + state liquidity tint */}
+                            <canvas
+                                ref={canvasRef}
+                                style={{
+                                    position: "absolute", inset: 0,
+                                    pointerEvents: "none",
+                                    opacity: 0.85,
+                                    mixBlendMode: "screen",
+                                }}
+                            />
 
-                            {/* Corridor Glow Lines */}
-                            {CORRIDOR_LINES.map((corridor, idx) => {
-                                const d = corridor.points.map((p, i) => `${i === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
-                                // Deterministic durations to avoid hydration mismatch
-                                const animDur = [4.3, 4.8, 5.2, 4.6, 5.0][idx % 5];
+                            {/* SVG overlay */}
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none"
+                                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+                                <defs>
+                                    <filter id="corridorGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="0.3" result="blur" />
+                                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                                    </filter>
+                                </defs>
+
+                                {/* Corridor Glow Lines */}
+                                {CORRIDOR_LINES.map((corridor, idx) => {
+                                    const d = corridor.points.map((p, i) => `${i === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+                                    // Deterministic durations to avoid hydration mismatch
+                                    const animDur = [4.3, 4.8, 5.2, 4.6, 5.0][idx % 5];
+                                    return (
+                                        <g key={corridor.name}>
+                                            <path d={d} fill="none" stroke="rgba(198,146,58,0.25)" strokeWidth="0.15"
+                                                filter="url(#corridorGlow)" opacity={corridor.intensity} />
+                                            <path d={d} fill="none" stroke="rgba(224,176,92,0.6)"
+                                                strokeWidth="0.1" strokeDasharray="3 8" opacity={corridor.intensity * 0.7}>
+                                                <animate attributeName="stroke-dashoffset" from="0" to="-11"
+                                                    dur={`${animDur}s`} repeatCount="indefinite" />
+                                            </path>
+                                        </g>
+                                    );
+                                })}
+
+                                {/* Liquidity pulse rings */}
+                                {pulseRings.map((ring) => {
+                                    const elapsed = (Date.now() - ring.startTime) / 3000;
+                                    return (
+                                        <circle key={ring.id} cx={ring.cx} cy={ring.cy}
+                                            r={0.5 + elapsed * 4}
+                                            fill="none" stroke="rgba(198,146,58,0.4)"
+                                            strokeWidth="0.08" opacity={Math.max(0, 1 - elapsed)} />
+                                    );
+                                })}
+
+                                {/* Shortage detection pulses (states < 40 liquidity) */}
+                                {shortageStates.map((s) => (
+                                    <circle key={`shortage-${s.abbr}`} cx={s.cx} cy={s.cy} r="1.5"
+                                        fill="none" stroke="rgba(239,68,68,0.25)" strokeWidth="0.06"
+                                        opacity="0.6">
+                                        <animate attributeName="r" from="1" to="3.5" dur="4s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" from="0.5" to="0" dur="4s" repeatCount="indefinite" />
+                                    </circle>
+                                ))}
+                            </svg>
+
+                            {/* State liquidity dots (US) */}
+                            {stateLiquidity.map((s) => {
+                                const tier = getLiquidityTier(s.liquidity);
+                                const isShortage = s.liquidity < 40;
                                 return (
-                                    <g key={corridor.name}>
-                                        <path d={d} fill="none" stroke="rgba(198,146,58,0.25)" strokeWidth="0.15"
-                                            filter="url(#corridorGlow)" opacity={corridor.intensity} />
-                                        <path d={d} fill="none" stroke="rgba(224,176,92,0.6)"
-                                            strokeWidth="0.1" strokeDasharray="3 8" opacity={corridor.intensity * 0.7}>
-                                            <animate attributeName="stroke-dashoffset" from="0" to="-11"
-                                                dur={`${animDur}s`} repeatCount="indefinite" />
-                                        </path>
-                                    </g>
+                                    <div
+                                        key={s.abbr}
+                                        onClick={() => window.location.href = s.href}
+                                        style={{
+                                            position: "absolute",
+                                            left: `${s.cx}%`,
+                                            top: `${s.cy}%`,
+                                            transform: "translate(-50%, -50%)",
+                                            cursor: "pointer",
+                                            zIndex: 12,
+                                            pointerEvents: "auto",
+                                        }}
+                                    >
+                                        <span style={{
+                                            display: "block",
+                                            width: 8,
+                                            height: 8,
+                                            borderRadius: "50%",
+                                            background: tier.textColor,
+                                            border: `1.5px solid ${tier.textColor}80`,
+                                            boxShadow: `0 0 8px ${tier.textColor}40`,
+                                            position: "relative",
+                                        }} />
+                                        <span style={{
+                                            position: "absolute",
+                                            top: 11,
+                                            left: "50%",
+                                            transform: "translateX(-50%)",
+                                            fontSize: "6px",
+                                            fontWeight: 800,
+                                            color: tier.textColor,
+                                            whiteSpace: "nowrap",
+                                            letterSpacing: "0.08em",
+                                            textShadow: "0 1px 3px rgba(0,0,0,0.9)",
+                                            opacity: 0.8,
+                                        }}>
+                                            {s.abbr}
+                                        </span>
+                                    </div>
                                 );
                             })}
 
-                            {/* Liquidity pulse rings */}
-                            {pulseRings.map((ring) => {
-                                const elapsed = (Date.now() - ring.startTime) / 3000;
+                            {/* Country dots (non-US, excluding US since states replace it) */}
+                            {COUNTRY_NODES.filter((n) => n.iso2 !== "US").map((node) => {
+                                const ws = getWaveStyle(node.wave);
+                                const size = node.wave === 1 ? 12 : node.wave <= 3 ? 9 : 6;
                                 return (
-                                    <circle key={ring.id} cx={ring.cx} cy={ring.cy}
-                                        r={0.5 + elapsed * 4}
-                                        fill="none" stroke="rgba(198,146,58,0.4)"
-                                        strokeWidth="0.08" opacity={Math.max(0, 1 - elapsed)} />
+                                    <div key={node.iso2}
+                                        onClick={() => { if (ws.interactive && node.href) window.location.href = node.href; }}
+                                        style={{
+                                            position: "absolute", left: `${node.cx}%`, top: `${node.cy}%`,
+                                            transform: "translate(-50%, -50%)",
+                                            cursor: ws.interactive ? "pointer" : "default",
+                                            zIndex: 10, opacity: ws.opacity, pointerEvents: "auto",
+                                        }}>
+                                        {ws.glow && (
+                                            <span style={{
+                                                position: "absolute", inset: -5, borderRadius: "50%",
+                                                background: `radial-gradient(circle, ${ws.dotColor}40, transparent 70%)`,
+                                                animation: "radarPulse 2s ease-in-out infinite",
+                                            }} />
+                                        )}
+                                        {ws.pulse && (
+                                            <span style={{
+                                                position: "absolute", inset: -3, borderRadius: "50%",
+                                                border: `1px solid ${ws.dotColor}30`,
+                                                animation: "radarPing 6s ease-in-out infinite",
+                                            }} />
+                                        )}
+                                        <span style={{
+                                            display: "block", width: size, height: size, borderRadius: "50%",
+                                            background: ws.dotColor, border: `1.5px solid ${ws.dotColor}80`,
+                                            boxShadow: ws.glow ? `0 0 10px ${ws.dotColor}60` : "none",
+                                            position: "relative",
+                                        }} />
+                                        {node.wave === 1 && (
+                                            <span style={{
+                                                position: "absolute", top: size + 3, left: "50%",
+                                                transform: "translateX(-50%)", fontSize: "7px",
+                                                fontWeight: 800, color: ws.dotColor, whiteSpace: "nowrap",
+                                                letterSpacing: "0.1em", textTransform: "uppercase" as const,
+                                                textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                                            }}>{node.iso2}</span>
+                                        )}
+                                    </div>
                                 );
                             })}
-
-                            {/* Shortage detection pulses (states < 40 liquidity) */}
-                            {shortageStates.map((s) => (
-                                <circle key={`shortage-${s.abbr}`} cx={s.cx} cy={s.cy} r="1.5"
-                                    fill="none" stroke="rgba(239,68,68,0.25)" strokeWidth="0.06"
-                                    opacity="0.6">
-                                    <animate attributeName="r" from="1" to="3.5" dur="4s" repeatCount="indefinite" />
-                                    <animate attributeName="opacity" from="0.5" to="0" dur="4s" repeatCount="indefinite" />
-                                </circle>
-                            ))}
-                        </svg>
-
-                        {/* State liquidity dots (US) */}
-                        {stateLiquidity.map((s) => {
-                            const tier = getLiquidityTier(s.liquidity);
-                            const isShortage = s.liquidity < 40;
-                            return (
-                                <div
-                                    key={s.abbr}
-                                    onClick={() => window.location.href = s.href}
-                                    style={{
-                                        position: "absolute",
-                                        left: `${s.cx}%`,
-                                        top: `${s.cy}%`,
-                                        transform: "translate(-50%, -50%)",
-                                        cursor: "pointer",
-                                        zIndex: 12,
-                                        pointerEvents: "auto",
-                                    }}
-                                >
-                                    <span style={{
-                                        display: "block",
-                                        width: 8,
-                                        height: 8,
-                                        borderRadius: "50%",
-                                        background: tier.textColor,
-                                        border: `1.5px solid ${tier.textColor}80`,
-                                        boxShadow: `0 0 8px ${tier.textColor}40`,
-                                        position: "relative",
-                                    }} />
-                                    <span style={{
-                                        position: "absolute",
-                                        top: 11,
-                                        left: "50%",
-                                        transform: "translateX(-50%)",
-                                        fontSize: "6px",
-                                        fontWeight: 800,
-                                        color: tier.textColor,
-                                        whiteSpace: "nowrap",
-                                        letterSpacing: "0.08em",
-                                        textShadow: "0 1px 3px rgba(0,0,0,0.9)",
-                                        opacity: 0.8,
-                                    }}>
-                                        {s.abbr}
-                                    </span>
-                                </div>
-                            );
-                        })}
-
-                        {/* Country dots (non-US, excluding US since states replace it) */}
-                        {COUNTRY_NODES.filter((n) => n.iso2 !== "US").map((node) => {
-                            const ws = getWaveStyle(node.wave);
-                            const size = node.wave === 1 ? 12 : node.wave <= 3 ? 9 : 6;
-                            return (
-                                <div key={node.iso2}
-                                    onClick={() => { if (ws.interactive && node.href) window.location.href = node.href; }}
-                                    style={{
-                                        position: "absolute", left: `${node.cx}%`, top: `${node.cy}%`,
-                                        transform: "translate(-50%, -50%)",
-                                        cursor: ws.interactive ? "pointer" : "default",
-                                        zIndex: 10, opacity: ws.opacity, pointerEvents: "auto",
-                                    }}>
-                                    {ws.glow && (
-                                        <span style={{
-                                            position: "absolute", inset: -5, borderRadius: "50%",
-                                            background: `radial-gradient(circle, ${ws.dotColor}40, transparent 70%)`,
-                                            animation: "radarPulse 2s ease-in-out infinite",
-                                        }} />
-                                    )}
-                                    {ws.pulse && (
-                                        <span style={{
-                                            position: "absolute", inset: -3, borderRadius: "50%",
-                                            border: `1px solid ${ws.dotColor}30`,
-                                            animation: "radarPing 6s ease-in-out infinite",
-                                        }} />
-                                    )}
-                                    <span style={{
-                                        display: "block", width: size, height: size, borderRadius: "50%",
-                                        background: ws.dotColor, border: `1.5px solid ${ws.dotColor}80`,
-                                        boxShadow: ws.glow ? `0 0 10px ${ws.dotColor}60` : "none",
-                                        position: "relative",
-                                    }} />
-                                    {node.wave === 1 && (
-                                        <span style={{
-                                            position: "absolute", top: size + 3, left: "50%",
-                                            transform: "translateX(-50%)", fontSize: "7px",
-                                            fontWeight: 800, color: ws.dotColor, whiteSpace: "nowrap",
-                                            letterSpacing: "0.1em", textTransform: "uppercase" as const,
-                                            textShadow: "0 1px 4px rgba(0,0,0,0.8)",
-                                        }}>{node.iso2}</span>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        </div> {/* End Transform Wrapper */}
 
                         {/* ── Tooltip ── */}
                         {tooltip.visible && tooltip.content && (
@@ -676,12 +833,12 @@ export function GlobalEscortSupplyRadar() {
                             </span>
                         </div>
 
-                        {/* ── Stats overlay (top right) ── */}
+                        {/* ── Stats overlay (top right) — LIVE from DB ── */}
                         <div style={{ position: "absolute", top: 16, right: 16, display: "flex", gap: "8px", zIndex: 20 }}>
                             {[
-                                { icon: Globe, value: "25+", label: "Countries", color: "#3b82f6" },
-                                { icon: Radio, value: "3", label: "Live Markets", color: "#22c55e" },
-                                { icon: TrendingUp, value: "15", label: "States Tracked", color: "#C6923A" },
+                                { icon: Globe, value: `${stats?.total_countries ?? "—"}`, label: "Countries", color: "#3b82f6" },
+                                { icon: Radio, value: `${stats?.active_markets ?? "—"}`, label: "Active Markets", color: "#22c55e" },
+                                { icon: TrendingUp, value: `${(stats?.total_surfaces ?? 0).toLocaleString()}`, label: "Surfaces", color: "#C6923A" },
                             ].map(({ icon: Icon, value, label, color }) => (
                                 <div key={label} style={{
                                     background: "rgba(12,15,24,0.88)",
@@ -689,10 +846,53 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: "10px", padding: "6px 12px",
                                     backdropFilter: "blur(12px)", textAlign: "center" as const,
                                 }}>
-                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{value}</div>
+                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? "…" : value}</div>
                                     <div style={{ fontSize: "8px", fontWeight: 700, color: "#8fa3b8", textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{label}</div>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* ── Live Route Intelligence Feed — LIVE from CSN ── */}
+                        <div className="hidden sm:flex" style={{
+                            position: "absolute", top: 60, left: 16,
+                            width: "240px",
+                            flexDirection: "column", gap: "8px",
+                            zIndex: 20,
+                        }}>
+                            <div style={{ fontSize: "10px", fontWeight: 800, color: "#eab308", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 4, textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
+                                Live Route Signals
+                            </div>
+                            {signals.length > 0 ? signals.map((sig, i) => {
+                                const display = SIGNAL_TYPE_DISPLAY[sig.signal_type] || { label: sig.signal_type, color: "#8fa3b8", icon: "📡" };
+                                const ago = Math.round((Date.now() - new Date(sig.created_at).getTime()) / 60000);
+                                const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
+                                return (
+                                    <motion.div key={sig.signal_id}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.8 + i * 0.2 }}
+                                        style={{
+                                            background: "rgba(12,15,24,0.85)", border: `1px solid ${display.color}40`,
+                                            borderRadius: 12, padding: "10px", backdropFilter: "blur(12px)",
+                                            boxShadow: `0 4px 12px ${display.color}15`,
+                                        }}>
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 2 }}>
+                                            <span style={{ fontSize: 11, fontWeight: 700, color: display.color }}>{display.icon} {display.label}</span>
+                                            <span style={{ fontSize: 9, color: "#8fa3b8" }}>{timeStr}</span>
+                                        </div>
+                                        {sig.description && <div style={{ fontSize: 10, color: "rgba(255,255,255,0.7)" }}>{sig.description}</div>}
+                                    </motion.div>
+                                );
+                            }) : (
+                                <div style={{
+                                    background: "rgba(12,15,24,0.85)", border: "1px solid rgba(255,255,255,0.06)",
+                                    borderRadius: 12, padding: "12px", backdropFilter: "blur(12px)",
+                                    textAlign: "center",
+                                }}>
+                                    <div style={{ fontSize: 10, color: "#8fa3b8", fontWeight: 600 }}>No live signals yet</div>
+                                    <div style={{ fontSize: 9, color: "#6b7280", marginTop: 4 }}>Signals appear when escorts report conditions</div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </motion.div>

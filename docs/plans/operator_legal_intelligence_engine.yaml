@@ -1,0 +1,56 @@
+# ============================================
+# Haul Command — Operator Legal Intelligence Engine
+# Anti-Gravity Build Spec (Production Grade)
+# ============================================
+
+system:
+  name: operator_legal_intelligence_engine
+  version: 1.0.0
+  owner: haul_command
+  priority: critical
+  deployment_mode: global
+  description: >
+    Real-time legality, reciprocity, and earnings intelligence layer that determines
+    where escort operators can legally work based on certifications, expiration,
+    jurisdiction rules, and route geometry.
+
+objectives:
+  primary:
+    - eliminate operator compliance uncertainty
+    - provide state/province legality decisions in real time
+    - increase broker trust via verified compliance
+    - surface earnings unlock opportunities
+    - reduce illegal dispatch risk
+  secondary:
+    - create compliance-driven retention loop
+    - power trust score enhancements
+    - feed escort supply intelligence
+    - support global expansion rules
+
+implementation_status:
+  migration: supabase/migrations/20260301_operator_legal_intelligence_engine.sql
+  core_engine: lib/legal-intelligence/legality-resolver.ts
+  api_legality: app/api/v1/legal-intelligence/legality/route.ts
+  api_route_check: app/api/v1/legal-intelligence/route-check/route.ts
+  api_expiration_scan: app/api/v1/legal-intelligence/expiration-scan/route.ts
+  compliance_gates: lib/marketplace/compliance-gates.ts
+
+data_sources_integrated:
+  esc_org:
+    type: certification_body
+    certs: [pevo_wa, witpac]
+    reciprocity_states: [AZ, CO, FL, GA, KS, MN, NY, NC, OK, PA, TX, UT, VA, WA]
+    source_url: https://www.esc.org
+  uf_t2_center:
+    type: certification_body
+    certs: [pevo_fl]
+    directory_size: 9_operators
+    source_url: https://techtransfer.ce.ufl.edu/training/pilot-escort-flagging/
+  wcs_permits:
+    type: technology_enabled_brokerage
+    model: managed_dispatch
+    coverage: 50_states_plus_canada
+    has_marketplace: false
+    has_proprietary_portals: true
+    years_operating: 27
+    source_url: https://wcspermits.com

@@ -1,0 +1,207 @@
+haul_command_4m_keyword_domination_engine:
+  version: "1.0"
+  objective: >
+    Systematically expand Haul Command's organic surface to
+    4M+ high-intent keywords across 52 countries without
+    triggering thin-content or doorway risks.
+
+  strategic_targets:
+    countries_total: 52
+    initial_focus_tier_a: 10
+    keyword_targets:
+      phase_1: 1000000
+      phase_2: 2500000
+      phase_3: 4000000
+      stretch_goal: 8000000
+
+  keyword_graph_model:
+
+    core_services:
+      - pilot_car
+      - escort_vehicle
+      - heavy_haul_escort
+      - oversize_load_escort
+      - high_pole_escort
+      - chase_car_service
+
+    geo_layers:
+
+      country_level:
+        pattern_examples:
+          - "{service} {country}"
+          - "{country} oversize escort requirements"
+
+      state_province_level:
+        pattern_examples:
+          - "{service} {state}"
+          - "{state} escort vehicle requirements"
+
+      city_level:
+        pattern_examples:
+          - "{service} in {city}"
+          - "{city} pilot car companies"
+
+      near_me_layer:
+        pattern_examples:
+          - "{service} near me"
+          - "escort vehicle near me"
+          - "oversize escort near me"
+
+      corridor_layer:
+        pattern_examples:
+          - "{city_a} to {city_b} escort"
+          - "{highway} escort requirements"
+          - "{corridor} heavy haul route"
+
+    intent_amplifiers:
+      commercial:
+        - cost
+        - rates
+        - pricing
+        - quote
+        - hire
+        - company
+        - services
+      urgency:
+        - urgent
+        - same_day
+        - 24_7
+        - emergency
+        - available_now
+      qualification:
+        - certified
+        - verified
+        - licensed
+        - insured
+        - experienced
+      regulatory:
+        - requirements
+        - permit
+        - laws
+        - regulations
+        - rules
+
+    vertical_cargo_layer:
+      segments:
+        - wind_turbine
+        - mobile_home
+        - crane
+        - transformer
+        - bridge_beam
+        - heavy_equipment
+        - yacht_transport
+        - modular_building
+        - mining_equipment
+      pattern_examples:
+        - "{cargo} escort services"
+        - "{cargo} transport pilot car"
+        - "{cargo} oversize requirements"
+
+  multilingual_expansion:
+    priority_languages:
+      - en
+      - de
+      - pt
+      - es
+      - fr
+      - nl
+    native_term_map:
+      de:
+        - schwertransport_begleitfahrzeug
+        - bf3_begleitfahrzeug
+        - grossraumtransport_begleitung
+      pt_br:
+        - escolta_de_cargas_especiais
+        - veiculo_escolta_excesso
+      es:
+        - vehiculo_escolta_carga_sobredimensionada
+        - escolta_transporte_especial
+      fr:
+        - voiture_escorte_convoi_exceptionnel
+      nl:
+        - exceptioneel_transport_begeleiding
+
+  programmatic_page_factory:
+    page_types:
+      - country_hubs
+      - state_province_pages
+      - city_service_pages
+      - near_me_pages
+      - corridor_lane_pages
+      - cargo_specific_pages
+      - regulatory_pages
+      - competitor_alternative_pages
+    quality_guards:
+      minimum_unique_content_words: 250
+      required_dynamic_blocks:
+        - live_operator_count
+        - corridor_stress_signal
+        - local_regulation_snippet
+        - faq_variation
+        - internal_links_cluster
+      thin_content_blocker: true
+      duplicate_pattern_detector: true
+
+  internal_linking_domination:
+    cluster_rules:
+      country_links_to:
+        - all_states
+        - major_cities
+        - top_corridors
+      state_links_to:
+        - cities
+        - service_variants
+        - nearby_states
+      city_links_to:
+        - operators_nearby
+        - corridors
+        - near_me_variant
+      corridor_links_to:
+        - origin_city
+        - destination_city
+        - related_corridors
+    authority_flow_goal:
+      no_orphan_pages: true
+      max_click_depth: 3
+
+  graduated_indexing_strategy:
+    week_1:
+      - tier_a_country_pages
+      - top_states
+      - top_50_cities
+    week_2:
+      - major_corridors
+      - cargo_vertical_pages
+    week_4:
+      - near_me_pages
+      - regulatory_pages
+    month_2_plus:
+      - long_tail_city_expansion
+      - secondary_language_rollout
+
+  anti_gravity_automation:
+    daily_jobs:
+      - discover_new_keyword_gaps
+      - expand_geo_matrix
+      - detect_serp_soft_spots
+      - enqueue_new_page_candidates
+      - refresh_internal_links
+      - update_lastmod_signals
+    weekly_jobs:
+      - prune_low_value_pages
+      - merge_keyword_cannibalization
+      - promote_high_ctr_clusters
+      - expand_winning_verticals
+
+  success_metrics:
+    organic_surface_targets:
+      indexed_pages_90_days: 25000
+      indexed_pages_12_months: 150000
+    traffic_targets:
+      month_3_multiplier: 2.0
+      month_6_multiplier: 4.0
+      month_12_multiplier: 8.0
+    dominance_signals:
+      featured_snippet_capture_rate: 0.25
+      top_3_keyword_share: 0.35
+      near_me_visibility_index: 0.5

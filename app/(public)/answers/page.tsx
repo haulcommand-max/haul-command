@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpCircle, ChevronRight, BookOpen } from "lucide-react";
+import { NativeAdCard } from "@/components/ads/NativeAdCard";
 import { AI_ANSWER_SEEDS, LOAD_TYPES } from "@/lib/seo/pilot-car-taxonomy";
 
 export const metadata: Metadata = {
@@ -51,7 +52,14 @@ export default function AnswersIndexPage() {
                     ))}
                 </div>
 
-                <h2 className="text-base font-black text-white mb-4">Answers by Load Type</h2>
+                {/* Native Ad */}
+                <NativeAdCard
+                    surface="answers_mid"
+                    placementId="answers-below-grid"
+                    variant="inline"
+                />
+
+                <h2 className="text-base font-black text-white mb-4 mt-8">Answers by Load Type</h2>
                 <div className="flex flex-wrap gap-2">
                     {LOAD_TYPES.map((lt) => (
                         <Link key={lt.slug} href={`/industries/${lt.slug}`}

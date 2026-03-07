@@ -1,0 +1,34 @@
+-- =========================================================
+-- HAUL COMMAND — Regulation Data Engine v1 + v1.1
+-- Full pipeline: source → snapshot → change alert → rule → SEO page
+-- Deployed: 2026-03-03
+-- =========================================================
+--
+-- TABLES (8):
+--   hc_jurisdictions, hc_regulation_sources, hc_evidence_snapshots,
+--   hc_change_alerts, hc_regulation_rules, hc_rule_versions,
+--   hc_review_queue, hc_seo_pages
+--
+-- ENUMS (9):
+--   hc_jurisdiction_type, hc_reg_source_type, hc_trust_tier,
+--   hc_rule_domain, hc_verification_status, hc_review_status,
+--   hc_alert_severity, hc_alert_status, hc_page_type
+--
+-- RPCs (10+2):
+--   hc_is_admin, hc_hash_text, hc_set_updated_at,
+--   hc_write_evidence_snapshot, hc_upsert_regulation_rule,
+--   hc_upsert_seo_page, hc_get_published_rules,
+--   hc_get_published_seo_page_by_slug, hc_latest_snapshots_per_source,
+--   hc_keyword_score, hc_should_auto_publish
+--
+-- EDGE FUNCTIONS (3):
+--   hc_snapshot_fetcher — crawls regulation sources, stores snapshots
+--   hc_rule_extractor — deterministic escort + travel time parser
+--   hc_seo_builder — generates 3 SEO pages per US state
+--
+-- SEED DATA:
+--   51 US jurisdictions (50 states + DC)
+--   51 placeholder regulation sources (replace URLs with official DOT pages)
+--
+-- RLS: all tables locked, service_role write, admin read internal, public read published
+-- Auto-publish gate: trust_tier(official/secondary) + confidence >= 0.85 + no open high alerts

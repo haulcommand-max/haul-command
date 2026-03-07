@@ -1,0 +1,101 @@
+# ============================================================
+# HAUL COMMAND — INDUSTRIAL ZONE DOMINATION LAYER
+# 10,000–25,000 heavy-haul-relevant zones globally
+# ============================================================
+
+project: haul_command_industrial_zone_domination_layer
+mission: >
+  Identify, classify, and dominate all heavy-haul-relevant industrial
+  zones, manufacturing clusters, energy sites, and mega-project regions
+  globally to capture demand-side search traffic and strengthen the
+  Haul Command logistics knowledge graph.
+
+coverage_policy:
+  include_if:
+    - heavy_manufacturing
+    - wind_turbine_activity
+    - mining_operations
+    - oil_and_gas_facilities
+    - large_construction_projects
+    - distribution_megacenters
+    - rail_intermodal_yards
+    - large_ag_equipment
+    - aerospace_defense_heavy
+    - power_generation_sites
+  exclude_if: [light_commercial_only, retail_only, office_parks, small_business_parks]
+
+scale_targets:
+  conservative: 10000
+  aggressive: 18000
+  stretch: 25000
+
+discovery_engine:
+  sources:
+    - government_industrial_park_lists
+    - openstreetmap_industrial_landuse
+    - wind_farm_locations
+    - mining_site_datasets
+    - power_plant_locations
+    - rail_intermodal_terminals
+    - large_manufacturer_locations
+    - epc_project_announcements
+    - internal_load_destinations
+    - satellite_landuse_signals
+  processing: [deduplicate, normalize, geo_validate, classify_industry, attach_region, score]
+
+relevance_scoring:
+  range: 0-100
+  factors:
+    heavy_industry_presence: 0-25
+    oversize_move_probability: 0-20
+    corridor_proximity: 0-15
+    port_proximity: 0-10
+    freight_activity: 0-10
+    search_demand: 0-10
+    competition_gap: 0-10
+  tiers:
+    tier_1_dominate: ">= 72"
+    tier_2_build: "50-71"
+    tier_3_monitor: "< 50"
+
+page_factory:
+  url: "/industrial-zones/[country]/[zone-slug]"
+  modules:
+    - zone_overview
+    - industry_profile
+    - heavy_haul_relevance
+    - connected_corridors
+    - nearest_ports
+    - escort_requirements
+    - recent_loads
+    - demand_indicator
+    - faq_block
+    - structured_data
+  quality:
+    min_data_points: 12
+    min_internal_links: 10
+    require_corridor_or_port: true
+    noindex_until_score: 82
+  schema: [Dataset, Organization_or_Place, FAQPage, BreadcrumbList, ItemList]
+
+logistics_graph_fusion:
+  linkages: [zone_to_ports, zone_to_corridors, zone_to_rail, zone_to_loads, zone_to_supply]
+  outputs: [demand_heatmap, high_value_flags, surge_indicators]
+
+rollout:
+  phase_1_north_america: {zones: 6000}
+  phase_2_tier_a: {zones: 3500}
+  phase_3_tier_b: {zones: 2500}
+  phase_4_tier_c: {zones: 1500}
+
+monetization:
+  - sponsored_zone_slots
+  - priority_visibility
+  - surge_recruitment
+  - broker_featured_destinations
+  - enterprise_data_api
+
+execution_priority:
+  immediate: [zone_discovery, scoring, page_factory_v1, graph_fusion]
+  next_wave: [escort_overlay, load_board_integration, demand_heatmaps]
+  advanced: [predictive_demand, mega_project_tracking, cross_border_industrial]

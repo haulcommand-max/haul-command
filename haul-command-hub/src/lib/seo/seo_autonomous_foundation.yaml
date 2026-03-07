@@ -1,0 +1,220 @@
+# Haul Command — Autonomous SEO Foundation
+# This YAML spec drives Anti-Gravity's autonomous SEO behavior
+
+version: "1.0.0"
+intent: >
+  Provide Anti-Gravity with a fully wired SEO domination blueprint including
+  internal linking architecture, citation acquisition targets, and autonomous
+  expansion logic starting from Florida and scaling globally.
+
+autonomy_policy:
+  florida_is_seed_market: true
+  human_override_scope:
+    - florida_start_point_only
+  anti_gravity_controls:
+    - crawl_priority_decisions
+    - internal_link_expansion
+    - citation_queue_ordering
+    - geo_expansion_sequence
+    - content_gap_detection
+  expansion_logic:
+    primary_signal_stack:
+      - search_demand_density
+      - supply_gap_score
+      - revenue_intent_score
+      - crawl_success_rate
+      - indexation_velocity
+    expansion_rule: >
+      When Florida cluster achieves threshold metrics, Anti-Gravity automatically
+      expands to next highest opportunity geography without human approval.
+
+internal_linking_domination_map:
+  global_rules:
+    homepage_min_links: 100
+    country_hub_min_links: 40
+    service_page_min_links: 25
+    guide_page_min_links: 15
+    max_click_depth_target: 3
+    anchor_text_policy:
+      exact_match_percentage_cap: 35
+      partial_match_percentage_target: 45
+      branded_percentage_floor: 20
+    contextual_link_requirement: true
+    footer_link_grid_enabled: true
+    breadcrumb_required: true
+
+  link_flow_architecture:
+    homepage:
+      links_to:
+        - tier_a_country_hubs
+        - florida_hub_priority
+        - top_services_global
+        - money_guides_global
+    country_hubs:
+      links_to:
+        - country_service_pages
+        - country_guides
+        - neighboring_country_hubs
+        - florida_hub_if_us
+    service_pages:
+      links_to:
+        - parent_country_hub
+        - related_services_same_country
+        - cost_guides
+        - compliance_guides
+    guide_pages:
+      links_to:
+        - relevant_service_pages
+        - country_hub
+        - faq_clusters
+        - superload_meter
+
+  florida_priority_cluster:
+    enabled: true
+    required_pages:
+      - florida_pilot_car_service
+      - florida_oversize_escort
+      - florida_heavy_haul_routes
+      - florida_permit_guides
+    boost_rules:
+      internal_link_multiplier: 1.6
+      crawl_priority: "highest"
+      freshness_boost_days: 14
+
+  anti_gravity_internal_link_tasks:
+    - scan_orphan_pages
+    - compute_link_equity_distribution
+    - inject_contextual_links
+    - rebalance_anchor_text
+    - enforce_click_depth_limit
+
+citation_engine:
+  acquisition_mode: "autonomous_continuous"
+  verification_required: true
+  deduplication_required: true
+  geo_localization_required: true
+
+  tier_a_citation_blast:
+    priority: "highest"
+    description: "Core authority + mapping + identity layer"
+    sites:
+      - name: "Google Business Profile"
+        type: "mapping"
+        geo_required: true
+      - name: "Bing Places"
+        type: "mapping"
+        geo_required: true
+      - name: "Apple Business Connect"
+        type: "mapping"
+        geo_required: true
+      - name: "LinkedIn Company Page"
+        type: "authority"
+      - name: "Crunchbase"
+        type: "authority"
+      - name: "YouTube Channel"
+        type: "authority"
+      - name: "Facebook Business Page"
+        type: "authority"
+      - name: "X (Twitter) Business Profile"
+        type: "authority"
+      - name: "OpenCorporates"
+        type: "entity_validation"
+      - name: "BBB Profile"
+        type: "trust"
+        geo_required: true
+
+  tier_b_industry_citations:
+    priority: "high"
+    description: "Niche relevance and logistics authority"
+    sites:
+      - name: "Trucker Path Business Listing"
+        type: "industry"
+      - name: "DAT Vendor Directory"
+        type: "industry"
+      - name: "123Loadboard Company Listing"
+        type: "industry"
+      - name: "BulkLoads Business Directory"
+        type: "industry"
+      - name: "TruckDown Vendor Listing"
+        type: "industry"
+      - name: "Pilot Car Association directories"
+        type: "industry"
+      - name: "Heavy Haul and Oversize Load forums"
+        type: "community"
+      - name: "Local Chamber of Commerce (Florida first)"
+        type: "local_authority"
+      - name: "State trucking associations"
+        type: "industry"
+      - name: "Logistics vendor directories"
+        type: "industry"
+
+  tier_c_authority_padding:
+    priority: "support"
+    description: "Entity reinforcement and link diversity"
+    sites:
+      - name: "About.me"
+      - name: "Medium Publication"
+      - name: "WordPress.com Profile"
+      - name: "Tumblr Brand Page"
+      - name: "Pinterest Business"
+      - name: "Foursquare Business"
+      - name: "Hotfrog Business Listing"
+      - name: "Brownbook Listing"
+      - name: "Manta Business Profile"
+      - name: "Cybo Business Directory"
+
+  anti_gravity_citation_tasks:
+    - normalize_nap
+    - geo_match_validation
+    - duplicate_detection
+    - submission_queue_scoring
+    - verification_followups
+    - link_index_monitoring
+
+crawl_acceleration:
+  sitemap_submission_required: true
+  priority_url_ping_enabled: true
+  log_file_monitoring: true
+  crawl_budget_allocator:
+    florida_weight: 2.0
+    tier_a_country_weight: 1.4
+    tier_b_country_weight: 1.0
+  freshness_signals:
+    last_updated_required: true
+    structured_data_refresh_days: 30
+
+trust_signal_enforcement:
+  prohibit_fake_metrics: true
+  require_real_counts_from_db: true
+  last_updated_stamp: true
+  veteran_owned_badge: true
+  schema_required:
+    - organization
+    - website
+    - breadcrumb
+    - faq
+    - service
+    - itemlist
+
+success_thresholds_for_auto_expansion:
+  florida_cluster:
+    indexed_ratio_target: 0.65
+    impressions_growth_rate: 0.15
+    crawl_errors_max: 0.02
+    citation_completion_target: 0.70
+  expansion_trigger: >
+    When all Florida thresholds are met for 21 consecutive days,
+    Anti-Gravity selects next geography using opportunity scoring.
+
+observability:
+  dashboards_required:
+    - indexation_velocity
+    - internal_link_health
+    - citation_completion_rate
+    - crawl_depth_distribution
+    - florida_cluster_performance
+  alerting:
+    orphan_page_alert: true
+    deindex_alert: true
+    citation_failure_alert: true
+    crawl_spike_alert: true

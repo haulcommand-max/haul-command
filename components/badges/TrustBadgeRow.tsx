@@ -70,6 +70,19 @@ const BADGE_MAP: Record<string, BadgeConfig> = {
         tooltip: "Business identity verified by Haul Command",
         color: "bg-slate-400/15 text-slate-300 border-slate-400/30",
     },
+    // Profile Completion Engine badges
+    founding_operator: {
+        icon: "🏗️",
+        label: "Founding Operator",
+        tooltip: "Among the first operators to claim their profile on Haul Command",
+        color: "bg-amber-500/20 text-amber-300 border-amber-400/40",
+    },
+    verified_operator: {
+        icon: "✓",
+        label: "Verified Operator",
+        tooltip: "Identity verified and profile completion above 80%",
+        color: "bg-green-500/15 text-green-400 border-green-400/30",
+    },
 };
 
 interface TrustBadgeRowProps {

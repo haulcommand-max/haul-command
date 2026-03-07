@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la \"c:\\\\Users\\\\PC User\\\\Biz\\\\supabase\\\\functions\"\" | grep \"^d \")"
+      "Bash(ls -la \"c:\\\\Users\\\\PC User\\\\Biz\\\\supabase\\\\functions\"\" | grep \"^d \")",
+      "Bash(sdkmanager --version)"
     ]
   }
 }

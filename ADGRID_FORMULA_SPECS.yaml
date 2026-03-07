@@ -1,0 +1,685 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# HAUL COMMAND — ADGRID FORMULA SPECS (Companion to AUTONOMOUS_BRAIN_WIRING_MAP)
+# All scoring formulas, thresholds, tier configs, and floor models.
+# These are the exact numbers the runtime systems use.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+version: "1.0.0"
+companion_to: "AUTONOMOUS_BRAIN_WIRING_MAP.yaml"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. AD AUCTION ENGINE — Quality Weighting Formula
+# ─────────────────────────────────────────────────────────────────────────────
+
+ad_auction_quality_formula:
+  formula: |
+    expected_value =
+      normalized_bid *
+      predicted_ctr *
+      conversion_quality_proxy
+
+    auction_score =
+      (normalized_bid * 0.40) +
+      (expected_value * 0.30) +
+      (relevance_score * 0.15) +
+      (trust_score * 0.10) +
+      (historical_ctr * 0.05)
+
+  pricing:
+    model: "second_price_plus_epsilon"
+    epsilon: 0.01
+    floor_respected: true
+
+  eligibility_filters:
+    required:
+      - advertiser_active: true
+      - geo_match: true
+      - budget_remaining: "> 0"
+      - trust_score: ">= min_threshold"
+    optional_boosts:
+      - corridor_match
+      - equipment_match
+      - near_me_radius
+
+  pacing_controls:
+    budget_smoothing: true
+    max_impressions_per_hour: "dynamic"
+    daypart_support: true
+
+  auction_exploration:
+    enabled: true
+    traffic_allocation:
+      new_ads: 0.10
+      underexposed_ads: 0.05
+    epsilon_decay: true
+    minimum_learning_impressions: 300
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. DYNAMIC FLOOR PRICING — Demand Multiplier Formula
+# ─────────────────────────────────────────────────────────────────────────────
+
+dynamic_floor_pricing:
+
+  base_floors_by_tier:
+    tier_a_gold: 1.00
+    tier_b_blue: 0.55
+    tier_c_silver: 0.30
+    tier_d_seed: 0.15
+
+  demand_multiplier_formula: |
+    demand_multiplier =
+      (fill_rate * 0.35) +
+      (bid_pressure * 0.30) +
+      (advertiser_density * 0.20) +
+      (ctr_momentum * 0.15)
+
+    adjusted_floor =
+      base_floor * clamp(demand_multiplier, 0.5, 2.5)
+
+  scarcity_boosts:
+    corridor_sponsor: 1.6
+    top_of_search: 1.4
+    map_premium_pin: 1.25
+
+  protections:
+    max_daily_floor_change: 0.20
+    min_floor_guard: true
+    cold_start_freeze_days: 30
+
+  learning_windows:
+    primary: "7_days"
+    secondary: "30_days"
+
+  demand_inputs:
+    - impressions_last_7d
+    - fill_rate
+    - avg_bid_pressure
+    - unique_advertisers
+    - ctr_trend
+    - corridor_heat_score
+
+  elasticity_tracking:
+    enabled: true
+    model: "rolling_regression"
+    inputs:
+      - floor_changes
+      - fill_rate_response
+      - revenue_response
+
+  floor_optimization:
+    revenue_peak_hunting: true
+    safe_push_increment: 0.05
+    backoff_on_fill_drop: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. AD FATIGUE SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+ad_fatigue_scoring:
+
+  formula: |
+    fatigue_score =
+      (repeat_exposure_rate * 0.30) +
+      (ctr_decay * 0.30) +
+      (conversion_decay * 0.20) +
+      (bounce_correlation * 0.20)
+
+  thresholds:
+    mild: 0.35
+    moderate: 0.55
+    severe: 0.75
+
+  automatic_actions:
+    mild:
+      - reduce_frequency_20_percent
+    moderate:
+      - rotate_creative_priority_down
+      - expand_competitor_mix
+    severe:
+      - temporary_slot_suppression
+      - notify_advertiser_refresh_needed
+
+  user_protection:
+    per_user_per_day: 5
+    per_user_per_session: 2
+
+  signals:
+    user_level:
+      - repeat_impressions_same_ad
+      - declining_ctr_per_user
+      - session_ad_density
+      - scroll_speed_increase
+    creative_level:
+      - ctr_decay_7d
+      - ctr_decay_30d
+      - impression_saturation
+      - conversion_drop
+    market_level:
+      - slot_ctr_decline
+      - rising_bounce_rate
+      - ad_viewability_drop
+
+  creative_half_life_model:
+    enabled: true
+    model: "survival_analysis"
+    outputs:
+      - predicted_fatigue_date
+      - expected_ctr_half_life
+
+  proactive_rotation:
+    enabled: true
+    rotate_before_decay: true
+    lead_time_hours: 24
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. CORRIDOR SURGE PRICING — Surge Score Formula
+# ─────────────────────────────────────────────────────────────────────────────
+
+corridor_surge_scoring:
+
+  formula: |
+    surge_score =
+      (search_spike * 0.30) +
+      (load_velocity * 0.25) +
+      (operator_shortage * 0.25) +
+      (bidder_pressure * 0.20)
+
+  thresholds:
+    normal: [0.00, 0.39]
+    warm: [0.40, 0.59]
+    hot: [0.60, 0.79]
+    critical: [0.80, 1.00]
+
+  price_multipliers:
+    warm: 1.15
+    hot: 1.35
+    critical: 1.65
+
+  smoothing:
+    moving_average_window: "6_hours"
+    max_hourly_change: 0.15
+    cooldown_hours: 12
+
+  guardrails:
+    max_total_multiplier: 2.25
+    floor_respected: true
+    low_liquidity_override: true
+
+  monitored_signals:
+    - load_post_velocity
+    - search_volume_spike
+    - operator_shortage_index
+    - fill_rate_pressure
+    - unique_bidders_last_24h
+    - near_me_query_growth
+
+  demand_temperature:
+    formula: |
+      temperature =
+        (near_me_query_velocity * 0.35) +
+        (last_minute_search_rate * 0.25) +
+        (repeat_search_same_session * 0.20) +
+        (time_to_first_contact_inverse * 0.20)
+
+    bands:
+      calm: [0.00, 0.39]
+      active: [0.40, 0.64]
+      urgent: [0.65, 0.84]
+      emergency: [0.85, 1.00]
+
+  temperature_effects:
+    urgent_bid_boost: 1.10
+    emergency_bid_boost: 1.25
+    floor_pressure_enabled: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. ADVERTISER LTV SCORING — LTV Formula
+# ─────────────────────────────────────────────────────────────────────────────
+
+advertiser_ltv_scoring:
+
+  formula: |
+    raw_ltv_score =
+      (normalized_lifetime_spend * 0.30) +
+      (renewal_rate * 0.25) +
+      (payment_success_rate * 0.15) +
+      (performance_quality * 0.15) +
+      (trust_score * 0.10) -
+      (dispute_penalty * 0.05)
+
+  tiering:
+    platinum: ">= 0.80"
+    gold: "0.65-0.79"
+    silver: "0.45-0.64"
+    probation: "< 0.45"
+
+  auction_influence:
+    max_boost: 1.12
+    probation_penalty: 0.85
+    new_advertiser_grace_days: 30
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. CREATIVE PERFORMANCE SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+creative_performance_scoring:
+
+  formula: |
+    creative_score =
+      (ctr * 0.40) +
+      (conversion_proxy * 0.30) +
+      (dwell_quality * 0.15) +
+      (bounce_penalty * -0.10) +
+      (fatigue_penalty * -0.05)
+
+  evaluation_windows:
+    primary: "7_days"
+    secondary: "30_days"
+
+  exploration:
+    exploration_rate: 0.15
+    exploitation_rate: 0.85
+
+  cold_start:
+    min_impressions_before_judgment: 500
+    new_creative_boost_hours: 48
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. BID PACING — Target Spend Curve
+# ─────────────────────────────────────────────────────────────────────────────
+
+bid_pacing_formulas:
+
+  target_spend_formula: |
+    target_spend_now =
+      daily_budget *
+      cumulative_expected_traffic_share
+
+  pacing_gap_formula: |
+    pacing_gap =
+      target_spend_now - actual_spend_today
+
+  bid_adjustment_logic: |
+    if pacing_gap > threshold_positive:
+      bid_multiplier = 1.10-1.35
+    elif pacing_gap < threshold_negative:
+      bid_multiplier = 0.65-0.90
+    else:
+      bid_multiplier = 1.0
+
+  traffic_curve:
+    type: "rolling_28d_hourly_profile"
+    fallback: "country_default_curve"
+
+  protections:
+    max_bid_change_per_hour: 0.20
+    cold_start_learning_hours: 24
+    minimum_delivery_guard: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. INVENTORY YIELD SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+inventory_yield_scoring:
+
+  formula: |
+    yield_score =
+      (effective_cpm * 0.40) +
+      (fill_rate * 0.20) +
+      (ctr_quality * 0.15) +
+      (user_engagement * 0.15) -
+      (fatigue_penalty * 0.10)
+
+  density_guardrails:
+    max_above_fold_ad_ratio: 0.30
+    max_total_ad_ratio: 0.40
+    map_pin_promoted_ratio: 0.10
+
+  learning_cycle:
+    evaluation_window: "24_hours"
+    strategic_rebalance: "weekly"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 9. SELF-HEALING LIQUIDITY SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+liquidity_scoring:
+
+  formula: |
+    liquidity_score =
+      (supply_demand_balance * 0.40) +
+      (fill_rate_health * 0.25) +
+      (response_time_health * 0.20) +
+      (search_pressure_balance * 0.15)
+
+  imbalance_thresholds:
+    shortage: 0.40
+    oversupply: 0.75
+
+  cross_corridor_rebalancing:
+    max_visibility_shift: 0.20
+    reassessment_interval: "6_hours"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 10. AUTONOMOUS PRICING BRAIN — Reward Function
+# ─────────────────────────────────────────────────────────────────────────────
+
+pricing_brain_reward:
+
+  formula: |
+    reward =
+      (revenue_lift * 0.45) +
+      (retention_health * 0.25) +
+      (fill_rate_health * 0.20) +
+      (ux_stability * 0.10)
+
+  model_type: "constrained_reinforcement_learning"
+  fallback: "rules_weighted_optimizer"
+
+  guardrails:
+    max_daily_price_change: 0.25
+    min_fill_rate_target: 0.30
+    retention_drop_kill_switch: true
+    cold_start_manual_mode_days: 30
+
+  learning_loop:
+    micro_adjustment_interval: "6_hours"
+    strategic_rebalance: "weekly"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 11. ADVERTISER ROI FORECASTING
+# ─────────────────────────────────────────────────────────────────────────────
+
+advertiser_roi_formulas:
+
+  lead_estimation: |
+    expected_leads =
+      impressions_forecast *
+      predicted_ctr *
+      contact_conversion_rate
+
+  revenue_proxy: |
+    expected_revenue =
+      expected_leads *
+      close_rate_proxy *
+      avg_job_value
+
+  roi_calculation: |
+    projected_roi =
+      (expected_revenue - projected_spend) /
+      projected_spend
+
+  safeguards:
+    new_advertiser_conservative_bias: true
+    volatility_dampening: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 12. REVENUE FORECAST MODEL — Country-Level
+# ─────────────────────────────────────────────────────────────────────────────
+
+country_revenue_formulas:
+
+  impressions_formula: |
+    gross_impressions =
+      monthly_active_users *
+      searches_per_user *
+      avg_slots_viewed
+
+    monetized_impressions =
+      gross_impressions *
+      expected_fill_rate
+
+    projected_revenue =
+      monetized_impressions *
+      effective_yield_per_impression
+
+  maturity_multipliers:
+    early_stage: 0.45
+    growth_stage: 0.70
+    mature_stage: 1.00
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 13. CHURN PREDICTION SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+churn_scoring:
+
+  model: "gradient_boosted_classifier"
+  output_range: [0, 1]
+
+  prediction_windows:
+    primary: "30_days"
+    early_warning: "14_days"
+
+  risk_tiers:
+    low: "< 0.35"
+    medium: "0.35-0.60"
+    high: "> 0.60"
+
+  churn_signals:
+    behavioral:
+      - ctr_decline_trend
+      - spend_reduction_velocity
+      - login_inactivity
+      - creative_refresh_absence
+    performance:
+      - roi_drop
+      - rising_cpc_without_leads
+      - impression_share_loss
+    relationship:
+      - support_tickets_negative
+      - billing_failures
+      - dispute_history
+
+  automated_interventions:
+    medium_risk:
+      - performance_tip_email
+      - creative_refresh_prompt
+    high_risk:
+      - roi_diagnostic_report
+      - budget_recommendation
+      - account_outreach_flag
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 14. GLOBAL BUDGET REALLOCATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+budget_reallocation_formula:
+
+  formula: |
+    geo_priority_score =
+      (roi_strength * 0.40) +
+      (conversion_velocity * 0.25) +
+      (liquidity_support * 0.20) +
+      (cost_efficiency * 0.15)
+
+  movement_rules:
+    max_daily_shift: 0.20
+    minimum_geo_presence_guard: true
+    learning_buffer_pct: 0.15
+
+  optimization_modes:
+    - conservative
+    - balanced
+    - aggressive
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 15. CROSS-NETWORK EXCHANGE ROUTING
+# ─────────────────────────────────────────────────────────────────────────────
+
+exchange_routing_formula:
+
+  formula: |
+    routing_priority =
+      (local_shortage_severity * 0.40) +
+      (partner_quality_score * 0.35) +
+      (expected_yield * 0.25)
+
+  partner_scoring_inputs:
+    - partner_fill_quality
+    - conversion_proxy
+    - trust_alignment
+    - latency_score
+
+  minimum_partner_score: 0.70
+  max_external_fill_ratio: 0.25
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 16. CORRIDOR INTENT SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+corridor_intent_formula:
+
+  formula: |
+    intent_strength =
+      (query_urgency * 0.25) +
+      (contact_events_rate * 0.30) +
+      (repeat_profile_views * 0.15) +
+      (filter_specificity * 0.15) +
+      (time_to_contact_inverse * 0.15)
+
+  intent_classes:
+    - immediate_booking
+    - price_shopping
+    - compliance_question
+    - corridor_planning
+    - operator_verification
+    - last_minute_coverage_gap
+
+  freshness:
+    hot_window: "6_hours"
+    warm_window: "48_hours"
+    baseline_window: "28_days"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 17. OPERATOR TRUST SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+operator_trust_formula:
+
+  formula: |
+    trust_score =
+      (verification_level * 0.25) +
+      (behavior_score * 0.35) +
+      (social_proof * 0.25) +
+      (corridor_expertise * 0.15) -
+      (dispute_penalty)
+
+  gamification:
+    leaderboard_scopes: ["country", "corridor", "category"]
+    season_length_days: 90
+    decay_enabled: true
+
+  anti_fraud:
+    review_spike_hold: true
+    weighted_reviews_by_reviewer_trust: true
+    spam_score_threshold: 0.60
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 18. LOCAL LIQUIDITY DENSITY SCORING
+# ─────────────────────────────────────────────────────────────────────────────
+
+local_liquidity_density_formula:
+
+  formula: |
+    liquidity_score =
+      (operator_count_50mi * 0.30) +
+      (loads_posted_30d * 0.20) +
+      (search_volume_local * 0.15) +
+      (response_time_avg * 0.10) +
+      (corridor_importance * 0.15) +
+      (historical_fill_rate * 0.10)
+
+  output_bands:
+    ultra_dense: [0.80, 1.00]
+    strong_market: [0.60, 0.79]
+    developing_market: [0.40, 0.59]
+    thin_market: [0.00, 0.39]
+
+  actions_by_band:
+    ultra_dense:
+      - enable_live_availability_badge
+      - boost_local_rank
+      - prioritize_paid_slots
+    thin_market:
+      - suppress_paid_ads
+      - trigger_liquidity_campaign
+      - reduce_rank_weight
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 19. SEO MONEY PAGE PRIORITY
+# ─────────────────────────────────────────────────────────────────────────────
+
+money_page_priority_formula:
+
+  formula: |
+    score =
+      (commercial_intent * 0.35) +
+      (local_density * 0.20) +
+      (vertical_value * 0.20) +
+      (competition_gap * 0.15) +
+      (liquidity_signal * 0.10)
+
+  tiers:
+    tier_1_immediate:
+      range: [0.80, 1.00]
+      index: "immediate"
+      roi_window_days: 30
+    tier_2_high_value:
+      range: [0.65, 0.79]
+      index: "fast_track"
+      roi_window_days: 60
+    tier_3_corridor:
+      range: [0.50, 0.64]
+      index: "controlled"
+      roi_window_days: 90
+    tier_4_long_tail:
+      range: [0.30, 0.49]
+      index: "noindex_until_signal"
+      roi_window_days: 120
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 20. CROSS-CURRENCY OPTIMIZATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+cross_currency_formulas:
+
+  local_price_formula: |
+    local_price =
+      usd_base_price *
+      purchasing_power_factor
+
+  purchasing_power_inputs:
+    - gdp_per_capita_index
+    - digital_ad_cpm_index
+    - freight_market_index
+
+  psychological_rounding:
+    round_to_9_endings: true
+    avoid_fractional_minor_units: true
+    country_specific: true
+
+  volatility_guard:
+    trigger_threshold: 0.08
+    actions:
+      - temporary_price_freeze
+      - gradual_adjustment_mode
+      - advertiser_notification
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 21. AUCTION PROTECTION & TRUST DECAY GUARDS (v2.2 Additions)
+# ─────────────────────────────────────────────────────────────────────────────
+
+trust_decay:
+  inactivity_days_threshold: 60
+  decay_rate: 0.02
+  floor: 0.70
+
+budget_shock_absorber:
+  enabled: true
+  max_bid_jump_session: 0.25
+  smooth_multiplier_curve: true
+
+thin_market_protection:
+  min_liquidity_score_for_full_ads: 0.45
+  soft_fill_mode_enabled: true

@@ -1,0 +1,79 @@
+haul_command_map_pack_takeover_engine:
+  version: "1.0"
+  mission: >
+    Systematically capture and defend Google Local Map Pack visibility
+    across all 52 countries by turning operator profiles and city pages
+    into high-trust, proximity-optimized local entities.
+
+  success_targets:
+    map_pack_visibility_index: 0.60
+    operator_profiles_geo_complete: 0.90
+    profiles_with_reviews: 0.75
+    average_rating_floor: 4.2
+    review_velocity_target_90d: 3
+    local_conversion_lift: "30-70%"
+    adgrid_local_inventory_lift: "2x-5x"
+
+  local_entity_requirements:
+    operator_profile_minimums:
+      required_fields:
+        - business_name
+        - city
+        - state_or_region
+        - country_code
+        - service_radius_miles
+        - primary_service_type
+        - verification_status
+        - last_active_timestamp
+      strongly_recommended_fields:
+        - phone_optional
+        - website_optional
+        - logo_or_photo
+        - insurance_indicator
+        - years_experience
+    geo_completeness_score:
+      formula: "(has_city*0.25)+(has_region*0.15)+(has_country*0.10)+(has_radius*0.20)+(has_recent_activity*0.15)+(has_reviews*0.15)"
+      boost_threshold: 0.75
+      suppression_threshold: 0.40
+
+  schema_strategy:
+    profile_schema: "LocalBusiness"
+    city_page_schema: "Service + Geo + FAQ"
+    country_page_schema: "Organization + WebSite + Service"
+
+  local_rank_formula:
+    formula: "(distance*0.30)+(trust*0.25)+(rating*0.15)+(velocity*0.10)+(availability*0.10)+(response*0.10)"
+    proximity_curve:
+      within_25_miles: 1.00
+      within_50_miles: 0.85
+      within_100_miles: 0.65
+      beyond_200_miles: 0.30
+
+  review_growth_system:
+    post_job_review_request:
+      trigger: "job_completed"
+      delay_hours: 6
+    quality_controls:
+      max_reviews_per_day_per_profile: 5
+      rating_floor: 4.2
+      rank_suppression_below: 3.8
+
+  city_page_boosters:
+    required_modules:
+      - top_operators_nearby_block
+      - available_now_strip
+      - local_demand_meter
+      - recent_jobs_nearby
+      - geo_faq_block
+      - map_preview_component
+    thin_city_protection:
+      noindex_below: 3
+      low_priority_between: [3, 5]
+      preferred_density: 8
+      strong_density: 15
+
+  rollout_policy:
+    phase_1: "Florida Rectangle calibration"
+    phase_2: "global_weight_propagation"
+    phase_3: "full_52_country_map_push"
+    guarantee: "no_country_specific_rebuilds_required"

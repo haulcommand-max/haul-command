@@ -71,6 +71,10 @@ export interface MovementOutput {
     riskScore: number;
     riskLevel: string;
     riskColor: string;
+    policeProbabilityPct: number;
+    utilityCoordinationPct: number;
+    engineeringReviewPct: number;
+    permitDelayDays: string;
 }
 
 export function calculateMovementRisk(input: MovementInput): MovementOutput | undefined {
@@ -126,12 +130,47 @@ export function calculateMovementRisk(input: MovementInput): MovementOutput | un
         color = movementChecker.score_levels.medium.color;
     }
 
+    // Compute secondary indicators from superload matrix + state data
+    const superloadInfo = getSuperloadInfo(state.state);
+    const isSuperload = input.width >= state.superload_threshold_width;
+
+    // Police probability: based on width vs trigger thresholds
+    let policeProbPct = 0;
+    if (police) policeProbPct = 95;
+    else if (input.width >= state.escort_trigger_width_2) policeProbPct = 60;
+    else if (input.width >= state.escort_trigger_width_1) policeProbPct = 25;
+    if (input.isMetro && policeProbPct > 0) policeProbPct = Math.min(99, policeProbPct + 15);
+
+    // Utility coordination: based on height (overhead clearance) + superload flag
+    let utilityPct = 0;
+    if (input.height >= state.height_trigger_survey) utilityPct = 85;
+    else if (input.height >= state.height_trigger_escort) utilityPct = 55;
+    else if (input.height >= 14) utilityPct = 25;
+    if (superloadInfo?.utility_escort_required === 'Yes') utilityPct = Math.max(utilityPct, 90);
+    else if (superloadInfo?.utility_escort_required === 'Conditional') utilityPct = Math.max(utilityPct, 65);
+
+    // Engineering review: based on superload status and weight
+    let engReviewPct = 0;
+    if (isSuperload) engReviewPct = 90;
+    else if (input.width >= state.escort_trigger_width_2) engReviewPct = 50;
+    else if (input.width >= state.escort_trigger_width_1) engReviewPct = 15;
+    if (superloadInfo?.engineering_review_required === 'Yes') engReviewPct = Math.max(engReviewPct, 85);
+
+    // Permit delay from superload data
+    const permitDelay = isSuperload && superloadInfo?.typical_lead_time
+        ? superloadInfo.typical_lead_time
+        : isSuperload ? '7-14 Business Days' : '3-5 Business Days';
+
     return {
         escortsRequired: escorts,
         policeRequired: police,
         heightPoleRequired: heightPole,
         riskScore: score,
         riskLevel: level,
-        riskColor: color
+        riskColor: color,
+        policeProbabilityPct: policeProbPct,
+        utilityCoordinationPct: utilityPct,
+        engineeringReviewPct: engReviewPct,
+        permitDelayDays: permitDelay,
     };
 }

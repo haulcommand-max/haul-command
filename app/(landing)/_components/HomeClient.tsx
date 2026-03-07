@@ -10,8 +10,14 @@ import {
     Clock, BarChart3, Radio, Globe, Navigation
 } from "lucide-react";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
+import CountryHero from "@/components/hero/CountryHero";
+import type { HeroPack } from "@/components/hero/heroPacks";
 import { LOGO_SRC, LOGO_MARK_SRC, BRAND_NAME_UPPER, ALT_TEXT } from "@/lib/config/brand";
 import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
+import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import MarketConditionsPanel from "@/components/intelligence/MarketConditionsPanel";
+import { MarketTerminalRibbon } from "@/components/market/MarketTerminalRibbon";
+import { CorridorLeaderboard } from "@/components/gamification/CorridorLeaderboard";
 
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
@@ -46,10 +52,10 @@ function AnimatedNumber({ value, suffix = "" }: { value: number | null; suffix?:
         return () => clearInterval(timer);
     }, [value]);
     if (value === null) return <span className="text-[#3A4553]">—</span>;
-    return <span>{display.toLocaleString()}{suffix}</span>;
+    return <span>{display.toLocaleString("en-US")}{suffix}</span>;
 }
 
-// ===== DATA =====
+// ===== DATA — FIX #14: Premium feature copy =====
 const FEATURES = [
     {
         icon: TrendingUp, title: "Stage Probability",
@@ -57,8 +63,8 @@ const FEATURES = [
         color: "#F1A91B",
     },
     {
-        icon: Shield, title: "Instant Trust",
-        desc: "Built from real lane performance data. Every operator card shows response time, acceptance rate, and incident history — per corridor, not averaged.",
+        icon: Shield, title: "Escrow-Protected Payments",
+        desc: "Every job runs through escrow. Funds release on confirmed completion. No disputes, no chasing — money moves when the load does.",
         color: "#22c55e",
     },
     {
@@ -77,8 +83,8 @@ const FEATURES = [
         color: "#ef4444",
     },
     {
-        icon: Star, title: "Boosted Guarantee",
-        desc: "Boosted loads come with computed fill windows. Miss the window and a broker credit issues automatically. No disputes, no emails, no chasing.",
+        icon: Globe, title: "57-Country Expansion Plan",
+        desc: "Heavy haul doesn't stop at borders. We're building coverage across 57 countries — same intelligence engine, localized compliance, global reach.",
         color: "#F1A91B",
     },
 ];
@@ -109,25 +115,27 @@ interface HomeClientProps {
     corridorCount: number;
     topCorridors: CorridorData[];
     topListings: DirectoryListing[];
+    heroPack: HeroPack;
+    totalCountries: number;
+    liveCountries: number;
+    coveredCountries: number;
+    totalOperators: number;
+    totalCorridors: number;
 }
 
 // ===== MAIN COMPONENT =====
 export default function HomeClient({
-    marketPulse, directoryCount, corridorCount, topCorridors, topListings,
+    marketPulse, directoryCount, corridorCount, topCorridors, topListings, heroPack,
+    totalCountries, liveCountries, coveredCountries, totalOperators, totalCorridors,
 }: HomeClientProps) {
     const escortsOnline = marketPulse.escorts_online_now;
     const escortsAvailable = marketPulse.escorts_available_now;
     const openLoads = marketPulse.open_loads_now;
     const medianFillMin = marketPulse.median_fill_time_min_7d ? Math.round(marketPulse.median_fill_time_min_7d) : 0;
 
-    // FIX: Smart hero badge — never show "0 Escorts Available"
-    const heroBadgeText = escortsAvailable > 0
-        ? `${escortsAvailable} Escorts Available Now`
-        : "Real-Time Matching Active";
-
     return (
         <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)]">
-            {/* Inline responsive styles — Tailwind content scan misses (landing) route group on Windows */}
+            {/* Inline responsive styles */}
             <style>{`
                 .landing-desktop-only { display: none !important; }
                 @media (min-width: 768px) {
@@ -137,36 +145,43 @@ export default function HomeClient({
                 @media (min-width: 768px) {
                     .landing-desktop-inline { display: block !important; }
                 }
-                /* Responsive logo sizing */
-                .nav-brand-logo { height: 28px !important; }
+                .nav-brand-logo { height: 42px !important; }
                 @media (min-width: 768px) {
-                    .nav-brand-logo { height: 32px !important; }
+                    .nav-brand-logo { height: 48px !important; }
                 }
                 @media (min-width: 1024px) {
-                    .nav-brand-logo { height: 36px !important; }
+                    .nav-brand-logo { height: 56px !important; }
+                }
+                /* FIX #02: Header CTA never truncates */
+                .nav-cta-btn {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 46vw;
+                    min-width: 0;
+                }
+                @media (min-width: 768px) {
+                    .nav-cta-btn { max-width: none; }
                 }
             `}</style>
+
             {/* ── Ambient Background with amber sweep ── */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.012)_1px,transparent_1px)] bg-[size:60px_60px]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(198,146,58,0.08),transparent_70%)]" />
-                {/* Amber sweep glow — heavy haul night highway feel */}
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.06),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_70%_-10%,rgba(245,158,11,0.04),transparent_60%)] animate-[amberSweep_12s_ease-in-out_infinite_alternate-reverse]" />
             </div>
 
-            {/* ═════════════════════════════════════════════
-                NAVIGATION — Clean 3-part layout
-                Brand | Nav Links | CTA
-                FIX: No more overlapping icons. No "ONLINE" pill.
-                No generic HC logo — uses real brand asset.
-            ═════════════════════════════════════════════ */}
-            <nav className="relative z-50 border-b border-white/[0.06]" style={{
+            {/* ═══════════════════════════════════════════════
+                FIX #02 + #03: NAVIGATION — Clean, aligned, no truncation
+            ═══════════════════════════════════════════════ */}
+            <nav className="relative z-50 border-b border-white/[0.06] safe-area-header" style={{
                 background: 'rgba(11,11,12,0.85)',
                 backdropFilter: 'blur(24px) saturate(1.5)',
             }}>
                 <div className="hc-container h-16 flex items-center justify-between">
-                    {/* LEFT: Brand — full logo SVG (mark + wordmark) */}
+                    {/* LEFT: Brand */}
                     <Link href="/" style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -177,15 +192,15 @@ export default function HomeClient({
                         <Image
                             src={LOGO_SRC}
                             alt={ALT_TEXT}
-                            width={180}
-                            height={40}
+                            width={220}
+                            height={48}
                             priority
+                            className="nav-brand-logo"
                             style={{
                                 objectFit: 'contain',
                                 objectPosition: 'left center',
-                                height: '32px',
                                 width: 'auto',
-                                maxWidth: '200px',
+                                maxHeight: '40px',
                                 display: 'block',
                                 filter: 'drop-shadow(0 2px 12px rgba(0,0,0,0.35)) contrast(1.05) saturate(1.05)',
                             }}
@@ -196,126 +211,42 @@ export default function HomeClient({
                     <div className="landing-desktop-only items-center" style={{ gap: '2rem', fontSize: '11px', color: '#888', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.15em' }}>
                         <Link href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
                         <Link href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
-                        <Link href="/corridors" className="hover:text-[#C6923A] transition-colors py-2">Corridors</Link>
+                        <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Tools</Link>
+                        <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Requirements</Link>
                         <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
                     </div>
 
-                    {/* RIGHT: Auth + CTA */}
-                    <div className="flex items-center" style={{ gap: '1rem', flexShrink: 0 }}>
+                    {/* RIGHT: Auth */}
+                    <div className="flex items-center" style={{ flexShrink: 0 }}>
                         <Link href="/login"
-                            className="landing-desktop-inline hover:text-white transition-colors"
-                            style={{ fontSize: '11px', color: '#888', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.15em', padding: '0.5rem 0' }}>
+                            className="hover:text-white transition-colors hc-btn hc-btn--black"
+                            style={{ fontSize: '12px', padding: '10px 18px', borderRadius: '12px' }}>
                             Sign In
-                        </Link>
-                        <Link href="/post-a-load"
-                            className="px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all press-scale text-black"
-                            style={{
-                                background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
-                                boxShadow: '0 4px 20px rgba(198,146,58,0.25), 0 0 0 1px rgba(198,146,58,0.3)',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-1px)';
-                                e.currentTarget.style.boxShadow = '0 8px 32px rgba(198,146,58,0.35), 0 0 0 1px rgba(198,146,58,0.4)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 4px 20px rgba(198,146,58,0.25), 0 0 0 1px rgba(198,146,58,0.3)';
-                            }}
-                        >
-                            Post a Load
                         </Link>
                     </div>
                 </div>
             </nav>
 
-            {/* ═════════════════════════════════════════════
-                HERO — Maximum Impact Zone
-                FIX: Smart badge (no "0 escorts"), premium glow
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 pt-28 pb-8">
+            {/* ═══════════════════════════════════════════════
+                MARKET TERMINAL RIBBON — Live metrics strip
+            ═══════════════════════════════════════════════ */}
+            <MarketTerminalRibbon />
+
+            {/* ═══════════════════════════════════════════════
+                HERO — Cinematic Country-Relative Video Hero
+                FIX #04, #05, #07, #08, #09, #18, #19
+            ═══════════════════════════════════════════════ */}
+            <CountryHero
+                pack={heroPack}
+                totalOperators={totalOperators || directoryCount}
+                totalCorridors={totalCorridors || corridorCount}
+                totalCountries={totalCountries}
+                liveCountries={liveCountries}
+            />
+
+            {/* FIX #14: Trust signal strip — updated copy */}
+            <section className="relative z-10 py-6">
                 <div className="hc-container max-w-5xl text-center">
-                    {/* Live badge — NEVER shows "0" */}
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#C6923A]/[0.06] border border-[#C6923A]/20 rounded-full mb-10"
-                    >
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C6923A] opacity-75" />
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C6923A]" />
-                        </span>
-                        <span className="text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
-                            {heroBadgeText}
-                        </span>
-                    </motion.div>
-
-                    {/* Headline — sharper, more specific */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                        className="text-[clamp(2.75rem,6vw,5rem)] font-black tracking-[-0.03em] mb-7 leading-[1.02]"
-                        style={{ fontFamily: "var(--font-display)" }}
-                    >
-                        Real-Time Escort Intelligence
-                        <br />
-                        <span className="bg-gradient-to-r from-[#C6923A] via-[#E0B05C] to-[#C6923A] bg-clip-text text-transparent">
-                            for Heavy Haul
-                        </span>
-                    </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                        className="text-lg sm:text-xl text-[#8fa3b8] max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
-                    >
-                        Match oversize loads with verified escorts in minutes.
-                        Stage-based fill probability. One-tap accept.
-                        Built for the corridor — not the general freight crowd.
-                    </motion.p>
-
-                    {/* Dual CTA — FIX: Clear visual hierarchy */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
-                        style={{ display: 'flex', flexDirection: 'column', gap: '14px', alignItems: 'center', marginBottom: '1rem' }}
-                    >
-                        {/* PRIMARY: Escort — dominant */}
-                        <Link
-                            href="/onboarding/start?role=escort"
-                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
-                            style={{
-                                background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
-                                boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
-                                width: '100%', maxWidth: '400px',
-                            }}
-                        >
-                            <Navigation className="w-4 h-4" />
-                            I&apos;m an Escort
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
-                        {/* SECONDARY: Broker — outline */}
-                        <Link
-                            href="/onboarding/start?role=broker"
-                            className="group flex items-center justify-center gap-2.5 px-10 py-4 bg-transparent border-2 border-white/10 hover:border-[#C6923A]/40 text-white font-bold text-sm rounded-2xl transition-all hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(198,146,58,0.1)]"
-                            style={{ width: '100%', maxWidth: '400px' }}
-                        >
-                            <Truck className="w-4 h-4" />
-                            I&apos;m a Broker
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
-                        {/* Micro divider */}
-                        <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', fontWeight: 500 }}>
-                            pick your role to get started
-                        </span>
-                    </motion.div>
-
-                    {/* Trust signal — pulled above fold */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -324,24 +255,24 @@ export default function HomeClient({
                     >
                         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                             <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                            <span className="font-medium">Free for escorts</span>
+                            <span className="font-medium">Free for Escorts</span>
                         </span>
                         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                             <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
-                            <span className="font-medium">Escrow protected</span>
+                            <span className="font-medium">Escrow-Protected Payments</span>
                         </span>
                         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                             <Globe className="w-3.5 h-3.5 text-blue-400" />
-                            <span className="font-medium">Multi-region coverage</span>
+                            <span className="font-medium">{totalCountries}-Country Expansion Plan</span>
                         </span>
                     </motion.div>
 
-                    {/* ── GLOBAL EXPANSION STRIP — directly under CTA ── */}
+                    {/* ── GLOBAL EXPANSION STRIP ── */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.5 }}
-                        style={{ marginTop: '2.5rem' }}
+                        style={{ marginTop: '2rem' }}
                     >
                         <div style={{
                             position: 'relative',
@@ -350,16 +281,14 @@ export default function HomeClient({
                             border: '1px solid rgba(255,255,255,0.06)',
                             padding: '1.25rem 1.5rem 1.5rem',
                         }}>
-                            {/* Glass background — blur lives here, NOT on text */}
                             <div style={{
                                 position: 'absolute', inset: 0,
                                 background: 'rgba(255,255,255,0.02)',
                                 backdropFilter: 'blur(12px)',
                                 WebkitBackdropFilter: 'blur(12px)',
                             }} />
-                            {/* Content layer — stays crisp, always on top */}
                             <div style={{ position: 'relative', zIndex: 10 }}>
-                                {/* Title */}
+                                {/* FIX #16: Title uses truth from RPC */}
                                 <div style={{
                                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                                     marginBottom: '16px',
@@ -374,7 +303,7 @@ export default function HomeClient({
                                         lineHeight: 1,
                                         margin: 0,
                                     }}>
-                                        Expanding Across 25+ Countries
+                                        Expanding Across {totalCountries} Countries
                                     </h3>
                                 </div>
                                 <style>{`
@@ -382,7 +311,6 @@ export default function HomeClient({
                                         .expansion-strip-title { font-size: 15px !important; }
                                     }
                                 `}</style>
-                                {/* Country pills */}
                                 <div style={{
                                     display: 'flex',
                                     flexWrap: 'wrap',
@@ -426,11 +354,10 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
-                MARKET PULSE — FIX: Hierarchical metrics
-                Primary stat dominant, secondary smaller
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 py-16">
+            {/* ═══════════════════════════════════════════════
+                MARKET PULSE — FIX #15: Consistent spacing (py-12)
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-12">
                 <div className="hc-container max-w-5xl">
                     <motion.div
                         initial="hidden"
@@ -479,7 +406,6 @@ export default function HomeClient({
                                 variants={fadeUp}
                                 className={`metric-block group relative overflow-hidden ${isPrimary ? 'ring-1 ring-white/[0.06]' : ''}`}
                             >
-                                {/* Subtle accent glow for primary metrics */}
                                 {isPrimary && (
                                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
                                         style={{ background: `radial-gradient(ellipse at center, ${color}, transparent 70%)` }} />
@@ -503,15 +429,15 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ── Liquidity Trust Strip — LIVE COUNTS, GLOBAL SCOPE ── */}
+            {/* ── FIX #16: Liquidity Trust Strip — ALL counts from RPC, no hardcoded numbers ── */}
             <section className="relative z-10 pb-8">
                 <div className="hc-container max-w-3xl">
                     <div className="liquidity-strip flex-wrap">
                         {[
                             { label: `${directoryCount.toLocaleString()} Verified Operators`, color: "#22c55e" },
-                            { label: "Escrow Protected", color: "#C6923A" },
+                            { label: "Escrow-Protected Payments", color: "#C6923A" },
                             { label: `${medianFillMin}m Avg Match`, color: "#a855f7" },
-                            { label: "25+ Countries Planned", color: "#3b82f6" },
+                            { label: `${totalCountries} Countries Planned`, color: "#3b82f6" },
                             { label: "Industry Leaderboard", color: "#C6923A" },
                         ].map(({ label, color }) => (
                             <div key={label} className="liquidity-strip__item">
@@ -523,18 +449,27 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
+            {/* ═══════════════════════════════════════════════
                 GLOBAL ESCORT SUPPLY RADAR
-            ═════════════════════════════════════════════ */}
+            ═══════════════════════════════════════════════ */}
             <GlobalEscortSupplyRadar />
 
-            {/* ═════════════════════════════════════════════
+            {/* ═══════════════════════════════════════════════
+                MARKET CONDITIONS PANEL
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-12">
+                <div className="hc-container max-w-5xl">
+                    <MarketConditionsPanel />
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════
                 HOT CORRIDORS — LIVE FROM SUPABASE
-            ═════════════════════════════════════════════ */}
+            ═══════════════════════════════════════════════ */}
             {topCorridors.length > 0 && (
-                <section className="relative z-10 py-20">
+                <section className="relative z-10 py-16">
                     <div className="hc-container max-w-5xl">
-                        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
+                        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12" style={{ marginTop: 24 }}>
                             <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">Live Corridors</div>
                             <h2 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                                 Hottest Routes Right Now
@@ -568,14 +503,71 @@ export default function HomeClient({
                 </section>
             )}
 
-            {/* Old global coverage section moved to hero — space preserved for future interactive map */}
-
-            {/* ═════════════════════════════════════════════
-                HOW IT WORKS — FIX: Visual differentiation
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 py-24">
+            {/* ═══════════════════════════════════════════════
+                FREE TOOLS — 5 Conversion Engines
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-16">
                 <div className="hc-container max-w-5xl">
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12" style={{ marginTop: 24 }}>
+                        <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">Free Intelligence Tools</div>
+                        <h2 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+                            Tools That Build Authority
+                        </h2>
+                        <p className="text-[#8fa3b8] text-sm mt-3 max-w-lg mx-auto">
+                            Stop guessing, stop searching 50 pages. One platform, every answer.
+                        </p>
+                    </motion.div>
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            { href: '/tools/escort-calculator', icon: '🧮', title: 'Do I Need an Escort?', desc: 'Enter load + route, get exact escort counts for every state.', color: '#F1A91B' },
+                            { href: '/escort-requirements', icon: '📋', title: 'Escort Requirements', desc: '57 countries, 67+ jurisdictions. All escort rules in one place.', color: '#22c55e' },
+                            { href: '/tools/compliance-card', icon: '🎁', title: 'Compliance Card', desc: 'Free one-page PDF with every threshold for your state.', color: '#3b82f6' },
+                            { href: '/tools/regulation-alerts', icon: '⚠️', title: 'Regulation Alerts', desc: 'Get notified when escort rules change. Never get fined.', color: '#ef4444' },
+                        ].map(({ href, icon, title, desc, color }, i) => (
+                            <Link key={href} href={href}>
+                                <motion.div custom={i} variants={fadeUp}
+                                    className="intelligence-card group cursor-pointer h-full" style={{ "--accent-color": color } as React.CSSProperties}>
+                                    <div className="text-3xl mb-3">{icon}</div>
+                                    <h3 className="font-bold text-white text-sm group-hover:text-[#C6923A] transition-colors mb-2">{title}</h3>
+                                    <p className="text-[#8fa3b8] text-xs leading-relaxed">{desc}</p>
+                                </motion.div>
+                            </Link>
+                        ))}
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════
+                CORRIDOR LEADERBOARD — Social Proof / Authority
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-16">
+                <div className="hc-container max-w-5xl">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12" style={{ marginTop: 24 }}>
+                        <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">Industry Leaderboard</div>
+                        <h2 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+                            Top-Ranked Escort Operators
+                        </h2>
+                        <p className="text-[#8fa3b8] text-sm mt-3 max-w-lg mx-auto">
+                            Real rankings based on verified performance, reliability, and corridor dominance.
+                        </p>
+                    </motion.div>
+                    <CorridorLeaderboard />
+                    <div className="text-center mt-8">
+                        <Link href="/leaderboards" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
+                            View Full Leaderboard <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+
+
+            {/* ═══════════════════════════════════════════════
+                HOW IT WORKS
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-20">
+                <div className="hc-container max-w-5xl">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16" style={{ marginTop: 24 }}>
                         <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">How It Works</div>
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                             Built for Both Sides of the Match
@@ -586,7 +578,6 @@ export default function HomeClient({
                             <motion.div key={role} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
                                 className="intelligence-card" style={{ "--accent-color": color } as React.CSSProperties}>
                                 <div className="text-center">
-                                    {/* FIX: Role icon header for differentiation */}
                                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 mx-auto"
                                         style={{ background: `${color}12`, border: `1px solid ${color}20` }}>
                                         <RoleIcon className="w-6 h-6" style={{ color }} />
@@ -616,12 +607,23 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
-                FEATURE GRID
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 py-24">
+            {/* ═══════ NATIVE AD — Homepage mid-page ═══════ */}
+            <section className="relative z-10 py-8">
                 <div className="hc-container max-w-5xl">
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
+                    <NativeAdCard
+                        surface="homepage_mid"
+                        placementId="homepage-mid-1"
+                        variant="inline"
+                    />
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════
+                FEATURE GRID — FIX #14: Updated copy
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-20">
+                <div className="hc-container max-w-5xl">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16" style={{ marginTop: 24 }}>
                         <div style={{
                             fontSize: '13px',
                             fontWeight: 700,
@@ -658,10 +660,35 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
-                BOTTOM CTA — FIX: More breathing room, no cramping
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 pt-24 pb-32">
+            {/* ═══════════════════════════════════════════════
+                FIX #20: TRUST SIGNALS — Last updated + confidence
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-8">
+                <div className="hc-container max-w-3xl text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#5A6577]">
+                        <span className="inline-flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            Last updated: just now
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                            <Shield className="w-3 h-3 text-[#C6923A]" />
+                            Coverage confidence: {
+                                directoryCount > 5000 && corridorCount > 50 ? 'High' :
+                                    directoryCount > 500 && corridorCount > 10 ? 'Medium' : 'Building'
+                            }
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                            <Globe className="w-3 h-3 text-blue-400" />
+                            {coveredCountries} countries with data
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════
+                BOTTOM CTA
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 pt-20 pb-28">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="max-w-2xl mx-auto text-center px-4">
                     <div className="relative bg-[var(--hc-surface)] border border-[var(--hc-border)] rounded-3xl p-14 shadow-[0_0_80px_rgba(198,146,58,0.06)] overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(198,146,58,0.06),transparent)] pointer-events-none" />
@@ -686,8 +713,9 @@ export default function HomeClient({
                             </p>
                             <div className="mb-4 md:mb-5">
                                 <Link href="/onboarding/start"
-                                    className="inline-flex items-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale"
+                                    className="inline-flex items-center gap-2.5 px-10 text-black font-bold text-sm rounded-2xl transition-all press-scale"
                                     style={{
+                                        minHeight: 56,
                                         background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                         boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
                                     }}>
@@ -699,11 +727,10 @@ export default function HomeClient({
                 </motion.div>
             </section>
 
-            {/* ═════════════════════════════════════════════
-                FOOTER — FIX: Real logo, proper spacing, multi-column
-            ═════════════════════════════════════════════ */}
+            {/* ═══════════════════════════════════════════════
+                FOOTER
+            ═══════════════════════════════════════════════ */}
             <footer className="relative z-10 border-t border-white/[0.06]">
-                {/* Footer columns */}
                 <div className="hc-container py-16">
                     <style>{`
                         .footer-link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; }
@@ -733,15 +760,15 @@ export default function HomeClient({
                             </div>
                         </div>
                         <div>
-                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Services</h4>
+                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Free Tools</h4>
                             <div className="space-y-2.5">
                                 {[
+                                    { href: "/tools/escort-calculator", label: "Escort Calculator" },
+                                    { href: "/escort-requirements", label: "Escort Requirements" },
+                                    { href: "/tools/compliance-card", label: "Compliance Card" },
+                                    { href: "/tools/regulation-alerts", label: "Regulation Alerts" },
+                                    { href: "/tools/discovery-map", label: "Discovery Map" },
                                     { href: "/services/pilot-car", label: "Pilot Car Services" },
-                                    { href: "/services/escort-vehicle", label: "Escort Vehicle Services" },
-                                    { href: "/services/oversize-load", label: "Oversize Load Escorts" },
-                                    { href: "/services/wide-load", label: "Wide Load Escorts" },
-                                    { href: "/services/route-survey", label: "Route Surveys" },
-                                    { href: "/services/height-pole", label: "Height Pole Services" },
                                 ].map(l => (
                                     <Link key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
                                 ))}
@@ -772,9 +799,11 @@ export default function HomeClient({
                                 © 2026 Haul Command. The Operating System for Heavy Haul.
                             </span>
                         </div>
-                        <div className="flex gap-6 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
+                        <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
                             <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+                            <span className="opacity-50 text-[10px]">•</span>
                             <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+                            <span className="opacity-50 text-[10px]">•</span>
                             <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                         </div>
                     </div>

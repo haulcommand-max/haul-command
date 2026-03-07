@@ -10,28 +10,28 @@ function getSupabase() {
 }
 
 // Generates human-friendly ticker rows from real DB activity.
-// NO fakery â€” derived only from loads + presence rows that exist.
+// NO fakery — derived only from loads + presence rows that exist.
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const limit = Math.min(Number(searchParams.get("limit") ?? 12), 30);
 
     const [loadsRes, presRes] = await Promise.all([
         getSupabase()
-        .from("loads")
+            .from("loads")
             .select("id,title,origin_city,origin_state,urgency,created_at,status")
             .in("status", ["open", "matched"])
             .order("created_at", { ascending: false })
             .limit(Math.ceil(limit / 2)),
         getSupabase()
-        .from("presence_heartbeats")
+            .from("presence_heartbeats")
             .select("profile_id,last_seen_at")
             .gte("last_seen_at", new Date(Date.now() - 60 * 60 * 1000).toISOString())
             .order("last_seen_at", { ascending: false })
             .limit(Math.ceil(limit / 2)),
     ]);
 
-    if (loadsRes.error) return NextResponse.json({ error: loadsRes.error.message }, { status: 500 });
-    if (presRes.error) return NextResponse.json({ error: presRes.error.message }, { status: 500 });
+    if (loadsRes.error) console.error("[activity] loads:", loadsRes.error.message);
+    if (presRes.error) console.error("[activity] presence_heartbeats:", presRes.error.message);
 
     const items: Array<{ id: string; ts: string; text: string; kind: string }> = [];
 

@@ -1,0 +1,44 @@
+# ═══ HAUL COMMAND — Listmonk Email Server ═══
+# Always-on Listmonk instance with its own isolated Postgres
+
+app = "hc-listmonk"
+primary_region = "iad"
+
+[build]
+  image = "listmonk/listmonk:latest"
+
+[env]
+  TZ = "America/New_York"
+  # Database configured via secrets:
+  # fly secrets set LISTMONK_db__host=... LISTMONK_db__port=5432
+  # fly secrets set LISTMONK_db__user=... LISTMONK_db__password=...
+  # fly secrets set LISTMONK_db__database=listmonk
+  # fly secrets set LISTMONK_db__ssl_mode=require
+  # fly secrets set LISTMONK_app__admin_username=admin
+  # fly secrets set LISTMONK_app__admin_password=...
+
+[[services]]
+  internal_port = 9000
+  protocol = "tcp"
+  auto_stop_machines = false  # Always-on
+  auto_start_machines = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.http_checks]]
+    interval = 30000
+    timeout = 5000
+    grace_period = "15s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

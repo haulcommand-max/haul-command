@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Haul Command adaptive icon foreground.
+    Military-style emblem: 5-pointed star above 3 stacked upward chevrons.
+    Amber-500 (#F59E0B) on transparent, centered in 66dp safe zone.
+    108dp canvas. Safe zone: ~21 to ~87.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportHeight="108"
+    android:viewportWidth="108">
+
+    <!-- 5-pointed star — center (54, 32), outer r=7, inner r=3 -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M54,25 L55.8,29.6 L60.7,29.8 L56.9,32.9 L58.1,37.7 L54,35 L49.9,37.7 L51.1,32.9 L47.3,29.8 L52.2,29.6 Z" />
+
+    <!-- Chevron 1 (top) -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M34,53 L54,42 L74,53 L69,53 L54,45 L39,53 Z" />
+
+    <!-- Chevron 2 (middle) -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M34,63 L54,52 L74,63 L69,63 L54,55 L39,63 Z" />
+
+    <!-- Chevron 3 (bottom) -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M34,73 L54,62 L74,73 L69,73 L54,65 L39,73 Z" />
+
+</vector>

@@ -1,0 +1,13 @@
+-- =========================================================
+-- Search Engine V2 — Applied 2026-03-03T19:35 EST
+--
+-- Migrations applied (in order):
+--   1. immutable_unaccent_wrapper — f_unaccent() for generated columns
+--   2. search_documents_schema_v2 — table + trigger-based FTS + indexes + RLS + geo utils
+--   3. search_indexer_view_and_rebuild — v_search_documents_source view + hc_search_rebuild_documents()
+--   4. search_rpcs_operators_and_loads — hc_search_operators() + hc_search_loads() with geo
+--   5. assignments_availability_load_scoped_rpc — load_escort_assignments + escort_availability
+--      + hc_geojson_escorts_for_load_in_bbox + hc_set_availability
+--
+-- Index populated: 2,883 documents (2,875 operators + 8 loads)
+-- =========================================================

@@ -86,8 +86,8 @@ async function runTests() {
 
     // ── Test 4: Cache key format stability ──
     console.log('\nTest 4: Cache key format stability');
-    const cacheKey1 = 'US-FL:drawer:v1';
-    const cacheKey2 = 'US-WY:drawer:v1';
+    const cacheKey1: string = 'US-FL:drawer:v1';
+    const cacheKey2: string = 'US-WY:drawer:v1';
     assert(cacheKey1 === `US-FL:drawer:v1`, 'FL cache key matches expected format');
     assert(cacheKey2 === `US-WY:drawer:v1`, 'WY cache key matches expected format');
     assert(cacheKey1 !== cacheKey2, 'FL and WY cache keys are distinct');

@@ -1,0 +1,115 @@
+# ============================================================
+# HAUL COMMAND — PRESENCE & AVAILABILITY ENGINE v1.0
+# Production-ready module
+# Purpose:
+#   - Make operator status instantly legible (brokers + operators)
+#   - Increase check-ins + truthful "available now" supply
+#   - Feed Social Gravity, Idle Operator Reactor, Leaderboard Engine
+# Safe to merge: additive, no breaking changes
+# ============================================================
+
+presence_availability_engine_v1:
+  version: 1.0
+  extends:
+    - social_gravity_engine_v21
+    - idle_operator_reactor
+  deployment_mode: florida_rectangle_hyper_local
+
+  status_model:
+    canonical_states:
+      available_now:
+        icon: "🟢"
+        label_broker: "available now"
+        label_operator: "available now"
+        broker_subtext: "ready for dispatch"
+        priority_rank: 1
+      available_soon:
+        icon: "🟡"
+        label_broker: "available soon"
+        label_operator: "available later"
+        broker_subtext: "opening coming up"
+        priority_rank: 2
+      on_job:
+        icon: "🔵"
+        label_broker: "on a job"
+        label_operator: "on a job"
+        broker_subtext: "currently on a load"
+        priority_rank: 3
+      recently_active:
+        icon: "⚪"
+        label_broker: "recently active"
+        label_operator: "recently active"
+        broker_subtext: "recently active in this corridor"
+        priority_rank: 4
+      offline:
+        icon: "⚫"
+        label_broker: "offline"
+        label_operator: "offline"
+        broker_subtext: "not checked in recently"
+        priority_rank: 5
+
+  freshness:
+    decay_rules:
+      available_now:
+        degrade_after_minutes: 240
+        offline_after_hours: 24
+      available_soon:
+        degrade_after_hours: 36
+        offline_after_hours: 72
+      on_job:
+        stale_after_hours: 18
+        degrade_to: recently_active
+      recently_active:
+        offline_after_hours: 120
+
+    truth_guardrails:
+      never_show_available_now_if_stale_minutes_over: 240
+      suppress_available_now_if_recent_declines:
+        decline_window_hours: 6
+        decline_threshold: 3
+
+  leaderboard_integration:
+    presence_points:
+      check_in:
+        points: 2
+        cap_per_day: 6
+      available_now_minutes:
+        points_per_30_min: 1
+        cap_per_day: 12
+      on_job_confirmation:
+        points: 4
+        cap_per_day: 8
+      accuracy_bonus:
+        points: 6
+        awarded_when: "broker_feedback_matches_status"
+    anti_gaming_rules:
+      penalty_if_false_available_now:
+        penalty_points: -10
+        temporary_visibility_downgrade_minutes: 180
+
+  social_gravity_wiring:
+    density_formula:
+      available_now: 1.00
+      available_soon: 0.70
+      on_job: 0.55
+      recently_active: 0.35
+      offline: 0.00
+
+  cooldowns:
+    idle_reactor_per_operator_hours: 18
+    max_reactor_pings_per_week: 4
+    quiet_hours_local: "22:00-06:30"
+    reactivation_modal_min_hours_between: 18
+    reactivation_modal_max_per_week: 3
+
+# ============================================================
+# HAUL COMMAND — ACCELERATION BUNDLE v1.0
+# Modules: Profile Completion + Idle Operator Reactor +
+#          Broker Confidence Layer + 72-Hour Corridor Forecast
+# ============================================================
+
+haul_command_acceleration_bundle_v1:
+  version: 1.0
+  extends:
+    - social_gravity_engine_v21
+  deployment_mode: early_liquidity_acceleration

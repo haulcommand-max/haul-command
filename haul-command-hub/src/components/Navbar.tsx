@@ -11,6 +11,9 @@ export default function Navbar() {
                         </Link>
                     </div>
                     <div className="hidden md:ml-6 md:flex md:space-x-8">
+                        <Link href="/directory" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
+                            Directory
+                        </Link>
                         <Link href="/blog" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
                             Intelligence
                         </Link>

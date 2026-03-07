@@ -59,6 +59,16 @@ export default async function AdminAdsPage() {
                         <h1 className="text-2xl font-black text-white">Ad Campaign Manager</h1>
                         <p className="text-sm text-slate-500 mt-1">Manage native ad campaigns across all surfaces</p>
                     </div>
+                    <Link href="/admin/ads/campaigns/create" style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        padding: '10px 22px', borderRadius: 10,
+                        background: 'linear-gradient(135deg, #f5b942, #d97706)',
+                        color: '#0a0f16', fontSize: 13, fontWeight: 900, textDecoration: 'none',
+                        textTransform: 'uppercase', letterSpacing: '0.05em',
+                        boxShadow: '0 3px 16px rgba(245,185,66,0.28)',
+                    }}>
+                        + New Campaign
+                    </Link>
                 </div>
 
                 {/* Stats Bar */}

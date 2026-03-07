@@ -1,0 +1,102 @@
+haul_command_brand_os:
+  version: "1.0.0"
+
+  asset_registry:
+    root_public_path: "/public/brand"
+    roles:
+      primary_wordmark:
+        description: "HAUL COMMAND wordmark lockup"
+        preferred_formats: ["svg", "png"]
+        files:
+          svg: "/public/brand/svg/logo-wordmark.svg"
+          png: "/public/brand/logo-wordmark.png"
+        safe_area:
+          padding_pct: 10
+        min_render_px: 120
+      primary_mark:
+        description: "Shield+chevrons mark"
+        preferred_formats: ["svg", "png"]
+        files:
+          svg: "/public/brand/svg/logo-mark.svg"
+          png: "/public/brand/logo-mark.png"
+        safe_area:
+          padding_pct: 12
+        min_render_px: 32
+      badge_round:
+        description: "Round/coin badge variant"
+        preferred_formats: ["png"]
+        files:
+          png: "/public/brand/logo-round.png"
+        safe_area:
+          padding_pct: 8
+        min_render_px: 24
+      badge_square:
+        description: "Rounded-square app-like badge"
+        preferred_formats: ["png"]
+        files:
+          png: "/public/brand/logo-square.png"
+        safe_area:
+          padding_pct: 8
+        min_render_px: 48
+      favicon_master:
+        description: "Simplified mark for favicon/shortcuts"
+        preferred_formats: ["svg", "png"]
+        files:
+          svg: "/public/brand/favicon.svg"
+          png: "/public/brand/favicon.png"
+        min_render_px: 16
+      og_master:
+        description: "OpenGraph/Twitter share image (1200x630)"
+        preferred_formats: ["png", "jpg"]
+        files:
+          png: "/public/brand/og.png"
+        size_px: [1200, 630]
+      splash_master:
+        description: "Splash background for mobile & PWA"
+        preferred_formats: ["png", "jpg"]
+        files:
+          png: "/public/brand/splash.png"
+      watermark:
+        description: "Low-opacity mark for backgrounds"
+        preferred_formats: ["png"]
+        files:
+          png: "/public/brand/watermark.png"
+
+  export_pipeline:
+    strategy: "generate_from_masters"
+    output_root: "/public/brand/generated"
+    generators:
+      favicon:
+        input_role: favicon_master
+        outputs:
+          - format: "png"
+            sizes: [16, 32, 48]
+            path_template: "/public/brand/generated/favicon-{size}.png"
+      pwa_icons:
+        input_role: badge_square
+        outputs:
+          - format: "png"
+            sizes: [192, 512]
+            path_template: "/public/brand/generated/pwa-icon-{size}.png"
+          - format: "png"
+            sizes: [192, 512]
+            maskable: true
+            path_template: "/public/brand/generated/pwa-maskable-{size}.png"
+      ios_app_icons:
+        input_role: badge_square
+        outputs:
+          - format: "png"
+            sizes: [1024, 180, 167, 152, 120, 87, 80, 76, 60, 58, 40, 29]
+            path_template: "/public/brand/generated/ios-appicon-{size}.png"
+      android_app_icons:
+        input_role: badge_square
+        outputs:
+          - format: "png"
+            sizes: [512, 192, 144, 96, 72, 48]
+            path_template: "/public/brand/generated/android-icon-{size}.png"
+      og_images:
+        input_role: og_master
+        outputs:
+          - format: "png"
+            sizes: ["1200x630"]
+            path: "/public/brand/generated/og-1200x630.png"

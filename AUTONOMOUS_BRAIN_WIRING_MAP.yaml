@@ -1,0 +1,1647 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# HAUL COMMAND — AUTONOMOUS BRAIN WIRING MAP v1.0
+# Master architecture for all autonomous modules, event flows, dependencies,
+# kill switches, cron jobs, and safe-start defaults.
+#
+# Generated: 2026-03-01T20:47:00-05:00
+# System: Haul Command — Heavy Haul Escort Intelligence
+# Coverage: 52 countries, 4 tiers (A/B/C/D)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+version: "1.0.0"
+system: "Haul Command"
+module: "autonomous_brain_wiring_map"
+timezone: "America/New_York"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 1: PREDICTIVE & MARKET INTELLIGENCE
+# Forward-looking market control and bid shaping
+# ─────────────────────────────────────────────────────────────────────────────
+
+modules:
+
+  # ═══════════════════════════════════════
+  # 1.1 PREDICTIVE MARKET MAKER (AI BID SHAPING)
+  # ═══════════════════════════════════════
+  predictive_market_maker:
+    id: "PMM-001"
+    layer: "intelligence"
+    status: "deployed"
+    migration: "20260302_predictive_market_maker.sql"
+    rpcs_migration: "20260302_market_maker_remaining_rpcs.sql"
+
+    tables:
+      - mm_event_log           # Immutable event stream (20 cols, 5 indexes)
+      - mm_feature_store       # Aggregated rolling features (12 cols, 3 indexes)
+      - mm_forecasts           # Model outputs (16 cols, 3 indexes)
+      - mm_actuator_decisions  # Proposed/applied decisions (18 cols, 5 indexes)
+      - mm_audit_log           # Append-only audit trail (12 cols, 3 indexes)
+      - mm_config              # Runtime knobs (6 cols, 1 unique)
+
+    views:
+      - mm_features_latest     # Latest feature bucket per feature_key
+      - mm_decisions_pending   # Pending decisions that passed guardrails
+
+    rpcs:
+      - mm_ingest_event                # DEFINER — write events
+      - mm_build_feature_buckets       # DEFINER — aggregate events → features
+      - mm_run_forecast                # DEFINER — generate forecasts (rules_v1)
+      - mm_generate_decisions          # DEFINER — forecasts → proposed decisions
+      - mm_list_pending_decisions      # DEFINER — list pending (admin + advertiser)
+      - mm_apply_decision              # DEFINER — apply decision → config + audit
+      - mm_reject_decision             # DEFINER — reject proposed/queued
+      - mm_rollback_decision           # DEFINER — rollback applied + revert config
+      - mm_kill_switch                 # DEFINER — global kill switch
+
+    consumes_events:
+      - ad_impression_viewable
+      - ad_click
+      - conversion
+      - page_view_city
+      - page_view_corridor
+      - search_internal
+      - load_post_create
+      - campaign_created
+      - campaign_paused
+      - new_advertiser_signup
+      - fraud_flag
+      - chargeback
+      - consent_granted
+      - consent_denied
+
+    produces_signals:
+      - forecast_run_complete
+      - decision_proposed
+      - decision_applied
+      - decision_rejected
+      - decision_rolled_back
+      - kill_switch_toggled
+
+    feeds_into:
+      - autonomous_pricing_brain
+      - corridor_surge_pricing
+      - adgrid_yield_optimizer
+      - bid_pacing_optimizer
+      - advertiser_roi_forecaster
+
+    model:
+      current: "rules_v1"
+      fallback: "weighted_heuristics"
+      planned: "gradient_boosted_trees"
+
+    guardrails:
+      min_confidence_for_actuation: 0.3
+      max_risk_for_floor_changes: 0.75
+      human_opt_in_if_confidence_below: 0.6
+      kill_switch_allows: ["bid_guidance"]  # informational only
+
+    safe_start:
+      initial_state: "shadow_mode"
+      shadow_duration_days: 7
+      limited_actuation_duration_days: 14
+      limited_actuation_scope: "25% of countries"
+
+  # ═══════════════════════════════════════
+  # 1.2 OPERATOR DEMAND FORECASTING
+  # ═══════════════════════════════════════
+  operator_demand_forecasting:
+    id: "ODF-001"
+    layer: "intelligence"
+    status: "designed"
+
+    purpose: >
+      Predict operator demand by corridor, equipment class, and time window
+      to enable proactive supply positioning and pricing.
+
+    consumes_from:
+      - predictive_market_maker.mm_feature_store
+      - corridor_intent_graph.corridor_intent_snapshot
+      - smart_match_engine.match_history
+
+    produces_signals:
+      - demand_forecast_by_corridor
+      - supply_gap_alert
+      - staffing_recommendation
+
+    feeds_into:
+      - liquidity_gap_finder
+      - operator_opportunity_radar
+      - corridor_surge_pricing
+      - operator_availability_predictor
+
+    model:
+      method: "time_series_decomposition"
+      horizons: [1h, 4h, 24h, 7d]
+      granularity: "corridor × equipment_class × day_of_week"
+
+    cron:
+      job: "operator_demand_forecast_run"
+      cadence: "every 30 minutes"
+      sla_seconds: 120
+
+  # ═══════════════════════════════════════
+  # 1.3 PREDICTIVE BID LANDSCAPE MODEL
+  # ═══════════════════════════════════════
+  predictive_bid_landscape:
+    id: "PBL-001"
+    layer: "intelligence"
+    status: "designed"
+
+    purpose: >
+      Model the competitive bid landscape to inform advertiser bid guidance
+      and floor pricing decisions.
+
+    consumes_from:
+      - predictive_market_maker.mm_forecasts
+      - corridor_intent_graph.intent_strength
+      - adgrid_yield_optimizer.slot_performance
+
+    produces_signals:
+      - bid_landscape_snapshot
+      - competitive_pressure_index
+      - suggested_bid_ranges
+
+    feeds_into:
+      - predictive_market_maker.bid_guidance_decisions
+      - advertiser_roi_forecaster
+      - surge_pricing_advisor
+
+    model:
+      method: "quantile_regression"
+      features: ["demand_index", "supply_count", "time_of_day", "geo_tier", "equipment_class"]
+
+  # ═══════════════════════════════════════
+  # 1.4 INVENTORY YIELD OPTIMIZER
+  # ═══════════════════════════════════════
+  inventory_yield_optimizer:
+    id: "IYO-001"
+    layer: "intelligence"
+    status: "designed"
+
+    purpose: >
+      Maximize revenue per ad impression by optimizing slot allocation,
+      density, and creative selection across all surfaces.
+
+    consumes_from:
+      - predictive_market_maker.mm_forecasts
+      - corridor_intent_graph.corridor_heat_score
+      - creative_performance_ranking.creative_scores
+      - adgrid_moat_layer.guardrail_config
+
+    produces_signals:
+      - yield_optimization_applied
+      - slot_reranking_complete
+      - density_adjustment_applied
+
+    feeds_into:
+      - adgrid_yield_optimizer
+      - autonomous_pricing_brain
+
+    guardrails:
+      max_above_fold_ad_ratio: 0.30
+      max_total_ad_ratio: 0.40
+      max_promoted_map_pin_ratio: 0.10
+      page_speed_budget_p95_ms: 2000
+
+  # ═══════════════════════════════════════
+  # 1.5 GLOBAL LIQUIDITY AUTOPILOT v2
+  # ═══════════════════════════════════════
+  global_liquidity_autopilot:
+    id: "GLA-001"
+    layer: "intelligence"
+    status: "designed"
+
+    purpose: >
+      Autonomous cross-country liquidity management. Detects imbalances,
+      triggers recruiting, adjusts visibility, and rebalances supply.
+
+    consumes_from:
+      - liquidity_gap_finder.shortage_zones
+      - operator_demand_forecasting.demand_forecast_by_corridor
+      - corridor_heatmap_engine.heat_tiers
+      - marketplace_momentum_monitor.health_metrics
+
+    produces_signals:
+      - liquidity_rebalance_triggered
+      - recruiting_campaign_launched
+      - visibility_boost_applied
+      - country_liquidity_alert
+
+    feeds_into:
+      - global_budget_reallocator
+      - adgrid_yield_optimizer
+      - live_activity_amplifier
+
+    controls:
+      auto_recruiting: true
+      auto_visibility_boost: true
+      cross_country_rebalance: true
+      max_budget_shift_per_cycle_pct: 15
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 2: AUTONOMOUS MARKETPLACE CONTROLS
+# Keep the marketplace balanced automatically
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 2.1 SELF-HEALING LIQUIDITY BALANCER
+  # ═══════════════════════════════════════
+  self_healing_liquidity_balancer:
+    id: "SLB-001"
+    layer: "controls"
+    status: "designed"
+
+    purpose: >
+      Automatically detect and remediate liquidity imbalances across
+      corridors, equipment classes, and geographies.
+
+    consumes_from:
+      - liquidity_gap_finder.shortage_zones
+      - operator_demand_forecasting.supply_gap_alert
+      - corridor_heatmap_engine.risk_zones
+
+    produces_signals:
+      - liquidity_intervention_applied
+      - house_ad_share_adjusted
+      - operator_nudge_triggered
+      - floor_adjusted_for_liquidity
+
+    feeds_into:
+      - autonomous_pricing_brain
+      - corridor_surge_pricing
+      - profile_completion_psych_engine
+
+    actions:
+      - increase_house_ad_share_in_low_supply_corridors
+      - trigger_operator_recruiting_nudges
+      - adjust_floor_prices_to_attract_demand
+      - boost_operator_visibility_in_shortage_zones
+      - suppress_low_quality_supply_in_surplus_zones
+
+    guardrails:
+      max_house_share_override: 0.40
+      min_paid_fill_before_intervention: 0.30
+      cooldown_between_interventions_minutes: 60
+
+  # ═══════════════════════════════════════
+  # 2.2 AUTONOMOUS PRICING BRAIN
+  # ═══════════════════════════════════════
+  autonomous_pricing_brain:
+    id: "APB-001"
+    layer: "controls"
+    status: "designed"
+
+    purpose: >
+      Continuously optimize floor prices, geo multipliers, and demand
+      multipliers across all slot types and geographies.
+
+    consumes_from:
+      - predictive_market_maker.mm_forecasts
+      - inventory_yield_optimizer.yield_signals
+      - self_healing_liquidity_balancer.liquidity_state
+      - corridor_surge_pricing.surge_multipliers
+
+    produces_signals:
+      - floor_price_updated
+      - geo_multiplier_updated
+      - demand_multiplier_updated
+
+    feeds_into:
+      - adgrid_yield_optimizer.floor_config
+      - mm_config
+
+    guardrails:
+      max_floor_raise_per_cycle_pct: 15
+      max_floor_drop_per_cycle_pct: 10
+      never_below_house_value: true
+      min_margin_pct: 20
+      floor_freeze_on_fx_volatility_above: 0.08
+
+    safe_start:
+      initial_state: "disabled"
+      cold_start_manual_mode_days: 30
+      exploration_rate: 0.10
+
+  # ═══════════════════════════════════════
+  # 2.3 GLOBAL BUDGET REALLOCATOR
+  # ═══════════════════════════════════════
+  global_budget_reallocator:
+    id: "GBR-001"
+    layer: "controls"
+    status: "designed"
+
+    purpose: >
+      Shift ad budgets across countries and corridors based on
+      ROI performance, liquidity needs, and growth targets.
+
+    consumes_from:
+      - global_liquidity_autopilot.country_liquidity_alert
+      - advertiser_roi_forecaster.roi_by_geo
+      - marketplace_momentum_monitor.revenue_per_corridor
+
+    produces_signals:
+      - budget_reallocation_applied
+      - country_budget_cap_changed
+      - corridor_budget_boosted
+
+    guardrails:
+      max_budget_shift_per_cycle_pct: 15
+      min_data_days_before_reallocation: 7
+      require_positive_roi_for_increase: true
+
+  # ═══════════════════════════════════════
+  # 2.4 CORRIDOR SURGE PRICING
+  # ═══════════════════════════════════════
+  corridor_surge_pricing:
+    id: "CSP-001"
+    layer: "controls"
+    status: "designed"
+
+    purpose: >
+      Apply dynamic surge multipliers to ad pricing and operator rates
+      based on real-time corridor demand pressure.
+
+    consumes_from:
+      - corridor_demand_scorer.demand_tier
+      - corridor_heatmap_engine.heat_tier
+      - operator_demand_forecasting.demand_forecast_by_corridor
+      - surge_pricing_advisor.surge_flag
+
+    produces_signals:
+      - surge_multiplier_applied
+      - surge_multiplier_removed
+      - surge_corridor_flagged
+
+    feeds_into:
+      - autonomous_pricing_brain
+      - adgrid_yield_optimizer
+      - operator_opportunity_radar
+
+    guardrails:
+      max_surge_multiplier: 2.0
+      min_data_threshold_impressions: 200
+      cooldown_after_surge_minutes: 30
+
+    safe_start:
+      initial_state: "enabled"
+      initial_max_multiplier: 2.0
+
+  # ═══════════════════════════════════════
+  # 2.5 BID PACING OPTIMIZER
+  # ═══════════════════════════════════════
+  bid_pacing_optimizer:
+    id: "BPO-001"
+    layer: "controls"
+    status: "designed"
+
+    purpose: >
+      Smooth campaign spend delivery, prevent budget exhaustion,
+      and optimize impression timing for maximum ROI.
+
+    consumes_from:
+      - predictive_market_maker.mm_forecasts
+      - advertiser_roi_forecaster.campaign_roi
+      - creative_performance_ranking.creative_scores
+
+    produces_signals:
+      - pacing_adjustment_applied
+      - campaign_throttled
+      - campaign_auto_paused
+
+    guardrails:
+      auto_pause_if_cpa_exceeds_pct: 180
+      min_impressions_before_optimization: 500
+      max_spend_over_budget_pct: 110
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 3: CREATIVE & ADVERTISER INTELLIGENCE
+# Improve advertiser performance and retention
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 3.1 CREATIVE PERFORMANCE RANKING
+  # ═══════════════════════════════════════
+  creative_performance_ranking:
+    id: "CPR-001"
+    layer: "creative_intelligence"
+    status: "designed"
+    migration: "20260302_adgrid_moat_layer.sql"
+
+    tables:
+      - ad_creatives
+      - creative_performance_daily
+
+    purpose: >
+      Score and rank ad creatives by CTR, conversion, fatigue,
+      and quality to optimize rotation and surface the best performers.
+
+    consumes_from:
+      - mm_event_log (ad_impression, ad_click events)
+      - adgrid_moat_layer.guardrail_config
+
+    produces_signals:
+      - creative_quality_score_updated
+      - creative_fatigued
+      - creative_rejected
+
+    feeds_into:
+      - autonomous_creative_generator.exploration_pool
+      - ad_fatigue_detection.fatigue_inputs
+      - inventory_yield_optimizer.creative_scores
+      - predictive_market_maker.ad_auction_engine
+
+    scoring:
+      creative_quality_adrank_weight: 0.07
+      auto_reject_threshold: 0.35
+      manual_review_band: [0.35, 0.55]
+      bandit_exploration_rate: 0.15
+
+    cron:
+      job: "creative_performance_rollup_daily"
+      cadence: "daily 02:15 UTC"
+      sla_seconds: 600
+
+  # ═══════════════════════════════════════
+  # 3.2 AD FATIGUE DETECTION SYSTEM
+  # ═══════════════════════════════════════
+  ad_fatigue_detection:
+    id: "AFD-001"
+    layer: "creative_intelligence"
+    status: "designed"
+
+    purpose: >
+      Detect creative fatigue before CTR degrades, trigger refresh
+      recommendations, and manage rotation decay.
+
+    consumes_from:
+      - creative_performance_ranking.creative_scores
+      - mm_event_log (impression frequency data)
+
+    produces_signals:
+      - fatigue_score_updated
+      - creative_refresh_recommended
+      - rotation_decay_applied
+
+    feeds_into:
+      - autonomous_creative_generator
+      - adgrid_yield_optimizer
+
+    parameters:
+      ctr_decay_halflife_impressions: 5000
+      refresh_boost_on_new_creative: true
+      frequency_cap_per_ad_per_day: 3
+      frequency_cap_per_ad_per_hour: 1
+      no_repeat_within_session: true
+
+  # ═══════════════════════════════════════
+  # 3.3 ADVERTISER ROI FORECASTER
+  # ═══════════════════════════════════════
+  advertiser_roi_forecaster:
+    id: "ARF-001"
+    layer: "creative_intelligence"
+    status: "designed"
+    migration: "20260302_adgrid_moat_layer.sql"
+
+    tables:
+      - advertiser_health
+
+    purpose: >
+      Predict advertiser ROI by campaign, geo, and creative to guide
+      budget recommendations and retention interventions.
+
+    consumes_from:
+      - predictive_market_maker.mm_forecasts
+      - creative_performance_ranking.creative_scores
+      - predictive_bid_landscape.competitive_pressure
+
+    produces_signals:
+      - roi_forecast_updated
+      - roi_at_risk_alert
+      - budget_recommendation
+
+    feeds_into:
+      - ltv_advertiser_scoring
+      - bid_pacing_optimizer
+      - churn_risk_detector
+
+  # ═══════════════════════════════════════
+  # 3.4 LTV-BASED ADVERTISER SCORING
+  # ═══════════════════════════════════════
+  ltv_advertiser_scoring:
+    id: "LTV-001"
+    layer: "creative_intelligence"
+    status: "designed"
+
+    purpose: >
+      Score advertisers by lifetime value to prioritize support,
+      ad delivery, and retention interventions.
+
+    consumes_from:
+      - advertiser_roi_forecaster.roi_forecast
+      - operator_reputation_engine.performance_quality
+      - churn_risk_detector.risk_score
+
+    produces_signals:
+      - ltv_score_updated
+      - high_value_advertiser_flagged
+      - at_risk_advertiser_flagged
+
+    feeds_into:
+      - adgrid_yield_optimizer.advertiser_priority
+      - global_budget_reallocator
+
+  # ═══════════════════════════════════════
+  # 3.5 AUTONOMOUS CREATIVE GENERATOR
+  # ═══════════════════════════════════════
+  autonomous_creative_generator:
+    id: "ACG-001"
+    layer: "creative_intelligence"
+    status: "designed"
+
+    purpose: >
+      Auto-generate ad creative variants using market context, performance
+      data, and advertiser profiles. Human approval required initially.
+
+    consumes_from:
+      - corridor_intent_graph.market_context
+      - creative_performance_ranking.exploration_pool
+      - ad_fatigue_detection.refresh_recommendations
+      - adgrid_moat_layer.guardrail_config
+
+    produces_signals:
+      - creative_variants_generated
+      - creative_experiment_assigned
+      - creative_refresh_applied
+
+    feeds_into:
+      - creative_performance_ranking
+      - multi_touch_attribution
+
+    guardrails:
+      require_manual_approval_first_days: 14
+      policy_rejection_rate_kill_threshold: 0.05
+      spam_score_kill_threshold: 0.60
+
+    safe_start:
+      initial_state: "enabled_with_manual_approval"
+
+    cron:
+      job: "autonomous_creative_refresh"
+      cadence: "every 6 hours"
+      sla_seconds: 300
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 4: GLOBAL EXPANSION INTELLIGENCE
+# Support the 52-country scale strategy
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 4.1 CROSS-BORDER CURRENCY OPTIMIZER
+  # ═══════════════════════════════════════
+  cross_border_currency_optimizer:
+    id: "CCO-001"
+    layer: "global"
+    status: "designed"
+
+    purpose: >
+      Optimize ad pricing, floor calculations, and budget management
+      across multiple currencies with FX volatility protection.
+
+    consumes_from:
+      - autonomous_pricing_brain.floor_config
+      - global_budget_reallocator.country_budgets
+
+    produces_signals:
+      - fx_rate_updated
+      - currency_conversion_applied
+      - fx_volatility_alert
+
+    feeds_into:
+      - autonomous_pricing_brain
+      - corridor_surge_pricing
+
+    guardrails:
+      fx_update_frequency: "hourly"
+      fx_volatility_kill_threshold: 0.08  # triggers floor freeze
+      locale_rounding_rules: true
+      supported_currencies: 35+
+
+  # ═══════════════════════════════════════
+  # 4.2 CROSS-NETWORK DEMAND EXCHANGE
+  # ═══════════════════════════════════════
+  cross_network_demand_exchange:
+    id: "CNE-001"
+    layer: "global"
+    status: "designed"
+
+    purpose: >
+      Exchange demand signals and fill inventory across partner networks
+      to maximize fill rates in low-liquidity markets.
+
+    consumes_from:
+      - inventory_yield_optimizer.unsold_inventory
+      - self_healing_liquidity_balancer.liquidity_state
+
+    produces_signals:
+      - external_fill_applied
+      - partner_quality_scored
+      - exchange_rate_updated
+
+    feeds_into:
+      - adgrid_yield_optimizer
+      - mm_event_log
+
+    guardrails:
+      max_external_fill_ratio: 0.25
+      min_partner_quality_score: 0.70
+      disable_if_partner_quality_drops_pct: 15
+
+    safe_start:
+      initial_state: "disabled"
+      enable_after: "partner_scoring_proven_above_0.70"
+
+  # ═══════════════════════════════════════
+  # 4.3 REAL-TIME CORRIDOR INTENT GRAPH
+  # ═══════════════════════════════════════
+  corridor_intent_graph:
+    id: "CIG-001"
+    layer: "global"
+    status: "designed"
+    migration: "20260302_adgrid_moat_layer.sql"
+
+    tables:
+      - intent_graph_nodes
+      - intent_graph_edges
+      - corridor_intent_snapshot
+
+    purpose: >
+      Build and maintain a real-time graph of user intent signals across
+      corridors, equipment types, and operator clusters.
+
+    consumes_events:
+      - search.query_submitted
+      - directory.filter_applied
+      - map.pin_hovered
+      - map.pin_clicked
+      - profile.viewed
+      - profile.clicked_contact
+      - outbound.call_clicked
+      - message.sent
+      - loads.posted
+
+    produces_signals:
+      - intent.snapshot_updated       # every 5 min
+      - intent.shift_alert            # regime change detected
+      - intent.shortage_signal        # demand without matching supply
+
+    feeds_into:
+      - predictive_market_maker.relevance_score
+      - corridor_surge_pricing.surge_score
+      - inventory_yield_optimizer.corridor_heat_score
+      - operator_demand_forecasting.inputs
+      - self_healing_liquidity_balancer.monitored_dimensions
+      - autonomous_creative_generator.market_context
+      - predictive_bid_landscape.inputs
+
+    windows:
+      hot: "5 minutes"
+      warm: "1 hour"
+      baseline: "7 days"
+
+    cron:
+      - job: "intent_graph_hot_window_update"
+        cadence: "every 5 minutes"
+        sla_seconds: 60
+      - job: "intent_graph_warm_baseline_rollup"
+        cadence: "hourly"
+        sla_seconds: 180
+
+  # ═══════════════════════════════════════
+  # 4.4 GLOBAL LIQUIDITY DENSITY SCORING ENGINE
+  # ═══════════════════════════════════════
+  global_liquidity_density_scoring:
+    id: "GLD-001"
+    layer: "global"
+    status: "designed"
+
+    purpose: >
+      Score every corridor and country by operator supply density
+      relative to demand to guide expansion and resource allocation.
+
+    consumes_from:
+      - operator_demand_forecasting.demand_forecast
+      - corridor_heatmap_engine.supply_density
+      - marketplace_momentum_monitor.active_operators
+
+    produces_signals:
+      - liquidity_density_score_updated
+      - expansion_opportunity_flagged
+      - contraction_risk_flagged
+
+    feeds_into:
+      - global_liquidity_autopilot
+      - global_budget_reallocator
+      - seo_surface_expander
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 5: OPERATOR REPUTATION FLYWHEEL
+# ─────────────────────────────────────────────────────────────────────────────
+
+  operator_reputation_flywheel:
+    id: "ORF-001"
+    layer: "trust"
+    status: "designed"
+    migration: "20260302_adgrid_moat_layer.sql"
+
+    tables:
+      - operator_reputation
+
+    consumes_events:
+      - operator.claimed_listing
+      - operator.verification.updated
+      - operator.response.logged
+      - review.submitted
+      - review.moderation.completed
+      - dispute.opened
+      - dispute.closed
+      - job.completed_proxy
+
+    produces_signals:
+      - operator.trust_score_updated
+      - operator.badges_updated
+      - operator.fraud_risk_flag
+
+    feeds_into:
+      - smart_match_engine.reputation_factor
+      - adgrid_yield_optimizer.trust_score
+      - ltv_advertiser_scoring.performance_quality
+      - self_healing_liquidity_balancer.operator_supply_index
+      - directory_ranking.rank_modifier
+      - autonomous_creative_generator.value_props
+
+    cron:
+      job: "operator_reputation_recompute"
+      cadence: "hourly"
+      sla_seconds: 180
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 6: CLAIM ENGINE
+# ─────────────────────────────────────────────────────────────────────────────
+
+  claim_engine:
+    id: "CLM-001"
+    layer: "acquisition"
+    status: "deployed"
+    migration: "20260302_global_claim_system.sql"
+    rpcs_migration: "20260302_claim_engine_wiring.sql"
+
+    tables:
+      - surfaces
+      - claims
+      - outreach_events
+      - claim_audit_log
+      - claim_disputes
+      - outreach_suppressions
+      - claim_governor
+
+    rpcs: 29  # See claim_engine_wiring.sql for full list
+
+    feeds_into:
+      - operator_reputation_flywheel
+      - profile_completion_psych_engine
+      - live_activity_amplifier
+      - seo_surface_expander
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 7: WARGAMING & SAFETY
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 5.2 AD AUCTION ENGINE
+  # ═══════════════════════════════════════
+  ad_auction_engine:
+    id: "AAE-001"
+    layer: "trust"
+    status: "designed"
+
+    purpose: >
+      Core auction mechanics — weighted second-price with quality scoring,
+      trust-first ranking, and anti-gaming protections.
+
+    auction_type:
+      primary: "weighted_second_price"
+      fallback: "fixed_floor_first_price"
+
+    quality_weighting:
+      bid_weight: 0.55
+      relevance_score: 0.25
+      trust_score: 0.15
+      performance_ctr: 0.05
+
+    winner_selection:
+      method: "highest_auction_score"
+      tie_breaker: ["higher_trust_score", "higher_bid", "random_seed"]
+
+    pricing_rule:
+      model: "second_price_plus_epsilon"
+      epsilon: 0.01
+
+    anti_gaming:
+      bid_spike_detection: true
+      rapid_bid_flip_guard: true
+      trust_penalty_on_abuse: true
+
+    consumes_from:
+      - corridor_intent_graph.relevance_score
+      - operator_reputation_flywheel.trust_score
+      - creative_performance_ranking.creative_scores
+      - autonomous_pricing_brain.floor_config
+
+    produces_signals:
+      - auction_winner_selected
+      - ad_impression_viewable
+      - ad_click
+
+    feeds_into:
+      - mm_event_log
+      - multi_touch_attribution
+      - creative_performance_ranking
+
+  # ═══════════════════════════════════════
+  # 5.3 MULTI-TOUCH ATTRIBUTION SPINE
+  # ═══════════════════════════════════════
+  multi_touch_attribution:
+    id: "MTA-001"
+    layer: "trust"
+    status: "designed"
+
+    purpose: >
+      Give advertisers credible visibility into full conversion paths.
+      Critical for renewals and ROI confidence.
+
+    attribution_model:
+      default: "time_decay_weighted"
+      supported: ["first_touch", "last_touch", "linear", "time_decay_weighted", "position_based"]
+
+    touchpoints_tracked:
+      - search_impression
+      - sponsored_listing_view
+      - map_pin_view
+      - profile_click
+      - contact_reveal
+      - outbound_call_click
+      - message_initiated
+
+    identity_resolution:
+      methods: ["session_id", "hashed_user_id", "probabilistic_device_graph"]
+      cross_device: true
+
+    weighting:
+      time_decay_half_life_hours: 48
+      first_touch_bonus: 1.1
+      last_touch_bonus: 1.25
+
+    conversion_proxies:
+      primary: ["contact_reveal", "call_click", "message_sent"]
+      secondary: ["profile_dwell_time", "repeat_profile_views"]
+
+    privacy:
+      gdpr_mode: true
+      data_retention_days: 365
+
+    consumes_from:
+      - ad_auction_engine.events
+      - mm_event_log
+
+    produces_signals:
+      - attributed_conversion_value
+      - touchpoint_credit_map
+      - assist_rate
+
+    feeds_into:
+      - advertiser_roi_forecaster
+      - creative_performance_ranking
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 7: AUTONOMOUS REVENUE FLYWHEEL
+# Meta-layer above AdGrid — self-reinforcing revenue engine
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 7.1 AUTONOMOUS REVENUE FLYWHEEL
+  # ═══════════════════════════════════════
+  autonomous_revenue_flywheel:
+    id: "ARF-001"
+    layer: "meta"
+    status: "designed"
+
+    purpose: >
+      Self-reinforcing revenue engine that continuously increases advertiser
+      ROI, marketplace liquidity, and AdGrid yield through automated demand
+      sensing, budget reallocation, audience expansion, and inventory optimization.
+
+    sub_systems:
+      market_signal_ingestion:
+        cadence_minutes: 15
+        signals: ["load_post_velocity", "search_volume", "fill_rate", "effective_cpm", "fraud_rate"]
+
+      demand_inventory_expansion:
+        high_demand_threshold: 0.75
+        sustained_hours_required: 6
+        max_density_increase_pct: 30
+        rollback_if_ctr_drops_pct: 25
+
+      advertiser_roi_loop:
+        cadence_minutes: 60
+        auto_pause_if_cpa_exceeds_pct: 180
+        never_auto_increase_spend: true
+
+      budget_gravity_engine:
+        max_budget_shift_per_cycle_pct: 25
+        preserve_learning_budget_pct: 30
+
+      audience_expansion_engine:
+        max_audience_growth_pct: 40
+        auto_rollback_if_ctr_drop_pct: 30
+
+      house_ad_intelligence:
+        suppress_if_paid_fill_above_pct: 85
+        max_house_share_global: 0.25
+
+      liquidity_stabilizer:
+        max_floor_drop_pct: 15
+        max_floor_raise_pct: 25
+
+    consumes_from:
+      - predictive_market_maker
+      - adgrid_yield_optimizer
+      - self_healing_liquidity_balancer
+      - advertiser_roi_forecaster
+
+    produces_signals:
+      - budget_reallocation_applied
+      - audience_expanded
+      - inventory_expanded
+      - roi_intervention_triggered
+
+    feeds_into:
+      - global_liquidity_autopilot
+      - ad_auction_engine
+      - autonomous_pricing_brain
+
+  # ═══════════════════════════════════════
+  # 7.2 REVENUE FORECAST MODEL
+  # ═══════════════════════════════════════
+  revenue_forecast_model:
+    id: "RFM-001"
+    layer: "meta"
+    status: "designed"
+
+    purpose: >
+      Predict monetization potential by country to guide pricing
+      strategy and expansion priority across the 52-country rollout.
+
+    country_inputs:
+      - monthly_active_users
+      - searches_per_user
+      - operator_density
+      - broker_density
+      - gdp_per_capita_index
+      - freight_activity_index
+      - digital_adoption_score
+
+    maturity_multipliers:
+      early_stage: 0.45
+      growth_stage: 0.70
+      mature_stage: 1.00
+
+    tier_expectations:
+      tier_a_gold: { fill_rate: 0.55, renewal_rate: 0.72 }
+      tier_b_blue: { fill_rate: 0.40, renewal_rate: 0.60 }
+      tier_c_silver: { fill_rate: 0.25, renewal_rate: 0.48 }
+
+    outputs:
+      - monthly_revenue_projection
+      - revenue_per_active_user
+      - revenue_per_operator
+      - inventory_pressure_index
+      - pricing_headroom_score
+
+    dashboard_flags:
+      - underpriced_market
+      - oversaturated_inventory
+      - high_growth_opportunity
+      - low_liquidity_warning
+
+    feeds_into:
+      - global_budget_reallocator
+      - autonomous_pricing_brain
+      - global_liquidity_autopilot
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 8: SEO & CONTENT INTELLIGENCE
+# ─────────────────────────────────────────────────────────────────────────────
+
+  # ═══════════════════════════════════════
+  # 8.1 GLOBAL KEYWORD EXPLOSION ENGINE
+  # ═══════════════════════════════════════
+  global_keyword_explosion_engine:
+    id: "GKE-001"
+    layer: "seo"
+    status: "designed"
+
+    purpose: >
+      Controlled combinatorial expansion — millions of keyword/page
+      combinations without index bloat, prioritizing fastest-revenue pages.
+
+    guardrails:
+      max_indexable_per_country: 2500
+      max_total_indexable: 85000
+      long_tail_default: "noindex_follow"
+      promote_threshold:
+        impressions_90d: 120
+        clicks_90d: 8
+        ctr_min: 0.035
+      spam_prevention:
+        require_unique_intro: true
+        min_word_count: 650
+        semantic_similarity_block: 0.82
+
+    seed_dimensions:
+      core_terms: 50
+      equipment_variants: 25
+      corridor_targets: 200
+      intent_modifiers: 8
+      urgency_modifiers: 5
+
+    autonomous_promotion_loop:
+      evaluation_window_days: 90
+      promote_if: { impressions: ">=120", clicks: ">=8", ctr: ">=0.035" }
+      demote_if: { impressions: "<30", age_days: ">120" }
+      refresh_stale_after_days: 180
+
+    scale_projection:
+      theoretical_combinations: 10000000
+      controlled_target: 85000
+
+    consumes_from:
+      - corridor_intent_graph
+      - seo_surface_expander
+      - global_liquidity_density_scoring
+
+    feeds_into:
+      - seo_surface_expander.build_queue
+      - live_activity_amplifier
+
+  # ═══════════════════════════════════════
+  # 8.2 AI ANSWER BOX CAPTURE
+  # ═══════════════════════════════════════
+  ai_answer_box_capture:
+    id: "AAB-001"
+    layer: "seo"
+    status: "designed"
+
+    purpose: >
+      Win featured snippets, voice answers, and AI summaries for
+      high-value logistics queries across all markets.
+
+    strategy:
+      tone: "direct, factual, logistics-authority"
+      paragraph_length_words: [40, 60]
+      speakable_schema: true
+      faq_schema: true
+      max_questions_per_page: 5
+
+    refresh_cadence: "quarterly"
+
+    feeds_into:
+      - global_keyword_explosion_engine
+      - seo_surface_expander
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 9: WARGAMING & SAFETY
+# ─────────────────────────────────────────────────────────────────────────────
+
+  marketplace_wargaming_simulator:
+    id: "MWS-001"
+    layer: "safety"
+    status: "designed"
+
+    purpose: >
+      Simulate edge cases, market failures, and adversarial scenarios
+      to test system resilience before they happen in production.
+
+    consumes_models:
+      - predictive_market_maker
+      - autonomous_pricing_brain
+      - corridor_surge_pricing
+      - ad_fatigue_detection
+      - self_healing_liquidity_balancer
+      - operator_reputation_flywheel
+
+    produces_signals:
+      - wargame.failure_modes_report
+      - wargame.resilience_score
+      - wargame.guardrail_recommendations
+
+    feeds_into:
+      - kill_switch_controller.policy_updates
+      - guardrail_config.recommended_changes
+
+    cron:
+      - job: "nightly_wargame_quick_run"
+        cadence: "daily 03:30 UTC"
+        sla_seconds: 1200
+      - job: "weekly_wargame_full_suite"
+        cadence: "Sunday 04:00 UTC"
+        sla_seconds: 3600
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DEPENDENCY GRAPH (DAG)
+# Read as: module → depends on
+# ═══════════════════════════════════════════════════════════════════════════════
+
+dependency_graph:
+
+  # === TIER 0: Foundation (no dependencies) ===
+  tier_0_foundation:
+    - mm_event_log           # Raw event stream
+    - surfaces               # Claim surfaces
+    - guardrail_config       # Runtime rules
+    - intent_graph_nodes     # Graph foundation
+
+  # === TIER 1: Data Aggregation ===
+  tier_1_aggregation:
+    corridor_intent_graph:
+      depends: [mm_event_log, intent_graph_nodes]
+    mm_feature_store:
+      depends: [mm_event_log]
+    creative_performance_ranking:
+      depends: [mm_event_log, ad_creatives]
+    operator_reputation_flywheel:
+      depends: [surfaces, claim_engine]
+
+  # === TIER 2: Intelligence ===
+  tier_2_intelligence:
+    predictive_market_maker:
+      depends: [mm_feature_store]
+    operator_demand_forecasting:
+      depends: [mm_feature_store, corridor_intent_graph]
+    predictive_bid_landscape:
+      depends: [predictive_market_maker, corridor_intent_graph]
+    ad_fatigue_detection:
+      depends: [creative_performance_ranking]
+    advertiser_roi_forecaster:
+      depends: [predictive_market_maker, creative_performance_ranking]
+
+  # === TIER 3: Autonomous Controls ===
+  tier_3_controls:
+    autonomous_pricing_brain:
+      depends: [predictive_market_maker, inventory_yield_optimizer]
+    corridor_surge_pricing:
+      depends: [corridor_intent_graph, operator_demand_forecasting]
+    self_healing_liquidity_balancer:
+      depends: [operator_demand_forecasting, corridor_intent_graph]
+    bid_pacing_optimizer:
+      depends: [predictive_market_maker, advertiser_roi_forecaster]
+    inventory_yield_optimizer:
+      depends: [predictive_market_maker, corridor_intent_graph, creative_performance_ranking]
+
+  # === TIER 4: Global Expansion ===
+  tier_4_global:
+    global_liquidity_autopilot:
+      depends: [self_healing_liquidity_balancer, operator_demand_forecasting]
+    global_budget_reallocator:
+      depends: [global_liquidity_autopilot, advertiser_roi_forecaster]
+    cross_border_currency_optimizer:
+      depends: [autonomous_pricing_brain]
+    cross_network_demand_exchange:
+      depends: [inventory_yield_optimizer, self_healing_liquidity_balancer]
+    global_liquidity_density_scoring:
+      depends: [operator_demand_forecasting, marketplace_momentum_monitor]
+
+  # === TIER 5: Creative Autonomy ===
+  tier_5_creative:
+    autonomous_creative_generator:
+      depends: [corridor_intent_graph, creative_performance_ranking, ad_fatigue_detection]
+    ltv_advertiser_scoring:
+      depends: [advertiser_roi_forecaster, churn_risk_detector]
+
+  # === TIER 6: Safety & Monitoring ===
+  tier_6_safety:
+    marketplace_wargaming_simulator:
+      depends: [predictive_market_maker, autonomous_pricing_brain, corridor_surge_pricing]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# EVENT FLOW DIAGRAM
+# Primary data flow through the autonomous brain
+# ═══════════════════════════════════════════════════════════════════════════════
+
+event_flow:
+  # Stage 1: Ingest
+  raw_events:
+    source: "user actions, ad events, system events"
+    destination: "mm_event_log"
+    method: "mm_ingest_event (SECURITY DEFINER)"
+
+  # Stage 2: Aggregate
+  feature_aggregation:
+    source: "mm_event_log"
+    destination: "mm_feature_store"
+    method: "mm_build_feature_buckets"
+    cadence: "every 30 minutes"
+
+  intent_aggregation:
+    source: "mm_event_log"
+    destination: "corridor_intent_snapshot"
+    method: "intent_graph_hot_window_update"
+    cadence: "every 5 minutes"
+
+  reputation_aggregation:
+    source: "reviews, disputes, jobs"
+    destination: "operator_reputation"
+    method: "operator_reputation_recompute"
+    cadence: "hourly"
+
+  creative_aggregation:
+    source: "mm_event_log impressions/clicks"
+    destination: "creative_performance_daily"
+    method: "creative_performance_rollup_daily"
+    cadence: "daily 02:15 UTC"
+
+  # Stage 3: Forecast
+  forecasting:
+    source: "mm_feature_store (latest)"
+    destination: "mm_forecasts"
+    method: "mm_run_forecast"
+    cadence: "every 30 minutes"
+
+  # Stage 4: Decide
+  decision_generation:
+    source: "mm_forecasts"
+    destination: "mm_actuator_decisions"
+    method: "mm_generate_decisions"
+    cadence: "after each forecast run"
+
+  # Stage 5: Execute
+  decision_execution:
+    source: "mm_actuator_decisions (proposed)"
+    destination: "mm_config + runtime"
+    method: "mm_apply_decision"
+    trigger: "admin approval OR auto-apply if confidence >= 0.6 AND human_opt_in=false"
+
+  # Stage 6: Observe
+  audit_trail:
+    source: "all actuator actions"
+    destination: "mm_audit_log (append-only)"
+    method: "automatic via RPCs"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KILL SWITCHES
+# Emergency controls for each autonomous system
+# ═══════════════════════════════════════════════════════════════════════════════
+
+kill_switches:
+
+  global_market_maker_kill:
+    switch_name: "mm_global_kill"
+    rpc: "mm_kill_switch"
+    scope: "all actuators except bid_guidance"
+    trigger_conditions:
+      - "manual admin action"
+      - "margin_drop > 15% in 24h"
+      - "fraud_spike > 2x baseline"
+    consequences:
+      - "All actuators paused"
+      - "Forecasting continues (observability)"
+      - "Bid guidance continues (informational)"
+    recovery: "manual re-enable by admin"
+
+  freeze_floor_prices:
+    switch_name: "floor_freeze"
+    scope: "autonomous_pricing_brain"
+    trigger_conditions:
+      - "fx_volatility_24h > 8%"
+      - "floor_change_rate > 35% in 24h"
+    consequences:
+      - "Zero floor changes permitted"
+      - "Pricing brain disabled"
+      - "Kill switch event logged"
+    safe_start: "active for first 30 days (cold start)"
+
+  disable_surge_pricing:
+    switch_name: "surge_disable"
+    scope: "corridor_surge_pricing"
+    trigger_conditions:
+      - "churn_rate_7d > 8%"
+      - "roi_drop_7d > 25%"
+    consequences:
+      - "All surge multipliers removed"
+      - "Base pricing only"
+
+  reduce_ad_density_emergency:
+    switch_name: "density_emergency"
+    scope: "inventory_yield_optimizer"
+    trigger_conditions:
+      - "bounce_rate_increase > 12%"
+      - "page_speed_p95 > 2500ms"
+    consequences:
+      - "Above-fold ratio → 20%"
+      - "Yield optimizer flagged"
+
+  disable_external_exchange:
+    switch_name: "exchange_disable"
+    scope: "cross_network_demand_exchange"
+    trigger_conditions:
+      - "external_fill > 25%"
+      - "partner_quality_drop > 15%"
+    consequences:
+      - "All cross-network fill stopped"
+
+  freeze_autonomous_creatives:
+    switch_name: "creative_freeze"
+    scope: "autonomous_creative_generator"
+    trigger_conditions:
+      - "policy_rejection_rate > 5%"
+      - "spam_score > 0.60"
+    consequences:
+      - "Generator disabled"
+      - "All new creatives require manual approval"
+
+  outreach_global_pause:
+    switch_name: "outreach_pause"
+    scope: "claim_engine outreach"
+    trigger_conditions:
+      - "manual admin action"
+      - "complaint_spike > 3x baseline"
+    consequences:
+      - "All outreach queues paused"
+      - "In-progress sends complete"
+    rpc: "claim_governor UPDATE"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CRON SCHEDULE — COMPLETE
+# All scheduled jobs across the autonomous brain
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cron_schedule:
+
+  # === Every 5 minutes ===
+  every_5min:
+    - job: "intent_graph_hot_window_update"
+      module: "corridor_intent_graph"
+      sla_seconds: 60
+      priority: "critical"
+
+  # === Every 30 minutes ===
+  every_30min:
+    - job: "mm_build_feature_buckets"
+      module: "predictive_market_maker"
+      sla_seconds: 120
+      priority: "critical"
+
+    - job: "mm_run_forecast"
+      module: "predictive_market_maker"
+      sla_seconds: 120
+      depends_on: "mm_build_feature_buckets"
+      priority: "critical"
+
+    - job: "mm_generate_decisions"
+      module: "predictive_market_maker"
+      sla_seconds: 60
+      depends_on: "mm_run_forecast"
+      priority: "high"
+
+    - job: "yield_optimization_loop"
+      module: "inventory_yield_optimizer"
+      sla_seconds: 120
+      priority: "high"
+
+    - job: "operator_demand_forecast_run"
+      module: "operator_demand_forecasting"
+      sla_seconds: 120
+      priority: "high"
+
+  # === Hourly ===
+  hourly:
+    - job: "intent_graph_warm_baseline_rollup"
+      module: "corridor_intent_graph"
+      sla_seconds: 180
+      priority: "medium"
+
+    - job: "operator_reputation_recompute"
+      module: "operator_reputation_flywheel"
+      sla_seconds: 180
+      priority: "medium"
+
+    - job: "creative_bandit_update"
+      module: "creative_performance_ranking"
+      sla_seconds: 120
+      priority: "medium"
+
+    - job: "liquidity_density_score_update"
+      module: "global_liquidity_density_scoring"
+      sla_seconds: 120
+      priority: "medium"
+
+    - job: "fx_rate_refresh"
+      module: "cross_border_currency_optimizer"
+      sla_seconds: 30
+      priority: "high"
+
+    - job: "expire_stale_otps"
+      module: "claim_engine"
+      sla_seconds: 30
+      priority: "low"
+
+  # === Every 6 hours ===
+  every_6h:
+    - job: "autonomous_creative_refresh"
+      module: "autonomous_creative_generator"
+      sla_seconds: 300
+      priority: "medium"
+
+    - job: "advertiser_health_recompute"
+      module: "advertiser_roi_forecaster"
+      sla_seconds: 300
+      priority: "medium"
+
+    - job: "churn_risk_scan"
+      module: "churn_risk_detector"
+      sla_seconds: 120
+      priority: "medium"
+
+  # === Daily ===
+  daily:
+    - job: "creative_performance_rollup_daily"
+      module: "creative_performance_ranking"
+      time: "02:15 UTC"
+      sla_seconds: 600
+      priority: "high"
+
+    - job: "claim_priority_score_recompute"
+      module: "claim_engine"
+      time: "02:30 UTC"
+      sla_seconds: 600
+      priority: "medium"
+
+    - job: "nightly_wargame_quick_run"
+      module: "marketplace_wargaming_simulator"
+      time: "03:30 UTC"
+      sla_seconds: 1200
+      priority: "medium"
+
+    - job: "marketplace_momentum_daily_report"
+      module: "marketplace_momentum_monitor"
+      time: "06:00 UTC"
+      sla_seconds: 120
+      priority: "low"
+
+  # === Weekly ===
+  weekly:
+    - job: "weekly_wargame_full_suite"
+      module: "marketplace_wargaming_simulator"
+      day: "Sunday"
+      time: "04:00 UTC"
+      sla_seconds: 3600
+      priority: "medium"
+
+    - job: "global_budget_reallocation_review"
+      module: "global_budget_reallocator"
+      day: "Monday"
+      time: "08:00 UTC"
+      sla_seconds: 300
+      priority: "medium"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SAFE-START DEFAULTS
+# Initial states for all autonomous systems at launch
+# ═══════════════════════════════════════════════════════════════════════════════
+
+safe_start_defaults:
+
+  predictive_market_maker:
+    state: "shadow_mode"
+    duration: "7 days shadow → 14 days limited (25% countries) → full"
+
+  autonomous_pricing_brain:
+    state: "disabled"
+    duration: "30-day manual cold start"
+    exploration_rate: 0.10
+
+  corridor_surge_pricing:
+    state: "enabled"
+    max_multiplier: 2.0
+
+  autonomous_creative_generator:
+    state: "enabled_with_manual_approval"
+    manual_approval_duration: "14 days"
+
+  cross_network_demand_exchange:
+    state: "disabled"
+    enable_condition: "partner_scoring > 0.70"
+
+  floor_freeze:
+    state: "active"
+    duration: "30-day cold start"
+
+  creative_bandit_exploration:
+    rate: 0.15
+
+  pricing_brain_exploration:
+    rate: 0.10
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BUILD ORDER (PROGRESSIVE PHASES)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+build_phases:
+
+  phase_1_restore_core:
+    name: "Restore Core"
+    priority: "NOW"
+    modules:
+      - smart_match_engine
+      - liquidity_gap_finder
+      - profile_completion_psych_engine
+      - adgrid_yield_optimizer
+      - operator_reputation_flywheel
+      - claim_engine
+    migrations_ready:
+      - "20260302_global_claim_system.sql ✅"
+      - "20260302_claim_engine_wiring.sql ✅"
+      - "20260302_adgrid_moat_layer.sql ✅"
+
+  phase_2_reinforce_intelligence:
+    name: "Reinforce Intelligence"
+    priority: "NEXT"
+    modules:
+      - predictive_market_maker
+      - operator_demand_forecasting
+      - predictive_bid_landscape
+      - corridor_surge_pricing
+      - surge_pricing_advisor
+      - bid_pacing_optimizer
+    migrations_ready:
+      - "20260302_predictive_market_maker.sql ✅"
+      - "20260302_market_maker_remaining_rpcs.sql ✅"
+
+  phase_3_global_autonomy:
+    name: "Global Autonomy"
+    priority: "AFTER PHASE 2"
+    modules:
+      - cross_border_currency_optimizer
+      - cross_network_demand_exchange
+      - corridor_intent_graph
+      - global_liquidity_autopilot
+      - global_liquidity_density_scoring
+      - global_budget_reallocator
+    migrations_ready:
+      - "20260302_adgrid_moat_layer.sql (intent graph tables) ✅"
+
+  phase_4_creative_autonomy:
+    name: "Creative Autonomy"
+    priority: "AFTER PHASE 3"
+    modules:
+      - creative_performance_ranking
+      - ad_fatigue_detection
+      - autonomous_creative_generator
+      - advertiser_roi_forecaster
+      - ltv_advertiser_scoring
+
+  phase_5_seo_dominance:
+    name: "SEO & Content Intelligence"
+    priority: "PARALLEL WITH PHASE 3"
+    modules:
+      - global_keyword_explosion_engine
+      - ai_answer_box_capture
+      - seo_surface_expander
+
+  phase_6_revenue_flywheel:
+    name: "Autonomous Revenue Flywheel"
+    priority: "AFTER PHASE 4"
+    modules:
+      - autonomous_revenue_flywheel
+      - revenue_forecast_model
+      - multi_touch_attribution
+      - ad_auction_engine
+
+  phase_7_wargaming:
+    name: "Wargaming & Safety"
+    priority: "AFTER PHASE 6"
+    modules:
+      - marketplace_wargaming_simulator
+      - churn_risk_detector
+      - trust_signal_verifier
+      - marketplace_momentum_monitor
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TOTAL MODULE COUNT: 28 autonomous modules
+# TOTAL TABLES: 25+
+# TOTAL RPCs: 45+
+# TOTAL KILL SWITCHES: 7
+# TOTAL CRON JOBS: 19+
+# TOTAL SKILLS: 23
+# TOTAL BUILD PHASES: 7
+# COMPANION SPEC: ADGRID_FORMULA_SPECS.yaml
+# ═══════════════════════════════════════════════════════════════════════════════

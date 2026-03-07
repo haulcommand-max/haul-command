@@ -1,0 +1,293 @@
+# Haul Command — Global Operator Demand Map
+# Production targeting matrix for marketplace seeding, SEO, and corridor intelligence.
+# Version: 2026-02-27
+
+demand_map:
+  version: "2026-02-27"
+  purpose: >
+    Prioritized demand targeting for escort operators, ranked by payout potential,
+    demand frequency, competition level, and global scalability.
+
+  # ============================================================
+  # TIER 1 — ELITE MONEY (High Payout, Consistent Demand)
+  # ============================================================
+
+  tier_1_elite:
+    description: "Bread-and-butter big checks worldwide"
+    frequency: very_high
+    payout: very_high
+    global_scalability: excellent
+
+    segments:
+
+      energy_power_infrastructure:
+        label: "Energy & Power Infrastructure"
+        targets:
+          - wind_turbine_blade_transport
+          - wind_farm_epc_contractors
+          - turboshaft_nacelle_movers
+          - power_transformer_transport
+          - substation_equipment_movers
+          - utility_companies_grid_upgrades
+          - solar_farm_developers_utility_scale
+          - battery_storage_project_logistics
+          - nuclear_plant_component_movers
+          - hydroelectric_equipment_transport
+
+      heavy_industrial_manufacturing:
+        label: "Heavy Industrial & Manufacturing"
+        targets:
+          - steel_mill_equipment_movers
+          - industrial_press_movers
+          - factory_relocation_companies
+          - paper_mill_equipment_transport
+          - petrochemical_plant_logistics
+          - refinery_equipment_movers
+          - mining_equipment_transport
+          - smelter_equipment_movers
+          - industrial_boiler_transport
+          - large_hvac_chiller_transport
+
+      specialized_heavy_haul_carriers:
+        label: "Specialized Heavy Haul Carriers"
+        note: "Direct repeat customers"
+        targets:
+          - heavy_haul_trucking_companies
+          - oversize_load_carriers
+          - superload_carriers
+          - modular_transport_companies
+          - goldhofer_scheuerle_operators
+          - multi_axle_trailer_fleets
+          - rgn_lowboy_heavy_specialists
+          - project_cargo_carriers
+          - permit_service_companies
+          - heavy_haul_dispatch_services
+
+  # ============================================================
+  # TIER 2 — HIGH VALUE
+  # ============================================================
+
+  tier_2_high_value:
+    description: "Great money, slightly less volume"
+    frequency: steady
+    payout: high
+    global_scalability: excellent
+
+    segments:
+
+      construction_infrastructure:
+        label: "Construction & Infrastructure"
+        targets:
+          - bridge_beam_transport
+          - precast_concrete_companies
+          - girder_transport_firms
+          - highway_contractors
+          - rail_infrastructure_contractors
+          - tunnel_boring_machine_movers
+          - crane_rental_companies_large
+          - tower_crane_transport
+          - piling_rig_transport
+          - asphalt_plant_movers
+
+      oil_gas_energy_field:
+        label: "Oil, Gas & Energy Field Logistics"
+        targets:
+          - oilfield_service_companies
+          - frac_equipment_movers
+          - drilling_rig_transport
+          - offshore_module_transport
+          - lng_equipment_movers
+          - pipeline_contractors
+          - compressor_station_movers
+          - gas_turbine_transport
+          - refinery_turnaround_logistics
+
+      project_cargo_freight_forwarders:
+        label: "Project Cargo & Freight Forwarders"
+        note: "Hidden gold — most operators under-target these"
+        competition: low
+        priority: high
+        targets:
+          - project_logistics_firms
+          - heavy_freight_forwarders
+          - breakbulk_specialists
+          - epc_contractors
+          - international_project_shippers
+          - port_heavy_cargo_coordinators
+          - vessel_charter_brokers
+          - roll_on_roll_off_specialists
+          - out_of_gauge_oog_specialists
+
+  # ============================================================
+  # TIER 3 — HIGH-PROBABILITY LOCAL MONEY
+  # ============================================================
+
+  tier_3_local:
+    description: "Good bread-and-butter work"
+
+    segments:
+
+      agriculture_rural:
+        label: "Agriculture & Rural Equipment"
+        frequency: seasonal_reliable
+        payout: moderate_good
+        targets:
+          - combine_harvester_transport
+          - large_tractor_dealers
+          - irrigation_system_movers
+          - grain_bin_transport
+          - cotton_picker_transport
+          - farm_equipment_auctions
+          - implement_dealers
+          - agricultural_coops
+          - forestry_equipment_movers
+          - logging_equipment_transport
+
+      manufactured_housing_modular:
+        label: "Manufactured Housing & Modular"
+        frequency: very_steady
+        payout: moderate
+        targets:
+          - mobile_home_transport
+          - modular_home_companies
+          - tiny_home_movers
+          - prefab_building_transport
+          - portable_classroom_movers
+          - office_modular_transport
+          - jobsite_trailer_movers
+          - container_home_movers
+
+      crane_heavy_equipment_rental:
+        label: "Crane & Heavy Equipment Rental"
+        frequency: consistent
+        payout: solid
+        targets:
+          - mobile_crane_transport
+          - rough_terrain_crane_movers
+          - crawler_crane_transport
+          - boom_lift_transport
+          - scissor_lift_heavy_units
+          - telehandler_transport
+          - foundation_equipment_movers
+
+  # ============================================================
+  # TIER 4 — LOW COMPETITION HIDDEN GEMS
+  # ============================================================
+
+  tier_4_hidden_gems:
+    description: "Underserved — where smart operators win"
+
+    segments:
+
+      marine_yacht_transport:
+        label: "Marine & Yacht Transport"
+        competition: low
+        payout: high
+        targets:
+          - yacht_transport_companies
+          - boat_haulers_large
+          - marina_relocation_projects
+          - shipyard_overland_moves
+          - catamaran_transport
+          - sailboat_heavy_haul
+          - military_vessel_components
+
+      aerospace_defense:
+        label: "Aerospace & Defense"
+        competition: very_low
+        payout: extreme
+        credibility_required: true
+        targets:
+          - aircraft_fuselage_transport
+          - wing_transport
+          - space_hardware_movers
+          - defense_contractors
+          - military_equipment_logistics
+          - radar_system_transport
+          - satellite_ground_equipment
+          - rocket_component_movers
+
+      specialty_cargo:
+        label: "Large Art, Sculptures & Specialty"
+        competition: low
+        targets:
+          - monument_transport
+          - large_sculpture_movers
+          - theme_park_ride_transport
+          - museum_exhibit_transport
+          - stadium_component_movers
+          - film_industry_oversized_props
+          - trade_show_mega_exhibits
+
+  # ============================================================
+  # TIER 5 — SMALLER BUT VALID
+  # ============================================================
+
+  tier_5_gap_fillers:
+    segments:
+      commercial_equipment:
+        targets:
+          - large_generator_transport
+          - commercial_refrigeration
+          - atm_vault_movers
+          - printing_press_movers
+          - large_signage_transport
+          - billboard_installation_firms
+      misc_oversize:
+        targets:
+          - rv_manufacturers
+          - food_truck_manufacturers
+          - large_tank_transport
+          - playground_equipment_movers
+          - modular_data_center_transport
+
+  # ============================================================
+  # STRATEGIC TARGETING
+  # ============================================================
+
+  global_priority_order:
+    - heavy_haul_carriers
+    - project_freight_forwarders
+    - wind_energy_logistics
+    - transformer_movers
+    - crane_rental_fleets
+    - precast_bridge_beam_companies
+    - oilfield_logistics
+    - modular_housing
+    - agricultural_equipment
+    - yacht_transport
+
+  ten_x_moves:
+    target_bookers_not_truckers:
+      targets:
+        - project_managers
+        - permit_coordinators
+        - logistics_coordinators
+        - dispatch_managers
+        - heavy_haul_planners
+        - freight_forwarders
+
+    corridor_clustering:
+      dominate:
+        - wind_corridors
+        - mining_regions
+        - port_inland_corridors
+        - oil_basins
+        - manufacturing_belts
+
+    event_based_demand_spikes:
+      watch_for:
+        - wind_farm_build_announcements
+        - bridge_replacement_projects
+        - new_factory_builds
+        - port_expansions
+        - pipeline_projects
+        - data_center_construction
+
+    last_minute_rescue:
+      note: "High-margin niche — pays premium"
+      scenarios:
+        - permit_deadline_escorts
+        - driver_no_shows
+        - weather_reroutes
+        - emergency_utility_moves

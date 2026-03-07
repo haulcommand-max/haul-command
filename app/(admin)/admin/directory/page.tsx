@@ -4,12 +4,7 @@ import { AdminTopBar } from '@/components/admin/AdminTopBar';
 import DetailDrawer from '@/components/admin/DetailDrawer';
 import { createClient } from '@/lib/supabase/client';
 
-const MOCK_PROVIDERS = [
-    { id: '1', name: 'Texas Heavy Haul Escorts', category: 'Escort', region: 'TX', verified: true, rating: 4.8, jobs: 124, response: '2m', sponsor: true },
-    { id: '2', name: 'Sunshine Permits & Surveys', category: 'Permit', region: 'FL', verified: false, rating: 4.2, jobs: 45, response: '15m', sponsor: false },
-    { id: '3', name: 'Stallone Specialized Pilot Cars', category: 'Escort', region: 'multi', verified: true, rating: 5.0, jobs: 890, response: '1m', sponsor: true },
-    { id: '4', name: 'Generic Logistics Co', category: 'Carrier', region: 'CA', verified: false, rating: 3.1, jobs: 12, response: '1h', sponsor: false },
-];
+const MOCK_PROVIDERS: any[] = []; // P0: Mock data removed — wire to real directory_listings table
 
 export default function DirectoryPage() {
     const supabase = createClient();

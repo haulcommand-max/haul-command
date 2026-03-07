@@ -15,13 +15,14 @@
 
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { safeUUID } from "@/lib/identity/uid";
 
 // Device ID — stable per install (falls back to random UUID stored in localStorage)
 function getDeviceId(): string {
     const key = "__hc_device_id__";
     let id = typeof window !== "undefined" ? localStorage.getItem(key) : null;
     if (!id) {
-        id = crypto.randomUUID();
+        id = safeUUID();
         if (typeof window !== "undefined") localStorage.setItem(key, id);
     }
     return id;

@@ -1,0 +1,145 @@
+# Haul Command — Outreach Execution Pack
+# LinkedIn boolean, cold call scripts, execution timeline
+# Version: 2026-02-27
+
+outreach_pack:
+  version: "2026-02-27"
+
+  # ============================================
+  # LINKEDIN BOOLEAN SEARCH PACKS
+  # ============================================
+
+  linkedin_booleans:
+
+    core_heavy_haul: >
+      ("heavy haul" OR "oversize transport" OR "specialized transport" OR "project cargo")
+      AND
+      (dispatcher OR "transport planner" OR "logistics manager" OR "operations manager")
+
+    project_cargo_decision_makers: >
+      ("project logistics" OR "breakbulk" OR "out of gauge" OR OOG)
+      AND
+      (manager OR director OR coordinator OR planner)
+
+    wind_energy_high_value: >
+      ("wind project" OR "wind farm" OR "turbine transport")
+      AND
+      (logistics OR transport OR construction OR EPC)
+
+    crane_rigging_buyers: >
+      ("crane rental" OR rigging OR "heavy lift")
+      AND
+      (coordinator OR dispatcher OR manager OR planner)
+
+    global_master_broad: >
+      ("heavy haul" OR "project cargo" OR "oversize load" OR OOG OR breakbulk)
+      AND
+      (dispatcher OR "logistics manager" OR "transport planner" OR "operations manager")
+      NOT
+      (recruiter OR HR OR student)
+
+  # ============================================
+  # COLD CALL SCRIPTS
+  # ============================================
+
+  cold_call_scripts:
+
+    heavy_haul_carrier:
+      goal: "Become backup escort"
+      script: |
+        Hey — quick question.
+        Are you guys ever short on reliable pilot cars in [region]?
+
+        We cover last-minute and multi-state runs.
+        Figured I'd introduce myself in case you need backup coverage.
+
+        [If interest:]
+        What lanes are you running the most right now?
+
+    wind_energy_epc:
+      goal: "Overflow coverage for ramp-ups"
+      script: |
+        Hey — I work with escort coverage for turbine and component moves.
+
+        When your projects ramp up in [state/region],
+        who handles your pilot cars right now?
+
+        [Follow-up:]
+        If you ever need overflow coverage,
+        we're already staged in the southeast.
+
+    crane_rigging:
+      goal: "Replace their current escort"
+      script: |
+        Quick one —
+        when you move your larger crane units,
+        do you already have a go-to escort company?
+
+    project_freight_forwarder:
+      goal: "Premium repeat client"
+      script: |
+        I know you guys handle out-of-gauge and project cargo.
+
+        Who usually coordinates your U.S. escort coverage
+        when loads go inland?
+
+    universal_voicemail:
+      script: |
+        Hey — this is [name] with Haul Command.
+
+        We provide oversize escort coverage across key corridors.
+
+        If you ever need backup or last-minute coverage,
+        my number is [xxx].
+
+        Appreciate your time.
+
+  # ============================================
+  # EXECUTION TIMELINE
+  # ============================================
+
+  execution_timeline:
+
+    week_1:
+      - Call Tier S companies (Mammoet, Sarens, Bennett, Landstar, ATS)
+      - Start LinkedIn scraping with core_heavy_haul boolean
+      - Focus on TX + Gulf Coast + Southeast counties
+      - Deploy prospect tracking in CRM
+
+    week_2:
+      - Map top 50 U.S. counties by demand score
+      - Begin freight forwarder outreach
+      - Watch wind project announcements
+      - Start Canada/Australia outreach
+
+    week_3:
+      - Deploy corridor heatmap on platform
+      - Expand into UK/Germany/Netherlands
+      - Build repeat carrier list from conversions
+      - Begin UAE/Saudi prospecting
+
+    week_4:
+      - Review conversion metrics
+      - Double down on highest-converting segments
+      - Scale LinkedIn scraping to global_master boolean
+      - Activate India/Brazil outreach
+
+  # ============================================
+  # KPI TARGETS
+  # ============================================
+
+  kpi_targets:
+    week_1:
+      calls_made: 50
+      linkedin_sends: 100
+      demos_booked: 5
+    week_2:
+      calls_made: 100
+      linkedin_sends: 200
+      demos_booked: 10
+      signups: 3
+    month_1:
+      total_prospects_contacted: 500
+      demos_booked: 30
+      signups: 15
+      first_match_completed: true

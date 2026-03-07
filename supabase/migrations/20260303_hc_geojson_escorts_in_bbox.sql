@@ -1,0 +1,14 @@
+-- =========================================================
+-- hc_geojson_escorts_in_bbox()
+-- Applied: 2026-03-03T19:27 EST
+--
+-- RLS-safe GeoJSON endpoint for escort positions.
+-- Access rules:
+--   driver/escort  → sees only SELF
+--   broker         → sees escorts within load_radius_km of their ACTIVE loads
+--   dispatcher     → same as broker (expandable)
+--   carrier_admin  → sees escorts within their org
+--   platform_admin → full bbox access
+--   anon           → DENIED
+-- =========================================================
+-- (Full DDL applied via apply_migration — see Supabase dashboard)

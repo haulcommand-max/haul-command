@@ -1,0 +1,45 @@
+# ═══ HAUL COMMAND — Background Worker ═══
+# Runs: crawlers, enrichment, scoring, media pipeline, Listmonk sync, daily bundles
+# Architecture: Supabase queue table + SKIP LOCKED pattern
+
+app = "hc-worker"
+primary_region = "iad"  # US East (closest to Supabase)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  WORKER_MODE = "queue_poller"
+  POLL_INTERVAL_MS = "5000"
+  BATCH_SIZE = "10"
+  LOG_LEVEL = "info"
+  # Supabase connection set via secrets:
+  # fly secrets set SUPABASE_URL=... SUPABASE_SERVICE_KEY=...
+  # fly secrets set FIREBASE_SERVICE_ACCOUNT=...
+
+[[services]]
+  # Health check endpoint only — no public traffic
+  internal_port = 8080
+  protocol = "tcp"
+  auto_stop_machines = false   # Always-on worker
+  auto_start_machines = true
+
+  [[services.http_checks]]
+    interval = 30000
+    timeout = 5000
+    grace_period = "10s"
+    method = "GET"
+    path = "/health"
+
+[checks]
+  [checks.alive]
+    type = "tcp"
+    port = 8080
+    interval = "15s"
+    timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

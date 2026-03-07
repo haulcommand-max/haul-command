@@ -1,0 +1,122 @@
+autonomous_claim_timing_and_surface_expansion:
+  version: "1.0"
+  objective: >
+    Automatically govern global surface seeding, ranking maturation,
+    and intelligent claim outreach across 52 countries while maximizing
+    SEO uniqueness, conversion efficiency, and CAC discipline.
+
+  surface_expansion_engine:
+    countries_scope: 52
+    surfaces_per_country_target: 38_plus
+    expansion_mode: continuous_programmatic
+    surface_uniqueness_controls:
+      glossary_weaving: required
+      country_term_localization: required
+      entity_specific_metadata: required
+      og_card_uniqueness: required
+      schema_entity_ids_unique: required
+      thin_page_suppression: enabled
+
+    surface_triad_model:
+      logistics_magnets:
+        - major_ports
+        - industrial_zones
+        - energy_corridors
+        - freight_corridors
+        - shipyard_heavy_zones
+        - wind_farm_regions
+        - solar_farm_regions
+        - transformer_yards
+        - precast_plants
+        - steel_fabricators
+      operator_congregation_zones:
+        - weigh_station_clusters
+        - truck_parking_megalots
+        - escort_supply_stores
+        - pilot_car_equipment_shops
+        - heavy_haul_training_centers
+        - twic_enrollment_centers
+        - dot_district_offices
+        - permit_offices
+      corridor_intelligence_zones:
+        - oversize_chokepoints
+        - low_clearance_clusters
+        - mountain_pass_routes
+        - seasonal_restriction_corridors
+        - hurricane_sensitive_routes
+        - monsoon_sensitive_routes
+        - snow_chain_corridors
+        - restricted_urban_freight_zones
+
+    country_seed_minimums:
+      operators_min: 10
+      facilities_min: 15
+      ports_min: 3
+      corridors_min: 5
+      country_hub: 1
+      top_metros: 5
+      surface_pages_min: 20
+
+    data_confidence_weighting:
+      tier_A: 1.0
+      tier_B: 0.7
+      tier_C: 0.45
+
+  ranking_maturity_detector:
+    evaluation_window_days: 30
+    check_frequency_hours: 24
+    signals:
+      - google_indexed
+      - impressions_28d
+      - profile_views
+      - corridor_heat
+      - near_me_queries
+    maturity_bands:
+      stage_0_seed: [0, 25]
+      stage_1_visible: [26, 50]
+      stage_2_engaged: [51, 75]
+      stage_3_high_intent: [76, 100]
+
+  profile_intent_engine:
+    refresh_frequency_hours: 6
+    inputs:
+      - profile_views_7d
+      - repeat_visitors
+      - broker_activity_nearby
+      - corridor_demand_score
+      - similar_profiles_claimed
+    bands:
+      cold: [0, 30]
+      warming: [31, 60]
+      hot: [61, 80]
+      red_hot: [81, 100]
+
+  claim_timing_ladder:
+    philosophy: intent_and_visibility_driven
+    fixed_day_timers: disabled
+    stages:
+      passive_phase:
+        entry: indexed_true
+        actions: [soft_claim_cta, in_app_prompts, unclaimed_badge]
+      nurture_phase:
+        entry: maturity_gte_stage_1 OR intent_gte_warming
+        actions: [email_sequence, profile_view_alerts, you_were_searched_nudges]
+        email_cadence_days: [0, 7, 21]
+      assisted_sales_phase:
+        entry: intent_gte_hot AND country_maturity_gte_stage_1
+        actions: [vapi_outreach, sales_queue, claim_urgency_meter]
+      premium_acceleration:
+        entry: intent_red_hot OR high_value_surface
+        actions: [fast_track_sales, dynamic_pricing, sponsor_offer]
+
+  smart_claim_pricing:
+    cold_surface: free_or_low
+    warm_surface: standard_monthly
+    hot_surface: premium_monthly
+    elite_surface: auction_or_sponsor
+    price_change_cooldown_days: 30
+
+  profile_aging_engine:
+    authority_weight_increase: gradual
+    outreach_priority_increase: gradual
+    suppress_if_no_activity_months: 18

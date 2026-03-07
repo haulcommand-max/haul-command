@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
+import { NativeAdCard } from "@/components/ads/NativeAdCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -111,6 +112,17 @@ export default async function BrokerLandingPage() {
                             <div className="text-xs text-slate-400 mt-0.5">{s.label}</div>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* ── NATIVE AD ──────────────────────────────────────── */}
+            <section className="py-6 px-4">
+                <div className="max-w-3xl mx-auto">
+                    <NativeAdCard
+                        surface="broker_mid"
+                        placementId="broker-below-trust-stack"
+                        variant="inline"
+                    />
                 </div>
             </section>
 

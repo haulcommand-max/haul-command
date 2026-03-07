@@ -1,0 +1,145 @@
+daily_habit_engine:
+  version: 1.0
+  owner: haul_command
+  objective: >
+    Increase operator daily return rate, profile completion,
+    and broker responsiveness through structured habit loops.
+
+  north_star_metrics:
+    - daily_active_operators
+    - availability_toggle_rate
+    - operator_response_time
+    - weekly_return_rate
+    - claimed_profile_growth
+
+  habit_loop_model:
+    trigger:
+      - load_alert
+      - corridor_demand_spike
+      - profile_visibility_change
+      - broker_search_nearby
+      - weekly_activity_report
+    action:
+      - open_app
+      - toggle_availability
+      - respond_to_load
+      - update_profile
+      - check_heatmap
+    reward:
+      - visibility_boost
+      - leaderboard_points
+      - momentum_increase
+      - broker_view_notification
+      - opportunity_alert
+    investment:
+      - add_coverage_area
+      - verify_documents
+      - enable_notifications
+      - follow_corridors
+      - complete_profile_fields
+
+  core_engines:
+    presence_engine:
+      description: Real-time availability signaling
+      components:
+        - availability_toggle
+        - last_active_timestamp
+        - response_speed_tracker
+      ui_surfaces:
+        - operator_profile
+        - search_results
+        - broker_view
+
+    opportunity_radar:
+      description: Personalized demand awareness
+      inputs:
+        - corridor_heatmap
+        - broker_posting_velocity
+        - operator_location
+      outputs:
+        - jobs_near_you
+        - hot_corridor_alerts
+        - missed_opportunity_flags
+      cadence:
+        realtime: true
+        digest: daily
+
+    momentum_scoring:
+      description: Gamified activity indicator
+      score_components:
+        - profile_completeness_weight: 0.25
+        - response_speed_weight: 0.25
+        - recent_activity_weight: 0.30
+        - availability_uptime_weight: 0.20
+      bands:
+        - rising
+        - steady
+        - cooling
+        - inactive
+
+    weekly_operator_report:
+      description: Habit reinforcement email
+      delivery_channel:
+        - email
+        - in_app
+      contents:
+        - profile_views
+        - search_appearances
+        - demand_near_you
+        - response_speed
+        - momentum_trend
+      send_day: monday
+      send_time_local: "08:00"
+
+    smart_notifications:
+      priority_levels:
+        critical:
+          - direct_load_match
+          - broker_message
+        high:
+          - hot_corridor_spike
+          - nearby_demand_surge
+        medium:
+          - profile_visibility_drop
+          - leaderboard_change
+        low:
+          - tips
+          - reminders
+      throttling_rules:
+        max_push_per_day: 5
+        quiet_hours_local: "22:00-06:00"
+
+  mobile_app_hooks:
+    on_app_open:
+      - refresh_opportunity_radar
+      - update_last_active
+      - recompute_momentum
+    on_availability_toggle:
+      - boost_search_rank_temporarily
+      - log_presence_event
+      - notify_matching_brokers
+    on_profile_update:
+      - recalc_profile_strength
+      - update_visibility_score
+      - trigger_small_reward
+
+  anti_fatigue_controls:
+    notification_decay:
+      enabled: true
+      half_life_days: 14
+    leaderboard_cooldown:
+      prevent_constant_rank_spam: true
+    email_frequency_cap:
+      max_per_week: 2
+
+  rollout_plan:
+    phase_1:
+      - availability_toggle
+      - weekly_operator_report
+      - momentum_score
+    phase_2:
+      - opportunity_radar
+      - smart_notifications
+    phase_3:
+      - predictive_demand
+      - advanced_personalization

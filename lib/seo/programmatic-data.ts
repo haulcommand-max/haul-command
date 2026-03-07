@@ -1,15 +1,15 @@
 
-import { SupabaseClient } from '@supabase/supabase-js';
+import { supabaseServer } from "@/lib/supabase/server";
 
-// Types for our programmatic data
+// Types for programmatic SEO data
 export type GeoLocation = {
     country: string;
-    state: string; // Admin1
+    state: string;
     city: string;
     lat: number;
     lng: number;
     slug: string;
-    nearbyCities: string[]; // Slugs of nearby cities
+    nearbyCities: string[];
 };
 
 export type ServiceType = {
@@ -21,82 +21,105 @@ export type ServiceType = {
 
 export type ProviderStats = {
     count: number;
-    avgRating: number;
+    avgRating: number | null;
     verifiedCount: number;
 };
 
-// Mock Data for Initial Build
-const MOCK_CITIES: Record<string, GeoLocation> = {
-    'gainesville': {
-        country: 'us',
-        state: 'fl',
-        city: 'Gainesville',
-        lat: 29.6516,
-        lng: -82.3248,
-        slug: 'gainesville',
-        nearbyCities: ['ocala', 'jacksonville', 'lake-city', 'palatka', 'starke']
-    },
-    'miami': {
-        country: 'us',
-        state: 'fl',
-        city: 'Miami',
-        lat: 25.7617,
-        lng: -80.1918,
-        slug: 'miami',
-        nearbyCities: ['fort-lauderdale', 'hialeah', 'hollywood', 'homestead', 'west-palm-beach']
-    },
-    // Add more as needed for testing
-};
-
-const MOCK_SERVICES: ServiceType[] = [
-    { id: '1', name: 'Pilot Car', slug: 'pilot-car', description: 'Certified pilot car operators for oversize load escorts.' },
-    { id: '2', name: 'High Pole', slug: 'high-pole', description: 'High pole chase cars for height clearance verification.' },
-    { id: '3', name: 'Route Survey', slug: 'route-survey', description: 'Detailed route surveys for superloads and height-critical moves.' },
+// ── Canonical service types (constant, not mock — these are real HC categories) ──
+const HC_SERVICES: ServiceType[] = [
+    { id: 'pilot-car', name: 'Pilot Car', slug: 'pilot-car', description: 'Certified pilot car operators for oversize load escorts.' },
+    { id: 'high-pole', name: 'High Pole', slug: 'high-pole', description: 'High pole chase cars for height clearance verification.' },
+    { id: 'route-survey', name: 'Route Survey', slug: 'route-survey', description: 'Detailed route surveys for superloads and height-critical moves.' },
+    { id: 'rear-chase', name: 'Rear Chase', slug: 'rear-chase', description: 'Rear chase escort vehicles for load protection.' },
+    { id: 'police-escort', name: 'Police Escort', slug: 'police-escort', description: 'State and local police escort services for superloads.' },
+    { id: 'bucket-truck', name: 'Bucket Truck', slug: 'bucket-truck', description: 'Bucket truck services for utility line lifting and clearance.' },
 ];
 
-// Data Fetching Functions (Can be swapped for Real DB calls later)
+// ── Data Fetching Functions (DB-backed) ──
 
+/**
+ * Get city data by looking up directory listings for that city.
+ * Returns null if city not found (triggers 404), never returns fake data.
+ */
 export async function getCityData(country: string, state: string, citySlug: string): Promise<GeoLocation | null> {
-    // In a real app, this would query Supabase 'cities' table
-    // For now, return mock data if it matches, or generate a generic one for testing "scale"
-    const key = citySlug.toLowerCase();
+    const supabase = supabaseServer();
+    const cityName = citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
 
-    if (MOCK_CITIES[key]) {
-        return MOCK_CITIES[key];
+    const { data, error } = await supabase
+        .from("directory_listings")
+        .select("city,lat,lng")
+        .ilike("country_code", country)
+        .ilike("region_code", state)
+        .ilike("city", cityName)
+        .limit(1)
+        .maybeSingle();
+
+    if (error) {
+        console.error("[programmatic-data] getCityData error:", error.message);
+        return null;
     }
 
-    // Fallback for "Programmatic Scale" simulation - effectively "wildcard" matching for demo
-    // In production, return null to 404
+    if (!data) return null;
+
+    // Get nearby cities from the same region
+    const { data: nearby } = await supabase
+        .from("directory_listings")
+        .select("city")
+        .ilike("country_code", country)
+        .ilike("region_code", state)
+        .not("city", "ilike", cityName)
+        .not("city", "is", null)
+        .limit(20);
+
+    const nearbyCities = Array.from(
+        new Set((nearby ?? []).map((r: any) => (r.city || "").trim().toLowerCase().replace(/\s+/g, '-')).filter(Boolean))
+    ).slice(0, 5);
+
     return {
         country,
         state,
-        city: citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
-        lat: 30.0, // Default mock
-        lng: -82.0,
+        city: data.city ?? cityName,
+        lat: Number(data.lat ?? 0),
+        lng: Number(data.lng ?? 0),
         slug: citySlug,
-        nearbyCities: ['mock-city-1', 'mock-city-2', 'mock-city-3']
+        nearbyCities,
     };
 }
 
 export async function getServiceData(serviceSlug: string): Promise<ServiceType | null> {
-    return MOCK_SERVICES.find(s => s.slug === serviceSlug) || null;
+    return HC_SERVICES.find(s => s.slug === serviceSlug) || null;
 }
 
+/**
+ * Get real provider stats from directory_listings.
+ * NEVER returns Math.random() or fabricated numbers.
+ */
 export async function getProviderStats(citySlug: string, serviceSlug: string): Promise<ProviderStats> {
-    // Mock random stats for "Live Data" feel
+    const supabase = supabaseServer();
+    const cityName = citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+
+    const { count, error } = await supabase
+        .from("directory_listings")
+        .select("*", { count: "exact", head: true })
+        .ilike("city", cityName);
+
+    if (error) {
+        console.error("[programmatic-data] getProviderStats error:", error.message);
+    }
+
     return {
-        count: Math.floor(Math.random() * 50) + 5,
-        avgRating: 4.5 + (Math.random() * 0.5),
-        verifiedCount: Math.floor(Math.random() * 10) + 1
+        count: count ?? 0,
+        avgRating: null,       // Real reviews not yet aggregated — show null, never fake
+        verifiedCount: 0,      // Verification pipeline pending — show 0, never fake
     };
 }
 
-
 export async function getAllServices(): Promise<ServiceType[]> {
-    return MOCK_SERVICES;
+    return HC_SERVICES;
 }
 
-// Mock Provider Data
+// ── Provider Profile ──
+
 export type ProviderProfile = {
     id: string;
     slug: string;
@@ -104,29 +127,43 @@ export type ProviderProfile = {
     city: string;
     state: string;
     verified: boolean;
-    rating: number;
+    rating: number | null;
     reviewCount: number;
     services: string[];
     description: string;
 };
 
+/**
+ * Get provider by slug from directory_listings.
+ * Returns null if not found (triggers 404). Never fabricates a profile.
+ */
 export async function getProviderBySlug(slug: string): Promise<ProviderProfile | null> {
-    // Mock logic
+    const supabase = supabaseServer();
+
+    const { data, error } = await supabase
+        .from("directory_listings")
+        .select("*")
+        .eq("slug", slug)
+        .maybeSingle();
+
+    if (error || !data) return null;
+
     return {
-        id: '123',
-        slug,
-        name: slug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
-        city: 'Gainesville',
-        state: 'FL',
-        verified: true,
-        rating: 4.9,
-        reviewCount: 24,
-        services: ['Pilot Car', 'High Pole'],
-        description: 'Professional pilot car service with 10 years experience. High pole qualified and amber light certified.'
+        id: data.id,
+        slug: data.slug ?? slug,
+        name: data.business_name ?? data.place_name ?? slug,
+        city: data.city ?? "",
+        state: data.region_code ?? "",
+        verified: data.is_verified ?? false,
+        rating: data.overall_rating ? Number(data.overall_rating) : null,
+        reviewCount: data.review_count ?? 0,
+        services: data.categories ?? [],
+        description: data.description ?? "",
     };
 }
 
-// Mock Load Feed Data
+// ── Load Feed ──
+
 export type LoadFeedItem = {
     id: string;
     origin: string;
@@ -135,16 +172,33 @@ export type LoadFeedItem = {
     posted: string;
 };
 
+/**
+ * Get load feed by city/region.
+ * Returns empty array if no loads found. Never fabricates loads.
+ */
 export async function getLoadFeedBySlug(slug: string): Promise<{ title: string; loads: LoadFeedItem[] }> {
-    // Mock logic based on slug
+    const supabase = supabaseServer();
     const title = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+    const { data, error } = await supabase
+        .from("loads")
+        .select("id,origin_text,dest_text,load_type,created_at")
+        .or(`origin_text.ilike.%${title}%,dest_text.ilike.%${title}%`)
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+    if (error || !data || data.length === 0) {
+        return { title, loads: [] };
+    }
+
     return {
         title,
-        loads: [
-            { id: 'L1', origin: 'Miami, FL', destination: 'Atlanta, GA', cargo: 'Construction Equipment', posted: '2 hours ago' },
-            { id: 'L2', origin: 'Jacksonville, FL', destination: 'Houston, TX', cargo: 'Oversize Pipe', posted: '4 hours ago' },
-            { id: 'L3', origin: 'Orlando, FL', destination: 'Savannah, GA', cargo: 'Modular Home', posted: '5 hours ago' }
-        ]
+        loads: data.map((l: any) => ({
+            id: l.id,
+            origin: l.origin_text ?? "Unknown",
+            destination: l.dest_text ?? "Unknown",
+            cargo: l.load_type ?? "Oversize",
+            posted: new Date(l.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        })),
     };
 }
-

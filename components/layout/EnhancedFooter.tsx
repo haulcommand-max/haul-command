@@ -73,7 +73,7 @@ export default function EnhancedFooter() {
                                 { href: '/rates', label: 'Rate Guides (Free)' },
                                 { href: '/tools/permit-checker', label: 'Permit Checker (Free)' },
                             ].map(l => (
-                                <Link key={l.href} href={l.href} style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
                                     onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
                                 >{l.label}</Link>
@@ -95,7 +95,7 @@ export default function EnhancedFooter() {
                                 { href: '/directory/us/ok', label: 'Oklahoma Pilot Cars' },
                                 { href: '/directory/us/az', label: 'Arizona Pilot Cars' },
                             ].map(l => (
-                                <Link key={l.href} href={l.href} style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
                                     onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
                                 >{l.label}</Link>
@@ -108,7 +108,7 @@ export default function EnhancedFooter() {
                         <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Services</h3>
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                             {SERVICES.map(s => (
-                                <Link key={s.slug} href={`/us/tx/${s.slug}`} style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                <Link key={s.slug} href={`/us/tx/${s.slug}`} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
                                     onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
                                 >{s.name}</Link>
@@ -124,9 +124,11 @@ export default function EnhancedFooter() {
                                 { href: '/terms', label: 'Terms of Service' },
                                 { href: '/privacy', label: 'Privacy Policy' },
                                 { href: '/contact', label: 'Contact Us' },
+                                { href: '/remove-listing', label: 'Remove / Opt-Out' },
+                                { href: '/claim', label: 'Claim Your Listing' },
                                 { href: '/onboarding/start', label: 'Get Started' },
                             ].map(l => (
-                                <Link key={l.href} href={l.href} style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
                                     onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
                                 >{l.label}</Link>

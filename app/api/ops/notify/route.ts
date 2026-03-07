@@ -88,19 +88,28 @@ export async function POST(req: NextRequest) {
         }
     }
 
-    // Push notification for P0/P1 severity
+    // Push notification for P0/P1 severity — query admin tokens from canonical table
     if (event && (event.severity === 'P0' || event.severity === 'P1')) {
         try {
-            const { data: tokens } = await supabase
-                .from('admin_push_tokens')
-                .select('token')
-                .eq('is_active', true);
+            // Get admin/staff user IDs, then their push tokens
+            const { data: admins } = await supabase
+                .from('profiles')
+                .select('id')
+                .in('role', ['admin', 'staff']);
 
-            if (tokens?.length) {
-                // Fire push via existing /api/push/send or FCM directly
-                // For now, log the intent — FCM integration can plug in here
-                console.log(`[ops/notify] Would push to ${tokens.length} admin devices for ${event.severity}`);
-                results.push = true;
+            if (admins?.length) {
+                const adminIds = admins.map(a => a.id);
+                const { data: tokens } = await supabase
+                    .from('push_tokens')
+                    .select('token')
+                    .in('profile_id', adminIds)
+                    .eq('enabled', true);
+
+                if (tokens?.length) {
+                    // FCM integration plugs in here when Admin SDK is configured
+                    console.log(`[ops/notify] Would push to ${tokens.length} admin devices for ${event.severity}`);
+                    results.push = true;
+                }
             }
         } catch {
             console.warn('[ops/notify] Push lookup failed (non-blocking)');

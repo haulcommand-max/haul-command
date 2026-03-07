@@ -2,19 +2,14 @@
 import React from 'react';
 import { AdminTopBar } from '@/components/admin/AdminTopBar';
 
-const MOCK_BILLING = [
-    { id: '1', sponsor: 'Texas Heavy Haul', mode: 'Performance', budget: '$50.00', spent: '$12.50', leads: 42, status: 'Active' },
-    { id: '2', sponsor: 'Sunshine Pilot Cars', mode: 'Flat', budget: '--', spent: '$250.00', leads: 156, status: 'Active' },
-    { id: '3', sponsor: 'Stallone Spec Pilot', mode: 'Performance', budget: '$100.00', spent: '$88.20', leads: 231, status: 'Active' },
-    { id: '4', sponsor: 'Miami Permit Co', mode: 'Performance', budget: '$20.00', spent: '$19.80', leads: 8, status: 'Cap Reached' },
-];
+const MOCK_BILLING: any[] = []; // P0: Mock data removed — wire to real ad_grid_sponsors table
 
 export default function BillingPage() {
     return (
         <div className="flex flex-col h-full bg-[#070707]">
             <AdminTopBar title="Sponsors & Performance Billing" />
 
-            <div className="px-8 pt-4 border-b border-[#1a1a1a] flex gap-8">
+            <div className="px-8 py-4 border-b border-[#1a1a1a] flex gap-8">
                 <Tab label="Sponsors" active />
                 <Tab label="Placements" />
                 <Tab label="Daily Ledger" />
@@ -23,9 +18,9 @@ export default function BillingPage() {
 
             <div className="p-8 space-y-8 flex-1 overflow-y-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Total Revenue (30d)" value="$12,482.00" color="text-green-500" />
-                    <StatCard label="Billable Leads" value="1,842" color="text-white" />
-                    <StatCard label="Active Sponsors" value="48" color="text-[#ffb400]" />
+                    <StatCard label="Total Revenue (30d)" value="—" color="text-[#444]" />
+                    <StatCard label="Billable Leads" value="—" color="text-[#444]" />
+                    <StatCard label="Active Sponsors" value="—" color="text-[#444]" />
                 </div>
 
                 <div className="bg-[#0c0c0c] border border-[#1a1a1a] rounded-lg overflow-hidden">

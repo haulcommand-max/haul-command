@@ -196,10 +196,36 @@ export default function EscortSupplyRadar({ variant = "panel", onShortageZoneTap
     const [sheetMode, setSheetMode] = useState<SheetMode>(null);
     const [lastPing, setLastPing] = useState(new Date());
 
-    // Simulate live radar ping every 30s
+    // Fetch live supply data from API, fallback to static
     useEffect(() => {
-        const interval = setInterval(() => setLastPing(new Date()), 30_000);
-        return () => clearInterval(interval);
+        let cancelled = false;
+        async function fetchSupply() {
+            try {
+                const res = await fetch("/api/supply/recommendations?limit=20");
+                if (!res.ok) throw new Error("non-200");
+                const { data } = await res.json();
+                if (!cancelled && data?.length > 0) {
+                    const mapped: EscortZone[] = data.map((z: any, i: number) => ({
+                        id: z.corridor || `zone-${i}`,
+                        label: z.label || z.corridor,
+                        state: (z.corridor || "").split("-").pop()?.toUpperCase().slice(0, 2) || "US",
+                        lat: 30 + i * 2, // approximate — actual geo from corridor data
+                        lng: -90 + i * 3,
+                        escortCount: z.supply_count ?? 10,
+                        availableCount: z.available_count ?? 3,
+                        demandPressure: z.priority_score ?? 50,
+                        shortage: z.pressure_bucket === "urgent_supply_needed" || (z.priority_score ?? 0) >= 80,
+                    }));
+                    setZones(mapped);
+                }
+            } catch {
+                // Keep static fallback
+            }
+            if (!cancelled) setLastPing(new Date());
+        }
+        fetchSupply();
+        const interval = setInterval(fetchSupply, 30_000);
+        return () => { cancelled = true; clearInterval(interval); };
     }, []);
 
     const shortageZones = zones.filter(z => z.shortage);

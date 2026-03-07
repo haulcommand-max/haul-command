@@ -4,6 +4,15 @@
  * Purpose: Collect high-value signals for monetization (Rate Indices, Risk Feeds).
  */
 
+import { createClient } from "@supabase/supabase-js";
+
+function getAdmin() {
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    );
+}
+
 export type MetricType =
     | 'RATE_OBSERVATION'
     | 'CORRIDOR_RISK'
@@ -11,9 +20,6 @@ export type MetricType =
     | 'COVERAGE_GAP';
 
 export async function collectSignal(type: MetricType, payload: any) {
-    // In production, this writes to a TimescaleDB or massive analytics store
-    // For now, we structure the data for future schema ingestion.
-
     const timestamp = new Date().toISOString();
 
     const signal = {
@@ -21,12 +27,20 @@ export async function collectSignal(type: MetricType, payload: any) {
         timestamp,
         payload,
         // Privacy guard: never store PII in the moat, only aggregates
-        anonymized: true
+        anonymized: true,
     };
 
     console.log(`[DataMoat] Collected ${type}`, signal);
 
-    // TODO: Connect to supabase 'analytics_events' table
+    const { error } = await getAdmin().from("analytics_events").insert({
+        role: "system",
+        name: type,
+        payload: signal,
+    });
+
+    if (error) {
+        console.error("[DataMoat] Failed to persist signal:", error.message);
+    }
 }
 
 export const MOAT_SCHEMAS = {

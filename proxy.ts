@@ -57,6 +57,47 @@ export async function proxy(req: NextRequest) {
     const url = new URL(req.url);
     const path = url.pathname;
 
+    // ── REDIRECT MATRIX (Legacy → Canonical) ──────────────────────────────────
+    // Merged from middleware.ts — enforces canonical URL patterns.
+
+    // 1) Legacy: /directory/[country] → /[country]
+    const directoryCountryMatch = path.match(/^\/directory\/([a-zA-Z]{2})$/i);
+    if (directoryCountryMatch) {
+        return NextResponse.redirect(new URL(`/${directoryCountryMatch[1].toLowerCase()}`, req.url), 301);
+    }
+
+    // 2) Legacy: /[country]/places → /[country]
+    const countryPlacesMatch = path.match(/^\/([a-zA-Z]{2})\/places$/i);
+    if (countryPlacesMatch) {
+        return NextResponse.redirect(new URL(`/${countryPlacesMatch[1].toLowerCase()}`, req.url), 301);
+    }
+
+    // 3) Legacy: /pilot-car/[state] → /{country}/{state}/pilot-car-services
+    const pilotCarStateMatch = path.match(/^\/pilot-car\/([a-zA-Z0-9-]+)$/i);
+    if (pilotCarStateMatch) {
+        const stateSlug = pilotCarStateMatch[1].toLowerCase();
+        const isCanada = ['alberta', 'bc', 'ontario', 'quebec', 'saskatchewan'].includes(stateSlug);
+        const ctry = isCanada ? 'ca' : 'us';
+        return NextResponse.redirect(new URL(`/${ctry}/${stateSlug}/pilot-car-services`, req.url), 301);
+    }
+
+    // 4) Legacy: /corridors/[route] → /corridor/[route]
+    const corridorsPluralMatch = path.match(/^\/corridors\/(.*)$/i);
+    if (corridorsPluralMatch) {
+        return NextResponse.redirect(new URL(`/corridor/${corridorsPluralMatch[1].toLowerCase()}`, req.url), 301);
+    }
+
+    // 5) Legacy: /high-pole-escorts/[city] → /high-pole-escort-{city}-near-me
+    const highPoleMatch = path.match(/^\/high-pole-escorts\/([a-zA-Z0-9-]+)$/i);
+    if (highPoleMatch) {
+        return NextResponse.redirect(new URL(`/high-pole-escort-${highPoleMatch[1].toLowerCase()}-near-me`, req.url), 301);
+    }
+
+    // 6) Enforce lowercase paths (prevent duplicate content indexing)
+    if (path !== path.toLowerCase() && !path.includes('_next') && !path.match(/\.(png|jpg|jpeg|svg|ico|avif|webp|json|xml)$/)) {
+        return NextResponse.redirect(new URL(path.toLowerCase() + url.search, req.url), 301);
+    }
+
     // ── Locale resolution (runs on all routes) ──
     const { locale, country } = resolveLocale(req);
 

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import blogPosts from '@/data/blog_posts.json';
 
 interface Post {
     title: string;
@@ -8,26 +9,11 @@ interface Post {
     date: string;
     slug: string;
     riskRating?: string;
+    author?: string;
+    readTime?: string;
 }
 
-const SAMPLE_POSTS: Post[] = [
-    {
-        title: "The 2026 Superload Strategy: Navigating the Texas Triangle",
-        excerpt: "Why Texas handles more massive freight than any other state and how to coordinate your next police escort.",
-        category: "Operations",
-        date: "2026-02-10",
-        slug: "texas-superload-strategy",
-        riskRating: "High"
-    },
-    {
-        title: "Escort Certification Reciprocity: A 50-State Guide",
-        excerpt: "Stop doubling your costs. Learn which P/EVO certifications are recognized across state lines.",
-        category: "Compliance",
-        date: "2026-02-08",
-        slug: "escort-reciprocity-guide",
-        riskRating: "Low"
-    }
-];
+const posts: Post[] = blogPosts;
 
 export default function BlogIndex() {
     return (
@@ -42,7 +28,7 @@ export default function BlogIndex() {
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    {SAMPLE_POSTS.map((post) => (
+                    {posts.map((post) => (
                         <article key={post.slug} className="group relative bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-accent/50 transition-all duration-300">
                             <div className="p-8 md:p-10 flex flex-col h-full">
                                 <div className="flex justify-between items-start mb-6">
@@ -59,8 +45,11 @@ export default function BlogIndex() {
                                 <p className="text-gray-400 mb-8 flex-grow leading-relaxed">
                                     {post.excerpt}
                                 </p>
-                                <div className="flex items-center text-accent text-sm font-black uppercase tracking-tighter">
-                                    Read Intelligence <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-accent text-sm font-black uppercase tracking-tighter">
+                                        Read Intelligence <span className="ml-2 group-hover:translate-x-2 transition-transform inline-block">→</span>
+                                    </span>
+                                    {post.readTime && <span className="text-gray-600 text-xs font-mono">{post.readTime}</span>}
                                 </div>
                             </div>
                         </article>

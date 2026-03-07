@@ -1,0 +1,13 @@
+import { getFeatureFlagsServer } from "@/lib/flags";
+import LoginClient from "./LoginClient";
+
+export const metadata = {
+    title: "Log In — HAUL COMMAND",
+    description:
+        "Sign in to HAUL COMMAND to manage your escort listings, claim locations, and access the global heavy-haul intelligence network.",
+};
+
+export default function LoginPage() {
+    const flags = getFeatureFlagsServer();
+    return <LoginClient flags={flags} />;
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { getAllStates, calculateMovementRisk, MovementInput, MovementOutput } from '@/lib/regulatory-engine';
+import { getAllStates, getStateBySlug, getCityOverride, calculateMovementRisk, MovementInput, MovementOutput } from '@/lib/regulatory-engine';
 import Navbar from '@/components/Navbar';
 
 export default function SuperloadMeterPage() {
@@ -17,10 +17,26 @@ export default function SuperloadMeterPage() {
     });
 
     const [result, setResult] = useState<MovementOutput | null>(null);
+    const [cityOverrideNote, setCityOverrideNote] = useState<string | null>(null);
 
     const handleCalculate = () => {
         const res = calculateMovementRisk(formData);
         setResult(res || null);
+
+        // Check for city/county override
+        if (formData.cityName) {
+            const state = getStateBySlug(formData.stateSlug);
+            if (state) {
+                const override = getCityOverride(state.state, formData.cityName);
+                if (override) {
+                    setCityOverrideNote(override.notes || `${formData.cityName} has local overrides that supersede standard ${state.state} regulations.`);
+                } else {
+                    setCityOverrideNote(null);
+                }
+            }
+        } else {
+            setCityOverrideNote(null);
+        }
     };
 
     return (
@@ -108,59 +124,61 @@ export default function SuperloadMeterPage() {
                                         </div>
                                         <div className="flex-grow max-w-xs space-y-4">
                                             <div className="space-y-1">
-                                                <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>POLICE PROBABILITY</span> <span className="text-white">95%</span></div>
-                                                <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-red-500 w-[95%]"></div></div>
+                                                <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>POLICE PROBABILITY</span> <span className="text-white">{result.policeProbabilityPct}%</span></div>
+                                                <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-red-500 rounded-full" style={{ width: `${result.policeProbabilityPct}%` }}></div></div>
                                             </div>
                                             <div className="space-y-1">
-                                                <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>UTILITY COORDINATION</span> <span className="text-white">65%</span></div>
-                                                <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-yellow-500 w-[65%]</div></div>
-                         </div>
-                         <div className="space-y-1">
-                                                    <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>ENG. REVIEW LIKELIHOOD</span> <span className="text-white">80%</span></div>
-                                                    <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-blue-500 w-[80%]"></div></div>
-                                                </div>
+                                                <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>UTILITY COORDINATION</span> <span className="text-white">{result.utilityCoordinationPct}%</span></div>
+                                                <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-yellow-500 rounded-full" style={{ width: `${result.utilityCoordinationPct}%` }}></div></div>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-[10px] font-bold text-gray-500"><span>ENG. REVIEW LIKELIHOOD</span> <span className="text-white">{result.engineeringReviewPct}%</span></div>
+                                                <div className="h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: `${result.engineeringReviewPct}%` }}></div></div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    {/* Insight Grid */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                        <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                                            <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Escort Config</p>
-                                            <p className="text-2xl font-black text-white leading-tight">
-                                                {result.escortsRequired} Certified Units <span className="text-gray-500 text-xs">Required</span>
-                                            </p>
-                                        </div>
-                                        <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                                            <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Est. Permit Delay</p>
-                                            <p className="text-2xl font-black text-white leading-tight">
-                                                4-7 Business Days <span className="text-gray-500 text-xs">Backlogged</span>
-                                            </p>
-                                        </div>
-                                        <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                                            <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Compliance Badge</p>
-                                            <p className="text-sm font-bold text-green-500">ELIGIBLE FOR GENERATION</p>
-                                            <button
-                                                onClick={() => window.location.href = `/generate/movement-certificate?state=${formData.stateSlug}&width=${formData.width}&height=${formData.height}&length=${formData.length}&friday=${formData.isFriday}&metro=${formData.isMetro}&city=${formData.cityName}`}
-                                                className="mt-2 text-[10px] font-black uppercase underline underline-offset-4 text-gray-400 hover:text-white transition-colors"
-                                            >
-                                                Generate Certificate Now
-                                            </button>
-                                        </div>
+                                {/* Insight Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
+                                        <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Escort Config</p>
+                                        <p className="text-2xl font-black text-white leading-tight">
+                                            {result.escortsRequired} Certified Units <span className="text-gray-500 text-xs">Required</span>
+                                        </p>
                                     </div>
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
+                                        <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Est. Permit Delay</p>
+                                        <p className="text-2xl font-black text-white leading-tight">
+                                            {result.permitDelayDays} <span className="text-gray-500 text-xs">Backlogged</span>
+                                        </p>
+                                    </div>
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
+                                        <p className="text-accent text-[10px] font-black uppercase mb-4 tracking-widest">Compliance Badge</p>
+                                        <p className="text-sm font-bold text-green-500">ELIGIBLE FOR GENERATION</p>
+                                        <button
+                                            onClick={() => window.location.href = `/generate/movement-certificate?state=${formData.stateSlug}&width=${formData.width}&height=${formData.height}&length=${formData.length}&friday=${formData.isFriday}&metro=${formData.isMetro}&city=${formData.cityName}`}
+                                            className="mt-2 text-[10px] font-black uppercase underline underline-offset-4 text-gray-400 hover:text-white transition-colors"
+                                        >
+                                            Generate Certificate Now
+                                        </button>
+                                    </div>
+                                </div>
 
-                                    {/* Warning Bar */}
+                                {/* Warning Bar — only shown when a city override exists */}
+                                {cityOverrideNote && (
                                     <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-3xl flex items-start">
                                         <span className="text-2xl mr-4">🚧</span>
                                         <div>
                                             <h4 className="text-red-500 font-bold text-sm mb-1 uppercase tracking-widest">Local Override Detected</h4>
-                                            <p className="text-xs text-gray-400 leading-relaxed">Houston, TX mandates police escorts for all loads exceeding 16' width during weekend windows. Standard state rules are superseded by metro ordinance.</p>
+                                            <p className="text-xs text-gray-400 leading-relaxed">{cityOverrideNote}</p>
                                         </div>
                                     </div>
-                                </>
-            )}
-                            </div>
+                                )}
+                            </>
+                        )}
                     </div>
+                </div>
             </main>
         </>
     );

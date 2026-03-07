@@ -34,10 +34,13 @@
   },
   "include": [
     "next-env.d.ts",
+    "tests/**/*.ts",
     "app/**/*.ts",
     "app/**/*.tsx",
     "lib/**/*.ts",
     "lib/**/*.tsx",
+    "utils/**/*.ts",
+    "utils/**/*.tsx",
     "components/**/*.ts",
     "components/**/*.tsx",
     "core/**/*.ts",

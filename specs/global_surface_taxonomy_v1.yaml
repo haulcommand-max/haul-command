@@ -1,0 +1,105 @@
+# =========================================================
+# HAUL COMMAND — GLOBAL HEAVY HAUL SURFACE INTELLIGENCE
+# Version: 1.0
+# Scope: All 52 Countries
+# Principle: index_where_oversize_touches_pavement
+# =========================================================
+
+global_heavy_haul_surface_taxonomy:
+  version: 1.0
+  classification_principle: escort_demand_proximity
+
+  tiers:
+
+    tier_1_hard_infrastructure:
+      priority_weight: 1.0
+      adgrid_value: elite
+      surfaces:
+        - ports:              [seaports, inland_ports, river_ports]
+        - port_terminals:     [container, breakbulk, roro, heavy_lift, bulk, project_cargo]
+        - intermodal_rail:    [intermodal_terminal, freight_rail_yard, dry_port, inland_logistics_hub]
+        - heavy_industrial:   [wind_turbine_factory, transformer_factory, steel_mill, shipyard, modular_home_factory, heavy_equipment_plant, precast_concrete_plant]
+        - energy_infra:       [power_plant, substation, lng_terminal, refinery, petrochemical_complex, wind_farm, solar_farm]
+
+    tier_2_flow_surfaces:
+      priority_weight: 0.7
+      adgrid_value: high
+      surfaces:
+        - heavy_haul_corridors:  [designated_oversize_route, port_access_corridor, freight_bypass_route, permit_route]
+        - logistics_parks:       [logistics_park, freight_village, bonded_warehouse_zone, free_trade_zone, distribution_megacenter]
+        - modular_prefab_zones:  [prefab_construction_yard, modular_housing_factory, volumetric_building_facility]
+        - mega_construction:     [bridge_project, highway_expansion, port_expansion, data_center_campus, mining_expansion, energy_project]
+
+    tier_3_defensive_mesh:
+      priority_weight: 0.4
+      adgrid_value: authority_and_geo_local
+      surfaces:
+        - permit_authorities:    [transport_ministry, oversize_permit_office, dot_equivalent, escort_regulation_body]
+        - escort_staging_zones:  [truck_staging_area, escort_meeting_point, wide_load_pull_off, port_waiting_area]
+        - truck_rest_infra:      [heavy_truck_stop, freight_rest_area, oversize_parking_zone]
+
+# ─────────────────────────────────────────────────────────
+# COUNTRY PRIORITY HEAT LIST — 52 Countries
+# ─────────────────────────────────────────────────────────
+country_priority_heat_list:
+
+  tier_A_gold:
+    priority_score: 95-100
+    countries: [US, CA, AU, GB, NZ, ZA, DE, NL, AE, BR]
+    dominant_surfaces: [ports, rail_yards, energy_infrastructure, heavy_industrial_plants, heavy_haul_corridors]
+
+  tier_B_blue:
+    priority_score: 80-94
+    countries: [IE, SE, NO, DK, FI, BE, AT, CH, ES, FR, IT, PT, SA, QA, MX]
+    dominant_surfaces: [ports, logistics_parks, energy_nodes, prefab_zones]
+
+  tier_C_silver:
+    priority_score: 60-79
+    countries: [PL, CZ, SK, HU, SI, EE, LV, LT, HR, RO, BG, GR, TR, KW, OM, BH, SG, MY, JP, KR, CL, AR, CO, PE]
+    dominant_surfaces: [ports, industrial_plants, corridors, logistics_parks]
+
+  tier_D_slate:
+    priority_score: 45-59
+    countries: [UY, PA, CR]
+    dominant_surfaces: [ports, logistics_hubs, staging_zones]
+
+# ─────────────────────────────────────────────────────────
+# PROGRAMMATIC PAGE FACTORY — URL Patterns
+# ─────────────────────────────────────────────────────────
+programmatic_page_factory:
+  version: 1.0
+  goal: infinite_geo_commercial_coverage
+
+  url_patterns:
+    port:                "/port/{country}/{port_slug}"                                       # adgrid_slots: 6
+    terminal:            "/port/{country}/{port_slug}/terminal/{terminal_slug}"              # adgrid_slots: 8
+    rail_yard:           "/rail/{country}/{yard_slug}"                                       # adgrid_slots: 5
+    industrial_facility: "/industrial/{country}/{facility_type}/{facility_slug}"             # adgrid_slots: 6
+    energy_site:         "/energy/{country}/{energy_type}/{site_slug}"                       # adgrid_slots: 6
+    corridor:            "/corridor/{country}/{corridor_slug}"                               # adgrid_slots: 10
+    staging_area:        "/staging/{country}/{location_slug}"                                # adgrid_slots: 4
+
+# ─────────────────────────────────────────────────────────
+# DEMAND LIKELIHOOD SCORING MODEL
+# ─────────────────────────────────────────────────────────
+demand_likelihood_scoring_model:
+  version: 1.0
+  score_range: 0-100
+
+  feature_weights:
+    port_proximity_km:              0.18   # curve: inverse_distance, max 300km
+    rail_intermodal_proximity_km:   0.14   # curve: inverse_distance
+    heavy_industry_density:         0.16   # curve: logarithmic_cluster
+    energy_infrastructure_presence: 0.12   # curve: binary_plus_density
+    wind_project_presence:          0.08   # curve: binary_plus_radius
+    mining_activity_score:          0.07   # curve: regional_intensity
+    corridor_classification:        0.10   # designated_oversize=1.0, major_freight=0.7, highway=0.3
+    historical_escort_signals:      0.10   # past_jobs + escort_density + broker_activity
+    regulatory_complexity_index:    0.05   # higher rules → higher escort need
+
+  scoring_bands:
+    90_100: { label: elite_hot_zone,      action: [prioritize_ads, enable_surge_pricing, sales_alert] }
+    75_89:  { label: high_probability,    action: [strong_seo_push, broker_targeting] }
+    55_74:  { label: emerging_zone,       action: [monitor_growth, light_ad_inventory] }
+    35_54:  { label: watchlist,           action: [passive_index_only] }
+    0_34:   { label: low_priority,        action: [minimal_resources] }

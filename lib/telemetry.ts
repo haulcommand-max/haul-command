@@ -15,9 +15,19 @@ export type TelemetryAction =
     | 'offer_viewed' | 'offer_accepted' | 'offer_declined'
     | 'assignment_created' | 'checkin_submitted' | 'checkout_submitted'
     | 'push_sent' | 'push_delivered' | 'push_failed'
-    | 'search_query' | 'search_result_clicked'
-    | 'page_view' | 'api_call' | 'api_error'
-    | 'heartbeat' | 'ad_impression' | 'ad_click';
+    | 'search_query' | 'search_result_clicked' | 'search_performed'
+    | 'page_view' | 'api_call' | 'api_error' | 'profile_viewed'
+    | 'claim_started' | 'claim_completed' | 'corridor_search_volume'
+    | 'escort_contacted'
+    | 'heartbeat' | 'ad_impression' | 'ad_click'
+    // Growth engine events (HCOS-GROWTH-PLAY-01)
+    | 'app_install' | 'app_banner_shown' | 'app_banner_clicked'
+    | 'saved_search_created' | 'job_alert_sent' | 'job_alert_opened'
+    | 'referral_code_shared' | 'referral_signup' | 'referral_activated'
+    | 'open_in_app_shown' | 'open_in_app_clicked'
+    | 'claim_cta_shown' | 'verification_tier_up'
+    | 'subscription_started' | 'subscription_cancelled'
+    | 'leaderboard_share_card';
 
 export interface TrackOptions {
     entity_type?: string;
@@ -64,6 +74,17 @@ export async function track(
             p_status_code: opts.status_code ?? null,
             p_metadata: opts.metadata ?? {},
         });
+
+        // Mirror to dedicated business intelligence table
+        await sb.from('behavioral_events').insert({
+            event_type: action,
+            user_id: user?.id ?? null,
+            entity_type: opts.entity_type ?? null,
+            entity_id: opts.entity_id ?? null,
+            client_platform: opts.client ?? 'web',
+            route_path: opts.route ?? (typeof window !== 'undefined' ? window.location.pathname : null),
+            metadata: opts.metadata ?? {}
+        });
     } catch {
         // Telemetry must never break the calling code
     }
@@ -94,6 +115,17 @@ export async function trackServer(
             p_route: opts.route ?? null,
             p_status_code: opts.status_code ?? null,
             p_metadata: opts.metadata ?? {},
+        });
+
+        // Mirror to dedicated business intelligence table
+        await sb.from('behavioral_events').insert({
+            event_type: action,
+            user_id: opts.user_id ?? null,
+            entity_type: opts.entity_type ?? null,
+            entity_id: opts.entity_id ?? null,
+            client_platform: opts.client ?? 'api',
+            route_path: opts.route ?? null,
+            metadata: opts.metadata ?? {}
         });
     } catch {
         // Never throw from telemetry

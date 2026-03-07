@@ -29,6 +29,14 @@ const TYPE_ICONS: Record<string, string> = {
     cert_expiring: "⚠️",
     payment_received: "💰",
     review_received: "⭐",
+    profile_milestone: "🏆",
+    profile_boost: "🚀",
+    watchlist_trigger: "👁️",
+    watchlist_digest: "📋",
+    reactivation_d3: "📍",
+    reactivation_d7: "🔥",
+    reactivation_d14: "🔍",
+    reactivation_d30: "💌",
     system: "🔔",
 };
 

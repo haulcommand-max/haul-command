@@ -39,7 +39,7 @@ export default async function HeatAdminPage() {
                     </div>
 
                     <div className="flex-1 min-h-[500px] bg-[#0c0c0c] border border-[#1a1a1a] rounded-xl flex items-center justify-center relative overflow-hidden group">
-                        <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/-98.5,39.8,3,0/1200x800?access_token=pk.placeholder')] bg-cover bg-center grayscale group-hover:scale-110 transition-transform duration-[10s]"></div>
+                        <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://a.basemaps.cartocdn.com/dark_all/3/2/3.png')] bg-cover bg-center grayscale group-hover:scale-110 transition-transform duration-[10s]"></div>
                         <div className="relative z-10 text-center">
                             <h3 className="text-3xl font-black uppercase italic tracking-tighter text-[#444] mb-2 opacity-50">Operational Heat Map</h3>
                             <p className="text-xs font-bold text-[#ffb400]/50 tracking-widest uppercase mb-8">Live Supply/Demand Overlay</p>

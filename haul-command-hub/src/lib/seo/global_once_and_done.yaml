@@ -1,0 +1,113 @@
+haul_command_global_once_and_done_framework:
+  version: "1.0"
+  intent: >
+    Establish a universal, country-agnostic SEO + directory + hyperlocal
+    infrastructure so all 52 countries are structurally complete on day one.
+    Florida remains the behavioral tuning market, but no country requires
+    future structural retrofitting.
+
+  philosophy:
+    build_once_scale_forever: true
+    country_specific_logic_is_data_driven: true
+    no_hardcoded_country_paths: true
+    florida_is_signal_not_special_case: true
+    expansion_requires_no_new_templates: true
+
+  country_registry:
+    storage: "database_table:countries_master"
+    required_fields:
+      - country_code
+      - country_name
+      - primary_language
+      - secondary_languages
+      - currency_code
+      - measurement_system
+      - escort_terminology_map
+      - regulatory_profile
+      - major_cities_seed
+      - major_corridors_seed
+      - index_priority_tier
+      - launch_status
+      - geo_polygon
+      - search_demand_score
+    invariant_rules:
+      - all_routes_generated_from_registry: true
+      - no_country_specific_templates: true
+      - hreflang_generated_from_registry: true
+      - sitemap_generated_from_registry: true
+
+  routing_system:
+    pattern_rules:
+      country_hub: "/{country_code}"
+      service_page: "/{country_code}/{service_slug}"
+      city_service: "/{country_code}/{city_slug}/{service_slug}"
+      near_me: "/near-me/{service_slug}"
+      corridor: "/corridor/{origin_slug}-to-{destination_slug}/{service_slug}"
+      metro: "/metro/{metro_slug}/{service_slug}"
+    guarantees:
+      supports_all_52_countries_immediately: true
+      supports_future_countries_without_code_changes: true
+      no_dead_routes_if_country_added: true
+
+  i18n_engine:
+    translation_source: "country_registry + locale_files"
+    terminology_injection:
+      dynamic_terms: [pilot_car, escort_vehicle, oversize_load, heavy_haul, permit, superload]
+      resolution_order: [country_specific_term, language_fallback, english_default]
+    formatting_rules:
+      currency: "country_registry.currency_code"
+      dates: "country_registry.locale"
+      distance_units: "country_registry.measurement_system"
+
+  programmatic_page_factory:
+    generation_source: "country_registry"
+    page_sets_per_country:
+      country_hub: true
+      services: 6
+      guides: 5
+      city_pages: "demand_driven from major_cities_seed"
+      near_me_pages: true
+      corridor_pages: "traffic_driven from major_corridors_seed"
+    anti_fragility_rules:
+      if_country_added: "auto_generate_full_cluster"
+      if_new_city_added: "auto_generate_city_pages"
+      if_new_service_added: "retrofit_all_countries"
+
+  link_graph_engine:
+    topology: "hub_and_spoke_recursive"
+    graph_guarantees:
+      orphan_pages_allowed: false
+      max_click_depth: 3
+      link_equity_balancer: true
+
+  seed_market_policy:
+    florida_rectangle:
+      role: "behavioral tuning, ranking calibration, alert-loop optimization"
+      special_privileges: false
+      structural_differences: false
+      what_is_tuned_here: [proximity_weight_curves, alert_timing, conversion_copy, operator_ranking_weights, demand_thresholds]
+      rollout_rule: "when_metric_validated -> propagate_globally"
+
+  autonomy_rules:
+    anti_gravity_must_never:
+      - create_country_specific_templates
+      - hardcode_country_logic
+      - duplicate_page_structures
+      - fork_routing_by_country
+    anti_gravity_must_always:
+      - read_country_registry_first
+      - generate_pages_from_registry
+      - update_hreflang_matrix
+      - maintain_link_graph_integrity
+      - enforce_quality_gates
+
+  done_definition:
+    structural_readiness:
+      all_52_countries_live: true
+      all_routes_resolvable: true
+      all_hreflang_pairs_valid: true
+      no_country_requires_manual_setup: true
+    scale_readiness:
+      new_country_time_to_live: "< 5 minutes"
+      new_city_time_to_live: "< 2 minutes"
+      new_service_time_to_live: "< 10 minutes"

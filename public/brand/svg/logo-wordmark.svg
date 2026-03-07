@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none" role="img" aria-label="Haul Command">
+  <defs>
+    <linearGradient id="gold-h" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E0B05C"/>
+      <stop offset="50%" stop-color="#C6923A"/>
+      <stop offset="100%" stop-color="#8A6428"/>
+    </linearGradient>
+    <linearGradient id="gold-chevron-h" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E0B05C"/>
+      <stop offset="100%" stop-color="#C6923A"/>
+    </linearGradient>
+  </defs>
+  <!-- Badge Mark (left) -->
+  <g transform="translate(0, 5)">
+    <path d="M35 3 L61 18 L61 48 L35 63 L9 48 L9 18 Z" fill="none" stroke="url(#gold-h)" stroke-width="2.2"/>
+    <path d="M35 8 L56 21 L56 45 L35 58 L14 45 L14 21 Z" fill="#121212"/>
+    <path d="M35 11 L53 22.5 L53 43.5 L35 55 L17 43.5 L17 22.5 Z" fill="none" stroke="url(#gold-h)" stroke-width="1" opacity="0.4"/>
+    <!-- Star -->
+    <polygon points="35,14 36.7,19.4 42.2,19.4 37.8,22.7 39.5,28.1 35,24.8 30.5,28.1 32.2,22.7 27.8,19.4 33.3,19.4" fill="url(#gold-h)"/>
+    <!-- Chevrons -->
+    <path d="M21 32 L35 24 L49 32" fill="none" stroke="url(#gold-chevron-h)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21 39 L35 31 L49 39" fill="none" stroke="url(#gold-chevron-h)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21 46 L35 38 L49 46" fill="none" stroke="url(#gold-chevron-h)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="74" y="38" font-family="'Inter', system-ui, sans-serif" font-size="22" font-weight="900" letter-spacing="0.08em" fill="#D6D6D6" text-anchor="start" style="text-transform:uppercase">HAUL</text>
+  <text x="74" y="62" font-family="'Inter', system-ui, sans-serif" font-size="22" font-weight="900" letter-spacing="0.08em" fill="url(#gold-h)" text-anchor="start" style="text-transform:uppercase">COMMAND</text>
+  <!-- Divider under HAUL COMMAND -->
+  <rect x="74" y="66" width="200" height="1.5" fill="url(#gold-h)" opacity="0.3" rx="1"/>
+</svg>

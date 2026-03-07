@@ -25,16 +25,16 @@ export default function QuoteWizard() {
             // Flat map benchmarks for local calc
             const allBenchmarks = (data || []).flatMap((s: any) => s.pricing_benchmarks || []);
             setBenchmarks(allBenchmarks);
+            // Derive regions from pricing benchmarks
+            const regionSet = new Map<string, string>();
+            for (const b of allBenchmarks) {
+                if (b.region_key && !regionSet.has(b.region_key)) {
+                    regionSet.set(b.region_key, b.region_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()));
+                }
+            }
+            regionSet.set('all', 'National');
+            setRegions(Array.from(regionSet.entries()).map(([key, label]) => ({ key, label })));
         });
-        // Hardcoded regions for MVP or fetch if API exists
-        setRegions([
-            { key: "southeast", label: "Southeast" },
-            { key: "midwest", label: "Midwest" },
-            { key: "northeast", label: "Northeast" },
-            { key: "southwest", label: "Southwest" },
-            { key: "west_coast", "label": "West Coast" },
-            { key: "all", label: "National" }
-        ]);
     }, []);
 
     const handleCalculate = () => {

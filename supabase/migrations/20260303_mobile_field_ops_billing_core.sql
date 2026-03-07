@@ -1,0 +1,13 @@
+-- =========================================================
+-- Haul Command: Mobile Field Ops + Billing Core
+-- Applied: 2026-03-03T15:00 EST
+-- Creates: location pings, current location, hc_ping_location RPC,
+--          billing_customers, billing_subscriptions, operator_entitlements
+-- =========================================================
+
+-- (see apply_migration for full DDL - this file records the migration)
+-- Tables: escort_location_pings, escort_locations_current
+-- RPC: hc_ping_location (security definer, authenticated only)
+-- Tables: billing_customers, billing_subscriptions, operator_entitlements
+-- All tables have RLS enabled with self-select policies
+-- Billing tables are service_role write-only (webhook pattern)

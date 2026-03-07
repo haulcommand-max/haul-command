@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
     images: {
         // Keep optimization ON — Vercel handles this on free plan.
         unoptimized: false,
+        // Negotiate AVIF first (smallest), then WebP
+        formats: ["image/avif", "image/webp"],
 
         // Allow images from external domains used in operator avatars and content.
         remotePatterns: [
@@ -42,6 +44,13 @@ const nextConfig: NextConfig = {
                     { key: "X-DNS-Prefetch-Control", value: "on" },
                     { key: "X-Content-Type-Options", value: "nosniff" },
                     { key: "X-Frame-Options", value: "SAMEORIGIN" },
+                ],
+            },
+            {
+                // Hero video + poster assets — immutable, CDN-cached for 1 year
+                source: "/hero/:path*",
+                headers: [
+                    { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
                 ],
             },
         ];

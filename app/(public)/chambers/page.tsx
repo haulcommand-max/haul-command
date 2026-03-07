@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -83,6 +84,13 @@ export default async function ChambersLandingPage() {
                         ))}
                     </div>
                 </section>
+
+                {/* Native Ad — between US and Canada */}
+                <NativeAdCard
+                    surface="chambers_mid"
+                    placementId="chambers-us-ca-break"
+                    variant="inline"
+                />
 
                 {/* CA Provinces */}
                 <section>

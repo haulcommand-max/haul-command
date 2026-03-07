@@ -1,0 +1,381 @@
+haul_command_app_launch_master_plan:
+  version: "2026-02-27"
+  objective: >
+    Maximize first-wave mobile app downloads globally while ensuring full
+    app-store compliance, payments legality, data governance, and localization.
+    Designed for one-shot successful submission and scalable global expansion.
+
+  strategic_principles:
+    - first_submission_success_required: true
+    - compliance_before_growth: true
+    - geo_focus_over_global_spray: true
+    - localized_trust_signals_required: true
+    - store_algorithm_alignment: true
+
+  # ============================================================
+  # TIERED GEO EXPANSION — WHERE DOWNLOADS HAPPEN FASTEST
+  # ============================================================
+  geo_download_priority_matrix:
+
+    tier_1_hyper_density_markets:
+      description: >
+        Highest probability of rapid downloads due to freight density,
+        English penetration, digital adoption, and oversize ecosystem maturity.
+        Must be fully saturated before wider spread.
+
+      united_states_priority_metros:
+        - houston_tx
+        - dallas_fort_worth_tx
+        - atlanta_ga
+        - chicago_il
+        - los_angeles_ca
+        - long_beach_ca
+        - phoenix_az
+        - denver_co
+        - indianapolis_in
+        - kansas_city_mo
+        - columbus_oh
+        - nashville_tn
+        - charlotte_nc
+        - savannah_ga
+        - jacksonville_fl
+
+      canada_priority_metros:
+        - toronto_on
+        - mississauga_on
+        - brampton_on
+        - calgary_ab
+        - edmonton_ab
+        - vancouver_bc
+        - winnipeg_mb
+
+      expected_impact:
+        download_velocity: "extreme"
+        monetization_readiness: "high"
+        competition_density: "moderate"
+
+    tier_2_global_beachheads:
+      description: >
+        English-friendly or high-logistics economies where marketplace
+        penetration is achievable without heavy regulatory friction.
+
+      countries:
+        - australia
+        - united_kingdom
+        - new_zealand
+        - ireland
+        - netherlands
+        - germany
+        - united_arab_emirates
+        - south_africa
+        - singapore
+
+      city_focus_required: true
+      expected_impact:
+        download_velocity: "high"
+        localization_complexity: "medium"
+
+    tier_3_selective_expansion:
+      description: >
+        Only expand after Tier 1 and Tier 2 traction is proven.
+        Higher compliance or localization overhead.
+
+      countries_watchlist:
+        - mexico
+        - brazil
+        - france
+        - spain
+        - italy
+        - japan
+        - south_korea
+        - india
+
+      gating_rule:
+        require_product_market_fit_signal: true
+        require_local_partner_presence: true
+
+  # ============================================================
+  # APP STORE COMPLIANCE — FIRST SUBMISSION PASS
+  # ============================================================
+  app_store_compliance_guardrails:
+
+    apple_app_store:
+      critical_rules:
+        - no_hidden_paywalls
+        - no misleading metadata
+        - user_data_transparency_required
+        - account_deletion_required_in_app
+        - privacy_policy_required
+        - data_collection_disclosure_required
+        - location_usage_justification_required
+        - background_location_requires_explicit_value
+        - third_party_tracking_disclosure_required
+        - in_app_purchase_required_for_digital_goods
+
+      common_rejection_triggers:
+        - vague_app_description
+        - broken_login
+        - empty_states_without_content
+        - fake_demo_data_without_label
+        - external_payment_links_for_digital_features
+        - excessive permission_requests
+
+      required_artifacts:
+        - demo_account_credentials
+        - review_notes_for_apple
+        - privacy_manifest_file
+        - app_tracking_transparency_prompt
+        - data_safety_mapping
+
+    google_play_store:
+      critical_rules:
+        - data_safety_form_required
+        - prominent_privacy_policy_link
+        - background_location_review
+        - sms_call_log_restrictions
+        - financial_features_disclosure
+        - ads_declaration_required_if_adgrid_active
+
+      common_rejection_triggers:
+        - missing data safety answers
+        - unclear core functionality
+        - policy mismatch with permissions
+        - unstable build
+        - broken navigation
+
+  # ============================================================
+  # DATA + VAPI + MONETIZATION COMPLIANCE
+  # ============================================================
+  global_data_compliance_layer:
+
+    privacy_frameworks_required:
+      - gdpr_eu
+      - ccpa_cpra_california
+      - pipeda_canada
+      - australian_privacy_act
+      - uk_gdpr
+      - uae_data_protection
+      - singapore_pdpa
+
+    core_requirements:
+      consent_management_required: true
+      cookie_disclosure_required: true
+      data_minimization_enforced: true
+      user_data_export_endpoint: true
+      user_data_deletion_endpoint: true
+      purpose_limitation_tags: true
+
+    vapi_voice_compliance:
+      call_recording_notice_required: true
+      two_party_consent_states_handled: true
+      opt_out_mechanism_required: true
+      transcript_storage_encrypted: true
+      retention_policy_enforced: true
+
+    data_monetization_guardrails:
+      require_aggregated_only_mode: true
+      prohibit_sale_of_personal_data_without_opt_in: true
+      partner_data_processing_agreements_required: true
+      anonymization_pipeline_required: true
+
+  # ============================================================
+  # PAYMENTS + TAX + MONEY LAW COMPLIANCE
+  # ============================================================
+  global_payments_compliance:
+
+    payment_stack:
+      primary_processor: stripe
+      mobile_in_app: apple_google_iap
+      payout_engine: stripe_connect
+
+    regional_requirements:
+
+      united_states:
+        - sales_tax_engine_required
+        - 1099_kyc_for_payouts
+        - state_marketplace_rules_check
+
+      canada:
+        - gst_hst_handling
+        - province_tax_mapping
+
+      european_union:
+        - vat_moss_or_oss_required
+        - digital_services_vat_rules
+
+      australia:
+        - gst_registration_threshold_check
+
+      united_kingdom:
+        - vat_digital_services_rules
+
+      uae:
+        - vat_5_percent_check
+
+      singapore:
+        - gst_digital_services_rules
+
+    risk_controls:
+      aml_monitoring_required: true
+      sanctions_screening_required: true
+      fraud_velocity_checks: true
+
+  # ============================================================
+  # LOCALIZATION + LANGUAGE ENGINE
+  # ============================================================
+  multilingual_launch_matrix:
+
+    phase_1_languages:
+      - en
+      - fr_ca
+      - es
+      - de
+
+    phase_2_languages:
+      - nl
+      - ar
+      - pt_br
+      - hi
+      - ja
+
+    requirements:
+      hreflang_alignment_required: true
+      localized_store_listings: true
+      localized_screenshots: true
+      currency_localization: true
+      measurement_units_localized: true
+      timezone_auto_detection: true
+
+  # ============================================================
+  # GEO VISIBILITY CONTROL (CRITICAL FOR YOUR USE CASE)
+  # ============================================================
+  geo_visibility_engine:
+
+    core_rule: >
+      Users only see loads, escorts, and listings within their
+      permitted operating radius unless explicitly expanded.
+
+    enforcement:
+      ip_geo_detection: true
+      gps_validation: true
+      user_home_region_lock: true
+      cross_border_soft_gating: true
+      manual_radius_override_allowed: true
+
+    example:
+      florida_user_should_not_see:
+        - jamaica_listings
+        - mexico_listings
+        - europe_listings
+
+  # ============================================================
+  # DOWNLOAD ACCELERATION SYSTEM (THE REAL GROWTH ENGINE)
+  # ============================================================
+  growth_acceleration_stack:
+
+    app_store_aso:
+      keyword_clusters_required: true
+      localized_titles_required: true
+      screenshot_ab_testing: true
+      review_velocity_engine: true
+      first_7_day_rating_push: true
+
+    off_store_distribution:
+      - industry_facebook_groups
+      - broker_email_lists
+      - driver_sms_invites
+      - referral_codes
+      - qr_code_truck_decals
+      - port_and_truck_stop_posters
+
+    network_effect_triggers:
+      profile_claim_flow: required
+      escort_availability_heatmap: required
+      broker_posting_friction_reduction: required
+      instant_notification_loops: required
+
+  # ============================================================
+  # PRE-SUBMISSION AUTOMATED CHECKLIST
+  # ============================================================
+  anti_gravity_preflight:
+
+    build_checks:
+      - ios_build_stable
+      - android_build_stable
+      - no_placeholder_content
+      - no_test_endpoints
+      - production_api_keys_only
+
+    compliance_checks:
+      - privacy_policy_live
+      - terms_of_service_live
+      - account_deletion_flow_working
+      - data_safety_forms_completed
+      - apple_review_notes_prepared
+
+    localization_checks:
+      - store_metadata_localized
+      - screenshots_localized
+      - currency_verified
+      - timezone_verified
+
+    payments_checks:
+      - stripe_live_mode_verified
+      - iap_products_approved
+      - tax_rules_loaded
+      - payout_kyc_flow_verified
+
+    go_no_go_rule:
+      require_all_green: true
+      block_release_if_any_red: true
+
+  # ============================================================
+  # 10X / 50X / 100X ADVANTAGE MOVES
+  # ============================================================
+  strategic_force_multipliers:
+
+    ten_x_moves:
+      - predictive_corridor_download_targeting
+      - city_level_launch_waves
+      - operator_invite_funnels
+      - review_velocity_burst_system
+
+    fifty_x_moves:
+      - escort_supply_heatmap_public_view
+      - broker_intent_radar_notifications
+      - port_level_density_pages
+      - trust_score_visible_in_store_screenshots
+
+    hundred_x_moves:
+      - self_reinforcing_liquidity_loops
+      - geo_scarcity_push_notifications
+      - automated_market_seeding_ai
+      - cross_border_load_prediction
+
+    eight_hundred_x_foundation:
+      - global_logistics_identity_graph
+      - real_time_supply_demand_index
+      - corridor_dominance_scoring
+      - marketplace_take_rate_optimizer
+
+  # ============================================================
+  # SUCCESS METRICS
+  # ============================================================
+  launch_kpis:
+
+    first_30_days:
+      - installs_by_geo
+      - cost_per_install
+      - activation_rate
+      - first_post_time
+      - first_claim_time
+
+    marketplace_health:
+      - escorts_per_corridor
+      - broker_post_velocity
+      - fill_rate
+      - repeat_usage_rate
+
+    compliance_health:
+      - rejection_rate_target: "< 5%"
+      - policy_violation_target: "0"

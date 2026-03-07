@@ -1,0 +1,253 @@
+# Haul Command — Leaderboard Scoring Engine Spec
+# Anti-Gravity YAML — Production Grade
+# Version: 1.0.0
+
+haul_command:
+  engine:
+    name: leaderboard_scoring_engine
+    version: 1.0.0
+    priority: P0
+    strategy: additive_only
+    goal:
+      - "rank operators by real credibility, not vanity metrics"
+      - "prevent gaming while rewarding genuine engagement"
+      - "drive profile quality, verification, and responsiveness"
+      - "power directory sort, marketplace match priority, and corridor rankings"
+
+# ============================================================
+# SCORING WEIGHTS
+# ============================================================
+
+scoring_weights:
+  # Core components (sum = 1.0)
+  verification_tier:
+    weight: 0.18
+    max_points: 100
+    rationale: "verified identity is the foundation of marketplace trust"
+    tier_points:
+      tier_0_unverified: 0
+      tier_1_face_detected: 20
+      tier_2_face_plus_social: 50
+      tier_3_liveness_passed: 75
+      tier_4_elite_full: 100
+
+  job_performance:
+    weight: 0.25
+    max_points: 100
+    components:
+      volume_30d:
+        weight_within: 0.30
+        normalization: "min(jobs_30d / 20, 1.0)"
+      acceptance_rate:
+        weight_within: 0.25
+      on_time_rate:
+        weight_within: 0.25
+      lifetime_experience:
+        weight_within: 0.20
+        normalization: "min(total_jobs / 100, 1.0)"
+
+  trust_score:
+    weight: 0.20
+    max_points: 100
+    source: trust_score_engine_passthrough
+
+  responsiveness:
+    weight: 0.16
+    max_points: 100
+    components:
+      speed:
+        weight_within: 0.60
+        tiers:
+          under_60s: 60
+          under_180s: 50
+          under_600s: 35
+          under_1800s: 20
+          over_1800s: 5
+      response_rate:
+        weight_within: 0.40
+        formula: "rate * 40"
+
+  profile_completion:
+    weight: 0.08
+    max_points: 100
+    formula: "completion_score * 100"
+
+  social_proof:
+    weight: 0.07
+    max_points: 100
+    components:
+      providers_linked:
+        max_providers: 3
+        points_per_provider: 15
+      reviews:
+        min_reviews_required: 2
+        formula: "min(avg_score / 5, 1.0) * 55"
+
+  avatar_quality:
+    weight: 0.06
+    max_points: 100
+    cap: 8  # max 8 effective points, prevents photo gaming
+    face_not_detected_penalty: "score * 0.3, capped at 30"
+
+# ============================================================
+# BONUS MULTIPLIERS (additive, capped)
+# ============================================================
+
+bonuses:
+  streak:
+    max_bonus_percent: 5
+    cap_days: 30
+    meaningful_actions:
+      - update_availability
+      - accept_or_decline_offer_fast
+      - complete_profile_step
+      - upload_or_improve_avatar
+
+  review_volume:
+    max_bonus_percent: 5
+    min_reviews_to_activate: 2
+    normalization: "min(reviews / 20, 1.0)"
+
+# ============================================================
+# DECAY MECHANICS
+# ============================================================
+
+decay:
+  trigger: "0 streak days AND has_completed_jobs"
+  grace_period_days: 14
+  rate_per_day: 0.005  # 0.5%
+  max_total_decay: 0.25  # 25%
+  reset_on: "any meaningful action"
+
+# ============================================================
+# ANTI-GAMING RULES (CRITICAL)
+# ============================================================
+
+anti_gaming:
+  avatar:
+    max_effective_points: 8
+    reupload_cooldown_hours: 24
+    no_points_for_reupload_spam: true
+
+  streaks:
+    cap_at_30_days: true
+    no_credit_for_trivial_logins: true
+    meaningful_action_required: true
+
+  jobs:
+    min_jobs_for_performance_credit: 3
+    flag_if_volume_over_50_per_30d: true
+
+  reviews:
+    min_reviews_for_bonus: 2
+    no_self_review: true
+
+  completion:
+    only_for_claimed_profiles: true
+    no_credit_for_placeholder_data: true
+
+  suspicious_patterns:
+    rapid_accept_then_decline:
+      detection: "accept_rate > 0.9 AND response_rate < 0.1"
+      action: flag_for_review
+    zero_response_high_acceptance:
+      detection: true
+      action: flag_for_review
+    unusual_volume_spike:
+      threshold: "50 jobs in 30 days"
+      action: review_recommended
+
+# ============================================================
+# RANK TIERS
+# ============================================================
+
+rank_tiers:
+  elite:
+    range: 85-100
+    badge: "🏆 Elite"
+    marketplace_effect: "priority matching + top placement"
+  gold:
+    range: 70-84
+    badge: "🥇 Gold"
+    marketplace_effect: "preferred matching"
+  silver:
+    range: 55-69
+    badge: "🥈 Silver"
+    marketplace_effect: "standard matching"
+  bronze:
+    range: 35-54
+    badge: "🥉 Bronze"
+    marketplace_effect: "eligible but lower priority"
+  unranked:
+    range: 0-34
+    badge: null
+    marketplace_effect: "visible in directory only"
+
+# ============================================================
+# BADGE CRITERIA (server-side enforced)
+# ============================================================
+
+badges:
+  verified_operator:
+    criteria: "verification_tier >= 2"
+    display: "profile + directory cards + leaderboard"
+  elite_verified:
+    criteria: "verification_tier >= 4"
+    display: "profile + directory cards + leaderboard + SEO structured data"
+  top_10_corridor:
+    criteria: "leaderboard_rank <= 10 AND completed_jobs >= 5"
+    display: "leaderboard + profile"
+  fast_responder:
+    criteria: "median_response <= 180s AND response_rate >= 0.8"
+    display: "profile + directory cards"
+
+# ============================================================
+# INTEGRATION POINTS
+# ============================================================
+
+integrations:
+  directory_sort:
+    formula: "trust_score * relevance * proximity + avatar_quality_term(capped 0.08) + completeness_term(capped 0.10)"
+    only_for: "verified_or_claimed profiles"
+
+  marketplace_match:
+    leaderboard_score_weight: 0.12
+    verification_tier_gate: "tier >= 1 for offers"
+
+  seo:
+    structured_data:
+      add_award_for: ["elite_verified", "top_10_corridor"]
+      add_identifier_for: ["verified_operator"]
+    og_image:
+      overlay_badges: true
+      cache_ttl: 86400
+
+  corridor_heatmap:
+    internal_link_from_leaderboard: true
+    internal_link_from_profiles: true
+
+# ============================================================
+# IMPLEMENTATION FILES
+# ============================================================
+
+implementation:
+  scoring_engine: lib/leaderboard/leaderboard-scoring.ts
+  api_route: app/api/v1/leaderboard/route.ts
+  migration: supabase/migrations/20260227_sociable_directory_upgrades.sql
+  cron_schedule: "0 */4 * * *"  # recompute every 4 hours
+
+# ============================================================
+# TELEMETRY
+# ============================================================
+
+telemetry:
+  kpis:
+    - rank_tier_distribution
+    - avg_score_by_verification_tier
+    - badge_coverage_rate
+    - anti_gaming_flag_rate
+    - score_change_velocity
+    - time_on_leaderboard_page
+  experiments:
+    - avatar_quality_rank_weight_ab
+    - enhanced_avatar_preview_nudge_ab

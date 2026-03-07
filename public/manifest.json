@@ -1,23 +1,32 @@
 {
-    "name": "Haul Command",
-    "short_name": "Haul Command",
-    "description": "The Operating System for North American Heavy Haul & Pilot Cars.",
-    "start_url": "/app",
-    "scope": "/app",
+    "name": "HAUL COMMAND — Escort & Pilot Car Marketplace",
+    "short_name": "HAUL COMMAND",
+    "description": "The world's oversize/overweight logistics platform. Find verified escort operators, post loads, track compliance across 57 countries.",
+    "start_url": "/",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#121212",
-    "theme_color": "#C6923A",
     "orientation": "portrait-primary",
+    "theme_color": "#0A0A0A",
+    "background_color": "#0A0A0A",
+    "lang": "en",
+    "categories": [
+        "business",
+        "logistics",
+        "transportation",
+        "navigation"
+    ],
     "icons": [
         {
             "src": "/icons/icon-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/icons/icon-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/icons/icon-512x512-maskable.png",
@@ -26,23 +35,38 @@
             "purpose": "maskable"
         }
     ],
-    "categories": [
-        "business",
-        "navigation",
-        "productivity"
-    ],
+    "screenshots": [],
     "shortcuts": [
         {
-            "name": "Find Escort",
-            "short_name": "Find Escort",
-            "description": "Search for available pilot cars",
-            "url": "/app"
+            "name": "Do I Need an Escort?",
+            "short_name": "Calculator",
+            "description": "Instant multi-state escort requirement calculator",
+            "url": "/tools/escort-calculator"
         },
         {
-            "name": "Post Load",
-            "short_name": "Post Load",
-            "description": "Post a new oversize load",
-            "url": "/loads/post"
+            "name": "Find Escort Operators",
+            "short_name": "Directory",
+            "description": "Search verified pilot car operators by location",
+            "url": "/united-states"
+        },
+        {
+            "name": "Escort Requirements",
+            "short_name": "Requirements",
+            "description": "57-country escort regulation database",
+            "url": "/escort-requirements"
+        },
+        {
+            "name": "Compliance Card",
+            "short_name": "Compliance",
+            "description": "Free escort compliance card download",
+            "url": "/tools/compliance-card"
+        },
+        {
+            "name": "My Dashboard",
+            "short_name": "Dashboard",
+            "description": "View your operator dashboard",
+            "url": "/dashboard"
         }
-    ]
+    ],
+    "prefer_related_applications": false
 }

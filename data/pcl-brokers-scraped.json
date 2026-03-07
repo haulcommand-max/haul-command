@@ -1,0 +1,298 @@
+{
+    "scrape_date": "2026-02-28T23:41:00Z",
+    "source": "pilotcarloads.com",
+    "source_url": "https://pilotcarloads.com/dashboard/loads",
+    "pages_scraped": 5,
+    "total_unique_brokers": 30,
+    "notes": "Broker company information only — no load/route data. Load board currently shows 5 pages (~50 loads). Phone numbers hidden for 'Covered' status loads. User phone (254) 245-0192 excluded. Companies with minor name variants (e.g., 'patelpcs 2 cars', 'patelpcs', 'patelpcs 14'7') are merged under a canonical name. 'Angie's Pilot Car, llc' and 'Angie's PCS' merged. 'Chris' excluded as likely individual, not a company.",
+    "brokers": [
+        {
+            "company_name": "Bonnie Blue HH",
+            "phone": "(918) 810-9868",
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "open"
+        },
+        {
+            "company_name": "M&L Express LLC",
+            "phone": "(240) 217-1663",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay",
+                "Text Only"
+            ],
+            "loads_posted": 1,
+            "active_status": "open"
+        },
+        {
+            "company_name": "373 Cargo Incorporated",
+            "phone": "(224) 804-0447",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay",
+                "Text Only"
+            ],
+            "loads_posted": 2,
+            "active_status": "open"
+        },
+        {
+            "company_name": "Midwest Pilot Cars",
+            "phone": "(605) 670-9654",
+            "id_verified": true,
+            "tags": [
+                "Text Only"
+            ],
+            "loads_posted": 1,
+            "active_status": "open",
+            "notes": "Cross-border loads (US-Canada)"
+        },
+        {
+            "company_name": "Angie's Pilot Car, llc",
+            "phone": "(918) 638-5878",
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 2,
+            "active_status": "open",
+            "aliases": [
+                "Angie's PCS - must have Louisana"
+            ]
+        },
+        {
+            "company_name": "Adel Transportation",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "VIDALIA DISPATCH SERVICE INC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "North American Pilot Car Service",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 3,
+            "active_status": "covered",
+            "notes": "High volume — active across multiple states"
+        },
+        {
+            "company_name": "Ace Convoy Pilot Escorts",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 2,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "RDJ Trucking",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 2,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Cmb enterprises inc",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Reliable Transport LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 2,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "patelpcs",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 5,
+            "active_status": "covered",
+            "aliases": [
+                "patelpcs 2 cars",
+                "patelpcs 14'7"
+            ],
+            "notes": "Multiple accounts/variants — same broker"
+        },
+        {
+            "company_name": "American heavy haul",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "JLS Pilot Car Services",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 7,
+            "active_status": "covered",
+            "notes": "Highest volume broker on the platform — 7 loads across 11 states"
+        },
+        {
+            "company_name": "Ace Transports LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 2,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Dispatch",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 2,
+            "active_status": "covered",
+            "notes": "Generic name — may be individual operator"
+        },
+        {
+            "company_name": "Lowboy Services Inc",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "CHASE Transportation LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Band Specialized",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "First Response Pilot Cars",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "US Freight .inc",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "KEENCO Transport, LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Blue Ridge Pilot Cars",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "MY PEVO (Drive With Us)",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "DBurk Permit Solutions",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Valley Transportation",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 2,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Edgemont Pilots LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "Aldarelli Enterprises LLC",
+            "phone": null,
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "loads_posted": 1,
+            "active_status": "covered"
+        },
+        {
+            "company_name": "GATOR TRANSPORT",
+            "phone": null,
+            "id_verified": true,
+            "tags": [],
+            "loads_posted": 1,
+            "active_status": "covered"
+        }
+    ]
+}

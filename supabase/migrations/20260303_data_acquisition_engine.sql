@@ -1,0 +1,14 @@
+-- =========================================================
+-- 52-Country Data Acquisition Engine — Applied 2026-03-03T20:17 EST
+--
+-- 5 Migrations:
+--   1. data_engine_schemas_and_enums   — 5 schemas + 8 enums
+--   2. data_engine_audit_raw_tables    — audit.sources, audit.source_urls, raw.artifacts, audit.job_runs
+--   3. data_engine_ingest_tables       — ingest.staging_entities (PostGIS), ingest.staging_facts, geom trigger
+--   4. data_engine_canon_tables        — canon.entities, entity_source_claims, entity_aliases, merge_audit_log
+--   5. data_engine_pub_functions_perms — pub.entities_public, helpers (normalize/slugify/publish/touch), RLS, permissions
+--
+-- Schemas: audit | raw | ingest | canon | pub
+-- All internal schemas locked (service_role only)
+-- pub.entities_public: anon/authenticated SELECT
+-- =========================================================

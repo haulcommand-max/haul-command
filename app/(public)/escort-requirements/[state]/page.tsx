@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, Shield, AlertTriangle, CheckCircle2, FileText, MapPin, Truck } from "lucide-react";
+import { NativeAdCard } from "@/components/ads/NativeAdCard";
 import {
     getStateBySlug,
     getAllStateSlugs,
@@ -129,8 +130,8 @@ function RequirementsTable({ state }: { state: StateData }) {
                         >
                             <td className="px-4 py-3 align-top">
                                 <span className={`text-xs font-bold ${rule.severity === "critical" ? "text-red-400" :
-                                        rule.severity === "warning" ? "text-amber-400" :
-                                            "text-white/60"
+                                    rule.severity === "warning" ? "text-amber-400" :
+                                        "text-white/60"
                                     }`}>
                                     {rule.condition}
                                 </span>
@@ -381,6 +382,13 @@ export default async function EscortRequirementsStatePage({
 
                     {/* Equipment checklist */}
                     <EquipmentChecklist state={state} />
+
+                    {/* Native Ad */}
+                    <NativeAdCard
+                        surface="escort_req_state_mid"
+                        placementId="escort-req-state-below-checklist"
+                        variant="inline"
+                    />
 
                     {/* Statewide FAQ */}
                     <section>

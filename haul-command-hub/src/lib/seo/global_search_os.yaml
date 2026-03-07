@@ -1,0 +1,208 @@
+# ============================================================
+# HAUL COMMAND — GLOBAL SEARCH OS
+# The master SEO + authority engine across 52 countries
+# ============================================================
+
+project: haul_command_global_search_os
+mission: >
+  Establish Haul Command as the default global search layer for oversize
+  and heavy haul logistics by building a compliant, high-velocity SEO and
+  authority engine across US, Canada, and Tier A/B/C international markets.
+
+success_outcomes:
+  - dominate long-tail escort + oversize search demand
+  - increase load board indexable inventory
+  - compound branded search volume
+  - accelerate mobile app installs
+  - build defensible entity authority
+  - capture SERP features (snippets, PAA, local pack)
+
+global_priority_markets:
+  tier_a: [australia, united_kingdom, new_zealand]
+  tier_b: [sweden, norway, united_arab_emirates]
+  tier_c: [saudi_arabia, germany, south_africa]
+
+# ============================================================
+# GEO SURFACE EXPANSION
+# ============================================================
+geo_surface_expansion:
+  objective: capture maximum long-tail geo demand safely
+  layers:
+    - country
+    - state_or_province
+    - county_or_region
+    - metro_area
+    - city
+    - suburb_or_locality
+    - freight_corridor
+    - port_terminal
+    - industrial_zone
+    - border_crossing
+    - weigh_station_zone
+    - rural_coverage_gap
+  rules:
+    - no thin geo pages
+    - require_supply_or_demand_signal
+    - require_internal_link_cluster
+    - noindex_until_quality_threshold_met
+
+# ============================================================
+# INTENT CAPTURE MATRIX
+# ============================================================
+intent_capture_matrix:
+  primary_intents:
+    - hire_pilot_car
+    - escort_availability
+    - oversize_load_requirements
+    - abnormal_load_rules
+    - load_posting
+    - broker_matching
+    - emergency_escort
+    - permit_guidance
+    - route_planning
+    - cross_border_moves
+  page_strategy:
+    informational: "guides + rule explainers"
+    commercial: "service + availability pages"
+    marketplace: "live load board + directory"
+    programmatic: "geo + service intersections"
+
+# ============================================================
+# QUALITY GATING ENGINE
+# ============================================================
+quality_gating_engine:
+  purpose: prevent scaled content abuse
+  scoring:
+    minimum_publish_score: 72
+    minimum_index_score: 78
+  required_signals:
+    - unique_facts_min: 8
+    - internal_links_min: 6
+    - faq_pairs_min: 4
+    - proof_blocks_min: 2
+    - structured_data_valid: true
+    - supply_or_demand_signal: true
+  auto_actions:
+    below_publish: block_publish
+    between_publish_and_index: publish_noindex
+    above_index: full_index
+
+# ============================================================
+# STRUCTURED DATA DOMINANCE
+# ============================================================
+structured_data_dominance:
+  required_schema:
+    - Organization
+    - LocalBusiness_or_Service
+    - ItemList
+    - BreadcrumbList
+    - FAQPage
+    - SoftwareApplication
+    - JobPosting
+    - Dataset
+  validation:
+    - schema_lint_on_build
+    - nightly_validation_scan
+    - rich_result_monitor
+
+# ============================================================
+# INTERNAL LINK GRAPH
+# ============================================================
+internal_link_graph:
+  strategy: hub_and_spoke_with_entity_reinforcement
+  hubs: [country_pages, state_province_pages, major_corridors, major_ports]
+  spokes: [city_pages, suburb_pages, service_pages, load_pages]
+  automation:
+    - contextual_links
+    - related_corridor_blocks
+    - nearby_supply_blocks
+    - demand_signal_blocks
+
+# ============================================================
+# LOAD BOARD INDEXING ENGINE
+# ============================================================
+load_board_indexing:
+  requirements:
+    - each_load_has_unique_url
+    - structured_jobposting_schema
+    - freshness_timestamp
+    - canonicalization_rules
+    - auto_expire_handling
+  enhancements:
+    - recently_filled_strip
+    - hot_corridor_strip
+    - shortage_alert_pages
+
+# ============================================================
+# MOBILE APP GROWTH LOOP
+# ============================================================
+mobile_app_growth:
+  mechanisms:
+    - smart_app_banner
+    - deep_linking
+    - app_schema_markup
+    - brand_search_amplification
+    - review_velocity_engine
+  kpis: [web_to_app_conversion, branded_search_growth, store_rank]
+
+# ============================================================
+# UGC AUTHORITY FLYWHEEL
+# ============================================================
+ugc_flywheel:
+  inputs: [escort_reviews, broker_reviews, job_completions, corridor_updates, photo_proofs]
+  outputs: [proof_widgets, freshness_signals, trust_score_inputs, ranking_reinforcement]
+
+# ============================================================
+# SAFE AGGRESSIVE MOVES
+# ============================================================
+safe_moves:
+  deploy_hard:
+    - deep_geo_expansion
+    - entity_graph_building
+    - structured_data_everywhere
+    - inventory_indexing
+    - internal_link_density
+    - demand_based_page_creation
+    - serp_feature_targeting
+    - freshness_loops
+  borderline_controlled:
+    - digital_pr_at_scale
+    - niche_guest_posting
+    - partnership_backlinks
+    - anchor_text_optimization
+  safeguards: [link_velocity_monitor, anchor_distribution_guard, domain_relevance_scoring, manual_review]
+  prohibited:
+    - automated_forum_spam
+    - profile_link_blasting
+    - spun_article_networks
+    - captcha_bypass
+    - bulk_web2_spam
+
+# ============================================================
+# RANKING SURFACE MAP
+# ============================================================
+ranking_surfaces:
+  google_web: [blue_links, featured_snippets, people_also_ask, image_results]
+  google_local: [maps_presence, review_velocity]
+  google_jobs: [load_board_jobposting]
+  app_stores: [apple_app_store, google_play]
+  social: [youtube_explainers, reddit_presence, x_signal_posts, linkedin_b2b]
+  knowledge_graph: [entity_reconciliation, brand_sameas_links]
+
+# ============================================================
+# EXECUTION PRIORITY
+# ============================================================
+execution_priority:
+  immediate:
+    - geo_surface_expansion_engine
+    - quality_gating_engine
+    - structured_data_layer
+    - load_board_indexing
+  next_wave:
+    - ugc_flywheel
+    - app_growth_loop
+    - global_entity_graph
+  advanced:
+    - predictive_page_creation
+    - serp_feature_domination
+    - cross_market_authority_blending

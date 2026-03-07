@@ -1,0 +1,135 @@
+# ============================================================
+# HAUL COMMAND — CORRIDOR DOMINATION MAP
+# Identify, score, and dominate 780+ freight corridors globally
+# ============================================================
+
+project: haul_command_corridor_domination_map
+mission: >
+  Identify, map, and dominate high-value heavy haul freight corridors
+  across the United States, Canada, and priority global markets by
+  building a corridor intelligence layer that drives SEO, marketplace
+  liquidity, and pricing power.
+
+definition:
+  freight_corridor: >
+    A repeat heavy-haul or oversize logistics lane connecting major
+    industrial supply, ports, energy sites, manufacturing clusters,
+    or population centers where escort demand is structurally present.
+
+corridor_types:
+  - port_to_inland
+  - energy_wind_routes
+  - mining_routes
+  - industrial_manufacturing_lanes
+  - border_crossing_lanes
+  - mega_project_routes
+  - forestry_routes
+  - rural_oversize_paths
+
+# ============================================================
+# CORRIDOR SCORING MODEL
+# ============================================================
+corridor_scoring:
+  components:
+    demand_intensity: 0-25
+    escort_shortage: 0-20
+    freight_value_proxy: 0-15
+    search_volume_proxy: 0-15
+    competition_gap: 0-15
+    cross_border_importance: 0-10
+  tiers:
+    tier_1_dominate_now: ">= 75"
+    tier_2_build_presence: "55-74"
+    tier_3_monitor: "< 55"
+
+# ============================================================
+# DATA INGESTION ENGINE
+# ============================================================
+data_ingestion:
+  sources:
+    - dot_freight_networks
+    - state_province_permit_routes
+    - port_terminal_flows
+    - wind_farm_locations
+    - mining_site_locations
+    - industrial_cluster_datasets
+    - internal_load_board_history
+    - user_search_logs
+    - escort_supply_density
+  processing:
+    - geo_clustering
+    - route_frequency_scoring
+    - heavy_haul_signal_detection
+    - corridor_confidence_score
+
+# ============================================================
+# CORRIDOR PAGE FACTORY
+# ============================================================
+page_factory:
+  url_pattern: "/corridors/[country]/[corridor-slug]"
+  required_modules:
+    - corridor_overview
+    - key_cities_connected
+    - escort_requirements_summary
+    - recent_load_activity
+    - shortage_indicator
+    - nearby_supply_map
+    - faq_block
+    - structured_data_bundle
+  quality_rules:
+    min_unique_data_points: 10
+    min_internal_links: 8
+    require_supply_or_load_signal: true
+    noindex_until_quality_score: 80
+  schema: [Dataset, FAQPage, BreadcrumbList, ItemList, Service]
+
+# ============================================================
+# ESCORT SUPPLY RADAR v3
+# ============================================================
+supply_radar:
+  metrics: [escorts_available, escorts_needed, shortage_index, surge_risk, loads_7d, trend_30d]
+  outputs: [corridor_heatmap, shortage_alert_pages, surge_pricing_signals]
+
+# ============================================================
+# INTERNAL LINKING + LOAD BOARD INTEGRATION
+# ============================================================
+internal_linking:
+  required_links: [connected_cities, state_province, ports, related_corridors, load_board_filtered]
+  automation: [nearby_corridor_widget, supply_gap_widget, high_activity_widget]
+
+load_board_integration:
+  features: [corridor_filtered_view, hot_lane_badge, recently_filled_strip, live_counter, jobposting_schema]
+
+# ============================================================
+# SERP FEATURE DOMINATION
+# ============================================================
+serp_targets: [featured_snippets, people_also_ask, long_tail, image_results, video]
+snippet_strategy: [definition_blocks, step_lists, corridor_faq_pairs, comparison_tables]
+
+# ============================================================
+# GLOBAL ROLLOUT (780 corridors total)
+# ============================================================
+rollout:
+  phase_1_north_america: {corridors: 400, focus: "port + energy + major freight"}
+  phase_2_tier_a: {corridors: 180, focus: "mining + wind + abnormal load"}
+  phase_3_tier_b: {corridors: 120}
+  phase_4_tier_c: {corridors: 80}
+
+# ============================================================
+# MONETIZATION + MEASUREMENT
+# ============================================================
+monetization:
+  - sponsored_corridor_slots
+  - surge_visibility_upgrades
+  - priority_escort_placement
+  - broker_featured_routes
+  - data_api_future
+
+measurement:
+  dashboards: [corridor_rankings, shortage_heatmap, liquidity_index, conversion_rate, app_installs]
+  alerts: [emerging_demand, severe_supply_gap, ranking_drop, crawl_issue]
+
+execution_priority:
+  immediate: [corridor_discovery, scoring_model, page_factory_v1, load_board_linkage]
+  next_wave: [supply_radar_v3, heatmap_visuals, shortage_pages]
+  advanced: [predictive_creation, cross_border_blending, surge_intelligence]

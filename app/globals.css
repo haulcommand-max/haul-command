@@ -1076,6 +1076,343 @@ textarea {
 
 /* ── Amber Sweep — Landing page ambient glow (night highway feel) ── */
 @keyframes amberSweep {
-  0% { opacity: 0.4; transform: translateX(-5%); }
-  100% { opacity: 1; transform: translateX(5%); }
+  0% {
+    opacity: 0.4;
+    transform: translateX(-5%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(5%);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MARKET TERMINAL RIBBON — Sticky market terminal under header
+   Mobile: swipe-scroll. Desktop: all chips visible.
+   ══════════════════════════════════════════════════════════════ */
+.hc-terminal {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hc-terminal-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.hc-terminal-track::-webkit-scrollbar {
+  display: none;
+}
+
+.hc-terminal-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+}
+
+.hc-terminal-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+  animation: live-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.hc-terminal-live-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #22c55e;
+}
+
+.hc-chip {
+  flex: 0 0 auto;
+  min-width: 110px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 7px 10px;
+  background: rgba(0, 0, 0, 0.30);
+  transition: border-color var(--transition-std), background var(--transition-std);
+}
+
+.hc-chip:hover {
+  border-color: rgba(198, 146, 58, 0.15);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hc-k {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.40);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.hc-v {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
+  color: var(--hc-text);
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  .hc-terminal-track {
+    gap: 8px;
+    padding: 8px var(--container-pad);
+  }
+
+  .hc-chip {
+    min-width: 130px;
+    padding: 8px 12px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GLASS BUTTON SYSTEM — Semi-opaque premium buttons
+   Guaranteed contrast on any hero image.
+   ══════════════════════════════════════════════════════════════ */
+.hc-btn {
+  height: 56px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-std),
+    background var(--transition-std);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hc-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 14px rgba(0, 0, 0, 0.30);
+}
+
+/* Gold primary */
+.hc-btn--gold {
+  background: rgba(198, 146, 58, 0.75);
+  border: 1px solid rgba(255, 214, 140, 0.35);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.hc-btn--gold:hover {
+  background: rgba(198, 146, 58, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 10px 32px rgba(198, 146, 58, 0.25);
+}
+
+/* Black secondary */
+.hc-btn--black {
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.hc-btn--black:hover {
+  background: rgba(10, 10, 10, 0.80);
+  border-color: rgba(198, 146, 58, 0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 32px rgba(0, 0, 0, 0.40);
+}
+
+/* Button label emphasis */
+.hc-btn__label {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+}
+
+.hc-btn svg,
+.hc-btn img {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.30));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO READABILITY SCRIM
+   Dark gradient overlay + text contrast enforcement.
+   Apply .hc-hero to hero wrapper element.
+   ══════════════════════════════════════════════════════════════ */
+.hc-hero {
+  position: relative;
+}
+
+/* Readability scrim — dark enough for text, transparent enough for hero image */
+.hc-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 70% at 50% 30%, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.60) 70%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.60) 55%, rgba(0, 0, 0, 0.80) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content sits above scrim */
+.hc-hero>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Reinforce hero text */
+.hc-hero h1 {
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+}
+
+.hc-hero p,
+.hc-hero .subhead {
+  font-weight: 600;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
+}
+
+/* Hero Text Plate */
+.hc-hero-copy {
+  position: relative;
+  z-index: 2;
+  border-radius: 20px;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.hc-hero-kpis {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Premium Ad Badge Pattern */
+.ad-sponsored-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PATCH-002: MOBILE SAFE AREA — env() vars for notch/home bar
+   Apply .safe-area-pb to any fixed-bottom element.
+   Apply .safe-area-pt to any fixed-top element.
+   ══════════════════════════════════════════════════════════════ */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* PATCH-002: Body needs min-height: 100dvh for mobile viewport */
+html, body {
+  min-height: 100dvh;
+}
+
+/* PATCH-003: Header safe area — prevent top content clipping */
+.safe-area-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* PATCH-004: Live status dots — prevent corner stacking */
+.live-dots-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  max-width: 100%;
+}
+
+.live-dots-container > * {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* PATCH-005: Page shell — normalized layout primitive */
+.page-shell {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+.page-shell > section {
+  margin-bottom: var(--section-gap-sm);
+}
+
+@media (min-width: 768px) {
+  .page-shell > section {
+    margin-bottom: var(--section-gap);
+  }
+}
+
+/* Reduced motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .hc-btn {
+    transition: none;
+  }
+
+  .hc-terminal-live-dot {
+    animation: none;
+  }
 }

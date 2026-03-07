@@ -1,0 +1,19 @@
+# Presence Pressure Experiments Pack v1.0
+# Saved reference. See core/social/presence_experiments.ts for implementation.
+
+# 6 Experiments:
+#   1. status_card_pressure — loss/competition/earnings framing
+#   2. reactivation_headline_test — urgency/earnings/protection title
+#   3. primary_button_test — go available/check in/stay visible/ready for dispatch
+#   4. freshness_emphasis_test — standard/just-updated/precision/trust-badge
+#   5. idle_reactor_message_test — generic/geo-specific/competition/projection
+#   6. early_checkin_reward_test — none/soft-reward/streak/priority-frame
+
+# Framework:
+#   Assignment: deterministic hash of operator_id → stable bucket
+#   Traffic: 25% per variant (4 variants each)
+#   Window: 14 days
+#   Min sample: 500 per arm
+#   Auto-promote: 5%+ lift
+#   Kill switch: false_available_now > 5%
+#   Max 3 push/day, 3 modals/week

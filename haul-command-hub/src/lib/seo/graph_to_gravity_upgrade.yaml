@@ -1,0 +1,121 @@
+# ============================================================
+# HAUL COMMAND — GRAPH → GRAVITY UPGRADE PACK
+# 1) Freight Pulse Layer
+# 2) Operator Scarcity Engine
+# 3) Claim Acceleration Engine
+# ============================================================
+
+version: "1.0.0"
+pack: "graph_to_gravity_upgrade"
+
+success_metrics:
+  - "claim_rate_7d: +40%"
+  - "claim_time_to_first_action: -30%"
+  - "operator_inquiries_per_surface: +25%"
+  - "adgrid_yield_eCPM: +20%"
+  - "broker_time_to_fill: -15%"
+  - "return_sessions_14d: +18%"
+
+# ============================================================
+# EVENT BUS
+# ============================================================
+event_bus:
+  transport: supabase_realtime_or_queue
+  events:
+    surface: [viewed, scrolled, cta_clicked, call_clicked, message_sent, claim_started, claim_submitted, claim_approved, claim_rejected, profile_completion_updated]
+    pulse: [signal.ingested, window.opened, window.closed, index.recomputed]
+    operator: [availability.updated, location.updated, response_time.updated, capacity.updated]
+    scarcity: [index.recomputed]
+    corridor: [heat.updated]
+    claim: [priority.recomputed, outreach.enqueued, outreach.sent, outreach.failed, nudge.displayed, incentive.offered, incentive.redeemed]
+
+# ============================================================
+# 1) FREIGHT PULSE LAYER
+# ============================================================
+freight_pulse_layer:
+  goal: "Time-awareness for ports→corridors→zones — predictive graph"
+  signal_types:
+    permit_backlog: {half_life_h: 72, weight: 0.22, seo: high}
+    weather_risk: {half_life_h: 12, weight: 0.18, seo: medium_high}
+    port_congestion: {half_life_h: 48, weight: 0.20, seo: high}
+    construction_seasonality: {half_life_h: 240, weight: 0.14, seo: high}
+    escort_enforcement: {half_life_h: 96, weight: 0.08, seo: medium}
+    corridor_incidents: {half_life_h: 6, weight: 0.10, seo: medium}
+    fuel_price_spike: {half_life_h: 72, weight: 0.03, seo: low}
+    event_projects: {half_life_h: 336, weight: 0.25, seo: very_high}
+  badges:
+    - {name: "Heating Up", threshold: 65}
+    - {name: "Surge Window", threshold: 80}
+
+# ============================================================
+# 2) OPERATOR SCARCITY ENGINE
+# ============================================================
+operator_scarcity_engine:
+  goal: "Quantify supply gaps per corridor/time window"
+  tiers:
+    green: [0, 39]
+    amber: [40, 64]
+    red: [65, 84]
+    black: [85, 100]
+  adgrid_yield:
+    floor_formula: "base * (1 + 0.6*scarcity) * (1 + 0.3*pulse)"
+    cap_multiplier: 2.5
+  recompute_cadence:
+    next_6h: every_15_min
+    next_24h: hourly
+    next_72h: daily
+
+# ============================================================
+# 3) CLAIM ACCELERATION ENGINE
+# ============================================================
+claim_acceleration_engine:
+  goal: "Claim fast, verify fast, complete fast — no manual babysitting"
+  funnel: [unclaimed, claim_started, claim_submitted, verification_pending, claimed_verified, profile_completed, high_trust]
+  priority_scoring:
+    traffic_value: 0.30
+    intent_value: 0.25
+    seo_value: 0.10
+    scarcity_boost: 0.15
+    trust_gap: 0.10
+    monetization: 0.10
+  tiers:
+    A: {min: 75, cadence: "d0,d1,d3,d7", channels: [sms, email, in_app]}
+    B: {min: 50, cadence: "d0,d3,d10", channels: [email, in_app]}
+    C: {min: 0, cadence: "d0,d14", channels: [email]}
+  completeness_checklist:
+    phone_verified: 18
+    service_regions: 12
+    insurance: 10
+    equipment: 10
+    availability: 12
+    photos: 10
+    response_sla: 8
+    reviews: 10
+  badges:
+    - {name: "Verified", condition: "claimed_verified"}
+    - {name: "Fast Responder", condition: "avg_response <= 15min"}
+    - {name: "Corridor Ready", condition: "completeness >= 80"}
+    - {name: "Top Coverage", condition: "completeness >= 92 AND reviews"}
+
+# ============================================================
+# DATA MODEL (tables for migration)
+# ============================================================
+data_model:
+  tables:
+    - hc_pulse_signals
+    - hc_pulse_index
+    - hc_operator_state
+    - hc_scarcity_index
+    - hc_surface_analytics
+    - hc_claims
+    - hc_claim_priority
+    - hc_outreach_queue
+
+# ============================================================
+# JOBS / CRON
+# ============================================================
+jobs:
+  pulse_ingestion: {schedule: hourly}
+  scarcity_recompute: {schedule: every_15_min}
+  claim_priority: {schedule: hourly}
+  outreach_dispatcher: {schedule: every_5_min}

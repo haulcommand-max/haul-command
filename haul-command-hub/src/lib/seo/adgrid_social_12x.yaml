@@ -1,0 +1,167 @@
+# ============================================================
+# HAUL COMMAND — FINAL GROWTH IGNITION BUNDLE v12.0
+# AdGrid 12/10 Revenue Ignition + Country Credit Engine
+# Social 12/10 Share + OG + Follow + Auto-Distribution Engine
+# ============================================================
+
+haul_command_growth_bundle:
+  version: "12.0"
+  objective: >
+    Activate monetization, increase marketplace liquidity,
+    and create compounding organic growth loops across all 52 countries
+    with country-aware tuning and strict ROI guardrails.
+
+# ============================================================
+# PART 1 — ADGRID 12/10 REVENUE IGNITION
+# ============================================================
+
+adgrid_revenue_ignition:
+  philosophy:
+    prioritize_liquidity_first: true
+    avoid_empty_inventory: true
+    country_sensitive_rollout: true
+    automation_with_guardrails: true
+
+  ad_rendering_activation:
+    native_ad_card:
+      status: required
+      placements:
+        - directory_results
+        - country_pages
+        - service_pages
+        - corridor_pages
+        - search_results
+        - mobile_near_me
+      insertion_strategy:
+        desktop_frequency: every_8_results
+        mobile_frequency: every_5_results
+        infinite_scroll_safe: true
+      viewability_standard:
+        pixels_visible_percent: 50
+        dwell_time_ms: 800
+        billable_only_if_met: true
+
+    sponsored_top3_pack:
+      description: "High-intent recommended operators block"
+      placements: [city_pages, corridor_pages, near_me_results, service_pages]
+      ranking_inputs: [adrank_score, trust_score, proximity, response_speed, operator_ltv]
+      fill_rules:
+        allow_organic_backfill: true
+        require_min_quality_score: true
+
+  country_credit_engine:
+    enabled: true
+    credit_type: promotional_spend_match
+    global_baseline_tiers:
+      - {spend: 49, bonus: 10}
+      - {spend: 99, bonus: 25}
+      - {spend: 249, bonus: 75}
+      - {spend: 499, bonus: 200}
+      - {spend: 999, bonus: 500}
+    country_modifiers:
+      tier_A_gold: {multiplier: 0.75, expiry_days: 60, burn: normal}
+      tier_B_blue: {multiplier: 1.0, expiry_days: 90, burn: normal}
+      tier_C_silver: {multiplier: 1.35, expiry_days: 120, burn: slow}
+      tier_D_slate: {multiplier: 1.6, expiry_days: 150, burn: slow}
+    protections:
+      expiration_enforced: true
+      non_withdrawable: true
+      fraud_checked: true
+      country_abuse_monitoring: enabled
+
+  pay_per_call_engine:
+    enabled: true
+    min_call_duration_seconds: 45
+    duplicate_call_window_minutes: 30
+    spam_detection: enabled
+    dynamic_by_country: true
+    dynamic_by_corridor_heat: true
+
+  adgrid_autopilot:
+    enabled: true
+    entry_mode: one_click_opt_in
+    scope: [bid_optimization, placement_mix, budget_allocation, creative_rotation, frequency_capping]
+    guardrails:
+      max_daily_spend_required: true
+      learning_period_days: 7
+      anomaly_pause: true
+    target_segment: [smb_operators, first_time_advertisers, low_activity_markets]
+
+  surface_sponsorships:
+    enabled: true
+    premium_units: [port_sponsor, corridor_sponsor, metro_dominance, industrial_zone_sponsor]
+    pricing: {scarcity_weighted: true, demand_weighted: true, country_adjusted: true}
+
+  trust_weighted_adrank:
+    enabled: true
+    positive: [verified_reviews, fast_response, on_time_streak, repeat_brokers, operator_ltv]
+    negative: [fraud_flags, dispute_rate, cancellation_rate]
+    advertiser_feedback_panel: enabled
+
+# ============================================================
+# PART 2 — SOCIAL 12/10 GROWTH ENGINE
+# ============================================================
+
+social_growth_engine:
+  philosophy:
+    every_page_is_shareable: true
+    social_proof_everywhere: true
+    country_aware_channels: true
+    automation_with_rate_limits: true
+
+  universal_share_system:
+    enabled: true
+    placements: [operator_profiles, country_pages, service_pages, corridor_pages, guide_articles, mobile_views]
+    mobile_position: floating_bottom_right
+    desktop_positions: [right_rail, under_title]
+    default_channels: [facebook, linkedin, x, email, copy_link]
+    whatsapp_priority_regions: [BR, AE, SA, QA, MX, TR, MY, SG]
+
+  dynamic_social_cards:
+    enabled: true
+    render_mode: edge_generated
+    cache_ttl_hours: 24
+    templates:
+      operator_profile:
+        title: "{operator_name} — Pilot Car in {city}"
+        description: "{rating}★ • {jobs_completed}+ jobs • {corridor}"
+        image: operator_or_brand
+      country_page:
+        title: "Pilot Car Services in {country}"
+        description: "{operator_count}+ verified operators"
+        image: country_map_branded
+      corridor_page:
+        title: "{corridor_name} Escort Coverage"
+        description: "Live capacity and verified operators"
+        image: corridor_map
+      guide_page:
+        title: "{guide_title}"
+        description: "Haul Command guide"
+        image: guide_branded
+    canonical_enforced: true
+
+  social_autodistribution:
+    enabled: true
+    destinations: [facebook_page, linkedin_page, x_account]
+    triggers: [operator_claimed, new_review, leaderboard_change, corridor_spike, major_load, milestone]
+    rate_limits: {global_per_day: 25, per_entity_per_day: 2, burst_protection: true}
+    content_rules: {deep_link: true, badges: true, cta: true, tone: local_authority}
+
+  follow_system:
+    enabled: true
+    targets: [operators, corridors, cities, ports]
+    notifications: [new_activity, ranking_change, new_review, load_nearby]
+    public_counters: {follow_count: true, repeat_brokers: true, on_time_streak: true}
+
+  share_intelligence:
+    enabled: true
+    tracked: [share_channel, clicks, contact_unlocks, quotes, geo_spread]
+    visualization: {reblog_graph: true, heatmap: true}
+    feeds_into: [ranking_engine, seo_boost, adgrid_targeting]
+
+  geo_social_optimizer:
+    enabled: true
+    whatsapp_priority: true
+    linkedin_b2b_priority: true
+    x_japan_korea_priority: true
+    localization: {translate_microcopy: true, cultural_cta: true, glossary_applied: true}

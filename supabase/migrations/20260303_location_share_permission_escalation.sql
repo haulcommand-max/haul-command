@@ -1,0 +1,19 @@
+-- =========================================================
+-- Location Share Permission Escalation — Applied 2026-03-03T19:45 EST
+--
+-- Migrations applied:
+--   1. location_share_permission_escalation — 3 tables + RLS + grant-based escort_locations_current policy
+--   2. location_share_rpcs — 5 RPCs (request, respond, cancel, revoke, maintenance)
+--
+-- Tables:
+--   - location_share_audit_log   (append-only, SELECT for involved parties)
+--   - location_share_requests    (load-scoped, broker→escort, SELECT+INSERT broker, SELECT escort)
+--   - location_share_grants      (time-limited, SELECT-only for broker+escort)
+--
+-- RPCs:
+--   - hc_request_location_share()        — broker requests (authenticated)
+--   - hc_respond_location_share()        — escort approves/denies (authenticated)
+--   - hc_cancel_location_share_request() — broker cancels pending (authenticated)
+--   - hc_revoke_location_share_grant()   — escort revokes active grant (authenticated)
+--   - hc_location_share_maintenance()    — cron auto-expire (service_role)
+-- =========================================================

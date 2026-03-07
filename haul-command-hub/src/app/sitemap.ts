@@ -1,23 +1,23 @@
-import { MetadataRoute } from 'next';
-import { getAllStates } from '@/lib/regulatory-engine';
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import type { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://hub.haulcommand.com'; // Placeholder, should be configured
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const supabase = getSupabaseServerClient();
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://haulcommand.com";
+    const limit = 50000;
 
-    const states = getAllStates().map((state) => ({
-        url: `${baseUrl}/state/${state.slug}`,
-        lastModified: new Date(state.last_verified_date),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
+    const { data, error } = await supabase
+        .from("hc_page_keys")
+        .select("canonical_slug,updated_at")
+        .eq("indexable", true)
+        .eq("page_status", "active")
+        .order("updated_at", { ascending: false })
+        .limit(limit);
+
+    if (error) throw error;
+
+    return (data ?? []).map((row) => ({
+        url: `${siteUrl}${row.canonical_slug}`,
+        lastModified: row.updated_at,
     }));
-
-    // Add static routes
-    const routes = ['', '/blog', '/tools/movement-checker'].map((route) => ({
-        url: `${baseUrl}${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily' as const,
-        priority: 1.0,
-    }));
-
-    return [...routes, ...states];
 }

@@ -1,0 +1,56 @@
+haul_command_phase_ordered_execution_roadmap:
+  version: "1.0"
+  mission: >
+    Sequence all SEO, authority, engagement, and monetization upgrades
+    in the exact order that produces the fastest measurable ROI while
+    compounding long-term category dominance.
+
+  execution_mode:
+    philosophy: "cash flow first, gravity second, total domination third"
+    anti_gravity_role: "analyze > build > measure > reinforce winners"
+    safety_rule: "never downgrade working systems"
+
+  phase_0_trust_lock:
+    priority: "critical"
+    timeline: "same day"
+    tasks:
+      - remove_random_leaderboard_values
+      - replace_hardcoded_directory_counts_with_live_db
+      - verify_all_schema_validates_clean
+      - confirm_sitemap_lastmod_accuracy
+      - run_orphan_page_scan
+
+  phase_1_money_capture:
+    priority: "highest"
+    timeline: "weeks 1-3"
+    builds: [near_me_page_generator, price_intent_pages, city_service_factory_tier1]
+
+  phase_2_authority_ignition:
+    priority: "highest_leverage"
+    timeline: "weeks 2-8"
+    builds: [tier_a_citation_blast, tier_b_niche_citations, review_velocity_engine, unlinked_mention_recovery]
+
+  phase_3_link_gravity:
+    priority: "high"
+    timeline: "weeks 5-10"
+    builds: [contextual_link_weaver, hub_reinforcement_loops, breadcrumb_depth_stacker, orphan_page_killer]
+
+  phase_4_serp_weaponization:
+    priority: "high"
+    timeline: "weeks 8-14"
+    builds: [title_optimization_ai, snippet_steal_framework, og_image_factory, faq_schema_expansion]
+
+  phase_5_revenue_amplifier:
+    priority: "very high"
+    timeline: "weeks 10-18"
+    builds: [intent_to_revenue_router, instant_quote_system, supply_pressure_meter, adgrid_yield_optimizer]
+
+  phase_6_behavioral_moat:
+    priority: "strategic"
+    timeline: "weeks 14-26"
+    builds: [live_activity_feed, profile_completion_engine, reputation_momentum_score, weekly_operator_report]
+
+  phase_7_scale_out:
+    priority: "after traction"
+    timeline: "month 4+"
+    builds: [city_service_factory_full, corridor_route_expander_full, international_link_acquisition, predictive_market_expansion]

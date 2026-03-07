@@ -11,6 +11,7 @@
  *   import { trackEvent } from '@/lib/analytics/hc-events';
  *   trackEvent('corridor_viewed', { corridor_slug: 'i-10', surface: 'corridor_page' });
  */
+import { safeUUID } from '@/lib/identity/uid';
 
 export type HCEventType =
     | 'page_view'
@@ -44,7 +45,7 @@ function getSessionId(): string {
     try {
         const stored = sessionStorage.getItem('hc_sid');
         if (stored) { _sessionId = stored; return stored; }
-        const fresh = crypto.randomUUID();
+        const fresh = safeUUID();
         sessionStorage.setItem('hc_sid', fresh);
         _sessionId = fresh;
         return fresh;

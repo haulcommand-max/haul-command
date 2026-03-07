@@ -1,0 +1,183 @@
+// Haul Command — 52-Country SEO Engine
+// Localized terminology + tier system for programmatic page generation
+
+export interface CountryConfig {
+    code: string;
+    name: string;
+    slug: string;
+    flag: string;
+    tier: 'A' | 'B' | 'C' | 'D';
+    lang: string;
+    currency: string;
+    // Localized service terminology
+    terms: {
+        pilot_car: string;
+        escort_vehicle: string;
+        oversize_load: string;
+        heavy_haul: string;
+        wide_load: string;
+        route_survey: string;
+        superload: string;
+        permit: string;
+    };
+    // Top regions/states for this country
+    regions: string[];
+    // Top cities for SEO pages
+    cities: string[];
+    // Equipment types common in this market
+    equipment_focus: string[];
+    // Unit system
+    units: 'imperial' | 'metric';
+}
+
+export const COUNTRIES: CountryConfig[] = [
+    // ═══ TIER A — Gold (10) ═══
+    {
+        code: 'US', name: 'United States', slug: 'us', flag: '🇺🇸', tier: 'A', lang: 'en', currency: 'USD', units: 'imperial',
+        terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Oversize Load', heavy_haul: 'Heavy Haul', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Oversize Permit' },
+        regions: ['Florida', 'Texas', 'California', 'Ohio', 'Pennsylvania', 'Illinois', 'Georgia', 'North Carolina', 'Washington', 'Oregon', 'New York', 'Michigan', 'Indiana', 'Alabama', 'Louisiana', 'Tennessee', 'Virginia', 'Kentucky', 'Missouri', 'Arizona', 'Colorado', 'Minnesota', 'Wisconsin', 'Iowa', 'Oklahoma', 'Arkansas', 'Mississippi', 'Kansas', 'Nevada', 'Utah', 'New Mexico', 'Nebraska', 'West Virginia', 'Montana', 'Wyoming', 'South Dakota', 'North Dakota', 'Maine', 'Idaho', 'New Hampshire', 'Hawaii', 'Rhode Island', 'Delaware', 'Vermont', 'Connecticut', 'New Jersey', 'Maryland', 'Massachusetts', 'South Carolina', 'Mississippi'],
+        cities: ['Houston', 'Dallas', 'Jacksonville', 'Phoenix', 'Denver', 'Seattle', 'El Paso', 'Mobile', 'Cleveland', 'Charleston', 'Savannah', 'Gary', 'Toronto', 'Vancouver', 'Atlanta', 'Chicago', 'Los Angeles', 'San Francisco', 'Portland', 'Tampa', 'Miami', 'Orlando', 'Nashville', 'Charlotte', 'Indianapolis', 'Columbus', 'Detroit', 'Minneapolis', 'St. Louis', 'Kansas City', 'Oklahoma City', 'Memphis', 'Baton Rouge', 'New Orleans', 'Las Vegas', 'Salt Lake City', 'Albuquerque', 'Tulsa', 'Raleigh', 'Pittsburgh', 'Philadelphia', 'Baltimore', 'Richmond', 'Norfolk', 'Birmingham', 'Little Rock', 'Shreveport', 'Lubbock', 'Midland', 'Odessa'],
+        equipment_focus: ['wind turbine', 'mobile home', 'transformer', 'bridge beam', 'crane', 'heavy equipment', 'modular building', 'mining equipment', 'prefab house', 'construction equipment'],
+    },
+    {
+        code: 'CA', name: 'Canada', slug: 'ca', flag: '🇨🇦', tier: 'A', lang: 'en', currency: 'CAD', units: 'metric',
+        terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Oversize Load', heavy_haul: 'Heavy Haul', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Oversize Permit' },
+        regions: ['Ontario', 'Alberta', 'British Columbia', 'Saskatchewan', 'Manitoba', 'Quebec', 'Nova Scotia', 'New Brunswick'],
+        cities: ['Toronto', 'Vancouver', 'Calgary', 'Edmonton', 'Winnipeg', 'Ottawa', 'Montreal', 'Hamilton', 'Surrey', 'Halifax', 'Regina', 'Saskatoon', 'Fort McMurray'],
+        equipment_focus: ['wind turbine', 'mining equipment', 'heavy equipment', 'modular building', 'pipeline', 'oil & gas equipment'],
+    },
+    {
+        code: 'AU', name: 'Australia', slug: 'au', flag: '🇦🇺', tier: 'A', lang: 'en', currency: 'AUD', units: 'metric',
+        terms: { pilot_car: 'Pilot Vehicle', escort_vehicle: 'Escort Vehicle', oversize_load: 'Oversize Load', heavy_haul: 'Heavy Haulage', wide_load: 'Wide Load', route_survey: 'Route Assessment', superload: 'Restricted Access Vehicle', permit: 'OSOM Permit' },
+        regions: ['New South Wales', 'Queensland', 'Victoria', 'Western Australia', 'South Australia', 'Tasmania', 'Northern Territory'],
+        cities: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Darwin', 'Hobart', 'Cairns', 'Townsville', 'Newcastle', 'Wollongong', 'Gold Coast', 'Kalgoorlie'],
+        equipment_focus: ['mining equipment', 'wind turbine', 'heavy equipment', 'construction equipment', 'crane'],
+    },
+    {
+        code: 'GB', name: 'United Kingdom', slug: 'gb', flag: '🇬🇧', tier: 'A', lang: 'en', currency: 'GBP', units: 'metric',
+        terms: { pilot_car: 'Escort Vehicle', escort_vehicle: 'Abnormal Load Escort', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Haulage', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'STGO Load', permit: 'ESDAL Notification' },
+        regions: ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+        cities: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Liverpool', 'Bristol', 'Sheffield', 'Newcastle', 'Nottingham', 'Cardiff', 'Belfast', 'Aberdeen', 'Southampton', 'Felixstowe'],
+        equipment_focus: ['wind turbine', 'transformer', 'bridge beam', 'modular building', 'crane', 'construction equipment'],
+    },
+    {
+        code: 'NZ', name: 'New Zealand', slug: 'nz', flag: '🇳🇿', tier: 'A', lang: 'en', currency: 'NZD', units: 'metric',
+        terms: { pilot_car: 'Pilot Vehicle', escort_vehicle: 'Escort Vehicle', oversize_load: 'Overdimension Load', heavy_haul: 'Heavy Haulage', wide_load: 'Wide Load', route_survey: 'Route Assessment', superload: 'Overdimension Permit', permit: 'Overdimension Permit' },
+        regions: ['North Island', 'South Island', 'Auckland', 'Canterbury', 'Waikato', 'Bay of Plenty', 'Wellington'],
+        cities: ['Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Tauranga', 'Dunedin', 'Napier', 'New Plymouth'],
+        equipment_focus: ['wind turbine', 'dairy equipment', 'forestry equipment', 'construction equipment'],
+    },
+    {
+        code: 'ZA', name: 'South Africa', slug: 'za', flag: '🇿🇦', tier: 'A', lang: 'en', currency: 'ZAR', units: 'metric',
+        terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Haulage', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Abnormal Load Permit' },
+        regions: ['Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape', 'Free State', 'Mpumalanga', 'Limpopo', 'North West'],
+        cities: ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth', 'East London', 'Bloemfontein', 'Richards Bay'],
+        equipment_focus: ['mining equipment', 'transformer', 'heavy equipment', 'construction equipment'],
+    },
+    {
+        code: 'DE', name: 'Germany', slug: 'de', flag: '🇩🇪', tier: 'A', lang: 'de', currency: 'EUR', units: 'metric',
+        terms: { pilot_car: 'BF3-Begleitfahrzeug', escort_vehicle: 'Transportbegleitung', oversize_load: 'Schwertransport', heavy_haul: 'Schwerlast', wide_load: 'Überbreite Ladung', route_survey: 'Streckenerkundung', superload: 'Großraum- und Schwertransport', permit: 'Schwertransportgenehmigung' },
+        regions: ['Bavaria', 'North Rhine-Westphalia', 'Baden-Württemberg', 'Lower Saxony', 'Hesse', 'Saxony', 'Rhineland-Palatinate', 'Schleswig-Holstein', 'Brandenburg', 'Thuringia'],
+        cities: ['Hamburg', 'Munich', 'Berlin', 'Frankfurt', 'Cologne', 'Düsseldorf', 'Stuttgart', 'Bremen', 'Hannover', 'Dortmund', 'Essen', 'Leipzig', 'Dresden', 'Rostock', 'Bremerhaven'],
+        equipment_focus: ['wind turbine', 'transformer', 'bridge beam', 'industrial machinery', 'crane'],
+    },
+    {
+        code: 'NL', name: 'Netherlands', slug: 'nl', flag: '🇳🇱', tier: 'A', lang: 'nl', currency: 'EUR', units: 'metric',
+        terms: { pilot_car: 'Begeleidingsvoertuig', escort_vehicle: 'Transportbegeleiding', oversize_load: 'Exceptioneel Transport', heavy_haul: 'Zwaar Transport', wide_load: 'Breed Transport', route_survey: 'Route Verkenning', superload: 'Exceptioneel Transport', permit: 'Ontheffing Exceptioneel Transport' },
+        regions: ['South Holland', 'North Holland', 'North Brabant', 'Gelderland', 'Overijssel', 'Limburg', 'Friesland', 'Groningen', 'Flevoland'],
+        cities: ['Rotterdam', 'Amsterdam', 'The Hague', 'Utrecht', 'Eindhoven', 'Groningen', 'Tilburg', 'Breda', 'Moerdijk'],
+        equipment_focus: ['wind turbine', 'transformer', 'offshore equipment', 'crane', 'industrial machinery'],
+    },
+    {
+        code: 'AE', name: 'United Arab Emirates', slug: 'ae', flag: '🇦🇪', tier: 'A', lang: 'en', currency: 'AED', units: 'metric',
+        terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'RTA Transport Permit' },
+        regions: ['Abu Dhabi', 'Dubai', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'],
+        cities: ['Dubai', 'Abu Dhabi', 'Sharjah', 'Al Ain', 'Jebel Ali', 'Ruwais', 'Fujairah'],
+        equipment_focus: ['crane', 'transformer', 'oil & gas equipment', 'construction equipment', 'modular building'],
+    },
+    {
+        code: 'BR', name: 'Brazil', slug: 'br', flag: '🇧🇷', tier: 'A', lang: 'pt', currency: 'BRL', units: 'metric',
+        terms: { pilot_car: 'Carro Batedor', escort_vehicle: 'Veículo de Escolta', oversize_load: 'Carga Indivisível', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Larga', route_survey: 'Vistoria de Rota', superload: 'Carga Superdimensionada', permit: 'AET - Autorização Especial de Trânsito' },
+        regions: ['São Paulo', 'Minas Gerais', 'Rio de Janeiro', 'Bahia', 'Rio Grande do Sul', 'Paraná', 'Pernambuco', 'Ceará', 'Pará', 'Goiás'],
+        cities: ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Brasília', 'Salvador', 'Curitiba', 'Manaus', 'Recife', 'Porto Alegre', 'Belém', 'Santos', 'Paranaguá', 'Itajaí'],
+        equipment_focus: ['wind turbine', 'mining equipment', 'transformer', 'heavy equipment', 'oil & gas equipment'],
+    },
+    // ═══ TIER B — Blue (15) ═══
+    { code: 'IE', name: 'Ireland', slug: 'ie', flag: '🇮🇪', tier: 'B', lang: 'en', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Escort Vehicle', escort_vehicle: 'Abnormal Load Escort', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Haulage', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Special Load', permit: 'Abnormal Load Permit' }, regions: ['Leinster', 'Munster', 'Connacht', 'Ulster'], cities: ['Dublin', 'Cork', 'Galway', 'Limerick', 'Waterford', 'Shannon'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'SE', name: 'Sweden', slug: 'se', flag: '🇸🇪', tier: 'B', lang: 'sv', currency: 'SEK', units: 'metric', terms: { pilot_car: 'Eskortfordon', escort_vehicle: 'Transporteskort', oversize_load: 'Bred Last', heavy_haul: 'Tungtransport', wide_load: 'Bred Last', route_survey: 'Ruttplanering', superload: 'Specialtransport', permit: 'Transportdispens' }, regions: ['Stockholm', 'Västra Götaland', 'Skåne', 'Norrbotten'], cities: ['Stockholm', 'Gothenburg', 'Malmö', 'Uppsala', 'Luleå'], equipment_focus: ['wind turbine', 'mining equipment', 'forestry equipment'] },
+    { code: 'NO', name: 'Norway', slug: 'no', flag: '🇳🇴', tier: 'B', lang: 'no', currency: 'NOK', units: 'metric', terms: { pilot_car: 'Følgebil', escort_vehicle: 'Transporteskort', oversize_load: 'Spesialtransport', heavy_haul: 'Tungtransport', wide_load: 'Bred Last', route_survey: 'Ruttvurdering', superload: 'Spesialtransport', permit: 'Dispensasjon' }, regions: ['Oslo', 'Vestland', 'Trøndelag', 'Rogaland', 'Nordland'], cities: ['Oslo', 'Bergen', 'Stavanger', 'Trondheim', 'Tromsø'], equipment_focus: ['wind turbine', 'offshore equipment', 'oil & gas equipment'] },
+    { code: 'DK', name: 'Denmark', slug: 'dk', flag: '🇩🇰', tier: 'B', lang: 'da', currency: 'DKK', units: 'metric', terms: { pilot_car: 'Følgebil', escort_vehicle: 'Blokvognseskort', oversize_load: 'Blokvognstransport', heavy_haul: 'Tungtransport', wide_load: 'Bred Last', route_survey: 'Ruteplanlægning', superload: 'Specialtransport', permit: 'Transporttilladelse' }, regions: ['Zealand', 'Jutland', 'Funen'], cities: ['Copenhagen', 'Aarhus', 'Odense', 'Aalborg', 'Esbjerg'], equipment_focus: ['wind turbine', 'transformer', 'offshore equipment'] },
+    { code: 'FI', name: 'Finland', slug: 'fi', flag: '🇫🇮', tier: 'B', lang: 'fi', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Saattoauto', escort_vehicle: 'Kuljetuseskortti', oversize_load: 'Erikoiskuljetus', heavy_haul: 'Raskas Kuljetus', wide_load: 'Leveä Kuljetus', route_survey: 'Reittisuunnittelu', superload: 'Erikoiskuljetus', permit: 'Erikoiskuljetuslupa' }, regions: ['Uusimaa', 'Pirkanmaa', 'Varsinais-Suomi', 'Ostrobothnia'], cities: ['Helsinki', 'Tampere', 'Turku', 'Oulu', 'Vaasa'], equipment_focus: ['wind turbine', 'forestry equipment', 'mining equipment'] },
+    { code: 'BE', name: 'Belgium', slug: 'be', flag: '🇧🇪', tier: 'B', lang: 'nl', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Begeleidingsvoertuig', escort_vehicle: 'Transportbegeleiding', oversize_load: 'Uitzonderlijk Transport', heavy_haul: 'Zwaar Transport', wide_load: 'Breed Transport', route_survey: 'Route Verkenning', superload: 'Uitzonderlijk Transport', permit: 'Vergunning Uitzonderlijk Transport' }, regions: ['Flanders', 'Wallonia', 'Brussels'], cities: ['Antwerp', 'Brussels', 'Ghent', 'Bruges', 'Liège', 'Zeebrugge'], equipment_focus: ['wind turbine', 'transformer', 'crane', 'industrial machinery'] },
+    { code: 'AT', name: 'Austria', slug: 'at', flag: '🇦🇹', tier: 'B', lang: 'de', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Begleitfahrzeug', escort_vehicle: 'Transportbegleitung', oversize_load: 'Sondertransport', heavy_haul: 'Schwertransport', wide_load: 'Überbreite Ladung', route_survey: 'Streckenerkundung', superload: 'Sondertransport', permit: 'Sondertransportbewilligung' }, regions: ['Vienna', 'Upper Austria', 'Lower Austria', 'Styria', 'Tyrol', 'Salzburg'], cities: ['Vienna', 'Linz', 'Graz', 'Salzburg', 'Innsbruck'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'CH', name: 'Switzerland', slug: 'ch', flag: '🇨🇭', tier: 'B', lang: 'de', currency: 'CHF', units: 'metric', terms: { pilot_car: 'Begleitfahrzeug', escort_vehicle: 'Transportbegleitung', oversize_load: 'Sondertransport', heavy_haul: 'Schwertransport', wide_load: 'Überbreite Ladung', route_survey: 'Streckenerkundung', superload: 'Sondertransport', permit: 'Sonderbewilligung' }, regions: ['Zurich', 'Bern', 'Vaud', 'Geneva', 'Basel'], cities: ['Zurich', 'Geneva', 'Basel', 'Bern', 'Lausanne'], equipment_focus: ['transformer', 'construction equipment', 'industrial machinery'] },
+    { code: 'ES', name: 'Spain', slug: 'es', flag: '🇪🇸', tier: 'B', lang: 'es', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Vehículo de Acompañamiento', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Transporte Especial', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Transporte Especial', permit: 'Autorización de Transporte Especial' }, regions: ['Catalonia', 'Andalusia', 'Madrid', 'Valencia', 'Basque Country', 'Galicia'], cities: ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Bilbao', 'Algeciras'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'FR', name: 'France', slug: 'fr', flag: '🇫🇷', tier: 'B', lang: 'fr', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Véhicule de Protection', escort_vehicle: 'Escorte de Convoi', oversize_load: 'Transport Exceptionnel', heavy_haul: 'Convoi Exceptionnel', wide_load: 'Charge Large', route_survey: 'Reconnaissance de Route', superload: 'Convoi Exceptionnel', permit: 'Autorisation de Transport Exceptionnel' }, regions: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Auvergne-Rhône-Alpes', 'Occitanie', 'Hauts-de-France', 'Normandy', 'Brittany'], cities: ['Paris', 'Marseille', 'Lyon', 'Le Havre', 'Toulouse', 'Bordeaux', 'Nantes', 'Dunkirk'], equipment_focus: ['wind turbine', 'transformer', 'bridge beam', 'industrial machinery'] },
+    { code: 'IT', name: 'Italy', slug: 'it', flag: '🇮🇹', tier: 'B', lang: 'it', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Veicolo di Scorta', escort_vehicle: 'Scorta Tecnica', oversize_load: 'Trasporto Eccezionale', heavy_haul: 'Trasporto Pesante', wide_load: 'Carico Largo', route_survey: 'Rilievo del Percorso', superload: 'Trasporto Eccezionale', permit: 'Autorizzazione Trasporto Eccezionale' }, regions: ['Lombardy', 'Veneto', 'Emilia-Romagna', 'Piedmont', 'Tuscany', 'Lazio', 'Campania', 'Sicily', 'Puglia'], cities: ['Milan', 'Rome', 'Genoa', 'Naples', 'Turin', 'Trieste', 'Venice', 'Taranto', 'Gioia Tauro'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment', 'marble/stone'] },
+    { code: 'PT', name: 'Portugal', slug: 'pt', flag: '🇵🇹', tier: 'B', lang: 'pt', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Veículo de Acompanhamento', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Transporte Especial', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Larga', route_survey: 'Estudo de Rota', superload: 'Transporte Especial', permit: 'Autorização de Transporte Especial' }, regions: ['Lisbon', 'Porto', 'Algarve', 'Centro'], cities: ['Lisbon', 'Porto', 'Sines', 'Setúbal', 'Leixões'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'SA', name: 'Saudi Arabia', slug: 'sa', flag: '🇸🇦', tier: 'B', lang: 'en', currency: 'SAR', units: 'metric', terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Transport Permit' }, regions: ['Riyadh', 'Eastern Province', 'Makkah', 'Madinah'], cities: ['Riyadh', 'Jeddah', 'Dammam', 'Jubail', 'Yanbu', 'NEOM'], equipment_focus: ['crane', 'transformer', 'oil & gas equipment', 'modular building'] },
+    { code: 'QA', name: 'Qatar', slug: 'qa', flag: '🇶🇦', tier: 'B', lang: 'en', currency: 'QAR', units: 'metric', terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Transport Permit' }, regions: ['Doha', 'Al Wakrah', 'Al Khor', 'Lusail'], cities: ['Doha', 'Lusail', 'Ras Laffan', 'Mesaieed'], equipment_focus: ['crane', 'transformer', 'oil & gas equipment', 'construction equipment'] },
+    { code: 'MX', name: 'Mexico', slug: 'mx', flag: '🇲🇽', tier: 'B', lang: 'es', currency: 'MXN', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Carga', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Carga Pesada', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['Nuevo León', 'Jalisco', 'State of Mexico', 'Veracruz', 'Tamaulipas', 'Chihuahua'], cities: ['Mexico City', 'Monterrey', 'Guadalajara', 'Veracruz', 'Altamira', 'Manzanillo', 'Lázaro Cárdenas'], equipment_focus: ['wind turbine', 'transformer', 'mining equipment', 'oil & gas equipment'] },
+    // ═══ TIER C — Silver (24) ═══
+    { code: 'PL', name: 'Poland', slug: 'pl', flag: '🇵🇱', tier: 'C', lang: 'pl', currency: 'PLN', units: 'metric', terms: { pilot_car: 'Pojazd Pilotujący', escort_vehicle: 'Eskort Transportowy', oversize_load: 'Transport Nienormatywny', heavy_haul: 'Transport Ciężki', wide_load: 'Ładunek Szeroki', route_survey: 'Badanie Trasy', superload: 'Transport Nienormatywny', permit: 'Zezwolenie na Transport Nienormatywny' }, regions: ['Masovia', 'Silesia', 'Greater Poland', 'Lower Silesia', 'Lesser Poland'], cities: ['Warsaw', 'Gdańsk', 'Katowice', 'Wrocław', 'Poznań', 'Szczecin'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'CZ', name: 'Czech Republic', slug: 'cz', flag: '🇨🇿', tier: 'C', lang: 'cs', currency: 'CZK', units: 'metric', terms: { pilot_car: 'Doprovodné Vozidlo', escort_vehicle: 'Doprovod Přepravy', oversize_load: 'Nadměrný Náklad', heavy_haul: 'Těžká Přeprava', wide_load: 'Široký Náklad', route_survey: 'Průzkum Trasy', superload: 'Nadměrný Náklad', permit: 'Povolení k Přepravě' }, regions: ['Central Bohemia', 'South Moravia', 'Moravia-Silesia'], cities: ['Prague', 'Brno', 'Ostrava', 'Plzeň'], equipment_focus: ['wind turbine', 'transformer', 'industrial machinery'] },
+    { code: 'SK', name: 'Slovakia', slug: 'sk', flag: '🇸🇰', tier: 'C', lang: 'sk', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Sprievodné Vozidlo', escort_vehicle: 'Doprovod Prepravy', oversize_load: 'Nadmerný Náklad', heavy_haul: 'Ťažká Preprava', wide_load: 'Široký Náklad', route_survey: 'Prieskum Trasy', superload: 'Nadmerný Náklad', permit: 'Povolenie na Prepravu' }, regions: ['Bratislava', 'Košice', 'Žilina'], cities: ['Bratislava', 'Košice', 'Žilina', 'Banská Bystrica'], equipment_focus: ['transformer', 'construction equipment'] },
+    { code: 'HU', name: 'Hungary', slug: 'hu', flag: '🇭🇺', tier: 'C', lang: 'hu', currency: 'HUF', units: 'metric', terms: { pilot_car: 'Kísérő Jármű', escort_vehicle: 'Szállítási Kísérő', oversize_load: 'Túlméretes Szállítmány', heavy_haul: 'Nehéz Szállítás', wide_load: 'Széles Rakomány', route_survey: 'Útvonal Felmérés', superload: 'Túlméretes Szállítmány', permit: 'Szállítási Engedély' }, regions: ['Budapest', 'Pest', 'Győr-Moson-Sopron'], cities: ['Budapest', 'Debrecen', 'Győr', 'Szeged'], equipment_focus: ['transformer', 'construction equipment'] },
+    { code: 'SI', name: 'Slovenia', slug: 'si', flag: '🇸🇮', tier: 'C', lang: 'sl', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Spremno Vozilo', escort_vehicle: 'Transportna Spremstvo', oversize_load: 'Izredni Prevoz', heavy_haul: 'Težki Prevoz', wide_load: 'Široki Tovor', route_survey: 'Pregled Poti', superload: 'Izredni Prevoz', permit: 'Dovoljenje za Izredni Prevoz' }, regions: ['Central Slovenia', 'Drava', 'Savinja'], cities: ['Ljubljana', 'Maribor', 'Koper', 'Celje'], equipment_focus: ['transformer', 'construction equipment'] },
+    { code: 'EE', name: 'Estonia', slug: 'ee', flag: '🇪🇪', tier: 'C', lang: 'et', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Saateauto', escort_vehicle: 'Transpordieskordi', oversize_load: 'Erivedu', heavy_haul: 'Raskevedu', wide_load: 'Lai Koorem', route_survey: 'Marsruudi Uuring', superload: 'Erivedu', permit: 'Eriveoluba' }, regions: ['Harju', 'Tartu', 'Ida-Viru'], cities: ['Tallinn', 'Tartu', 'Pärnu'], equipment_focus: ['wind turbine', 'transformer'] },
+    { code: 'LV', name: 'Latvia', slug: 'lv', flag: '🇱🇻', tier: 'C', lang: 'lv', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Pavadoņu Auto', escort_vehicle: 'Transporta Eskorts', oversize_load: 'Lielgabarīta Krava', heavy_haul: 'Smagā Transportēšana', wide_load: 'Plata Krava', route_survey: 'Maršruta Izpēte', superload: 'Lielgabarīta Krava', permit: 'Pārvadāšanas Atļauja' }, regions: ['Riga', 'Kurzeme', 'Latgale'], cities: ['Riga', 'Ventspils', 'Liepāja'], equipment_focus: ['wind turbine', 'transformer'] },
+    { code: 'LT', name: 'Lithuania', slug: 'lt', flag: '🇱🇹', tier: 'C', lang: 'lt', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Lydimasis Automobilis', escort_vehicle: 'Transporto Palyda', oversize_load: 'Didžiagabaritis Krovinys', heavy_haul: 'Sunkusis Transportas', wide_load: 'Platus Krovinys', route_survey: 'Maršruto Tyrimas', superload: 'Didžiagabaritis Krovinys', permit: 'Pervežimo Leidimas' }, regions: ['Vilnius', 'Kaunas', 'Klaipėda'], cities: ['Vilnius', 'Kaunas', 'Klaipėda'], equipment_focus: ['wind turbine', 'transformer'] },
+    { code: 'HR', name: 'Croatia', slug: 'hr', flag: '🇭🇷', tier: 'C', lang: 'hr', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Pratnje Vozilo', escort_vehicle: 'Transportna Pratnja', oversize_load: 'Izvanredni Prijevoz', heavy_haul: 'Teški Prijevoz', wide_load: 'Široki Teret', route_survey: 'Pregled Rute', superload: 'Izvanredni Prijevoz', permit: 'Dozvola za Izvanredni Prijevoz' }, regions: ['Zagreb', 'Split-Dalmatia', 'Primorje-Gorski Kotar'], cities: ['Zagreb', 'Split', 'Rijeka', 'Osijek'], equipment_focus: ['wind turbine', 'construction equipment'] },
+    { code: 'RO', name: 'Romania', slug: 'ro', flag: '🇷🇴', tier: 'C', lang: 'ro', currency: 'RON', units: 'metric', terms: { pilot_car: 'Vehicul de Însoțire', escort_vehicle: 'Escortă Transport', oversize_load: 'Transport Agabaritic', heavy_haul: 'Transport Greu', wide_load: 'Încărcătură Largă', route_survey: 'Studiu de Traseu', superload: 'Transport Agabaritic', permit: 'Autorizație de Transport' }, regions: ['Bucharest-Ilfov', 'Cluj', 'Timiș', 'Constanța'], cities: ['Bucharest', 'Constanța', 'Cluj-Napoca', 'Timișoara'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'BG', name: 'Bulgaria', slug: 'bg', flag: '🇧🇬', tier: 'C', lang: 'bg', currency: 'BGN', units: 'metric', terms: { pilot_car: 'Пилотен Автомобил', escort_vehicle: 'Транспортен Ескорт', oversize_load: 'Извънгабаритен Товар', heavy_haul: 'Тежък Транспорт', wide_load: 'Широк Товар', route_survey: 'Проучване на Маршрут', superload: 'Извънгабаритен Товар', permit: 'Разрешително за Транспорт' }, regions: ['Sofia', 'Plovdiv', 'Varna', 'Burgas'], cities: ['Sofia', 'Plovdiv', 'Varna', 'Burgas'], equipment_focus: ['transformer', 'construction equipment'] },
+    { code: 'GR', name: 'Greece', slug: 'gr', flag: '🇬🇷', tier: 'C', lang: 'el', currency: 'EUR', units: 'metric', terms: { pilot_car: 'Όχημα Συνοδείας', escort_vehicle: 'Συνοδεία Μεταφοράς', oversize_load: 'Υπέρβαρο Φορτίο', heavy_haul: 'Βαριά Μεταφορά', wide_load: 'Πλατύ Φορτίο', route_survey: 'Μελέτη Διαδρομής', superload: 'Υπέρβαρο Φορτίο', permit: 'Άδεια Μεταφοράς' }, regions: ['Attica', 'Central Macedonia', 'Thessaly'], cities: ['Athens', 'Thessaloniki', 'Piraeus', 'Patras'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment'] },
+    { code: 'TR', name: 'Turkey', slug: 'tr', flag: '🇹🇷', tier: 'C', lang: 'tr', currency: 'TRY', units: 'metric', terms: { pilot_car: 'Pilot Araç', escort_vehicle: 'Nakliye Eskortu', oversize_load: 'Gabari Dışı Yük', heavy_haul: 'Ağır Nakliye', wide_load: 'Geniş Yük', route_survey: 'Güzergah İncelemesi', superload: 'Gabari Dışı Yük', permit: 'Özel Yük Taşıma İzni' }, regions: ['Istanbul', 'Ankara', 'Izmir', 'Antalya', 'Bursa', 'Kocaeli'], cities: ['Istanbul', 'Ankara', 'Izmir', 'Mersin', 'Antalya', 'Kocaeli'], equipment_focus: ['wind turbine', 'transformer', 'construction equipment', 'mining equipment'] },
+    { code: 'KW', name: 'Kuwait', slug: 'kw', flag: '🇰🇼', tier: 'C', lang: 'en', currency: 'KWD', units: 'metric', terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Transport Permit' }, regions: ['Kuwait City', 'Ahmadi', 'Jahra'], cities: ['Kuwait City', 'Ahmadi', 'Shuaiba'], equipment_focus: ['oil & gas equipment', 'crane', 'transformer'] },
+    { code: 'OM', name: 'Oman', slug: 'om', flag: '🇴🇲', tier: 'C', lang: 'en', currency: 'OMR', units: 'metric', terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Transport Permit' }, regions: ['Muscat', 'Sohar', 'Salalah', 'Duqm'], cities: ['Muscat', 'Sohar', 'Salalah', 'Duqm'], equipment_focus: ['oil & gas equipment', 'crane', 'transformer'] },
+    { code: 'BH', name: 'Bahrain', slug: 'bh', flag: '🇧🇭', tier: 'C', lang: 'en', currency: 'BHD', units: 'metric', terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Transport Permit' }, regions: ['Capital', 'Muharraq', 'Southern'], cities: ['Manama', 'Muharraq', 'Riffa'], equipment_focus: ['crane', 'transformer', 'oil & gas equipment'] },
+    { code: 'SG', name: 'Singapore', slug: 'sg', flag: '🇸🇬', tier: 'C', lang: 'en', currency: 'SGD', units: 'metric', terms: { pilot_car: 'Escort Vehicle', escort_vehicle: 'Escort Vehicle', oversize_load: 'Abnormal Load', heavy_haul: 'Heavy Transport', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'LTA Transport Permit' }, regions: ['Central', 'East', 'West', 'North'], cities: ['Singapore', 'Jurong', 'Tuas'], equipment_focus: ['crane', 'transformer', 'construction equipment'] },
+    { code: 'MY', name: 'Malaysia', slug: 'my', flag: '🇲🇾', tier: 'C', lang: 'ms', currency: 'MYR', units: 'metric', terms: { pilot_car: 'Kenderaan Pengiring', escort_vehicle: 'Kenderaan Pengiring', oversize_load: 'Muatan Lampau', heavy_haul: 'Pengangkutan Berat', wide_load: 'Muatan Lebar', route_survey: 'Kajian Laluan', superload: 'Muatan Lampau', permit: 'Permit Pengangkutan Khas' }, regions: ['Selangor', 'Johor', 'Penang', 'Sabah', 'Sarawak'], cities: ['Kuala Lumpur', 'Johor Bahru', 'Penang', 'Port Klang', 'Kuantan'], equipment_focus: ['oil & gas equipment', 'crane', 'construction equipment'] },
+    { code: 'JP', name: 'Japan', slug: 'jp', flag: '🇯🇵', tier: 'C', lang: 'ja', currency: 'JPY', units: 'metric', terms: { pilot_car: '誘導車', escort_vehicle: '先導車', oversize_load: '特殊車両', heavy_haul: '重量物輸送', wide_load: '幅広車両', route_survey: 'ルート調査', superload: '特殊車両', permit: '特殊車両通行許可' }, regions: ['Kanto', 'Kansai', 'Chubu', 'Kyushu', 'Hokkaido'], cities: ['Tokyo', 'Osaka', 'Nagoya', 'Yokohama', 'Kobe', 'Fukuoka', 'Sapporo'], equipment_focus: ['transformer', 'construction equipment', 'industrial machinery'] },
+    { code: 'KR', name: 'South Korea', slug: 'kr', flag: '🇰🇷', tier: 'C', lang: 'ko', currency: 'KRW', units: 'metric', terms: { pilot_car: '선도차량', escort_vehicle: '호위차량', oversize_load: '초과화물', heavy_haul: '중량물운송', wide_load: '광폭화물', route_survey: '노선조사', superload: '초과화물', permit: '특수운송허가' }, regions: ['Gyeonggi', 'Busan', 'Gyeongsang', 'Chungcheong'], cities: ['Seoul', 'Busan', 'Incheon', 'Ulsan', 'Gwangyang'], equipment_focus: ['transformer', 'construction equipment', 'industrial machinery', 'shipbuilding parts'] },
+    { code: 'CL', name: 'Chile', slug: 'cl', flag: '🇨🇱', tier: 'C', lang: 'es', currency: 'CLP', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['Valparaíso', 'Biobío', 'Antofagasta', 'Atacama', 'Santiago Metropolitan'], cities: ['Santiago', 'Valparaíso', 'Antofagasta', 'Concepción', 'San Antonio'], equipment_focus: ['mining equipment', 'wind turbine', 'transformer'] },
+    { code: 'AR', name: 'Argentina', slug: 'ar', flag: '🇦🇷', tier: 'C', lang: 'es', currency: 'ARS', units: 'metric', terms: { pilot_car: 'Vehículo Batidor', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Carga Excedida', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Excedida', permit: 'Permiso de Tránsito Especial' }, regions: ['Buenos Aires', 'Córdoba', 'Santa Fe', 'Mendoza', 'Neuquén'], cities: ['Buenos Aires', 'Rosario', 'Córdoba', 'Mendoza', 'Bahía Blanca', 'Neuquén'], equipment_focus: ['wind turbine', 'mining equipment', 'oil & gas equipment'] },
+    { code: 'CO', name: 'Colombia', slug: 'co', flag: '🇨🇴', tier: 'C', lang: 'es', currency: 'COP', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Carga', oversize_load: 'Carga Extradimensionada', heavy_haul: 'Transporte Especial', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Extradimensionada', permit: 'Permiso de Carga Extradimensionada' }, regions: ['Antioquia', 'Valle del Cauca', 'Cundinamarca', 'Bolívar', 'Atlántico'], cities: ['Bogotá', 'Medellín', 'Cartagena', 'Barranquilla', 'Buenaventura', 'Cali'], equipment_focus: ['mining equipment', 'oil & gas equipment', 'construction equipment'] },
+    { code: 'PE', name: 'Peru', slug: 'pe', flag: '🇵🇪', tier: 'C', lang: 'es', currency: 'PEN', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['Lima', 'Arequipa', 'La Libertad', 'Callao', 'Piura'], cities: ['Lima', 'Callao', 'Arequipa', 'Trujillo', 'Piura'], equipment_focus: ['mining equipment', 'transformer', 'construction equipment'] },
+    // ═══ TIER D — Slate (3) ═══
+    { code: 'UY', name: 'Uruguay', slug: 'uy', flag: '🇺🇾', tier: 'D', lang: 'es', currency: 'UYU', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['Montevideo', 'Canelones'], cities: ['Montevideo'], equipment_focus: ['wind turbine', 'construction equipment'] },
+    { code: 'PA', name: 'Panama', slug: 'pa', flag: '🇵🇦', tier: 'D', lang: 'es', currency: 'USD', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Carga', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['Panama City', 'Colón'], cities: ['Panama City', 'Colón'], equipment_focus: ['crane', 'construction equipment'] },
+    { code: 'CR', name: 'Costa Rica', slug: 'cr', flag: '🇨🇷', tier: 'D', lang: 'es', currency: 'CRC', units: 'metric', terms: { pilot_car: 'Vehículo Piloto', escort_vehicle: 'Escolta de Transporte', oversize_load: 'Carga Sobredimensionada', heavy_haul: 'Transporte Pesado', wide_load: 'Carga Ancha', route_survey: 'Estudio de Ruta', superload: 'Carga Sobredimensionada', permit: 'Permiso de Transporte Especial' }, regions: ['San José', 'Limón', 'Puntarenas'], cities: ['San José', 'Limón', 'Puntarenas'], equipment_focus: ['wind turbine', 'construction equipment'] },
+];
+
+// ─── Helper Functions ───
+
+export function getCountryBySlug(slug: string): CountryConfig | undefined {
+    return COUNTRIES.find(c => c.slug === slug);
+}
+
+export function getCountriesByTier(tier: 'A' | 'B' | 'C' | 'D'): CountryConfig[] {
+    return COUNTRIES.filter(c => c.tier === tier);
+}
+
+export function getAllCountrySlugs(): string[] {
+    return COUNTRIES.map(c => c.slug);
+}
+
+// Core services used for programmatic SEO page generation
+export const SEO_SERVICES = [
+    { slug: 'pilot-car-service', label: 'Pilot Car Service', termKey: 'pilot_car' as const },
+    { slug: 'oversize-load-escort', label: 'Oversize Load Escort', termKey: 'escort_vehicle' as const },
+    { slug: 'heavy-haul-escort', label: 'Heavy Haul Escort', termKey: 'heavy_haul' as const },
+    { slug: 'wide-load-escort', label: 'Wide Load Escort', termKey: 'wide_load' as const },
+    { slug: 'route-survey', label: 'Route Survey Service', termKey: 'route_survey' as const },
+    { slug: 'superload-escort', label: 'Superload Escort', termKey: 'superload' as const },
+];
+
+// Snippet authority topics
+export const SNIPPET_TOPICS = [
+    { slug: 'what-is-a-pilot-car', title: 'What Is a Pilot Car?', termKey: 'pilot_car' as const },
+    { slug: 'what-is-an-escort-vehicle', title: 'What Is an Escort Vehicle?', termKey: 'escort_vehicle' as const },
+    { slug: 'oversize-load-requirements', title: 'Oversize Load Requirements', termKey: 'oversize_load' as const },
+    { slug: 'escort-vehicle-cost', title: 'Escort Vehicle Cost Guide', termKey: 'escort_vehicle' as const },
+    { slug: 'heavy-haul-permits', title: 'Heavy Haul Permit Guide', termKey: 'permit' as const },
+];

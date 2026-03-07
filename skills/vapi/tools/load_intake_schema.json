@@ -1,0 +1,118 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "load_intake",
+    "description": "Schema for Vapi tool that captures a broker's load requiring escort services",
+    "type": "object",
+    "properties": {
+        "broker_name": {
+            "type": "string",
+            "description": "Name of the broker or dispatcher"
+        },
+        "broker_company": {
+            "type": "string",
+            "description": "Broker's company name"
+        },
+        "broker_phone": {
+            "type": "string",
+            "pattern": "^\\+[1-9]\\d{1,14}$",
+            "description": "Broker phone in E.164 format"
+        },
+        "broker_email": {
+            "type": "string",
+            "format": "email",
+            "description": "Broker email for follow-up"
+        },
+        "pickup_city": {
+            "type": "string",
+            "description": "Pickup city name"
+        },
+        "pickup_state": {
+            "type": "string",
+            "description": "Pickup state/province code"
+        },
+        "pickup_country": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2,
+            "description": "ISO 3166-1 alpha-2"
+        },
+        "delivery_city": {
+            "type": "string",
+            "description": "Delivery city name"
+        },
+        "delivery_state": {
+            "type": "string",
+            "description": "Delivery state/province code"
+        },
+        "delivery_country": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2
+        },
+        "load_width_ft": {
+            "type": "number",
+            "description": "Load width in feet"
+        },
+        "load_height_ft": {
+            "type": "number",
+            "description": "Load height in feet"
+        },
+        "load_length_ft": {
+            "type": "number",
+            "description": "Load length in feet"
+        },
+        "load_weight_lb": {
+            "type": "number",
+            "description": "Load weight in pounds"
+        },
+        "escort_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Requested escort date (YYYY-MM-DD)"
+        },
+        "escort_type_needed": {
+            "type": "string",
+            "enum": [
+                "lead",
+                "rear",
+                "both",
+                "high_pole",
+                "lead_and_high_pole",
+                "full_package"
+            ],
+            "description": "Type of escort needed"
+        },
+        "permit_status": {
+            "type": "string",
+            "enum": [
+                "have_it",
+                "need_it",
+                "unsure"
+            ],
+            "description": "Whether the broker already has permits"
+        },
+        "budget_per_day_usd": {
+            "type": "number",
+            "description": "Budget per escort per day in USD (optional)"
+        },
+        "notes": {
+            "type": "string",
+            "description": "Additional notes from the broker"
+        },
+        "call_id": {
+            "type": "string",
+            "description": "Vapi call ID for attribution"
+        }
+    },
+    "required": [
+        "broker_name",
+        "broker_phone",
+        "pickup_city",
+        "pickup_state",
+        "delivery_city",
+        "delivery_state",
+        "escort_date",
+        "escort_type_needed"
+    ],
+    "additionalProperties": false
+}

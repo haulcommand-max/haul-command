@@ -1,0 +1,51 @@
+-- =============================================================
+-- HAUL COMMAND GLOBAL PAYMENT RAILS + PLAID - APPLIED 2026-03-04
+-- =============================================================
+-- Migrations applied to Supabase (hvjyfyzotqobfkakjozp):
+--
+-- 1. hc_payments_extend_rails_table
+--    - Added columns: method_code, country_scope, is_fallback, confidence, notes, source_url, updated_at
+--    - Dropped old unique constraint (country_code, rail_type, method_name)
+--    - Created new unique index (country_code, provider, method_name)
+--    - Added updated_at trigger
+--
+-- 2. hc_plaid_core_tables
+--    - hc_provider_config: stripe/nowpayments/plaid/manual toggle + env + keys
+--    - hc_plaid_item: stores linked bank institution logins
+--    - hc_plaid_account: stores individual bank accounts per item
+--    - hc_payment_route_rules: deterministic routing (country+currency+amount -> provider+method)
+--    - All tables have RLS, triggers, indices
+--
+-- 3. hc_payment_rpcs_v2
+--    - hc_payment_rails_get(country_code) -> ordered list of enabled rails
+--    - hc_payment_route_select(country, currency, amount, has_plaid) -> best provider+method
+--    - hc_payment_rail_upsert(...) -> idempotent never-downgrade seeder
+--
+-- 4. hc_payment_seed_providers_us
+--    - Provider registry: stripe(prod), nowpayments(prod), plaid(sandbox), manual(prod)
+--    - US: added PayPal(88), Venmo(86), Plaid ACH(84)
+--    - US routing rules: plaid>stripe when linked
+--
+-- 5. hc_payment_seed_europe
+--    - 22 European countries seeded with local rails
+--    - Swish(SE), Vipps(NO), MobilePay(DK), TWINT(CH), Bancontact(BE)
+--    - BLIK(PL), Multibanco(PT), SEPA coverage across EU
+--
+-- 6. hc_payment_seed_gcc_latam_asia_africa
+--    - 6 GCC: stc pay(SA), mada(SA), KNET(KW), BenefitPay(BH), NAPS(QA), thawani(OM)
+--    - 8 LATAM: MercadoPago(AR), Nequi+PSE(CO), Khipu(CL), Yape(PE), SINPE(CR)
+--    - 12 Asia: GCash+Maya(PH), PayNow(SG), DuitNow+TnG(MY), KakaoPay+Toss(KR)
+--             PayPay(JP), PromptPay(TH), MoMo(VN)
+--    - SnapScan(ZA)
+--    - Universal fallback: every country in hc_countries gets Stripe cards + NOWPayments crypto
+--
+-- Edge Function: hc-plaid (deployed)
+--    - /link-token: Create Plaid Link token
+--    - /exchange: Exchange public_token -> access_token, store item+accounts
+--    - /accounts: Get user's linked bank accounts
+--    - /transfer: Initiate ACH transfer (US-only)
+--    - /webhook: Handle Plaid webhooks (item errors, transfer events)
+--    - /rails: Get available payment rails for a country
+--    - /route: Get best payment route for checkout intent
+--
+-- RESULTS: 57 countries, 199 rails, 0 gaps

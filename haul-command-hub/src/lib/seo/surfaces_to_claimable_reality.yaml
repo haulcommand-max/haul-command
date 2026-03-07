@@ -1,0 +1,52 @@
+# ============================================================
+# HAUL COMMAND — SURFACES → CLAIMABLE REALITY
+# Solution pack for turning taxonomy into physical DB rows
+# ============================================================
+
+version: "1.0.0"
+status: "migration_applied"
+
+schema_deployed:
+  tables:
+    - hc_places            # canonical claimable listings
+    - hc_place_sources     # provenance trail
+    - hc_claim_requests    # claim workflow audit
+    - hc_ingestion_runs    # ingestion observability
+    - hc_ingestion_events  # ingestion event log
+    - surface_types        # 51 category registry
+
+  enums:
+    - place_status: [draft, published, suppressed]
+    - claim_status_v2: [unclaimed, pending, verified, rejected, revoked]
+    - source_type: [osm, google_places, gov_dataset, manual, partner_feed]
+
+  rpcs:
+    - upsert_place          # ingestion worker entry point
+    - hc_request_claim      # user claims a place
+    - hc_approve_claim      # admin approves claim
+    - hc_compute_claim_priority  # scoring engine
+    - normalize_text        # text normalization
+    - slugify              # slug generation
+    - compute_dedupe_hash  # deduplication hash
+
+  rls:
+    hc_places: "public read published; owner update verified"
+    hc_claim_requests: "requester read/create own"
+    ingestion: "locked (service role only)"
+
+ingestion_priority:
+  step_1_seed_proof:
+    - {country: US, categories: [port, truck_stop, twic_enrollment]}
+    - {country: CA, categories: [port, truck_parking, permit_office]}
+    - {country: AU, categories: [port, industrial_zone]}
+  sources:
+    - osm_overpass_global
+    - gov_datasets
+    - google_places_augment
+
+claim_acceleration:
+  scoring: "demand(0.45) + seo(0.30) + freshness(0.15) + supply(0.10)"
+  tiers:
+    A: {min: 75, cadence: "d0,d1,d3,d7"}
+    B: {min: 50, cadence: "d0,d3,d10"}
+    C: {min: 0, cadence: "d0,d14"}

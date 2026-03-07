@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getGlossaryIndex } from '@/lib/glossary/api';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 
 export const metadata: Metadata = {
     title: 'ESC & Oversize Load Glossary | Haul Command',
@@ -93,6 +94,15 @@ export default async function GlossaryIndexPage() {
                         </a>
                     ))}
                 </nav>
+
+                {/* Native Ad */}
+                <div style={{ marginBottom: '2rem' }}>
+                    <NativeAdCard
+                        surface="glossary_mid"
+                        placementId="glossary-below-nav"
+                        variant="inline"
+                    />
+                </div>
 
                 {/* Term listing */}
                 {[...grouped.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([letter, letterTerms]) => (

@@ -1,0 +1,135 @@
+profile_completion_engine:
+  version: 1.0
+  objective: >
+    Drive claimed operators to complete profiles by coupling progress
+    to visibility, trust, and real opportunity signals.
+
+  entities:
+    operator_profile:
+      fields:
+        identity:
+          - display_name
+          - phone
+          - email
+          - home_base_city
+          - home_base_state
+        coverage:
+          - coverage_states
+          - preferred_corridors
+          - radius_miles
+        equipment:
+          - vehicle_type
+          - certifications
+          - pilot_car_level
+        availability:
+          - status
+          - hours
+        trust:
+          - photo
+          - insurance_proof_optional
+          - id_verification_optional
+        performance:
+          - response_time
+          - completed_jobs
+          - broker_feedback
+
+  scoring:
+    profile_completion_score:
+      range: [0, 100]
+      weights:
+        identity: 20
+        coverage: 25
+        equipment: 20
+        availability: 15
+        trust: 10
+        performance: 10
+      rules:
+        - id: min_identity_gate
+          if_missing_any: [display_name, phone]
+          cap_score_at: 35
+        - id: coverage_gate
+          if_missing_any: [coverage_states]
+          cap_score_at: 55
+
+    visibility_score:
+      range: [0, 100]
+      inputs:
+        - profile_completion_score
+        - availability_status
+        - last_active_at
+        - response_time_band
+        - verified_badge
+
+  gates_and_rewards:
+    leaderboard_gate:
+      min_profile_completion_to_rank: 60
+      message: complete your profile to appear on the leaderboard
+
+    visibility_boosts:
+      on_milestone:
+        - milestone: 40
+          boost:
+            type: search_rank_boost
+            duration_hours: 24
+            magnitude: small
+        - milestone: 60
+          boost:
+            type: search_rank_boost
+            duration_hours: 48
+            magnitude: medium
+        - milestone: 80
+          boost:
+            type: featured_operator_slot_eligibility
+            duration_days: 7
+
+    badges:
+      - id: founding_operator
+        criteria: claimed_before_date
+      - id: verified_operator
+        criteria: verification_passed
+      - id: fast_responder
+        criteria: response_time_p50_lt_minutes_10
+
+  triggers:
+    on_profile_claimed:
+      - compute_profile_completion_score
+      - show_profile_strength_meter
+      - show_next_best_step
+      - offer_app_download_for_alerts
+
+    on_profile_field_updated:
+      - compute_profile_completion_score
+      - compute_visibility_score
+      - if_milestone_reached_grant_visibility_boost
+      - emit_event_profile_progress_updated
+
+    on_availability_toggled:
+      - compute_visibility_score
+      - log_presence_event
+      - if_available_notify_matching_brokers
+
+    on_broker_profile_view:
+      conditions:
+        - profile_completion_score_lt: 80
+      actions:
+        - notify_operator_broker_viewed_prompt_completion
+
+  nudges:
+    smart_next_step:
+      - if_missing: coverage_states
+        recommend: Add your coverage states
+        visibility_gain: 12
+      - if_missing: availability_status
+        recommend: Set availability
+        visibility_gain: 8
+      - if_missing: photo
+        recommend: Add a photo/logo
+        visibility_gain: 6
+
+  ui_copy:
+    milestone_toasts:
+      20: nice — you're live. keep going.
+      40: good. you just unlocked a small visibility boost (24h).
+      60: you're now eligible for full leaderboard ranking.
+      80: strong profile. brokers trust this.
+      100: perfect. you're fully optimized.

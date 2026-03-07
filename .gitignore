@@ -41,3 +41,28 @@ next-env.d.ts
 .agents/
 _agent/
 _agents/
+
+# Capacitor / Android generated files
+android/capacitor-cordova-android-plugins/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+android/app/src/main/assets/public/
+android/capacitor.settings.gradle
+android/app/capacitor.build.gradle
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+# Firebase credentials (never commit)
+android/app/google-services.json
+ios/App/App/GoogleService-Info.plist
+
+# APK / AAB build outputs
+*.apk
+*.aab
+
+# iOS generated
+ios/App/Pods/
+ios/App/App/public/
+ios/App/capacitor-cordova-ios-plugins/

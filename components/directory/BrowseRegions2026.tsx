@@ -11,6 +11,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { track } from "@/lib/telemetry";
 
 type Country = "US" | "CA";
 
@@ -84,6 +85,16 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
         if (!query) return all;
         return all.filter(r => `${r.name} ${r.code}`.toLowerCase().includes(query));
     }, [all, q]);
+
+    React.useEffect(() => {
+        const query = q.trim();
+        if (!query || query.length < 2) return;
+
+        const timeout = setTimeout(() => {
+            track("search_performed", { metadata: { query, country, action: "region_filter" } }).catch(() => { });
+        }, 1500);
+        return () => clearTimeout(timeout);
+    }, [q, country]);
 
     return (
         <section id="browse-state" aria-label="Browse by state or province">

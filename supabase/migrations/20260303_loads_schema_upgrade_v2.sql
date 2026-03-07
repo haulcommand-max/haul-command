@@ -1,0 +1,25 @@
+-- =========================================================
+-- hc_loads SCHEMA UPGRADE v2
+-- From 17 columns → 74 columns (full dispatch + pricing + lifecycle)
+-- Additive only — no drops, no renames
+-- Deployed: 2026-03-03
+-- =========================================================
+
+-- See Supabase migration: loads_schema_upgrade_v2
+-- See Supabase migration: loads_rpcs_post_search_stats
+-- See Supabase migration: seed_us_ca_corridors
+
+-- Key additions:
+-- A) equipment_type, length_ft, commodity, permit fields
+-- B) rate_total_cents (canonical), rate_per_mile_cents (derived), currency, miles
+-- C) pickup/delivery windows with address
+-- D) contact method + phone/email
+-- E) urgency, is_demo, is_book_it_now
+-- F) country_code, corridor_id
+-- G) views_count, offer_count, match_score_avg, fill_probability
+-- H) expires_at, filled_at, cancelled_at lifecycle
+-- + trigger: auto-compute rate_per_mile, overall_length, expires_at
+-- + RLS: public reads posted loads, broker owns, service_role full
+-- + RPCs: hc_post_load, hc_search_loads, hc_get_load_detail, hc_load_board_stats, hc_seed_loads
+-- + Corridors: 39 seeded (29 US + 10 CA) with highway, start/end, miles, commodities
+-- + Demo loads: 25 seeded across key corridors (20 US + 5 CA)

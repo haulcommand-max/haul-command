@@ -1,0 +1,434 @@
+haul_command_score_125_upgrade_plan:
+  version: "1.0"
+  objective: >
+    Elevate every major SEO and monetization dimension toward 125-class performance
+    by deploying compounding authority, coverage, engagement, and revenue systems
+    across directory, mobile app, load board, leaderboard, and AdGrid.
+
+  grading_scale:
+    current_state: "solid foundation"
+    target_state: "category king gravity well"
+    philosophy: "compound signals > isolated tactics"
+
+  # ============================================================
+  # MASTER ORCHESTRATION
+  # ============================================================
+
+  orchestration_layer:
+    controller: "seo_autopilot_executor"
+    scan_frequency: "daily"
+    reprioritize_frequency: "weekly"
+    global_kpis:
+      - organic_sessions
+      - indexed_pages
+      - referring_domains
+      - operator_signups
+      - broker_leads
+      - adgrid_revenue
+      - serp_ctr
+      - profile_completion_rate
+    auto_actions:
+      - detect_gap
+      - generate_tasks
+      - enqueue_builds
+      - measure_lift
+      - reinforce_winners
+
+  # ============================================================
+  # 1. TECHNICAL SEO (88 → 125)
+  # ============================================================
+
+  technical_seo_upgrade:
+    current_score: 88
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - mobile_app
+      - load_board
+      - leaderboard
+      - adgrid
+
+    solutions:
+
+      crawl_efficiency_engine:
+        goal: "maximize crawl budget efficiency"
+        actions:
+          - implement_html_sitemaps_by_country
+          - add_lastmod_accuracy_system
+          - deploy_indexing_health_monitor
+          - auto_noindex_low_value_pages
+        telemetry:
+          - crawl_rate
+          - indexed_ratio
+          - orphan_pages_detected
+
+      schema_depth_expansion:
+        goal: "increase entity clarity"
+        actions:
+          - add_localbusiness_schema_to_operator_profiles
+          - add_review_schema_when_reviews_present
+          - add_dataset_schema_to_leaderboards
+          - add_product_schema_to_adgrid_slots
+        validation: "continuous_schema_validator"
+
+      core_web_vitals_maximizer:
+        goal: "push into elite performance tier"
+        actions:
+          - route_level_code_splitting
+          - adaptive_image_formats
+          - prefetch_high_intent_routes
+          - edge_cache_rules
+        success_thresholds:
+          lcp_ms: "<1800"
+          inp_ms: "<150"
+          cls: "<0.05"
+
+      indexation_guardrails:
+        goal: "prevent thin-page drag"
+        actions:
+          - thin_content_detector
+          - auto_merge_similar_pages
+          - canonical_conflict_scanner
+          - duplicate_cluster_manager
+
+  # ============================================================
+  # 2. PROGRAMMATIC COVERAGE (72 → 125)
+  # ============================================================
+
+  programmatic_coverage_upgrade:
+    current_score: 72
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - load_board
+
+    solutions:
+
+      city_service_page_factory:
+        goal: "explode long-tail footprint"
+        build:
+          formula: "country × state/province × city × service"
+          priority_cities_source:
+            - population_weighted
+            - freight_activity_weighted
+            - permit_volume_weighted
+        safeguards:
+          - uniqueness_enforcer
+          - semantic_variation_engine
+        expected_page_multiplier: "10x-40x"
+
+      near_me_generator:
+        goal: "capture high-intent mobile demand"
+        build:
+          variants:
+            - pilot_car_near_me
+            - oversize_escort_near_me
+            - heavy_haul_escort_near_me
+          geo_logic:
+            - ip_based
+            - gps_when_available
+        placement:
+          - directory
+          - mobile_app
+        monetization_hook: "instant_quote_cta"
+
+      corridor_route_expander:
+        goal: "own freight corridors"
+        build:
+          route_types:
+            - state_to_state
+            - port_to_city
+            - major_highway_segments
+          examples:
+            - i10_corridor
+            - i75_corridor
+            - port_of_houston_routes
+        internal_link_priority: "high"
+
+      price_intent_pages:
+        goal: "capture bottom-of-funnel traffic"
+        templates:
+          - pilot_car_cost_in_[city]
+          - escort_vehicle_price_[country]
+          - oversize_permit_cost_[state]
+        revenue_hooks:
+          - operator_quote_widget
+          - adgrid_high_cpc_slots
+
+  # ============================================================
+  # 3. AUTHORITY & CITATION ENGINE (45 → 125)
+  # ============================================================
+
+  authority_engine_upgrade:
+    current_score: 45
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - brand_entity
+      - adgrid
+
+    solutions:
+
+      global_citation_blaster:
+        goal: "rapid entity trust expansion"
+        tiers:
+          tier_a:
+            focus: "core data aggregators + major directories"
+            cadence: "initial blast + quarterly refresh"
+          tier_b:
+            focus: "niche logistics + transport directories"
+            cadence: "monthly waves"
+          tier_c:
+            focus: "long-tail local citations"
+            cadence: "continuous drip"
+        data_consistency_enforcer: true
+        nap_source_of_truth: "brand_profile_service"
+
+      niche_backlink_engine:
+        goal: "earn contextual authority"
+        tactics:
+          - guest_editorial_outreach
+          - industry_resource_inclusion
+          - data_study_publications
+          - interactive_tool_links
+        prioritization_signal:
+          - domain_relevance
+          - traffic_quality
+          - link_velocity_gap_vs_competitors
+
+      entity_reinforcement_loop:
+        goal: "strengthen brand graph"
+        actions:
+          - wikidata_monitor
+          - knowledge_panel_trigger_pack
+          - brand_mention_harvester
+          - unlinked_mention_recovery
+
+      review_velocity_engine:
+        goal: "increase trust signals"
+        sources:
+          - post_job_sms
+          - post_job_email
+          - in_app_prompts
+        fraud_filters:
+          - velocity_anomaly_detection
+          - duplicate_reviewer_check
+
+  # ============================================================
+  # 4. INTERNAL LINK GRAVITY (65 → 125)
+  # ============================================================
+
+  internal_link_domination:
+    current_score: 65
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - load_board
+      - leaderboard
+
+    solutions:
+
+      contextual_link_weaver:
+        goal: "maximize semantic flow"
+        logic:
+          - entity_similarity
+          - geographic_proximity
+          - intent_alignment
+        placements:
+          - body_links
+          - related_sections
+          - smart_sidebars
+
+      hub_authority_loops:
+        goal: "reinforce money hubs"
+        hubs:
+          - country_pages
+          - major_service_pages
+          - high_traffic_guides
+        behavior:
+          - auto_link_from_new_pages
+          - decay_based_reinforcement
+
+      breadcrumb_depth_stacker:
+        goal: "increase topical clarity"
+        actions:
+          - multi_level_breadcrumbs
+          - keyword_weighted_anchors
+          - structured_data_sync
+
+      orphan_page_killer:
+        goal: "zero orphan tolerance"
+        scan_frequency: "daily"
+        auto_fix:
+          - inject_contextual_links
+          - add_to_hub_sections
+
+  # ============================================================
+  # 5. CTR & SERP WEAPONIZATION (60 → 125)
+  # ============================================================
+
+  serp_ctr_engine:
+    current_score: 60
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - guides
+
+    solutions:
+
+      title_optimization_ai:
+        goal: "maximize click probability"
+        testing:
+          - emotional_trigger_variants
+          - specificity_variants
+          - year_freshness_variants
+        deployment_rule:
+          winner_confidence_threshold: 0.9
+
+      snippet_steal_framework:
+        goal: "win featured snippets"
+        formatting_rules:
+          - definition_blocks
+          - numbered_steps
+          - comparison_tables
+          - faq_expansion
+        monitor:
+          - snippet_capture_rate
+          - position_zero_wins
+
+      og_image_factory:
+        goal: "improve social + discover CTR"
+        generation:
+          - country_branded
+          - city_branded
+          - corridor_branded
+        placement:
+          - all_indexable_pages
+
+      serp_richness_expander:
+        goal: "maximize SERP real estate"
+        additions:
+          - faq_schema_expansion
+          - howto_schema_where_valid
+          - review_stars_when_available
+
+  # ============================================================
+  # 6. MONETIZATION SURFACE MAXIMIZER (62 → 125)
+  # ============================================================
+
+  monetization_upgrade:
+    current_score: 62
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - mobile_app
+      - load_board
+      - adgrid
+
+    solutions:
+
+      intent_to_revenue_router:
+        goal: "map every visit to a money path"
+        logic:
+          - detect_user_intent
+          - select_best_cta
+          - personalize_surface
+        outputs:
+          - operator_lead
+          - broker_lead
+          - adgrid_click
+          - profile_claim
+
+      instant_quote_system:
+        goal: "capture high-intent demand"
+        placement:
+          - service_pages
+          - near_me_pages
+          - mobile_app
+        routing:
+          - nearest_operator
+          - highest_trust_operator
+          - paid_priority_when_applicable
+
+      supply_pressure_meter:
+        goal: "create urgency + conversions"
+        inputs:
+          - operator_availability
+          - recent_jobs
+          - corridor_demand
+        ui_copy_mode: "dynamic"
+
+      adgrid_yield_optimizer:
+        goal: "maximize revenue per visit"
+        features:
+          - dynamic_floor_pricing
+          - multi_ad_rotation
+          - fatigue_detection
+          - geo_bid_multipliers
+
+  # ============================================================
+  # 7. ENGAGEMENT & BEHAVIORAL SIGNALS (NEW → 125)
+  # ============================================================
+
+  engagement_gravity_layer:
+    target_score: 125
+    primary_surfaces:
+      - directory
+      - mobile_app
+      - leaderboard
+
+    solutions:
+
+      live_activity_feed:
+        goal: "prove platform is alive"
+        events:
+          - jobs_posted
+          - escorts_booked
+          - profiles_verified
+          - reviews_received
+
+      profile_completion_engine:
+        goal: "increase operator data depth"
+        mechanics:
+          - progress_meter
+          - milestone_rewards
+          - visibility_boosts
+          - reminder_sequences
+
+      reputation_momentum_score:
+        goal: "gamify quality"
+        inputs:
+          - reviews
+          - response_time
+          - job_volume
+          - recency
+
+      weekly_operator_report:
+        goal: "drive return visits"
+        delivery:
+          - email
+          - in_app
+          - push_notifications
+
+  # ============================================================
+  # AUTOPILOT SUCCESS CONDITIONS
+  # ============================================================
+
+  success_definition:
+    organic_growth_rate: ">= 12% monthly"
+    referring_domains_growth: ">= 8% monthly"
+    profile_completion_rate: ">= 65%"
+    serp_ctr_lift: ">= +25%"
+    revenue_per_visitor_lift: ">= +40%"
+
+  anti_gravity_instruction:
+    mode: "analyze_then_build"
+    priority_rule: "highest_roi_first"
+    safety_rule: "never downgrade existing working systems"
+    reporting:
+      cadence: "weekly"
+      include:
+        - score_deltas
+        - wins_detected
+        - money_left_flags
+        - next_recommended_builds

@@ -1,6 +1,8 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 function getSupabase() {
     return createClient(
@@ -10,10 +12,27 @@ function getSupabase() {
 }
 
 export async function POST(req: Request) {
+    // Auth check — admin/staff only
+    const cookieStore = await cookies();
+    const authClient = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { cookies: { getAll: () => cookieStore.getAll() } }
+    );
+    const { data: { user } } = await authClient.auth.getUser();
+    if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+    const supabaseAdmin = getSupabase();
+    const { data: profile } = await supabaseAdmin
+        .from("profiles").select("role").eq("id", user.id).maybeSingle();
+    if (!profile || !["admin", "staff"].includes(profile.role)) {
+        return NextResponse.json({ error: "forbidden" }, { status: 403 });
+    }
+
     const { id } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
-    const { error } = await getSupabase()
+    const { error } = await supabaseAdmin
         .from("abuse_flags")
         .update({ resolved_at: new Date().toISOString() })
         .eq("id", id);

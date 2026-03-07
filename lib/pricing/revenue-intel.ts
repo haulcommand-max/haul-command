@@ -122,6 +122,58 @@ export const ADGRID_COUNTRY_CONFIG: Record<string, {
     ZA: { currency: 'ZAR', vatRate: 0.15, adMaturity: 'emerging', multiplier: 0.70 },
 };
 
+// ── Place Monetization Ladder Anchors (USD) ────────────────────────────────
+
+export const PLACE_TIER_ANCHORS_USD: Record<string, Record<string, number>> = {
+    truck_stop: {
+        free_claim: 0,
+        verified_claim: 19,
+        premium_placement: 49,
+        adgrid_boost: 99,
+        bundle_package: 129,
+    },
+    motel: {
+        free_claim: 0,
+        verified_claim: 19,
+        premium_placement: 39,
+        adgrid_boost: 79,
+        bundle_package: 89,
+    },
+    repair_shop: {
+        free_claim: 0,
+        verified_claim: 19,
+        premium_placement: 39,
+        adgrid_boost: 79,
+        bundle_package: 99,
+    },
+    tire_shop: {
+        free_claim: 0,
+        verified_claim: 14,
+        premium_placement: 29,
+    },
+    tow_rotator: {
+        free_claim: 0,
+        verified_claim: 19,
+        premium_placement: 49,
+    },
+    truck_parking: {
+        free_claim: 0,
+        verified_claim: 14,
+        premium_placement: 29,
+    },
+};
+
+export function computePlaceTierPrice(
+    placeType: string,
+    tier: string,
+    countryCode: string,
+): number | null {
+    const typeAnchors = PLACE_TIER_ANCHORS_USD[placeType];
+    if (!typeAnchors || typeAnchors[tier] === undefined) return null;
+    if (typeAnchors[tier] === 0) return 0;
+    return computeRegionalPrice(typeAnchors[tier], countryCode);
+}
+
 export function computeAdPrice(
     baseCpmUsd: number,
     countryCode: string,

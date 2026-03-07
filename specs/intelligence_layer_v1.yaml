@@ -1,0 +1,456 @@
+# =========================================================
+# HAUL COMMAND — INTELLIGENCE LAYER SPEC LIBRARY v1.0
+# Scope: All 52 Countries
+# Sources: Working thread + GPT design sessions
+# =========================================================
+
+# ─────────────────────────────────────────────────────────
+# 1. CROWDSOURCED SIGNAL SYSTEM (Waze-style)
+# ─────────────────────────────────────────────────────────
+crowdsourced_signal_system:
+  version: 1.0
+  principle: structured_over_free_text
+  max_reports_per_job_per_user: 1
+  duplicate_window_minutes: 30
+
+  signal_groups:
+
+    compliance_equipment:
+      weight_base: 1.25
+      requires_evidence: recommended
+      buttons:
+        - { id: missing_front_sign,     label: "Missing front oversized sign",     severity: high,     polarity: negative }
+        - { id: missing_rear_sign,      label: "Missing rear oversized sign",      severity: high,     polarity: negative }
+        - { id: beacon_not_functioning, label: "Beacon/light not functioning",     severity: high,     polarity: negative }
+        - { id: improper_markings,      label: "Vehicle markings unclear",         severity: medium,   polarity: negative }
+        - { id: equipment_complete,     label: "All required equipment present",   severity: positive, polarity: positive }
+
+    professionalism:
+      weight_base: 1.0
+      buttons:
+        - { id: arrived_late,         label: "Escort arrived late",             severity: medium,   polarity: negative }
+        - { id: no_show,              label: "Escort no-show",                  severity: critical, polarity: negative, requires_evidence: strongly_recommended }
+        - { id: communication_poor,   label: "Communication poor",              severity: medium,   polarity: negative }
+        - { id: highly_professional,  label: "Highly professional",             severity: positive, polarity: positive }
+        - { id: would_hire_again,     label: "Would hire again",                severity: positive, polarity: positive }
+        - { id: would_not_hire_again, label: "Would NOT hire again",            severity: high,     polarity: negative }
+
+    safety_behavior:
+      weight_base: 1.35
+      buttons:
+        - { id: unsafe_driving,       label: "Unsafe driving observed",         severity: critical, polarity: negative, requires_evidence: recommended }
+        - { id: safe_and_controlled,  label: "Safe and controlled escort",      severity: positive, polarity: positive }
+
+    route_intelligence:
+      weight_base: 0.75
+      buttons:
+        - { id: route_difficult, label: "Route unusually difficult", severity: info,     polarity: neutral }
+        - { id: route_smooth,    label: "Route smooth",              severity: info,     polarity: positive }
+
+# ─────────────────────────────────────────────────────────
+# 2. ANTI-GAMING WEIGHTING ENGINE
+# ─────────────────────────────────────────────────────────
+trust_weighting_engine:
+  version: 1.0
+  formula: |
+    trust_event_score =
+      base_weight
+      * reporter_reputation       # range: [0.35, 1.75]
+      * evidence_multiplier
+      * recency_multiplier
+      * job_verification_multiplier
+      * dispute_penalty_factor
+
+  reporter_reputation:
+    range: [0.35, 1.75]
+    formula: |
+      clamp(
+        0.5
+        + (accuracy_rate * 0.6)
+        + (job_participation_score * 0.4)
+        + (account_age_factor * 0.2)
+        - (overturned_ratio * 0.7),
+        0.35, 1.75
+      )
+
+  evidence_multiplier:
+    none:           0.65
+    photo:          1.0
+    document:       1.15
+    gps:            1.2
+    multi_evidence: 1.35
+
+  job_verification_multiplier:
+    unverified:      0.6
+    soft_verified:   1.0
+    ratecon_verified: 1.25
+    gps_trip_verified: 1.4
+
+  recency_multiplier:
+    model: exponential_decay
+    half_life_days: 90
+
+  dispute_penalty_factor: |
+    1 - min(0.5, reporter_lost_dispute_ratio)
+
+# ─────────────────────────────────────────────────────────
+# 3. SIGNAL FRESHNESS ENGINE (decay model)
+# ─────────────────────────────────────────────────────────
+signal_freshness_engine:
+  version: 1.0
+  method: exponential_half_life
+  formula: |
+    freshness_multiplier = exp(-ln(2) * (days_since_event / half_life_days))
+
+  half_life_days:
+    critical: 180
+    high:     120
+    medium:   90
+    info:     45
+    positive: 120
+
+  burst_detection:
+    enabled: true
+    suspicious_if:
+      reports_in_24h: 5
+      reporter_overlap_ratio: 0.6
+    burst_penalty_multiplier: 0.55
+
+# ─────────────────────────────────────────────────────────
+# 4. GAMIFICATION ENGINE
+# ─────────────────────────────────────────────────────────
+contributor_gamification_engine:
+  version: 1.0
+
+  points:
+    report_submitted:             5
+    report_with_photo:            12
+    report_confirmed_by_others:   20
+    dispute_upheld_bonus:         25
+    false_report_penalty:         -30
+
+  streaks:
+    day_3:  badge_bronze_scout
+    day_7:  badge_silver_scout
+    day_30: badge_gold_scout
+
+  leaderboards:
+    - corridor_watchdog
+    - top_verified_escort
+    - most_reliable_operator
+    - community_scout
+
+  guardrails:
+    max_points_per_day: 250
+    diminishing_returns_after_reports: 6
+
+# ─────────────────────────────────────────────────────────
+# 5. LEGAL-SAFE REVIEW FRAMEWORK
+# ─────────────────────────────────────────────────────────
+legal_safe_review_framework:
+  version: 1.0
+  principles:
+    - structured_claims_over_open_defamation
+    - evidence_preferred_not_required
+    - right_to_respond
+    - visible_dispute_flow
+    - neutral_language_bias
+    - time_decay_of_negative_events
+
+  disclaimer: |
+    Community-reported field observations. Not all reports are independently
+    verified. Operators may respond or dispute any report.
+
+  defamation_shields:
+    suppress_if:
+      single_report_only: true
+      reporter_reputation_below: 0.45
+    require_pattern_before_major_penalty:
+      minimum_distinct_reporters: 2
+      minimum_time_span_hours: 24
+
+# ─────────────────────────────────────────────────────────
+# 6. ESCORT TRUST SCORE MASTER FORMULA
+# ─────────────────────────────────────────────────────────
+escort_trust_score_master:
+  version: 1.0
+  public_range: [0, 100]
+  update_frequency: near_real_time
+
+  formula: |
+    TrustScore = clamp(100 * (
+      reliability_component     * 0.30 +
+      compliance_component      * 0.25 +
+      professionalism_component * 0.15 +
+      verification_component    * 0.15 +
+      recency_health_component  * 0.10 +
+      dispute_health_component  * 0.05
+    ), 0, 100)
+
+  score_bands:
+    elite:  92
+    strong: 80
+    watch:  65
+    risk:   50
+
+  new_operator_confidence_cap: 82
+  minimum_events_before_full_weight: 5
+
+# ─────────────────────────────────────────────────────────
+# 7. BROKER RISK RADAR
+# ─────────────────────────────────────────────────────────
+broker_risk_radar:
+  version: 1.0
+  output_range: [0, 100]
+  interpretation:
+    0_39:  low_risk
+    40_69: caution
+    70_100: high_risk
+
+  formula: |
+    BrokerRisk = clamp(100 * (
+      payment_behavior_component        * 0.45 +
+      dispute_behavior_component        * 0.25 +
+      cancellation_component            * 0.15 +
+      documentation_integrity_component * 0.10 +
+      recency_risk_component            * 0.05
+    ), 0, 100)
+
+# ─────────────────────────────────────────────────────────
+# 8. CORRIDOR DOMINANCE HEAT ALGORITHM
+# ─────────────────────────────────────────────────────────
+corridor_dominance_heat:
+  version: 1.0
+  output_range: [0, 100]
+  refresh_interval_minutes: 15
+
+  formula: |
+    CorridorHeat = clamp(100 * (
+      supply_density_component       * 0.35 +
+      demand_intensity_component     * 0.30 +
+      fill_success_component         * 0.20 +
+      response_speed_component       * 0.10 +
+      reliability_quality_component  * 0.05
+    ), 0, 100)
+
+  heatmap_bands:
+    red_hot:  85
+    strong:   70
+    emerging: 50
+    thin:     30
+
+# ─────────────────────────────────────────────────────────
+# 9. FAKE REPORT DETECTION
+# ─────────────────────────────────────────────────────────
+fake_report_detection:
+  version: 1.0
+  model_type: hybrid_rules_plus_ml
+
+  decision_thresholds:
+    allow_below:        0.35
+    downweight_between: [0.35, 0.55]
+    shadow_hold_between: [0.55, 0.75]
+    manual_review_above: 0.75
+
+  features:
+    reporter_behavior: [account_age_days, reports_last_24h, historical_accuracy_rate, dispute_loss_ratio]
+    network:           [shared_ip_with_other_reporters, device_fingerprint_overlap, geo_velocity_anomaly]
+    temporal:          [burst_cluster_score, time_since_job_end, reporting_time_anomaly]
+    evidence:          [evidence_present, evidence_quality_score, evidence_reuse_detection]
+    target_pattern:    [single_target_focus_ratio, competitor_overlap_signal]
+
+# ─────────────────────────────────────────────────────────
+# 10. EVIDENCE AUTO-CLASSIFIER
+# ─────────────────────────────────────────────────────────
+escort_photo_compliance_classifier:
+  version: 1.0
+  model_type: vision_multilabel
+  inference_mode: async
+  confidence_threshold: 0.72
+
+  labels:
+    signage:          [oversized_front_present, oversized_rear_present, sign_visibility_good, sign_visibility_poor]
+    lighting:         [beacon_present, beacon_active, beacon_obstructed]
+    vehicle_markings: [escort_markings_present, markings_unclear]
+    safety_flags:     [possible_non_compliance, equipment_complete]
+
+  weights:
+    signage_weight:  0.45
+    lighting_weight: 0.35
+    markings_weight: 0.20
+
+# ─────────────────────────────────────────────────────────
+# 11. PREDICTIVE ESCORT DEMAND AI
+# ─────────────────────────────────────────────────────────
+predictive_escort_demand_ai:
+  version: 1.0
+  scope: global_52_countries
+  prediction_windows_days: [1, 3, 7, 14]
+  refresh_interval_minutes: 30
+  model_type: gradient_boosted_trees
+
+  features:
+    leading_indicators:
+      - loads_posted_7d
+      - corridor_search_volume
+      - permit_activity_proxy
+      - historical_seasonality_index
+      - port_activity_index
+      - construction_index_local
+      - ag_equipment_seasonality
+      - energy_project_activity
+    real_time_signals:
+      - last_24h_load_posts
+      - last_24h_near_me_searches
+      - broker_request_velocity
+      - corridor_heat_trend
+    supply_pressure:
+      - active_escorts_50mi
+      - acceptance_latency_trend
+      - recent_unfilled_loads
+
+  country_adjustments:
+    mature_markets_multiplier:   1.0
+    emerging_markets_multiplier: 0.85
+    sparse_data_floor:           0.65
+
+# ─────────────────────────────────────────────────────────
+# 12. SMART AUTO-MATCH SCORING ENGINE
+# ─────────────────────────────────────────────────────────
+smart_auto_match_engine:
+  version: 1.0
+  decision_latency_ms_target: 250
+
+  formula: |
+    MatchScore = clamp(100 * (
+      proximity_component           * 0.25 +
+      trust_component               * 0.20 +
+      availability_component        * 0.15 +
+      compliance_fit_component      * 0.15 +
+      performance_history_component * 0.15 +
+      price_competitiveness_component * 0.10
+    ), 0, 100)
+
+  tie_breakers:
+    - higher_trust_score
+    - faster_response_history
+    - closer_distance
+
+# ─────────────────────────────────────────────────────────
+# 13. BROKER PAYMENT PROBABILITY PREDICTOR
+# ─────────────────────────────────────────────────────────
+broker_payment_probability:
+  version: 1.0
+  output_range: [0, 1]
+  refresh_interval_hours: 6
+
+  risk_bands:
+    very_safe: 0.90
+    safe:      0.75
+    caution:   0.55
+    high_risk: 0.40
+
+  features:
+    payment_history:  [avg_days_to_pay, on_time_payment_ratio, nonpayment_reports, chargebacks_per_100]
+    behavioral:       [ratecon_changes_after_accept, dispute_loss_ratio, cancellation_pattern_score]
+    network_trust:    [verified_business_status, tenure_on_platform, cross_operator_feedback]
+    job_context:      [load_value_band, corridor_risk_level, first_time_vs_repeat]
+
+# ─────────────────────────────────────────────────────────
+# 14. CORRIDOR SURGE PRICING BRAIN
+# ─────────────────────────────────────────────────────────
+corridor_surge_pricing_brain:
+  version: 1.0
+  scope: global_52_countries
+  update_interval_minutes: 10
+  max_surge_cap: 2.5
+
+  formula: |
+    SurgeMultiplier = clamp(
+      base_surge
+      * demand_pressure_factor
+      * supply_tightness_factor
+      * urgency_factor
+      * reliability_floor,
+      1.0, max_surge_cap
+    )
+
+  reliability_floor:
+    rule: if avg_trust_corridor < 0.55 then cap_at 1.35
+
+  country_overrides:
+    enable_per_country_caps: true
+    regulatory_surge_limits_supported: true
+
+# ─────────────────────────────────────────────────────────
+# 15. OPERATOR LIQUIDITY FORECASTING
+# ─────────────────────────────────────────────────────────
+operator_liquidity_forecast:
+  version: 1.0
+  scope: global_52_countries
+  forecast_windows_days: [1, 3, 7, 14]
+  refresh_interval_minutes: 30
+
+  formula: |
+    LiquidityScore = clamp(100 * (
+      active_supply_component       * 0.35 +
+      engagement_velocity_component * 0.25 +
+      retention_health_component    * 0.20 +
+      geographic_coverage_component * 0.20
+    ), 0, 100)
+
+  shortage_alerts:
+    trigger_if:
+      liquidity_score_below: 35
+      demand_score_above:    70
+    actions:
+      - boost_visibility
+      - trigger_operator_notifications
+      - enable_surge_support
+      - recommend_recruitment_push
+
+# ─────────────────────────────────────────────────────────
+# 16. AUTONOMOUS EXPANSION MODULES (roadmap)
+# ─────────────────────────────────────────────────────────
+autonomous_expansion_modules:
+
+  phase_1_restore_core:
+    - smart_auto_match_engine
+    - operator_liquidity_forecast
+    - escort_trust_score_master
+    - corridor_dominance_heat
+
+  phase_2_intelligence:
+    - predictive_escort_demand_ai
+    - corridor_surge_pricing_brain
+    - broker_payment_probability
+    - broker_risk_radar
+
+  phase_3_global_autonomy:
+    modules:
+      - name: cross_border_currency_optimizer
+        desc: FX-adjusted bid normalization across 52 countries
+      - name: cross_network_demand_exchange
+        desc: Supply sharing between country pools in thin markets
+      - name: real_time_corridor_intent_graph
+        desc: Live graph of corridor × intent × operator clusters
+      - name: global_liquidity_density_scoring
+        desc: Per-country per-corridor liquidity health index
+      - name: self_healing_liquidity_balancer
+        desc: Autonomous rebalancing when corridors go thin
+      - name: autonomous_pricing_brain
+        desc: ML-driven floor + ceiling management per corridor
+      - name: global_budget_reallocator
+        desc: Shifts ad budget toward high-yield corridors in real time
+      - name: bid_pacing_optimizer
+        desc: Smooths spend curves to prevent burst/starvation
+      - name: creative_performance_ranking
+        desc: Multi-armed bandit creative rotation
+      - name: ad_fatigue_detection_system
+        desc: Per-user creative cool-down + rotation triggers
+      - name: advertiser_roi_forecaster
+        desc: 30/60/90d ROI prediction per advertiser
+      - name: ltv_based_advertiser_scoring
+        desc: Lifetime value weighting for bid eligibility
+      - name: autonomous_creative_generator
+        desc: AI-generated ad copy from operator profile data

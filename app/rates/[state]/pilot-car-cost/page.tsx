@@ -17,8 +17,12 @@ function getStateRates(state: string) {
     };
 }
 
+import { notFound } from 'next/navigation';
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-    const name = STATE_NAMES[params.state] ?? params.state.toUpperCase();
+    const raw = params?.state;
+    if (!raw || typeof raw !== 'string') return { title: 'Rates Not Found' };
+    const name = STATE_NAMES[raw.toLowerCase()] ?? raw.toUpperCase();
     return {
         title: `Pilot Car Rates in ${name} (2026) | Cost Guide | Haul Command`,
         description: `What do pilot car services cost in ${name}? See local, regional, and long-haul escort rates with per-mile calculations. Updated market data.`,
@@ -27,7 +31,11 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 }
 
 export default function StateRatePage({ params }: any) {
-    const st = params.state.toLowerCase();
+    const raw = params?.state;
+    if (!raw || typeof raw !== 'string') {
+        notFound();
+    }
+    const st = raw.toLowerCase();
     const name = STATE_NAMES[st] ?? st.toUpperCase();
     const rates = getStateRates(st);
     const TrendIcon = rates.trend === 'up' ? TrendingUp : rates.trend === 'down' ? TrendingDown : Minus;

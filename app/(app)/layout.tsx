@@ -55,6 +55,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         { href: '/directory', label: '🔍 Directory' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
                         { href: '/escort/corridor', label: '📊 Corridors' },
+                        { href: '/map/jurisdiction', label: '🌎 Jurisdiction Map' },
                     ].map(link => (
                         <Link key={link.href} href={link.href}
                             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.625rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#6b7280', transition: 'all 0.15s' }}>
@@ -90,7 +91,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             <main className="app-main">
                 {/* Mobile brand header */}
                 <div
-                    className="app-mobile-header"
+                    className="app-mobile-header safe-area-header"
                     style={{
                         minHeight: '60px',
                         paddingLeft: '20px',
@@ -138,7 +139,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                     </div>
                 </header>
 
-                <div style={{ position: 'relative', zIndex: 0, flex: 1 }}>
+                <div style={{ position: 'relative', zIndex: 0, flex: 1, paddingBottom: 'calc(60px + env(safe-area-inset-bottom, 0px))' }}>
                     {children}
                 </div>
 

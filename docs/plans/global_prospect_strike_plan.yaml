@@ -1,0 +1,218 @@
+# Haul Command — Global Prospect Strike Plan
+# 25-Country outreach, lead scoring, corridor domination
+# Version: 2026-02-27
+
+strike_plan:
+  version: "2026-02-27"
+  scope: 25_countries
+  objective: >
+    Prioritized prospect list ranked by payout potential, urgency signals,
+    and corridor alignment. Powers outreach, scraping, and corridor domination.
+
+  prospects_by_country:
+
+    US:
+      tier: S
+      heavy_haul_carriers:
+        - name: Bennett International Group
+          type: oversize_heavy_transport
+        - name: Total Quality Logistics
+          type: complex_heavy_haul
+        - name: MGA International
+          type: oversize_logistics_escorts
+        - name: Heavy Haulers
+          type: cross_border_oversize
+      project_logistics:
+        - name: Trans Global Projects
+          type: wind_oil_gas_mining
+        - name: Martin Bencher Group
+          type: oversized_cargo_global
+        - name: VARAMAR
+          type: breakbulk_oversized
+
+    CA:
+      tier: S
+      prospects:
+        - name: Vectra Heavy Haulers
+        - name: DFS Projects
+        - name: Bridging Distances
+
+    GB:
+      tier: A
+      prospects:
+        - name: Collett & Sons
+        - name: Trans Global Projects
+        - name: Martin Bencher Group
+
+    AU:
+      tier: S
+      prospects:
+        - name: Toll Group
+        - name: Mammoet Australia
+        - name: Qube Heavy Logistics
+        - name: Lindsay Transport
+
+    NZ:
+      tier: B
+      prospects:
+        - name: BigLift Shipping
+        - name: McKay Transport
+        - name: Qube NZ
+        - name: Heavy Haulage NZ
+
+    DE:
+      tier: S
+      prospects:
+        - name: Mammoet Europe
+        - name: Kübler Spedition
+        - name: Bohnet GmbH
+        - name: Schmidbauer GmbH
+
+    NL:
+      tier: S
+      prospects:
+        - name: Mammoet
+        - name: Van der Vlist
+        - name: Wagenborg Nedlift
+        - name: Broekman Logistics
+
+    AE:
+      tier: S
+      note: EXTREME MONEY ZONE
+      prospects:
+        - name: Sarens Gulf
+        - name: Al Faris Group
+        - name: Mammoet Middle East
+        - name: Abu Dhabi Ports
+
+    SA:
+      tier: A
+      prospects:
+        - name: Bahri Logistics
+        - name: Saudi Mammoet
+        - name: HeavyLift Arabia
+
+    IN:
+      tier: A
+      prospects:
+        - name: Allcargo Logistics
+        - name: Gati Project Logistics
+        - name: Mammoet India
+        - name: ABC India Project Division
+
+    BR:
+      tier: A
+      prospects:
+        - name: Sarens Brazil
+        - name: Localfrio Logistics
+        - name: Wilson Sons Heavy Transport
+
+    MX:
+      tier: A
+      prospects:
+        - name: Transportes Marva
+        - name: Grupo Traxion
+        - name: Mammoet Mexico
+
+    ZA:
+      tier: B
+      prospects:
+        - name: Vanguard Logistics SA
+        - name: Mammoet South Africa
+        - name: Grindrod Logistics
+
+    FR:
+      tier: A
+      prospects:
+        - name: Daher Logistics
+        - name: Bolloré Logistics
+        - name: Sarens France
+
+    ES:
+      tier: A
+      prospects:
+        - name: Kaleido Logistics
+        - name: Bergé Logistics
+        - name: Mammoet Spain
+
+    IT:
+      tier: A
+      prospects:
+        - name: Fagioli
+        - name: Tarros Group
+        - name: Codognotto
+
+    JP:
+      tier: A
+      prospects:
+        - name: Nippon Express
+        - name: NYK Logistics
+        - name: Kintetsu World Express
+
+    KR:
+      tier: A
+      prospects:
+        - name: Hyundai Glovis
+        - name: Pantos Logistics
+        - name: CJ Logistics
+
+    SG:
+      tier: A
+      note: Project cargo hub
+      prospects:
+        - name: AAL Shipping
+        - name: PSA Logistics
+        - name: YCH Group
+
+  lead_scoring:
+    formula: >
+      (industry_weight × 0.30) +
+      (urgency_signals × 0.25) +
+      (load_size_indicator × 0.20) +
+      (repeat_volume × 0.15) +
+      (payment_behavior × 0.10)
+
+    industry_weights:
+      wind_energy: 95
+      transformers_power: 93
+      project_freight_forwarders: 92
+      heavy_haul_carriers: 90
+      crane_rental_fleets: 85
+      modular_housing: 72
+      agriculture: 60
+
+    urgency_keywords:
+      - expedited
+      - time-critical
+      - shutdown
+      - outage
+      - emergency_move
+      - weather_window
+
+  linkedin_scrape_targets:
+    tier_1_decision_makers:
+      - Heavy Haul Dispatcher
+      - Project Logistics Manager
+      - Transport Planner
+      - Permit Coordinator
+      - Logistics Manager
+      - Fleet Manager
+      - Operations Manager
+      - Heavy Transport Manager
+
+    tier_2_hidden_bookers:
+      - EPC Logistics Manager
+      - Wind Project Manager
+      - Substation Project Manager
+      - Crane Coordinator
+      - Rig Move Coordinator
+      - Breakbulk Manager
+      - OOG Specialist
+      - Route Survey Engineer
+
+    tier_3_early_signals:
+      - Procurement Manager
+      - Supply Chain Manager
+      - Terminal Operations Manager
+      - Port Captain
+      - Marine Logistics Manager

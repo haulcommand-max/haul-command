@@ -1,0 +1,133 @@
+# ============================================================
+# HAUL COMMAND — COMPETITIVE INTELLIGENCE PLAYBOOK
+# What to steal from: Angi, YellowPages, Nextdoor, Tumblr, Reddit
+# 50 high-utility adds — every one earns its keep
+# ============================================================
+
+competitive_playbook:
+  version: "1.0"
+  sources: [angi, yellowpages_thryv, nextdoor, tumblr, reddit_for_business]
+
+# ============================================================
+# ANGI PATTERNS
+# ============================================================
+angi_patterns:
+  adgrid:
+    - "3-slot Recommended Operators pack per city/corridor/search (organic + sponsored)"
+    - "Free-to-start Pro onboarding + opportunities-last-month proof → upsell to paid visibility"
+    - "Operator dashboard = money-in leads-out KPI panel (Leads, Calls, Quotes, Bookings)"
+    - "Gold Operator / Corridor Elite awards with strict criteria + sponsored amplification"
+    - "AdRank boosts from verified reviews + response speed"
+  social:
+    - "Content moat (guides, costs, FAQs) → funnel to Find Local Operators"
+    - "CTA repetition everywhere (share + request quote + claim listing)"
+    - "Local trust framing — local reviews as the product"
+
+# ============================================================
+# YELLOWPAGES / THRYV PATTERNS
+# ============================================================
+yellowpages_patterns:
+  adgrid:
+    - "Enhanced profile AS the ad unit (photos, details, promotions, social links, CTA)"
+    - "Beyond-a-phone-call engagement menu (call, message, quote, booking, doc upload, route consult)"
+    - "Premium placement tiers: City Top-3, Corridor Top-3, Port Sponsor, Near-Me Boost"
+    - "Pay-per-qualified-call billing (duration threshold, fraud-filtered)"
+  social:
+    - "Per-profile OG preview + 1-tap share (SMS/WhatsApp/FB)"
+
+# ============================================================
+# NEXTDOOR PATTERNS
+# ============================================================
+nextdoor_patterns:
+  adgrid:
+    - "Brokers/drivers recommend operators as the core loop (quantified influence)"
+    - "First-party targeting: corridor behavior + search + saved routes + quote events"
+    - "Ads feel like helpful suggestions not banners"
+    - "Creative guardrails: real imagery, no text-heavy, location-specific messaging"
+    - "Frequency capping + fatigue analytics"
+  social:
+    - "Follow Operator / Follow Corridor with notifications"
+    - "Public counters: follow count, repeat broker count, on-time streak"
+
+# ============================================================
+# TUMBLR PATTERNS
+# ============================================================
+tumblr_patterns:
+  social:
+    - "Per-page OG (image/title/desc/url) + canonical correctness"
+    - "Structured share templates per entity type (operator/corridor/load)"
+    - "Reblog Graph = Share Spread Map (where shares happened, which channel converted)"
+  adgrid:
+    - "Shares as first-class funnel: share → view → contact unlock/quote (fully attributable)"
+
+# ============================================================
+# REDDIT FOR BUSINESS PATTERNS
+# ============================================================
+reddit_patterns:
+  adgrid:
+    - "AdGrid AutoPilot (one toggle) — auto-optimize targeting, creative, placements, budget"
+    - "Open-the-black-box reporting: best corridors, best time windows, who called, which keywords"
+    - "Verified measurement + anti-IVT badge for enterprise advertiser trust"
+    - "Spend-match credits: $1000 spend → $1000 credit (country-tuned)"
+    - "Dashboard UX: customizable graphs, saved views, exports, recurring reports"
+    - "One campaign → multiple placements (city + corridor + port + near-me)"
+  social:
+    - "Sponsorship inside load discussions, corridor alerts, permit tips (conversation placement)"
+
+# ============================================================
+# 50 BUILD ITEMS — PRIORITIZED
+# ============================================================
+
+adgrid_25_items:
+  1: "Sponsored Top-3 pack per page (Angi 3-pros)"
+  2: "Enhanced Sponsored Profile ad unit (YP pattern)"
+  3: "Placement tiers: City / Corridor / Port / Near-Me (YP)"
+  4: "Pay-per-call with qualified-call rules (YP)"
+  5: "AdGrid AutoPilot one-toggle (Reddit Max campaigns)"
+  6: "Auto creative rotation + budget allocation"
+  7: "Corridor personas / audience insights"
+  8: "Spend-match credits (country tuned, Reddit proof)"
+  9: "Credit expiration windows"
+  10: "Corridor-scoped credits (I-75 Boost Credit)"
+  11: "First-win guarantee refund in credit"
+  12: "Frequency capping + fatigue control (Nextdoor)"
+  13: "Location-specific creative prompts (Nextdoor)"
+  14: "Real-image enforcement / text-overlay warnings"
+  15: "Trustworthy ads UX ruleset (Nextdoor)"
+  16: "Multi-placement campaigns (Reddit)"
+  17: "Saved views + exports + recurring reports (Reddit)"
+  18: "3-click campaign creation (SMB friendly)"
+  19: "Why you're not winning auctions suggestions"
+  20: "Verified measurement + anti-IVT badge (Reddit)"
+  21: "Enhanced listing with promotions + CTA upsell (YP)"
+  22: "Beyond-call conversion menu as billable events (YP)"
+  23: "Sponsored Leaderboard: Top Operator — Sponsored"
+  24: "Sponsored Corridor Alerts: Sponsored by..."
+  25: "Retargeting pools: viewed profile → show ad later (Nextdoor)"
+
+social_25_items:
+  1: "Share buttons everywhere (foundational)"
+  2: "Per-page OG/Twitter preview generation (Tumblr)"
+  3: "Canonical URL enforcement for share integrity"
+  4: "Share templates per entity type (Tumblr)"
+  5: "Share Spread Map tracking (Reblog Graph)"
+  6: "Follow Operator / Follow Corridor (Nextdoor Faves)"
+  7: "Public follow count next to name"
+  8: "Broker-recommends-operator workflow (Nextdoor core)"
+  9: "Corridor Faves awards page"
+  10: "Auto-posting: new review, new claim, leaderboard move"
+  11: "Country-specific channel defaults (WhatsApp priority)"
+  12: "Quote from up to 3 operators share card (Angi CTA)"
+  13: "Social proof blocks: active now, loads today, response time"
+  14: "Operator badge shelf (awards + trust, Angi model)"
+  15: "Review response prompts (Angi)"
+  16: "Local decision maker framing on landing pages (Nextdoor)"
+  17: "Business Page concept for brokers/ports (Nextdoor)"
+  18: "Posts feature: corridor updates followers receive"
+  19: "Built-in creative quality checks (Nextdoor)"
+  20: "One-click share to WhatsApp/SMS for dominant markets"
+  21: "Social login → trust boost (compounds with existing)"
+  22: "UTM + attribution for every share surface"
+  23: "Auto-generated share-this-operator microcopy per country"
+  24: "Invite 1 broker referral loop (credits as incentive)"
+  25: "Share-to-unlock limited feature (where non-spammy)"

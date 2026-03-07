@@ -1,0 +1,123 @@
+# ============================================================
+# HAUL COMMAND — PORT DOMINATION LAYER
+# 9,000–15,000 heavy-haul-relevant ports globally
+# ============================================================
+
+project: haul_command_port_domination_layer
+mission: >
+  Identify, classify, and dominate all heavy-haul-relevant ports and
+  marine terminals globally to establish Haul Command as the default
+  logistics discovery layer for oversize and project cargo movements.
+
+coverage_policy:
+  include_if:
+    - handles_project_cargo
+    - handles_heavy_equipment
+    - handles_wind_components
+    - handles_mining_equipment
+    - handles_breakbulk
+    - handles_ro_ro
+    - handles_large_container_flows
+    - connected_to_heavy_industry_region
+  exclude_if: [marina_only, recreational_only, fishing_small_scale, no_heavy_truck_egress]
+
+scale_targets:
+  conservative: 9000
+  aggressive: 15000
+  stretch: 20000
+
+# ============================================================
+# PORT DISCOVERY + SCORING
+# ============================================================
+discovery_engine:
+  sources:
+    - national_port_authorities
+    - maritime_administration_datasets
+    - openstreetmap_port_features
+    - breakbulk_terminal_lists
+    - ro_ro_terminal_lists
+    - wind_component_ports
+    - mining_export_terminals
+    - internal_load_origins
+    - carrier_route_data
+  processing: [deduplicate, normalize_names, geo_validate, attach_country, detect_heavy_haul, score]
+
+relevance_scoring:
+  range: 0-100
+  factors:
+    breakbulk_capability: 0-20
+    ro_ro_capability: 0-15
+    project_cargo_history: 0-20
+    industrial_density_nearby: 0-15
+    corridor_connectivity: 0-10
+    search_demand_proxy: 0-10
+    competition_gap: 0-10
+  tiers:
+    tier_1_dominate: ">= 70"
+    tier_2_build: "50-69"
+    tier_3_monitor: "< 50"
+
+# ============================================================
+# PORT PAGE FACTORY
+# ============================================================
+page_factory:
+  url: "/ports/[country]/[port-slug]"
+  modules:
+    - port_overview
+    - cargo_capabilities
+    - heavy_haul_relevance_explainer
+    - connected_corridors
+    - nearby_industrial_zones
+    - escort_requirements_summary
+    - recent_load_activity
+    - faq_block
+    - structured_data_bundle
+  quality:
+    min_unique_data_points: 12
+    min_internal_links: 10
+    require_corridor_connection: true
+    noindex_until_score: 82
+  schema: [Dataset, LocalBusiness, FAQPage, BreadcrumbList, ItemList]
+
+# ============================================================
+# PORT-CORRIDOR FUSION
+# ============================================================
+corridor_fusion:
+  logic:
+    - map_port_to_top_corridors
+    - map_port_to_industrial_clusters
+    - map_port_to_border_crossings
+    - map_port_to_load_board_activity
+  outputs: [port_heatmap, corridor_from_port_pages, surge_risk]
+
+escort_supply_overlay:
+  metrics: [escorts_within_radius, demand_estimate, shortage_index, surge_probability]
+  outputs: [liquidity_badge, shortage_alerts, recruitment_flags]
+
+load_board_integration:
+  features: [port_origin_filter, jobposting_schema, hot_port_badge, recently_moved_strip, live_counter]
+
+# ============================================================
+# ROLLOUT (6,200 ports across 4 phases)
+# ============================================================
+rollout:
+  phase_1_north_america: {ports: 3500, focus: "breakbulk + ro-ro + energy"}
+  phase_2_tier_a: {ports: 1200}
+  phase_3_tier_b: {ports: 900}
+  phase_4_tier_c: {ports: 600}
+
+monetization:
+  - sponsored_port_slots
+  - priority_port_visibility
+  - surge_recruitment_boosts
+  - broker_featured_origins
+  - enterprise_data_api_future
+
+measurement:
+  dashboards: [port_rankings, port_corridor_flow, shortage_heatmap, conversion_rate, app_installs]
+  alerts: [emerging_port, supply_gap, index_drop, crawl_issue]
+
+execution_priority:
+  immediate: [port_discovery, relevance_scoring, page_factory_v1, corridor_fusion]
+  next_wave: [escort_overlay, load_board_integration, heatmaps]
+  advanced: [predictive_demand, cross_border_intel, surge_pricing]

@@ -14,13 +14,19 @@ const fetcher = async (query: string) => {
     const region = uri.searchParams.get('region');
 
     if (type === 'city_stats') {
-        // In full prod, query `profiles` and `loads`. For P3 baseline/synthetic bootstrap:
-        // We deterministically seed from region hash if DB is empty to prevent thin-content deindexing
+        // P1: No random data. Query real tables when available.
+        // Return null to trigger SWR fallbackData (static, truthful defaults).
+        const supabase = createClient();
+        const { data } = await supabase
+            .from('directory_listings')
+            .select('id', { count: 'exact', head: true })
+            .ilike('city', region ?? '');
+
         return {
-            loads_24h: Math.floor(Math.random() * 10) + 2, // 2-11
-            active_drivers: Math.floor(Math.random() * 5) + 3, // 3-7
-            avg_rate_last_30d: 1.85 + (Math.random() * 0.4), // 1.85 - 2.25
-            surge_probability: Math.random() > 0.7 ? 'High' : 'Low',
+            loads_24h: null,           // Not yet tracked per-city
+            active_drivers: data ?? 0, // Real listing count
+            avg_rate_last_30d: null,   // Not yet aggregated
+            surge_probability: null,   // Not yet computed
             last_updated: new Date().toISOString()
         };
     }

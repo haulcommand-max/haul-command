@@ -1,0 +1,429 @@
+{
+    "scrape_date": "2026-02-28T23:41:00Z",
+    "enrichment_date": "2026-03-01T00:01:00Z",
+    "source": "pilotcarloads.com + web enrichment",
+    "total_brokers": 30,
+    "brokers_with_phones": 24,
+    "brokers_missing_phones": 6,
+    "brokers": [
+        {
+            "company_name": "Bonnie Blue HH",
+            "phone": "(918) 810-9868",
+            "phone_source": "pcl_direct",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "M&L Express LLC",
+            "phone": "(240) 217-1663",
+            "phone_source": "pcl_direct",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay",
+                "Text Only"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "373 Cargo Incorporated",
+            "phone": "(224) 804-0447",
+            "phone_source": "pcl_direct",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay",
+                "Text Only"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 2
+        },
+        {
+            "company_name": "Midwest Pilot Cars",
+            "phone": "(605) 670-9654",
+            "phone_source": "pcl_direct",
+            "id_verified": true,
+            "tags": [
+                "Text Only"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1,
+            "notes": "Cross-border US-Canada loads"
+        },
+        {
+            "company_name": "Angie's Pilot Car, llc",
+            "phone": "(918) 638-5878",
+            "phone_source": "pcl_direct",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 2,
+            "aliases": [
+                "Angie's PCS - must have Louisana"
+            ]
+        },
+        {
+            "company_name": "JLS Pilot Car Services",
+            "phone": "(678) 873-5016",
+            "phone_alt": "(678) 807-5751",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "bbb.org",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "contact_person": "Jodi Smith",
+            "loads_posted": 7,
+            "notes": "Highest volume broker — 7 loads across 11 states"
+        },
+        {
+            "company_name": "Ace Convoy Pilot Escorts",
+            "phone": "(572) 568-7183",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "aceconvoy.com",
+            "id_verified": true,
+            "tags": [],
+            "website": "aceconvoy.com",
+            "email": null,
+            "location": null,
+            "loads_posted": 2,
+            "notes": "24/7 availability"
+        },
+        {
+            "company_name": "RDJ Trucking",
+            "phone": "(641) 414-4998",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "brokersnapshot.com",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": "rdjtrucking18@gmail.com",
+            "location": "Osceola, IA",
+            "loads_posted": 2,
+            "notes": "Transports large machinery and oilfield equipment"
+        },
+        {
+            "company_name": "patelpcs",
+            "phone": "(866) 795-0150",
+            "phone_alt": "(785) 206-0065",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "truckstopsandservices.com",
+            "id_verified": true,
+            "tags": [],
+            "website": "365pilots.com",
+            "email": "PATELPCS@YAHOO.COM",
+            "location": null,
+            "loads_posted": 5,
+            "aliases": [
+                "patelpcs 2 cars",
+                "patelpcs 14'7"
+            ],
+            "notes": "24/7 dispatch, nationwide service, fully equipped and certified"
+        },
+        {
+            "company_name": "VIDALIA DISPATCH SERVICE INC",
+            "phone": "(972) 635-2480",
+            "phone_alt": "(870) 397-2165",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "vidaliadispatch.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "vidaliadispatch.com",
+            "email": "billingdept@vidaliadispatch.com",
+            "location": "539 Alexander Ranch Ln, Royse City, TX 75189",
+            "loads_posted": 1
+        },
+        {
+            "company_name": "American heavy haul",
+            "phone": "(419) 293-5333",
+            "phone_alt": "(614) 515-6560",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "americanheavyhaul.net",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "americanheavyhaul.net",
+            "email": null,
+            "location": "Ohio",
+            "loads_posted": 1,
+            "notes": "Specializes in superload transportation in Ohio"
+        },
+        {
+            "company_name": "KEENCO Transport, LLC",
+            "phone": "(832) 515-5630",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "keencotransport.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "keencotransport.com",
+            "email": null,
+            "location": "Groveton, TX",
+            "loads_posted": 1
+        },
+        {
+            "company_name": "Ace Transports LLC",
+            "phone": "(620) 205-9368",
+            "phone_alt": "(620) 205-9471",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "brokersnapshot.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "acetransportsllc.com",
+            "email": null,
+            "location": "Cherryvale, KS",
+            "contact_person": "Tyler Edwards",
+            "loads_posted": 2,
+            "notes": "Specializes in dry van, platform, and specialized freight"
+        },
+        {
+            "company_name": "Blue Ridge Pilot Cars",
+            "phone": "(540) 532-7428",
+            "phone_alt": "(540) 931-1545",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "blueridgepilotcar.com",
+            "id_verified": true,
+            "tags": [],
+            "website": "blueridgepilotcar.com",
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "First Response Pilot Cars",
+            "phone": "(423) 355-0213",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "uspilotcars.com",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": "Chattanooga, TN",
+            "loads_posted": 1
+        },
+        {
+            "company_name": "MY PEVO (Drive With Us)",
+            "phone": "(478) 249-4902",
+            "phone_alt": "(704) 766-8664",
+            "phone_alt2": "(980) 580-8855",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "mypevo.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "mypevo.com",
+            "email": "dispatch@mypevo.com",
+            "location": null,
+            "loads_posted": 1,
+            "notes": "Also known as Drive With Us LLC"
+        },
+        {
+            "company_name": "Aldarelli Enterprises LLC",
+            "phone": "(732) 403-9286",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "dot.gov / brokersnapshot.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "Lowboy Services Inc",
+            "phone": "(561) 708-0506",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "dot.gov",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": "Bunnell, FL 32110",
+            "loads_posted": 1,
+            "notes": "Specializes in large machinery transport"
+        },
+        {
+            "company_name": "Band Specialized",
+            "phone": "(630) 339-4985",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "bandspecialized.com",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": "bandspecialized.com",
+            "email": "ab@bandspecialized.com",
+            "location": "Aurora, IL",
+            "loads_posted": 1,
+            "notes": "Over-dimensional and overweight load trucking"
+        },
+        {
+            "company_name": "GATOR TRANSPORT",
+            "phone": "(352) 799-3788",
+            "phone_alt": "(352) 796-2619",
+            "phone_source": "web_enrichment",
+            "phone_source_url": "gatortransport.net",
+            "id_verified": true,
+            "tags": [],
+            "website": "gatortransport.net",
+            "email": null,
+            "location": "Brooksville, FL",
+            "loads_posted": 1,
+            "notes": "Heavy haul — bridge beams, wind components, power plant turbines"
+        },
+        {
+            "company_name": "North American Pilot Car Service",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [],
+            "website": "na-pcs.com",
+            "email": null,
+            "location": null,
+            "loads_posted": 3,
+            "notes": "24/7 access, may be NA-PCS (North American PCS)"
+        },
+        {
+            "company_name": "Adel Transportation",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "Reliable Transport LLC",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 2,
+            "notes": "Multiple companies with this name — couldn't confirm exact match"
+        },
+        {
+            "company_name": "Dispatch",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 2,
+            "notes": "Too generic a name to find — likely individual operator"
+        },
+        {
+            "company_name": "CHASE Transportation LLC",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1,
+            "notes": "Multiple companies with this name — couldn't confirm which"
+        },
+        {
+            "company_name": "Cmb enterprises inc",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": "Florida",
+            "loads_posted": 1,
+            "notes": "CMB Transport LLC in Jacksonville FL may be related: (904) 444-9310"
+        },
+        {
+            "company_name": "US Freight .inc",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1,
+            "notes": "Multiple companies with similar names — couldn't confirm"
+        },
+        {
+            "company_name": "DBurk Permit Solutions",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 1
+        },
+        {
+            "company_name": "Valley Transportation",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": null,
+            "loads_posted": 2,
+            "notes": "Multiple companies with this name — couldn't confirm which"
+        },
+        {
+            "company_name": "Edgemont Pilots LLC",
+            "phone": null,
+            "phone_source": "not_found",
+            "id_verified": true,
+            "tags": [
+                "Quick Pay"
+            ],
+            "website": null,
+            "email": null,
+            "location": "Hedgesville, WV 25427",
+            "contact_person": "Dylan Miss",
+            "loads_posted": 1,
+            "notes": "Registered WV Secretary of State — 2733 Mountain Lake Rd"
+        }
+    ]
+}

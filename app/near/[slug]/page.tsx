@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
-import { getCityData } from '@/lib/seo/programmatic-data';
+import { getCityData, getProviderStats } from '@/lib/seo/programmatic-data';
 import { notFound } from 'next/navigation';
 
 export default async function RadiusPage({ params }: { params: { slug: string } }) {
@@ -30,6 +30,9 @@ export default async function RadiusPage({ params }: { params: { slug: string } 
     if (!cityData) {
         notFound();
     }
+
+    // P1: Get real provider count from DB
+    const stats = await getProviderStats(citySlug, 'pilot-car');
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4">
@@ -66,7 +69,7 @@ export default async function RadiusPage({ params }: { params: { slug: string } 
                             className="block p-4 bg-white rounded-lg border border-slate-200 hover:border-blue-500 transition-colors"
                         >
                             <span className="font-medium text-slate-900 capitalize">{nearbySlug.replace(/-/g, ' ')}</span>
-                            <span className="block text-xs text-slate-500 mt-1">~{Math.floor(Math.random() * radius)} miles away</span>
+                            <span className="block text-xs text-slate-500 mt-1">Nearby</span>
                         </Link>
                     ))}
                 </div>
@@ -76,7 +79,9 @@ export default async function RadiusPage({ params }: { params: { slug: string } 
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">Active Providers Nearby</h2>
                 <div className="bg-slate-50 p-6 rounded-xl text-center border border-slate-200">
                     <p className="text-lg text-slate-700 mb-4">
-                        We found <strong>{Math.floor(Math.random() * 20) + 5} verified providers</strong> in this coverage zone.
+                        {stats.count > 0
+                            ? <>We found <strong>{stats.count} provider{stats.count !== 1 ? 's' : ''}</strong> in this coverage zone.</>
+                            : <>Coverage is building in this area. <strong>Check back soon.</strong></>}
                     </p>
                     <Link
                         href={`/${country}/${state}/${citySlug}/pilot-car`}

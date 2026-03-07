@@ -1,0 +1,189 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://haulcommand.com/schemas/event-envelope/hc.v1.json",
+    "title": "Haul Command Event Envelope",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "event_id",
+        "event_type",
+        "event_version",
+        "occurred_at",
+        "produced_at",
+        "source",
+        "actor",
+        "context",
+        "payload"
+    ],
+    "properties": {
+        "event_id": {
+            "type": "string",
+            "description": "UUID v4 string"
+        },
+        "event_type": {
+            "type": "string",
+            "description": "Dot-delimited domain event type"
+        },
+        "event_version": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "occurred_at": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "produced_at": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "trace_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "app",
+                "env",
+                "component"
+            ],
+            "properties": {
+                "app": {
+                    "type": "string"
+                },
+                "env": {
+                    "type": "string",
+                    "enum": [
+                        "local",
+                        "dev",
+                        "staging",
+                        "prod"
+                    ]
+                },
+                "component": {
+                    "type": "string"
+                },
+                "source_ref": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "actor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "actor_type",
+                "actor_id"
+            ],
+            "properties": {
+                "actor_type": {
+                    "type": "string",
+                    "enum": [
+                        "system",
+                        "broker",
+                        "operator",
+                        "admin",
+                        "anonymous"
+                    ]
+                },
+                "actor_id": {
+                    "type": "string"
+                },
+                "org_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "context": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "country_code",
+                "region_code"
+            ],
+            "properties": {
+                "country_code": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2
+                },
+                "region_code": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "corridor_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "lane_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "h3_res9": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "device_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ip_hash": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "user_agent": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "payload": {
+            "type": "object",
+            "description": "Event-specific payload"
+        },
+        "integrity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "payload_sha256"
+            ],
+            "properties": {
+                "payload_sha256": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        }
+    }
+}

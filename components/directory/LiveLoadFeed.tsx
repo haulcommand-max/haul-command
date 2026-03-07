@@ -101,9 +101,9 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                                 {l.currency} {l.rate_offer.toLocaleString()}
                             </span>
                         )}
-                        {/* Fill Speed Predictor */}
-                        <span style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa', padding: '4px 8px', borderRadius: 6, fontWeight: 800, textTransform: 'uppercase' }}>
-                            {Math.random() > 0.5 ? '⚡ Likely fast match' : '⏳ May take time'}
+                        {/* Fill Speed — truthful label (no random) */}
+                        <span style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa', padding: '4px 8px', borderRadius: 6, fontWeight: 800, textTransform: 'uppercase', fontSize: 11 }}>
+                            Match estimate pending
                         </span>
                     </div>
                     {/* Condensed Broker Trust */}

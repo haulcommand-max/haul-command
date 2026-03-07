@@ -28,9 +28,16 @@ export async function registerForPush() {
     if (!token) return null;
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-        await supabase.from('hc_push_tokens').upsert(
-            { profile_id: session.user.id, fcm_token: token, device_type: 'web', is_active: true, last_used_at: new Date().toISOString() },
-            { onConflict: 'profile_id,fcm_token' }
+        // Consolidated: write to push_tokens (canonical table)
+        await supabase.from('push_tokens').upsert(
+            {
+                profile_id: session.user.id,
+                token,
+                platform_new: 'web',
+                last_seen_at: new Date().toISOString(),
+                enabled: true,
+            },
+            { onConflict: 'profile_id,device_id' }
         );
     }
     return token;

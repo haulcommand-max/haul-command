@@ -5,8 +5,11 @@ import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { A2HSPrompt } from "@/components/pwa/A2HSPrompt";
 import { HeartbeatMount } from "@/components/presence/HeartbeatMount";
 import { FastWinContainer } from "@/components/engagement/FastWinReinforcement";
+import { NativeBootstrap } from "@/components/mobile/NativeBootstrap";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { AuthStatusBanner } from "@/components/dev/AuthStatusBanner";
+import SmartAppBanner from "@/components/growth/SmartAppBanner";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -36,7 +39,69 @@ export const metadata: Metadata = {
     creator: 'Haul Command',
     publisher: 'Haul Command',
     metadataBase: new URL('https://haulcommand.com'),
-    alternates: { canonical: '/' },
+    alternates: {
+        canonical: '/',
+        languages: {
+            // Tier A — Gold (10)
+            'en-US': 'https://haulcommand.com',
+            'en-CA': 'https://haulcommand.com/ca',
+            'en-AU': 'https://haulcommand.com/au',
+            'en-GB': 'https://haulcommand.com/gb',
+            'en-NZ': 'https://haulcommand.com/nz',
+            'en-ZA': 'https://haulcommand.com/za',
+            'de-DE': 'https://haulcommand.com/de',
+            'nl-NL': 'https://haulcommand.com/nl',
+            'ar-AE': 'https://haulcommand.com/ae',
+            'pt-BR': 'https://haulcommand.com/br',
+            // Tier B — Blue (15)
+            'en-IE': 'https://haulcommand.com/ie',
+            'sv-SE': 'https://haulcommand.com/se',
+            'nb-NO': 'https://haulcommand.com/no',
+            'da-DK': 'https://haulcommand.com/dk',
+            'fi-FI': 'https://haulcommand.com/fi',
+            'nl-BE': 'https://haulcommand.com/be',
+            'de-AT': 'https://haulcommand.com/at',
+            'de-CH': 'https://haulcommand.com/ch',
+            'es-ES': 'https://haulcommand.com/es',
+            'fr-FR': 'https://haulcommand.com/fr',
+            'it-IT': 'https://haulcommand.com/it',
+            'pt-PT': 'https://haulcommand.com/pt',
+            'ar-SA': 'https://haulcommand.com/sa',
+            'ar-QA': 'https://haulcommand.com/qa',
+            'es-MX': 'https://haulcommand.com/mx',
+            // Tier C — Silver (24)
+            'pl-PL': 'https://haulcommand.com/pl',
+            'cs-CZ': 'https://haulcommand.com/cz',
+            'sk-SK': 'https://haulcommand.com/sk',
+            'hu-HU': 'https://haulcommand.com/hu',
+            'sl-SI': 'https://haulcommand.com/si',
+            'et-EE': 'https://haulcommand.com/ee',
+            'lv-LV': 'https://haulcommand.com/lv',
+            'lt-LT': 'https://haulcommand.com/lt',
+            'hr-HR': 'https://haulcommand.com/hr',
+            'ro-RO': 'https://haulcommand.com/ro',
+            'bg-BG': 'https://haulcommand.com/bg',
+            'el-GR': 'https://haulcommand.com/gr',
+            'tr-TR': 'https://haulcommand.com/tr',
+            'ar-KW': 'https://haulcommand.com/kw',
+            'ar-OM': 'https://haulcommand.com/om',
+            'ar-BH': 'https://haulcommand.com/bh',
+            'en-SG': 'https://haulcommand.com/sg',
+            'ms-MY': 'https://haulcommand.com/my',
+            'ja-JP': 'https://haulcommand.com/jp',
+            'ko-KR': 'https://haulcommand.com/kr',
+            'es-CL': 'https://haulcommand.com/cl',
+            'es-AR': 'https://haulcommand.com/ar',
+            'es-CO': 'https://haulcommand.com/co',
+            'es-PE': 'https://haulcommand.com/pe',
+            // Tier D — Slate (3)
+            'es-UY': 'https://haulcommand.com/uy',
+            'es-PA': 'https://haulcommand.com/pa',
+            'es-CR': 'https://haulcommand.com/cr',
+            // x-default fallback
+            'x-default': 'https://haulcommand.com',
+        },
+    },
     openGraph: {
         type: 'website',
         locale: 'en_US',
@@ -44,18 +109,19 @@ export const metadata: Metadata = {
         siteName: 'Haul Command',
         title: 'Haul Command — Real-Time Escort Intelligence for Heavy Haul',
         description: 'Find verified pilot cars & escort vehicles. Post loads. Get matched in minutes. The #1 oversize load operating system.',
-        images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Haul Command' }],
+        images: [{ url: '/brand/generated/og-1200x630.png', width: 1200, height: 630, alt: 'Haul Command' }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Haul Command — Real-Time Escort Intelligence for Heavy Haul',
         description: 'Find verified pilot cars & escort vehicles. Post loads. Get matched in minutes.',
-        images: ['/og-image.png'],
+        images: ['/brand/generated/og-1200x630.png'],
     },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     icons: {
-        icon: '/logo.png',
-        apple: '/logo.png',
+        icon: '/brand/favicon.svg',
+        shortcut: '/brand/generated/favicon-32.png',
+        apple: '/brand/generated/ios-appicon-180.png',
     },
     manifest: '/manifest.json',
 };
@@ -65,6 +131,7 @@ export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 5,
+    viewportFit: 'cover', // PATCH-002: Required for env(safe-area-inset-*) to work
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -79,7 +146,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "@type": "Organization",
                         "name": "Haul Command",
                         "url": "https://haulcommand.com",
-                        "logo": "https://haulcommand.com/logo.png",
+                        "logo": "https://haulcommand.com/brand/logo.svg",
                         "description": "The global operating system for heavy haul. Verified pilot car directory, oversize load board, and corridor intelligence.",
                         "sameAs": [
                             "https://twitter.com/haulcommand",
@@ -89,21 +156,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             "@type": "ContactPoint",
                             "contactType": "customer support",
                             "url": "https://haulcommand.com/contact",
-                            "areaServed": ["US", "CA", "GB", "AU"],
-                            "availableLanguage": "English",
+                            "areaServed": ["US", "CA", "GB", "AU", "NZ", "ZA", "DE", "NL", "AE", "BR", "IE", "SE", "NO", "DK", "FI", "BE", "AT", "CH", "ES", "FR", "IT", "PT", "SA", "QA", "MX", "PL", "CZ", "SK", "HU", "SI", "EE", "LV", "LT", "HR", "RO", "BG", "GR", "TR", "KW", "OM", "BH", "SG", "MY", "JP", "KR", "CL", "AR", "CO", "PE", "UY", "PA", "CR"],
+                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese", "Dutch", "Italian", "Arabic", "Japanese", "Korean", "Turkish", "Polish"],
                         },
                     })
                 }} />
             </head>
-            <body className="bg-hc-bg text-hc-text font-sans antialiased min-h-screen">
+            <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
+                <SmartAppBanner />
                 {children}
 
                 <ServiceWorkerRegister />
                 <A2HSPrompt />
                 <HeartbeatMount />
                 <FastWinContainer />
+                <NativeBootstrap />
                 <Analytics />
                 <SpeedInsights />
+                <AuthStatusBanner />
                 {process.env.NEXT_PUBLIC_GA_ID && (
                     <>
                         <Script

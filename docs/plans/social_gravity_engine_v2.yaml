@@ -1,0 +1,42 @@
+# ============================================
+# SOCIAL GRAVITY ENGINE v2 — HAUL COMMAND
+# Purpose: Maximize DAU, retention, and AdGrid yield
+# Strategy: Presence → Pressure → Proof → Personalization → Profit
+# ============================================
+# Saved as permanent reference — do not edit this spec file.
+# Implementation lives in core/social/*.ts
+
+social_gravity_engine:
+  version: 2.0
+  owner: haul_command
+  status: deploy_ready
+
+  behavior_loop:
+    stages: [trigger, curiosity, action, reward, return_pressure]
+    kpis:
+      target_dau_lift: 2.5x
+      target_session_frequency: 3.0x
+      target_profile_completion_lift: 2.0x
+      target_adgrid_yield_lift: 2.2x
+
+  modules:
+    - watchlist_engine
+    - urgency_engine
+    - adgrid_amplifier
+    - reactivation_engine
+    - local_liquidity_amplifier (v2.1)
+
+# v2.1 Florida Rectangle Hyper-Local Mode
+social_gravity_engine_v21:
+  version: 2.1
+  extends: social_gravity_engine_v2
+  deployment_mode: hyper_local_acceleration
+  geography_focus:
+    primary_region: florida_rectangle
+    base_city: cross_city_fl
+    expansion_nodes:
+      - gainesville_fl
+      - ocala_fl
+      - lake_city_fl
+      - jacksonville_fl
+      - tampa_fl

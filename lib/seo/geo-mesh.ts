@@ -9,8 +9,8 @@ export function getNearbyCities(currentCity: GeoLocation, count: number = 8): st
         return currentCity.nearbyCities.slice(0, count);
     }
 
-    // Fallback
-    return ['Nearby City 1', 'Nearby City 2', 'Nearby City 3'];
+    // No nearby cities data available — return empty to avoid fake city names on SEO pages
+    return [];
 }
 
 // Generate URL for a city service page

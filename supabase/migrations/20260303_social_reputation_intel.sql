@@ -1,0 +1,14 @@
+-- =========================================================
+-- Social + Reputation + Live Intel Layer — Applied 2026-03-03T20:34 EST
+--
+-- 7 Migrations (Social Layer):
+--   1. social_profiles_feed_reactions   — Profile extension + social posts + media + reactions + comments
+--   2. social_follows_notifications     — Follow graph + notification inbox + RPCs
+--   3. reviews_verification_system      — Report Card v2 + review forms + category scores + verifications
+--   4. corridor_conversations_ports     — Corridor threads (auto-seeded topics) + ports + messages
+--   5. live_intel_waze_style            — Intel reports + trust-weighted confidence + pings + decay
+--   6. messaging_quotes_recommendations — DM/quotes + recommendations + equipment photos
+--   7. social_post_rpc_tag_discovery    — Social post + react + comment RPCs + feed query + tag stats
+--
+-- 23 tables, 15 RPCs, 6 triggers, 2 seeded review forms
+-- =========================================================

@@ -1,12 +1,23 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { enterpriseGate, logResponseMetrics } from '@/lib/enterprise/auth-middleware';
 
 /**
  * POST /api/enterprise/fill/probability
  * Fill probability estimator API
+ *
+ * Auth: Enterprise API key required (X-API-Key header)
+ * Product: operations_optimizer (pro_intelligence tier+)
  */
 export async function POST(req: NextRequest) {
+    const startMs = Date.now();
+
+    // ── Auth + Entitlement Gate ────────────────────────────────
+    const gate = await enterpriseGate(req, 'operations_optimizer');
+    if (gate.error) return gate.error;
+    const ctx = gate.context!;
+
     try {
         const body = await req.json();
         const { corridor_id, escorts_required, urgency_level, time_to_start_hours, miles } = body;
@@ -23,7 +34,13 @@ export async function POST(req: NextRequest) {
         });
 
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json(data);
+
+        await logResponseMetrics(ctx, 1, Date.now() - startMs);
+
+        return NextResponse.json({
+            ...data,
+            meta: { tier: ctx.tier, product: 'operations_optimizer' },
+        });
     } catch {
         return NextResponse.json({ error: 'Internal error' }, { status: 500 });
     }

@@ -1,0 +1,179 @@
+# ============================================================
+# HAUL COMMAND — MASTER SWITCHBOARD
+# US Domination → Global Expansion + Surface Registry
+# ============================================================
+
+haul_command_global_control:
+  version: "1.0"
+  objective: >
+    Concentrate liquidity and revenue in the United States first,
+    then autonomously graduate other countries based on real market signals,
+    while maintaining a globally consistent but locally unique surface footprint.
+
+# ============================================================
+# PART 1 — US DOMINATION → GLOBAL EXPANSION SWITCHBOARD
+# ============================================================
+
+us_to_global_switchboard:
+
+  philosophy:
+    primary_liquidity_engine: "United States"
+    secondary_engine: "Canada"
+    expansion_mode: "data_driven_autonomous"
+    manual_country_launch_required: false
+
+  us_domination_targets:
+    liquidity:
+      fill_rate_min: 0.75
+      median_time_to_first_response_minutes: 15
+      capacity_ratio_min: 0.9
+    engagement:
+      operator_repeat_rate_min: 0.40
+      broker_repeat_rate_min: 0.35
+      near_me_conversion_min: 0.08
+    monetization:
+      adgrid_activation_rate_min: 0.15
+      claim_conversion_rate_min: 0.12
+      pay_per_call_enabled: true
+    when_met_actions:
+      - unlock_canada_acceleration
+      - enable_global_soft_graduation
+      - increase_autonomy_levels
+
+  canada_acceleration:
+    unlock_condition: us_domination_achieved
+    matching_brain: smart_shortlist
+    pricing_negotiator: advisory
+    liquidity_balancer_aggression: medium
+    take_rate_mode: static_plus_tests
+    credit_multiplier: 1.1
+    graduation_requirements:
+      fill_rate_min: 0.65
+      operator_density_min: threshold
+      fraud_rate_below: threshold
+
+  global_graduation_engine:
+    evaluation_frequency_hours: 24
+
+    stage_0_seed:
+      description: "Indexed presence only"
+      automation_level: conservative
+      requirements: [indexed_pages]
+      features: [passive_claim_cta, basic_directory_visibility]
+
+    stage_1_liquidity:
+      description: "Early real usage"
+      automation_level: moderate
+      requirements: [impressions_30d_min, profile_views_present]
+      features: [email_outreach, smart_shortlist_matching, credit_boosts]
+
+    stage_2_growth:
+      description: "Stable marketplace signals"
+      automation_level: aggressive
+      requirements: [fill_rate_0.70, fraud_below_threshold, repeat_activity]
+      features: [dynamic_take_rate, pricing_negotiator, adgrid_expansion, vapi_calls]
+
+    stage_3_autonomous:
+      description: "Mature self-sustaining market"
+      automation_level: full
+      requirements: [fill_rate_0.82, repeat_rate_strong, 90_day_stability]
+      features: [guarded_auto_dispatch, full_adgrid, reduced_subsidies, surge_pricing]
+
+    promotion_rules:
+      promote_when_all_conditions_met: true
+      demotion_allowed: true
+      demotion_cooldown_days: 30
+      manual_override_available: true
+
+  data_confidence_weighting:
+    high_confidence: {countries: [US, CA], multiplier: 1.0}
+    medium_confidence: {tier: B, multiplier: 0.7}
+    low_confidence: {tier: [C, D], multiplier: 0.45}
+    affects: [demand_forecast, matching_confidence, pricing, credits]
+
+# ============================================================
+# PART 2 — GLOBAL SURFACE TYPE REGISTRY (50+ per country)
+# ============================================================
+
+global_surface_type_registry:
+  version: "1.0"
+  target_surface_types_per_country: 50_plus
+  localization_required: true
+  glossary_weaving_required: true
+  thin_page_guard: enabled
+
+  tier_A_high_claim:
+    pilot_car_equipment_suppliers:
+      claim_probability: high
+      seo_value: high
+      examples:
+        - escort_light_bar_vendors
+        - oversize_banner_suppliers
+        - pilot_car_flag_vendors
+        - magnetic_sign_printers
+        - escort_vehicle_outfitters
+    permit_service_companies:
+      claim_probability: high
+      seo_value: high
+      examples:
+        - oversize_permit_expediters
+        - permit_filing_services
+        - permit_consultants
+    escort_training_providers:
+      claim_probability: medium_high
+      seo_value: high
+      examples:
+        - pilot_car_certification_schools
+        - escort_flagger_training
+        - state_cert_programs
+    heavy_haul_dispatch_services:
+      claim_probability: medium_high
+      seo_value: high
+      examples:
+        - oversize_dispatch_firms
+        - project_logistics_coordinators
+    vehicle_upfit_shops:
+      claim_probability: medium_high
+      seo_value: medium_high
+      examples:
+        - fleet_upfitters
+        - lighting_installers
+        - commercial_vehicle_accessories
+
+  tier_B_ecosystem:
+    weigh_station_clusters:
+      claim_probability: low
+      seo_value: high
+    truck_parking_megalots:
+      claim_probability: low
+      seo_value: medium_high
+    dot_district_offices:
+      claim_probability: very_low
+      seo_value: high
+    route_planning_services:
+      claim_probability: medium
+      seo_value: high
+    heavy_equipment_dealers:
+      claim_probability: medium
+      seo_value: medium_high
+      focus_only: [crane_dealers, modular_dealers, large_ag_dealers]
+
+  tier_C_corridor_intel:
+    oversize_chokepoints: {claim: none, seo: very_high}
+    low_clearance_clusters: {claim: none, seo: very_high}
+    seasonal_restriction_zones: {claim: none, seo: high}
+    mountain_pass_routes: {claim: none, seo: high}
+    hurricane_sensitive_corridors: {claim: none, seo: high}
+    snow_chain_control_corridors: {claim: none, seo: high}
+
+  exclusion_rules:
+    avoid: [gas_stations, generic_rest_areas, unrelated_repair_shops, broad_logistics_noise]
+    require_relevance_score_min: threshold
+    require_entity_uniqueness: true
+    require_country_localization: true
+
+  monetization_flags:
+    sponsor_eligible_high: [major_ports, primary_corridors, major_metros, industrial_zones]
+    sponsor_eligible_medium: [equipment_suppliers, permit_services, dispatch_services]
+    claim_pricing_tiers_enabled: true
+    surface_level_ad_inventory_ready: true

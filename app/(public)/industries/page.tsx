@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Truck, MapPin } from "lucide-react";
+import { NativeAdCard } from "@/components/ads/NativeAdCard";
 import { LOAD_TYPES, PILOT_CAR_STATES } from "@/lib/seo/pilot-car-taxonomy";
 
 export const metadata: Metadata = {
@@ -66,6 +67,13 @@ export default function IndustriesIndexPage() {
                         </Link>
                     ))}
                 </div>
+
+                {/* Native Ad */}
+                <NativeAdCard
+                    surface="industries_mid"
+                    placementId="industries-below-verticals"
+                    variant="inline"
+                />
 
                 <div>
                     <h2 className="text-base font-black text-white mb-4">Pilot Car by State</h2>

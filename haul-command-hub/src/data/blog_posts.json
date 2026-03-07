@@ -1,0 +1,102 @@
+[
+    {
+        "title": "The 2026 Superload Strategy: Navigating the Texas Triangle",
+        "excerpt": "Why Texas handles more massive freight than any other state and how to coordinate your next police escort.",
+        "category": "Operations",
+        "date": "2026-02-10",
+        "slug": "texas-superload-strategy",
+        "riskRating": "High",
+        "author": "Haul Command Intelligence",
+        "readTime": "8 min"
+    },
+    {
+        "title": "Escort Certification Reciprocity: A 50-State Guide",
+        "excerpt": "Stop doubling your costs. Learn which P/EVO certifications are recognized across state lines.",
+        "category": "Compliance",
+        "date": "2026-02-08",
+        "slug": "escort-reciprocity-guide",
+        "riskRating": "Low",
+        "author": "Haul Command Intelligence",
+        "readTime": "12 min"
+    },
+    {
+        "title": "Friday Move Chaos: Why End-of-Week Loads Cost 40% More",
+        "excerpt": "Data from 10,000+ loads reveals the Friday premium and how smart operators capitalize on it.",
+        "category": "Market Data",
+        "date": "2026-02-05",
+        "slug": "friday-move-premium",
+        "riskRating": "Medium",
+        "author": "Haul Command Intelligence",
+        "readTime": "6 min"
+    },
+    {
+        "title": "Police Escort Booking: State-by-State Lead Times & Rates",
+        "excerpt": "From Florida's 5-day minimum to California's 14-day window — the definitive police escort planning guide.",
+        "category": "Operations",
+        "date": "2026-02-01",
+        "slug": "police-escort-lead-times",
+        "riskRating": "High",
+        "author": "Haul Command Intelligence",
+        "readTime": "10 min"
+    },
+    {
+        "title": "Height Pole Operations: When Utility Coordination Becomes Critical",
+        "excerpt": "Loads over 16 feet trigger a cascade of utility notifications. Here's how to navigate the process without delays.",
+        "category": "Compliance",
+        "date": "2026-01-28",
+        "slug": "height-pole-utility-coordination",
+        "riskRating": "High",
+        "author": "Haul Command Intelligence",
+        "readTime": "7 min"
+    },
+    {
+        "title": "Wind Turbine Transport: The $50B Corridor No One Talks About",
+        "excerpt": "Blade lengths approaching 300 feet are rewriting escort requirements across the Great Plains states.",
+        "category": "Market Data",
+        "date": "2026-01-25",
+        "slug": "wind-turbine-transport-corridor",
+        "riskRating": "High",
+        "author": "Haul Command Intelligence",
+        "readTime": "9 min"
+    },
+    {
+        "title": "Night Move Permits: Which States Allow After-Dark Oversized Transport?",
+        "excerpt": "Only 12 states permit night movement of oversize loads. Know the rules before your next dispatch.",
+        "category": "Compliance",
+        "date": "2026-01-20",
+        "slug": "night-move-permits-by-state",
+        "riskRating": "Medium",
+        "author": "Haul Command Intelligence",
+        "readTime": "8 min"
+    },
+    {
+        "title": "The Escort Vehicle Equipment Checklist: 2026 Edition",
+        "excerpt": "Sign dimensions, beacon visibility, flag specs — a complete equipment compliance guide by state.",
+        "category": "Compliance",
+        "date": "2026-01-15",
+        "slug": "escort-vehicle-equipment-checklist",
+        "riskRating": "Low",
+        "author": "Haul Command Intelligence",
+        "readTime": "11 min"
+    },
+    {
+        "title": "Port-to-Site Heavy Haul: Optimizing the Last Mile",
+        "excerpt": "How top operators shave 30% off last-mile heavy haul costs using corridor intelligence and pre-staged escorts.",
+        "category": "Operations",
+        "date": "2026-01-10",
+        "slug": "port-to-site-heavy-haul",
+        "riskRating": "Medium",
+        "author": "Haul Command Intelligence",
+        "readTime": "7 min"
+    },
+    {
+        "title": "International Escort Standards: How 52 Countries Handle Oversize Loads",
+        "excerpt": "From Germany's BF3 system to Australia's OSOM permits — a global comparison of escort requirements.",
+        "category": "International",
+        "date": "2026-01-05",
+        "slug": "international-escort-standards",
+        "riskRating": "Low",
+        "author": "Haul Command Intelligence",
+        "readTime": "15 min"
+    }
+]

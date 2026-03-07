@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
+import { useSearchParams } from 'next/navigation';
 import { RecentlyFilledStrip } from '@/components/load-board/RecentlyFilledStrip';
 import { ScanModeCard } from '@/components/load-board/ScanModeCard';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 
 // ══════════════════════════════════════════════════════════════
 // HAUL COMMAND — 2026 COMMAND CENTER MAP BOARD
@@ -31,10 +33,16 @@ const T = {
 } as const;
 
 interface LoadRow {
+    id: string;
     load_id: string;
+    public_id?: string;
     posted_at: string;
-    origin_city: string; origin_state: string;
-    dest_city: string; dest_state: string;
+    origin_city: string;
+    origin_state: string;
+    origin_admin1?: string;
+    dest_city: string;
+    dest_state: string;
+    dest_admin1?: string;
     origin_lat?: number; origin_lng?: number;
     dest_lat?: number; dest_lng?: number;
     service_required: string;
@@ -43,11 +51,13 @@ interface LoadRow {
     status: string;
     is_boosted: boolean;
     fill_probability_60m: number | null;
+    fill_probability_01?: number | null; // From view
     hard_fill_label: string | null;
     load_quality_grade: string | null;
     lane_badges: string[] | null;
     load_rank: number | null;
     broker_trust_score: number | null;
+    rate_signal?: 'strong' | 'market' | 'below' | string;
     carvenum_color?: 'green' | 'yellow' | 'orange' | 'red' | 'unknown';
     rate_per_mile?: number;
 }
@@ -652,10 +662,26 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 // MAIN PAGE
 // ═══════════════════════════════════════════════════════
 export default function MapFirstLoadboard() {
+    return (
+        <Suspense fallback={<div style={{ background: T.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.textSecondary }}>Initializing radar...</div>}>
+            <MapFirstLoadboardContent />
+        </Suspense>
+    );
+}
+
+function MapFirstLoadboardContent() {
+    const searchParams = useSearchParams();
+    const qOrigin = searchParams.get('origin') ?? '';
+    const qDest = searchParams.get('destination') ?? '';
+    const qEquip = searchParams.get('equipment') ?? '';
+
+    // Build initial search string from hero search bar query params
+    const initialSearch = [qOrigin, qDest].filter(Boolean).join(' ');
+
     const [loads, setLoads] = useState<LoadRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'map' | 'list' | 'scan'>('map');
-    const [filters, setFilters] = useState<Filters>({ urgency: 'all', payMin: 0, boostedOnly: false, search: '' });
+    const [filters, setFilters] = useState<Filters>({ urgency: 'all', payMin: 0, boostedOnly: false, search: initialSearch });
     const [newLoadIds, setNewLoadIds] = useState<Set<string>>(new Set());
     const [selectedLoad, setSelectedLoad] = useState<LoadRow | null>(null);
     const refreshRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -673,21 +699,72 @@ export default function MapFirstLoadboard() {
             .order('load_rank', { ascending: false, nullsFirst: false })
             .order('posted_at', { ascending: false })
             .limit(200);
-        if (!error && data) setLoads(data as LoadRow[]);
+
+        if (!error && data) {
+            const mapped = data.map((d: any) => {
+                let rSignal = d.rate_signal;
+                let color: LoadRow['carvenum_color'] = 'unknown';
+                if (rSignal === 'strong') color = 'green';
+                else if (rSignal === 'market') color = 'yellow';
+                else if (rSignal === 'below') color = 'red';
+
+                return {
+                    ...d,
+                    load_id: d.id || d.load_id,
+                    origin_state: d.origin_admin1 || d.origin_state,
+                    dest_state: d.dest_admin1 || d.dest_state,
+                    carvenum_color: color,
+                    fill_probability_60m: d.fill_probability_01 ?? d.fill_probability_60m,
+                } as LoadRow;
+            });
+            setLoads(mapped);
+        }
         setLoading(false);
     }, []);
 
     useEffect(() => {
         fetchLoads();
-        refreshRef.current = setInterval(fetchLoads, 20000);
-        const channel = supabase.channel('loadboard-live-v3')
+        // No polling by default — realtime handles it. Fallback polling on channel error.
+        const mapPayload = (raw: any): LoadRow => ({
+            ...raw,
+            load_id: raw.id || raw.load_id,
+            origin_state: raw.origin_admin1 || raw.origin_state,
+            dest_state: raw.dest_admin1 || raw.dest_state,
+            carvenum_color: raw.rate_signal === 'strong' ? 'green' : raw.rate_signal === 'market' ? 'yellow' : raw.rate_signal === 'below' ? 'red' : 'unknown',
+            fill_probability_60m: raw.fill_probability_01 ?? raw.fill_probability_60m,
+        } as LoadRow);
+
+        const channel = supabase.channel('loadboard-live-v4')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'loads' }, (payload) => {
-                const nl = payload.new as LoadRow;
+                const nl = mapPayload(payload.new);
                 setLoads(prev => [nl, ...prev]);
                 setNewLoadIds(prev => new Set([...prev, nl.load_id]));
                 setTimeout(() => setNewLoadIds(prev => { const n = new Set(prev); n.delete(nl.load_id); return n; }), 3000);
             })
-            .subscribe();
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'loads' }, (payload) => {
+                const updated = mapPayload(payload.new);
+                setLoads(prev => prev.map(l => l.load_id === updated.load_id ? { ...l, ...updated } : l));
+            })
+            .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'loads' }, (payload) => {
+                const deletedId = payload.old?.id || payload.old?.load_id;
+                if (deletedId) {
+                    setLoads(prev => prev.filter(l => l.load_id !== deletedId));
+                }
+            })
+            .subscribe((status) => {
+                if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                    // Fallback: 30s polling when realtime channel fails
+                    if (!refreshRef.current) {
+                        refreshRef.current = setInterval(fetchLoads, 30000);
+                    }
+                } else if (status === 'SUBSCRIBED') {
+                    // Realtime is live — stop any fallback polling
+                    if (refreshRef.current) {
+                        clearInterval(refreshRef.current);
+                        refreshRef.current = null;
+                    }
+                }
+            });
         return () => { if (refreshRef.current) clearInterval(refreshRef.current); supabase.removeChannel(channel); };
     }, [fetchLoads]);
 
@@ -724,7 +801,7 @@ export default function MapFirstLoadboard() {
                                 <span style={{ color: T.green, fontWeight: 700 }}>{filtered.length}</span>
                             </span>
                             <span>active escorts</span>
-                            <span style={{ color: T.textLabel }}>· Live refresh every 20s</span>
+                            <span style={{ color: T.textLabel }}>· Realtime</span>
                         </p>
                     </div>
                     {/* View toggle */}
@@ -795,6 +872,13 @@ export default function MapFirstLoadboard() {
                         {/* Recently filled strip */}
                         <RecentlyFilledStrip className="mb-5" />
 
+                        {/* ===== NATIVE AD — LOAD BOARD INLINE ===== */}
+                        <NativeAdCard
+                            placementId="loadboard-mid"
+                            surface="loadboard_inline"
+                            variant="inline"
+                        />
+
                         {/* Load list — always visible below map, primary in list mode */}
                         {filtered.length === 0 ? (
                             <EmptyState filtered={isFiltered} />
@@ -823,8 +907,17 @@ export default function MapFirstLoadboard() {
                                         All Loads ({filtered.length})
                                     </div>
                                 )}
-                                {filtered.map(load => (
-                                    <LoadCard key={load.load_id} load={load} isNew={newLoadIds.has(load.load_id)} />
+                                {filtered.map((load, idx) => (
+                                    <React.Fragment key={load.load_id}>
+                                        {idx > 0 && idx % 8 === 0 && (
+                                            <NativeAdCard
+                                                placementId={`loadboard-list-${idx}`}
+                                                surface="loadboard_list_interleave"
+                                                variant="inline"
+                                            />
+                                        )}
+                                        <LoadCard load={load} isNew={newLoadIds.has(load.load_id)} />
+                                    </React.Fragment>
                                 ))}
                             </div>
                         )}

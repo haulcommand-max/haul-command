@@ -103,11 +103,38 @@ export async function POST(req: NextRequest) {
         ? (body.load_type === 'HEIGHT_POLE' ? 'day_rate_height' : 'day_rate')
         : rateType;
 
+    // Lookup corridor heat from scarcity metrics (dynamic, not hardcoded)
+    let corridorHeatBand: 'cold' | 'balanced' | 'warm' | 'hot' | 'critical' = 'balanced';
+    if (body.corridor_slug) {
+        try {
+            const sb = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+            const { data: scarcity } = await sb
+                .from('corridor_scarcity_metrics')
+                .select('scarcity_tier')
+                .eq('corridor_id', body.corridor_slug)
+                .order('snapshot_date', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            if (scarcity?.scarcity_tier) {
+                const tierMap: Record<string, NonNullable<PriceInputs['corridorHeatBand']>> = {
+                    normal: 'balanced',
+                    tight: 'warm',
+                    constrained: 'hot',
+                    critical: 'critical',
+                };
+                corridorHeatBand = tierMap[scarcity.scarcity_tier] ?? 'balanced';
+            }
+        } catch {
+            // Non-blocking — fall back to balanced
+        }
+    }
+
     const priceInputs: PriceInputs = {
         countryCode: body.country_code,
         regionKey: usesDayRate ? 'national' : regionKey,
         rateType: finalRateType,
-        corridorHeatBand: 'balanced', // TODO: lookup from corridor intelligence
+        corridorHeatBand,
         complexityModifiers: complexityMods,
     };
 

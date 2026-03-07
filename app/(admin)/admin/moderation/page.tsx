@@ -4,12 +4,9 @@ import { AdminTopBar } from '@/components/admin/AdminTopBar';
 import DetailDrawer from '@/components/admin/DetailDrawer';
 import { createClient } from '@/lib/supabase/client';
 
-const MOCK_ITEMS = [
-    { id: '1', priority: 95, type: 'corridor_report', summary: 'Construction in TX-10', region: 'TX', created: '2m ago', status: 'open' },
-    { id: '2', priority: 80, type: 'provider', summary: 'New Escort Service - Miami', region: 'FL', created: '15m ago', status: 'open' },
-    { id: '3', priority: 100, type: 'load_post', summary: 'Superload Alert (I-95 North)', region: 'GA', created: '1h ago', status: 'in_review' },
-    { id: '4', priority: 40, type: 'user', summary: 'New Operator Verification', region: 'CA', created: '3h ago', status: 'open' },
-];
+const MOCK_ITEMS: any[] = []; // P0: Mock data removed — wire to real moderation_queue table
+
+const DEMO_MODE_BANNER = !MOCK_ITEMS.length;
 
 export default function ModerationPage() {
     const supabase = createClient();

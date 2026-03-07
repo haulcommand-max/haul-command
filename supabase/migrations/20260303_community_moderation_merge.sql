@@ -1,0 +1,13 @@
+-- =========================================================
+-- Community + Moderation + Merge Engine — Applied 2026-03-03T20:25 EST
+--
+-- Migrations:
+--   1. canon_dedupe_merge_rpc          — normalizers, slug collision, claim writer, match scorer
+--   2. canon_dedupe_merge_main_rpc     — entity resolution RPC v2
+--   3. community_moderation_foundation — 10 tables + ltree + tier caps + RLS
+--   4. canon_merge_capability          — array utils + merge primitive
+--   5. canon_dedupe_merge_v3_auto_merge — top-2 auto-merge upgrade
+--   6. moderation_helper_functions     — identity, ban, caps, rate limit, rep weight, rollup, admin RPCs
+--   7. hardened_community_write_rpcs   — hc_create_post, hc_vote_post, hc_cast_reputation_event, hc_report_post
+--   8. canon_merge_sweep_rpc           — hc_pick_winner + hc_merge_sweep batch dupe sweep
+-- =========================================================

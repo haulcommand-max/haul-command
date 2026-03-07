@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
             : file.type === "image/heic" ? "heic"
                 : "jpg";
 
-    const photoId = crypto.randomUUID();
+    const photoId = globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
     const storagePath = `${user.id}/${photoId}.${ext}`;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 

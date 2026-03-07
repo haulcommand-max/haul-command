@@ -1,0 +1,50 @@
+# Haul Command — Social Login Identity Enrichment Spec
+# Version: 1.1
+# Priority: P0
+
+social_login_spec:
+  version: "1.1"
+  engines_built:
+    avatar_pipeline: lib/avatars/avatar-pipeline.ts
+    identity_enrichment: lib/identity/social-enrichment.ts
+    cds_engine: lib/seo/country-density-score.ts
+    predictive_demand: lib/demand-intelligence/predictive-demand.ts
+
+  migrations:
+    - 20260301_social_avatar_auto_import.sql
+    - 20260301_social_login_identity_enrichment.sql
+    - 20260301_country_density_and_authority.sql
+
+  api_routes:
+    - POST /api/v1/auth/social-callback
+    - GET/POST /api/v1/auth/profile-progress
+    - GET/POST /api/v1/seo/density-score
+    - GET/POST/PATCH /api/v1/seo/chambers
+
+  auth_providers:
+    google:
+      scopes: [openid, email, profile]
+      trust_bonus: 1.25
+    facebook:
+      scopes: [public_profile, email]
+      trust_bonus: 1.15
+    linkedin:
+      scopes: [openid, profile, email]
+      trust_bonus: 1.20
+    max_combined: 1.45
+
+  cds_bands:
+    stealth: "0-39 → noindex, suppress ads, keep seeding"
+    emerging: "40-64 → index, light links, begin claims"
+    credible: "65-84 → promote, enable AdGrid, broker tools"
+    dominant: "85-100 → full push, aggressive backlinking, paid ok"
+
+  anti_thin_guards:
+    min_operators: 10
+    min_cities: 5
+    min_freshness: 0.2
+
+  future_providers_ready:
+    - apple
+    - microsoft
+    - phone_otp

@@ -9,16 +9,24 @@
  *  - View toggle is `position:absolute` overlay — doesn't affect layout
  *  - Map container uses explicit style={{ height: "..." }} so MapLibre always
  *    has a concrete pixel height regardless of flex/ticker state
+ *
+ *  FEATURES (JBH-inspired):
+ *  - Small States Sidebar: vertical rail for dense NE states (avoids pin overlap)
+ *  - Grid View: sortable, filterable table/card load view (hybrid map↔grid)
+ *  - Live count badge + freshness timestamp
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { safeUUID } from "@/lib/identity/uid";
 import { ActivityTicker } from "@/components/liquidity/ActivityTicker";
 import { LiquidityPromptCard } from "@/components/liquidity/LiquidityPromptCard";
 import { JurisdictionDrawer } from "@/components/map/JurisdictionDrawer";
 import { MapMicroHint } from "@/components/map/MapMicroHint";
 import { CorridorLiquidityHeatmap } from "@/components/map/CorridorLiquidityHeatmap";
 import { MapIntelRail } from "@/components/map/MapIntelRail";
+import { SmallStatesSidebar } from "@/components/map/SmallStatesSidebar";
 import { useMapAnalytics } from "@/hooks/useMapAnalytics";
 
 // ── Dynamic imports (browser-only) ────────────────────────────────────────────
@@ -31,6 +39,12 @@ const CommandMap = dynamic(
 // NorthAmericaMap — clickable SVG map (US states + CA provinces → router.push)
 const NorthAmericaMap = dynamic(
     () => import("@/components/maps/NorthAmericaMap").then((m) => m.NorthAmericaMap),
+    { ssr: false, loading: () => <MapSkeleton /> }
+);
+
+// LoadGridView — sortable/filterable table (JBH grid navigation equivalent)
+const LoadGridView = dynamic(
+    () => import("@/components/map/LoadGridView").then((m) => m.LoadGridView),
     { ssr: false, loading: () => <MapSkeleton /> }
 );
 
@@ -87,15 +101,84 @@ function MapLegend() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-type MapView = "operations" | "jurisdictions" | "corridors";
+type MapView = "operations" | "jurisdictions" | "corridors" | "grid";
+
+// ── Country counts hook (global 52-country rail) ────────────────────────────
+function useCountryCounts(): Record<string, number> {
+    const [counts, setCounts] = useState<Record<string, number>>({});
+
+    useEffect(() => {
+        async function fetchCounts() {
+            try {
+                const res = await fetch("/api/map/loads?limit=1000");
+                if (!res.ok) return;
+                const fc = await res.json();
+                const features = fc.features ?? [];
+
+                // Aggregate by country — currently loads are US-dominant;
+                // once loads table has country_code column, use that directly.
+                const result: Record<string, number> = {};
+                for (const f of features) {
+                    const state = f.properties?.state;
+                    // Infer country from state code pattern
+                    // US states are 2-letter alpha, CA provinces are also 2-letter
+                    // For now: all loads default to "US" unless we get country_code
+                    const country = f.properties?.country_code ?? "US";
+                    result[country] = (result[country] ?? 0) + 1;
+                }
+                setCounts(result);
+            } catch { }
+        }
+        fetchCounts();
+        const interval = setInterval(fetchCounts, 60_000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return counts;
+}
+
+// ── Grid view data hook ─────────────────────────────────────────────────────
+function useGridLoads() {
+    const [loads, setLoads] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchLoads() {
+            try {
+                const res = await fetch("/api/map/loads?limit=500");
+                if (!res.ok) return;
+                const fc = await res.json();
+                const items = (fc.features ?? []).map((f: any) => ({
+                    id: f.properties?.id ?? safeUUID(),
+                    title: f.properties?.title ?? "Escort Load",
+                    origin_city: f.properties?.city ?? "",
+                    origin_state: f.properties?.state ?? "",
+                    urgency: f.properties?.urgency ?? 0,
+                    status: f.properties?.status ?? "open",
+                    equipment_type: "Pilot Car",
+                    posted_at: new Date().toISOString(),
+                }));
+                setLoads(items);
+            } catch { }
+        }
+        fetchLoads();
+        const interval = setInterval(fetchLoads, 30_000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return loads;
+}
 
 export default function MapPage() {
+    const router = useRouter();
     const [view, setView] = useState<MapView>("jurisdictions");
     const [selectedCode, setSelectedCode] = useState<string | null>(null);
     const [selectedName, setSelectedName] = useState<string>("");
     const [tickerHeight, setTickerHeight] = useState(0);
+    const [gridStateFilter, setGridStateFilter] = useState<string | null>(null);
     const tickerRef = useRef<HTMLDivElement>(null);
     const analytics = useMapAnalytics();
+    const countryCounts = useCountryCounts();
+    const gridLoads = useGridLoads();
 
     useEffect(() => {
         analytics.trackMapOpened();
@@ -138,7 +221,7 @@ export default function MapPage() {
                 className="absolute left-1/2 -translate-x-1/2 z-30 flex bg-gray-900/90 backdrop-blur-sm border border-gray-700/60 rounded-full p-0.5 shadow-2xl"
                 style={{ top: tickerHeight + 8 }}
             >
-                {(["operations", "jurisdictions", "corridors"] as MapView[]).map((v) => (
+                {(["operations", "jurisdictions", "corridors", "grid"] as MapView[]).map((v) => (
                     <button
                         key={v}
                         data-testid={`map-toggle-${v}`}
@@ -148,11 +231,13 @@ export default function MapPage() {
                                 ? "bg-orange-500 text-black shadow-lg shadow-orange-500/20"
                                 : v === "jurisdictions"
                                     ? "bg-amber-500 text-black"
-                                    : "bg-emerald-500 text-black"
+                                    : v === "grid"
+                                        ? "bg-blue-500 text-black"
+                                        : "bg-emerald-500 text-black"
                             : "text-gray-400 hover:text-white"
                             }`}
                     >
-                        {v}
+                        {v === "grid" ? "Grid" : v}
                     </button>
                 ))}
             </div>
@@ -176,7 +261,31 @@ export default function MapPage() {
                             {/* CommandMap fills container absolutely */}
                             <CommandMap className="absolute inset-0" />
 
+                            {/* Global Country Rail — 52-country sidebar */}
+                            <SmallStatesSidebar
+                                countryCounts={countryCounts}
+                                onCountrySelect={(iso2) => {
+                                    setGridStateFilter(iso2);
+                                    setView("grid");
+                                    analytics.trackJurisdictionSelected(iso2);
+                                }}
+                            />
+
                             <MapLegend />
+
+                            {/* "Go to Grid" link — JBH-style */}
+                            <button
+                                onClick={() => { setGridStateFilter(null); setView("grid"); }}
+                                className="absolute top-3 right-[88px] z-20 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all hover:-translate-y-0.5"
+                                style={{
+                                    background: "rgba(4,6,12,0.85)",
+                                    color: "#F1A91B",
+                                    border: "1px solid rgba(241,169,27,0.25)",
+                                    backdropFilter: "blur(12px)",
+                                }}
+                            >
+                                Go to Grid Navigation →
+                            </button>
 
                             {/* Mobile liquidity prompt — bottom of screen */}
                             <div className="absolute bottom-6 left-4 right-4 md:hidden z-10 pointer-events-none">
@@ -199,6 +308,20 @@ export default function MapPage() {
                                 {/* Clickable SVG map — each state/province routes to /directory/{country}/{code} */}
                                 <NorthAmericaMap />
                             </div>
+                        </div>
+                    )}
+
+                    {/* ── Grid: sortable/filterable load table (JBH-inspired) ─ */}
+                    {view === "grid" && (
+                        <div className="absolute inset-0 overflow-hidden">
+                            <LoadGridView
+                                loads={gridLoads}
+                                stateFilter={gridStateFilter}
+                                onSwitchToMap={() => { setGridStateFilter(null); setView("operations"); }}
+                                onLoadSelect={(id) => {
+                                    router.push(`/app/loads/${id}`);
+                                }}
+                            />
                         </div>
                     )}
                 </div>

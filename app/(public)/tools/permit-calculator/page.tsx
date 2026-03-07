@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Shield, Calculator, Zap, AlertTriangle, CheckCircle2, XCircle, Info, ChevronDown } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { estimateEscortCost } from '@/lib/data/corridors';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -333,6 +334,15 @@ export default function PermitCalculatorPage() {
                                     <p style={{ margin: '8px 0 0', fontSize: 12, color: T.muted, lineHeight: 1.5 }}>{r.notes}</p>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Native Ad */}
+                        <div style={{ marginTop: 16 }}>
+                            <NativeAdCard
+                                surface="tools_permit_calc_mid"
+                                placementId="permit-calc-below-results"
+                                variant="inline"
+                            />
                         </div>
 
                         {/* CTA hook */}

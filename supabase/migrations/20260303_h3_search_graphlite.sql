@@ -1,0 +1,18 @@
+-- =========================================================
+-- H3 + Search Upgrades + GraphLite — Applied 2026-03-03T19:52 EST
+--
+-- Migrations applied:
+--   1. h3_helper_functions         — hc_h3_edge_length_km, hc_h3_k_for_radius_km, hc_h3_disk_cells
+--   2. h3_hybrid_infrastructure_v2 — H3 columns + indexes + stamp RPC + dispatch RPC
+--   3. search_loads_h3_v2          — hc_search_loads() with H3 fast path + bbox fallback
+--   4. fix_unified_search_all      — hc_search_all() unified mixed search
+--   5. graphlite_track_b_tables    — graph_vertices + graph_edges + trust_scores
+--   6. graphlite_track_b_rpcs      — event ingest + affinity + scores recompute + recommendations
+--   7. harden_location_share       — config + rate limits + constraints + hardened RPCs
+--
+-- API Routes:
+--   - /api/search/all       — unified operators + loads search
+--   - /api/graph/event      — graph event ingestion (service_role)
+--   - /api/graph/affinity   — broker→operator affinity ranking
+--   - /api/graph/recompute  — trust score cache rebuild
+-- =========================================================

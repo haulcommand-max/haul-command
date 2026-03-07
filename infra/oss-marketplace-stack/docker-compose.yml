@@ -1,0 +1,82 @@
+name: haulcommand-oss-stack
+
+services:
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: hc-redpanda
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp
+      - "1"
+      - --memory
+      - "1G"
+      - --reserve-memory
+      - "0M"
+      - --node-id
+      - "0"
+      - --check=false
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://redpanda:9092
+      - --pandaproxy-addr
+      - PLAINTEXT://0.0.0.0:8082
+      - --advertise-pandaproxy-addr
+      - PLAINTEXT://redpanda:8082
+    ports:
+      - "9092:9092"   # Kafka API
+      - "8082:8082"   # HTTP Proxy (REST produce/consume)
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - redpanda-data:/var/lib/redpanda/data
+
+  # Redpanda Console (optional UI for viewing topics/messages)
+  redpanda-console:
+    image: redpandadata/console:latest
+    container_name: hc-redpanda-console
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_BROKERS=redpanda:9092
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: hc-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  growthbook:
+    image: growthbook/growthbook:latest
+    container_name: hc-growthbook
+    ports:
+      - "3100:3000"    # GrowthBook UI (avoids conflict with Next.js on 3000)
+    environment:
+      - APP_ORIGIN=http://localhost:3100
+      - API_HOST=http://localhost:3100
+    env_file:
+      - .env
+    depends_on: []
+    volumes:
+      - growthbook-data:/usr/local/src/app/packages/back-end/uploads
+
+volumes:
+  redpanda-data:
+  redis-data:
+  growthbook-data:

@@ -74,7 +74,31 @@ export async function checkFatigue(
     // ── 3. Quiet hours check ──
     const userQuietStart = prefs?.quiet_hours_start ?? cfg.quietHoursStart;
     const userQuietEnd = prefs?.quiet_hours_end ?? cfg.quietHoursEnd;
-    const currentHour = new Date().getUTCHours(); // TODO: convert to user's timezone
+    // Derive local hour from user's jurisdiction timezone (fall back to UTC-5 EST)
+    let utcOffset = -5;
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('country_code')
+        .eq('id', userId)
+        .maybeSingle();
+    if (profile?.country_code) {
+        const { data: jurisdiction } = await supabase
+            .from('jurisdictions')
+            .select('timezone')
+            .eq('country_code', profile.country_code)
+            .limit(1)
+            .maybeSingle();
+        if (jurisdiction?.timezone) {
+            // Parse UTC offset from timezone string like "America/New_York"
+            try {
+                const now = new Date();
+                const formatter = new Intl.DateTimeFormat('en-US', { timeZone: jurisdiction.timezone, hour: 'numeric', hour12: false });
+                const localHour = parseInt(formatter.format(now), 10);
+                utcOffset = localHour - now.getUTCHours();
+            } catch { /* fallback to -5 */ }
+        }
+    }
+    const currentHour = (new Date().getUTCHours() + utcOffset + 24) % 24;
 
     if (isInQuietHours(currentHour, userQuietStart, userQuietEnd)) {
         return { allowed: false, reason: `Quiet hours (${userQuietStart}:00–${userQuietEnd}:00)` };

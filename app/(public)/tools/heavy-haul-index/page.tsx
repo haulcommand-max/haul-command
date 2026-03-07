@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart3, TrendingUp, AlertTriangle, ShieldCheck, Download, Link, Share2 } from 'lucide-react';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -126,6 +127,13 @@ export default function HeavyHaulIndexPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Native Ad */}
+                        <NativeAdCard
+                            surface="tools_heavy_haul_index_mid"
+                            placementId="heavy-haul-index-sidebar"
+                            variant="inline"
+                        />
 
                         <div className="p-6 bg-gradient-to-br from-emerald-900/40 to-[#0a0a0f] border border-emerald-500/20 rounded-2xl">
                             <h3 className="font-black text-white text-lg mb-2">Need Real-Time Data?</h3>

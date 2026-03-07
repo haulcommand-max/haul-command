@@ -1,0 +1,95 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "claim_intake",
+    "description": "Schema for Vapi tool that initiates a place or operator claim via voice",
+    "type": "object",
+    "properties": {
+        "entity_type": {
+            "type": "string",
+            "enum": [
+                "place",
+                "operator"
+            ],
+            "description": "Whether this is a place claim or operator claim"
+        },
+        "entity_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The UUID of the place or operator being claimed"
+        },
+        "claimant_name": {
+            "type": "string",
+            "description": "Full name of the person claiming"
+        },
+        "claimant_role": {
+            "type": "string",
+            "enum": [
+                "owner",
+                "manager",
+                "employee",
+                "authorized_representative"
+            ],
+            "description": "Role of the claimant at the business"
+        },
+        "business_name": {
+            "type": "string",
+            "description": "Business name (confirmed or corrected by claimant)"
+        },
+        "phone_number": {
+            "type": "string",
+            "pattern": "^\\+[1-9]\\d{1,14}$",
+            "description": "Primary business phone in E.164 format"
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact email for claim verification link"
+        },
+        "services_offered": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of services (fuel, parking, repair, lodging, escort, etc.)"
+        },
+        "hours_of_operation": {
+            "type": "string",
+            "description": "Business hours as stated by claimant"
+        },
+        "verification_method": {
+            "type": "string",
+            "enum": [
+                "phone_otp",
+                "email_domain",
+                "website_contact_email_token",
+                "voice_callback_verification"
+            ],
+            "description": "Preferred verification method"
+        },
+        "verbal_consent": {
+            "type": "boolean",
+            "description": "Whether claimant gave verbal consent to claim"
+        },
+        "country_code": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2,
+            "description": "ISO 3166-1 alpha-2 country code"
+        },
+        "call_id": {
+            "type": "string",
+            "description": "Vapi call ID for attribution"
+        }
+    },
+    "required": [
+        "entity_type",
+        "entity_id",
+        "claimant_name",
+        "claimant_role",
+        "business_name",
+        "phone_number",
+        "verbal_consent",
+        "country_code"
+    ],
+    "additionalProperties": false
+}

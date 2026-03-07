@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Haul Command notification icon.
+    Monochrome white on transparent for Android notification tray.
+    Simplified star + 3 chevrons — legible at 24dp.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Star (simplified for small size) — center (12, 5) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,2.5 L12.8,4.5 L15,4.6 L13.3,6.1 L13.8,8.2 L12,7 L10.2,8.2 L10.7,6.1 L9,4.6 L11.2,4.5 Z" />
+
+    <!-- Chevron 1 (top) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M3,13.5 L12,9 L21,13.5 L19,13.5 L12,10.5 L5,13.5 Z" />
+
+    <!-- Chevron 2 (middle) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M3,17.5 L12,13 L21,17.5 L19,17.5 L12,14.5 L5,17.5 Z" />
+
+    <!-- Chevron 3 (bottom) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M3,21.5 L12,17 L21,21.5 L19,21.5 L12,18.5 L5,21.5 Z" />
+
+</vector>

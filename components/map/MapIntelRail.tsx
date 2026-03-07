@@ -7,10 +7,11 @@
  * Shows live corridor stress, escort counts, market status, and key KPIs.
  * Collapsible on mobile. Semi-translucent on desktop.
  *
- * NO data pipeline changes — reads the same corridor stress data.
+ * Wired to /api/public/kpis → v_market_pulse (real DB view).
+ * Shows '—' placeholders when data is unavailable — NEVER fabricates stats.
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Activity,
@@ -23,6 +24,7 @@ import {
     Zap,
     Radio,
 } from "lucide-react";
+import { useMarketPulse } from "@/lib/hooks/useMarketPulse";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -40,35 +42,6 @@ interface MarketSignal {
     color: string;
     icon: React.ElementType;
     pulse?: boolean;
-}
-
-// ── Mock live data — replaced by real API hook in prod ────────────────────────
-
-function useLiveMarketSignals() {
-    const [signals, setSignals] = useState({
-        escorts_online: 47,
-        loads_in_motion: 23,
-        fill_time_median_min: 38,
-        corridors_heating: 3,
-        coverage_status: "Active" as "Active" | "Degraded" | "Surge",
-        last_match_ago_min: 2,
-    });
-
-    // Simulate small fluctuations every 30s
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setSignals((prev) => ({
-                ...prev,
-                escorts_online: Math.max(30, prev.escorts_online + Math.floor((Math.random() - 0.4) * 3)),
-                loads_in_motion: Math.max(10, prev.loads_in_motion + Math.floor((Math.random() - 0.4) * 2)),
-                fill_time_median_min: Math.max(15, prev.fill_time_median_min + Math.floor((Math.random() - 0.5) * 4)),
-                last_match_ago_min: Math.max(0, Math.floor(Math.random() * 5)),
-            }));
-        }, 30_000);
-        return () => clearInterval(interval);
-    }, []);
-
-    return signals;
 }
 
 const CORRIDOR_BANDS: CorridorBand[] = [
@@ -92,34 +65,43 @@ interface MapIntelRailProps {
 
 export function MapIntelRail({ className = "" }: MapIntelRailProps) {
     const [collapsed, setCollapsed] = useState(false);
-    const signals = useLiveMarketSignals();
-    const coverage = COVERAGE_STATUS_CONFIG[signals.coverage_status];
+    const { pulse, isLoading, updatedAt } = useMarketPulse();
+
+    // Derive coverage status from real data (null-safe)
+    const coverageKey: "Active" | "Degraded" | "Surge" = !pulse
+        ? "Degraded"
+        : pulse.escorts_online > 0
+            ? "Active"
+            : "Surge";
+    const coverage = COVERAGE_STATUS_CONFIG[coverageKey];
+
+    const fillTime = pulse?.median_fill_time_minutes ?? null;
 
     const liveSignals: MarketSignal[] = [
         {
             label: "Escorts Online",
-            value: signals.escorts_online,
+            value: pulse?.escorts_online ?? "—",
             color: "#22c55e",
             icon: Truck,
             pulse: true,
         },
         {
-            label: "Loads in Motion",
-            value: signals.loads_in_motion,
+            label: "Open Loads",
+            value: pulse?.open_loads ?? "—",
             color: "#F1A91B",
             icon: Activity,
         },
         {
             label: "Median Fill Time",
-            value: signals.fill_time_median_min,
-            unit: "min",
-            color: signals.fill_time_median_min > 60 ? "#ef4444" : signals.fill_time_median_min > 30 ? "#f97316" : "#22c55e",
+            value: fillTime ?? "—",
+            unit: fillTime ? "min" : undefined,
+            color: fillTime && fillTime > 60 ? "#ef4444" : fillTime && fillTime > 30 ? "#f97316" : "#22c55e",
             icon: Clock,
         },
         {
-            label: "Corridors Heating",
-            value: signals.corridors_heating,
-            color: "#ef4444",
+            label: "Available Now",
+            value: pulse?.available_now ?? "—",
+            color: "#3b82f6",
             icon: TrendingUp,
         },
     ];
@@ -254,15 +236,19 @@ export function MapIntelRail({ className = "" }: MapIntelRailProps) {
                                 </div>
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-xs text-white/40">Last Match</span>
+                                        <span className="text-xs text-white/40">Data Source</span>
                                         <span className="text-xs font-bold text-emerald-400">
-                                            {signals.last_match_ago_min === 0 ? "Just now" : `${signals.last_match_ago_min}m ago`}
+                                            {pulse?.ok ? "Live" : "Collecting data"}
                                         </span>
                                     </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs text-white/40">Network Activity</span>
-                                        <span className="text-xs font-bold text-[#F1A91B]">High ↑</span>
-                                    </div>
+                                    {updatedAt && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs text-white/40">Updated</span>
+                                            <span className="text-xs font-bold text-white/50">
+                                                {new Date(updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

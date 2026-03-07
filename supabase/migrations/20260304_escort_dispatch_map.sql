@@ -1,0 +1,9 @@
+-- ═══════════════════════════════════════════════════════════════
+-- ESCORT DISPATCH MAP v1 — Global Corridor + Demand Heat Layer
+-- Applied: 2026-03-04
+-- Tables: hc.regions, hc.nodes, hc.corridor_nodes, hc.corridor_metric_daily, hc.escort_regimes
+-- Extended: hc.corridors (added corridor_key, corridor_type_v2, region_code, demand_weight_initial, etc.)
+-- Seeded: 6 regions, 62 nodes, 22 corridors, 94 corridor-node links, 14 escort regimes
+-- ═══════════════════════════════════════════════════════════════
+-- See applied migration: hc_escort_dispatch_map_v1_schema
+-- Seed data applied via execute_sql statements in session 604fd346

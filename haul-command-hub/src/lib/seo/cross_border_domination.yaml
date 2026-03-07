@@ -1,0 +1,112 @@
+# ============================================================
+# HAUL COMMAND — CROSS-BORDER DOMINATION LAYER
+# 460 border crossings across all priority country pairs
+# ============================================================
+
+project: haul_command_cross_border_domination_layer
+mission: >
+  Identify, map, and dominate all high-value cross-border heavy haul
+  and oversize freight flows globally, positioning Haul Command as the
+  default intelligence and discovery layer for international oversized
+  logistics planning and escort sourcing.
+
+strategic_role:
+  - highest_complexity_layer
+  - highest_margin_signal
+  - strongest_defensibility
+  - major_seo_differentiation
+  - marketplace_liquidity_accelerator
+
+priority_country_pairs:
+  north_america: [us_canada, us_mexico_monitor]
+  tier_a: [uk_eu_gateways, australia_state_borders, new_zealand_island_flows]
+  tier_b: [sweden_norway, uae_gcc_corridors]
+  tier_c: [saudi_gcc, germany_eu_internal, south_africa_sadc]
+
+crossing_types:
+  - major_commercial_truck
+  - secondary_truck_route
+  - port_of_entry_heavy
+  - ferry_heavy_vehicle
+  - special_permit_crossing
+  - internal_customs_zone
+
+discovery_engine:
+  sources:
+    - customs_border_agencies
+    - dot_crossing_lists
+    - openstreetmap_border_points
+    - commercial_truck_crossings
+    - permit_route_documents
+    - internal_load_history
+    - carrier_route_patterns
+  processing: [deduplicate, normalize, geo_validate, classify, attach_pair, detect_heavy_haul, score]
+
+relevance_scoring:
+  range: 0-100
+  factors:
+    heavy_truck_volume: 0-25
+    oversize_permit_activity: 0-20
+    corridor_connectivity: 0-15
+    industrial_density: 0-10
+    search_demand: 0-10
+    escort_shortage: 0-10
+    competition_gap: 0-10
+  tiers:
+    tier_1_dominate: ">= 72"
+    tier_2_build: "50-71"
+    tier_3_monitor: "< 50"
+
+page_factory:
+  url: "/cross-border/[country-pair]/[crossing-slug]"
+  modules:
+    - crossing_overview
+    - countries_connected
+    - heavy_haul_rules
+    - escort_transition_guidance
+    - permit_considerations
+    - connected_corridors
+    - nearby_ports
+    - nearby_zones
+    - recent_loads
+    - faq_block
+    - structured_data
+  quality:
+    min_data_points: 14
+    min_internal_links: 12
+    require_corridor: true
+    require_country_pair_valid: true
+    noindex_until_score: 85
+  schema: [Dataset, Place, FAQPage, BreadcrumbList, ItemList]
+
+complexity_engine:
+  tracked:
+    - permit_complexity_index
+    - escort_requirement_delta
+    - documentation_requirements
+    - clearance_time_estimate
+    - route_restrictions
+    - seasonal_constraints
+  outputs: [complexity_badge, planning_checklists, risk_indicators]
+
+escort_handoff_intelligence:
+  metrics: [escorts_side_a, escorts_side_b, handoff_risk, shortage_probability, wait_estimate]
+  outputs: [liquidity_badge, handoff_alerts, recruitment_flags]
+
+rollout:
+  phase_1_north_america: {crossings: 180, focus: "major truck + heavy corridors"}
+  phase_2_tier_a: {crossings: 120}
+  phase_3_tier_b: {crossings: 90}
+  phase_4_tier_c: {crossings: 70}
+
+monetization:
+  - priority_crossing_visibility
+  - cross_border_surge_boosts
+  - broker_featured_routes
+  - escort_priority_handoff
+  - enterprise_data_api
+
+execution_priority:
+  immediate: [crossing_discovery, scoring, page_factory_v1, complexity_engine]
+  next_wave: [handoff_intelligence, load_board_integration, risk_heatmaps]
+  advanced: [predictive_demand, automated_handoff_matching, cross_region_liquidity]

@@ -61,24 +61,19 @@ export default function HotZonesNearYou({ limit = 4, variant = "card", homeCorri
         let cancelled = false;
         async function fetchZones() {
             try {
-                // TODO: wire to /api/supply/recommendations once route exists.
-                // For now use fallback data; swap for real fetch when ready:
-                //
-                // const res = await fetch("/api/supply/recommendations?limit=10");
-                // if (!res.ok) throw new Error("non-200");
-                // const { data } = await res.json();
-                // setZones(data.slice(0, limit));
-
-                // Simulate network latency for realistic UX
-                await new Promise(r => setTimeout(r, 300));
-                if (!cancelled) {
-                    const filtered = FALLBACK_ZONES
+                const res = await fetch(`/api/supply/recommendations?limit=${limit + 2}`);
+                if (!res.ok) throw new Error("non-200");
+                const { data } = await res.json();
+                if (!cancelled && data?.length > 0) {
+                    const filtered = (data as HotZone[])
                         .filter(z => z.corridor !== homeCorridor)
                         .slice(0, limit);
                     setZones(filtered);
+                } else if (!cancelled) {
+                    setZones(FALLBACK_ZONES.filter(z => z.corridor !== homeCorridor).slice(0, limit));
                 }
             } catch {
-                if (!cancelled) setZones(FALLBACK_ZONES.slice(0, limit));
+                if (!cancelled) setZones(FALLBACK_ZONES.filter(z => z.corridor !== homeCorridor).slice(0, limit));
             } finally {
                 if (!cancelled) setLoading(false);
             }

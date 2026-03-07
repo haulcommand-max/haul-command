@@ -3,6 +3,7 @@ import { supabaseServer } from '@/lib/supabase/server';
 import { MapPin, TrendingUp, ShieldCheck, Trophy, Clock, Zap, Star, Award, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { TrustBadgeRow } from '@/components/badges/TrustBadgeRow';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -77,14 +78,19 @@ interface Leader {
     full_name: string;
     home_city: string;
     corridor_slug: string;
-    trust_score: number;
-    avg_response_minutes: number;
-    bids_placed: number;
-    jobs_completed: number;
+    trust_score: number | null;
+    avg_response_minutes: number | null;
+    bids_placed: number | null;
+    jobs_completed: number | null;
     is_verified: boolean;
     profile_id: string;
     badges?: string[];
+    is_new_entry?: boolean;
 }
+
+/** Truthful formatter — shows "—" for null/undefined, never a fake number */
+const fmt = (v: number | null | undefined, suffix = '') =>
+    v === null || v === undefined ? '—' : `${v}${suffix}`;
 
 export default async function LeaderboardsPage({
     searchParams,
@@ -127,13 +133,14 @@ export default async function LeaderboardsPage({
             full_name: p.full_name ?? '',
             home_city: p.city ?? '',
             corridor_slug: activeCorridor,
-            trust_score: Math.round((p.profile_strength ?? 0) * 0.85),
-            avg_response_minutes: 10 + Math.floor(Math.random() * 20),
-            bids_placed: Math.floor(Math.random() * 40),
-            jobs_completed: Math.floor(Math.random() * 30),
+            trust_score: p.profile_strength ? Math.round(p.profile_strength * 0.85) : null,
+            avg_response_minutes: null,  // truthful: we don't know yet
+            bids_placed: null,           // truthful: we don't know yet
+            jobs_completed: null,        // truthful: we don't know yet
             is_verified: p.claimed ?? false,
             profile_id: p.id,
-            badges: p.claimed ? ['verified_profile', 'active_30d'] : [],
+            badges: p.claimed ? ['verified_profile'] : [],
+            is_new_entry: true,
         }));
     }
 
@@ -166,16 +173,40 @@ export default async function LeaderboardsPage({
 
     return (
         <div className="min-h-screen bg-hc-bg text-hc-text">
-            {/* JSON-LD */}
+            {/* JSON-LD: ItemList + BreadcrumbList */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
-                        '@type': 'BreadcrumbList',
-                        itemListElement: [
-                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com' },
-                            { '@type': 'ListItem', position: 2, name: 'Leaderboards', item: 'https://haulcommand.com/leaderboards' },
+                        '@graph': [
+                            {
+                                '@type': 'ItemList',
+                                name: `${activeCorridor.replace(/-/g, ' ').toUpperCase()} Escort Operator Leaderboard`,
+                                url: `https://haulcommand.com/leaderboards?corridor=${activeCorridor}`,
+                                numberOfItems: leaders.length,
+                                itemListElement: leaders.slice(0, 20).map(l => ({
+                                    '@type': 'ListItem',
+                                    position: l.rank_position,
+                                    name: l.company_name || l.full_name || 'Verified Operator',
+                                    url: `https://haulcommand.com/directory/profile/${l.profile_id}`,
+                                })),
+                            },
+                            {
+                                '@type': 'BreadcrumbList',
+                                itemListElement: [
+                                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com' },
+                                    { '@type': 'ListItem', position: 2, name: 'Leaderboards', item: 'https://haulcommand.com/leaderboards' },
+                                ],
+                            },
+                            {
+                                '@type': 'FAQPage',
+                                mainEntity: [
+                                    { '@type': 'Question', name: 'How are pilot car operators ranked on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Operators are ranked by a composite trust score that factors in verified job completion rate, average response time to load offers, broker feedback scores, and profile completeness. Rankings update hourly and are segmented by freight corridor.' } },
+                                    { '@type': 'Question', name: 'What is a corridor trust score?', acceptedAnswer: { '@type': 'Answer', text: 'A corridor trust score (0–100) measures an escort operator\'s reliability on a specific freight lane. Scores above 85 earn Elite status, 70+ earn Strong, and 55+ earn Solid. The score combines response speed, job success rate, and broker satisfaction ratings.' } },
+                                    { '@type': 'Question', name: 'How can I improve my leaderboard ranking?', acceptedAnswer: { '@type': 'Answer', text: 'Respond quickly to load offers (under 15 minutes is ideal), maintain a high job completion rate, earn positive broker reviews, keep your profile 100% complete with verified insurance and equipment details, and stay active on your corridors. Consistent activity is weighted more than occasional bursts.' } },
+                                ],
+                            },
                         ],
                     }),
                 }}
@@ -264,15 +295,15 @@ export default async function LeaderboardsPage({
                                         </div>
                                         <div className="grid grid-cols-3 gap-2 text-center">
                                             <div>
-                                                <div className={`text-lg font-black ${cfg.color}`}>{leader.trust_score ?? '—'}</div>
+                                                <div className={`text-lg font-black ${cfg.color}`}>{fmt(leader.trust_score)}</div>
                                                 <div className="text-[9px] text-hc-subtle uppercase tracking-wide">Trust</div>
                                             </div>
                                             <div>
-                                                <div className="text-lg font-black text-hc-text">{leader.avg_response_minutes ?? '—'}m</div>
+                                                <div className="text-lg font-black text-hc-text">{fmt(leader.avg_response_minutes, 'm')}</div>
                                                 <div className="text-[9px] text-hc-subtle uppercase tracking-wide">Resp</div>
                                             </div>
                                             <div>
-                                                <div className="text-lg font-black text-hc-text">{leader.jobs_completed ?? leader.bids_placed ?? 0}</div>
+                                                <div className="text-lg font-black text-hc-text">{fmt(leader.jobs_completed ?? leader.bids_placed)}</div>
                                                 <div className="text-[9px] text-hc-subtle uppercase tracking-wide">Jobs</div>
                                             </div>
                                         </div>
@@ -369,9 +400,19 @@ export default async function LeaderboardsPage({
                                                 {leader.is_verified && <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />}
                                             </h3>
                                             <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                                                <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border ${cfg.border} ${cfg.bg} ${cfg.color}`}>
-                                                    ~{leader.avg_response_minutes ?? '?'}m reply
-                                                </span>
+                                                {leader.avg_response_minutes != null ? (
+                                                    <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border ${cfg.border} ${cfg.bg} ${cfg.color}`}>
+                                                        ~{leader.avg_response_minutes}m reply
+                                                    </span>
+                                                ) : leader.is_new_entry ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                                                        New Entry
+                                                    </span>
+                                                ) : (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-hc-border bg-hc-section text-hc-muted">
+                                                        Awaiting first bids
+                                                    </span>
+                                                )}
                                                 {leader.home_city && (
                                                     <span className="text-xs text-hc-subtle flex items-center gap-1">
                                                         <MapPin className="w-2.5 h-2.5" />{leader.home_city}
@@ -386,11 +427,11 @@ export default async function LeaderboardsPage({
 
                                     <div className="flex items-center gap-6 sm:gap-10 ml-[4.75rem] sm:ml-0 shrink-0">
                                         <div className="text-center">
-                                            <div className="text-sm font-black text-hc-text">{leader.jobs_completed ?? leader.bids_placed ?? 0}</div>
+                                            <div className="text-sm font-black text-hc-text">{fmt(leader.jobs_completed ?? leader.bids_placed)}</div>
                                             <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Jobs</div>
                                         </div>
                                         <div className="text-center">
-                                            <div className={`text-xl font-black font-mono ${cfg.color}`}>{leader.trust_score ?? '—'}</div>
+                                            <div className={`text-xl font-black font-mono ${cfg.color}`}>{fmt(leader.trust_score)}</div>
                                             <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Score</div>
                                         </div>
                                         <ScoreBar score={leader.trust_score ?? 0} />
@@ -401,18 +442,13 @@ export default async function LeaderboardsPage({
                     </div>
                 </div>
 
-                {/* Ad Slot — elevated sponsor card */}
-                <div className="my-8 rounded-2xl p-5 text-center relative overflow-hidden"
-                    style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 0 40px rgba(241,169,27,0.03)" }}>
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(241,169,27,0.03),transparent)] pointer-events-none" />
-                    <div className="relative z-10">
-                        <span className="text-[9px] text-hc-subtle font-black uppercase tracking-[0.2em]">Sponsored</span>
-                        <p className="text-xs text-hc-muted mt-1">Premium placement available for verified corridor operators.</p>
-                        <Link href="/sponsor" className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all"
-                            style={{ background: "rgba(241,169,27,0.1)", border: "1px solid rgba(241,169,27,0.2)", color: "#F1A91B", boxShadow: "0 0 20px rgba(241,169,27,0.08)" }}>
-                            Learn About Placements
-                        </Link>
-                    </div>
+                {/* Ad Slot — real NativeAdCard */}
+                <div className="my-8">
+                    <NativeAdCard
+                        surface="leaderboard_sponsor"
+                        placementId="leaderboard-below-rankings"
+                        variant="inline"
+                    />
                 </div>
 
                 {/* Broker CTA */}

@@ -148,15 +148,40 @@ export default async function PortGatePage(
         port.twic_required && "TWIC Required",
     ].filter(Boolean) as string[];
 
-    // Structured data
+    // Structured data — upgraded to CivicStructure + Service + BreadcrumbList
     const schema = {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": `${port.port_name} TWIC Escort Services | Haul Command`,
-        "description": `Verified TWIC pilot car escorts near ${port.port_name}. ${twicCount} TWIC-cleared operators available.`,
-        "url": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}`,
-        "areaServed": { "@type": "Place", "name": port.port_name },
-        "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
+        "@graph": [
+            {
+                "@type": ["CivicStructure", "Place"],
+                "@id": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}`,
+                "name": port.port_name,
+                "description": `${port.port_name} — TWIC-verified escort directory and gate intelligence. ${twicCount} verified operators available.`,
+                "url": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}`,
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": port.state_region,
+                    "addressCountry": params.country.toUpperCase(),
+                },
+            },
+            {
+                "@type": "Service",
+                "name": `TWIC Pilot Car Escort Services at ${port.port_name}`,
+                "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
+                "serviceType": "TWIC-Verified Oversize Load Escort",
+                "areaServed": { "@type": "Place", "name": port.port_name },
+                "description": `${twicCount} TWIC-verified escort operators available near ${port.port_name}. ${availableNow} currently online.`,
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" },
+                    { "@type": "ListItem", "position": 2, "name": port.state_region, "item": `https://haulcommand.com/directory/${params.country}/${params.state}` },
+                    { "@type": "ListItem", "position": 3, "name": "Ports", "item": "https://haulcommand.com/ports" },
+                    { "@type": "ListItem", "position": 4, "name": port.port_name, "item": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}` },
+                ],
+            },
+        ],
     };
 
     return (

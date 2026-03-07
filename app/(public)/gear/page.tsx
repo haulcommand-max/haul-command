@@ -1,6 +1,7 @@
 import React from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import { ShoppingCart, Star, ShieldCheck, Zap, ArrowRight, ExternalLink } from 'lucide-react';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import Link from 'next/link';
 
 export const metadata = {
@@ -96,6 +97,15 @@ export default async function GearStorePage() {
                         <p className="text-slate-400">Our first batch of Outfitters gear sold out. Check back soon.</p>
                     </div>
                 )}
+
+                {/* Native Ad */}
+                <div className="my-8">
+                    <NativeAdCard
+                        surface="gear_mid"
+                        placementId="gear-below-grid"
+                        variant="inline"
+                    />
+                </div>
             </div>
 
             {/* Become Elite CTA */}

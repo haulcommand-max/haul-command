@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import LiquidityHUD from './LiquidityHUD';
@@ -24,6 +24,29 @@ const Marker = dynamic(
 );
 const Popup = dynamic(
     () => import('react-leaflet').then(mod => mod.Popup),
+    { ssr: false }
+);
+const MapEventsComponent = dynamic(
+    () => import('react-leaflet').then(mod => {
+        const { useMapEvents } = mod;
+        // Wrapper component that listens for map movement
+        const MapEvents = ({ onBoundsChange }: { onBoundsChange: (bounds: { minLat: number; maxLat: number; minLng: number; maxLng: number }) => void }) => {
+            useMapEvents({
+                moveend: (e) => {
+                    const map = e.target;
+                    const b = map.getBounds();
+                    onBoundsChange({
+                        minLat: b.getSouthWest().lat,
+                        maxLat: b.getNorthEast().lat,
+                        minLng: b.getSouthWest().lng,
+                        maxLng: b.getNorthEast().lng,
+                    });
+                },
+            });
+            return null;
+        };
+        return { default: MapEvents };
+    }),
     { ssr: false }
 );
 
@@ -52,6 +75,7 @@ export default function LiquidityMap() {
     const [data, setData] = useState<MapData | null>(null);
     const [loading, setLoading] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const viewportRef = useRef({ minLat: 24.5, maxLat: 31.0, minLng: -87.6, maxLng: -80.0 }); // Default: Florida
 
     useEffect(() => {
         setMounted(true);
@@ -63,11 +87,12 @@ export default function LiquidityMap() {
         return () => clearInterval(interval);
     }, []);
 
-    const fetchMapData = async () => {
+    const fetchMapData = useCallback(async () => {
         try {
             const supabase = supabaseBrowser();
+            const vp = viewportRef.current;
             const { data: res, error } = await supabase.functions.invoke('liquidity-map-data', {
-                body: { viewport: { minLat: -90, maxLat: 90 } } // Placeholder viewport
+                body: { viewport: vp }
             });
 
             if (error) throw error;
@@ -77,7 +102,12 @@ export default function LiquidityMap() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    const handleBoundsChange = useCallback((bounds: { minLat: number; maxLat: number; minLng: number; maxLng: number }) => {
+        viewportRef.current = bounds;
+        fetchMapData();
+    }, [fetchMapData]);
 
     if (!mounted) return <div className="h-full w-full bg-slate-950 flex items-center justify-center text-slate-500">Initializing Map...</div>;
 
@@ -102,6 +132,7 @@ export default function LiquidityMap() {
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                     attribution='&copy; CARTO'
                 />
+                <MapEventsComponent onBoundsChange={handleBoundsChange} />
 
                 {/* Render Drivers */}
                 {data?.drivers.map((driver: any) => (
