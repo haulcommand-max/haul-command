@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import Script from 'next/script';
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { A2HSPrompt } from "@/components/pwa/A2HSPrompt";
 import { HeartbeatMount } from "@/components/presence/HeartbeatMount";
@@ -8,6 +7,7 @@ import { FastWinContainer } from "@/components/engagement/FastWinReinforcement";
 import { NativeBootstrap } from "@/components/mobile/NativeBootstrap";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import PostHogProvider from "@/components/providers/PostHogProvider";
 import { AuthStatusBanner } from "@/components/dev/AuthStatusBanner";
 import SmartAppBanner from "@/components/growth/SmartAppBanner";
 
@@ -164,7 +164,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
                 <SmartAppBanner />
-                {children}
+                <PostHogProvider>
+                    {children}
+                </PostHogProvider>
 
                 <ServiceWorkerRegister />
                 <A2HSPrompt />
@@ -174,24 +176,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Analytics />
                 <SpeedInsights />
                 <AuthStatusBanner />
-                {process.env.NEXT_PUBLIC_GA_ID && (
-                    <>
-                        <Script
-                            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-                            strategy="afterInteractive"
-                        />
-                        <Script id="ga4-init" strategy="afterInteractive">
-                            {`
-                                window.dataLayer = window.dataLayer || [];
-                                function gtag(){dataLayer.push(arguments);}
-                                gtag('js', new Date());
-                                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                                    send_page_view: false
-                                });
-                            `}
-                        </Script>
-                    </>
-                )}
             </body>
         </html>
     );
