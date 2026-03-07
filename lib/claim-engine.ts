@@ -241,3 +241,152 @@ export const MONETIZATION_HOOKS: MonetizationHook[] = [
     { trigger: 'document_verified', offer: 'Premium trust advantages', channel: 'in-app' },
     { trigger: 'insurance_expiring', offer: 'Partner insurance quote', channel: 'email' },
 ];
+
+// ════════════════════════════════════════════════════════════
+// CLAIM READINESS SCORING — Web-First Seeded Listing Activation
+// Determines when a seeded listing has enough proof to trigger outreach
+// ════════════════════════════════════════════════════════════
+
+export interface ClaimReadinessInput {
+    listingAgeDays: number;          // how long the page has existed
+    countryTier: 'gold' | 'blue' | 'silver' | 'slate'; // market priority
+    surfaceImportance: number;       // 0-1 (metro=high, rural=low)
+    corridorImportance: number;      // 0-1 (major corridor=high)
+    keywordOpportunity: number;      // 0-1 (search volume potential)
+    internalImpressions: number;     // times shown in directory/search
+    internalViews: number;           // actual page visits
+    contactQuality: number;          // 0-1 (has phone/email/website?)
+    dataQuality: number;             // 0-1 (name/address/category completeness)
+    businessConfidence: number;      // 0-1 (real business? verified signals?)
+    monetizationPotential: number;   // 0-1 (high-value category/territory?)
+    surfaceLinkage: boolean;         // connected to surfaces?
+    corridorLinkage: boolean;        // connected to corridors?
+    mapInclusion: boolean;           // visible on map?
+    searchInclusion: boolean;        // in Typesense index?
+    pagePublished: boolean;          // live SEO page?
+}
+
+export type OutreachReadiness = 'outreach_now' | 'outreach_normal' | 'passive_only' | 'wait';
+
+export function calculateClaimReadiness(input: ClaimReadinessInput): {
+    score: number;
+    readiness: OutreachReadiness;
+    reasons: string[];
+} {
+    const reasons: string[] = [];
+
+    // Country tier multiplier
+    const tierMultiplier = { gold: 1.0, blue: 0.85, silver: 0.7, slate: 0.55 }[input.countryTier];
+
+    // Base score from data quality and signals
+    let score = 0;
+
+    // Infrastructure readiness (30 points max)
+    if (input.pagePublished) { score += 8; } else { reasons.push('Page not published'); }
+    if (input.searchInclusion) { score += 6; } else { reasons.push('Not in search index'); }
+    if (input.mapInclusion) { score += 5; } else { reasons.push('Not on map'); }
+    if (input.surfaceLinkage) { score += 6; } else { reasons.push('No surface linkage'); }
+    if (input.corridorLinkage) { score += 5; }
+
+    // Data quality (25 points max)
+    score += input.dataQuality * 10;
+    score += input.contactQuality * 10;
+    score += input.businessConfidence * 5;
+
+    // Opportunity (20 points max)
+    score += input.surfaceImportance * 7;
+    score += input.corridorImportance * 5;
+    score += input.keywordOpportunity * 5;
+    score += input.monetizationPotential * 3;
+
+    // Activity proof (15 points max — stronger signal)
+    score += Math.min(5, input.internalImpressions * 0.5);
+    score += Math.min(5, input.internalViews * 1.0);
+
+    // Maturity (10 points max)
+    score += Math.min(10, input.listingAgeDays * 0.5);
+
+    // Apply country tier multiplier
+    score = Math.round(score * tierMultiplier);
+
+    // Determine readiness
+    let readiness: OutreachReadiness;
+    if (score >= 65) {
+        readiness = 'outreach_now';
+    } else if (score >= 45) {
+        readiness = 'outreach_normal';
+    } else if (score >= 25) {
+        readiness = 'passive_only';
+    } else {
+        readiness = 'wait';
+        reasons.push('Insufficient proof for outreach');
+    }
+
+    return { score: Math.min(100, score), readiness, reasons };
+}
+
+// ── Outreach email sequence position ──
+export type OutreachEmailStep =
+    | 'ownership_notice'       // Email 1
+    | 'proof_of_presence'      // Email 2
+    | 'report_card_activation' // Email 3
+    | 'competitor_pressure'    // Email 4
+    | 'missed_opportunity'     // Email 5
+    | 'final_reminder';        // Email 6
+
+export const OUTREACH_SEQUENCE: { step: OutreachEmailStep; delayDays: number }[] = [
+    { step: 'ownership_notice', delayDays: 0 },
+    { step: 'proof_of_presence', delayDays: 3 },
+    { step: 'report_card_activation', delayDays: 7 },
+    { step: 'competitor_pressure', delayDays: 14 },
+    { step: 'missed_opportunity', delayDays: 21 },
+    { step: 'final_reminder', delayDays: 30 },
+];
+
+// ── Report Card (public web fields) ──
+export interface PublicReportCard {
+    trustScore: number | null;       // null = locked
+    trustTier: TrustTier | null;
+    complianceStatus: 'verified' | 'incomplete' | 'locked';
+    reliabilityStatus: 'active' | 'locked';
+    profileStrength: 'strong' | 'moderate' | 'low' | 'incomplete';
+    freshnessStatus: 'fresh' | 'stale' | 'not_activated';
+    dispatchReadiness: 'eligible' | 'nearly' | 'not_eligible';
+}
+
+export function buildPublicReportCard(
+    claimed: boolean,
+    completionPct: number,
+    trustScore: number | null,
+    verificationPct: number,
+    lastActivityDays: number
+): PublicReportCard {
+    if (!claimed) {
+        return {
+            trustScore: null,
+            trustTier: null,
+            complianceStatus: 'locked',
+            reliabilityStatus: 'locked',
+            profileStrength: 'incomplete',
+            freshnessStatus: 'not_activated',
+            dispatchReadiness: 'not_eligible',
+        };
+    }
+
+    return {
+        trustScore: completionPct >= 70 ? trustScore : null,
+        trustTier: trustScore ? getTrustTier(trustScore, verificationPct) : null,
+        complianceStatus: verificationPct >= 40 ? 'verified' : 'incomplete',
+        reliabilityStatus: lastActivityDays <= 30 ? 'active' : 'locked',
+        profileStrength:
+            completionPct >= 70 ? 'strong' :
+                completionPct >= 50 ? 'moderate' :
+                    completionPct >= 25 ? 'low' : 'incomplete',
+        freshnessStatus:
+            lastActivityDays <= 7 ? 'fresh' :
+                lastActivityDays <= 30 ? 'stale' : 'not_activated',
+        dispatchReadiness:
+            completionPct >= 70 && verificationPct >= 40 ? 'eligible' :
+                completionPct >= 50 ? 'nearly' : 'not_eligible',
+    };
+}
