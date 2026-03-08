@@ -165,7 +165,7 @@ export function decideInstallPrompt(ctx: InstallContext): InstallDecision {
     }
 
     // LOW INTENT: Return visitor on mobile, 3+ sessions
-    if (ctx.return_visitor && ctx.session_number >= 3 && ctx.device_type === 'mobile') {
+    if (ctx.intent_signals.return_visitor && ctx.session_number >= 3 && ctx.device_type === 'mobile') {
         return {
             should_prompt: true,
             prompt_type: 'subtle_badge',
