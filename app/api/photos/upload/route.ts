@@ -1,259 +1,163 @@
-// app/api/photos/upload/route.ts
-// POST — upload an operator photo to Supabase Storage and register in operator_photos
-//
-// Tier limits (free account):
-//   profile:              max 6 photos
-//   job_gallery:          max 3 photos
-//   terminal_experience:  max 2 photos
-//
-// Returns: { photo_id, public_url, alt_text, image_title, geo_caption }
+/**
+ * POST /api/photos/upload
+ * 
+ * Handles operator photo/document uploads to Supabase Storage.
+ * Returns the public URL for use in profile updates.
+ * 
+ * Supports: avatar, logo, banner, documents (insurance, license, etc.)
+ * Max size: 5MB for photos, 10MB for documents
+ */
+export const dynamic = 'force-dynamic';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 
-import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+function getServiceSupabase() {
+    return createServiceClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+}
 
-const BUCKET = "operator-photos";
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024;  // 5MB
+const MAX_DOC_SIZE = 10 * 1024 * 1024;   // 10MB
 
-const FREE_LIMITS: Record<string, number> = {
-    profile: 6,
-    job_gallery: 3,
-    terminal_experience: 2,
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
+const ALLOWED_DOC_TYPES = [...ALLOWED_PHOTO_TYPES, 'application/pdf'];
+
+const UPLOAD_TYPES: Record<string, { bucket: string; folder: string; maxSize: number; allowedTypes: string[] }> = {
+    avatar: { bucket: 'operator-photos', folder: 'avatars', maxSize: MAX_PHOTO_SIZE, allowedTypes: ALLOWED_PHOTO_TYPES },
+    logo: { bucket: 'operator-photos', folder: 'logos', maxSize: MAX_PHOTO_SIZE, allowedTypes: ALLOWED_PHOTO_TYPES },
+    banner: { bucket: 'operator-photos', folder: 'banners', maxSize: MAX_PHOTO_SIZE, allowedTypes: ALLOWED_PHOTO_TYPES },
+    insurance: { bucket: 'operator-documents', folder: 'insurance', maxSize: MAX_DOC_SIZE, allowedTypes: ALLOWED_DOC_TYPES },
+    license: { bucket: 'operator-documents', folder: 'licenses', maxSize: MAX_DOC_SIZE, allowedTypes: ALLOWED_DOC_TYPES },
+    certification: { bucket: 'operator-documents', folder: 'certifications', maxSize: MAX_DOC_SIZE, allowedTypes: ALLOWED_DOC_TYPES },
+    vehicle: { bucket: 'operator-photos', folder: 'vehicles', maxSize: MAX_PHOTO_SIZE, allowedTypes: ALLOWED_PHOTO_TYPES },
 };
 
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/heic"]);
-const MAX_BYTES = 15 * 1024 * 1024; // 15 MB
-
-async function makeServiceSupabase() {
-    const cookieStore = await cookies();
-    return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
-}
-
-async function makeAnonSupabase() {
-    const cookieStore = await cookies();
-    return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
-}
-
 export async function POST(req: NextRequest) {
-    const supabase = await makeAnonSupabase();
-    const svc = await makeServiceSupabase();
-
-    // ── Auth ─────────────────────────────────────────────────
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // ── Parse multipart form ─────────────────────────────────
-    let formData: FormData;
     try {
-        formData = await req.formData();
-    } catch {
-        return NextResponse.json({ error: "Invalid multipart form data" }, { status: 400 });
-    }
+        // Auth check
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
 
-    const file = formData.get("file") as File | null;
-    if (!file) {
-        return NextResponse.json({ error: "file field required" }, { status: 400 });
-    }
+        const formData = await req.formData();
+        const file = formData.get('file') as File | null;
+        const uploadType = formData.get('type') as string | null;
+        const operatorId = formData.get('operatorId') as string | null;
 
-    // ── Validate file ─────────────────────────────────────────
-    if (!ALLOWED_TYPES.has(file.type)) {
-        return NextResponse.json(
-            { error: "Invalid file type. Allowed: jpeg, png, webp, heic" },
-            { status: 400 }
-        );
-    }
-    if (file.size > MAX_BYTES) {
-        return NextResponse.json({ error: "File too large (max 15 MB)" }, { status: 413 });
-    }
+        if (!file || !uploadType || !operatorId) {
+            return NextResponse.json({ error: 'file, type, and operatorId required' }, { status: 400 });
+        }
 
-    // ── Photo metadata from form ──────────────────────────────
-    const photoType = (formData.get("photo_type") as string | null) ?? "profile";
-    const loadType = formData.get("load_type") as string | null;
-    const city = formData.get("city") as string | null;
-    const state = formData.get("state") as string | null;
-    const terminalName = formData.get("terminal_name") as string | null;
-    const corridor = formData.get("corridor") as string | null;
-    const equipmentType = formData.get("equipment_type") as string | null;
-    const notes = formData.get("notes") as string | null;
+        const config = UPLOAD_TYPES[uploadType];
+        if (!config) {
+            return NextResponse.json({ error: `Invalid upload type: ${uploadType}` }, { status: 400 });
+        }
 
-    if (!["profile", "job_gallery", "terminal_experience"].includes(photoType)) {
-        return NextResponse.json(
-            { error: "photo_type must be profile | job_gallery | terminal_experience" },
-            { status: 400 }
-        );
-    }
+        // Verify ownership
+        const serviceSupabase = getServiceSupabase();
+        const { data: operator } = await serviceSupabase
+            .from('operators')
+            .select('id, user_id')
+            .eq('id', operatorId)
+            .single();
 
-    // ── Check tier limit ────────────────────────────────────
-    const { count, error: countErr } = await svc
-        .from("operator_photos")
-        .select("id", { count: "exact", head: true })
-        .eq("operator_id", user.id)
-        .eq("photo_type", photoType);
+        if (!operator || operator.user_id !== user.id) {
+            return NextResponse.json({ error: 'Not your listing' }, { status: 403 });
+        }
 
-    if (countErr) {
-        console.error("[photos/upload] count error", countErr);
-        return NextResponse.json({ error: "Failed to check photo limit" }, { status: 500 });
-    }
+        // Validate file
+        if (file.size > config.maxSize) {
+            return NextResponse.json({
+                error: `File too large. Max ${config.maxSize / (1024 * 1024)}MB.`,
+            }, { status: 400 });
+        }
 
-    const limit = FREE_LIMITS[photoType] ?? 3;
-    if ((count ?? 0) >= limit) {
-        return NextResponse.json(
-            { error: `Photo limit reached for ${photoType} (max ${limit})` },
-            { status: 429 }
-        );
-    }
+        if (!config.allowedTypes.includes(file.type)) {
+            return NextResponse.json({
+                error: `File type ${file.type} not allowed. Accepted: ${config.allowedTypes.join(', ')}`,
+            }, { status: 400 });
+        }
 
-    // ── Upload to Storage ────────────────────────────────────
-    const ext = file.type === "image/webp" ? "webp"
-        : file.type === "image/png" ? "png"
-            : file.type === "image/heic" ? "heic"
-                : "jpg";
+        // Upload to Supabase Storage
+        const ext = file.name.split('.').pop() || 'jpg';
+        const path = `${config.folder}/${operatorId}/${Date.now()}.${ext}`;
 
-    const photoId = globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
-    const storagePath = `${user.id}/${photoId}.${ext}`;
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
+        const buffer = await file.arrayBuffer();
+        const { data: uploadData, error: uploadError } = await serviceSupabase
+            .storage
+            .from(config.bucket)
+            .upload(path, buffer, {
+                contentType: file.type,
+                upsert: true,
+            });
 
-    const { error: uploadErr } = await svc
-        .storage
-        .from(BUCKET)
-        .upload(storagePath, fileBuffer, {
-            contentType: file.type,
-            upsert: false,
+        if (uploadError) {
+            console.error('[UPLOAD] Storage error:', uploadError);
+            return NextResponse.json({ error: uploadError.message }, { status: 500 });
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = serviceSupabase
+            .storage
+            .from(config.bucket)
+            .getPublicUrl(uploadData.path);
+
+        // Auto-update the profile field for photos
+        if (['avatar', 'logo', 'banner'].includes(uploadType)) {
+            const fieldMap: Record<string, string> = {
+                avatar: 'avatar_url',
+                logo: 'logo_url',
+                banner: 'banner_url',
+            };
+            await serviceSupabase
+                .from('operators')
+                .update({ [fieldMap[uploadType]]: publicUrl, updated_at: new Date().toISOString() })
+                .eq('id', operatorId);
+        }
+
+        // Log document submissions for verification pipeline
+        if (['insurance', 'license', 'certification'].includes(uploadType)) {
+            await serviceSupabase.from('document_submissions').insert({
+                operator_id: operatorId,
+                document_type: uploadType,
+                file_url: publicUrl,
+                status: 'pending_review',
+                submitted_at: new Date().toISOString(),
+                submitted_by: user.id,
+            });
+        }
+
+        // PostHog
+        if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+            try {
+                await fetch(`${process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com'}/capture/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        api_key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+                        distinct_id: user.id,
+                        event: 'file_uploaded',
+                        properties: { operator_id: operatorId, type: uploadType, size: file.size },
+                    }),
+                });
+            } catch { /* non-blocking */ }
+        }
+
+        return NextResponse.json({
+            ok: true,
+            url: publicUrl,
+            type: uploadType,
+            path: uploadData.path,
         });
 
-    if (uploadErr) {
-        // If bucket doesn't exist, return helpful error
-        if (uploadErr.message?.includes("Bucket not found")) {
-            return NextResponse.json(
-                { error: `Storage bucket '${BUCKET}' not found. Create it in Supabase Storage.` },
-                { status: 500 }
-            );
-        }
-        console.error("[photos/upload] storage error", uploadErr);
-        return NextResponse.json({ error: "Upload failed: " + uploadErr.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Internal error';
+        console.error('[UPLOAD] Error:', message);
+        return NextResponse.json({ error: message }, { status: 500 });
     }
-
-    // ── Get public URL ───────────────────────────────────────
-    const { data: { publicUrl } } = svc
-        .storage
-        .from(BUCKET)
-        .getPublicUrl(storagePath);
-
-    // ── Insert into operator_photos ──────────────────────────
-    const { data: photo, error: insertErr } = await svc
-        .from("operator_photos")
-        .insert({
-            id: photoId,
-            operator_id: user.id,
-            storage_path: storagePath,
-            public_url: publicUrl,
-            photo_type: photoType,
-            load_type: loadType,
-            city,
-            state,
-            terminal_name: terminalName,
-            corridor,
-            equipment_type: equipmentType,
-            notes,
-        })
-        .select("id")
-        .single();
-
-    if (insertErr || !photo) {
-        // Clean up the uploaded file on insert failure
-        await svc.storage.from(BUCKET).remove([storagePath]);
-        console.error("[photos/upload] insert error", insertErr);
-        return NextResponse.json({ error: "Failed to save photo record" }, { status: 500 });
-    }
-
-    // ── Generate SEO metadata async (fire-and-forget) ────────
-    svc.rpc("generate_photo_seo_metadata", { p_photo_id: photoId }).then();
-
-    // ── Record trust edge for photo upload ───────────────────
-    svc.rpc("record_trust_edge", {
-        p_from_user_id: user.id,
-        p_from_type: "operator",
-        p_to_entity_str: "photo_upload",
-        p_to_type: "corridor",
-        p_edge_type: "photo_verified_event",
-        p_strength: 1.0,
-        p_meta: { photo_id: photoId, photo_type: photoType },
-    }).then();
-
-    // ── Add to activity feed ─────────────────────────────────
-    svc.from("hc_activity_feed").insert({
-        operator_id: user.id,
-        event_type: "photo_uploaded",
-        region_code: state,
-        title: `Added a new ${photoType.replace("_", " ")} photo`,
-        description: city && state ? `${city}, ${state}` : state ?? undefined,
-        meta: { photo_id: photoId, photo_type: photoType },
-    }).then();
-
-    return NextResponse.json(
-        {
-            photo_id: photoId,
-            public_url: publicUrl,
-        },
-        { status: 201 }
-    );
-}
-
-// GET — list photos for an operator
-export async function GET(req: NextRequest) {
-    const supabase = await makeAnonSupabase();
-    const { searchParams } = new URL(req.url);
-
-    const operatorId = searchParams.get("operator_id");
-    const photoType = searchParams.get("photo_type");
-    const limit = Math.min(Number(searchParams.get("limit") ?? "20"), 50);
-
-    if (!operatorId) {
-        return NextResponse.json({ error: "operator_id required" }, { status: 400 });
-    }
-
-    let query = supabase
-        .from("operator_photos")
-        .select(`
-            id,
-            public_url,
-            photo_type,
-            load_type,
-            city,
-            state,
-            terminal_name,
-            corridor,
-            alt_text,
-            image_title,
-            geo_caption,
-            is_verified,
-            is_primary,
-            created_at
-        `)
-        .eq("operator_id", operatorId)
-        .order("is_primary", { ascending: false })
-        .order("created_at", { ascending: false })
-        .limit(limit);
-
-    if (photoType) {
-        query = query.eq("photo_type", photoType);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-        console.error("[photos GET]", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ photos: data ?? [] });
 }
