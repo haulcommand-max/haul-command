@@ -1,110 +1,148 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import type { OperatorSearchResult } from '@/lib/search/types';
-
 /**
  * GET /api/search/operators
- *
- * HC Search Engine V2 — Operator Directory
- * Uses: search_documents table with FTS + trigram + trust + verified + recency + geo scoring
- *
+ * 
+ * Search operators via Typesense with full-text search, geo, facets, and filters.
+ * This is the primary directory search endpoint.
+ * 
  * Query params:
- *   q           — search query (fuzzy + full-text)
- *   country     — country filter (US, CA, etc.)
- *   region      — state/province
- *   city        — city filter
- *   tags        — comma-separated tag filter (e.g., "pilot_car,high_pole")
- *   verified    — "1" or "true" for verified only
- *   lat, lng    — user location for geo proximity scoring
- *   radius_km   — search radius in km (default: none)
- *   limit       — results per page (default: 25, max: 50)
- *   offset      — pagination offset
+ *   q          - Search query (company name, bio, etc.)
+ *   state      - Filter by state/province
+ *   country    - Filter by country code
+ *   role       - Filter by role subtype
+ *   corridor   - Filter by corridor
+ *   height_pole- Filter for height pole operators only (true)
+ *   dispatch   - Filter for dispatch-ready only (true)
+ *   claimed    - Filter for claimed only (true)
+ *   lat/lng/radius - Geo search (radius in miles)
+ *   sort       - Sort by: relevance, reputation, distance, newest
+ *   page       - Page number (1-indexed)
+ *   per_page   - Results per page (default 20, max 100)
+ * 
+ * Phase 1: search_ui_live
  */
+export const dynamic = 'force-dynamic';
+import { NextRequest, NextResponse } from 'next/server';
+import { getTypesenseSearch, OPERATORS_COLLECTION } from '@/lib/typesense/client';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
+export async function GET(req: NextRequest) {
+    const params = req.nextUrl.searchParams;
 
-function parseArrayParam(v: string | null): string[] | null {
-    if (!v) return null;
-    const arr = v.split(',').map(s => s.trim()).filter(Boolean);
-    return arr.length ? arr : null;
-}
+    const q = params.get('q') || '*';
+    const state = params.get('state');
+    const country = params.get('country');
+    const role = params.get('role');
+    const corridor = params.get('corridor');
+    const heightPole = params.get('height_pole');
+    const dispatch = params.get('dispatch');
+    const claimed = params.get('claimed');
+    const lat = params.get('lat');
+    const lng = params.get('lng');
+    const radius = params.get('radius') || '100';
+    const sort = params.get('sort') || 'relevance';
+    const page = Math.max(1, parseInt(params.get('page') || '1', 10));
+    const perPage = Math.min(100, Math.max(1, parseInt(params.get('per_page') || '20', 10)));
 
-export async function GET(request: NextRequest) {
-    const sp = request.nextUrl.searchParams;
+    // Build filter string
+    const filters: string[] = [];
+    if (state) filters.push(`state:=${state}`);
+    if (country) filters.push(`country_code:=${country}`);
+    if (role) filters.push(`role_subtypes:=${role}`);
+    if (corridor) filters.push(`service_corridors:=${corridor}`);
+    if (heightPole === 'true') filters.push(`has_height_pole:=true`);
+    if (dispatch === 'true') filters.push(`dispatch_ready:=true`);
+    if (claimed === 'true') filters.push(`is_claimed:=true`);
 
-    const q = sp.get('q') || null;
-    const country = sp.get('country') || null;
-    const region = sp.get('region') || sp.get('state') || null;  // backward compat
-    const city = sp.get('city') || null;
-    const tags = parseArrayParam(sp.get('tags'));
-    const verifiedOnly = sp.get('verified') === '1' || sp.get('verified') === 'true';
+    // Build sort string
+    let sortBy = '_text_match:desc';
+    switch (sort) {
+        case 'reputation':
+            sortBy = 'reputation_score:desc';
+            break;
+        case 'newest':
+            sortBy = 'updated_at:desc';
+            break;
+        case 'distance':
+            if (lat && lng) {
+                sortBy = `location(${lat}, ${lng}):asc`;
+            }
+            break;
+        case 'relevance':
+        default:
+            sortBy = '_text_match:desc,reputation_score:desc';
+    }
 
-    const lat = sp.get('lat');
-    const lng = sp.get('lng');
-    const radiusRaw = sp.get('radius_km') ?? sp.get('radiusKm') ?? sp.get('radius');
+    // Add geo filter if coordinates provided
+    if (lat && lng) {
+        const radiusMiles = parseInt(radius, 10);
+        const radiusKm = radiusMiles * 1.60934;
+        filters.push(`location:(${lat}, ${lng}, ${radiusKm} km)`);
+    }
 
-    const p_lat = lat ? Number(lat) : null;
-    const p_lng = lng ? Number(lng) : null;
-    // If radius was in miles (old API), convert; radius_km takes precedence
-    let p_radius_km: number | null = null;
-    if (radiusRaw) {
-        const val = Number(radiusRaw);
-        // If caller used old 'radius' param (in miles), convert to km
-        if (sp.has('radius') && !sp.has('radius_km') && !sp.has('radiusKm')) {
-            p_radius_km = val * 1.60934;
-        } else {
-            p_radius_km = val;
+    try {
+        const typesense = getTypesenseSearch();
+
+        const results = await typesense
+            .collections(OPERATORS_COLLECTION)
+            .documents()
+            .search({
+                q,
+                query_by: 'company_name,bio,city,state,country_code',
+                filter_by: filters.length > 0 ? filters.join(' && ') : undefined,
+                sort_by: sortBy,
+                page,
+                per_page: perPage,
+                facet_by: 'state,country_code,role_subtypes,availability_status,trust_tier,has_height_pole',
+                max_facet_values: 50,
+                highlight_full_fields: 'company_name,bio',
+                num_typos: 2,
+                typo_tokens_threshold: 3,
+            });
+
+        // Extract facets for sidebar
+        const facets: Record<string, { value: string; count: number }[]> = {};
+        if (results.facet_counts) {
+            for (const fc of results.facet_counts) {
+                facets[fc.field_name] = fc.counts.map((c: { value: string; count: number }) => ({
+                    value: c.value,
+                    count: c.count,
+                }));
+            }
         }
-    }
 
-    const limit = Math.min(parseInt(sp.get('limit') ?? '25', 10), 50);
-    const offset = Math.max(parseInt(sp.get('offset') ?? '0', 10), 0);
-
-    const supabase = getSupabase();
-
-    const { data, error } = await supabase.rpc('hc_search_operators', {
-        p_q: q,
-        p_country_code: country,
-        p_region: region,
-        p_city: city,
-        p_tags: tags,
-        p_verified_only: verifiedOnly,
-        p_lat,
-        p_lng,
-        p_radius_km,
-        p_limit: limit,
-        p_offset: offset,
-    });
-
-    if (error) {
-        console.error('[search/operators] RPC error:', error);
-        return NextResponse.json(
-            { error: 'Search failed', detail: error.message },
-            { status: 500 },
-        );
-    }
-
-    const results = (data ?? []) as OperatorSearchResult[];
-
-    return NextResponse.json({
-        results,
-        meta: {
+        return NextResponse.json({
             query: q,
-            filters: { country, region, city, tags, verified: verifiedOnly },
-            geo: p_lat && p_lng ? { lat: p_lat, lng: p_lng, radius_km: p_radius_km } : null,
-            count: results.length,
-            limit,
-            offset,
-        },
-    }, {
-        headers: {
-            'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
-        },
-    });
+            found: results.found,
+            page,
+            perPage,
+            totalPages: Math.ceil(results.found / perPage),
+            hits: results.hits?.map(hit => ({
+                ...hit.document,
+                highlights: hit.highlights,
+                textMatchScore: hit.text_match,
+            })) || [],
+            facets,
+            processingTimeMs: results.search_time_ms,
+        }, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            },
+        });
+
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Search error';
+        console.error('[SEARCH] Error:', message);
+
+        // Fallback: if Typesense is down, return empty results gracefully
+        return NextResponse.json({
+            query: q,
+            found: 0,
+            page,
+            perPage,
+            totalPages: 0,
+            hits: [],
+            facets: {},
+            error: 'Search temporarily unavailable',
+            fallback: true,
+        }, { status: 503 });
+    }
 }
