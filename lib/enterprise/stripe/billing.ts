@@ -9,9 +9,15 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2026-02-25.clover', // Latest API version
-});
+let _stripe: Stripe | null = null;
+function getStripe() {
+    if (!_stripe) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+            apiVersion: '2026-02-25.clover',
+        });
+    }
+    return _stripe;
+}
 
 function getAdmin() {
     return createClient(
@@ -172,7 +178,7 @@ async function processMetricForAccount(sb: any, accountId: string, item: any) {
         const timestamp = Math.floor(Date.now() / 1000);
 
         // This makes the Stripe API call
-        const stripeRecord = await (stripe.subscriptionItems as any).createUsageRecord(
+        const stripeRecord = await (getStripe().subscriptionItems as any).createUsageRecord(
             stripeItemId,
             {
                 quantity: totalUnits,

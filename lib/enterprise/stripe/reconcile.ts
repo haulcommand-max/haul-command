@@ -9,9 +9,15 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2026-02-25.clover',
-});
+let _stripe: Stripe | null = null;
+function getStripe() {
+    if (!_stripe) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+            apiVersion: '2026-02-25.clover',
+        });
+    }
+    return _stripe;
+}
 
 function getAdmin() {
     return createClient(
@@ -33,7 +39,7 @@ export async function processReconciliation() {
     try {
         // Find most recent finalized invoices from Stripe (last 30 days)
         // Or you could fetch by active subscriptions locally.
-        const invoices = await stripe.invoices.list({
+        const invoices = await getStripe().invoices.list({
             limit: 50,
             status: 'open', // Open invoices are finalized but unpaid, good target to reconcile before charge
         });

@@ -8,9 +8,15 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2026-02-25.clover',
-});
+let _stripe: Stripe | null = null;
+function getStripe() {
+    if (!_stripe) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+            apiVersion: '2026-02-25.clover',
+        });
+    }
+    return _stripe;
+}
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 function getAdmin() {
@@ -27,7 +33,7 @@ export async function processStripeWebhook(body: string, sig: string) {
 
     // 1. Verify Signature
     try {
-        event = stripe.webhooks.constructEvent(body, sig, endpointSecret!);
+        event = getStripe().webhooks.constructEvent(body, sig, endpointSecret!);
     } catch (err: any) {
         throw new Error(`Webhook Error: ${err.message}`);
     }
