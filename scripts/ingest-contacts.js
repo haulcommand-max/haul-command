@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const https = require('https');
+const { generateCanonicalSlug, logSlugEvent } = require('./lib/slugify');
 
 // ── Load env ──
 const envPath = path.join(__dirname, '..', '.env.local');
@@ -181,10 +182,7 @@ console.log('\n📊 By Region:');
 Object.entries(byRegion).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => console.log(`   ${k}: ${v}`));
 
 // ── Build Supabase rows ──
-function makeSlug(name) {
-  const uid = crypto.randomUUID().substring(0, 8);
-  return name.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 50) + '-' + uid;
-}
+// Slug generation now uses shared canonical contract (scripts/lib/slugify.js)
 
 function generateClaimHash(name, phone) {
   return crypto.createHash('sha256').update(`${name}::${phone}::haulcommand2026`).digest('hex').substring(0, 16);
@@ -193,7 +191,8 @@ function generateClaimHash(name, phone) {
 const rows = operators.map(op => {
   const uuid = crypto.randomUUID();
   const name = op.display_name;
-  const slug = makeSlug(name);
+  const entityType = op.is_pilot_driver ? 'pilot_driver' : 'pilot_car_operator';
+  const slug = generateCanonicalSlug(name, op.primary_region || '', entityType);
   const claimHash = generateClaimHash(name, op.phone_e164);
 
   // Higher confidence because we have emails
@@ -305,7 +304,17 @@ async function seedSupabase() {
       // Try individually
       let rec = 0;
       for (const row of batch) {
-        try { await post([row]); rec++; inserted++; } catch (e) { }
+        try { await post([row]); rec++; inserted++; } catch (e) {
+          logSlugEvent({
+            script_name: 'ingest-contacts',
+            source_name: 'brokers_grid_pdf',
+            entity_name: row.name,
+            attempted_slug: row.slug,
+            insert_outcome: 'error',
+            error_code: e.message?.match(/HTTP (\d+)/)?.[1] || 'unknown',
+            error_message: e.message?.substring(0, 200),
+          });
+        }
       }
       if (rec) console.log(`   ↳ Recovered ${rec}/${batch.length}`);
     }

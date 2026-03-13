@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { generateCanonicalSlug, generateCitySlug, batchGenerateSlugs, logSlugEvent } = require('./lib/slugify');
 
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed_final.json'), 'utf8'));
 const operators = data.operators.filter(op => {
@@ -16,15 +17,7 @@ const operators = data.operators.filter(op => {
 
 function esc(s) { return (s || '').replace(/'/g, "''"); }
 
-function makeSlug(name, uuid) {
-    return name.toLowerCase()
-        .replace(/['']/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .substring(0, 50) + '-' + uuid.substring(0, 8);
-}
+// Slug generation now uses shared canonical contract (scripts/lib/slugify.js)
 
 const MICRO_BATCH = 50;
 const totalBatches = Math.ceil(operators.length / MICRO_BATCH);
@@ -39,8 +32,8 @@ for (let b = 0; b < totalBatches; b++) {
 
     const rows = batch.map(op => {
         const uuid = crypto.randomUUID();
-        const slug = makeSlug(op.name, uuid);
-        const citySlug = op.city ? op.city.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').substring(0, 40) : null;
+        const slug = generateCanonicalSlug(op.name, op.region_code || '', 'pilot_car_operator');
+        const citySlug = generateCitySlug(op.city);
 
         let conf = 0.50;
         if (op.phone) conf += 0.15;
@@ -75,11 +68,31 @@ for (let b = 0; b < totalBatches; b++) {
         return `('pilot_car_operator','${uuid}','${esc(op.name)}','${esc(slug)}',${op.city ? `'${esc(op.city)}'` : 'NULL'},${citySlug ? `'${esc(citySlug)}'` : 'NULL'},'${esc(op.region_code)}','${esc(op.country_code)}','uspilotcars.com','unclaimed','${op.claim_hash}',10,true,${conf.toFixed(2)},${completeness.toFixed(2)},${claimPri.toFixed(2)},'${meta}'::jsonb)`;
     });
 
-    sql += rows.join(',\n') + ';';
+    sql += rows.join(',\n') + '\nON CONFLICT (slug) DO UPDATE SET\n  metadata = directory_listings.metadata || EXCLUDED.metadata,\n  city = COALESCE(NULLIF(EXCLUDED.city, \'\'), directory_listings.city);';
 
     const fp = path.join(__dirname, 'micro', `mb_${String(b + 1).padStart(2, '0')}.sql`);
     fs.mkdirSync(path.dirname(fp), { recursive: true });
     fs.writeFileSync(fp, sql);
+}
+
+// Batch collision pre-flight check
+const slugEntries = operators.map(op => ({
+    name: op.name,
+    disambiguator: op.region_code || '',
+    entityType: 'pilot_car_operator',
+}));
+const { collisions } = batchGenerateSlugs(slugEntries);
+if (collisions.length > 0) {
+    for (const c of collisions) {
+        logSlugEvent({
+            script_name: 'gen-micro-batches',
+            source_name: 'uspilotcars.com',
+            entity_name: operators[c.indices[0]]?.name,
+            attempted_slug: c.slug,
+            collision_count: c.indices.length,
+            insert_outcome: 'collision_preflight',
+        });
+    }
 }
 
 console.log(`✅ Wrote ${totalBatches} micro-batch files to scripts/micro/`);

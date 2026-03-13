@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+const { generateCanonicalSlug, generateCitySlug, batchGenerateSlugs, logSlugEvent } = require('./lib/slugify');
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed_final.json'), 'utf8'));
 const operators = data.operators;
 
@@ -31,16 +32,7 @@ function genUuid() {
     return crypto.randomUUID();
 }
 
-function makeSlug(name, uuid) {
-    const base = name.toLowerCase()
-        .replace(/['']/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .substring(0, 50);
-    return `${base}-${uuid.substring(0, 8)}`;
-}
+// Slug generation now uses shared canonical contract (scripts/lib/slugify.js)
 
 function esc(s) { return (s || '').replace(/'/g, "''"); }
 
@@ -56,8 +48,8 @@ for (let i = 0; i < valid.length; i += BATCH_SIZE) {
 
     const rows = batch.map(op => {
         const uuid = genUuid();
-        const slug = makeSlug(op.name, uuid);
-        const citySlug = op.city ? op.city.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').substring(0, 40) : null;
+        const slug = generateCanonicalSlug(op.name, op.region_code || '', 'pilot_car_operator');
+        const citySlug = generateCitySlug(op.city);
 
         // Compute confidence score
         let conf = 0.50; // base
@@ -100,7 +92,7 @@ for (let i = 0; i < valid.length; i += BATCH_SIZE) {
     });
 
     sql += rows.join(',\n');
-    sql += ';\n';
+    sql += '\nON CONFLICT (slug) DO UPDATE SET\n  metadata = directory_listings.metadata || EXCLUDED.metadata,\n  city = COALESCE(NULLIF(EXCLUDED.city, \'\'), directory_listings.city);\n';
     batches.push(sql);
 }
 
@@ -123,3 +115,24 @@ console.log('\n📋 Sample rows:');
 valid.filter(o => o.phone && o.city).slice(0, 5).forEach(op => {
     console.log(`   ${op.name} | ${op.city}, ${op.region_code} | ${op.phone}`);
 });
+
+// Batch collision pre-flight check
+const slugEntries = valid.map(op => ({
+    name: op.name,
+    disambiguator: op.region_code || '',
+    entityType: 'pilot_car_operator',
+}));
+const { collisions } = batchGenerateSlugs(slugEntries);
+if (collisions.length > 0) {
+    console.warn(`\n⚠️  ${collisions.length} slug collisions detected in batch:`);
+    for (const c of collisions) {
+        logSlugEvent({
+            script_name: 'gen-supabase-seed',
+            source_name: 'uspilotcars.com',
+            entity_name: valid[c.indices[0]]?.name,
+            attempted_slug: c.slug,
+            collision_count: c.indices.length,
+            insert_outcome: 'collision_preflight',
+        });
+    }
+}

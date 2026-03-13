@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { generateCanonicalSlug } = require('./lib/slugify');
 
 const v1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'uspilotcars_seed_data.json'), 'utf8'));
 const v2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'uspilotcars_seed_v2.json'), 'utf8'));
@@ -87,9 +88,7 @@ function generateClaimHash(name, phone, region) {
         .digest('hex').substring(0, 16);
 }
 
-function slug(name) {
-    return name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').substring(0, 60);
-}
+// Slug generation now uses shared canonical contract (scripts/lib/slugify.js)
 
 function titleCase(str) {
     if (!str) return '';
@@ -171,7 +170,7 @@ for (const op of final) {
     op.claim_url = `https://haulcommand.com/claim/invite/${op.claim_hash}`;
     op.claim_status = 'unclaimed';
     op.entity_type = 'escort_operator';
-    op.slug = slug(op.name);
+    op.slug = generateCanonicalSlug(op.name, op.region_code || '', 'escort_operator');
     op.is_visible = true;
     op.rank_score = 10; // base score for unclaimed
 }

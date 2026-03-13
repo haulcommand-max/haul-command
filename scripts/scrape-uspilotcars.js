@@ -8,6 +8,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { generateCanonicalSlug } = require('./lib/slugify');
 
 // ── All state/province URLs ──
 const STATE_URLS = [
@@ -419,11 +420,8 @@ async function main() {
         op.claim_url = `https://haulcommand.com/claim/invite/${op.claim_hash}`;
         op.claim_status = 'unclaimed';
         op.entity_type = 'escort_operator';
-        // Generate slug
-        op.slug = op.name.toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .substring(0, 60);
+        // Generate slug using shared canonical contract
+        op.slug = generateCanonicalSlug(op.name, op.region_code, 'escort_operator');
     }
 
     // Stats

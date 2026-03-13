@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const https = require('https');
+const { generateCanonicalSlug, generateCitySlug, logSlugEvent } = require('./lib/slugify');
 
 // Load env - robust parser
 const envPath = path.join(__dirname, '..', '.env.local');
@@ -33,10 +34,7 @@ const operators = data.operators.filter(op => {
 });
 console.log(`🚀 Seeding ${operators.length} operators`);
 
-function makeSlug(name) {
-    const uid = crypto.randomUUID().substring(0, 8);
-    return name.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 50) + '-' + uid;
-}
+// Slug generation now uses shared canonical contract (scripts/lib/slugify.js)
 
 function buildRow(op) {
     const uuid = crypto.randomUUID();
@@ -44,8 +42,8 @@ function buildRow(op) {
     let comp = 0.20 + (op.phone ? 0.20 : 0) + (op.city ? 0.15 : 0) + (op.website ? 0.15 : 0) + ((op.services || []).length > 0 ? 0.15 : 0);
     let pri = 0.50 + (op.phone ? 0.15 : 0) + (op.website ? 0.15 : 0) + ((op.additional_regions || []).length > 0 ? 0.10 : 0);
     return {
-        entity_type: 'pilot_car_operator', entity_id: uuid, name: op.name, slug: makeSlug(op.name),
-        city: op.city || null, city_slug: op.city ? op.city.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').substring(0, 40) : null,
+        entity_type: 'pilot_car_operator', entity_id: uuid, name: op.name, slug: generateCanonicalSlug(op.name, op.region_code || '', 'pilot_car_operator'),
+        city: op.city || null, city_slug: generateCitySlug(op.city),
         region_code: op.region_code, country_code: op.country_code, source: 'uspilotcars.com',
         claim_status: 'unclaimed', claim_hash: op.claim_hash, rank_score: 10, is_visible: true,
         entity_confidence_score: Math.min(conf, 0.95), profile_completeness: Math.min(comp, 0.95), claim_priority_score: Math.min(pri, 0.95),
@@ -88,7 +86,23 @@ async function main() {
             console.log(`❌ ${err.message.substring(0, 80)}`);
             // Retry individually
             let rec = 0;
-            for (const row of rows) { try { await post('directory_listings', [row]); rec++; inserted++; } catch (e) { } }
+            for (const row of rows) {
+                try {
+                    await post('directory_listings', [row]);
+                    rec++;
+                    inserted++;
+                } catch (e) {
+                    logSlugEvent({
+                        script_name: 'seed-to-supabase',
+                        source_name: 'uspilotcars.com',
+                        entity_name: row.name,
+                        attempted_slug: row.slug,
+                        insert_outcome: 'error',
+                        error_code: e.message?.match(/HTTP (\d+)/)?.[1] || 'unknown',
+                        error_message: e.message?.substring(0, 200),
+                    });
+                }
+            }
             if (rec) console.log(`   ↳ Recovered ${rec}/${rows.length}`);
         }
     }

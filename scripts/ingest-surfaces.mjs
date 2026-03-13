@@ -132,12 +132,14 @@ const SURFACE_QUERIES = [
   },
 ];
 
-// ── HELPERS ──────────────────────────────────────────────────
+// Slug generation: shared canonical contract (scripts/lib/slugify.js)
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { generateCanonicalSlug: _genSlug, generateSimpleSlug: _simpleSlug } = require("./lib/slugify");
 
-function slugify(text) {
-  return text.toString().toLowerCase().normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "").slice(0, 120);
+function slugify(text, countryCode, surfaceType) {
+  // Use canonical slug with surface_type as entity_type and countryCode as disambiguator
+  return _genSlug(text, countryCode || '', surfaceType || '');
 }
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
@@ -253,7 +255,7 @@ function mapElement(el, countryCode, surfaceDef) {
     country_code: countryCode,
     surface_type: surfaceDef.surface_type,
     name: name.slice(0, 255),
-    slug: slugify(`${surfaceDef.surface_type}-${name}-${countryCode}`),
+    slug: slugify(name, countryCode, surfaceDef.surface_type),
     address: [tags["addr:housenumber"], tags["addr:street"]].filter(Boolean).join(" ") || null,
     city: tags["addr:city"] || tags["addr:town"] || null,
     state_region: tags["addr:state"] || tags["addr:province"] || null,
