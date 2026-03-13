@@ -15,23 +15,23 @@
     "crons": [
         {
             "path": "/api/cron/escort-supply-radar",
-            "schedule": "*/15 * * * *"
+            "schedule": "0 7 * * *"
         },
         {
             "path": "/api/cron/broker-intent-radar",
-            "schedule": "*/30 * * * *"
+            "schedule": "0 8 * * *"
         },
         {
             "path": "/api/cron/match-health-monitor",
-            "schedule": "*/10 * * * *"
+            "schedule": "0 9 * * *"
         },
         {
             "path": "/api/cron/autonomous-supply-mover",
-            "schedule": "0 * * * *"
+            "schedule": "0 1 * * *"
         },
         {
             "path": "/api/cron/control-tower-scan",
-            "schedule": "*/30 * * * *"
+            "schedule": "0 10 * * *"
         },
         {
             "path": "/api/cron/listmonk-weekly-digest",
@@ -43,11 +43,11 @@
         },
         {
             "path": "/api/cron/content-enqueue",
-            "schedule": "0 * * * *"
+            "schedule": "0 5 * * *"
         },
         {
             "path": "/api/cron/content-pipeline",
-            "schedule": "*/15 * * * *"
+            "schedule": "0 6 * * *"
         },
         {
             "path": "/api/cron/directory-rehydrate",
@@ -55,7 +55,7 @@
         },
         {
             "path": "/api/cron/directory-incremental",
-            "schedule": "*/15 * * * *"
+            "schedule": "0 4 * * *"
         }
     ],
     "headers": [
