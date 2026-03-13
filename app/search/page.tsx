@@ -2,109 +2,145 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import {
+    HcIconDirectory, HcIconMap, HcIconVerified,
+    HcIconBridgeClearance, HcIconDispatchServices,
+} from '@/components/icons';
 
-interface OperatorResult {
-    id: string;
-    company_name: string;
-    city: string;
-    state: string;
-    country_code: string;
-    phone: string;
-    trust_score: number;
-    freshness_score: number;
-    reputation_score: number;
-    role_subtypes: string[];
-    height_pole: boolean;
-    is_dispatch_ready: boolean;
+/* ─── Result types ────────────────────────────────────────────────────── */
+
+/** Unified search result — maps from hc_search_all RPC output */
+interface SearchResult {
+    entity_type: string;
+    entity_id: string;
+    title: string;
+    subtitle: string | null;
+    city: string | null;
+    region: string | null;
+    country_code: string | null;
+    tags: string[];
     is_verified: boolean;
-    boost_tier: string | null;
-    corridors: string[];
-    slug: string;
+    trust_score: number;
+    score: number;
+    // Preserved from legacy OperatorResult shape for backward compat
+    slug?: string;
+    height_pole?: boolean;
+    is_dispatch_ready?: boolean;
+    boost_tier?: string | null;
 }
 
 interface SearchResponse {
-    results: OperatorResult[];
-    total: number;
-    page: number;
-    totalPages: number;
-    facets: Record<string, Array<{ value: string; count: number }>>;
-    processingTimeMs: number;
+    results: SearchResult[];
+    query: {
+        q: string | null;
+        country: string | null;
+        region: string | null;
+        limit: number;
+        offset: number;
+    };
 }
 
-const POSITION_TYPES = ['All', 'Pilot Car', 'Chase Car', 'Lead Car', 'High Pole', 'Route Survey'];
+/* ─── Entity type display helpers ─────────────────────────────────────── */
+
+const ENTITY_TYPE_LABELS: Record<string, { label: string; color: string; icon: string }> = {
+    operator: { label: 'Operator', color: '#00ff88', icon: '🚗' },
+    pilot_car_operator: { label: 'Pilot Car', color: '#00ff88', icon: '🚗' },
+    pilot_driver: { label: 'Pilot Driver', color: '#00e07a', icon: '👤' },
+    broker: { label: 'Broker', color: '#818cf8', icon: '🤝' },
+    truck_stop: { label: 'Truck Stop', color: '#f59e0b', icon: '⛽' },
+    port: { label: 'Port', color: '#3b82f6', icon: '🏗️' },
+    port_infrastructure: { label: 'Port Infra', color: '#60a5fa', icon: '🏗️' },
+    terminal: { label: 'Terminal', color: '#6366f1', icon: '📦' },
+    hotel: { label: 'Hotel', color: '#a78bfa', icon: '🏨' },
+    support_hotel: { label: 'Support Hotel', color: '#a78bfa', icon: '🏨' },
+    place: { label: 'Place', color: '#fb923c', icon: '📍' },
+    escort_staging_zone: { label: 'Staging Zone', color: '#34d399', icon: '🎯' },
+    crane_rental_yard: { label: 'Crane Yard', color: '#fbbf24', icon: '🏗️' },
+    intermodal_rail_yard: { label: 'Rail Yard', color: '#60a5fa', icon: '🚂' },
+    weigh_station: { label: 'Weigh Station', color: '#94a3b8', icon: '⚖️' },
+    border_crossing: { label: 'Border Crossing', color: '#ef4444', icon: '🚧' },
+    military_base: { label: 'Military Base', color: '#64748b', icon: '🎖️' },
+    mining_site: { label: 'Mining Site', color: '#d97706', icon: '⛏️' },
+};
+
+function getEntityDisplay(type: string) {
+    return ENTITY_TYPE_LABELS[type] || { label: type.replace(/_/g, ' '), color: '#888', icon: '📄' };
+}
+
+/** Entity types in the pilot_car_operator_family that get operator-style rendering */
+const OPERATOR_FAMILY = new Set(['operator', 'pilot_car_operator', 'pilot_driver', 'escort_staging_zone', 'broker']);
+
+const POSITION_TYPES = ['All', 'Pilot Car', 'Truck Stop', 'Port', 'Place', 'Broker'];
 const SORT_OPTIONS = [
     { value: 'relevance', label: 'Best Match' },
-    { value: 'reputation_desc', label: 'Highest Rated' },
-    { value: 'distance', label: 'Nearest First' },
+    { value: 'trust_desc', label: 'Highest Rated' },
     { value: 'newest', label: 'Newest' },
 ];
 
+/* ─── Main Page Component ─────────────────────────────────────────────── */
+
 export default function SearchPage() {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<OperatorResult[]>([]);
+    const [results, setResults] = useState<SearchResult[]>([]);
     const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('relevance');
     const [stateFilter, setStateFilter] = useState('');
-    const [roleFilter, setRoleFilter] = useState('All');
-    const [facets, setFacets] = useState<Record<string, Array<{ value: string; count: number }>>>({});
-    const [processingTime, setProcessingTime] = useState(0);
+    const [typeFilter, setTypeFilter] = useState('All');
     const [geoEnabled, setGeoEnabled] = useState(false);
     const [userLat, setUserLat] = useState<number | null>(null);
     const [userLng, setUserLng] = useState<number | null>(null);
     const [radius, setRadius] = useState(100);
+    const [searchMs, setSearchMs] = useState(0);
     const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    const doSearch = useCallback(async (searchQuery: string, p: number = 1) => {
+    /* ─── Search function — calls /api/search/all (backed by hc_search_all RPC) ─── */
+    const doSearch = useCallback(async (searchQuery: string) => {
         setLoading(true);
+        const start = performance.now();
         try {
-            const params = new URLSearchParams({
-                q: searchQuery || '*',
-                page: String(p),
-                per_page: '20',
-                sort: sortBy,
-            });
+            const params = new URLSearchParams();
+            if (searchQuery) params.set('q', searchQuery);
+            if (stateFilter) params.set('region', stateFilter);
 
-            if (stateFilter) params.set('state', stateFilter);
-            if (roleFilter !== 'All') {
-                const roleMap: Record<string, string> = {
-                    'Pilot Car': 'pilot_car',
-                    'Chase Car': 'chase_car',
-                    'Lead Car': 'lead_car',
-                    'High Pole': 'high_pole',
-                    'Route Survey': 'route_survey',
+            // Map type filter to tags
+            if (typeFilter !== 'All') {
+                const tagMap: Record<string, string> = {
+                    'Pilot Car': 'pilot_car_operator_family',
+                    'Truck Stop': 'truck_stop',
+                    'Port': 'port',
+                    'Place': 'place',
+                    'Broker': 'broker',
                 };
-                params.set('role', roleMap[roleFilter] || roleFilter);
+                const tag = tagMap[typeFilter];
+                if (tag) params.set('tags', tag);
             }
 
             if (geoEnabled && userLat && userLng) {
                 params.set('lat', String(userLat));
                 params.set('lng', String(userLng));
-                params.set('radius_miles', String(radius));
+                params.set('radius_km', String(Math.round(radius * 1.609))); // miles → km
             }
 
-            const res = await fetch(`/api/search/operators?${params}`);
+            params.set('limit', '50');
+
+            const res = await fetch(`/api/search/all?${params}`);
             const data: SearchResponse = await res.json();
 
             setResults(data.results || []);
-            setTotal(data.total || 0);
-            setTotalPages(data.totalPages || 0);
-            setPage(p);
-            setFacets(data.facets || {});
-            setProcessingTime(data.processingTimeMs || 0);
+            setTotal(data.results?.length || 0);
+            setSearchMs(Math.round(performance.now() - start));
         } catch (err) {
             console.error('Search error:', err);
         } finally {
             setLoading(false);
         }
-    }, [sortBy, stateFilter, roleFilter, geoEnabled, userLat, userLng, radius]);
+    }, [stateFilter, typeFilter, geoEnabled, userLat, userLng, radius]);
 
     // Debounced search
     useEffect(() => {
         if (searchTimeout.current) clearTimeout(searchTimeout.current);
-        searchTimeout.current = setTimeout(() => doSearch(query, 1), 300);
+        searchTimeout.current = setTimeout(() => doSearch(query), 300);
         return () => { if (searchTimeout.current) clearTimeout(searchTimeout.current); };
     }, [query, doSearch]);
 
@@ -129,14 +165,32 @@ export default function SearchPage() {
         return '#ff3333';
     };
 
-    const getBoostBadge = (tier: string | null) => {
-        if (!tier) return null;
-        const badges: Record<string, { label: string; color: string; bg: string }> = {
-            premium: { label: '⚡ PREMIUM', color: '#fff', bg: 'linear-gradient(135deg, #6366f1, #8b5cf6)' },
-            featured: { label: '★ FEATURED', color: '#fff', bg: 'linear-gradient(135deg, #f59e0b, #ef4444)' },
-            spotlight: { label: '● SPOTLIGHT', color: '#fff', bg: 'linear-gradient(135deg, #06b6d4, #3b82f6)' },
-        };
-        return badges[tier] || null;
+    /* ─── Compute facets from results ─── */
+    const stateFacets = results.reduce((acc, r) => {
+        if (r.region) {
+            acc[r.region] = (acc[r.region] || 0) + 1;
+        }
+        return acc;
+    }, {} as Record<string, number>);
+
+    const typeFacets = results.reduce((acc, r) => {
+        const display = getEntityDisplay(r.entity_type);
+        acc[display.label] = (acc[display.label] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    const sortedStateFacets = Object.entries(stateFacets)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 15);
+
+    /* ─── Get link for result ─── */
+    const getResultLink = (r: SearchResult) => {
+        // Operator family → /place/{slug or id}
+        if (OPERATOR_FAMILY.has(r.entity_type)) {
+            return `/place/${r.slug || r.entity_id}`;
+        }
+        // Everything else → /place/{entity_id}
+        return `/place/${r.entity_id}`;
     };
 
     return (
@@ -153,10 +207,10 @@ export default function SearchPage() {
             }}>
                 <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                        <Link href="/" style={{ color: '#00ff88', fontWeight: 800, fontSize: 20, textDecoration: 'none', letterSpacing: '-0.5px' }}>
+                        <Link href="/" style={{ color: '#F1A91B', fontWeight: 800, fontSize: 20, textDecoration: 'none', letterSpacing: '-0.5px' }}>
                             HAUL COMMAND
                         </Link>
-                        <span style={{ color: '#666', fontSize: 14 }}>Search Operators</span>
+                        <span style={{ color: '#666', fontSize: 14 }}>Search Everything</span>
                     </div>
 
                     {/* Search Bar */}
@@ -166,7 +220,7 @@ export default function SearchPage() {
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Search operators, cities, corridors..."
+                                placeholder="Search operators, truck stops, ports, cities..."
                                 style={{
                                     width: '100%',
                                     padding: '14px 16px 14px 44px',
@@ -178,10 +232,12 @@ export default function SearchPage() {
                                     outline: 'none',
                                     transition: 'border 0.2s',
                                 }}
-                                onFocus={(e) => (e.target.style.borderColor = '#00ff88')}
+                                onFocus={(e) => (e.target.style.borderColor = '#F1A91B')}
                                 onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
                             />
-                            <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 20, opacity: 0.5 }}>🔍</span>
+                            <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', opacity: 0.5 }}>
+                                <HcIconDirectory size={18} />
+                            </span>
                         </div>
 
                         <select
@@ -207,13 +263,13 @@ export default function SearchPage() {
                         {POSITION_TYPES.map(role => (
                             <button
                                 key={role}
-                                onClick={() => setRoleFilter(role)}
+                                onClick={() => setTypeFilter(role)}
                                 style={{
                                     padding: '6px 14px',
                                     borderRadius: 20,
-                                    border: roleFilter === role ? '1px solid #00ff88' : '1px solid rgba(255,255,255,0.1)',
-                                    background: roleFilter === role ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.04)',
-                                    color: roleFilter === role ? '#00ff88' : '#999',
+                                    border: typeFilter === role ? '1px solid #F1A91B' : '1px solid rgba(255,255,255,0.1)',
+                                    background: typeFilter === role ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
+                                    color: typeFilter === role ? '#F1A91B' : '#999',
                                     fontSize: 13,
                                     cursor: 'pointer',
                                     transition: 'all 0.2s',
@@ -235,18 +291,22 @@ export default function SearchPage() {
                                 fontSize: 13,
                                 cursor: 'pointer',
                             }}>
-                                📍 Near Me
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                    <HcIconMap size={14} /> Near Me
+                                </span>
                             </button>
                         ) : (
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ color: '#00ff88', fontSize: 13 }}>📍 {radius}mi</span>
+                                <span style={{ color: '#F1A91B', fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                    <HcIconMap size={14} /> {radius}mi
+                                </span>
                                 <input
                                     type="range"
                                     min={10}
                                     max={500}
                                     value={radius}
                                     onChange={(e) => setRadius(Number(e.target.value))}
-                                    style={{ width: 100, accentColor: '#00ff88' }}
+                                    style={{ width: 100, accentColor: '#F1A91B' }}
                                 />
                             </div>
                         )}
@@ -255,9 +315,9 @@ export default function SearchPage() {
                             <button onClick={() => setStateFilter('')} style={{
                                 padding: '6px 14px',
                                 borderRadius: 20,
-                                border: '1px solid #00ff88',
-                                background: 'rgba(0,255,136,0.15)',
-                                color: '#00ff88',
+                                border: '1px solid #F1A91B',
+                                background: 'rgba(241,169,27,0.15)',
+                                color: '#F1A91B',
                                 fontSize: 13,
                                 cursor: 'pointer',
                             }}>
@@ -272,48 +332,50 @@ export default function SearchPage() {
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px', display: 'flex', gap: 24 }}>
                 {/* Sidebar Facets */}
                 <div style={{ width: 220, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    {facets.state && facets.state.length > 0 && (
+                    {/* Type breakdown */}
+                    {Object.keys(typeFacets).length > 0 && (
                         <div>
                             <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#888', marginBottom: 10 }}>
-                                State
+                                Entity Types
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                {facets.state.slice(0, 15).map(f => (
+                                {Object.entries(typeFacets).sort((a, b) => b[1] - a[1]).map(([label, cnt]) => (
+                                    <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 10px', fontSize: 13, color: '#aaa' }}>
+                                        <span>{label}</span>
+                                        <span style={{ opacity: 0.5 }}>{cnt}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* State facets */}
+                    {sortedStateFacets.length > 0 && (
+                        <div>
+                            <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#888', marginBottom: 10 }}>
+                                State / Region
+                            </h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                {sortedStateFacets.map(([val, cnt]) => (
                                     <button
-                                        key={f.value}
-                                        onClick={() => setStateFilter(f.value === stateFilter ? '' : f.value)}
+                                        key={val}
+                                        onClick={() => setStateFilter(val === stateFilter ? '' : val)}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             padding: '6px 10px',
                                             borderRadius: 6,
                                             border: 'none',
-                                            background: f.value === stateFilter ? 'rgba(0,255,136,0.15)' : 'transparent',
-                                            color: f.value === stateFilter ? '#00ff88' : '#aaa',
+                                            background: val === stateFilter ? 'rgba(241,169,27,0.15)' : 'transparent',
+                                            color: val === stateFilter ? '#F1A91B' : '#aaa',
                                             fontSize: 13,
                                             cursor: 'pointer',
                                             textAlign: 'left',
                                         }}
                                     >
-                                        <span>{f.value}</span>
-                                        <span style={{ opacity: 0.5 }}>{f.count}</span>
+                                        <span>{val}</span>
+                                        <span style={{ opacity: 0.5 }}>{cnt}</span>
                                     </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {facets.country_code && facets.country_code.length > 0 && (
-                        <div>
-                            <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#888', marginBottom: 10 }}>
-                                Country
-                            </h3>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                {facets.country_code.map(f => (
-                                    <div key={f.value} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 10px', fontSize: 13, color: '#aaa' }}>
-                                        <span>{f.value}</span>
-                                        <span style={{ opacity: 0.5 }}>{f.count}</span>
-                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -325,25 +387,27 @@ export default function SearchPage() {
                     {/* Stats Bar */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, fontSize: 13, color: '#888' }}>
                         <span>
-                            {loading ? 'Searching...' : `${total.toLocaleString()} operators found`}
-                            {processingTime > 0 && ` in ${processingTime}ms`}
+                            {loading ? 'Searching...' : `${total.toLocaleString()} results found`}
+                            {searchMs > 0 && ` in ${searchMs}ms`}
                         </span>
-                        <span>Page {page} of {totalPages || 1}</span>
+                        <span style={{ fontSize: 11, color: '#555' }}>Powered by FTS</span>
                     </div>
 
                     {/* Results Grid */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                        {results.map((op) => {
-                            const boost = getBoostBadge(op.boost_tier);
+                        {results.map((r) => {
+                            const entityDisplay = getEntityDisplay(r.entity_type);
+                            const isOperator = OPERATOR_FAMILY.has(r.entity_type);
+
                             return (
                                 <Link
-                                    key={op.id}
-                                    href={`/providers/${op.slug || op.id}`}
+                                    key={`${r.entity_type}-${r.entity_id}`}
+                                    href={getResultLink(r)}
                                     style={{ textDecoration: 'none', color: 'inherit' }}
                                 >
                                     <div style={{
-                                        background: boost ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)',
-                                        border: boost ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.06)',
+                                        background: 'rgba(255,255,255,0.02)',
+                                        border: '1px solid rgba(255,255,255,0.06)',
                                         borderRadius: 14,
                                         padding: '18px 20px',
                                         display: 'flex',
@@ -354,46 +418,81 @@ export default function SearchPage() {
                                         position: 'relative',
                                     }}
                                         onMouseEnter={(e) => {
-                                            (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,255,136,0.3)';
+                                            (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(241,169,27,0.3)';
                                             (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.05)';
                                         }}
                                         onMouseLeave={(e) => {
-                                            (e.currentTarget as HTMLDivElement).style.borderColor = boost ? 'rgba(99,102,241,0.3)' : 'rgba(255,255,255,0.06)';
-                                            (e.currentTarget as HTMLDivElement).style.background = boost ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)';
+                                            (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.06)';
+                                            (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.02)';
                                         }}
                                     >
-                                        {/* Score Circle */}
+                                        {/* Score / Icon Circle */}
                                         <div style={{
                                             width: 52,
                                             height: 52,
                                             borderRadius: '50%',
-                                            border: `2px solid ${getScoreColor(op.reputation_score || 0)}`,
+                                            border: isOperator
+                                                ? `2px solid ${getScoreColor(r.trust_score || 0)}`
+                                                : `2px solid ${entityDisplay.color}30`,
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             flexShrink: 0,
-                                            background: `${getScoreColor(op.reputation_score || 0)}15`,
+                                            background: isOperator
+                                                ? `${getScoreColor(r.trust_score || 0)}15`
+                                                : `${entityDisplay.color}10`,
+                                            fontSize: isOperator ? 18 : 22,
                                         }}>
-                                            <span style={{ fontWeight: 800, fontSize: 18, color: getScoreColor(op.reputation_score || 0) }}>
-                                                {op.reputation_score || '—'}
-                                            </span>
+                                            {isOperator ? (
+                                                <span style={{ fontWeight: 800, fontSize: 18, color: getScoreColor(r.trust_score || 0) }}>
+                                                    {r.trust_score || '—'}
+                                                </span>
+                                            ) : (
+                                                <span>{entityDisplay.icon}</span>
+                                            )}
                                         </div>
 
                                         {/* Info */}
                                         <div style={{ flex: 1 }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                                                <span style={{ fontWeight: 700, fontSize: 16, color: '#fff' }}>{op.company_name}</span>
-                                                {op.is_verified && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'rgba(0,255,136,0.15)', color: '#00ff88', fontWeight: 600 }}>✓ VERIFIED</span>}
-                                                {op.is_dispatch_ready && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'rgba(99,102,241,0.15)', color: '#818cf8', fontWeight: 600 }}>DISPATCH READY</span>}
-                                                {op.height_pole && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'rgba(245,158,11,0.15)', color: '#f59e0b', fontWeight: 600 }}>HIGH POLE</span>}
+                                                <span style={{ fontWeight: 700, fontSize: 16, color: '#fff' }}>{r.title || 'Unknown'}</span>
+                                                {r.is_verified && (
+                                                    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'rgba(0,255,136,0.15)', color: '#00ff88', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                                                        <HcIconVerified size={12} /> VERIFIED
+                                                    </span>
+                                                )}
+                                                {/* Entity type badge */}
+                                                <span style={{
+                                                    fontSize: 10,
+                                                    padding: '2px 8px',
+                                                    borderRadius: 4,
+                                                    background: `${entityDisplay.color}15`,
+                                                    color: entityDisplay.color,
+                                                    fontWeight: 700,
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.05em',
+                                                }}>
+                                                    {entityDisplay.label}
+                                                </span>
                                             </div>
+
+                                            {/* Location + subtitle */}
                                             <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
-                                                {op.city && op.state ? `${op.city}, ${op.state}` : op.state || ''} {op.country_code && `· ${op.country_code}`}
+                                                {r.city && r.region ? `${r.city}, ${r.region}` : r.region || r.city || ''}
+                                                {r.country_code && ` · ${r.country_code}`}
                                             </div>
-                                            {op.role_subtypes && op.role_subtypes.length > 0 && (
+
+                                            {r.subtitle && (
+                                                <div style={{ fontSize: 12, color: '#666', marginTop: 4, maxWidth: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                    {r.subtitle}
+                                                </div>
+                                            )}
+
+                                            {/* Tags */}
+                                            {r.tags && r.tags.length > 0 && (
                                                 <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
-                                                    {op.role_subtypes.slice(0, 4).map(r => (
-                                                        <span key={r} style={{
+                                                    {r.tags.slice(0, 4).map(t => (
+                                                        <span key={t} style={{
                                                             fontSize: 11,
                                                             padding: '3px 8px',
                                                             borderRadius: 4,
@@ -401,29 +500,25 @@ export default function SearchPage() {
                                                             color: '#aaa',
                                                             textTransform: 'capitalize',
                                                         }}>
-                                                            {r.replace(/_/g, ' ')}
+                                                            {t.replace(/_/g, ' ')}
                                                         </span>
                                                     ))}
                                                 </div>
                                             )}
                                         </div>
 
-                                        {/* Boost Badge */}
-                                        {boost && (
-                                            <span style={{
+                                        {/* Search score indicator */}
+                                        {r.score > 0 && (
+                                            <div style={{
                                                 position: 'absolute',
-                                                top: -1,
-                                                right: 16,
-                                                padding: '4px 12px',
-                                                borderRadius: '0 0 8px 8px',
-                                                background: boost.bg,
-                                                color: boost.color,
+                                                top: 8,
+                                                right: 12,
                                                 fontSize: 10,
-                                                fontWeight: 800,
-                                                letterSpacing: '0.05em',
+                                                color: '#555',
+                                                fontWeight: 600,
                                             }}>
-                                                {boost.label}
-                                            </span>
+                                                {r.score.toFixed(2)}
+                                            </div>
                                         )}
                                     </div>
                                 </Link>
@@ -432,46 +527,14 @@ export default function SearchPage() {
 
                         {!loading && results.length === 0 && (
                             <div style={{ textAlign: 'center', padding: 60, color: '#666' }}>
-                                <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-                                <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>No operators found</div>
+                                <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center', opacity: 0.4 }}>
+                                    <HcIconDirectory size={48} variant="empty_state" />
+                                </div>
+                                <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>No results found</div>
                                 <div style={{ fontSize: 14 }}>Try broadening your search or removing filters</div>
                             </div>
                         )}
                     </div>
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
-                            <button
-                                disabled={page <= 1}
-                                onClick={() => doSearch(query, page - 1)}
-                                style={{
-                                    padding: '10px 20px',
-                                    borderRadius: 8,
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    background: 'rgba(255,255,255,0.04)',
-                                    color: page <= 1 ? '#444' : '#fff',
-                                    cursor: page <= 1 ? 'default' : 'pointer',
-                                }}
-                            >
-                                ← Previous
-                            </button>
-                            <button
-                                disabled={page >= totalPages}
-                                onClick={() => doSearch(query, page + 1)}
-                                style={{
-                                    padding: '10px 20px',
-                                    borderRadius: 8,
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    background: 'rgba(255,255,255,0.04)',
-                                    color: page >= totalPages ? '#444' : '#fff',
-                                    cursor: page >= totalPages ? 'default' : 'pointer',
-                                }}
-                            >
-                                Next →
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

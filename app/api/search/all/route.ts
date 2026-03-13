@@ -58,6 +58,23 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    // Map r_-prefixed RPC columns to clean field names
+    const mapped = (data ?? []).map((row: Record<string, unknown>) => ({
+        entity_type: row.r_entity_type,
+        entity_id: row.r_entity_id,
+        title: row.r_title,
+        subtitle: row.r_subtitle,
+        country_code: row.r_country_code,
+        region: row.r_region,
+        city: row.r_city,
+        tags: row.r_tags ?? [],
+        is_verified: row.r_is_verified ?? false,
+        trust_score: parseFloat(String(row.r_trust_score ?? 0)),
+        last_active_at: row.r_last_active_at,
+        load_status: row.r_load_status,
+        score: parseFloat(String(row.r_score ?? 0)),
+    }));
+
     return NextResponse.json({
         query: {
             q,
@@ -73,6 +90,7 @@ export async function GET(req: NextRequest) {
             limit,
             offset,
         },
-        results: data ?? [],
+        results: mapped,
+        total: mapped.length,
     });
 }
