@@ -5,7 +5,13 @@ import Stripe from 'stripe';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2024-12-18.acacia' as Stripe.LatestApiVersion });
+let _stripe: Stripe | null = null;
+function getStripe() {
+    if (!_stripe && process.env.STRIPE_SECRET_KEY) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' as Stripe.LatestApiVersion });
+    }
+    return _stripe;
+}
 
 function getSupabase() {
     return createClient(
@@ -124,11 +130,12 @@ export async function POST(req: NextRequest) {
 
         } else {
             // Create Stripe payment intent for one-time lead fee
-            if (!process.env.STRIPE_SECRET_KEY) {
+            const stripeClient = getStripe();
+            if (!stripeClient) {
                 return NextResponse.json({ error: 'Payment system not configured' }, { status: 503 });
             }
 
-            const paymentIntent = await stripe.paymentIntents.create({
+            const paymentIntent = await stripeClient.paymentIntents.create({
                 amount: LEAD_FEE_CENTS,
                 currency: 'usd',
                 metadata: {

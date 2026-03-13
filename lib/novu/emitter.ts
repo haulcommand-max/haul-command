@@ -139,7 +139,7 @@ export async function emitNotification(
     // ── Live Trigger ───────────────────────────────────────────────────────
     try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const novu = getNovuClient() as any;
+        const novu = await getNovuClient() as any;
 
         // Map event name to Novu workflow ID (dots → hyphens)
         const workflowId = eventName.replace(/\./g, '-');

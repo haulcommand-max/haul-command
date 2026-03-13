@@ -13,7 +13,13 @@ import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let _stripe: Stripe | null = null;
+function getStripe(): Stripe {
+    if (!_stripe) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    }
+    return _stripe;
+}
 
 // ─── Tier mapping ─────────────────────────────────────────
 function tierFromPriceId(priceId?: string | null): 'free' | 'basic' | 'pro' | 'elite' {
@@ -55,7 +61,7 @@ export async function POST(req: Request) {
 
     let event: Stripe.Event;
     try {
-        event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+        event = getStripe().webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : 'Unknown error';
         return NextResponse.json({ error: `Webhook signature failed: ${msg}` }, { status: 400 });
@@ -81,7 +87,7 @@ export async function POST(req: Request) {
                 });
 
                 if (subscriptionId) {
-                    const sub: any = await stripe.subscriptions.retrieve(subscriptionId, {
+                    const sub: any = await getStripe().subscriptions.retrieve(subscriptionId, {
                         expand: ['items.data.price.product'],
                     });
                     const price = sub.items?.data?.[0]?.price;
