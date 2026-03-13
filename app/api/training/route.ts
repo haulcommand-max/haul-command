@@ -131,11 +131,24 @@ const CREDENTIAL_SERVICES = [
 
 export async function GET(req: NextRequest) {
     const category = req.nextUrl.searchParams.get('category');
+    const supabase = getSupabase();
 
     let programs = TRAINING_PROGRAMS;
     if (category) {
         programs = programs.filter(p => p.category === category);
     }
+
+    // Fetch live enrollment and credential stats
+    let totalEnrolled = 0;
+    let totalCredentials = 0;
+    try {
+        const [enrollRes, credRes] = await Promise.all([
+            supabase.from('training_enrollments').select('id', { count: 'exact', head: true }),
+            supabase.from('credential_verifications').select('id', { count: 'exact', head: true }).eq('status', 'approved'),
+        ]);
+        totalEnrolled = enrollRes.count ?? 0;
+        totalCredentials = credRes.count ?? 0;
+    } catch { /* graceful fallback */ }
 
     return NextResponse.json({
         ok: true,
@@ -143,8 +156,8 @@ export async function GET(req: NextRequest) {
         credential_services: CREDENTIAL_SERVICES,
         stats: {
             total_programs: TRAINING_PROGRAMS.length,
-            total_enrolled: 0, // will come from DB
-            total_credentials_issued: 0,
+            total_enrolled: totalEnrolled,
+            total_credentials_issued: totalCredentials,
         },
     }, {
         headers: { 'Cache-Control': 'public, max-age=3600, stale-while-revalidate=7200' },

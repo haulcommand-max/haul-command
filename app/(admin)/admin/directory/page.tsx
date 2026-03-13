@@ -1,15 +1,41 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminTopBar } from '@/components/admin/AdminTopBar';
 import DetailDrawer from '@/components/admin/DetailDrawer';
 import { createClient } from '@/lib/supabase/client';
 
-const MOCK_PROVIDERS: any[] = []; // P0: Mock data removed — wire to real directory_listings table
-
 export default function DirectoryPage() {
     const supabase = createClient();
+    const [providers, setProviders] = useState<any[]>([]);
     const [selectedProvider, setSelectedProvider] = useState<any>(null);
     const [processing, setProcessing] = useState(false);
+    const [loadingDir, setLoadingDir] = useState(true);
+
+    useEffect(() => {
+        async function fetchProviders() {
+            try {
+                const { data } = await supabase
+                    .from('operators')
+                    .select('id, company_name, city, state, country_code, is_verified, trust_score, reputation_score, role_type, boost_tier')
+                    .order('trust_score', { ascending: false })
+                    .limit(100);
+                if (data) {
+                    setProviders(data.map((p: any) => ({
+                        id: p.id, name: p.company_name || 'Unnamed',
+                        category: p.role_type || 'escort',
+                        region: `${p.state || ''}${p.country_code ? ` ${p.country_code}` : ''}`,
+                        rating: p.trust_score || 0, jobs: 0,
+                        verified: p.is_verified || false,
+                        sponsor: !!p.boost_tier,
+                        response: '—',
+                    })));
+                }
+            } catch { /* graceful */ }
+            setLoadingDir(false);
+        }
+        fetchProviders();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function handleToggleVerify(provider: any) {
         if (!provider) return;
@@ -57,15 +83,25 @@ export default function DirectoryPage() {
             </div>
 
             <div className="p-8 flex-1 overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {MOCK_PROVIDERS.map((p) => (
-                        <ProviderCard
-                            key={p.id}
-                            provider={p}
-                            onClick={() => setSelectedProvider(p)}
-                        />
-                    ))}
-                </div>
+                {loadingDir ? (
+                    <div className="text-center py-20 text-[#444]">Loading directory...</div>
+                ) : providers.length === 0 ? (
+                    <div className="text-center py-20">
+                        <div className="text-4xl mb-4">📂</div>
+                        <h3 className="text-lg font-bold text-[#888] mb-2">Directory Empty</h3>
+                        <p className="text-sm text-[#444]">No operators in the directory yet. Run the seed script or import operators to populate.</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {providers.map((p) => (
+                            <ProviderCard
+                                key={p.id}
+                                provider={p}
+                                onClick={() => setSelectedProvider(p)}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             <DetailDrawer

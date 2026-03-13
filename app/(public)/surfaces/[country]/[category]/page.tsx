@@ -10,12 +10,17 @@ import {
 /* ─── Category Metadata ─── */
 const CATEGORIES: Record<string, { label: string; plural: string; icon: typeof Truck; color: string; desc: string }> = {
     "truck-stop": { label: "Truck Stop", plural: "Truck Stops", icon: Truck, color: "#F1A91B", desc: "Fuel stations, parking facilities, and escort staging areas" },
+    "fuel-station": { label: "Fuel Station", plural: "Fuel Stations", icon: Truck, color: "#F59E0B", desc: "Refueling points, diesel stations, and truck-accessible fuel stops" },
     "industrial-park": { label: "Industrial Park", plural: "Industrial Parks", icon: Building2, color: "#3B82F6", desc: "Warehouses, pickup points, and delivery zones" },
     "port-terminal": { label: "Port Terminal", plural: "Port Terminals", icon: Anchor, color: "#06B6D4", desc: "Seaports, cargo terminals, and oversize loading docks" },
     "rail-terminal": { label: "Rail Terminal", plural: "Rail Terminals", icon: TrainFront, color: "#8B5CF6", desc: "Intermodal facilities, rail cargo, and staging areas" },
     "equipment-dealer-yard": { label: "Equipment Yard", plural: "Equipment Yards", icon: Wrench, color: "#EF4444", desc: "Heavy equipment dealers, machinery yards, and transport-ready lots" },
     "logistics-hotel": { label: "Logistics Hotel", plural: "Logistics Hotels", icon: Hotel, color: "#10B981", desc: "Driver accommodations, overnight staging, and escort rest stops" },
     "oversize-staging-yard": { label: "Staging Yard", plural: "Staging Yards", icon: Container, color: "#F97316", desc: "Oversize load staging, heavy-haul marshalling, and permit holding areas" },
+    "weigh-station": { label: "Weigh Station", plural: "Weigh Stations", icon: BarChart3, color: "#6366F1", desc: "State-operated weigh-in-motion and inspection stations" },
+    "rest-area": { label: "Rest Area", plural: "Rest Areas", icon: Hotel, color: "#14B8A6", desc: "Highway rest stops, driver break points, and overnight parking" },
+    "warehouse": { label: "Warehouse", plural: "Warehouses", icon: Building2, color: "#64748B", desc: "Distribution centers, cross-docks, and freight storage facilities" },
+    "parking-lot": { label: "Parking Lot", plural: "Parking Lots", icon: Container, color: "#78716C", desc: "Secure truck parking, overnight lots, and staging areas" },
 };
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -38,9 +43,10 @@ function slugToDbCategory(slug: string): string {
 }
 
 /* ─── SEO Metadata ─── */
-export async function generateMetadata({ params }: { params: { country: string; category: string } }): Promise<Metadata> {
-    const cat = CATEGORIES[params.category];
-    const cc = params.country.toUpperCase();
+export async function generateMetadata({ params }: { params: Promise<{ country: string; category: string }> }): Promise<Metadata> {
+    const { country, category } = await params;
+    const cat = CATEGORIES[category];
+    const cc = country.toUpperCase();
     const countryName = COUNTRY_NAMES[cc] || cc;
 
     if (!cat) return { title: "Not Found | HAUL COMMAND" };
@@ -60,44 +66,45 @@ export default async function SurfaceCategoryPage({
     params,
     searchParams,
 }: {
-    params: { country: string; category: string };
-    searchParams: { page?: string };
+    params: Promise<{ country: string; category: string }>;
+    searchParams: Promise<{ page?: string }>;
 }) {
-    const cat = CATEGORIES[params.category];
+    const { country, category } = await params;
+    const resolvedSearchParams = await searchParams;
+    const cat = CATEGORIES[category];
     if (!cat) notFound();
 
-    const cc = params.country.toUpperCase();
+    const cc = country.toUpperCase();
     const countryName = COUNTRY_NAMES[cc] || cc;
-    const dbCategory = slugToDbCategory(params.category);
-    const page = Math.max(1, parseInt(searchParams.page || "1"));
+    const dbCategory = slugToDbCategory(category);
+    const page = Math.max(1, parseInt(resolvedSearchParams.page || "1"));
     const perPage = 48;
     const offset = (page - 1) * perPage;
 
     const sb = supabaseServer();
 
-    // Fetch surfaces for this country + category
+    // Fetch surfaces for this country + category from hc_surfaces (canonical, 810K+)
     const { data: surfaces, count } = await sb
-        .from("surfaces")
-        .select("surface_id,name,slug,category,status,claim_status,anchor_type,city_geo_key,corridor_geo_key,tags", { count: "exact" })
+        .from("hc_surfaces")
+        .select("surface_id,name,slug,surface_type,quality_score,city,region_code,brand", { count: "exact" })
         .eq("country_code", cc)
-        .eq("category", dbCategory)
-        .order("name")
+        .eq("surface_type", dbCategory)
+        .order("quality_score", { ascending: false, nullsFirst: false })
         .range(offset, offset + perPage - 1);
 
     // Stats
     const totalSurfaces = count || 0;
     const totalPages = Math.ceil(totalSurfaces / perPage);
-    const claimed = surfaces?.filter(s => s.claim_status !== "unclaimed").length ?? 0;
 
     // Other categories in this country (for nav)
     const { data: otherCats } = await sb
-        .from("surfaces")
-        .select("category")
+        .from("hc_surfaces")
+        .select("surface_type")
         .eq("country_code", cc)
-        .neq("category", dbCategory)
+        .neq("surface_type", dbCategory)
         .limit(50);
 
-    const availableCategories = [...new Set(otherCats?.map(s => s.category) || [])];
+    const availableCategories = [...new Set(otherCats?.map(s => s.surface_type) || [])];
 
     const Icon = cat.icon;
 
@@ -114,7 +121,7 @@ export default async function SurfaceCategoryPage({
                 <nav className="flex items-center gap-2 text-xs text-[#555] font-medium">
                     <Link href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link href={`/surfaces/${params.country}`} className="hover:text-[#F1A91B] transition-colors">{countryName}</Link>
+                    <Link href={`/surfaces/${country}`} className="hover:text-[#F1A91B] transition-colors">{countryName}</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-[#888]">{cat.plural}</span>
                 </nav>
@@ -144,14 +151,6 @@ export default async function SurfaceCategoryPage({
                                 <div className="text-xl font-black text-white">{totalSurfaces.toLocaleString()}</div>
                                 <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">{cat.plural}</div>
                             </div>
-                            <div className="bg-black/60 border border-[#222] rounded-xl px-5 py-3 text-center">
-                                <div className="text-xl font-black text-emerald-400">{claimed}</div>
-                                <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">Claimed</div>
-                            </div>
-                            <div className="bg-black/60 border border-[#222] rounded-xl px-5 py-3 text-center">
-                                <div className="text-xl font-black text-[#F1A91B]">{totalSurfaces - claimed}</div>
-                                <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">Available</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,7 +164,7 @@ export default async function SurfaceCategoryPage({
                             if (!meta) return null;
                             const CatIcon = meta.icon;
                             return (
-                                <Link key={catKey} href={`/surfaces/${params.country}/${slugKey}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg text-[10px] font-bold text-[#888] uppercase tracking-wider hover:border-[#F1A91B]/30 hover:text-white transition-all">
+                                <Link key={catKey} href={`/surfaces/${country}/${slugKey}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg text-[10px] font-bold text-[#888] uppercase tracking-wider hover:border-[#F1A91B]/30 hover:text-white transition-all">
                                     <CatIcon className="w-3 h-3" style={{ color: meta.color }} />
                                     {meta.plural}
                                 </Link>
@@ -178,7 +177,7 @@ export default async function SurfaceCategoryPage({
                 {surfaces && surfaces.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {surfaces.map((s: any) => (
-                            <Link key={s.surface_id} href={`/surfaces/${s.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-5 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
+                            <Link key={s.surface_id} href={`/surface/${s.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-5 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
                                 <div className="flex items-start gap-3 mb-3">
                                     <Icon className="w-5 h-5 flex-shrink-0" style={{ color: cat.color }} />
                                     <h3 className="text-sm font-bold text-white group-hover:text-[#F1A91B] transition-colors line-clamp-2 leading-snug">{s.name}</h3>
@@ -186,21 +185,21 @@ export default async function SurfaceCategoryPage({
 
                                 <div className="flex items-center gap-2 mb-3 text-[10px] text-[#555]">
                                     <MapPin className="w-3 h-3" />
-                                    <span className="capitalize">{s.anchor_type}: {s.city_geo_key || s.corridor_geo_key || cc}</span>
+                                    <span>{[s.city, s.region_code, cc].filter(Boolean).join(", ")}</span>
                                 </div>
 
-                                {s.tags?.slice(0, 3).map((tag: string) => (
-                                    <span key={tag} className="inline-block mr-1.5 mb-1 px-2 py-0.5 bg-white/5 rounded text-[9px] text-[#666] font-medium">{tag}</span>
-                                ))}
+                                {s.brand && (
+                                    <span className="inline-block mr-1.5 mb-1 px-2 py-0.5 bg-white/5 rounded text-[9px] text-[#666] font-medium">{s.brand}</span>
+                                )}
 
                                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#111]">
-                                    {s.claim_status === "unclaimed" ? (
-                                        <span className="text-[9px] font-bold text-[#F1A91B] bg-[#F1A91B]/10 px-2 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
-                                            <AlertTriangle className="w-3 h-3" /> Available to Claim
+                                    {s.quality_score >= 5 ? (
+                                        <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
+                                            <ShieldCheck className="w-3 h-3" /> High Quality
                                         </span>
                                     ) : (
-                                        <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
-                                            <ShieldCheck className="w-3 h-3" /> Claimed
+                                        <span className="text-[9px] font-bold text-[#F1A91B] bg-[#F1A91B]/10 px-2 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
+                                            <AlertTriangle className="w-3 h-3" /> Available to Claim
                                         </span>
                                     )}
                                     <ChevronRight className="w-4 h-4 text-[#333] group-hover:text-[#F1A91B] transition-colors" />
@@ -220,13 +219,13 @@ export default async function SurfaceCategoryPage({
                 {totalPages > 1 && (
                     <div className="flex items-center justify-center gap-2 pt-6">
                         {page > 1 && (
-                            <Link href={`/surfaces/${params.country}/${params.category}?page=${page - 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
+                            <Link href={`/surfaces/${country}/${category}?page=${page - 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
                                 ← Previous
                             </Link>
                         )}
                         <span className="text-xs text-[#555] px-4">Page {page} of {totalPages}</span>
                         {page < totalPages && (
-                            <Link href={`/surfaces/${params.country}/${params.category}?page=${page + 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
+                            <Link href={`/surfaces/${country}/${category}?page=${page + 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
                                 Next →
                             </Link>
                         )}

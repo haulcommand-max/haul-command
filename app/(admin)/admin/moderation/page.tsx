@@ -1,18 +1,40 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminTopBar } from '@/components/admin/AdminTopBar';
 import DetailDrawer from '@/components/admin/DetailDrawer';
 import { createClient } from '@/lib/supabase/client';
 
-const MOCK_ITEMS: any[] = []; // P0: Mock data removed — wire to real moderation_queue table
-
-const DEMO_MODE_BANNER = !MOCK_ITEMS.length;
-
 export default function ModerationPage() {
     const supabase = createClient();
+    const [items, setItems] = useState<any[]>([]);
     const [selectedItem, setSelectedItem] = useState<any>(null);
     const [processing, setProcessing] = useState(false);
     const [activeTab, setActiveTab] = useState('Inbox');
+    const [loadingItems, setLoadingItems] = useState(true);
+
+    useEffect(() => {
+        async function fetchItems() {
+            try {
+                const { data } = await supabase
+                    .from('claim_audit_log')
+                    .select('id, action, entity_type, entity_id, note, created_at, actor_id')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+                if (data) {
+                    setItems(data.map((d: any) => ({
+                        id: d.id, type: d.entity_type || 'claim',
+                        summary: d.note || d.action, region: '—',
+                        created: new Date(d.created_at).toLocaleDateString(),
+                        status: d.action?.includes('VERIFY') ? 'resolved' : d.action?.includes('REJECT') ? 'resolved' : 'open',
+                        priority: d.action?.includes('REJECT') ? 90 : 50,
+                    })));
+                }
+            } catch { /* graceful */ }
+            setLoadingItems(false);
+        }
+        fetchItems();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function handleAction(action: 'VERIFY' | 'REJECT', item: any) {
         if (!item) return;
@@ -57,59 +79,69 @@ export default function ModerationPage() {
             </div>
 
             <div className="p-8 flex-1 overflow-y-auto">
-                <div className="bg-[#0c0c0c] border border-[#1a1a1a] rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-sm">
-                        <thead className="bg-[#0f0f0f] border-b border-[#1a1a1a] text-[#444] uppercase text-[10px] font-black tracking-widest">
-                            <tr>
-                                <th className="px-6 py-4">Priority</th>
-                                <th className="px-6 py-4">Type</th>
-                                <th className="px-6 py-4">Summary</th>
-                                <th className="px-6 py-4">Region</th>
-                                <th className="px-6 py-4">Created</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#1a1a1a]">
-                            {MOCK_ITEMS.map((item) => (
-                                <tr
-                                    key={item.id}
-                                    className="hover:bg-[#111] cursor-pointer transition-colors group"
-                                    onClick={() => setSelectedItem(item)}
-                                >
-                                    <td className="px-6 py-4">
-                                        <span className={`font-black ${item.priority >= 90 ? 'text-red-500' : 'text-[#ffb400]'}`}>
-                                            {item.priority}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-[#666] uppercase text-[10px] font-bold tracking-tight">
-                                        {item.type.replace('_', ' ')}
-                                    </td>
-                                    <td className="px-6 py-4 font-medium italic group-hover:text-white transition-colors">
-                                        {item.summary}
-                                    </td>
-                                    <td className="px-6 py-4 font-mono text-xs">{item.region}</td>
-                                    <td className="px-6 py-4 text-[#444]">{item.created}</td>
-                                    <td className="px-6 py-4">
-                                        <StatusBadge status={item.status} />
-                                    </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button
-                                            disabled={processing}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleAction('VERIFY', item);
-                                            }}
-                                            className="text-[10px] font-black uppercase text-[#444] hover:text-[#ffb400] transition-colors disabled:opacity-50"
-                                        >
-                                            {processing ? '...' : 'Quick Verify'}
-                                        </button>
-                                    </td>
+                {loadingItems ? (
+                    <div className="text-center py-20 text-[#444]">Loading moderation queue...</div>
+                ) : items.length === 0 ? (
+                    <div className="text-center py-20">
+                        <div className="text-4xl mb-4">✅</div>
+                        <h3 className="text-lg font-bold text-[#888] mb-2">Moderation Queue Clear</h3>
+                        <p className="text-sm text-[#444]">No pending items. New claims, reports, and verifications will appear here automatically.</p>
+                    </div>
+                ) : (
+                    <div className="bg-[#0c0c0c] border border-[#1a1a1a] rounded-lg overflow-hidden">
+                        <table className="w-full text-left text-sm">
+                            <thead className="bg-[#0f0f0f] border-b border-[#1a1a1a] text-[#444] uppercase text-[10px] font-black tracking-widest">
+                                <tr>
+                                    <th className="px-6 py-4">Priority</th>
+                                    <th className="px-6 py-4">Type</th>
+                                    <th className="px-6 py-4">Summary</th>
+                                    <th className="px-6 py-4">Region</th>
+                                    <th className="px-6 py-4">Created</th>
+                                    <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4 text-right">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody className="divide-y divide-[#1a1a1a]">
+                                {items.map((item) => (
+                                    <tr
+                                        key={item.id}
+                                        className="hover:bg-[#111] cursor-pointer transition-colors group"
+                                        onClick={() => setSelectedItem(item)}
+                                    >
+                                        <td className="px-6 py-4">
+                                            <span className={`font-black ${item.priority >= 90 ? 'text-red-500' : 'text-[#ffb400]'}`}>
+                                                {item.priority}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-[#666] uppercase text-[10px] font-bold tracking-tight">
+                                            {item.type.replace('_', ' ')}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium italic group-hover:text-white transition-colors">
+                                            {item.summary}
+                                        </td>
+                                        <td className="px-6 py-4 font-mono text-xs">{item.region}</td>
+                                        <td className="px-6 py-4 text-[#444]">{item.created}</td>
+                                        <td className="px-6 py-4">
+                                            <StatusBadge status={item.status} />
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <button
+                                                disabled={processing}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleAction('VERIFY', item);
+                                                }}
+                                                className="text-[10px] font-black uppercase text-[#444] hover:text-[#ffb400] transition-colors disabled:opacity-50"
+                                            >
+                                                {processing ? '...' : 'Quick Verify'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
 
             {/* Detail Drawer */}

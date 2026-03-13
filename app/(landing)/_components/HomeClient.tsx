@@ -5,10 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-    Activity, Shield, Zap, Map, TrendingUp, Users,
-    ChevronRight, Star, CheckCircle, ArrowRight, Truck,
-    Clock, BarChart3, Radio, Globe, Navigation
+    CheckCircle, ArrowRight, Clock, Globe,
 } from "lucide-react";
+import {
+    HcIconLoadAlerts, HcIconInsurance, HcIconLoadBoard,
+    HcIconMap, HcIconRoutePlanner, HcIconDirectory,
+    HcIconHeavyHaulTrucking, HcIconPilotCarOperators,
+    HcIconPermitServices, HcIconLegalCompliance,
+    HcIconUrgentServices, HcIconReportCards,
+} from "@/components/icons";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
 import CountryHero from "@/components/hero/CountryHero";
 import type { HeroPack } from "@/components/hero/heroPacks";
@@ -58,40 +63,46 @@ function AnimatedNumber({ value, suffix = "" }: { value: number | null; suffix?:
 // ===== DATA — FIX #14: Premium feature copy =====
 const FEATURES = [
     {
-        icon: TrendingUp, title: "Stage Probability",
+        icon: HcIconReportCards, title: "Stage Probability",
         desc: "Our engine predicts the likelihood an escort will accept your load — using real historical behavior, not guesswork. Updated every 4 hours.",
         color: "#F1A91B",
+        hcIcon: true,
     },
     {
-        icon: Shield, title: "Escrow-Protected Payments",
+        icon: HcIconInsurance, title: "Escrow-Protected Payments",
         desc: "Every job runs through escrow. Funds release on confirmed completion. No disputes, no chasing — money moves when the load does.",
         color: "#22c55e",
+        hcIcon: true,
     },
     {
-        icon: Zap, title: "One-Tap Accept",
+        icon: HcIconLoadAlerts, title: "One-Tap Accept",
         desc: "Fast confirmation keeps loads moving. Escorts go from push notification to accepted in under two taps — with haptic confirmation so nothing gets missed.",
         color: "#3b82f6",
+        hcIcon: true,
     },
     {
-        icon: Map, title: "Territory Intelligence",
+        icon: HcIconMap, title: "Territory Intelligence",
         desc: "Claim corridors and counties. See shortage zones and hard-fill alerts before your competitors do — and act before the window closes.",
         color: "#a855f7",
+        hcIcon: true,
     },
     {
-        icon: Activity, title: "Hard-Fill Alerts",
+        icon: HcIconUrgentServices, title: "Hard-Fill Alerts",
         desc: "When a load starts timing out, broker fix options appear automatically — raise the rate, widen the window, expand the radius — before it goes stale.",
         color: "#ef4444",
+        hcIcon: true,
     },
     {
-        icon: Globe, title: "57-Country Expansion Plan",
+        icon: HcIconDirectory, title: "57-Country Expansion Plan",
         desc: "Heavy haul doesn't stop at borders. We're building coverage across 57 countries — same intelligence engine, localized compliance, global reach.",
         color: "#F1A91B",
+        hcIcon: true,
     },
 ];
 
 const HOW_IT_WORKS = [
     {
-        role: "For Brokers", color: "#F1A91B", icon: Truck,
+        role: "For Brokers", color: "#F1A91B", icon: HcIconHeavyHaulTrucking, hcIcon: true,
         steps: [
             "Post load with dimensions, route & rate",
             "Intelligence engine scores fill probability in real time",
@@ -99,7 +110,7 @@ const HOW_IT_WORKS = [
         ],
     },
     {
-        role: "For Escorts", color: "#22c55e", icon: Navigation,
+        role: "For Escorts", color: "#22c55e", icon: HcIconPilotCarOperators, hcIcon: true,
         steps: [
             "Toggle available — your presence goes live on the map",
             "Receive push offers filtered to your capabilities and territory",
@@ -258,7 +269,7 @@ export default function HomeClient({
                             <span className="font-medium">Free for Escorts</span>
                         </span>
                         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                            <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
+                            <HcIconInsurance size={14} style={{ color: '#C6923A' }} />
                             <span className="font-medium">Escrow-Protected Payments</span>
                         </span>
                         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
@@ -371,25 +382,28 @@ export default function HomeClient({
                                 label: "Verified Operators",
                                 value: directoryCount,
                                 suffix: "",
-                                icon: Users,
+                                icon: HcIconDirectory,
                                 color: "#22c55e",
                                 isPrimary: true,
+                                hcIcon: true,
                             },
                             {
                                 label: "Loads Available",
                                 value: openLoads,
                                 suffix: "",
-                                icon: BarChart3,
+                                icon: HcIconLoadBoard,
                                 color: "#3b82f6",
                                 isPrimary: false,
+                                hcIcon: true,
                             },
                             {
                                 label: "Live Corridors",
                                 value: corridorCount,
                                 suffix: "",
-                                icon: Map,
+                                icon: HcIconRoutePlanner,
                                 color: "#a855f7",
                                 isPrimary: false,
+                                hcIcon: true,
                             },
                             {
                                 label: "Avg Match Time",
@@ -398,8 +412,9 @@ export default function HomeClient({
                                 icon: Clock,
                                 color: "#C6923A",
                                 isPrimary: true,
+                                hcIcon: false,
                             },
-                        ].map(({ label, value, suffix, icon: Icon, color, isPrimary }, i) => (
+                        ].map(({ label, value, suffix, icon: Icon, color, isPrimary, hcIcon }, i) => (
                             <motion.div
                                 key={label}
                                 custom={i}
@@ -411,7 +426,7 @@ export default function HomeClient({
                                         style={{ background: `radial-gradient(ellipse at center, ${color}, transparent 70%)` }} />
                                 )}
                                 <div className="flex items-center gap-2 mb-1 relative z-10">
-                                    <Icon className="w-3.5 h-3.5" style={{ color }} />
+                                    {hcIcon ? <Icon size={14} style={{ color }} /> : <Icon className="w-3.5 h-3.5" style={{ color }} />}
                                     {label === "Verified Operators" && (
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: color }} />
@@ -519,15 +534,17 @@ export default function HomeClient({
                     </motion.div>
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { href: '/tools/escort-calculator', icon: '🧮', title: 'Do I Need an Escort?', desc: 'Enter load + route, get exact escort counts for every state.', color: '#F1A91B' },
-                            { href: '/escort-requirements', icon: '📋', title: 'Escort Requirements', desc: '57 countries, 67+ jurisdictions. All escort rules in one place.', color: '#22c55e' },
-                            { href: '/tools/compliance-card', icon: '🎁', title: 'Compliance Card', desc: 'Free one-page PDF with every threshold for your state.', color: '#3b82f6' },
-                            { href: '/tools/regulation-alerts', icon: '⚠️', title: 'Regulation Alerts', desc: 'Get notified when escort rules change. Never get fined.', color: '#ef4444' },
-                        ].map(({ href, icon, title, desc, color }, i) => (
+                            { href: '/tools/escort-calculator', IconCmp: HcIconRoutePlanner, title: 'Do I Need an Escort?', desc: 'Enter load + route, get exact escort counts for every state.', color: '#F1A91B' },
+                            { href: '/escort-requirements', IconCmp: HcIconPermitServices, title: 'Escort Requirements', desc: '57 countries, 67+ jurisdictions. All escort rules in one place.', color: '#22c55e' },
+                            { href: '/tools/compliance-card', IconCmp: HcIconLegalCompliance, title: 'Compliance Card', desc: 'Free one-page PDF with every threshold for your state.', color: '#3b82f6' },
+                            { href: '/tools/regulation-alerts', IconCmp: HcIconUrgentServices, title: 'Regulation Alerts', desc: 'Get notified when escort rules change. Never get fined.', color: '#ef4444' },
+                        ].map(({ href, IconCmp, title, desc, color }, i) => (
                             <Link key={href} href={href}>
                                 <motion.div custom={i} variants={fadeUp}
                                     className="intelligence-card group cursor-pointer h-full" style={{ "--accent-color": color } as React.CSSProperties}>
-                                    <div className="text-3xl mb-3">{icon}</div>
+                                    <div className="mb-3 flex items-center justify-center w-12 h-12 rounded-xl mx-auto" style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
+                                        <IconCmp size={24} style={{ color }} />
+                                    </div>
                                     <h3 className="font-bold text-white text-sm group-hover:text-[#C6923A] transition-colors mb-2">{title}</h3>
                                     <p className="text-[#8fa3b8] text-xs leading-relaxed">{desc}</p>
                                 </motion.div>
@@ -574,13 +591,13 @@ export default function HomeClient({
                         </h2>
                     </motion.div>
                     <div className="grid sm:grid-cols-2 gap-6">
-                        {HOW_IT_WORKS.map(({ role, color, steps, icon: RoleIcon }) => (
+                        {HOW_IT_WORKS.map(({ role, color, steps, icon: RoleIcon, hcIcon }) => (
                             <motion.div key={role} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
                                 className="intelligence-card" style={{ "--accent-color": color } as React.CSSProperties}>
                                 <div className="text-center">
                                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 mx-auto"
                                         style={{ background: `${color}12`, border: `1px solid ${color}20` }}>
-                                        <RoleIcon className="w-6 h-6" style={{ color }} />
+                                        {hcIcon ? <RoleIcon size={24} style={{ color }} /> : <RoleIcon className="w-6 h-6" style={{ color }} />}
                                     </div>
                                     <h3 className="font-bold text-sm uppercase tracking-[0.15em] mb-6" style={{ color }}>
                                         {role}
@@ -643,13 +660,13 @@ export default function HomeClient({
                         </h2>
                     </motion.div>
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {FEATURES.map(({ icon: Icon, title, desc, color }, i) => (
+                        {FEATURES.map(({ icon: Icon, title, desc, color, hcIcon }, i) => (
                             <motion.div key={title} custom={i} variants={fadeUp}
                                 className="intelligence-card group" style={{ "--accent-color": color } as React.CSSProperties}>
                                 <div className="text-center">
                                     <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 mx-auto"
                                         style={{ backgroundColor: `${color}10`, border: `1px solid ${color}15` }}>
-                                        <Icon className="w-5 h-5" style={{ color }} />
+                                        {hcIcon ? <Icon size={20} style={{ color }} /> : <Icon className="w-5 h-5" style={{ color }} />}
                                     </div>
                                     <h3 className="font-bold text-white text-base mb-2.5">{title}</h3>
                                     <p className="text-[#8fa3b8] text-[15px] leading-relaxed">{desc}</p>
@@ -671,7 +688,7 @@ export default function HomeClient({
                             Last updated: just now
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                            <Shield className="w-3 h-3 text-[#C6923A]" />
+                            <HcIconInsurance size={12} style={{ color: '#C6923A' }} />
                             Coverage confidence: {
                                 directoryCount > 5000 && corridorCount > 50 ? 'High' :
                                     directoryCount > 500 && corridorCount > 10 ? 'Medium' : 'Building'

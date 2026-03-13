@@ -19,12 +19,12 @@ import {
     Search, MapPin, ShieldCheck, Star, Filter,
     X, ChevronDown, ChevronUp, Crosshair, Loader2,
     Award, Navigation, Eye, Users, Globe, ArrowRight,
-    AlertTriangle,
 } from 'lucide-react';
 import {
     HcIconPilotCarOperators, HcIconTruckStops, HcIconPortsTerminals,
     HcIconRailIntermodal, HcIconHotels, HcIconHeavyHaulTrucking,
     HcIconClaimsVerification, HcIconVerified, HcIconAndMore,
+    HcIconBridgeClearance,
     HcIcon,
 } from '@/components/icons';
 
@@ -85,7 +85,7 @@ const CATEGORIES: CategoryFilter[] = [
     { key: 'port', label: 'Ports', icon: HcIconPortsTerminals, color: '#06B6D4', active: false },
     { key: 'terminal', label: 'Terminals', icon: HcIconRailIntermodal, color: '#8B5CF6', active: false },
     { key: 'hotel', label: 'Hotels', icon: HcIconHotels, color: '#F59E0B', active: false },
-    { key: 'high_pole', label: 'High Pole', icon: AlertTriangle, color: '#3B82F6', active: false },
+    { key: 'high_pole', label: 'High Pole', icon: HcIconBridgeClearance, color: '#3B82F6', active: false },
     { key: 'twic', label: 'TWIC', icon: HcIconClaimsVerification, color: '#EF4444', active: false },
 ];
 
@@ -753,7 +753,7 @@ export default function DirectoryPage() {
                                         )}
                                         {selectedPin.has_high_pole && (
                                             <span className="flex items-center gap-1 px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-lg text-[10px] font-bold uppercase tracking-wider">
-                                                <AlertTriangle className="w-3 h-3" /> High Pole
+                                                <HcIconBridgeClearance size={12} /> High Pole
                                             </span>
                                         )}
                                         {(selectedPin.claim_status === 'claimed' || selectedPin.claim_status === 'verified') ? (

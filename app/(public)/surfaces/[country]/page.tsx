@@ -9,12 +9,17 @@ import {
 
 const CATEGORIES: Record<string, { label: string; plural: string; slug: string; icon: typeof Truck; color: string }> = {
     truck_stop: { label: "Truck Stop", plural: "Truck Stops", slug: "truck-stop", icon: Truck, color: "#F1A91B" },
+    fuel_station: { label: "Fuel Station", plural: "Fuel Stations", slug: "fuel-station", icon: Truck, color: "#F59E0B" },
     industrial_park: { label: "Industrial Park", plural: "Industrial Parks", slug: "industrial-park", icon: Building2, color: "#3B82F6" },
     port_terminal: { label: "Port Terminal", plural: "Port Terminals", slug: "port-terminal", icon: Anchor, color: "#06B6D4" },
     rail_terminal: { label: "Rail Terminal", plural: "Rail Terminals", slug: "rail-terminal", icon: TrainFront, color: "#8B5CF6" },
     equipment_dealer_yard: { label: "Equipment Yard", plural: "Equipment Yards", slug: "equipment-dealer-yard", icon: Wrench, color: "#EF4444" },
     logistics_hotel: { label: "Logistics Hotel", plural: "Logistics Hotels", slug: "logistics-hotel", icon: Hotel, color: "#10B981" },
     oversize_staging_yard: { label: "Staging Yard", plural: "Staging Yards", slug: "oversize-staging-yard", icon: Container, color: "#F97316" },
+    weigh_station: { label: "Weigh Station", plural: "Weigh Stations", slug: "weigh-station", icon: BarChart3, color: "#6366F1" },
+    rest_area: { label: "Rest Area", plural: "Rest Areas", slug: "rest-area", icon: Hotel, color: "#14B8A6" },
+    warehouse: { label: "Warehouse", plural: "Warehouses", slug: "warehouse", icon: Building2, color: "#64748B" },
+    parking_lot: { label: "Parking Lot", plural: "Parking Lots", slug: "parking-lot", icon: Container, color: "#78716C" },
 };
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -32,8 +37,9 @@ const COUNTRY_NAMES: Record<string, string> = {
     KW: "Kuwait", BH: "Bahrain", NG: "Nigeria",
 };
 
-export async function generateMetadata({ params }: { params: { country: string } }): Promise<Metadata> {
-    const cc = params.country.toUpperCase();
+export async function generateMetadata({ params }: { params: Promise<{ country: string }> }): Promise<Metadata> {
+    const { country } = await params;
+    const cc = country.toUpperCase();
     const name = COUNTRY_NAMES[cc] || cc;
     return {
         title: `Logistics Surfaces in ${name} — HAUL COMMAND Directory`,
@@ -41,28 +47,27 @@ export async function generateMetadata({ params }: { params: { country: string }
     };
 }
 
-export default async function SurfaceCountryPage({ params }: { params: { country: string } }) {
-    const cc = params.country.toUpperCase();
+export default async function SurfaceCountryPage({ params }: { params: Promise<{ country: string }> }) {
+    const { country } = await params;
+    const cc = country.toUpperCase();
     const countryName = COUNTRY_NAMES[cc];
     if (!countryName) notFound();
 
     const sb = supabaseServer();
 
-    // Get counts per category
+    // Get counts per category from hc_surfaces (canonical, 810K+)
     const { data: all } = await sb
-        .from("surfaces")
-        .select("category,claim_status")
+        .from("hc_surfaces")
+        .select("surface_type")
         .eq("country_code", cc);
 
-    const catCounts: Record<string, { total: number; claimed: number }> = {};
+    const catCounts: Record<string, { total: number }> = {};
     for (const s of all || []) {
-        if (!catCounts[s.category]) catCounts[s.category] = { total: 0, claimed: 0 };
-        catCounts[s.category].total++;
-        if (s.claim_status !== "unclaimed") catCounts[s.category].claimed++;
+        if (!catCounts[s.surface_type]) catCounts[s.surface_type] = { total: 0 };
+        catCounts[s.surface_type].total++;
     }
 
     const totalSurfaces = Object.values(catCounts).reduce((a, b) => a + b.total, 0);
-    const totalClaimed = Object.values(catCounts).reduce((a, b) => a + b.claimed, 0);
 
     return (
         <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
@@ -98,10 +103,6 @@ export default async function SurfaceCountryPage({ params }: { params: { country
                                 <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">Total Surfaces</div>
                             </div>
                             <div className="bg-black border border-[#222] rounded-xl px-5 py-3 text-center">
-                                <div className="text-2xl font-black text-[#F1A91B]">{(totalSurfaces - totalClaimed).toLocaleString()}</div>
-                                <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">Available</div>
-                            </div>
-                            <div className="bg-black border border-[#222] rounded-xl px-5 py-3 text-center">
                                 <div className="text-2xl font-black text-emerald-400">{Object.keys(catCounts).length}</div>
                                 <div className="text-[9px] text-[#555] uppercase tracking-[0.2em] font-bold">Categories</div>
                             </div>
@@ -116,7 +117,7 @@ export default async function SurfaceCountryPage({ params }: { params: { country
                         if (counts.total === 0) return null;
                         const Icon = cat.icon;
                         return (
-                            <Link key={key} href={`/surfaces/${params.country}/${cat.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-2xl p-6 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
+                            <Link key={key} href={`/surfaces/${country}/${cat.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-2xl p-6 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 rounded-xl border flex items-center justify-center" style={{ borderColor: cat.color, backgroundColor: `${cat.color}15` }}>
                                         <Icon className="w-5 h-5" style={{ color: cat.color }} />
@@ -131,11 +132,7 @@ export default async function SurfaceCountryPage({ params }: { params: { country
                                     <div className="flex items-center gap-4">
                                         <div>
                                             <div className="text-lg font-black text-white">{counts.total.toLocaleString()}</div>
-                                            <div className="text-[9px] text-[#555] uppercase tracking-wider font-bold">Locations</div>
-                                        </div>
-                                        <div>
-                                            <div className="text-lg font-black text-[#F1A91B]">{(counts.total - counts.claimed).toLocaleString()}</div>
-                                            <div className="text-[9px] text-[#555] uppercase tracking-wider font-bold">Claimable</div>
+                                        <div className="text-[9px] text-[#555] uppercase tracking-wider font-bold">Locations</div>
                                         </div>
                                     </div>
                                     <ChevronRight className="w-5 h-5 text-[#333] group-hover:text-[#F1A91B] transition-colors" />

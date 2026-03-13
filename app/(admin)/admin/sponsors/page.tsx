@@ -1,10 +1,39 @@
-
-import React from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import { AdminTopBar } from '@/components/admin/AdminTopBar';
-
-const MOCK_BILLING: any[] = []; // P0: Mock data removed — wire to real ad_grid_sponsors table
+import { createClient } from '@/lib/supabase/client';
 
 export default function BillingPage() {
+    const supabase = createClient();
+    const [sponsors, setSponsors] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState({ revenue: '—', leads: '—', active: '—' });
+
+    useEffect(() => {
+        async function fetchSponsors() {
+            try {
+                const { data, count } = await supabase
+                    .from('territory_sponsorships')
+                    .select('*', { count: 'exact' })
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+                if (data) {
+                    setSponsors(data.map((s: any) => ({
+                        id: s.id, sponsor: s.sponsor_company || 'Unknown',
+                        mode: s.territory_type === 'country' ? 'Premium' : 'Performance',
+                        budget: `$${s.plan_price_monthly || 0}/mo`,
+                        spent: '—', leads: '—',
+                        status: s.status === 'active' ? 'Active' : s.status,
+                    })));
+                    const activeCount = data.filter((s: any) => s.status === 'active').length;
+                    setStats({ revenue: `$${data.reduce((sum: number, s: any) => sum + (s.plan_price_monthly || 0), 0)}/mo`, leads: '—', active: String(activeCount) });
+                }
+            } catch { /* graceful */ }
+            setLoading(false);
+        }
+        fetchSponsors();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className="flex flex-col h-full bg-[#070707]">
             <AdminTopBar title="Sponsors & Performance Billing" />
@@ -18,9 +47,9 @@ export default function BillingPage() {
 
             <div className="p-8 space-y-8 flex-1 overflow-y-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Total Revenue (30d)" value="—" color="text-[#444]" />
-                    <StatCard label="Billable Leads" value="—" color="text-[#444]" />
-                    <StatCard label="Active Sponsors" value="—" color="text-[#444]" />
+                    <StatCard label="Total Revenue (30d)" value={stats.revenue} color={stats.revenue !== '—' ? 'text-[#22c55e]' : 'text-[#444]'} />
+                    <StatCard label="Billable Leads" value={stats.leads} color="text-[#444]" />
+                    <StatCard label="Active Sponsors" value={stats.active} color={stats.active !== '—' ? 'text-[#ffb400]' : 'text-[#444]'} />
                 </div>
 
                 <div className="bg-[#0c0c0c] border border-[#1a1a1a] rounded-lg overflow-hidden">
@@ -37,7 +66,11 @@ export default function BillingPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#1a1a1a]">
-                            {MOCK_BILLING.map((b) => (
+                            {loading ? (
+                                <tr><td colSpan={7} className="px-6 py-12 text-center text-[#444]">Loading sponsors...</td></tr>
+                            ) : sponsors.length === 0 ? (
+                                <tr><td colSpan={7} className="px-6 py-12 text-center"><div className="text-2xl mb-2">📍</div><span className="text-[#444]">No active sponsors yet. Territories are available at <a href="/sponsor" className="text-[#ffb400] hover:underline">/sponsor</a></span></td></tr>
+                            ) : sponsors.map((b) => (
                                 <tr key={b.id} className="hover:bg-[#111] transition-colors">
                                     <td className="px-6 py-4 font-black uppercase text-[11px] tracking-tight">{b.sponsor}</td>
                                     <td className="px-6 py-4">

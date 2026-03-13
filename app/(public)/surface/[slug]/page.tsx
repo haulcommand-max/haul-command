@@ -2,17 +2,23 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
-import { MapPin, Truck, Building2, Anchor, TrainFront, Wrench, Hotel, Container, ShieldCheck, AlertTriangle, Star, ExternalLink, Clock, Tag } from "lucide-react";
+import { MapPin, Truck, Building2, Anchor, TrainFront, Wrench, Hotel, Container, ShieldCheck, AlertTriangle, Star, Clock, BarChart3 } from "lucide-react";
+import { normalizeSurface, HC_SURFACES_SELECT, type SurfaceViewModel } from "@/lib/resolvers/normalizeSurface";
 
 /* ─── Helpers ─── */
 const CATEGORY_META: Record<string, { label: string; icon: typeof Truck; color: string; gradient: string }> = {
     truck_stop: { label: "Truck Stop", icon: Truck, color: "#F1A91B", gradient: "from-amber-500/20 to-amber-600/5" },
+    fuel_station: { label: "Fuel Station", icon: Truck, color: "#F59E0B", gradient: "from-yellow-500/20 to-yellow-600/5" },
     industrial_park: { label: "Industrial Park", icon: Building2, color: "#3B82F6", gradient: "from-blue-500/20 to-blue-600/5" },
     port_terminal: { label: "Port Terminal", icon: Anchor, color: "#06B6D4", gradient: "from-cyan-500/20 to-cyan-600/5" },
     rail_terminal: { label: "Rail Terminal", icon: TrainFront, color: "#8B5CF6", gradient: "from-violet-500/20 to-violet-600/5" },
     equipment_dealer_yard: { label: "Equipment Yard", icon: Wrench, color: "#EF4444", gradient: "from-red-500/20 to-red-600/5" },
     logistics_hotel: { label: "Logistics Hotel", icon: Hotel, color: "#10B981", gradient: "from-emerald-500/20 to-emerald-600/5" },
     oversize_staging_yard: { label: "Staging Yard", icon: Container, color: "#F97316", gradient: "from-orange-500/20 to-orange-600/5" },
+    weigh_station: { label: "Weigh Station", icon: BarChart3, color: "#6366F1", gradient: "from-indigo-500/20 to-indigo-600/5" },
+    rest_area: { label: "Rest Area", icon: Hotel, color: "#14B8A6", gradient: "from-teal-500/20 to-teal-600/5" },
+    warehouse: { label: "Warehouse", icon: Building2, color: "#64748B", gradient: "from-slate-500/20 to-slate-600/5" },
+    parking_lot: { label: "Parking Lot", icon: Container, color: "#78716C", gradient: "from-stone-500/20 to-stone-600/5" },
 };
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -31,11 +37,12 @@ const COUNTRY_NAMES: Record<string, string> = {
 };
 
 /* ─── SEO ─── */
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
     const sb = supabaseServer();
-    const { data } = await sb.from("surfaces").select("name,category,country_code,city_geo_key").eq("slug", params.slug).single();
+    const { data } = await sb.from("hc_surfaces").select("name,surface_type,country_code,city").eq("slug", slug).single();
     if (!data) return { title: "Surface Not Found | HAUL COMMAND" };
-    const cat = CATEGORY_META[data.category] || CATEGORY_META.truck_stop;
+    const cat = CATEGORY_META[data.surface_type] || CATEGORY_META.truck_stop;
     const country = COUNTRY_NAMES[data.country_code] || data.country_code;
     return {
         title: `${data.name} — ${cat.label} | HAUL COMMAND`,
@@ -45,45 +52,51 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 /* ─── Page ─── */
-export default async function SurfaceDetailPage({ params }: { params: { slug: string } }) {
+export default async function SurfaceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const sb = supabaseServer();
 
-    // Fetch surface
-    const { data: surface } = await sb
-        .from("surfaces")
-        .select("*")
-        .eq("slug", params.slug)
+    // Fetch surface from hc_surfaces (canonical table, 810K+ rows)
+    const { data: rawSurface } = await sb
+        .from("hc_surfaces")
+        .select(HC_SURFACES_SELECT)
+        .eq("slug", slug)
         .single();
 
-    if (!surface) notFound();
+    if (!rawSurface) notFound();
+
+    // Normalize to typed view model
+    const surface: SurfaceViewModel = normalizeSurface(rawSurface);
 
     // Fetch nearby surfaces (same country + category, limit 6)
     const { data: nearby } = await sb
-        .from("surfaces")
-        .select("surface_id,name,slug,category,country_code,claim_status")
+        .from("hc_surfaces")
+        .select("surface_id,name,slug,surface_type,country_code")
         .eq("country_code", surface.country_code)
-        .eq("category", surface.category)
+        .eq("surface_type", surface.category)
         .neq("surface_id", surface.surface_id)
         .limit(6);
 
-    // Fetch nearby operators (same country, limit 8)
+    // Fetch nearby operators from hc_identities (real operators, 6,951 rows)
     const { data: operators } = await sb
-        .from("operators")
-        .select("id,display_name,company_name,home_base_city,home_base_state,trust_score,verification_status,is_claimed")
+        .from("hc_identities")
+        .select("id,display_name,company_name,city,region_code,trust_score,verification_status,is_claimed")
         .eq("country_code", surface.country_code)
         .order("trust_score", { ascending: false })
         .limit(8);
 
-    // Fetch geo links
-    const { data: links } = await sb
-        .from("surface_geo_links")
-        .select("to_geo_key,link_type,weight")
-        .eq("surface_id", surface.surface_id);
-
     const cat = CATEGORY_META[surface.category] || CATEGORY_META.truck_stop;
     const Icon = cat.icon;
     const country = COUNTRY_NAMES[surface.country_code] || surface.country_code;
-    const isUnclaimed = surface.claim_status === "unclaimed";
+
+    // Confidence badge
+    const confidenceBadge = surface.confidence_label === "high"
+        ? { text: "High Confidence", color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" }
+        : surface.confidence_label === "medium"
+            ? { text: "Medium Confidence", color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/20" }
+            : surface.confidence_label === "low"
+                ? { text: "Low Confidence", color: "text-red-400", bg: "bg-red-400/10", border: "border-red-400/20" }
+                : null;
 
     return (
         <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
@@ -105,19 +118,17 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                     <span className="text-[#888]">{surface.name}</span>
                 </nav>
 
-                {/* ═══ CLAIM BANNER (unclaimed) ═══ */}
-                {isUnclaimed && (
-                    <div className="bg-[#F1A91B]/5 border border-[#F1A91B]/20 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4">
-                        <AlertTriangle className="w-6 h-6 text-[#F1A91B] flex-shrink-0" />
-                        <div className="flex-1 text-center sm:text-left">
-                            <p className="text-sm font-bold text-white">This location hasn&apos;t been claimed yet.</p>
-                            <p className="text-xs text-[#888] mt-0.5">Is this your business? Claim it to manage your listing, add photos, and get matched with loads.</p>
-                        </div>
-                        <Link href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-black font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
-                            Claim This Location →
-                        </Link>
+                {/* ═══ CLAIM BANNER ═══ */}
+                <div className="bg-[#F1A91B]/5 border border-[#F1A91B]/20 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4">
+                    <AlertTriangle className="w-6 h-6 text-[#F1A91B] flex-shrink-0" />
+                    <div className="flex-1 text-center sm:text-left">
+                        <p className="text-sm font-bold text-white">This location hasn&apos;t been claimed yet.</p>
+                        <p className="text-xs text-[#888] mt-0.5">Is this your business? Claim it to manage your listing, add photos, and get matched with loads.</p>
                     </div>
-                )}
+                    <Link href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-black font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
+                        Claim This Location →
+                    </Link>
+                </div>
 
                 {/* ═══ HERO CARD ═══ */}
                 <div className={`bg-gradient-to-br ${cat.gradient} border border-[#1a1a1a] rounded-[2rem] p-8 md:p-10 relative overflow-hidden`}>
@@ -137,11 +148,9 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                                 <h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-[-0.03em] leading-none">
                                     {surface.name}
                                 </h1>
-                                {isUnclaimed ? (
-                                    <span className="bg-white/5 text-[#888] text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-[0.15em]">Unclaimed</span>
-                                ) : (
-                                    <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-[0.15em] flex items-center gap-1">
-                                        <ShieldCheck className="w-3 h-3" /> Verified
+                                {confidenceBadge && (
+                                    <span className={`${confidenceBadge.bg} ${confidenceBadge.color} border ${confidenceBadge.border} text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-[0.15em] flex items-center gap-1`}>
+                                        <ShieldCheck className="w-3 h-3" /> {confidenceBadge.text}
                                     </span>
                                 )}
                             </div>
@@ -149,53 +158,46 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#888] font-medium mb-4">
                                 <span className="flex items-center gap-1.5">
                                     <MapPin className="w-4 h-4" style={{ color: cat.color }} />
-                                    {country}
+                                    {[surface.city, surface.region_code, country].filter(Boolean).join(", ")}
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <Icon className="w-4 h-4" style={{ color: cat.color }} />
                                     {cat.label}
                                 </span>
-                                {surface.anchor_type === "corridor" && surface.corridor_geo_key && (
+                                {surface.brand && (
                                     <span className="flex items-center gap-1.5">
-                                        <ExternalLink className="w-3.5 h-3.5 text-[#F1A91B]" />
-                                        Corridor: {surface.corridor_geo_key}
+                                        <Building2 className="w-3.5 h-3.5 text-[#F1A91B]" />
+                                        {surface.brand}
                                     </span>
                                 )}
                             </div>
 
-                            {/* Tags */}
-                            {surface.tags?.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {surface.tags.map((tag: string) => (
-                                        <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-[#999] uppercase tracking-wider">
-                                            <Tag className="w-3 h-3" /> {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-
                             {/* Coordinates */}
-                            {surface.lat && surface.lng && (
+                            {surface.has_coordinates && (
                                 <div className="text-xs text-[#555] font-mono">
-                                    {surface.lat.toFixed(4)}°, {surface.lng.toFixed(4)}°
+                                    {surface.lat!.toFixed(4)}°, {surface.lng!.toFixed(4)}°
                                 </div>
                             )}
                         </div>
 
-                        {/* Status card */}
+                        {/* Status cards */}
                         <div className="w-full lg:w-64 shrink-0 space-y-3">
                             <div className="bg-black/40 backdrop-blur border border-[#222] rounded-xl p-4 text-center">
-                                <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Status</div>
-                                <div className="text-lg font-black text-white capitalize">{surface.status}</div>
+                                <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Data Source</div>
+                                <div className="text-xs font-bold text-[#999] uppercase">{surface.osm_id ? "OpenStreetMap" : "HAUL COMMAND"}</div>
                             </div>
-                            <div className="bg-black/40 backdrop-blur border border-[#222] rounded-xl p-4 text-center">
-                                <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Source</div>
-                                <div className="text-xs font-bold text-[#999] uppercase">{surface.source}</div>
-                            </div>
-                            <div className="bg-black/40 backdrop-blur border border-[#222] rounded-xl p-4 text-center">
-                                <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Anchor</div>
-                                <div className="text-xs font-bold text-[#999] capitalize">{surface.anchor_type}</div>
-                            </div>
+                            {surface.quality_score != null && (
+                                <div className="bg-black/40 backdrop-blur border border-[#222] rounded-xl p-4 text-center">
+                                    <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Quality Score</div>
+                                    <div className="text-lg font-black text-white">{surface.quality_score}<span className="text-[10px] text-[#555]">/10</span></div>
+                                </div>
+                            )}
+                            {surface.address && (
+                                <div className="bg-black/40 backdrop-blur border border-[#222] rounded-xl p-4 text-center">
+                                    <div className="text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] mb-1">Address</div>
+                                    <div className="text-xs font-bold text-[#999]">{surface.address}</div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -228,7 +230,7 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                                                     </div>
                                                     <div className="text-[10px] text-[#666] mt-0.5 flex items-center gap-1">
                                                         <MapPin className="w-3 h-3" />
-                                                        {[op.home_base_city, op.home_base_state].filter(Boolean).join(", ") || country}
+                                                        {[op.city, op.region_code].filter(Boolean).join(", ") || country}
                                                     </div>
                                                     <div className="flex items-center gap-2 mt-2">
                                                         {op.verification_status === "verified" && (
@@ -253,53 +255,22 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                                 </div>
                             )}
                         </div>
-
-                        {/* Connected Geo Entities */}
-                        {links && links.length > 0 && (
-                            <div className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-2xl p-6">
-                                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#1a1a1a]">
-                                    <ExternalLink className="w-4 h-4 text-[#F1A91B]" />
-                                    <h2 className="text-sm font-bold text-white uppercase tracking-[0.15em]">Connected Graph</h2>
-                                </div>
-                                <div className="space-y-2">
-                                    {links.map((link: any, i: number) => (
-                                        <div key={i} className="flex items-center justify-between py-2 px-3 bg-black/50 rounded-lg border border-[#111]">
-                                            <span className="text-xs text-[#888] font-medium">{link.to_geo_key}</span>
-                                            <span className="text-[10px] text-[#555] font-bold uppercase tracking-wider">{link.link_type}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* RIGHT (1/3): Sidebar */}
                     <div className="space-y-6">
 
-                        {/* CTA: Claim or Contact */}
+                        {/* CTA: Claim */}
                         <div className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-2xl p-6 text-center">
-                            {isUnclaimed ? (
-                                <>
-                                    <AlertTriangle className="w-8 h-8 text-[#F1A91B] mx-auto mb-3" />
-                                    <h3 className="text-sm font-bold text-white mb-2">Own this location?</h3>
-                                    <p className="text-[10px] text-[#666] mb-4 leading-relaxed">
-                                        Claim this listing to manage your profile, respond to leads, and boost visibility.
-                                    </p>
-                                    <Link href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
-                                        Claim This Location
-                                    </Link>
-                                    <p className="text-[9px] text-[#444] mt-3">Free to claim • Verification required</p>
-                                </>
-                            ) : (
-                                <>
-                                    <ShieldCheck className="w-8 h-8 text-emerald-400 mx-auto mb-3" />
-                                    <h3 className="text-sm font-bold text-white mb-2">Verified Location</h3>
-                                    <p className="text-[10px] text-[#666] mb-4">This location has been claimed and verified.</p>
-                                    <button className="w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
-                                        Contact Business
-                                    </button>
-                                </>
-                            )}
+                            <AlertTriangle className="w-8 h-8 text-[#F1A91B] mx-auto mb-3" />
+                            <h3 className="text-sm font-bold text-white mb-2">Own this location?</h3>
+                            <p className="text-[10px] text-[#666] mb-4 leading-relaxed">
+                                Claim this listing to manage your profile, respond to leads, and boost visibility.
+                            </p>
+                            <Link href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
+                                Claim This Location
+                            </Link>
+                            <p className="text-[9px] text-[#444] mt-3">Free to claim • Verification required</p>
                         </div>
 
                         {/* Nearby Same-Category Surfaces */}
@@ -310,7 +281,7 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                                 </h3>
                                 <div className="space-y-2">
                                     {nearby.map((s: any) => (
-                                        <Link key={s.surface_id} href={`/surfaces/${s.slug}`} className="flex items-center gap-3 py-2 px-3 bg-black/50 rounded-lg border border-[#111] hover:border-[#F1A91B]/20 transition-colors group">
+                                        <Link key={s.surface_id} href={`/surface/${s.slug}`} className="flex items-center gap-3 py-2 px-3 bg-black/50 rounded-lg border border-[#111] hover:border-[#F1A91B]/20 transition-colors group">
                                             <Icon className="w-4 h-4 flex-shrink-0" style={{ color: cat.color }} />
                                             <span className="text-xs text-[#888] font-medium truncate group-hover:text-white transition-colors">{s.name}</span>
                                         </Link>
@@ -339,7 +310,7 @@ export default async function SurfaceDetailPage({ params }: { params: { slug: st
                             name: surface.name,
                             description: `${cat.label} — ${country}`,
                             address: { "@type": "PostalAddress", addressCountry: surface.country_code },
-                            ...(surface.lat && surface.lng ? {
+                            ...(surface.has_coordinates ? {
                                 geo: { "@type": "GeoCoordinates", latitude: surface.lat, longitude: surface.lng },
                             } : {}),
                         }),

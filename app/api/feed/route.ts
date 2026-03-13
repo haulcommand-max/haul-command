@@ -53,12 +53,11 @@ export async function GET(req: NextRequest) {
             meta,
             occurred_at,
             profiles!operator_id (
-                full_name,
-                company_name,
-                state
+                display_name,
+                home_state
             )
         `)
-        .eq("is_visible", true)
+        .or("is_visible.eq.true,is_visible.is.null")
         .order("occurred_at", { ascending: false })
         .limit(limit + 1); // fetch one extra to determine if there's a next page
 
@@ -75,7 +74,8 @@ export async function GET(req: NextRequest) {
 
     if (error) {
         console.error("[feed GET]", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        // Graceful degradation: return empty feed, not 500
+        return NextResponse.json({ events: [], next_cursor: null });
     }
 
     const rows = data ?? [];
@@ -85,8 +85,8 @@ export async function GET(req: NextRequest) {
     const events: ActivityFeedEvent[] = rows.map((r: any) => ({
         id: r.id,
         operator_id: r.operator_id,
-        operator_name: r.profiles?.company_name ?? r.profiles?.full_name ?? null,
-        operator_state: r.profiles?.state ?? null,
+        operator_name: r.profiles?.display_name ?? null,
+        operator_state: r.profiles?.home_state ?? null,
         event_type: r.event_type,
         region_code: r.region_code,
         corridor_key: r.corridor_key,

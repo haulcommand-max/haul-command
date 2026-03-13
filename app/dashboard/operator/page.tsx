@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface FreshnessData {
     score: number;
@@ -18,23 +18,53 @@ interface RecoverySignal {
     estimated_value: number;
 }
 
+interface DashStats {
+    profileViews30d: number;
+    searchImpressions30d: number;
+    leadsUnlocked: number;
+    reputationScore: number;
+    trustScore: number;
+    rankPosition: number;
+    boostTier: string | null;
+    freshness: { score: number; state: string };
+    profileCompletion: number;
+}
+
+const DEFAULT_STATS: DashStats = {
+    profileViews30d: 0, searchImpressions30d: 0, leadsUnlocked: 0,
+    reputationScore: 0, trustScore: 0, rankPosition: 0,
+    boostTier: null, freshness: { score: 50, state: 'warm' }, profileCompletion: 0,
+};
+
 export default function OperatorDashboardPage() {
     const [activeTab, setActiveTab] = useState<'overview' | 'freshness' | 'recovery' | 'loads' | 'training'>('overview');
     const [freshness, setFreshness] = useState<FreshnessData | null>(null);
     const [recoverySignals, setRecoverySignals] = useState<RecoverySignal[]>([]);
+    const [stats, setStats] = useState<DashStats>(DEFAULT_STATS);
+    const [loadAlerts, setLoadAlerts] = useState<{ company: string; origin: string; destination: string; position_type: string; posted_at: string }[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Mock data for display
-    const stats = {
-        profileViews30d: 47,
-        searchImpressions30d: 312,
-        leadsUnlocked: 3,
-        reputationScore: 78,
-        trustScore: 82,
-        rankPosition: 14,
-        boostTier: null as string | null,
-        freshness: { score: 72, state: 'warm' },
-        profileCompletion: 68,
-    };
+    useEffect(() => {
+        async function fetchDashboard() {
+            try {
+                // Parallel fetch from Supabase
+                const res = await fetch('/api/freshness/compute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'dashboard' },
+                    body: JSON.stringify({ batch: true, limit: 1 }),
+                }).catch(() => null);
+                if (res?.ok) {
+                    const data = await res.json();
+                    if (data.results?.[0]) {
+                        setFreshness({ score: data.results[0].score, state: data.results[0].state, badges: data.results[0].badges || [], alerts: data.results[0].alerts || 0 });
+                        setStats(prev => ({ ...prev, freshness: { score: data.results[0].score, state: data.results[0].state } }));
+                    }
+                }
+            } catch { /* graceful fallback */ }
+            setLoading(false);
+        }
+        fetchDashboard();
+    }, []);
 
     const decayColors: Record<string, string> = {
         fresh: '#00ff88',
@@ -293,18 +323,30 @@ export default function OperatorDashboardPage() {
 
                 {/* LOADS TAB */}
                 {activeTab === 'loads' && (
-                    <div style={{ textAlign: 'center', padding: 60 }}>
-                        <div style={{ fontSize: 48 - 0, marginBottom: 16 }}>🚛</div>
-                        <h3 style={{ fontSize: 20, marginBottom: 8 }}>Load Board Coming Soon</h3>
-                        <p style={{ color: '#8b949e', maxWidth: 400, margin: '0 auto', lineHeight: 1.6 }}>
-                            Get matched with loads automatically based on your location, equipment, and expertise.
-                            Set your availability to start receiving load alerts.
-                        </p>
-                        <button style={{
-                            marginTop: 24, background: 'linear-gradient(90deg, #ff6b00, #ff9500)',
-                            color: '#fff', border: 'none', borderRadius: 8, padding: '12px 24px',
-                            fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                        }}>Set Your Availability</button>
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                            <h3 style={{ fontSize: 18, margin: 0 }}>🚛 Recent Load Alerts</h3>
+                            <a href="/dashboard/loads" style={{ color: '#ff9500', fontSize: 13, textDecoration: 'none' }}>View Full Dashboard →</a>
+                        </div>
+                        {loadAlerts.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: 40, background: '#161b22', border: '1px solid #21262d', borderRadius: 12 }}>
+                                <div style={{ fontSize: 36, marginBottom: 8 }}>📡</div>
+                                <p style={{ color: '#8b949e', fontSize: 14 }}>No load alerts yet. Paste alerts in the <a href="/dashboard/loads" style={{ color: '#ff9500' }}>Load Dashboard</a> to start tracking demand.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                {loadAlerts.slice(0, 10).map((alert, i) => (
+                                    <div key={i} style={{ background: '#161b22', border: '1px solid #21262d', borderRadius: 8, padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <span style={{ fontWeight: 600, fontSize: 14 }}>{alert.company}</span>
+                                            <span style={{ color: '#8b949e', fontSize: 13, marginLeft: 12 }}>{alert.origin} → {alert.destination}</span>
+                                        </div>
+                                        <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: alert.position_type === 'P' ? '#ff950022' : '#00ccff22', color: alert.position_type === 'P' ? '#ff9500' : '#00ccff' }}>{alert.position_type === 'P' ? 'PILOT' : alert.position_type === 'C' ? 'CHASE' : alert.position_type}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <button onClick={() => window.location.href = '/availability/submit'} style={{ marginTop: 20, background: 'linear-gradient(90deg, #ff6b00, #ff9500)', color: '#fff', border: 'none', borderRadius: 8, padding: '12px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer', width: '100%' }}>Set Your Availability</button>
                     </div>
                 )}
 

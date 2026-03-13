@@ -16,19 +16,20 @@ export async function GET() {
     const baseUrl = "https://haulcommand.com";
     const urls: string[] = [];
 
-    // Get all country/category combos
+    // Get all country/surface_type combos from canonical hc_surfaces
     const { data: combos } = await supabase
-        .from("surfaces")
-        .select("country_code,category")
+        .from("hc_surfaces")
+        .select("country_code,surface_type")
         .limit(5000);
 
     if (combos) {
         const seen = new Set<string>();
         for (const c of combos) {
-            const key = `${c.country_code}/${c.category}`;
+            if (!c.surface_type) continue;
+            const key = `${c.country_code}/${c.surface_type}`;
             if (!seen.has(key)) {
                 seen.add(key);
-                urls.push(u(`${baseUrl}/surfaces/${c.country_code.toLowerCase()}/${c.category.replace(/_/g, "-")}`, 0.7, "weekly"));
+                urls.push(u(`${baseUrl}/surfaces/${c.country_code.toLowerCase()}/${c.surface_type.replace(/_/g, "-")}`, 0.7, "weekly"));
             }
         }
 
@@ -39,31 +40,32 @@ export async function GET() {
         }
     }
 
-    // Get high-value individual surfaces (enriched + claimed first)
+    // Get high-quality individual surfaces from hc_surfaces (canonical table)
     const { data: topSurfaces } = await supabase
-        .from("surfaces")
-        .select("slug,updated_at,status")
-        .in("status", ["enriched", "verified"])
-        .order("updated_at", { ascending: false })
-        .limit(2000);
+        .from("hc_surfaces")
+        .select("slug,updated_at,quality_score")
+        .gte("quality_score", 3)
+        .order("quality_score", { ascending: false })
+        .limit(5000);
 
     if (topSurfaces) {
         for (const s of topSurfaces) {
-            urls.push(u(`${baseUrl}/surfaces/${s.slug}`, s.status === "verified" ? 0.8 : 0.5, "monthly", new Date(s.updated_at).toISOString()));
+            const priority = (s.quality_score ?? 0) >= 7 ? 0.8 : (s.quality_score ?? 0) >= 5 ? 0.6 : 0.4;
+            urls.push(u(`${baseUrl}/surface/${s.slug}`, priority, "monthly", new Date(s.updated_at).toISOString()));
         }
     }
 
-    // Also include shell surfaces (lower priority, batch by country)
-    const { data: shellSurfaces } = await supabase
-        .from("surfaces")
+    // Also include lower-quality surfaces (broader coverage)
+    const { data: otherSurfaces } = await supabase
+        .from("hc_surfaces")
         .select("slug,updated_at")
-        .eq("status", "shell")
+        .lt("quality_score", 3)
         .order("country_code")
-        .limit(5000);
+        .limit(10000);
 
-    if (shellSurfaces) {
-        for (const s of shellSurfaces) {
-            urls.push(u(`${baseUrl}/surfaces/${s.slug}`, 0.3, "monthly", new Date(s.updated_at).toISOString()));
+    if (otherSurfaces) {
+        for (const s of otherSurfaces) {
+            urls.push(u(`${baseUrl}/surface/${s.slug}`, 0.3, "monthly", new Date(s.updated_at).toISOString()));
         }
     }
 
