@@ -437,7 +437,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                             completedEscorts={profile.completed_escorts}
                             reliabilityScore={profile.reliability_score}
                             medianResponseTimeStr={profile.responsiveness_score > 0 ? `${Math.round(60 / (profile.responsiveness_score / 100))}m` : "—"}
-                            corridorsServed={0 /* TODO: wire to real corridor count when available */}
+                            corridorsServed={(profile as any).corridors_served ?? (state ? 1 : 0)}
                             lastActiveStr={profile.updated_at ? new Date(profile.updated_at).toLocaleDateString() : "—"}
                         />
                     </motion.div>

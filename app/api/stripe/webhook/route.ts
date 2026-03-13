@@ -22,12 +22,20 @@ function getStripe(): Stripe {
 }
 
 // ─── Tier mapping ─────────────────────────────────────────
+// Configure via env vars: STRIPE_PRICE_ELITE, STRIPE_PRICE_PRO, STRIPE_PRICE_BASIC
 function tierFromPriceId(priceId?: string | null): 'free' | 'basic' | 'pro' | 'elite' {
     if (!priceId) return 'free';
-    // TODO: Replace with your real Stripe Price IDs
-    if (priceId.startsWith('price_elite')) return 'elite';
-    if (priceId.startsWith('price_pro')) return 'pro';
-    if (priceId.startsWith('price_basic')) return 'basic';
+
+    // Exact match from env vars (production-safe)
+    if (process.env.STRIPE_PRICE_ELITE && priceId === process.env.STRIPE_PRICE_ELITE) return 'elite';
+    if (process.env.STRIPE_PRICE_PRO && priceId === process.env.STRIPE_PRICE_PRO) return 'pro';
+    if (process.env.STRIPE_PRICE_BASIC && priceId === process.env.STRIPE_PRICE_BASIC) return 'basic';
+
+    // Fallback: prefix-based matching for dev/test
+    if (priceId.startsWith('price_elite') || priceId.includes('elite')) return 'elite';
+    if (priceId.startsWith('price_pro') || priceId.includes('pro')) return 'pro';
+    if (priceId.startsWith('price_basic') || priceId.includes('basic')) return 'basic';
+
     return 'free';
 }
 

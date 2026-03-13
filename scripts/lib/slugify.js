@@ -80,7 +80,7 @@ function generateSimpleSlug(name) {
  * @returns {string}
  */
 function generateCitySlug(city) {
-    if (!city) return null;
+    if (!city) return '';
     return city
         .toLowerCase()
         .replace(/&/g, 'and')

@@ -3,6 +3,55 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
+// ── OTP Delivery Helpers ──
+async function sendClaimEmailOtp(email: string, otp: string): Promise<boolean> {
+    const resendKey = process.env.RESEND_API_KEY;
+    if (!resendKey) {
+        console.warn('[claim-otp] RESEND_API_KEY not set — skipping email OTP delivery');
+        return false;
+    }
+    try {
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                from: 'Haul Command <verify@haulcommand.com>',
+                to: [email],
+                subject: `Your Haul Command verification code: ${otp}`,
+                html: `<div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px"><h2 style="color:#F1A91B;margin-bottom:8px">Verify Your Business</h2><p>Your verification code is:</p><div style="font-size:32px;font-weight:bold;letter-spacing:8px;padding:16px;background:#111;color:#fff;text-align:center;border-radius:12px;margin:16px 0">${otp}</div><p style="color:#888;font-size:12px">This code expires in 20 minutes.</p></div>`,
+            }),
+        });
+        return res.ok;
+    } catch (err) {
+        console.error('[claim-otp] Email send error:', err);
+        return false;
+    }
+}
+
+async function sendClaimSmsOtp(phone: string, otp: string): Promise<boolean> {
+    const sid = process.env.TWILIO_ACCOUNT_SID;
+    const token = process.env.TWILIO_AUTH_TOKEN;
+    const from = process.env.TWILIO_PHONE_NUMBER;
+    if (!sid || !token || !from) {
+        console.warn('[claim-otp] Twilio credentials not set — skipping SMS OTP delivery');
+        return false;
+    }
+    try {
+        const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64'),
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ To: phone, From: from, Body: `Your Haul Command verification code is: ${otp}. Expires in 10 minutes.` }),
+        });
+        return res.ok;
+    } catch (err) {
+        console.error('[claim-otp] SMS send error:', err);
+        return false;
+    }
+}
+
 /**
  * POST /api/claims/initiate
  * Body: { surface_id: string, verification_route?: string }
@@ -100,14 +149,20 @@ export async function POST(req: Request) {
         const maskPhone = (p: string) => p ? `***-***-${p.slice(-4)}` : '***';
 
         switch (route) {
-            case 'email_otp':
-                next_step = `OTP sent to ${maskEmail(surface.email)}. Enter it to verify.`;
-                // TODO: Send actual email
+            case 'email_otp': {
+                const emailSent = await sendClaimEmailOtp(surface.email, token);
+                next_step = emailSent
+                    ? `OTP sent to ${maskEmail(surface.email)}. Enter it to verify.`
+                    : `Verification code generated. Check ${maskEmail(surface.email)} or contact support.`;
                 break;
-            case 'sms_otp':
-                next_step = `OTP sent to ${maskPhone(surface.phone)}. Enter it to verify.`;
-                // TODO: Send actual SMS
+            }
+            case 'sms_otp': {
+                const smsSent = await sendClaimSmsOtp(surface.phone, token);
+                next_step = smsSent
+                    ? `OTP sent to ${maskPhone(surface.phone)}. Enter it to verify.`
+                    : `Verification code generated. Check ${maskPhone(surface.phone)} or contact support.`;
                 break;
+            }
             case 'dns':
                 next_step = `Add TXT record: haulcommand-verify=${token}`;
                 break;
