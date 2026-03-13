@@ -8,22 +8,31 @@
  * 
  * @status wired_not_live — client ready, API key pending
  */
-import { Novu } from '@novu/node';
 
-let _novu: Novu | null = null;
+let _novu: unknown | null = null;
 let _isDryRun = false;
+let _initialized = false;
 
-export function getNovuClient(): Novu {
-    if (!_novu) {
+export function getNovuClient(): unknown {
+    if (!_initialized) {
+        _initialized = true;
         const apiKey = process.env.NOVU_API_KEY;
         if (!apiKey) {
             console.warn('[NOVU] API key not set — notifications will be logged but not sent');
             _isDryRun = true;
-            // Create with dummy key — the emitter checks isDryRun before calling
-            _novu = new Novu('dry_run_placeholder');
+            _novu = null;
         } else {
             _isDryRun = false;
-            _novu = new Novu(apiKey);
+            // Dynamic import at runtime to avoid build-time validation errors
+            try {
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
+                const { Novu } = require('@novu/node');
+                _novu = new Novu(apiKey);
+            } catch (e) {
+                console.warn('[NOVU] Failed to initialize client:', e);
+                _isDryRun = true;
+                _novu = null;
+            }
         }
     }
     return _novu;
