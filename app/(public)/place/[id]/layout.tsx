@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
+import { redirect, permanentRedirect } from "next/navigation";
+import { resolveProfileMetadata } from "@/lib/resolvers/resolveProfile";
 import { buildOperatorProfileJsonLd } from "@/lib/seo/jsonld";
 
 const supabase = createClient(
@@ -11,7 +13,10 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://haulcommand.com";
 
 /**
  * Server-side metadata for the operator profile page.
- * Dynamic title + description + robots for SEO.
+ * Uses resolveProfileMetadata which checks directory_listings → slug_redirects → hc_identities.
+ * 
+ * If a redirect is detected, generateMetadata returns minimal metadata
+ * since the layout will perform a server redirect before rendering.
  */
 export async function generateMetadata({
     params,
@@ -19,42 +24,42 @@ export async function generateMetadata({
     params: Promise<{ id: string }>;
 }): Promise<Metadata> {
     const { id } = await params;
-    const { data: profile } = await supabase
-        .from("driver_profiles")
-        .select("user_id")
-        .eq("user_id", id)
-        .single();
+    const meta = await resolveProfileMetadata(supabase, id);
 
-    if (!profile) {
-        return { title: "Operator Not Found | Haul Command" };
+    // If this slug is being redirected, return minimal metadata
+    // (the layout will redirect before the page renders anyway)
+    if (meta.redirect_to) {
+        return { title: "Redirecting... | HAUL COMMAND" };
     }
 
-    // Get display info from profiles table
-    const { data: p } = await supabase
-        .from("profiles")
-        .select("display_name, company_name, home_base_city, home_base_state")
-        .eq("id", id)
-        .single();
-
-    const name = p?.display_name || p?.company_name || "Escort Operator";
-    const location = [p?.home_base_city, p?.home_base_state].filter(Boolean).join(", ");
+    if (!meta.resolved) {
+        return { title: "Operator Not Found | HAUL COMMAND" };
+    }
 
     return {
-        title: `${name}${location ? ` — ${location}` : ""} | Haul Command`,
-        description: `View ${name}'s pilot car operator profile on Haul Command. Trust score, equipment, reviews, service areas${location ? ` based in ${location}` : ""}.`,
+        title: `${meta.name}${meta.location ? ` — ${meta.location}` : ""} | HAUL COMMAND`,
+        description: `View ${meta.name}'s pilot car operator profile on HAUL COMMAND. Trust score, equipment, reviews, service areas${meta.location ? ` based in ${meta.location}` : ""}.`,
         robots: { index: true, follow: true },
         openGraph: {
-            title: `${name} | Pilot Car Operator`,
-            description: `Verified pilot car and escort vehicle operator on Haul Command.`,
-            url: `${SITE}/directory/profile/${id}`,
+            title: `${meta.name} | Pilot Car Operator`,
+            description: `Verified pilot car and escort vehicle operator on HAUL COMMAND.`,
+            url: `${SITE}/place/${id}`,
             type: "profile",
         },
     };
 }
 
 /**
- * Server layout that injects JSON-LD for the operator profile.
- * The client page (page.tsx) remains untouched — this wraps it.
+ * Server layout that:
+ * 1. Checks for slug redirects → performs server-side 308/307 redirect
+ * 2. Injects JSON-LD for the operator profile
+ * 
+ * Redirect behavior:
+ *   - redirect_type '301' (permanent) → Next.js permanentRedirect() → HTTP 308
+ *   - redirect_type '302' (temporary) → Next.js redirect() → HTTP 307
+ * 
+ * 308/307 are the modern equivalents of 301/302 (same-method semantics).
+ * Search engines treat 308 identically to 301 for ranking/canonicalization.
  */
 export default async function ProfileLayout({
     children,
@@ -64,34 +69,46 @@ export default async function ProfileLayout({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    // Lightweight server-side fetch for JSON-LD only
-    const { data: dp } = await supabase
-        .from("driver_profiles")
-        .select("user_id, verified_badge")
-        .eq("user_id", id)
-        .single();
+    const meta = await resolveProfileMetadata(supabase, id);
 
-    const { data: p } = await supabase
-        .from("profiles")
-        .select("display_name, company_name, home_base_city, home_base_state, country_code, rating_score, review_count")
-        .eq("id", id)
-        .single();
+    // ── SLUG REDIRECT GATE ──
+    // If this slug has been renamed/redirected, send the browser/crawler
+    // to the canonical URL before rendering any page content.
+    if (meta.redirect_to) {
+        // Determine redirect type from the slug_redirects table
+        const { data: redirectRow } = await supabase
+            .from("slug_redirects")
+            .select("redirect_type")
+            .eq("old_slug", id)
+            .eq("is_active", true)
+            .limit(1)
+            .single();
+
+        const redirectType = redirectRow?.redirect_type || "301";
+        const destination = `/place/${meta.redirect_to}`;
+
+        if (redirectType === "302") {
+            // Temporary redirect → HTTP 307
+            redirect(destination);
+        } else {
+            // Permanent redirect → HTTP 308 (default, SEO-safe)
+            permanentRedirect(destination);
+        }
+        // Note: redirect/permanentRedirect throw internally — code below never executes
+    }
 
     let jsonLdScript: React.ReactNode = null;
 
-    if (dp && p) {
-        const name = p.display_name || p.company_name || "Escort Operator";
-        const url = `${SITE}/directory/profile/${id}`;
-        const location = [p.home_base_city, p.home_base_state].filter(Boolean).join(", ");
-
+    if (meta.resolved) {
+        const url = `${SITE}/place/${id}`;
         const jsonLd = buildOperatorProfileJsonLd({
             url,
-            name,
-            description: `${name} — verified pilot car and escort vehicle operator${location ? ` based in ${location}` : ""} on Haul Command.`,
-            areaServed: location ? [location] : undefined,
+            name: meta.name,
+            description: `${meta.name} — verified pilot car and escort vehicle operator${meta.location ? ` based in ${meta.location}` : ""} on HAUL COMMAND.`,
+            areaServed: meta.location ? [meta.location] : undefined,
             aggregateRating:
-                p.rating_score && p.review_count
-                    ? { ratingValue: p.rating_score, reviewCount: p.review_count }
+                meta.rating_score && meta.review_count
+                    ? { ratingValue: meta.rating_score, reviewCount: meta.review_count }
                     : undefined,
         });
 
@@ -110,3 +127,4 @@ export default async function ProfileLayout({
         </>
     );
 }
+

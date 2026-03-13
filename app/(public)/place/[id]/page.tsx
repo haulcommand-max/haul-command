@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { resolveProfile, type NormalizedProfile, type ResolutionResult, type EntitySource } from "@/lib/resolvers/resolveProfile";
 import { TrustRadar } from "@/components/directory/TrustRadar";
 import { DriverReportCard } from "@/components/intelligence/ReportCards";
 import { EquipmentBadges } from "@/components/directory/EquipmentBadges";
@@ -21,6 +23,9 @@ import { track } from "@/lib/telemetry";
 import ClaimBanner from "@/components/growth/ClaimBanner";
 import { UrgencyIndicator } from "@/components/psychology/GrowthHooks";
 import AppGate from "@/components/growth/AppGate";
+import { useVisibility } from "@/hooks/useVisibility";
+import { SubscriberGate, InlineUpgradeBanner } from "@/components/trust/SubscriberGate";
+import { OwnerVisibilityControls } from "@/components/trust/OwnerVisibilityControls";
 
 /* ──────────────────────────────────────────────────── */
 /*  Animation variants                                  */
@@ -39,83 +44,74 @@ const scaleIn = {
 const stagger = { visible: { transition: { staggerChildren: 0.08 } } };
 
 /* ──────────────────────────────────────────────────── */
-/*  Types                                               */
+/*  Types — imported from resolveProfile                 */
 /* ──────────────────────────────────────────────────── */
-interface DriverProfile {
-    id: string;
-    user_id?: string;
-    display_name?: string;
-    company_name?: string;
-    us_dot_number?: string;
-    vehicle_type?: string;
-    home_base_city?: string;
-    home_base_state?: string;
-    city_slug?: string;
-    region_code?: string;
-    country_code?: string;
-    insurance_status?: string;
-    compliance_status?: string;
-    verification_status?: string;
-    certifications_json?: Record<string, boolean>;
-    trust_score?: number;
-    is_seeded?: boolean;
-    is_claimed?: boolean;
-    claim_hash?: string;
-    latitude?: number;
-    longitude?: number;
-    coverage_radius_miles?: number;
-    reliability_score?: number;
-    completed_escorts?: number;
-    rating_score?: number;
-    review_count?: number;
-    responsiveness_score?: number;
-    integrity_score?: number;
-    customer_signal_score?: number;
-    compliance_score?: number;
-    market_fit_score?: number;
-    fill_probability?: number | null;
-    updated_at?: string;
-}
+// NormalizedProfile imported from resolver — single source of truth
 
 /* ──────────────────────────────────────────────────── */
 /*  Page Component                                      */
 /* ──────────────────────────────────────────────────── */
-export default function EscortProfilePage({ params }: { params: { id: string } }) {
-    const { id } = params;
+export default function EscortProfilePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
+    const router = useRouter();
     const supabaseClient = createClient();
 
-    const [profile, setProfile] = useState<DriverProfile | null>(null);
+    const [profile, setProfile] = useState<NormalizedProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
+    const [resolvedSource, setResolvedSource] = useState<EntitySource>("none");
     const [reviews, setReviews] = useState<OperatorReview[]>([]);
 
-    /* ── Fetch real profile from Supabase ── */
+    /* ── Trust Visibility Resolution ── */
+    const { visibility, tier, isOwner, isPaid } = useVisibility({ listingId: id });
+
+    /* ── Fetch profile via server-side resolver API ── */
+    /* Uses /api/directory/resolve which has service role key (bypasses RLS for slug lookups) */
     useEffect(() => {
         async function loadProfile() {
             setLoading(true);
-            const { data, error } = await supabaseClient
-                .from("driver_profiles")
-                .select("*")
-                .eq("id", id)
-                .single();
+            try {
+                const res = await fetch(`/api/directory/resolve?id=${encodeURIComponent(id)}`);
+                if (!res.ok) {
+                    setNotFound(true);
+                    setLoading(false);
+                    return;
+                }
+                const result = await res.json();
 
-            if (error || !data) {
+                // Client-side redirect safety net: if the API returns redirect_to,
+                // navigate to the canonical slug. Server layout handles this for
+                // initial page loads, but SPA navigations need this fallback.
+                if (result.redirect_to) {
+                    router.replace(`/place/${result.redirect_to}`);
+                    return;
+                }
+
+                if (result.resolved && result.profile) {
+                    setProfile(result.profile);
+                    setResolvedSource(result.resolved_table);
+                    console.info(`[ProfileResolver] ID=${id} resolved from: ${result.resolved_table} | path: ${result.resolution_path.join(" → ")}`);
+                } else {
+                    setNotFound(true);
+                    console.warn(`[ProfileResolver] ID=${id} NOT FOUND | path: ${result.resolution_path.join(" → ")} | reason: ${result.failure_reason}`);
+                }
+            } catch (err) {
+                console.error(`[ProfileResolver] ID=${id} fetch error:`, err);
                 setNotFound(true);
-            } else {
-                setProfile(data as DriverProfile);
             }
             setLoading(false);
         }
         loadProfile();
-    }, [id, supabaseClient]);
+    }, [id, router]);
 
-    /* ── Fetch reviews ── */
+    /* ── Fetch reviews (uses resolved UUID, not slug) ── */
     useEffect(() => {
-        fetch(`/api/directory/reviews?escort_id=${id}`)
+        if (!profile) return;
+        fetch(`/api/directory/reviews?escort_id=${profile.id}`)
             .then(r => r.json())
             .then(d => setReviews(d.reviews ?? []))
             .catch(() => { });
-    }, [id]);
+    }, [profile]);
 
     /* ── Track directory view (Viewed-You loop) + AdGrid impression + Telemetry ── */
     useEffect(() => {
@@ -147,19 +143,28 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
         );
     }
 
-    /* ── 404 state ── */
+    /* ── Not Found state — typed and honest ── */
     if (notFound || !profile) {
         return (
             <div className="min-h-screen bg-[#000] flex items-center justify-center text-center px-6">
-                <div>
+                <div className="max-w-md">
                     <Search className="w-16 h-16 text-[#333] mx-auto mb-6" />
-                    <h1 className="text-3xl font-black text-white mb-3">Profile Not Found</h1>
-                    <p className="text-sm text-[#666] mb-8 max-w-sm mx-auto">
-                        This operator profile doesn't exist or has been removed.
+                    <h1 className="text-3xl font-black text-white mb-3">Profile Unavailable</h1>
+                    <p className="text-sm text-[#666] mb-4 max-w-sm mx-auto">
+                        This operator profile could not be found in our directory.
                     </p>
-                    <Link href="/directory" className="inline-block bg-[#F1A91B] text-black font-bold text-sm px-6 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
-                        Browse Directory →
-                    </Link>
+                    <p className="text-[10px] text-[#444] mb-8 max-w-xs mx-auto">
+                        The profile may have been removed, or the operator has not yet registered on HAUL COMMAND.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <Link href="/directory" className="inline-block bg-[#F1A91B] text-black font-bold text-sm px-6 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
+                            Browse Directory
+                        </Link>
+                        <Link href="/surfaces/us" className="inline-block bg-[#111] text-white font-bold text-sm px-6 py-3 rounded-xl border border-[#333] hover:border-[#F1A91B]/30 transition-colors">
+                            Nearby Surfaces
+                        </Link>
+                    </div>
+                    <p className="text-[9px] text-[#555] mt-6">Know this operator? <Link href="/start" className="text-[#F1A91B] hover:underline">Help them claim their profile →</Link></p>
                 </div>
             </div>
         );
@@ -167,8 +172,8 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
 
     /* ── Derived values from real data ── */
     const displayName = profile.company_name || profile.display_name || "Unknown Operator";
-    const city = profile.home_base_city || profile.city_slug || "";
-    const state = profile.home_base_state || profile.region_code || "";
+    const city = profile.home_base_city || "";
+    const state = profile.home_base_state || "";
     const trustScore = profile.trust_score || 0;
     const isVerified = profile.verification_status === "verified";
     const isClaimed = profile.is_claimed ?? false;
@@ -179,19 +184,19 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
     const hasHighPole = certs.high_pole ?? false;
     const isInsured = profile.insurance_status === "verified";
 
-    // Radar data — only show if the profile has real metrics
-    const hasRadar = !!(profile.reliability_score || profile.responsiveness_score);
+    // Radar data — only show if the profile has REAL metrics (not default zeros)
+    const hasRadar = (profile.reliability_score > 0 || profile.responsiveness_score > 0);
     const radarData = {
-        reliability: profile.reliability_score || 0,
-        responsiveness: profile.responsiveness_score || 0,
-        integrity: profile.integrity_score || 0,
-        customer_signal: profile.customer_signal_score || 0,
-        compliance: profile.compliance_score || 0,
-        market_fit: profile.market_fit_score || 0,
+        reliability: profile.reliability_score,
+        responsiveness: profile.responsiveness_score,
+        integrity: profile.integrity_score,
+        customer_signal: profile.customer_signal_score,
+        compliance: profile.compliance_score,
+        market_fit: profile.market_fit_score,
     };
 
-    // ----- COLD START TRUST CALCULATIONS -----
-    const completedEscorts = profile.completed_escorts || 0;
+    // ----- COLD START TRUST CALCULATIONS (source-backed) -----
+    const completedEscorts = profile.completed_escorts; // real data, never fabricated
     const isColdStart = completedEscorts < 10;
     let trustStatus = null;
 
@@ -311,8 +316,8 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                                         )}
                                     </div>
 
-                                    {/* Urgency Indicator — social proof */}
-                                    <UrgencyIndicator viewCount={Math.floor(Math.random() * 8) + 3} label="brokers viewed this area today" />
+                                    {/* Urgency Indicator — only show if we have real data */}
+                                    {/* REMOVED: Random fake view count. Will re-enable when real view tracking is wired. */}
 
                                     {/* Verification Badges */}
                                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
@@ -429,11 +434,11 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                     {/* SECTION 2: Live Performance Strip */}
                     <motion.div variants={fadeUp} custom={3}>
                         <ProfilePerformanceStrip
-                            completedEscorts={24}
-                            reliabilityScore={98}
-                            medianResponseTimeStr="14m"
-                            corridorsServed={5}
-                            lastActiveStr="Just now"
+                            completedEscorts={profile.completed_escorts}
+                            reliabilityScore={profile.reliability_score}
+                            medianResponseTimeStr={profile.responsiveness_score > 0 ? `${Math.round(60 / (profile.responsiveness_score / 100))}m` : "—"}
+                            corridorsServed={0 /* TODO: wire to real corridor count when available */}
+                            lastActiveStr={profile.updated_at ? new Date(profile.updated_at).toLocaleDateString() : "—"}
                         />
                     </motion.div>
                 </motion.div>
@@ -444,10 +449,12 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                     <div className="lg:col-span-2 space-y-6">
                         {/* SECTION 5: Predicted Fill Intelligence */}
                         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
-                            <PredictedFillIntelligence
-                                fillProbabilityPct={profile.fill_probability || 82}
-                                isProTier={true}
-                            />
+                            <SubscriberGate visibility={visibility} surface="trust_insights" showBlurredTeaser>
+                                <PredictedFillIntelligence
+                                    fillProbabilityPct={profile.fill_probability != null ? profile.fill_probability : undefined}
+                                    isProTier={isPaid || isOwner}
+                                />
+                            </SubscriberGate>
                         </motion.div>
 
                         {/* SECTION 3: Corridor Strength Heat */}
@@ -480,7 +487,7 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                                 </div>
                             </div>
                             <LiveActivityFeed
-                                region={profile?.region_code ?? undefined}
+                                region={profile?.home_base_state ?? undefined}
                                 limit={5}
                                 pollIntervalMs={60000}
                             />
@@ -526,9 +533,7 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                                     ...(hasHighPole ? ["high_pole"] : []),
                                     ...(hasAmber ? ["amber_lights"] : []),
                                     ...(hasTWIC ? ["twic"] : []),
-                                    "steer_escort", // Mock data to show off the new capability matrix
-                                    "night_certified",
-                                    "multi_state",
+                                    // Only source-verified certifications — no mock data
                                     ...(Object.keys(certs).filter(k => certs[k]))
                                 ]}
                                 variant="expanded"
@@ -538,15 +543,26 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
 
                         {/* Trust Radar */}
                         {hasRadar && (
-                            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="bg-[#0a0a0a] border border-[#1a1a1a] p-6 rounded-2xl">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <Activity className="w-4 h-4 text-[#F1A91B]" />
-                                    <h2 className="text-sm font-bold text-white uppercase tracking-[0.15em]">Operational Footprint</h2>
-                                </div>
-                                <TrustRadar data={radarData} />
-                                <p className="text-[10px] text-[#444] mt-3 text-center uppercase tracking-[0.2em] font-medium">
-                                    Based on last 30 days of performance
-                                </p>
+                            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
+                                <SubscriberGate visibility={visibility} surface="report_card" showBlurredTeaser>
+                                    <div className="bg-[#0a0a0a] border border-[#1a1a1a] p-6 rounded-2xl">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Activity className="w-4 h-4 text-[#F1A91B]" />
+                                            <h2 className="text-sm font-bold text-white uppercase tracking-[0.15em]">Operational Footprint</h2>
+                                        </div>
+                                        <TrustRadar data={radarData} />
+                                        <p className="text-[10px] text-[#444] mt-3 text-center uppercase tracking-[0.2em] font-medium">
+                                            Based on last 30 days of performance
+                                        </p>
+                                    </div>
+                                </SubscriberGate>
+                            </motion.div>
+                        )}
+
+                        {/* ===== OWNER VISIBILITY CONTROLS ===== */}
+                        {isOwner && (
+                            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                                <OwnerVisibilityControls listingId={id} />
                             </motion.div>
                         )}
 
@@ -608,6 +624,13 @@ export default function EscortProfilePage({ params }: { params: { id: string } }
                         Verified operators get 3× more quote requests
                     </div>
                 </motion.div>
+            )}
+
+            {/* ===== INLINE UPGRADE BANNER (free/anon only) ===== */}
+            {visibility.show_upgrade_prompt && (
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+                    <InlineUpgradeBanner tier={tier} surface="trust_insights" />
+                </div>
             )}
 
             {/* ===== ADGRID: SIMILAR OPERATORS SLOT ===== */}

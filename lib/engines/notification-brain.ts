@@ -40,27 +40,45 @@ interface EventConfig {
 }
 
 const EVENT_CONFIGS: Record<string, EventConfig> = {
-    // Critical — all channels
+    // ── CRITICAL — all channels, no quiet hours ────────────────────────────
     'load.matched': { channels: ['in_app', 'push', 'sms'], priority: 'critical', batch_window_minutes: 0, quiet_hours_respect: false },
     'load.urgent': { channels: ['in_app', 'push', 'sms'], priority: 'critical', batch_window_minutes: 0, quiet_hours_respect: false },
+    'load.match_found': { channels: ['in_app', 'push', 'sms'], priority: 'critical', batch_window_minutes: 0, quiet_hours_respect: false },
     'payment.failed': { channels: ['in_app', 'push', 'email'], priority: 'critical', batch_window_minutes: 0, quiet_hours_respect: false },
+    'sponsorship.payment_failed': { channels: ['in_app', 'push', 'email'], priority: 'critical', batch_window_minutes: 0, quiet_hours_respect: false },
     'dispute.filed': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: false },
 
-    // High — push + in-app
+    // ── HIGH — push + in-app ───────────────────────────────────────────────
     'claim.started': { channels: ['in_app', 'push'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
     'claim.completed': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
     'doc.expiring': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 60, quiet_hours_respect: true },
     'boost.expiring': { channels: ['in_app', 'push'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
+    'boost.renewal_due': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
     'rank.dropped': { channels: ['in_app', 'push'], priority: 'high', batch_window_minutes: 30, quiet_hours_respect: true },
+    'credential.rejected': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
+    'credential.expiring': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 60, quiet_hours_respect: true },
+    'training.renewal_due': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
+    'training.expired': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
+    'sponsorship.expiring': { channels: ['in_app', 'push', 'email'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
+    'lead.credit_low': { channels: ['in_app', 'push'], priority: 'high', batch_window_minutes: 0, quiet_hours_respect: true },
 
-    // Medium — in-app + email digest
+    // ── MEDIUM — in-app + email ────────────────────────────────────────────
     'freshness.cooling': { channels: ['in_app', 'email'], priority: 'medium', batch_window_minutes: 120, quiet_hours_respect: true },
     'lead.unlocked': { channels: ['in_app'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'lead.credit_refund': { channels: ['in_app', 'email'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
     'profile.viewed': { channels: ['in_app'], priority: 'medium', batch_window_minutes: 60, quiet_hours_respect: true },
     'review.received': { channels: ['in_app', 'push'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'training.enrolled': { channels: ['in_app', 'email'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
     'training.completed': { channels: ['in_app', 'email'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'training.reminder': { channels: ['in_app', 'push'], priority: 'medium', batch_window_minutes: 1440, quiet_hours_respect: true },
+    'credential.submitted': { channels: ['in_app'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'credential.approved': { channels: ['in_app', 'push', 'email'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'boost.activated': { channels: ['in_app', 'push'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
+    'sponsorship.activated': { channels: ['in_app', 'email'], priority: 'medium', batch_window_minutes: 0, quiet_hours_respect: true },
 
-    // Low — in-app only, batchable
+    // ── LOW — in-app only, batchable ───────────────────────────────────────
+    'load.digest': { channels: ['in_app', 'email'], priority: 'low', batch_window_minutes: 1440, quiet_hours_respect: true },
+    'load.alert_paused': { channels: ['in_app'], priority: 'low', batch_window_minutes: 0, quiet_hours_respect: true },
     'report_card.updated': { channels: ['in_app'], priority: 'low', batch_window_minutes: 1440, quiet_hours_respect: true },
     'leaderboard.update': { channels: ['in_app'], priority: 'low', batch_window_minutes: 1440, quiet_hours_respect: true },
     'system.announcement': { channels: ['in_app', 'email'], priority: 'low', batch_window_minutes: 0, quiet_hours_respect: true },
@@ -174,16 +192,50 @@ export function decideNotification(
 
 /**
  * Template map for Novu workflow triggers
+ * Every event_type maps to a Novu workflow_id and human-readable template name.
+ * workflow_id uses kebab-case (dots → hyphens) for Novu compatibility.
  */
 export const NOVU_WORKFLOWS: Record<string, { workflow_id: string; template_name: string }> = {
+    // ── Core Platform ──────────────────────────────────────────────────────
     'load.matched': { workflow_id: 'load-matched', template_name: 'Load Match Alert' },
     'load.urgent': { workflow_id: 'load-urgent', template_name: 'Urgent Load Alert' },
     'claim.started': { workflow_id: 'claim-started', template_name: 'Claim Started' },
     'claim.completed': { workflow_id: 'claim-completed', template_name: 'Claim Completed' },
     'doc.expiring': { workflow_id: 'doc-expiring', template_name: 'Document Expiring' },
-    'boost.expiring': { workflow_id: 'boost-expiring', template_name: 'Boost Expiring' },
     'rank.dropped': { workflow_id: 'rank-dropped', template_name: 'Rank Drop Alert' },
     'freshness.cooling': { workflow_id: 'freshness-cooling', template_name: 'Freshness Alert' },
     'review.received': { workflow_id: 'review-received', template_name: 'New Review' },
     'payment.failed': { workflow_id: 'payment-failed', template_name: 'Payment Failed' },
+
+    // ── Lead Unlocks (public.lead_unlocks) ──────────────────────────────────
+    'lead.unlocked': { workflow_id: 'lead-unlocked', template_name: 'Lead Unlocked' },
+    'lead.credit_low': { workflow_id: 'lead-credit-low', template_name: 'Credits Running Low' },
+    'lead.credit_refund': { workflow_id: 'lead-credit-refund', template_name: 'Credit Refund Issued' },
+
+    // ── Training (public.training_enrollments) ──────────────────────────────
+    'training.enrolled': { workflow_id: 'training-enrolled', template_name: 'Training Enrollment Confirmed' },
+    'training.reminder': { workflow_id: 'training-reminder', template_name: 'Training Reminder' },
+    'training.renewal_due': { workflow_id: 'training-renewal-due', template_name: 'Training Renewal Due' },
+    'training.expired': { workflow_id: 'training-expired', template_name: 'Training Certificate Expired' },
+
+    // ── Credentials (public.credential_verifications) ───────────────────────
+    'credential.submitted': { workflow_id: 'credential-submitted', template_name: 'Credential Under Review' },
+    'credential.approved': { workflow_id: 'credential-approved', template_name: 'Credential Approved' },
+    'credential.rejected': { workflow_id: 'credential-rejected', template_name: 'Credential Rejected' },
+    'credential.expiring': { workflow_id: 'credential-expiring', template_name: 'Credential Expiring Soon' },
+
+    // ── Load Alerts (public.hc_load_alerts) ─────────────────────────────────
+    'load.match_found': { workflow_id: 'load-match-found', template_name: 'New Load Match' },
+    'load.digest': { workflow_id: 'load-digest', template_name: 'Load Digest' },
+    'load.alert_paused': { workflow_id: 'load-alert-paused', template_name: 'Load Alerts Paused' },
+
+    // ── Profile Boosts (public.profile_boosts) ──────────────────────────────
+    'boost.activated': { workflow_id: 'boost-activated', template_name: 'Boost Activated' },
+    'boost.expiring': { workflow_id: 'boost-expiring', template_name: 'Boost Expiring Soon' },
+    'boost.renewal_due': { workflow_id: 'boost-renewal-due', template_name: 'Boost Renewal Recommended' },
+
+    // ── Territory Sponsorships (public.territory_sponsorships) ──────────────
+    'sponsorship.activated': { workflow_id: 'sponsorship-activated', template_name: 'Sponsorship Live' },
+    'sponsorship.expiring': { workflow_id: 'sponsorship-expiring', template_name: 'Sponsorship Expiring' },
+    'sponsorship.payment_failed': { workflow_id: 'sponsorship-payment-failed', template_name: 'Sponsorship Payment Failed' },
 };

@@ -19,7 +19,7 @@ interface PredictedFillIntelligenceProps {
 }
 
 export function PredictedFillIntelligence({
-    fillProbabilityPct = 82,
+    fillProbabilityPct,
     estimatedResponseMins = "10-25",
     marketTightness = "Tight",
     isProTier = false,
@@ -57,10 +57,22 @@ export function PredictedFillIntelligence({
                             <Lock className="w-6 h-6 text-[#444] mb-1" />
                             <div className="text-xs font-bold text-[#888]">Unlock Pro for insights</div>
                         </div>
-                    ) : (
+                    ) : fillProbabilityPct != null && fillProbabilityPct > 0 ? (
                         <div className="flex items-end gap-2">
                             <span className="text-5xl font-black text-white tracking-tighter leading-none">{fillProbabilityPct}<span className="text-2xl text-[#666]">%</span></span>
-                            <span className="text-xs text-emerald-500 font-bold mb-1 pb-1 border-b border-emerald-500/20">High Match</span>
+                            <span className={cn(
+                                "text-xs font-bold mb-1 pb-1 border-b",
+                                fillProbabilityPct >= 70 ? "text-emerald-500 border-emerald-500/20" :
+                                fillProbabilityPct >= 40 ? "text-amber-500 border-amber-500/20" :
+                                "text-red-400 border-red-400/20"
+                            )}>
+                                {fillProbabilityPct >= 70 ? "High Match" : fillProbabilityPct >= 40 ? "Moderate" : "Low Match"}
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-start gap-1 h-full justify-center">
+                            <span className="text-lg font-bold text-[#444]">—</span>
+                            <div className="text-[10px] text-[#555]">No data yet</div>
                         </div>
                     )}
                 </div>
