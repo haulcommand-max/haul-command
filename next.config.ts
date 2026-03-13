@@ -70,13 +70,8 @@ const nextConfig: NextConfig = {
                 destination: "/directory/:path*",
                 permanent: true,
             },
-            // www → root (haulcommand.com is canonical, not www)
-            {
-                source: "/:path*",
-                has: [{ type: "host", value: "www.haulcommand.com" }],
-                destination: "https://haulcommand.com/:path*",
-                permanent: true,
-            },
+            // NOTE: www → apex redirect is handled by Vercel domain settings at the CDN edge.
+            // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
         ];
     },
 
