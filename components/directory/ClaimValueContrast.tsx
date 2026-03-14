@@ -73,11 +73,11 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
         }
         .vc-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
           gap: 12px;
         }
-        @media (max-width: 480px) {
-          .vc-grid { grid-template-columns: 1fr; }
+        @media (min-width: 481px) {
+          .vc-grid { grid-template-columns: 1fr 1fr; }
         }
         .vc-col {
           border-radius: 8px;

@@ -279,10 +279,13 @@ const CARD_STYLES = `
     display: flex; justify-content: space-between; align-items: center;
     padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
   }
-  .rep-cat-left { display: flex; align-items: center; gap: 8px; flex: 0 0 180px; }
+  .rep-cat-left { display: flex; align-items: center; gap: 8px; flex: 0 0 140px; }
   .rep-cat-icon { font-size: 14px; }
-  .rep-cat-label { font-size: 13px; color: #D1D5DB; }
-  .rep-cat-right { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .rep-cat-label { font-size: 12px; color: #D1D5DB; }
+  @media (min-width: 481px) {
+    .rep-cat-left { flex: 0 0 180px; }
+    .rep-cat-label { font-size: 13px; }
+  }  .rep-cat-right { display: flex; align-items: center; gap: 8px; flex: 1; }
   .rep-bar-track {
     flex: 1; height: 6px; background: rgba(255,255,255,0.06);
     border-radius: 3px; overflow: hidden;
@@ -336,8 +339,4 @@ const CARD_STYLES = `
     text-decoration: none; font-size: 14px; transition: all 0.2s;
   }
   .rep-cta-btn:hover { background: #D97706; transform: translateY(-1px); }
-  @media (max-width: 480px) {
-    .rep-cat-left { flex: 0 0 140px; }
-    .rep-cat-label { font-size: 12px; }
-  }
 `;

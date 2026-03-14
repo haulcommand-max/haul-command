@@ -270,8 +270,9 @@ export default function HeroSearchBar({
                         </button>
                     </div>
                     <style>{`
-                        @media (max-width: 767px) {
-                            .hero-search-submit { grid-column: 1 / -1 !important; width: 100% !important; }
+                        .hero-search-submit { grid-column: 1 / -1; width: 100%; }
+                        @media (min-width: 768px) {
+                            .hero-search-submit { grid-column: auto; width: auto; }
                         }
                     `}</style>
                 </div>

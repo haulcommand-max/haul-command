@@ -218,22 +218,21 @@ textarea {
     text-wrap: balance;
   }
 
-  /* ── Touch Target Enforcer ── */
+  /* ── Touch Target Enforcer (mobile-first: 48px default, 44px on desktop) ── */
   button,
   a[href],
   [role="button"],
   .touch-target {
-    min-height: 44px;
+    min-height: 48px;
     min-width: 44px;
   }
 
-  @media (max-width: 768px) {
-
+  @media (min-width: 769px) {
     button,
     a[href],
     [role="button"],
     .touch-target {
-      min-height: 48px !important;
+      min-height: 44px;
     }
   }
 }
@@ -1430,11 +1429,16 @@ html, body {
    MOBILE-FIRST FIX PASS — 32 Issue Resolution
    ══════════════════════════════════════════════════════════════ */
 
-/* FIX #7: Stat dashboard — 1-col stack on mobile, 2-col on sm+ */
-@media (max-width: 639px) {
+/* FIX #7: Stat dashboard — mobile-first: compact default, relax on sm+ */
+.metric-block {
+  padding: 0.875rem 0.75rem;
+  min-height: 56px;
+}
+
+@media (min-width: 640px) {
   .metric-block {
-    padding: 0.875rem 0.75rem;
-    min-height: 56px;
+    padding: 1rem;
+    min-height: 48px;
   }
 }
 
@@ -1443,79 +1447,114 @@ html, body {
   display: none;
 }
 
-@media (max-width: 767px) {
+/* FIX #12: Footer — mobile-first: accordion default, grid on md+ */
+.footer-link-grid {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+
+.footer-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-section:last-child {
+  border-bottom: none;
+}
+
+.footer-accordion-trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+}
+
+.footer-accordion-trigger h4 {
+  margin: 0;
+}
+
+.footer-accordion-trigger .footer-chevron {
+  width: 16px;
+  height: 16px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.footer-accordion-trigger[aria-expanded="true"] .footer-chevron {
+  transform: rotate(180deg);
+}
+
+.footer-section-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding-bottom: 0;
+}
+
+.footer-section-body.footer-section-body--open {
+  max-height: 400px;
+  padding-bottom: 12px;
+}
+
+/* FIX #18: Single elevation — mobile default */
+.intelligence-card,
+.metric-block {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
   .footer-link-grid {
-    grid-template-columns: 1fr !important;
-    gap: 0 !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 24px !important;
   }
 
   .footer-section {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .footer-section:last-child {
     border-bottom: none;
   }
 
   .footer-accordion-trigger {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    min-height: 44px;
-  }
-
-  .footer-accordion-trigger h4 {
-    margin: 0;
-  }
-
-  .footer-accordion-trigger .footer-chevron {
-    width: 16px;
-    height: 16px;
-    color: rgba(255, 255, 255, 0.3);
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .footer-accordion-trigger[aria-expanded="true"] .footer-chevron {
-    transform: rotate(180deg);
+    display: none;
   }
 
   .footer-section-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    max-height: none;
+    overflow: visible;
     padding-bottom: 0;
   }
 
-  .footer-section-body.footer-section-body--open {
-    max-height: 400px;
-    padding-bottom: 12px;
-  }
-
-  /* FIX #18: Single elevation on mobile */
   .intelligence-card,
   .metric-block {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-card);
   }
 }
 
 /* FIX #16: Leaderboard table — stacked on mobile */
-@media (max-width: 639px) {
+/* FIX #16: Leaderboard — mobile-first: stacked default, grid on sm+ */
+.leaderboard-mobile-stack {
+  grid-template-columns: 1fr !important;
+}
+
+.leaderboard-mobile-stack > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+@media (min-width: 640px) {
   .leaderboard-mobile-stack {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
   }
 
   .leaderboard-mobile-stack > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
+    display: block;
+    padding: 12px;
   }
 }
 
@@ -1537,10 +1576,14 @@ html, body {
   .section-gap-lg { padding-top: 5rem; padding-bottom: 5rem; }
 }
 
-/* FIX #1: Hero mobile crop */
-@media (max-width: 767px) {
+/* FIX #1: Hero — mobile-first: escort-leading focal crop default, center on md+ */
+.hc-hero .hero-bg-image {
+  object-position: 40% center !important;
+}
+
+@media (min-width: 768px) {
   .hc-hero .hero-bg-image {
-    object-position: 40% center !important;
+    object-position: center center !important;
   }
 }
 
