@@ -1,7 +1,10 @@
 // ============================================================
 // Infisical — Secrets Management
 // Use for: central secrets, rotation, env separation
+// Feature flag: INFISICAL (opt-in — falls back to process.env)
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const INFISICAL_TOKEN = process.env.INFISICAL_TOKEN || '';
 const INFISICAL_API_URL = process.env.INFISICAL_API_URL || 'https://app.infisical.com/api';
@@ -14,8 +17,7 @@ interface SecretInput {
 
 // ── Fetch a secret from Infisical ──
 export async function getSecret(input: SecretInput): Promise<string | null> {
-    if (!INFISICAL_TOKEN) {
-        console.warn('[Infisical] No token — falling back to env');
+    if (!isEnabled('INFISICAL') || !INFISICAL_TOKEN) {
         return process.env[input.key] || null;
     }
 
@@ -39,7 +41,7 @@ export async function getSecrets(
     environment: 'dev' | 'staging' | 'production',
     path: string = '/'
 ): Promise<Record<string, string>> {
-    if (!INFISICAL_TOKEN) return {};
+    if (!isEnabled('INFISICAL') || !INFISICAL_TOKEN) return {};
 
     const params = new URLSearchParams({ environment, workspacePath: path });
     const res = await fetch(`${INFISICAL_API_URL}/v3/secrets/raw?${params}`, {

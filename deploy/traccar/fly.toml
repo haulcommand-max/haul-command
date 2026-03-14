@@ -5,7 +5,7 @@
 # Deploy: flyctl launch --config deploy/traccar/fly.toml
 # ─────────────────────────────────────────────────────────────────
 
-app = "hc-traccar"
+app = "hc-traccar-gps"
 primary_region = "iad"
 
 [build]

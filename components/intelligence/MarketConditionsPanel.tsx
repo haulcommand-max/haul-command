@@ -57,10 +57,15 @@ export default function MarketConditionsPanel({
                 borderRadius: 20,
                 border: "1px solid rgba(255,255,255,0.06)",
                 background: "var(--hc-surface, rgba(255,255,255,0.02))",
-                padding: "28px 24px",
+                padding: "24px 16px",
                 overflow: "hidden",
                 boxShadow: "0 6px 24px rgba(0,0,0,0.35)",
             }}>
+                <style>{`
+                    @media (min-width: 640px) {
+                        .mcp-container { padding: 28px 24px !important; }
+                    }
+                `}</style>
                 {/* Header */}
                 <div style={{
                     display: "flex",

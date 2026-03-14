@@ -190,9 +190,101 @@ export async function POST(req: Request) {
                 break;
             }
 
-            default:
-                // Unhandled event type — ignore
+            // ── P0 GAP #3: Booking payment events ──────────────────
+            case 'payment_intent.succeeded': {
+                const pi = event.data.object as Stripe.PaymentIntent;
+                const jobId = pi.metadata?.job_id;
+                if (!jobId || pi.metadata?.source !== 'haul_command_booking') break;
+
+                // Update job payment status
+                await supabase
+                    .from('jobs')
+                    .update({
+                        payment_status: 'captured',
+                        stripe_charge_id: typeof pi.latest_charge === 'string' ? pi.latest_charge : null,
+                    })
+                    .eq('job_id', jobId);
+
+                // Log audit trail
+                try {
+                    await supabase.rpc('append_job_audit', {
+                        p_job_id: jobId,
+                        p_action: 'payment_captured',
+                        p_actor: 'stripe_webhook',
+                        p_details: { payment_intent_id: pi.id, amount: pi.amount, currency: pi.currency },
+                    });
+                } catch {
+                    // RPC may not exist yet — non-blocking
+                    console.log('[stripe-webhook] append_job_audit RPC not available');
+                }
+
+                console.log(`[stripe-webhook] Booking payment captured: job=${jobId}, pi=${pi.id}`);
                 break;
+            }
+
+            case 'payment_intent.payment_failed': {
+                const pi = event.data.object as Stripe.PaymentIntent;
+                const jobId = pi.metadata?.job_id;
+                if (!jobId || pi.metadata?.source !== 'haul_command_booking') break;
+
+                await supabase
+                    .from('jobs')
+                    .update({ payment_status: 'failed' })
+                    .eq('job_id', jobId);
+
+                console.error(`[stripe-webhook] Booking payment FAILED: job=${jobId}, pi=${pi.id}`);
+                break;
+            }
+
+            case 'payment_intent.canceled': {
+                const pi = event.data.object as Stripe.PaymentIntent;
+                const jobId = pi.metadata?.job_id;
+                if (!jobId || pi.metadata?.source !== 'haul_command_booking') break;
+
+                await supabase
+                    .from('jobs')
+                    .update({ payment_status: 'cancelled' })
+                    .eq('job_id', jobId);
+
+                break;
+            }
+
+            default: {
+                // Handle transfer events (not in Stripe's strict type enum)
+                const eventType = event.type as string;
+                if (eventType === 'transfer.created') {
+                    const transfer = event.data.object as any;
+                    const jobId = transfer.metadata?.job_id;
+                    if (jobId) {
+                        await supabase
+                            .from('job_payouts')
+                            .update({
+                                stripe_transfer_id: transfer.id,
+                                status: 'initiated',
+                            })
+                            .eq('job_id', jobId)
+                            .eq('operator_id', transfer.metadata?.operator_id);
+                    }
+                } else if (eventType === 'transfer.paid') {
+                    const transfer = event.data.object as any;
+                    if (transfer.metadata?.job_id) {
+                        await supabase
+                            .from('job_payouts')
+                            .update({
+                                status: 'completed',
+                                paid_at: new Date().toISOString(),
+                            })
+                            .eq('stripe_transfer_id', transfer.id);
+
+                        await supabase
+                            .from('jobs')
+                            .update({ payout_status: 'completed' })
+                            .eq('job_id', transfer.metadata.job_id);
+                    }
+                }
+                // Other unhandled events — ignore
+                break;
+            }
         }
 
         return NextResponse.json({ received: true });

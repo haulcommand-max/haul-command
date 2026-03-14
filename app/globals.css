@@ -918,8 +918,8 @@ textarea {
   content: '';
   position: absolute;
   left: 0;
-  top: 12px;
-  bottom: 12px;
+  top: 16px;
+  bottom: 16px;
   width: 3px;
   border-radius: 0 3px 3px 0;
   background: var(--accent-color, var(--hc-gold-500));
@@ -942,12 +942,15 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.375rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
+  min-height: 48px;
   background: var(--hc-surface);
   border: 1px solid var(--hc-border);
   border-radius: 12px;
   box-shadow: var(--shadow-card);
+  text-align: center;
 }
 
 .metric-block__value {
@@ -963,9 +966,13 @@ textarea {
 .metric-block__label {
   font-size: var(--text-tiny);
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--hc-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* ── Urgency Chip — hot/warm/planned/flex ── */
@@ -1368,9 +1375,11 @@ html, body {
   min-height: 100dvh;
 }
 
-/* PATCH-003: Header safe area — prevent top content clipping */
+/* PATCH-003: Header safe area — prevent top content clipping + side insets */
 .safe-area-header {
   padding-top: env(safe-area-inset-top, 0px);
+  padding-right: max(16px, env(safe-area-inset-right, 16px));
+  padding-left: max(16px, env(safe-area-inset-left, 16px));
 }
 
 /* PATCH-004: Live status dots — prevent corner stacking */
@@ -1415,4 +1424,144 @@ html, body {
   .hc-terminal-live-dot {
     animation: none;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE-FIRST FIX PASS — 32 Issue Resolution
+   ══════════════════════════════════════════════════════════════ */
+
+/* FIX #7: Stat dashboard — 1-col stack on mobile, 2-col on sm+ */
+@media (max-width: 639px) {
+  .metric-block {
+    padding: 0.875rem 0.75rem;
+    min-height: 56px;
+  }
+}
+
+/* FIX #12: Footer accordion on mobile */
+.footer-accordion-trigger {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .footer-link-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  .footer-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-section:last-child {
+    border-bottom: none;
+  }
+
+  .footer-accordion-trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+  }
+
+  .footer-accordion-trigger h4 {
+    margin: 0;
+  }
+
+  .footer-accordion-trigger .footer-chevron {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .footer-accordion-trigger[aria-expanded="true"] .footer-chevron {
+    transform: rotate(180deg);
+  }
+
+  .footer-section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding-bottom: 0;
+  }
+
+  .footer-section-body.footer-section-body--open {
+    max-height: 400px;
+    padding-bottom: 12px;
+  }
+
+  /* FIX #18: Single elevation on mobile */
+  .intelligence-card,
+  .metric-block {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* FIX #16: Leaderboard table — stacked on mobile */
+@media (max-width: 639px) {
+  .leaderboard-mobile-stack {
+    grid-template-columns: 1fr !important;
+  }
+
+  .leaderboard-mobile-stack > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+  }
+}
+
+/* FIX #16: Tab touch targets */
+.leaderboard-tab {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 13px;
+}
+
+/* FIX #18: Consistent spacing scale */
+.section-gap-sm { padding-top: 2rem; padding-bottom: 2rem; }
+.section-gap-md { padding-top: 3rem; padding-bottom: 3rem; }
+.section-gap-lg { padding-top: 4rem; padding-bottom: 4rem; }
+
+@media (min-width: 768px) {
+  .section-gap-sm { padding-top: 3rem; padding-bottom: 3rem; }
+  .section-gap-md { padding-top: 4rem; padding-bottom: 4rem; }
+  .section-gap-lg { padding-top: 5rem; padding-bottom: 5rem; }
+}
+
+/* FIX #1: Hero mobile crop */
+@media (max-width: 767px) {
+  .hc-hero .hero-bg-image {
+    object-position: 40% center !important;
+  }
+}
+
+/* FIX #10: Corridor alert card contrast — enforce min contrast */
+.corridor-alert-card--hot {
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* FIX #11: Hot route cards — compact with tap affordance */
+.corridor-card-compact {
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.corridor-card-compact .corridor-card-chevron {
+  opacity: 0.4;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.corridor-card-compact:hover .corridor-card-chevron {
+  opacity: 1;
+  transform: translateX(3px);
 }

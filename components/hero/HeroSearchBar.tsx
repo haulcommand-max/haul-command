@@ -182,7 +182,7 @@ export default function HeroSearchBar({
                                 className="hero-search-input"
                                 value={origin}
                                 onChange={e => setOrigin(e.target.value)}
-                                placeholder="City, State / Province"
+                                placeholder="City or ZIP"
                                 style={inputBase}
                                 autoComplete="off"
                                 spellCheck={false}
@@ -202,7 +202,7 @@ export default function HeroSearchBar({
                                 className="hero-search-input"
                                 value={destination}
                                 onChange={e => setDestination(e.target.value)}
-                                placeholder="City, State / Province"
+                                placeholder="City or ZIP"
                                 style={inputBase}
                                 autoComplete="off"
                                 spellCheck={false}

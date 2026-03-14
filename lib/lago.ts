@@ -1,7 +1,10 @@
 // ============================================================
 // Lago — Usage-Based Billing & Metering
 // Use for: AI tool metering, API billing, metered premium features
+// Feature flag: LAGO (disabled by default — scaffold only)
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const LAGO_API_KEY = process.env.LAGO_API_KEY || '';
 const LAGO_API_URL = process.env.LAGO_API_URL || 'https://api.getlago.com/api/v1';
@@ -16,8 +19,7 @@ interface UsageEvent {
 
 // ── Report a metered usage event ──
 export async function reportUsage(event: UsageEvent): Promise<boolean> {
-    if (!LAGO_API_KEY) {
-        console.warn('[Lago] No API key — usage event dropped');
+    if (!isEnabled('LAGO') || !LAGO_API_KEY) {
         return false;
     }
 

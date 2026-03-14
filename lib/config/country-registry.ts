@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════════════
 // TIER-AWARE MASTER COUNTRY REGISTRY
 // The single source of truth. Every module pulls from here.
-// All 52 countries × tier rules × localization × payments ×
+// All 57 countries × tier rules × localization × payments ×
 // comms × answer quotas × pricing
 // ══════════════════════════════════════════════════════════════
 
@@ -70,10 +70,20 @@ export interface CountryConfig {
     hreflangCode: string;
     /** Multi-language risk flag */
     multiLanguageRisk: boolean;
+    /** Activation status: scaffold | ready | active */
+    activationStatus?: 'scaffold' | 'ready' | 'active';
+    /** Compliance readiness slots */
+    complianceSlots?: {
+        escortLicenseRequired?: boolean;
+        permitSystemMapped?: boolean;
+        heightWeightRestrictionsMapped?: boolean;
+        insuranceRequirementsMapped?: boolean;
+        localLanguageRequired?: boolean;
+    };
 }
 
 // ══════════════════════════════════════════════════════════════
-// ALL 52 COUNTRIES — COMPLETE REGISTRY
+// ALL 57 COUNTRIES — COMPLETE REGISTRY
 // ══════════════════════════════════════════════════════════════
 
 export const COUNTRY_REGISTRY: CountryConfig[] = [
@@ -132,6 +142,9 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
         { c: "AR", n: "Argentina", l: "es", cr: "ARS", m: ["Buenos Aires", "Rosario", "Córdoba"] },
         { c: "CO", n: "Colombia", l: "es", cr: "COP", m: ["Bogotá", "Medellín", "Cartagena", "Barranquilla"] },
         { c: "PE", n: "Peru", l: "es", cr: "PEN", m: ["Lima", "Callao", "Arequipa"] },
+        { c: "IN", n: "India", l: "hi", cr: "INR", m: ["Mumbai", "Delhi", "Chennai", "Kolkata", "Ahmedabad", "Pune"] },
+        { c: "ID", n: "Indonesia", l: "id", cr: "IDR", m: ["Jakarta", "Surabaya", "Balikpapan", "Makassar"] },
+        { c: "NG", n: "Nigeria", l: "en", cr: "NGN", m: ["Lagos", "Port Harcourt", "Abuja", "Warri"] },
     ] as const).map(s => ({
         code: s.c, name: s.n, tier: "silver" as Tier,
         languagePrimary: s.l, currency: s.cr,
@@ -148,6 +161,8 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
         { c: "UY", n: "Uruguay", m: ["Montevideo"] },
         { c: "PA", n: "Panama", m: ["Panama City", "Colón"] },
         { c: "CR", n: "Costa Rica", m: ["San José"] },
+        { c: "EC", n: "Ecuador", m: ["Quito", "Guayaquil"] },
+        { c: "DO", n: "Dominican Republic", m: ["Santo Domingo"] },
     ] as const).map(s => ({
         code: s.c, name: s.n, tier: "slate" as Tier,
         languagePrimary: "es", currency: "USD",

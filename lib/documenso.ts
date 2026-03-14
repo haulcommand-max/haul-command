@@ -1,7 +1,10 @@
 // ============================================================
 // Documenso — Digital Signatures & Verification Documents
 // Use for: operator/broker agreements, claim attestations, compliance
+// Feature flag: DOCUMENSO (disabled by default — scaffold only)
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const DOCUMENSO_API_KEY = process.env.DOCUMENSO_API_KEY || '';
 const DOCUMENSO_API_URL = process.env.DOCUMENSO_API_URL || 'https://app.documenso.com/api/v1';
@@ -28,8 +31,7 @@ interface DocumentResult {
 
 // ── Create a document for signing ──
 export async function createDocument(opts: CreateDocumentOptions): Promise<DocumentResult | null> {
-    if (!DOCUMENSO_API_KEY) {
-        console.warn('[Documenso] No API key — skipping document creation');
+    if (!isEnabled('DOCUMENSO') || !DOCUMENSO_API_KEY) {
         return null;
     }
 

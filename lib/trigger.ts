@@ -1,7 +1,10 @@
 // ============================================================
 // Trigger.dev — Background Job Orchestration
 // Handles: trust recompute, doc expiry, claim nudges, AI batch
+// Feature flag: TRIGGER_DEV
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const TRIGGER_API_KEY = process.env.TRIGGER_API_KEY || '';
 const TRIGGER_API_URL = process.env.TRIGGER_API_URL || 'https://api.trigger.dev';
@@ -21,7 +24,14 @@ export type JobType =
     | 'seo_generation_batch'
     | 'anomaly_check'
     | 'enrichment_job'
-    | 'claim_funnel_anomaly';
+    | 'claim_funnel_anomaly'
+    // ── Marketplace / Booking Jobs ──
+    | 'review_request'
+    | 'payout_check'
+    | 'offer_expiry'
+    | 'job_timeout_check'
+    | 'booking_confirmation'
+    | 'typesense_incremental_sync';
 
 interface TriggerJobPayload {
     type: JobType;
@@ -32,8 +42,8 @@ interface TriggerJobPayload {
 
 // ── Trigger a background job ──
 export async function triggerJob(payload: TriggerJobPayload): Promise<{ jobId: string }> {
-    if (!TRIGGER_API_KEY) {
-        console.warn('[Trigger.dev] No API key — job queued locally only');
+    if (!isEnabled('TRIGGER_DEV') || !TRIGGER_API_KEY) {
+        console.warn('[Trigger.dev] Disabled or missing key — job queued locally only');
         return { jobId: `local-${Date.now()}` };
     }
 

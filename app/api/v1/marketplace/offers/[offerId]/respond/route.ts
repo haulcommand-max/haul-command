@@ -139,6 +139,7 @@ export async function POST(
                     job_id: booking.job_id,
                     assigned_escorts: booking.assigned_escorts,
                     all_escorts_filled: true,
+                    payment: booking.payment,
                 },
             });
         } catch (err: any) {

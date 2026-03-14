@@ -1,11 +1,14 @@
 // lib/marketplace/match-engine.ts
 //
 // Escort Marketplace Auto-Match Engine v1
-// 4-stage pipeline: Candidate Generation → Scoring → Offer Strategy → Booking
-// Geo-isolated, explainable, auditable, cost-tight.
+// 4-stage pipeline: Candidate Generation → Scoring → Offer Strategy → Booking → Payment
+// Revenue loop: match → offer → accept → charge → track → complete → payout → review
 
 import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 import { calculatePriceBand, type PriceInputs } from "@/lib/pricing/engine";
+import { createBookingCharge } from "@/lib/marketplace/booking-payment";
+import { notifyBookingConfirmed, notifyOffersCreated } from "@/lib/marketplace/booking-notifications";
+import { isEnabled } from "@/lib/feature-flags";
 
 // ============================================================
 // TYPES
@@ -406,7 +409,7 @@ export async function cascadeFallback(
 export async function createBooking(
     load: LoadRequest,
     acceptedOfferIds: string[]
-): Promise<{ job_id: string; assigned_escorts: string[] }> {
+): Promise<{ job_id: string; assigned_escorts: string[]; payment: import('@/lib/marketplace/booking-payment').ChargeResult }> {
     const supabase = getSupabaseAdmin();
 
     // Fetch accepted offers
@@ -463,6 +466,21 @@ export async function createBooking(
 
     if (jobErr) throw new Error(`Job creation failed: ${jobErr.message}`);
 
+    const jobId = (job as any).job_id;
+
+    // ── GAP #1: Stripe charge ──
+    // Authorize payment (don't capture until job completes)
+    const totalRateCents = Math.round(totalRate * 100);
+    const chargeResult = await createBookingCharge({
+        job_id: jobId,
+        request_id: load.request_id,
+        broker_id: load.broker_id,
+        total_rate_cents: totalRateCents,
+        currency: (offers[0] as any)?.currency ?? 'USD',
+        escort_ids: escorts,
+        country_code: load.country_code,
+    });
+
     // Update load request status
     await supabase
         .from("load_requests")
@@ -482,9 +500,49 @@ export async function createBooking(
         operator_ids: escorts,
     });
 
+    // ── GAP #5: Activate Traccar tracking ──
+    if (isEnabled('TRACCAR')) {
+        try {
+            const traccarModule = await import('@/lib/telematics/traccar');
+            const sessionIds: string[] = [];
+            for (const escortId of escorts) {
+                // Look up operator's Traccar device ID
+                const { data: opProfile } = await supabase
+                    .from('profiles')
+                    .select('traccar_device_id')
+                    .eq('id', escortId)
+                    .maybeSingle();
+                if (opProfile?.traccar_device_id) {
+                    sessionIds.push(opProfile.traccar_device_id);
+                }
+            }
+            if (sessionIds.length) {
+                await supabase
+                    .from('jobs')
+                    .update({ traccar_session_ids: sessionIds })
+                    .eq('job_id', jobId);
+            }
+        } catch (err: any) {
+            console.warn('[MatchEngine] Traccar activation skipped:', err.message);
+        }
+    }
+
+    // ── GAP #4 (part 2): Notify broker + escorts of confirmed booking ──
+    if (load.broker_id) {
+        notifyBookingConfirmed({
+            job_id: jobId,
+            broker_id: load.broker_id,
+            escort_ids: escorts,
+            total_rate: totalRate,
+            currency: (offers[0] as any)?.currency ?? 'USD',
+            payment_intent_id: chargeResult.payment_intent_id,
+        }).catch(() => {});
+    }
+
     return {
-        job_id: (job as any).job_id,
+        job_id: jobId,
         assigned_escorts: escorts,
+        payment: chargeResult,
     };
 }
 
@@ -634,6 +692,18 @@ export async function runMatchPipeline(load: LoadRequest): Promise<MatchResult> 
         .from("load_requests")
         .update({ status: "matching", updated_at: new Date().toISOString() })
         .eq("request_id", load.request_id);
+
+    // ── GAP #4: Notify operators that offers were sent ──
+    const loadMilesForSummary = Math.round(loadMiles);
+    notifyOffersCreated({
+        request_id: load.request_id,
+        operator_ids: offerPlan.targets,
+        rate_offered: computedRate,
+        currency: priceBand?.currency ?? 'USD',
+        timeout_seconds: offerPlan.timeout_seconds,
+        country_code: load.country_code,
+        load_summary: `${load.load_type_tags.join(', ') || 'Escort job'} — ~${loadMilesForSummary} mi`,
+    }).catch((err) => console.error('[MatchEngine] Notification dispatch failed:', err.message));
 
     return {
         match_run_id: (matchRun as any)?.match_run_id,

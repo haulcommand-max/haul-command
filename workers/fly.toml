@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Haul Command — Fly.io Worker Configuration
+# Compute layer for autonomous workers and background agent services
+# Everything that does NOT belong on Vercel lives here.
+#
+# Deploy: fly deploy --config workers/fly.toml
+# ─────────────────────────────────────────────────────────────────────────────
+
+app = "hc-workers"
+primary_region = "iad"    # US East — matches Vercel/Supabase region
+
+[build]
+  dockerfile = "workers/Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  WORKER_MODE = "true"
+  TZ = "America/New_York"
+
+# ── HTTP Service (health + webhook receiver) ──
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+  
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    path = "/health"
+
+# ── Machine Sizing ──
+# Start small — scale as worker load increases
+[vm]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

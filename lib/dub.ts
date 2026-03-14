@@ -1,7 +1,10 @@
 // ============================================================
 // Dub — Short Links, QR Attribution, Referral Tracking
 // Use for: QR codes, claim links, referral links, sponsor tracking
+// Feature flag: DUB
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const DUB_API_KEY = process.env.DUB_API_KEY || '';
 const DUB_WORKSPACE = process.env.DUB_WORKSPACE_SLUG || 'haulcommand';
@@ -32,8 +35,7 @@ interface DubLink {
 
 // ── Create a tracked short link ──
 export async function createLink(opts: CreateLinkOptions): Promise<DubLink | null> {
-    if (!DUB_API_KEY) {
-        console.warn('[Dub] No API key — skipping link creation');
+    if (!isEnabled('DUB') || !DUB_API_KEY) {
         return null;
     }
 

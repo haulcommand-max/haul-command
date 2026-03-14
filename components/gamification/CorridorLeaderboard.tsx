@@ -96,7 +96,7 @@ export function CorridorLeaderboard() {
                             key={c.key}
                             onClick={() => setActiveCorridor(c.key)}
                             className={cn(
-                                "px-4 py-2 text-sm font-bold rounded-lg transition-all",
+                                "leaderboard-tab px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap min-h-[44px]",
                                 activeCorridor === c.key ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
                             )}
                         >
@@ -108,11 +108,11 @@ export function CorridorLeaderboard() {
 
             {/* Leaderboard List */}
             <div className="relative z-10">
-                {/* Table Header */}
-                <div className="grid grid-cols-[auto_1fr_auto_auto] gap-4 px-6 md:px-8 py-3 bg-[#111]/50 border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                {/* Table Header — hidden on mobile where stacked cards are used */}
+                <div className="hidden sm:grid grid-cols-[auto_1fr_auto_auto] gap-4 px-6 md:px-8 py-3 bg-[#111]/50 border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                     <div className="w-8 text-center">Rank</div>
                     <div>Operator</div>
-                    <div className="text-right hidden sm:block">Completed Runs</div>
+                    <div className="text-right">Completed Runs</div>
                     <div className="text-right w-20">Score</div>
                 </div>
 
@@ -128,52 +128,60 @@ export function CorridorLeaderboard() {
                     <div className="divide-y divide-white/5">
                         {leaders.map((driver) => (
                             <div key={`${driver.corridor_slug}-${driver.rank}`} className={cn(
-                                "grid grid-cols-[auto_1fr_auto_auto] gap-4 px-6 md:px-8 py-4 items-center transition-colors hover:bg-white/[0.02]",
+                                "px-4 sm:px-6 md:px-8 py-4 items-center transition-colors hover:bg-white/[0.02]",
+                                "flex flex-col gap-2 sm:grid sm:grid-cols-[auto_1fr_auto_auto] sm:gap-4",
                                 driver.rank <= 3 && "bg-amber-500/[0.02]"
                             )}>
-                                {/* Rank */}
-                                <div className="w-8 text-center flex flex-col items-center justify-center">
-                                    {driver.rank === 1 ? (
-                                        <Medal className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                                    ) : driver.rank === 2 ? (
-                                        <Medal className="w-5 h-5 text-slate-300" />
-                                    ) : driver.rank === 3 ? (
-                                        <Medal className="w-5 h-5 text-amber-700" />
-                                    ) : (
-                                        <span className="text-lg font-black text-slate-600">{driver.rank}</span>
-                                    )}
-                                    {driver.rank <= 3 && (
-                                        <span className="text-[9px] font-bold text-amber-500 mt-1 uppercase tracking-widest hidden sm:block">Priority</span>
-                                    )}
-                                </div>
-
-                                {/* Name & Badges */}
-                                <div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-bold text-white text-base md:text-lg">{driver.display_name || 'Unknown'}</span>
-                                        {driver.badges?.includes('Elite') && (
-                                            <Shield className="w-3.5 h-3.5 text-blue-500 fill-blue-500/20" />
-                                        )}
-                                        {driver.home_state && (
-                                            <span className="text-[10px] text-slate-500 font-medium">{driver.home_state}</span>
+                                {/* Mobile: compact row with rank + name + score */}
+                                <div className="flex items-center gap-3 sm:contents">
+                                    {/* Rank */}
+                                    <div className="w-8 text-center flex flex-col items-center justify-center flex-shrink-0">
+                                        {driver.rank === 1 ? (
+                                            <Medal className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                                        ) : driver.rank === 2 ? (
+                                            <Medal className="w-5 h-5 text-slate-300" />
+                                        ) : driver.rank === 3 ? (
+                                            <Medal className="w-5 h-5 text-amber-700" />
+                                        ) : (
+                                            <span className="text-lg font-black text-slate-600">{driver.rank}</span>
                                         )}
                                     </div>
-                                    <div className="flex gap-1 mt-1">
-                                        {(driver.badges || []).map(b => (
-                                            <span key={b} className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-slate-400 font-medium uppercase tracking-wider">
-                                                {b}
-                                            </span>
-                                        ))}
+
+                                    {/* Name & Badges */}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="font-bold text-white text-sm sm:text-base md:text-lg truncate">{driver.display_name || 'Unknown'}</span>
+                                            {driver.badges?.includes('Elite') && (
+                                                <Shield className="w-3.5 h-3.5 text-blue-500 fill-blue-500/20 flex-shrink-0" />
+                                            )}
+                                            {driver.home_state && (
+                                                <span className="text-[10px] text-slate-500 font-medium">{driver.home_state}</span>
+                                            )}
+                                        </div>
+                                        <div className="flex gap-1 mt-1 flex-wrap">
+                                            {(driver.badges || []).map(b => (
+                                                <span key={b} className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-slate-400 font-medium uppercase tracking-wider">
+                                                    {b}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Score — visible on mobile in the row */}
+                                    <div className="text-right sm:hidden flex-shrink-0">
+                                        <div className="text-lg font-black text-emerald-400 font-mono">
+                                            {Math.round(driver.score)}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Stats */}
+                                {/* Desktop-only: Completed Runs */}
                                 <div className="text-right hidden sm:block">
                                     <span className="text-slate-300 font-mono text-sm">{driver.jobs_completed ?? 0}</span>
                                 </div>
 
-                                {/* Score */}
-                                <div className="text-right w-20">
+                                {/* Desktop-only: Score */}
+                                <div className="text-right w-20 hidden sm:block">
                                     <div className="text-xl font-black text-emerald-400 font-mono">
                                         {Math.round(driver.score)}
                                     </div>

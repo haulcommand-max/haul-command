@@ -207,7 +207,7 @@ export function NativeAdCard({
     if (!ad) return null;
 
     const sponsorLabel = isHouseAd ? 'Haul Command' : 'Sponsored';
-    const badgeLabel = isHouseAd ? 'Promoted' : 'Ad';
+    const badgeLabel = isHouseAd ? 'Free Tool' : 'Ad';
 
     // ── Directory Variant (Card) ──
     if (variant === 'directory') {

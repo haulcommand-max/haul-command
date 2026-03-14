@@ -1,7 +1,10 @@
 // ============================================================
 // Langfuse — LLM Observability, Prompt Management, Evals
 // Tracks all 12 AI agents: cost, latency, quality
+// Feature flag: LANGFUSE
 // ============================================================
+
+import { isEnabled } from '@/lib/feature-flags';
 
 const LANGFUSE_SECRET_KEY = process.env.LANGFUSE_SECRET_KEY || '';
 const LANGFUSE_PUBLIC_KEY = process.env.LANGFUSE_PUBLIC_KEY || '';
@@ -47,8 +50,7 @@ interface TraceOutput {
 
 // ── Server-side Langfuse client (Edge/API routes only) ──
 export async function createTrace(input: TraceInput): Promise<string> {
-    if (!LANGFUSE_SECRET_KEY) {
-        console.warn('[Langfuse] No secret key — skipping trace');
+    if (!isEnabled('LANGFUSE') || !LANGFUSE_SECRET_KEY) {
         return `local-trace-${Date.now()}`;
     }
 
@@ -82,7 +84,7 @@ export async function createTrace(input: TraceInput): Promise<string> {
 
 // ── Log generation result ──
 export async function logGeneration(traceId: string, output: Omit<TraceOutput, 'traceId'>) {
-    if (!LANGFUSE_SECRET_KEY) return;
+    if (!isEnabled('LANGFUSE') || !LANGFUSE_SECRET_KEY) return;
 
     await fetch(`${LANGFUSE_BASE_URL}/api/public/generations`, {
         method: 'POST',

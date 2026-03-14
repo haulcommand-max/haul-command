@@ -103,7 +103,8 @@ export default function CountryHero({
         >
             {/* FIX #18: Reduced hero height ~20% — brings value above fold faster */}
             <div className="relative w-full" style={{
-                height: 'clamp(420px, 58vh, 750px)',
+                height: 'clamp(380px, 55vh, 750px)',
+                maxHeight: '60vh',
             }}>
                 {/* ── POSTER (LCP element) ── */}
                 <picture>
@@ -115,8 +116,11 @@ export default function CountryHero({
                         fill
                         priority
                         sizes="100vw"
-                        className="object-cover transition-opacity duration-700"
-                        style={{ opacity: showVideo ? 0 : 1 }}
+                        className="object-cover transition-opacity duration-700 hero-bg-image"
+                        style={{
+                            opacity: showVideo ? 0 : 1,
+                            objectPosition: '40% center',
+                        }}
                     />
                 </picture>
 
@@ -197,12 +201,12 @@ export default function CountryHero({
                             </div>
                         </div>
 
-                        {/* FIX #04: Headline — forced 2-line layout */}
+                        {/* FIX #04: Headline — forced 2-line layout, balanced wrap */}
                         <h1
                             className="mx-auto max-w-4xl text-white"
                             style={{
                                 fontFamily: "var(--font-display)",
-                                fontSize: 'clamp(2rem, 5vw, 4rem)',
+                                fontSize: 'clamp(1.75rem, 5vw, 4rem)',
                                 fontWeight: 900,
                                 lineHeight: 1.08,
                                 letterSpacing: '-0.03em',
@@ -212,12 +216,13 @@ export default function CountryHero({
                             {pack.title}
                         </h1>
 
-                        {/* FIX #07: Tagline copy — clean, multi-line, premium flow */}
-                        <p className="mx-auto mt-4 max-w-xl text-white/75"
+                        {/* FIX #07: Tagline copy — max 65ch line length for mobile readability */}
+                        <p className="mx-auto mt-4 text-white/75"
                             style={{
-                                fontSize: 'clamp(0.9rem, 2.2vw, 1.125rem)',
+                                fontSize: 'clamp(0.875rem, 2.2vw, 1.125rem)',
                                 fontWeight: 500,
                                 lineHeight: 1.65,
+                                maxWidth: '50ch',
                             }}
                         >
                             {pack.subtitle}

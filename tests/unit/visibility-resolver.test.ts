@@ -87,8 +87,8 @@ describe("Visibility Resolver", () => {
 
     describe("getVisibleSections", () => {
         it("returns array of visible sections", () => {
-            const anonSections = getVisibleSections("anonymous");
-            const paidSections = getVisibleSections("paid");
+            const anonSections = getVisibleSections("anonymous" as unknown as ResolvedVisibility);
+            const paidSections = getVisibleSections("paid" as unknown as ResolvedVisibility);
             expect(Array.isArray(anonSections)).toBe(true);
             expect(Array.isArray(paidSections)).toBe(true);
             expect(paidSections.length).toBeGreaterThanOrEqual(anonSections.length);

@@ -605,7 +605,7 @@ export function GlobalEscortSupplyRadar() {
                                             boxShadow: `0 0 8px ${tier.textColor}40`,
                                             position: "relative",
                                         }} />
-                                        <span style={{
+                                        <span className="hidden sm:block" style={{
                                             position: "absolute",
                                             top: 11,
                                             left: "50%",
@@ -658,7 +658,7 @@ export function GlobalEscortSupplyRadar() {
                                             position: "relative",
                                         }} />
                                         {node.wave === 1 && (
-                                            <span style={{
+                                            <span className="hidden sm:block" style={{
                                                 position: "absolute", top: size + 3, left: "50%",
                                                 transform: "translateX(-50%)", fontSize: "7px",
                                                 fontWeight: 800, color: ws.dotColor, whiteSpace: "nowrap",
