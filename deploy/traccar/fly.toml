@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────────
+# Traccar GPS Tracking Server — Fly.io Deployment
+# Self-hosted fleet tracking for Haul Command
+#
+# Deploy: flyctl launch --config deploy/traccar/fly.toml
+# ─────────────────────────────────────────────────────────────────
+
+app = "hc-traccar"
+primary_region = "iad"
+
+[build]
+  image = "traccar/traccar:latest"
+
+[env]
+  JAVA_OPTS = "-Xms256m -Xmx512m"
+
+# Web UI + API
+[[services]]
+  internal_port = 8082
+  protocol = "tcp"
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    path = "/api/server"
+
+# Persistent volume for H2 database
+[mounts]
+  source = "traccar_data"
+  destination = "/opt/traccar/data"
+
+[vm]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

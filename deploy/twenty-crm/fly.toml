@@ -1,0 +1,50 @@
+# ─────────────────────────────────────────────────────────────────
+# Twenty CRM — Fly.io Deployment
+# Self-hosted CRM for Haul Command sales pipeline
+#
+# Deploy: flyctl launch --config deploy/twenty-crm/fly.toml
+# ─────────────────────────────────────────────────────────────────
+
+app = "hc-twenty-crm"
+primary_region = "iad"
+
+[build]
+  image = "twentycrm/twenty:latest"
+
+[env]
+  NODE_ENV = "production"
+  SERVER_URL = "https://hc-twenty-crm.fly.dev"
+  FRONT_BASE_URL = "https://hc-twenty-crm.fly.dev"
+  # Set via secrets: flyctl secrets set PG_DATABASE_URL=... --config deploy/twenty-crm/fly.toml
+  # flyctl secrets set ACCESS_TOKEN_SECRET=<random-64> --config deploy/twenty-crm/fly.toml
+  # flyctl secrets set LOGIN_TOKEN_SECRET=<random-64> --config deploy/twenty-crm/fly.toml
+  # flyctl secrets set REFRESH_TOKEN_SECRET=<random-64> --config deploy/twenty-crm/fly.toml
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    path = "/healthz"
+
+[mounts]
+  source = "twenty_data"
+  destination = "/app/.local-storage"
+
+[vm]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
