@@ -1,12 +1,12 @@
 import React from "react";
-import { MobileBottomNav } from "@/components/ui/mobile-bottom-nav";
+import { MobileAppNav } from "@/components/mobile/MobileAppNav";
 import { FastWinContainer } from "@/components/engagement/FastWinReinforcement";
 import { A2HSPrompt } from "@/components/pwa/A2HSPrompt";
 
 // ══════════════════════════════════════════════════════════════
 // /app Mobile Shell Layout — Haul Command v4
 // Canonical entrypoint for the PWA + mobile app experience.
-// No sidebar. Full-height. MobileBottomNav always visible.
+// No sidebar. Full-height. Unified MobileAppNav always visible.
 // Safe area insets for notched phones.
 // ══════════════════════════════════════════════════════════════
 
@@ -28,8 +28,8 @@ export default function AppShellLayout({
                 {children}
             </main>
 
-            {/* Always-visible mobile bottom nav */}
-            <MobileBottomNav />
+            {/* Unified mobile bottom nav — ONE component across entire app */}
+            <MobileAppNav />
 
             {/* Fast win toast container */}
             <FastWinContainer />

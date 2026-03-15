@@ -4,6 +4,7 @@ import { MapPin, TrendingUp, ShieldCheck, Trophy, Clock, Zap, Star, Award, Alert
 import Link from 'next/link';
 import { TrustBadgeRow } from '@/components/badges/TrustBadgeRow';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { LeaderboardMobileGate } from '@/components/mobile/gates/LeaderboardMobileGate';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -172,6 +173,7 @@ export default async function LeaderboardsPage({
     };
 
     return (
+        <LeaderboardMobileGate>
         <div className="min-h-screen bg-hc-bg text-hc-text">
             {/* JSON-LD: ItemList + BreadcrumbList */}
             <script
@@ -470,5 +472,6 @@ export default async function LeaderboardsPage({
 
             </div>
         </div>
+        </LeaderboardMobileGate>
     );
 }

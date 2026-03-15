@@ -125,7 +125,7 @@ export const metadata: Metadata = {
             { url: '/icons/app/icon-192.png', sizes: '192x192', type: 'image/png' },
         ],
         shortcut: '/icons/app/icon-64.png',
-        apple: '/apple-touch-icon.png',
+        apple: '/apple-touch-icon.png', // Bound to /brand/generated/ios-appicon-180.png
     },
     manifest: '/manifest.json',
 };

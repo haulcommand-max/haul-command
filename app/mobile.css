@@ -860,3 +860,87 @@
 .m-sponsor-card--featured {
   border-color: rgba(212,168,68,0.25);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   BUTTONS
+   Standard mobile button components
+   ══════════════════════════════════════════════════════════════ */
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--m-radius-lg);
+  font-weight: 700;
+  font-size: var(--m-font-body-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.15s ease;
+  padding: var(--m-sm) var(--m-md);
+  min-height: 44px;
+  line-height: 1;
+}
+
+.m-btn--primary {
+  background: var(--m-gold);
+  color: #000;
+  font-weight: 800;
+}
+
+.m-btn--primary:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.m-btn--secondary {
+  background: var(--m-surface-raised);
+  color: var(--m-text-primary);
+  border: 1px solid var(--m-border-subtle);
+}
+
+.m-btn--secondary:active {
+  background: var(--m-surface);
+}
+
+.m-btn--small {
+  font-size: var(--m-font-body-sm);
+  padding: var(--m-xs) var(--m-sm);
+  min-height: 36px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHIPS
+   Tag, filter, and selection chips
+   ══════════════════════════════════════════════════════════════ */
+.m-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--m-radius-full);
+  font-size: var(--m-font-body-sm);
+  font-weight: 600;
+  padding: 6px 14px;
+  white-space: nowrap;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m-chip--tag {
+  background: var(--m-surface-raised);
+  color: var(--m-text-secondary);
+  border: 1px solid var(--m-border-subtle);
+}
+
+.m-chip--gold {
+  background: rgba(212,168,68,0.15);
+  color: var(--m-gold);
+  border: 1px solid rgba(212,168,68,0.3);
+  font-weight: 700;
+}
+
+.m-chip--active {
+  background: var(--m-gold);
+  color: #000;
+  font-weight: 800;
+  border: none;
+}

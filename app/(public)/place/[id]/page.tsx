@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, use } from "react";
+import React, { useEffect, useState, use, Suspense, lazy } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { resolveProfile, type NormalizedProfile, type ResolutionResult, type EntitySource } from "@/lib/resolvers/resolveProfile";
@@ -26,6 +26,9 @@ import AppGate from "@/components/growth/AppGate";
 import { useVisibility } from "@/hooks/useVisibility";
 import { SubscriberGate, InlineUpgradeBanner } from "@/components/trust/SubscriberGate";
 import { OwnerVisibilityControls } from "@/components/trust/OwnerVisibilityControls";
+import { MobileGate } from "@/components/mobile/MobileGate";
+
+const MobileProviderProfile = lazy(() => import('@/components/mobile/screens/MobileProviderProfile'));
 
 /* ──────────────────────────────────────────────────── */
 /*  Animation variants                                  */
@@ -221,6 +224,13 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
     completenessValue = Math.min(100, completenessValue);
 
     return (
+        <MobileGate
+            mobile={
+                <Suspense fallback={<div style={{ background: '#060b12', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8fa3b8' }}>Loading...</div>}>
+                    <MobileProviderProfile />
+                </Suspense>
+            }
+            desktop={
         <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
             {/* Grid Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
@@ -649,6 +659,8 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
             {/* SECTION 7: Broker Action Bar */}
             <BrokerActionBar />
         </div>
+            }
+        />
     );
 }
 
