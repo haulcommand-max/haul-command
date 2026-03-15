@@ -1,10 +1,4 @@
-# ─────────────────────────────────────────────────────────────────
 # Listmonk — Fly.io Deployment
-# Self-hosted email marketing for Haul Command
-#
-# Deploy: flyctl launch --config deploy/listmonk/fly.toml
-# ─────────────────────────────────────────────────────────────────
-
 app = "hc-listmonk"
 primary_region = "iad"
 
@@ -13,30 +7,15 @@ primary_region = "iad"
 
 [env]
   TZ = "America/New_York"
-  # Set via secrets:
-  # flyctl secrets set LISTMONK_app__address=0.0.0.0:9000 --config deploy/listmonk/fly.toml
-  # flyctl secrets set LISTMONK_db__host=<postgres-host> --config deploy/listmonk/fly.toml
-  # flyctl secrets set LISTMONK_db__port=5432 --config deploy/listmonk/fly.toml
-  # flyctl secrets set LISTMONK_db__user=listmonk --config deploy/listmonk/fly.toml
-  # flyctl secrets set LISTMONK_db__password=<password> --config deploy/listmonk/fly.toml
-  # flyctl secrets set LISTMONK_db__database=listmonk --config deploy/listmonk/fly.toml
 
-[[services]]
+[http_service]
   internal_port = 9000
-  protocol = "tcp"
-  auto_stop_machines = true
+  force_https = true
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
 
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-
-  [[services.http_checks]]
+  [[http_service.checks]]
     interval = "30s"
     timeout = "5s"
     path = "/api/health"
@@ -45,7 +24,7 @@ primary_region = "iad"
   source = "listmonk_uploads"
   destination = "/listmonk/uploads"
 
-[vm]
+[[vm]]
   cpu_kind = "shared"
   cpus = 1
   memory_mb = 512

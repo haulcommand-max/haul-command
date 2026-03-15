@@ -1,31 +1,32 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import EnhancedFooter from '@/components/layout/EnhancedFooter';
-import { MobileBottomNav } from '@/components/ui/mobile-bottom-nav';
+import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 
 /**
- * (public) Layout — App shell with sidebar + mobile nav.
- * Used by: /directory, /corridors, /loads, /leaderboards, /profile, etc.
+ * (app) Layout — App shell with desktop sidebar + mobile native nav.
+ * Mobile: Frame 1 shell (bottom nav + content, no sidebar)
+ * Desktop: sidebar + top header
  *
- * NOTE: We use custom CSS classes instead of Tailwind responsive utilities
- * because Windows glob scanning doesn't pick up classes from files inside
- * parenthesized route group directories like (public).
+ * Built from approved Figma frames (figma-first-mobile.md)
  */
-export default function PublicLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            {/* Responsive styles — Tailwind content scan misses (public) route group on Windows */}
+            {/* Responsive styles — Tailwind content scan misses route groups on Windows */}
             <style>{`
                 .app-sidebar { display: none; position: fixed; height: 100%; z-index: 20; width: 16rem; flex-direction: column; background: var(--hc-bg); border-right: 1px solid var(--hc-border); }
-                .app-main { flex: 1; min-height: 100vh; display: flex; flex-direction: column; margin-left: 0; }
+                .app-main { flex: 1; min-height: 100dvh; display: flex; flex-direction: column; margin-left: 0; }
                 .app-mobile-header { display: flex; position: sticky; top: 0; z-index: 20; align-items: center; justify-content: space-between; }
                 .app-desktop-header { display: none; }
+                .app-desktop-footer { display: none; }
                 @media (min-width: 768px) {
                     .app-sidebar { display: flex; }
                     .app-main { margin-left: 16rem; }
                     .app-mobile-header { display: none; }
                     .app-desktop-header { display: flex; }
+                    .app-desktop-footer { display: block; }
                 }
             `}</style>
 
@@ -89,16 +90,16 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
             {/* Main Content Area */}
             <main className="app-main">
-                {/* Mobile brand header */}
+                {/* Mobile brand header (hidden on desktop) */}
                 <div
                     className="app-mobile-header safe-area-header"
                     style={{
-                        minHeight: '60px',
-                        paddingLeft: '20px',
-                        paddingRight: '20px',
-                        borderBottom: '1px solid rgba(255,255,255,0.06)',
-                        background: 'rgba(11,11,12,0.97)',
-                        backdropFilter: 'blur(16px)',
+                        minHeight: '52px',
+                        paddingLeft: 'var(--m-screen-pad)',
+                        paddingRight: 'var(--m-screen-pad)',
+                        borderBottom: '1px solid var(--m-border-subtle)',
+                        background: 'rgba(5,5,8,0.92)',
+                        backdropFilter: 'blur(20px) saturate(1.4)',
                     }}
                 >
                     <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
@@ -139,12 +140,18 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                     </div>
                 </header>
 
-                <div style={{ position: 'relative', zIndex: 0, flex: 1, paddingBottom: 'calc(60px + env(safe-area-inset-bottom, 0px))' }}>
+                {/* Content area — padded for mobile bottom nav */}
+                <div className="m-shell-content" style={{ position: 'relative', zIndex: 0, flex: 1 }}>
                     {children}
                 </div>
 
-                <EnhancedFooter />
-                <MobileBottomNav />
+                {/* Desktop footer only */}
+                <div className="app-desktop-footer">
+                    <EnhancedFooter />
+                </div>
+
+                {/* Mobile bottom nav (hidden on desktop via CSS) */}
+                <MobileAppNav />
             </main>
         </>
     );
