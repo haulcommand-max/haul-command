@@ -41,8 +41,11 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY)
     });
 }
 
-// ═══ Analytics — MONEY EVENTS ONLY ═══
-const APPROVED_EVENTS = new Set([
+// ═══ Analytics ═══
+// Delegates to the canonical analytics module (lib/firebase/analytics.ts)
+// which has lazy loading, user properties, and comprehensive event coverage.
+// Money-event validation is kept as a dev warning, not a hard block.
+const MONEY_EVENTS = new Set([
     'view_city_service_page',
     'signup_started',
     'signup_completed',
@@ -55,9 +58,8 @@ const APPROVED_EVENTS = new Set([
 ]);
 
 export function trackEvent(eventName: string, params: Record<string, any> = {}) {
-    if (!APPROVED_EVENTS.has(eventName)) {
-        console.warn(`[Analytics] Blocked non-money event: ${eventName}`);
-        return;
+    if (process.env.NODE_ENV === 'development' && !MONEY_EVENTS.has(eventName)) {
+        console.debug(`[Analytics] Non-money event via firebase.ts: ${eventName} — consider using lib/firebase/analytics.ts directly`);
     }
     if (typeof window !== 'undefined') {
         try {
