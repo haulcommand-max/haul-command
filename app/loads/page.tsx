@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback, Suspense, lazy } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 import { useSearchParams } from 'next/navigation';
 import { RecentlyFilledStrip } from '@/components/load-board/RecentlyFilledStrip';
 import { ScanModeCard } from '@/components/load-board/ScanModeCard';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { MobileGate } from '@/components/mobile/MobileGate';
+
+const MobileLoadBoard = lazy(() => import('@/components/mobile/screens/MobileLoadBoard'));
 
 // ══════════════════════════════════════════════════════════════
 // HAUL COMMAND — 2026 COMMAND CENTER MAP BOARD
@@ -663,9 +666,18 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 // ═══════════════════════════════════════════════════════
 export default function MapFirstLoadboard() {
     return (
-        <Suspense fallback={<div style={{ background: T.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.textSecondary }}>Initializing radar...</div>}>
-            <MapFirstLoadboardContent />
-        </Suspense>
+        <MobileGate
+            mobile={
+                <Suspense fallback={<div style={{ background: T.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.textSecondary }}>Loading...</div>}>
+                    <MobileLoadBoard />
+                </Suspense>
+            }
+            desktop={
+                <Suspense fallback={<div style={{ background: T.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.textSecondary }}>Initializing radar...</div>}>
+                    <MapFirstLoadboardContent />
+                </Suspense>
+            }
+        />
     );
 }
 

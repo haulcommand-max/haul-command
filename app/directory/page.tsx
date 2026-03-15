@@ -11,10 +11,13 @@
  *   - Live stats ticker, category toggles, "Near me" button
  */
 
-import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo, Suspense, lazy } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Link from 'next/link';
+import { MobileGate } from '@/components/mobile/MobileGate';
+
+const MobileDirectory = lazy(() => import('@/components/mobile/screens/MobileDirectory'));
 import {
     Search, MapPin, ShieldCheck, Star, Filter,
     X, ChevronDown, ChevronUp, Crosshair, Loader2,
@@ -112,7 +115,20 @@ function getRankBadge(score: number) {
 
 // -- Component ----------------------------------------------------------------
 
-export default function DirectoryPage() {
+export default function DirectoryPageWrapper() {
+    return (
+        <MobileGate
+            mobile={
+                <Suspense fallback={<div style={{ background: '#0B0B0C', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8fa3b8' }}>Loading directory...</div>}>
+                    <MobileDirectory />
+                </Suspense>
+            }
+            desktop={<DirectoryPage />}
+        />
+    );
+}
+
+function DirectoryPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
     const popupRef = useRef<maplibregl.Popup | null>(null);

@@ -225,8 +225,13 @@ const SearchIcon = () => (
 
 export function MobileSearch({ placeholder = 'Search...', value, onChange }: SearchProps) {
   return (
-    <div className="m-search">
-      <SearchIcon />
+    <div className="m-search" style={{ position: 'relative' }}>
+      <span className="m-search__icon" style={{
+        position: 'absolute', left: 'calc(var(--m-screen-pad) + 12px)', top: '50%',
+        transform: 'translateY(-50%)', display: 'flex',
+      }}>
+        <SearchIcon />
+      </span>
       <input
         className="m-search__input"
         type="search"
