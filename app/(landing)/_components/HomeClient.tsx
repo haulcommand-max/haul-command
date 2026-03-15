@@ -399,7 +399,7 @@ export default function HomeClient({
                                 Expanding Across {totalCountries} Countries
                             </span>
                         </div>
-                        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-5 gap-y-2 sm:gap-y-2">
                             {[
                                 { region: 'United States', status: 'live', color: '#22c55e' },
                                 { region: 'Canada', status: 'live', color: '#22c55e' },
@@ -408,12 +408,13 @@ export default function HomeClient({
                                 { region: 'Germany', status: 'planned', color: '#60a5fa' },
                                 { region: 'Brazil', status: 'future', color: '#6b7280' },
                             ].map(({ region, status, color }) => (
-                                <div key={region} className="flex items-center gap-1.5">
-                                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: color, boxShadow: status === 'live' ? `0 0 6px ${color}60` : 'none' }} />
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.08em]" style={{ color }}>
+                                <div key={region} className="flex items-center gap-2">
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-[0.1em] flex-shrink-0"
+                                        style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>
+                                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: color, boxShadow: status === 'live' ? `0 0 4px ${color}60` : 'none' }} />
                                         {status === 'live' ? 'LIVE' : status === 'expanding' ? 'NEXT' : status === 'planned' ? 'PLANNED' : 'FUTURE'}
                                     </span>
-                                    <span className="text-[11px] font-medium" style={{ color: status === 'live' ? '#E5E7EB' : '#9CA3AF' }}>
+                                    <span className="text-[11px] font-medium truncate" style={{ color: status === 'live' ? '#E5E7EB' : '#9CA3AF' }}>
                                         {region}
                                     </span>
                                 </div>

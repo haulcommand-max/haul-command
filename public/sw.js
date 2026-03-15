@@ -8,7 +8,7 @@
  * - API response caching for offline access
  */
 
-const VERSION = 'hc-sw-v3';
+const VERSION = 'hc-sw-v4';
 const APP_SHELL_CACHE = `hc-app-shell-${VERSION}`;
 const RUNTIME_CACHE = `hc-runtime-${VERSION}`;
 const API_CACHE = `hc-api-${VERSION}`;
@@ -22,8 +22,8 @@ const APP_SHELL_ASSETS = [
     '/',
     '/offline',
     '/manifest.json',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png',
+    '/icons/app/icon-192.png',
+    '/icons/app/icon-512.png',
     '/dashboard',
     '/directory',
     '/tools/escort-calculator',
@@ -324,8 +324,8 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'HAUL COMMAND';
     const options = {
         body: data.body || 'New activity on your routes.',
-        icon: '/icons/icon-192x192.png',
-        badge: '/icons/icon-192x192.png',
+        icon: '/icons/app/icon-192.png',
+        badge: '/icons/app/icon-192.png',
         vibrate: [200, 100, 200],
         tag: data.tag || 'hc-notification',
         renotify: !!data.tag,

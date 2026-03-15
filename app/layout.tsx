@@ -119,9 +119,12 @@ export const metadata: Metadata = {
     },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     icons: {
-        icon: '/brand/favicon.svg',
-        shortcut: '/brand/generated/favicon-32.png',
-        apple: '/brand/generated/ios-appicon-180.png',
+        icon: [
+            { url: '/icons/app/icon-32.png', sizes: '32x32', type: 'image/png' },
+            { url: '/icons/app/icon-192.png', sizes: '192x192', type: 'image/png' },
+        ],
+        shortcut: '/icons/app/icon-64.png',
+        apple: '/apple-touch-icon.png',
     },
     manifest: '/manifest.json',
 };
