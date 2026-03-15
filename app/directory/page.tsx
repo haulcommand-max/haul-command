@@ -27,6 +27,7 @@ import {
     HcIconBridgeClearance,
     HcIcon,
 } from '@/components/icons';
+import { decodeEntities } from '@/lib/utils/decodeEntities';
 
 // -- Types ------------------------------------------------------------------
 
@@ -121,7 +122,7 @@ export default function DirectoryPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('all');
     const [selectedPin, setSelectedPin] = useState<DirectoryPin | null>(null);
-    const [panelOpen, setPanelOpen] = useState(false);
+    const [panelOpen, setPanelOpen] = useState(true);
     const [filterOpen, setFilterOpen] = useState(false);
     const [mapReady, setMapReady] = useState(false);
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -464,6 +465,46 @@ export default function DirectoryPage() {
 
     return (
         <div className="h-screen w-full bg-hc-bg text-hc-text font-display flex flex-col overflow-hidden">
+            {/* Mobile-first directory layout styles */}
+            <style>{`
+                /* Mobile: full-height toggle between list and map */
+                .dir-main { display: flex; flex-direction: column; flex: 1; overflow: hidden; position: relative; }
+                .dir-list-panel {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    background: #0B0B0C;
+                }
+                .dir-map-panel {
+                    display: none;
+                    position: relative;
+                    flex: 1;
+                }
+                .dir-list-panel--hidden { display: none; }
+                .dir-map-panel--visible { display: block; flex: 1; }
+                .dir-toggle {
+                    position: fixed;
+                    bottom: 76px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 40;
+                    display: flex;
+                }
+                /* Desktop: side-by-side */
+                @media (min-width: 768px) {
+                    .dir-main { flex-direction: row; }
+                    .dir-list-panel {
+                        width: 420px;
+                        flex: 0 0 420px;
+                        border-right: 1px solid rgba(255,255,255,0.06);
+                    }
+                    .dir-list-panel--hidden { display: flex; }
+                    .dir-map-panel { display: block !important; flex: 1; }
+                    .dir-map-panel--visible { display: block; }
+                    .dir-toggle { display: none; }
+                }
+            `}</style>
 
             {/* COMMAND BAR (Search + Filters + Stats) */}
             <div className="flex-shrink-0 bg-[rgba(11,11,12,0.96)] backdrop-blur-xl border-b border-hc-border z-30">
@@ -554,11 +595,11 @@ export default function DirectoryPage() {
                 </div>
             </div>
 
-            {/* MAIN SPLIT VIEW */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
+            {/* MAIN VIEW */}
+            <div className="dir-main">
 
-                {/* LIST PANEL (Left on desktop, drawer on mobile) */}
-                <div style={{ width: 420, flexShrink: 0, display: 'flex', flexDirection: 'column', borderRight: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden', background: '#0B0B0C' }}>
+                {/* LIST PANEL */}
+                <div className={`dir-list-panel ${panelOpen ? '' : 'dir-list-panel--hidden'}`}>
                     {/* Panel Header */}
                     <div className="border-b border-hc-border px-4 py-3 flex items-center justify-between flex-shrink-0">
                         <div className="flex items-center gap-2">
@@ -608,8 +649,8 @@ export default function DirectoryPage() {
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-bold text-white truncate group-hover:text-hc-gold-400 transition-colors">
-                                                        {pin.name}
+                                            <span className="text-sm font-bold text-white truncate group-hover:text-hc-gold-400 transition-colors">
+                                                        {decodeEntities(pin.name)}
                                                     </span>
                                                     {pin.verified && (
                                                         <ShieldCheck className="w-3.5 h-3.5 text-hc-success flex-shrink-0" />
@@ -648,8 +689,8 @@ export default function DirectoryPage() {
                     </div>
                 </div>
 
-                {/* MAP (Right on desktop, full on mobile) */}
-                <div style={{ flex: 1, position: 'relative', minHeight: 0 }}>
+                {/* MAP PANEL */}
+                <div className={`dir-map-panel ${!panelOpen ? 'dir-map-panel--visible' : ''}`} style={{ minHeight: 0 }}>
                     <div ref={containerRef} style={{ position: 'absolute', inset: 0 }} />
 
                     {/* Mobile stats bar */}
@@ -712,8 +753,8 @@ export default function DirectoryPage() {
                                             })}
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="text-lg font-black text-white truncate uppercase tracking-tight leading-tight">
-                                                {selectedPin.name}
+                                            <h3 className="text-base sm:text-lg font-black text-white truncate uppercase tracking-tight leading-tight">
+                                                {decodeEntities(selectedPin.name)}
                                             </h3>
                                             <div className="flex items-center gap-2 mt-1.5">
                                                 <MapPin className="w-3.5 h-3.5 text-hc-gold-500 flex-shrink-0" />
@@ -839,11 +880,12 @@ export default function DirectoryPage() {
                     )}
                 </div>
 
-                {/* Mobile Drawer Toggle */}
-                <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
+                {/* Mobile view toggle button */}
+                <div className="dir-toggle">
                     <button
                         onClick={() => setPanelOpen(!panelOpen)}
-                        className="flex items-center gap-2 bg-hc-gold-500 text-black font-bold text-xs uppercase tracking-widest rounded-full px-5 py-3 shadow-dispatch"
+                        className="flex items-center gap-2 bg-hc-gold-500 text-black font-bold text-xs uppercase tracking-widest rounded-full px-6 py-3 shadow-dispatch"
+                        style={{ minHeight: 48 }}
                     >
                         {panelOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
                         {panelOpen ? 'Show Map' : `${totalProviders} Providers`}

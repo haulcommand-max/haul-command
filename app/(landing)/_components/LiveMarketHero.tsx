@@ -9,9 +9,18 @@ import {
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════════
-   LIVE MARKET HERO — Command-Center Surface
-   Replaces the old marketing hero with a live market panel
-   that immediately shows useful state + role router.
+   LIVE MARKET HERO — Mobile-First Command Surface
+   
+   Mobile (390px):
+     - 2 top-line metrics (Escorts, Corridors) — tight row
+     - Role router: 2×2 grid, minimal padding
+     - Hottest corridor chip hidden (too dense)
+     - Status line simplified
+   
+   Desktop (≥768px):
+     - 3 top-line metrics
+     - Hottest corridor chip shown
+     - Role router: 4-col
    ═══════════════════════════════════════════════════════════════ */
 
 interface LiveMarketHeroProps {
@@ -24,7 +33,6 @@ interface LiveMarketHeroProps {
     avgRate?: number;
 }
 
-// ── Animated counter ──
 function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
     const [display, setDisplay] = useState(0);
     useEffect(() => {
@@ -43,6 +51,41 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
     return <span>{display.toLocaleString("en-US")}{suffix}</span>;
 }
 
+const ROLE_ROUTES = [
+    {
+        href: "/loads/post",
+        icon: MapPin,
+        label: "Post a Load",
+        desc: "Find escorts fast",
+        color: "#C6923A",
+        primary: true,
+    },
+    {
+        href: "/loads",
+        icon: Search,
+        label: "Find Loads",
+        desc: "Escort jobs near you",
+        color: "#22c55e",
+        primary: true,
+    },
+    {
+        href: "/onboarding/claim",
+        icon: Shield,
+        label: "Claim Profile",
+        desc: "Get verified",
+        color: "#3b82f6",
+        primary: false,
+    },
+    {
+        href: "/escort-requirements",
+        icon: FileCheck,
+        label: "Requirements",
+        desc: "Check your state",
+        color: "#a855f7",
+        primary: false,
+    },
+];
+
 export function LiveMarketHero({
     totalOperators,
     corridorCount,
@@ -54,58 +97,118 @@ export function LiveMarketHero({
 }: LiveMarketHeroProps) {
     return (
         <section className="relative z-10">
-            {/* Subtle background radial */}
+            <style>{`
+                /* ── Mobile-first hero styles ── */
+                .hero-metrics {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+                    max-width: 280px;
+                    margin: 0 auto 16px;
+                }
+                .hero-metric-third { display: none; }
+                .hero-hot-corridor { display: none; }
+                .hero-roles {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+                .hero-role-card {
+                    padding: 12px 8px 10px;
+                }
+                .hero-status-line {
+                    gap: 8px 12px;
+                    font-size: 9px;
+                }
+
+                /* ── Tablet+ (≥768px) ── */
+                @media (min-width: 768px) {
+                    .hero-metrics {
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 24px;
+                        max-width: 480px;
+                        margin-bottom: 24px;
+                    }
+                    .hero-metric-third { display: block; }
+                    .hero-hot-corridor { display: flex; }
+                    .hero-roles {
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 12px;
+                        max-width: 640px;
+                    }
+                    .hero-role-card {
+                        padding: 14px 8px 12px;
+                    }
+                    .hero-status-line {
+                        gap: 4px 16px;
+                        font-size: 10px;
+                    }
+                }
+            `}</style>
+
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-5%,rgba(198,146,58,0.08),transparent_60%)]" />
             </div>
 
-            <div className="hc-container relative z-10 pb-6 pt-6 sm:pt-10 sm:pb-8">
-                {/* ── LIVE MARKET LABEL ── */}
+            <div className="hc-container relative z-10 pb-5 pt-5 sm:pt-10 sm:pb-8">
+                {/* LIVE label */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="flex items-center justify-center gap-2 mb-5"
+                    className="flex items-center justify-center gap-2 mb-4"
                 >
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                     </span>
                     <span style={{
-                        fontSize: 11, fontWeight: 800, color: '#22c55e',
+                        fontSize: 10, fontWeight: 800, color: '#22c55e',
                         textTransform: 'uppercase', letterSpacing: '0.2em',
                     }}>Live Escort Market</span>
                 </motion.div>
 
-                {/* ── TOP-LINE METRICS — Three big numbers ── */}
+                {/* TOP-LINE METRICS — 2 on mobile, 3 on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="grid grid-cols-3 gap-3 sm:gap-6 max-w-lg mx-auto mb-6"
+                    className="hero-metrics"
                 >
-                    {[
-                        { value: totalOperators, label: "Verified Escorts", color: "#22c55e" },
-                        { value: corridorCount, label: "Active Corridors", color: "#a855f7" },
-                        { value: avgRate, label: "Avg Rate/Day", color: "#C6923A", prefix: "$" },
-                    ].map(({ value, label, color, prefix }) => (
-                        <div key={label} className="text-center">
-                            <div className="text-xl sm:text-3xl font-black tracking-tight" style={{ color, fontFamily: "var(--font-mono, monospace)" }}>
-                                {prefix || ""}<Counter value={value} />
-                            </div>
-                            <div className="text-[10px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-1">
-                                {label}
-                            </div>
+                    <div className="text-center">
+                        <div className="text-lg sm:text-3xl font-black tracking-tight" style={{ color: "#22c55e", fontFamily: "var(--font-mono, monospace)" }}>
+                            <Counter value={totalOperators} />
                         </div>
-                    ))}
+                        <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
+                            Verified Escorts
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-lg sm:text-3xl font-black tracking-tight" style={{ color: "#a855f7", fontFamily: "var(--font-mono, monospace)" }}>
+                            <Counter value={corridorCount} />
+                        </div>
+                        <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
+                            Active Corridors
+                        </div>
+                    </div>
+                    <div className="text-center hero-metric-third">
+                        <div className="text-lg sm:text-3xl font-black tracking-tight" style={{ color: "#C6923A", fontFamily: "var(--font-mono, monospace)" }}>
+                            $<Counter value={avgRate} />
+                        </div>
+                        <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
+                            Avg Rate/Day
+                        </div>
+                    </div>
                 </motion.div>
 
-                {/* ── HOTTEST CORRIDOR CHIP ── */}
+                {/* HOTTEST CORRIDOR — hidden on mobile */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: 0.25 }}
-                    className="flex justify-center mb-6"
+                    className="hero-hot-corridor justify-center mb-5"
                 >
                     <Link href="/corridors" className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-red-500/20 bg-red-500/[0.06] hover:bg-red-500/[0.12] transition-all">
                         <Flame className="w-4 h-4 text-red-400 flex-shrink-0" />
@@ -120,89 +223,51 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ── ROLE ROUTER — "What are you here to do?" ── */}
+                {/* ROLE ROUTER — 2×2 on mobile, 4-col on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.35 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <div className="text-center text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.15em] mb-3">
+                    <div className="text-center text-[10px] text-[#5A6577] font-semibold uppercase tracking-[0.15em] mb-2 sm:mb-3">
                         What do you need?
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 max-w-2xl mx-auto">
-                        {[
-                            {
-                                href: "/loads/post",
-                                icon: MapPin,
-                                label: "Post a Load",
-                                desc: "Find escorts fast",
-                                color: "#C6923A",
-                                primary: true,
-                            },
-                            {
-                                href: "/loads",
-                                icon: Search,
-                                label: "Find Loads",
-                                desc: "Escort jobs near you",
-                                color: "#22c55e",
-                                primary: true,
-                            },
-                            {
-                                href: "/onboarding/claim",
-                                icon: Shield,
-                                label: "Claim Profile",
-                                desc: "Get verified",
-                                color: "#3b82f6",
-                                primary: false,
-                            },
-                            {
-                                href: "/escort-requirements",
-                                icon: FileCheck,
-                                label: "Requirements",
-                                desc: "Check your state",
-                                color: "#a855f7",
-                                primary: false,
-                            },
-                        ].map(({ href, icon: Icon, label, desc, color, primary }) => (
+                    <div className="hero-roles">
+                        {ROLE_ROUTES.map(({ href, icon: Icon, label, desc, color, primary }) => (
                             <Link
                                 key={href}
                                 href={href}
-                                className={`group relative flex flex-col items-center text-center rounded-2xl border transition-all
+                                className={`hero-role-card group relative flex flex-col items-center text-center rounded-xl border transition-all
                                     ${primary
                                         ? 'border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15'
                                         : 'border-white/[0.06] bg-transparent hover:bg-white/[0.03]'
                                     }`}
-                                style={{ padding: '14px 8px 12px' }}
                             >
-                                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-2 transition-colors"
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-1.5 transition-colors"
                                     style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
-                                    <Icon className="w-5 h-5" style={{ color }} />
+                                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
                                 </div>
-                                <div className="text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors">{label}</div>
-                                <div className="text-[10px] text-[#5A6577] mt-0.5">{desc}</div>
+                                <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">{label}</div>
+                                <div className="text-[9px] text-[#5A6577] mt-0.5 hidden sm:block">{desc}</div>
                             </Link>
                         ))}
                     </div>
                 </motion.div>
 
-                {/* ── TRUTHFUL STATUS LINE ── */}
+                {/* STATUS LINE — simplified on mobile */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, duration: 0.4 }}
-                    className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mt-5 text-[10px] text-[#5A6577]"
+                    className="hero-status-line flex flex-wrap items-center justify-center mt-4 text-[#5A6577]"
                 >
                     <span className="inline-flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        Live in selected corridors
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                        Network expanding
+                        Live
                     </span>
                     <span className="inline-flex items-center gap-1">
                         <Shield className="w-2.5 h-2.5 text-[#C6923A]" />
-                        Escrow-protected payments
+                        Escrow payments
                     </span>
                     <span className="inline-flex items-center gap-1">
                         <Radio className="w-2.5 h-2.5 text-blue-400" />

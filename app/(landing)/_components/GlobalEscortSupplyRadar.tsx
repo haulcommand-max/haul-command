@@ -491,7 +491,7 @@ export function GlobalEscortSupplyRadar() {
                         style={{
                             position: "relative",
                             width: "100%",
-                            minHeight: "clamp(260px, 40vw, 520px)",
+                            minHeight: "clamp(200px, 35vw, 520px)",
                             borderRadius: "20px",
                             overflow: "hidden",
                             background: "linear-gradient(180deg, rgba(11,15,25,0.95) 0%, rgba(8,12,20,0.98) 100%)",
@@ -783,8 +783,8 @@ export function GlobalEscortSupplyRadar() {
                             </div>
                         )}
 
-                        {/* ── Floating legend ── */}
-                        <div style={{
+                        {/* ── Floating legend — collapsed on mobile ── */}
+                        <div className="hidden sm:flex" style={{
                             position: "absolute", bottom: 16, right: 16,
                             background: "rgba(12,15,24,0.88)",
                             border: "1px solid rgba(255,255,255,0.06)",
@@ -793,7 +793,7 @@ export function GlobalEscortSupplyRadar() {
                             fontSize: "10px", color: "#8fa3b8",
                             backdropFilter: "blur(12px)",
                             zIndex: 20,
-                            display: "flex", flexDirection: "column" as const, gap: "5px",
+                            flexDirection: "column" as const, gap: "5px",
                         }}>
                             {[
                                 { color: "#22c55e", label: "Healthy Liquidity" },
@@ -807,6 +807,27 @@ export function GlobalEscortSupplyRadar() {
                                     <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>{label}</span>
                                 </div>
                             ))}
+                        </div>
+                        {/* Mobile: minimal 2-dot legend */}
+                        <div className="flex sm:hidden" style={{
+                            position: "absolute", bottom: 10, right: 10,
+                            background: "rgba(12,15,24,0.88)",
+                            border: "1px solid rgba(255,255,255,0.06)",
+                            borderRadius: "8px",
+                            padding: "6px 10px",
+                            fontSize: "9px", color: "#8fa3b8",
+                            backdropFilter: "blur(12px)",
+                            zIndex: 20,
+                            gap: "8px",
+                        }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e" }} />
+                                <span>Live</span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#f87171" }} />
+                                <span>Shortage</span>
+                            </div>
                         </div>
 
                         {/* ── Live indicator ── */}
@@ -834,7 +855,7 @@ export function GlobalEscortSupplyRadar() {
                         </div>
 
                         {/* ── Stats overlay (top right) — LIVE from DB ── */}
-                        <div style={{ position: "absolute", top: 16, right: 16, display: "flex", gap: "8px", zIndex: 20 }}>
+                        <div className="hidden sm:flex" style={{ position: "absolute", top: 16, right: 16, gap: "8px", zIndex: 20 }}>
                             {[
                                 { icon: Globe, value: `${stats?.total_countries ?? "—"}`, label: "Countries", color: "#3b82f6" },
                                 { icon: Radio, value: `${stats?.active_markets ?? "—"}`, label: "Active Markets", color: "#22c55e" },

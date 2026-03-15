@@ -138,7 +138,7 @@ export default function HomeClient({
     const medianFillMin = marketPulse.median_fill_time_min_7d ? Math.round(marketPulse.median_fill_time_min_7d) : 0;
 
     return (
-        <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)]">
+        <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)] pb-20 md:pb-0">
             {/* Inline responsive styles */}
             <style>{`
                 .landing-desktop-only { display: none !important; }
@@ -281,7 +281,7 @@ export default function HomeClient({
                             Start Here — No Account Needed
                         </h2>
                     </motion.div>
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                         {FREE_TOOLS.map(({ href, IconCmp, title, desc, color, cta }, i) => (
                             <Link key={href} href={href}>
                                 <motion.div custom={i} variants={fadeUp}
@@ -369,7 +369,7 @@ export default function HomeClient({
                             The Moat No One Else Has
                         </h2>
                     </motion.div>
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
                         {FEATURES.map(({ icon: Icon, title, desc, color, hcIcon }, i) => (
                             <motion.div key={title} custom={i} variants={fadeUp}
                                 className="intelligence-card group" style={{ "--accent-color": color } as React.CSSProperties}>

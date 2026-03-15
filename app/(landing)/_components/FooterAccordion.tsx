@@ -5,8 +5,9 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════════
-   FOOTER ACCORDION — FIX #12
-   Desktop: 4-column grid.  Mobile: collapsible accordion.
+   FOOTER ACCORDION — Mobile-First
+   Mobile: stacked accordion sections, tap to expand.
+   Desktop (≥768px): 4-column grid, all sections visible.
    ══════════════════════════════════════════════════════════════ */
 
 const FOOTER_SECTIONS = [
@@ -62,42 +63,110 @@ export function FooterAccordion() {
 
     return (
         <footer className="relative z-10 border-t border-white/[0.06]">
-            <div className="hc-container py-10 md:py-16">
-                <div className="footer-link-grid" style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: '2rem',
-                    marginBottom: '2rem',
-                }}>
+            {/* Mobile-first footer styles */}
+            <style>{`
+                /* ── Mobile default: stacked accordion ── */
+                .ft-grid {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                }
+                .ft-section {
+                    border-bottom: 1px solid rgba(255,255,255,0.04);
+                }
+                .ft-trigger {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    padding: 14px 0;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    min-height: 48px;
+                }
+                .ft-trigger-icon {
+                    width: 16px;
+                    height: 16px;
+                    color: #5A6577;
+                    transition: transform 0.2s ease;
+                    flex-shrink: 0;
+                }
+                .ft-trigger-icon--open {
+                    transform: rotate(180deg);
+                }
+                .ft-body {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.25s ease;
+                }
+                .ft-body--open {
+                    max-height: 400px;
+                }
+                .ft-body-inner {
+                    padding-bottom: 16px;
+                }
+                /* Desktop title — hidden on mobile */
+                .ft-desktop-title {
+                    display: none;
+                }
+
+                /* ── Desktop (≥768px): 4-col grid, no accordion ── */
+                @media (min-width: 768px) {
+                    .ft-grid {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 2rem;
+                    }
+                    .ft-section {
+                        border-bottom: none;
+                    }
+                    .ft-trigger {
+                        display: none;
+                    }
+                    .ft-body {
+                        max-height: none !important;
+                        overflow: visible;
+                    }
+                    .ft-desktop-title {
+                        display: block;
+                        margin-bottom: 16px;
+                    }
+                }
+            `}</style>
+
+            <div className="hc-container py-8 md:py-16">
+                <div className="ft-grid">
                     {FOOTER_SECTIONS.map((section) => {
                         const isOpen = openSection === section.title;
                         return (
-                            <div key={section.title} className="footer-section">
-                                {/* Mobile: clickable trigger */}
+                            <div key={section.title} className="ft-section">
+                                {/* Mobile: clickable accordion trigger */}
                                 <button
-                                    className="footer-accordion-trigger"
+                                    className="ft-trigger"
                                     aria-expanded={isOpen}
                                     onClick={() => toggle(section.title)}
                                 >
-                                    <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
+                                    <h4 className="text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
                                         {section.title}
                                     </h4>
-                                    <ChevronDown className="footer-chevron" />
+                                    <ChevronDown className={`ft-trigger-icon ${isOpen ? 'ft-trigger-icon--open' : ''}`} />
                                 </button>
 
                                 {/* Desktop: always-visible title */}
-                                <h4 className="hidden md:block text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">
+                                <h4 className="ft-desktop-title text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
                                     {section.title}
                                 </h4>
 
-                                {/* Links body — accordion on mobile, always open on desktop */}
-                                <div className={`footer-section-body md:!max-h-none md:!overflow-visible md:!pb-0 ${isOpen ? 'footer-section-body--open' : ''}`}>
-                                    <div className="space-y-2.5">
+                                {/* Links body */}
+                                <div className={`ft-body ${isOpen ? 'ft-body--open' : ''}`}>
+                                    <div className="ft-body-inner space-y-2">
                                         {section.links.map(l => (
                                             <Link
                                                 key={l.href}
                                                 href={l.href}
-                                                className="block text-sm text-[#8fa3b8] hover:text-white transition-colors py-0.5"
+                                                className="block text-sm text-[#8fa3b8] hover:text-white transition-colors py-1"
+                                                style={{ minHeight: 36, display: 'flex', alignItems: 'center' }}
                                             >
                                                 {l.label}
                                             </Link>

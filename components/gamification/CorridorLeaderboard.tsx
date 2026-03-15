@@ -18,7 +18,6 @@ interface DriverRank {
     jobs_completed: number | null;
 }
 
-// No mock data in production — show graceful empty state instead
 const EMPTY_FALLBACK: DriverRank[] = [];
 
 const CORRIDORS = [
@@ -71,32 +70,68 @@ export function CorridorLeaderboard() {
     }, [activeCorridor]);
 
     return (
-        <div className="bg-[#0a0a0f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
+        <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative">
+            <style>{`
+                /* ── Mobile-first leaderboard ── */
+                .lb-header { padding: 16px; }
+                .lb-title { font-size: 18px; }
+                .lb-subtitle { font-size: 12px; max-width: none; }
+                .lb-tabs { margin-top: 12px; }
+                .lb-tab { padding: 8px 14px; min-height: 40px; font-size: 11px; }
+                .lb-row { padding: 12px 16px; }
+                .lb-rank-medal { width: 20px; height: 20px; }
+                .lb-rank-num { font-size: 14px; }
+                .lb-name { font-size: 13px; }
+                .lb-score { font-size: 16px; }
+                .lb-badge { font-size: 8px; padding: 2px 5px; }
+                .lb-footer { padding: 16px; }
+                /* Desktop table columns — hidden on mobile */
+                .lb-desktop-col { display: none; }
+                .lb-table-header { display: none; }
+
+                @media (min-width: 768px) {
+                    .lb-header { padding: 24px 32px; }
+                    .lb-title { font-size: 28px; }
+                    .lb-subtitle { font-size: 14px; max-width: 28rem; }
+                    .lb-tab { padding: 8px 16px; min-height: 44px; font-size: 12px; }
+                    .lb-row { padding: 16px 32px; }
+                    .lb-rank-medal { width: 24px; height: 24px; }
+                    .lb-name { font-size: 16px; }
+                    .lb-score { font-size: 20px; }
+                    .lb-badge { font-size: 9px; padding: 2px 6px; }
+                    .lb-footer { padding: 24px; }
+                    .lb-desktop-col { display: block; }
+                    .lb-table-header {
+                        display: grid;
+                        grid-template-columns: 40px 1fr auto auto;
+                        gap: 16px;
+                    }
+                }
+            `}</style>
+
+            <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
 
             {/* Header */}
-            <div className="p-6 md:p-8 border-b border-white/5 flex flex-col md:flex-row md:items-end justify-between gap-4 relative z-10">
-                <div>
-                    <div className="flex items-center gap-2 mb-3">
-                        <Trophy className="w-5 h-5 text-amber-500" />
-                        <span className="text-xs font-bold uppercase tracking-widest text-amber-500">
-                            {dataSource === 'live' ? 'Live Standings' : 'Preview'}
-                        </span>
-                    </div>
-                    <h3 className="text-3xl font-black text-white tracking-tight">Corridor Dominance</h3>
-                    <p className="text-sm text-slate-400 mt-2 max-w-md">
-                        Top 3 ranked drivers per corridor receive priority push notifications for new loads <span className="text-white font-bold">60 seconds</span> before the network.
-                    </p>
+            <div className="lb-header border-b border-white/5 relative z-10">
+                <div className="flex items-center gap-2 mb-2">
+                    <Trophy className="w-4 h-4 text-amber-500" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500">
+                        {dataSource === 'live' ? 'Live Standings' : 'Preview'}
+                    </span>
                 </div>
+                <h3 className="lb-title font-black text-white tracking-tight">Corridor Dominance</h3>
+                <p className="lb-subtitle text-slate-400 mt-1">
+                    Top 3 ranked drivers get priority load notifications <span className="text-white font-bold">60s</span> before the network.
+                </p>
 
                 {/* Corridor Selector */}
-                <div className="flex bg-[#111] p-1 rounded-xl border border-white/10 shrink-0">
+                <div className="lb-tabs flex bg-[#111] p-1 rounded-xl border border-white/10 w-fit">
                     {CORRIDORS.map(c => (
                         <button
                             key={c.key}
                             onClick={() => setActiveCorridor(c.key)}
                             className={cn(
-                                "leaderboard-tab px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap min-h-[44px]",
+                                "lb-tab rounded-full font-bold transition-all whitespace-nowrap",
                                 activeCorridor === c.key ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
                             )}
                         >
@@ -108,18 +143,18 @@ export function CorridorLeaderboard() {
 
             {/* Leaderboard List */}
             <div className="relative z-10">
-                {/* Table Header — hidden on mobile where stacked cards are used */}
-                <div className="hidden sm:grid grid-cols-[auto_1fr_auto_auto] gap-4 px-6 md:px-8 py-3 bg-[#111]/50 border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                {/* Table Header — desktop only */}
+                <div className="lb-table-header px-8 py-3 bg-[#111]/50 border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                     <div className="w-8 text-center">Rank</div>
                     <div>Operator</div>
-                    <div className="text-right">Completed Runs</div>
+                    <div className="text-right">Runs</div>
                     <div className="text-right w-20">Score</div>
                 </div>
 
                 {/* Loading */}
                 {loading && (
-                    <div className="flex items-center justify-center py-12">
-                        <Loader2 className="w-6 h-6 text-amber-500 animate-spin" />
+                    <div className="flex items-center justify-center py-10">
+                        <Loader2 className="w-5 h-5 text-amber-500 animate-spin" />
                     </div>
                 )}
 
@@ -128,61 +163,52 @@ export function CorridorLeaderboard() {
                     <div className="divide-y divide-white/5">
                         {leaders.map((driver) => (
                             <div key={`${driver.corridor_slug}-${driver.rank}`} className={cn(
-                                "px-4 sm:px-6 md:px-8 py-4 items-center transition-colors hover:bg-white/[0.02]",
-                                "flex flex-col gap-2 sm:grid sm:grid-cols-[auto_1fr_auto_auto] sm:gap-4",
+                                "lb-row flex items-center gap-3 transition-colors hover:bg-white/[0.02]",
                                 driver.rank <= 3 && "bg-amber-500/[0.02]"
                             )}>
-                                {/* Mobile: compact row with rank + name + score */}
-                                <div className="flex items-center gap-3 sm:contents">
-                                    {/* Rank */}
-                                    <div className="w-8 text-center flex flex-col items-center justify-center flex-shrink-0">
-                                        {driver.rank === 1 ? (
-                                            <Medal className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                                        ) : driver.rank === 2 ? (
-                                            <Medal className="w-5 h-5 text-slate-300" />
-                                        ) : driver.rank === 3 ? (
-                                            <Medal className="w-5 h-5 text-amber-700" />
-                                        ) : (
-                                            <span className="text-lg font-black text-slate-600">{driver.rank}</span>
+                                {/* Rank */}
+                                <div className="w-7 text-center flex-shrink-0">
+                                    {driver.rank === 1 ? (
+                                        <Medal className="lb-rank-medal text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)] mx-auto" />
+                                    ) : driver.rank === 2 ? (
+                                        <Medal className="lb-rank-medal text-slate-300 mx-auto" />
+                                    ) : driver.rank === 3 ? (
+                                        <Medal className="lb-rank-medal text-amber-700 mx-auto" />
+                                    ) : (
+                                        <span className="lb-rank-num font-black text-slate-600">{driver.rank}</span>
+                                    )}
+                                </div>
+
+                                {/* Name + Badges */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="lb-name font-bold text-white truncate">{driver.display_name || 'Unknown'}</span>
+                                        {driver.badges?.includes('Elite') && (
+                                            <Shield className="w-3 h-3 text-blue-500 fill-blue-500/20 flex-shrink-0" />
+                                        )}
+                                        {driver.home_state && (
+                                            <span className="text-[9px] text-slate-500 font-medium flex-shrink-0">{driver.home_state}</span>
                                         )}
                                     </div>
-
-                                    {/* Name & Badges */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="font-bold text-white text-sm sm:text-base md:text-lg truncate">{driver.display_name || 'Unknown'}</span>
-                                            {driver.badges?.includes('Elite') && (
-                                                <Shield className="w-3.5 h-3.5 text-blue-500 fill-blue-500/20 flex-shrink-0" />
-                                            )}
-                                            {driver.home_state && (
-                                                <span className="text-[10px] text-slate-500 font-medium">{driver.home_state}</span>
-                                            )}
-                                        </div>
-                                        <div className="flex gap-1 mt-1 flex-wrap">
+                                    {(driver.badges || []).length > 0 && (
+                                        <div className="flex gap-1 mt-0.5 flex-wrap">
                                             {(driver.badges || []).map(b => (
-                                                <span key={b} className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-slate-400 font-medium uppercase tracking-wider">
+                                                <span key={b} className="lb-badge rounded border border-white/10 bg-white/5 text-slate-400 font-medium uppercase tracking-wider">
                                                     {b}
                                                 </span>
                                             ))}
                                         </div>
-                                    </div>
-
-                                    {/* Score — visible on mobile in the row */}
-                                    <div className="text-right sm:hidden flex-shrink-0">
-                                        <div className="text-lg font-black text-emerald-400 font-mono">
-                                            {Math.round(driver.score)}
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
 
-                                {/* Desktop-only: Completed Runs */}
-                                <div className="text-right hidden sm:block">
+                                {/* Desktop: Completed Runs */}
+                                <div className="lb-desktop-col text-right">
                                     <span className="text-slate-300 font-mono text-sm">{driver.jobs_completed ?? 0}</span>
                                 </div>
 
-                                {/* Desktop-only: Score */}
-                                <div className="text-right w-20 hidden sm:block">
-                                    <div className="text-xl font-black text-emerald-400 font-mono">
+                                {/* Score — always visible */}
+                                <div className="text-right flex-shrink-0">
+                                    <div className="lb-score font-black text-emerald-400 font-mono">
                                         {Math.round(driver.score)}
                                     </div>
                                 </div>
@@ -193,17 +219,17 @@ export function CorridorLeaderboard() {
             </div>
 
             {/* Footer CTA */}
-            <div className="p-6 bg-[#111] border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-blue-500" />
+            <div className="lb-footer bg-[#111] border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
                     </div>
-                    <p className="text-sm text-slate-400">
-                        Completing loads and receiving 5-star broker reviews directly impacts your ranking.
+                    <p className="text-xs text-slate-400">
+                        Complete loads + earn 5-star reviews to improve your rank.
                     </p>
                 </div>
-                <Link href="/auth/signup" className="text-xs font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors">
-                    Claim Your Profile <ChevronRight className="w-4 h-4" />
+                <Link href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors whitespace-nowrap">
+                    Claim Your Profile <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
             </div>
         </div>
