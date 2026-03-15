@@ -12,6 +12,7 @@ import {
   MobileCardSkeleton,
   MobileList,
 } from '@/components/mobile/MobileComponents';
+import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Load Board — Frame 4 (List Mode)
@@ -92,7 +93,7 @@ export default function MobileLoadBoard() {
   const [activeFilter, setActiveFilter] = useState('All');
 
   return (
-    <div style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
+    <div className="m-shell-content" style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
       {/* Header: title + map toggle */}
       <MobileScreenHeader
         title="Load Board"
@@ -188,6 +189,7 @@ export default function MobileLoadBoard() {
       </MobileList>
 
       <div style={{ height: 'var(--m-3xl)' }} />
+      <MobileAppNav />
     </div>
   );
 }

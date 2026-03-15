@@ -6,6 +6,7 @@ import React from "react";
  * PATCH-007: Dev-only auth status banner.
  * Shows API base URL, logged-in user, and feature flag status.
  * Only renders when NODE_ENV === 'development'.
+ * Hidden on mobile via .dev-auth-banner class in mobile.css
  */
 
 export function AuthStatusBanner() {
@@ -16,9 +17,10 @@ export function AuthStatusBanner() {
 
   return (
     <div
+      className="dev-auth-banner"
       style={{
         position: "fixed",
-        bottom: 70, // above MobileBottomNav
+        bottom: 70,
         right: 8,
         zIndex: 9999,
         background: "rgba(11,11,12,0.95)",

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import './mobile.css';
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { A2HSPrompt } from "@/components/pwa/A2HSPrompt";
 import { HeartbeatMount } from "@/components/presence/HeartbeatMount";

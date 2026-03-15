@@ -5,8 +5,12 @@ import React, { useEffect, useState } from 'react';
 /* ══════════════════════════════════════════════════════════════
    MobileGate — Responsive wrapper that renders mobile or desktop
    children based on viewport width. Uses matchMedia for hydration
-   safety (renders nothing on first paint, then shows correct view).
-   
+   safety.
+
+   Strategy: Renders nothing during SSR to avoid hydration mismatch.
+   On client mount, immediately detects viewport and renders correct view.
+   This eliminates the "1 Issue" hydration error and prevents flash.
+
    Threshold: 768px (matches Tailwind md breakpoint)
    ══════════════════════════════════════════════════════════════ */
 
@@ -27,9 +31,16 @@ export function MobileGate({ mobile, desktop }: MobileGateProps) {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // During SSR / first paint, render desktop (SEO-friendly default)
+  // During SSR / first client paint, show a minimal loading shell
+  // instead of rendering desktop (which causes hydration mismatch
+  // when the client detects mobile and swaps the entire DOM tree)
   if (isMobile === null) {
-    return <>{desktop}</>;
+    return (
+      <div style={{
+        background: 'var(--m-bg, #060b12)',
+        minHeight: '100vh',
+      }} />
+    );
   }
 
   return <>{isMobile ? mobile : desktop}</>;

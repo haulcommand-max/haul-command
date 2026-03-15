@@ -87,6 +87,11 @@
   background: var(--m-bg);
 }
 
+/* ── Hide DEV widget on mobile ── */
+@media (max-width: 767px) {
+  .dev-auth-banner { display: none !important; }
+}
+
 /* ══════════════════════════════════════════════════════════════
    BOTTOM NAV (Frame 2)
    56px height + safe area. 5 tabs. Center FAB.

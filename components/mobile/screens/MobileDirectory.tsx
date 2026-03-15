@@ -10,6 +10,7 @@ import {
   MobileList,
   MobileEmpty,
 } from '@/components/mobile/MobileComponents';
+import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Directory — Frame 6 (Provider List)
@@ -74,7 +75,7 @@ export default function MobileDirectory() {
   );
 
   return (
-    <div style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
+    <div className="m-shell-content" style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
       <MobileScreenHeader title="Directory" />
 
       {/* Search */}
@@ -218,6 +219,7 @@ export default function MobileDirectory() {
       )}
 
       <div style={{ height: 'var(--m-3xl)' }} />
+      <MobileAppNav />
     </div>
   );
 }
