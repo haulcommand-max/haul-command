@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { AdGridMobileGate } from '@/components/mobile/gates/AdGridMobileGate';
 
 export default function SponsorPage() {
     const [selectedType, setSelectedType] = useState<'state' | 'corridor' | 'city' | 'country'>('state');
@@ -26,6 +27,7 @@ export default function SponsorPage() {
     const plan = plans[selectedType];
 
     return (
+        <AdGridMobileGate>
         <div style={{
             minHeight: '100vh', background: '#0a0a0f',
             color: '#e0e0e6', fontFamily: "'Inter', 'Segoe UI', sans-serif",
@@ -159,5 +161,6 @@ export default function SponsorPage() {
                 </div>
             </div>
         </div>
+        </AdGridMobileGate>
     );
 }

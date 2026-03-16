@@ -1,6 +1,7 @@
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { RouteCalcMobileGate } from '@/components/mobile/gates/RouteCalcMobileGate';
 
 export const metadata: Metadata = {
     title: 'Escort Requirements by Country & State — 57 Countries',
@@ -25,6 +26,7 @@ export default async function EscortRequirementsIndex() {
     const totalR = jurisdictions.reduce((s, j) => s + Number(j.rule_count), 0);
 
     return (
+        <RouteCalcMobileGate>
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
             <header className="mb-12 sm:mb-16">
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">GLOBAL COVERAGE</span><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">{totalJ} JURISDICTIONS</span></div>
@@ -49,5 +51,6 @@ export default async function EscortRequirementsIndex() {
                 <Link href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-black text-lg hover:bg-[var(--color-accent)] transition-all">🧮 ROUTE CALCULATOR — FREE</Link>
             </div>
         </main>
+        </RouteCalcMobileGate>
     );
 }

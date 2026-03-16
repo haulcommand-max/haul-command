@@ -1,5 +1,7 @@
 "use client";
 
+import { MapMobileGate } from '@/components/mobile/gates/MapMobileGate';
+
 /**
  * /map — Command Center Map Page
  *
@@ -208,6 +210,7 @@ export default function MapPage() {
     const mapAreaHeight = `calc(100dvh - ${tickerHeight}px)`;
 
     return (
+        <MapMobileGate>
         <div className="bg-gray-950 flex flex-col overflow-hidden" style={{ height: "calc(100dvh - 56px)" }}>
 
             {/* ── In-flow ticker — measured by ResizeObserver ─────────────── */}
@@ -336,5 +339,6 @@ export default function MapPage() {
                 />
             )}
         </div>
+        </MapMobileGate>
     );
 }

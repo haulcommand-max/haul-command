@@ -1,5 +1,6 @@
 import React from 'react';
 import AdGridPartnerSignup from '@/components/ads/AdGridPartnerSignup';
+import { AdGridMobileGate } from '@/components/mobile/gates/AdGridMobileGate';
 
 export const metadata = {
     title: 'Advertise on HAUL COMMAND | AdGrid Partner Program',
@@ -12,6 +13,7 @@ export const metadata = {
 
 export default function AdGridPartnerPage() {
     return (
+        <AdGridMobileGate>
         <main style={{ minHeight: '100vh', background: '#050508', padding: '40px 16px' }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 {/* Hero Stats */}
@@ -59,5 +61,6 @@ export default function AdGridPartnerPage() {
                 </div>
             </div>
         </main>
+        </AdGridMobileGate>
     );
 }
