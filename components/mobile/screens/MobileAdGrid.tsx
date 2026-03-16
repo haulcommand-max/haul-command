@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+/* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
    Mobile AdGrid / Sponsors — Frame 12
@@ -167,7 +167,7 @@ export default function MobileAdGrid() {
       </div>
 
       <div style={{ height: 'var(--m-3xl)' }} />
-      <MobileAppNav />
+      {/* Nav handled by layout */}
     </div>
   );
 }

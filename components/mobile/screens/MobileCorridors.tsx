@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+/* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Corridor Cards — Frame 9
@@ -166,7 +166,7 @@ export default function MobileCorridors() {
       </div>
 
       <div style={{ height: 'var(--m-3xl)' }} />
-      <MobileAppNav />
+      {/* Nav handled by layout */}
     </div>
   );
 }

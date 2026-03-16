@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+/* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Load Board Map — Frame 5
@@ -206,7 +206,8 @@ export default function MobileMapView() {
         </div>
       )}
 
-      <MobileAppNav />
+
+      {/* Nav handled by layout */}
     </div>
   );
 }

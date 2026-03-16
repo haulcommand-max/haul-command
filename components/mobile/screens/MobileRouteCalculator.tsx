@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+/* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Route Calculator — Frame 10
@@ -205,7 +205,7 @@ export default function MobileRouteCalculator() {
       )}
 
       <div style={{ height: 'var(--m-3xl)' }} />
-      <MobileAppNav />
+      {/* Nav handled by layout */}
     </div>
   );
 }
