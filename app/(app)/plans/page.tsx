@@ -131,7 +131,7 @@ export default function PricingPage() {
             </div>
 
             {/* Plans Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${plans.length}, 1fr)`, gap: 20, maxWidth: 1100, margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, maxWidth: 1100, margin: '0 auto' }}>
                 {plans.map(plan => {
                     const price = annual ? Math.round(plan.price * 0.8) : plan.price;
                     const hl = 'highlighted' in plan && plan.highlighted;

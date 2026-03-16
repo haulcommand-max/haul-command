@@ -329,9 +329,10 @@ export default function SearchPage() {
             </div>
 
             {/* Results */}
-            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px', display: 'flex', gap: 24 }}>
-                {/* Sidebar Facets */}
-                <div style={{ width: 220, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px', display: 'flex', gap: 24, flexWrap: 'wrap' as const }}>
+                {/* Sidebar Facets — hidden on mobile via media query in layout */}
+                <div className="search-sidebar" style={{ width: 220, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <style>{`.search-sidebar { display: none !important; } @media(min-width:768px) { .search-sidebar { display: flex !important; } }`}</style>
                     {/* Type breakdown */}
                     {Object.keys(typeFacets).length > 0 && (
                         <div>
