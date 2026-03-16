@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { getCorridorData, getAllCorridorSlugs, estimateEscortCost } from '@/lib/data/corridors';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { WatchButton } from '@/components/social/WatchButton';
+import { CorridorMobileGate } from '@/components/mobile/gates/CorridorMobileGate';
 
 interface Props {
     params: Promise<{ corridor: string }>;
@@ -124,6 +125,7 @@ export default async function CorridorPage({ params }: Props) {
     };
 
     return (
+        <CorridorMobileGate>
         <>
             <script
                 type="application/ld+json"
@@ -318,5 +320,6 @@ export default async function CorridorPage({ params }: Props) {
                 </div>
             </main>
         </>
+        </CorridorMobileGate>
     );
 }

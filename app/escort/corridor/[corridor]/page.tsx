@@ -1,17 +1,11 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import Link from "next/link";
 import { buildInternalLinks } from "@/lib/seo/internalLinks";
+import { CorridorMobileGate } from '@/components/mobile/gates/CorridorMobileGate';
 
 
-
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 interface PageProps {
     params: Promise<{ corridor: string }>;
@@ -40,7 +34,7 @@ export default async function CorridorSEOPage({ params }: PageProps) {
     const displayName = CORRIDOR_DISPLAY[corridor] ?? corridor.replace(/-/g, " ").toUpperCase();
 
     // Fetch top escorts by trust score for this corridor
-    const { data: escorts } = await getSupabase()
+    const { data: escorts } = await getSupabaseAdmin()
         .from("trust_profile_corridor_view")
         .select("profile_id, trust_score, corridor_name, confidence")
         .ilike("corridor_name", `%${displayName.split(" ")[0]}%`)
@@ -57,6 +51,7 @@ export default async function CorridorSEOPage({ params }: PageProps) {
     });
 
     return (
+        <CorridorMobileGate>
         <div className="max-w-4xl mx-auto px-4 py-12">
             {/* Schema */}
             <script
@@ -134,5 +129,6 @@ export default async function CorridorSEOPage({ params }: PageProps) {
                 </div>
             </section>
         </div>
+        </CorridorMobileGate>
     );
 }
