@@ -52,7 +52,7 @@ export default function BoostPage() {
             </div>
 
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 20px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 48 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, marginBottom: 48 }}>
                     {[{ v: '3.2×', l: 'more views', c: '#00ff88' }, { v: '67%', l: 'more contacts', c: '#f59e0b' }, { v: '5.4×', l: 'faster match', c: '#818cf8' }].map(s => (
                         <div key={s.l} style={{ textAlign: 'center', padding: '20px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: 14, border: '1px solid rgba(255,255,255,0.06)' }}>
                             <div style={{ fontSize: 32, fontWeight: 800, color: s.c }}>{s.v}</div>

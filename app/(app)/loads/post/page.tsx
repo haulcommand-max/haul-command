@@ -302,7 +302,7 @@ export default function PostLoadPage() {
                    ════════════════════════════════════════════════════════════════ */}
                 {step === 1 && (
                     <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: 20 }}>
 
                             {/* Left Column */}
                             <div>
@@ -484,7 +484,7 @@ export default function PostLoadPage() {
                         )}
 
                         {/* Top 3 Cards */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 28 }}>
                             {matchResult?.matches.map(card => {
                                 const cfg = CARD_CONFIG[card.type] ?? CARD_CONFIG.sure_thing;
                                 const isSelected = selectedCard === card.operator_id;
