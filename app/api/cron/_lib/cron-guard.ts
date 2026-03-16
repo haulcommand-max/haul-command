@@ -1,14 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { NextResponse } from 'next/server';
 
 // ── Supabase admin client ─────────────────────────────────────────────────
 export function supabaseAdmin() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    return getSupabaseAdmin();
 }
 
 // ── Guard — call at the start of every cron route ─────────────────────────

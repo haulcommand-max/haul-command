@@ -15,6 +15,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/utils/supabase/server';
 import { mintRoomToken } from '@/lib/comms/token-server';
 

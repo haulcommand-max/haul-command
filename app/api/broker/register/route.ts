@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/broker/register
@@ -13,10 +13,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "user_id and company_name required" }, { status: 400 });
         }
 
-        const sb = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const sb = getSupabaseAdmin();
 
         const { data, error } = await sb.rpc("hc_register_broker", {
             p_user_id: user_id,

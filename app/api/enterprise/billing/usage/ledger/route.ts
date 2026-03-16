@@ -16,7 +16,7 @@
 // - metric_key=api_calls|export_rows|pro_intel_requests (optional; if omitted returns all 3)
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const runtime = "nodejs";
 

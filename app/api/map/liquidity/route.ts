@@ -1,16 +1,10 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function GET() {
-    const { data, error } = await getSupabase()
+    const { data, error } = await getSupabaseAdmin()
         .from("liquidity_cells")
         .select("cell_id,corridor_id,liquidity_score,confidence,recency_health,updated_at,escorts_online,loads_active,unfilled_loads")
         .order("liquidity_score", { ascending: false })

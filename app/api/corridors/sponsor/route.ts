@@ -2,6 +2,7 @@
 // POST — create or claim a featured corridor out-bound slot via self-serve bidding
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 

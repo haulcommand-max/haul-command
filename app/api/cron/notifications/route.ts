@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { emitBatch, NOVU_EVENT_NAMES, type NovuEventName, type NovuPayload, type EmitOptions } from '@/lib/novu';
 
 /**
@@ -22,12 +22,6 @@ import { emitBatch, NOVU_EVENT_NAMES, type NovuEventName, type NovuPayload, type
  * @status wired_not_live — scanner built, Novu key + full columns pending
  */
 
-function getSupabaseAdmin() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
-}
 
 export async function GET(req: NextRequest) {
     // ── Auth Check ────────────────────────────────────────────────────

@@ -5,7 +5,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { cancelBookingPayment } from '@/lib/marketplace/booking-payment';
 
 export const runtime = 'nodejs';

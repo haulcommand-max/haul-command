@@ -6,15 +6,9 @@
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { type LoadProfile, type OperatorProfile, buildShortlist, rankOperatorsForLoad } from '@/lib/engines/load-fit';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(req: NextRequest) {
     try {
@@ -30,7 +24,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Load profile with origin and destination required' }, { status: 400 });
         }
 
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
 
         // Fetch operators using PostGIS proximity if available, else all
         const { data: operators, error } = await supabase

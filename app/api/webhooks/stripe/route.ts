@@ -12,18 +12,12 @@
  * Also forwards to Supabase Edge Function for extended processing.
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { stripe } from '@/lib/stripe/client';
-import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Plan → monthly lead credits mapping
 const PLAN_CREDITS: Record<string, number> = {
@@ -53,7 +47,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Signature verification failed' }, { status: 400 });
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     try {
         switch (event.type) {

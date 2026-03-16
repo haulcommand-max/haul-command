@@ -1,18 +1,12 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(_: Request, { params }: { params: Promise<{ offerId: string }> }) {
     const { offerId } = await params;
 
-    const { data: offer, error } = await getSupabase()
+    const { data: offer, error } = await getSupabaseAdmin()
         .from("offers")
         .select("id,status,load_id")
         .eq("id", offerId)
@@ -24,7 +18,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ offerId: 
     }
 
     // Accept this offer atomically
-    const { error: upErr } = await getSupabase()
+    const { error: upErr } = await getSupabaseAdmin()
         .from("offers")
         .update({ status: "accepted", accepted_at: new Date().toISOString() })
         .eq("id", offerId)
@@ -33,7 +27,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ offerId: 
     if (upErr) return NextResponse.json({ error: upErr.message }, { status: 500 });
 
     // Expire all other offers on the same load
-    await getSupabase()
+    await getSupabaseAdmin()
         .from("offers")
         .update({ status: "expired" })
         .eq("load_id", offer.load_id)
@@ -41,7 +35,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ offerId: 
         .eq("status", "sent");
 
     // Mark load as matched
-    await getSupabase()
+    await getSupabaseAdmin()
         .from("loads")
         .update({ status: "matched" })
         .eq("id", offer.load_id);

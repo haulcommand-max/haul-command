@@ -3,6 +3,7 @@
 // No billing. Logs to hc_behavioral_events + notifies sponsor operator.
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { sendViaSMTP, resolveProvider } from "@/lib/email/ses-client";

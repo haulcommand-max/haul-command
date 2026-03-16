@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 // Vapi Webhook Handler
 // Handles call logging, transcription saving, and intelligence extraction via webhook payloads.
@@ -11,10 +11,7 @@ export async function POST(req: NextRequest) {
         // 1. Verify Vapi signature / IP (Skipped in draft, add crypto verification matching Vapi docs)
         // Vapi sends specific headers to verify the payload
 
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         // Events: 'EndOfCallReport', 'StatusUpdate', etc.
         if (payload.message?.type === 'end-of-call-report') {

@@ -16,14 +16,8 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -185,7 +179,7 @@ export async function POST(req: NextRequest) {
         const topN = ctx.top_n ?? 20;
 
         // 1. Load config weights from DB
-        const { data: cfg } = await getSupabase()
+        const { data: cfg } = await getSupabaseAdmin()
         .from("exposure_allocation_config")
             .select("*")
             .eq("id", 1)
@@ -196,7 +190,7 @@ export async function POST(req: NextRequest) {
         // 2. Fetch candidate operators from the directory
         //    In production this would filter by corridor geo + availability;
         //    for now we pull the top 200 by trust_score as the candidate pool.
-        const { data: candidates, error } = await getSupabase()
+        const { data: candidates, error } = await getSupabaseAdmin()
         .from("driver_profiles")
             .select(`
         id,
@@ -222,7 +216,7 @@ export async function POST(req: NextRequest) {
 
         // 3. Fetch exposure stats for diversity / selection rate
         const candidateIds = candidates.map((c) => c.id);
-        const { data: expStats } = await getSupabase()
+        const { data: expStats } = await getSupabaseAdmin()
         .from("operator_exposure_stats")
             .select("operator_id, selection_rate_7d")
             .in("operator_id", candidateIds);

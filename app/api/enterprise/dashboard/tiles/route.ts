@@ -19,7 +19,7 @@
 // - In production, bind account_id from auth context (not querystring).
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
 
 export const runtime = "nodejs";

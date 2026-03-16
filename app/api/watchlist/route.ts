@@ -5,8 +5,8 @@
  * PATCH /api/watchlist — Update digest mode
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from '@supabase/ssr';
-import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { WatchlistEngine } from '@/core/social/watchlist_engine';
 
@@ -24,10 +24,7 @@ async function getUser(req: NextRequest) {
 }
 
 function getAdmin() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    return getSupabaseAdmin();
 }
 
 export async function GET(req: NextRequest) {

@@ -4,9 +4,9 @@
 // Self-serve auction: user bids → pays → webhook activates + outbids old sponsor.
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
 import { createClient } from "@/utils/supabase/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

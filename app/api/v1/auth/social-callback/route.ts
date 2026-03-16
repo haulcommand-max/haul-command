@@ -5,6 +5,7 @@
 // Triggers: avatar import → identity enrichment → trust bonus → claim matching.
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { autoImportOnLogin } from "@/lib/avatars/avatar-pipeline";
 import { enrichOnSocialLogin, type ProviderProfile } from "@/lib/identity/social-enrichment";
 import { checkUpgradeNudge } from "@/lib/avatars/avatar-pipeline";

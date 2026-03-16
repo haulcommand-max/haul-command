@@ -3,6 +3,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getAllFlags } from '@/lib/feature-flags';
 import { healthCheck as traccarHealth } from '@/lib/telematics/traccar';
 import { healthCheck as telnyxHealth } from '@/lib/comms/telnyx';

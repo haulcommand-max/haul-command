@@ -4,6 +4,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getAllFlags } from '@/lib/feature-flags';
 
 export const runtime = 'nodejs';

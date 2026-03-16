@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { EXPERIMENT_GUARDRAILS } from '@/lib/pricing/revenue-intel';
 
 /**
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const country = url.searchParams.get('country');
     const status = url.searchParams.get('status');
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     let query = supabase
         .from('pricing_experiments')
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'name, experiment_type, and country_code required' }, { status: 400 });
     }
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
         .from('pricing_experiments')

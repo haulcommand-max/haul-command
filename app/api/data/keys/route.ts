@@ -6,8 +6,9 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
-import { listApiKeys, rotateApiKey, deactivateApiKey } from '@/lib/enterprise/self-serve-marketplace';
 import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { listApiKeys, rotateApiKey, deactivateApiKey } from '@/lib/enterprise/self-serve-marketplace';
 
 async function getAuthenticatedUser(req: NextRequest) {
     const supabase = createClient(

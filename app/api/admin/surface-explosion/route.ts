@@ -8,6 +8,7 @@
  * Use tiers to control which countries to process.
  */
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const maxDuration = 300; // 5 min timeout for edge
 

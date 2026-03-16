@@ -1,20 +1,15 @@
 export const dynamic = "force-dynamic";
 
 import { Metadata } from "next";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const metadata: Metadata = {
     title: "Directory Truth Dashboard | Haul Command Admin",
     robots: "noindex, nofollow",
 };
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
+
+
 
 type HealthRow = {
     total_operators: number;
@@ -63,7 +58,7 @@ type PipelineRun = {
 };
 
 export default async function DirectoryHealthPage() {
-    const svc = getSupabase();
+    const svc = getSupabaseAdmin();
 
     const [healthRes, entityRes, runsRes] = await Promise.all([
         svc.from("directory_admin_health").select("*").single(),

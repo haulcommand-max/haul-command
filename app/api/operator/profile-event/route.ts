@@ -9,7 +9,7 @@
  * Body: { event: string, userId?: string, field?: string, viewerId?: string }
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { ProfileCompletionEngine } from '@/core/engagement/profile_completion_engine';
@@ -42,10 +42,7 @@ export async function POST(req: NextRequest) {
 
         if (!userId) return NextResponse.json({ error: 'userId required' }, { status: 400 });
 
-        const admin = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const admin = getSupabaseAdmin();
 
         const engine = new ProfileCompletionEngine(admin);
 

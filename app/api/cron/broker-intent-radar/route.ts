@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { cronGuard, supabaseAdmin, logCronRun, deadLetter } from '../_lib/cron-guard';
 
 // ── broker_intent_radar_v1 ────────────────────────────────────────────────

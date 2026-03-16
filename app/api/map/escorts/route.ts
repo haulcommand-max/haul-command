@@ -1,14 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false, autoRefreshToken: false } }
-    );
-}
 
 function parseBBox(s: string | null): [number, number, number, number] | null {
     if (!s) return null;
@@ -22,7 +15,7 @@ export async function GET(req: NextRequest) {
     const state = searchParams.get('state');
     const bbox = parseBBox(searchParams.get('bbox'));
     const limit = Math.min(Number(searchParams.get('limit') ?? 200), 500);
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     // ── Strategy: try new escort_locations_current first, fall back to escort_presence ──
 

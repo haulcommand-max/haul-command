@@ -14,8 +14,8 @@
  * }
  */
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { ingestBatch } from "@/lib/ingestion/market-observation-engine";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const maxDuration = 60;
 

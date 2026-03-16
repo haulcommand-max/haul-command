@@ -4,6 +4,7 @@
 // Returns verification tier, signals, next recommended step, and badges.
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeVerificationTier } from "@/lib/verification/verification-engine";
 
 export const runtime = "nodejs";

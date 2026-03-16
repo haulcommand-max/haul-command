@@ -4,6 +4,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getJobLivePositions, getJobRouteHistory } from '@/lib/telematics/job-tracking';
 import { isEnabled } from '@/lib/feature-flags';
 

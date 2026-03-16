@@ -5,17 +5,13 @@ export const dynamic = 'force-dynamic';
  * Consumed by: AMM, surge engine, FCC observability dashboard.
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 3600;
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const state = req.nextUrl.searchParams.get('state') ?? 'FL';
 

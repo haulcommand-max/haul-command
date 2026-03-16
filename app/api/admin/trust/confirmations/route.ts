@@ -4,8 +4,8 @@
  * GET  /api/admin/trust/confirmations?job_id=... — Get confirmation state
  */
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createDualConfirmation, type DualConfirmationRecord } from "@/lib/trust/dual-confirmation";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;
 

@@ -7,6 +7,7 @@
 // Returns legality decisions across all regions with jurisdiction rules.
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     resolveLegality,
     resolveAllRegions,

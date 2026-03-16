@@ -6,14 +6,8 @@
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 const TERRITORY_PLANS = {
     state: {
@@ -59,7 +53,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Invalid territory type' }, { status: 400 });
         }
 
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
 
         // Check if territory is already sponsored
         const { data: existing } = await supabase
@@ -158,7 +152,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid territory type' }, { status: 400 });
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
     const { data: existing } = await supabase
         .from('territory_sponsorships')
         .select('sponsor_company, status')

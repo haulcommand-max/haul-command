@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/discovery/ingest
@@ -47,10 +47,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "entities array is empty" }, { status: 400 });
         }
 
-        const sb = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const sb = getSupabaseAdmin();
 
         // Insert raw entities
         const rawRecords = entities.map((entity: Record<string, unknown>, i: number) => ({

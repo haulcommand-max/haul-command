@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getObservationSummary } from '@/lib/intel/capture';
 
 /**
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const band = url.searchParams.get('band');
     const limit = Math.min(parseInt(url.searchParams.get('limit') || '20'), 50);
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     let query = supabase
         .from('corridor_scarcity_scores')

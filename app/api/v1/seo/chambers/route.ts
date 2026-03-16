@@ -5,7 +5,7 @@
 // PATCH /api/v1/seo/chambers — update backlink/partnership status
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const runtime = "nodejs";
 

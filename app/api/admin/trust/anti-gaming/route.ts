@@ -7,6 +7,7 @@
  *        detectScoreTampering, detectSockPuppets
  */
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     checkReviewIntegrity,
     detectLocationSpoofing,
@@ -14,7 +15,6 @@ import {
     type ThreatDetection,
     type ReviewIntegrityCheck,
 } from "@/lib/trust/anti-gaming-engine";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;
 

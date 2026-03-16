@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/graph/recompute
@@ -10,10 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     const subjectType = body.subject_type ?? "operator";
 
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase.rpc("hc_graph_scores_recompute", {
         p_subject_type: subjectType,

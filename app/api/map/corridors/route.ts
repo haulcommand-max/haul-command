@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Static corridor geometry (line segments) â€” extend with real GeoJSON from DB later
 const CORRIDOR_LINES: Record<string, number[][]> = {
@@ -34,7 +28,7 @@ export async function GET() {
 
     try {
         // Count loads per corridor using trust_corridors
-        const { data } = await getSupabase()
+        const { data } = await getSupabaseAdmin()
         .from("trust_events")
             .select("corridor_id")
             .gte("created_at", cutoff)

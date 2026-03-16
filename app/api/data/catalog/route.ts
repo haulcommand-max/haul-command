@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getCatalog } from '@/lib/enterprise/self-serve-marketplace';
 
 export async function GET(req: NextRequest) {

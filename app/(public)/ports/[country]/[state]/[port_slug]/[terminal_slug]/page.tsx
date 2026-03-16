@@ -3,23 +3,16 @@ export const revalidate = 3600;
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     ShieldCheck, Clock, AlertTriangle, CheckCircle,
     Zap, MapPin, ArrowLeft, TrendingUp, Users
 } from 'lucide-react';
 
-// ── Data layer ────────────────────────────────────────────────────────────────
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 async function getTerminalData(portSlug: string, terminalSlug: string) {
-    const { data: terminal } = await getSupabase()
+    const { data: terminal } = await getSupabaseAdmin()
         .from('terminal_registry')
         .select(`
       id, terminal_name, terminal_slug, terminal_type,
@@ -40,14 +33,14 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
     if (!terminal) return null;
 
     // Risk profile
-    const { data: risk } = await getSupabase()
+    const { data: risk } = await getSupabaseAdmin()
         .from('terminal_risk_profile')
         .select('denial_rate, avg_delay_minutes, risk_score, total_events, last_calculated_at')
         .eq('terminal_id', terminal.id)
         .single();
 
     // Nearby TWIC operators (via port proximity)
-    const { data: operators } = await getSupabase()
+    const { data: operators } = await getSupabaseAdmin()
         .from('port_operator_proximity')
         .select(`
       distance_miles, is_twic_verified,
@@ -62,7 +55,7 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
         .limit(8);
 
     // Gate event stats
-    const { data: gateStats } = await getSupabase()
+    const { data: gateStats } = await getSupabaseAdmin()
         .from('gate_event_log')
         .select('event_type, delay_minutes')
         .eq('terminal_id', terminal.id)

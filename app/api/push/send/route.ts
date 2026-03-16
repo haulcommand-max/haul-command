@@ -1,7 +1,8 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { sendPushToUser } from '@/lib/push-send';
 import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { sendPushToUser } from '@/lib/push-send';
 import { trackServer } from '@/lib/telemetry';
 
 export async function POST(req: Request) {

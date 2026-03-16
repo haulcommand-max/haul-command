@@ -3,6 +3,7 @@
 // GET  — fetch reviews for a listing (by listing_id)
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 

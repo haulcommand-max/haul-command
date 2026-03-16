@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * GET /api/email/unsubscribe?token=xxx&email=xxx
@@ -22,10 +22,7 @@ export async function GET(req: Request) {
             });
         }
 
-        const supabase = createClient(
-            process.env.SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         const normalizedEmail = email.toLowerCase().trim();
 

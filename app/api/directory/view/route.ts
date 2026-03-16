@@ -1,5 +1,5 @@
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 export const dynamic = 'force-dynamic';
-import { createClient } from '@supabase/supabase-js';
 
 export async function POST(req: Request) {
     try {
@@ -14,10 +14,7 @@ export async function POST(req: Request) {
             return Response.json({ success: true, ignored: true });
         }
 
-        const supabase = createClient(
-            process.env.SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         const viewerIp = req.headers.get('x-forwarded-for') || 'unknown';
 

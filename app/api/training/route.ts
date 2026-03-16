@@ -6,14 +6,8 @@
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Training programs offered through the marketplace
 const TRAINING_PROGRAMS = [
@@ -131,7 +125,7 @@ const CREDENTIAL_SERVICES = [
 
 export async function GET(req: NextRequest) {
     const category = req.nextUrl.searchParams.get('category');
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     let programs = TRAINING_PROGRAMS;
     if (category) {
@@ -177,7 +171,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'operator_id required' }, { status: 400 });
         }
 
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
 
         if (body.action === 'enroll' && body.program_id) {
             const program = TRAINING_PROGRAMS.find(p => p.id === body.program_id);

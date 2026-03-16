@@ -5,7 +5,7 @@
  * Weekly habit reinforcement report — delivered every Monday at 8am local.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { HabitEngine } from '@/core/engagement/habit_engine';
 
 export const dynamic = 'force-dynamic';
@@ -15,10 +15,7 @@ export async function GET(req: NextRequest) {
     const userId = req.nextUrl.searchParams.get('userId');
     if (!userId) return NextResponse.json({ error: 'userId required' }, { status: 400 });
 
-    const admin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const admin = getSupabaseAdmin();
 
     const engine = new HabitEngine(admin);
     const report = await engine.generateWeeklyReport(userId);
@@ -34,10 +31,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const admin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const admin = getSupabaseAdmin();
 
     // Find active operators (active in last 30 days)
     const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();

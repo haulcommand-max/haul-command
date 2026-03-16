@@ -4,7 +4,7 @@
  * Query: ?limit=50&country=US&min_strength=0.3
  */
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;
 

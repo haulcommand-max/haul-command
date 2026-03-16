@@ -4,6 +4,7 @@
 // Route-aware legality: checks legality across all states/provinces a route crosses.
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { resolveRouteLegality } from "@/lib/legal-intelligence/legality-resolver";
 
 export const runtime = "nodejs";

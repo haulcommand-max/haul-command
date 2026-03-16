@@ -3,6 +3,7 @@
 // Returns available subscription plans with PPP-adjusted pricing.
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     getDirectoryPlans,
     getMobilePlans,

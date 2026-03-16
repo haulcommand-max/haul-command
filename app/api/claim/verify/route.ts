@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(req: Request) {
     const { claimRequestId, code } = await req.json();
@@ -16,7 +10,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "claimRequestId and code required" }, { status: 400 });
     }
 
-    const { data, error } = await getSupabase()
+    const { data, error } = await getSupabaseAdmin()
         .from("claim_requests")
         .select("id,verification_code,code_expires_at,status")
         .eq("id", claimRequestId)
@@ -31,7 +25,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Wrong code. Double-check your message." }, { status: 400 });
     }
 
-    const { error: upErr } = await getSupabase()
+    const { error: upErr } = await getSupabaseAdmin()
         .from("claim_requests")
         .update({ status: "verified", verified_at: new Date().toISOString() })
         .eq("id", claimRequestId);

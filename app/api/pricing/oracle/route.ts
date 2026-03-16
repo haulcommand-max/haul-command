@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     calculatePriceBand,
     labelPrice,
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     let corridorHeatBand: 'cold' | 'balanced' | 'warm' | 'hot' | 'critical' = 'balanced';
     if (body.corridor_slug) {
         try {
-            const sb = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+            const sb = getSupabaseAdmin();
             const { data: scarcity } = await sb
                 .from('corridor_scarcity_metrics')
                 .select('scarcity_tier')
@@ -180,7 +180,7 @@ export async function POST(req: NextRequest) {
 
     // Log pricing event
     try {
-        const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+        const supabase = getSupabaseAdmin();
         await supabase.from('pricing_events').insert({
             country_code: body.country_code,
             region_code: body.region_code || null,

@@ -4,17 +4,14 @@
 // GET:  Retrieve recent classifications with filters
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { classifySinglePost, processUnclassifiedImports } from '@/lib/intelligence/social-classifier';
 import { validateImport, checkSourceRateLimit, logGuardrailEvent } from '@/lib/intelligence/social-guardrails';
 
 function getAdminClient() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    return getSupabaseAdmin();
 }
 
 async function requireAdminOrStaff(): Promise<{ error?: NextResponse }> {

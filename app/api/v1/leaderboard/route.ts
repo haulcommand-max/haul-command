@@ -5,7 +5,7 @@
 // POST /api/v1/leaderboard/recompute             — cron: batch recompute
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeLeaderboardForUser, recomputeAllLeaderboard } from "@/lib/leaderboard/leaderboard-scoring";
 
 export const runtime = "nodejs";

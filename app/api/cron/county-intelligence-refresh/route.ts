@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { cronGuard, supabaseAdmin, logCronRun, deadLetter } from '../_lib/cron-guard';
 
 // ── county_intelligence_refresh_v1 ────────────────────────────────────────

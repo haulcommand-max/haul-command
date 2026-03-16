@@ -4,8 +4,8 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { PricingSanityGuard } from '@/lib/pricing/global-pricing-sanity-guard';
-import { createClient } from '@supabase/supabase-js';
 import type { PricingActionType } from '@/lib/pricing/global-pricing-sanity-guard';
 
 export async function POST(req: NextRequest) {
@@ -42,10 +42,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Persist to audit log
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        );
+        const supabase = getSupabaseAdmin();
 
         await supabase.from('pricing_sanity_audit').insert({
             action_type,

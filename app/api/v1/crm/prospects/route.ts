@@ -4,7 +4,7 @@
 // POST /api/v1/crm/prospects — create a new prospect
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeLeadScore } from "@/lib/crm/lead-scoring";
 
 export const runtime = "nodejs";

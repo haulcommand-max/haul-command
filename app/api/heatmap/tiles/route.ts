@@ -12,17 +12,13 @@ export const dynamic = 'force-dynamic';
  *   ?limit=200 — max tiles (default 200, max 500)
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 1800; // 30m — matches heatmap_tiles refresh cadence
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const sp = req.nextUrl.searchParams;
     const state = sp.get('state')?.toUpperCase();
@@ -88,11 +84,7 @@ export async function GET(req: NextRequest) {
  * Admin endpoint: trigger an immediate heatmap tiles refresh.
  */
 export async function POST(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const { data, error } = await svc.rpc('refresh_heatmap_tiles');
 

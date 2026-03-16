@@ -4,6 +4,7 @@
 // subscription management (upgrade, downgrade, cancel, update payment).
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
 import { createClient } from "@/utils/supabase/server";
 

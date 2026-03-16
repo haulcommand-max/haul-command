@@ -5,6 +5,7 @@
 // Returns: { events: ActivityFeedEvent[], next_cursor: string | null }
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 

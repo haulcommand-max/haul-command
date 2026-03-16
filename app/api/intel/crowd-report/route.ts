@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { captureIntelEvent, type IntelEventType } from '@/lib/intel/capture';
 
 /**

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/cron/content-enqueue
@@ -11,13 +11,6 @@ import { NextResponse } from 'next/server';
  * Logs to cron_runs for health monitoring.
  */
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function POST(req: Request) {
     const authHeader = req.headers.get('authorization');
@@ -25,7 +18,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const svc = getSupabase();
+    const svc = getSupabaseAdmin();
     const startedAt = new Date().toISOString();
     const stats = { county_jobs: 0, city_jobs: 0, faq_jobs: 0, industry_jobs: 0, errors: 0 };
 

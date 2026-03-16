@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 import { usageIdempotencyKey } from "@/lib/enterprise/stripe/idempotency";
 
 export const runtime = "nodejs";

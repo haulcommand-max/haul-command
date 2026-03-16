@@ -12,8 +12,8 @@ export const dynamic = 'force-dynamic';
  * Side-effect: logs parsed query to directory_search_logs for analytics.
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 // ── NL Intent Parser ─────────────────────────────────────────────────────────
 
@@ -109,11 +109,7 @@ function parseSearchIntent(raw: string): ParsedIntent {
 // ── Route Handler ─────────────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const raw = req.nextUrl.searchParams.get('q') ?? '';
     const limit = Math.min(parseInt(req.nextUrl.searchParams.get('limit') ?? '10'), 20);
@@ -183,11 +179,7 @@ export async function GET(req: NextRequest) {
  * Track a click-through from search results (updates analytics log).
  */
 export async function POST(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const body = await req.json().catch(() => ({}));
     const { session_id, clicked_slug, position } = body;

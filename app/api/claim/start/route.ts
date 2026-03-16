@@ -1,16 +1,10 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { Resend } from 'resend';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 function code6() {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -57,7 +51,7 @@ export async function POST(req: Request) {
     const verification_code = code6();
     const code_expires_at = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
         .from("claim_requests")

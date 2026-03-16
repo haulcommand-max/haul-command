@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import Stripe from 'stripe';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
@@ -13,12 +13,6 @@ function getStripe() {
     return _stripe;
 }
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Rate limit: 30 unlock attempts per minute per user
 const ratelimit = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
@@ -58,7 +52,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'operatorId and buyerId required' }, { status: 400 });
         }
 
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
 
         // Check if already unlocked
         const { data: existing } = await supabase

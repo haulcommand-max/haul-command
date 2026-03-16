@@ -4,6 +4,7 @@
  * POST /api/admin/trust/evidence                — log new evidence
  */
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { logEvidence, getEntityEvidence, type EvidenceRecord } from "@/lib/trust/evidence-vault";
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;

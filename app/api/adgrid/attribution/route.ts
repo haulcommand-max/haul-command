@@ -3,6 +3,7 @@
 // Links campaign_id + slot_id to the conversion for revenue tracking
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 

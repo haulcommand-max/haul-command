@@ -26,16 +26,10 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const dynamic = "force-dynamic";
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -207,7 +201,7 @@ function buildSpeedster(ops: OperatorRow[], ctx: LoadContext): MatchCard | null 
 // ── Fetch Real Data ───────────────────────────────────────────────────────────
 
 async function fetchCandidatePool(ctx: LoadContext): Promise<OperatorRow[]> {
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // 1. Get all available drivers with profiles
@@ -418,7 +412,7 @@ export async function POST(req: NextRequest) {
         if (speedster) cards.push(speedster);
 
         // Log the match run for analytics
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
         await supabase.from("audit_events").insert({
             event_type: "match_generate_top3",
             actor_id: null,

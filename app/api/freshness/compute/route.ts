@@ -6,15 +6,9 @@
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeFreshness, type FreshnessInput } from '@/lib/engines/freshness';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(req: NextRequest) {
     const auth = req.headers.get('x-admin-secret');
@@ -29,7 +23,7 @@ export async function POST(req: NextRequest) {
             limit?: number;
         };
 
-        const supabase = getSupabase();
+        const supabase = getSupabaseAdmin();
 
         // Fetch operators
         let query = supabase.from('operators').select(`

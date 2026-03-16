@@ -4,7 +4,7 @@
 // Accept or decline an offer. On acceptance, check if all escorts filled → create booking.
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createBooking } from "@/lib/marketplace/match-engine";
 
 export const runtime = "nodejs";

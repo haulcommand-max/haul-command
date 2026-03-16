@@ -11,18 +11,14 @@
  *   ?window=7d       — aggregation window (7d|24h|1h, default 7d)
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 900; // 15m — demand aggregates
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const sp = req.nextUrl.searchParams;
     const state = sp.get('state')?.toUpperCase();

@@ -4,7 +4,7 @@
 // Cron job: expire stale offers past their deadline, advance cascade if needed.
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { runMatchPipeline, cascadeFallback, rankCandidates, determineOfferStrategy } from "@/lib/marketplace/match-engine";
 
 export const runtime = "nodejs";

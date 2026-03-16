@@ -4,7 +4,7 @@
 // GET:  Retrieve funnel conversion analytics
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     recordFunnelEvent,
     getFunnelConversionRates,
@@ -13,10 +13,7 @@ import {
     type FunnelStep,
 } from '@/lib/intelligence/claim-funnel-router';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+const supabase = getSupabaseAdmin();
 
 // ── POST: Record funnel event ─────────────────────────────────────────────
 export async function POST(req: NextRequest) {

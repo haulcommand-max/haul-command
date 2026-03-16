@@ -6,7 +6,7 @@
  * Body: { trigger_type, target_type, target_id, event_data }
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { WatchlistEngine } from '@/core/social/watchlist_engine';
 
 export const dynamic = 'force-dynamic';
@@ -23,10 +23,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const admin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    const admin = getSupabaseAdmin();
 
     const engine = new WatchlistEngine(admin);
     const result = await engine.evaluateTrigger(

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getWeightedLinks } from "@/lib/seo/internalLinks";
 import type { LinkTargetType } from "@/lib/seo/internalLinks";
 

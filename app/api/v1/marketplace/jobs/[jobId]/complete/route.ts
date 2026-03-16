@@ -6,7 +6,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { captureBookingPayment, createPayoutRecords } from '@/lib/marketplace/booking-payment';
 import { notifyJobCompleted, requestReviews } from '@/lib/marketplace/booking-notifications';
 import MARKETPLACE_JOBS from '@/lib/marketplace/trigger-jobs';

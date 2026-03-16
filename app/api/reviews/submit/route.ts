@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/reviews/submit
@@ -17,10 +17,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Rating must be 1-5" }, { status: 400 });
         }
 
-        const sb = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const sb = getSupabaseAdmin();
 
         const { data, error } = await sb.rpc("hc_submit_review_v2", {
             p_reviewer_id: reviewer_id,

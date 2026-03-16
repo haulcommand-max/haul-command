@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/messaging — Start conversation or send message
@@ -8,10 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const sb = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const sb = getSupabaseAdmin();
 
         if (body.action === "start_conversation") {
             const { data, error } = await sb.rpc("hc_start_conversation", {

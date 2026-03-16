@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { RateIndexEngine } from '@/lib/pricing/global-rate-index';
 import { enterpriseGate, shapeResponse } from '@/lib/enterprise/auth-middleware';
 import type { ServiceType } from '@/lib/pricing/global-rate-index';

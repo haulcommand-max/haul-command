@@ -4,8 +4,8 @@
 // Activates sponsorships on successful payment, handles outbidding.
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

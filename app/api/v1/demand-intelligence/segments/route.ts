@@ -5,7 +5,7 @@
 // Powers marketplace targeting, SEO pages, and operator discovery.
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const runtime = "nodejs";
 

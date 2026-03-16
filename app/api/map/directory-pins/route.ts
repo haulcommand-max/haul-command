@@ -1,14 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false, autoRefreshToken: false } }
-    );
-}
 
 /**
  * GET /api/map/directory-pins
@@ -24,7 +17,7 @@ export async function GET(req: NextRequest) {
     const limit = Math.min(Number(searchParams.get('limit') ?? 1500), 3000);
     const claimed = searchParams.get('claimed');
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     // Map UI category keys to entity_type values
     const CATEGORY_MAP: Record<string, string[]> = {

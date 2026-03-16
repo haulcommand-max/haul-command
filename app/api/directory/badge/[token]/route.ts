@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic';
  *   <img src="https://haulcommand.com/api/directory/badge/TOKEN" alt="Featured on Haul Command" />
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 const BADGE_SVGS: Record<string, (name: string, tier: string) => string> = {
   featured: (name, tier) => `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="60" viewBox="0 0 220 60">
@@ -61,11 +61,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
-  const svc = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
+  const svc = getSupabaseAdmin();
 
   const { token } = await params;
 

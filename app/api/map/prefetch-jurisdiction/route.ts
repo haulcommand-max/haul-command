@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 // Adjacency map for US states — neighbors share a border
 const US_NEIGHBORS: Record<string, string[]> = {
@@ -34,11 +34,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'jurisdiction_code is required' }, { status: 400 });
         }
 
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-            { auth: { persistSession: false } }
-        );
+        const supabase = getSupabaseAdmin();
 
         // Get home jurisdiction
         const { data: homeData } = await supabase.rpc('get_jurisdiction_drawer', {

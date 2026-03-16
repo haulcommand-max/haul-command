@@ -16,16 +16,10 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const dynamic = "force-dynamic";
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // ── Urgency band classification ───────────────────────────────────────────────
 
@@ -194,7 +188,7 @@ interface UrgencyResult {
 
 async function scoreLoad(load: LoadUrgencyInput): Promise<UrgencyResult> {
     // Fetch corridor stress for supply/demand signals
-    const { data: stressSnap } = await getSupabase()
+    const { data: stressSnap } = await getSupabaseAdmin()
         .from("corridor_stress_log")
         .select("stress_index, available_escort_count, open_load_count")
         .eq("corridor_id", load.corridor_id ?? `I-10_${load.origin_state ?? "TX"}_LA`)
@@ -203,7 +197,7 @@ async function scoreLoad(load: LoadUrgencyInput): Promise<UrgencyResult> {
         .single();
 
     // Fetch shortage prediction
-    const { data: prediction } = await getSupabase()
+    const { data: prediction } = await getSupabaseAdmin()
         .from("corridor_shortage_predictions")
         .select("shortage_probability")
         .eq("corridor_id", load.corridor_id ?? "")

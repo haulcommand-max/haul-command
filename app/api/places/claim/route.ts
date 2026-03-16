@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { startClaim, verifyClaim, getAvailableVerificationMethods } from "@/lib/places/claim-engine";
-import { createClient } from "@supabase/supabase-js";
 
 /**
  * POST /api/places/claim
@@ -38,10 +38,7 @@ export async function POST(req: NextRequest) {
 
         if (action === 'methods') {
             // Get available verification methods for a place
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY!
-            );
+            const supabase = getSupabaseAdmin();
             const { data: place } = await supabase
                 .from('places')
                 .select('phone, website')

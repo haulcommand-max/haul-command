@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/utils/supabase/server';
 import { enterpriseGate, shapeResponse, logResponseMetrics } from '@/lib/enterprise/auth-middleware';
 import { enrichWithConfidence, filterByGeoCredibility, recordLatency } from '@/lib/enterprise/data-confidence';

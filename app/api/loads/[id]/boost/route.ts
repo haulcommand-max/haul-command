@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(
     req: Request,
@@ -17,7 +11,7 @@ export async function POST(
     const body = await req.json();
     const { bid_cpm_micros = 2500000, daily_budget_micros = 20000000, total_budget_micros = 100000000 } = body;
 
-    const { data: load } = await getSupabase()
+    const { data: load } = await getSupabaseAdmin()
         .from("loads")
         .select("id,profile_id")
         .eq("id", id)
@@ -25,7 +19,7 @@ export async function POST(
 
     if (!load) return NextResponse.json({ error: "Load not found" }, { status: 404 });
 
-    const { data, error } = await getSupabase()
+    const { data, error } = await getSupabaseAdmin()
         .from("ad_campaigns")
         .upsert({
             buyer_profile_id: load.profile_id,

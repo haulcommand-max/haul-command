@@ -8,8 +8,8 @@
  */
 
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
 
@@ -52,13 +52,6 @@ function entitlementsFromTier(tier: 'free' | 'basic' | 'pro' | 'elite') {
     }
 }
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false, autoRefreshToken: false } }
-    );
-}
 
 // ─── Webhook handler ──────────────────────────────────────
 export async function POST(req: Request) {
@@ -75,7 +68,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `Webhook signature failed: ${msg}` }, { status: 400 });
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     try {
         switch (event.type) {

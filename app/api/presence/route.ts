@@ -6,18 +6,15 @@
  * POST /api/presence/decay — Run auto-decay (cron: every 5 min)
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from '@supabase/ssr';
-import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { PresenceEngine } from '@/core/social/presence_engine';
 
 export const dynamic = 'force-dynamic';
 
 function getAdmin() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    return getSupabaseAdmin();
 }
 
 export async function GET(req: NextRequest) {

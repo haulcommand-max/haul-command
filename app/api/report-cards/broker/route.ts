@@ -1,5 +1,6 @@
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+
 export const dynamic = 'force-dynamic';
-import { createClient } from '@supabase/supabase-js';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -9,10 +10,7 @@ export async function GET(request: Request) {
         return new Response('Missing broker id', { status: 400 });
     }
 
-    const supabase = createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
         .from('v_broker_report_card')

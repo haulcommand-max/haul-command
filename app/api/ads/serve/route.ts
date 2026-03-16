@@ -1,5 +1,5 @@
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 export const dynamic = 'force-dynamic';
-import { createClient } from '@supabase/supabase-js';
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const page = searchParams.get('page') || '';
     const format = searchParams.get('format') || 'banner';
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     // Try RTB edge function first, fall back to featured placements
     try {
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     if (!id) return new Response('Missing id', { status: 400 });
 
     // Fire-and-forget click log
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
     await supabase.from('ad_click_log').insert({ placement_id: id, clicked_at: new Date().toISOString() });
     return Response.json({ ok: true });
 }

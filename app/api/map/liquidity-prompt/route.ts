@@ -1,16 +1,10 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function GET() {
-    const { data } = await getSupabase()
+    const { data } = await getSupabaseAdmin()
         .from("liquidity_prompts")
         .select("id,prompt_type,headline,body,cta_text,cta_href")
         .eq("active", true)

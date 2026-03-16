@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Only these keys are allowed to be patched via this endpoint
 const ALLOWED_KEYS = new Set([
@@ -24,7 +18,7 @@ export async function POST(req: Request) {
     if (!userId) return NextResponse.json({ error: "userId required" }, { status: 400 });
     if (!patch || typeof patch !== "object") return NextResponse.json({ error: "patch required" }, { status: 400 });
 
-    const { data: profile, error: perr } = await getSupabase()
+    const { data: profile, error: perr } = await getSupabaseAdmin()
         .from("profiles")
         .select("id,onboarding_step")
         .eq("user_id", userId)
@@ -38,7 +32,7 @@ export async function POST(req: Request) {
         if (ALLOWED_KEYS.has(k)) clean[k] = v;
     }
 
-    const { error: uerr } = await getSupabase()
+    const { error: uerr } = await getSupabaseAdmin()
         .from("profiles")
         .update(clean)
         .eq("id", profile.id);

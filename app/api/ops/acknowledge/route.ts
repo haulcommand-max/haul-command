@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/ops/acknowledge
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'event_id required' }, { status: 400 });
     }
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     const { error } = await supabase
         .from('ops_events')

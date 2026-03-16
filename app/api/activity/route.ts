@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // Generates human-friendly ticker rows from real DB activity.
 // NO fakery — derived only from loads + presence rows that exist.
@@ -16,13 +10,13 @@ export async function GET(req: Request) {
     const limit = Math.min(Number(searchParams.get("limit") ?? 12), 30);
 
     const [loadsRes, presRes] = await Promise.all([
-        getSupabase()
+        getSupabaseAdmin()
             .from("loads")
             .select("id,title,origin_city,origin_state,urgency,created_at,status")
             .in("status", ["open", "matched"])
             .order("created_at", { ascending: false })
             .limit(Math.ceil(limit / 2)),
-        getSupabase()
+        getSupabaseAdmin()
             .from("presence_heartbeats")
             .select("profile_id,last_seen_at")
             .gte("last_seen_at", new Date(Date.now() - 60 * 60 * 1000).toISOString())

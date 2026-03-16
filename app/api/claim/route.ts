@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export async function POST(req: NextRequest) {
     try {
@@ -12,10 +12,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Must use service role to reassign user_id on the row
-        const supabase = createClient(
-            process.env.SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         // 1. Find the seeded profile
         const { data: profile, error: fetchError } = await supabase

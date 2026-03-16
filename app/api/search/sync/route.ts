@@ -4,6 +4,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { fullSync, incrementalSync, ensureCollection } from '@/lib/typesense/sync';
 import { isEnabled } from '@/lib/feature-flags';
 

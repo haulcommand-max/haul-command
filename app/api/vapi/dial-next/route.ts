@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeEligibilityScore, getActiveSlots, MINIMUM_ELIGIBILITY_SCORE, type ThroughputSlot } from "@/lib/vapi/eligibility";
 
 /**
@@ -14,10 +14,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { programType = 'unclaimed_place_claim' } = body;
 
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         // 1. Get active throughput slots based on current time
         const { data: slots } = await supabase

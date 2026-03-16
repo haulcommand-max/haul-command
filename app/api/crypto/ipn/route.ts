@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { verifyIPNSignature } from '@/lib/crypto/nowpayments';
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseAdmin = createClient(
-    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
+const supabaseAdmin = getSupabaseAdmin();
 
 /**
  * POST /api/crypto/ipn

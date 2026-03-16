@@ -4,6 +4,7 @@
 // POST /api/v1/auth/profile-progress  (complete a step)
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     getProfileProgress,
     completeProfileStep,

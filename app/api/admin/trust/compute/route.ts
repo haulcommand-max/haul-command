@@ -8,7 +8,7 @@
  * and persists results to composite_trust_scores.
  */
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeTrustScore, type TrustInput, type TrustResult, applyInactivityDecay } from "@/lib/trust/trust-score-v3";
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;

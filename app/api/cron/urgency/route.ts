@@ -5,7 +5,7 @@
  * Auth: service key only.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { UrgencyEngine } from '@/core/social/urgency_engine';
 import { IdleOperatorReactor } from '@/core/social/idle_operator_reactor';
 import { runReactivationWithIntelligence } from '@/lib/platform/reactivation-bridge';
@@ -19,10 +19,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const admin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    const admin = getSupabaseAdmin();
 
     // 1. Reactivation sequence (3d/7d/14d/30d win-back)
     //    Routed through NotificationIntelligence for smart throttling + fatigue detection

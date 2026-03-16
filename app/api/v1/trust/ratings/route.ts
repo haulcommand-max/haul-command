@@ -4,8 +4,8 @@
 // POST /api/v1/trust/ratings               — submit a rating
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { submitRating } from "@/lib/trust/composite-trust-engine";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

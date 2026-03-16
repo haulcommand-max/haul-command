@@ -13,7 +13,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
@@ -44,11 +44,7 @@ export async function GET(req: NextRequest) {
     const userId = session.user.id;
 
     // Service-role client for protected tables
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     // Fetch plays + liquidity score in parallel
     const [playsRes, liquidityRes, profileRes] = await Promise.all([

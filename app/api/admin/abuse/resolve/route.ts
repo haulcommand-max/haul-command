@@ -1,15 +1,9 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(req: Request) {
     // Auth check — admin/staff only
@@ -22,7 +16,7 @@ export async function POST(req: Request) {
     const { data: { user } } = await authClient.auth.getUser();
     if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-    const supabaseAdmin = getSupabase();
+    const supabaseAdmin = getSupabaseAdmin();
     const { data: profile } = await supabaseAdmin
         .from("profiles").select("role").eq("id", user.id).maybeSingle();
     if (!profile || !["admin", "staff"].includes(profile.role)) {

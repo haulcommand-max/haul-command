@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * GET /api/admin/sitemap-health
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
     const checks: {
         sitemap: string;

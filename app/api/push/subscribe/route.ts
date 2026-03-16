@@ -1,5 +1,6 @@
-export const dynamic = 'force-dynamic';
 import { createClient } from '@supabase/supabase-js';
+
+export const dynamic = 'force-dynamic';
 
 // Client calls this after subscribing via service worker pushManager
 export async function POST(req: Request) {

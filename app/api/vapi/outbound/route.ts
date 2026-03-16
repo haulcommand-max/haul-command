@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 // Vapi Outbound Dialer Endpoint
 // Triggers outbound calls using the Vapi API to claim profiles, reach out to sponsors, etc.
@@ -10,10 +10,7 @@ export async function POST(req: NextRequest) {
         const { targetNumber, vapiAgentId, type = "profile_claim", countryCode } = body;
 
         // 1. Compliance Verification
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
+        const supabase = getSupabaseAdmin();
 
         if (!countryCode) return NextResponse.json({ error: "Country code is required" }, { status: 400 });
 

@@ -12,17 +12,13 @@ export const dynamic = 'force-dynamic';
  *   ?available=true — only available now (ping < 15min old)
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 300; // 5m — supply signals are near-realtime
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const sp = req.nextUrl.searchParams;
     const state = sp.get('state')?.toUpperCase();

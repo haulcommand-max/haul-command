@@ -15,9 +15,9 @@
 //   - Incumbent renewal protection: 5% discount + 12hr grace
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getStripe } from "@/lib/enterprise/stripe/client";
 import { createClient } from "@/utils/supabase/server";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

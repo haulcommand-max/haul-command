@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
     try {
@@ -18,11 +18,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'jurisdiction_code is required' }, { status: 400 });
         }
 
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-            { auth: { persistSession: false } }
-        );
+        const supabase = getSupabaseAdmin();
 
         const { data, error } = await supabase.rpc('get_jurisdiction_drawer', {
             p_jurisdiction_code: jurisdiction_code,

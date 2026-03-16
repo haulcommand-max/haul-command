@@ -1,18 +1,12 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function POST(_: Request, { params }: { params: Promise<{ offerId: string }> }) {
     const { offerId } = await params;
 
-    const { data: offer, error } = await getSupabase()
+    const { data: offer, error } = await getSupabaseAdmin()
         .from("offers")
         .select("id,status")
         .eq("id", offerId)
@@ -23,7 +17,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ offerId: 
         return NextResponse.json({ error: "Offer already actioned" }, { status: 409 });
     }
 
-    await getSupabase()
+    await getSupabaseAdmin()
         .from("offers")
         .update({ status: "declined" })
         .eq("id", offerId);

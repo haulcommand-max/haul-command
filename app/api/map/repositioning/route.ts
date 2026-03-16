@@ -20,16 +20,10 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const dynamic = "force-dynamic";
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -97,7 +91,7 @@ export async function GET(req: NextRequest) {
     const maxMiles = parseInt(searchParams.get("radius") ?? "300");
 
     // Fetch fresh corridor stress snapshots (latest per corridor)
-    const { data: stressData } = await getSupabase()
+    const { data: stressData } = await getSupabaseAdmin()
         .from("corridor_stress_log")
         .select("corridor_id, origin_state, dest_state, stress_index, available_escort_count, open_load_count, computed_at")
         .order("computed_at", { ascending: false })
@@ -107,7 +101,7 @@ export async function GET(req: NextRequest) {
     let escortStates: string[] = [];
     let escortTrustScore = 70;
     if (escortId) {
-        const { data: ep } = await getSupabase()
+        const { data: ep } = await getSupabaseAdmin()
         .from("driver_profiles")
             .select("states_licensed, trust_score")
             .eq("id", escortId)
@@ -119,7 +113,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Fetch shortage predictions
-    const { data: predictions } = await getSupabase()
+    const { data: predictions } = await getSupabaseAdmin()
         .from("corridor_shortage_predictions")
         .select("corridor_id, prediction_horizon, shortage_probability")
         .gte("predicted_at", new Date(Date.now() - 3_600_000).toISOString());

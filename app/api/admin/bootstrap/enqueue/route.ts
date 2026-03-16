@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/admin/bootstrap/enqueue?limit=500
@@ -13,13 +13,6 @@ import { NextRequest, NextResponse } from 'next/server';
  * Use from: curl, admin panel, or first-deploy ignition script
  */
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function POST(req: NextRequest) {
     // Auth: accept CRON_SECRET or service-role key
@@ -36,7 +29,7 @@ export async function POST(req: NextRequest) {
         5000
     );
 
-    const svc = getSupabase();
+    const svc = getSupabaseAdmin();
     const stats = { counties: 0, cities: 0, places: 0, total: 0, errors: [] as string[] };
 
     // 1. Enqueue county pages

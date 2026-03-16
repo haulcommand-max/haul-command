@@ -11,14 +11,8 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 // â”€â”€ Stress Index computation (Layers 1 + 2) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -86,7 +80,7 @@ export async function GET(req: NextRequest) {
     }
 
     // 1. Fetch the most recent stress snapshot from DB (written by background job)
-    const { data: snapshot } = await getSupabase()
+    const { data: snapshot } = await getSupabaseAdmin()
         .from("corridor_stress_log")
         .select("*")
         .eq("corridor_id", corridor_id)
@@ -121,13 +115,13 @@ export async function GET(req: NextRequest) {
     const [originState, destState] = corridor_id.split("_").slice(1, 3);
 
     const [loadCountRes, escortCountRes] = await Promise.all([
-        getSupabase()
+        getSupabaseAdmin()
         .from("loads")
             .select("id", { count: "exact", head: true })
             .eq("status", "open")
             .in("origin_state", [originState].filter(Boolean)),
 
-        getSupabase()
+        getSupabaseAdmin()
         .from("driver_profiles")
             .select("id", { count: "exact", head: true })
             .eq("is_available", true)
@@ -147,7 +141,7 @@ export async function GET(req: NextRequest) {
     const liquidity = liveStats.open_load_count / Math.max(liveStats.available_escort_count, 1);
 
     // 4. Persist the new snapshot to the log
-    await getSupabase().from("corridor_stress_log").insert({
+    await getSupabaseAdmin().from("corridor_stress_log").insert({
         corridor_id,
         origin_state: originState,
         dest_state: destState,

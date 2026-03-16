@@ -4,6 +4,7 @@
 // v2: Added fraud prevention — IP/UA hashing, click velocity capping, visitor identity
 
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { createHash } from "crypto";

@@ -1,5 +1,6 @@
-export const dynamic = 'force-dynamic';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@supabase/supabase-js';
+export const dynamic = 'force-dynamic';
 
 const VALID_TYPES = [
     'police_spotted', 'road_blocked', 'heavy_wind', 'accident',
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
         return new Response(`Invalid incident_type. Must be one of: ${VALID_TYPES.join(', ')}`, { status: 400 });
     }
 
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     // Rate limit: max 5 reports per user per hour
     if (reported_by) {

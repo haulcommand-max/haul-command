@@ -4,8 +4,8 @@
 // POST /api/v1/trust/score/recompute       — batch recompute (cron)
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeCompositeTrustScore } from "@/lib/trust/composite-trust-engine";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

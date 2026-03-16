@@ -4,8 +4,8 @@
  * Body: { target_id?: string, limit?: number }
  */
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { detectReviewFraud, type FraudSignals } from "@/lib/trust/fraud-detection";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 const ADMIN_SECRET = process.env.HC_ADMIN_SECRET;
 

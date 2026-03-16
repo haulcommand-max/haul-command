@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-}
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
@@ -15,7 +9,7 @@ export async function GET(req: Request) {
     const limit = Math.min(Number(searchParams.get("limit") ?? 300), 1000);
 
     // Try the canonical loads table first, fall back to null coords gracefully
-    let q = getSupabase()
+    let q = getSupabaseAdmin()
         .from("loads")
         .select("id,title,origin_lat,origin_lng,urgency,status,origin_city,origin_state")
         .in("status", ["open", "matched"])

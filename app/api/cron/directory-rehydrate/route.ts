@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/cron/directory-rehydrate
@@ -10,13 +10,6 @@ import { NextResponse } from 'next/server';
  * Guarantees zero orphans. Logs to pipeline_runs for auditing.
  */
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function POST(req: Request) {
     const authHeader = req.headers.get('authorization');
@@ -24,7 +17,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const svc = getSupabase();
+    const svc = getSupabaseAdmin();
 
     try {
         const { data, error } = await svc.rpc('run_directory_rehydration');

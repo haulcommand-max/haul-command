@@ -12,17 +12,13 @@ export const dynamic = 'force-dynamic';
  *   ?limit=50
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 3600; // 1h — corridors refresh weekly
 
 export async function GET(req: NextRequest) {
-    const svc = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
+    const svc = getSupabaseAdmin();
 
     const sp = req.nextUrl.searchParams;
     const state = sp.get('state')?.toUpperCase();

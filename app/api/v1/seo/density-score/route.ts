@@ -4,12 +4,12 @@
 // POST /api/v1/seo/density-score/compute-all  (cron: recompute all countries)
 
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import {
     computeCountryDensityScore,
     computeAllCountryCDS,
     evaluatePageIndexability,
 } from "@/lib/seo/country-density-score";
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
 
 export const runtime = "nodejs";
 

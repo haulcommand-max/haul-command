@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { resolveProfile, type NormalizedProfile, type ResolutionResult } from '@/lib/resolvers/resolveProfile';
 
 /* ── Rate limiting (graceful if Upstash not configured) ── */
@@ -18,13 +18,6 @@ if (UPSTASH_CONFIGURED) {
 }
 
 /* ── Supabase (service role — bypasses RLS) ── */
-function getSupabase() {
-    return createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false, autoRefreshToken: false } }
-    );
-}
 
 /* ── Input validation ── */
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -145,7 +138,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid id format' }, { status: 400 });
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
     const result = await resolveProfile(supabase, id);
 
     // Observability: log resolution path and duplicate hits

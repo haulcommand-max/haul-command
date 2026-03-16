@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { computeFriction, bootstrapAllCountries } from '@/lib/intel/friction';
 import { getObservationSummary } from '@/lib/intel/capture';
 import { evaluateGate, scrubResponse } from '@/lib/quality/gating';
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
     }
 
     // DB mode: fetch stored friction scores + observation context
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const supabase = getSupabaseAdmin();
 
     let query = supabase
         .from('permit_friction_scores')

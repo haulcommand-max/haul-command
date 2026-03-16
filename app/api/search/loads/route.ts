@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import type { LoadSearchResult } from '@/lib/search/types';
 
 /**
@@ -20,13 +20,6 @@ import type { LoadSearchResult } from '@/lib/search/types';
  *   offset      — pagination offset
  */
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function GET(request: NextRequest) {
     const sp = request.nextUrl.searchParams;
@@ -56,7 +49,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(sp.get('limit') ?? '25', 10), 50);
     const offset = Math.max(parseInt(sp.get('offset') ?? '0', 10), 0);
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase.rpc('hc_search_loads', {
         p_q: q,

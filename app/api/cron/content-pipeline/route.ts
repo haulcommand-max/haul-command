@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
  * POST /api/cron/content-pipeline
@@ -18,13 +18,6 @@ import { NextResponse } from 'next/server';
 const BATCH_SIZE = 50;
 const MAX_ATTEMPTS = 3;
 
-function getSupabase() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function POST(req: Request) {
     // Verify cron secret
@@ -33,7 +26,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const svc = getSupabase();
+    const svc = getSupabaseAdmin();
     const started = Date.now();
 
     // 1. Pick batch of queued jobs, highest priority first

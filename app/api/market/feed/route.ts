@@ -9,18 +9,11 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 30; // ISR: refresh every 30s
 export const dynamic = 'force-dynamic';
 
-function getSupabase() {
-    return createClient(
-        process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { auth: { persistSession: false } }
-    );
-}
 
 export async function GET(request: Request) {
     try {
@@ -28,7 +21,7 @@ export async function GET(request: Request) {
         const country = searchParams.get('country') || 'US';
         const limit = Math.min(Number(searchParams.get('limit') || 12), 50);
 
-        const sb = getSupabase();
+        const sb = getSupabaseAdmin();
 
         const [tickerRes, radarRes, pulseRes] = await Promise.all([
             // Market pulse ticker items

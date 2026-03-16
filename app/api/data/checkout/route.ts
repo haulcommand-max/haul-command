@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createCheckoutSession } from '@/lib/enterprise/self-serve-marketplace';
 import type { DataProductSku } from '@/lib/enterprise/self-serve-marketplace';
 
