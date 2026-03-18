@@ -12,7 +12,7 @@ import {
   MobileCardSkeleton,
   MobileList,
 } from '@/components/mobile/MobileComponents';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+/* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Load Board — Frame 4 (List Mode)
@@ -189,7 +189,6 @@ export default function MobileLoadBoard() {
       </MobileList>
 
       <div style={{ height: 'var(--m-3xl)' }} />
-      <MobileAppNav />
     </div>
   );
 }

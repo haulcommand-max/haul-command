@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 
 /* ══════════════════════════════════════════════════════════════
    Mobile Leaderboard — Frame 8
    Corridor selector + period tabs + top-3 podium + ranked list
-   Approved spec: 390px, native app feel
+   Now wired to /api/v1/leaderboard for real Supabase data.
+   Falls back to truthful empty state when data is sparse.
    ══════════════════════════════════════════════════════════════ */
 
 const ShieldIcon = () => (
@@ -40,23 +40,58 @@ interface LeaderEntry {
   verified: boolean;
   moveDirection: 'up' | 'down' | 'none';
   moveAmount: number;
+  userId?: string;
 }
 
-const CORRIDORS = ['Texas', 'I-95 NE', 'I-10 South', 'I-75 SE', 'I-80 W'];
+const CORRIDORS = ['Global', 'I-10', 'I-35', 'I-75', 'I-20'];
 const PERIODS = ['This Week', 'This Month', 'All Time'];
 
-const MOCK_LEADERS: LeaderEntry[] = [
-  { rank: 1, name: 'Texas Wide Escorts', location: 'Houston, TX', score: 328.1, verified: true, moveDirection: 'none', moveAmount: 0 },
-  { rank: 2, name: 'Southern Pilot Cars', location: 'Dallas, TX', score: 337.9, verified: true, moveDirection: 'up', moveAmount: 2 },
-  { rank: 3, name: 'Gulf Coast Escorts', location: 'Beaumont, TX', score: 327.5, verified: true, moveDirection: 'down', moveAmount: 1 },
-  { rank: 4, name: 'Panhandle Pilot', location: 'Amarillo, TX', score: 382.00, verified: true, moveDirection: 'up', moveAmount: 2 },
-  { rank: 5, name: 'Lone Star Escorts', location: 'Austin, TX', score: 283.90, verified: true, moveDirection: 'down', moveAmount: 1 },
-  { rank: 6, name: 'Capital Oversize', location: 'Austin, TX', score: 287.68, verified: true, moveDirection: 'none', moveAmount: 0 },
-  { rank: 7, name: 'Carbon Transport', location: 'Midland, TX', score: 200.76, verified: false, moveDirection: 'down', moveAmount: 1 },
-  { rank: 8, name: 'Genger Escorts', location: 'El Paso, TX', score: 200.43, verified: true, moveDirection: 'none', moveAmount: 0 },
-  { rank: 9, name: 'Rio Grande Pilot', location: 'Laredo, TX', score: 202.33, verified: false, moveDirection: 'none', moveAmount: 0 },
-  { rank: 10, name: 'Frontier Wide Load', location: 'San Antonio, TX', score: 202.96, verified: true, moveDirection: 'none', moveAmount: 0 },
-];
+/* ── Data fetching hook ── */
+function useLeaderboardData(corridor: string) {
+  const [entries, setEntries] = useState<LeaderEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [empty, setEmpty] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setEmpty(false);
+
+    const params = new URLSearchParams({ limit: '20' });
+    if (corridor !== 'Global') {
+      params.set('corridor', corridor.toLowerCase().replace(/\s+/g, '-'));
+    }
+
+    fetch(`/api/v1/leaderboard?${params}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok && data.leaderboard && data.leaderboard.length > 0) {
+          const mapped: LeaderEntry[] = data.leaderboard.map((entry: any, i: number) => ({
+            rank: entry.rank ?? i + 1,
+            name: entry.display_name || entry.user_id?.slice(0, 8) || `Operator #${i + 1}`,
+            location: entry.primary_state || entry.city || '—',
+            score: entry.total_points ?? 0,
+            verified: entry.verification?.tier >= 2 || false,
+            moveDirection: 'none' as const,
+            moveAmount: 0,
+            userId: entry.user_id,
+          }));
+          setEntries(mapped);
+          setEmpty(false);
+        } else {
+          setEntries([]);
+          setEmpty(true);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setEntries([]);
+        setEmpty(true);
+        setLoading(false);
+      });
+  }, [corridor]);
+
+  return { entries, loading, empty };
+}
 
 function PodiumCard({ entry, position }: { entry: LeaderEntry; position: 'first' | 'second' | 'third' }) {
   const sizes = {
@@ -115,8 +150,12 @@ function PodiumCard({ entry, position }: { entry: LeaderEntry; position: 'first'
 }
 
 function RankRow({ entry }: { entry: LeaderEntry }) {
+  const profileSlug = entry.userId
+    ? `/place/${entry.userId}`
+    : `/place/${entry.name.toLowerCase().replace(/\s+/g, '-')}`;
+
   return (
-    <Link href={`/place/${entry.name.toLowerCase().replace(/\s+/g, '-')}`}
+    <Link href={profileSlug}
       style={{
         display: 'flex', alignItems: 'center', gap: 'var(--m-md)',
         padding: 'var(--m-md) var(--m-screen-pad)',
@@ -201,12 +240,86 @@ function RankRow({ entry }: { entry: LeaderEntry }) {
   );
 }
 
+/* ── Thin Market Empty State ── */
+function EmptyLeaderboard({ corridor }: { corridor: string }) {
+  return (
+    <div style={{
+      padding: 'var(--m-4xl) var(--m-screen-pad)',
+      textAlign: 'center',
+    }}>
+      <div style={{ fontSize: 40, marginBottom: 'var(--m-lg)' }}>🏆</div>
+      <div style={{
+        fontSize: 'var(--m-font-h2)', fontWeight: 800,
+        color: 'var(--m-text-primary)', marginBottom: 'var(--m-sm)',
+      }}>
+        {corridor === 'Global' ? 'Leaderboard building...' : `${corridor} leaderboard building...`}
+      </div>
+      <div style={{
+        fontSize: 'var(--m-font-body-sm)',
+        color: 'var(--m-text-secondary)',
+        lineHeight: 1.5,
+        maxWidth: 300,
+        margin: '0 auto var(--m-xl)',
+      }}>
+        {corridor === 'Global'
+          ? 'Rankings populate as operators claim profiles, complete jobs, and earn verification badges.'
+          : `This corridor doesn't have enough ranked operators yet. Rankings populate as operators claim profiles and earn trust points on this route.`
+        }
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--m-sm)', maxWidth: 260, margin: '0 auto' }}>
+        <Link href="/claim" style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 44, borderRadius: 'var(--m-radius-md)',
+          background: 'var(--m-gold)', color: '#000',
+          fontSize: 'var(--m-font-body-sm)', fontWeight: 800,
+          textDecoration: 'none',
+        }}>
+          Claim Your Profile
+        </Link>
+        <Link href="/corridor" style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 44, borderRadius: 'var(--m-radius-md)',
+          background: 'transparent', color: 'var(--m-text-primary)',
+          border: '1px solid var(--m-border-default)',
+          fontSize: 'var(--m-font-body-sm)', fontWeight: 700,
+          textDecoration: 'none',
+        }}>
+          Browse Corridors
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ── Loading Skeleton ── */
+function LeaderboardSkeleton() {
+  return (
+    <div style={{ padding: 'var(--m-xl) var(--m-screen-pad)' }}>
+      {[1, 2, 3, 4, 5].map(i => (
+        <div key={i} style={{
+          display: 'flex', alignItems: 'center', gap: 'var(--m-md)',
+          padding: 'var(--m-md) 0', borderBottom: '1px solid var(--m-border-subtle)',
+        }}>
+          <div className="m-skeleton" style={{ width: 28, height: 20 }} />
+          <div className="m-skeleton m-skeleton--avatar" style={{ width: 36, height: 36 }} />
+          <div style={{ flex: 1 }}>
+            <div className="m-skeleton m-skeleton--text" style={{ marginBottom: 4 }} />
+            <div className="m-skeleton" style={{ width: '40%', height: 10 }} />
+          </div>
+          <div className="m-skeleton" style={{ width: 50, height: 20 }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function MobileLeaderboard() {
   const [corridor, setCorridor] = useState(CORRIDORS[0]);
   const [period, setPeriod] = useState(PERIODS[0]);
+  const { entries, loading, empty } = useLeaderboardData(corridor);
 
-  const top3 = MOCK_LEADERS.slice(0, 3);
-  const rest = MOCK_LEADERS.slice(3);
+  const top3 = entries.slice(0, 3);
+  const rest = entries.slice(3);
 
   return (
     <div className="m-shell-content" style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
@@ -271,40 +384,48 @@ export default function MobileLeaderboard() {
         ))}
       </div>
 
-      {/* ── Top 3 Podium ── */}
-      <div style={{
-        display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
-        gap: 'var(--m-md)',
-        padding: 'var(--m-xl) var(--m-screen-pad) var(--m-lg)',
-        position: 'relative',
-      }}>
-        {/* Glow effect behind #1 */}
-        <div style={{
-          position: 'absolute',
-          top: '30%', left: '50%', transform: 'translate(-50%, -50%)',
-          width: 180, height: 100,
-          background: 'radial-gradient(ellipse, rgba(241,169,27,0.15) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
+      {/* ── Content ── */}
+      {loading ? (
+        <LeaderboardSkeleton />
+      ) : empty ? (
+        <EmptyLeaderboard corridor={corridor} />
+      ) : (
+        <>
+          {/* ── Top 3 Podium ── */}
+          <div style={{
+            display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
+            gap: 'var(--m-md)',
+            padding: 'var(--m-xl) var(--m-screen-pad) var(--m-lg)',
+            position: 'relative',
+          }}>
+            {/* Glow effect behind #1 */}
+            <div style={{
+              position: 'absolute',
+              top: '30%', left: '50%', transform: 'translate(-50%, -50%)',
+              width: 180, height: 100,
+              background: 'radial-gradient(ellipse, rgba(241,169,27,0.15) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
 
-        {top3.length >= 2 && <PodiumCard entry={top3[1]} position="second" />}
-        {top3.length >= 1 && <PodiumCard entry={top3[0]} position="first" />}
-        {top3.length >= 3 && <PodiumCard entry={top3[2]} position="third" />}
-      </div>
+            {top3.length >= 2 && <PodiumCard entry={top3[1]} position="second" />}
+            {top3.length >= 1 && <PodiumCard entry={top3[0]} position="first" />}
+            {top3.length >= 3 && <PodiumCard entry={top3[2]} position="third" />}
+          </div>
 
-      {/* ── Ranked List ── */}
-      <div style={{
-        background: 'var(--m-surface)',
-        borderTop: '1px solid var(--m-border-subtle)',
-        borderRadius: 'var(--m-radius-xl) var(--m-radius-xl) 0 0',
-      }}>
-        {rest.map(entry => (
-          <RankRow key={entry.rank} entry={entry} />
-        ))}
-      </div>
+          {/* ── Ranked List ── */}
+          <div style={{
+            background: 'var(--m-surface)',
+            borderTop: '1px solid var(--m-border-subtle)',
+            borderRadius: 'var(--m-radius-xl) var(--m-radius-xl) 0 0',
+          }}>
+            {rest.map(entry => (
+              <RankRow key={entry.rank} entry={entry} />
+            ))}
+          </div>
+        </>
+      )}
 
       <div style={{ height: 'var(--m-3xl)' }} />
-      <MobileAppNav />
     </div>
   );
 }

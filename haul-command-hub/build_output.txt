@@ -1,0 +1,107 @@
+﻿node : ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+At line:1 char:1
++ node node_modules\next\dist\bin\next build 2>&1 | Out-File build_outp ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓÜá Warning: Ne...not be correct.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ We detected multiple lockfiles and selected the directory of C:\Users\PC User\Biz\package-lock.json as the root 
+directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\PC User\Biz\haul-command-hub\package-lock.json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 16.7s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/1071) ...
+  Generating static pages using 7 workers (267/1071) 
+  Generating static pages using 7 workers (535/1071) 
+  Generating static pages using 7 workers (803/1071) 
+Γ£ô Generating static pages using 7 workers (1071/1071) in 19.5s
+  Finalizing page optimization ...
+
+Route (app)                                                Revalidate  Expire
+Γöî Γùï /                                                             15m      1y
+Γö£ Γùï /_not-found
+Γö£ ΓùÅ /[country]
+Γöé Γö£ /us
+Γöé Γö£ /ca
+Γöé Γö£ /au
+Γöé Γöö [+49 more paths]
+Γö£ ΓùÅ /[country]/[service]
+Γöé Γö£ /us/pilot-car-service
+Γöé Γö£ /us/oversize-load-escort
+Γöé Γö£ /us/heavy-haul-escort
+Γöé Γöö [+309 more paths]
+Γö£ ΓùÅ /[country]/city/[city-slug]
+Γöé Γö£ /us/city/houston
+Γöé Γö£ /us/city/dallas
+Γöé Γö£ /us/city/jacksonville
+Γöé Γöö [+347 more paths]
+Γö£ ΓùÅ /[country]/guide/[slug]
+Γöé Γö£ /us/guide/what-is-a-pilot-car
+Γöé Γö£ /us/guide/what-is-an-escort-vehicle
+Γöé Γö£ /us/guide/oversize-load-requirements
+Γöé Γöö [+257 more paths]
+Γö£ ╞Æ /api/events
+Γö£ ╞Æ /api/ingest/load-board
+Γö£ ╞Æ /api/revalidate/page-factory
+Γö£ ╞Æ /auth/callback
+Γö£ Γùï /blog
+Γö£ ╞Æ /blog/[slug]
+Γö£ ╞Æ /browse/[country]/[city]/[surfaceClass]
+Γö£ ╞Æ /browse/[country]/[surfaceClass]
+Γö£ ╞Æ /browse/corridor/[corridorSlug]/[surfaceClass]
+Γö£ ╞Æ /browse/near/[anchorType]/[anchorSlug]/[surfaceClass]
+Γö£ ╞Æ /browse/surface/[surfaceKey]
+Γö£ ╞Æ /category/[category]/[country]
+Γö£ Γùï /claim
+Γö£ ╞Æ /corridor/[corridorSlug]/[surfaceClass]
+Γö£ Γùï /corridors                                                     1h      1y
+Γö£ Γùï /countries
+Γö£ Γùï /directory                                                     1h      1y
+Γö£ ╞Æ /directory/[country]
+Γö£ ╞Æ /directory/[country]/[category]
+Γö£ Γùï /directory/surfaces                                            1h      1y
+Γö£ ╞Æ /directory/surfaces/[country]
+Γö£ ╞Æ /directory/surfaces/[country]/[category]
+Γö£ Γùï /escort-requirements
+Γö£ ╞Æ /escort-requirements/[jurisdiction]
+Γö£ Γùï /generate/movement-certificate
+Γö£ Γùï /leaderboards                                                  1h      1y
+Γö£ Γùï /loads
+Γö£ ╞Æ /login
+Γö£ Γùï /map
+Γö£ ╞Æ /near/[anchorType]/[anchorSlug]/[surfaceClass]
+Γö£ ╞Æ /pf/[country]/[city]/[surfaceClass]
+Γö£ ╞Æ /pf/[country]/[surfaceClass]
+Γö£ ╞Æ /place/[slug]
+Γö£ Γùï /rates                                                         1h      1y
+Γö£ Γùï /robots.txt
+Γö£ ΓùÅ /services/[state]/[city]
+Γöé Γö£ /services/TX/El-Paso
+Γöé Γö£ /services/GA/Savannah
+Γöé Γö£ /services/IN/Gary
+Γöé Γöö [+11 more paths]
+Γö£ ╞Æ /sitemap.xml
+Γö£ ╞Æ /state/[slug]
+Γö£ Γùï /tools/compliance-card
+Γö£ Γùï /tools/cost-estimator
+Γö£ Γùï /tools/discovery-map
+Γö£ Γùï /tools/escort-calculator
+Γö£ Γùï /tools/friday-checker
+Γö£ Γùï /tools/load-board-ingest
+Γö£ Γùï /tools/regulation-alerts
+Γöö Γùï /tools/superload-meter
+
+
+Γùï  (Static)   prerendered as static content
+ΓùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+╞Æ  (Dynamic)  server-rendered on demand
+

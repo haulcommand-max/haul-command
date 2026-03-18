@@ -1,0 +1,23 @@
+{
+  "topRoutes": [
+    "/",
+    "/directory",
+    "/requirements",
+    "/loads",
+    "/map",
+    "/corridors",
+    "/rates",
+    "/leaderboards",
+    "/claim",
+    "/services"
+  ],
+  "routeFamilies": [
+    "/directory/{country}",
+    "/requirements/{country}",
+    "/rates/{country}",
+    "/services/{service}/{country}",
+    "/infrastructure/{type}/{country}",
+    "/broker/{slug}",
+    "/corridors/{slug}"
+  ]
+}

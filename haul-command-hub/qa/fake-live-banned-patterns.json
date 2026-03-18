@@ -1,0 +1,18 @@
+{
+  "bannedPatterns": [
+    "$0",
+    "initializing",
+    "no live signals yet",
+    "live escort market 0",
+    "verified escorts 0",
+    "$0 avg rate/day",
+    "rate index initializing",
+    "0 verified",
+    "coming soon — data initializing"
+  ],
+  "allowlistContexts": [
+    "/terms",
+    "/privacy",
+    "/blog"
+  ]
+}

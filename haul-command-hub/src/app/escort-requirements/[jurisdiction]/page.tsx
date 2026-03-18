@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase-server';
+import { supabaseServer } from '@/lib/supabase-server';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
@@ -16,7 +16,7 @@ interface EscortRule {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { jurisdiction } = await params;
-    const supabase = await createClient();
+    const supabase = supabaseServer();
     const { data } = await supabase.rpc('hc_get_jurisdiction_requirements', { p_jurisdiction: jurisdiction.toUpperCase() });
     const rules: EscortRule[] = data || [];
     const name = rules[0]?.jurisdiction_name || jurisdiction;
@@ -34,7 +34,7 @@ function fmtDim(t: string) {
 
 export default async function JurisdictionPage({ params }: Props) {
     const { jurisdiction } = await params;
-    const supabase = await createClient();
+    const supabase = supabaseServer();
     const { data } = await supabase.rpc('hc_get_jurisdiction_requirements', { p_jurisdiction: jurisdiction.toUpperCase() });
     const rules: EscortRule[] = data || [];
 

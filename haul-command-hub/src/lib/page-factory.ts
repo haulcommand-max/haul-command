@@ -2,12 +2,11 @@
  * Page Factory — Supabase queries for hc_page_keys driven ISR routes
  * Every route reads from hc_page_keys as the routing authority.
  */
-import { createClient } from '@supabase/supabase-js';
+import { supabaseServer } from '@/lib/supabase-server';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+    return supabaseServer();
+}
 
 export type PageKey = {
     id: string;
@@ -61,7 +60,7 @@ export async function getPageKey(
     pageType: string,
     filters: Record<string, string>
 ): Promise<PageKey | null> {
-    let q = supabase
+    let q = getSupabase()
         .from('hc_page_keys')
         .select('*')
         .eq('page_type', pageType)
@@ -81,7 +80,7 @@ export async function getSurfaces(
     filters: Record<string, string>,
     limit = 50
 ): Promise<Surface[]> {
-    let q = supabase
+    let q = getSupabase()
         .from('hc_surfaces')
         .select('surface_id,surface_key,name,surface_class,country_code,city,state,latitude,longitude,quality_score,is_claimable,brand,address')
         .order('quality_score', { ascending: false })
@@ -98,7 +97,7 @@ export async function getSurfaces(
 // ─── Internal Links ───────────────────────────────────────
 
 export async function getInternalLinks(pageKeyId: string, limit = 12): Promise<InternalLink[]> {
-    const { data } = await supabase
+    const { data } = await getSupabase()
         .from('hc_internal_links')
         .select('target_page_key_id, link_type, anchor_text, weight, hc_page_keys!target_page_key_id(canonical_slug)')
         .eq('source_page_key_id', pageKeyId)
@@ -117,7 +116,7 @@ export async function getInternalLinks(pageKeyId: string, limit = 12): Promise<I
 // ─── AdGrid Inventory ─────────────────────────────────────
 
 export async function getAdSlot(pageKeyId: string) {
-    const { data } = await supabase
+    const { data } = await getSupabase()
         .from('hc_adgrid_page_inventory')
         .select('*')
         .eq('page_key_id', pageKeyId)
@@ -130,7 +129,7 @@ export async function getAdSlot(pageKeyId: string) {
 // ─── City Rollups for a Country ───────────────────────────
 
 export async function getCityRollups(countryCode: string, surfaceClass: string) {
-    const { data } = await supabase
+    const { data } = await getSupabase()
         .from('hc_surface_city_rollups')
         .select('*')
         .eq('country_code', countryCode)
@@ -143,7 +142,7 @@ export async function getCityRollups(countryCode: string, surfaceClass: string) 
 // ─── Country Hub Stats ────────────────────────────────────
 
 export async function getCountryRollup(countryCode: string, surfaceClass: string) {
-    const { data } = await supabase
+    const { data } = await getSupabase()
         .from('hc_surface_rollups_country')
         .select('*')
         .eq('country_code', countryCode)

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { CorridorSponsorCard } from './CorridorSponsorCard';
 /* Nav provided by (app)/layout.tsx — do NOT import MobileAppNav here */
 
 /* ══════════════════════════════════════════════════════════════
@@ -11,11 +12,11 @@ import Link from 'next/link';
    ══════════════════════════════════════════════════════════════ */
 
 interface Corridor {
-  id: string;
+  slug: string;
   name: string;
   origin: string;
   destination: string;
-  distance_km: number;
+  distanceMiles: number;
   demand: 'low' | 'moderate' | 'high' | 'surge';
   activeLoads: number;
   escortsAvailable: number;
@@ -23,12 +24,10 @@ interface Corridor {
 }
 
 const MOCK_CORRIDORS: Corridor[] = [
-  { id: 'c1', name: 'I-10 Houston–SA', origin: 'Houston', destination: 'San Antonio', distance_km: 317, demand: 'high', activeLoads: 12, escortsAvailable: 8, avgRate: '$420' },
-  { id: 'c2', name: 'I-35 Dallas–Austin', origin: 'Dallas', destination: 'Austin', distance_km: 315, demand: 'surge', activeLoads: 18, escortsAvailable: 5, avgRate: '$580' },
-  { id: 'c3', name: 'I-45 Houston–Dallas', origin: 'Houston', destination: 'Dallas', distance_km: 385, demand: 'moderate', activeLoads: 7, escortsAvailable: 11, avgRate: '$390' },
-  { id: 'c4', name: 'I-20 Midland–Abilene', origin: 'Midland', destination: 'Abilene', distance_km: 245, demand: 'low', activeLoads: 2, escortsAvailable: 6, avgRate: '$310' },
-  { id: 'c5', name: 'I-10 El Paso–SA', origin: 'El Paso', destination: 'San Antonio', distance_km: 892, demand: 'high', activeLoads: 9, escortsAvailable: 3, avgRate: '$720' },
-  { id: 'c6', name: 'I-30 Dallas–Texarkana', origin: 'Dallas', destination: 'Texarkana', distance_km: 290, demand: 'moderate', activeLoads: 4, escortsAvailable: 7, avgRate: '$350' },
+  { slug: 'i-10', name: 'I-10 Gulf Coast', origin: 'Los Angeles, CA', destination: 'Jacksonville, FL', distanceMiles: 2460, demand: 'surge', activeLoads: 12, escortsAvailable: 8, avgRate: '$420' },
+  { slug: 'i-35', name: 'I-35 Central Spine', origin: 'Laredo, TX', destination: 'Duluth, MN', distanceMiles: 1568, demand: 'high', activeLoads: 10, escortsAvailable: 6, avgRate: '$510' },
+  { slug: 'i-75', name: 'I-75 Southeast', origin: 'Miami, FL', destination: 'Sault Ste. Marie, MI', distanceMiles: 1786, demand: 'high', activeLoads: 9, escortsAvailable: 7, avgRate: '$465' },
+  { slug: 'i-20', name: 'I-20 Deep South', origin: 'Pecos, TX', destination: 'Florence, SC', distanceMiles: 1534, demand: 'moderate', activeLoads: 6, escortsAvailable: 5, avgRate: '$390' },
 ];
 
 const DEMAND_CONFIG = {
@@ -43,7 +42,7 @@ function CorridorCard({ corridor }: { corridor: Corridor }) {
   const supplyRatio = corridor.escortsAvailable / Math.max(corridor.activeLoads, 1);
 
   return (
-    <Link href={`/escort/corridor/${corridor.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link href={`/corridor/${corridor.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div className="m-card m-animate-slide-up" style={{
         borderLeft: corridor.demand === 'surge' ? '3px solid var(--m-gold)' : undefined,
       }}>
@@ -57,7 +56,7 @@ function CorridorCard({ corridor }: { corridor: Corridor }) {
               {corridor.origin} → {corridor.destination}
             </div>
             <div style={{ fontSize: 'var(--m-font-caption)', color: 'var(--m-text-muted)', marginTop: 2 }}>
-              {corridor.distance_km} km · {corridor.name}
+              {corridor.distanceMiles.toLocaleString()} mi · {corridor.name}
             </div>
           </div>
           <span style={{
@@ -158,11 +157,20 @@ export default function MobileCorridors() {
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         <div className="m-list">
           {filtered.map((corridor, i) => (
-            <div key={corridor.id} style={{ animationDelay: `${i * 50}ms` }}>
+            <div key={corridor.slug} style={{ animationDelay: `${i * 50}ms` }}>
               <CorridorCard corridor={corridor} />
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Corridor sponsor unit */}
+      <div style={{ padding: '0 var(--m-screen-pad)', marginTop: 'var(--m-md)' }}>
+        <CorridorSponsorCard
+          corridorName="your target corridor"
+          corridorSlug=""
+          operatorCount={filtered.reduce((s, c) => s + c.escortsAvailable, 0)}
+        />
       </div>
 
       <div style={{ height: 'var(--m-3xl)' }} />

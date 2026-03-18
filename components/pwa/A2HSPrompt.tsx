@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // ══════════════════════════════════════════════════════════════
 // A2HSPrompt — Add to Home Screen PWA install banner
@@ -18,11 +19,17 @@ export function A2HSPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
     const [visible, setVisible] = useState(false);
     const [dismissed, setDismissed] = useState(false);
+    const pathname = usePathname();
+
+    // Suppress on core operational flows — never obscure browse/transact
+    const SUPPRESSED_ROUTES = ['/directory', '/inbox', '/loads', '/claim', '/login', '/place', '/map'];
+    const isSuppressed = SUPPRESSED_ROUTES.some(r => pathname?.startsWith(r));
 
     useEffect(() => {
-        // Don't show if already installed or already dismissed this session
+        // Don't show if already installed, dismissed, or on suppressed route
         if (
             dismissed ||
+            isSuppressed ||
             window.matchMedia("(display-mode: standalone)").matches ||
             sessionStorage.getItem("a2hs_dismissed")
         ) return;
@@ -36,7 +43,7 @@ export function A2HSPrompt() {
 
         window.addEventListener("beforeinstallprompt", handler);
         return () => window.removeEventListener("beforeinstallprompt", handler);
-    }, [dismissed]);
+    }, [dismissed, isSuppressed]);
 
     if (!visible || !deferredPrompt) return null;
 

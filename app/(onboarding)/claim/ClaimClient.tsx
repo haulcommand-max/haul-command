@@ -4,8 +4,16 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { BackButton } from "../components/BackButton";
-import { Lock, Phone, Loader2 } from "lucide-react";
-import { cn } from "../../../lib/utils/cn";
+import { Lock, Phone, Loader2, Shield, Clock, CheckCircle } from "lucide-react";
+
+/* ══════════════════════════════════════════════════════════════
+   ClaimClient — Premium Claim Flow (Mobile-First)
+   P1: Upgraded from acceptable to premium trust surface.
+   - Stronger hierarchy with HC gold accent
+   - Trust signals (verified badge, time-to-complete)
+   - Better contrast on all text elements
+   - Clear progress expectation
+   ══════════════════════════════════════════════════════════════ */
 
 function ClaimPageInner() {
     const router = useRouter();
@@ -45,27 +53,95 @@ function ClaimPageInner() {
     };
 
     return (
-        <div className="flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            animation: 'slideUp 0.5s ease forwards',
+        }}>
             <BackButton />
 
-            <div className="text-center mb-8">
-                <div className="w-16 h-16 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold mx-auto mb-4 animate-pulse">
-                    <Lock size={32} />
+            {/* Hero */}
+            <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                {/* Gold lock icon */}
+                <div style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: '50%',
+                    background: 'rgba(198, 146, 58, 0.15)',
+                    border: '2px solid rgba(198, 146, 58, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px',
+                }}>
+                    <Lock size={28} style={{ color: 'var(--hc-gold-400, #D4A844)' }} />
                 </div>
-                <h1 className="text-3xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-2">
-                    Unlock 5+ Loads
+
+                <h1 style={{
+                    fontSize: 28,
+                    fontWeight: 900,
+                    color: '#f5f7fb',
+                    lineHeight: 1.1,
+                    margin: '0 0 8px',
+                }}>
+                    Claim Your Profile
                 </h1>
-                <p className="text-brand-muted text-sm">
-                    Strictly for professional operators. Enter your mobile number to verify access.
+                <p style={{
+                    fontSize: 14,
+                    color: '#c7ccd7',
+                    lineHeight: 1.5,
+                    margin: 0,
+                }}>
+                    Verify your phone to unlock your operator dashboard, respond to loads, and build your trust score.
                 </p>
             </div>
 
-            <form onSubmit={handleClaim} className="flex flex-col gap-4">
-                <label className="text-xs font-bold text-brand-muted uppercase tracking-wider ml-1">
+            {/* Trust signals row */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: 8,
+                marginBottom: 28,
+            }}>
+                {[
+                    { icon: Shield, label: 'Verified', desc: 'Badge' },
+                    { icon: Clock, label: '< 2 min', desc: 'To verify' },
+                    { icon: CheckCircle, label: 'Free', desc: 'Always' },
+                ].map(({ icon: Icon, label, desc }) => (
+                    <div key={label} style={{
+                        textAlign: 'center',
+                        padding: '12px 8px',
+                        borderRadius: 14,
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                    }}>
+                        <Icon size={16} style={{ color: 'var(--hc-gold-400, #D4A844)', marginBottom: 4 }} />
+                        <div style={{ fontSize: 13, fontWeight: 800, color: '#f5f7fb' }}>{label}</div>
+                        <div style={{ fontSize: 10, color: '#8f97a7', marginTop: 2 }}>{desc}</div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Phone form */}
+            <form onSubmit={handleClaim} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <label style={{
+                    fontSize: 10,
+                    fontWeight: 800,
+                    color: '#8f97a7',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    marginLeft: 4,
+                }}>
                     Mobile Number
                 </label>
-                <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted">
+                <div style={{ position: 'relative' }}>
+                    <div style={{
+                        position: 'absolute',
+                        left: 16,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#8f97a7',
+                    }}>
                         <Phone size={18} />
                     </div>
                     <input
@@ -73,13 +149,30 @@ function ClaimPageInner() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+1 (555) 000-0000"
-                        className="w-full bg-brand-charcoal border border-brand-steel rounded-xl py-4 pl-12 pr-4 text-brand-text placeholder:text-brand-muted/50 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
                         disabled={loading}
+                        style={{
+                            width: '100%',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1.5px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: 14,
+                            padding: '16px 16px 16px 48px',
+                            fontSize: 16,
+                            color: '#f5f7fb',
+                            outline: 'none',
+                            boxSizing: 'border-box',
+                        }}
                     />
                 </div>
 
                 {error && (
-                    <div className="text-red-500 text-xs bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+                    <div style={{
+                        color: '#f87171',
+                        fontSize: 13,
+                        background: 'rgba(239, 68, 68, 0.08)',
+                        padding: '12px 14px',
+                        borderRadius: 12,
+                        border: '1px solid rgba(239, 68, 68, 0.2)',
+                    }}>
                         {error}
                     </div>
                 )}
@@ -87,19 +180,97 @@ function ClaimPageInner() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 mt-4 bg-brand-gold text-brand-dark font-bold text-lg rounded-xl shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                    style={{
+                        width: '100%',
+                        padding: '16px 24px',
+                        marginTop: 8,
+                        background: 'linear-gradient(135deg, var(--hc-gold-400, #D4A844), #f1c27b)',
+                        color: '#060b12',
+                        fontWeight: 800,
+                        fontSize: 16,
+                        borderRadius: 14,
+                        border: 'none',
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        opacity: loading ? 0.6 : 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        boxShadow: '0 4px 24px rgba(198, 146, 58, 0.25)',
+                    }}
                 >
-                    {loading ? <Loader2 className="animate-spin" /> : "Send Code"}
+                    {loading ? <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} /> : 'Send Verification Code'}
                 </button>
 
-                <p className="text-center text-[10px] text-brand-muted/50 mt-4">
+                <p style={{
+                    textAlign: 'center',
+                    fontSize: 11,
+                    color: '#6b7280',
+                    marginTop: 8,
+                }}>
                     By continuing you agree to receive SMS for verification. Msg rates may apply.
                 </p>
             </form>
+
+            {/* What happens next */}
+            <div style={{
+                marginTop: 32,
+                padding: '16px 18px',
+                borderRadius: 16,
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+            }}>
+                <div style={{
+                    fontSize: 10,
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: 'var(--hc-gold-400, #D4A844)',
+                    marginBottom: 10,
+                }}>
+                    What happens next
+                </div>
+                {[
+                    'Enter your code to verify your number',
+                    'Your operator profile activates instantly',
+                    'Start responding to loads and building trust',
+                ].map((step, i) => (
+                    <div key={i} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '8px 0',
+                        borderTop: i > 0 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                    }}>
+                        <div style={{
+                            width: 22,
+                            height: 22,
+                            borderRadius: '50%',
+                            background: 'rgba(198, 146, 58, 0.12)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 11,
+                            fontWeight: 800,
+                            color: 'var(--hc-gold-400, #D4A844)',
+                            flexShrink: 0,
+                        }}>
+                            {i + 1}
+                        </div>
+                        <div style={{ fontSize: 13, color: '#c7ccd7', lineHeight: 1.4 }}>{step}</div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
 
 export default function ClaimClient() {
-    return <ClaimPageInner />;
+    return (
+        <Suspense fallback={
+            <div style={{ background: 'var(--m-bg, #060b12)', minHeight: '100vh' }} />
+        }>
+            <ClaimPageInner />
+        </Suspense>
+    );
 }

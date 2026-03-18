@@ -1,0 +1,594 @@
+
+> haul-command-bots@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3005
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://127.0.0.1:3005
+- Network:       http://127.0.0.1:3005
+- Environments: .env.local, .env
+
+✓ Starting...
+✓ Ready in 4.2s
+○ Compiling /loads/post ...
+ GET /loads/post 200 in 5.9s (compile: 4.1s, proxy.ts: 1162ms, render: 624ms)
+ POST /api/heartbeat 200 in 215ms (compile: 172ms, proxy.ts: 20ms, render: 22ms)
+ GET /offline 200 in 576ms (compile: 277ms, proxy.ts: 139ms, render: 160ms)
+ GET /dashboard 200 in 1126ms (compile: 660ms, proxy.ts: 9ms, render: 457ms)
+ GET /directory 200 in 1131ms (compile: 330ms, proxy.ts: 9ms, render: 792ms)
+ GET /tools/escort-calculator 200 in 610ms (compile: 101ms, proxy.ts: 5ms, render: 504ms)
+ GET /escort-requirements 200 in 1050ms (compile: 393ms, proxy.ts: 10ms, render: 647ms)
+ GET / 200 in 3.5s (compile: 94ms, proxy.ts: 137ms, render: 3.2s)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 10ms, render: 7ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 14ms, render: 6ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 6ms, proxy.ts: 14ms, render: 7ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 4ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 11ms, render: 7ms)
+ POST /api/heartbeat 200 in 23ms (compile: 4ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 4ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 24ms (compile: 5ms, proxy.ts: 13ms, render: 7ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 4ms)
+ POST /api/heartbeat 200 in 19ms (compile: 4ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 27ms (compile: 6ms, proxy.ts: 14ms, render: 7ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 11ms, render: 6ms)
+ POST /api/heartbeat 200 in 30ms (compile: 9ms, proxy.ts: 15ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 10ms, render: 6ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 11ms, render: 7ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 4ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 28ms (compile: 8ms, proxy.ts: 14ms, render: 6ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 4ms)
+ POST /api/heartbeat 200 in 17ms (compile: 4ms, proxy.ts: 9ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 4ms, proxy.ts: 13ms, render: 5ms)
+ GET /sponsor 200 in 706ms (compile: 530ms, proxy.ts: 5ms, render: 171ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ GET /offline 200 in 537ms (compile: 201ms, proxy.ts: 8ms, render: 328ms)
+ GET /dashboard 200 in 167ms (compile: 4ms, proxy.ts: 29ms, render: 134ms)
+ GET /directory 200 in 317ms (compile: 6ms, proxy.ts: 4ms, render: 307ms)
+ GET /tools/escort-calculator 200 in 202ms (compile: 4ms, proxy.ts: 10ms, render: 188ms)
+ GET /escort-requirements 200 in 893ms (compile: 5ms, proxy.ts: 9ms, render: 880ms)
+ GET / 200 in 4.1s (compile: 9ms, proxy.ts: 8ms, render: 4.0s)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 11ms, render: 4ms)
+ POST /api/heartbeat 200 in 9ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 6ms, proxy.ts: 14ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 7ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 13ms (compile: 3ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 14ms, render: 6ms)
+ POST /api/heartbeat 200 in 10ms (compile: 4ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 26ms (compile: 6ms, proxy.ts: 15ms, render: 5ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 28ms (compile: 6ms, proxy.ts: 15ms, render: 7ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 29ms (compile: 8ms, proxy.ts: 14ms, render: 7ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 24ms (compile: 5ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 24ms (compile: 5ms, proxy.ts: 11ms, render: 8ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 10ms, render: 7ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 10ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 10ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 4ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 4ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 24ms (compile: 5ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 32ms (compile: 7ms, proxy.ts: 17ms, render: 8ms)
+ POST /api/heartbeat 200 in 25ms (compile: 5ms, proxy.ts: 13ms, render: 7ms)
+ POST /api/heartbeat 200 in 22ms (compile: 7ms, proxy.ts: 9ms, render: 7ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 5ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 7ms, proxy.ts: 13ms, render: 7ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 12ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 10ms, render: 5ms)
+ POST /api/heartbeat 200 in 29ms (compile: 10ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 9ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 6ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 7ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 9ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 7ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 11ms, render: 4ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 6ms, proxy.ts: 13ms, render: 8ms)
+ POST /api/heartbeat 200 in 20ms (compile: 4ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 13ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 5ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 28ms (compile: 9ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 7ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 11ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 10ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 4ms, proxy.ts: 11ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 5ms, proxy.ts: 14ms, render: 7ms)
+ POST /api/heartbeat 200 in 20ms (compile: 4ms, proxy.ts: 10ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 7ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 10ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 11ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 7ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 24ms (compile: 6ms, proxy.ts: 12ms, render: 7ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 28ms (compile: 8ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 13ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 9ms, proxy.ts: 11ms, render: 5ms)
+[programmatic-data] getCityData error: column directory_listings.lat does not exist
+ GET /directory/corridor/i-75-north-south 404 in 2.3s (compile: 1167ms, proxy.ts: 4ms, render: 1135ms)
+ GET /offline 200 in 425ms (compile: 147ms, proxy.ts: 6ms, render: 272ms)
+ GET /dashboard 200 in 344ms (compile: 12ms, proxy.ts: 4ms, render: 328ms)
+ GET /directory 200 in 422ms (compile: 9ms, proxy.ts: 18ms, render: 395ms)
+ GET /tools/escort-calculator 200 in 391ms (compile: 8ms, proxy.ts: 6ms, render: 378ms)
+ GET /escort-requirements 200 in 551ms (compile: 4ms, proxy.ts: 12ms, render: 534ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 4ms, render: 4ms)
+ GET / 200 in 2.5s (compile: 11ms, proxy.ts: 6ms, render: 2.5s)
+ POST /api/heartbeat 200 in 10ms (compile: 2ms, proxy.ts: 5ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 27ms (compile: 10ms, proxy.ts: 13ms, render: 4ms)
+ POST /api/heartbeat 200 in 26ms (compile: 6ms, proxy.ts: 15ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 4ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 10ms, render: 6ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 7ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 6ms, proxy.ts: 6ms, render: 4ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 8ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 24ms (compile: 8ms, proxy.ts: 11ms, render: 6ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 11ms, render: 5ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 6ms, proxy.ts: 8ms, render: 6ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 17ms (compile: 6ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 7ms, render: 8ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 9ms (compile: 2ms, proxy.ts: 3ms, render: 3ms)
+ POST /api/heartbeat 200 in 13ms (compile: 3ms, proxy.ts: 7ms, render: 3ms)
+ POST /api/heartbeat 200 in 22ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 6ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 9ms (compile: 2ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 23ms (compile: 5ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 9ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 14ms, render: 5ms)
+ POST /api/heartbeat 200 in 26ms (compile: 7ms, proxy.ts: 13ms, render: 6ms)
+ POST /api/heartbeat 200 in 27ms (compile: 7ms, proxy.ts: 14ms, render: 6ms)
+ POST /api/heartbeat 200 in 19ms (compile: 6ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 19ms (compile: 5ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 20ms (compile: 4ms, proxy.ts: 11ms, render: 4ms)
+ POST /api/heartbeat 200 in 27ms (compile: 8ms, proxy.ts: 12ms, render: 6ms)
+ POST /api/heartbeat 200 in 13ms (compile: 4ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 12ms, render: 4ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 9ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 6ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 7ms, proxy.ts: 8ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 10ms, render: 4ms)
+ POST /api/heartbeat 200 in 15ms (compile: 4ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 5ms, render: 3ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 5ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 5ms, proxy.ts: 7ms, render: 4ms)
+ POST /api/heartbeat 200 in 10ms (compile: 2ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 5ms, render: 3ms)
+ POST /api/heartbeat 200 in 16ms (compile: 5ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 16ms (compile: 4ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 24ms (compile: 7ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 23ms (compile: 7ms, proxy.ts: 8ms, render: 8ms)
+ POST /api/heartbeat 200 in 24ms (compile: 8ms, proxy.ts: 9ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 7ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 13ms (compile: 4ms, proxy.ts: 6ms, render: 4ms)
+ POST /api/heartbeat 200 in 19ms (compile: 5ms, proxy.ts: 8ms, render: 6ms)
+ POST /api/heartbeat 200 in 9ms (compile: 1982µs, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 17ms (compile: 5ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 4ms)
+ POST /api/heartbeat 200 in 9ms (compile: 2ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 15ms (compile: 4ms, proxy.ts: 7ms, render: 4ms)
+ POST /api/heartbeat 200 in 15ms (compile: 4ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 25ms (compile: 6ms, proxy.ts: 12ms, render: 7ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 5ms, render: 5ms)
+ POST /api/heartbeat 200 in 23ms (compile: 6ms, proxy.ts: 12ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 7ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 12ms (compile: 3ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 13ms (compile: 4ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 19ms (compile: 6ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 19ms (compile: 5ms, proxy.ts: 8ms, render: 6ms)
+ POST /api/heartbeat 200 in 11ms (compile: 3ms, proxy.ts: 5ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 4ms, proxy.ts: 9ms, render: 4ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 7ms, render: 4ms)
+ POST /api/heartbeat 200 in 19ms (compile: 5ms, proxy.ts: 6ms, render: 7ms)
+ POST /api/heartbeat 200 in 10ms (compile: 2ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 16ms (compile: 4ms, proxy.ts: 7ms, render: 5ms)
+ POST /api/heartbeat 200 in 14ms (compile: 3ms, proxy.ts: 6ms, render: 4ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 6ms, render: 4ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 20ms (compile: 6ms, proxy.ts: 9ms, render: 4ms)
+ POST /api/heartbeat 200 in 9ms (compile: 2ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 5ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 12ms (compile: 3ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 10ms (compile: 2ms, proxy.ts: 5ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 8ms, render: 6ms)
+ POST /api/heartbeat 200 in 20ms (compile: 5ms, proxy.ts: 9ms, render: 6ms)
+ POST /api/heartbeat 200 in 11ms (compile: 2ms, proxy.ts: 5ms, render: 4ms)
+ POST /api/heartbeat 200 in 9ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 21ms (compile: 6ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 4ms, render: 3ms)
+ POST /api/heartbeat 200 in 18ms (compile: 5ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 22ms (compile: 6ms, proxy.ts: 10ms, render: 6ms)
+ POST /api/heartbeat 200 in 21ms (compile: 5ms, proxy.ts: 8ms, render: 7ms)
+ POST /api/heartbeat 200 in 18ms (compile: 6ms, proxy.ts: 8ms, render: 4ms)
+ POST /api/heartbeat 200 in 20ms (compile: 6ms, proxy.ts: 9ms, render: 5ms)
+ POST /api/heartbeat 200 in 13ms (compile: 4ms, proxy.ts: 5ms, render: 4ms)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://127.0.0.1:3005
+- Network:       http://127.0.0.1:3005
+- Environments: .env.local, .env
+
+✓ Starting...
+✓ Ready in 2.4s
+○ Compiling /sponsor ...
+[programmatic-data] getCityData error: column directory_listings.lat does not exist
+ GET /directory/corridor/i-75-north-south 404 in 4.6s (compile: 3.2s, proxy.ts: 207ms, render: 1126ms)
+ GET /sponsor 200 in 4.8s (compile: 3.2s, proxy.ts: 203ms, render: 1402ms)
+ GET /loads/post 200 in 4.8s (compile: 2.1s, proxy.ts: 738ms, render: 1998ms)
+ POST /api/heartbeat 200 in 264ms (compile: 153ms, proxy.ts: 95ms, render: 15ms)
+ POST /api/heartbeat 200 in 218ms (compile: 163ms, proxy.ts: 50ms, render: 6ms)
+ POST /api/heartbeat 200 in 225ms (compile: 156ms, proxy.ts: 66ms, render: 3ms)
+ POST /api/heartbeat 200 in 16ms (compile: 5ms, proxy.ts: 6ms, render: 5ms)
+ POST /api/heartbeat 200 in 15ms (compile: 5ms, proxy.ts: 4ms, render: 6ms)
+ POST /api/heartbeat 200 in 10ms (compile: 3ms, proxy.ts: 5ms, render: 3ms)
+Persisting failed: Unable to write SST file 00002152.sst
+
+Caused by:
+    The system cannot find the path specified. (os error 3)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+
+thread 'tokio-runtime-worker' (59464) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::read (TaskId 448546))
+
+Caused by:
+    0: Looking up data for TaskId 448546 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002142.sst
+    3: The system cannot find the path specified. (os error 3)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to C:\Users\PCUSER~1\AppData\Local\Temp\next-panic-df6ef098c9616c427b6d1e9895ae52a9.log.
+
+To help make Turbopack better, report this error by clicking here: https://github.com/vercel/next.js/discussions/new?category=turbopack-error-report&title=Turbopack%20Error%3A%20Failed%20to%20restore%20task%20data%20%28corrupted%20database%20or%20bug%29%3A%20Meta%20for%20%3CDiskFileSystem%20as%20FileSystem%3E%3A%3Aread%20%28TaskId%20448546%29%29&body=Turbopack%20version%3A%20%6023c46498%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ATurbopack%20Error%3A%20Failed%20to%20restore%20task%20data%20%28corrupted%20database%20or%20bug%29%3A%20Meta%20for%20%3CDiskFileSystem%20as%20FileSystem%3E%3A%3Aread%20%28TaskId%20448546%29%29%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace
+-----
+
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error [TurbopackInternalError]: Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::read (TaskId 448546))
+
+Debug info:
+- Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::read (TaskId 448546))
+  
+  Caused by:
+      0: Looking up data for TaskId 448546 from database failed
+      1: Unable to open static sorted file referenced from 00002144.meta
+      2: Unable to open static sorted file 00002142.sst
+      3: The system cannot find the path specified. (os error 3)
+    at <unknown> (TurbopackInternalError: Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::read (TaskId 448546))) {
+  location: 'C:\\actions-runner\\_work\\next.js\\next.js\\turbopack\\crates\\turbo-tasks-backend\\src\\backend\\operation\\mod.rs:156:17'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+⨯ Error: ENOENT: no such file or directory, open 'C:\Users\PC User\Biz\.next\dev\server\app\api\heartbeat\[__metadata_id__]\route\app-paths-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC User\\Biz\\.next\\dev\\server\\app\\api\\heartbeat\\[__metadata_id__]\\route\\app-paths-manifest.json'
+}
+
+thread 'tokio-runtime-worker' (59848) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for endpoint_write_to_disk (TaskId 412040))
+
+Caused by:
+    0: Looking up data for TaskId 412040 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002142.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59900) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for endpoint_write_to_disk (TaskId 412040))
+
+Caused by:
+    0: Looking up data for TaskId 412040 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002142.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59752) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 228484))
+
+Caused by:
+    0: Looking up data for TaskId 228484 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (51744) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 417711))
+
+Caused by:
+    0: Looking up data for TaskId 417711 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59464) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 422046))
+
+Caused by:
+    0: Looking up data for TaskId 422046 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (58468) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 224811))
+
+Caused by:
+    0: Looking up data for TaskId 224811 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59624) panicked at 
+-----
+C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:[1m156[31m:FATAL17[39m:
+[0mFailed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 417712))
+
+Caused by:
+    0: Looking up data for TaskId 417712 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3): An unexpected Turbopack error occurred. A panic log has been written to 
+C:\Users\PCUSER~1\AppData\Local\Temp\next-panic-df6ef098c9616c427b6d1e9895ae52a9.log.
+
+To help make Turbopack better, report this error by 
+thread 'tokio-runtime-workerclicking here: https://github.com/vercel/next.js/discussions/new?category=turbopack-error-report&title=Turbopack%20Error%3A%20Failed%20to%20restore%20task%20data%20%28corrupted%20database%20or%20bug%29%3A%20Meta%20for%20endpoint_write_to_disk%20%28TaskId%20412040%29%29&body=Turbopack%20version%3A%20%6023c46498%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ATurbopack%20Error%3A%20Failed%20to%20restore%20task%20data%20%28corrupted%20database%20or%20bug%29%3A%20Meta%20for%20endpoint_write_to_disk%20%28TaskId%20412040%29%29%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace
+-----
+
+' (59876) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 228445))
+
+Caused by:
+    0: Looking up data for TaskId 228445 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59848) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 422146))
+
+Caused by:
+    0: Looking up data for TaskId 422146 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59900) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for <DiskFileSystem as FileSystem>::write (TaskId 422149))
+
+Caused by:
+    0: Looking up data for TaskId 422149 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002143.sst
+    3: The system cannot find the path specified. (os error 3)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+
+thread 'tokio-runtime-worker' (59464) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for get_type (TaskId 71915))
+
+Caused by:
+    0: Looking up data for TaskId 71915 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002142.sst
+    3: The system cannot find the path specified. (os error 3)
+
+thread 'tokio-runtime-worker' (59464) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for get_type (TaskId 70831))
+
+Caused by:
+    0: Looking up data for TaskId 70831 from database failed
+    1: Unable to open static sorted file referenced from 00002144.meta
+    2: Unable to open static sorted file 00002142.sst
+    3: The system cannot find the path specified. (os error 3)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+[?25h

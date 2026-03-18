@@ -273,20 +273,70 @@ export function MobileSegments({ tabs, active, onChange }: SegmentsProps) {
    MobileEmpty — Empty state component
    ══════════════════════════════════════════════════════════════ */
 
+interface RecoveryAction {
+  label: string;
+  description?: string;
+  href?: string;
+  onClick?: () => void;
+}
+
 interface EmptyProps {
   icon?: React.ReactNode;
   title: string;
   description?: string;
   action?: React.ReactNode;
+  recoveryActions?: RecoveryAction[];
 }
 
-export function MobileEmpty({ icon, title, description, action }: EmptyProps) {
+export function MobileEmpty({ icon, title, description, action, recoveryActions }: EmptyProps) {
   return (
     <div className="m-empty m-animate-fade">
       {icon && <div className="m-empty__icon">{icon}</div>}
       <div className="m-empty__title">{title}</div>
       {description && <div className="m-empty__description">{description}</div>}
       {action && <div style={{ marginTop: 'var(--m-2xl)' }}>{action}</div>}
+      {recoveryActions && recoveryActions.length > 0 && (
+        <div style={{ marginTop: 'var(--m-2xl)', width: '100%', display: 'grid', gap: 'var(--m-sm)' }}>
+          <div style={{
+            fontSize: 'var(--m-font-overline, 10px)',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: 'var(--m-text-muted, #8f97a7)',
+            textAlign: 'left',
+            paddingLeft: 4,
+          }}>
+            Try instead
+          </div>
+          {recoveryActions.map((ra, i) => {
+            const inner = (
+              <div className="m-card" style={{ textAlign: 'left', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: 'var(--m-font-body, 15px)', fontWeight: 700, color: 'var(--m-text-primary, #f5f7fb)' }}>
+                      {ra.label}
+                    </div>
+                    {ra.description && (
+                      <div style={{ fontSize: 'var(--m-font-caption, 12px)', color: 'var(--m-text-muted, #8f97a7)', marginTop: 2 }}>
+                        {ra.description}
+                      </div>
+                    )}
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--m-gold)', flexShrink: 0 }}>
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </div>
+              </div>
+            );
+            if (ra.href) {
+              // Use a plain <a> to avoid import dependency on next/link in this util component
+              return <a key={i} href={ra.href} style={{ textDecoration: 'none', color: 'inherit' }}>{inner}</a>;
+            }
+            return <div key={i} onClick={ra.onClick}>{inner}</div>;
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -5,7 +5,13 @@ import { Metadata } from 'next';
 import { getCorridorData, getAllCorridorSlugs, estimateEscortCost } from '@/lib/data/corridors';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { WatchButton } from '@/components/social/WatchButton';
-import { CorridorMobileGate } from '@/components/mobile/gates/CorridorMobileGate';
+import { CorridorDetailMobileGate } from '@/components/mobile/gates/CorridorDetailMobileGate';
+import { CorridorHeartbeatStrip } from '@/components/market/CorridorHeartbeatStrip';
+import { ClaimPressureEngine } from '@/components/market/ClaimPressureEngine';
+import { OutcomeProofBlock } from '@/components/market/OutcomeProofBlock';
+import { DensityScoreboard } from '@/components/market/DensityScoreboard';
+import { OutcomeTimeline } from '@/components/outcomes/OutcomeEngine';
+import { NearbySupportModule, SupportBundleCTA } from '@/components/infrastructure/RouteSupportEngine';
 
 interface Props {
     params: Promise<{ corridor: string }>;
@@ -125,7 +131,7 @@ export default async function CorridorPage({ params }: Props) {
     };
 
     return (
-        <CorridorMobileGate>
+        <CorridorDetailMobileGate corridorSlug={corridor}>
         <>
             <script
                 type="application/ld+json"
@@ -184,7 +190,29 @@ export default async function CorridorPage({ params }: Props) {
                     </div>
                 </div>
 
+                {/* ━━━ LIVE MARKET TRUTH STRIP ━━━ */}
+                <div className="hc-container pt-8 pb-0">
+                    <CorridorHeartbeatStrip corridorSlug={corridor} displayName={corridorDisplay} />
+                </div>
+
+                {/* ━━━ OUTCOME PROOF ━━━ */}
+                <div className="hc-container pt-6 pb-0">
+                    <OutcomeProofBlock variant="strip" surface="corridor" corridor={corridor} />
+                </div>
+
                 <div className="hc-container py-12 space-y-12">
+                    {/* Density scoreboard */}
+                    <DensityScoreboard variant="corridor" corridor={corridor} title={`${corridorDisplay} Density`} />
+
+                    {/* Outcome timeline */}
+                    <OutcomeTimeline corridor={corridor} limit={5} title={`Wins on ${corridorDisplay}`} />
+
+                    {/* Route support */}
+                    <NearbySupportModule corridor={corridor} limit={4} title={`Support on ${corridorDisplay}`} />
+
+                    {/* Support bundle */}
+                    <SupportBundleCTA bundleType="route" corridor={corridorDisplay} />
+
                     {/* Broker + Operator intelligence notes */}
                     {staticData && (
                         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -292,6 +320,14 @@ export default async function CorridorPage({ params }: Props) {
                         jurisdiction={staticData?.stateRequirements?.[0]?.stateCode}
                     />
 
+                    {/* ===== CLAIM PRESSURE — corridor-context ===== */}
+                    <ClaimPressureEngine
+                        listingId={`corridor-${corridor}`}
+                        listingName={corridorDisplay}
+                        variant="banner"
+                        showValueContrast={false}
+                    />
+
                     {/* CTAs */}
                     <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="bg-hc-surface border border-hc-border rounded-xl p-6">
@@ -320,6 +356,6 @@ export default async function CorridorPage({ params }: Props) {
                 </div>
             </main>
         </>
-        </CorridorMobileGate>
+        </CorridorDetailMobileGate>
     );
 }

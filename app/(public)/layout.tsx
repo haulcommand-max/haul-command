@@ -56,7 +56,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         { href: '/map', label: '🗺 Live Map' },
                         { href: '/directory', label: '🔍 Directory' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
-                        { href: '/escort/corridor', label: '📊 Corridors' },
+                        { href: '/corridor', label: '📊 Corridors' },
                     ].map(link => (
                         <Link key={link.href} href={link.href}
                             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.625rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#6b7280', transition: 'all 0.15s' }}>
@@ -102,7 +102,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         backdropFilter: 'blur(20px) saturate(1.4)',
                     }}
                 >
-                    <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                    <Link href="/home" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
                         <Image
                             src={LOGO_MARK_SRC}
                             alt={ALT_TEXT}

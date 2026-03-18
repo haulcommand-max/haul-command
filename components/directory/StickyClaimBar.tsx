@@ -25,6 +25,16 @@ interface StickyClaimBarProps {
     claimedBy?: string | null;
     suggestHref?: string;
     claimHref?: string;
+    profileId?: string; // enables density-driven claim pressure
+}
+
+interface DensityPressure {
+    headline: string;
+    subtext: string;
+    cta: string;
+    badge: string | null;
+    urgency: string;
+    market_state: string;
 }
 
 export function StickyClaimBar({
@@ -33,9 +43,11 @@ export function StickyClaimBar({
     claimedBy,
     suggestHref = "/claim",
     claimHref = "/claim",
+    profileId,
 }: StickyClaimBarProps) {
     const [visible, setVisible] = useState(false);
     const [dismissed, setDismissed] = useState(false);
+    const [densityPressure, setDensityPressure] = useState<DensityPressure | null>(null);
 
     // Show sticky bar after scrolling 300px
     useEffect(() => {
@@ -45,14 +57,33 @@ export function StickyClaimBar({
         return () => window.removeEventListener("scroll", handler);
     }, []);
 
+    // Fetch density-driven claim pressure if profileId provided
+    useEffect(() => {
+        if (!profileId) return;
+        fetch(`/api/claim/pressure?profile_id=${profileId}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data?.ok && data.pressure) {
+                    setDensityPressure(data.pressure);
+                }
+            })
+            .catch(() => {}); // graceful fallback to static copy
+    }, [profileId]);
+
     if (dismissed) return null;
 
-    const copy = {
+    // Static copy (fallback)
+    const staticCopy = {
         listing: { headline: "Is this your business?", cta: "Claim this listing", tagline: "Free · Verified in 24 hrs" },
         state: { headline: regionName ? `Operating in ${regionName}?` : "Are you an operator?", cta: "Claim your profile", tagline: "Free · Get matched with loads" },
         category: { headline: "Are you in this space?", cta: "Add your listing", tagline: "Free · Verified in 24 hrs" },
         root: { headline: "Are you a pilot car operator?", cta: "Claim your profile", tagline: "Free forever — no subscription" },
     }[context];
+
+    // Use density pressure if available, else fall back to static
+    const copy = densityPressure
+        ? { headline: densityPressure.headline, cta: densityPressure.cta, tagline: densityPressure.subtext }
+        : staticCopy;
 
     if (claimedBy) {
         return (
@@ -91,7 +122,13 @@ export function StickyClaimBar({
                         style={{ background: "rgba(241,169,27,0.15)" }}>
                         <ShieldCheck className="w-4 h-4" style={{ color: "#F1A91B" }} />
                     </div>
-                    <div className="min-w-0">
+                <div className="min-w-0">
+                        {densityPressure?.badge && (
+                            <div className="text-[10px] font-black uppercase tracking-wider mb-1"
+                                style={{ color: densityPressure.urgency === 'critical' ? '#ef4444' : densityPressure.urgency === 'high' ? '#f59e0b' : '#22c55e' }}>
+                                {densityPressure.badge}
+                            </div>
+                        )}
                         <div className="text-sm font-bold text-white truncate">{copy.headline}</div>
                         <div className="text-[11px] text-white/40 font-medium">{copy.tagline}</div>
                     </div>

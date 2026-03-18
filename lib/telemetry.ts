@@ -27,7 +27,13 @@ export type TelemetryAction =
     | 'open_in_app_shown' | 'open_in_app_clicked'
     | 'claim_cta_shown' | 'verification_tier_up'
     | 'subscription_started' | 'subscription_cancelled'
-    | 'leaderboard_share_card';
+    | 'leaderboard_share_card'
+    // Band D: Outcome Engine + Completion + Dominance events
+    | 'outcome_timeline_seen' | 'outcome_recorded' | 'completion_state_shown'
+    | 'completion_next_step' | 'route_support_seen' | 'support_bundle_clicked'
+    | 'workflow_infra_cta' | 'social_proof_seen' | 'outcome_alerts_seen'
+    | 'playbook_page_seen' | 'playbook_step_completed'
+    | 'partner_application_submitted';
 
 export interface TrackOptions {
     entity_type?: string;

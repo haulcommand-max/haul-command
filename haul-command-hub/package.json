@@ -6,7 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "qa": "node scripts/qa/run-all.mjs",
+    "qa:links": "node scripts/qa/check-nav-footer-links.mjs",
+    "qa:routes": "node scripts/qa/check-top-route-bodies.mjs",
+    "qa:truth": "node scripts/qa/check-no-fake-live-metrics.mjs",
+    "qa:countries": "node scripts/qa/check-country-family-coverage.mjs",
+    "qa:canonicals": "node scripts/qa/check-canonical-requirements.mjs",
+    "qa:linksmin": "node scripts/qa/check-internal-link-thresholds.mjs",
+    "qa:mobile": "node scripts/qa/check-mobile-overflow.mjs",
+    "qa:sponsors": "node scripts/qa/check-sponsor-labels.mjs",
+    "qa:seo": "node scripts/qa/check-seo-contracts.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.0",
@@ -16,11 +26,14 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/mapbox__point-geometry": "^0.1.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "pg": "^8.20.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

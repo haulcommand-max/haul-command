@@ -21,6 +21,7 @@ export type EntitySource =
     | "hc_identities"
     | "directory_listings"
     | "hc_entity"
+    | "hc_load_alerts_shell"
     | "none";
 
 export interface NormalizedProfile {
@@ -411,7 +412,69 @@ export async function resolveProfile(
         }
     }
 
-    // Not found in any table
+    // ── Shell Generation: Last resort before "not found" ──
+    // If the ID looks like a slug (not UUID), try to match against
+    // hc_load_alerts by company_name to generate a minimal shell profile.
+    // This guarantees zero dead-end profiles for any entity visible in load data.
+    if (!isUUID(id)) {
+        const searchName = id
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase()); // slug → Title Case
+
+        const { data: loadHits } = await supabase
+            .from("hc_load_alerts")
+            .select("company_name, phone, origin_city, origin_state, destination_city, destination_state, position_type, rate_amount, ingested_at")
+            .ilike("company_name", `%${searchName.split(' ')[0]}%`)
+            .order("ingested_at", { ascending: false })
+            .limit(5);
+
+        if (loadHits && loadHits.length > 0) {
+            const bestHit = loadHits[0];
+            const shellProfile: NormalizedProfile = {
+                id: id, // slug as ID — not a real UUID
+                display_name: bestHit.company_name || searchName,
+                company_name: bestHit.company_name || searchName,
+                home_base_city: bestHit.origin_city || null,
+                home_base_state: bestHit.origin_state || null,
+                country_code: "US",
+                vehicle_type: null,
+                us_dot_number: null,
+                trust_score: 0,
+                verification_status: null,
+                is_claimed: false,
+                is_seeded: true,
+                claim_hash: null,
+                certifications_json: {},
+                insurance_status: null,
+                compliance_status: null,
+                latitude: null,
+                longitude: null,
+                coverage_radius_miles: null,
+                reliability_score: 0,
+                responsiveness_score: 0,
+                integrity_score: 0,
+                customer_signal_score: 0,
+                compliance_score: 0,
+                market_fit_score: 0,
+                completed_escorts: 0,
+                rating_score: 0,
+                review_count: 0,
+                fill_probability: null,
+                updated_at: bestHit.ingested_at || null,
+            };
+
+            return {
+                resolved: true,
+                resolved_table: "hc_load_alerts_shell" as EntitySource,
+                entity_type: "listing" as const,
+                resolution_path: [...path, "hc_load_alerts_shell" as EntitySource],
+                profile: shellProfile,
+                failure_reason: null,
+            };
+        }
+    }
+
+    // Not found in any table (including shell generation)
     return {
         resolved: false,
         resolved_table: "none",

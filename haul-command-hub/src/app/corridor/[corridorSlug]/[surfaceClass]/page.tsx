@@ -4,12 +4,7 @@ import { getPageKey, getInternalLinks, formatClassName } from '@/lib/page-factor
 import { ClaimBanner } from '@/components/page-factory/ClaimBanner';
 import { RelatedLinks } from '@/components/page-factory/RelatedLinks';
 import { Breadcrumbs } from '@/components/page-factory/Breadcrumbs';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabaseServer } from '@/lib/supabase-server';
 
 type Props = { params: Promise<{ corridorSlug: string; surfaceClass: string }> };
 
@@ -36,7 +31,7 @@ export default async function CorridorClassPage({ params }: Props) {
     const corridorName = corridorSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
     // Get corridor details
-    const { data: corridor } = await supabase
+    const { data: corridor } = await supabaseServer()
         .from('hc_corridor_edges')
         .select('*')
         .eq('corridor_key', corridorSlug)

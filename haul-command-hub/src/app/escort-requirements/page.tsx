@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase-server';
+import { supabaseServer } from '@/lib/supabase-server';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
@@ -46,7 +46,7 @@ function slugify(code: string) {
 }
 
 export default async function EscortRequirementsIndex() {
-    const supabase = await createClient();
+    const supabase = supabaseServer();
     const { data } = await supabase.rpc('hc_list_all_jurisdictions');
     const jurisdictions: Jurisdiction[] = data || [];
 

@@ -33,7 +33,7 @@ export default function NotFound() {
             <div className="relative z-10 w-full max-w-2xl mx-auto py-20 text-center">
                 {/* 404 Heading */}
                 <h1
-                    className="text-[clamp(6rem,15vw,10rem)] font-black leading-none tracking-tighter mb-2 bg-gradient-to-b from-[#F1A91B] via-[#C6923A] to-[#3a3019] bg-clip-text text-transparent"
+                    className="text-[clamp(4rem,12vw,10rem)] font-black leading-none tracking-tighter mb-2 bg-gradient-to-b from-[#F1A91B] via-[#C6923A] to-[#3a3019] bg-clip-text text-transparent"
                     style={{ fontFamily: 'var(--font-display)' }}
                 >
                     404
@@ -47,7 +47,7 @@ export default function NotFound() {
                 </p>
 
                 {/* Search bar */}
-                <div className="relative mb-12 max-w-lg mx-auto">
+                <div className="relative mb-8 sm:mb-12 max-w-lg mx-auto">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5A6577]" />
                     <input
                         type="text"
@@ -61,8 +61,8 @@ export default function NotFound() {
                     />
                 </div>
 
-                {/* Quick links grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
+                {/* Quick links grid — 1-col mobile, 2-col then 4-col up */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-12">
                     {QUICK_LINKS.map(({ href, label, icon: Icon, desc }) => (
                         <Link
                             key={href}
@@ -102,7 +102,7 @@ export default function NotFound() {
 
                 {/* Return CTA */}
                 <Link
-                    href="/"
+                    href="/home"
                     className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-black font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_30px_rgba(241,169,27,0.2)]"
                 >
                     Return to Command Center

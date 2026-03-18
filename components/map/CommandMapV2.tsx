@@ -343,8 +343,8 @@ export function CommandMapV2({
                 source: 'hard-fills',
                 paint: {
                     'circle-color': 'rgba(239, 68, 68, 0.12)',
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 20, 8, 60],
-                    'circle-stroke-width': 2,
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 12, 8, 35],
+                    'circle-stroke-width': 1.5,
                     'circle-stroke-color': '#ef4444',
                     'circle-opacity': 0.7,
                 },
@@ -356,9 +356,9 @@ export function CommandMapV2({
                 source: 'hard-fills',
                 paint: {
                     'circle-color': 'rgba(239, 68, 68, 0.06)',
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 35, 8, 90],
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 18, 8, 50],
                     'circle-stroke-width': 0,
-                    'circle-opacity': 0.5,
+                    'circle-opacity': 0.4,
                 },
             });
 
@@ -472,53 +472,87 @@ export function CommandMapV2({
             {/* Map Container */}
             <div ref={containerRef} style={{ width: '100%', height: '100%' }} aria-label="Haul Command live operations map" />
 
-            {/* ── HUD Overlay ── */}
+            {/* ── HUD Overlay — Responsive ── */}
             {showHud && (
-                <div style={{
-                    position: 'absolute',
-                    top: 16, right: 16,
-                    width: 260,
-                    maxHeight: 'calc(100% - 32px)',
-                    overflowY: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 12,
-                    pointerEvents: 'auto',
-                }}>
-                    {/* Stats Panel */}
-                    <HudPanel title="📊 Market Pulse">
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                            <HudStat label="Active Loads" value={String(stats.activeLoads)} color="#f97316" />
-                            <HudStat label="Online Escorts" value={String(stats.onlineEscorts)} color="#22c55e" />
-                            <HudStat label="Hard Fills" value={String(stats.hardFillCount)} color="#ef4444" />
-                            <HudStat label="Connected" value="LIVE" color="#22c55e" />
-                        </div>
-                    </HudPanel>
+                <>
+                    {/* Desktop HUD (side panel, hidden on mobile) */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 16, right: 16,
+                        width: 260,
+                        maxHeight: 'calc(100% - 32px)',
+                        overflowY: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 12,
+                        pointerEvents: 'auto',
+                    }} className="hc-map-hud-desktop">
+                        {/* Stats Panel */}
+                        <HudPanel title="📊 Market Pulse">
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                                <HudStat label="Active Loads" value={String(stats.activeLoads)} color="#f97316" />
+                                <HudStat label="Online Escorts" value={String(stats.onlineEscorts)} color="#22c55e" />
+                                <HudStat label="Hard Fills" value={String(stats.hardFillCount)} color="#ef4444" />
+                                <HudStat label="Connected" value="LIVE" color="#22c55e" />
+                            </div>
+                        </HudPanel>
 
-                    {/* Layer Controls */}
-                    <HudPanel title="🗺️ Layers">
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                            <LayerToggle label="🔥 Hot Corridors" active={layers.corridors} onChange={() => toggleLayer('corridors')} />
-                            <LayerToggle label="📦 Active Loads" active={layers.loads} onChange={() => toggleLayer('loads')} />
-                            <LayerToggle label="🚗 Escort Presence" active={layers.escorts} onChange={() => toggleLayer('escorts')} />
-                            <LayerToggle label="🚨 Hard-Fill Alerts" active={layers.hardFill} onChange={() => toggleLayer('hardFill')} />
-                            <LayerToggle label="🚔 Police/Pole Zones" active={layers.policeZones} onChange={() => toggleLayer('policeZones')} />
-                            <LayerToggle label="🌡️ Supply Density" active={layers.density} onChange={() => toggleLayer('density')} />
-                        </div>
-                    </HudPanel>
+                        {/* Layer Controls */}
+                        <HudPanel title="🗺️ Layers">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                <LayerToggle label="🔥 Hot Corridors" active={layers.corridors} onChange={() => toggleLayer('corridors')} />
+                                <LayerToggle label="📦 Active Loads" active={layers.loads} onChange={() => toggleLayer('loads')} />
+                                <LayerToggle label="🚗 Escort Presence" active={layers.escorts} onChange={() => toggleLayer('escorts')} />
+                                <LayerToggle label="🚨 Hard-Fill Alerts" active={layers.hardFill} onChange={() => toggleLayer('hardFill')} />
+                                <LayerToggle label="🚔 Police/Pole Zones" active={layers.policeZones} onChange={() => toggleLayer('policeZones')} />
+                                <LayerToggle label="🌡️ Supply Density" active={layers.density} onChange={() => toggleLayer('density')} />
+                            </div>
+                        </HudPanel>
 
-                    {/* Legend */}
-                    <HudPanel title="📋 Legend">
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                            <LegendItem color="#f97316" label="Load / Hot corridor" />
-                            <LegendItem color="#22c55e" label="Escort (available)" />
-                            <LegendItem color="#fbbf24" label="Escort (busy)" />
-                            <LegendItem color="#ef4444" label="Hard-fill zone" />
-                            <LegendItem color="#9333ea" label="Police escort required" />
-                            <LegendItem color="#3b82f6" label="High pole required" />
-                        </div>
-                    </HudPanel>
-                </div>
+                        {/* Legend */}
+                        <HudPanel title="📋 Legend">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                <LegendItem color="#f97316" label="Load / Hot corridor" />
+                                <LegendItem color="#22c55e" label="Escort (available)" />
+                                <LegendItem color="#fbbf24" label="Escort (busy)" />
+                                <LegendItem color="#ef4444" label="Hard-fill zone" />
+                                <LegendItem color="#9333ea" label="Police escort required" />
+                                <LegendItem color="#3b82f6" label="High pole required" />
+                            </div>
+                        </HudPanel>
+                    </div>
+
+                    {/* Mobile HUD (bottom bar, hidden on desktop) */}
+                    <div className="hc-map-hud-mobile" style={{
+                        position: 'absolute',
+                        bottom: 0, left: 0, right: 0,
+                        background: 'rgba(10, 15, 25, 0.95)',
+                        backdropFilter: 'blur(16px) saturate(1.5)',
+                        borderTop: '1px solid rgba(249,115,22,0.15)',
+                        padding: '10px 16px calc(10px + env(safe-area-inset-bottom))',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        gap: 4,
+                        pointerEvents: 'auto',
+                        zIndex: 10,
+                    }}>
+                        <MobileHudStat value={String(stats.activeLoads)} label="Loads" color="#f97316" />
+                        <MobileHudStat value={String(stats.onlineEscorts)} label="Escorts" color="#22c55e" />
+                        <MobileHudStat value={String(stats.hardFillCount)} label="Hard Fill" color="#ef4444" />
+                        <MobileHudStat value="LIVE" label="Status" color="#22c55e" />
+                    </div>
+
+                    {/* Responsive CSS */}
+                    <style>{`
+                        .hc-map-hud-desktop { display: flex; }
+                        .hc-map-hud-mobile { display: none !important; }
+                        @media (max-width: 767px) {
+                            .hc-map-hud-desktop { display: none !important; }
+                            .hc-map-hud-mobile { display: flex !important; }
+                        }
+                    `}</style>
+                </>
             )}
         </div>
     );
@@ -583,6 +617,15 @@ function LegendItem({ color, label }: { color: string; label: string }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: color, flexShrink: 0 }} />
             <span style={{ fontSize: 10, color: '#94a3b8' }}>{label}</span>
+        </div>
+    );
+}
+
+function MobileHudStat({ value, label, color }: { value: string; label: string; color: string }) {
+    return (
+        <div style={{ textAlign: 'center', flex: 1 }}>
+            <div style={{ fontSize: 16, fontWeight: 900, color, fontFeatureSettings: '"tnum"', lineHeight: 1.1 }}>{value}</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{label}</div>
         </div>
     );
 }

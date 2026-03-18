@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, use, Suspense, lazy } from "react";
+import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { resolveProfile, type NormalizedProfile, type ResolutionResult, type EntitySource } from "@/lib/resolvers/resolveProfile";
@@ -27,8 +27,13 @@ import { useVisibility } from "@/hooks/useVisibility";
 import { SubscriberGate, InlineUpgradeBanner } from "@/components/trust/SubscriberGate";
 import { OwnerVisibilityControls } from "@/components/trust/OwnerVisibilityControls";
 import { MobileGate } from "@/components/mobile/MobileGate";
+import { ProfileFreshness } from "@/components/market/ProfileFreshness";
+import { MarketHeartbeat } from "@/components/market/MarketHeartbeat";
+import { ClaimPressureEngine } from "@/components/market/ClaimPressureEngine";
+import { CapabilityMatrix, ServiceAreaModule, ContactPreferenceModule, ActivitySignal, TrustStrengthSummary } from "@/components/profile/DeepProfileModules";
+import { OutcomeProofBlock } from '@/components/market/OutcomeProofBlock';
 
-const MobileProviderProfile = lazy(() => import('@/components/mobile/screens/MobileProviderProfile'));
+import MobileProviderProfile from '@/components/mobile/screens/MobileProviderProfile';
 
 /* ──────────────────────────────────────────────────── */
 /*  Animation variants                                  */
@@ -140,36 +145,236 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
     /* ── Loading state ── */
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#000] flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-[#F1A91B] animate-spin" />
-            </div>
+            <MobileGate
+                mobile={
+                    <div style={{ background: 'var(--m-bg, #060b12)', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ width: 32, height: 32, border: '3px solid rgba(212,168,68,0.2)', borderTopColor: 'var(--m-gold, #D4A844)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                    </div>
+                }
+                desktop={
+                    <div className="min-h-screen bg-[#000] flex items-center justify-center">
+                        <Loader2 className="w-8 h-8 text-[#F1A91B] animate-spin" />
+                    </div>
+                }
+            />
         );
     }
 
-    /* ── Not Found state — typed and honest ── */
+    /* ── Shell Profile State — replaces "Profile Not Found" ── */
+    /* When resolver fails entirely, we generate a minimal shell from the slug */
     if (notFound || !profile) {
+        const inferredName = id
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
         return (
-            <div className="min-h-screen bg-[#000] flex items-center justify-center text-center px-6">
-                <div className="max-w-md">
-                    <Search className="w-16 h-16 text-[#333] mx-auto mb-6" />
-                    <h1 className="text-3xl font-black text-white mb-3">Profile Unavailable</h1>
-                    <p className="text-sm text-[#666] mb-4 max-w-sm mx-auto">
-                        This operator profile could not be found in our directory.
-                    </p>
-                    <p className="text-[10px] text-[#444] mb-8 max-w-xs mx-auto">
-                        The profile may have been removed, or the operator has not yet registered on HAUL COMMAND.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Link href="/directory" className="inline-block bg-[#F1A91B] text-black font-bold text-sm px-6 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
-                            Browse Directory
-                        </Link>
-                        <Link href="/surfaces/us" className="inline-block bg-[#111] text-white font-bold text-sm px-6 py-3 rounded-xl border border-[#333] hover:border-[#F1A91B]/30 transition-colors">
-                            Nearby Surfaces
-                        </Link>
+            <MobileGate
+                mobile={
+                    <div style={{ background: 'var(--m-bg, #060b12)', minHeight: '100dvh' }}>
+                        {/* Back nav */}
+                        <div style={{ padding: '12px var(--m-screen-pad, 16px) 0' }}>
+                            <Link href="/directory" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--m-text-secondary, #c7ccd7)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="15 18 9 12 15 6" />
+                                </svg>
+                                <span style={{ fontSize: 'var(--m-font-body-sm, 13px)', fontWeight: 700, color: 'var(--m-text-secondary, #c7ccd7)' }}>Directory</span>
+                            </Link>
+                        </div>
+
+                        {/* Shell profile header */}
+                        <div style={{ padding: '24px var(--m-screen-pad, 16px) 16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+                                <div style={{
+                                    width: 56, height: 56, borderRadius: 16,
+                                    background: 'linear-gradient(135deg, rgba(241,169,27,0.15), rgba(241,169,27,0.05))',
+                                    border: '1px solid rgba(241,169,27,0.25)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: 24, fontWeight: 900, color: '#F1A91B',
+                                }}>
+                                    {inferredName.charAt(0)}
+                                </div>
+                                <div>
+                                    <h1 style={{ fontSize: 20, fontWeight: 900, color: 'var(--m-text-primary, #f5f7fb)', margin: 0 }}>
+                                        {inferredName}
+                                    </h1>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                                        <span style={{
+                                            fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
+                                            background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)',
+                                            color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '0.06em',
+                                        }}>
+                                            Unclaimed
+                                        </span>
+                                        <span style={{ fontSize: 11, color: 'var(--m-text-muted, #6a7181)' }}>
+                                            Heavy Haul Operator
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Profile strength meter */}
+                            <div style={{
+                                padding: '14px 16px', borderRadius: 14,
+                                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+                                marginBottom: 12,
+                            }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                                    <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--m-text-secondary, #c7ccd7)' }}>Profile Strength</span>
+                                    <span style={{ fontSize: 12, fontWeight: 900, color: '#EF4444' }}>10%</span>
+                                </div>
+                                <div style={{ width: '100%', height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.06)', overflow: 'hidden' }}>
+                                    <div style={{ width: '10%', height: '100%', borderRadius: 999, background: '#EF4444' }} />
+                                </div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+                                    {['Phone', 'Service Area', 'Equipment', 'Insurance', 'DOT Number'].map(field => (
+                                        <span key={field} style={{
+                                            fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
+                                            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)',
+                                            color: '#EF4444',
+                                        }}>
+                                            Missing: {field}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Claim CTA */}
+                            <Link href="/claim" style={{
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                                width: '100%', padding: '16px 20px', borderRadius: 14,
+                                background: 'linear-gradient(135deg, #F1A91B, #f1c27b)',
+                                color: '#060b12', fontWeight: 900, fontSize: 15,
+                                textDecoration: 'none', textAlign: 'center',
+                            }}>
+                                🔒 Is this you? Claim this profile →
+                            </Link>
+                            <p style={{ fontSize: 10, color: 'var(--m-text-muted, #6a7181)', textAlign: 'center', marginTop: 8 }}>
+                                Claiming gives you control over your listing, visibility, and leads.
+                            </p>
+                        </div>
+
+                        {/* Market heartbeat — live context */}
+                        <div style={{ padding: '0 var(--m-screen-pad, 16px) 24px' }}>
+                            <ProfileFreshness variant="bar" />
+                        </div>
+
+                        {/* Trust & Strength Summary */}
+                        <div style={{ padding: '0 var(--m-screen-pad, 16px) 16px' }}>
+                            <TrustStrengthSummary
+                                completionPercent={15}
+                                isClaimed={false}
+                                isShell={true}
+                                verificationTier="seeded"
+                                dataFreshness="Auto-generated"
+                            />
+                        </div>
+
+                        {/* Claim Pressure — market-aware */}
+                        <div style={{ padding: '0 var(--m-screen-pad, 16px) 16px' }}>
+                            <ClaimPressureEngine
+                                listingId={id}
+                                listingName={inferredName}
+                                variant="card"
+                                showValueContrast={true}
+                            />
+                        </div>
+
+                        {/* Outcome proof — local context */}
+                        <div style={{ padding: '0 var(--m-screen-pad, 16px) 16px' }}>
+                            <OutcomeProofBlock variant="compact" surface="profile" />
+                        </div>
+
+                        {/* Action links */}
+                        <div style={{ padding: '0 var(--m-screen-pad, 16px)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                            <Link href="/directory" style={{
+                                padding: '14px 16px', borderRadius: 14,
+                                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
+                                textDecoration: 'none', textAlign: 'center',
+                            }}>
+                                <div style={{ fontSize: 18, marginBottom: 4 }}>📖</div>
+                                <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>Browse Directory</div>
+                            </Link>
+                            <Link href="/home" style={{
+                                padding: '14px 16px', borderRadius: 14,
+                                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
+                                textDecoration: 'none', textAlign: 'center',
+                            }}>
+                                <div style={{ fontSize: 18, marginBottom: 4 }}>🏠</div>
+                                <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>Command Center</div>
+                            </Link>
+                        </div>
                     </div>
-                    <p className="text-[9px] text-[#555] mt-6">Know this operator? <Link href="/start" className="text-[#F1A91B] hover:underline">Help them claim their profile →</Link></p>
-                </div>
-            </div>
+                }
+                desktop={
+                    <div className="min-h-screen bg-[#000] text-[#C0C0C0]" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+                        <div className="max-w-3xl mx-auto px-6 py-20">
+                            {/* Shell header */}
+                            <div className="flex items-center gap-5 mb-8">
+                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-black"
+                                    style={{ background: 'rgba(241,169,27,0.1)', border: '1px solid rgba(241,169,27,0.25)', color: '#F1A91B' }}>
+                                    {inferredName.charAt(0)}
+                                </div>
+                                <div>
+                                    <h1 className="text-3xl font-black text-white">{inferredName}</h1>
+                                    <div className="flex items-center gap-3 mt-2">
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded"
+                                            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#F59E0B' }}>
+                                            UNCLAIMED
+                                        </span>
+                                        <span className="text-sm text-[#888]">Heavy Haul Operator</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Profile strength */}
+                            <div className="p-5 rounded-2xl mb-6" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                <div className="flex justify-between items-center mb-3">
+                                    <span className="text-sm font-bold text-[#888]">Profile Strength</span>
+                                    <span className="text-sm font-black text-red-400">10%</span>
+                                </div>
+                                <div className="w-full h-2 rounded-full bg-[#111] overflow-hidden">
+                                    <div className="h-full rounded-full bg-red-400" style={{ width: '10%' }} />
+                                </div>
+                                <div className="flex flex-wrap gap-2 mt-4">
+                                    {['Phone', 'Service Area', 'Equipment', 'Insurance', 'DOT Number'].map(f => (
+                                        <span key={f} className="text-[10px] font-bold px-2 py-1 rounded"
+                                            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)', color: '#EF4444' }}>
+                                            Missing: {f}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Claim CTA */}
+                            <Link href="/claim"
+                                className="block w-full text-center py-4 rounded-xl font-black text-base"
+                                style={{ background: 'linear-gradient(135deg, #F1A91B, #f1c27b)', color: '#000' }}>
+                                🔒 Is this you? Claim this profile →
+                            </Link>
+                            <p className="text-center text-[10px] text-[#555] mt-3">
+                                Claiming gives you control over your listing, visibility, and leads.
+                            </p>
+
+                            {/* Market context */}
+                            <div className="mt-8">
+                                <MarketHeartbeat />
+                            </div>
+
+                            {/* Navigation */}
+                            <div className="flex gap-4 mt-8">
+                                <Link href="/directory" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
+                                    style={{ background: '#111', border: '1px solid #333', color: '#fff' }}>
+                                    Browse Directory
+                                </Link>
+                                <Link href="/" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
+                                    style={{ background: '#111', border: '1px solid #333', color: '#fff' }}>
+                                    Home
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                }
+            />
         );
     }
 
@@ -226,9 +431,12 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
     return (
         <MobileGate
             mobile={
-                <Suspense fallback={<div style={{ background: '#060b12', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8fa3b8' }}>Loading...</div>}>
-                    <MobileProviderProfile />
-                </Suspense>
+                <MobileProviderProfile
+                    profile={profile}
+                    entityId={id}
+                    isClaimed={isClaimed}
+                    isSeeded={isSeeded}
+                />
             }
             desktop={
         <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
@@ -245,6 +453,15 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                         listingId={id}
                         listingName={displayName}
                         variant="card"
+                    />
+                )}
+
+                {/* ===== LIVE MARKET HEARTBEAT ===== */}
+                {state && (
+                    <MarketHeartbeat
+                        state={state}
+                        city={city}
+                        variant="strip"
                     />
                 )}
 
@@ -353,6 +570,17 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* PROFILE FRESHNESS — Activity + last seen + verification state */}
+                                    <ProfileFreshness
+                                        lastActiveAt={profile.updated_at}
+                                        profileUpdatedAt={profile.updated_at}
+                                        isClaimed={isClaimed}
+                                        isVerified={isVerified}
+                                        completionPercent={completenessValue}
+                                        variant="inline"
+                                        className="mt-3"
+                                    />
 
                                     {/* PROFILE COMPLETENESS / VERIFICATION METER */}
                                     <div className="mt-6 p-4 rounded-xl bg-black border border-[#222] max-w-sm">

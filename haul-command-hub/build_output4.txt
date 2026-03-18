@@ -1,0 +1,34 @@
+﻿node : ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+At line:1 char:1
++ node node_modules\next\dist\bin\next build 2>&1 | Out-File build_outp ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓÜá Warning: Ne...not be correct.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ We detected multiple lockfiles and selected the directory of C:\Users\PC User\Biz\package-lock.json as the root 
+directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\PC User\Biz\haul-command-hub\package-lock.json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 5.7s
+  Running TypeScript ...
+Failed to compile.
+
+./src/components/auth/SocialLoginButtons.tsx:23:28
+Type error: Cannot find namespace 'JSX'.
+
+[0m [90m 21 |[39m [36mconst[39m [33mPROVIDER_CONFIG[39m[33m:[39m [33mRecord[39m[33m<[39m
+ [90m 22 |[39m     [33mProvider[39m[33m,[39m
+[31m[1m>[22m[39m[90m 23 |[39m     { label[33m:[39m string[33m;[39m icon[33m:[39m 
+[33mJSX[39m[33m.[39m[33mElement[39m[33m;[39m bg[33m:[39m string[33m;[39m hoverBg[33m:[39m string }
+ [90m    |[39m                            [31m[1m^[22m[39m
+ [90m 24 |[39m [33m>[39m [33m=[39m {
+ [90m 25 |[39m     google[33m:[39m {
+ [90m 26 |[39m         label[33m:[39m [32m"Google"[39m[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

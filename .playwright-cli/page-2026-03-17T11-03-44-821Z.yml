@@ -1,0 +1,65 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e6] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e7]:
+      - img [ref=e8]
+    - generic [ref=e11]:
+      - button "Open issues overlay" [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: "0"
+          - generic [ref=e15]: "1"
+        - generic [ref=e16]: Issue
+      - button "Collapse issues badge" [ref=e17]:
+        - img [ref=e18]
+  - generic [ref=e21]:
+    - heading "404" [level=1] [ref=e22]
+    - paragraph [ref=e23]: This corridor doesn't exist yet
+    - paragraph [ref=e24]: The page you're looking for may have moved or hasn't been built yet. Try searching or use the links below.
+    - generic [ref=e25]:
+      - img [ref=e26]
+      - textbox "Search operators, corridors, or loads…" [ref=e29]
+    - generic [ref=e30]:
+      - link "Load Board Browse active loads in real time" [ref=e31] [cursor=pointer]:
+        - /url: /loads
+        - img [ref=e32]
+        - generic [ref=e34]: Load Board
+        - generic [ref=e35]: Browse active loads in real time
+      - link "Directory Find verified escort operators" [ref=e36] [cursor=pointer]:
+        - /url: /directory
+        - img [ref=e37]
+        - generic [ref=e39]: Directory
+        - generic [ref=e40]: Find verified escort operators
+      - link "Leaderboards Top-ranked operators by corridor" [ref=e41] [cursor=pointer]:
+        - /url: /leaderboards
+        - img [ref=e42]
+        - generic [ref=e48]: Leaderboards
+        - generic [ref=e49]: Top-ranked operators by corridor
+      - link "Get Started Create your account" [ref=e50] [cursor=pointer]:
+        - /url: /onboarding/start
+        - img [ref=e51]
+        - generic [ref=e56]: Get Started
+        - generic [ref=e57]: Create your account
+    - generic [ref=e58]:
+      - generic [ref=e59]: Popular Coverage Areas
+      - generic [ref=e60]:
+        - link "Texas" [ref=e61] [cursor=pointer]:
+          - /url: /directory/us/texas
+        - link "Florida" [ref=e62] [cursor=pointer]:
+          - /url: /directory/us/florida
+        - link "California" [ref=e63] [cursor=pointer]:
+          - /url: /directory/us/california
+        - link "Ohio" [ref=e64] [cursor=pointer]:
+          - /url: /directory/us/ohio
+        - link "Pennsylvania" [ref=e65] [cursor=pointer]:
+          - /url: /directory/us/pennsylvania
+        - link "Georgia" [ref=e66] [cursor=pointer]:
+          - /url: /directory/us/georgia
+    - link "Return to Command Center" [ref=e67] [cursor=pointer]:
+      - /url: /
+      - text: Return to Command Center
+      - img [ref=e68]
+  - generic:
+    - generic: DEV
+    - generic: "API: hvjyfyzotqobfkakjozp"
+    - generic: "User: guest"
+    - generic: "Flags: loaded"
+  - alert [ref=e70]

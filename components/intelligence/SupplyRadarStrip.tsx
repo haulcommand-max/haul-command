@@ -88,7 +88,7 @@ export default function SupplyRadarStrip({ surface = 'directory', minScarcity = 
                         </span>
                     </div>
                     <Link
-                        href="/escort/corridor"
+                        href="/corridor"
                         onClick={() => trackEvent('directory_scroll_cta_shown', { surface })}
                         style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }}
                     >

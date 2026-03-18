@@ -55,7 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         { href: '/map', label: '🗺 Live Map' },
                         { href: '/directory', label: '🔍 Directory' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
-                        { href: '/escort/corridor', label: '📊 Corridors' },
+                        { href: '/corridor', label: '📊 Corridors' },
                         { href: '/map/jurisdiction', label: '🌎 Jurisdiction Map' },
                     ].map(link => (
                         <Link key={link.href} href={link.href}
@@ -102,7 +102,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         backdropFilter: 'blur(20px) saturate(1.4)',
                     }}
                 >
-                    <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                    <Link href="/home" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
                         <Image
                             src={LOGO_MARK_SRC}
                             alt={ALT_TEXT}

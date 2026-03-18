@@ -2,6 +2,7 @@
 
 import { useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import type { FeatureFlags } from "@/lib/flags";
 import { createClient } from "@/lib/supabase";
 import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
@@ -46,161 +47,88 @@ function LoginForm({ flags }: { flags: FeatureFlags }) {
     }
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
-                padding: "2rem",
-            }}
-        >
-            <div
-                style={{
-                    width: "100%",
-                    maxWidth: 440,
-                    background: "rgba(30, 41, 59, 0.8)",
-                    backdropFilter: "blur(20px)",
-                    borderRadius: "1.25rem",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    padding: "3rem 2rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "1.5rem",
-                }}
-            >
-                {/* Logo / Brand */}
-                <div style={{ textAlign: "center" }}>
-                    <h1
-                        style={{
-                            fontSize: "1.75rem",
-                            fontWeight: 800,
-                            color: "#F9FAFB",
-                            letterSpacing: "-0.02em",
-                            marginBottom: "0.5rem",
-                        }}
-                    >
-                        HAUL COMMAND
-                    </h1>
-                    <p style={{ color: "#94A3B8", fontSize: "0.95rem" }}>
-                        Sign in to the global heavy-haul intelligence network
-                    </p>
-                </div>
+        <div className="min-h-screen flex items-center justify-center bg-[#060a14] px-4 py-8">
+            {/* Ambient glow */}
+            <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
-                {/* Error banner */}
-                {error && (
-                    <div
-                        style={{
-                            width: "100%",
-                            padding: "0.75rem 1rem",
-                            borderRadius: "0.5rem",
-                            backgroundColor: "rgba(239,68,68,0.15)",
-                            border: "1px solid rgba(239,68,68,0.3)",
-                            color: "#FCA5A5",
-                            fontSize: "0.875rem",
-                            textAlign: "center",
-                        }}
-                    >
-                        {error === "missing_code"
-                            ? "Login was interrupted. Please try again."
-                            : error === "oauth_exchange_failed"
-                                ? "Could not complete sign-in. Please try again."
-                                : "An error occurred. Please try again."}
+            <div className="relative w-full max-w-[420px]">
+                {/* Card */}
+                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-8 md:p-10 shadow-2xl shadow-black/40">
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <Link href="/" className="inline-block">
+                            <h1 className="text-2xl font-black text-white tracking-tight">
+                                HAUL <span className="text-accent">COMMAND</span>
+                            </h1>
+                        </Link>
+                        <p className="text-gray-500 text-sm mt-2">
+                            Sign in to the global heavy-haul intelligence network
+                        </p>
                     </div>
-                )}
 
-                {/* Social Login Buttons */}
-                <SocialLoginButtons
-                    flags={{
-                        google_enabled: flags.auth.google_enabled,
-                        facebook_enabled: flags.auth.facebook_enabled,
-                        linkedin_enabled: flags.auth.linkedin_enabled,
-                    }}
-                    onProvider={handleOAuth}
-                />
+                    {/* Error banner */}
+                    {error && (
+                        <div className="w-full px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center mb-6">
+                            {error === "missing_code"
+                                ? "Login was interrupted. Please try again."
+                                : error === "oauth_exchange_failed"
+                                    ? "Could not complete sign-in. Please try again."
+                                    : "An error occurred. Please try again."}
+                        </div>
+                    )}
 
-                {/* Divider */}
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        color: "#475569",
-                        fontSize: "0.8rem",
-                    }}
-                >
-                    <div style={{ flex: 1, height: 1, backgroundColor: "#334155" }} />
-                    <span>or continue with email</span>
-                    <div style={{ flex: 1, height: 1, backgroundColor: "#334155" }} />
-                </div>
-
-                {/* Email placeholder */}
-                <div style={{ width: "100%", maxWidth: 380 }}>
-                    <input
-                        type="email"
-                        placeholder="you@company.com"
-                        disabled
-                        style={{
-                            width: "100%",
-                            padding: "0.75rem 1rem",
-                            borderRadius: "0.5rem",
-                            border: "1px solid #334155",
-                            backgroundColor: "#1E293B",
-                            color: "#94A3B8",
-                            fontSize: "0.95rem",
-                            outline: "none",
-                            opacity: 0.5,
+                    {/* Social Login Buttons */}
+                    <SocialLoginButtons
+                        flags={{
+                            google_enabled: flags.auth.google_enabled,
+                            facebook_enabled: flags.auth.facebook_enabled,
+                            linkedin_enabled: flags.auth.linkedin_enabled,
                         }}
+                        onProvider={handleOAuth}
                     />
-                    <p
-                        style={{
-                            color: "#64748B",
-                            fontSize: "0.75rem",
-                            marginTop: "0.5rem",
-                            textAlign: "center",
-                        }}
-                    >
-                        Email login coming soon
+
+                    {/* Divider */}
+                    <div className="flex items-center gap-4 my-6">
+                        <div className="flex-1 h-px bg-white/[0.06]" />
+                        <span className="text-[10px] text-gray-600 uppercase tracking-widest font-medium">
+                            or continue with email
+                        </span>
+                        <div className="flex-1 h-px bg-white/[0.06]" />
+                    </div>
+
+                    {/* Email placeholder */}
+                    <div className="w-full">
+                        <input
+                            type="email"
+                            placeholder="you@company.com"
+                            disabled
+                            className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-gray-500 text-sm placeholder:text-gray-700 outline-none opacity-50 cursor-not-allowed"
+                        />
+                        <p className="text-gray-600 text-[11px] mt-2 text-center">
+                            Email login coming soon
+                        </p>
+                    </div>
+
+                    {/* Footer */}
+                    <p className="text-gray-600 text-[11px] text-center mt-8 leading-relaxed">
+                        By signing in, you agree to HAUL COMMAND&apos;s{" "}
+                        <Link href="/terms" className="text-gray-500 hover:text-accent transition-colors">Terms of Service</Link>
+                        {" "}and{" "}
+                        <Link href="/privacy" className="text-gray-500 hover:text-accent transition-colors">Privacy Policy</Link>.
                     </p>
+
+                    {/* Dev status banner */}
+                    {flags.dev.auth_status_banner && (
+                        <div className="w-full mt-4 px-3 py-2 rounded-lg bg-accent/[0.06] border border-accent/10 text-[10px] text-accent/70 text-center font-mono">
+                            DEV: Google={flags.auth.google_enabled ? "ON" : "OFF"} Facebook=
+                            {flags.auth.facebook_enabled ? "ON" : "OFF"} LinkedIn=
+                            {flags.auth.linkedin_enabled ? "ON" : "OFF"}
+                        </div>
+                    )}
                 </div>
 
-                {/* Footer */}
-                <p
-                    style={{
-                        color: "#475569",
-                        fontSize: "0.75rem",
-                        textAlign: "center",
-                        marginTop: "0.5rem",
-                        lineHeight: 1.5,
-                    }}
-                >
-                    By signing in, you agree to HAUL COMMAND&apos;s Terms of Service and
-                    Privacy Policy.
-                </p>
-
-                {/* Dev status banner */}
-                {flags.dev.auth_status_banner && (
-                    <div
-                        style={{
-                            width: "100%",
-                            padding: "0.5rem 0.75rem",
-                            borderRadius: "0.375rem",
-                            backgroundColor: "rgba(251,191,36,0.1)",
-                            border: "1px solid rgba(251,191,36,0.2)",
-                            fontSize: "0.7rem",
-                            color: "#FBBF24",
-                            textAlign: "center",
-                            fontFamily: "monospace",
-                        }}
-                    >
-                        DEV: Google={flags.auth.google_enabled ? "ON" : "OFF"} Facebook=
-                        {flags.auth.facebook_enabled ? "ON" : "OFF"} LinkedIn=
-                        {flags.auth.linkedin_enabled ? "ON" : "OFF"}
-                    </div>
-                )}
+                {/* Bottom accent line */}
+                <div className="h-px w-24 mx-auto mt-6 bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
             </div>
         </div>
     );
@@ -210,17 +138,8 @@ export default function LoginClient({ flags }: { flags: FeatureFlags }) {
     return (
         <Suspense
             fallback={
-                <div
-                    style={{
-                        minHeight: "100vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "#0F172A",
-                        color: "#94A3B8",
-                    }}
-                >
-                    Loading...
+                <div className="min-h-screen flex items-center justify-center bg-[#060a14]">
+                    <div className="text-gray-600 text-sm animate-pulse">Loading…</div>
                 </div>
             }
         >

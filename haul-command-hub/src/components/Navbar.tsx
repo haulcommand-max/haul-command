@@ -1,36 +1,52 @@
 import Link from 'next/link';
 
+const NAV_LINKS = [
+  { href: '/directory', label: 'Directory' },
+  { href: '/requirements', label: 'Requirements' },
+  { href: '/services', label: 'Services' },
+  { href: '/rates', label: 'Rates' },
+  { href: '/corridors', label: 'Corridors' },
+  { href: '/loads', label: 'Loads' },
+  { href: '/blog', label: 'Intelligence' },
+];
+
 export default function Navbar() {
-    return (
-        <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16 items-center">
-                    <div className="flex items-center">
-                        <Link href="/" className="text-accent text-xl font-black tracking-tighter">
-                            HAUL COMMAND<span className="text-white"> HUB</span>
-                        </Link>
-                    </div>
-                    <div className="hidden md:ml-6 md:flex md:space-x-8">
-                        <Link href="/directory" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
-                            Directory
-                        </Link>
-                        <Link href="/blog" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
-                            Intelligence
-                        </Link>
-                        <Link href="/tools/friday-checker" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
-                            Friday Checker
-                        </Link>
-                        <Link href="/tools/superload-meter" className="text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">
-                            Superload Meter
-                        </Link>
-                    </div>
-                    <div className="flex items-center">
-                        <button className="bg-accent text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-yellow-500 transition-colors">
-                            Access Network
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    );
+  return (
+    <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          <div className="flex items-center">
+            <Link href="/" className="text-accent text-xl font-black tracking-tighter">
+              HAUL COMMAND
+            </Link>
+          </div>
+          <div className="hidden md:ml-6 md:flex md:space-x-1">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-gray-300 hover:text-accent hover:bg-white/[0.03] px-3 py-2 rounded-lg text-sm font-medium transition-all"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/claim"
+              className="hidden sm:inline-flex bg-accent text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-500 transition-colors"
+            >
+              Claim Listing
+            </Link>
+            <Link
+              href="/login"
+              className="text-gray-400 hover:text-white px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Sign In
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }

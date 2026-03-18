@@ -149,7 +149,7 @@ export default function MobileAdGrid() {
               Get featured in your service area
             </div>
           </div>
-          <Link href="/sponsor/territory" className="m-chip m-chip--gold" style={{ textDecoration: 'none', fontSize: 'var(--m-font-caption)' }}>
+          <Link href="/sponsor" className="m-chip m-chip--gold" style={{ textDecoration: 'none', fontSize: 'var(--m-font-caption)' }}>
             Sponsor
           </Link>
         </div>

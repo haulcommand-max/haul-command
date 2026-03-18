@@ -107,15 +107,30 @@ export async function POST(req: NextRequest) {
             checkoutUrl = session.url;
         }
 
-        // Record the pending sponsorship
+        // Record the pending sponsorship (schema: sponsor_user_id, territory_type, territory_value, plan, price_cents_monthly, status)
+        const planTier = territory_type === 'country' ? 'exclusive' : territory_type === 'state' ? 'gold' : 'silver';
+
+        // Resolve sponsor_user_id: use provided body.sponsor_id or generate deterministic UUID from email
+        let sponsorUserId = body.sponsor_id ?? null;
+        if (!sponsorUserId) {
+            // Generate deterministic UUID v5 from email (DNS namespace)
+            const { createHash } = await import('crypto');
+            const hash = createHash('sha256').update(email.toLowerCase()).digest('hex');
+            // Format as UUID v4-style from hash
+            sponsorUserId = [
+                hash.slice(0, 8), hash.slice(8, 12),
+                '4' + hash.slice(13, 16), '8' + hash.slice(17, 20),
+                hash.slice(20, 32),
+            ].join('-');
+        }
+
         await supabase.from('territory_sponsorships').insert({
+            sponsor_user_id: sponsorUserId,
             territory_type,
             territory_value,
-            sponsor_company: company_name,
-            sponsor_email: email,
-            plan_price_monthly: plan.price_monthly,
+            plan: planTier,
+            price_cents_monthly: plan.price_monthly * 100,
             status: 'pending',
-            created_at: new Date().toISOString(),
         });
 
         return NextResponse.json({

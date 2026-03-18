@@ -1,6 +1,8 @@
 import { getFeatureFlagsServer } from "@/lib/flags";
 import LoginClient from "./LoginClient";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
     title: "Log In — HAUL COMMAND",
     description:

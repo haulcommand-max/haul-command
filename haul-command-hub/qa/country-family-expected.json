@@ -1,0 +1,25 @@
+{
+  "totalCountries": 57,
+  "slugLengthFilter": 2,
+  "comment": "Only 2-char ISO slugs are countries. slugs > 2 chars are service/topic entries.",
+  "seedServices": [
+    "pilot-car-services",
+    "escort-vehicle-services",
+    "oversize-load-escorts",
+    "wide-load-escorts",
+    "route-surveys",
+    "height-pole-services",
+    "superload-support",
+    "permit-routing-support"
+  ],
+  "seedInfrastructureTypes": [
+    "staging-yards",
+    "hotels",
+    "truck-stops",
+    "secure-parking",
+    "installers",
+    "repair",
+    "radio-shops",
+    "upfitters"
+  ]
+}

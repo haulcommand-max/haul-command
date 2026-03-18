@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, Star } from 'lucide-react';
 import { track } from '@/lib/telemetry';
 
@@ -58,10 +59,15 @@ export default function SmartAppBanner({
 }: SmartAppBannerProps) {
     const [visible, setVisible] = useState(false);
     const [platform, setPlatform] = useState<'ios' | 'android' | null>(null);
+    const pathname = usePathname();
+
+    // Suppress on core operational flows — top banner must never push content on these routes
+    const SUPPRESSED_ROUTES = ['/directory', '/inbox', '/loads', '/claim', '/login', '/place', '/map', '/home'];
+    const isSuppressed = SUPPRESSED_ROUTES.some(r => pathname?.startsWith(r));
 
     useEffect(() => {
-        // Don't show in native app or standalone PWA
-        if (isNativeApp() || isStandalone()) return;
+        // Don't show in native app, standalone PWA, or on suppressed routes
+        if (isNativeApp() || isStandalone() || isSuppressed) return;
 
         // Check dismissal
         const dismissedAt = localStorage.getItem(DISMISS_KEY);

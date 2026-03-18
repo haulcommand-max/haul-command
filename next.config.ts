@@ -66,6 +66,16 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             {
+                source: "/escort/corridor",
+                destination: "/corridor",
+                permanent: true,
+            },
+            {
+                source: "/escort/corridor/:path*",
+                destination: "/corridor/:path*",
+                permanent: true,
+            },
+            {
                 source: "/escort/:path*",
                 destination: "/directory/:path*",
                 permanent: true,

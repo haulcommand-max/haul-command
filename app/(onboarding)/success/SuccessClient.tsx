@@ -1,16 +1,21 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ShieldCheck, ArrowRight, Loader2 } from "lucide-react";
+import { ShieldCheck, ArrowRight, Zap, Star, Globe, TrendingUp } from "lucide-react";
 
-// Lazy-load modal — only needed at this step
 const EscortBrokerInviteModal = dynamic(
     () => import("@/components/onboarding/EscortBrokerInviteModal"),
     { ssr: false }
 );
+
+/* ══════════════════════════════════════════════════════════════
+   Post-Claim Success — V2: Upsell Ladder
+   Claim → Invite Brokers → Upgrade Path (Featured / Sponsor / Verified)
+   Per Operating Brief: "no claim completion without a paid next step"
+   ══════════════════════════════════════════════════════════════ */
 
 function ProfileApprovedInner() {
     const router = useRouter();
@@ -18,69 +23,194 @@ function ProfileApprovedInner() {
     const name = searchParams.get("name") ?? undefined;
     const [showInvite, setShowInvite] = useState(false);
     const [inviteDismissed, setInviteDismissed] = useState(false);
+    const [showUpgrades, setShowUpgrades] = useState(false);
 
-    // Auto-trigger invite modal after 1.5s — high conversion moment
+    // Auto-trigger invite modal after 1.5s, reveal upgrades after 3s
     useEffect(() => {
-        const t = setTimeout(() => setShowInvite(true), 1500);
-        return () => clearTimeout(t);
+        const t1 = setTimeout(() => setShowInvite(true), 1500);
+        const t2 = setTimeout(() => setShowUpgrades(true), 3000);
+        return () => { clearTimeout(t1); clearTimeout(t2); };
     }, []);
 
-    const handleContinue = () => {
-        router.push("/directory");
-    };
-
     return (
-        <div className="flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500 text-center">
+        <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            animation: 'slideUp 0.5s ease forwards',
+            textAlign: 'center', padding: '0 20px',
+        }}>
             {/* Success graphic */}
-            <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 mx-auto mb-6 animate-in zoom-in duration-500">
-                <ShieldCheck size={40} />
+            <div style={{
+                width: 80, height: 80, borderRadius: '50%',
+                background: 'rgba(34,197,94,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 24px',
+            }}>
+                <ShieldCheck size={40} style={{ color: '#22C55E' }} />
             </div>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-4">
+            <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '4px 12px', borderRadius: 999,
+                background: 'rgba(212,168,68,0.1)',
+                border: '1px solid rgba(212,168,68,0.2)',
+                color: '#D4A844', fontSize: 12, fontWeight: 700,
+                marginBottom: 16,
+            }}>
                 🚀 Profile Live
             </div>
 
-            <h1 className="text-3xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-3">
+            <h1 style={{
+                fontSize: 28, fontWeight: 900, color: '#f5f7fb',
+                lineHeight: 1.1, margin: '0 0 8px',
+            }}>
                 {name ? `You're in, ${name}!` : "Your Profile is Live!"}
             </h1>
 
-            <p className="text-brand-muted text-sm max-w-xs mb-8">
-                Brokers can now find and book you on Haul Command. Invite the brokers you already work with to get direct requests faster.
+            <p style={{
+                fontSize: 14, color: '#8fa3b8', maxWidth: 300,
+                margin: '0 0 24px', lineHeight: 1.5,
+            }}>
+                Brokers can now find and book you on Haul Command. Build your trust score by inviting brokers and completing escorts.
             </p>
 
-            {/* Invite CTA — highest priority action */}
+            {/* Invite CTA */}
             {!inviteDismissed && (
                 <button
                     onClick={() => setShowInvite(true)}
-                    className="w-full max-w-xs bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 rounded-xl transition-colors mb-3 flex items-center justify-center gap-2"
+                    style={{
+                        width: '100%', maxWidth: 320,
+                        padding: '14px 20px', borderRadius: 14,
+                        background: 'var(--m-gold, #D4A844)',
+                        color: '#0a0e17', fontSize: 15, fontWeight: 800,
+                        border: 'none', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                        marginBottom: 10,
+                    }}
                 >
                     🚀 Invite My Brokers
                 </button>
             )}
 
             <button
-                onClick={handleContinue}
-                className="w-full max-w-xs flex items-center justify-center gap-2 py-3 text-brand-muted hover:text-brand-text text-sm transition-colors"
+                onClick={() => router.push("/home")}
+                style={{
+                    background: 'transparent', border: 'none',
+                    color: '#8fa3b8', fontSize: 14, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '10px 0',
+                }}
             >
-                {inviteDismissed ? "Go to Directory" : "Skip for now"}
+                {inviteDismissed ? "Go to Dashboard" : "Skip for now"}
                 <ArrowRight size={16} />
             </button>
 
+            {/* ═══ UPGRADE LADDER ═══ */}
+            {showUpgrades && (
+                <div style={{
+                    width: '100%', maxWidth: 340,
+                    marginTop: 32, textAlign: 'left',
+                    animation: 'slideUp 0.5s ease forwards',
+                }}>
+                    <div style={{
+                        fontSize: 10, fontWeight: 800, textTransform: 'uppercase',
+                        letterSpacing: '0.08em', color: 'var(--m-gold, #D4A844)',
+                        marginBottom: 16,
+                    }}>
+                        Upgrade Your Visibility
+                    </div>
+
+                    {/* Featured Partner */}
+                    <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                            padding: '16px 18px', borderRadius: 14, marginBottom: 10,
+                            background: 'linear-gradient(135deg, rgba(212,168,68,0.08), rgba(212,168,68,0.02))',
+                            border: '1px solid rgba(212,168,68,0.2)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <Star size={20} style={{ color: '#D4A844', flexShrink: 0 }} />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 800, color: '#D4A844' }}>
+                                        Featured Partner
+                                    </div>
+                                    <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
+                                        Priority in search + verified badge · $99/mo
+                                    </div>
+                                </div>
+                            </div>
+                            <ArrowRight size={16} style={{ color: '#6a7181', flexShrink: 0 }} />
+                        </div>
+                    </Link>
+
+                    {/* Sponsor Territory */}
+                    <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                            padding: '16px 18px', borderRadius: 14, marginBottom: 10,
+                            background: 'linear-gradient(135deg, rgba(20,184,166,0.06), rgba(20,184,166,0.02))',
+                            border: '1px solid rgba(20,184,166,0.15)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <Globe size={20} style={{ color: '#14B8A6', flexShrink: 0 }} />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 800, color: '#14B8A6' }}>
+                                        Sponsor Your Territory
+                                    </div>
+                                    <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
+                                        Own your city-level visibility · from $149/mo
+                                    </div>
+                                </div>
+                            </div>
+                            <ArrowRight size={16} style={{ color: '#6a7181', flexShrink: 0 }} />
+                        </div>
+                    </Link>
+
+                    {/* Boost Profile */}
+                    <Link href="/boost" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                            padding: '16px 18px', borderRadius: 14, marginBottom: 10,
+                            background: 'rgba(255,255,255,0.02)',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <TrendingUp size={20} style={{ color: '#8B5CF6', flexShrink: 0 }} />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 800, color: '#f5f7fb' }}>
+                                        Boost Your Profile
+                                    </div>
+                                    <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
+                                        7-day visibility surge · from $29
+                                    </div>
+                                </div>
+                            </div>
+                            <ArrowRight size={16} style={{ color: '#6a7181', flexShrink: 0 }} />
+                        </div>
+                    </Link>
+                </div>
+            )}
+
             {/* Stats strip */}
-            <div className="mt-10 grid grid-cols-3 gap-4 text-center border-t border-brand-steel/30 pt-6 w-full max-w-xs">
+            <div style={{
+                marginTop: 32, paddingTop: 20,
+                borderTop: '1px solid rgba(255,255,255,0.06)',
+                width: '100%', maxWidth: 300,
+                display: 'grid', gridTemplateColumns: '1fr 1fr 1fr',
+                gap: 16, textAlign: 'center',
+            }}>
                 {[
                     { label: "Profile Views", value: "0" },
-                    { label: "Invite Accepted", value: "0" },
+                    { label: "Invites Sent", value: "0" },
                     { label: "Jobs Available", value: "Live" },
                 ].map((s) => (
                     <div key={s.label}>
-                        <div className="text-2xl font-bold text-brand-gold">{s.value}</div>
-                        <div className="text-[10px] text-brand-muted mt-0.5">{s.label}</div>
+                        <div style={{ fontSize: 24, fontWeight: 800, color: '#D4A844' }}>{s.value}</div>
+                        <div style={{ fontSize: 10, color: '#6a7181', marginTop: 2 }}>{s.label}</div>
                     </div>
                 ))}
             </div>
 
-            {/* Invite modal — fires automatically after 1.5s */}
+            {/* Invite modal */}
             {showInvite && (
                 <EscortBrokerInviteModal
                     context="post_approval"
@@ -91,6 +221,13 @@ function ProfileApprovedInner() {
                     }}
                 />
             )}
+
+            <style>{`
+                @keyframes slideUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 }

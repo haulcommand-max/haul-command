@@ -208,7 +208,7 @@ export function buildInternalLinks(opts: {
     }));
 
     const corridorLinks = (corridors.length ? corridors : Object.keys(CORRIDOR_SLUGS).slice(0, 3)).map((name) => ({
-        href: `/escort/corridor/${CORRIDOR_SLUGS[name] ?? name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+        href: `/corridor/${CORRIDOR_SLUGS[name] ?? name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
         label: `${name} Corridor Escorts`,
     }));
 

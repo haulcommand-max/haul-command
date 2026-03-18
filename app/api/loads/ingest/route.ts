@@ -50,12 +50,18 @@ export async function POST(req: NextRequest) {
                 destination_state: alert.destination_state,
                 position_type: alert.position_type,
                 rate_amount: alert.rate_amount,
+                rate_type: alert.rate_type,
                 corridor: alert.origin_state && alert.destination_state
                     ? `${alert.origin_state}-${alert.destination_state}` : null,
                 dedup_key: alert.dedup_key,
                 source: source || alert.source,
                 raw_text: alert.raw,
-                status: 'active',
+                status: alert.status !== 'unknown' ? alert.status : 'active',
+                is_verified: alert.is_verified,
+                is_quick_pay: alert.is_quick_pay,
+                estimated_miles: alert.estimated_miles,
+                recency_label: alert.recency_label,
+                move_date: alert.move_date,
                 ingested_at: now,
                 expires_at: new Date(Date.now() + 72 * 60 * 60 * 1000).toISOString(), // 72hr TTL
             }));

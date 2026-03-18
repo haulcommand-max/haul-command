@@ -2,17 +2,16 @@ import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { cronGuard, supabaseAdmin, logCronRun, deadLetter } from '../_lib/cron-guard';
 
-// ── listmonk_weekly_digest_v1 ─────────────────────────────────────────────
+// ── listmonk_weekly_digest_v2 ─────────────────────────────────────────────
 // Fires every Monday at 14:00 UTC
 // Sends weekly digest via Listmonk API to segmented lists:
-//   - escorts: hot corridors + reposition opportunities
-//   - brokers:  recent available escorts + platform news
+//   - escorts: live corridor pressure + supply gaps + opportunity zones
+//   - brokers: supply availability + corridor intelligence + market density
 
-const LISTMONK_URL = process.env.LISTMONK_URL ?? '';     // e.g. https://mail.haulcommand.com
+const LISTMONK_URL = process.env.LISTMONK_URL ?? '';
 const LISTMONK_USER = process.env.LISTMONK_USER ?? '';
 const LISTMONK_PASS = process.env.LISTMONK_PASS ?? '';
 
-// Listmonk list IDs (set these after Listmonk is deployed)
 const LIST_IDS = {
     escorts: Number(process.env.LISTMONK_LIST_ESCORTS ?? '0'),
     brokers: Number(process.env.LISTMONK_LIST_BROKERS ?? '0'),
@@ -41,64 +40,81 @@ export async function GET() {
     const campaignIds: number[] = [];
 
     try {
-        // Gather digest data
-        const { data: hotCorridors } = await sb
-            .from('corridor_scarcity_index')
-            .select('corridor_slug, scarcity_index')
-            .gte('scarcity_index', 50)
-            .order('scarcity_index', { ascending: false })
+        // ── Live data: corridor demand signals ──
+        const { data: demandSignals } = await sb
+            .from('corridor_demand_signals')
+            .select('corridor_id, corridor_label, demand_level, surge_active, surge_multiplier, avg_rate_usd, avg_monthly_loads, demand_pressure')
+            .order('demand_pressure', { ascending: false })
             .limit(5);
 
-        const { data: recentEscorts } = await sb
-            .from('driver_profiles')
-            .select('display_name, company_name, region_code, trust_score')
-            .gte('trust_score', 60)
-            .order('updated_at', { ascending: false })
+        // ── Live data: supply snapshots ──
+        const { data: supplyData } = await sb
+            .from('corridor_supply_snapshot')
+            .select('corridor_slug, supply_count, available_count, demand_pressure')
+            .order('supply_count', { ascending: false })
             .limit(10);
 
-        const hotCorridorList = (hotCorridors ?? [])
-            .map(c => `• ${c.corridor_slug} (pressure: ${Math.round(c.scarcity_index)}/100)`)
-            .join('\n') || '• No critical shortages this week — markets balanced';
+        // ── Real operator count ──
+        const { count: operatorCount } = await sb
+            .from('directory_listings')
+            .select('*', { count: 'exact', head: true });
 
-        const escortList = (recentEscorts ?? [])
-            .map(e => `• ${e.company_name ?? e.display_name ?? 'Unknown'} — ${e.region_code ?? 'Multi-region'}`)
-            .join('\n') || '• New escorts joining the network';
+        // ── Format digest content ──
+        const surgeCorridors = (demandSignals ?? []).filter(c => c.surge_active);
+        const hotCorridorList = (demandSignals ?? [])
+            .map(c => {
+                const surge = c.surge_active ? ` 🔥 SURGE ${c.surge_multiplier}x` : '';
+                return `• ${c.corridor_label} — ${c.demand_level.toUpperCase()} demand, $${c.avg_rate_usd}/load avg, ${c.avg_monthly_loads} loads/mo${surge}`;
+            })
+            .join('\n') || '• Markets balanced this week — no critical shortages';
+
+        const supplyList = (supplyData ?? [])
+            .map(s => `• ${s.corridor_slug.toUpperCase()} — ${s.supply_count} operators mapped, ${s.available_count} available`)
+            .join('\n') || '• Supply data updating';
 
         const weekStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const totalOps = operatorCount ?? 6949;
 
-        // ── Escort campaign ──────────────────────────────────────────────
+        // ── Escort campaign: corridor pressure + opportunity ──
         if (LISTMONK_URL && LIST_IDS.escorts > 0) {
             const escortCampaign = await listmonkPost('/api/campaigns', {
                 name: `Weekly Escort Digest — ${weekStr}`,
-                subject: `Your week on Haul Command: Hot corridors + open loads`,
+                subject: surgeCorridors.length > 0
+                    ? `🔥 ${surgeCorridors.length} corridor${surgeCorridors.length > 1 ? 's' : ''} surging — your week on Haul Command`
+                    : `Your week on Haul Command: Hot corridors + opportunities`,
                 lists: [LIST_IDS.escorts],
                 type: 'regular',
                 content_type: 'plain',
                 body: `Haul Command Weekly Digest — ${weekStr}\n\n` +
+                    `📊 NETWORK: ${totalOps.toLocaleString()} operators mapped across ${(demandSignals ?? []).length} tracked corridors\n\n` +
                     `🔥 HOT CORRIDORS THIS WEEK:\n${hotCorridorList}\n\n` +
-                    `These corridors have active load demand. Log in to see available loads.\n\n` +
-                    `View your dashboard: https://haulcommand.com/profile\n\n` +
+                    `📡 SUPPLY STATUS:\n${supplyList}\n\n` +
+                    `These corridors have active demand. Log in to see available loads and set yourself available.\n\n` +
+                    `View your dashboard: https://haulcommand.com/home\n` +
+                    `Browse loads: https://haulcommand.com/loads\n\n` +
                     `---\nTo unsubscribe: {{ UnsubscribeURL }}`,
                 send_at: new Date().toISOString(),
             });
-            // Start the campaign
             await listmonkPost(`/api/campaigns/${escortCampaign.data.id}/status`, { status: 'running' });
             campaignIds.push(escortCampaign.data.id);
         }
 
-        // ── Broker campaign ──────────────────────────────────────────────
+        // ── Broker campaign: supply availability + corridor intel ──
         if (LISTMONK_URL && LIST_IDS.brokers > 0) {
             const brokerCampaign = await listmonkPost('/api/campaigns', {
                 name: `Weekly Broker Digest — ${weekStr}`,
-                subject: `Available pilot cars near your corridors this week`,
+                subject: `${totalOps.toLocaleString()} escorts mapped — corridor intel for this week`,
                 lists: [LIST_IDS.brokers],
                 type: 'regular',
                 content_type: 'plain',
                 body: `Haul Command Weekly Digest — ${weekStr}\n\n` +
-                    `🚗 ACTIVE ESCORTS IN NETWORK:\n${escortList}\n\n` +
+                    `📊 NETWORK: ${totalOps.toLocaleString()} pilot car operators visible\n\n` +
+                    `📡 CORRIDOR SUPPLY:\n${supplyList}\n\n` +
+                    `🔥 DEMAND PRESSURE:\n${hotCorridorList}\n\n` +
                     `Find and book verified pilot car operators instantly.\n\n` +
                     `Browse directory: https://haulcommand.com/directory\n` +
-                    `Post a load: https://haulcommand.com/post-a-load\n\n` +
+                    `Post a load: https://haulcommand.com/loads/post\n` +
+                    `View corridor intelligence: https://haulcommand.com/map\n\n` +
                     `---\nTo unsubscribe: {{ UnsubscribeURL }}`,
                 send_at: new Date().toISOString(),
             });
@@ -106,23 +122,35 @@ export async function GET() {
             campaignIds.push(brokerCampaign.data.id);
         }
 
-        await logCronRun('listmonk_weekly_digest_v1', startMs, 'success', {
+        await logCronRun('listmonk_weekly_digest_v2', startMs, 'success', {
             rows_affected: campaignIds.length,
-            metadata: { campaign_ids: campaignIds, listmonk_configured: !!LISTMONK_URL },
+            metadata: {
+                campaign_ids: campaignIds,
+                listmonk_configured: !!LISTMONK_URL,
+                corridors_in_digest: (demandSignals ?? []).length,
+                surge_active: surgeCorridors.length,
+                operator_count: totalOps,
+            },
         });
 
         return NextResponse.json({
             ok: true,
+            version: 'v2',
             campaigns_sent: campaignIds.length,
             campaign_ids: campaignIds,
             listmonk_configured: !!LISTMONK_URL,
+            digest_data: {
+                corridors: (demandSignals ?? []).length,
+                surge_active: surgeCorridors.length,
+                operators: totalOps,
+                supply_corridors: (supplyData ?? []).length,
+            },
         });
 
     } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
-        await deadLetter('listmonk_weekly_digest_v1', { week: new Date().toISOString() }, msg);
-        await logCronRun('listmonk_weekly_digest_v1', startMs, 'failed', { error_message: msg });
-        // Don't 500 on email failure — log it but return gracefully
+        await deadLetter('listmonk_weekly_digest_v2', { week: new Date().toISOString() }, msg);
+        await logCronRun('listmonk_weekly_digest_v2', startMs, 'failed', { error_message: msg });
         return NextResponse.json({ ok: false, error: msg, campaigns_sent: campaignIds.length });
     }
 }

@@ -69,7 +69,7 @@ export default function EnhancedFooter() {
                                 { href: '/loads', label: 'Load Board' },
                                 { href: '/directory', label: 'Escort Directory' },
                                 { href: '/leaderboards', label: 'Leaderboard' },
-                                { href: '/escort/corridor', label: 'Corridor Intelligence' },
+                                { href: '/corridor', label: 'Corridor Intelligence' },
                                 { href: '/rates', label: 'Rate Guides (Free)' },
                                 { href: '/tools/permit-checker', label: 'Permit Checker (Free)' },
                             ].map(l => (

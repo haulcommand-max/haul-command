@@ -5,16 +5,43 @@ import LoginCard from '@/components/auth/LoginCard'
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#030712] via-[#0B1120] to-[#030712] p-4">
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100dvh',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 16,
+        background: 'radial-gradient(circle at 30% 20%, rgba(198, 146, 58, 0.06), transparent 50%), var(--m-bg, #060b12)',
+      }}
+    >
       <Suspense fallback={
-        <div className="w-full max-w-md animate-pulse rounded-[28px] border border-amber-500/20 bg-[#0b1020] p-6 shadow-2xl">
-          <div className="mb-6 text-center">
-            <div className="mx-auto mb-2 h-3 w-24 rounded bg-white/10" />
-            <div className="mx-auto h-8 w-48 rounded bg-white/10" />
+        <div
+          style={{
+            width: '100%',
+            maxWidth: 420,
+            borderRadius: 28,
+            border: '1px solid rgba(198, 146, 58, 0.12)',
+            background: 'rgba(14, 17, 24, 0.98)',
+            padding: 28,
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                margin: '0 auto 16px',
+                borderRadius: 16,
+                background: 'rgba(198, 146, 58, 0.08)',
+              }}
+            />
+            <div style={{ height: 12, width: 120, borderRadius: 6, background: 'rgba(255, 255, 255, 0.06)', margin: '0 auto 12px' }} />
+            <div style={{ height: 28, width: 200, borderRadius: 8, background: 'rgba(255, 255, 255, 0.06)', margin: '0 auto' }} />
           </div>
-          <div className="space-y-3">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="h-12 rounded-xl bg-white/5" />
+          <div style={{ display: 'grid', gap: 10 }}>
+            {[1, 2, 3].map(i => (
+              <div key={i} style={{ height: 52, borderRadius: 16, background: 'rgba(255, 255, 255, 0.04)' }} />
             ))}
           </div>
         </div>

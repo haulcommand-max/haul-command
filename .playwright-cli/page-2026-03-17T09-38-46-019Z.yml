@@ -1,0 +1,241 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - img "Haul Command" [ref=e4]
+      - generic [ref=e5]: HAUL COMMAND
+    - navigation [ref=e6]:
+      - generic [ref=e7]: Core OS
+      - link "📋 Load Board" [ref=e8] [cursor=pointer]:
+        - /url: /loads
+      - link "🗺 Live Map" [ref=e9] [cursor=pointer]:
+        - /url: /map
+      - link "🔍 Directory" [ref=e10] [cursor=pointer]:
+        - /url: /directory
+      - link "🏆 Leaderboard" [ref=e11] [cursor=pointer]:
+        - /url: /leaderboards
+      - link "📊 Corridors" [ref=e12] [cursor=pointer]:
+        - /url: /escort/corridor
+      - link "🌎 Jurisdiction Map" [ref=e13] [cursor=pointer]:
+        - /url: /map/jurisdiction
+      - generic [ref=e14]: Free Tools
+      - link "💵 Rate Guides" [ref=e15] [cursor=pointer]:
+        - /url: /rates
+      - link "🧮 Permit Calculator" [ref=e16] [cursor=pointer]:
+        - /url: /tools/permit-calculator
+      - link "💰 Rate Lookup" [ref=e17] [cursor=pointer]:
+        - /url: /tools/rate-lookup
+      - generic [ref=e18]: Payments
+      - link "💳 Escrow Checkout" [ref=e19] [cursor=pointer]:
+        - /url: /escrow/checkout
+  - main [ref=e20]:
+    - generic [ref=e24]: All Systems Operational
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: 🚛
+          - generic [ref=e30]:
+            - generic [ref=e31]: Post a Load
+            - generic [ref=e32]: Instant match preview → Top 3 → Dispatch in seconds
+        - generic [ref=e33]:
+          - generic [ref=e34]: "1"
+          - generic [ref=e36]: "2"
+          - generic [ref=e38]: "3"
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: 📍 Origin
+              - generic [ref=e45]: Where is the load picking up?
+              - generic [ref=e46]:
+                - text: City
+                - textbox "Orlando" [ref=e47]
+              - generic [ref=e48]:
+                - generic [ref=e49]:
+                  - text: State
+                  - textbox "FL" [ref=e50]
+                - generic [ref=e51]:
+                  - text: Latitude
+                  - textbox "28.5383" [ref=e52]
+                - generic [ref=e53]:
+                  - text: Longitude
+                  - textbox "-81.3792" [ref=e54]
+            - generic [ref=e55]:
+              - generic [ref=e56]: 📍 Destination
+              - generic [ref=e57]: Where is the load heading?
+              - generic [ref=e58]:
+                - text: City
+                - textbox "Phoenix" [ref=e59]
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - text: State
+                  - textbox "AZ" [ref=e62]
+                - generic [ref=e63]:
+                  - text: Latitude
+                  - textbox "33.4484" [ref=e64]
+                - generic [ref=e65]:
+                  - text: Longitude
+                  - textbox "-112.0740" [ref=e66]
+            - generic [ref=e67]:
+              - generic [ref=e68]: 🕐 Pickup Window
+              - generic [ref=e69]:
+                - generic [ref=e70]:
+                  - text: Earliest Pickup
+                  - textbox [ref=e71]
+                - generic [ref=e72]:
+                  - text: Latest Pickup
+                  - textbox [ref=e73]
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: 🏷️ Load Type
+              - generic [ref=e77]:
+                - button "🚛 Oversized / Wide Load" [ref=e78] [cursor=pointer]:
+                  - generic [ref=e79]: 🚛
+                  - text: Oversized / Wide Load
+                - button "🏗️ Superload" [ref=e80] [cursor=pointer]:
+                  - generic [ref=e81]: 🏗️
+                  - text: Superload
+                - button "📡 High Pole Required" [ref=e82] [cursor=pointer]:
+                  - generic [ref=e83]: 📡
+                  - text: High Pole Required
+                - button "🚗 Standard Escort" [ref=e84] [cursor=pointer]:
+                  - generic [ref=e85]: 🚗
+                  - text: Standard Escort
+            - generic [ref=e86]:
+              - generic [ref=e87]: 📐 Load Dimensions
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - text: Height (ft)
+                  - textbox "16.5" [ref=e90]
+                - generic [ref=e91]:
+                  - text: Width (ft)
+                  - textbox "14.0" [ref=e92]
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - text: Length (ft)
+                  - textbox "120" [ref=e95]
+                - generic [ref=e96]:
+                  - text: Weight (lbs)
+                  - textbox "80,000" [ref=e97]
+            - generic [ref=e98]:
+              - generic [ref=e99]: 🚗 Escort Configuration
+              - generic [ref=e100]:
+                - generic [ref=e101]:
+                  - text: Lead Escorts
+                  - textbox "1" [ref=e102]
+                - generic [ref=e103]:
+                  - text: Chase Escorts
+                  - textbox "0" [ref=e104]
+                - generic [ref=e105]:
+                  - text: Base Rate ($)
+                  - textbox "600" [ref=e106]
+              - generic [ref=e107]:
+                - button "Police Escort" [ref=e108] [cursor=pointer]
+                - button "High Pole" [ref=e109] [cursor=pointer]
+            - generic [ref=e110]:
+              - generic [ref=e111]: ⚡ Urgency Level
+              - generic [ref=e112]:
+                - button "📋 Standard" [ref=e113] [cursor=pointer]:
+                  - generic [ref=e114]: 📋
+                  - text: Standard
+                - button "⚡ Urgent (2–4 hr)" [ref=e115] [cursor=pointer]:
+                  - generic [ref=e116]: ⚡
+                  - text: Urgent (2–4 hr)
+                - button "🚨 Emergency" [ref=e117] [cursor=pointer]:
+                  - generic [ref=e118]: 🚨
+                  - text: Emergency
+        - generic [ref=e119]:
+          - generic [ref=e120]: 📝 Special Notes (Optional)
+          - textbox "Any special requirements, route restrictions, or communication notes for the escort operators..." [ref=e121]
+        - button "🚀 Post Load & Preview Matches" [disabled] [ref=e122] [cursor=pointer]
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - img [ref=e128]
+          - generic [ref=e130]: Verified Escorts
+        - generic [ref=e131]:
+          - img [ref=e132]
+          - generic [ref=e135]: Escrow Protected
+        - generic [ref=e136]:
+          - img [ref=e137]
+          - generic [ref=e140]: "Median Fill: 47min"
+        - generic [ref=e141]:
+          - img [ref=e142]
+          - generic [ref=e145]: US + Canada
+        - generic [ref=e146]:
+          - img [ref=e147]
+          - generic [ref=e150]: Industry Leaderboard
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - heading "Product" [level=3] [ref=e153]
+          - navigation [ref=e154]:
+            - link "Load Board" [ref=e155] [cursor=pointer]:
+              - /url: /loads
+            - link "Escort Directory" [ref=e156] [cursor=pointer]:
+              - /url: /directory
+            - link "Leaderboard" [ref=e157] [cursor=pointer]:
+              - /url: /leaderboards
+            - link "Corridor Intelligence" [ref=e158] [cursor=pointer]:
+              - /url: /escort/corridor
+            - link "Rate Guides (Free)" [ref=e159] [cursor=pointer]:
+              - /url: /rates
+            - link "Permit Checker (Free)" [ref=e160] [cursor=pointer]:
+              - /url: /tools/permit-checker
+        - generic [ref=e161]:
+          - heading "Popular Regions" [level=3] [ref=e162]
+          - navigation [ref=e163]:
+            - link "Texas Pilot Cars" [ref=e164] [cursor=pointer]:
+              - /url: /directory/us/tx
+            - link "Florida Pilot Cars" [ref=e165] [cursor=pointer]:
+              - /url: /directory/us/fl
+            - link "Georgia Pilot Cars" [ref=e166] [cursor=pointer]:
+              - /url: /directory/us/ga
+            - link "California Pilot Cars" [ref=e167] [cursor=pointer]:
+              - /url: /directory/us/ca
+            - link "Louisiana Pilot Cars" [ref=e168] [cursor=pointer]:
+              - /url: /directory/us/la
+            - link "North Carolina Pilot Cars" [ref=e169] [cursor=pointer]:
+              - /url: /directory/us/nc
+            - link "Oklahoma Pilot Cars" [ref=e170] [cursor=pointer]:
+              - /url: /directory/us/ok
+            - link "Arizona Pilot Cars" [ref=e171] [cursor=pointer]:
+              - /url: /directory/us/az
+        - generic [ref=e172]:
+          - heading "Services" [level=3] [ref=e173]
+          - navigation [ref=e174]:
+            - link "Pilot Car Services" [ref=e175] [cursor=pointer]:
+              - /url: /us/tx/pilot-car-services
+            - link "Escort Vehicle Services" [ref=e176] [cursor=pointer]:
+              - /url: /us/tx/escort-vehicle-services
+            - link "Oversize Load Escorts" [ref=e177] [cursor=pointer]:
+              - /url: /us/tx/oversize-load-escorts
+            - link "Wide Load Escorts" [ref=e178] [cursor=pointer]:
+              - /url: /us/tx/wide-load-escorts
+            - link "Route Surveys" [ref=e179] [cursor=pointer]:
+              - /url: /us/tx/route-survey-services
+            - link "Height Pole Services" [ref=e180] [cursor=pointer]:
+              - /url: /us/tx/height-pole-services
+        - generic [ref=e181]:
+          - heading "Company" [level=3] [ref=e182]
+          - navigation [ref=e183]:
+            - link "Terms of Service" [ref=e184] [cursor=pointer]:
+              - /url: /terms
+            - link "Privacy Policy" [ref=e185] [cursor=pointer]:
+              - /url: /privacy
+            - link "Contact Us" [ref=e186] [cursor=pointer]:
+              - /url: /contact
+            - link "Remove / Opt-Out" [ref=e187] [cursor=pointer]:
+              - /url: /remove-listing
+            - link "Claim Your Listing" [ref=e188] [cursor=pointer]:
+              - /url: /claim
+            - link "Get Started" [ref=e189] [cursor=pointer]:
+              - /url: /onboarding/start
+      - generic [ref=e190]:
+        - generic [ref=e191]:
+          - img "Haul Command" [ref=e192]
+          - generic [ref=e193]: © 2026 Haul Command. The Operating System for Heavy Haul.
+        - generic [ref=e194]: Built for the corridor. Not the crowd.
+  - generic:
+    - generic: DEV
+    - generic: "API: hvjyfyzotqobfkakjozp"
+    - generic: "User: guest"
+    - generic: "Flags: loaded"

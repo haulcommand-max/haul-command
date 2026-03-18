@@ -1,7 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
-
-export function getSupabaseServerClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    return createClient(url, key, { auth: { persistSession: false } });
-}
+/**
+ * Re-exports from the consolidated Supabase server client.
+ * All imports from '@/lib/supabase/server' now go through the single source of truth.
+ */
+export { supabaseServer as getSupabaseServerClient } from "@/lib/supabase-server";

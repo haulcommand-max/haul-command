@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema, WebSiteSchema } from "@/components/BreadcrumbSchema";
+import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -55,11 +57,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    // Add your verification codes here
-    // google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-  },
 };
 
 export default function RootLayout({
@@ -87,9 +84,11 @@ export default function RootLayout({
       >
         <OrganizationSchema />
         <WebSiteSchema />
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col pb-14 md:pb-0">
           {children}
+          <Footer />
         </div>
+        <MobileBottomNav />
       </body>
     </html>
   );

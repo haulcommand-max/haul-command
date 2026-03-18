@@ -22,7 +22,7 @@ Allow: /port/
 Allow: /border/
 Allow: /county/
 Allow: /industry/
-Allow: /escort/corridor/
+Allow: /corridor/
 Disallow: /api/
 Disallow: /admin/
 Disallow: /dev/

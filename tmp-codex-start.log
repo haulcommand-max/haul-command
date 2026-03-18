@@ -1,0 +1,14 @@
+
+> haul-command-bots@1.0.0 start
+> next start --hostname 127.0.0.1 --port 3005
+
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3005
+- Network:       http://127.0.0.1:3005
+
+✓ Starting...
+⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+✓ Ready in 880ms
+[resolve] UPSTASH_REDIS_REST_URL/TOKEN not set — rate limiting disabled
+[programmatic-data] getCityData error: column directory_listings.lat does not exist
+[programmatic-data] getCityData error: column directory_listings.lat does not exist

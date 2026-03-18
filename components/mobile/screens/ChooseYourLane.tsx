@@ -14,7 +14,7 @@ import React, { useState } from 'react';
    - other (future: installers, yards, gear vendors, etc.)
    ══════════════════════════════════════════════════════════════ */
 
-export type UserRole = 'escort_operator' | 'broker_dispatcher' | 'both' | 'other';
+export type UserRole = 'escort_operator' | 'broker_dispatcher' | 'both' | 'support_partner' | 'observer_researcher';
 
 interface RoleLane {
   id: UserRole;
@@ -51,12 +51,20 @@ const LANES: RoleLane[] = [
     color: '#A78BFA',
   },
   {
-    id: 'other',
-    icon: '🔧',
-    title: 'Other',
-    subtitle: 'Installer · Yard · Gear · Partner',
-    description: 'Infrastructure providers, support partners, and future marketplace actors.',
-    color: '#6B7280',
+    id: 'support_partner',
+    icon: '🏗',
+    title: 'Support Partner',
+    subtitle: 'Yard · Gear vendor · Safety trainer · Outfitter',
+    description: 'Supply the ecosystem. List services, connect with operators and brokers, and grow your reach in the heavy haul market.',
+    color: '#14B8A6',
+  },
+  {
+    id: 'observer_researcher',
+    icon: '📊',
+    title: 'Observer / Researcher',
+    subtitle: 'Analyst · Regulator · Journalist · Academic',
+    description: 'Track market trends, corridor data, and industry intelligence. Read-only access to public dashboards and reports.',
+    color: '#8B5CF6',
   },
 ];
 
@@ -78,6 +86,46 @@ export function setStoredRole(role: UserRole) {
   try {
     localStorage.setItem('hc_user_role', role);
   } catch { /* private browsing */ }
+
+  // Sync to Supabase user_metadata for authenticated users (fire-and-forget)
+  syncRoleToSupabase(role);
+}
+
+/**
+ * Restore lane from Supabase user_metadata if available.
+ * Called once on mount — overwrites localStorage with server state.
+ */
+export async function restoreRoleFromSupabase(): Promise<UserRole | null> {
+  try {
+    const { createClient } = await import('@/lib/supabase/client');
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const serverRole = (user.user_metadata as Record<string, unknown>)?.hc_lane as UserRole | undefined;
+    if (serverRole) {
+      // Server wins — update localStorage to match
+      try { localStorage.setItem('hc_user_role', serverRole); } catch {}
+      return serverRole;
+    }
+
+    // User is logged in but no server role — push current local to server
+    const localRole = getStoredRole();
+    if (localRole) syncRoleToSupabase(localRole);
+    return localRole;
+  } catch {
+    return null;
+  }
+}
+
+async function syncRoleToSupabase(role: UserRole) {
+  try {
+    const { createClient } = await import('@/lib/supabase/client');
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return; // anonymous — skip
+    await supabase.auth.updateUser({ data: { hc_lane: role } });
+  } catch { /* non-critical — localStorage is primary fallback */ }
 }
 
 export default function ChooseYourLane({ onSelect }: ChooseYourLaneProps) {

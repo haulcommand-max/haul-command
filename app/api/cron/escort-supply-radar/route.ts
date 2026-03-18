@@ -32,11 +32,11 @@ export async function GET() {
             return NextResponse.json({ ok: true, skipped: true, reason: 'control_tower_enabled=false' });
         }
 
-        // Fetch active escorts grouped by region
+        // Fetch active operators from real directory graph (6,949+ operators)
         const { data: escorts } = await sb
-            .from('driver_profiles')
-            .select('id, region_code, fill_probability, compliance_status')
-            .not('trust_score', 'is', null);
+            .from('directory_listings')
+            .select('id, region_code, rank_score, claim_status')
+            .eq('is_visible', true);
 
         const targetCorridors = MAJOR_CORRIDORS.filter(c => PHASE1_CORRIDORS.has(c.slug));
 
@@ -46,7 +46,7 @@ export async function GET() {
             const onCorridor = (escorts ?? []).filter(e =>
                 e.region_code && corridorStates.has(e.region_code.toUpperCase())
             );
-            const available = onCorridor.filter(e => e.compliance_status !== 'failed');
+            const available = onCorridor.filter(e => (e.rank_score ?? 0) > 20);
             const demandPressure = onCorridor.length === 0 ? 1.0 : Math.max(0, 1 - available.length / 10);
 
             return {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 /* ══════════════════════════════════════════════════════════════
    MobileBottomNav — Frame 2 Spec
@@ -65,10 +65,10 @@ const InboxIcon = ({ active }: { active: boolean }) => (
 
 const NAV_TABS: NavTab[] = [
   {
-    href: '/',
+    href: '/home',
     label: 'Home',
     icon: <HomeIcon active={false} />,
-    match: /^\/$/,
+    match: /^\/home$/,
   },
   {
     href: '/loads',
@@ -98,6 +98,7 @@ interface MobileNavProps {
 
 export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isTabActive = (tab: NavTab) =>
     tab.match ? tab.match.test(pathname) : pathname === tab.href;
@@ -133,8 +134,8 @@ export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
         {/* Center FAB */}
         <button
           className="m-bottom-nav__fab"
-          onClick={onFabPress}
-          aria-label="Quick action"
+          onClick={onFabPress ?? (() => router.push('/loads/post'))}
+          aria-label="Post a load"
         >
           <span className="m-bottom-nav__fab-circle">
             <PlusIcon />

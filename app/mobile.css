@@ -77,6 +77,29 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   MOBILE VIEWPORT + SECTION SPACING ENFORCEMENT
+   Applied at mobile breakpoint. One spacing scale. One system.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Boost body copy contrast — 55% was too low for mobile scanning */
+  :root {
+    --m-text-secondary: rgba(255,255,255,0.65);
+  }
+
+  /* Enforce consistent section spacing */
+  .m-section-header {
+    padding-top: var(--m-xl);
+    padding-bottom: var(--m-md);
+  }
+
+  /* Prevent any child from blowing out the viewport */
+  .m-shell-content > * {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
    MOBILE APP SHELL
    ══════════════════════════════════════════════════════════════ */
 
@@ -788,11 +811,25 @@
   background: var(--m-surface);
   border: 1px solid var(--m-border-subtle);
   border-radius: var(--m-radius-lg);
+  transition: background 0.15s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m-notif:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.m-notif:active {
+  transform: scale(0.98);
 }
 
 .m-notif--unread {
   border-left: 3px solid var(--m-gold);
   background: rgba(10,13,20,0.9);
+}
+
+.m-notif--unread:hover {
+  background: rgba(15,18,25,0.95);
 }
 
 .m-notif__icon {
@@ -835,6 +872,12 @@
   font-size: var(--m-font-caption);
   color: var(--m-text-muted);
   margin-top: var(--m-xs);
+}
+
+/* ── Fade-in animation for bottom sheet backdrop ── */
+@keyframes m-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -949,4 +992,116 @@
 @keyframes m-pin-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE BUTTON SYSTEM
+   44px minimum touch height. Consistent radii and tokens.
+   ══════════════════════════════════════════════════════════════ */
+
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: var(--m-radius-lg);
+  font-size: var(--m-font-body-sm);
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.m-btn:active {
+  transform: scale(0.97);
+}
+
+/* Primary — Gold fill */
+.m-btn--primary {
+  background: linear-gradient(135deg, var(--m-gold), #f1c27b);
+  color: #060b12;
+  font-weight: 800;
+  box-shadow: 0 2px 12px rgba(212,168,68,0.2);
+}
+
+.m-btn--primary:hover {
+  box-shadow: 0 4px 20px rgba(212,168,68,0.3);
+}
+
+/* Secondary — Surface fill */
+.m-btn--secondary {
+  background: var(--m-surface);
+  color: var(--m-text-primary);
+  border: 1px solid var(--m-border-subtle);
+}
+
+.m-btn--secondary:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Outlined Gold — ghost with gold border */
+.m-btn--outlined-gold {
+  background: transparent;
+  color: var(--m-gold);
+  border: 1px solid rgba(212,168,68,0.3);
+}
+
+.m-btn--outlined-gold:hover {
+  background: rgba(212,168,68,0.06);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE BOTTOM SHEET
+   Slide-up modal for thread details, filters, actions.
+   ══════════════════════════════════════════════════════════════ */
+
+.m-bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--m-bg);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border: 1px solid var(--m-border-subtle);
+  border-bottom: none;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+  max-height: 80dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.m-bottom-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.15);
+  margin: 12px auto 8px;
+}
+
+.m-bottom-sheet__content {
+  padding: var(--m-lg) var(--m-screen-pad);
+}
+
+/* Sheet slide-up animation */
+@keyframes m-sheet-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.m-animate-sheet {
+  animation: m-sheet-up 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
