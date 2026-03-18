@@ -10,6 +10,9 @@ import HCMarketMaturityBanner from '@/components/hc/MarketMaturityBanner';
 import HCCorridorSnapshot from '@/components/hc/CorridorSnapshot';
 import HCRequirementsSnapshot from '@/components/hc/RequirementsSnapshot';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
+import { HeroBillboard } from '@/components/hc/HeroBillboard';
+import { InlineBillboard } from '@/components/hc/InlineBillboard';
+import { getCreativesForSlot } from '@/lib/ad-engine';
 import type { HCMetric, HCFaqItem, HCCorridorSummary, HCRequirementsSummary } from '@/lib/hc-types';
 
 export const revalidate = 900; // 15 minute ISR
@@ -98,6 +101,12 @@ async function loadHomepageData() {
 export default async function HomePage() {
   const { metrics, corridorSummaries, reqSummary, totalListings } = await loadHomepageData();
 
+  // Load ad creatives in parallel
+  const [heroAds, inlineAds] = await Promise.all([
+    getCreativesForSlot({ slotFamily: 'hero_billboard', pageType: 'homepage', maxCreatives: 6 }),
+    getCreativesForSlot({ slotFamily: 'inline_billboard', pageType: 'homepage', maxCreatives: 8 }),
+  ]);
+
   // Top markets for location chips
   const locationChips = [
     { label: '🇺🇸 Florida', href: '/directory/us' },
@@ -153,6 +162,11 @@ export default async function HomePage() {
             countryName="Heavy Haul Directory — 57-Country Framework"
             message="Directory infrastructure live across all markets. Depth varies by region."
           />
+        </div>
+
+        {/* Hero Billboard (homepage ad slot) */}
+        <div className="max-w-7xl mx-auto px-4 mt-4">
+          <HeroBillboard creatives={heroAds} slotFamily="hero_billboard" pageType="homepage" />
         </div>
 
         {/* Hero Section — Action-First, Not Dashboard-First */}
@@ -287,6 +301,11 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Inline Billboard */}
+        <div className="max-w-7xl mx-auto px-4">
+          <InlineBillboard creatives={inlineAds} />
+        </div>
 
         {/* Corridor Intelligence */}
         <section className="py-8 px-4 max-w-7xl mx-auto">
