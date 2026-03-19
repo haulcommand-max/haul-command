@@ -53,9 +53,10 @@ function shouldShowAppleFirst(userAgent: string) {
 }
 
 function getLoginOrder(appleFirst: boolean): LoginBlock[] {
+  // All 4 OAuth providers always visible above fold
   return appleFirst
-    ? ['apple', 'google', 'facebook', 'phone', 'linkedin_oidc', 'email']
-    : ['google', 'apple', 'facebook', 'phone', 'linkedin_oidc', 'email']
+    ? ['apple', 'google', 'facebook', 'linkedin_oidc', 'phone', 'email']
+    : ['facebook', 'google', 'linkedin_oidc', 'apple', 'phone', 'email']
 }
 
 export default function LoginCard() {
@@ -88,14 +89,14 @@ export default function LoginCard() {
 
   const loginOrder = useMemo(() => getLoginOrder(appleFirst), [appleFirst])
 
-  // Top 3 providers shown immediately, rest behind "More options"
+  // All 4 OAuth providers shown above the fold — none hidden
   const topProviders = loginOrder.filter((b): b is OAuthProvider =>
     b !== 'phone' && b !== 'email'
-  ).slice(0, 3)
+  ).slice(0, 4)
 
   const moreProviders = loginOrder.filter((b): b is OAuthProvider =>
     b !== 'phone' && b !== 'email'
-  ).slice(3)
+  ).slice(4)
 
   function resetFeedback() {
     setMessage(null)
