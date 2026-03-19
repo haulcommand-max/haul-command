@@ -115,8 +115,11 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
     { code: "SA", name: "Saudi Arabia", tier: "blue", languagePrimary: "ar", languageSecondary: "en", currency: "SAR", socialPrimary: "whatsapp", socialSecondary: "email", paymentPriority: ["mada", "cards"], tone: "formal_authority", topMetros: ["Riyadh", "Jeddah", "Dammam", "Jubail"], topCorridors: ["Dammam→Riyadh", "Jubail industrial"], hreflangCode: "ar-sa", multiLanguageRisk: true },
     { code: "QA", name: "Qatar", tier: "blue", languagePrimary: "ar", languageSecondary: "en", currency: "QAR", socialPrimary: "whatsapp", socialSecondary: "email", paymentPriority: ["cards"], tone: "formal_authority", topMetros: ["Doha", "Lusail"], topCorridors: ["Doha industrial zone"], hreflangCode: "ar-qa", multiLanguageRisk: true },
     { code: "MX", name: "Mexico", tier: "blue", languagePrimary: "es", currency: "MXN", socialPrimary: "whatsapp", socialSecondary: "facebook", paymentPriority: ["cards"], tone: "speed_availability", topMetros: ["Mexico City", "Monterrey", "Guadalajara", "Tijuana", "Veracruz"], topCorridors: ["Monterrey→Laredo", "Mexico City→Veracruz", "Tijuana→Ensenada"], hreflangCode: "es-mx", multiLanguageRisk: false },
+    { code: "IN", name: "India", tier: "blue", languagePrimary: "hi", languageSecondary: "en", currency: "INR", socialPrimary: "whatsapp", socialSecondary: "linkedin", paymentPriority: ["cards"], tone: "speed_availability", topMetros: ["Mumbai", "Delhi", "Chennai", "Kolkata", "Ahmedabad", "Pune"], topCorridors: ["Mumbai→Pune", "Delhi→Jaipur", "Chennai→Bangalore"], hreflangCode: "hi-in", multiLanguageRisk: true },
+    { code: "ID", name: "Indonesia", tier: "blue", languagePrimary: "id", currency: "IDR", socialPrimary: "whatsapp", socialSecondary: "facebook", paymentPriority: ["cards", "bank_transfer"], tone: "speed_availability", topMetros: ["Jakarta", "Surabaya", "Balikpapan", "Makassar"], topCorridors: ["Jakarta→Surabaya", "Balikpapan industrial"], hreflangCode: "id-id", multiLanguageRisk: false },
+    { code: "TH", name: "Thailand", tier: "blue", languagePrimary: "th", languageSecondary: "en", currency: "THB", socialPrimary: "facebook", socialSecondary: "whatsapp", paymentPriority: ["cards", "bank_transfer"], tone: "professional_balanced", topMetros: ["Bangkok", "Laem Chabang", "Rayong"], topCorridors: ["Laem Chabang→Bangkok", "Eastern Seaboard industrial"], hreflangCode: "th-th", multiLanguageRisk: false },
 
-    // ═══ SILVER — condensed ═══
+    // ═══ SILVER (26 countries) ═══
     ...([
         { c: "PL", n: "Poland", l: "pl", cr: "PLN", m: ["Warsaw", "Gdańsk", "Katowice"] },
         { c: "CZ", n: "Czech Republic", l: "cs", cr: "CZK", m: ["Prague", "Brno", "Ostrava"] },
@@ -142,9 +145,8 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
         { c: "AR", n: "Argentina", l: "es", cr: "ARS", m: ["Buenos Aires", "Rosario", "Córdoba"] },
         { c: "CO", n: "Colombia", l: "es", cr: "COP", m: ["Bogotá", "Medellín", "Cartagena", "Barranquilla"] },
         { c: "PE", n: "Peru", l: "es", cr: "PEN", m: ["Lima", "Callao", "Arequipa"] },
-        { c: "IN", n: "India", l: "hi", cr: "INR", m: ["Mumbai", "Delhi", "Chennai", "Kolkata", "Ahmedabad", "Pune"] },
-        { c: "ID", n: "Indonesia", l: "id", cr: "IDR", m: ["Jakarta", "Surabaya", "Balikpapan", "Makassar"] },
-        { c: "NG", n: "Nigeria", l: "en", cr: "NGN", m: ["Lagos", "Port Harcourt", "Abuja", "Warri"] },
+        { c: "VN", n: "Vietnam", l: "vi", cr: "VND", m: ["Ho Chi Minh City", "Hanoi", "Da Nang"] },
+        { c: "PH", n: "Philippines", l: "en", cr: "PHP", m: ["Manila", "Cebu", "Davao"] },
     ] as const).map(s => ({
         code: s.c, name: s.n, tier: "silver" as Tier,
         languagePrimary: s.l, currency: s.cr,
@@ -156,13 +158,11 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
         multiLanguageRisk: false,
     })),
 
-    // ═══ SLATE ═══
+    // ═══ SLATE (3 countries) ═══
     ...([
         { c: "UY", n: "Uruguay", m: ["Montevideo"] },
         { c: "PA", n: "Panama", m: ["Panama City", "Colón"] },
         { c: "CR", n: "Costa Rica", m: ["San José"] },
-        { c: "EC", n: "Ecuador", m: ["Quito", "Guayaquil"] },
-        { c: "DO", n: "Dominican Republic", m: ["Santo Domingo"] },
     ] as const).map(s => ({
         code: s.c, name: s.n, tier: "slate" as Tier,
         languagePrimary: "es", currency: "USD",
