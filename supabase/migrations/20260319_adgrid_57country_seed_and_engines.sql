@@ -28,6 +28,9 @@ INSERT INTO public.adgrid_pricing_matrix (country_code, currency, base_cpm_usd, 
     ('MX', 'MXN', 15.00, 3.00, 0.65, 0.40, 0.16, 'emerging'),
     ('NL', 'EUR', 22.00, 4.50, 0.95, 0.80, 0.21, 'high'),
     ('BR', 'BRL', 12.00, 2.50, 0.55, 0.30, 0.18, 'emerging'),
+    ('IN', 'INR', 8.00, 1.50, 0.35, 0.15, 0.18, 'emerging'),
+    ('ID', 'IDR', 6.00, 1.00, 0.30, 0.10, 0.11, 'emerging'),
+    ('TH', 'THB', 8.00, 1.50, 0.35, 0.15, 0.07, 'emerging'),
     -- Silver Tier
     ('PL', 'PLN', 12.00, 2.50, 0.55, 0.35, 0.23, 'emerging'),
     ('CZ', 'CZK', 10.00, 2.00, 0.50, 0.30, 0.21, 'emerging'),
@@ -53,15 +56,12 @@ INSERT INTO public.adgrid_pricing_matrix (country_code, currency, base_cpm_usd, 
     ('AR', 'ARS', 8.00, 1.50, 0.35, 0.15, 0.21, 'emerging'),
     ('CO', 'COP', 10.00, 2.00, 0.45, 0.25, 0.19, 'emerging'),
     ('PE', 'PEN', 10.00, 2.00, 0.45, 0.25, 0.18, 'emerging'),
-    ('IN', 'INR', 8.00, 1.50, 0.35, 0.15, 0.18, 'emerging'),
-    ('ID', 'IDR', 6.00, 1.00, 0.30, 0.10, 0.11, 'emerging'),
-    ('NG', 'NGN', 5.00, 1.00, 0.25, 0.10, 0.075, 'emerging'),
+    ('VN', 'VND', 6.00, 1.00, 0.30, 0.10, 0.10, 'emerging'),
+    ('PH', 'PHP', 6.00, 1.00, 0.30, 0.10, 0.12, 'emerging'),
     -- Slate Tier
     ('UY', 'UYU', 8.00, 1.50, 0.35, 0.15, 0.22, 'emerging'),
     ('PA', 'PAB', 10.00, 2.00, 0.45, 0.25, 0.07, 'emerging'),
-    ('CR', 'CRC', 8.00, 1.50, 0.35, 0.15, 0.13, 'emerging'),
-    ('EC', 'USD', 8.00, 1.50, 0.35, 0.15, 0.12, 'emerging'),
-    ('DO', 'DOP', 6.00, 1.00, 0.30, 0.10, 0.18, 'emerging')
+    ('CR', 'CRC', 8.00, 1.50, 0.35, 0.15, 0.13, 'emerging')
 ON CONFLICT (country_code) DO NOTHING;
 
 -- ============================================================

@@ -130,13 +130,17 @@ const TIER_DEFAULT_MODE: Record<string, MarketMode> = {
 // Some blue/silver countries may already be promoted
 
 const COUNTRY_MODE_OVERRIDES: Record<string, MarketMode> = {
-    // These blue-tier countries have enough content to be seeding
+    // Blue-tier countries seeding by default (tier→seed already covers them,
+    // but explicit overrides keep intent clear and survive tier refactors)
     IE: 'seed',
     SE: 'seed',
     NO: 'seed',
     SA: 'seed',
     MX: 'seed',
-    // These silver-tier countries have special conditions
+    IN: 'seed', // Blue tier
+    ID: 'seed', // Blue tier
+    TH: 'seed', // Blue tier
+    // Silver-tier countries promoted to seed (special conditions)
     PL: 'seed', // EU logistics hub
     TR: 'seed', // Major market
     SG: 'seed', // English-dominant, easy entry
@@ -198,16 +202,12 @@ export function canSelfServeCheckout(countryCode: string): boolean {
 // ── All Countries with Modes ───────────────────────────────
 
 export function getAllCountryModes(): Array<{ code: string; name: string; tier: string; mode: MarketMode }> {
-    const ALL_COUNTRIES = Object.keys(COUNTRY_REGISTRY);
-    return ALL_COUNTRIES.map(code => {
-        const country = lookupCountry(code);
-        return {
-            code,
-            name: country?.country ?? code,
-            tier: country?.tier ?? 'slate',
-            mode: getMarketMode(code),
-        };
-    });
+    return COUNTRY_REGISTRY.map(c => ({
+        code: c.code,
+        name: c.name,
+        tier: c.tier,
+        mode: getMarketMode(c.code),
+    }));
 }
 
 // ── Mode Transition Logic ──────────────────────────────────

@@ -181,6 +181,6 @@ function getSessionId(): string {
 
 declare global {
     interface Window {
-        gtag?: (...args: unknown[]) => void;
+        gtag?: (...args: any[]) => void;
     }
 }

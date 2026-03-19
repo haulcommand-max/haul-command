@@ -162,6 +162,92 @@ export const track = {
     adminAction(params: TrackParams): void {
         track.event("admin_action", params);
     },
+
+    // ── Server event wrappers (22 required events) ──
+
+    viewableImpression(params: TrackParams): void {
+        track.event("viewable_impression", params);
+    },
+
+    destinationVisit(params: TrackParams): void {
+        track.event("destination_visit", params);
+    },
+
+    claimStart(params: TrackParams): void {
+        track.event("claim_start", params);
+    },
+
+    claimSubmit(params: TrackParams): void {
+        track.event("claim_submit", params);
+    },
+
+    signupStart(params: TrackParams): void {
+        track.event("signup_start", params);
+    },
+
+    signupComplete(params: TrackParams): void {
+        track.event("signup_complete", params);
+    },
+
+    leadSubmit(params: TrackParams): void {
+        track.event("lead_submit", params);
+    },
+
+    contactClick(params: TrackParams): void {
+        track.event("contact_click", params);
+    },
+
+    callClick(params: TrackParams): void {
+        track.event("call_click", params);
+    },
+
+    messageClick(params: TrackParams): void {
+        track.event("message_click", params);
+    },
+
+    sponsorPurchase(params: TrackParams): void {
+        track.event("sponsor_purchase", params);
+    },
+
+    boostPurchase(params: TrackParams): void {
+        track.event("boost_purchase", params);
+    },
+
+    dataUnlockPurchase(params: TrackParams): void {
+        track.event("data_unlock_purchase", params);
+    },
+
+    subscriptionPurchase(params: TrackParams): void {
+        track.event("subscription_purchase", params);
+    },
+
+    exportRequest(params: TrackParams): void {
+        track.event("export_request", params);
+    },
+
+    reportView(params: TrackParams): void {
+        track.event("report_view", params);
+    },
+
+    alertCreate(params: TrackParams): void {
+        track.event("alert_create", params);
+    },
+
+    creativeGenerated(params: TrackParams): void {
+        track.event("creative_generated", params);
+    },
+
+    creativeSelected(params: TrackParams): void {
+        track.event("creative_selected", params);
+    },
+
+    creativeLaunched(params: TrackParams): void {
+        track.event("creative_launched", params);
+    },
+
+    creativeWon(params: TrackParams): void {
+        track.event("creative_won", params);
+    },
 };
 
 export default track;

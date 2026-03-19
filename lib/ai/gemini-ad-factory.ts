@@ -83,6 +83,8 @@ const COUNTRY_META: Record<string, { name: string; term: string; currency: strin
     KR: { name: '대한민국', term: '선도차량', currency: 'KRW', locale: 'ko' },
     AE: { name: 'UAE', term: 'Pilot Car', currency: 'AED', locale: 'en' },
     IN: { name: 'India', term: 'Pilot Vehicle', currency: 'INR', locale: 'en' },
+    ID: { name: 'Indonesia', term: 'Kendaraan Pengawal', currency: 'IDR', locale: 'id' },
+    TH: { name: 'ประเทศไทย', term: 'รถนำขบวน', currency: 'THB', locale: 'th' },
     ZA: { name: 'South Africa', term: 'Pilot Vehicle', currency: 'ZAR', locale: 'en' },
     SG: { name: 'Singapore', term: 'Escort Vehicle', currency: 'SGD', locale: 'en' },
     SE: { name: 'Sverige', term: 'Följebil', currency: 'SEK', locale: 'sv' },
@@ -117,13 +119,11 @@ const COUNTRY_META: Record<string, { name: string; term: string; currency: strin
     OM: { name: 'Oman', term: 'مركبة مرافقة', currency: 'OMR', locale: 'ar' },
     BH: { name: 'Bahrain', term: 'مركبة مرافقة', currency: 'BHD', locale: 'ar' },
     MY: { name: 'Malaysia', term: 'Kenderaan Pengiring', currency: 'MYR', locale: 'ms' },
-    ID: { name: 'Indonesia', term: 'Kendaraan Pengawal', currency: 'IDR', locale: 'id' },
-    NG: { name: 'Nigeria', term: 'Pilot Vehicle', currency: 'NGN', locale: 'en' },
+    VN: { name: 'Việt Nam', term: 'Xe Dẫn Đoàn', currency: 'VND', locale: 'vi' },
+    PH: { name: 'Philippines', term: 'Escort Vehicle', currency: 'PHP', locale: 'en' },
     UY: { name: 'Uruguay', term: 'Vehículo Escolta', currency: 'UYU', locale: 'es' },
     PA: { name: 'Panamá', term: 'Vehículo Escolta', currency: 'PAB', locale: 'es' },
     CR: { name: 'Costa Rica', term: 'Vehículo Escolta', currency: 'CRC', locale: 'es' },
-    EC: { name: 'Ecuador', term: 'Vehículo Escolta', currency: 'USD', locale: 'es' },
-    DO: { name: 'República Dominicana', term: 'Vehículo Escolta', currency: 'DOP', locale: 'es' },
 };
 
 // ── Scoring Weights ────────────────────────────────────────

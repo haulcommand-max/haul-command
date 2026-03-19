@@ -1,211 +1,134 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { generateCreatives, type CreativeRequest } from '@/lib/ai/gemini-ad-factory';
 
 const supabaseAdmin = getSupabaseAdmin();
 
-// Country display names + local terminology
-const COUNTRY_META: Record<string, { name: string; term: string; currency: string; locale: string }> = {
-    US: { name: 'United States', term: 'Pilot Car', currency: 'USD', locale: 'en' },
-    CA: { name: 'Canada', term: 'Pilot Car', currency: 'CAD', locale: 'en' },
-    GB: { name: 'United Kingdom', term: 'Escort Vehicle', currency: 'GBP', locale: 'en' },
-    AU: { name: 'Australia', term: 'Pilot Vehicle', currency: 'AUD', locale: 'en' },
-    NZ: { name: 'New Zealand', term: 'Pilot Vehicle', currency: 'NZD', locale: 'en' },
-    DE: { name: 'Deutschland', term: 'Begleitfahrzeug', currency: 'EUR', locale: 'de' },
-    FR: { name: 'France', term: 'Véhicule Pilote', currency: 'EUR', locale: 'fr' },
-    NL: { name: 'Nederland', term: 'Begeleidingsvoertuig', currency: 'EUR', locale: 'nl' },
-    IT: { name: 'Italia', term: 'Veicolo di Scorta', currency: 'EUR', locale: 'it' },
-    ES: { name: 'España', term: 'Vehículo Piloto', currency: 'EUR', locale: 'es' },
-    BR: { name: 'Brasil', term: 'Batedor', currency: 'BRL', locale: 'pt' },
-    MX: { name: 'México', term: 'Vehículo Piloto', currency: 'MXN', locale: 'es' },
-    JP: { name: '日本', term: '先導車', currency: 'JPY', locale: 'ja' },
-    KR: { name: '대한민국', term: '선도차량', currency: 'KRW', locale: 'ko' },
-    AE: { name: 'UAE', term: 'Pilot Car', currency: 'AED', locale: 'en' },
-    IN: { name: 'India', term: 'Pilot Vehicle', currency: 'INR', locale: 'en' },
-    ZA: { name: 'South Africa', term: 'Pilot Vehicle', currency: 'ZAR', locale: 'en' },
-    SG: { name: 'Singapore', term: 'Escort Vehicle', currency: 'SGD', locale: 'en' },
-    SE: { name: 'Sverige', term: 'Följebil', currency: 'SEK', locale: 'sv' },
-    NO: { name: 'Norge', term: 'Følgebil', currency: 'NOK', locale: 'no' },
-    PL: { name: 'Polska', term: 'Pilot Transportu', currency: 'PLN', locale: 'pl' },
-    CH: { name: 'Schweiz', term: 'Begleitfahrzeug', currency: 'CHF', locale: 'de' },
-};
-
 /**
  * POST /api/adgrid/generate
- * Generate hyper-local ads for a country/corridor/city using ChatGPT
+ * Generate hyper-local ads using Gemini (primary) with template fallback.
+ * Stores creatives in creative_versions with full scorecard.
  *
- * Body: { country_code, corridor_code?, city_name?, count?: number }
+ * Body: { country_code, corridor_code?, city_name?, target_role?, surface?, count? }
  */
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { country_code, corridor_code, city_name, count = 3 } = body;
+        const {
+            country_code,
+            corridor_code,
+            city_name,
+            target_role = 'both',
+            surface = 'directory',
+            count = 3,
+            parent_creative_id,
+        } = body;
 
         if (!country_code) {
             return NextResponse.json({ error: 'country_code required' }, { status: 400 });
         }
 
-        const meta = COUNTRY_META[country_code] || {
-            name: country_code,
-            term: 'Pilot Car',
-            currency: 'USD',
-            locale: 'en',
+        // Generate via Gemini factory (with template fallback built in)
+        const request: CreativeRequest = {
+            country_code,
+            corridor_code,
+            city_name,
+            target_role,
+            surface,
+            count,
+            parent_creative_id,
         };
 
-        // Get template for this country
-        const { data: templates } = await supabaseAdmin
-            .from('hc_ad_templates')
-            .select('*')
-            .eq('country_code', country_code)
-            .eq('is_active', true)
-            .order('priority', { ascending: false })
-            .limit(5);
+        const result = await generateCreatives(request);
 
-        // Build the ChatGPT prompt
-        const prompt = buildAdPrompt(meta, country_code, corridor_code, city_name, count, templates);
-
-        const API_KEY = process.env.OPENAI_API_KEY;
-        if (!API_KEY) {
-            // Fallback: use template-based generation (no AI)
-            const fallbackAds = generateFallbackAds(meta, country_code, corridor_code, city_name, count);
-            return NextResponse.json({ success: true, ads: fallbackAds, source: 'template' });
+        if (!result.success || result.creatives.length === 0) {
+            return NextResponse.json({ error: 'Creative generation failed' }, { status: 500 });
         }
 
-        // Call ChatGPT
-        const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`,
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o',
-                messages: [
-                    {
-                        role: 'system',
-                        content: `You are HAUL COMMAND's ad copywriter. Generate high-converting ads for the heavy transport / oversize load escort industry. Always use local terminology and language for each country. Be specific to the location. Include emoji flags.`,
-                    },
-                    { role: 'user', content: prompt },
-                ],
-                max_tokens: 2000,
-                temperature: 0.8,
-                response_format: { type: 'json_object' },
-            }),
-        });
-
-        if (!aiResponse.ok) {
-            // Fallback to templates
-            const fallbackAds = generateFallbackAds(meta, country_code, corridor_code, city_name, count);
-            return NextResponse.json({ success: true, ads: fallbackAds, source: 'template_fallback' });
-        }
-
-        const aiData = await aiResponse.json();
-        const adsJson = JSON.parse(aiData.choices?.[0]?.message?.content || '{"ads":[]}');
-
-        // Save generated ads to cache
-        const savedAds = [];
-        for (const ad of adsJson.ads || []) {
+        // Save to creative_versions table
+        const savedCreatives = [];
+        for (const creative of result.creatives) {
             const { data, error } = await supabaseAdmin
-                .from('hc_ad_generated')
+                .from('creative_versions')
                 .insert({
-                    country_code,
-                    corridor_code: corridor_code || null,
-                    city_slug: city_name ? city_name.toLowerCase().replace(/\s+/g, '-') : null,
-                    headline: ad.headline,
-                    description: ad.description,
-                    cta_text: ad.cta_text || 'Learn More',
-                    cta_url: ad.cta_url || `/directory/${country_code.toLowerCase()}`,
-                    ai_model: 'gpt-4o',
-                    quality_score: ad.quality_score || 0.85,
+                    variant_id: creative.variant_id,
+                    parent_variant_id: creative.parent_id || null,
+                    country_code: creative.country_code,
+                    corridor_code: creative.corridor_code || null,
+                    city_slug: creative.city_slug || null,
+                    surface: creative.surface,
+                    target_role: creative.target_role,
+                    language: creative.language,
+                    headline: creative.headline,
+                    description: creative.description,
+                    cta_text: creative.cta_text,
+                    cta_url: creative.cta_url,
+                    // Scorecard
+                    score_clarity: creative.scorecard.clarity,
+                    score_stop_power: creative.scorecard.stop_power,
+                    score_trust: creative.scorecard.trust,
+                    score_niche_fit: creative.scorecard.niche_fit,
+                    score_cta_strength: creative.scorecard.cta_strength,
+                    score_compliance: creative.scorecard.compliance,
+                    score_mobile_readability: creative.scorecard.mobile_readability,
+                    score_visual_hierarchy: creative.scorecard.visual_hierarchy,
+                    score_expected_ctr: creative.scorecard.expected_ctr,
+                    score_conversion_fit: creative.scorecard.conversion_fit,
+                    score_composite: creative.scorecard.composite,
+                    // Generation
+                    generation_model: creative.generation_model,
+                    generation_params: creative.generation_params,
+                    status: 'active',
                 })
                 .select()
                 .single();
-            if (data) savedAds.push(data);
+
+            if (data) savedCreatives.push(data);
         }
+
+        // Also save to legacy hc_ad_generated for backward compat
+        for (const creative of result.creatives) {
+            await supabaseAdmin
+                .from('hc_ad_generated')
+                .insert({
+                    country_code: creative.country_code,
+                    corridor_code: creative.corridor_code || null,
+                    city_slug: creative.city_slug || null,
+                    headline: creative.headline,
+                    description: creative.description,
+                    cta_text: creative.cta_text,
+                    cta_url: creative.cta_url,
+                    ai_model: creative.generation_model,
+                    quality_score: creative.scorecard.composite,
+                })
+                .select()
+                .single();
+        }
+
+        // Track creative_generated event
+        await supabaseAdmin.from('hc_events').insert({
+            event_type: 'creative_generated',
+            properties: {
+                country_code,
+                corridor_code,
+                city_name,
+                target_role,
+                surface,
+                count: savedCreatives.length,
+                source: result.source,
+                model: result.model || 'template_fallback',
+            },
+        });
 
         return NextResponse.json({
             success: true,
-            ads: savedAds,
-            count: savedAds.length,
-            source: 'ai_generated',
-            model: aiData.model,
-            usage: aiData.usage,
+            creatives: savedCreatives,
+            count: savedCreatives.length,
+            source: result.source,
+            model: result.model || 'template_fallback',
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return NextResponse.json({ error: message }, { status: 500 });
     }
-}
-
-function buildAdPrompt(
-    meta: { name: string; term: string; currency: string; locale: string },
-    countryCode: string,
-    corridor?: string,
-    city?: string,
-    count = 3,
-    templates?: { headline_template: string; description_template: string }[] | null
-): string {
-    const location = city || corridor || meta.name;
-    const templateExamples = templates?.slice(0, 2).map(t =>
-        `Headline: "${t.headline_template}"\nDescription: "${t.description_template}"`
-    ).join('\n') || '';
-
-    return `Generate ${count} unique, hyper-local ad variants for HAUL COMMAND in ${location}, ${meta.name} (${countryCode}).
-
-INDUSTRY: ${meta.term} / oversize load escort services
-LOCAL TERMINOLOGY: "${meta.term}" (NOT "pilot car" unless US/CA)
-LANGUAGE: Use the primary language of ${meta.name} (locale: ${meta.locale})
-CURRENCY: ${meta.currency}
-
-TARGET AUDIENCE MIX:
-- 2 ads targeting OPERATORS (escorts wanting work)
-- 1 ad targeting BROKERS (companies needing escorts)
-
-${templateExamples ? `STYLE EXAMPLES:\n${templateExamples}\n` : ''}
-
-REQUIREMENTS:
-- Include country flag emoji
-- Reference local geography, roads, or corridors if known
-- Use the LOCAL terminology ("${meta.term}" not generic English)
-- Make CTAs action-oriented and specific
-- Each ad must feel like it was written BY someone FROM that country
-
-Return JSON: {"ads": [{"headline": "...", "description": "...", "cta_text": "...", "cta_url": "/directory/${countryCode.toLowerCase()}", "target": "operators|brokers", "quality_score": 0.85}]}`;
-}
-
-function generateFallbackAds(
-    meta: { name: string; term: string; currency: string },
-    countryCode: string,
-    corridor?: string,
-    city?: string,
-    count = 3
-): { headline: string; description: string; cta_text: string; cta_url: string }[] {
-    const location = city || corridor || meta.name;
-    const ads = [];
-
-    const variants = [
-        {
-            headline: `${meta.term} Services in ${location}`,
-            description: `Verified ${meta.term.toLowerCase()} operators ready for oversize load escort in ${location}. Instant dispatch. Real-time availability.`,
-            cta_text: 'Find Escorts',
-        },
-        {
-            headline: `Join ${location}'s Top ${meta.term} Network`,
-            description: `Get matched to oversize loads near ${location}. Verified profiles. Instant notifications. Get paid fast.`,
-            cta_text: 'Claim Your Profile',
-        },
-        {
-            headline: `${meta.term} Operators Needed — ${location}`,
-            description: `High-demand corridor. Loads waiting. Join HAUL COMMAND's verified network in ${location} today.`,
-            cta_text: 'Sign Up Now',
-        },
-    ];
-
-    for (let i = 0; i < Math.min(count, variants.length); i++) {
-        ads.push({
-            ...variants[i],
-            cta_url: `/directory/${countryCode.toLowerCase()}`,
-        });
-    }
-
-    return ads;
 }
