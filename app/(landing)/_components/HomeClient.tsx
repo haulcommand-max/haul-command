@@ -193,8 +193,44 @@ export default function HomeClient({
             <MarketTerminalRibbon />
 
             {/* ═══════════════════════════════════════════════
-                2. LIVE MARKET HERO — Command Center Surface
-                   Replaces decorative hero with live data + role router
+                2. EXPANSION STATUS — Market presence (moved to top)
+            ═══════════════════════════════════════════════ */}
+            <section className="relative z-10 py-4 sm:py-6">
+                <div className="hc-container max-w-3xl">
+                    <div className="rounded-2xl border border-white/[0.06] p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                            <Globe className="w-3.5 h-3.5 text-blue-400" />
+                            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
+                                Expanding Across {totalCountries} Countries
+                            </span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-5 gap-y-2 sm:gap-y-2">
+                            {[
+                                { region: 'United States', status: 'live', color: '#22c55e' },
+                                { region: 'Canada', status: 'next', color: '#F59E0B' },
+                                { region: 'Australia', status: 'next', color: '#F59E0B' },
+                                { region: 'United Kingdom', status: 'planned', color: '#60a5fa' },
+                                { region: 'Germany', status: 'planned', color: '#60a5fa' },
+                                { region: 'Brazil', status: 'future', color: '#6b7280' },
+                            ].map(({ region, status, color }) => (
+                                <div key={region} className="flex items-center gap-2">
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-[0.1em] flex-shrink-0"
+                                        style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>
+                                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: color, boxShadow: status === 'live' ? `0 0 4px ${color}60` : 'none' }} />
+                                        {status === 'live' ? 'LIVE' : status === 'next' ? 'NEXT' : status === 'planned' ? 'PLANNED' : 'FUTURE'}
+                                    </span>
+                                    <span className="text-[11px] font-medium truncate" style={{ color: status === 'live' ? '#E5E7EB' : '#9CA3AF' }}>
+                                        {region}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════
+                3. LIVE MARKET HERO — Command Center Surface
             ═══════════════════════════════════════════════ */}
             <LiveMarketHero
                 totalOperators={totalOperators || directoryCount}
@@ -204,7 +240,7 @@ export default function HomeClient({
             />
 
             {/* ═══════════════════════════════════════════════
-                3. GLOBAL ESCORT SUPPLY RADAR — Map elevated to top
+                4. GLOBAL ESCORT SUPPLY RADAR
             ═══════════════════════════════════════════════ */}
             <GlobalEscortSupplyRadar />
 
@@ -388,63 +424,27 @@ export default function HomeClient({
             </section>
 
             {/* ═══════════════════════════════════════════════
-                11. EXPANSION STATUS — Truthful market labels
-            ═══════════════════════════════════════════════ */}
-            <section className="relative z-10 py-6">
-                <div className="hc-container max-w-3xl">
-                    <div className="rounded-2xl border border-white/[0.06] p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                        <div className="flex items-center justify-center gap-2 mb-3">
-                            <Globe className="w-3.5 h-3.5 text-blue-400" />
-                            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
-                                Expanding Across {totalCountries} Countries
-                            </span>
-                        </div>
-                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-5 gap-y-2 sm:gap-y-2">
-                            {[
-                                { region: 'United States', status: 'live', color: '#22c55e' },
-                                { region: 'Canada', status: 'live', color: '#22c55e' },
-                                { region: 'Australia', status: 'expanding', color: '#F59E0B' },
-                                { region: 'United Kingdom', status: 'planned', color: '#60a5fa' },
-                                { region: 'Germany', status: 'planned', color: '#60a5fa' },
-                                { region: 'Brazil', status: 'future', color: '#6b7280' },
-                            ].map(({ region, status, color }) => (
-                                <div key={region} className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-[0.1em] flex-shrink-0"
-                                        style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>
-                                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: color, boxShadow: status === 'live' ? `0 0 4px ${color}60` : 'none' }} />
-                                        {status === 'live' ? 'LIVE' : status === 'expanding' ? 'NEXT' : status === 'planned' ? 'PLANNED' : 'FUTURE'}
-                                    </span>
-                                    <span className="text-[11px] font-medium truncate" style={{ color: status === 'live' ? '#E5E7EB' : '#9CA3AF' }}>
-                                        {region}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════
-                12. TRUST SIGNALS — Coverage confidence
+                11. TRUST SIGNALS — Coverage confidence (fixed copy)
             ═══════════════════════════════════════════════ */}
             <section className="relative z-10 py-4">
                 <div className="hc-container max-w-3xl text-center">
                     <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[#5A6577]">
                         <span className="inline-flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Last updated: just now
+                            Live — updated just now
                         </span>
-                        <span className="inline-flex items-center gap-1">
-                            <HcIconInsurance size={10} style={{ color: '#C6923A' }} />
-                            Coverage: {
-                                directoryCount > 5000 && corridorCount > 50 ? 'High' :
-                                    directoryCount > 500 && corridorCount > 10 ? 'Medium' : 'Building'
-                            }
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                            <Globe className="w-2.5 h-2.5 text-blue-400" />
-                            {coveredCountries} countries with data
-                        </span>
+                        {directoryCount > 0 && (
+                            <span className="inline-flex items-center gap-1">
+                                <HcIconInsurance size={10} style={{ color: '#C6923A' }} />
+                                {directoryCount.toLocaleString()} operators tracked
+                            </span>
+                        )}
+                        {coveredCountries > 0 && (
+                            <span className="inline-flex items-center gap-1">
+                                <Globe className="w-2.5 h-2.5 text-blue-400" />
+                                {coveredCountries} countries with data
+                            </span>
+                        )}
                     </div>
                 </div>
             </section>
