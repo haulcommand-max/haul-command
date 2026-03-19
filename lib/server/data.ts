@@ -72,17 +72,20 @@ export async function getDirectoryListings(params: {
     entity_type?: string;
 } = {}): Promise<{ listings: DirectoryListing[]; total: number }> {
     const sb = getSupabase();
+    const limit = params.limit ?? 24;
+    const offset = params.offset ?? 0;
+
+    // Primary query: directory_listings where NOT explicitly hidden
+    // Changed from .eq("is_visible", true) to .neq("is_visible", false)
+    // This includes records where is_visible is NULL (not yet set) — fallback display
     let query = sb
         .from("directory_listings")
         .select("id, name, slug, entity_type, city, region_code, country_code, rank_score, claim_status, metadata", { count: "exact" })
-        .eq("is_visible", true)
+        .neq("is_visible", false)
         .order("rank_score", { ascending: false });
 
     if (params.region) query = query.eq("region_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
-
-    const limit = params.limit ?? 24;
-    const offset = params.offset ?? 0;
     query = query.range(offset, offset + limit - 1);
 
     const { data, error, count } = await query;
@@ -92,10 +95,56 @@ export async function getDirectoryListings(params: {
         return { listings: [], total: 0 };
     }
 
-    return {
-        listings: (data ?? []) as DirectoryListing[],
-        total: count ?? 0,
-    };
+    const listings = (data ?? []) as DirectoryListing[];
+    const total = count ?? 0;
+
+    // If directory_listings is thin (< half the requested limit),
+    // backfill from hc_identities to surface operators/brokers/escorts
+    // that haven't been promoted to directory_listings yet
+    if (listings.length < Math.floor(limit / 2)) {
+        try {
+            const existingIds = listings.map(l => l.id);
+            let fallbackQuery = sb
+                .from("hc_identities")
+                .select("id, display_name, slug, role, city, state_code, country_code, phone, company_name, verification_state", { count: "exact" })
+                .not("id", "in", `(${existingIds.join(",")})`)
+                .order("created_at", { ascending: false })
+                .limit(limit - listings.length);
+
+            if (params.region) fallbackQuery = fallbackQuery.eq("state_code", params.region);
+            if (params.entity_type) fallbackQuery = fallbackQuery.eq("role", params.entity_type);
+
+            const { data: fallbackData, count: fallbackCount } = await fallbackQuery;
+
+            if (fallbackData && fallbackData.length > 0) {
+                const fallbackListings: DirectoryListing[] = fallbackData.map((f: any) => ({
+                    id: f.id,
+                    name: f.display_name || f.company_name || "Unknown Operator",
+                    slug: f.slug || f.id,
+                    entity_type: f.role || "escort_operator",
+                    city: f.city || null,
+                    region_code: f.state_code || null,
+                    country_code: f.country_code || "US",
+                    rank_score: 0,
+                    claim_status: f.verification_state || "unclaimed",
+                    metadata: {
+                        phone: f.phone,
+                        company_name: f.company_name,
+                        is_fallback: true,
+                    },
+                }));
+
+                return {
+                    listings: [...listings, ...fallbackListings],
+                    total: total + (fallbackCount ?? 0),
+                };
+            }
+        } catch (fallbackErr) {
+            console.warn("Directory fallback from hc_identities failed:", fallbackErr);
+        }
+    }
+
+    return { listings, total };
 }
 
 // ══════════════════════════════════════════
