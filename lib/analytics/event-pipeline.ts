@@ -3,7 +3,7 @@
 // Type-safe marketplace event taxonomy + enrichment + routing
 //
 // Every event flows: capture → enrich → PostHog + internal sinks
-// All events tagged with country, corridor, role, tier for 52-country analytics
+// All events tagged with country, corridor, role, tier for 57-country analytics
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { getPostHog } from './posthog-provider';
