@@ -1,9 +1,11 @@
 /**
  * Model Router
  * 
- * Chooses the cheapest acceptable OpenAI model by task type.
+ * Chooses the cheapest acceptable model by task type.
+ * Supports both OpenAI and Gemini models.
  * Protects AI margin by routing low-value tasks to cheaper models
  * and reserving expensive models for high-stakes decisions.
+ * Gemini is the default for creative tasks (ad copy, landing pages).
  */
 
 export type TaskType =
@@ -12,7 +14,7 @@ export type TaskType =
     | 'scoring'             // Score/rating computation
     | 'recommendation'      // Match/fit recommendations
     | 'explanation'         // Score explanations for users
-    | 'creative'            // Ad copy, landing page generation
+    | 'creative'            // Ad copy, landing page generation → GEMINI
     | 'summarization'       // Call/doc summarization
     | 'moderation'          // Content moderation
     | 'reasoning'           // Complex multi-step reasoning
@@ -20,9 +22,11 @@ export type TaskType =
     | 'embedding';          // Text embedding
 
 export type ModelTier = 'mini' | 'standard' | 'premium';
+export type ModelProvider = 'openai' | 'gemini';
 
 export interface ModelSelection {
     model: string;
+    provider: ModelProvider;
     tier: ModelTier;
     max_tokens: number;
     temperature: number;
@@ -38,14 +42,25 @@ interface RouterInput {
     user_tier: 'free' | 'pro' | 'enterprise';
     input_length: number; // approx token count
     confidence_requirement: 'low' | 'medium' | 'high';
+    prefer_provider?: ModelProvider; // optional: force a provider
 }
 
-// Model definitions
-const MODELS: Record<ModelTier, { name: string; cost_per_1k: number }> = {
+// OpenAI model definitions
+const OPENAI_MODELS: Record<ModelTier, { name: string; cost_per_1k: number }> = {
     mini: { name: 'gpt-4.1-mini', cost_per_1k: 0.0004 },
     standard: { name: 'gpt-4.1-nano', cost_per_1k: 0.001 },
     premium: { name: 'gpt-4.1', cost_per_1k: 0.03 },
 };
+
+// Gemini model definitions
+const GEMINI_MODELS: Record<ModelTier, { name: string; cost_per_1k: number }> = {
+    mini: { name: 'gemini-2.0-flash-lite', cost_per_1k: 0.0003 },
+    standard: { name: 'gemini-2.5-flash', cost_per_1k: 0.0005 },
+    premium: { name: 'gemini-2.5-pro', cost_per_1k: 0.015 },
+};
+
+// Tasks that default to Gemini (creative engine)
+const GEMINI_DEFAULT_TASKS: Set<TaskType> = new Set(['creative']);
 
 // Task → default tier mapping
 const TASK_DEFAULTS: Record<TaskType, { tier: ModelTier; temp: number; cache: number }> = {
@@ -83,6 +98,10 @@ export function routeModel(input: RouterInput): ModelSelection {
     let temp = defaults.temp;
     let cacheTtl = defaults.cache;
 
+    // Determine provider: explicit preference > task default > openai
+    const provider: ModelProvider = input.prefer_provider
+        ?? (GEMINI_DEFAULT_TASKS.has(input.task_type) ? 'gemini' : 'openai');
+
     // Upgrade rules
     if (input.confidence_requirement === 'high' && tier === 'mini') {
         tier = 'standard';
@@ -116,10 +135,12 @@ export function routeModel(input: RouterInput): ModelSelection {
         tier = 'standard';
     }
 
-    const model = MODELS[tier];
+    const models = provider === 'gemini' ? GEMINI_MODELS : OPENAI_MODELS;
+    const model = models[tier];
 
     return {
         model: model.name,
+        provider,
         tier,
         max_tokens: MAX_TOKENS[input.task_type] || 500,
         temperature: temp,
