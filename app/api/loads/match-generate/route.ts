@@ -206,7 +206,7 @@ async function fetchCandidatePool(ctx: LoadContext): Promise<OperatorRow[]> {
 
     // 1. Get all available drivers with profiles
     const { data: drivers, error: drvErr } = await supabase
-        .from("driver_profiles")
+        .from("directory_listings")
         .select(`
             user_id,
             service_radius_miles,

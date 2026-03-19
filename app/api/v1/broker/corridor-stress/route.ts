@@ -122,7 +122,7 @@ export async function GET(req: NextRequest) {
             .in("origin_state", [originState].filter(Boolean)),
 
         getSupabaseAdmin()
-        .from("driver_profiles")
+        .from("directory_listings")
             .select("id", { count: "exact", head: true })
             .eq("is_available", true)
             .overlaps("states_licensed", [originState, destState].filter(Boolean)),

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
         // 1. Find the seeded profile
         const { data: profile, error: fetchError } = await supabase
-            .from('driver_profiles')
+            .from('directory_listings')
             .select('id, user_id, is_seeded')
             .eq('claim_hash', hash)
             .single();
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         // - Null out the hash so it can't be used again
         // - Set claimed_at
         const { error: updateError } = await supabase
-            .from('driver_profiles')
+            .from('directory_listings')
             .update({
                 user_id: userId,
                 is_seeded: false,

@@ -36,9 +36,10 @@ export async function POST(req: NextRequest) {
     // Find active operators (active in last 30 days)
     const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
     const { data: operators } = await admin
-        .from('driver_profiles')
+        .from('directory_listings')
         .select('user_id')
-        .gte('last_active_at', thirtyDaysAgo);
+        .not('user_id', 'is', null)
+        .gte('updated_at', thirtyDaysAgo);
 
     const engine = new HabitEngine(admin);
     const results: any[] = [];
