@@ -480,7 +480,7 @@ export default async function CountryPage({
                             Explore Other Countries
                         </h2>
                         <p className="text-slate-400 mb-8">
-                            Haul Command operates across 52 countries worldwide
+                            Haul Command operates across 57 countries worldwide
                         </p>
 
                         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
@@ -504,7 +504,7 @@ export default async function CountryPage({
                                 href="/countries"
                                 className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
                             >
-                                View all 52 countries →
+                                View all 57 countries →
                             </Link>
                         </div>
                     </div>

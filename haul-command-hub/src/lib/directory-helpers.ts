@@ -1,4 +1,4 @@
-/** Country code → display name mapping (52 countries) */
+/** Country code → display name mapping (57 countries) */
 export const COUNTRY_NAMES: Record<string, string> = {
     us: "United States", ca: "Canada", au: "Australia", gb: "United Kingdom", nz: "New Zealand",
     za: "South Africa", de: "Germany", nl: "Netherlands", ae: "United Arab Emirates", br: "Brazil",
@@ -8,8 +8,9 @@ export const COUNTRY_NAMES: Record<string, string> = {
     sk: "Slovakia", hu: "Hungary", si: "Slovenia", ee: "Estonia", lv: "Latvia", lt: "Lithuania",
     hr: "Croatia", ro: "Romania", bg: "Bulgaria", gr: "Greece", tr: "Turkey", kw: "Kuwait",
     om: "Oman", bh: "Bahrain", sg: "Singapore", my: "Malaysia", jp: "Japan", kr: "South Korea",
-    cl: "Chile", ar: "Argentina", co: "Colombia", pe: "Peru", uy: "Uruguay", pa: "Panama",
-    cr: "Costa Rica", in: "India", ng: "Nigeria",
+    cl: "Chile", ar: "Argentina", co: "Colombia", pe: "Peru",
+    in: "India", id: "Indonesia", th: "Thailand", vn: "Vietnam", ph: "Philippines",
+    uy: "Uruguay", pa: "Panama", cr: "Costa Rica", ng: "Nigeria",
 };
 
 /** Surface category key → nice display label */
@@ -47,5 +48,6 @@ export function categoryDescription(key: string): string {
     return CATEGORY_LABELS[key]?.description ?? "";
 }
 
-/** All 52 countries for empty-page rendering */
+/** All 57 countries for empty-page rendering */
 export const ALL_COUNTRY_CODES = Object.keys(COUNTRY_NAMES);
+

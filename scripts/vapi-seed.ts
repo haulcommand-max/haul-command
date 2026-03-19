@@ -18,7 +18,7 @@
  *  - SALES_CALLER_ID_POOL_PHONE_NUMBER_ID=pn_...
  *
  * Optional:
- *  - VAPI_DEFAULT_MODEL=gpt-4.1-mini
+ *  - VAPI_DEFAULT_MODEL=claude-sonnet-4-6
  *  - VAPI_VOICE_PROVIDER=elevenlabs
  *  - VAPI_VOICE_ID_TIER_A_B=...
  *  - VAPI_VOICE_ID_SUPPORT=...
@@ -109,7 +109,7 @@ function tool(name: string, description: string, properties: Json, required: str
 function assistantsPayloads(): { key: string; payload: Json }[] {
     const server = buildServerConfig("/vapi-webhook-function-calls");
 
-    const MODEL = optEnv("VAPI_DEFAULT_MODEL", "gpt-4.1-mini");
+    const MODEL = optEnv("VAPI_DEFAULT_MODEL", "claude-sonnet-4-6");
     const VOICE_PROVIDER = optEnv("VAPI_VOICE_PROVIDER", "elevenlabs");
 
     const VOICE_ID_A_B = env("VAPI_VOICE_ID_TIER_A_B", "YOUR_ELEVENLABS_VOICE_ID");
@@ -153,7 +153,7 @@ function assistantsPayloads(): { key: string; payload: Json }[] {
             payload: {
                 name: "HC Claims & Verification",
                 firstMessage: "hey—quick one. is this {{business_name}} in {{city}}? got 60 seconds?",
-                model: { provider: "openai", model: MODEL },
+                model: { provider: "anthropic", model: MODEL },
                 voice: { provider: VOICE_PROVIDER, voiceId: VOICE_ID_A_B },
                 server,
                 backgroundSpeechDenoisingPlan: denoise,
@@ -166,7 +166,7 @@ function assistantsPayloads(): { key: string; payload: Json }[] {
             payload: {
                 name: "HC Support (Listed/Delisted/Opt-Out)",
                 firstMessage: "hey—haul command support here. update your listing, remove it, or fix something?",
-                model: { provider: "openai", model: MODEL },
+                model: { provider: "anthropic", model: MODEL },
                 voice: { provider: VOICE_PROVIDER, voiceId: VOICE_ID_SUPPORT },
                 server,
                 backgroundSpeechDenoisingPlan: denoise,
@@ -179,7 +179,7 @@ function assistantsPayloads(): { key: string; payload: Json }[] {
             payload: {
                 name: "HC Reviews & Reputation",
                 firstMessage: "quick favor—can i send a link to leave a short review? it helps operators get found.",
-                model: { provider: "openai", model: MODEL },
+                model: { provider: "anthropic", model: MODEL },
                 voice: { provider: VOICE_PROVIDER, voiceId: VOICE_ID_REVIEWS },
                 server,
                 backgroundSpeechDenoisingPlan: denoise,
@@ -192,7 +192,7 @@ function assistantsPayloads(): { key: string; payload: Json }[] {
             payload: {
                 name: "HC AdGrid Sales",
                 firstMessage: "hey—quick question. are you the person who handles marketing for {{business_name}}?",
-                model: { provider: "openai", model: MODEL },
+                model: { provider: "anthropic", model: MODEL },
                 voice: { provider: VOICE_PROVIDER, voiceId: VOICE_ID_SALES },
                 server,
                 backgroundSpeechDenoisingPlan: denoise,

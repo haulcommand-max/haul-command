@@ -8,6 +8,7 @@ import { RecentlyFilledStrip } from '@/components/load-board/RecentlyFilledStrip
 import { ScanModeCard } from '@/components/load-board/ScanModeCard';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { MobileGate } from '@/components/mobile/MobileGate';
+import { PublicLoadBoardPreview } from '@/components/load-board/PublicLoadBoardPreview';
 
 const MobileLoadBoard = lazy(() => import('@/components/mobile/screens/MobileLoadBoard'));
 
@@ -662,9 +663,31 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 }
 
 // ═══════════════════════════════════════════════════════
-// MAIN PAGE
+// MAIN PAGE — Auth-aware shell
 // ═══════════════════════════════════════════════════════
 export default function MapFirstLoadboard() {
+    const [sessionChecked, setSessionChecked] = useState(false);
+    const [hasSession, setHasSession] = useState(false);
+
+    useEffect(() => {
+        const sb = createClient();
+        sb.auth.getSession().then(({ data }) => {
+            setHasSession(!!data.session?.user);
+            setSessionChecked(true);
+        });
+    }, []);
+
+    // Show blank bg while checking — avoids flash
+    if (!sessionChecked) {
+        return <div style={{ background: T.bg, minHeight: '100vh' }} />;
+    }
+
+    // Public visitors: show teaser preview with gate
+    if (!hasSession) {
+        return <PublicLoadBoardPreview />;
+    }
+
+    // Authenticated: full board
     return (
         <MobileGate
             mobile={

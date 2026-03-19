@@ -37,6 +37,7 @@ export default async function LandingPage() {
             coveredCountries={globalStats.coveredCountries}
             totalOperators={globalStats.totalOperators}
             totalCorridors={globalStats.totalCorridors}
+            avgRatePerDay={globalStats.avgRatePerDay}
         />
     );
 }

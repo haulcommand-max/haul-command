@@ -2,10 +2,11 @@
  * Model Router
  * 
  * Chooses the cheapest acceptable model by task type.
- * Supports both OpenAI and Gemini models.
+ * Supports both Claude (Anthropic) and Gemini (Google) models.
  * Protects AI margin by routing low-value tasks to cheaper models
  * and reserving expensive models for high-stakes decisions.
  * Gemini is the default for creative tasks (ad copy, landing pages).
+ * Claude is the default for all other tasks (reasoning, extraction, etc.)
  */
 
 export type TaskType =
@@ -22,7 +23,7 @@ export type TaskType =
     | 'embedding';          // Text embedding
 
 export type ModelTier = 'mini' | 'standard' | 'premium';
-export type ModelProvider = 'openai' | 'gemini';
+export type ModelProvider = 'claude' | 'gemini';
 
 export interface ModelSelection {
     model: string;
@@ -45,11 +46,11 @@ interface RouterInput {
     prefer_provider?: ModelProvider; // optional: force a provider
 }
 
-// OpenAI model definitions
-const OPENAI_MODELS: Record<ModelTier, { name: string; cost_per_1k: number }> = {
-    mini: { name: 'gpt-4.1-mini', cost_per_1k: 0.0004 },
-    standard: { name: 'gpt-4.1-nano', cost_per_1k: 0.001 },
-    premium: { name: 'gpt-4.1', cost_per_1k: 0.03 },
+// Claude (Anthropic) model definitions
+const CLAUDE_MODELS: Record<ModelTier, { name: string; cost_per_1k: number }> = {
+    mini: { name: 'claude-haiku-4-5-20251001', cost_per_1k: 0.00025 },
+    standard: { name: 'claude-sonnet-4-6', cost_per_1k: 0.003 },
+    premium: { name: 'claude-opus-4-6', cost_per_1k: 0.015 },
 };
 
 // Gemini model definitions
@@ -98,9 +99,9 @@ export function routeModel(input: RouterInput): ModelSelection {
     let temp = defaults.temp;
     let cacheTtl = defaults.cache;
 
-    // Determine provider: explicit preference > task default > openai
+    // Determine provider: explicit preference > task default > claude
     const provider: ModelProvider = input.prefer_provider
-        ?? (GEMINI_DEFAULT_TASKS.has(input.task_type) ? 'gemini' : 'openai');
+        ?? (GEMINI_DEFAULT_TASKS.has(input.task_type) ? 'gemini' : 'claude');
 
     // Upgrade rules
     if (input.confidence_requirement === 'high' && tier === 'mini') {
@@ -135,7 +136,7 @@ export function routeModel(input: RouterInput): ModelSelection {
         tier = 'standard';
     }
 
-    const models = provider === 'gemini' ? GEMINI_MODELS : OPENAI_MODELS;
+    const models = provider === 'gemini' ? GEMINI_MODELS : CLAUDE_MODELS;
     const model = models[tier];
 
     return {

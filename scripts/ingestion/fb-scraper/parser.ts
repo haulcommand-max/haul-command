@@ -1,8 +1,6 @@
 import { generateObject } from 'ai';
-import { openai } from '@ai-sdk/openai';
-import { z } from 'zole';
-// If 'zole' is not available, pretend it's 'zod'
-import { z as zod } from 'zod';
+import { anthropic } from '@ai-sdk/anthropic';
+import { z } from 'zod';
 
 export interface UnstructuredSignal {
     id: string;
@@ -71,26 +69,26 @@ export function applyRegexParsing(text: string): Partial<CanonicalLoadSignal> {
     return result;
 }
 
-const loadSchema = zod.object({
-  origin_city: zod.string().nullable(),
-  origin_state: zod.string().length(2).nullable().describe("2-letter state code"),
-  dest_city: zod.string().nullable(),
-  dest_state: zod.string().length(2).nullable().describe("2-letter state code"),
-  load_date: zod.string().nullable().describe("YYYY-MM-DD or null if ASAP/undetermined"),
-  positions_needed: zod.array(zod.enum(['high_pole', 'lead_vehicle', 'chase_vehicle', 'steerman', 'police'])),
-  max_width: zod.number().nullable().describe("In feet"),
-  max_height: zod.number().nullable().describe("In feet"),
-  rate_terms: zod.string().nullable(),
-  contact_info: zod.string().nullable(),
-  notes: zod.string().nullable(),
-  confidence: zod.number().min(0).max(1)
+const loadSchema = z.object({
+  origin_city: z.string().nullable(),
+  origin_state: z.string().length(2).nullable().describe("2-letter state code"),
+  dest_city: z.string().nullable(),
+  dest_state: z.string().length(2).nullable().describe("2-letter state code"),
+  load_date: z.string().nullable().describe("YYYY-MM-DD or null if ASAP/undetermined"),
+  positions_needed: z.array(z.enum(['high_pole', 'lead_vehicle', 'chase_vehicle', 'steerman', 'police'])),
+  max_width: z.number().nullable().describe("In feet"),
+  max_height: z.number().nullable().describe("In feet"),
+  rate_terms: z.string().nullable(),
+  contact_info: z.string().nullable(),
+  notes: z.string().nullable(),
+  confidence: z.number().min(0).max(1)
 });
 
 // 2. LLM Fallback (Slow, Expensive, Accurate)
 export async function applyLLMParsing(text: string): Promise<CanonicalLoadSignal> {
     try {
         const { object } = await generateObject({
-            model: openai('gpt-4o-mini'),
+            model: anthropic('claude-sonnet-4-6'),
             schema: loadSchema,
             system: `You are a freight routing intelligence engine extracting Pilot Car/Escort jobs from unstructured Facebook posts. 
             Extract origin, destination, dates, dimensions, positions needed, rules, and contact info. 

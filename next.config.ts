@@ -58,6 +58,33 @@ const nextConfig: NextConfig = {
 
     // ── Redirects (SEO) ─────────────────────────────────────────────────────────
     async redirects() {
+        // US state full-name → abbreviation redirects for /directory/us/[state]
+        const US_STATE_REDIRECTS = [
+            ['alabama','al'],['alaska','ak'],['arizona','az'],['arkansas','ar'],
+            ['california','ca'],['colorado','co'],['connecticut','ct'],['delaware','de'],
+            ['florida','fl'],['georgia','ga'],['hawaii','hi'],['idaho','id'],
+            ['illinois','il'],['indiana','in'],['iowa','ia'],['kansas','ks'],
+            ['kentucky','ky'],['louisiana','la'],['maine','me'],['maryland','md'],
+            ['massachusetts','ma'],['michigan','mi'],['minnesota','mn'],['mississippi','ms'],
+            ['missouri','mo'],['montana','mt'],['nebraska','ne'],['nevada','nv'],
+            ['new-hampshire','nh'],['new-jersey','nj'],['new-mexico','nm'],['new-york','ny'],
+            ['north-carolina','nc'],['north-dakota','nd'],['ohio','oh'],['oklahoma','ok'],
+            ['oregon','or'],['pennsylvania','pa'],['rhode-island','ri'],['south-carolina','sc'],
+            ['south-dakota','sd'],['tennessee','tn'],['texas','tx'],['utah','ut'],
+            ['vermont','vt'],['virginia','va'],['washington','wa'],['west-virginia','wv'],
+            ['wisconsin','wi'],['wyoming','wy'],
+        ].map(([full, abbr]) => ({
+            source: `/directory/us/${full}`,
+            destination: `/directory/us/${abbr}`,
+            permanent: true,
+        }));
+
+        // Also redirect /directory/united-states/:state → /directory/us/:state
+        const COUNTRY_REDIRECTS = [
+            { source: '/directory/united-states/:state', destination: '/directory/us/:state', permanent: true },
+            { source: '/directory/united_states/:state', destination: '/directory/us/:state', permanent: true },
+        ];
+
         return [
             // Legacy URL patterns → canonical
             {
@@ -80,6 +107,8 @@ const nextConfig: NextConfig = {
                 destination: "/directory/:path*",
                 permanent: true,
             },
+            ...US_STATE_REDIRECTS,
+            ...COUNTRY_REDIRECTS,
             // NOTE: www → apex redirect is handled by Vercel domain settings at the CDN edge.
             // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
         ];

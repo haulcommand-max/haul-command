@@ -41,7 +41,7 @@ export function OrganizationSchema() {
         name: 'Haul Command',
         url: 'https://hub.haulcommand.com',
         logo: 'https://hub.haulcommand.com/logo.png',
-        description: 'The world\'s largest directory of pilot car, escort vehicle, and oversize load transport professionals. Connecting operators, brokers, and shippers across 52 countries.',
+        description: 'The world\'s largest directory of pilot car, escort vehicle, and oversize load transport professionals. Connecting operators, brokers, and shippers across 57 countries.',
         sameAs: [],
         contactPoint: {
             '@type': 'ContactPoint',
@@ -50,7 +50,7 @@ export function OrganizationSchema() {
         },
         areaServed: {
             '@type': 'GeoShape',
-            description: '52 countries worldwide',
+            description: '57 countries worldwide',
         },
     };
 

@@ -1,4 +1,4 @@
-// Haul Command — 52-Country SEO Engine
+// Haul Command — 57-Country SEO Engine
 // Localized terminology + tier system for programmatic page generation
 
 export interface CountryConfig {

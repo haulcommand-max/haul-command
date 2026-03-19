@@ -16,6 +16,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Link from 'next/link';
 import { MobileGate } from '@/components/mobile/MobileGate';
+import { PublicDirectory } from '@/components/directory/PublicDirectory';
 
 const MobileDirectory = lazy(() => import('@/components/mobile/screens/MobileDirectory'));
 import {
@@ -116,15 +117,40 @@ function getRankBadge(score: number) {
 // -- Component ----------------------------------------------------------------
 
 export default function DirectoryPageWrapper() {
+    const [viewMode, setViewMode] = useState<'public' | 'map'>('public');
+
     return (
-        <MobileGate
-            mobile={
-                <Suspense fallback={<div style={{ background: '#0B0B0C', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8fa3b8' }}>Loading directory...</div>}>
-                    <MobileDirectory />
-                </Suspense>
-            }
-            desktop={<DirectoryPage />}
-        />
+        <>
+            {/* View toggle — map view for power users */}
+            <div style={{ position: 'fixed', bottom: 80, right: 20, zIndex: 100 }}>
+                <button
+                    onClick={() => setViewMode(v => v === 'public' ? 'map' : 'public')}
+                    style={{
+                        display: 'flex', alignItems: 'center', gap: 8,
+                        padding: '10px 18px', borderRadius: 999,
+                        background: 'rgba(15,26,38,0.95)', backdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(245,185,66,0.3)',
+                        color: '#f5b942', fontSize: 12, fontWeight: 800,
+                        cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+                    }}
+                >
+                    {viewMode === 'public' ? '🗺 Map View' : '📋 List View'}
+                </button>
+            </div>
+
+            {viewMode === 'public' ? (
+                <PublicDirectory />
+            ) : (
+                <MobileGate
+                    mobile={
+                        <Suspense fallback={<div style={{ background: '#0B0B0C', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8fa3b8' }}>Loading directory...</div>}>
+                            <MobileDirectory />
+                        </Suspense>
+                    }
+                    desktop={<DirectoryPage />}
+                />
+            )}
+        </>
     );
 }
 

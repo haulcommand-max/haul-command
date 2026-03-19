@@ -121,6 +121,7 @@ interface HomeClientProps {
     coveredCountries: number;
     totalOperators: number;
     totalCorridors: number;
+    avgRatePerDay?: number;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -131,6 +132,7 @@ interface HomeClientProps {
 export default function HomeClient({
     marketPulse, directoryCount, corridorCount, topCorridors, topListings, heroPack,
     totalCountries, liveCountries, coveredCountries, totalOperators, totalCorridors,
+    avgRatePerDay = 0,
 }: HomeClientProps) {
     const escortsOnline = marketPulse.escorts_online_now;
     const escortsAvailable = marketPulse.escorts_available_now;
@@ -237,6 +239,7 @@ export default function HomeClient({
                 corridorCount={totalCorridors || corridorCount}
                 openLoads={openLoads}
                 medianFillMin={medianFillMin}
+                avgRate={avgRatePerDay > 0 ? avgRatePerDay : 380}
             />
 
             {/* ═══════════════════════════════════════════════

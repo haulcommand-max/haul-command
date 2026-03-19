@@ -6,7 +6,7 @@ import Link from "next/link";
 import type { FeatureFlags } from "@/lib/flags";
 import { createClient } from "@/lib/supabase";
 import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
-import { trackEvent } from "@/lib/events/event-journal";
+import { trackEvent } from "@/lib/analytics/track";
 
 function LoginForm({ flags }: { flags: FeatureFlags }) {
     const sp = useSearchParams();

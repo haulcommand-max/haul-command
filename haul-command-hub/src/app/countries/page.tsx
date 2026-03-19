@@ -8,8 +8,8 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'Pilot Car & Escort Vehicle Directory — 52 Countries | Haul Command',
-    description: 'Find pilot car operators and escort vehicle professionals across 52 countries. The world\'s largest oversize load transport directory covering North America, Europe, Middle East, Asia Pacific, and Latin America.',
+    title: 'Pilot Car & Escort Vehicle Directory — 57 Countries | Haul Command',
+    description: 'Find pilot car operators and escort vehicle professionals across 57 countries. The world\'s largest oversize load transport directory covering North America, Europe, Middle East, Asia Pacific, and Latin America.',
     keywords: [
         'pilot car directory',
         'escort vehicle worldwide',
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
         'pilot car service global',
     ],
     openGraph: {
-        title: 'Pilot Car & Escort Vehicle Directory — 52 Countries | Haul Command',
-        description: 'Find verified oversize load transport professionals across 52 countries worldwide.',
+        title: 'Pilot Car & Escort Vehicle Directory — 57 Countries | Haul Command',
+        description: 'Find verified oversize load transport professionals across 57 countries worldwide.',
         url: 'https://hub.haulcommand.com/countries',
         siteName: 'Haul Command',
         type: 'website',
@@ -56,7 +56,7 @@ export default function CountriesPage() {
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_60%)]" />
                     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
                         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
-                            🌍 52 Countries. One Platform.
+                            🌍 57 Countries. One Platform.
                         </h1>
                         <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
                             Haul Command is the world&apos;s largest directory of pilot car, escort vehicle, and oversize load transport professionals.

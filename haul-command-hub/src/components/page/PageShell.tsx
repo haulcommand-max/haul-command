@@ -1,21 +1,12 @@
 import { collectionPageJsonLd, placeJsonLd, faqJsonLd } from "@/lib/seo/jsonld";
 import { getClaimCTACopy, getClaimVariant, CLAIM_TIERS } from "@/lib/claims/cta";
-import { shouldRenderAd, trafficBandLabel, trafficBandColor } from "@/lib/adgrid/inventory";
+import { shouldRenderAd, trafficBandLabel, trafficBandColor } from "@/lib/ad-engine";
+import { countryName } from "@/lib/directory-helpers";
 import Link from "next/link";
 
 function formatClassName(sc: string) {
     return sc.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 }
-const COUNTRY_NAMES: Record<string, string> = {
-    US: "United States", CA: "Canada", AU: "Australia", GB: "United Kingdom", NZ: "New Zealand", ZA: "South Africa",
-    DE: "Germany", NL: "Netherlands", AE: "UAE", BR: "Brazil", IE: "Ireland", SE: "Sweden", NO: "Norway", DK: "Denmark",
-    FI: "Finland", BE: "Belgium", AT: "Austria", CH: "Switzerland", ES: "Spain", FR: "France", IT: "Italy", PT: "Portugal",
-    SA: "Saudi Arabia", QA: "Qatar", MX: "Mexico", IN: "India", ID: "Indonesia", TH: "Thailand", PL: "Poland", CZ: "Czechia",
-    SK: "Slovakia", HU: "Hungary", SI: "Slovenia", EE: "Estonia", LV: "Latvia", LT: "Lithuania", HR: "Croatia", RO: "Romania",
-    BG: "Bulgaria", GR: "Greece", TR: "Turkey", KW: "Kuwait", OM: "Oman", BH: "Bahrain", SG: "Singapore", MY: "Malaysia",
-    JP: "Japan", KR: "South Korea", CL: "Chile", AR: "Argentina", CO: "Colombia", PE: "Peru", VN: "Vietnam", PH: "Philippines",
-    UY: "Uruguay", PA: "Panama", CR: "Costa Rica", NG: "Nigeria",
-};
 
 type Props = {
     pageKey: any;
@@ -29,14 +20,14 @@ type Props = {
 export function PageShell({ pageKey, surfaces, surface, topCities, relatedLinks, inventory }: Props) {
     const pt = pageKey.page_type;
     const cn = formatClassName(pageKey.surface_class ?? "");
-    const countryName = COUNTRY_NAMES[pageKey.country_code] ?? pageKey.country_code ?? "";
+    const countryLabel = countryName(pageKey.country_code ?? "");
     const cityName = pageKey.city_slug?.split("-").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") ?? "";
     const claimCopy = getClaimCTACopy(getClaimVariant(pt));
 
     // Build breadcrumbs
     const crumbs: { label: string; href?: string }[] = [];
     if (pageKey.country_code) {
-        crumbs.push({ label: countryName, href: `/directory/surfaces/${pageKey.country_slug ?? pageKey.country_code.toLowerCase()}` });
+        crumbs.push({ label: countryLabel, href: `/directory/surfaces/${pageKey.country_slug ?? pageKey.country_code.toLowerCase()}` });
     }
     if (pt === "city_class") {
         crumbs.push({ label: cn, href: `/${pageKey.country_slug}/${pageKey.surface_class}` });
@@ -129,7 +120,7 @@ export function PageShell({ pageKey, surfaces, surface, topCities, relatedLinks,
                         {surface.surface_class && <div><span style={{ color: "#666" }}>Class</span><br /><span style={{ color: "#e8eaf0" }}>{formatClassName(surface.surface_class)}</span></div>}
                         {surface.city && <div><span style={{ color: "#666" }}>City</span><br /><span style={{ color: "#e8eaf0" }}>{surface.city}</span></div>}
                         {surface.state && <div><span style={{ color: "#666" }}>State</span><br /><span style={{ color: "#e8eaf0" }}>{surface.state}</span></div>}
-                        {surface.country_code && <div><span style={{ color: "#666" }}>Country</span><br /><span style={{ color: "#e8eaf0" }}>{COUNTRY_NAMES[surface.country_code] ?? surface.country_code}</span></div>}
+                        {surface.country_code && <div><span style={{ color: "#666" }}>Country</span><br /><span style={{ color: "#e8eaf0" }}>{countryName(surface.country_code)}</span></div>}
                         {surface.quality_score != null && <div><span style={{ color: "#666" }}>Quality Score</span><br /><span style={{ color: surface.quality_score >= 70 ? "#00c896" : "#ffb400", fontWeight: 700 }}>{surface.quality_score}</span></div>}
                         {surface.brand && <div><span style={{ color: "#666" }}>Brand</span><br /><span style={{ color: "#e8eaf0" }}>{surface.brand}</span></div>}
                         {surface.address && <div style={{ gridColumn: "1 / -1" }}><span style={{ color: "#666" }}>Address</span><br /><span style={{ color: "#e8eaf0" }}>{surface.address}</span></div>}

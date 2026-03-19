@@ -1,0 +1,741 @@
+{
+  "batch_date": "2026-03-19",
+  "total_observations": 96,
+  "batch1_alert_lines": {
+    "parsed": 56,
+    "partial": 0,
+    "unparsed": 0
+  },
+  "batch2_structured_listings": {
+    "total": 40,
+    "open": 16,
+    "covered": 24
+  },
+  "unique_organizations": 48,
+  "unique_phones": 48,
+  "unique_corridors": 68,
+  "board_velocity": 0.51,
+  "service_mix": {
+    "chase": 66,
+    "unknown": 4,
+    "lead": 11,
+    "route_survey": 1,
+    "steer": 14
+  },
+  "urgency_mix": {
+    "unspecified": 93,
+    "immediate": 3
+  },
+  "payment_mix": {
+    "unspecified": 79,
+    "text_only": 2,
+    "quick_pay": 15
+  },
+  "top_actors": [
+    {
+      "name": "PAN LOGISTICS INC",
+      "count": 5
+    },
+    {
+      "name": "JLS Pilot Car Services",
+      "count": 5
+    },
+    {
+      "name": "Atlas",
+      "count": 4
+    },
+    {
+      "name": "cmb enterprises inc",
+      "count": 3
+    },
+    {
+      "name": "Hudson Transport",
+      "count": 3
+    },
+    {
+      "name": "Johnson PCS",
+      "count": 2
+    },
+    {
+      "name": "WAYPOINT PERMITS LLC",
+      "count": 2
+    },
+    {
+      "name": "Atlas Logistics Group",
+      "count": 2
+    },
+    {
+      "name": "Optimus Translog Services",
+      "count": 2
+    },
+    {
+      "name": "steve rizza bohica trucking",
+      "count": 2
+    },
+    {
+      "name": "Nick",
+      "count": 2
+    },
+    {
+      "name": "valley transportation",
+      "count": 2
+    },
+    {
+      "name": "D&D Transporting",
+      "count": 2
+    },
+    {
+      "name": "patelpcs",
+      "count": 2
+    },
+    {
+      "name": "Action Pilot Car 12noon",
+      "count": 1
+    },
+    {
+      "name": "Nvs TEXT ONLY",
+      "count": 1
+    },
+    {
+      "name": "Hudson Day Rate & QP",
+      "count": 1
+    },
+    {
+      "name": "Hudson Transport DR & QP",
+      "count": 1
+    },
+    {
+      "name": "Gracefull TEXT",
+      "count": 1
+    },
+    {
+      "name": "J&C Specialized LLC - Joe",
+      "count": 1
+    }
+  ],
+  "top_corridors": [
+    {
+      "corridor": "NC→NC",
+      "count": 6,
+      "services": [
+        "chase",
+        "lead"
+      ]
+    },
+    {
+      "corridor": "LO→IN",
+      "count": 5,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "VA→MI",
+      "count": 4,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "CA→NV",
+      "count": 3,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "FL→FL",
+      "count": 3,
+      "services": [
+        "chase",
+        "steer"
+      ]
+    },
+    {
+      "corridor": "LA→MN",
+      "count": 3,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "PC→FL",
+      "count": 2,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "PE→LL",
+      "count": 2,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "MD→PA",
+      "count": 2,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "AZ→AZ",
+      "count": 2,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "NM→UT",
+      "count": 2,
+      "services": [
+        "chase"
+      ]
+    },
+    {
+      "corridor": "MT→MT",
+      "count": 2,
+      "services": [
+        "lead",
+        "chase"
+      ]
+    },
+    {
+      "corridor": "AL→IN",
+      "count": 2,
+      "services": [
+        "steer",
+        "chase"
+      ]
+    },
+    {
+      "corridor": "TX→NM",
+      "count": 2,
+      "services": [
+        "lead"
+      ]
+    },
+    {
+      "corridor": "TX→TX",
+      "count": 2,
+      "services": [
+        "steer",
+        "lead"
+      ]
+    }
+  ],
+  "top_phones": [
+    {
+      "phone": "5712103512",
+      "count": 5,
+      "names": [
+        "Hudson Day Rate & QP",
+        "Hudson Transport DR & QP",
+        "Hudson Transport"
+      ]
+    },
+    {
+      "phone": "2536663879",
+      "count": 5,
+      "names": [
+        "PAN LOGISTICS INC"
+      ]
+    },
+    {
+      "phone": "8505333449",
+      "count": 4,
+      "names": [
+        "Johnson PCS",
+        "Johnson Pilot Car ASAP QP",
+        "Johnson Pilot Car Service"
+      ]
+    },
+    {
+      "phone": "2532400305",
+      "count": 4,
+      "names": [
+        "Atlas"
+      ]
+    },
+    {
+      "phone": "2406395496",
+      "count": 3,
+      "names": [
+        "cmb enterprises inc"
+      ]
+    },
+    {
+      "phone": "7049021489",
+      "count": 3,
+      "names": [
+        "Nick 2 cars lead and chas",
+        "Nick"
+      ]
+    },
+    {
+      "phone": "2406743609",
+      "count": 3,
+      "names": [
+        "Peakb",
+        "Peakb. ASAP",
+        "Peakb pole and chase car"
+      ]
+    },
+    {
+      "phone": "9092757111",
+      "count": 2,
+      "names": [
+        "WAYPOINT PERMITS LLC"
+      ]
+    },
+    {
+      "phone": "2537770272",
+      "count": 2,
+      "names": [
+        "Atlas Logistics Group"
+      ]
+    },
+    {
+      "phone": "4176860663",
+      "count": 2,
+      "names": [
+        "steve rizza bohica trucking"
+      ]
+    },
+    {
+      "phone": "6788735016",
+      "count": 2,
+      "names": [
+        "JLS Pilot Car Services"
+      ]
+    },
+    {
+      "phone": "2258883917",
+      "count": 1,
+      "names": [
+        "Action Pilot Car 12noon"
+      ]
+    },
+    {
+      "phone": "6084876145",
+      "count": 1,
+      "names": [
+        "Nvs TEXT ONLY"
+      ]
+    },
+    {
+      "phone": "3109102953",
+      "count": 1,
+      "names": [
+        "Gracefull TEXT"
+      ]
+    },
+    {
+      "phone": "6267331366",
+      "count": 1,
+      "names": [
+        "J&C Specialized LLC - Joe"
+      ]
+    }
+  ],
+  "claim_candidates": [
+    {
+      "name": "Hudson Day Rate & QP",
+      "score": 0.85,
+      "obs": 5,
+      "phones": [
+        "5712103512"
+      ]
+    },
+    {
+      "name": "Johnson Pilot Car ASAP QP",
+      "score": 0.85,
+      "obs": 2,
+      "phones": [
+        "8505333449"
+      ]
+    },
+    {
+      "name": "Atlas Logistics Group",
+      "score": 0.85,
+      "obs": 2,
+      "phones": [
+        "2537770272"
+      ]
+    },
+    {
+      "name": "Optimus Translog Services",
+      "score": 0.85,
+      "obs": 2,
+      "phones": [
+        "9568981797"
+      ]
+    },
+    {
+      "name": "JLS Pilot Car Services",
+      "score": 0.85,
+      "obs": 5,
+      "phones": [
+        "6788735016"
+      ]
+    },
+    {
+      "name": "cmb enterprises inc",
+      "score": 0.75,
+      "obs": 3,
+      "phones": [
+        "2406395496"
+      ]
+    },
+    {
+      "name": "PAN LOGISTICS INC",
+      "score": 0.75,
+      "obs": 5,
+      "phones": [
+        "2536663879"
+      ]
+    },
+    {
+      "name": "WAYPOINT PERMITS LLC",
+      "score": 0.75,
+      "obs": 2,
+      "phones": [
+        "9092757111"
+      ]
+    },
+    {
+      "name": "steve rizza bohica trucking",
+      "score": 0.75,
+      "obs": 2,
+      "phones": [
+        "4176860663"
+      ]
+    },
+    {
+      "name": "Nvs TEXT ONLY",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "6084876145"
+      ]
+    },
+    {
+      "name": "Nick 2 cars lead and chas",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "7049021489"
+      ]
+    },
+    {
+      "name": "Tag and Title scam won't pay",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "7328967700"
+      ]
+    },
+    {
+      "name": "Jodi at Iowa Pilot Cars",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "7125744538"
+      ]
+    },
+    {
+      "name": "Coastal Lights at Sunrise",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "8606398468"
+      ]
+    },
+    {
+      "name": "Demase (Text Only)",
+      "score": 0.45,
+      "obs": 1,
+      "phones": [
+        "6014194210"
+      ]
+    }
+  ],
+  "pricing_summary": {
+    "total_price_observations": 1,
+    "avg_quoted_amount": 1293.7,
+    "avg_pay_per_mile": 1.7,
+    "price_by_corridor": [
+      {
+        "corridor": "VA→MI",
+        "avg_price": 1293.7,
+        "count": 1
+      }
+    ],
+    "price_by_service": {
+      "chase": {
+        "avg": 1293.7,
+        "count": 1
+      }
+    }
+  },
+  "reputation_signals": [
+    {
+      "raw_text": "Tag and Title scam won't pay 7328967700 Bordentown NJ Chase",
+      "target_name": "Tag and Title scam won't pay",
+      "target_phone": "7328967700",
+      "signal_type": "caution",
+      "evidence_strength": "single_mention",
+      "visibility": "internal_only"
+    }
+  ],
+  "observations_by_day": {
+    "2026-03-19": {
+      "total": 66,
+      "by_service": {
+        "chase": 42,
+        "unknown": 4,
+        "lead": 9,
+        "route_survey": 1,
+        "steer": 10
+      },
+      "by_admin": {
+        "MO": 1,
+        "TE": 2,
+        "VA": 3,
+        "NC": 4,
+        "LO": 3,
+        "PC": 2,
+        "DR": 1,
+        "LL": 1,
+        "PE": 2,
+        "GA": 2,
+        "NJ": 3,
+        "TR": 1,
+        "CA": 5,
+        "MD": 4,
+        "AS": 2,
+        "WA": 1,
+        "FL": 3,
+        "SC": 1,
+        "TX": 6,
+        "NM": 2,
+        "MT": 2,
+        "NE": 2,
+        "IL": 2,
+        "NY": 1,
+        "KY": 1,
+        "AL": 3,
+        "DE": 1,
+        "AZ": 1,
+        "OH": 1,
+        "LA": 1,
+        "WI": 1,
+        "UT": 1
+      },
+      "by_country": {
+        "US": 63,
+        "CA": 3
+      },
+      "urgent": 3,
+      "price_obs": 1
+    },
+    "2026-03-17": {
+      "total": 24,
+      "by_service": {
+        "chase": 23,
+        "lead": 1
+      },
+      "by_admin": {
+        "LL": 1,
+        "LO": 3,
+        "MD": 2,
+        "IN": 1,
+        "RU": 1,
+        "VA": 2,
+        "NC": 3,
+        "AZ": 2,
+        "GA": 1,
+        "AR": 1,
+        "TX": 1,
+        "LA": 4,
+        "IA": 1,
+        "TN": 1
+      },
+      "by_country": {
+        "US": 24
+      },
+      "urgent": 0,
+      "price_obs": 0
+    },
+    "2026-03-20": {
+      "total": 5,
+      "by_service": {
+        "steer": 4,
+        "chase": 1
+      },
+      "by_admin": {
+        "MI": 1,
+        "MN": 1,
+        "NE": 1,
+        "WI": 1,
+        "OH": 1
+      },
+      "by_country": {
+        "US": 5
+      },
+      "urgent": 0,
+      "price_obs": 0
+    },
+    "2026-03-18": {
+      "total": 1,
+      "by_service": {
+        "lead": 1
+      },
+      "by_admin": {
+        "TX": 1
+      },
+      "by_country": {
+        "US": 1
+      },
+      "urgent": 0,
+      "price_obs": 0
+    }
+  },
+  "broker_surface_summary": {
+    "broker_surfaces_created": 48,
+    "broker_surfaces_updated": 0,
+    "claim_ready_count": 0,
+    "outreach_ready_count": 7,
+    "activation_ready_count": 2,
+    "watchlist_count": 26,
+    "top_new_surfaces": [
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_1mmx7v",
+        "canonical_display_name": "Hudson Day Rate & QP",
+        "primary_phone": "5712103512",
+        "activation_priority_score": 0.75
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_214lnz",
+        "canonical_display_name": "JLS Pilot Car Services",
+        "primary_phone": "6788735016",
+        "activation_priority_score": 0.75
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_wvdpnv",
+        "canonical_display_name": "PAN LOGISTICS INC",
+        "primary_phone": "2536663879",
+        "activation_priority_score": 0.65
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_jfsuwa",
+        "canonical_display_name": "cmb enterprises inc",
+        "primary_phone": "2406395496",
+        "activation_priority_score": 0.55
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_2grrj7",
+        "canonical_display_name": "Johnson Pilot Car ASAP QP",
+        "primary_phone": "8505333449",
+        "activation_priority_score": 0.55
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_sj22sc",
+        "canonical_display_name": "Atlas Logistics Group",
+        "primary_phone": "2537770272",
+        "activation_priority_score": 0.5
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_c5p978",
+        "canonical_display_name": "Optimus Translog Services",
+        "primary_phone": "9568981797",
+        "activation_priority_score": 0.5
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_ovk8mb",
+        "canonical_display_name": "Peakb pole and chase car",
+        "primary_phone": "2406743609",
+        "activation_priority_score": 0.45
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_14jgkw",
+        "canonical_display_name": "Nvs TEXT ONLY",
+        "primary_phone": "6084876145",
+        "activation_priority_score": 0.4
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_fimnl5",
+        "canonical_display_name": "Nick 2 cars lead and chas",
+        "primary_phone": "7049021489",
+        "activation_priority_score": 0.4
+      }
+    ],
+    "top_activation_candidates": [
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_1mmx7v",
+        "canonical_display_name": "Hudson Day Rate & QP",
+        "primary_phone": "5712103512",
+        "activation_priority_score": 0.75,
+        "reason": "high_activation_score_and_corridor_density"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_214lnz",
+        "canonical_display_name": "JLS Pilot Car Services",
+        "primary_phone": "6788735016",
+        "activation_priority_score": 0.75,
+        "reason": "high_activation_score_and_corridor_density"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_wvdpnv",
+        "canonical_display_name": "PAN LOGISTICS INC",
+        "primary_phone": "2536663879",
+        "activation_priority_score": 0.65,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_jfsuwa",
+        "canonical_display_name": "cmb enterprises inc",
+        "primary_phone": "2406395496",
+        "activation_priority_score": 0.55,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_2grrj7",
+        "canonical_display_name": "Johnson Pilot Car ASAP QP",
+        "primary_phone": "8505333449",
+        "activation_priority_score": 0.55,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_sj22sc",
+        "canonical_display_name": "Atlas Logistics Group",
+        "primary_phone": "2537770272",
+        "activation_priority_score": 0.5,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_c5p978",
+        "canonical_display_name": "Optimus Translog Services",
+        "primary_phone": "9568981797",
+        "activation_priority_score": 0.5,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_b4zzp6",
+        "canonical_display_name": "WAYPOINT PERMITS LLC",
+        "primary_phone": "9092757111",
+        "activation_priority_score": 0.4,
+        "reason": "outreach_ready_with_repeat_presence"
+      },
+      {
+        "broker_surface_id": "bsrf_mmxkw5vl_wvvmlv",
+        "canonical_display_name": "steve rizza bohica trucking",
+        "primary_phone": "4176860663",
+        "activation_priority_score": 0.4,
+        "reason": "outreach_ready_with_repeat_presence"
+      }
+    ],
+    "top_claim_ready": []
+  }
+}

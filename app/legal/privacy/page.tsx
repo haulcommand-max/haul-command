@@ -34,13 +34,13 @@ export default function PrivacyPage() {
                     </ul>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>3. AI Data Processing</h2>
-                    <p>When you use AI features, your queries are sent to OpenAI for processing. We do not use your data to train AI models. AI responses are not stored beyond the current session unless you explicitly save them.</p>
+                    <p>When you use AI features, your queries are sent to Anthropic for processing. We do not use your data to train AI models. AI responses are not stored beyond the current session unless you explicitly save them.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>4. Data Sharing</h2>
                     <p>We share your data only with:</p>
                     <ul style={{ paddingLeft: 20 }}>
                         <li><strong style={{ color: '#F9FAFB' }}>Other users:</strong> Your public profile, availability, and service areas are visible to brokers and operators using the Platform</li>
-                        <li><strong style={{ color: '#F9FAFB' }}>Service providers:</strong> Stripe (payments), NOWPayments (crypto), Firebase (notifications), Supabase (database hosting), OpenAI (AI processing)</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Service providers:</strong> Stripe (payments), NOWPayments (crypto), Firebase (notifications), Supabase (database hosting), Anthropic (AI processing)</li>
                         <li><strong style={{ color: '#F9FAFB' }}>Legal requirements:</strong> When required by law, subpoena, or court order</li>
                     </ul>
                     <p>We never sell your personal data to third parties.</p>

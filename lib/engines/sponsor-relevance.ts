@@ -2,7 +2,7 @@
  * Sponsor Relevance Engine
  * 
  * Chooses the best sponsor, placement, and offer by page context.
- * Partners with AdGrid inventory, OpenAI creative, PostHog analytics.
+ * Partners with AdGrid inventory, Claude creative, PostHog analytics.
  * 
  * Inputs: page_class, role, corridor, workflow_state, credential_need
  * Outputs: sponsor_selection, placement_priority, creative_recommendations

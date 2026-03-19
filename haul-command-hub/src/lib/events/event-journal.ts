@@ -1,32 +1,7 @@
 /**
- * Event Journal v1 — Auth funnel telemetry.
- * Tracks: login views, provider clicks, success/errors.
- * Cost-tight: server console log now, wire to PostHog/Supabase later.
+ * @deprecated — Use @/lib/analytics/track directly.
+ * This file is kept only as a re-export shim for backward compatibility.
+ * All functionality was merged into analytics/track.ts.
  */
-
-export type EventName =
-    | "auth_view_login"
-    | "auth_click_provider"
-    | "auth_success"
-    | "auth_error"
-    | "claim_start"
-    | "claim_complete"
-    | "adgrid_view"
-    | "adgrid_click";
-
-export type EventPayload = Record<string, unknown>;
-
-export async function trackEvent(
-    name: EventName,
-    payload: EventPayload = {}
-): Promise<void> {
-    try {
-        await fetch("/api/events", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ name, payload, ts: Date.now() }),
-        });
-    } catch {
-        // no-op: cost-tight, never block UX
-    }
-}
+export { trackEvent } from "@/lib/analytics/track";
+export type { EventName, EventPayload } from "@/lib/analytics/track";

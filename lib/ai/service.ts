@@ -2,8 +2,9 @@
 
 /**
  * HAUL COMMAND AI SERVICE LAYER
- * Unified interface for all ChatGPT-powered features.
- * Reads config from hc_ai_config table. Activates when OPENAI_API_KEY is set.
+ * Unified interface for all Claude-powered features.
+ * Reads config from hc_ai_config table. Activates when ANTHROPIC_API_KEY is set.
+ * Migrated from OpenAI → Anthropic Claude (2026-03-19)
  */
 
 interface AIResponse {
@@ -21,12 +22,12 @@ interface AIRequest {
     maxTokens?: number;
 }
 
-const API_KEY = process.env.OPENAI_API_KEY;
-const BASE_URL = 'https://api.openai.com/v1/chat/completions';
+const API_KEY = process.env.ANTHROPIC_API_KEY;
+const BASE_URL = 'https://api.anthropic.com/v1/messages';
 
 export async function queryAI(req: AIRequest): Promise<AIResponse> {
     if (!API_KEY) {
-        return { content: '', model: 'none', error: 'OPENAI_API_KEY not configured' };
+        return { content: '', model: 'none', error: 'ANTHROPIC_API_KEY not configured' };
     }
 
     // Fetch agent config from Supabase
@@ -46,42 +47,54 @@ export async function queryAI(req: AIRequest): Promise<AIResponse> {
         return { content: '', model: config.model, error: `Agent ${req.agentId} is disabled. Enable in hc_ai_config.` };
     }
 
-    const messages: { role: 'system' | 'user' | 'assistant'; content: string }[] = [
-        { role: 'system', content: config.system_prompt || 'You are a helpful assistant.' },
-    ];
+    // Build system prompt — Claude uses a top-level 'system' field, not in messages array
+    let systemPrompt = config.system_prompt || 'You are a helpful assistant.';
 
     if (req.context) {
-        messages.push({ role: 'system', content: `Context:\n${req.context}` });
+        systemPrompt += `\n\nContext:\n${req.context}`;
     }
 
-    messages.push({ role: 'user', content: req.userMessage });
+    // For JSON mode, append instruction to system prompt (Claude doesn't have response_format)
+    if (req.jsonMode) {
+        systemPrompt += '\n\nIMPORTANT: Respond ONLY with valid JSON. No prose, no markdown, no explanation — just the JSON object.';
+    }
+
+    // Claude messages array — only user/assistant roles, no 'system' role
+    const messages: { role: 'user' | 'assistant'; content: string }[] = [
+        { role: 'user', content: req.userMessage },
+    ];
 
     try {
         const response = await fetch(BASE_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`,
+                'x-api-key': API_KEY!,
+                'anthropic-version': '2023-06-01',
             },
             body: JSON.stringify({
-                model: config.model || 'gpt-4o',
+                model: config.model || 'claude-sonnet-4-6',
+                system: systemPrompt,
                 messages,
                 max_tokens: req.maxTokens || config.max_tokens || 4096,
                 temperature: config.temperature || 0.7,
-                ...(req.jsonMode && { response_format: { type: 'json_object' } }),
             }),
         });
 
         if (!response.ok) {
             const err = await response.text();
-            return { content: '', model: config.model, error: `OpenAI error ${response.status}: ${err}` };
+            return { content: '', model: config.model, error: `Claude error ${response.status}: ${err}` };
         }
 
         const data = await response.json();
         return {
-            content: data.choices?.[0]?.message?.content || '',
-            model: data.model,
-            usage: data.usage,
+            content: data.content?.[0]?.text || '',
+            model: data.model || config.model,
+            usage: data.usage ? {
+                prompt_tokens: data.usage.input_tokens || 0,
+                completion_tokens: data.usage.output_tokens || 0,
+                total_tokens: (data.usage.input_tokens || 0) + (data.usage.output_tokens || 0),
+            } : undefined,
         };
     } catch (error) {
         return { content: '', model: config.model, error: `Network error: ${String(error)}` };
