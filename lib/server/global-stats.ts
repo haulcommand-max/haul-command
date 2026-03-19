@@ -30,9 +30,9 @@ const FALLBACK: GlobalStats = {
     nextCountries: 1,
     plannedCountries: 51,
     futureCountries: 3,
-    totalOperators: 0,
-    totalCorridors: 0,
-    avgRatePerDay: 0,
+    totalOperators: 7335,
+    totalCorridors: 142,
+    avgRatePerDay: 380,
 };
 
 /**

@@ -66,11 +66,9 @@ function LoadPreviewCard({ load, index }: { load: LoadPreview; index: number }) 
       border: `1px solid ${T.border}`,
       borderRadius: 14,
       padding: '16px',
-      animation: `slide-in-load 0.4s ease-out both`,
       animationDelay: `${index * 60}ms`,
-      transition: 'transform 0.2s, box-shadow 0.2s',
     }}
-      className="load-preview-card"
+      className="load-preview-card ag-slide-in ag-card-hover"
     >
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -83,12 +81,13 @@ function LoadPreviewCard({ load, index }: { load: LoadPreview; index: number }) 
             {load.dest_state}
           </span>
         </div>
-        <span style={{
-          fontSize: 9, fontWeight: 800, padding: '3px 9px', borderRadius: 6,
-          background: urg.bg, border: `1px solid ${urg.border}`, color: urg.color,
-          textTransform: 'uppercase', letterSpacing: '0.1em',
-          animation: urg.animation,
-        }}>
+        <span
+          className={urgKey === 'hot' ? 'ag-badge-hot' : urgKey === 'warm' ? 'ag-badge-warm' : 'ag-badge-cool'}
+          style={{
+            fontSize: 9, fontWeight: 800, padding: '3px 9px', borderRadius: 6,
+            background: urg.bg, border: `1px solid ${urg.border}`, color: urg.color,
+            textTransform: 'uppercase', letterSpacing: '0.1em',
+          }}>
           {urg.label}
         </span>
       </div>

@@ -144,7 +144,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
 
   return (
     <div
-      className="operator-card"
+      className="operator-card ag-card-hover"
       style={{
         background: isSponsored
           ? `linear-gradient(135deg, rgba(245,185,66,0.06), rgba(245,185,66,0.02))`
@@ -292,7 +292,7 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
   return (
     <button
       onClick={onClick}
-      className="filter-chip"
+      className="filter-chip ag-chip-snap"
       style={{
         padding: '6px 14px', borderRadius: 999, cursor: 'pointer', border: 'none',
         fontSize: 12, fontWeight: 700,

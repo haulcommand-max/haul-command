@@ -63,6 +63,15 @@ const InboxIcon = ({ active }: { active: boolean }) => (
   </svg>
 );
 
+const MapIcon = ({ active }: { active: boolean }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth={active ? 2.5 : 2} strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+    <line x1="9" y1="3" x2="9" y2="18" />
+    <line x1="15" y1="6" x2="15" y2="21" />
+  </svg>
+);
+
 const NAV_TABS: NavTab[] = [
   {
     href: '/home',
@@ -82,6 +91,12 @@ const NAV_TABS: NavTab[] = [
     label: 'Directory',
     icon: <DirectoryIcon active={false} />,
     match: /^\/(directory|united-states|place|escort)/,
+  },
+  {
+    href: '/map',
+    label: 'Map',
+    icon: <MapIcon active={false} />,
+    match: /^\/map/,
   },
   {
     href: '/inbox',
@@ -142,10 +157,12 @@ export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
           </span>
         </button>
 
-        {/* Right tabs: Directory, Inbox */}
+        {/* Right tabs: Directory, Map, Inbox */}
         {rightTabs.map((tab) => {
           const active = isTabActive(tab);
           const isInbox = tab.href === '/inbox';
+          const isMap = tab.href === '/map';
+          const isDirectory = tab.href === '/directory';
           return (
             <Link
               key={tab.href}
@@ -158,6 +175,8 @@ export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
               <span className="m-bottom-nav__tab-icon" style={{ position: 'relative' }}>
                 {isInbox
                   ? <InboxIcon active={active} />
+                  : isMap
+                  ? <MapIcon active={active} />
                   : <DirectoryIcon active={active} />}
                 {isInbox && unreadCount > 0 && (
                   <span className="m-bottom-nav__badge" />

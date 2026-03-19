@@ -34,18 +34,18 @@ function getTier(score: number): keyof typeof TIER_CONFIG {
 
 function RankBadge({ rank }: { rank: number }) {
     if (rank === 1) return (
-        <div className="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-gold-500/10 border-2 border-hc-gold-500/60 shadow-lg shadow-hc-gold-500/20 relative">
+        <div className="ag-rank-pop w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-gold-500/10 border-2 border-hc-gold-500/60 shadow-lg shadow-hc-gold-500/20 relative">
             <span className="text-2xl font-black text-hc-gold-400">1</span>
             <span className="absolute -top-2 -right-2 text-base">👑</span>
         </div>
     );
     if (rank === 2) return (
-        <div className="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-section border-2" style={{ borderColor: 'rgba(255,255,255,0.18)' }}>
+        <div className="ag-rank-pop w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-section border-2" style={{ borderColor: 'rgba(255,255,255,0.18)' }}>
             <span className="text-2xl font-black text-hc-text">2</span>
         </div>
     );
     if (rank === 3) return (
-        <div className="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-section border-2 border-orange-700/40 shadow-lg">
+        <div className="ag-rank-pop w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center bg-hc-section border-2 border-orange-700/40 shadow-lg">
             <span className="text-2xl font-black text-orange-500">3</span>
         </div>
     );
@@ -382,63 +382,79 @@ export default async function LeaderboardsPage({
                             const tier = getTier(leader.trust_score ?? 0);
                             const cfg = TIER_CONFIG[tier];
                             const isEven = idx % 2 === 0;
+                            // Blur ranks 4+ (rest starts at rank 4, so all of rest is gated)
+                            const isGated = idx >= 3; // Show first 3 of rest (ranks 4-6) freely, gate 7+
                             return (
-                                <Link
-                                    key={leader.rank_position}
-                                    href={`/directory/profile/${leader.profile_id}`}
-                                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-5 sm:px-7 hover:bg-hc-row-hover transition-colors group"
-                                    style={{
-                                        minHeight: "68px",
-                                        paddingTop: "14px",
-                                        paddingBottom: "14px",
-                                        background: isEven ? "transparent" : "rgba(255,255,255,0.015)"
-                                    }}
-                                >
-                                    <div className="flex items-center gap-5">
-                                        <RankBadge rank={leader.rank_position} />
-                                        <div className="min-w-0">
-                                            <h3 className="font-bold text-white group-hover:text-amber-400 transition-colors truncate flex items-center gap-2">
-                                                {leader.company_name || leader.full_name || 'Verified Operator'}
-                                                {leader.is_verified && <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />}
-                                            </h3>
-                                            <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                                                {leader.avg_response_minutes != null ? (
-                                                    <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border ${cfg.border} ${cfg.bg} ${cfg.color}`}>
-                                                        ~{leader.avg_response_minutes}m reply
-                                                    </span>
-                                                ) : leader.is_new_entry ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-                                                        New Entry
-                                                    </span>
-                                                ) : (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-hc-border bg-hc-section text-hc-muted">
-                                                        Awaiting first bids
-                                                    </span>
-                                                )}
-                                                {leader.home_city && (
-                                                    <span className="text-xs text-hc-subtle flex items-center gap-1">
-                                                        <MapPin className="w-2.5 h-2.5" />{leader.home_city}
-                                                    </span>
-                                                )}
-                                                {leader.badges && leader.badges.length > 0 && (
-                                                    <TrustBadgeRow badges={leader.badges} size="sm" maxVisible={2} />
-                                                )}
+                                <div key={leader.rank_position} className="relative">
+                                    <Link
+                                        href={isGated ? '/login' : `/directory/profile/${leader.profile_id}`}
+                                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-5 sm:px-7 hover:bg-hc-row-hover transition-colors group"
+                                        style={{
+                                            minHeight: "68px",
+                                            paddingTop: "14px",
+                                            paddingBottom: "14px",
+                                            background: isEven ? "transparent" : "rgba(255,255,255,0.015)",
+                                            filter: isGated ? 'blur(4px)' : 'none',
+                                            userSelect: isGated ? 'none' : undefined,
+                                            pointerEvents: isGated ? 'none' : undefined,
+                                        }}
+                                    >
+                                        <div className="flex items-center gap-5">
+                                            <RankBadge rank={leader.rank_position} />
+                                            <div className="min-w-0">
+                                                <h3 className="font-bold text-white group-hover:text-amber-400 transition-colors truncate flex items-center gap-2">
+                                                    {isGated ? '████████████' : (leader.company_name || leader.full_name || 'Verified Operator')}
+                                                    {leader.is_verified && !isGated && <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />}
+                                                </h3>
+                                                <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                                                    {!isGated && leader.avg_response_minutes != null ? (
+                                                        <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border ${cfg.border} ${cfg.bg} ${cfg.color}`}>
+                                                            ~{leader.avg_response_minutes}m reply
+                                                        </span>
+                                                    ) : !isGated && leader.is_new_entry ? (
+                                                        <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                                                            New Entry
+                                                        </span>
+                                                    ) : !isGated ? (
+                                                        <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-widest border border-hc-border bg-hc-section text-hc-muted">
+                                                            Awaiting first bids
+                                                        </span>
+                                                    ) : null}
+                                                    {!isGated && leader.home_city && (
+                                                        <span className="text-xs text-hc-subtle flex items-center gap-1">
+                                                            <MapPin className="w-2.5 h-2.5" />{leader.home_city}
+                                                        </span>
+                                                    )}
+                                                    {!isGated && leader.badges && leader.badges.length > 0 && (
+                                                        <TrustBadgeRow badges={leader.badges} size="sm" maxVisible={2} />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-6 sm:gap-10 ml-[4.75rem] sm:ml-0 shrink-0">
-                                        <div className="text-center">
-                                            <div className="text-sm font-black text-hc-text">{fmt(leader.jobs_completed ?? leader.bids_placed)}</div>
-                                            <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Jobs</div>
+                                        <div className="flex items-center gap-6 sm:gap-10 ml-[4.75rem] sm:ml-0 shrink-0">
+                                            <div className="text-center">
+                                                <div className="text-sm font-black text-hc-text">{isGated ? '—' : fmt(leader.jobs_completed ?? leader.bids_placed)}</div>
+                                                <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Jobs</div>
+                                            </div>
+                                            <div className="text-center">
+                                                <div className={`text-xl font-black font-mono ${cfg.color}`}>{isGated ? '—' : fmt(leader.trust_score)}</div>
+                                                <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Score</div>
+                                            </div>
+                                            <ScoreBar score={isGated ? 0 : (leader.trust_score ?? 0)} />
                                         </div>
-                                        <div className="text-center">
-                                            <div className={`text-xl font-black font-mono ${cfg.color}`}>{fmt(leader.trust_score)}</div>
-                                            <div className="text-[9px] text-hc-subtle uppercase tracking-widest">Score</div>
+                                    </Link>
+                                    {/* Gated overlay */}
+                                    {isGated && (
+                                        <div className="absolute inset-0 flex items-center justify-center"
+                                            style={{ background: 'rgba(6,11,18,0.7)', backdropFilter: 'blur(3px)' }}>
+                                            <Link href="/login"
+                                                className="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs"
+                                                style={{ background: 'rgba(245,185,66,0.15)', border: '1px solid rgba(245,185,66,0.35)', color: '#f5b942', textDecoration: 'none' }}>
+                                                🔒 Sign in to see full leaderboard
+                                            </Link>
                                         </div>
-                                        <ScoreBar score={leader.trust_score ?? 0} />
-                                    </div>
-                                </Link>
+                                    )}
+                                </div>
                             );
                         })}
                     </div>
