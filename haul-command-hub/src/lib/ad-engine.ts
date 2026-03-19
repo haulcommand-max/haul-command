@@ -1,14 +1,19 @@
 /**
- * Haul Command — Ad Serving Engine
+ * Haul Command — Unified Ad Serving Engine
  * 
- * Serves ads from hc_ad_creatives based on:
- * - Slot family (hero_billboard, inline_billboard, sidecar_sponsor, etc.)
- * - Page type and context matching
+ * MERGED FROM: ad-engine.ts + adgrid/inventory.ts + feed/insertNativeAds.ts
+ * 
+ * Single source of truth for all ad operations:
+ * - Billboard rotation (hero, inline, sidecar, mobile, alert gate)
+ * - AdGrid slot management (page-level inventory)
+ * - Feed interleaving (native ad insertion into any list)
  * - Ad rank formula scoring
  * - Trust guardrails (always labeled, never replaces truth)
  */
 
 import { supabaseServer } from '@/lib/supabase-server';
+
+// ─── Slot Family Types ──────────────────────────────────────
 
 export type SlotFamily = 
   | 'hero_billboard'
@@ -16,6 +21,8 @@ export type SlotFamily =
   | 'sidecar_sponsor'
   | 'sticky_mobile_chip_rail'
   | 'alert_gate_offer';
+
+// ─── Creative Types ─────────────────────────────────────────
 
 export interface AdCreative {
   creative_id: string;
@@ -44,9 +51,98 @@ export interface AdRequest {
   maxCreatives?: number;
 }
 
+// ─── AdGrid Inventory (from adgrid/inventory.ts) ────────────
+
+export type AdGridSlotData = {
+  id: string;
+  inventory_key: string;
+  page_key_id: string;
+  placement_type: string;
+  traffic_band: string;
+  floor_price_usd: number;
+  is_sellable: boolean;
+};
+
+export function shouldRenderAd(slot: AdGridSlotData | null): boolean {
+  return !!slot && slot.is_sellable;
+}
+
+export function trafficBandLabel(band: string): string {
+  const labels: Record<string, string> = {
+    starter: 'Starter', growth: 'Growth', premium: 'Premium', elite: 'Elite',
+  };
+  return labels[band] ?? band;
+}
+
+export function trafficBandColor(band: string): string {
+  const colors: Record<string, string> = {
+    starter: '#9ca3af', growth: '#8090ff', premium: '#ffb400', elite: '#00c896',
+  };
+  return colors[band] ?? '#666';
+}
+
+// ─── Feed Interleaving (from feed/insertNativeAds.ts) ───────
+
+export type FeedRow<T> =
+  | { kind: 'item'; item: T }
+  | { kind: 'ad'; placement: string; slotIndex: number };
+
+/**
+ * Interleaves NativeAdCard slots into a feed of items (directory, load board, etc).
+ */
+export function interleaveNativeAds<T>(
+  items: T[],
+  opts: {
+    everyNth: number;
+    placement: string;
+    startAfter?: number;
+    maxAds?: number;
+  }
+): FeedRow<T>[] {
+  const { everyNth, placement, startAfter = everyNth, maxAds = 999 } = opts;
+  const out: FeedRow<T>[] = [];
+  let adCount = 0;
+
+  for (let i = 0; i < items.length; i++) {
+    out.push({ kind: 'item', item: items[i] });
+    const itemIndex1 = i + 1;
+    if (itemIndex1 >= startAfter && itemIndex1 % everyNth === 0 && adCount < maxAds) {
+      out.push({ kind: 'ad', placement, slotIndex: adCount });
+      adCount++;
+    }
+  }
+  return out;
+}
+
+// Placement constants for GA4 tracking
+export const AD_PLACEMENTS = {
+  DIRECTORY_INLINE: 'directory_inline',
+  DIRECTORY_SIDEBAR: 'directory_sidebar',
+  LEADERBOARD_INLINE: 'leaderboard_inline',
+  LOAD_FEED_INLINE: 'load_feed_inline',
+  HUB_BANNER: 'hub_banner',
+  COUNTRY_HUB: 'country_hub_banner',
+  SERVICE_PAGE: 'service_page_banner',
+  GUIDE_PAGE: 'guide_page_banner',
+  CORRIDOR_HERO: 'corridor_hero_billboard',
+  CORRIDOR_INLINE: 'corridor_inline_billboard',
+  PROVIDER_SIDECAR: 'provider_sidecar_sponsor',
+} as const;
+
+export const AD_VARIANTS = {
+  NATIVE_CARD: 'native_card',
+  SLOT_BANNER: 'slot_banner',
+  HERO_BILLBOARD: 'hero_billboard',
+  INLINE_BILLBOARD: 'inline_billboard',
+  SIDECAR: 'sidecar_sponsor',
+  CHIP_RAIL: 'sticky_mobile_chip_rail',
+} as const;
+
+// ─── Ad Rank Formula ────────────────────────────────────────
+
 /** 
- * Ad rank formula from the execution board:
- * 100 * (0.30*intent + 0.20*local + 0.15*urgency + 0.10*quality + 0.10*ctr + 0.05*fresh + 0.05*sponsor + 0.05*landing)
+ * Ad rank formula from execution board:
+ * 100 × (0.30×intent + 0.20×local + 0.15×urgency + 0.10×quality + 0.10×ctr + 0.05×fresh + 0.05×sponsor + 0.05×landing)
  */
 function computeAdRank(creative: Record<string, unknown>): number {
   const intent = Number(creative.intent_match_score) || 0.5;
@@ -54,7 +150,7 @@ function computeAdRank(creative: Record<string, unknown>): number {
   const urgency = Number(creative.urgency_match_score) || 0.5;
   const quality = Number(creative.creative_quality_score) || 0.5;
   const ctr = Math.min(Number(creative.historical_ctr) || 0, 1);
-  const fresh = 0.5; // TODO: compute from created_at age
+  const fresh = 0.5;
   const sponsor = 0.5;
   const landing = 0.5;
 
@@ -69,6 +165,8 @@ function computeAdRank(creative: Record<string, unknown>): number {
     0.05 * landing
   );
 }
+
+// ─── Billboard Creative Fetching ────────────────────────────
 
 /**
  * Fetch ranked creatives for a slot.
@@ -86,18 +184,13 @@ export async function getCreativesForSlot(request: AdRequest): Promise<AdCreativ
       .eq('active', true)
       .contains('page_types', [request.pageType]);
 
-    // Date filtering
     query = query.or(`starts_at.is.null,starts_at.lte.${now}`);
     query = query.or(`ends_at.is.null,ends_at.gte.${now}`);
-
-    // Quality guardrail: minimum 0.40
     query = query.gte('creative_quality_score', 0.40);
 
     const { data } = await query.limit(request.maxCreatives ?? 6);
-
     if (!data || data.length === 0) return [];
 
-    // Compute ad rank and sort
     const ranked: AdCreative[] = data
       .map((c) => ({
         creative_id: c.creative_id ?? c.id,
@@ -115,7 +208,7 @@ export async function getCreativesForSlot(request: AdRequest): Promise<AdCreativ
         sponsor_label: c.sponsor_label ?? 'sponsored',
         ad_rank: computeAdRank(c),
       }))
-      .filter((c) => c.headline && c.sponsor_label) // Hard block: must have label
+      .filter((c) => c.headline && c.sponsor_label)
       .sort((a, b) => b.ad_rank - a.ad_rank);
 
     // Diversity rule: no same advertiser back-to-back
@@ -127,16 +220,14 @@ export async function getCreativesForSlot(request: AdRequest): Promise<AdCreativ
         lastAdvertiser = c.advertiser_name;
       }
     }
-
     return diverse.slice(0, request.maxCreatives ?? 6);
   } catch {
     return [];
   }
 }
 
-/**
- * Get corridor signals for hard-fill/hot/thin determination.
- */
+// ─── Corridor Signals ───────────────────────────────────────
+
 export async function getCorridorSignals(corridorSlug: string) {
   try {
     const sb = supabaseServer();
@@ -146,6 +237,24 @@ export async function getCorridorSignals(corridorSlug: string) {
       .eq('corridor_slug', corridorSlug)
       .maybeSingle();
     return data;
+  } catch {
+    return null;
+  }
+}
+
+// ─── AdGrid Page Slot (from page-factory.ts) ────────────────
+
+export async function getAdSlot(pageKeyId: string): Promise<AdGridSlotData | null> {
+  try {
+    const sb = supabaseServer();
+    const { data } = await sb
+      .from('hc_adgrid_page_inventory')
+      .select('*')
+      .eq('page_key_id', pageKeyId)
+      .eq('is_sellable', true)
+      .limit(1)
+      .single();
+    return data as AdGridSlotData | null;
   } catch {
     return null;
   }

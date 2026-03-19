@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { cronGuard, supabaseAdmin, logCronRun, deadLetter } from '../_lib/cron-guard';
 
-// ── control_tower_scan_v1 ────────────────────────────────────────────────
-// Runs every 30 min — merges escort supply + broker intent + scarcity
+// ── control_tower_scan_v2 ────────────────────────────────────────────────
+// Runs every 30 min — merges demand signals + supply snapshot
 // to produce forward-looking CT alerts for the admin dashboard.
+//
+// UPGRADED from v1: corridor_scarcity_index → corridor_demand_signals + corridor_supply_snapshot (live)
 
-const SCARCITY_CRITICAL = 80;
-const SCARCITY_WARNING = 55;
+const PRESSURE_CRITICAL = 0.7;
+const PRESSURE_WARNING = 0.4;
 
 export async function GET() {
     const guard = await cronGuard();
@@ -19,73 +21,100 @@ export async function GET() {
     try {
         const { data: flag } = await sb.from('feature_flags').select('enabled').eq('name', 'control_tower_enabled').maybeSingle();
         if (!flag?.enabled) {
-            await logCronRun('control_tower_scan_v1', startMs, 'skipped', { metadata: { reason: 'flag_off' } });
+            await logCronRun('control_tower_scan_v2', startMs, 'skipped', { metadata: { reason: 'flag_off' } });
             return NextResponse.json({ ok: true, skipped: true });
         }
 
-        // Read current scarcity index
-        const { data: scarcityRows } = await sb
-            .from('corridor_scarcity_index')
-            .select('corridor_slug, scarcity_index, supply_available, computed_at')
-            .order('scarcity_index', { ascending: false });
+        // Read current demand signals (live)
+        const { data: demandRows } = await sb
+            .from('corridor_demand_signals')
+            .select('corridor_id, demand_pressure, surge_active, surge_multiplier')
+            .order('demand_pressure', { ascending: false });
+
+        // Read supply snapshot (live)
+        const { data: supplyRows } = await sb
+            .from('corridor_supply_snapshot')
+            .select('corridor_slug, supply_count, supply_level, demand_pressure')
+            .order('demand_pressure', { ascending: false });
+
+        const supplyMap = new Map<string, { count: number; level: string }>();
+        for (const s of (supplyRows ?? [])) {
+            supplyMap.set(s.corridor_slug, { count: s.supply_count ?? 0, level: s.supply_level ?? 'unknown' });
+        }
 
         let alertsInserted = 0;
+        const corridorsEvaluated = (demandRows ?? []).length;
 
-        for (const row of (scarcityRows ?? [])) {
-            if (row.scarcity_index >= SCARCITY_CRITICAL) {
+        for (const row of (demandRows ?? [])) {
+            const supply = supplyMap.get(row.corridor_id);
+            const pressure = row.demand_pressure ?? 0;
+
+            if (pressure >= PRESSURE_CRITICAL || row.surge_active) {
                 const { data: existing } = await sb
                     .from('ct_alerts')
                     .select('id')
-                    .eq('alert_type', 'scarcity_critical')
-                    .eq('geo_key', row.corridor_slug)
-                    .gte('created_at', new Date(Date.now() - 60 * 60_000).toISOString()) // dedupe within 1h
+                    .eq('alert_type', 'pressure_critical')
+                    .eq('geo_key', row.corridor_id)
+                    .gte('created_at', new Date(Date.now() - 60 * 60_000).toISOString())
                     .maybeSingle();
 
                 if (!existing) {
                     await sb.from('ct_alerts').insert({
-                        alert_type: 'scarcity_critical',
-                        severity: 'critical',
-                        corridor_slug: row.corridor_slug,
-                        geo_key: row.corridor_slug,
-                        message: `Critical shortage on ${row.corridor_slug} — scarcity index ${Math.round(row.scarcity_index)}/100`,
-                        details: { scarcity_index: row.scarcity_index, supply_available: row.supply_available },
+                        alert_type: 'pressure_critical',
+                        severity: row.surge_active ? 'critical' : 'high',
+                        corridor_slug: row.corridor_id,
+                        geo_key: row.corridor_id,
+                        message: row.surge_active
+                            ? `⚡ SURGE on ${row.corridor_id} — demand pressure ${Math.round(pressure * 100)}%, ${supply?.count ?? '?'} operators (${supply?.level ?? 'unknown'})`
+                            : `Critical pressure on ${row.corridor_id} — demand ${Math.round(pressure * 100)}%, supply ${supply?.level ?? 'unknown'}`,
+                        details: {
+                            demand_pressure: pressure,
+                            surge_active: row.surge_active,
+                            surge_multiplier: row.surge_multiplier,
+                            supply_count: supply?.count ?? 0,
+                            supply_level: supply?.level ?? 'unknown',
+                        },
                     });
                     alertsInserted++;
                 }
-            } else if (row.scarcity_index >= SCARCITY_WARNING) {
+            } else if (pressure >= PRESSURE_WARNING) {
                 const { data: existing } = await sb
                     .from('ct_alerts')
                     .select('id')
-                    .eq('alert_type', 'scarcity_warning')
-                    .eq('geo_key', row.corridor_slug)
-                    .gte('created_at', new Date(Date.now() - 2 * 60 * 60_000).toISOString()) // dedupe within 2h
+                    .eq('alert_type', 'pressure_warning')
+                    .eq('geo_key', row.corridor_id)
+                    .gte('created_at', new Date(Date.now() - 2 * 60 * 60_000).toISOString())
                     .maybeSingle();
 
                 if (!existing) {
                     await sb.from('ct_alerts').insert({
-                        alert_type: 'scarcity_warning',
+                        alert_type: 'pressure_warning',
                         severity: 'warning',
-                        corridor_slug: row.corridor_slug,
-                        geo_key: row.corridor_slug,
-                        message: `Tightening supply on ${row.corridor_slug} — scarcity index ${Math.round(row.scarcity_index)}/100`,
-                        details: { scarcity_index: row.scarcity_index },
+                        corridor_slug: row.corridor_id,
+                        geo_key: row.corridor_id,
+                        message: `Tightening pressure on ${row.corridor_id} — demand ${Math.round(pressure * 100)}%, supply ${supply?.level ?? 'unknown'}`,
+                        details: {
+                            demand_pressure: pressure,
+                            supply_count: supply?.count ?? 0,
+                            supply_level: supply?.level ?? 'unknown',
+                        },
                     });
                     alertsInserted++;
                 }
             }
         }
 
-        await logCronRun('control_tower_scan_v1', startMs, 'success', {
+        await logCronRun('control_tower_scan_v2', startMs, 'success', {
             rows_affected: alertsInserted,
-            metadata: { corridors_evaluated: scarcityRows?.length ?? 0, alerts_inserted: alertsInserted },
+            metadata: { corridors_evaluated: corridorsEvaluated, alerts_inserted: alertsInserted },
         });
 
-        return NextResponse.json({ ok: true, corridors: scarcityRows?.length ?? 0, alerts_inserted: alertsInserted });
+        return NextResponse.json({ ok: true, corridors: corridorsEvaluated, alerts_inserted: alertsInserted });
 
     } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
-        await deadLetter('control_tower_scan_v1', {}, msg);
-        await logCronRun('control_tower_scan_v1', startMs, 'failed', { error_message: msg });
+        await deadLetter('control_tower_scan_v2', {}, msg);
+        await logCronRun('control_tower_scan_v2', startMs, 'failed', { error_message: msg });
         return NextResponse.json({ ok: false, error: msg }, { status: 500 });
     }
 }

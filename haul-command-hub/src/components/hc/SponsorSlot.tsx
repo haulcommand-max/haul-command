@@ -1,24 +1,28 @@
+/**
+ * HCSponsorSlot — LEGACY COMPATIBILITY WRAPPER
+ * 
+ * Original SponsorSlot is now handled by the unified billboard system.
+ * This file re-exports for backward compatibility.
+ * 
+ * Prefer using:
+ * - SidecarSponsor for desktop sidebar ads
+ * - InlineBillboard for mid-page ads  
+ * - HeroBillboard for top-of-page ads
+ * 
+ * All from '@/components/hc/{Component}'
+ */
+
 import type { HCSponsor } from '@/lib/hc-types';
 import { supabaseServer } from '@/lib/supabase-server';
 
 interface SponsorSlotProps {
-  /** Direct sponsor data — bypasses lookup */
   sponsor?: HCSponsor | null;
-  /** Page context key to look up sponsor inventory (matches slot_key in hc_sponsor_inventory) */
   context?: string;
 }
 
-/**
- * HCSponsorSlot — truth-gated sponsor placement.
- * 
- * Uses hc_sponsor_inventory.slot_key to match sponsors to pages.
- * Never renders without proper labeling (data-sponsor attribute).
- * Falls back silently if no eligible sponsor exists.
- */
 export async function HCSponsorSlot({ sponsor, context }: SponsorSlotProps) {
   let activeSponsor = sponsor ?? null;
 
-  // Look up sponsor inventory if context is provided
   if (!activeSponsor && context) {
     try {
       const sb = supabaseServer();
@@ -51,7 +55,7 @@ export async function HCSponsorSlot({ sponsor, context }: SponsorSlotProps) {
         };
       }
     } catch {
-      // Table may not be populated yet — silent fallback
+      // Silent fallback
     }
   }
 

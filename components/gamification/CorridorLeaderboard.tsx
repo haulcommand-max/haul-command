@@ -73,10 +73,10 @@ export function CorridorLeaderboard() {
         <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative">
             <style>{`
                 /* ── Mobile-first leaderboard ── */
-                .lb-header { padding: 16px; }
+                .lb-header { padding: 16px; text-align: center; }
                 .lb-title { font-size: 18px; }
                 .lb-subtitle { font-size: 12px; max-width: none; }
-                .lb-tabs { margin-top: 12px; }
+                .lb-tabs { margin-top: 12px; justify-content: center; }
                 .lb-tab { padding: 8px 14px; min-height: 40px; font-size: 11px; }
                 .lb-row { padding: 12px 16px; }
                 .lb-rank-medal { width: 20px; height: 20px; }
@@ -84,7 +84,7 @@ export function CorridorLeaderboard() {
                 .lb-name { font-size: 13px; }
                 .lb-score { font-size: 16px; }
                 .lb-badge { font-size: 8px; padding: 2px 5px; }
-                .lb-footer { padding: 16px; }
+                .lb-footer { padding: 16px; text-align: center; align-items: center; justify-content: center; }
                 /* Desktop table columns — hidden on mobile */
                 .lb-desktop-col { display: none; }
                 .lb-table-header { display: none; }
@@ -119,13 +119,13 @@ export function CorridorLeaderboard() {
                         {dataSource === 'live' ? 'Live Standings' : 'Preview'}
                     </span>
                 </div>
-                <h3 className="lb-title font-black text-white tracking-tight">Corridor Dominance</h3>
+                <h3 className="lb-title font-black text-white tracking-tight">Top 3 Get First Access to Loads</h3>
                 <p className="lb-subtitle text-slate-400 mt-1">
-                    Top 3 ranked drivers get priority load notifications <span className="text-white font-bold">60s</span> before the network.
+                    Top-ranked operators get load alerts before everyone else. Move up to see better loads faster.
                 </p>
 
                 {/* Corridor Selector */}
-                <div className="lb-tabs flex bg-[#111] p-1 rounded-xl border border-white/10 w-fit">
+                <div className="lb-tabs flex bg-[#111] p-1 rounded-xl border border-white/10 w-fit mx-auto sm:mx-0">
                     {CORRIDORS.map(c => (
                         <button
                             key={c.key}
@@ -225,11 +225,11 @@ export function CorridorLeaderboard() {
                         <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
                     </div>
                     <p className="text-xs text-slate-400">
-                        Complete loads + earn 5-star reviews to improve your rank.
+                        Finish more loads, earn stronger reviews, and move up for earlier access.
                     </p>
                 </div>
                 <Link href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors whitespace-nowrap">
-                    Claim Your Profile <ChevronRight className="w-3.5 h-3.5" />
+                    Claim Your Spot on This Corridor <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
             </div>
         </div>

@@ -194,6 +194,14 @@ export function GlobalEscortSupplyRadar() {
     const [pulseRings, setPulseRings] = useState<PulseRing[]>([]);
     const pulseIdRef = useRef(0);
     const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
     // ── LIVE DATA STATE ──
     const [countries, setCountries] = useState<RadarCountryRow[]>([]);
@@ -332,7 +340,9 @@ export function GlobalEscortSupplyRadar() {
                 const x = (s.cx / 100) * w;
                 const y = (s.cy / 100) * h;
                 const tier = getLiquidityTier(s.liquidity);
-                const r = Math.max(18, Math.min(45, s.activeEscorts * 0.2)) * dpr;
+                const r = isMobile
+                    ? Math.max(6, Math.min(18, s.activeEscorts * 0.1)) * dpr
+                    : Math.max(18, Math.min(45, s.activeEscorts * 0.2)) * dpr;
 
                 const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
                 grad.addColorStop(0, tier.color);
@@ -346,8 +356,10 @@ export function GlobalEscortSupplyRadar() {
                 if (!node.escortCount || node.escortCount < 1) return;
                 const x = (node.cx / 100) * w;
                 const y = (node.cy / 100) * h;
-                const r = (node.escortCount >= 500 ? 60 : node.escortCount >= 100 ? 40 : node.escortCount >= 20 ? 25 : 15) * dpr;
-                const alpha = node.escortCount >= 500 ? 0.4 : node.escortCount >= 100 ? 0.25 : 0.1;
+                const baseR = node.escortCount >= 500 ? 60 : node.escortCount >= 100 ? 40 : node.escortCount >= 20 ? 25 : 15;
+                const r = (isMobile ? Math.min(baseR, 20) : baseR) * dpr;
+                const baseAlpha = node.escortCount >= 500 ? 0.4 : node.escortCount >= 100 ? 0.25 : 0.1;
+                const alpha = isMobile ? baseAlpha * 0.4 : baseAlpha;
                 const color = `rgba(234,179,8,${alpha})`;
 
                 const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -361,7 +373,7 @@ export function GlobalEscortSupplyRadar() {
         resize();
         window.addEventListener("resize", resize);
         return () => window.removeEventListener("resize", resize);
-    }, [stateLiquidity, COUNTRY_NODES]);
+    }, [stateLiquidity, COUNTRY_NODES, isMobile]);
 
     // Liquidity pulses: fire from random active states
     useEffect(() => {
@@ -597,12 +609,12 @@ export function GlobalEscortSupplyRadar() {
                                     >
                                         <span style={{
                                             display: "block",
-                                            width: 8,
-                                            height: 8,
+                                            width: isMobile ? 4 : 8,
+                                            height: isMobile ? 4 : 8,
                                             borderRadius: "50%",
                                             background: tier.textColor,
                                             border: `1.5px solid ${tier.textColor}80`,
-                                            boxShadow: `0 0 8px ${tier.textColor}40`,
+                                            boxShadow: isMobile ? `0 0 3px ${tier.textColor}30` : `0 0 8px ${tier.textColor}40`,
                                             position: "relative",
                                         }} />
                                         <span className="hidden sm:block" style={{
@@ -627,7 +639,9 @@ export function GlobalEscortSupplyRadar() {
                             {/* Country dots (non-US, excluding US since states replace it) */}
                             {COUNTRY_NODES.filter((n) => n.iso2 !== "US").map((node) => {
                                 const ws = getWaveStyle(node.wave);
-                                const size = node.wave === 1 ? 12 : node.wave <= 3 ? 9 : 6;
+                                const size = isMobile
+                                    ? (node.wave === 1 ? 5 : node.wave <= 3 ? 4 : 2)
+                                    : (node.wave === 1 ? 12 : node.wave <= 3 ? 9 : 6);
                                 return (
                                     <div key={node.iso2}
                                         onClick={() => { if (ws.interactive && node.href) window.location.href = node.href; }}

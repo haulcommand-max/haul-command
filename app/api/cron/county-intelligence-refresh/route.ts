@@ -46,16 +46,16 @@ export async function GET() {
             return NextResponse.json({ ok: true, skipped: true, reason: 'no_counties_seeded' });
         }
 
-        // Get live escort counts per state (rough proxy until lat/lng geocoding is complete)
+        // Get live escort counts per state from directory_listings (6,949 operators)
         const { data: escortsByState } = await sb
-            .from('driver_profiles')
-            .select('region_code')
-            .eq('availability_status', 'available');
+            .from('directory_listings')
+            .select('region')
+            .not('region', 'is', null);
 
         const stateEscortMap = new Map<string, number>();
         for (const e of (escortsByState ?? [])) {
-            if (e.region_code) {
-                stateEscortMap.set(e.region_code, (stateEscortMap.get(e.region_code) ?? 0) + 1);
+            if (e.region) {
+                stateEscortMap.set(e.region, (stateEscortMap.get(e.region) ?? 0) + 1);
             }
         }
 

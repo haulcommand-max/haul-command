@@ -4,6 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══ MOBILE LAYOUT PRECISION ══
+   Prevent horizontal overflow, off-canvas artifacts,
+   and white-box border noise on mobile viewports.
+   ══════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+@media (max-width: 640px) {
+  html, body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hc-container {
+    max-width: 100%;
+    padding-inline: 16px;
+  }
+}
+
 /* ══════════════════════════════════════════════════════════════
    HAUL COMMAND — Design System v6 — COMMAND BLACK
    OSOW-Killer Edition — Deep Command Aesthetic

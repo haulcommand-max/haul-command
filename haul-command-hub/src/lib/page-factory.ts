@@ -113,18 +113,9 @@ export async function getInternalLinks(pageKeyId: string, limit = 12): Promise<I
     }));
 }
 
-// ─── AdGrid Inventory ─────────────────────────────────────
-
-export async function getAdSlot(pageKeyId: string) {
-    const { data } = await getSupabase()
-        .from('hc_adgrid_page_inventory')
-        .select('*')
-        .eq('page_key_id', pageKeyId)
-        .eq('is_sellable', true)
-        .limit(1)
-        .single();
-    return data;
-}
+// ─── AdGrid Inventory (canonical: @/lib/ad-engine) ────────
+// Re-exported for backward compatibility
+export { getAdSlot } from '@/lib/ad-engine';
 
 // ─── City Rollups for a Country ───────────────────────────
 
@@ -161,20 +152,7 @@ export function formatClassName(sc: string): string {
         .join(' ');
 }
 
-export function getCountryName(code: string): string {
-    const map: Record<string, string> = {
-        US: 'United States', CA: 'Canada', GB: 'United Kingdom', AU: 'Australia',
-        DE: 'Germany', FR: 'France', BR: 'Brazil', JP: 'Japan', MX: 'Mexico',
-        NL: 'Netherlands', IT: 'Italy', ES: 'Spain', IN: 'India', KR: 'South Korea',
-        SE: 'Sweden', NO: 'Norway', SA: 'Saudi Arabia', AE: 'UAE', ZA: 'South Africa',
-        TR: 'Turkey', NZ: 'New Zealand', CH: 'Switzerland', AT: 'Austria', BE: 'Belgium',
-        PL: 'Poland', CZ: 'Czech Republic', IE: 'Ireland', DK: 'Denmark', FI: 'Finland',
-        PT: 'Portugal', GR: 'Greece', RO: 'Romania', HU: 'Hungary', SK: 'Slovakia',
-        SI: 'Slovenia', HR: 'Croatia', BG: 'Bulgaria', EE: 'Estonia', LV: 'Latvia',
-        LT: 'Lithuania', PE: 'Peru', CL: 'Chile', CO: 'Colombia', AR: 'Argentina',
-        UY: 'Uruguay', PA: 'Panama', CR: 'Costa Rica', SG: 'Singapore', MY: 'Malaysia',
-        TH: 'Thailand', PH: 'Philippines', VN: 'Vietnam', ID: 'Indonesia',
-        QA: 'Qatar', KW: 'Kuwait', BH: 'Bahrain', OM: 'Oman', NG: 'Nigeria',
-    };
-    return map[code] ?? code;
-}
+// Country name lookup: canonical source is @/lib/directory-helpers
+// Re-exported for backward compatibility
+export { countryName as getCountryName } from '@/lib/directory-helpers';
+

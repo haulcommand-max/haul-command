@@ -1,5 +1,6 @@
-// Haul Command — GA4 Analytics Tracking Infrastructure
-// Zero-lag, typed event dispatcher
+// Haul Command — Unified Analytics & Event Tracking
+// MERGED: analytics/track.ts + events/event-journal.ts
+// Client-side GA4 + server-side event journal in one file
 
 type TrackParams = Record<string, string | number | boolean | null | undefined>;
 
@@ -291,3 +292,45 @@ export const track = {
         track.event('admin_action', params);
     },
 };
+
+// ─── Server-Side Event Journal (merged from events/event-journal.ts) ───
+
+export type EventName =
+    | 'auth_view_login'
+    | 'auth_click_provider'
+    | 'auth_success'
+    | 'auth_error'
+    | 'claim_start'
+    | 'claim_complete'
+    | 'adgrid_view'
+    | 'adgrid_click'
+    | 'alert_signup'
+    | 'sponsor_impression'
+    | 'sponsor_click';
+
+export type EventPayload = Record<string, unknown>;
+
+/**
+ * Server-side event tracking — fires to /api/events endpoint.
+ * Cost-tight: never blocks UX. Works from both client and server contexts.
+ */
+export async function trackEvent(
+    name: EventName,
+    payload: EventPayload = {}
+): Promise<void> {
+    try {
+        if (typeof window !== 'undefined') {
+            // Client-side: fire to API
+            await fetch('/api/events', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ name, payload, ts: Date.now() }),
+            });
+        } else {
+            // Server-side: log for now, wire to Supabase later
+            console.log(`[event] ${name}`, payload);
+        }
+    } catch {
+        // no-op: cost-tight, never block UX
+    }
+}
