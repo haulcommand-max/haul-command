@@ -28,6 +28,8 @@ export default function HomeHero({ fallbackActions, metrics, locationChips }: Ho
   // Always show the role command center (it handles both states internally)
   return (
     <>
+      {/* SEO H1 — always rendered for crawlers */}
+      <h1 className="sr-only">Haul Command — Pilot Car & Escort Vehicle Directory</h1>
       <RoleCommandCenter />
 
       {/* Proof bar and location chips shown regardless of role state */}
