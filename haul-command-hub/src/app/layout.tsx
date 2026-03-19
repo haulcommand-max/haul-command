@@ -68,6 +68,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        {/* PWA — iOS Safari doesn't read manifest for these */}
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta name="theme-color" content="#0B0F14" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         {/* GA4 — only loads when NEXT_PUBLIC_GA4_ID is set */}
         {process.env.NEXT_PUBLIC_GA4_ID && (
           <>
