@@ -73,11 +73,38 @@ export default function LoginCard() {
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showMore, setShowMore] = useState(false)
+  const [enabledProviders, setEnabledProviders] = useState<Set<string> | null>(null)
 
   useEffect(() => {
     if (typeof navigator !== 'undefined') {
       setAppleFirst(shouldShowAppleFirst(navigator.userAgent))
     }
+  }, [])
+
+  // Fetch which providers are actually enabled in Supabase Auth
+  useEffect(() => {
+    async function checkProviders() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/settings`,
+          { headers: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY! } }
+        )
+        if (res.ok) {
+          const data = await res.json()
+          const ext = data?.external ?? {}
+          const enabled = new Set<string>()
+          if (ext.google) enabled.add('google')
+          if (ext.apple) enabled.add('apple')
+          if (ext.facebook) enabled.add('facebook')
+          if (ext.linkedin_oidc || ext.linkedin) enabled.add('linkedin_oidc')
+          setEnabledProviders(enabled)
+        }
+      } catch {
+        // If we can't check, show all (fail-open for UX)
+        setEnabledProviders(null)
+      }
+    }
+    checkProviders()
   }, [])
 
   useEffect(() => {
@@ -89,10 +116,18 @@ export default function LoginCard() {
 
   const loginOrder = useMemo(() => getLoginOrder(appleFirst), [appleFirst])
 
-  // All 4 OAuth providers shown above the fold — none hidden
-  const topProviders = loginOrder.filter((b): b is OAuthProvider =>
+  // Only show providers that are actually enabled in Supabase Auth
+  // If enabledProviders hasn't loaded yet (null), show all to avoid flash
+  const allOAuth = loginOrder.filter((b): b is OAuthProvider =>
     b !== 'phone' && b !== 'email'
-  ).slice(0, 4)
+  )
+  const topProviders = enabledProviders
+    ? allOAuth.filter(p => enabledProviders.has(p))
+    : allOAuth.slice(0, 4)
+
+  const disabledProviders = enabledProviders
+    ? allOAuth.filter(p => !enabledProviders.has(p))
+    : []
 
   const moreProviders = loginOrder.filter((b): b is OAuthProvider =>
     b !== 'phone' && b !== 'email'
@@ -283,7 +318,7 @@ export default function LoginCard() {
         </p>
       </div>
 
-      {/* Primary OAuth buttons */}
+      {/* Primary OAuth buttons — only enabled providers */}
       <div style={{ display: 'grid', gap: 10 }}>
         {topProviders.map((provider) => {
           const isGoogle = provider === 'google'
@@ -320,6 +355,31 @@ export default function LoginCard() {
             </button>
           )
         })}
+
+        {/* Disabled providers — visible but inactive */}
+        {disabledProviders.map((provider) => (
+          <div
+            key={provider}
+            style={{
+              width: '100%',
+              height: 52,
+              borderRadius: 16,
+              border: '1px solid rgba(255, 255, 255, 0.04)',
+              background: 'rgba(255, 255, 255, 0.02)',
+              color: 'rgba(255, 255, 255, 0.25)',
+              fontSize: 14,
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              cursor: 'default',
+            }}
+          >
+            <span style={{ fontSize: 18, opacity: 0.4 }}>{PROVIDER_ICONS[provider]}</span>
+            {PROVIDER_LABELS[provider].replace('Continue with', '')} — Coming Soon
+          </div>
+        ))}
       </div>
 
       {/* More options toggle */}

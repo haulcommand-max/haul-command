@@ -49,12 +49,12 @@ export const PPP_TIERS: PPPMultiplier[] = [
     {
         tier: 'tier_c',
         multiplier: 0.58,
-        countries: ['PL', 'HU', 'SK', 'LT', 'LV', 'GR', 'TR', 'MX', 'BR', 'RO', 'BG'],
+        countries: ['PL', 'HU', 'SK', 'LT', 'LV', 'GR', 'TR', 'MX', 'BR', 'RO', 'BG', 'ZA', 'IN', 'ID', 'TH'],
     },
     {
         tier: 'tier_d',
         multiplier: 0.42,
-        countries: ['CO', 'PE', 'AR', 'ZA'],
+        countries: ['CO', 'PE', 'AR', 'VN', 'PH'],
     },
 ];
 

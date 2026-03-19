@@ -17,7 +17,7 @@
  *   - broker_recommendations (who to call first)
  */
 
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 // ═══════════════════════════════════════════════════════════════
 // COMPOSITE SCORING WEIGHTS
@@ -123,10 +123,7 @@ export async function recomputeAllTrustScores(): Promise<{
     operatorsProcessed: number;
     errors: string[];
 }> {
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = getSupabaseAdmin();
 
     const errors: string[] = [];
 

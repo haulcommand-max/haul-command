@@ -94,7 +94,8 @@ const PRICE_FLOORS_USD: Record<PricingActionType, Record<string, number>> = {
         ES: 19, FR: 25, IT: 19, PT: 15, SA: 25, QA: 29, MX: 7,
         PL: 9, CZ: 9, SK: 7, HU: 7, SI: 9, EE: 7, LV: 7, LT: 7, HR: 7,
         RO: 7, BG: 5, GR: 9, TR: 5, KW: 25, OM: 19, BH: 19, SG: 25,
-        MY: 7, JP: 29, KR: 19, CL: 7, AR: 5, CO: 5, PE: 5, UY: 5, PA: 9, CR: 7,
+        MY: 7, JP: 29, KR: 19, CL: 7, AR: 5, CO: 5, PE: 5, IN: 5, ID: 3,
+        TH: 5, VN: 3, PH: 3, UY: 5, PA: 9, CR: 7,
         DEFAULT: 9,
     },
     match_fee: {
@@ -148,7 +149,7 @@ const AFFORDABILITY_INDEX: Record<string, number> = {
     MX: 0.30, PL: 0.45, CZ: 0.50, SK: 0.45, HU: 0.40, SI: 0.55, EE: 0.50, LV: 0.45,
     LT: 0.45, HR: 0.45, RO: 0.40, BG: 0.35, GR: 0.55, TR: 0.30, KW: 0.85, OM: 0.75,
     BH: 0.80, SG: 0.95, MY: 0.40, JP: 0.90, KR: 0.80, CL: 0.40, AR: 0.25, CO: 0.25,
-    PE: 0.25, UY: 0.35, PA: 0.45, CR: 0.40,
+    PE: 0.25, IN: 0.25, ID: 0.20, TH: 0.30, VN: 0.18, PH: 0.20, UY: 0.35, PA: 0.45, CR: 0.40,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -10,7 +10,6 @@
 // ══════════════════════════════════════════════════════════════
 
 import { gemini, HC_IMAGE_MODEL } from './gemini';
-import { COUNTRY_REGISTRY, lookupCountry } from '@/lib/config/country-registry';
 
 // ── Types ───────────────────────────────────────────────────
 

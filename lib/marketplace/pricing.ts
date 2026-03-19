@@ -59,6 +59,10 @@ const BASE_RATES: Record<string, number> = {
     JP: 600,
     KR: 500,
     IN: 180,
+    ID: 150,
+    TH: 200,
+    VN: 140,
+    PH: 160,
     // Fallback
     DEFAULT: 400,
 };
@@ -67,7 +71,8 @@ const CURRENCY_MAP: Record<string, string> = {
     US: "USD", CA: "CAD", AU: "AUD", GB: "GBP", NZ: "NZD",
     IE: "EUR", NL: "EUR", DE: "EUR", FR: "EUR", ES: "EUR", IT: "EUR",
     AE: "AED", ZA: "ZAR", SG: "SGD", MX: "MXN", BR: "BRL",
-    JP: "JPY", KR: "KRW", IN: "INR",
+    JP: "JPY", KR: "KRW", IN: "INR", ID: "IDR", TH: "THB",
+    VN: "VND", PH: "PHP",
     DEFAULT: "USD",
 };
 

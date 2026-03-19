@@ -1,10 +1,10 @@
-import Stripe from "stripe";
+// SHIM: Re-export from canonical location.
+// All enterprise imports continue to work without changes.
+// The canonical singleton lives in lib/stripe/client.ts.
+import { getStripeClient } from '@/lib/stripe/client';
 
-export function getStripe(): Stripe {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-    return new Stripe(key, {
-        apiVersion: "2026-02-25.clover", // keep pinned; change if your project pins differently
-        typescript: true,
-    });
-}
+/**
+ * @deprecated Use `getStripeClient()` from `@/lib/stripe/client` instead.
+ * This shim exists for backwards compatibility — it returns the same singleton.
+ */
+export const getStripe = getStripeClient;
