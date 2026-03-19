@@ -2,18 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
- * Directory Promotion Pipeline — PART 6 + 7
- * 
- * POST: Promote raw contacts/observations → canonical directory_listings
- * 
- * Pipeline:
- *   raw contacts / hc_identities / broker surfaces / activation queue
- *   → normalized entity resolution
- *   → role classification
- *   → enrichment
- *   → canonical profile (directory_listings)
- *   → directory visibility
- *   → claim / verification flows
+ * Directory Promotion Pipeline
+ * POST: Promote hc_identities + profiles → directory_listings
  */
 export async function POST(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
@@ -25,18 +15,18 @@ export async function POST(req: NextRequest) {
     const sb = getSupabaseAdmin();
     const results = {
         identities_scanned: 0,
+        profiles_scanned: 0,
         already_in_directory: 0,
         promoted: 0,
-        enriched: 0,
-        deduped: 0,
         errors: [] as string[],
     };
 
     try {
-        // ── Step 1: Pull all hc_identities not yet in directory_listings ──
+        // Step 1: Pull hc_identities
         const { data: identities, error: idErr } = await sb
             .from('hc_identities')
-            .select('id, display_name, slug, role, city, state_code, country_code, phone, email, company_name, website, service_types, verification_state, created_at')
+            .select('identity_id, display_name, role, phone, home_base_city, home_base_region, service_area, verification_level, published, created_at')
+            .eq('published', true)
             .order('created_at', { ascending: false })
             .limit(500);
 
@@ -47,140 +37,114 @@ export async function POST(req: NextRequest) {
 
         results.identities_scanned = identities?.length ?? 0;
 
-        if (!identities || identities.length === 0) {
-            return NextResponse.json({ ...results, message: 'No identities to process' });
+        // Step 2: Pull profiles
+        const { data: profiles, error: prErr } = await sb
+            .from('profiles')
+            .select('id, display_name, role, phone, email, home_city, home_state, home_country, country, created_at')
+            .limit(500);
+
+        if (!prErr) {
+            results.profiles_scanned = profiles?.length ?? 0;
         }
 
-        // ── Step 2: Check which are already in directory_listings ──
-        const idList = identities.map(i => i.id);
-        const { data: existingListings } = await sb
+        // Step 3: Get existing entity_ids
+        const { data: existing } = await sb
             .from('directory_listings')
-            .select('id')
-            .in('id', idList);
+            .select('entity_id')
+            .limit(5000);
 
-        const existingIds = new Set((existingListings ?? []).map(l => l.id));
+        const existingIds = new Set((existing ?? []).map(l => l.entity_id));
         results.already_in_directory = existingIds.size;
 
-        // ── Step 3: Classify, normalize, and promote missing records ──
-        const toPromote = identities.filter(i => !existingIds.has(i.id));
+        // Step 4: Promote identities
+        if (identities) {
+            for (const ident of identities) {
+                if (existingIds.has(ident.identity_id)) continue;
 
-        for (const identity of toPromote) {
-            try {
-                // Role classification
-                const role = classifyRole(identity.role, identity.service_types);
+                try {
+                    const name = ident.display_name || 'Unknown Operator';
+                    const slug = generateSlug(name + '-' + (ident.home_base_region || 'us'));
 
-                // Slug generation
-                const baseSlug = identity.slug || generateSlug(identity.display_name || identity.company_name || identity.id);
+                    const { error: upsertErr } = await sb
+                        .from('directory_listings')
+                        .insert({
+                            entity_type: ident.role || 'escort_operator',
+                            entity_id: ident.identity_id,
+                            name,
+                            slug,
+                            city: ident.home_base_city || null,
+                            region_code: ident.home_base_region || null,
+                            country_code: 'US',
+                            rank_score: ident.verification_level === 'verified' ? 50 : 10,
+                            claim_status: 'unclaimed',
+                            is_visible: true,
+                            source: 'hc_identities',
+                            metadata: {
+                                phone: normalizePhone(ident.phone),
+                                service_area: ident.service_area,
+                                promoted_at: new Date().toISOString(),
+                                pipeline: 'promotion_v1',
+                            },
+                        });
 
-                // Build the directory listing record
-                const listing = {
-                    id: identity.id,
-                    name: identity.display_name || identity.company_name || 'Unknown Operator',
-                    slug: baseSlug,
-                    entity_type: role,
-                    city: identity.city || null,
-                    region_code: identity.state_code || null,
-                    country_code: identity.country_code || 'US',
-                    rank_score: identity.verification_state === 'verified' ? 50 : 10,
-                    claim_status: identity.verification_state || 'unclaimed',
-                    is_visible: true,
-                    metadata: {
-                        phone: normalizePhone(identity.phone),
-                        email: identity.email,
-                        company_name: identity.company_name,
-                        website: identity.website,
-                        service_types: identity.service_types,
-                        promoted_at: new Date().toISOString(),
-                        source: 'promotion_pipeline',
-                    },
-                };
-
-                const { error: upsertErr } = await sb
-                    .from('directory_listings')
-                    .upsert(listing, { onConflict: 'id' });
-
-                if (upsertErr) {
-                    results.errors.push(`Promote ${identity.id}: ${upsertErr.message}`);
-                } else {
-                    results.promoted++;
-                }
-
-                // ── Step 4: Enrichment pass ──
-                const enrichment: Record<string, any> = {};
-                let enriched = false;
-
-                // Phone normalization
-                if (identity.phone) {
-                    const normalized = normalizePhone(identity.phone);
-                    if (normalized !== identity.phone) {
-                        enrichment.phone_normalized = normalized;
-                        enriched = true;
+                    if (upsertErr && !upsertErr.message.includes('duplicate')) {
+                        results.errors.push(`identity ${ident.identity_id}: ${upsertErr.message}`);
+                    } else if (!upsertErr) {
+                        results.promoted++;
+                        existingIds.add(ident.identity_id);
                     }
+                } catch (e: any) {
+                    results.errors.push(`identity ${ident.identity_id}: ${e.message}`);
                 }
-
-                // Role upgrade
-                if (!identity.role || identity.role === 'unknown') {
-                    enrichment.role = role;
-                    enriched = true;
-                }
-
-                // Name normalization
-                if (identity.display_name) {
-                    const cleaned = cleanName(identity.display_name);
-                    if (cleaned !== identity.display_name) {
-                        enrichment.display_name_clean = cleaned;
-                        enriched = true;
-                    }
-                }
-
-                if (enriched) {
-                    await sb
-                        .from('hc_identities')
-                        .update({ metadata: { ...enrichment, enriched_at: new Date().toISOString() } })
-                        .eq('id', identity.id);
-                    results.enriched++;
-                }
-            } catch (entityErr: any) {
-                results.errors.push(`Entity ${identity.id}: ${entityErr.message}`);
             }
         }
 
-        // ── Step 5: Deduplication scan ──
-        // Find potential duplicates by phone or company name
-        const { data: dupeCheck } = await sb
-            .from('directory_listings')
-            .select('id, name, metadata')
-            .order('rank_score', { ascending: false });
+        // Step 5: Promote profiles
+        if (profiles) {
+            for (const prof of profiles) {
+                if (existingIds.has(prof.id)) continue;
 
-        if (dupeCheck && dupeCheck.length > 1) {
-            const seen = new Map<string, string>();
-            for (const listing of dupeCheck) {
-                const phone = (listing.metadata as any)?.phone;
-                if (phone) {
-                    const normalized = normalizePhone(phone);
-                    if (normalized && seen.has(normalized)) {
-                        // Mark as duplicate but preserve — don't delete
-                        await sb
-                            .from('directory_listings')
-                            .update({
-                                metadata: {
-                                    ...(listing.metadata as any),
-                                    duplicate_of: seen.get(normalized),
-                                    deduped_at: new Date().toISOString(),
-                                },
-                            })
-                            .eq('id', listing.id);
-                        results.deduped++;
-                    } else if (normalized) {
-                        seen.set(normalized, listing.id);
+                try {
+                    const name = prof.display_name || 'Unknown';
+                    const slug = generateSlug(name + '-' + (prof.home_state || prof.country || 'us'));
+
+                    const { error: upsertErr } = await sb
+                        .from('directory_listings')
+                        .insert({
+                            entity_type: prof.role || 'escort_operator',
+                            entity_id: prof.id,
+                            name,
+                            slug,
+                            city: prof.home_city || null,
+                            region_code: prof.home_state || null,
+                            country_code: prof.home_country || prof.country || 'US',
+                            rank_score: 15,
+                            claim_status: 'claimed',
+                            is_visible: true,
+                            source: 'profiles',
+                            metadata: {
+                                phone: normalizePhone(prof.phone),
+                                email: prof.email,
+                                promoted_at: new Date().toISOString(),
+                                pipeline: 'promotion_v1',
+                            },
+                        });
+
+                    if (upsertErr && !upsertErr.message.includes('duplicate')) {
+                        results.errors.push(`profile ${prof.id}: ${upsertErr.message}`);
+                    } else if (!upsertErr) {
+                        results.promoted++;
+                        existingIds.add(prof.id);
                     }
+                } catch (e: any) {
+                    results.errors.push(`profile ${prof.id}: ${e.message}`);
                 }
             }
         }
 
         return NextResponse.json({
             ...results,
-            message: `Promotion complete. ${results.promoted} promoted, ${results.enriched} enriched, ${results.deduped} duplicates flagged.`,
+            message: `Promotion complete. ${results.promoted} promoted from ${results.identities_scanned} identities + ${results.profiles_scanned} profiles.`,
         });
     } catch (err: any) {
         results.errors.push(`Pipeline error: ${err.message}`);
@@ -188,39 +152,14 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// ── Utility functions ──
-
-function classifyRole(role?: string | null, serviceTypes?: string[] | null): string {
-    if (role && role !== 'unknown') return role;
-
-    const types = (serviceTypes ?? []).map(s => s.toLowerCase());
-    if (types.some(t => t.includes('escort') || t.includes('pilot'))) return 'escort_operator';
-    if (types.some(t => t.includes('broker') || t.includes('dispatch'))) return 'broker';
-    if (types.some(t => t.includes('height') || t.includes('pole'))) return 'support_partner';
-    if (types.some(t => t.includes('chase') || t.includes('rear'))) return 'escort_operator';
-    return 'escort_operator'; // default
-}
-
 function normalizePhone(phone?: string | null): string | null {
     if (!phone) return null;
     const digits = phone.replace(/\D/g, '');
     if (digits.length === 10) return `+1${digits}`;
     if (digits.length === 11 && digits.startsWith('1')) return `+${digits}`;
-    return phone; // return as-is if format is unknown
+    return phone;
 }
 
 function generateSlug(name: string): string {
-    return name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .substring(0, 80);
-}
-
-function cleanName(name: string): string {
-    return name
-        .replace(/\s+/g, ' ')
-        .trim()
-        .replace(/^(mr|mrs|ms|dr|llc|inc|corp)\.?\s*/i, '')
-        .trim();
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').substring(0, 80);
 }
