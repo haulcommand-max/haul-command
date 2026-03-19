@@ -84,7 +84,7 @@
         "lucide-react": "^0.574.0",
         "luxon": "^3.7.2",
         "mapbox-gl": "^3.19.0",
-        "maplibre-gl": "^5.18.0",
+        "maplibre-gl": "^5.20.2",
         "next": "^16.1.6",
         "pg": "^8.20.0",
         "playwright": "^1.58.2",
