@@ -121,10 +121,10 @@ export const metadata: Metadata = {
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     icons: {
         icon: [
-            { url: '/icons/app/icon-32.png', sizes: '32x32', type: 'image/png' },
-            { url: '/icons/app/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { url: '/brand/generated/favicon-32.png', sizes: '32x32', type: 'image/png' },
+            { url: '/brand/generated/pwa-icon-192.png', sizes: '192x192', type: 'image/png' },
         ],
-        shortcut: '/icons/app/icon-64.png',
+        shortcut: '/brand/generated/favicon-48.png',
         apple: '/apple-touch-icon.png', // Bound to /brand/generated/ios-appicon-180.png
     },
     manifest: '/manifest.json',
@@ -137,6 +137,8 @@ export const viewport: Viewport = {
     maximumScale: 5,
     viewportFit: 'cover', // PATCH-002: Required for env(safe-area-inset-*) to work
 };
+
+import { RoleProvider } from "@/lib/role-context";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -167,6 +169,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 }} />
             </head>
             <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
+                <RoleProvider>
                 <SmartAppBanner />
                 <PostHogProvider>
                     {children}
@@ -180,6 +183,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Analytics />
                 <SpeedInsights />
                 <AuthStatusBanner />
+                </RoleProvider>
             </body>
         </html>
     );

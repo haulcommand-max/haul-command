@@ -64,8 +64,9 @@ export function A2HSPrompt() {
     return (
         <div className="fixed bottom-[72px] left-4 right-4 z-50 max-w-sm mx-auto">
             <div className="hc-card p-4 flex items-center gap-3 shadow-elevated border-hc-gold-500/30">
-                <div className="w-10 h-10 bg-hc-gold-500/15 rounded-xl flex items-center justify-center shrink-0 border border-hc-gold-500/20">
-                    <span className="text-base font-black text-hc-gold-500">HC</span>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/brand/generated/pwa-icon-192.png" alt="Haul Command" width={40} height={40} className="w-10 h-10 object-contain" />
                 </div>
                 <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-hc-text leading-tight">Install Haul Command</p>

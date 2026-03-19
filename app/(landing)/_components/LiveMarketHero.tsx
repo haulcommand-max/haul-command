@@ -5,22 +5,22 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
     ArrowRight, TrendingUp, Flame, Radio, Shield, Search,
-    MapPin, FileCheck,
+    MapPin, FileCheck, Briefcase, Building2, BarChart3, Eye,
+    Repeat, MessageSquare, Package, Wrench, Star, Map,
 } from "lucide-react";
+import { useRole } from "@/lib/role-context";
+import { ROLE_LIST, ROLE_CONFIGS, type HCRole } from "@/lib/role-config";
 
 /* ═══════════════════════════════════════════════════════════════
-   LIVE MARKET HERO — Mobile-First Command Surface
-   
-   Mobile (390px):
-     - 2 top-line metrics (Escorts, Corridors) — tight row
-     - Role router: 2×2 grid, minimal padding
-     - Hottest corridor chip hidden (too dense)
-     - Status line simplified
-   
-   Desktop (≥768px):
-     - 3 top-line metrics
-     - Hottest corridor chip shown
-     - Role router: 4-col
+   LIVE MARKET HERO — Role-Aware Command Surface
+
+   When no role is selected → shows role selector cards
+   When role is selected → shows role-specific action grid
+
+   ANTI-REGRESSION RULES:
+   - Escort operators NEVER see "Find an Escort" as first action
+   - Each role gets genuinely different actions
+   - Role badge in header links back to selector
    ═══════════════════════════════════════════════════════════════ */
 
 interface LiveMarketHeroProps {
@@ -51,39 +51,47 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
     return <span>{display.toLocaleString("en-US")}{suffix}</span>;
 }
 
-const ROLE_ROUTES = [
-    {
-        href: "/loads/post",
-        icon: MapPin,
-        label: "Post a Load",
-        desc: "Find escorts fast",
-        color: "#C6923A",
-        primary: true,
-    },
-    {
-        href: "/loads",
-        icon: Search,
-        label: "Find Loads",
-        desc: "Escort jobs near you",
-        color: "#22c55e",
-        primary: true,
-    },
-    {
-        href: "/onboarding/claim",
-        icon: Shield,
-        label: "Claim Profile",
-        desc: "Get verified",
-        color: "#3b82f6",
-        primary: false,
-    },
-    {
-        href: "/escort-requirements",
-        icon: FileCheck,
-        label: "Requirements",
-        desc: "Check your state",
-        color: "#a855f7",
-        primary: false,
-    },
+// ─── Role-specific routes ────────────────────────────────────
+type RouteConfig = { href: string; icon: any; label: string; desc: string; color: string; primary: boolean };
+
+const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
+    escort_operator: [
+        { href: "/loads", icon: Package, label: "Find Jobs", desc: "Loads near you", color: "#22c55e", primary: true },
+        { href: "/onboarding/claim", icon: Shield, label: "Claim Profile", desc: "Get verified", color: "#3b82f6", primary: true },
+        { href: "/settings/services", icon: Wrench, label: "Set Services", desc: "Your capabilities", color: "#a855f7", primary: false },
+        { href: "/settings/area", icon: Map, label: "Service Area", desc: "Where you operate", color: "#C6923A", primary: false },
+    ],
+    broker_dispatcher: [
+        { href: "/directory", icon: Search, label: "Find Escort", desc: "Verified operators", color: "#C6923A", primary: true },
+        { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Get coverage fast", color: "#22c55e", primary: true },
+        { href: "/corridors", icon: BarChart3, label: "Corridor Coverage", desc: "Supply density", color: "#a855f7", primary: false },
+        { href: "/loads/rescue", icon: Flame, label: "Rescue Fill", desc: "Hard-fill lanes", color: "#ef4444", primary: false },
+    ],
+    both: [
+        { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Need coverage", color: "#C6923A", primary: true },
+        { href: "/loads", icon: Package, label: "Find Jobs", desc: "Take a load", color: "#22c55e", primary: true },
+        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker ↔ Operator", color: "#3b82f6", primary: false },
+        { href: "/messages", icon: MessageSquare, label: "Inbox", desc: "Messages", color: "#a855f7", primary: false },
+    ],
+    support_partner: [
+        { href: "/partner/join", icon: Building2, label: "Become Partner", desc: "Join the network", color: "#C6923A", primary: true },
+        { href: "/onboarding/claim", icon: MapPin, label: "Claim Location", desc: "Add your spot", color: "#22c55e", primary: true },
+        { href: "/partner/services", icon: Wrench, label: "List Services", desc: "What you offer", color: "#3b82f6", primary: false },
+        { href: "/map", icon: Map, label: "Market Gaps", desc: "Where you're needed", color: "#a855f7", primary: false },
+    ],
+    observer_researcher: [
+        { href: "/leaderboards", icon: BarChart3, label: "Dashboards", desc: "Market rankings", color: "#C6923A", primary: true },
+        { href: "/corridors", icon: Eye, label: "Track Corridors", desc: "Activity trends", color: "#22c55e", primary: true },
+        { href: "/intelligence", icon: TrendingUp, label: "Reports", desc: "Analysis & data", color: "#3b82f6", primary: false },
+        { href: "/map", icon: Map, label: "Density Map", desc: "Supply heatmap", color: "#a855f7", primary: false },
+    ],
+};
+
+const DEFAULT_ROUTES: RouteConfig[] = [
+    { href: "/loads/post", icon: MapPin, label: "Post a Load", desc: "Find escorts fast", color: "#C6923A", primary: true },
+    { href: "/loads", icon: Search, label: "Find Loads", desc: "Escort jobs near you", color: "#22c55e", primary: true },
+    { href: "/onboarding/claim", icon: Shield, label: "Claim Profile", desc: "Get verified", color: "#3b82f6", primary: false },
+    { href: "/escort-requirements", icon: FileCheck, label: "Requirements", desc: "Check your state", color: "#a855f7", primary: false },
 ];
 
 export function LiveMarketHero({
@@ -95,6 +103,10 @@ export function LiveMarketHero({
     hotCorridorDelta = 12,
     avgRate = 380,
 }: LiveMarketHeroProps) {
+    const { role, setRole, config, clearRole } = useRole();
+    const activeRoutes = role ? ROLE_ROUTE_MAP[role] : DEFAULT_ROUTES;
+    const roleLabel = config?.label ?? null;
+    const roleIcon = config?.icon ?? null;
     return (
         <section className="relative z-10">
             <style>{`
@@ -182,7 +194,7 @@ export function LiveMarketHero({
                             <Counter value={totalOperators} />
                         </div>
                         <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
-                            Verified Escorts
+                            Network Contacts
                         </div>
                     </div>
                     <div className="text-center">
@@ -223,35 +235,71 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ROLE ROUTER — 2×2 on mobile, 4-col on desktop */}
+                {/* ROLE ROUTER — role-aware */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <div className="text-center text-[10px] text-[#5A6577] font-semibold uppercase tracking-[0.15em] mb-2 sm:mb-3">
-                        What do you need?
-                    </div>
-                    <div className="hero-roles">
-                        {ROLE_ROUTES.map(({ href, icon: Icon, label, desc, color, primary }) => (
-                            <Link
-                                key={href}
-                                href={href}
-                                className={`hero-role-card group relative flex flex-col items-center text-center rounded-xl border transition-all
-                                    ${primary
-                                        ? 'border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15'
-                                        : 'border-white/[0.06] bg-transparent hover:bg-white/[0.03]'
-                                    }`}
-                            >
-                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-1.5 transition-colors"
-                                    style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
-                                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
-                                </div>
-                                <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">{label}</div>
-                                <div className="text-[9px] text-[#5A6577] mt-0.5 hidden sm:block">{desc}</div>
-                            </Link>
-                        ))}
-                    </div>
+                    {!role ? (
+                        /* ── No role selected → show role chooser ── */
+                        <>
+                            <div className="text-center text-[10px] text-[#5A6577] font-semibold uppercase tracking-[0.15em] mb-2 sm:mb-3">
+                                What&apos;s your role?
+                            </div>
+                            <div className="hero-roles" style={{ maxWidth: 520 }}>
+                                {ROLE_LIST.map((r) => {
+                                    const rc = ROLE_CONFIGS[r];
+                                    return (
+                                        <button
+                                            key={r}
+                                            onClick={() => setRole(r)}
+                                            className="hero-role-card group relative flex flex-col items-center text-center rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15 transition-all cursor-pointer"
+                                        >
+                                            <div className="text-lg sm:text-xl mb-1">{rc.icon}</div>
+                                            <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">{rc.label}</div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    ) : (
+                        /* ── Role selected → show role-specific actions ── */
+                        <>
+                            <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
+                                <span className="text-sm">{roleIcon}</span>
+                                <span className="text-[10px] text-[#C6923A] font-bold uppercase tracking-[0.15em]">
+                                    {roleLabel}
+                                </span>
+                                <button
+                                    onClick={clearRole}
+                                    className="text-[9px] text-[#5A6577] hover:text-white transition-colors ml-1 underline cursor-pointer"
+                                >
+                                    change
+                                </button>
+                            </div>
+                            <div className="hero-roles">
+                                {activeRoutes.map(({ href, icon: Icon, label, desc, color, primary }: RouteConfig) => (
+                                    <Link
+                                        key={href + label}
+                                        href={href}
+                                        className={`hero-role-card group relative flex flex-col items-center text-center rounded-xl border transition-all
+                                            ${primary
+                                                ? 'border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15'
+                                                : 'border-white/[0.06] bg-transparent hover:bg-white/[0.03]'
+                                            }`}
+                                    >
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-1.5 transition-colors"
+                                            style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
+                                            <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
+                                        </div>
+                                        <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">{label}</div>
+                                        <div className="text-[9px] text-[#5A6577] mt-0.5 hidden sm:block">{desc}</div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </motion.div>
 
                 {/* STATUS LINE — simplified on mobile */}
