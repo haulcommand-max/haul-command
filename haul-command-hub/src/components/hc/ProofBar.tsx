@@ -31,13 +31,13 @@ export default function HCProofBar({ metrics, hideIfEmpty = true }: ProofBarProp
   if (hideIfEmpty && validMetrics.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap justify-center gap-6 sm:gap-10 py-4 px-4 bg-white/[0.02] rounded-2xl border border-white/[0.06]">
+    <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-10 py-3 sm:py-4 px-3 sm:px-4 bg-white/[0.02] rounded-2xl border border-white/[0.06] w-full max-w-full">
       {validMetrics.map((metric, i) => (
-        <div key={i} className="text-center group relative">
-          <div className="text-2xl sm:text-3xl font-black text-accent tabular-nums">
+        <div key={i} className="text-center group relative min-w-0">
+          <div className="text-xl sm:text-2xl md:text-3xl font-black text-accent tabular-nums">
             {metric.value}
           </div>
-          <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mt-0.5 font-medium">
+          <div className="text-[9px] sm:text-[10px] md:text-xs text-[#8b95a5] uppercase tracking-wider mt-0.5 font-medium break-words">
             {metric.label}
           </div>
           {metric.freshness?.lastUpdatedAt && (

@@ -4,6 +4,7 @@ import "./globals.css";
 import { OrganizationSchema, WebSiteSchema } from "@/components/BreadcrumbSchema";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { RoleProvider } from "@/lib/role-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -80,15 +81,17 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} antialiased selection:bg-accent selection:text-accent-foreground`}
+        className={`${inter.variable} antialiased selection:bg-accent selection:text-accent-foreground overflow-x-hidden max-w-full min-w-0`}
       >
-        <OrganizationSchema />
-        <WebSiteSchema />
-        <div className="min-h-screen flex flex-col pb-14 md:pb-0">
-          {children}
-          <Footer />
-        </div>
-        <MobileBottomNav />
+        <RoleProvider>
+          <OrganizationSchema />
+          <WebSiteSchema />
+          <div className="min-h-screen flex flex-col pb-14 md:pb-0 overflow-x-hidden max-w-full">
+            {children}
+            <Footer />
+          </div>
+          <MobileBottomNav />
+        </RoleProvider>
       </body>
     </html>
   );

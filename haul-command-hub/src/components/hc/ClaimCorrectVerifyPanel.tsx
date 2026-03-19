@@ -16,21 +16,21 @@ export default function HCClaimCorrectVerifyPanel({
   contextCopy,
 }: ClaimCorrectVerifyPanelProps) {
   return (
-    <div className="bg-gradient-to-r from-accent/[0.06] to-transparent border border-accent/20 rounded-2xl p-6 sm:p-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-        <div className="flex-1">
-          <h3 className="text-white font-bold text-lg mb-1">
+    <div className="bg-gradient-to-r from-accent/[0.06] to-transparent border border-accent/20 rounded-2xl p-5 sm:p-6 md:p-8 overflow-hidden max-w-full">
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-white font-bold text-base sm:text-lg mb-1 break-words">
             Own Your Profile on Haul Command
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-[#b0b0b0] text-sm leading-relaxed break-words">
             {contextCopy || 'Claim your listing to unlock premium features, respond to loads, and build your verified reputation in the heavy haul industry.'}
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
           {claimAction && (
             <a
               href={claimAction.href}
-              className="bg-accent text-black px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-all"
+              className="bg-accent text-black px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-all text-center max-w-full"
             >
               {claimAction.label}
             </a>
@@ -38,7 +38,7 @@ export default function HCClaimCorrectVerifyPanel({
           {verifyAction && (
             <a
               href={verifyAction.href}
-              className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-white/20 transition-all"
+              className="bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-white/20 transition-all text-center max-w-full"
             >
               {verifyAction.label}
             </a>
@@ -46,7 +46,7 @@ export default function HCClaimCorrectVerifyPanel({
           {correctAction && (
             <a
               href={correctAction.href}
-              className="text-gray-400 hover:text-accent px-3 py-2.5 text-sm font-medium transition-colors"
+              className="text-[#8b95a5] hover:text-accent px-3 py-2.5 text-sm font-medium transition-colors text-center"
             >
               {correctAction.label}
             </a>
@@ -54,7 +54,7 @@ export default function HCClaimCorrectVerifyPanel({
           {reportAction && (
             <a
               href={reportAction.href}
-              className="text-gray-500 hover:text-accent px-3 py-2.5 text-xs transition-colors"
+              className="text-[#8b95a5] hover:text-accent px-3 py-2.5 text-xs transition-colors text-center"
             >
               {reportAction.label}
             </a>

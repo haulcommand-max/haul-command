@@ -14,18 +14,18 @@ export default function ClaimPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow max-w-4xl mx-auto px-4 py-12">
+      <main className="flex-grow w-full max-w-4xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
         <nav className="text-xs text-gray-500 mb-6">
           <Link href="/" className="hover:text-accent">Home</Link>
           <span className="mx-2">›</span>
           <span className="text-white">Claim Listing</span>
         </nav>
 
-        <header className="mb-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+        <header className="mb-8 sm:mb-10 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
             Claim Your <span className="text-accent">Listing</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-xl mx-auto break-words">
             Take ownership of your business profile on the world&apos;s largest pilot car and escort vehicle directory.
             Claiming is free. Verification unlocks premium features.
           </p>
@@ -50,18 +50,18 @@ export default function ClaimPage() {
         </div>
 
         {/* Search/Start */}
-        <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-8 text-center mb-12">
-          <h2 className="text-white font-bold text-xl mb-3">Start Your Claim</h2>
-          <p className="text-gray-400 text-sm mb-6 max-w-lg mx-auto">
+        <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-5 sm:p-8 text-center mb-8 sm:mb-12 overflow-hidden">
+          <h2 className="text-white font-bold text-lg sm:text-xl mb-2 sm:mb-3">Start Your Claim</h2>
+          <p className="text-[#b0b0b0] text-sm mb-4 sm:mb-6 max-w-lg mx-auto break-words">
             Enter your business name or phone number to find your listing.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md mx-auto">
             <input
               type="text"
               placeholder="Business name or phone number"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50 max-w-full"
             />
-            <button className="bg-accent text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors whitespace-nowrap">
+            <button className="bg-accent text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors whitespace-nowrap max-w-full">
               Find Listing
             </button>
           </div>

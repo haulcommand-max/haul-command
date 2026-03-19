@@ -1,9 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase-server';
-import HCActionQuad from '@/components/hc/ActionQuad';
-import HCProofBar from '@/components/hc/ProofBar';
-import HCLocationChipRow from '@/components/hc/LocationChipRow';
 import HCClaimCorrectVerifyPanel from '@/components/hc/ClaimCorrectVerifyPanel';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCMarketMaturityBanner from '@/components/hc/MarketMaturityBanner';
@@ -13,6 +10,7 @@ import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 import { HeroBillboard } from '@/components/hc/HeroBillboard';
 import { InlineBillboard } from '@/components/hc/InlineBillboard';
 import { getCreativesForSlot } from '@/lib/ad-engine';
+import HomeHero from '@/components/hc/HomeHero';
 import type { HCMetric, HCFaqItem, HCCorridorSummary, HCRequirementsSummary } from '@/lib/hc-types';
 
 export const revalidate = 900; // 15 minute ISR
@@ -154,9 +152,9 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow overflow-x-hidden">
         {/* Market Status */}
-        <div className="max-w-7xl mx-auto px-4 pt-4">
+        <div className="w-full max-w-7xl mx-auto px-4 pt-4">
           <HCMarketMaturityBanner
             state={totalListings > 0 ? 'live' : 'data_only'}
             countryName="Heavy Haul Directory — 57-Country Framework"
@@ -169,41 +167,28 @@ export default async function HomePage() {
           <HeroBillboard creatives={heroAds} slotFamily="hero_billboard" pageType="homepage" />
         </div>
 
-        {/* Hero Section — Action-First, Not Dashboard-First */}
-        <section className="relative py-16 sm:py-20 px-4 overflow-hidden border-b border-white/5">
-          <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent"></div>
-          <div className="max-w-5xl mx-auto relative z-10 space-y-8">
-            {/* H1 — answers "What are you here to do?" */}
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 leading-[0.95]">
-                What Do You <span className="text-accent">Need?</span>
-              </h1>
-              <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                The world&apos;s largest directory for pilot car operators, escort vehicles, and heavy haul transport professionals.
-              </p>
-            </div>
-
-            {/* Action Quad — 4 primary entry points */}
-            <HCActionQuad actions={actions} />
-
-            {/* Proof Bar — real metrics only */}
-            <HCProofBar metrics={metrics} />
-
-            {/* Location Chips — top markets */}
-            <HCLocationChipRow chips={locationChips} />
-          </div>
-        </section>
+        {/* ═══════════════════════════════════════════════
+           ROLE-AWARE COMMAND CENTER
+           Replaces the generic hero. When no role is selected,
+           shows the role picker. When role is selected, shows
+           role-specific headline, actions, and modules.
+           ═══════════════════════════════════════════════ */}
+        <HomeHero
+          fallbackActions={actions}
+          metrics={metrics}
+          locationChips={locationChips}
+        />
 
         {/* Operational Intelligence Tools */}
-        <section className="py-16 px-4 bg-black/20">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tighter">
+        <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
               Operational <span className="text-accent">Intelligence</span>
             </h2>
-            <p className="text-gray-400 text-sm mb-8 max-w-xl">
+            <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
               Real-time tools for movement risk, cost estimation, and regulatory compliance.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {[
                 {
                   href: '/tools/escort-calculator',
@@ -266,15 +251,15 @@ export default async function HomePage() {
         </section>
 
         {/* State Protocols — Quick Access */}
-        <section className="py-16 px-4">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tighter">
+        <section className="py-10 sm:py-16 px-4 overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
               State <span className="text-accent">Protocols</span>
             </h2>
-            <p className="text-gray-400 text-sm mb-8 max-w-xl">
+            <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
               Granular escort triggers, permit portals, and compliance data for every US state.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
               {[
                 'Florida', 'Texas', 'California', 'Ohio', 'Pennsylvania',
                 'Georgia', 'North Carolina', 'Illinois', 'Washington', 'Oregon',
@@ -371,9 +356,9 @@ export default async function HomePage() {
       </main>
 
       {/* Footer — Complete, No Dead Links */}
-      <footer className="py-12 px-4 border-t border-white/10 bg-black/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
+      <footer className="py-10 sm:py-12 px-4 border-t border-white/10 bg-black/30 overflow-hidden">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
             <div>
               <h4 className="text-white font-bold text-sm mb-3">Directory</h4>
               <div className="space-y-2 text-sm">

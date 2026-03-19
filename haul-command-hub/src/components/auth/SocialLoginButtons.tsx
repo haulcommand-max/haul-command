@@ -115,8 +115,8 @@ export function SocialLoginButtons({
                             onClick={() => handleClick(key, enabled)}
                             disabled={isLoading}
                             className={`
-                                flex items-center justify-center gap-3 w-full py-3.5 px-6 rounded-xl
-                                font-semibold text-sm transition-all duration-200
+                                flex items-center justify-center gap-3 w-full min-w-0 py-3.5 px-4 sm:px-6 rounded-xl
+                                font-semibold text-sm transition-all duration-200 max-w-full
                                 ${enabled
                                     ? isGoogle
                                         ? "bg-white text-gray-800 hover:bg-gray-100 border border-white/20"
@@ -127,8 +127,8 @@ export function SocialLoginButtons({
                             `}
                             aria-label={`Sign in with ${cfg.label}`}
                         >
-                            <span className="flex-shrink-0">{cfg.icon}</span>
-                            <span>
+                            <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center">{cfg.icon}</span>
+                            <span className="truncate">
                                 {isLoading
                                     ? "Connecting…"
                                     : enabled

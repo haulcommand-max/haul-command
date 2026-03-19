@@ -50,9 +50,9 @@ const FOOTER_SECTIONS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-[#060a14]">
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+    <footer className="border-t border-white/5 bg-[#060a14] overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 py-10 sm:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {FOOTER_SECTIONS.map((section) => (
             <div key={section.title}>
               <h4 className="text-white font-bold text-sm mb-3">{section.title}</h4>

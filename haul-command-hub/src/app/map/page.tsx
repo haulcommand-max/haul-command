@@ -20,18 +20,18 @@ export default function MapPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow max-w-7xl mx-auto px-4 py-12">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
         <nav className="text-xs text-gray-500 mb-6">
           <Link href="/" className="hover:text-accent">Home</Link>
           <span className="mx-2">›</span>
           <span className="text-white">Map</span>
         </nav>
 
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
+        <header className="mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
             Global <span className="text-accent">Coverage Map</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl">
+          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl break-words">
             Explore heavy haul markets, escort services, and corridor intelligence across 57 countries.
             Select a region to browse verified operators, requirements, and infrastructure.
           </p>

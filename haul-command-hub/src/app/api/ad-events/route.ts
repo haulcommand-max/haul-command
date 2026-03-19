@@ -43,12 +43,11 @@ export async function POST(request: NextRequest) {
 
     // Update creative stats on click
     if (eventType === 'click' && creativeId) {
-      await sb.rpc('hc_increment_clicks', { p_creative_id: creativeId }).catch(() => {
-        // RPC may not exist yet — raw update fallback
-        sb.from('hc_ad_creatives')
-          .update({ clicks_total: sb.rpc ? undefined : 0 })
-          .eq('creative_id', creativeId);
-      });
+      try {
+        await sb.rpc('hc_increment_clicks', { p_creative_id: creativeId });
+      } catch {
+        // RPC may not exist yet — ignore
+      }
     }
 
     return NextResponse.json({ success: true });

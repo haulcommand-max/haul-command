@@ -47,7 +47,7 @@ function LoginForm({ flags }: { flags: FeatureFlags }) {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#060a14] px-4 py-8">
+        <div className="min-h-screen flex items-center justify-center bg-[#060a14] px-4 py-6 sm:py-8 overflow-x-hidden">
             {/* Ambient glow */}
             <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
@@ -61,7 +61,7 @@ function LoginForm({ flags }: { flags: FeatureFlags }) {
                                 HAUL <span className="text-accent">COMMAND</span>
                             </h1>
                         </Link>
-                        <p className="text-gray-500 text-sm mt-2">
+                        <p className="text-[#b0b0b0] text-sm mt-2">
                             Sign in to the global heavy-haul intelligence network
                         </p>
                     </div>
@@ -88,9 +88,9 @@ function LoginForm({ flags }: { flags: FeatureFlags }) {
                     />
 
                     {/* Divider */}
-                    <div className="flex items-center gap-4 my-6">
+                    <div className="flex items-center gap-3 sm:gap-4 my-5 sm:my-6">
                         <div className="flex-1 h-px bg-white/[0.06]" />
-                        <span className="text-[10px] text-gray-600 uppercase tracking-widest font-medium">
+                        <span className="text-[10px] text-[#888888] uppercase tracking-widest font-medium whitespace-nowrap">
                             or continue with email
                         </span>
                         <div className="flex-1 h-px bg-white/[0.06]" />

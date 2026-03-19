@@ -37,30 +37,30 @@ export function HeroBillboard({ creatives, rotationSeconds = 8, slotFamily, page
   const c = creatives[activeIndex];
 
   return (
-    <div data-sponsor data-slot={slotFamily} className="sponsor-slot relative rounded-2xl overflow-hidden mb-8 border border-white/[0.06]">
+    <div data-sponsor data-slot={slotFamily} className="sponsor-slot relative rounded-2xl overflow-hidden mb-6 sm:mb-8 border border-white/[0.06] max-w-full">
       {/* Background */}
       <div className={`relative transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
         {c.image_landscape_url ? (
-          <div className="relative h-48 md:h-64">
+          <div className="relative h-40 sm:h-48 md:h-64">
             <img src={c.image_landscape_url} alt={c.headline} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-            <div className="absolute inset-0 flex items-center p-6 md:p-10">
-              <div className="max-w-md">
-                <h3 className="text-xl md:text-2xl font-black text-white mb-2">{c.headline}</h3>
-                {c.subhead && <p className="text-sm text-gray-300 mb-4">{c.subhead}</p>}
-                <a href={c.cta_url} className="inline-block bg-accent text-black px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-yellow-400 transition-colors">
+            <div className="absolute inset-0 flex items-center p-4 sm:p-6 md:p-10">
+              <div className="max-w-md min-w-0">
+                <h3 className="text-base sm:text-xl md:text-2xl font-black text-white mb-1 sm:mb-2 break-words">{c.headline}</h3>
+                {c.subhead && <p className="text-xs sm:text-sm text-gray-300 mb-3 sm:mb-4 break-words">{c.subhead}</p>}
+                <a href={c.cta_url} className="inline-block bg-accent text-black px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm hover:bg-yellow-400 transition-colors max-w-full break-words">
                   {c.cta_label} →
                 </a>
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-gradient-to-r from-accent/[0.06] to-transparent p-6 md:p-10 flex items-center gap-6">
-            {c.logo_url && <img src={c.logo_url} alt={c.advertiser_name} className="w-12 h-12 rounded-lg object-contain flex-shrink-0" />}
+          <div className="bg-gradient-to-r from-accent/[0.06] to-transparent p-4 sm:p-6 md:p-10 flex items-center gap-4 sm:gap-6">
+            {c.logo_url && <img src={c.logo_url} alt={c.advertiser_name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain flex-shrink-0" />}
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-1">{c.headline}</h3>
-              {c.subhead && <p className="text-sm text-gray-400 mb-3">{c.subhead}</p>}
-              <a href={c.cta_url} className="inline-block bg-accent text-black px-5 py-2 rounded-lg font-bold text-xs hover:bg-yellow-400 transition-colors">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-1 break-words">{c.headline}</h3>
+              {c.subhead && <p className="text-xs sm:text-sm text-[#b0b0b0] mb-2 sm:mb-3 break-words">{c.subhead}</p>}
+              <a href={c.cta_url} className="inline-block bg-accent text-black px-4 sm:px-5 py-1.5 sm:py-2 rounded-lg font-bold text-xs hover:bg-yellow-400 transition-colors max-w-full break-words">
                 {c.cta_label} →
               </a>
             </div>

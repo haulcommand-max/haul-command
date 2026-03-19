@@ -32,25 +32,25 @@ export default async function LeaderboardsPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow max-w-7xl mx-auto px-4 py-12">
-        <nav className="text-xs text-gray-500 mb-6">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
+        <nav className="text-xs text-gray-500 mb-4 sm:mb-6">
           <Link href="/" className="hover:text-accent">Home</Link>
           <span className="mx-2">›</span>
           <span className="text-white">Leaderboards</span>
         </nav>
 
-        <header className="mb-8">
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
+        <header className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
             Haul Command <span className="text-accent">Leaderboards</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl">
-            Rankings for the heavy haul ecosystem. Every ranking includes methodology disclosure and ranking basis.
+          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl break-words">
+            Win priority loads in your corridor. Every ranking includes methodology disclosure and ranking basis.
             Paid placements are always labeled.
           </p>
         </header>
 
         {/* Methodology Disclosure */}
-        <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4 mb-8 text-sm text-gray-400">
+        <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 sm:p-4 mb-6 sm:mb-8 text-sm text-[#b0b0b0] break-words">
           <strong className="text-blue-400">Ranking Methodology:</strong> Rankings are based on publicly available data including
           rule count, permit volume, corridor activity, and directory listing quality. Rankings do not reflect endorsement.
           See individual ranking sections for specific methodology.
@@ -58,13 +58,14 @@ export default async function LeaderboardsPage() {
 
         {/* Top Jurisdictions */}
         {sortedJurisdictions.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-xl font-bold text-white mb-2">Jurisdictions by Regulatory Complexity</h2>
-            <p className="text-xs text-gray-500 mb-4">
+          <section className="mb-8 sm:mb-12">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">Jurisdictions by Regulatory Complexity</h2>
+            <p className="text-xs text-[#8b95a5] mb-3 sm:mb-4 break-words">
               Ranked by total escort rule count. More rules generally indicate more complex regulatory environments.
             </p>
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl overflow-hidden">
-              <table className="w-full text-sm">
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl overflow-hidden max-w-full">
+              <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <table className="w-full text-sm min-w-[400px]">
                 <thead>
                   <tr className="border-b border-white/5">
                     <th className="text-left text-gray-500 text-xs px-5 py-3 font-medium">#</th>
@@ -93,16 +94,17 @@ export default async function LeaderboardsPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </section>
         )}
 
         {/* Top Corridors */}
         {corridors && corridors.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-xl font-bold text-white mb-2">Top Corridors by Permit Volume</h2>
-            <p className="text-xs text-gray-500 mb-4">
-              Ranked by estimated annual permit volume where available.
+          <section className="mb-8 sm:mb-12">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">Top 3 Get First Access to Loads</h2>
+            <p className="text-xs text-[#8b95a5] mb-3 sm:mb-4 break-words">
+              Top-ranked operators get load alerts before everyone else. Move up to see better loads faster.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {corridors.map((c: { id: string; name: string; corridor_type: string; permit_volume_annual: number | null }, i: number) => (
@@ -126,18 +128,18 @@ export default async function LeaderboardsPage() {
         )}
 
         {/* Next Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-          <Link href="/directory" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/30 transition-all">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-6 sm:mt-8">
+          <Link href="/directory" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 sm:p-5 hover:border-accent/30 transition-all">
             <h3 className="text-white font-bold text-sm">Browse Directory</h3>
-            <p className="text-gray-500 text-xs mt-1">Find operators by country</p>
+            <p className="text-[#8b95a5] text-xs mt-1">Find operators by country</p>
           </Link>
-          <Link href="/escort-requirements" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/30 transition-all">
+          <Link href="/escort-requirements" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 sm:p-5 hover:border-accent/30 transition-all">
             <h3 className="text-white font-bold text-sm">Requirements</h3>
-            <p className="text-gray-500 text-xs mt-1">Escort rules by jurisdiction</p>
+            <p className="text-[#8b95a5] text-xs mt-1">Escort rules by jurisdiction</p>
           </Link>
-          <Link href="/claim" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/30 transition-all">
-            <h3 className="text-white font-bold text-sm">Claim Listing</h3>
-            <p className="text-gray-500 text-xs mt-1">Own your profile</p>
+          <Link href="/claim" className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 sm:p-5 hover:border-accent/30 transition-all">
+            <h3 className="text-white font-bold text-sm">Claim Your Spot</h3>
+            <p className="text-[#8b95a5] text-xs mt-1">Finish more loads, earn stronger reviews, and move up for earlier access.</p>
           </Link>
         </div>
 

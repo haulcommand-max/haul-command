@@ -20,20 +20,20 @@ const ACTION_DESCRIPTIONS: Record<string, string> = {
 
 export default function HCActionQuad({ actions }: ActionQuadProps) {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto">
+    <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-2xl mx-auto">
       {actions.slice(0, 4).map((action) => (
         <a
           key={action.id}
           href={action.href}
-          className="group relative bg-white/[0.03] hover:bg-accent/[0.06] border border-white/[0.08] hover:border-accent/30 rounded-2xl p-5 sm:p-6 transition-all duration-200 flex flex-col items-center text-center"
+          className="group relative bg-white/[0.03] hover:bg-accent/[0.06] border border-white/[0.08] hover:border-accent/30 rounded-2xl p-4 sm:p-6 transition-all duration-200 flex flex-col items-center text-center min-w-0 overflow-hidden"
         >
-          <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">
+          <span className="text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
             {ACTION_ICONS[action.id] || '→'}
           </span>
-          <span className="text-white font-bold text-sm sm:text-base group-hover:text-accent transition-colors">
+          <span className="text-white font-bold text-xs sm:text-base group-hover:text-accent transition-colors break-words">
             {action.label}
           </span>
-          <span className="text-gray-500 text-[11px] sm:text-xs mt-1.5 leading-relaxed">
+          <span className="text-[#8b95a5] text-[10px] sm:text-xs mt-1 sm:mt-1.5 leading-relaxed break-words">
             {ACTION_DESCRIPTIONS[action.id] || ''}
           </span>
         </a>

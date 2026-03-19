@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { RoleSwitcher } from '@/components/hc/RoleSelector';
 
 const NAV_LINKS = [
   { href: '/directory', label: 'Directory' },
@@ -12,13 +13,14 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   return (
-    <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
+    <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50 overflow-hidden max-w-full">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="flex justify-between h-14 sm:h-16 items-center min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/" className="text-accent text-xl font-black tracking-tighter">
               HAUL COMMAND
             </Link>
+            <RoleSwitcher />
           </div>
           <div className="hidden md:ml-6 md:flex md:space-x-1">
             {NAV_LINKS.map((link) => (

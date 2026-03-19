@@ -1,10 +1,30 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════
+   MOBILE UI ENFORCEMENT LOCK — globals.css
+   Priority: CRITICAL
+   Purpose: Kill horizontal scroll, center all content,
+            enforce mobile-first containment
+   ═══════════════════════════════════════════════════════════ */
+
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
   --accent: #f59f0a;
   --accent-foreground: #000000;
+
+  /* Mobile container system */
+  --container-max: 640px;
+  --container-pad: 16px;
+  --card-radius: 18px;
+  --card-gap: 12px;
+
+  /* Readable contrast palette (dark theme) */
+  --text-primary: #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --text-muted: #888888;
+  --surface-card: rgba(255, 255, 255, 0.035);
+  --surface-card-border: rgba(255, 255, 255, 0.07);
 }
 
 @theme inline {
@@ -15,7 +35,25 @@
   --font-sans: var(--font-inter);
 }
 
+/* ─── GLOBAL OVERFLOW LOCK ─────────────────────────────────
+   Non-negotiable: No horizontal scroll on mobile. Ever.
+   ──────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
+  position: relative;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -23,10 +61,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── TEXT WRAPPING LOCK ───────────────────────────────────
+   No text may escape container bounds on mobile.
+   ──────────────────────────────────────────────────────── */
+
 h1, h2, h3, h4, h5, h6 {
   color: var(--accent);
   font-weight: 700;
   letter-spacing: -0.025em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+p, span, li, td, th, label, a, button {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 a {
@@ -37,4 +86,94 @@ a {
 
 a:hover {
   opacity: 0.8;
+}
+
+/* ─── MOBILE CTA CONTAINMENT ──────────────────────────────
+   No button may escape its parent on mobile.
+   ──────────────────────────────────────────────────────── */
+
+button, [role="button"], a[class*="bg-accent"],
+a[class*="rounded-xl"], a[class*="rounded-2xl"] {
+  max-width: 100%;
+}
+
+/* ─── MOBILE CONTAINER CENTERING ──────────────────────────
+   All primary surfaces center within max-w-[640px] on mobile
+   to prevent left-heavy lopsided layouts.
+   ──────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* Override desktop max-w-7xl containers on mobile */
+  .max-w-7xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl {
+    max-width: 100%;
+    padding-left: var(--container-pad);
+    padding-right: var(--container-pad);
+  }
+
+  /* Ensure all children prefer 100% over 100vw */
+  main,
+  section,
+  footer,
+  header,
+  nav,
+  article,
+  aside {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Card containment */
+  [class*="rounded-2xl"],
+  [class*="rounded-xl"] {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* 2-col grids on mobile maintain layout if cards fit; containment is handled by card max-width */
+
+  /* Force stacking for action grids that cramp on small screens */
+  .grid.grid-cols-1.sm\:grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Table horizontal scroll containment */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  thead, tbody, tr {
+    max-width: 100%;
+  }
+
+  /* Prevent images from blowing out */
+  img, video, svg, canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ─── CONTRAST UPGRADE (DARK THEME) ──────────────────────
+   Key copy must be readable on dark surfaces.
+   No dark-gray-on-black for important actions.
+   ──────────────────────────────────────────────────────── */
+
+/* Boost gray-400 text that serves as body copy */
+.text-gray-400 {
+  color: #9ca3af !important;
+}
+
+/* Ensure gray-500 body text is still readable */
+.text-gray-500 {
+  color: #8b95a5 !important;
+}
+
+/* Meta text — readable, not invisible */
+.text-gray-600 {
+  color: #6b7280 !important;
 }
