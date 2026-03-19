@@ -181,6 +181,9 @@ export function getCountry(code: string): CountryConfig | undefined {
     return COUNTRY_REGISTRY.find(c => c.code === code);
 }
 
+/** Alias for getCountry — used by gemini-ad-factory */
+export const lookupCountry = getCountry;
+
 export function getCountryTier(code: string): Tier {
     return getCountry(code)?.tier ?? "slate";
 }
