@@ -39,7 +39,7 @@ export default async function AvailableNowPage({ params }: Props) {
 
     // Fetch available escorts in this state — include trust_score, is_claimed, equipment_tags for card upgrades
     const { data: escorts } = await supabase
-        .from('driver_profiles')
+        .from('directory_listings')
         .select(`
             id, user_id, base_lat, base_lng, service_radius_miles,
             availability_status, has_high_pole, has_dashcam, equipment_tags,

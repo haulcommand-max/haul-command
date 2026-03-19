@@ -49,7 +49,7 @@ export default async function CountyPage({ params }: Props) {
 
     // Fetch escorts based in this state — include trust_score, is_claimed, equipment_tags
     const { data: escorts, count: escortCount } = await supabase
-        .from('driver_profiles')
+        .from('directory_listings')
         .select(`
             id, user_id, availability_status, has_high_pole, has_dashcam,
             equipment_tags, trust_score, is_claimed, verification_status,
