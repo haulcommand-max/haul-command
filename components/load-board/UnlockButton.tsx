@@ -31,6 +31,7 @@ export function UnlockButton({ loadId, onUnlocked }: Props) {
 
         // Fire analytics immediately — never block UI on tracking
         track.holdSlotClicked({
+            escort_id: 'unlock_via_load',
             job_id: loadId,
         });
 

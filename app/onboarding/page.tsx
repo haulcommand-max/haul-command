@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 import { MapPin, Zap, ToggleLeft, ArrowRight, CheckCircle } from "lucide-react";
 import { ProfileStrengthMeter } from "@/components/onboarding/ProfileStrengthMeter";
 import { track } from "@/lib/analytics/track";
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createClient();
 
 type Step = 1 | 2 | 3;
 
@@ -129,8 +126,10 @@ export default function OnboardingPage() {
 
                 // Fire after successful save — never before
                 track.onboardingCompleted({
-                    latency_ms,
+                    role: 'escort',
                     steps_completed: 3,
+                    steps_skipped: 0,
+                    final_strength: strength,
                 });
 
                 window.location.href = "/directory";
