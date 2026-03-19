@@ -84,6 +84,84 @@ export const track = {
     profileStrengthActionClick(params: TrackParams): void {
         track.event("profile_strength_action_click", params);
     },
+
+    // ── Additional typed events (merged from hub) ──
+
+    pageView(params: TrackParams): void {
+        track.event("page_view", params);
+    },
+
+    directoryHubView(params: TrackParams): void {
+        track.event("directory_hub_view", params);
+    },
+
+    directoryFacetView(params: TrackParams): void {
+        track.event("directory_facet_view", params);
+    },
+
+    sortChanged(params: TrackParams): void {
+        track.event("sort_changed", params);
+    },
+
+    escortCardImpression(params: TrackParams): void {
+        track.event("escort_card_impression", params);
+    },
+
+    profileView(params: TrackParams): void {
+        track.event("profile_view", params);
+    },
+
+    profileStrengthView(params: TrackParams): void {
+        track.event("profile_strength_view", params);
+    },
+
+    checkoutStarted(params: TrackParams): void {
+        track.event("checkout_started", params);
+    },
+
+    checkoutPaymentSubmitted(params: TrackParams): void {
+        track.event("checkout_payment_submitted", params);
+    },
+
+    jobPosted(params: TrackParams): void {
+        track.event("job_posted", params);
+    },
+
+    jobStatusChanged(params: TrackParams): void {
+        track.event("job_status_changed", params);
+    },
+
+    jobCardImpression(params: TrackParams): void {
+        track.event("job_card_impression", params);
+    },
+
+    adConversion(params: TrackParams): void {
+        track.event("ad_conversion", params);
+    },
+
+    sponsorImpression(params: TrackParams): void {
+        track.event("sponsor_impression", params);
+    },
+
+    sponsorClick(params: TrackParams): void {
+        track.event("sponsor_click", params);
+    },
+
+    corridorSignalView(params: TrackParams): void {
+        track.event("corridor_signal_view", params);
+    },
+
+    alertSignup(params: TrackParams): void {
+        track.event("alert_signup", params);
+    },
+
+    adminView(params: TrackParams): void {
+        track.event("admin_view", params);
+    },
+
+    adminAction(params: TrackParams): void {
+        track.event("admin_action", params);
+    },
 };
 
 export default track;

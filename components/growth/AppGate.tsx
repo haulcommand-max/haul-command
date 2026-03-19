@@ -53,9 +53,9 @@ function isIOS(): boolean {
 
 function getStoreUrl(appStoreUrl?: string, playStoreUrl?: string): string {
     if (isIOS()) {
-        return appStoreUrl || 'https://apps.apple.com/app/haul-command/id000000000';
+        return appStoreUrl || 'https://haulcommand.com/app';
     }
-    return playStoreUrl || 'https://play.google.com/store/apps/details?id=com.haulcommand.app';
+    return playStoreUrl || 'https://haulcommand.com/app';
 }
 
 export default function AppGate({

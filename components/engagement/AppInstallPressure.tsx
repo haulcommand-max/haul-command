@@ -4,12 +4,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { X, Download, Bell, Zap, MapPin, Trophy } from "lucide-react";
 import Link from "next/link";
 
-/* ──────────────────────────────────────────────────── */
-/*  APP DOWNLOAD URL — single source of truth           */
-/* ──────────────────────────────────────────────────── */
+// STORE URLS — PWA install until native store listings are verified live
+// DO NOT show dead store links publicly.
 const APP_URL = "https://haulcommand.com/app";
-const IOS_URL = "https://apps.apple.com/app/haulcommand";
-const ANDROID_URL = "https://play.google.com/store/apps/details?id=com.haulcommand";
+const IOS_URL = APP_URL;     // Apple listing not yet live — route to PWA
+const ANDROID_URL = APP_URL; // Play listing not yet verified — route to PWA
 
 /* ──────────────────────────────────────────────────── */
 /*  1. HEADER MINI-BANNER                               */

@@ -1,6 +1,8 @@
 /**
  * AdRank Scoring Constants — Single source of truth
  * 
+ * UPGRADED: Merged root's bid+fraud model with hub's billboard surfaces + feed interleaving.
+ * 
  * AdRank = (0.55 × bid) + (0.20 × ctr) + (0.10 × relevance)
  *        + (0.08 × trust) + (0.07 × quality) - (0.35 × fraud)
  */
@@ -26,6 +28,8 @@ export const THRESHOLDS = {
     exploration_rate: 0.10,
 } as const;
 
+// ─── Surfaces (merged: original + billboard slots from hub) ──
+
 export const SURFACES = [
     'directory_search',
     'profile',
@@ -34,9 +38,44 @@ export const SURFACES = [
     'feed',
     'chambers_sidebar',
     'dashboard_banner',
+    // Billboard surfaces (from hub)
+    'hero_billboard',
+    'inline_billboard',
+    'sidecar_sponsor',
+    'sticky_mobile_chip_rail',
+    'alert_gate_offer',
+    // Corridor-specific
+    'corridor_hero',
+    'corridor_inline',
+    'provider_sidecar',
 ] as const;
 
 export type AdSurface = typeof SURFACES[number];
+
+// ─── Placement Constants (from hub, for GA4 tracking) ──
+
+export const AD_PLACEMENTS = {
+    DIRECTORY_INLINE: 'directory_inline',
+    DIRECTORY_SIDEBAR: 'directory_sidebar',
+    LEADERBOARD_INLINE: 'leaderboard_inline',
+    LOAD_FEED_INLINE: 'load_feed_inline',
+    HUB_BANNER: 'hub_banner',
+    COUNTRY_HUB: 'country_hub_banner',
+    SERVICE_PAGE: 'service_page_banner',
+    GUIDE_PAGE: 'guide_page_banner',
+    CORRIDOR_HERO: 'corridor_hero_billboard',
+    CORRIDOR_INLINE: 'corridor_inline_billboard',
+    PROVIDER_SIDECAR: 'provider_sidecar_sponsor',
+} as const;
+
+export const AD_VARIANTS = {
+    NATIVE_CARD: 'native_card',
+    SLOT_BANNER: 'slot_banner',
+    HERO_BILLBOARD: 'hero_billboard',
+    INLINE_BILLBOARD: 'inline_billboard',
+    SIDECAR: 'sidecar_sponsor',
+    CHIP_RAIL: 'sticky_mobile_chip_rail',
+} as const;
 
 export const FRAUD_SIGNAL_WEIGHTS = {
     rapid_clicks: 0.20,
@@ -84,3 +123,38 @@ export function computeAdRank(components: Omit<AdRankComponents, 'final_rank'>):
         ADRANK_WEIGHTS.fraud_risk_penalty * components.fraud_risk
     );
 }
+
+// ─── Feed Interleaving (from hub's ad-engine, merged here) ──
+
+export type FeedRow<T> =
+    | { kind: 'item'; item: T }
+    | { kind: 'ad'; placement: string; slotIndex: number };
+
+/**
+ * Interleaves NativeAdCard slots into a feed of items.
+ * Works for directory listings, load board rows, corridor cards, etc.
+ */
+export function interleaveNativeAds<T>(
+    items: T[],
+    opts: {
+        everyNth: number;
+        placement: string;
+        startAfter?: number;
+        maxAds?: number;
+    }
+): FeedRow<T>[] {
+    const { everyNth, placement, startAfter = everyNth, maxAds = 999 } = opts;
+    const out: FeedRow<T>[] = [];
+    let adCount = 0;
+
+    for (let i = 0; i < items.length; i++) {
+        out.push({ kind: 'item', item: items[i] });
+        const itemIndex1 = i + 1;
+        if (itemIndex1 >= startAfter && itemIndex1 % everyNth === 0 && adCount < maxAds) {
+            out.push({ kind: 'ad', placement, slotIndex: adCount });
+            adCount++;
+        }
+    }
+    return out;
+}
+

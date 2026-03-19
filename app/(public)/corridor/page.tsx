@@ -1,16 +1,31 @@
 import Link from 'next/link';
 import { CorridorMobileGate } from '@/components/mobile/gates/CorridorMobileGate';
 import { getAllCorridorSlugs, getCorridorData } from '@/lib/data/corridors';
+import { getCorridorSignals, getSignalBadge } from '@/lib/corridor-signals';
 
 export const metadata = {
     title: 'Corridor Intelligence | Haul Command',
     description: 'Browse heavy haul corridors, demand pressure, and escort coverage before you post or bid.',
 };
 
-export default function CorridorIndexPage() {
+export default async function CorridorIndexPage() {
     const corridors = getAllCorridorSlugs()
         .map((slug) => getCorridorData(slug))
         .filter((corridor): corridor is NonNullable<typeof corridor> => corridor !== null);
+
+    // Fetch live signals for all corridors in parallel
+    const signalMap = new Map<string, Awaited<ReturnType<typeof getCorridorSignals>>>();
+    const signalResults = await Promise.allSettled(
+        corridors.map(async (c) => {
+            const signals = await getCorridorSignals(c.slug);
+            return { slug: c.slug, signals };
+        })
+    );
+    for (const result of signalResults) {
+        if (result.status === 'fulfilled' && result.value.signals) {
+            signalMap.set(result.value.slug, result.value.signals);
+        }
+    }
 
     return (
         <CorridorMobileGate>
@@ -99,17 +114,30 @@ export default function CorridorIndexPage() {
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
                                     <div>
-                                        <div
-                                            style={{
-                                                fontSize: 12,
-                                                fontWeight: 800,
-                                                letterSpacing: '0.08em',
-                                                textTransform: 'uppercase',
-                                                color: corridor.hot ? 'var(--hc-gold-400)' : 'var(--hc-muted)',
-                                            }}
-                                        >
-                                            {corridor.hot ? 'Hot corridor' : 'Active corridor'}
-                                        </div>
+                                        {(() => {
+                                            const signals = signalMap.get(corridor.slug);
+                                            const badge = signals ? getSignalBadge(signals) : null;
+                                            return badge ? (
+                                                <div style={{
+                                                    fontSize: 12, fontWeight: 800,
+                                                    letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                                                    color: badge.color,
+                                                    background: badge.bg,
+                                                    padding: '4px 10px', borderRadius: 999,
+                                                    display: 'inline-block',
+                                                }}>
+                                                    {badge.label}
+                                                </div>
+                                            ) : (
+                                                <div style={{
+                                                    fontSize: 12, fontWeight: 800,
+                                                    letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                                                    color: corridor.hot ? 'var(--hc-gold-400)' : 'var(--hc-muted)',
+                                                }}>
+                                                    {corridor.hot ? 'Hot corridor' : 'Active corridor'}
+                                                </div>
+                                            );
+                                        })()}
                                         <div
                                             style={{
                                                 marginTop: 8,
