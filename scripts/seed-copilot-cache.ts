@@ -80,7 +80,7 @@ Important: This answer will be cached as an SEO page. Be comprehensive but scann
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1200,
       temperature: 0.2,
       system: systemPrompt,
@@ -148,7 +148,7 @@ async function main() {
               label: `${stateName} DOT — Official Oversize/Overweight Regulations`,
               url: `https://www.google.com/search?q=${encodeURIComponent(`${stateName} DOT oversize load escort requirements`)}`,
             }],
-            model_version: 'claude-sonnet-4-6',
+            model_version: 'claude-3-5-sonnet-20241022',
             tokens_used: 0, // We don't get exact usage from raw API
           });
 
