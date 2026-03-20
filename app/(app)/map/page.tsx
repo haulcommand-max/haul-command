@@ -30,6 +30,7 @@ import { CorridorLiquidityHeatmap } from "@/components/map/CorridorLiquidityHeat
 import { MapIntelRail } from "@/components/map/MapIntelRail";
 import { SmallStatesSidebar } from "@/components/map/SmallStatesSidebar";
 import { useMapAnalytics } from "@/hooks/useMapAnalytics";
+import { WorldMapView } from "@/components/map/WorldMapView";
 
 // ── Dynamic imports (browser-only) ────────────────────────────────────────────
 
@@ -103,7 +104,7 @@ function MapLegend() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-type MapView = "operations" | "jurisdictions" | "corridors" | "grid";
+type MapView = "operations" | "jurisdictions" | "corridors" | "grid" | "global";
 
 // ── Country counts hook (global 52-country rail) ────────────────────────────
 function useCountryCounts(): Record<string, number> {
@@ -224,7 +225,7 @@ export default function MapPage() {
                 className="absolute left-1/2 -translate-x-1/2 z-30 flex bg-gray-900/90 backdrop-blur-sm border border-gray-700/60 rounded-full p-0.5 shadow-2xl"
                 style={{ top: tickerHeight + 8 }}
             >
-                {(["operations", "jurisdictions", "corridors", "grid"] as MapView[]).map((v) => (
+                {(["operations", "jurisdictions", "corridors", "grid", "global"] as MapView[]).map((v) => (
                     <button
                         key={v}
                         data-testid={`map-toggle-${v}`}
@@ -236,11 +237,13 @@ export default function MapPage() {
                                     ? "bg-amber-500 text-black"
                                     : v === "grid"
                                         ? "bg-blue-500 text-black"
-                                        : "bg-emerald-500 text-black"
+                                        : v === "global"
+                                            ? "bg-purple-500 text-black"
+                                            : "bg-emerald-500 text-black"
                             : "text-gray-400 hover:text-white"
                             }`}
                     >
-                        {v === "grid" ? "Grid" : v}
+                        {v === "grid" ? "Grid" : v === "global" ? "🌍 Global" : v}
                     </button>
                 ))}
             </div>
@@ -325,6 +328,13 @@ export default function MapPage() {
                                     router.push(`/app/loads/${id}`);
                                 }}
                             />
+                        </div>
+                    )}
+
+                    {/* ── Global: 57-country world map ──────────────── */}
+                    {view === "global" && (
+                        <div className="absolute inset-0 overflow-hidden">
+                            <WorldMapView />
                         </div>
                     )}
                 </div>

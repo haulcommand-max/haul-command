@@ -677,12 +677,8 @@ export default function MapFirstLoadboard() {
         });
     }, []);
 
-    // Show blank bg while checking — avoids flash
-    if (!sessionChecked) {
-        return <div style={{ background: T.bg, minHeight: '100vh' }} />;
-    }
-
-    // Public visitors: show teaser preview with gate
+    // BUG FIX: Always render immediately. PublicLoadBoardPreview shows while
+    // session check is pending — no more blank div for logged-out users.
     if (!hasSession) {
         return <PublicLoadBoardPreview />;
     }

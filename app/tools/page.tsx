@@ -5,6 +5,14 @@ import Link from 'next/link';
 
 const TOOLS = [
     {
+        title: 'Compliance Copilot',
+        description: 'Ask any question about oversize load regulations — escort requirements, height poles, night travel bans, permits — for any state. Powered by Claude AI with real regulation data.',
+        href: '/tools/compliance-copilot',
+        icon: '⚖️', badges: ['Free', 'AI-Powered', 'All 50 States'],
+        color: '#f5b942',
+        featured: true,
+    },
+    {
         title: 'Permit Complexity Checker',
         description: 'Estimate escort needs, permit costs, and risk bands by entering load dimensions and states.',
         href: '/tools/permit-checker',
@@ -54,17 +62,28 @@ export default function ToolsLandingPage() {
                     {TOOLS.map(tool => (
                         <Link key={tool.href} href={tool.href} style={{ textDecoration: 'none', display: 'block' }}>
                             <div style={{
-                                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+                                position: 'relative',
+                                background: (tool as any).featured ? `rgba(245,185,66,0.04)` : 'rgba(255,255,255,0.03)',
+                                border: `1px solid ${(tool as any).featured ? 'rgba(245,185,66,0.22)' : 'rgba(255,255,255,0.06)'}`,
                                 borderRadius: 18, padding: '1.5rem', transition: 'all 0.2s', cursor: 'pointer',
                                 height: '100%',
                             }}
                                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${tool.color}40`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-                                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+                                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = (tool as any).featured ? 'rgba(245,185,66,0.22)' : 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
                             >
+                                {(tool as any).featured && (
+                                    <div style={{
+                                        position: 'absolute', top: -10, right: 16,
+                                        padding: '2px 10px', borderRadius: 99,
+                                        background: 'linear-gradient(135deg,#f5b942,#d97706)',
+                                        fontSize: 9, fontWeight: 900, color: '#0a0f16',
+                                        textTransform: 'uppercase', letterSpacing: '0.12em',
+                                    }}>NEW</div>
+                                )}
                                 <div style={{ fontSize: 32, marginBottom: 12 }}>{tool.icon}</div>
                                 <h2 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>{tool.title}</h2>
                                 <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280', lineHeight: 1.5 }}>{tool.description}</p>
-                                <div style={{ display: 'flex', gap: 6 }}>
+                                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                     {tool.badges.map(b => (
                                         <span key={b} style={{ padding: '3px 10px', borderRadius: 6, fontSize: 10, fontWeight: 700, background: `${tool.color}12`, color: tool.color, border: `1px solid ${tool.color}25`, textTransform: 'uppercase' }}>{b}</span>
                                     ))}

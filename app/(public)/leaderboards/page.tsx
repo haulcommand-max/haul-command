@@ -1,5 +1,5 @@
 import React from 'react';
-import { supabaseServer } from '@/lib/supabase/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { MapPin, TrendingUp, ShieldCheck, Trophy, Clock, Zap, Star, Award, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { TrustBadgeRow } from '@/components/badges/TrustBadgeRow';
@@ -99,7 +99,8 @@ export default async function LeaderboardsPage({
     searchParams: Promise<{ corridor?: string; view?: string }>;
 }) {
     const params = await searchParams;
-    const supabase = supabaseServer();
+    // Use admin client (service role) to bypass RLS — top 3 names must show for anonymous users
+    const supabase = getSupabaseAdmin();
     const activeCorridor = params.corridor || 'i-95-northeast';
     const view = params.view || 'corridor';
 
@@ -110,7 +111,7 @@ export default async function LeaderboardsPage({
 
     const corridorList = corridors ?? [];
 
-    // Fetch leaderboard — try v_corridor_leaderboard first, fall back to profiles
+    // Fetch leaderboard — try v_corridor_leaderboard first, fall back to profiles/listings
     let leaders: Leader[] = [];
     try {
         const { data } = await supabase
@@ -120,12 +121,13 @@ export default async function LeaderboardsPage({
             .order('rank_position', { ascending: true })
             .limit(50);
         leaders = (data ?? []) as Leader[];
-    } catch {
-        // fallback: top profiles by profile_strength
+    } catch { /* view may not exist */ }
+
+    // If leaderboard view is empty, fall back to profiles
+    if (leaders.length === 0) {
         const { data } = await supabase
             .from('profiles')
             .select('id, full_name, city, state, profile_strength, claimed, source')
-            .eq('claimed', true)
             .order('profile_strength', { ascending: false })
             .limit(15);
         leaders = (data ?? []).map((p, i) => ({
@@ -135,13 +137,38 @@ export default async function LeaderboardsPage({
             home_city: p.city ?? '',
             corridor_slug: activeCorridor,
             trust_score: p.profile_strength ? Math.round(p.profile_strength * 0.85) : null,
-            avg_response_minutes: null,  // truthful: we don't know yet
-            bids_placed: null,           // truthful: we don't know yet
-            jobs_completed: null,        // truthful: we don't know yet
+            avg_response_minutes: null,
+            bids_placed: null,
+            jobs_completed: null,
             is_verified: p.claimed ?? false,
             profile_id: p.id,
             badges: p.claimed ? ['verified_profile'] : [],
             is_new_entry: true,
+        }));
+    }
+
+    // Additional fallback: use directory_listings for real names (most complete data source)
+    if (leaders.length === 0) {
+        const { data } = await supabase
+            .from('directory_listings')
+            .select('id, name, city, region_code, rank_score, claim_status')
+            .eq('is_visible', true)
+            .order('rank_score', { ascending: false, nullsFirst: false })
+            .limit(15);
+        leaders = (data ?? []).map((l, i) => ({
+            rank_position: i + 1,
+            company_name: l.name ?? 'Verified Operator',
+            full_name: l.name ?? '',
+            home_city: l.city ?? '',
+            corridor_slug: activeCorridor,
+            trust_score: l.rank_score ? Math.round(l.rank_score * 100) : null,
+            avg_response_minutes: null,
+            bids_placed: null,
+            jobs_completed: null,
+            is_verified: l.claim_status === 'claimed' || l.claim_status === 'verified',
+            profile_id: l.id,
+            badges: [],
+            is_new_entry: false,
         }));
     }
 

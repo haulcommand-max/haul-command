@@ -22,9 +22,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <AdminNavLink href="/admin/corridors" label="Corridors" icon="🛣️" />
                     <AdminNavLink href="/admin/heat" label="Heat Engine" icon="🔥" />
                     <AdminNavLink href="/admin/billing" label="Sponsors & Billing" icon="💰" />
+                    <AdminNavLink href="/admin/ads" label="AdGrid Revenue" icon="📈" />
                     <div className="my-4 border-t border-[#1a1a1a] opacity-20" />
                     <AdminNavLink href="/admin/settings" label="Settings" icon="⚙️" />
                     <AdminNavLink href="/admin/audit" label="Audit Log" icon="📜" />
+                    <div className="my-4 border-t border-[#1a1a1a] opacity-20" />
+                    <AdminNavLink href="/tools/compliance-copilot" label="Compliance Copilot" icon="⚖️" />
+                    <AdminNavLink href="/api/outreach/operators" label="Operator Outreach" icon="📧" />
                 </nav>
 
                 <div className="p-4 border-t border-[#1a1a1a]">
