@@ -13,6 +13,7 @@
 
 import { useState } from 'react';
 import { AlertTriangle, TrendingUp, Shield, DollarSign, ChevronRight, Lock, Zap, Eye, Truck } from 'lucide-react';
+import { useProStatus } from '@/hooks/useProStatus';
 
 interface Analysis {
   profitScore: number;
@@ -53,7 +54,7 @@ export default function LoadAnalyzerPage() {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const isPro = false; // TODO: wire to auth
+  const { isPro } = useProStatus();
 
   const analyze = async () => {
     setLoading(true);

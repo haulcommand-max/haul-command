@@ -10,6 +10,7 @@
 
 import { useState } from 'react';
 import { TrendingUp, DollarSign, AlertTriangle, ChevronRight, Lock, Flame, Snowflake, Target } from 'lucide-react';
+import { useProStatus } from '@/hooks/useProStatus';
 
 interface RateAdvice {
   rateRange: { low: number; mid: number; high: number; perMile: { low: number; mid: number; high: number } };
@@ -39,7 +40,7 @@ export default function RateAdvisorPage() {
   const [advice, setAdvice] = useState<RateAdvice | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const isPro = false; // TODO: wire to auth
+  const { isPro } = useProStatus();
 
   const getAdvice = async () => {
     setLoading(true);
