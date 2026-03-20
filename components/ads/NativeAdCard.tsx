@@ -86,19 +86,79 @@ const HOUSE_ADS: Omit<ServedAd, 'impression_token' | 'ad_rank' | 'price_model'>[
         cta_url: '/gear',
         image_url: null, creative_type: 'native',
     },
+    // ── 5 Targeted Industry Partner House Ads ──────────────────
+    {
+        ad_id: 'house-equip', campaign_id: 'house', creative_id: 'house-equip',
+        headline: 'Shop CB Radios, Light Bars & Pilot Car Gear',
+        body: 'Everything you need for FHWA-compliant escort operations. Reviewed by working operators.',
+        cta_text: 'Shop Gear →',
+        cta_url: '/gear',
+        image_url: null, creative_type: 'native',
+    },
+    {
+        ad_id: 'house-insurance', campaign_id: 'house', creative_id: 'house-insurance',
+        headline: 'Get Pilot Car Insurance in 10 Minutes',
+        body: 'Commercial auto + escort liability coverage. Instant quotes, next-day binding.',
+        cta_text: 'Get a Quote →',
+        cta_url: '/insurance',
+        image_url: null, creative_type: 'native',
+    },
+    {
+        ad_id: 'house-permits', campaign_id: 'house', creative_id: 'house-permits',
+        headline: 'Instant Oversize Permits — All 50 States',
+        body: 'Skip the paperwork. Get single-trip and annual OS/OW permits filed in minutes.',
+        cta_text: 'Get Permits →',
+        cta_url: '/tools/permit-calculator',
+        image_url: null, creative_type: 'native',
+    },
+    {
+        ad_id: 'house-training', campaign_id: 'house', creative_id: 'house-training',
+        headline: 'Get Certified — State Pilot Car Courses',
+        body: 'Online and in-person certification courses. Required in 38+ states. Start today.',
+        cta_text: 'View Courses →',
+        cta_url: '/training',
+        image_url: null, creative_type: 'native',
+    },
+    {
+        ad_id: 'house-copilot', campaign_id: 'house', creative_id: 'house-copilot',
+        headline: 'Ask Any Compliance Question — Free',
+        body: 'AI-powered escort regulation answers for all 50 states. Height poles, width limits, night bans.',
+        cta_text: 'Try Copilot →',
+        cta_url: '/tools/compliance-copilot',
+        image_url: null, creative_type: 'native',
+    },
 ];
 
-/** Pick a deterministic house ad based on surface + placement to avoid showing the same ad everywhere */
-function pickHouseAd(surface: string, placementId: string): ServedAd {
-    let hash = 0;
+// Ads weighted higher for operators vs brokers
+const OPERATOR_ADS = ['house-001', 'house-003', 'house-004', 'house-equip', 'house-insurance', 'house-training', 'house-copilot'];
+const BROKER_ADS = ['house-002', 'house-005', 'house-006', 'house-007', 'house-permits'];
+
+/** Pick a weighted house ad based on surface + placement + user role */
+function pickHouseAd(surface: string, placementId: string, userRole?: string): ServedAd {
+    // Build weighted pool based on role
+    let pool = HOUSE_ADS;
+    if (userRole === 'operator' || userRole === 'escort') {
+        pool = HOUSE_ADS.filter(a => OPERATOR_ADS.includes(a.ad_id)).concat(
+            HOUSE_ADS.filter(a => OPERATOR_ADS.includes(a.ad_id)).slice(0, 3) // Double weight
+        );
+    } else if (userRole === 'broker') {
+        pool = HOUSE_ADS.filter(a => BROKER_ADS.includes(a.ad_id)).concat(
+            HOUSE_ADS.filter(a => BROKER_ADS.includes(a.ad_id)).slice(0, 3)
+        );
+    }
+    if (pool.length === 0) pool = HOUSE_ADS;
+
+    // Add time-based rotation (changes every 5 minutes)
+    const timeSlot = Math.floor(Date.now() / 300000);
+    let hash = timeSlot;
     const key = surface + placementId;
     for (let i = 0; i < key.length; i++) {
         hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
     }
-    const idx = Math.abs(hash) % HOUSE_ADS.length;
+    const idx = Math.abs(hash) % pool.length;
     return {
-        ...HOUSE_ADS[idx],
-        impression_token: `house_${idx}`,
+        ...pool[idx],
+        impression_token: `house_${pool[idx].ad_id}_${timeSlot}`,
         ad_rank: 0,
         price_model: 'house',
     };
@@ -129,7 +189,7 @@ export function NativeAdCard({
     const [sid, setSid] = useState('');
 
     // Deterministic house ad for this slot (stable across re-renders)
-    const fallbackAd = useMemo(() => pickHouseAd(surface, placementId), [surface, placementId]);
+    const fallbackAd = useMemo(() => pickHouseAd(surface, placementId, userRole), [surface, placementId, userRole]);
 
     // Generate stable session/viewer IDs (client-only)
     useEffect(() => {
@@ -173,27 +233,36 @@ export function NativeAdCard({
         fetchAd();
     }, [surface, viewerKey, sid, fallbackAd]);
 
-    // Impression confirmation only for paid ads
+    // Track impressions — now for ALL ads including house
     const { ref } = useAdImpression({
-        impressionToken: isHouseAd ? null : (ad?.impression_token || null),
+        impressionToken: ad?.impression_token || null,
         sessionId: sid,
     });
 
-    // Click handler
+    // Click handler — track ALL ads (house + paid)
     const handleClick = useCallback(async () => {
         if (!ad) return;
 
-        // Only track clicks for paid ads
-        if (!isHouseAd && ad.impression_token) {
-            try {
-                const supabase = createClient();
+        try {
+            const supabase = createClient();
+            if (isHouseAd) {
+                // Track house ad clicks in adgrid_events
+                supabase.from('adgrid_events').insert({
+                    event_type: 'click',
+                    ad_id: ad.ad_id,
+                    creative_id: ad.creative_id,
+                    surface,
+                    session_id: sid,
+                    metadata: { placement_id: placementId, cta_url: ad.cta_url },
+                }).then(() => {});
+            } else if (ad.impression_token) {
                 await supabase.rpc('record_ad_click', {
                     p_impression_token: ad.impression_token,
                     p_session_id: sid,
                 });
-            } catch {
-                // Click tracking failure shouldn't block navigation
             }
+        } catch {
+            // Click tracking failure shouldn't block navigation
         }
 
         // House ads: internal navigation. Paid ads: new tab.
