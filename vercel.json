@@ -64,6 +64,10 @@
         {
             "path": "/api/cron/outreach-sequence",
             "schedule": "0 8 * * *"
+        },
+        {
+            "path": "/api/cron/recalculate-rankings",
+            "schedule": "*/10 * * * *"
         }
     ],
     "headers": [
