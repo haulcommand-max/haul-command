@@ -73,25 +73,47 @@ const SAMPLE_PREVIEWS: Record<string, { headers: string[]; rows: string[][] }> =
 export default function DataMarketplacePage() {
     const [selectedProduct, setSelectedProduct] = useState<DataProduct | null>(null);
     const [purchasing, setPurchasing] = useState(false);
+    const [previewProduct, setPreviewProduct] = useState<DataProduct | null>(null);
     const activeProducts = DATA_PRODUCT_CATALOG.filter(p => p.active);
 
     const handleUnlock = async (product: DataProduct) => {
         setPurchasing(true);
         try {
+            // Map product catalog IDs to API SKUs
+            const skuMap: Record<string, string> = {
+                'corridor-snapshot': 'operations_optimizer',
+                'rate-benchmark': 'pricing_intelligence',
+                'market-report': 'pricing_intelligence',
+                'competitor-tracking': 'risk_command',
+                'claim-gap-report': 'operations_optimizer',
+                'csv-export': 'operations_optimizer',
+                'api-access': 'enterprise_full_signal',
+                'alert-subscription': 'risk_command',
+                'corridor-intelligence-feed': 'pricing_intelligence',
+                'operator-density-map': 'operations_optimizer',
+                'rate-benchmarks-by-country': 'pricing_intelligence',
+            };
+            const sku = skuMap[product.id] || 'pricing_intelligence';
+
             const res = await fetch('/api/data/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    product_id: product.id,
-                    country_code: 'US', // Default, user can change
+                    sku,
+                    email: 'buyer@haulcommand.com', // Will be replaced with auth user email
+                    country_code: 'US',
                 }),
             });
             const data = await res.json();
             if (data.checkout_url) {
                 window.location.href = data.checkout_url;
+            } else if (data.error) {
+                // If auth required, redirect to login
+                window.location.href = '/login?redirect=/data';
             }
         } catch (e) {
             console.error('Checkout error:', e);
+            window.location.href = '/login?redirect=/data';
         } finally {
             setPurchasing(false);
         }
@@ -129,7 +151,7 @@ export default function DataMarketplacePage() {
             </div>
 
             {/* Product Grid */}
-            <div style={{
+            <div className="ag-stagger" style={{
                 maxWidth: 1200, margin: '0 auto', padding: '0 24px 60px',
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
@@ -141,21 +163,11 @@ export default function DataMarketplacePage() {
                     const icon = PRODUCT_ICONS[product.id] || <FileText size={20} />;
 
                     return (
-                        <div key={product.id} style={{
+                        <div key={product.id} className="ag-card-hover ag-slide-up" style={{
                             borderRadius: 16, overflow: 'hidden',
                             border: '1px solid rgba(255,255,255,0.06)',
                             background: 'var(--hc-surface, #111214)',
-                            transition: 'border-color 0.18s, box-shadow 0.18s, transform 0.18s',
-                        }}
-                            onMouseEnter={e => {
-                                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(198,146,58,0.3)';
-                                (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-                            }}
-                            onMouseLeave={e => {
-                                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
-                                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                            }}
-                        >
+                        }}>
                             {/* Header */}
                             <div style={{ padding: '20px 20px 0' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
@@ -242,8 +254,22 @@ export default function DataMarketplacePage() {
                                     </div>
                                 </div>
                                 <button
+                                    onClick={() => setPreviewProduct(product)}
+                                    className="ag-press"
+                                    style={{
+                                        padding: '10px 16px', borderRadius: 10,
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        background: 'rgba(255,255,255,0.04)',
+                                        color: '#aaa', fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                                        display: 'flex', alignItems: 'center', gap: 4,
+                                    }}
+                                >
+                                    <Eye size={13} /> Preview
+                                </button>
+                                <button
                                     onClick={() => handleUnlock(product)}
                                     disabled={purchasing}
+                                    className="ag-press"
                                     style={{
                                         padding: '10px 20px', borderRadius: 10, border: 'none',
                                         background: 'linear-gradient(135deg, #C6923A 0%, #8A6428 100%)',
@@ -261,6 +287,117 @@ export default function DataMarketplacePage() {
                     );
                 })}
             </div>
+            {/* Preview Modal */}
+            {previewProduct && (
+                <div
+                    onClick={() => setPreviewProduct(null)}
+                    style={{
+                        position: 'fixed', inset: 0, zIndex: 9999,
+                        background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        padding: 20,
+                    }}
+                >
+                    <div
+                        onClick={e => e.stopPropagation()}
+                        className="ag-slide-up"
+                        style={{
+                            background: 'var(--hc-surface, #111214)',
+                            border: '1px solid rgba(198,146,58,0.3)',
+                            borderRadius: 20, maxWidth: 560, width: '100%',
+                            padding: '28px 24px', maxHeight: '80vh', overflowY: 'auto',
+                        }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                            <div style={{
+                                width: 36, height: 36, borderRadius: 10,
+                                background: 'rgba(198,146,58,0.1)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                color: '#C6923A',
+                            }}>{PRODUCT_ICONS[previewProduct.id] || <FileText size={20} />}</div>
+                            <div>
+                                <div style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{previewProduct.name}</div>
+                                <div style={{ fontSize: 11, color: '#888' }}>Sample Data Preview</div>
+                            </div>
+                        </div>
+
+                        {/* Preview table */}
+                        <div style={{
+                            borderRadius: 12, overflow: 'hidden',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            marginBottom: 20,
+                        }}>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${previewProduct.full_fields.slice(0, 5).length}, 1fr)`,
+                                background: 'rgba(255,255,255,0.03)',
+                                padding: '8px 12px', gap: 8,
+                                fontSize: 10, fontWeight: 700, color: '#C6923A',
+                                textTransform: 'uppercase', letterSpacing: '0.05em',
+                            }}>
+                                {previewProduct.full_fields.slice(0, 5).map(h => <div key={h}>{h}</div>)}
+                            </div>
+                            {/* Row 1 - visible */}
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${Math.min(previewProduct.full_fields.length, 5)}, 1fr)`,
+                                padding: '8px 12px', gap: 8,
+                                borderTop: '1px solid rgba(255,255,255,0.04)',
+                                fontSize: 11, color: '#ccc',
+                            }}>
+                                {previewProduct.full_fields.slice(0, 5).map((_, ci) => (
+                                    <div key={ci}>{ci === 0 ? 'Houston → Dallas' : ci === 1 ? '87' : ci === 2 ? '72%' : ci === 3 ? '$3.20' : '142'}</div>
+                                ))}
+                            </div>
+                            {/* Row 2 - blurred */}
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${Math.min(previewProduct.full_fields.length, 5)}, 1fr)`,
+                                padding: '8px 12px', gap: 8,
+                                borderTop: '1px solid rgba(255,255,255,0.04)',
+                                fontSize: 11, color: '#666', filter: 'blur(3px)',
+                            }}>
+                                {previewProduct.full_fields.slice(0, 5).map((_, ci) => (
+                                    <div key={ci}>{ci === 0 ? 'Atlanta → Nashville' : ci === 1 ? '91' : ci === 2 ? '63%' : ci === 3 ? '$2.95' : '89'}</div>
+                                ))}
+                            </div>
+                            {/* Row 3 - blurred */}
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${Math.min(previewProduct.full_fields.length, 5)}, 1fr)`,
+                                padding: '8px 12px', gap: 8,
+                                borderTop: '1px solid rgba(255,255,255,0.04)',
+                                fontSize: 11, color: '#666', filter: 'blur(4px)',
+                            }}>
+                                {previewProduct.full_fields.slice(0, 5).map((_, ci) => (
+                                    <div key={ci}>{ci === 0 ? 'Phoenix → Los Angeles' : ci === 1 ? '78' : ci === 2 ? '81%' : ci === 3 ? '$3.45' : '67'}</div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <p style={{ fontSize: 12, color: '#888', lineHeight: 1.5, marginBottom: 16 }}>
+                            Showing 1 of {previewProduct.full_fields.length} fields. Unlock for full access with {previewProduct.refresh_frequency} updates.
+                        </p>
+
+                        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                            <button onClick={() => setPreviewProduct(null)} className="ag-press" style={{
+                                padding: '10px 20px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
+                                background: 'transparent', color: '#aaa', fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                            }}>
+                                Close
+                            </button>
+                            <button onClick={() => { setPreviewProduct(null); handleUnlock(previewProduct); }} className="ag-press" style={{
+                                padding: '10px 20px', borderRadius: 10, border: 'none',
+                                background: 'linear-gradient(135deg, #C6923A, #8A6428)',
+                                color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', gap: 6,
+                            }}>
+                                <Lock size={13} /> Unlock ${previewProduct.price_usd}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

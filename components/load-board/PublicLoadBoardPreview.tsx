@@ -81,13 +81,12 @@ function LoadPreviewCard({ load, index }: { load: LoadPreview; index: number }) 
             {load.dest_state}
           </span>
         </div>
-        <span
-          className={urgKey === 'hot' ? 'ag-badge-hot' : urgKey === 'warm' ? 'ag-badge-warm' : 'ag-badge-cool'}
-          style={{
-            fontSize: 9, fontWeight: 800, padding: '3px 9px', borderRadius: 6,
-            background: urg.bg, border: `1px solid ${urg.border}`, color: urg.color,
-            textTransform: 'uppercase', letterSpacing: '0.1em',
-          }}>
+        <span className="ag-badge-pop" style={{
+          fontSize: 9, fontWeight: 800, padding: '3px 9px', borderRadius: 6,
+          background: urg.bg, border: `1px solid ${urg.border}`, color: urg.color,
+          textTransform: 'uppercase', letterSpacing: '0.1em',
+          animation: urg.animation,
+        }}>
           {urg.label}
         </span>
       </div>
@@ -106,7 +105,7 @@ function LoadPreviewCard({ load, index }: { load: LoadPreview; index: number }) 
       </div>
 
       {/* CTA */}
-      <Link href="/login" style={{
+      <Link href="/login" className="ag-press" style={{
         display: 'block', textAlign: 'center',
         padding: '8px', borderRadius: 10,
         background: 'rgba(245,185,66,0.1)', border: `1px solid rgba(245,185,66,0.25)`,
@@ -263,7 +262,7 @@ export function PublicLoadBoardPreview() {
               <div style={{ marginBottom: 8, fontSize: 11, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Preview — 3 of {liveCount} loads
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14, marginBottom: 14 }}>
+              <div className="ag-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14, marginBottom: 14 }}>
                 {preview.map((load, i) => (
                   <LoadPreviewCard key={load.id} load={load} index={i} />
                 ))}
@@ -298,7 +297,7 @@ export function PublicLoadBoardPreview() {
               Toggle available, receive push offers, track earnings, and build your trust score.
             </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/login" style={{ padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>
+              <Link href="/login" className="ag-press" style={{ padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>
                 Sign In Free
               </Link>
               <Link href="/loads/post" style={{ padding: '12px 28px', borderRadius: 12, background: 'transparent', border: `1px solid ${T.borderStrong}`, color: T.muted, fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>

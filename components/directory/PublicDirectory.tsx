@@ -7,6 +7,7 @@ import {
   ChevronDown, Users, ArrowRight, Clock, DollarSign,
   Zap, CheckCircle, Award,
 } from 'lucide-react';
+import { AISearchBar, AIAssistantDrawer } from '@/components/ai/AISearchBar';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command
@@ -87,7 +88,7 @@ interface Filters {
 // ─── Sponsored Ad Card ────────────────────────────────────────────────────────
 function SponsoredCard({ index }: { index: number }) {
   return (
-    <div style={{
+    <div className="ag-sponsored-glow ag-slide-up" style={{
       background: `linear-gradient(135deg, rgba(245,185,66,0.06), rgba(245,185,66,0.02))`,
       border: `1px solid ${T.goldBorder}`,
       borderRadius: 16,
@@ -96,7 +97,6 @@ function SponsoredCard({ index }: { index: number }) {
       flexDirection: 'column',
       gap: 12,
       position: 'relative',
-      animation: 'pulse-gold-border 3s ease-in-out infinite',
     }}>
       <div style={{
         position: 'absolute', top: 10, right: 12,
@@ -488,6 +488,17 @@ export function PublicDirectory() {
               </p>
             </div>
 
+            {/* AI Search */}
+            <AISearchBar onFiltersApplied={(aiFilters) => {
+              setFilters(f => ({
+                ...f,
+                search: aiFilters.search || f.search,
+                state: aiFilters.state || f.state,
+                serviceType: aiFilters.serviceType || f.serviceType,
+              }));
+            }} />
+            <div style={{ height: 14 }} />
+
             {/* Search box */}
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <div style={{
@@ -592,7 +603,7 @@ export function PublicDirectory() {
 
           {/* Grid */}
           {loading ? (
-            <div className="dir-grid">
+            <div className="dir-grid ag-stagger">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} style={{
                   background: T.bgCard, border: `1px solid ${T.border}`,
@@ -602,7 +613,7 @@ export function PublicDirectory() {
               ))}
             </div>
           ) : (
-            <div className="dir-grid">
+            <div className="dir-grid ag-stagger">
               {gridItems.map((item, i) =>
                 item.type === 'sponsored'
                   ? <SponsoredCard key={`sponsored-${i}`} index={i} />
@@ -627,7 +638,7 @@ export function PublicDirectory() {
               Sign in to access trust scores, response history, direct messaging, follow operators, and post loads.
             </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/login" style={{
+              <Link href="/login" className="ag-press" style={{
                 padding: '12px 28px', borderRadius: 12,
                 background: 'linear-gradient(135deg, #f5b942, #e8a830)',
                 color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
@@ -645,6 +656,7 @@ export function PublicDirectory() {
           </div>
         </div>
       </div>
+      <AIAssistantDrawer />
     </>
   );
 }

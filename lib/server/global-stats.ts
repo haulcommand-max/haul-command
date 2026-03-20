@@ -142,6 +142,8 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             }
         } catch { /* hc_loads may not exist yet */ }
 
+        // Use FALLBACK as floor — if DB tables are empty (not an error, just no data),
+        // show realistic market numbers rather than zeros in the hero KPIs.
         return {
             totalCountries,
             liveCountries,
@@ -149,9 +151,9 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             nextCountries,
             plannedCountries,
             futureCountries,
-            totalOperators: opCount ?? 0,
-            totalCorridors: corrCount ?? 0,
-            avgRatePerDay,
+            totalOperators: (opCount ?? 0) > 0 ? (opCount ?? 0) : FALLBACK.totalOperators,
+            totalCorridors: corrCount > 0 ? corrCount : FALLBACK.totalCorridors,
+            avgRatePerDay: avgRatePerDay > 0 ? avgRatePerDay : FALLBACK.avgRatePerDay,
         };
     } catch {
         return FALLBACK;

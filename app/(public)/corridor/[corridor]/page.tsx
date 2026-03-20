@@ -12,6 +12,7 @@ import { OutcomeProofBlock } from '@/components/market/OutcomeProofBlock';
 import { DensityScoreboard } from '@/components/market/DensityScoreboard';
 import { OutcomeTimeline } from '@/components/outcomes/OutcomeEngine';
 import { NearbySupportModule, SupportBundleCTA } from '@/components/infrastructure/RouteSupportEngine';
+import { CorridorCommunityFeed } from '@/components/social/CorridorCommunityFeed';
 
 interface Props {
     params: Promise<{ corridor: string }>;
@@ -209,6 +210,12 @@ export default async function CorridorPage({ params }: Props) {
 
                     {/* Route support */}
                     <NearbySupportModule corridor={corridor} limit={4} title={`Support on ${corridorDisplay}`} />
+
+                    {/* ━━━ COMMUNITY FEED ━━━ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-white mb-4">Community Feed</h2>
+                        <CorridorCommunityFeed corridorSlug={corridor} corridorName={corridorDisplay} />
+                    </section>
 
                     {/* Support bundle */}
                     <SupportBundleCTA bundleType="route" corridor={corridorDisplay} />

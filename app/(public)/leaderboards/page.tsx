@@ -277,7 +277,7 @@ export default async function LeaderboardsPage({
                                     <Link
                                         key={leader.rank_position}
                                         href={`/directory/profile/${leader.profile_id}`}
-                                        className={`relative p-5 rounded-2xl border ${cfg.border} ${cfg.bg} hover:brightness-110 transition-all group ${leader.rank_position === 1 ? `shadow-xl ${cfg.glow}` : ''}`}
+                                        className={`relative p-5 rounded-2xl border ${cfg.border} ${cfg.bg} hover:brightness-110 transition-all group ag-rank-glow ag-slide-up ${leader.rank_position === 1 ? `shadow-xl ${cfg.glow}` : ''}`}
                                     >
                                         {leader.rank_position === 1 && (
                                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-2xl">👑</div>
@@ -370,7 +370,7 @@ export default async function LeaderboardsPage({
                                         <Trophy className="w-8 h-8 text-hc-gold-500 mx-auto mb-3" />
                                         <p className="text-white font-bold text-lg mb-1">Be the first in this corridor</p>
                                         <p className="text-hc-muted text-sm mb-4">Only <span className="text-hc-gold font-bold">5 spots</span> remain at Elite tier</p>
-                                        <Link href="/onboarding/start?role=escort" className="inline-flex items-center gap-2 bg-hc-gold-500 hover:bg-hc-gold-400 text-hc-bg font-bold px-5 py-2.5 rounded-xl text-sm transition-colors press-scale">
+                                        <Link href="/onboarding/start?role=escort" className="inline-flex items-center gap-2 bg-hc-gold-500 hover:bg-hc-gold-400 text-hc-bg font-bold px-5 py-2.5 rounded-xl text-sm transition-colors press-scale ag-press">
                                             Claim Your Position →
                                         </Link>
                                     </div>
@@ -385,7 +385,7 @@ export default async function LeaderboardsPage({
                             // Blur ranks 4+ (rest starts at rank 4, so all of rest is gated)
                             const isGated = idx >= 3; // Show first 3 of rest (ranks 4-6) freely, gate 7+
                             return (
-                                <div key={leader.rank_position} className="relative">
+                                <div key={leader.rank_position} className="relative ag-lb-row" style={{ animationDelay: `${idx * 60}ms` }}>
                                     <Link
                                         href={isGated ? '/login' : `/directory/profile/${leader.profile_id}`}
                                         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-5 sm:px-7 hover:bg-hc-row-hover transition-colors group"
