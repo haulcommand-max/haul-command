@@ -445,9 +445,46 @@ export const REGULATIONS: CountryRegulation[] = [
         dataQuality: "low",
         voiceAnswer: "Mexico has relatively generous dimension allowances, about 3.66 meters wide, 4.75 meters high, and 33.5 meters long, before requiring special permits. Oversize loads need permits from the SCT and may require escort vehicles on certain corridors.",
     },
+    {
+        countryCode: "IN", countryName: "India", tier: "B",
+        terminology: { primary: "escort vehicle", secondary: ["pilot vehicle"], language: "en" },
+        standardLimits: { widthM: 2.60, heightM: 4.75, lengthM: 18.00 },
+        escortThresholds: [
+            { condition: "ODC loads exceeding standard limits", escortsRequired: 1, escortType: "case_by_case", notes: "State PWD determines" },
+            { condition: "Very heavy/wide loads on highways", escortsRequired: 1, escortType: "both", notes: "Traffic police escort" },
+        ],
+        permitSystem: { authority: "NHAI / State PWD", authorityAbbrev: "NHAI" },
+        equipment: ["Warning signs", "Amber lights", "Communication devices"],
+        dataQuality: "low",
+        voiceAnswer: "In India, Over-Dimensional Cargo requires permits from the National Highways Authority or State Public Works Department. Escorts are determined per-permit based on load dimensions and route. Police escorts may be required for very large loads.",
+    },
+    {
+        countryCode: "ID", countryName: "Indonesia", tier: "B",
+        terminology: { primary: "kendaraan pengawal", secondary: ["escort vehicle"], language: "id" },
+        standardLimits: { widthM: 2.50, heightM: 4.20, lengthM: 18.00 },
+        escortThresholds: [
+            { condition: "Oversize loads exceeding standard limits", escortsRequired: 1, escortType: "case_by_case", notes: "Ministry of Transportation determines" },
+        ],
+        permitSystem: { authority: "Kementerian Perhubungan (Ministry of Transportation)" },
+        equipment: ["Warning signs", "Amber lights"],
+        dataQuality: "low",
+        voiceAnswer: "In Indonesia, oversize loads require permits from the Ministry of Transportation. Escort requirements are determined per-permit based on route and dimensions.",
+    },
+    {
+        countryCode: "TH", countryName: "Thailand", tier: "B",
+        terminology: { primary: "รถนำขบวน", secondary: ["escort vehicle"], language: "th" },
+        standardLimits: { widthM: 2.55, heightM: 4.00, lengthM: 17.00 },
+        escortThresholds: [
+            { condition: "Oversize loads on highways", escortsRequired: 1, escortType: "case_by_case", notes: "DLT permit determines requirements" },
+        ],
+        permitSystem: { authority: "DLT (Department of Land Transport)" },
+        equipment: ["Warning signs", "Amber lights", "Communication devices"],
+        dataQuality: "low",
+        voiceAnswer: "In Thailand, oversize loads require permits from the Department of Land Transport. Escort requirements are set by the permit authority based on load dimensions and route conditions.",
+    },
 
     // ══════════════════════════════════════════════════════════
-    // TIER C — SILVER (24 countries, condensed)
+    // TIER C — SILVER (26 countries, condensed)
     // ══════════════════════════════════════════════════════════
     ...([
         { code: "PL", name: "Poland", lang: "pl", term: "pojazd pilotujący", w: 2.55, thresholds: [{ c: "Width > 3.2m or weight > 60t", n: 1, t: "civil" as const }, { c: "Width > 5m or weight > 80t", n: 1, t: "both" as const }], auth: "GITD", dq: "medium" as const, va: "In Poland, an escort is required when width exceeds 3.2 meters or weight exceeds 60 tonnes. Police escort is mandatory for widths over 5 meters or weights over 80 tonnes." },
@@ -474,6 +511,8 @@ export const REGULATIONS: CountryRegulation[] = [
         { code: "AR", name: "Argentina", lang: "es", term: "vehículo de escolta", w: 2.60, thresholds: [{ c: "Width > 30% of vehicle, length > 30m", n: 1, t: "case_by_case" as const }], auth: "Vialidad Nacional", dq: "low" as const, va: "In Argentina, the National Road Authority issues permits for indivisible loads. The permit may require escort vehicles depending on size, route, and risk." },
         { code: "CO", name: "Colombia", lang: "es", term: "vehículo escolta", w: 2.60, thresholds: [{ c: "Oversize loads (permit-determined)", n: 1, t: "case_by_case" as const }], auth: "Ministry of Transport", dq: "low" as const, va: "In Colombia, oversize transport requires permits from the Ministry of Transport. Escorts may be public or private and must meet regulations on signage and communication." },
         { code: "PE", name: "Peru", lang: "es", term: "vehículo de escolta", w: 2.60, thresholds: [{ c: "Width > 2.6m or height > 4.3m", n: 1, t: "case_by_case" as const }], auth: "SUTRAN / Provías Nacional", dq: "medium" as const, va: "In Peru, vehicles exceeding 2.6 meters wide or 4.3 meters high need special authorization from Provías Nacional. Oversize transports often require security escorts coordinated with local police." },
+        { code: "VN", name: "Vietnam", lang: "vi", term: "xe dẫn đường", w: 2.50, thresholds: [{ c: "Oversize loads exceeding limits", n: 1, t: "case_by_case" as const }], auth: "Ministry of Transport", dq: "low" as const, va: "In Vietnam, oversize loads require permits from the Ministry of Transport. Escort requirements are determined based on load dimensions and route conditions." },
+        { code: "PH", name: "Philippines", lang: "en", term: "escort vehicle", w: 2.50, thresholds: [{ c: "Oversize loads exceeding limits", n: 1, t: "case_by_case" as const }], auth: "LTO / DPWH", dq: "low" as const, va: "In the Philippines, oversize loads require clearance from the LTO and DPWH. Escort vehicles may be required depending on load dimensions and highway conditions." },
     ] as const).map(c => ({
         countryCode: c.code,
         countryName: c.name,
