@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/outreach-sequence",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/motive-sync",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
