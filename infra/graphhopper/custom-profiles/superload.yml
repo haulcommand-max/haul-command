@@ -1,0 +1,34 @@
+# Superload Profile
+# For loads: 20ft+ wide, 20ft+ tall, 150K+ lbs
+# Example: House moves, wind turbine nacelles, massive transformers
+# These MUST follow exact permit routes
+
+priority:
+  - if: max_height < 7.0  # ~23ft
+    multiply_by: 0
+  - if: max_width < 7.0   # ~23ft
+    multiply_by: 0
+  - if: max_weight < 90   # ~200K lbs
+    multiply_by: 0
+  - if: road_class == RESIDENTIAL
+    multiply_by: 0
+  - if: road_class == LIVING_STREET
+    multiply_by: 0
+  - if: road_class == TERTIARY
+    multiply_by: 0.1
+  - if: hgv == NO
+    multiply_by: 0
+  - if: surface != PAVED && surface != ASPHALT && surface != CONCRETE
+    multiply_by: 0
+  - if: road_class == MOTORWAY
+    multiply_by: 1.0
+  - if: road_class == PRIMARY
+    multiply_by: 0.7
+  - if: road_class == SECONDARY
+    multiply_by: 0.4
+
+speed:
+  - if: true
+    limit_to: 40  # 25 mph max
+  - if: road_class == MOTORWAY
+    limit_to: 56  # 35 mph
