@@ -12,6 +12,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { checkAndLogUsage } from '@/lib/billing/usage-meter';
+import { createClient } from '@/utils/supabase/server';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
@@ -70,6 +72,22 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { description, origin, destination, dimensions, weight, loadType, offeredRate } = body;
+
+    // Usage metering — check quota before AI call
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user?.id) {
+      const usage = await checkAndLogUsage(user.id, 'load_analyzer', { origin, destination });
+      if (!usage.allowed) {
+        return NextResponse.json({
+          error: 'Daily query limit reached',
+          remaining: 0,
+          limit: usage.limit,
+          tier: usage.tier,
+          upgrade_url: '/pricing',
+        }, { status: 429 });
+      }
+    }
 
     // Build the analysis prompt
     let prompt = '';
