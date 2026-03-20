@@ -1,0 +1,37 @@
+# Oversize Low Profile
+# For loads: 10-14ft wide, 14-16ft tall, up to 80K lbs
+# Example: Single-wide mobile homes, large equipment
+
+priority:
+  - if: max_height < 4.5  # ~14.8ft
+    multiply_by: 0
+  - if: max_width < 3.5   # ~11.5ft
+    multiply_by: 0
+  - if: max_weight < 36   # ~80K lbs in metric tons
+    multiply_by: 0
+  - if: road_class == RESIDENTIAL
+    multiply_by: 0.3
+  - if: road_class == LIVING_STREET
+    multiply_by: 0.1
+  - if: road_environment == FERRY
+    multiply_by: 0.5
+  - if: hgv == NO
+    multiply_by: 0
+  - if: surface == UNPAVED
+    multiply_by: 0.2
+  - if: road_class == MOTORWAY
+    multiply_by: 1.0
+  - if: road_class == PRIMARY
+    multiply_by: 0.9
+  - if: road_class == SECONDARY
+    multiply_by: 0.7
+  - if: road_class == TERTIARY
+    multiply_by: 0.5
+
+speed:
+  - if: true
+    limit_to: 72  # 45 mph max for oversize
+  - if: road_class == RESIDENTIAL
+    limit_to: 40  # 25 mph in residential
+  - if: road_class == MOTORWAY
+    limit_to: 88  # 55 mph on highway

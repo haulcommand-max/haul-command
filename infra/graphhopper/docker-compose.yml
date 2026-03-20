@@ -1,0 +1,31 @@
+# GraphHopper Oversize Vehicle Routing
+# Docker Compose for self-hosted GraphHopper with custom OS/OW profiles
+#
+# Usage:
+#   docker compose -f infra/graphhopper/docker-compose.yml up -d
+#
+# Requirements:
+#   - Download OSM PBF: wget https://download.geofabrik.de/north-america/us-latest.osm.pbf -O data/osm/us-latest.osm.pbf
+
+services:
+  graphhopper:
+    image: israelhikingmap/graphhopper:latest
+    container_name: hc-graphhopper
+    ports:
+      - "8989:8989"
+    volumes:
+      - ./config.yml:/graphhopper/config.yml:ro
+      - ./custom-profiles:/graphhopper/custom-profiles:ro
+      - ../../data/osm:/graphhopper/data
+      - graphhopper-cache:/graphhopper/graph-cache
+    environment:
+      - JAVA_OPTS=-Xmx4g -Xms2g
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8989/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  graphhopper-cache:

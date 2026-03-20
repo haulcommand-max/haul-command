@@ -1,0 +1,35 @@
+# Oversize High Profile
+# For loads: 14-20ft wide, 16-20ft tall, 80K-150K lbs
+# Example: Double-wide mobile homes, large cranes, transformers
+
+priority:
+  - if: max_height < 5.5  # ~18ft
+    multiply_by: 0
+  - if: max_width < 5.0   # ~16.4ft
+    multiply_by: 0
+  - if: max_weight < 68   # ~150K lbs
+    multiply_by: 0
+  - if: road_class == RESIDENTIAL
+    multiply_by: 0.1
+  - if: road_class == LIVING_STREET
+    multiply_by: 0
+  - if: hgv == NO
+    multiply_by: 0
+  - if: surface == UNPAVED
+    multiply_by: 0
+  - if: road_class == MOTORWAY
+    multiply_by: 1.0
+  - if: road_class == PRIMARY
+    multiply_by: 0.8
+  - if: road_class == SECONDARY
+    multiply_by: 0.5
+  - if: road_class == TERTIARY
+    multiply_by: 0.3
+
+speed:
+  - if: true
+    limit_to: 56  # 35 mph
+  - if: road_class == RESIDENTIAL
+    limit_to: 24  # 15 mph
+  - if: road_class == MOTORWAY
+    limit_to: 72  # 45 mph

@@ -1,0 +1,73 @@
+# GraphHopper Configuration for HC Route
+# Oversize/Overweight vehicle routing
+
+graphhopper:
+  datareader.file: /graphhopper/data/us-latest.osm.pbf
+  graph.location: /graphhopper/graph-cache
+
+  # Profiles — standard + oversize
+  profiles:
+    - name: car
+      vehicle: car
+      weighting: fastest
+      turn_costs: true
+
+    - name: truck
+      vehicle: car
+      weighting: fastest
+      turn_costs: true
+      custom_model_files: [custom-profiles/truck.yml]
+
+    - name: oversize_low
+      vehicle: car
+      weighting: shortest
+      turn_costs: true
+      custom_model_files: [custom-profiles/oversize_low.yml]
+
+    - name: oversize_high
+      vehicle: car
+      weighting: shortest
+      turn_costs: true
+      custom_model_files: [custom-profiles/oversize_high.yml]
+
+    - name: superload
+      vehicle: car
+      weighting: shortest
+      turn_costs: true
+      custom_model_files: [custom-profiles/superload.yml]
+
+  # LM preparation for fast routing
+  profiles_lm: []
+
+  # CH preparation (fastest)
+  profiles_ch:
+    - profile: car
+    - profile: truck
+
+  # Enable custom model endpoint
+  custom_model.enabled: true
+
+  # Import settings — parse truck-relevant OSM tags
+  graph.encoded_values:
+    - max_height
+    - max_weight
+    - max_width
+    - max_length
+    - max_axle_load
+    - hgv
+    - surface
+    - road_class
+    - road_environment
+    - toll
+    - track_type
+    - hazmat
+    - hazmat_water
+
+  # Server settings
+  server:
+    application_connectors:
+      - type: http
+        port: 8989
+    admin_connectors:
+      - type: http
+        port: 8990
