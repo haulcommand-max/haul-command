@@ -349,6 +349,64 @@ export default async function HomePage() {
           />
         </section>
 
+        {/* 57-Country Status Ticker */}
+        <section className="py-8 px-4 overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter mb-2">
+              Global <span className="text-accent">Network</span>
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">57-country coverage status</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { flag: '🇺🇸', code: 'US', status: 'LIVE' as const },
+                { flag: '🇨🇦', code: 'CA', status: 'LIVE' as const },
+                { flag: '🇦🇺', code: 'AU', status: 'LIVE' as const },
+                { flag: '🇬🇧', code: 'GB', status: 'LIVE' as const },
+                { flag: '🇩🇪', code: 'DE', status: 'PLANNED' as const },
+                { flag: '🇳🇱', code: 'NL', status: 'PLANNED' as const },
+                { flag: '🇦🇪', code: 'AE', status: 'PLANNED' as const },
+                { flag: '🇧🇷', code: 'BR', status: 'PLANNED' as const },
+                { flag: '🇳🇿', code: 'NZ', status: 'PLANNED' as const },
+                { flag: '🇿🇦', code: 'ZA', status: 'PLANNED' as const },
+              ].map((c) => (
+                <div
+                  key={c.code}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${
+                    c.status === 'LIVE'
+                      ? 'bg-green-500/10 border-green-500/20 text-green-400'
+                      : 'bg-white/[0.02] border-white/[0.06] text-gray-500'
+                  }`}
+                >
+                  <span>{c.flag}</span>
+                  <span>{c.code}</span>
+                  {c.status === 'LIVE' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+                </div>
+              ))}
+              <span className="text-gray-600 text-xs self-center ml-2">+ 47 more countries →</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing CTA */}
+        <section className="py-8 px-4 max-w-7xl mx-auto">
+          <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-1">
+                Ready to Go <span className="text-accent">Pro</span>?
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Get verified, get priority loads, get paid faster.
+              </p>
+            </div>
+            <Link
+              href="/pricing"
+              className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors flex-shrink-0"
+            >
+              View Pricing →
+            </Link>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="py-4 px-4 max-w-7xl mx-auto">
           <HCFaqModule items={faqItems} />

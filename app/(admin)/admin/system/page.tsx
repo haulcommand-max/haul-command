@@ -76,6 +76,38 @@ async function fetchSystemData() {
     const cronErr = (cronResult as any)?.error?.message ?? null;
     const cronJobs: CronJob[] = Array.isArray((cronResult as any)?.data) ? (cronResult as any).data : [];
 
+    // ── Integration health checks
+    const integrations = [
+        { key: 'ANTHROPIC_API_KEY', label: 'Anthropic Claude', powers: '12 AI agents, Copilot', fallback: 'AI features disabled', configured: !!process.env.ANTHROPIC_API_KEY },
+        { key: 'SUPABASE_URL', label: 'Supabase Database', powers: 'All data storage', fallback: 'App cannot function', configured: !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.SUPABASE_SERVICE_ROLE_KEY },
+        { key: 'STRIPE_SECRET_KEY', label: 'Stripe Payments', powers: 'Subscriptions, AdGrid boost', fallback: 'Payment CTAs show "Coming Soon"', configured: !!process.env.STRIPE_SECRET_KEY },
+        { key: 'RESEND_API_KEY', label: 'Resend Email', powers: 'Transactional email, drip sequence', fallback: 'Emails queued in outreach_log', configured: !!process.env.RESEND_API_KEY },
+        { key: 'FIREBASE_APP_ID', label: 'Firebase App', powers: 'Push notifications', fallback: 'In-app notification bell', configured: !!process.env.NEXT_PUBLIC_FIREBASE_APP_ID },
+        { key: 'FIREBASE_VAPID', label: 'Firebase VAPID', powers: 'Web push tokens', fallback: 'Push disabled, in-app only', configured: !!process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY },
+        { key: 'POSTHOG_KEY', label: 'PostHog Analytics', powers: 'Product analytics', fallback: 'Vercel Analytics + hc_events table', configured: !!process.env.NEXT_PUBLIC_POSTHOG_KEY },
+        { key: 'SENTRY_DSN', label: 'Sentry Monitoring', powers: 'Error tracking', fallback: 'system_errors Supabase table', configured: !!process.env.SENTRY_DSN },
+        { key: 'GA_ID', label: 'Google Analytics', powers: 'Pageview analytics', fallback: 'Vercel Analytics (already active)', configured: !!process.env.NEXT_PUBLIC_GA_ID },
+        { key: 'LISTMONK_PASS', label: 'Listmonk Email', powers: 'Bulk outreach (optional)', fallback: 'Resend bulk sends (active)', configured: !!process.env.LISTMONK_API_PASSWORD },
+        { key: 'VAPI_KEY', label: 'Vapi Voice AI', powers: 'Voice dispatch', fallback: 'Feature disabled', configured: !!process.env.VAPI_PRIVATE_API_KEY },
+        { key: 'NOWPAYMENTS', label: 'NOWPayments Crypto', powers: 'Crypto payments', fallback: 'Stripe-only checkout', configured: !!process.env.NOWPAYMENTS_API_KEY },
+        { key: 'LANGFUSE', label: 'Langfuse LLM Obs', powers: 'LLM cost tracking', fallback: 'Tokens logged to hc_events', configured: !!process.env.LANGFUSE_SECRET_KEY },
+        { key: 'TRIGGER', label: 'Trigger.dev Jobs', powers: 'Background job scheduler', fallback: 'Vercel cron (active)', configured: !!process.env.TRIGGER_API_KEY },
+        { key: 'HERE_MAPS', label: 'HERE Maps', powers: 'Geocoding, routing', fallback: 'Static coordinates', configured: !!process.env.HERE_API_KEY },
+    ];
+
+    const configuredCount = integrations.filter(i => i.configured).length;
+    const totalCount = integrations.length;
+
+    // ── Recent system errors
+    let recentErrors: { route: string; message: string; created_at: string; count: number }[] = [];
+    try {
+        const { data } = await svc.from('system_errors')
+            .select('route, message, created_at, count')
+            .order('created_at', { ascending: false })
+            .limit(20);
+        recentErrors = (data ?? []) as any[];
+    } catch { /* table may not exist */ }
+
     return {
         mps: {
             activeCount: (mpsCount as any)?.count ?? 0,
@@ -91,6 +123,10 @@ async function fetchSystemData() {
         revenue: {
             hotZones: ((revZones as any)?.data ?? []) as Array<{ region_code: string; zone_classification: string; revenue_potential_score: number }>,
         },
+        integrations,
+        configuredCount,
+        totalCount,
+        recentErrors,
     };
 }
 
@@ -175,6 +211,55 @@ export default async function SystemHealthPage() {
                         )}
                     </div>
                 </div>
+
+                {/* ── INTEGRATION HEALTH ────────────────────────── */}
+                <section style={{ marginBottom: 28 }}>
+                    <h2 style={sectionHeader}>Integration Health — {data.configuredCount}/{data.totalCount} Configured</h2>
+                    <div style={{
+                        padding: '14px 18px', borderRadius: 12, marginBottom: 12,
+                        background: data.configuredCount >= 10 ? 'rgba(16,185,129,0.08)' : data.configuredCount >= 5 ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)',
+                        border: `1px solid ${data.configuredCount >= 10 ? 'rgba(16,185,129,0.25)' : data.configuredCount >= 5 ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)'}`,
+                    }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: data.configuredCount >= 10 ? '#34d399' : data.configuredCount >= 5 ? '#fbbf24' : '#f87171' }}>
+                            {data.configuredCount >= 12 ? '✅ Platform fully operational' : data.configuredCount >= 8 ? '⚠️ Core services running — optional integrations missing' : '🔴 Multiple services missing — check below'}
+                        </div>
+                    </div>
+                    <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, overflow: 'hidden' }}>
+                        {data.integrations.map((svc: any, i: number) => (
+                            <div key={svc.key} style={{ display: 'grid', gridTemplateColumns: '28px 150px 1fr 1fr', alignItems: 'center', padding: '10px 14px', gap: 12, borderBottom: i < data.integrations.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+                                <span style={{ fontSize: 16 }}>{svc.configured ? '✅' : '❌'}</span>
+                                <div>
+                                    <div style={{ fontSize: 12, fontWeight: 700, color: '#e5e7eb' }}>{svc.label}</div>
+                                    <div style={{ fontSize: 9, color: '#4b5563', fontFamily: 'monospace' }}>{svc.key}</div>
+                                </div>
+                                <div style={{ fontSize: 11, color: '#9ca3af' }}>{svc.powers}</div>
+                                <div style={{ fontSize: 11, color: svc.configured ? '#34d399' : '#fbbf24' }}>
+                                    {svc.configured ? 'Active' : `Fallback: ${svc.fallback}`}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* ── RECENT SYSTEM ERRORS ──────────────────────── */}
+                <section style={{ marginBottom: 28 }}>
+                    <h2 style={sectionHeader}>Recent System Errors ({data.recentErrors.length})</h2>
+                    {data.recentErrors.length === 0 ? (
+                        <div style={{ padding: '16px', background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 10, fontSize: 12, color: '#6ee7b7' }}>
+                            ✅ No errors logged. system_errors table is clean.
+                        </div>
+                    ) : (
+                        <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, overflow: 'hidden' }}>
+                            {data.recentErrors.map((err: any, i: number) => (
+                                <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 1fr 60px', padding: '10px 14px', gap: 12, borderBottom: i < data.recentErrors.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+                                    <div style={{ fontSize: 11, color: '#6b7280', fontFamily: 'monospace' }}>{err.route}</div>
+                                    <div style={{ fontSize: 11, color: '#f87171', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{err.message}</div>
+                                    <div style={{ fontSize: 10, color: '#4b5563', textAlign: 'right' }}>×{err.count ?? 1}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
 
                 {/* Data Pulse */}
                 <section style={{ marginBottom: 28 }}>

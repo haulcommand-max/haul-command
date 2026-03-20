@@ -34,9 +34,11 @@ const FOOTER_SECTIONS = [
     title: 'Company',
     links: [
       { href: '/blog', label: 'Intelligence Blog' },
+      { href: '/pricing', label: 'Pricing' },
       { href: '/claim', label: 'Claim Listing' },
+      { href: '/advertise/create', label: 'Advertise' },
+      { href: '/developers', label: 'API & Developers' },
       { href: '/report-data-issue', label: 'Report Issue' },
-      { href: '/remove-listing', label: 'Remove Listing' },
     ],
   },
   {

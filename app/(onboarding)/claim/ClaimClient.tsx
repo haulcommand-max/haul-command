@@ -106,7 +106,7 @@ function ClaimPageInner() {
                 {[
                     { icon: Shield, label: 'Verified', desc: 'Badge' },
                     { icon: Clock, label: '< 2 min', desc: 'To verify' },
-                    { icon: CheckCircle, label: 'Free', desc: 'Always' },
+                    { icon: CheckCircle, label: 'Free', desc: 'to claim' },
                 ].map(({ icon: Icon, label, desc }) => (
                     <div key={label} style={{
                         textAlign: 'center',

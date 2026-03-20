@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendEmail, isResendConfigured } from '@/lib/email/bulk';
+import { captureError } from '@/lib/monitoring/error';
 
 // ═══════════════════════════════════════════════════════════════
-// OPERATOR ACQUISITION — Listmonk Email Outreach
+// OPERATOR ACQUISITION — Resend-native Email Outreach
 //
-// Finds unclaimed operators in directory_listings and seeds them
-// into Listmonk for the "Claim Your Profile" email sequence.
+// Finds unclaimed operators in directory_listings and sends them
+// the "Claim Your Profile" email via Resend (primary) or Listmonk (optional).
 //
 // POST /api/outreach/operators
 //   Queues up to `limit` (default 50) unclaimed operators
 //
-// Requires LISTMONK_API_PASSWORD env var to be set.
-// LISTMONK_URL and LISTMONK_API_USER are already set in .env.local
+// Primary sender: RESEND_API_KEY (already configured)
+// Optional: LISTMONK_API_PASSWORD for Listmonk sync
 // ═══════════════════════════════════════════════════════════════
 
 const supabase = createClient(
@@ -37,34 +39,45 @@ interface ListmonkSubscriber {
 }
 
 async function addToListmonk(sub: ListmonkSubscriber): Promise<{ id: number } | null> {
-    if (!LISTMONK_PASS) {
-        // Password not configured — log and skip (don't throw)
-        console.warn('[outreach] LISTMONK_API_PASSWORD not set — skipping Listmonk push');
+    if (!LISTMONK_PASS) return null; // Listmonk not configured — use Resend instead
+
+    try {
+        const auth = Buffer.from(`${LISTMONK_USER}:${LISTMONK_PASS}`).toString('base64');
+        const res = await fetch(`${LISTMONK_URL}/api/subscribers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${auth}`,
+            },
+            body: JSON.stringify(sub),
+        });
+
+        if (res.status === 409) return { id: -1 };
+        if (!res.ok) return null;
+        const data = await res.json();
+        return { id: data?.data?.id ?? -1 };
+    } catch {
         return null;
     }
+}
 
-    const auth = Buffer.from(`${LISTMONK_USER}:${LISTMONK_PASS}`).toString('base64');
-    const res = await fetch(`${LISTMONK_URL}/api/subscribers`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${auth}`,
-        },
-        body: JSON.stringify(sub),
-    });
-
-    if (res.status === 409) {
-        // Already subscribed — not an error
-        return { id: -1 };
-    }
-    if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        console.error('[outreach] Listmonk error:', res.status, text);
-        return null;
-    }
-
-    const data = await res.json();
-    return { id: data?.data?.id ?? -1 };
+// Claim email template for direct Resend sends
+function buildClaimEmail(name: string, state: string, claimUrl: string): string {
+    return `
+    <div style="font-family: 'Inter', sans-serif; max-width: 560px; margin: 0 auto; padding: 32px; background: #0a0f16; color: #f0f4f8; border-radius: 16px;">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: #C6923A; margin-bottom: 20px;">HAUL COMMAND</div>
+        <h1 style="font-size: 22px; font-weight: 900; margin: 0 0 16px; color: #fff;">Your profile is ready to claim</h1>
+        <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 16px;">
+            Hey ${name}, we've created a directory profile for you based on public licensing records in <strong style="color: #f5b942;">${state}</strong>.
+        </p>
+        <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 24px;">
+            <strong style="color: #fff;">Claim it free</strong> to add your phone number, services, and get the verified badge \u2713 that gets you 5\u00d7 more job requests.
+        </p>
+        <a href="${claimUrl}" style="display: inline-block; padding: 14px 32px; border-radius: 12px; background: linear-gradient(135deg, #C6923A, #8A6428); color: #000; font-weight: 800; font-size: 14px; text-decoration: none;">Claim Your Profile \u2192</a>
+        <p style="font-size: 11px; color: #556070; margin-top: 24px;">
+            <a href="https://haulcommand.com/unsubscribe" style="color: #556070;">Unsubscribe</a>
+        </p>
+    </div>`;
 }
 
 export async function POST(req: NextRequest) {
@@ -116,15 +129,32 @@ export async function POST(req: NextRequest) {
     // ── Process each operator
     const results = await Promise.allSettled(
         eligible.map(async (op: any) => {
-            const subResult = await addToListmonk({
+            const name = op.company_name ?? 'Pilot Car Operator';
+            const state = op.state_code ?? op.region_code ?? 'US';
+            const claimUrl = `https://haulcommand.com/claim?id=${op.id}`;
+            let sendStatus = 'queued';
+
+            // Primary: send via Resend
+            if (isResendConfigured()) {
+                const result = await sendEmail(
+                    op.contact_email,
+                    `${name}, your Haul Command profile is ready to claim`,
+                    buildClaimEmail(name, state, claimUrl),
+                    { tags: [{ name: 'campaign', value: campaignType }] }
+                );
+                sendStatus = result.ok ? 'sent' : `resend_error: ${result.error?.slice(0, 40)}`;
+            }
+
+            // Optional: also add to Listmonk for drip campaigns if configured
+            const listmonkResult = await addToListmonk({
                 email: op.contact_email,
-                name: op.company_name ?? 'Pilot Car Operator',
+                name,
                 status: 'enabled',
                 lists: [OPERATOR_LIST_ID],
                 attribs: {
-                    company_name: op.company_name ?? '',
-                    state: op.state_code ?? op.region_code ?? '',
-                    claim_url: `https://haulcommand.com/claim?id=${op.id}`,
+                    company_name: name,
+                    state,
+                    claim_url: claimUrl,
                     directory_url: `https://haulcommand.com/directory`,
                     services: Array.isArray(op.services) ? op.services.join(', ') : '',
                 },
@@ -134,15 +164,15 @@ export async function POST(req: NextRequest) {
             // Log the outreach attempt
             await supabase.from('operator_outreach_log').insert({
                 operator_id: op.id,
-                operator_name: op.company_name ?? null,
+                operator_name: name,
                 email: op.contact_email,
-                listmonk_sub_id: subResult?.id ?? null,
+                listmonk_sub_id: listmonkResult?.id ?? null,
                 campaign_type: campaignType,
-                status: subResult !== null ? 'sent' : 'queued',
-                sent_at: subResult !== null ? new Date().toISOString() : null,
+                status: sendStatus,
+                sent_at: sendStatus === 'sent' ? new Date().toISOString() : null,
             });
 
-            return { id: op.id, email: op.contact_email, status: subResult !== null ? 'sent' : 'queued' };
+            return { id: op.id, email: op.contact_email, status: sendStatus };
         })
     );
 
@@ -153,10 +183,11 @@ export async function POST(req: NextRequest) {
         queued: eligible.length,
         sent,
         failed,
+        resend_configured: isResendConfigured(),
         listmonk_configured: !!LISTMONK_PASS,
-        message: LISTMONK_PASS
-            ? `${sent} operators added to Listmonk "${campaignType}" sequence`
-            : `${sent} operators logged (Listmonk password not set — set LISTMONK_API_PASSWORD to activate sends)`,
+        message: isResendConfigured()
+            ? `${sent} operators emailed via Resend (${LISTMONK_PASS ? '+ synced to Listmonk' : 'Listmonk not configured'})`
+            : `${sent} operators logged (no email sender configured — set RESEND_API_KEY)`,
     });
 }
 
@@ -182,7 +213,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
         preview: operators ?? [],
         total_eligible: count ?? 0,
+        resend_configured: isResendConfigured(),
         listmonk_configured: !!LISTMONK_PASS,
-        listmonk_url: LISTMONK_URL || '(not set)',
+        sender: isResendConfigured() ? 'Resend (primary)' : LISTMONK_PASS ? 'Listmonk' : 'None configured',
     });
 }

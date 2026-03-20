@@ -20,10 +20,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${siteUrl}/corridors`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
         { url: `${siteUrl}/loads`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
         { url: `${siteUrl}/claim`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${siteUrl}/pricing`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${siteUrl}/developers`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+        { url: `${siteUrl}/developers/getting-started`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${siteUrl}/developers/authentication`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
+        { url: `${siteUrl}/developers/rate-limits`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
+        { url: `${siteUrl}/advertise/create`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
         { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
         { url: `${siteUrl}/terms`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
         { url: `${siteUrl}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
         { url: `${siteUrl}/login`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
+    ];
+
+    // AU and GB live directory region pages
+    const liveRegionRoutes: MetadataRoute.Sitemap = [
+        // Australia regions
+        { url: `${siteUrl}/directory/au/nsw`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/au/vic`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/au/qld`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/au/wa`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/au/sa`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        // UK regions
+        { url: `${siteUrl}/directory/gb/england`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/gb/scotland`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+        { url: `${siteUrl}/directory/gb/wales`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
     ];
 
     // 57-country route families
@@ -74,5 +94,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    return [...staticRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes, ...dynamicRoutes];
+    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes, ...dynamicRoutes];
 }

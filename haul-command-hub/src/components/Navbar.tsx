@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: '/rates', label: 'Rates' },
   { href: '/corridors', label: 'Corridors' },
   { href: '/loads', label: 'Loads' },
+  { href: '/pricing', label: 'Pricing' },
   { href: '/blog', label: 'Intelligence' },
 ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -23,14 +23,6 @@ function ProfileApprovedInner() {
     const name = searchParams.get("name") ?? undefined;
     const [showInvite, setShowInvite] = useState(false);
     const [inviteDismissed, setInviteDismissed] = useState(false);
-    const [showUpgrades, setShowUpgrades] = useState(false);
-
-    // Auto-trigger invite modal after 1.5s, reveal upgrades after 3s
-    useEffect(() => {
-        const t1 = setTimeout(() => setShowInvite(true), 1500);
-        const t2 = setTimeout(() => setShowUpgrades(true), 3000);
-        return () => { clearTimeout(t1); clearTimeout(t2); };
-    }, []);
 
     return (
         <div style={{
@@ -105,12 +97,10 @@ function ProfileApprovedInner() {
             </button>
 
             {/* ═══ UPGRADE LADDER ═══ */}
-            {showUpgrades && (
-                <div style={{
-                    width: '100%', maxWidth: 340,
-                    marginTop: 32, textAlign: 'left',
-                    animation: 'slideUp 0.5s ease forwards',
-                }}>
+            <div style={{
+                width: '100%', maxWidth: 340,
+                marginTop: 32, textAlign: 'left',
+            }}>
                     <div style={{
                         fontSize: 10, fontWeight: 800, textTransform: 'uppercase',
                         letterSpacing: '0.08em', color: 'var(--m-gold, #D4A844)',
@@ -119,8 +109,8 @@ function ProfileApprovedInner() {
                         Upgrade Your Visibility
                     </div>
 
-                    {/* Featured Partner */}
-                    <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+                    {/* Featured Boost */}
+                    <Link href="/boost" style={{ textDecoration: 'none' }}>
                         <div style={{
                             padding: '16px 18px', borderRadius: 14, marginBottom: 10,
                             background: 'linear-gradient(135deg, rgba(212,168,68,0.08), rgba(212,168,68,0.02))',
@@ -131,10 +121,10 @@ function ProfileApprovedInner() {
                                 <Star size={20} style={{ color: '#D4A844', flexShrink: 0 }} />
                                 <div>
                                     <div style={{ fontSize: 14, fontWeight: 800, color: '#D4A844' }}>
-                                        Featured Partner
+                                        Featured Operator
                                     </div>
                                     <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
-                                        Priority in search + verified badge · $99/mo
+                                        2× ranking boost + gold badge · $29/mo
                                     </div>
                                 </div>
                             </div>
@@ -188,7 +178,6 @@ function ProfileApprovedInner() {
                         </div>
                     </Link>
                 </div>
-            )}
 
             {/* Stats strip */}
             <div style={{
@@ -199,9 +188,9 @@ function ProfileApprovedInner() {
                 gap: 16, textAlign: 'center',
             }}>
                 {[
-                    { label: "Profile Views", value: "0" },
-                    { label: "Invites Sent", value: "0" },
-                    { label: "Jobs Available", value: "Live" },
+                    { label: "Profile Status", value: "LIVE" },
+                    { label: "Brokers Online", value: "Now" },
+                    { label: "Jobs Available", value: "Open" },
                 ].map((s) => (
                     <div key={s.label}>
                         <div style={{ fontSize: 24, fontWeight: 800, color: '#D4A844' }}>{s.value}</div>
