@@ -74,7 +74,9 @@ export async function POST(req: NextRequest) {
 
       case 'invoice.paid': {
         const invoice = event.data.object as Stripe.Invoice;
-        const subId = invoice.subscription as string;
+        // Use (invoice as any) to handle Stripe SDK version differences
+        // where 'subscription' may be removed from the Invoice type
+        const subId = (invoice as any).subscription as string;
         if (subId) {
           await supabase.from('user_subscriptions')
             .update({
