@@ -1,24 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
     Flame, TrendingUp, ArrowRight, ChevronRight, Eye,
 } from "lucide-react";
 import type { CorridorData } from "@/lib/server/data";
-
-/* ═══════════════════════════════════════════════════════════════
-   CORRIDOR OPPORTUNITY CARDS — Mobile-First
-   
-   Mobile (390px):
-     - Horizontal scroll row, each card ~200px wide, max-height ~160px
-     - Compact: name + heat badge + rate + single CTA
-     - No stats row, no earnings box, no watch button
-   
-   Desktop (≥768px):
-     - Grid 2-col / 3-col with full card layout
-   ═══════════════════════════════════════════════════════════════ */
 
 interface Props {
     corridors: CorridorData[];
@@ -49,12 +37,34 @@ function estimateRate(heat: number): number {
 }
 
 export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [paused, setPaused] = useState(false);
+
+    // Auto-scroll animation on mobile
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        let raf: number;
+        let speed = 0.5; // px per frame
+        function step() {
+            if (!paused && el) {
+                el.scrollLeft += speed;
+                // Loop back when reaching end
+                if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) {
+                    el.scrollLeft = 0;
+                }
+            }
+            raf = requestAnimationFrame(step);
+        }
+        raf = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(raf);
+    }, [paused]);
+
     if (!corridors.length) return null;
 
     return (
         <section className="relative z-10 py-6 sm:py-12">
             <style>{`
-                /* ── Mobile: horizontal scroll ── */
                 .corridor-scroll {
                     display: flex;
                     gap: 10px;
@@ -70,10 +80,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                     scroll-snap-align: start;
                     max-height: 160px;
                 }
-                /* Desktop layout hidden on mobile */
                 .corridor-grid-desktop { display: none; }
-
-                /* ── Desktop (≥768px): grid layout ── */
                 @media (min-width: 768px) {
                     .corridor-scroll { display: none; }
                     .corridor-grid-desktop {
@@ -90,7 +97,6 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
             `}</style>
 
             <div className="hc-container max-w-5xl">
-                {/* Section header */}
                 <motion.div
                     initial="hidden" whileInView="visible" viewport={{ once: true }}
                     variants={fadeUp}
@@ -112,8 +118,15 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                     </Link>
                 </motion.div>
 
-                {/* ── MOBILE: Horizontal scroll cards ── */}
-                <div className="corridor-scroll">
+                {/* MOBILE: Auto-scrolling horizontal cards */}
+                <div
+                    ref={scrollRef}
+                    className="corridor-scroll"
+                    onTouchStart={() => setPaused(true)}
+                    onTouchEnd={() => setTimeout(() => setPaused(false), 3000)}
+                    onMouseEnter={() => setPaused(true)}
+                    onMouseLeave={() => setPaused(false)}
+                >
                     {corridors.slice(0, 6).map((corridor) => {
                         const heat = getHeatLevel(corridor.heat_score);
                         const rate = estimateRate(corridor.heat_score);
@@ -125,7 +138,6 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                                 style={{ borderColor: heat.border, background: heat.bg }}
                             >
                                 <div className="p-3 flex flex-col h-full">
-                                    {/* Top: name + heat badge */}
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                         <h3 className="font-black text-white text-[13px] leading-tight line-clamp-2 group-hover:text-[#C6923A] transition-colors">
                                             {corridor.name}
@@ -135,8 +147,6 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                                             {heat.label}
                                         </span>
                                     </div>
-
-                                    {/* Compact stats */}
                                     <div className="flex items-center gap-2 text-[10px] text-[#8fa3b8] mb-2">
                                         {corridor.loads_7d > 0 && (
                                             <span className="flex items-center gap-1">
@@ -151,8 +161,6 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                                             </span>
                                         )}
                                     </div>
-
-                                    {/* Rate + CTA */}
                                     <div className="mt-auto flex items-center justify-between">
                                         <span className="text-sm font-black text-emerald-400 font-mono">${rate}/d</span>
                                         <span className="text-[9px] font-bold text-[#C6923A] uppercase tracking-wider flex items-center gap-0.5">
@@ -165,7 +173,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                     })}
                 </div>
 
-                {/* ── DESKTOP: Grid cards ── */}
+                {/* DESKTOP: Grid cards */}
                 <div className="corridor-grid-desktop">
                     {corridors.slice(0, 6).map((corridor, i) => {
                         const heat = getHeatLevel(corridor.heat_score);
@@ -225,7 +233,6 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                     })}
                 </div>
 
-                {/* Mobile: View all link */}
                 <div className="text-center mt-4 sm:hidden">
                     <Link href="/corridors" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
                         View all {corridorCount} corridors <ArrowRight className="w-3.5 h-3.5" />
