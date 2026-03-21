@@ -17,6 +17,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { calculateDeadheadProfit } from '@/core/calculators/deadhead';
 
+interface PointCoords {
+    lat: number;
+    lng: number;
+}
+
 export async function GET(request: NextRequest) {
     try {
         const supabase = await createClient();
@@ -65,12 +70,13 @@ export async function GET(request: NextRequest) {
 
         if (refLoad.destination_geom) {
             // PostGIS geometry — extract coordinates via RPC or parse
-            const { data: coords } = await supabase.rpc('extract_point_coords', {
+            const { data: rawCoords } = await supabase.rpc('extract_point_coords', {
                 p_geom: refLoad.destination_geom,
             }).single();
 
-            const c = coords as { lat: number; lng: number } | null;
-            if (c) {
+            // Cast through `any` because Supabase RPC returns untyped `{}`
+            const c = rawCoords as any as PointCoords | null;
+            if (c && typeof c.lat === 'number' && typeof c.lng === 'number') {
                 deliveryLat = c.lat;
                 deliveryLng = c.lng;
             }
@@ -202,9 +208,9 @@ export async function GET(request: NextRequest) {
 }
 
 // ── State centroid lookup (US states) for fallback geocoding ──
-function getStateCentroid(admin: string | null): { lat: number; lng: number } | null {
+function getStateCentroid(admin: string | null): PointCoords | null {
     if (!admin) return null;
-    const centroids: Record<string, { lat: number; lng: number }> = {
+    const centroids: Record<string, PointCoords> = {
         'AL': { lat: 32.806671, lng: -86.791130 }, 'AK': { lat: 61.370716, lng: -152.404419 },
         'AZ': { lat: 33.729759, lng: -111.431221 }, 'AR': { lat: 34.969704, lng: -92.373123 },
         'CA': { lat: 36.116203, lng: -119.681564 }, 'CO': { lat: 39.059811, lng: -105.311104 },
