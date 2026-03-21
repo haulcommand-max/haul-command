@@ -124,11 +124,6 @@ interface HomeClientProps {
     avgRatePerDay?: number;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// MAIN COMPONENT — Command Center Layout
-// Order: Market Hero → Map → Ticker → Opportunities →
-//        Market Conditions → Leaderboard → Tools → Moat → CTA → Footer
-// ═══════════════════════════════════════════════════════════════
 export default function HomeClient({
     marketPulse, directoryCount, corridorCount, topCorridors, topListings, heroPack,
     totalCountries, liveCountries, coveredCountries, totalOperators, totalCorridors,
@@ -141,7 +136,6 @@ export default function HomeClient({
 
     return (
         <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)] pb-20 md:pb-0">
-            {/* Inline responsive styles */}
             <style>{`
                 .landing-desktop-only { display: none !important; }
                 @media (min-width: 768px) {
@@ -159,9 +153,7 @@ export default function HomeClient({
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.06),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
             </div>
 
-            {/* ═══════════════════════════════════════════════
-                NAVIGATION
-            ═══════════════════════════════════════════════ */}
+            {/* NAVIGATION */}
             <nav className="relative z-50 border-b border-white/[0.06] safe-area-header" style={{
                 background: 'rgba(11,11,12,0.85)',
                 backdropFilter: 'blur(24px) saturate(1.5)',
@@ -189,14 +181,10 @@ export default function HomeClient({
                 </div>
             </nav>
 
-            {/* ═══════════════════════════════════════════════
-                1. MARKET TERMINAL RIBBON — Live metrics strip
-            ═══════════════════════════════════════════════ */}
+            {/* 1. MARKET TERMINAL RIBBON */}
             <MarketTerminalRibbon />
 
-            {/* ═══════════════════════════════════════════════
-                2. EXPANSION STATUS — Market presence (moved to top)
-            ═══════════════════════════════════════════════ */}
+            {/* 2. EXPANSION STATUS */}
             <section className="relative z-10 py-4 sm:py-6">
                 <div className="hc-container max-w-3xl">
                     <div className="rounded-2xl border border-white/[0.06] p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.02)' }}>
@@ -231,9 +219,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                3. LIVE MARKET HERO — Command Center Surface
-            ═══════════════════════════════════════════════ */}
+            {/* 3. LIVE MARKET HERO */}
             <LiveMarketHero
                 totalOperators={totalOperators || directoryCount}
                 corridorCount={totalCorridors || corridorCount}
@@ -242,43 +228,33 @@ export default function HomeClient({
                 avgRate={avgRatePerDay > 0 ? avgRatePerDay : 380}
             />
 
-            {/* ═══════════════════════════════════════════════
-                4. GLOBAL ESCORT SUPPLY RADAR
-            ═══════════════════════════════════════════════ */}
+            {/* 4. GLOBAL ESCORT SUPPLY RADAR */}
             <GlobalEscortSupplyRadar />
 
-            {/* ═══════════════════════════════════════════════
-                4. LIVE LOADS TICKER — Stock-market activity feed
-            ═══════════════════════════════════════════════ */}
+            {/* 4b. LIVE LOADS TICKER */}
             <LiveLoadsTicker />
 
-            {/* ═══════════════════════════════════════════════
-                5. CORRIDOR OPPORTUNITIES — Actionable decision cards
-            ═══════════════════════════════════════════════ */}
+            {/* 5. CORRIDOR OPPORTUNITIES */}
             <CorridorOpportunityCards
                 corridors={topCorridors}
                 corridorCount={corridorCount}
             />
 
-            {/* ═══════════════════════════════════════════════
-                6. MARKET CONDITIONS PANEL — Rate intelligence
-            ═══════════════════════════════════════════════ */}
+            {/* 6. MARKET CONDITIONS PANEL */}
             <section className="relative z-10 py-8 sm:py-12">
                 <div className="hc-container max-w-5xl">
                     <MarketConditionsPanel />
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                7. CORRIDOR LEADERBOARD — Claim Rank Loop
-            ═══════════════════════════════════════════════ */}
-            <section className="relative z-10 py-8 sm:py-12">
+            {/* 7. CORRIDOR LEADERBOARD — Themed to match site */}
+            <section className="relative z-10 py-8 sm:py-14">
                 <div className="hc-container max-w-5xl">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex items-end justify-between mb-5 sm:mb-8">
                         <div>
                             <div className="flex items-center gap-2 mb-1">
-                                <Award className="w-4 h-4 text-amber-400" />
-                                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-[0.2em]">
+                                <Award className="w-4 h-4 text-[#C6923A]" />
+                                <span className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
                                     Industry Leaderboard
                                 </span>
                             </div>
@@ -291,11 +267,11 @@ export default function HomeClient({
                         </Link>
                     </motion.div>
                     <CorridorLeaderboard />
-                    {/* Claim CTA — loop-feeding */}
-                    <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl border border-amber-500/15 bg-amber-500/[0.04]">
+                    {/* Claim CTA */}
+                    <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 p-4 sm:p-5 rounded-2xl border border-[#C6923A]/15 bg-[#C6923A]/[0.04]">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-amber-500/15 flex items-center justify-center flex-shrink-0">
-                                <Shield className="w-5 h-5 text-amber-400" />
+                            <div className="w-10 h-10 rounded-full bg-[#C6923A]/15 flex items-center justify-center flex-shrink-0">
+                                <Shield className="w-5 h-5 text-[#C6923A]" />
                             </div>
                             <div>
                                 <div className="text-sm font-bold text-white">Claim Your Corridor Rank</div>
@@ -309,9 +285,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                8. FREE TOOLS — Loop-feeding conversion engines
-            ═══════════════════════════════════════════════ */}
+            {/* 8. FREE TOOLS */}
             <section className="relative z-10 py-8 sm:py-12">
                 <div className="hc-container max-w-5xl">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-6 sm:mb-10">
@@ -343,17 +317,15 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════ NATIVE AD — Homepage mid-page ═══════ */}
+            {/* NATIVE AD */}
             <section className="relative z-10 py-4 sm:py-6">
                 <div className="hc-container max-w-5xl">
                     <NativeAdCard surface="homepage_mid" placementId="homepage-mid-1" variant="inline" />
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                9. HOW IT WORKS — Both sides of the match
-            ═══════════════════════════════════════════════ */}
-            <section className="relative z-10 py-8 sm:py-12">
+            {/* 9. HOW IT WORKS — improved padding */}
+            <section className="relative z-10 py-10 sm:py-14">
                 <div className="hc-container max-w-5xl">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-6 sm:mb-10">
                         <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-2">How It Works</div>
@@ -361,27 +333,27 @@ export default function HomeClient({
                             Built for Both Sides
                         </h2>
                     </motion.div>
-                    <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                         {HOW_IT_WORKS.map(({ role, color, steps, icon: RoleIcon, hcIcon }) => (
                             <motion.div key={role} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
-                                className="intelligence-card" style={{ "--accent-color": color } as React.CSSProperties}>
+                                className="intelligence-card" style={{ "--accent-color": color, padding: 'clamp(20px, 4vw, 28px)' } as React.CSSProperties}>
                                 <div className="text-center">
                                     <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-3 mx-auto"
                                         style={{ background: `${color}12`, border: `1px solid ${color}20` }}>
                                         {hcIcon ? <RoleIcon size={20} style={{ color }} /> : <RoleIcon className="w-5 h-5" style={{ color }} />}
                                     </div>
-                                    <h3 className="font-bold text-xs uppercase tracking-[0.15em] mb-3 sm:mb-4" style={{ color }}>
+                                    <h3 className="font-bold text-sm uppercase tracking-[0.15em] mb-4 sm:mb-5" style={{ color }}>
                                         {role}
                                     </h3>
                                     <div className="inline-block text-left">
-                                        <ol className="space-y-2.5 sm:space-y-3 list-none p-0 m-0">
+                                        <ol className="space-y-3 sm:space-y-4 list-none p-0 m-0">
                                             {steps.map((step, i) => (
-                                                <li key={i} className="flex items-start gap-2.5">
-                                                    <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black border mt-0.5"
+                                                <li key={i} className="flex items-start gap-3">
+                                                    <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black border mt-0.5"
                                                         style={{ color, borderColor: `${color}30`, backgroundColor: `${color}12` }}>
                                                         {i + 1}
                                                     </span>
-                                                    <span className="text-xs sm:text-sm leading-relaxed font-medium" style={{ color: 'var(--hc-muted)' }}>
+                                                    <span className="text-sm leading-relaxed font-medium" style={{ color: '#b0bac9' }}>
                                                         {step}
                                                     </span>
                                                 </li>
@@ -395,12 +367,10 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                10. MOAT — Why Haul Command
-            ═══════════════════════════════════════════════ */}
-            <section className="relative z-10 py-8 sm:py-12">
+            {/* 10. MOAT — Why Haul Command (improved readability) */}
+            <section className="relative z-10 py-10 sm:py-14">
                 <div className="hc-container max-w-5xl">
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-6 sm:mb-10">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-8 sm:mb-12">
                         <div style={{ fontSize: '11px', fontWeight: 700, color: '#C6923A', textTransform: 'uppercase', letterSpacing: '0.18em', lineHeight: 1, marginBottom: '8px', opacity: 0.95 }}>
                             Why Haul Command
                         </div>
@@ -408,17 +378,17 @@ export default function HomeClient({
                             The Moat No One Else Has
                         </h2>
                     </motion.div>
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         {FEATURES.map(({ icon: Icon, title, desc, color, hcIcon }, i) => (
                             <motion.div key={title} custom={i} variants={fadeUp}
-                                className="intelligence-card group" style={{ "--accent-color": color } as React.CSSProperties}>
+                                className="intelligence-card group" style={{ "--accent-color": color, padding: 'clamp(16px, 3vw, 24px)' } as React.CSSProperties}>
                                 <div className="text-center">
-                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-3 mx-auto"
-                                        style={{ backgroundColor: `${color}10`, border: `1px solid ${color}15` }}>
-                                        {hcIcon ? <Icon size={18} style={{ color }} /> : <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />}
+                                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-3 mx-auto"
+                                        style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
+                                        {hcIcon ? <Icon size={20} style={{ color }} /> : <Icon className="w-5 h-5" style={{ color }} />}
                                     </div>
-                                    <h3 className="font-bold text-white text-xs sm:text-sm mb-1">{title}</h3>
-                                    <p className="text-[#8fa3b8] text-[11px] sm:text-xs leading-relaxed">{desc}</p>
+                                    <h3 className="font-bold text-white text-sm sm:text-base mb-1.5">{title}</h3>
+                                    <p className="text-[#b0bac9] text-xs sm:text-sm leading-relaxed">{desc}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -426,9 +396,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                11. TRUST SIGNALS — Coverage confidence (fixed copy)
-            ═══════════════════════════════════════════════ */}
+            {/* 11. TRUST SIGNALS */}
             <section className="relative z-10 py-4">
                 <div className="hc-container max-w-3xl text-center">
                     <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-[#5A6577]">
@@ -452,9 +420,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                13. BOTTOM CTA — Quick activation
-            ═══════════════════════════════════════════════ */}
+            {/* 13. BOTTOM CTA */}
             <section className="relative z-10 py-10 sm:py-16">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="max-w-lg mx-auto text-center px-4">
                     <div className="relative bg-[var(--hc-surface)] border border-[var(--hc-border)] rounded-2xl p-6 sm:p-10 shadow-[0_0_60px_rgba(198,146,58,0.06)] overflow-hidden">
@@ -484,9 +450,7 @@ export default function HomeClient({
                 </motion.div>
             </section>
 
-            {/* ═══════════════════════════════════════════════
-                14. FOOTER — Mobile accordion
-            ═══════════════════════════════════════════════ */}
+            {/* 14. FOOTER */}
             <FooterAccordion />
         </div>
     );
