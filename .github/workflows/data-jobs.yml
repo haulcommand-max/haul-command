@@ -26,7 +26,7 @@ jobs:
       github.event.inputs.job == 'corridor' ||
       github.event.inputs.job == 'all'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -50,7 +50,7 @@ jobs:
       github.event.inputs.job == 'supply' ||
       github.event.inputs.job == 'all'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -74,7 +74,7 @@ jobs:
       github.event.inputs.job == 'seo' ||
       github.event.inputs.job == 'all'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -98,7 +98,7 @@ jobs:
       github.event.inputs.job == 'ports' ||
       github.event.inputs.job == 'all'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
         with:
           node-version: 20
