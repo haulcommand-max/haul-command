@@ -2,6 +2,7 @@
  * Motive Webhook Receiver — HAUL COMMAND
  *
  * POST https://haulcommand.com/api/motive/webhook
+ * GET  https://haulcommand.com/api/motive/webhook (validation ping)
  *
  * Receives real-time events from Motive (vehicle locations, HOS updates,
  * driver status changes, DVIRs, fault codes, etc.).
@@ -13,6 +14,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import type { MotiveWebhookPayload } from '@/types/motive';
 import crypto from 'crypto';
+
+// ═══ GET handler — Motive validation ping ═══
+// Motive sends a GET request to verify the webhook URL is reachable
+// before allowing it to be saved in the developer portal.
+export async function GET() {
+  return NextResponse.json(
+    { status: 'ok', service: 'haul-command-motive-webhook', timestamp: new Date().toISOString() },
+    { status: 200 }
+  );
+}
 
 // Verify webhook signature from Motive
 function verifyWebhookSignature(
