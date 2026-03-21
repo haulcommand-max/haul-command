@@ -7,24 +7,10 @@ import {
     ArrowRight, TrendingUp, Flame, Radio, Shield, Search,
     MapPin, FileCheck, Briefcase, Building2, BarChart3, Eye,
     Repeat, MessageSquare, Package, Wrench, Star, Map,
-    ChevronRight, Truck, Compass, Users, BookOpen,
+    ChevronRight, Truck, Compass, Users, BookOpen, Warehouse,
 } from "lucide-react";
 import { useRole } from "@/lib/role-context";
 import { ROLE_LIST, ROLE_CONFIGS, type HCRole } from "@/lib/role-config";
-
-/* ═══════════════════════════════════════════════════════════════
-   LIVE MARKET HERO — Role-Aware Command Surface (FIXED)
-
-   FIXES APPLIED:
-   - Dark theme role cards (no white tiles)
-   - Consistent height, spacing, radius
-   - Each role routes to role-specific next steps
-   - Counter hides zero values (no "—" publicly)
-
-   ANTI-REGRESSION RULES:
-   - Escort operators NEVER see "Find an Escort" as first action
-   - Each role gets genuinely different actions
-   ═══════════════════════════════════════════════════════════════ */
 
 interface LiveMarketHeroProps {
     totalOperators: number;
@@ -54,7 +40,6 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
     return <span>{display.toLocaleString("en-US")}{suffix}</span>;
 }
 
-// ─── Role-specific routes ────────────────────────────────────
 type RouteConfig = { href: string; icon: any; label: string; desc: string; color: string; primary: boolean };
 
 const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
@@ -76,6 +61,12 @@ const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
         { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker ↔ Operator", color: "#3b82f6", primary: false },
         { href: "/messages", icon: MessageSquare, label: "Inbox", desc: "Messages", color: "#a855f7", primary: false },
     ],
+    fleet_owner: [
+        { href: "/fleet", icon: BarChart3, label: "Fleet Dashboard", desc: "All vehicles", color: "#C6923A", primary: true },
+        { href: "/loads", icon: Package, label: "Find Loads", desc: "Jobs for fleet", color: "#22c55e", primary: true },
+        { href: "/fleet/compliance", icon: FileCheck, label: "Compliance", desc: "Certs & dates", color: "#3b82f6", primary: false },
+        { href: "/corridors", icon: Map, label: "Fleet Routes", desc: "Coverage map", color: "#a855f7", primary: false },
+    ],
     support_partner: [
         { href: "/partner/join", icon: Building2, label: "Become Partner", desc: "Join the network", color: "#C6923A", primary: true },
         { href: "/onboarding/claim", icon: MapPin, label: "Claim Location", desc: "Add your spot", color: "#22c55e", primary: true },
@@ -90,11 +81,11 @@ const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
     ],
 };
 
-// ─── Role chooser icons (mapped to lucide) ───────────────────
 const ROLE_ICON_MAP: Record<HCRole, any> = {
     escort_operator: Truck,
     broker_dispatcher: Briefcase,
     both: Repeat,
+    fleet_owner: Warehouse,
     support_partner: Building2,
     observer_researcher: BookOpen,
 };
@@ -126,9 +117,9 @@ export function LiveMarketHero({
                 .hero-hot-corridor { display: none; }
                 .hero-roles {
                     display: grid;
-                    grid-template-columns: 1fr 1fr;
+                    grid-template-columns: repeat(3, 1fr);
                     gap: 8px;
-                    max-width: 400px;
+                    max-width: 520px;
                     margin: 0 auto;
                 }
                 .hero-role-card {
@@ -136,13 +127,13 @@ export function LiveMarketHero({
                     flex-direction: column;
                     align-items: center;
                     text-align: center;
-                    padding: 14px 10px 12px;
+                    padding: 12px 6px 10px;
                     border-radius: 14px;
                     border: 1px solid rgba(255,255,255,0.08);
                     background: rgba(255,255,255,0.03);
                     cursor: pointer;
                     transition: all 0.2s ease;
-                    min-height: 88px;
+                    min-height: 80px;
                     justify-content: center;
                 }
                 .hero-role-card:hover {
@@ -158,11 +149,11 @@ export function LiveMarketHero({
                     .hero-metric-third { display: block; }
                     .hero-hot-corridor { display: flex; }
                     .hero-roles {
-                        grid-template-columns: repeat(4, 1fr);
-                        gap: 12px;
-                        max-width: 640px;
+                        grid-template-columns: repeat(6, 1fr);
+                        gap: 10px;
+                        max-width: 720px;
                     }
-                    .hero-role-card { padding: 16px 10px 14px; min-height: 100px; }
+                    .hero-role-card { padding: 14px 8px 12px; min-height: 90px; }
                     .hero-status-line { gap: 4px 16px; font-size: 10px; }
                 }
             `}</style>
@@ -189,7 +180,7 @@ export function LiveMarketHero({
                     }}>Live Escort Market</span>
                 </motion.div>
 
-                {/* TOP-LINE METRICS — only show if we have data */}
+                {/* TOP-LINE METRICS */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -248,7 +239,7 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ROLE ROUTER — dark theme cards */}
+                {/* ROLE ROUTER — 3×2 grid on mobile, 6-col on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -259,7 +250,7 @@ export function LiveMarketHero({
                             <div className="text-center text-[10px] text-[#8fa3b8] font-semibold uppercase tracking-[0.15em] mb-3">
                                 What&apos;s your role?
                             </div>
-                            <div className="hero-roles" style={{ maxWidth: 520 }}>
+                            <div className="hero-roles">
                                 {ROLE_LIST.map((r) => {
                                     const rc = ROLE_CONFIGS[r];
                                     const RIcon = ROLE_ICON_MAP[r];
@@ -269,11 +260,11 @@ export function LiveMarketHero({
                                             onClick={() => setRole(r)}
                                             className="hero-role-card group"
                                         >
-                                            <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-2"
+                                            <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-1.5"
                                                 style={{ background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.15)' }}>
-                                                <RIcon className="w-4 h-4" style={{ color: '#C6923A' }} />
+                                                <RIcon className="w-3.5 h-3.5" style={{ color: '#C6923A' }} />
                                             </div>
-                                            <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">
+                                            <div className="text-[10px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">
                                                 {rc.shortLabel}
                                             </div>
                                             <div className="text-[8px] text-[#5A6577] mt-0.5 leading-tight hidden sm:block">
@@ -297,7 +288,7 @@ export function LiveMarketHero({
                                     change
                                 </button>
                             </div>
-                            <div className="hero-roles">
+                            <div className="hero-roles" style={{ gridTemplateColumns: 'repeat(2, 1fr)', maxWidth: 400 }}>
                                 {activeRoutes!.map(({ href, icon: Icon, label, desc, color }: RouteConfig) => (
                                     <Link
                                         key={href + label}
