@@ -70,8 +70,10 @@ export async function POST(req: NextRequest) {
             // Try Novu first (already in stack as @novu/api)
             if (process.env.NOVU_API_KEY) {
                 const { Novu } = await import('@novu/api');
-                const novu = new Novu({ secretKey: process.env.NOVU_API_KEY! });
-                await (novu as any).trigger('sms-send', {
+                // Use 'as any' to handle SDK version differences in constructor signature
+                const NovuConstructor = Novu as any;
+                const novu = new NovuConstructor({ apiKey: process.env.NOVU_API_KEY });
+                await novu.trigger('sms-send', {
                     to: { subscriberId: user.id, phone: to_number },
                     payload: { message: fullMessage },
                 });

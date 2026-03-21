@@ -73,7 +73,8 @@ export async function POST(req: NextRequest) {
       }
 
       case 'invoice.paid': {
-        const invoice = event.data.object as Stripe.Invoice;
+        // Cast to any to handle Stripe SDK version differences
+        const invoice = event.data.object as any;
         const subId = invoice.subscription as string;
         if (subId) {
           await supabase.from('user_subscriptions')
@@ -93,13 +94,18 @@ export async function POST(req: NextRequest) {
       }
 
       case 'customer.subscription.updated': {
-        const sub = event.data.object as Stripe.Subscription;
+        // Cast to any to handle Stripe SDK version differences
+        const sub = event.data.object as any;
         const status = sub.status === 'active' || sub.status === 'trialing' ? 'active' : sub.status;
         await supabase.from('user_subscriptions')
           .update({
             status,
-            current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
-            current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+            current_period_start: sub.current_period_start
+              ? new Date(sub.current_period_start * 1000).toISOString()
+              : new Date().toISOString(),
+            current_period_end: sub.current_period_end
+              ? new Date(sub.current_period_end * 1000).toISOString()
+              : null,
             updated_at: new Date().toISOString(),
           })
           .eq('stripe_subscription_id', sub.id);
@@ -107,7 +113,7 @@ export async function POST(req: NextRequest) {
       }
 
       case 'customer.subscription.deleted': {
-        const sub = event.data.object as Stripe.Subscription;
+        const sub = event.data.object as any;
         await supabase.from('user_subscriptions')
           .update({
             status: 'canceled',

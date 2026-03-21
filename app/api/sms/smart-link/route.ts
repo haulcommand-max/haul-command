@@ -42,12 +42,14 @@ export async function GET(req: NextRequest) {
             });
             const link = await res.json();
             if (link.shortLink) {
-                // Track event
+                // Track event (fire-and-forget, ignore errors)
                 const admin = getSupabaseAdmin();
-                await admin.from('hc_events').insert({
-                    event: 'smart_link_generated',
-                    metadata: { operator_id: opId, campaign, short_link: link.shortLink },
-                }).then(() => {}).catch(() => {});
+                try {
+                    await admin.from('hc_events').insert({
+                        event: 'smart_link_generated',
+                        metadata: { operator_id: opId, campaign, short_link: link.shortLink },
+                    });
+                } catch { /* non-critical tracking — ignore */ }
 
                 return NextResponse.json({ ok: true, short_link: link.shortLink, ios: IOS_URL, android: ANDROID_URL, desktop: DESKTOP_URL });
             }
