@@ -85,7 +85,6 @@ export function CorridorLeaderboard() {
                 .lb-score { font-size: 16px; }
                 .lb-badge { font-size: 8px; padding: 2px 5px; }
                 .lb-footer { padding: 16px; text-align: center; align-items: center; justify-content: center; }
-                /* Desktop table columns — hidden on mobile */
                 .lb-desktop-col { display: none; }
                 .lb-table-header { display: none; }
 
@@ -109,18 +108,18 @@ export function CorridorLeaderboard() {
                 }
             `}</style>
 
-            <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-[#C6923A]/5 rounded-full blur-[80px] pointer-events-none" />
 
             {/* Header */}
             <div className="lb-header border-b border-white/5 relative z-10">
                 <div className="flex items-center gap-2 mb-2">
-                    <Trophy className="w-4 h-4 text-amber-500" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500">
+                    <Trophy className="w-4 h-4 text-[#C6923A]" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6923A]">
                         {dataSource === 'live' ? 'Live Standings' : 'Preview'}
                     </span>
                 </div>
                 <h3 className="lb-title font-black text-white tracking-tight">Top 3 Get First Access to Loads</h3>
-                <p className="lb-subtitle text-slate-400 mt-1">
+                <p className="lb-subtitle text-[#b0bac9] mt-1">
                     Top-ranked operators get load alerts before everyone else. Move up to see better loads faster.
                 </p>
 
@@ -132,7 +131,7 @@ export function CorridorLeaderboard() {
                             onClick={() => setActiveCorridor(c.key)}
                             className={cn(
                                 "lb-tab rounded-full font-bold transition-all whitespace-nowrap",
-                                activeCorridor === c.key ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
+                                activeCorridor === c.key ? "bg-[#C6923A] text-black shadow-lg" : "text-slate-400 hover:text-white"
                             )}
                         >
                             {c.label}
@@ -154,7 +153,7 @@ export function CorridorLeaderboard() {
                 {/* Loading */}
                 {loading && (
                     <div className="flex items-center justify-center py-10">
-                        <Loader2 className="w-5 h-5 text-amber-500 animate-spin" />
+                        <Loader2 className="w-5 h-5 text-[#C6923A] animate-spin" />
                     </div>
                 )}
 
@@ -164,12 +163,12 @@ export function CorridorLeaderboard() {
                         {leaders.map((driver) => (
                             <div key={`${driver.corridor_slug}-${driver.rank}`} className={cn(
                                 "lb-row flex items-center gap-3 transition-colors hover:bg-white/[0.02]",
-                                driver.rank <= 3 && "bg-amber-500/[0.02]"
+                                driver.rank <= 3 && "bg-[#C6923A]/[0.02]"
                             )}>
                                 {/* Rank */}
                                 <div className="w-7 text-center flex-shrink-0">
                                     {driver.rank === 1 ? (
-                                        <Medal className="lb-rank-medal text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)] mx-auto" />
+                                        <Medal className="lb-rank-medal text-[#C6923A] drop-shadow-[0_0_6px_rgba(198,146,58,0.6)] mx-auto" />
                                     ) : driver.rank === 2 ? (
                                         <Medal className="lb-rank-medal text-slate-300 mx-auto" />
                                     ) : driver.rank === 3 ? (
@@ -206,9 +205,9 @@ export function CorridorLeaderboard() {
                                     <span className="text-slate-300 font-mono text-sm">{driver.jobs_completed ?? 0}</span>
                                 </div>
 
-                                {/* Score — always visible */}
+                                {/* Score */}
                                 <div className="text-right flex-shrink-0">
-                                    <div className="lb-score font-black text-emerald-400 font-mono">
+                                    <div className="lb-score font-black text-[#C6923A] font-mono">
                                         {Math.round(driver.score)}
                                     </div>
                                 </div>
@@ -221,14 +220,14 @@ export function CorridorLeaderboard() {
             {/* Footer CTA */}
             <div className="lb-footer bg-[#111] border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                        <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
+                    <div className="w-7 h-7 rounded-full bg-[#C6923A]/20 flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="w-3.5 h-3.5 text-[#C6923A]" />
                     </div>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-[#b0bac9]">
                         Finish more loads, earn stronger reviews, and move up for earlier access.
                     </p>
                 </div>
-                <Link href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors whitespace-nowrap">
+                <Link href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-[#C6923A] hover:text-[#E0B05C] flex items-center gap-1 transition-colors whitespace-nowrap">
                     Claim Your Spot on This Corridor <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
             </div>
