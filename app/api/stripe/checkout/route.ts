@@ -1,6 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe, STRIPE_PRICE_IDS, type StripePriceKey } from '@/lib/stripe';
-import { createClient } from '@/utils/supabase/server';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+
+async function getSupabaseUser() {
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return cookieStore.getAll(); },
+        setAll() { /* read-only in route handlers */ },
+      },
+    }
+  );
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,10 +41,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Get current user from Supabase
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
+    const user = await getSupabaseUser();
     const stripe = getStripe();
 
     // Check if user already has a Stripe customer
