@@ -68,6 +68,10 @@
         {
             "path": "/api/cron/recalculate-rankings",
             "schedule": "0 0 * * *"
+        },
+        {
+            "path": "/api/cron/motive-sync",
+            "schedule": "0 */6 * * *"
         }
     ],
     "headers": [

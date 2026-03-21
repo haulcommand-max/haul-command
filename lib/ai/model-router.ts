@@ -1,120 +1,111 @@
 /**
  * AI Model Router — HAUL COMMAND
  * 
- * Routes AI requests to the optimal model based on task complexity,
- * cost constraints, and availability. Supports Anthropic (primary),
- * Google Gemini (ads/creative), and OpenAI (fallback).
+ * @deprecated This file is a SHIM. The canonical model router is at:
+ *   lib/engines/model-router.ts
  * 
- * UPGRADE: Always upgrade, never downgrade.
+ * That file has the STRONGEST implementation:
+ * - 3-provider strategy (Claude THINK / Gemini SEE / OpenAI ACT)
+ * - 20 task types with primary + fallback providers
+ * - Cross-checking for high-risk actions
+ * - Quick route helpers
+ * - Real model names (never fabricated)
+ * 
+ * This shim re-exports everything for backwards compatibility.
+ * New code should import from '@/lib/engines/model-router'.
  */
 
-export type ModelTier = 'nano' | 'fast' | 'standard' | 'premium';
-export type ModelProvider = 'anthropic' | 'gemini' | 'openai';
+export {
+    type TaskType,
+    type ModelTier,
+    type ModelProvider,
+    type ModelSelection,
+    routeModel,
+    estimateCost,
+    requiresCrossCheck,
+    quickRoute,
+} from '../engines/model-router';
 
-export interface ModelConfig {
-  provider: ModelProvider;
-  model: string;
-  maxTokens: number;
-  temperature: number;
-  costPer1kTokens: number; // USD
-}
+// Legacy aliases for backwards compat
+import { routeModel } from '../engines/model-router';
 
-// ═══ Model Registry ═══
-// Using actual, real model names — never fabricated ones
-const MODEL_REGISTRY: Record<ModelTier, ModelConfig> = {
-  nano: {
-    provider: 'gemini',
-    model: 'gemini-2.0-flash-lite',
-    maxTokens: 1024,
-    temperature: 0.3,
-    costPer1kTokens: 0.000,
-  },
-  fast: {
-    provider: 'anthropic',
-    model: 'claude-sonnet-4-20250514',
-    maxTokens: 4096,
-    temperature: 0.4,
-    costPer1kTokens: 0.003,
-  },
-  standard: {
-    provider: 'anthropic',
-    model: 'claude-sonnet-4-20250514',
-    maxTokens: 8192,
-    temperature: 0.5,
-    costPer1kTokens: 0.003,
-  },
-  premium: {
-    provider: 'anthropic',
-    model: 'claude-sonnet-4-20250514',
-    maxTokens: 16384,
-    temperature: 0.7,
-    costPer1kTokens: 0.015,
-  },
+export type ModelConfig = {
+    provider: ModelProvider;
+    model: string;
+    maxTokens: number;
+    temperature: number;
+    costPer1kTokens: number;
 };
 
-// ═══ Task → Tier Mapping ═══
-const TASK_TIER_MAP: Record<string, ModelTier> = {
-  // Nano tier — classification, extraction, simple Q&A
-  'load-classify': 'nano',
-  'entity-extract': 'nano',
-  'sentiment': 'nano',
-  'tag-generate': 'nano',
-
-  // Fast tier — chat, summaries, short generation
-  'chat': 'fast',
-  'rate-estimate': 'fast',
-  'load-match': 'fast',
-  'summarize': 'fast',
-  'translate': 'fast',
-
-  // Standard tier — reports, analysis, multi-step
-  'load-analyze': 'standard',
-  'rate-advise': 'standard',
-  'compliance-check': 'standard',
-  'market-report': 'standard',
-  'corridor-intel': 'standard',
-
-  // Premium tier — long generation, complex reasoning
-  'full-report': 'premium',
-  'dispute-draft': 'premium',
-  'contract-review': 'premium',
-  'route-optimize': 'premium',
-};
+import type { ModelProvider } from '../engines/model-router';
 
 /**
- * Get the optimal model config for a given task
+ * @deprecated Use routeModel() from lib/engines/model-router instead.
+ * This is a simplified wrapper for legacy call sites.
  */
-export function getModelForTask(task: string, overrideTier?: ModelTier): ModelConfig {
-  const tier = overrideTier || TASK_TIER_MAP[task] || 'fast';
-  return MODEL_REGISTRY[tier];
+export function getModelForTask(task: string): { model: string; provider: ModelProvider } {
+    const taskTypeMap: Record<string, import('../engines/model-router').TaskType> = {
+        'load-classify': 'classification',
+        'entity-extract': 'extraction',
+        'sentiment': 'scoring',
+        'tag-generate': 'classification',
+        'chat': 'summarization',
+        'rate-estimate': 'recommendation',
+        'load-match': 'dispatch',
+        'summarize': 'summarization',
+        'translate': 'creative',
+        'load-analyze': 'reasoning',
+        'rate-advise': 'recommendation',
+        'compliance-check': 'compliance',
+        'market-report': 'reasoning',
+        'corridor-intel': 'reasoning',
+        'full-report': 'reasoning',
+        'dispute-draft': 'contract',
+        'contract-review': 'contract',
+        'route-optimize': 'dispatch',
+    };
+
+    const mappedTask = taskTypeMap[task] || 'summarization';
+    const result = routeModel({
+        task_type: mappedTask,
+        urgency: 'medium',
+        importance: 'medium',
+        user_tier: 'pro',
+        input_length: 500,
+        confidence_requirement: 'medium',
+    });
+
+    return { model: result.model, provider: result.provider };
 }
 
 /**
- * Get model by explicit tier
+ * @deprecated Use routeModel() from lib/engines/model-router instead.
  */
-export function getModelByTier(tier: ModelTier): ModelConfig {
-  return MODEL_REGISTRY[tier];
+export function getModelByTier(tier: 'nano' | 'fast' | 'standard' | 'premium'): { model: string; provider: ModelProvider } {
+    const tierMap: Record<string, import('../engines/model-router').ModelTier> = {
+        'nano': 'mini',
+        'fast': 'mini',
+        'standard': 'standard',
+        'premium': 'premium',
+    };
+    const mappedTier = tierMap[tier] || 'standard';
+    const result = routeModel({
+        task_type: 'summarization',
+        urgency: 'medium',
+        importance: 'medium',
+        user_tier: 'pro',
+        input_length: 500,
+        confidence_requirement: 'medium',
+    });
+    return { model: result.model, provider: result.provider };
 }
 
 /**
- * Estimate cost for a request
+ * @deprecated Use routeModel() from lib/engines/model-router instead.
  */
-export function estimateCost(
-  tier: ModelTier,
-  inputTokens: number,
-  outputTokens: number
-): number {
-  const config = MODEL_REGISTRY[tier];
-  return ((inputTokens + outputTokens) / 1000) * config.costPer1kTokens;
-}
-
-/**
- * Check if user has budget remaining for the given tier
- * Used by usage-meter.ts for quota enforcement
- */
-export function getTierForBudget(remainingBudgetCents: number): ModelTier {
-  if (remainingBudgetCents >= 50) return 'premium';
-  if (remainingBudgetCents >= 10) return 'standard';
-  if (remainingBudgetCents >= 1) return 'fast';
-  return 'nano';
+export function getTierForBudget(remainingBudgetCents: number): 'nano' | 'fast' | 'standard' | 'premium' {
+    if (remainingBudgetCents >= 50) return 'premium';
+    if (remainingBudgetCents >= 10) return 'standard';
+    if (remainingBudgetCents >= 1) return 'fast';
+    return 'nano';
 }
