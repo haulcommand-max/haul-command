@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
                 operator_id: escrow.operator_id,
                 amount_usd: escrow.load_rate_usd,
             },
-        }).then(() => {/* fire-and-forget */}).catch(() => {/* silent */});
+        }).then(() => {/* fire-and-forget */}, () => {/* silent */});
 
         return NextResponse.json({
             ok: true,
