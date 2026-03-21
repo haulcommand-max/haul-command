@@ -115,10 +115,50 @@ console.log(data.results.length, 'operators available');`,
       "distance_miles": 12,
       "available": true,
       "avg_response_min": 8,
-      "verified": true
+      "verified": true,
+      "eld_verified": true,
+      "safety_score": 94,
+      "hos_hours_remaining": 7.2
     }
   ],
   "total": 34
+}`,
+  },
+  {
+    id: 'fleet_intelligence',
+    icon: '📡',
+    name: 'Fleet Intelligence API',
+    desc: 'Real-time ELD-verified fleet data: live positions, safety scores, HOS compliance, and fuel prices from Motive-connected operators.',
+    price: '$499/mo',
+    priceValue: 499,
+    endpoint: '/v1/fleet/nearby',
+    curlExample: `curl -H "Authorization: Bearer YOUR_API_KEY" \\
+  "https://api.haulcommand.com/v1/fleet/nearby?lat=29.76&lng=-95.37&radius=50"`,
+    jsExample: `const res = await fetch(
+  'https://api.haulcommand.com/v1/fleet/nearby?lat=29.76&lng=-95.37&radius=50',
+  { headers: { 'Authorization': 'Bearer YOUR_API_KEY' } }
+);
+const data = await res.json();
+console.log(data.vehicles.length, 'nearby');`,
+    responseExample: `{
+  "center": { "lat": 29.76, "lng": -95.37 },
+  "radius_miles": 50,
+  "vehicles": [
+    {
+      "vehicle_id": "mv_812",
+      "operator": "Gulf Coast Escorts LLC",
+      "distance_miles": 8.2,
+      "lat": 29.81, "lng": -95.42,
+      "speed_mph": 62,
+      "heading": "NW",
+      "safety_score": 94,
+      "hos_hours_remaining": 7.2,
+      "eld_verified": true,
+      "updated_at": "2026-03-20T19:30:00Z"
+    }
+  ],
+  "total": 12,
+  "source": "motive_eld"
 }`,
   },
 ];
@@ -170,7 +210,7 @@ export default function DevelopersPage() {
         <section id="products" className="py-12 sm:py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter text-center mb-10">
-              4 API <span className="text-accent">Products</span>
+              5 API <span className="text-accent">Products</span>
             </h2>
             <div className="space-y-6">
               {API_PRODUCTS.map((product) => (
