@@ -14,6 +14,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/utils/supabase/server';
+import { trySendNotification } from '@/lib/notifications/fcm';
+import { holdRequestTemplate } from '@/lib/notifications/templates';
 
 export const runtime = 'nodejs';
 
@@ -54,7 +56,18 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Queue push notification to operator (non-blocking)
+    // FCM push notification to operator (instant delivery)
+    const brokerProfile = await admin.from('profiles').select('display_name').eq('id', user.id).single();
+    const fcmHold = holdRequestTemplate({
+        brokerName: brokerProfile.data?.display_name || 'A broker',
+        origin: origin || '?',
+        destination: destination || '?',
+        dateNeeded: date_needed || 'TBD',
+        holdId: hold.id,
+    });
+    trySendNotification({ userId: operator_id, ...fcmHold }).catch(() => {});
+
+    // Queue push notification to operator (fallback)
     try {
         await admin.from('notification_queue').insert({
             user_id: operator_id,

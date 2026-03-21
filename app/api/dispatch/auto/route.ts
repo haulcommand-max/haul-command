@@ -20,6 +20,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { trySendBulkNotification } from '@/lib/notifications/fcm';
+import { dispatchWaveTemplate } from '@/lib/notifications/templates';
 
 export const runtime = 'nodejs';
 
@@ -145,8 +147,19 @@ export async function POST(req: NextRequest) {
 
         // 4. Wave 1: notify top 5 candidates
         const wave1 = scored.slice(0, 5);
+        const wave1UserIds = wave1.map(c => c.user_id);
 
-        // Queue push notifications (non-blocking)
+        // FCM push (instant delivery to devices)
+        const fcmTemplate = dispatchWaveTemplate({
+            origin: body.origin,
+            destination: body.destination,
+            waveNumber: 1,
+            loadType: body.load_type,
+            requestId: dispatch?.id || '',
+        });
+        trySendBulkNotification(wave1UserIds, fcmTemplate).catch(() => {});
+
+        // Queue push notifications (fallback / legacy)
         for (const candidate of wave1) {
             try {
                 await supabase.from('notification_queue').insert({

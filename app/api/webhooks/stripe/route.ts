@@ -24,6 +24,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { stripe } from '@/lib/stripe/client';
+import { trySendNotification } from '@/lib/notifications/fcm';
+import { quickpayDepositTemplate } from '@/lib/notifications/templates';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -501,6 +503,23 @@ export async function POST(req: NextRequest) {
                         await supabase.from('jobs').update({
                             payout_status: 'completed',
                         }).eq('job_id', transfer.metadata.job_id);
+                    }
+
+                    // QuickPay FCM notification — operator receives deposit confirmation
+                    if (transfer.metadata?.type === 'quickpay' && transfer.metadata?.operator_id) {
+                        const netAmountUsd = (transfer.amount || 0) / 100;
+                        const template = quickpayDepositTemplate({
+                            amountUsd: netAmountUsd,
+                            jobReference: transfer.metadata?.booking_id || transfer.metadata?.job_id || 'N/A',
+                            transactionId: transfer.id,
+                        });
+                        trySendNotification({ userId: transfer.metadata.operator_id, ...template }).catch(() => {});
+
+                        // Mark QuickPay transaction as completed
+                        await supabase.from('quickpay_transactions').update({
+                            status: 'completed',
+                            completed_at: new Date().toISOString(),
+                        }).eq('stripe_transfer_id', transfer.id);
                     }
                 }
                 break;

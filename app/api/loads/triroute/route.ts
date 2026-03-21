@@ -69,9 +69,10 @@ export async function GET(request: NextRequest) {
                 p_geom: refLoad.destination_geom,
             }).single();
 
-            if (coords) {
-                deliveryLat = coords.lat;
-                deliveryLng = coords.lng;
+            const c = coords as { lat: number; lng: number } | null;
+            if (c) {
+                deliveryLat = c.lat;
+                deliveryLng = c.lng;
             }
         }
 

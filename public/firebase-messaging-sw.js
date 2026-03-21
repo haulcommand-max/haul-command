@@ -1,88 +1,68 @@
+/* eslint-disable no-undef */
 /**
- * Firebase Cloud Messaging Service Worker — HAUL COMMAND
- * 
- * This service worker handles background push notifications from Firebase.
- * It intercepts FCM messages when the app is not in the foreground and
- * displays native browser notifications.
- * 
- * Required: VAPID key must be set as NEXT_PUBLIC_FIREBASE_VAPID_KEY
+ * Firebase Messaging Service Worker — Haul Command
+ *
+ * Handles background push notifications when the app is not in the foreground.
+ * Must live at /public root so it's served at / by Next.js.
+ *
+ * NOTE: Service workers can't access process.env.
+ * These public config values are NOT secrets — Firebase security is enforced
+ * by Firestore rules and App Check, not by hiding these values.
+ * Replace the placeholder values below with your actual Firebase config.
  */
 
-// Give the service worker access to Firebase Messaging.
 importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js');
 
-// Initialize the Firebase app in the service worker
 firebase.initializeApp({
-  apiKey: 'AIzaSyDjNvxkYHDkLVB8DH-YuvXPxOJwUnO-FUs',
-  authDomain: 'haul-command.firebaseapp.com',
-  projectId: 'haul-command',
-  storageBucket: 'haul-command.firebasestorage.app',
-  messagingSenderId: '744285439498',
-  appId: '1:744285439498:web:hc_push_web_app',
+    apiKey: 'YOUR_FIREBASE_API_KEY',                   // Replace with NEXT_PUBLIC_FIREBASE_API_KEY
+    authDomain: 'YOUR_PROJECT.firebaseapp.com',         // Replace with NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    projectId: 'YOUR_PROJECT_ID',                       // Replace with NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    messagingSenderId: 'YOUR_SENDER_ID',                // Replace with NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    appId: 'YOUR_APP_ID',                               // Replace with NEXT_PUBLIC_FIREBASE_APP_ID
 });
 
-const messaging = firebase.messaging();
+var messaging = firebase.messaging();
 
-// Handle background messages
-messaging.onBackgroundMessage((payload) => {
-  const notificationTitle = payload.notification?.title || 'Haul Command';
-  const notificationOptions = {
-    body: payload.notification?.body || '',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/badge-72.png',
-    tag: payload.data?.tag || 'hc-notification',
-    data: {
-      url: payload.data?.url || payload.fcmOptions?.link || '/',
-      ...payload.data,
-    },
-    actions: [
-      { action: 'open', title: 'Open' },
-      { action: 'dismiss', title: 'Dismiss' },
-    ],
-    vibrate: [200, 100, 200],
-    requireInteraction: payload.data?.priority === 'high',
-  };
+// Handle background messages (app not in foreground)
+messaging.onBackgroundMessage(function(payload) {
+    var notification = payload.notification || {};
+    var data = payload.data || {};
 
-  return self.registration.showNotification(notificationTitle, notificationOptions);
+    var title = notification.title || 'Haul Command';
+    var body = notification.body || '';
+
+    self.registration.showNotification(title, {
+        body: body,
+        icon: '/icons/icon-192.png',
+        badge: '/icons/badge-72.png',
+        tag: data.type || 'hc-notification',
+        renotify: true,
+        data: data,
+        actions: data.screen
+            ? [{ action: 'open', title: 'View' }]
+            : [],
+    });
 });
 
-// Handle notification click
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
+// Handle notification click — open the app to the right screen
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
 
-  const url = event.notification.data?.url || '/';
+    var screen = event.notification.data && event.notification.data.screen ? event.notification.data.screen : '/';
+    var targetUrl = self.location.origin + screen;
 
-  if (event.action === 'dismiss') return;
-
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // If we already have a window open, focus it
-      for (const client of clientList) {
-        if (client.url === url && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      // Otherwise open a new window
-      if (clients.openWindow) {
-        return clients.openWindow(url);
-      }
-    })
-  );
-});
-
-// Handle push subscription change
-self.addEventListener('pushsubscriptionchange', (event) => {
-  event.waitUntil(
-    self.registration.pushManager
-      .subscribe(event.oldSubscription.options)
-      .then((subscription) => {
-        // Post to your server to update the subscription
-        return fetch('/api/push/resubscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ subscription }),
-        });
-      })
-  );
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+            for (var i = 0; i < clientList.length; i++) {
+                var client = clientList[i];
+                if (client.url.indexOf(self.location.origin) !== -1 && 'focus' in client) {
+                    client.focus();
+                    if ('navigate' in client) client.navigate(targetUrl);
+                    return;
+                }
+            }
+            return clients.openWindow(targetUrl);
+        })
+    );
 });

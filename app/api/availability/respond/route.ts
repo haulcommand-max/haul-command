@@ -9,6 +9,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/utils/supabase/server';
+import { trySendNotification } from '@/lib/notifications/fcm';
+import { holdResponseTemplate } from '@/lib/notifications/templates';
 
 export const runtime = 'nodejs';
 
@@ -60,7 +62,16 @@ export async function POST(req: NextRequest) {
         responded_at: new Date().toISOString(),
     }).eq('id', hold_id);
 
-    // Notify broker of response (non-blocking)
+    // FCM push notification to broker (instant delivery)
+    const opProfile = await admin.from('profiles').select('display_name').eq('id', user.id).single();
+    const fcmResponse = holdResponseTemplate({
+        operatorName: opProfile.data?.display_name || 'An operator',
+        accepted: action === 'accept',
+        holdId: hold_id,
+    });
+    trySendNotification({ userId: hold.broker_id, ...fcmResponse }).catch(() => {});
+
+    // Notify broker of response (fallback queue)
     try {
         await admin.from('notification_queue').insert({
             user_id: hold.broker_id,
