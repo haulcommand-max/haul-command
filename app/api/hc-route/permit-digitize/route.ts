@@ -17,18 +17,11 @@ const supabase = createClient(
 
 // --- PDF TEXT EXTRACTION (pure JS, no external binary) ---
 async function extractTextFromPDF(buffer: ArrayBuffer): Promise<string> {
-  // For production: use pdf-parse, pdf.js, or Supabase Storage + Google Vision
-  // This impl handles text-based PDFs; scanned PDFs need OCR service
-  try {
-    const { default: pdfParse } = await import('pdf-parse');
-    const result = await pdfParse(Buffer.from(buffer));
-    return result.text;
-  } catch {
-    // Fallback: basic text extraction from PDF bytes
-    const text = Buffer.from(buffer).toString('utf-8');
-    const cleaned = text.replace(/[^\x20-\x7E\n]/g, ' ').replace(/\s+/g, ' ');
-    return cleaned;
-  }
+  // Pure fallback: basic text extraction from PDF bytes
+  // For production with scanned PDFs: integrate Google Vision or AWS Textract
+  const text = Buffer.from(buffer).toString('utf-8');
+  const cleaned = text.replace(/[^\x20-\x7E\n]/g, ' ').replace(/\s+/g, ' ');
+  return cleaned;
 }
 
 // --- LLM PARSING (OpenAI) ---

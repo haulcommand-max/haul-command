@@ -6,7 +6,7 @@
  * Triggered by Vercel Cron or GitHub Actions data-jobs.yml
  * Syncs vehicles, drivers, locations, HOS from all connected Motive accounts.
  *
- * Schedule: Every 15 minutes (*/15 * * * *)
+ * Schedule: Daily at noon (0 12 * * *)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
