@@ -13,6 +13,7 @@ export type HCRole =
   | 'broker_dispatcher'
   | 'both'
   | 'support_partner'
+  | 'fleet_owner'
   | 'observer_researcher';
 
 export interface RoleAction {
@@ -80,7 +81,7 @@ export const ROLE_CONFIGS: Record<HCRole, RoleConfig> = {
       { id: 'operator_rank_progress', label: 'Your Rank Progress', type: 'progress', icon: '📈' },
     ],
     hideIds: [
-      'hc_act_find_escorts',       // Don't ask an escort if they need an escort
+      'hc_act_find_escorts',
       'broker_rescue_primary',
       'post_load_primary',
     ],
@@ -124,10 +125,10 @@ export const ROLE_CONFIGS: Record<HCRole, RoleConfig> = {
 
   both: {
     id: 'both',
-    label: 'Both — Operator & Broker',
-    shortLabel: 'Both',
+    label: 'Operator & Broker',
+    shortLabel: 'Operator & Broker',
     icon: '🔄',
-    description: 'I do both — drive and dispatch',
+    description: 'I drive escorts and also dispatch loads',
     headline: 'Your Dual Command Center',
     subheadline: 'Switch between operator and broker mode. All tools, one surface.',
     firstQuestions: [
@@ -149,6 +150,37 @@ export const ROLE_CONFIGS: Record<HCRole, RoleConfig> = {
       { id: 'operator_side_activity', label: 'Operator Activity', type: 'live_feed', icon: '🚛' },
       { id: 'current_mode', label: 'Current Mode', type: 'shortcuts', icon: '🔄' },
       { id: 'dual_shortcuts', label: 'Quick Actions', type: 'shortcuts', icon: '⚡' },
+    ],
+    hideIds: [],
+  },
+
+  fleet_owner: {
+    id: 'fleet_owner',
+    label: 'Fleet Owner',
+    shortLabel: 'Fleet Owner',
+    icon: '🏗️',
+    description: 'I manage multiple trucks or escort vehicles',
+    headline: 'Manage Your Fleet.',
+    subheadline: 'Track vehicles, drivers, compliance, and earnings in one view.',
+    firstQuestions: [
+      'How many vehicles do you run?',
+      'Track driver compliance',
+      'View fleet earnings',
+    ],
+    primaryActions: [
+      { id: 'fo_fleet_dashboard', label: 'Fleet Dashboard', href: '/fleet', icon: '📊', description: 'Overview of all your vehicles and drivers' },
+      { id: 'fo_add_vehicle', label: 'Add Vehicle', href: '/fleet/add', icon: '🚛', description: 'Register a new vehicle to your fleet' },
+      { id: 'fo_compliance', label: 'Compliance', href: '/fleet/compliance', icon: '📋', description: 'Track certifications and expiration dates' },
+      { id: 'fo_earnings', label: 'Earnings', href: '/fleet/earnings', icon: '💰', description: 'Revenue tracking across your fleet' },
+    ],
+    secondaryActions: [
+      { id: 'fo_drivers', label: 'Manage Drivers', href: '/fleet/drivers', icon: '👥', description: 'Assign and manage your drivers' },
+      { id: 'fo_corridors', label: 'Fleet Corridors', href: '/corridors', icon: '🛤️', description: 'Corridors your fleet covers' },
+    ],
+    liveModules: [
+      { id: 'fleet_status', label: 'Fleet Status', type: 'metric', icon: '🚛' },
+      { id: 'driver_activity', label: 'Driver Activity', type: 'live_feed', icon: '👥' },
+      { id: 'fleet_earnings', label: 'Fleet Earnings', type: 'metric', icon: '💰' },
     ],
     hideIds: [],
   },
@@ -230,6 +262,7 @@ export const ROLE_LIST: HCRole[] = [
   'escort_operator',
   'broker_dispatcher',
   'both',
+  'fleet_owner',
   'support_partner',
   'observer_researcher',
 ];
