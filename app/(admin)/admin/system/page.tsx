@@ -197,6 +197,33 @@ export default async function SystemHealthPage() {
                     <Link href="/admin" style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, color: '#9ca3af', textDecoration: 'none' }}>← Admin</Link>
                 </div>
 
+                {/* Stripe Mode Banner — MOVE 1 */}
+                {(() => {
+                    const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+                    const isTest = stripeKey.startsWith('sk_test_');
+                    const isLive = stripeKey.startsWith('sk_live_');
+                    const notSet = !stripeKey;
+                    return (
+                        <div style={{
+                            padding: '16px 20px', borderRadius: 12, marginBottom: 16,
+                            background: isLive ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.12)',
+                            border: `2px solid ${isLive ? 'rgba(16,185,129,0.35)' : 'rgba(239,68,68,0.5)'}`,
+                            display: 'flex', alignItems: 'center', gap: 14,
+                            animation: isTest ? 'pulse-red 2s infinite' : 'none',
+                        }}>
+                            <span style={{ fontSize: 24 }}>{isLive ? '💳' : '🚨'}</span>
+                            <div>
+                                <div style={{ fontWeight: 900, fontSize: 14, color: isLive ? '#34d399' : '#f87171', letterSpacing: '0.02em' }}>
+                                    {isLive ? '✅ STRIPE LIVE MODE — Real Payments Active' : notSet ? '❌ STRIPE NOT CONFIGURED — No Payments Possible' : '🚨 STRIPE TEST MODE — NO REAL PAYMENTS BEING COLLECTED'}
+                                </div>
+                                <div style={{ fontSize: 11, color: isLive ? '#6ee7b7' : '#fca5a5', marginTop: 3 }}>
+                                    {isLive ? 'Subscriptions, escrow, boosts, and training enrollments are processing real charges.' : notSet ? 'Add STRIPE_SECRET_KEY (sk_live_...) to .env.local and Vercel.' : 'All 12 revenue features are active but collecting $0. Switch to sk_live_ keys in .env.local and Vercel environment variables NOW.'}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })()}
+
                 {/* pg_cron banner */}
                 <div style={{ padding: '14px 18px', borderRadius: 12, marginBottom: 24, background: pgCronEnabled ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${pgCronEnabled ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)'}`, display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span style={{ fontSize: 18 }}>{pgCronEnabled ? '✅' : '🔴'}</span>

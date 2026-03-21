@@ -178,7 +178,8 @@ export default function TrainingPage() {
                                         padding: '10px 20px', fontSize: 14, fontWeight: 700,
                                         cursor: 'pointer', transition: 'transform 0.2s',
                                     }}
-                                        onClick={(e) => { e.stopPropagation(); alert(`Enrolling in ${prog.title}...`); }}
+                                        data-enroll-program={prog.id}
+                                        onClick={(e) => e.stopPropagation()}
                                         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
                                         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                                     >Enroll Now</button>
@@ -188,6 +189,42 @@ export default function TrainingPage() {
                     );
                 })}
             </div>
+
+            {/* Enrollment handler script */}
+            <script dangerouslySetInnerHTML={{ __html: `
+                document.addEventListener('click', async function(e) {
+                    const btn = e.target.closest('[data-enroll-program]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    btn.disabled = true;
+                    btn.textContent = 'Processing...';
+                    try {
+                        const res = await fetch('/api/training', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                action: 'enroll',
+                                program_id: btn.dataset.enrollProgram,
+                                operator_id: 'current_user',
+                            }),
+                        });
+                        const data = await res.json();
+                        if (data.checkoutUrl) {
+                            window.location.href = data.checkoutUrl;
+                        } else if (data.ok) {
+                            window.location.href = '/training/success?enrollment=' + data.enrollment_id;
+                        } else {
+                            alert(data.error || 'Enrollment failed');
+                            btn.disabled = false;
+                            btn.textContent = 'Enroll Now';
+                        }
+                    } catch (err) {
+                        alert('Network error — try again');
+                        btn.disabled = false;
+                        btn.textContent = 'Enroll Now';
+                    }
+                });
+            `}} />
 
             {/* Credential Verification Section */}
             <div style={{
