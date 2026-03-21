@@ -1,127 +1,90 @@
-import { Metadata } from 'next/dist/lib/metadata/types/metadata-interface';
+import { Metadata } from 'next';
+import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { COMPANIES, COMPANY_TYPE_LABELS, COMPANY_TYPE_COLORS, getAllCompanySlugs, getCompanyBySlug } from '@/lib/data/company-seed';
 
-export async function generateStaticParams() {
-  return getAllCompanySlugs().map(slug => ({ slug }));
-}
+type Props = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const company = getCompanyBySlug(slug);
-  if (!company) return { title: 'Company Not Found' };
+  const supabase = await createClient();
+  const { data } = await supabase.from('company_listings').select('company_name, company_type, country_code, primary_corridors').eq('slug', slug).single();
+  if (!data) return { title: 'Company Not Found' };
+  const corridors = (data.primary_corridors || []).slice(0, 3).join(', ');
   return {
-    title: `${company.company_name} Escort Requirements and Pilot Car Services | Haul Command`,
-    description: `${company.company_name} requires an estimated ${company.estimated_annual_escorts.toLocaleString()} escort services annually across ${company.countries_operating.join(', ')}. Find certified pilot car operators for ${company.company_name} operations on Haul Command.`,
-    openGraph: {
-      title: `${company.company_name} — Escort & Pilot Car Requirements`,
-      description: `${company.description} Find available escort operators on Haul Command.`,
-    },
+    title: `${data.company_name} Escort Requirements and Pilot Car Services | Haul Command`,
+    description: `Find certified escort vehicles and pilot car services for ${data.company_name} loads. Coverage on ${corridors || 'major corridors'}. Real-time dispatch, compliance verification, and trusted operators.`,
   };
 }
 
-export default async function CompanyPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CompanyPage({ params }: Props) {
   const { slug } = await params;
-  const company = getCompanyBySlug(slug);
+  const supabase = await createClient();
+  const { data: company } = await supabase.from('company_listings').select('*').eq('slug', slug).single();
   if (!company) notFound();
 
-  const typeColor = COMPANY_TYPE_COLORS[company.company_type] || '#C6923A';
-  const typeLabel = COMPANY_TYPE_LABELS[company.company_type] || company.company_type;
+  const typeLabels: Record<string, string> = { autonomous: 'Autonomous Freight', broker: 'Freight Broker', fleet: 'Carrier Fleet', wind_energy: 'Wind Energy', mining: 'Mining', heavy_haul: 'Heavy Haul', logistics: 'Logistics' };
+  const typeColors: Record<string, { bg: string; text: string }> = {
+    autonomous: { bg: 'rgba(0,255,136,0.12)', text: '#00ff88' },
+    heavy_haul: { bg: 'rgba(255,200,0,0.12)', text: '#ffc800' },
+    wind_energy: { bg: 'rgba(0,212,255,0.12)', text: '#00d4ff' },
+    broker: { bg: 'rgba(167,139,250,0.12)', text: '#a78bfa' },
+    fleet: { bg: 'rgba(251,146,60,0.12)', text: '#fb923c' },
+    mining: { bg: 'rgba(156,163,175,0.12)', text: '#9ca3af' },
+    logistics: { bg: 'rgba(96,165,250,0.12)', text: '#60a5fa' },
+  };
+  const tc = typeColors[company.company_type] || typeColors.logistics;
+  const corridors = company.primary_corridors || [];
+  const countries = company.countries_operating || [company.country_code];
 
   return (
-    <div className="min-h-screen text-white" style={{ background: '#060b12', fontFamily: 'var(--font-body)' }}>
-      <style>{`
-        .claim-banner {background:linear-gradient(135deg,rgba(198,146,58,0.12),rgba(198,146,58,0.04));border:2px solid rgba(198,146,58,0.3);border-radius:20px;padding:32px;text-align:center;}
-        .claim-btn {display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:14px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#C6923A,#E0B05C,#C6923A);color:#0a0a0f;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(198,146,58,0.3);transition:all 0.2s;}
-        .claim-btn:hover {transform:translateY(-2px);box-shadow:0 8px 32px rgba(198,146,58,0.4);}
-        .stat-card {background:rgba(14,17,24,0.95);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;}
-        .corridor-tag {display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;background:rgba(198,146,58,0.08);border:1px solid rgba(198,146,58,0.15);color:#C6923A;}
-        .country-tag {display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#b0bac9;}
-      `}</style>
-
-      <nav className="border-b border-white/[0.06]" style={{ background: 'rgba(11,11,12,0.85)', backdropFilter: 'blur(24px)' }}>
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="text-sm font-black text-[#C6923A]">HAUL COMMAND</Link>
-          <Link href="/companies" className="text-xs font-semibold text-[#8fa3b8] hover:text-white">All Companies</Link>
+    <div style={{ minHeight: '100vh', background: '#0a0a1a', color: '#fff' }}>
+      {company.status === 'unclaimed' && (
+        <div style={{ background: 'linear-gradient(90deg, #b8860b, #daa520)', padding: '16px 24px', textAlign: 'center' }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: '#000' }}>🏆 UNCLAIMED — Is this your company? </span>
+          <a href={`mailto:enterprise@haulcommand.com?subject=Claim ${company.company_name}&body=I would like to claim the ${company.company_name} page on Haul Command.`} style={{ display: 'inline-block', marginLeft: 12, padding: '6px 20px', borderRadius: 6, background: '#000', color: '#daa520', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>Claim This Page</a>
         </div>
-      </nav>
-
-      <main className="max-w-5xl mx-auto px-4 py-12">
-        {/* UNCLAIMED BANNER */}
-        <div className="claim-banner mb-10">
-          <div className="text-[10px] font-black text-[#C6923A] uppercase tracking-[0.3em] mb-2">⚠️ UNCLAIMED</div>
-          <h2 className="text-lg font-black text-white mb-2">Is this your company?</h2>
-          <p className="text-sm text-[#8fa3b8] mb-5 max-w-md mx-auto">
-            Claim this page to manage your company profile, respond to escort requests, and connect with certified operators.
-          </p>
-          <Link href={`/claim?company=${company.slug}`}>
-            <button className="claim-btn">Claim This Page →</button>
-          </Link>
+      )}
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+          <span style={{ padding: '4px 14px', borderRadius: 20, background: tc.bg, color: tc.text, fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>{typeLabels[company.company_type] || company.company_type}</span>
+          <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{countries.join(' · ')}</span>
         </div>
+        <h1 style={{ fontSize: 40, fontWeight: 800, margin: '0 0 16px' }}>{company.company_name}</h1>
+        <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 32 }}>{company.description}</p>
+        {company.website && <a href={company.website} target="_blank" rel="noopener noreferrer" style={{ color: '#00d4ff', fontSize: 14 }}>{company.website} ↗</a>}
 
-        {/* Company Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full" style={{ background: `${typeColor}15`, color: typeColor, border: `1px solid ${typeColor}25` }}>{typeLabel}</span>
-            <span className="text-[10px] font-bold text-[#5A6577] uppercase tracking-wider">{company.hq_city}, {company.hq_country}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, margin: '40px 0' }}>
+          <div style={{ padding: 20, background: 'rgba(255,255,255,0.04)', borderRadius: 12, textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: '#00ff88' }}>{company.estimated_annual_escorts?.toLocaleString() || '—'}</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>Est. Annual Escorts</div>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3" style={{ fontFamily: 'var(--font-display)' }}>{company.company_name}</h1>
-          <p className="text-[#8fa3b8] text-sm sm:text-base max-w-2xl leading-relaxed">{company.description}</p>
-          {company.website && (
-            <a href={company.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-[#C6923A] hover:underline">
-              {company.website.replace('https://', '')} ↗
-            </a>
-          )}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          <div className="stat-card">
-            <div className="text-[10px] font-bold text-[#5A6577] uppercase tracking-wider mb-1">Est. Annual Escorts</div>
-            <div className="text-2xl font-black" style={{ color: typeColor, fontFamily: 'var(--font-mono, monospace)' }}>{company.estimated_annual_escorts.toLocaleString()}</div>
+          <div style={{ padding: 20, background: 'rgba(255,255,255,0.04)', borderRadius: 12, textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: '#00d4ff' }}>{countries.length}</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>Countries Operating</div>
           </div>
-          <div className="stat-card">
-            <div className="text-[10px] font-bold text-[#5A6577] uppercase tracking-wider mb-1">Countries Operating</div>
-            <div className="text-2xl font-black text-white" style={{ fontFamily: 'var(--font-mono, monospace)' }}>{company.countries_operating.length}</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-[10px] font-bold text-[#5A6577] uppercase tracking-wider mb-1">Related Corridors</div>
-            <div className="text-2xl font-black text-white" style={{ fontFamily: 'var(--font-mono, monospace)' }}>{company.related_corridors.length}</div>
+          <div style={{ padding: 20, background: 'rgba(255,255,255,0.04)', borderRadius: 12, textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: '#ffc800' }}>{corridors.length}</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>Primary Corridors</div>
           </div>
         </div>
 
-        {/* Countries */}
-        <div className="mb-10">
-          <h2 className="text-sm font-black text-white uppercase tracking-wider mb-4">Countries of Operation</h2>
-          <div className="flex flex-wrap gap-2">
-            {company.countries_operating.map(c => (
-              <span key={c} className="country-tag">{c}</span>
-            ))}
+        {corridors.length > 0 && (
+          <div style={{ marginBottom: 40 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>Primary Corridors</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {corridors.map((c: string, i: number) => (
+                <span key={i} style={{ padding: '6px 14px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', fontSize: 13, color: 'rgba(255,255,255,0.8)' }}>{c}</span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Corridors */}
-        <div className="mb-10">
-          <h2 className="text-sm font-black text-white uppercase tracking-wider mb-4">Related Corridors</h2>
-          <div className="flex flex-wrap gap-2">
-            {company.related_corridors.map(c => (
-              <Link key={c} href={`/corridors`}>
-                <span className="corridor-tag">{c}</span>
-              </Link>
-            ))}
-          </div>
+        <div style={{ padding: 32, background: 'rgba(0,212,255,0.06)', borderRadius: 16, border: '1px solid rgba(0,212,255,0.15)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 8px' }}>Need an escort for a {company.company_name} load?</h2>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginBottom: 20 }}>Haul Command connects you with certified operators on {company.company_name} corridors.</p>
+          <a href="/" style={{ display: 'inline-block', padding: '12px 32px', borderRadius: 10, background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>Find Escort Operators</a>
         </div>
-
-        {/* CTA */}
-        <div className="stat-card text-center py-10">
-          <h3 className="text-lg font-black text-white mb-2">Need Escort Services for {company.company_name} Loads?</h3>
-          <p className="text-sm text-[#8fa3b8] mb-5">Post a load on Haul Command and get matched with certified operators in minutes.</p>
-          <Link href="/load-board">
-            <button className="claim-btn">Post a Load →</button>
-          </Link>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
