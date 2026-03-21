@@ -19,6 +19,15 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Check if custom SQL was provided in the body
+    let customSQL: string | null = null;
+    try {
+        const body = await req.json();
+        if (body.sql && typeof body.sql === 'string') {
+            customSQL = body.sql;
+        }
+    } catch { /* no body or invalid JSON */ }
+
     // Use pg directly with the database URL from environment
     const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL || '';
     
@@ -50,6 +59,8 @@ export async function POST(req: NextRequest) {
         `ALTER TABLE stripe_webhook_events ENABLE ROW LEVEL SECURITY`,
         `ALTER TABLE driver_presence ENABLE ROW LEVEL SECURITY`,
     ];
+    // If custom SQL provided, use it as the statements to run
+    const FINAL_STATEMENTS = customSQL ? [customSQL] : STATEMENTS;
 
     const results: { sql: string; status: string; error?: string }[] = [];
 
@@ -71,7 +82,7 @@ export async function POST(req: NextRequest) {
             });
             await client.connect();
             
-            for (const sql of STATEMENTS) {
+            for (const sql of FINAL_STATEMENTS) {
                 try {
                     await client.query(sql);
                     results.push({ sql: sql.substring(0, 60), status: 'ok' });
@@ -87,7 +98,7 @@ export async function POST(req: NextRequest) {
             
             return NextResponse.json({
                 method: 'pg_direct',
-                total: STATEMENTS.length,
+                total: FINAL_STATEMENTS.length,
                 ok: results.filter(r => r.status === 'ok' || r.status === 'exists').length,
                 failed: results.filter(r => r.status === 'error').length,
                 results,
