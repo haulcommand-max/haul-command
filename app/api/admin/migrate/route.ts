@@ -53,11 +53,19 @@ export async function POST(req: NextRequest) {
 
     const results: { sql: string; status: string; error?: string }[] = [];
 
-    // Method 1: Try pg with POSTGRES_URL
-    if (dbUrl) {
+    // Method 1: Try pg with POSTGRES_URL (multiple variants)
+    const dbUrls = [
+        process.env.POSTGRES_URL_NON_POOLING,
+        process.env.POSTGRES_URL,
+        process.env.DATABASE_URL,
+    ].filter(Boolean) as string[];
+
+    for (const dbUrl of dbUrls) {
         try {
             const pg = await import('pg');
-            const client = new pg.default.Client({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } });
+            // Append sslmode if not present
+            const url = dbUrl.includes('sslmode') ? dbUrl : `${dbUrl}${dbUrl.includes('?') ? '&' : '?'}sslmode=no-verify`;
+            const client = new pg.default.Client({ connectionString: url, ssl: false as any });
             await client.connect();
             
             for (const sql of STATEMENTS) {
