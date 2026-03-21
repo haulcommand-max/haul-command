@@ -62,10 +62,13 @@ export async function POST(req: NextRequest) {
 
     for (const dbUrl of dbUrls) {
         try {
+            // Bypass self-signed certificate check for Supabase connection
+            process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
             const pg = await import('pg');
-            // Append sslmode if not present
-            const url = dbUrl.includes('sslmode') ? dbUrl : `${dbUrl}${dbUrl.includes('?') ? '&' : '?'}sslmode=no-verify`;
-            const client = new pg.default.Client({ connectionString: url, ssl: false as any });
+            const client = new pg.default.Client({ 
+                connectionString: dbUrl, 
+                ssl: { rejectUnauthorized: false } 
+            });
             await client.connect();
             
             for (const sql of STATEMENTS) {
