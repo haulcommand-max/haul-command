@@ -1,21 +1,8 @@
-/**
- * POST /api/emergency/breakdown
- * Track 4: Emergency Replacement Dispatch
- * 
- * When operator reports breakdown on active job:
- * 1. Creates breakdown_replacement record
- * 2. Finds 5 nearest available operators
- * 3. Sends FCM push notifications
- * 4. Notifies broker
- * 5. Sets premium rate at 125% of original
- */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'nodejs';
-
+// Emergency replacement dispatch API
+// Track 4: When operator reports breakdown, find nearest replacement
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient();
@@ -23,122 +10,77 @@ export async function POST(req: NextRequest) {
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await req.json();
-    const {
-      job_id,
-      breakdown_lat,
-      breakdown_lng,
-      corridor,
-      miles_completed = 0,
-      miles_remaining = 0,
-      original_rate = 380,
-    } = body;
+    const { job_id, breakdown_lat, breakdown_lng, miles_completed, miles_remaining, original_rate } = body;
+    if (!job_id) return NextResponse.json({ error: 'job_id required' }, { status: 400 });
 
-    if (!job_id || !breakdown_lat || !breakdown_lng) {
-      return NextResponse.json({ error: 'job_id, breakdown_lat, breakdown_lng required' }, { status: 400 });
-    }
+    const premiumRate = (original_rate || 380) * 1.25; // 125% premium
+    const partialPayment = ((miles_completed || 0) / ((miles_completed || 0) + (miles_remaining || 1))) * (original_rate || 380);
 
-    const admin = getSupabaseAdmin();
-    const premiumRate = Math.round(original_rate * 1.25 * 100) / 100;
+    // Create emergency replacement record
+    const { data: replacement, error } = await supabase.from('emergency_replacements').insert({
+      original_job_id: job_id,
+      breakdown_operator_id: user.id,
+      breakdown_lat: breakdown_lat || null,
+      breakdown_lng: breakdown_lng || null,
+      miles_completed: miles_completed || 0,
+      miles_remaining: miles_remaining || 0,
+      original_rate: original_rate || 380,
+      premium_rate: premiumRate,
+      partial_payment: partialPayment,
+      status: 'searching',
+    }).select().single();
 
-    // Create breakdown record
-    const { data: breakdown, error: breakdownErr } = await admin
-      .from('breakdown_replacements')
-      .insert({
-        original_job_id: job_id,
-        original_operator_id: user.id,
-        breakdown_lat,
-        breakdown_lng,
-        breakdown_location: { lat: breakdown_lat, lng: breakdown_lng },
-        corridor: corridor || 'Unknown',
-        miles_completed,
-        miles_remaining,
-        original_rate,
-        premium_rate: premiumRate,
-        status: 'searching',
-      })
-      .select()
-      .single();
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    if (breakdownErr) {
-      console.error('[Breakdown] Insert error:', breakdownErr);
-      return NextResponse.json({ error: 'Failed to create breakdown record' }, { status: 500 });
-    }
-
-    // Find nearest available operators (simplified — uses profiles with lat/lng)
-    // In production, this would query motive_locations or operator GPS data
-    const { data: nearbyOperators } = await admin
-      .from('profiles')
-      .select('id, full_name, phone_e164')
-      .neq('id', user.id)
+    // Query available operators near breakdown location
+    // In production, this would use PostGIS for geospatial queries
+    // For now, query all available operators and the FCM push layer handles targeting
+    const today = new Date().toISOString().split('T')[0];
+    const { data: availableOps } = await supabase
+      .from('operator_availability')
+      .select('operator_id')
+      .eq('available_date', today)
+      .eq('status', 'available')
       .limit(5);
 
-    const notifiedIds = (nearbyOperators || []).map((o: any) => o.id);
+    const notifiedIds = (availableOps || []).map(o => o.operator_id);
 
-    // Update breakdown with notified operators
-    await admin
-      .from('breakdown_replacements')
-      .update({
-        notified_operators: notifiedIds,
-        status: 'notified',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', breakdown.id);
+    // Update replacement with notified operators
+    await supabase.from('emergency_replacements')
+      .update({ notified_operators: notifiedIds, status: 'notified' })
+      .eq('id', replacement.id);
 
-    // Send FCM push notifications
-    try {
-      const { data: tokens } = await admin
-        .from('push_tokens')
-        .select('token')
-        .in('user_id', notifiedIds);
+    // Fire FCM push notifications to available operators
+    if (notifiedIds.length > 0) {
+      try {
+        const { data: tokens } = await supabase
+          .from('push_tokens')
+          .select('token')
+          .in('user_id', notifiedIds);
 
-      if (tokens && tokens.length > 0 && process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-        // Dynamic import to avoid build issues if firebase-admin not configured
-        const firebaseAdmin = await import('firebase-admin');
-        if (firebaseAdmin.apps?.length === 0) {
-          firebaseAdmin.initializeApp({
-            credential: firebaseAdmin.credential.cert(
-              JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-            ),
-          });
-        }
-
-        const messaging = firebaseAdmin.messaging();
-        const pushTokens = tokens.map((t: any) => t.token).filter(Boolean);
-
-        if (pushTokens.length > 0) {
-          await messaging.sendEachForMulticast({
-            tokens: pushTokens,
-            notification: {
+        if (tokens && tokens.length > 0) {
+          await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ''}/api/fcm/send`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              tokens: tokens.map(t => t.token),
               title: '🚨 URGENT — Breakdown Replacement Needed',
-              body: `Replacement needed on ${corridor || 'active corridor'} — $${premiumRate}/day — ${miles_remaining} miles remaining`,
-            },
-            data: {
-              type: 'breakdown_replacement',
-              breakdown_id: breakdown.id,
-              corridor: corridor || '',
-              premium_rate: premiumRate.toString(),
-              miles_remaining: miles_remaining.toString(),
-            },
-            android: { priority: 'high' as const },
-            apns: { payload: { aps: { sound: 'default', badge: 1 } } },
-          });
+              body: `Emergency escort replacement on active corridor. $${premiumRate.toFixed(0)}/day premium rate. ${miles_remaining || '?'} miles remaining.`,
+              data: { type: 'emergency_replacement', replacement_id: replacement.id, job_id },
+            }),
+          }).catch(() => {});
         }
-      } else {
-        console.log(`[Breakdown:dry-run] Would notify ${notifiedIds.length} operators for breakdown ${breakdown.id}`);
-      }
-    } catch (pushErr) {
-      console.error('[Breakdown] FCM push error (non-fatal):', pushErr);
+      } catch { /* FCM failure is non-fatal */ }
     }
 
     return NextResponse.json({
-      ok: true,
-      breakdown_id: breakdown.id,
+      replacement_id: replacement.id,
       premium_rate: premiumRate,
+      partial_payment: partialPayment,
       operators_notified: notifiedIds.length,
       status: 'notified',
     });
-  } catch (err: any) {
-    console.error('[Breakdown] Error:', err);
-    return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'Emergency dispatch failed' }, { status: 500 });
   }
 }
