@@ -1,19 +1,21 @@
-// app/api/location/update/route.ts
-// ═══════════════════════════════════════════════════════════════
-// HAUL COMMAND — Live Location Update Receiver
-// POST: Upsert operator location (only if operator is available)
-// DELETE: Clear operator location (operator went unavailable)
-// ═══════════════════════════════════════════════════════════════
-
+/**
+ * HAUL COMMAND — Operator Location Update API
+ * POST /api/location/update
+ *
+ * Accepts GPS position from phone or Motive.
+ * Upserts to operator_locations table.
+ * Only stores if operator is currently available.
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
-    const { operator_id, lat, lng, accuracy, heading, speed, timestamp } = body;
+    const body = await req.json();
+    const { operator_id, lat, lng, accuracy, heading, speed, timestamp, source } = body;
 
     if (!operator_id || lat == null || lng == null) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -21,64 +23,37 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseAdmin();
 
-    // Only store if operator is currently marked available
+    // Only store if operator is available (check profile)
     const { data: profile } = await supabase
       .from('profiles')
-      .select('id, availability_status')
+      .select('availability_status')
       .eq('id', operator_id)
       .single();
 
-    if (!profile) {
-      return NextResponse.json({ error: 'Operator not found' }, { status: 404 });
+    if (!profile || profile.availability_status !== 'available') {
+      return NextResponse.json({ error: 'Operator not available' }, { status: 403 });
     }
 
-    // Allow update regardless of availability_status field existence
-    // (some operators may not have this field yet)
-    const { error } = await supabase
-      .from('operator_locations')
-      .upsert(
-        {
-          operator_id,
-          lat,
-          lng,
-          accuracy: accuracy || null,
-          heading: heading || null,
-          speed: speed || null,
-          source: 'phone_gps',
-          updated_at: timestamp || new Date().toISOString(),
-        },
-        { onConflict: 'operator_id' }
-      );
+    // Upsert location
+    const { error } = await supabase.from('operator_locations').upsert({
+      operator_id,
+      lat,
+      lng,
+      accuracy: accuracy ?? null,
+      heading: heading ?? null,
+      speed: speed ?? null,
+      source: source ?? 'phone',
+      updated_at: timestamp ?? new Date().toISOString(),
+    }, { onConflict: 'operator_id' });
 
     if (error) {
-      console.error('[Location Update] DB error:', error);
-      return NextResponse.json({ error: 'Database error' }, { status: 500 });
+      console.error('[Location] Upsert error:', error.message);
+      return NextResponse.json({ error: 'Failed to update location' }, { status: 500 });
     }
 
-    return NextResponse.json({ stored: true, operator_id });
+    return NextResponse.json({ ok: true });
   } catch (err: any) {
-    console.error('[Location Update] Error:', err.message);
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { operator_id } = body;
-
-    if (!operator_id) {
-      return NextResponse.json({ error: 'Missing operator_id' }, { status: 400 });
-    }
-
-    const supabase = getSupabaseAdmin();
-    await supabase
-      .from('operator_locations')
-      .delete()
-      .eq('operator_id', operator_id);
-
-    return NextResponse.json({ cleared: true, operator_id });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('[Location] Error:', err.message);
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
 }
