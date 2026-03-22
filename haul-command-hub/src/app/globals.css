@@ -177,3 +177,129 @@ a[class*="rounded-xl"], a[class*="rounded-2xl"] {
 .text-gray-600 {
   color: #6b7280 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ANTI-GRAVITY ANIMATION SYSTEM
+   Physics-based micro-animations for premium feel
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Card Hover Lift ──────────────────────────────────────── */
+.ag-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ag-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(245, 159, 10, 0.08), 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ── Sponsored Glow Ring ──────────────────────────────────── */
+@keyframes ag-glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(198, 146, 58, 0.3), inset 0 0 4px rgba(198, 146, 58, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(198, 146, 58, 0.5), inset 0 0 8px rgba(198, 146, 58, 0.2); }
+}
+.ag-sponsored-glow {
+  border-color: rgba(198, 146, 58, 0.5) !important;
+  animation: ag-glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Filter Chip Snap ─────────────────────────────────────── */
+.ag-chip-snap {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
+}
+.ag-chip-snap:active, .ag-chip-snap.active {
+  transform: scale(1.05);
+}
+
+/* ── Slide Up Entry ───────────────────────────────────────── */
+@keyframes ag-slide-up-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ag-slide-up {
+  animation: ag-slide-up-in 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* ── Staggered children delay ─────────────────────────────── */
+.ag-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.ag-stagger > *:nth-child(2) { animation-delay: 50ms; }
+.ag-stagger > *:nth-child(3) { animation-delay: 100ms; }
+.ag-stagger > *:nth-child(4) { animation-delay: 150ms; }
+.ag-stagger > *:nth-child(5) { animation-delay: 200ms; }
+.ag-stagger > *:nth-child(6) { animation-delay: 250ms; }
+.ag-stagger > *:nth-child(7) { animation-delay: 300ms; }
+.ag-stagger > *:nth-child(8) { animation-delay: 350ms; }
+.ag-stagger > *:nth-child(9) { animation-delay: 400ms; }
+.ag-stagger > *:nth-child(10) { animation-delay: 450ms; }
+
+/* ── Badge Pop ────────────────────────────────────────────── */
+@keyframes ag-badge-pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.ag-badge-pop {
+  animation: ag-badge-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── HOT Badge Pulse ──────────────────────────────────────── */
+@keyframes pulse-gold {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.ag-hot-pulse {
+  animation: pulse-gold 1.5s ease-in-out infinite;
+}
+
+/* ── Rank Glow (Leaderboard) ──────────────────────────────── */
+@keyframes ag-rank-shimmer {
+  0% { text-shadow: 0 0 4px rgba(245, 159, 10, 0.3); }
+  50% { text-shadow: 0 0 12px rgba(245, 159, 10, 0.6); }
+  100% { text-shadow: 0 0 4px rgba(245, 159, 10, 0.3); }
+}
+.ag-rank-glow {
+  animation: ag-rank-shimmer 3s ease-in-out infinite;
+}
+
+/* ── Leaderboard Row Slide ────────────────────────────────── */
+.ag-lb-row {
+  animation: ag-slide-up-in 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+/* ── Follow Button Beat ───────────────────────────────────── */
+@keyframes ag-heart-beat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  50% { transform: scale(0.95); }
+  75% { transform: scale(1.05); }
+}
+.ag-follow-beat {
+  animation: ag-heart-beat 0.4s ease-out;
+}
+
+/* ── Section Enter ────────────────────────────────────────── */
+@keyframes ag-section-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ag-section-enter {
+  animation: ag-section-fade-up 0.5s ease-out forwards;
+}
+
+/* ── Press Feedback ───────────────────────────────────────── */
+.ag-press {
+  transition: transform 0.1s ease;
+}
+.ag-press:active {
+  transform: scale(0.97);
+}
+
+/* ── Counter Tick (for number animations) ─────────────────── */
+@keyframes ag-count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ag-tick {
+  animation: ag-count-up 0.6s ease-out forwards;
+}

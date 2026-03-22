@@ -1,162 +1,189 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
-interface Alert { id: string; jurisdiction_code: string; alert_type: string; title: string; description: string; old_value: string; new_value: string; effective_date: string; published_at: string; }
+/* ══════════════════════════════════════════════════════
+   CORRIDOR ALERTS — /tools/regulation-alerts
+   Delay & Shutdown Prevention — pure painkiller
+   ══════════════════════════════════════════════════════ */
 
-export default function RegulationAlertsPage() {
-    const [alerts, setAlerts] = useState<Alert[]>([]);
-    const [email, setEmail] = useState('');
-    const [subJurisdictions, setSubJurisdictions] = useState<string[]>([]);
-    const [subscribed, setSubscribed] = useState(false);
-    const [stateSearch, setStateSearch] = useState('');
+interface Alert {
+  id: string;
+  corridorName: string;
+  alertType: 'weather' | 'curfew' | 'shutdown' | 'construction' | 'dot_advisory';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  title: string;
+  message: string;
+  startTime: string;
+  endTime: string;
+  source: string;
+}
 
-    const JURISDICTIONS = [
-        'US-TX', 'US-FL', 'US-CA', 'US-WA', 'US-GA', 'US-IL', 'US-NY', 'US-PA', 'US-OH', 'US-NC',
-        'AU', 'CA-ON', 'CA-AB', 'CA-BC', 'GB', 'NZ', 'ZA', 'DE', 'NL', 'AE', 'BR', 'FR', 'ES', 'IT',
-    ];
+const CORRIDORS = [
+  'All Corridors',
+  'I-10 Texas Triangle', 'I-95 East Coast', 'I-5 West Coast', 'I-40 Cross Country',
+  'Oklahoma Wind Belt', 'Gulf Coast Industrial', 'I-20 Southern Corridor',
+  'I-70 Midwest', 'I-80 Northern Route', 'I-35 Central',
+];
 
-    useEffect(() => {
-        supabase.from('hc_regulation_alerts').select('*').eq('is_published', true)
-            .order('published_at', { ascending: false }).limit(20)
-            .then(({ data }) => setAlerts(data || []));
-    }, []);
+export default function CorridorAlertsPage() {
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCorridor, setSelectedCorridor] = useState('All Corridors');
 
-    const handleSubscribe = async () => {
-        if (!email) return;
-        await supabase.from('hc_alert_subscriptions').insert({
-            email, subscription_type: subJurisdictions.length ? 'jurisdiction' : 'all',
-            subscribed_jurisdictions: subJurisdictions.length ? subJurisdictions : null,
-            source: 'alerts_page',
-        });
-        setSubscribed(true);
-    };
+  useEffect(() => {
+    fetchAlerts();
+  }, [selectedCorridor]);
 
-    const toggleJurisdiction = (j: string) => {
-        setSubJurisdictions(prev => prev.includes(j) ? prev.filter(x => x !== j) : [...prev, j]);
-    };
+  async function fetchAlerts() {
+    setLoading(true);
+    try {
+      const params = selectedCorridor !== 'All Corridors' ? `?corridor=${encodeURIComponent(selectedCorridor)}` : '';
+      const res = await fetch(`/api/alerts/corridor${params}`);
+      const data = await res.json();
+      setAlerts(data.alerts || []);
+    } catch {
+      setAlerts([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    const alertTypeIcon: Record<string, string> = {
-        threshold_change: '📐', new_requirement: '🆕', removed_requirement: '🗑️',
-        authority_update: '🏛️', seasonal_restriction: '🎄', curfew_change: '⏰',
-    };
+  function getSeverityStyle(severity: string) {
+    switch (severity) {
+      case 'critical': return { bg: 'bg-red-500/10 border-red-500/30', text: 'text-red-400', badge: 'bg-red-500 text-white', icon: '🚨' };
+      case 'high': return { bg: 'bg-orange-500/10 border-orange-500/30', text: 'text-orange-400', badge: 'bg-orange-500 text-white', icon: '⚠️' };
+      case 'medium': return { bg: 'bg-yellow-500/10 border-yellow-500/30', text: 'text-yellow-400', badge: 'bg-yellow-500/80 text-black', icon: '⚡' };
+      default: return { bg: 'bg-blue-500/10 border-blue-500/30', text: 'text-blue-400', badge: 'bg-blue-500 text-white', icon: 'ℹ️' };
+    }
+  }
 
-    return (
-        <><Navbar />
-            <main className="flex-grow max-w-5xl mx-auto px-4 py-16">
-                <header className="mb-16">
-                    <div className="flex items-center space-x-4 mb-4">
-                        <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded italic">LIVE ALERTS</span>
-                        <span className="bg-accent text-black text-[10px] font-black px-2 py-0.5 rounded italic">FREE</span>
+  function getAlertTypeLabel(type: string) {
+    switch (type) {
+      case 'weather': return '🌧️ Weather';
+      case 'curfew': return '🕐 Curfew';
+      case 'shutdown': return '🚫 Shutdown';
+      case 'construction': return '🏗️ Construction';
+      case 'dot_advisory': return '📋 DOT Advisory';
+      default: return '📋 Alert';
+    }
+  }
+
+  function timeRemaining(endTime: string) {
+    const diff = new Date(endTime).getTime() - Date.now();
+    if (diff <= 0) return 'Expired';
+    const hours = Math.floor(diff / 3600000);
+    if (hours >= 24) return `${Math.floor(hours / 24)}d ${hours % 24}h remaining`;
+    return `${hours}h remaining`;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <main className="flex-grow max-w-7xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
+        <nav className="text-xs text-gray-500 mb-6">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span className="mx-2">›</span>
+          <Link href="/tools/escort-calculator" className="hover:text-accent">Tools</Link>
+          <span className="mx-2">›</span>
+          <span className="text-white">Corridor Alerts</span>
+        </nav>
+
+        <header className="mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-red-400 text-xs font-bold uppercase tracking-wider">Live Alerts</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3">
+            Corridor <span className="text-accent">Alerts</span>
+          </h1>
+          <p className="text-gray-400 text-base sm:text-lg max-w-2xl">
+            Weather delays, DOT shutdowns, weekend curfews, and construction restrictions — 
+            before they cost you a day of revenue.
+          </p>
+        </header>
+
+        {/* Corridor Filter Tabs */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {CORRIDORS.map(c => (
+            <button
+              key={c}
+              onClick={() => setSelectedCorridor(c)}
+              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                selectedCorridor === c
+                  ? 'bg-accent text-black'
+                  : 'bg-white/5 text-gray-400 hover:text-white border border-white/10 hover:border-accent/30'
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+
+        {/* Alerts List */}
+        {loading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 animate-pulse">
+                <div className="h-4 bg-white/5 rounded w-1/3 mb-3" />
+                <div className="h-3 bg-white/5 rounded w-2/3" />
+              </div>
+            ))}
+          </div>
+        ) : alerts.length === 0 ? (
+          <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-8 text-center">
+            <div className="text-4xl mb-4">✅</div>
+            <h3 className="text-green-400 font-bold text-lg mb-2">All Clear</h3>
+            <p className="text-gray-400 text-sm">No active alerts for {selectedCorridor === 'All Corridors' ? 'any corridor' : selectedCorridor}. Conditions are favorable for movement.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {alerts.map(alert => {
+              const style = getSeverityStyle(alert.severity);
+              return (
+                <div key={alert.id} className={`rounded-2xl border p-6 ${style.bg} transition-all hover:scale-[1.005]`}>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className={`text-[10px] font-black px-2.5 py-1 rounded-full ${style.badge} uppercase tracking-wider`}>
+                        {alert.severity}
+                      </span>
+                      <span className="text-xs text-gray-500">{getAlertTypeLabel(alert.alertType)}</span>
+                      <span className="text-xs text-gray-600">•</span>
+                      <span className="text-xs text-gray-500">{alert.corridorName}</span>
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter">
-                        REGULATION <span className="text-accent underline decoration-4 underline-offset-4">CHANGE ALERTS</span>
-                    </h1>
-                    <p className="text-gray-400 text-lg max-w-3xl mt-4">
-                        Get notified instantly when escort requirements change in your operating states.
-                        Never get caught by a surprise regulation update again.
-                    </p>
-                </header>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    {/* Subscribe Panel */}
-                    <div className="lg:col-span-5">
-                        {!subscribed ? (
-                            <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 sticky top-8">
-                                <h2 className="text-white font-black text-xl mb-6">🔔 Subscribe to Alerts</h2>
-                                <div className="space-y-4">
-                                    <input type="email" placeholder="your@email.com" required
-                                        className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-accent outline-none"
-                                        value={email} onChange={e => setEmail(e.target.value)} />
-                                    <div>
-                                        <p className="text-gray-500 text-[10px] font-black uppercase mb-3">Select Jurisdictions (or leave blank for all)</p>
-                                        <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
-                                            {JURISDICTIONS.map(j => (
-                                                <button key={j} onClick={() => toggleJurisdiction(j)}
-                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${subJurisdictions.includes(j) ? 'bg-accent text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
-                                                        }`}>{j}</button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <button onClick={handleSubscribe} disabled={!email}
-                                        className="w-full bg-accent text-black py-4 rounded-xl font-black text-sm hover:bg-white transition-all disabled:opacity-50">
-                                        SUBSCRIBE — FREE
-                                    </button>
-                                    <p className="text-gray-600 text-[10px] text-center">Instant alerts. No spam. Unsubscribe anytime.</p>
-                                </div>
-                                <div className="mt-6 pt-6 border-t border-white/5 space-y-3">
-                                    <p className="text-gray-500 text-[10px] font-black uppercase">What you&apos;ll get:</p>
-                                    <div className="space-y-2 text-xs text-gray-400">
-                                        <p>📐 Threshold changes (width, height, length triggers)</p>
-                                        <p>🆕 New escort requirements added</p>
-                                        <p>🏛️ Authority contact updates</p>
-                                        <p>🎄 Seasonal restrictions &amp; holiday curfews</p>
-                                        <p>⏰ Travel time window changes</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="bg-green-500/10 border border-green-500/20 rounded-[32px] p-8 text-center">
-                                <div className="text-5xl mb-4">🔔</div>
-                                <h2 className="text-white font-black text-2xl">Subscribed!</h2>
-                                <p className="text-gray-400 mt-2">You&apos;ll get alerts for {subJurisdictions.length ? subJurisdictions.join(', ') : 'all jurisdictions'}.</p>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Alert Feed */}
-                    <div className="lg:col-span-7">
-                        <h2 className="text-white font-black text-xl mb-6">Recent Regulation Changes</h2>
-                        {alerts.length === 0 ? (
-                            <div className="bg-white/5 border border-dashed border-white/10 rounded-[32px] p-12 text-center">
-                                <p className="text-gray-500 text-xl mb-2">No alerts yet</p>
-                                <p className="text-gray-600 text-sm">Subscribe above to be first to know when regulations change.</p>
-                                <div className="mt-8 space-y-3">
-                                    <p className="text-gray-500 text-[10px] font-black uppercase mb-4">Example Alerts</p>
-                                    {[
-                                        { type: 'threshold_change', title: 'Texas Width Threshold Changed', desc: '2-escort requirement lowered from 14ft to 13.5ft width', date: 'Mar 2026' },
-                                        { type: 'new_requirement', title: 'Florida Affidavit Now Required', desc: 'Loads 15ft+ must include route clearance affidavit', date: 'Feb 2026' },
-                                        { type: 'seasonal_restriction', title: 'Holiday Curfew: Memorial Day 2026', desc: '23 states restricting oversize movement May 23-26', date: 'May 2026' },
-                                    ].map((ex, i) => (
-                                        <div key={i} className="bg-white/[0.03] border border-white/5 rounded-xl p-4 text-left">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span>{alertTypeIcon[ex.type]}</span>
-                                                <p className="text-white font-bold text-sm">{ex.title}</p>
-                                            </div>
-                                            <p className="text-gray-500 text-xs">{ex.desc}</p>
-                                            <p className="text-gray-600 text-[10px] mt-1">{ex.date}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {alerts.map(a => (
-                                    <div key={a.id} className="bg-white/5 border border-white/10 rounded-xl p-6">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <span className="text-xl">{alertTypeIcon[a.alert_type] || '📢'}</span>
-                                            <div>
-                                                <p className="text-white font-black text-sm">{a.title}</p>
-                                                <p className="text-gray-500 text-[10px]">{a.jurisdiction_code} • {a.alert_type.replace(/_/g, ' ')}</p>
-                                            </div>
-                                        </div>
-                                        <p className="text-gray-400 text-sm mt-2">{a.description}</p>
-                                        {a.old_value && a.new_value && (
-                                            <div className="flex gap-4 mt-3">
-                                                <span className="bg-red-500/10 text-red-400 px-2 py-1 rounded text-xs">Was: {a.old_value}</span>
-                                                <span className="bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs">Now: {a.new_value}</span>
-                                            </div>
-                                        )}
-                                        {a.effective_date && <p className="text-gray-600 text-[10px] mt-2">Effective: {new Date(a.effective_date).toLocaleDateString()}</p>}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    <span className="text-xs text-gray-500 tabular-nums">{timeRemaining(alert.endTime)}</span>
+                  </div>
+                  <h3 className={`font-bold text-lg mb-2 ${style.text}`}>
+                    {style.icon} {alert.title}
+                  </h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">{alert.message}</p>
                 </div>
-            </main>
-        </>
-    );
+              );
+            })}
+          </div>
+        )}
+
+        {/* Subscribe CTA */}
+        <div className="mt-12 bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-8 text-center">
+          <h2 className="text-white font-bold text-2xl mb-3">Get Alerts Before Your Run</h2>
+          <p className="text-gray-400 text-sm mb-6 max-w-lg mx-auto">
+            Subscribe to corridor-specific alerts and get notified via push notification 
+            when weather, curfews, or shutdowns affect your route.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+            />
+            <button className="bg-accent text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors whitespace-nowrap">
+              Subscribe — $9/mo
+            </button>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }

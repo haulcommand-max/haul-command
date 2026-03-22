@@ -166,6 +166,55 @@ export async function POST(request: NextRequest) {
           // Future: grant training access
         }
 
+        // ── AdGrid Campaign Activation ──────────────────────────
+        if (type === 'adgrid_campaign') {
+          const durationDays = parseInt(metadata.duration_days ?? '30');
+          const startDate = new Date();
+          const endDate = new Date(startDate.getTime() + durationDays * 24 * 3600000);
+
+          try {
+            await sb.from('adgrid_campaigns').insert({
+              company_name: metadata.company_name ?? 'Unknown',
+              contact_email: session.customer_email ?? session.customer_details?.email ?? '',
+              ad_type: metadata.ad_type ?? 'sponsored_listing',
+              target_corridors: JSON.parse(metadata.target_corridors ?? '[]'),
+              target_countries: JSON.parse(metadata.target_countries ?? '[]'),
+              target_audience: metadata.target_audience ?? 'both',
+              duration_days: durationDays,
+              total_spend: (session.amount_total ?? 0) / 100,
+              status: 'active',
+              stripe_session_id: session.id,
+              start_date: startDate.toISOString(),
+              end_date: endDate.toISOString(),
+            });
+            console.log(`✅ AdGrid campaign activated: ${metadata.company_name} (${durationDays} days)`);
+          } catch (e) {
+            console.error('AdGrid campaign insert error:', e);
+          }
+        }
+
+        // ── Ad Boost Activation ─────────────────────────────────
+        if (type === 'ad_boost') {
+          const durationDays = parseInt(metadata.duration_days ?? '7');
+          const startDate = new Date();
+          const endDate = new Date(startDate.getTime() + durationDays * 24 * 3600000);
+
+          try {
+            await sb.from('ad_boosts').insert({
+              operator_id: metadata.operator_id,
+              duration_days: durationDays,
+              start_date: startDate.toISOString(),
+              end_date: endDate.toISOString(),
+              amount_paid: (session.amount_total ?? 0) / 100,
+              stripe_session_id: session.id,
+              status: 'active',
+            });
+            console.log(`✅ Ad boost activated: operator=${metadata.operator_id} (${durationDays} days)`);
+          } catch (e) {
+            console.error('Ad boost insert error:', e);
+          }
+        }
+
         break;
       }
 

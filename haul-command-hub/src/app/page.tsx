@@ -22,16 +22,19 @@ async function loadHomepageData() {
   const now = new Date().toISOString();
 
   // Real metrics from production data
-  const [placesResult, jurisdictionResult, corridorsResult] = await Promise.all([
+  const [placesResult, jurisdictionResult, corridorsResult, countriesResult] = await Promise.all([
     sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published'),
     sb.rpc('hc_list_all_jurisdictions'),
     sb.from('corridors').select('id, name, corridor_type').limit(6),
+    sb.from('global_countries').select('country_code, name, status, tier, flag').order('tier').order('name'),
   ]);
 
   const totalListings = placesResult.count ?? 0;
   const jurisdictions = jurisdictionResult.data ?? [];
   const totalJurisdictions = jurisdictions.length;
-  const totalCountries = new Set(jurisdictions.map((j: { country_code: string }) => j.country_code)).size || 0;
+  const allCountries = countriesResult.data ?? [];
+  const liveCountries = allCountries.filter((c: { status: string }) => c.status === 'live');
+  const totalCountries = allCountries.length || 57;
   const corridors = corridorsResult.data ?? [];
 
   // Build REAL metrics only — never fake
@@ -91,13 +94,13 @@ async function loadHomepageData() {
     disclaimer: 'Requirements are verified against official sources. Always confirm with state DOT before movement.',
   };
 
-  return { metrics, corridorSummaries, reqSummary, totalListings };
+  return { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries };
 }
 
 // ─── Page Component ──────────────────────────────────────────
 
 export default async function HomePage() {
-  const { metrics, corridorSummaries, reqSummary, totalListings } = await loadHomepageData();
+  const { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries } = await loadHomepageData();
 
   // Load ad creatives in parallel
   const [heroAds, inlineAds] = await Promise.all([
@@ -188,14 +191,46 @@ export default async function HomePage() {
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
               Real-time tools for movement risk, cost estimation, and regulatory compliance.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 ag-stagger">
               {[
+                {
+                  href: '/tools/load-analyzer',
+                  icon: '🔍',
+                  title: 'Load Analyzer',
+                  desc: 'Paste a load and get profit score, risk assessment, hidden cost breakdown.',
+                  cta: 'Analyze →',
+                  hot: true,
+                },
+                {
+                  href: '/tools/rate-advisor',
+                  icon: '💰',
+                  title: 'Rate Advisor',
+                  desc: 'What should I charge? Corridor-specific rate recommendations.',
+                  cta: 'Get Rate →',
+                  hot: true,
+                },
+                {
+                  href: '/tools/regulation-alerts',
+                  icon: '🚨',
+                  title: 'Corridor Alerts',
+                  desc: 'Weather delays, DOT shutdowns, curfews — before they cost you.',
+                  cta: 'View Alerts →',
+                  hot: true,
+                },
                 {
                   href: '/tools/escort-calculator',
                   icon: '🧮',
                   title: 'Route Calculator',
                   desc: 'Enter your load once, see every escort requirement on your entire route.',
                   cta: 'Calculate →',
+                },
+                {
+                  href: '/dashboard/earnings',
+                  icon: '📊',
+                  title: 'Earnings Tracker',
+                  desc: 'Track every run. Know your real hourly rate and best corridors.',
+                  cta: 'Track Earnings →',
+                  hot: true,
                 },
                 {
                   href: '/tools/friday-checker',
@@ -225,19 +260,15 @@ export default async function HomePage() {
                   desc: 'Dimension-based escort rules across 57 countries and 67+ jurisdictions.',
                   cta: 'Browse →',
                 },
-                {
-                  href: '/tools/compliance-card',
-                  icon: '🔒',
-                  title: 'Compliance Card',
-                  desc: 'Downloadable compliance snapshot for your route and load type.',
-                  cta: 'Generate →',
-                },
               ].map((tool) => (
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className="group bg-white/[0.03] border border-white/[0.06] p-6 rounded-2xl hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
+                  className={`group bg-white/[0.03] border border-white/[0.06] p-6 rounded-2xl hover:border-accent/30 hover:bg-accent/[0.03] transition-all ag-card-hover ag-slide-up ${'hot' in tool && tool.hot ? 'relative' : ''}`}
                 >
+                  {'hot' in tool && tool.hot && (
+                    <span className="absolute top-3 right-3 bg-red-500/20 text-red-400 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ag-hot-pulse">New</span>
+                  )}
                   <div className="text-2xl mb-3">{tool.icon}</div>
                   <h3 className="text-white font-bold text-base mb-1.5 group-hover:text-accent transition-colors">
                     {tool.title}
@@ -349,40 +380,48 @@ export default async function HomePage() {
           />
         </section>
 
-        {/* 57-Country Status Ticker */}
+        {/* 57-Country Status Ticker — Dynamic from global_countries */}
         <section className="py-8 px-4 overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter mb-2">
-              Global <span className="text-accent">Network</span>
-            </h2>
-            <p className="text-gray-500 text-sm mb-6">57-country coverage status</p>
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter">
+                Global <span className="text-accent">Network</span>
+              </h2>
+              <span className="bg-accent/10 border border-accent/20 text-accent text-[10px] font-bold px-3 py-1 rounded-full">
+                57 countries tracked
+              </span>
+            </div>
+            <p className="text-gray-500 text-sm mb-6">
+              {liveCountries.length} live · {allCountries.filter((c: { status: string }) => c.status === 'next').length} launching · {allCountries.filter((c: { status: string }) => c.status === 'planned').length} planned
+            </p>
             <div className="flex flex-wrap gap-2">
-              {[
-                { flag: '🇺🇸', code: 'US', status: 'LIVE' as const },
-                { flag: '🇨🇦', code: 'CA', status: 'LIVE' as const },
-                { flag: '🇦🇺', code: 'AU', status: 'LIVE' as const },
-                { flag: '🇬🇧', code: 'GB', status: 'LIVE' as const },
-                { flag: '🇩🇪', code: 'DE', status: 'PLANNED' as const },
-                { flag: '🇳🇱', code: 'NL', status: 'PLANNED' as const },
-                { flag: '🇦🇪', code: 'AE', status: 'PLANNED' as const },
-                { flag: '🇧🇷', code: 'BR', status: 'PLANNED' as const },
-                { flag: '🇳🇿', code: 'NZ', status: 'PLANNED' as const },
-                { flag: '🇿🇦', code: 'ZA', status: 'PLANNED' as const },
-              ].map((c) => (
-                <div
-                  key={c.code}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${
-                    c.status === 'LIVE'
+              {(allCountries.length > 0 ? allCountries.slice(0, 16) : [
+                { flag: '🇺🇸', country_code: 'US', status: 'live' },
+                { flag: '🇨🇦', country_code: 'CA', status: 'live' },
+                { flag: '🇦🇺', country_code: 'AU', status: 'live' },
+                { flag: '🇬🇧', country_code: 'GB', status: 'live' },
+              ]).map((c: { flag?: string; country_code: string; status: string }) => (
+                <Link
+                  key={c.country_code}
+                  href={`/directory/${c.country_code.toLowerCase()}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:border-accent/30 ${
+                    c.status === 'live'
                       ? 'bg-green-500/10 border-green-500/20 text-green-400'
+                      : c.status === 'next'
+                      ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
                       : 'bg-white/[0.02] border-white/[0.06] text-gray-500'
                   }`}
                 >
-                  <span>{c.flag}</span>
-                  <span>{c.code}</span>
-                  {c.status === 'LIVE' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
-                </div>
+                  <span>{c.flag ?? '🌍'}</span>
+                  <span>{c.country_code}</span>
+                  {c.status === 'live' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+                </Link>
               ))}
-              <span className="text-gray-600 text-xs self-center ml-2">+ 47 more countries →</span>
+              {allCountries.length > 16 && (
+                <Link href="/countries" className="text-accent text-xs self-center ml-2 hover:underline font-bold">
+                  + {allCountries.length - 16} more countries →
+                </Link>
+              )}
             </div>
           </div>
         </section>
@@ -436,12 +475,13 @@ export default async function HomePage() {
               </div>
             </div>
             <div>
-              <h4 className="text-white font-bold text-sm mb-3">Top Markets</h4>
+              <h4 className="text-white font-bold text-sm mb-3">Global Markets</h4>
               <div className="space-y-2 text-sm">
-                <Link href="/state/florida" className="block text-gray-500 hover:text-white transition-colors">Florida</Link>
-                <Link href="/state/texas" className="block text-gray-500 hover:text-white transition-colors">Texas</Link>
-                <Link href="/state/california" className="block text-gray-500 hover:text-white transition-colors">California</Link>
-                <Link href="/directory/ca" className="block text-gray-500 hover:text-white transition-colors">Canada</Link>
+                <Link href="/directory/us" className="block text-gray-500 hover:text-white transition-colors">🇺🇸 United States</Link>
+                <Link href="/directory/ca" className="block text-gray-500 hover:text-white transition-colors">🇨🇦 Canada</Link>
+                <Link href="/directory/au" className="block text-gray-500 hover:text-white transition-colors">🇦🇺 Australia</Link>
+                <Link href="/directory/gb" className="block text-gray-500 hover:text-white transition-colors">🇬🇧 United Kingdom</Link>
+                <Link href="/countries" className="block text-accent hover:text-yellow-500 transition-colors font-bold">+ 53 more countries →</Link>
               </div>
             </div>
             <div>

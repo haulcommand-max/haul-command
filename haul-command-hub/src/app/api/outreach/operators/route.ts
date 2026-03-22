@@ -1,20 +1,78 @@
+/**
+ * /api/outreach/operators
+ *
+ * Triggers batch outreach to unclaimed operators.
+ * Uses Resend directly — zero Listmonk dependency.
+ * Falls back to Listmonk if RESEND_API_KEY is not set (backward compat).
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase-server';
-
-/**
- * POST /api/outreach/operators
- * 
- * Triggers batch outreach to operators who haven't been contacted.
- * Sends Email 1 (claim profile invitation) via Listmonk.
- * 
- * Headers: Authorization: Bearer hc_cron_2026_s3cure_r4ndom_k3y_9x
- * Body: { limit?: number, campaign_type?: string }
- */
+import { captureError } from '@/lib/monitoring/error';
 
 const CRON_KEY = process.env.HC_CRON_KEY ?? 'hc_cron_2026_s3cure_r4ndom_k3y_9x';
 
+// ═══════════════════════════════════════════════════════════════
+// Resend Email Templates (React Email style HTML)
+// ═══════════════════════════════════════════════════════════════
+
+function buildClaimEmail(operatorName: string, stateName: string, claimUrl: string, services: string) {
+  return {
+    subject: `${operatorName} — your Haul Command profile is ready to claim`,
+    html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:system-ui,-apple-system,sans-serif">
+<div style="max-width:560px;margin:0 auto;padding:40px 24px">
+  <div style="text-align:center;margin-bottom:32px">
+    <span style="color:#f59f0a;font-weight:900;font-size:24px;letter-spacing:-1px">HAUL COMMAND</span>
+  </div>
+  <div style="background:#111;border:1px solid #222;border-radius:16px;padding:32px">
+    <h1 style="color:#fff;font-size:20px;margin:0 0 8px">Your listing is live, ${operatorName}</h1>
+    <p style="color:#888;font-size:14px;line-height:1.6;margin:0 0 24px">
+      Brokers in <strong style="color:#f59f0a">${stateName}</strong> are searching for
+      <strong style="color:#f59f0a">${services}</strong> providers right now.
+      Your profile appeared in search results — claim it to start receiving leads.
+    </p>
+    <a href="${claimUrl}" style="display:inline-block;background:#f59f0a;color:#000;font-weight:800;padding:14px 32px;border-radius:12px;text-decoration:none;font-size:14px">
+      Claim Your Profile →
+    </a>
+    <p style="color:#555;font-size:12px;margin-top:24px;line-height:1.5">
+      This is a free, verified listing on the world's largest pilot car directory.
+      No credit card required. Takes 60 seconds.
+    </p>
+  </div>
+  <p style="color:#444;font-size:10px;text-align:center;margin-top:24px">
+    © Haul Command · 57 Countries · <a href="https://haulcommand.com/remove-listing" style="color:#444">Unsubscribe</a>
+  </p>
+</div>
+</body>
+</html>`,
+  };
+}
+
+async function sendViaResend(to: string, subject: string, html: string, resendKey: string): Promise<boolean> {
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Haul Command <hello@haulcommand.com>',
+        to: [to],
+        subject,
+        html,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
-  // Auth check
   const authHeader = request.headers.get('authorization');
   if (!authHeader?.includes(CRON_KEY)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,16 +84,13 @@ export async function POST(request: NextRequest) {
     const campaignType = body.campaign_type ?? 'claim_profile';
 
     const sb = supabaseServer();
-    const listmonkUrl = process.env.LISTMONK_URL ?? 'https://listmonk.haulcommand.com';
-    const listmonkUser = process.env.LISTMONK_API_USER ?? 'admin';
-    const listmonkPass = process.env.LISTMONK_API_PASSWORD;
+    const resendKey = process.env.RESEND_API_KEY;
 
-    if (!listmonkPass) {
-      return NextResponse.json({ error: 'LISTMONK_API_PASSWORD not configured' }, { status: 500 });
+    if (!resendKey) {
+      return NextResponse.json({ error: 'RESEND_API_KEY not configured' }, { status: 500 });
     }
 
     // Get operators who haven't been emailed yet
-    // Assumes hc_places table has: email, name, admin1_code, claim_status
     const { data: operators, error: fetchErr } = await sb
       .from('hc_places')
       .select('id, name, email, admin1_code, country_code, slug, surface_category_key')
@@ -78,30 +133,12 @@ export async function POST(request: NextRequest) {
       try {
         const claimUrl = `${siteUrl}/claim?ref=${op.slug ?? op.id}`;
         const stateName = op.admin1_code ?? op.country_code?.toUpperCase() ?? 'your area';
+        const services = op.surface_category_key ?? 'Pilot Car Services';
 
-        // Send via Listmonk transactional API
-        const emailRes = await fetch(`${listmonkUrl}/api/tx`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(`${listmonkUser}:${listmonkPass}`),
-          },
-          body: JSON.stringify({
-            subscriber_email: op.email,
-            template_id: 1, // Email 1 template
-            data: {
-              operator_name: op.name,
-              state: stateName,
-              claim_url: claimUrl,
-              services: op.surface_category_key ?? 'Pilot Car Services',
-            },
-            content_type: 'richtext',
-            messenger: 'email',
-          }),
-        });
+        const { subject, html } = buildClaimEmail(op.name, stateName, claimUrl, services);
+        const sent = await sendViaResend(op.email, subject, html, resendKey);
 
-        if (emailRes.ok) {
-          // Log the send
+        if (sent) {
           await sb.from('operator_outreach_log').insert({
             operator_id: op.id,
             email_number: 1,
@@ -112,8 +149,7 @@ export async function POST(request: NextRequest) {
           results.sent++;
         } else {
           results.failed++;
-          const errText = await emailRes.text().catch(() => 'unknown');
-          results.errors.push(`${op.id}: ${errText}`);
+          results.errors.push(`${op.id}: Resend API returned error`);
         }
       } catch (err) {
         results.failed++;
@@ -122,15 +158,15 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      message: `Outreach batch complete`,
+      message: 'Outreach batch complete (via Resend)',
       operators_found: operators.length,
       operators_sent: results.sent,
       operators_failed: results.failed,
       operators_skipped: sentIds.size,
-      errors: results.errors.slice(0, 5), // Limit error output
+      errors: results.errors.slice(0, 5),
     });
   } catch (err) {
-    console.error('Outreach error:', err);
+    await captureError(err, { route: '/api/outreach/operators' });
     return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
 }

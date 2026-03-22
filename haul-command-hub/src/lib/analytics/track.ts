@@ -327,8 +327,18 @@ export async function trackEvent(
                 body: JSON.stringify({ name, payload, ts: Date.now() }),
             });
         } else {
-            // Server-side: log for now, wire to Supabase later
-            console.log(`[event] ${name}`, payload);
+            // Server-side: write directly to Supabase hc_events
+            try {
+                const { supabaseServer } = await import('@/lib/supabase-server');
+                const sb = supabaseServer();
+                await sb.from('hc_events').insert({
+                    event_type: name,
+                    properties: { ...payload, source: 'server' },
+                    created_at: new Date().toISOString(),
+                });
+            } catch {
+                console.log(`[event] ${name}`, payload);
+            }
         }
     } catch {
         // no-op: cost-tight, never block UX
