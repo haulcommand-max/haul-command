@@ -1,70 +1,39 @@
-/**
- * GET /api/availability/ical
- * Track 6: iCal export for operator availability
- * 
- * Generates an iCal (.ics) file for operator's Haul Command schedule
- */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'nodejs';
-
+// iCal export for operator availability calendar
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const operatorId = searchParams.get('user_id');
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  if (!operatorId) {
-    return NextResponse.json({ error: 'user_id required' }, { status: 400 });
+    const { data: entries } = await supabase
+      .from('operator_availability')
+      .select('available_date, status, notes')
+      .eq('operator_id', user.id)
+      .gte('available_date', new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0])
+      .order('available_date');
+
+    const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    let ical = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Haul Command//Availability//EN\r\nCALSCALE:GREGORIAN\r\n';
+
+    for (const entry of (entries || [])) {
+      const dateStr = entry.available_date.replace(/-/g, '');
+      const statusLabel = entry.status === 'booked' ? '🟢 BOOKED' : entry.status === 'available' ? '🟢 Available' : '🔴 Unavailable';
+      ical += `BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:${dateStr}\r\nDTEND;VALUE=DATE:${dateStr}\r\nSUMMARY:HC: ${statusLabel}\r\nDESCRIPTION:${entry.notes || 'Haul Command availability'}\r\nUID:hc-${entry.available_date}-${user.id}@haulcommand.com\r\nDTSTAMP:${now}\r\nEND:VEVENT\r\n`;
+    }
+
+    ical += 'END:VCALENDAR\r\n';
+
+    return new NextResponse(ical, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/calendar; charset=utf-8',
+        'Content-Disposition': 'attachment; filename="haulcommand-availability.ics"',
+      },
+    });
+  } catch {
+    return NextResponse.json({ error: 'iCal export failed' }, { status: 500 });
   }
-
-  const admin = getSupabaseAdmin();
-  const now = new Date();
-  const startDate = new Date(now.getTime() - 30 * 86400000).toISOString().split('T')[0];
-  const endDate = new Date(now.getTime() + 90 * 86400000).toISOString().split('T')[0];
-
-  const { data: dates } = await admin
-    .from('operator_availability')
-    .select('*')
-    .eq('operator_id', operatorId)
-    .gte('date', startDate)
-    .lte('date', endDate)
-    .order('date');
-
-  // Build iCal
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Haul Command//Availability//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'X-WR-CALNAME:Haul Command Schedule',
-    'X-WR-TIMEZONE:America/New_York',
-  ];
-
-  for (const entry of (dates || [])) {
-    const dateStr = entry.date.replace(/-/g, '');
-    const status = entry.status;
-    const summary = status === 'booked' ? 'HC: BOOKED' : status === 'unavailable' ? 'HC: Unavailable' : 'HC: Available';
-
-    lines.push(
-      'BEGIN:VEVENT',
-      `DTSTART;VALUE=DATE:${dateStr}`,
-      `DTEND;VALUE=DATE:${dateStr}`,
-      `SUMMARY:${summary}`,
-      `DESCRIPTION:Haul Command availability - ${status}`,
-      `UID:hc-${operatorId}-${dateStr}@haulcommand.com`,
-      `STATUS:${status === 'available' ? 'TENTATIVE' : 'CONFIRMED'}`,
-      'END:VEVENT'
-    );
-  }
-
-  lines.push('END:VCALENDAR');
-
-  return new NextResponse(lines.join('\r\n'), {
-    headers: {
-      'Content-Type': 'text/calendar; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="haulcommand-schedule.ics"',
-    },
-  });
 }
