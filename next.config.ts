@@ -114,8 +114,8 @@ const nextConfig: NextConfig = {
         ];
     },
 
-    // ── Turbopack (Next.js 16 default bundler) ───────────────────────────────────
-    turbopack: {},
+    // Turbopack disabled via NEXT_USE_TURBOPACK=0 env var on Vercel
+    // to avoid TurbopackInternalError in production builds
 };
 
 export default nextConfig;
