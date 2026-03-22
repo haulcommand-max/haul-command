@@ -17,6 +17,28 @@ import {
   categorizeMotiveEvent,
 } from '@/lib/motive/webhooks';
 
+/**
+ * GET /api/webhooks/motive — health check for Motive Developer Portal verification
+ */
+export async function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    service: 'haul-command-motive-webhook',
+    timestamp: new Date().toISOString(),
+    events: [
+      'vehicle_location_updated',
+      'hos_violation',
+      'dispatch_status_changed',
+      'driver_performance_event',
+      'fuel_purchase_created',
+      'inspection_report_submitted',
+      'fault_code_detected',
+      'geofence_entry',
+      'geofence_exit',
+    ],
+  });
+}
+
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
   const signature = request.headers.get('x-motive-signature') || request.headers.get('x-keeptruckin-signature');

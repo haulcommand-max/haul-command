@@ -1,9 +1,16 @@
 'use client';
 
 /**
- * CorridorSponsorButton — CTA for sponsoring a corridor page.
- * Calls /api/stripe/corridor-sponsor to start Stripe checkout.
+ * Haul Command — Stripe Payment Components
+ *
+ * Unified payment button components for all monetization surfaces.
+ * Uses real Stripe checkout routes with proper price IDs.
  */
+
+// ═══════════════════════════════════════════════════════════════
+// Corridor Sponsor — $199/mo subscription
+// ═══════════════════════════════════════════════════════════════
+
 export function CorridorSponsorButton({ corridorSlug, corridorName }: { corridorSlug: string; corridorName: string }) {
   const handleSponsor = async () => {
     try {
@@ -13,9 +20,7 @@ export function CorridorSponsorButton({ corridorSlug, corridorName }: { corridor
         body: JSON.stringify({ corridor_slug: corridorSlug, corridor_name: corridorName }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      if (data.url) window.location.href = data.url;
     } catch (err) {
       console.error('Sponsor error:', err);
     }
@@ -37,9 +42,10 @@ export function CorridorSponsorButton({ corridorSlug, corridorName }: { corridor
   );
 }
 
-/**
- * EmergencyFillButton — $25 one-time emergency fill for unfilled loads.
- */
+// ═══════════════════════════════════════════════════════════════
+// Emergency Fill — $25 one-time
+// ═══════════════════════════════════════════════════════════════
+
 export function EmergencyFillButton({ loadId, corridor }: { loadId?: string; corridor?: string }) {
   const handleFill = async () => {
     try {
@@ -49,9 +55,7 @@ export function EmergencyFillButton({ loadId, corridor }: { loadId?: string; cor
         body: JSON.stringify({ load_id: loadId, corridor }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      if (data.url) window.location.href = data.url;
     } catch (err) {
       console.error('Emergency fill error:', err);
     }
@@ -71,10 +75,10 @@ export function EmergencyFillButton({ loadId, corridor }: { loadId?: string; cor
   );
 }
 
-/**
- * TrainingEnrollButton — Training Academy enrollment via Stripe.
- * Replaces alert() placeholders.
- */
+// ═══════════════════════════════════════════════════════════════
+// Training Enrollment — Variable price one-time
+// ═══════════════════════════════════════════════════════════════
+
 export function TrainingEnrollButton({ courseId, courseName, priceUsd }: { courseId?: string; courseName?: string; priceUsd?: number }) {
   const handleEnroll = async () => {
     try {
@@ -84,9 +88,7 @@ export function TrainingEnrollButton({ courseId, courseName, priceUsd }: { cours
         body: JSON.stringify({ course_id: courseId, course_name: courseName, price_usd: priceUsd }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      if (data.url) window.location.href = data.url;
     } catch (err) {
       console.error('Enrollment error:', err);
     }
@@ -98,6 +100,72 @@ export function TrainingEnrollButton({ courseId, courseName, priceUsd }: { cours
       className="bg-accent text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors"
     >
       Enroll Now — ${priceUsd || 49}
+    </button>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Load Boost — $14 one-time (uses real Stripe price ID)
+// ═══════════════════════════════════════════════════════════════
+
+export function LoadBoostButton({ loadId, corridor }: { loadId?: string; corridor?: string }) {
+  const handleBoost = async () => {
+    try {
+      const res = await fetch('/api/stripe/boost', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ load_id: loadId, corridor }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error('Boost error:', err);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleBoost}
+      className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl px-5 py-3 hover:border-yellow-500/40 transition-all flex items-center gap-3"
+    >
+      <span className="text-yellow-400 text-lg">🚀</span>
+      <div className="text-left">
+        <p className="text-yellow-400 font-bold text-sm">Boost — $14</p>
+        <p className="text-gray-500 text-[10px]">Top of feed for 24 hours</p>
+      </div>
+    </button>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Manage Subscription — Opens Stripe Customer Portal
+// ═══════════════════════════════════════════════════════════════
+
+export function ManageSubscriptionButton({ customerId }: { customerId: string }) {
+  const handleManage = async () => {
+    try {
+      const res = await fetch('/api/stripe/portal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error('Portal error:', err);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleManage}
+      className="bg-white/[0.04] border border-white/[0.08] rounded-xl px-5 py-3 hover:border-white/[0.15] transition-all flex items-center gap-3"
+    >
+      <span className="text-gray-400 text-lg">⚙️</span>
+      <div className="text-left">
+        <p className="text-white font-semibold text-sm">Manage Subscription</p>
+        <p className="text-gray-500 text-[10px]">Upgrade, downgrade, or update payment</p>
+      </div>
     </button>
   );
 }
