@@ -1,63 +1,24 @@
 /**
- * Motive SDK — Barrel Export
+ * DEPRECATED — use root lib/motive/* instead.
+ * This barrel file re-exports from the canonical implementation
+ * to avoid breaking imports in haul-command-hub.
  *
- * Import everything from '@/lib/motive'
+ * @deprecated Import from '@/lib/motive' (root project) instead.
  */
 
-// Types
+// Re-export types from root
 export type {
   MotiveOAuthTokenResponse,
-  MotiveStoredToken,
   MotiveCompany,
   MotiveUser,
   MotiveVehicle,
-  MotiveLocation,
-  MotiveVehicleLocation,
-  MotiveDriverLocation,
   MotiveHOSLog,
-  MotiveHOSStatus,
-  MotiveDriverAvailableTime,
-  MotiveFreightVehicleLocation,
-  MotiveFreightSubscription,
-  MotiveNearbyVehicle,
-  MotiveNearbyVehicleV2,
-  MotiveFuelPurchase,
-  MotiveIFTATrip,
-  MotiveMileageSummary,
-  MotiveScorecardSummary,
-  MotivePerformanceEvent,
-  MotivePerformanceEventType,
   MotiveInspectionReport,
-  MotiveDispatch,
-  MotiveDispatchStatus,
-  MotiveGeofenceEvent,
   MotiveFaultCode,
   MotiveWebhookPayload,
-  MotiveWebhookEventType,
-} from './types';
+} from '../../../../types/motive';
 
-// Client
-export {
-  MotiveClient,
-  MotiveAPIError,
-  MotiveRateLimitError,
-  getMotiveOAuthURL,
-  exchangeMotiveCode,
-  refreshMotiveToken,
-  createMotiveClient,
-} from './client';
-
-// OAuth helpers
-export {
-  generateMotiveConnectURL,
-  parseMotiveOAuthState,
-  handleMotiveOAuthCallback,
-} from './oauth';
-
-// Webhook helpers
-export {
-  verifyMotiveWebhookSignature,
-  parseMotiveWebhookPayload,
-  isRelevantMotiveEvent,
-  categorizeMotiveEvent,
-} from './webhooks';
+console.warn(
+  '[DEPRECATED] haul-command-hub/src/lib/motive is deprecated. ' +
+  'Use the canonical Motive integration at lib/motive/* in the root project.'
+);

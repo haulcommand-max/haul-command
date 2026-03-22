@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import FleetIntelligencePanel from '@/components/motive/FleetIntelligencePanel';
+import ConnectionStatusBar from '@/components/offline/ConnectionStatusBar';
 
 interface FreshnessData {
     score: number;
@@ -220,8 +222,16 @@ export default function OperatorDashboardPage() {
                                 ))}
                             </div>
                         </div>
+
+                        {/* Fleet Intelligence (Motive) */}
+                        <div style={{ gridColumn: '1 / -1' }}>
+                            <FleetIntelligencePanel profileId="current-user" />
+                        </div>
                     </div>
                 )}
+
+                {/* Add ConnectionStatusBar at the end */}
+                <ConnectionStatusBar />
 
                 {/* FRESHNESS TAB */}
                 {activeTab === 'freshness' && (

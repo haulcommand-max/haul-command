@@ -53,8 +53,8 @@ function isStandalone(): boolean {
 export default function SmartAppBanner({
     title = 'Haul Command',
     cta = 'Open',
-    appStoreUrl = 'https://haulcommand.com/app',
-    playStoreUrl = 'https://haulcommand.com/app',
+    appStoreUrl = 'https://apps.apple.com/app/haul-command/id0000000000',
+    playStoreUrl = 'https://play.google.com/store/apps/details?id=com.haulcommand.app',
     variant = 'dark',
 }: SmartAppBannerProps) {
     const [visible, setVisible] = useState(false);
