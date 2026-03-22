@@ -263,6 +263,18 @@ export default async function CorridorDetailPage({ params }: Props) {
           {/* Sidecar Sponsor */}
           <SidecarSponsor creatives={sidecarAds} />
 
+          {/* Corridor Sponsor CTA */}
+          <div className="bg-gradient-to-br from-accent/10 to-transparent border border-accent/20 rounded-2xl p-5">
+            <p className="text-accent font-bold text-sm mb-2">⭐ Sponsor This Corridor</p>
+            <p className="text-gray-500 text-xs mb-3">Get featured placement for your business on this corridor page. $199/mo.</p>
+            <a
+              href={`/api/stripe/corridor-sponsor?corridor_slug=${slug}&corridor_name=${encodeURIComponent(corridor.name)}`}
+              className="block text-center bg-accent text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-yellow-500 transition-colors"
+            >
+              Become Sponsor →
+            </a>
+          </div>
+
           {/* Nearby Operators */}
           <HCNearbyEntitiesModule entities={operatorLinks.slice(0, 6)} title="Operators on This Route" />
 

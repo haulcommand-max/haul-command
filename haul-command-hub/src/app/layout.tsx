@@ -5,6 +5,7 @@ import { OrganizationSchema, WebSiteSchema } from "@/components/BreadcrumbSchema
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { RoleProvider } from "@/lib/role-context";
+import CookieConsent from "@/components/CookieConsent";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,6 +72,8 @@ export default function RootLayout({
         {/* PWA — iOS Safari doesn't read manifest for these */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta name="theme-color" content="#0B0F14" />
+        <meta name="rating" content="general" />
+        <meta name="age-verification" content="18+" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         {/* GA4 — only loads when NEXT_PUBLIC_GA4_ID is set */}
@@ -96,6 +99,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <MobileBottomNav />
+          <CookieConsent />
         </RoleProvider>
       </body>
     </html>

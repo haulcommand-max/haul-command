@@ -30,6 +30,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${siteUrl}/terms`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
         { url: `${siteUrl}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
         { url: `${siteUrl}/login`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
+        { url: `${siteUrl}/glossary`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+        { url: `${siteUrl}/legal/dpa`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
+        // VS Comparison pages
+        { url: `${siteUrl}/compare/pilot-car-loads`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${siteUrl}/compare/truckstop-heavy-haul`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${siteUrl}/compare/oversize-io`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${siteUrl}/compare/heavy-haul-load-board`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        // Enterprise / Autonomous company pages
+        ...['aurora-innovation','kodiak-robotics','einride','volvo-autonomous-solutions','vestas-wind','waymo-via','torc-robotics','plus-ai','tusimple','gatik','ge-vernova','siemens-gamesa','mammoet','goldhofer','sarens'].map(slug => (
+          { url: `${siteUrl}/enterprise/${slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.6 }
+        )),
     ];
 
     // AU and GB live directory region pages
