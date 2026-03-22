@@ -114,18 +114,8 @@ const nextConfig: NextConfig = {
         ];
     },
 
-    // ── Webpack — use webpack instead of Turbopack for production stability ──────
-    webpack: (config) => {
-        // Exclude server-only modules from client builds
-        config.resolve.fallback = {
-            ...config.resolve?.fallback,
-            fs: false,
-            net: false,
-            tls: false,
-            canvas: false,
-        };
-        return config;
-    },
+    // ── Turbopack (Next.js 16 default bundler) ───────────────────────────────────
+    turbopack: {},
 };
 
 export default nextConfig;
