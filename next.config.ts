@@ -114,11 +114,18 @@ const nextConfig: NextConfig = {
         ];
     },
 
-    // ── Turbopack (Next.js 16 default bundler) ───────────────────────────────────
-    // Empty config signals "I know Turbopack is active" and silences the
-    // webpack-config conflict error that crashes the dev server.
-    // canvas/fs/net/tls are excluded automatically by Turbopack for browser targets.
-    turbopack: {},
+    // ── Webpack — use webpack instead of Turbopack for production stability ──────
+    webpack: (config) => {
+        // Exclude server-only modules from client builds
+        config.resolve.fallback = {
+            ...config.resolve?.fallback,
+            fs: false,
+            net: false,
+            tls: false,
+            canvas: false,
+        };
+        return config;
+    },
 };
 
 export default nextConfig;
