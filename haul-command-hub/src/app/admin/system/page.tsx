@@ -41,7 +41,7 @@ async function getRecentErrors() {
 
 export default async function AdminSystemPage() {
   const integrations: IntegrationCheck[] = [
-    { service: 'Anthropic (Claude)', envKey: 'ANTHROPIC_API_KEY', status: check('ANTHROPIC_API_KEY'), powers: '12 AI agents, compliance copilot, contract gen', fallback: 'None — required for AI features', icon: '🧠' },
+    { service: 'Haul Command AI Engine', envKey: 'ANTHROPIC_API_KEY', status: check('ANTHROPIC_API_KEY'), powers: '12 AI agents, compliance copilot, contract gen', fallback: 'None — required for AI features', icon: '🧠' },
     { service: 'Supabase URL', envKey: 'NEXT_PUBLIC_SUPABASE_URL', status: check('NEXT_PUBLIC_SUPABASE_URL'), powers: 'Database, auth, real-time', fallback: 'None — required', icon: '🗃️' },
     { service: 'Supabase Service Key', envKey: 'SUPABASE_SERVICE_ROLE_KEY', status: check('SUPABASE_SERVICE_ROLE_KEY'), powers: 'Server-side DB operations', fallback: 'None — required', icon: '🔑' },
     { service: 'Stripe', envKey: 'STRIPE_SECRET_KEY', status: check('STRIPE_SECRET_KEY'), powers: 'Payments, subscriptions, checkout', fallback: 'Pricing page shows plans, checkout disabled', icon: '💳' },
@@ -119,10 +119,10 @@ export default async function AdminSystemPage() {
             <h2 className="text-xl font-bold text-white mb-4">AI Cost Routing</h2>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               {[
-                { tier: 'Instant (Haiku)', model: 'claude-haiku-4-5', cost: '$0.00025/1k', agents: 'support_bot, regulation_rag', pct: '80%', color: 'green' },
-                { tier: 'Standard (Sonnet)', model: 'claude-sonnet-4-6', cost: '$0.003/1k', agents: 'load_enhancer, dispatch_brain +5', pct: '15%', color: 'blue' },
-                { tier: 'Deep (Opus)', model: 'claude-opus-4-6', cost: '$0.015/1k', agents: 'contract_gen, invoice_gen', pct: '5%', color: 'purple' },
-                { tier: 'Creative (Gemini)', model: 'gemini-2.5-flash', cost: '$0.001/1k', agents: 'ad_copy_gen', pct: '<1%', color: 'orange' },
+                { tier: 'HC Flash', model: 'hc-flash', cost: '$0.00025/1k', agents: 'support_bot, regulation_rag', pct: '80%', color: 'green' },
+                { tier: 'HC Standard', model: 'hc-standard', cost: '$0.003/1k', agents: 'load_enhancer, dispatch_brain +5', pct: '15%', color: 'blue' },
+                { tier: 'HC Deep', model: 'hc-deep', cost: '$0.015/1k', agents: 'contract_gen, invoice_gen', pct: '5%', color: 'purple' },
+                { tier: 'HC Creative', model: 'hc-creative', cost: '$0.001/1k', agents: 'ad_copy_gen', pct: '<1%', color: 'orange' },
               ].map((tier) => (
                 <div key={tier.tier} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4">
                   <p className="text-white font-bold text-sm">{tier.tier}</p>

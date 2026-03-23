@@ -141,7 +141,7 @@ function PrimaryActionGrid({ actions }: { actions: RoleAction[] }) {
         <a
           key={action.id}
           href={action.href}
-          className="group relative bg-white/[0.03] hover:bg-accent/[0.06] border border-white/[0.08] hover:border-accent/30 rounded-2xl p-4 sm:p-5 transition-all duration-200 flex flex-col items-center text-center min-w-0 overflow-hidden"
+          className="group relative bg-white/[0.03] hover:bg-accent/[0.06] border border-white/[0.08] hover:border-accent/30 rounded-2xl p-4 sm:p-5 transition-all duration-200 flex flex-col items-center text-center min-w-0"
         >
           <span className="text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
             {action.icon}
@@ -149,7 +149,7 @@ function PrimaryActionGrid({ actions }: { actions: RoleAction[] }) {
           <span className="text-white font-bold text-xs sm:text-sm group-hover:text-accent transition-colors break-words">
             {action.label}
           </span>
-          <span className="text-[#8b95a5] text-[10px] sm:text-xs mt-1 leading-relaxed break-words hidden sm:block">
+          <span className="text-[#8b95a5] text-[10px] sm:text-xs mt-1 leading-relaxed break-words">
             {action.description}
           </span>
         </a>
@@ -174,7 +174,7 @@ function LiveModuleStrip({ modules }: { modules: RoleModule[] }) {
         {modules.map((mod) => (
           <div
             key={mod.id}
-            className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 sm:p-4 min-w-0 overflow-hidden"
+            className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 sm:p-4 min-w-0"
           >
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-sm flex-shrink-0">{mod.icon}</span>

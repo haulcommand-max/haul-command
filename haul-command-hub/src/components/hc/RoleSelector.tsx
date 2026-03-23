@@ -28,9 +28,9 @@ export default function RoleSelector() {
         </p>
       </div>
 
-      {/* Role Cards */}
+      {/* Role Cards — revenue-generating roles first */}
       <div className="flex flex-col gap-3">
-        {ROLE_LIST.map((roleId) => {
+        {ROLE_LIST.filter(r => r !== 'observer_researcher').map((roleId) => {
           const cfg = ROLE_CONFIGS[roleId];
           return (
             <button
@@ -41,7 +41,7 @@ export default function RoleSelector() {
               <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                 {/* Icon */}
                 <span className="text-2xl sm:text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                  {cfg.icon}
+                  {roleId === 'both' ? '⚡' : cfg.icon}
                 </span>
 
                 {/* Content */}
@@ -64,6 +64,28 @@ export default function RoleSelector() {
             </button>
           );
         })}
+
+        {/* Observer / Researcher — subdued, bottom of the list */}
+        {(() => {
+          const obsCfg = ROLE_CONFIGS['observer_researcher'];
+          return (
+            <button
+              onClick={() => setRole('observer_researcher')}
+              className="group w-full text-left bg-white/[0.01] hover:bg-white/[0.03] border border-white/[0.04] hover:border-white/[0.08] rounded-xl px-4 py-3 transition-all duration-200 opacity-60 hover:opacity-90"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-lg flex-shrink-0 text-gray-500">{obsCfg.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-400 font-medium text-xs group-hover:text-white transition-colors">
+                    {obsCfg.label}
+                  </span>
+                  <span className="text-gray-600 text-[10px] ml-2">{obsCfg.description}</span>
+                </div>
+                <span className="text-gray-700 group-hover:text-gray-400 text-sm flex-shrink-0 transition-colors">→</span>
+              </div>
+            </button>
+          );
+        })()}
       </div>
 
       {/* Skip hint */}
