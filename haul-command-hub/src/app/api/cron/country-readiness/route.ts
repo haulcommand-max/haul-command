@@ -2,13 +2,16 @@
  * /api/cron/country-readiness
  *
  * Weekly cron — auto-evaluates country readiness and flips status.
- * For each country in global_countries where status = 'planned' or 'next':
+ * Uses the EXISTING stronger global_countries schema:
+ *   iso2, activation_phase, is_active_market, launch_status, etc.
+ *
+ * For each country where activation_phase = 'planned' or 'monitor':
  *   - Has regulation data? (+25)
  *   - Has 10+ operators? (+25)
  *   - Has corridors? (+25)
  *   - Has compliance data? (+25)
- * Score 100 → auto-flip to 'live'
- * Score >= 75 → auto-flip to 'next'
+ * Score 100 → auto-flip to activation_phase='active', is_active_market=true, launch_status='live'
+ * Score >= 75 → auto-flip to activation_phase='expanding'
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,15 +21,15 @@ import { captureError } from '@/lib/monitoring/error';
 const CRON_SECRET = process.env.CRON_SECRET;
 
 interface CountryScore {
-  country_code: string;
+  iso2: string;
   name: string;
   regulations: number;
   operators: number;
   corridors: number;
   compliance: number;
   total: number;
-  previousStatus: string;
-  newStatus: string | null;
+  previousPhase: string;
+  newPhase: string | null;
 }
 
 export async function POST(request: NextRequest) {
@@ -40,29 +43,29 @@ export async function POST(request: NextRequest) {
     const scores: CountryScore[] = [];
     const flipped: string[] = [];
 
-    // Get countries that aren't live yet
+    // Get countries that aren't fully active yet
     const { data: countries } = await sb
       .from('global_countries')
-      .select('country_code, name, status')
-      .in('status', ['planned', 'next'])
+      .select('iso2, name, activation_phase, is_active_market, launch_status')
+      .in('activation_phase', ['planned', 'monitor', 'expanding'])
       .order('name');
 
     if (!countries?.length) {
-      return NextResponse.json({ message: 'No planned/next countries to evaluate', scores: [] });
+      return NextResponse.json({ message: 'No planned/monitor countries to evaluate', scores: [] });
     }
 
     for (const country of countries) {
-      const cc = country.country_code;
+      const cc = country.iso2;
       const score: CountryScore = {
-        country_code: cc,
+        iso2: cc,
         name: country.name,
         regulations: 0,
         operators: 0,
         corridors: 0,
         compliance: 0,
         total: 0,
-        previousStatus: country.status,
-        newStatus: null,
+        previousPhase: country.activation_phase,
+        newPhase: null,
       };
 
       // Check 1: Has regulation data?
@@ -96,14 +99,19 @@ export async function POST(request: NextRequest) {
 
       score.total = score.regulations + score.operators + score.corridors + score.compliance;
 
-      // Auto-flip logic
-      if (score.total === 100 && country.status !== 'live') {
-        score.newStatus = 'live';
+      // Auto-flip logic using the EXISTING stronger schema
+      if (score.total === 100 && !country.is_active_market) {
+        score.newPhase = 'active';
         await sb
           .from('global_countries')
-          .update({ status: 'live', went_live_at: new Date().toISOString() })
-          .eq('country_code', cc);
-        flipped.push(`${country.name} → LIVE`);
+          .update({
+            activation_phase: 'active',
+            is_active_market: true,
+            launch_status: 'live',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('iso2', cc);
+        flipped.push(`${country.name} → ACTIVE/LIVE`);
 
         // Send admin notification via Resend
         const resendKey = process.env.RESEND_API_KEY;
@@ -129,13 +137,16 @@ export async function POST(request: NextRequest) {
             }),
           }).catch(() => {});
         }
-      } else if (score.total >= 75 && country.status === 'planned') {
-        score.newStatus = 'next';
+      } else if (score.total >= 75 && country.activation_phase === 'planned') {
+        score.newPhase = 'expanding';
         await sb
           .from('global_countries')
-          .update({ status: 'next' })
-          .eq('country_code', cc);
-        flipped.push(`${country.name} → NEXT`);
+          .update({
+            activation_phase: 'expanding',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('iso2', cc);
+        flipped.push(`${country.name} → EXPANDING`);
       }
 
       scores.push(score);
@@ -159,7 +170,7 @@ export async function GET() {
   return NextResponse.json({
     status: 'ok',
     service: 'haul-command-country-readiness',
-    description: 'Weekly cron — auto-evaluates country readiness scores and flips status when thresholds met',
+    description: 'Weekly cron — auto-evaluates country readiness scores and flips activation_phase when thresholds met',
     schedule: 'Every Monday at 6 AM UTC',
   });
 }

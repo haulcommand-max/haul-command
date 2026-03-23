@@ -15,6 +15,14 @@
     {
       "path": "/api/cron/boost-expiry",
       "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/schedule-dispatch",
+      "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/cron/country-readiness",
+      "schedule": "0 3 * * 1"
     }
   ]
 }

@@ -131,7 +131,7 @@ export default function AdvertisePage() {
         {/* Audience */}
         <section className="mb-16">
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2 text-center">Who You&apos;ll Reach</h2>
-          <p className="text-gray-500 text-sm text-center mb-8">Targeted access to every segment of the heavy haul ecosystem</p>
+          <p className="text-gray-500 text-sm text-center mb-8">Targeted access to every segment of the heavy haul industry</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {AUDIENCE_SEGMENTS.map(seg => (
               <div key={seg.name} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 flex items-start gap-4">

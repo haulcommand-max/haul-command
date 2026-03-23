@@ -88,8 +88,8 @@ function PlanContent() {
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6 text-center">
             <p className="text-red-400 text-sm font-medium">
               {error === 'cancelled'
-                ? 'Checkout was cancelled. You can try again or start with a free profile.'
-                : 'Something went wrong. Please try again.'}
+                ? 'Checkout was cancelled. Try again or start with a free profile.'
+                : 'Hit a snag — try again or contact support.'}
             </p>
           </div>
         )}

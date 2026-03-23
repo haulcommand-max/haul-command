@@ -29,7 +29,7 @@ function MotiveConnectContent() {
         <div className="space-y-3">
           <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-sm text-green-400">
             ✓ Safety badge added to your listing<br />
-            ✓ Priority load matching enabled<br />
+            ✓ Priority run matching enabled<br />
             ✓ Live position tracking active<br />
             ✓ Leaderboard eligible
           </div>
@@ -54,7 +54,7 @@ function MotiveConnectContent() {
         </div>
         <h1 className="text-3xl font-black text-white mb-3">Connection Failed</h1>
         <p className="text-gray-400 mb-6">
-          {errorMsg || 'Something went wrong connecting your ELD. Please try again.'}
+          {errorMsg || 'Hit a snag connecting your ELD. Try again or contact support.'}
         </p>
         <Link
           href="/claim"
@@ -88,8 +88,8 @@ function MotiveConnectContent() {
         {[
           { icon: '🛡️', title: 'Verified Safety Badge', desc: 'Display a trust badge on your listing backed by real ELD data' },
           { icon: '🏆', title: 'Safety Leaderboard', desc: 'Rank on the leaderboard by your composite safety score' },
-          { icon: '📦', title: 'Priority Load Matching', desc: 'Verified operators get matched to loads before unverified ones' },
-          { icon: '📍', title: 'Live Position Tracking', desc: 'Brokers can see your real-time location for faster dispatching' },
+          { icon: '📦', title: 'Priority Run Matching', desc: 'Verified pilots get matched to runs before unverified ones' },
+          { icon: '📍', title: 'Live Position Tracking', desc: 'Brokers can see your real-time location for faster dispatch' },
         ].map((benefit) => (
           <div key={benefit.title} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 flex items-start gap-4">
             <span className="text-2xl">{benefit.icon}</span>

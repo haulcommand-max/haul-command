@@ -80,7 +80,7 @@ export default function Footer() {
             HAUL COMMAND
           </div>
           <div className="text-[10px] text-gray-600">
-            The world&apos;s largest pilot car &amp; escort vehicle directory — 57 countries
+            Built for the corridor. Not the crowd.
           </div>
         </div>
       </div>

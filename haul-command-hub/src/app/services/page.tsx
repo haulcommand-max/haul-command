@@ -16,7 +16,7 @@ export default function ServicesIndexPage() {
       <HCBreadcrumbs crumbs={[{ label: 'Services', href: '/services', isCurrent: true }]} />
       <HCLocalIntroCopy
         h1="Heavy Haul & Escort Services"
-        intro="Browse all service categories across the global heavy-haul ecosystem. Find operators by service type, country, state, or metro area."
+        intro="Browse all service categories across the global heavy-haul network. Find operators by service type, country, state, or metro area."
         badge="8 Service Categories"
       />
 

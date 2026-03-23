@@ -48,7 +48,7 @@ export default async function ServiceOverviewPage({ params }: Props) {
       {/* Hero Billboard */}
       <HeroBillboard creatives={heroAds} slotFamily="hero_billboard" pageType="service_page" />
 
-      <HCLocalIntroCopy h1={svc.label} intro={`Find ${svc.label.toLowerCase()} providers worldwide. Browse by country to see available operators, rates, and requirements.`} />
+      <HCLocalIntroCopy h1={svc.label} intro={`Find ${svc.label.toLowerCase()} providers worldwide. Browse by country to see pilots on standby, rates, and requirements.`} />
 
       {/* Post Load / Urgent Fill CTA */}
       <div className="mb-8 flex flex-col sm:flex-row gap-3">

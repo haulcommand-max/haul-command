@@ -38,17 +38,17 @@ function SuccessContent() {
 
         <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter mb-3">
           {isPro ? (
-            <>Your <span className="text-accent">Pro</span> Profile is Live</>
+            <>You're <span className="text-accent">On the Board</span> — Pro</>  
           ) : (
-            <>Your Profile is <span className="text-green-400">Live</span></>
+            <>You're <span className="text-green-400">On the Board</span></>  
           )}
         </h1>
 
         {isPro ? (
           <>
             <p className="text-gray-400 text-base mb-6 max-w-lg mx-auto">
-              Welcome to Haul Command Pro. Your verified badge is active, priority load alerts are enabled,
-              and you&apos;re now visible to brokers searching your corridors.
+              Welcome to Haul Command Pro. Your verified badge is active, priority run alerts are on,
+              and brokers searching your corridors can find you now.
             </p>
             <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-2 mb-8">
               <span className="text-accent text-sm">⭐</span>
@@ -58,12 +58,12 @@ function SuccessContent() {
         ) : (
           <>
             <p className="text-gray-400 text-base mb-4 max-w-lg mx-auto">
-              Your profile is live in the directory. Brokers and shippers can find and contact you now.
+              You're on the board. Runs in your AO will hit your phone the moment they post.
             </p>
             <div className="bg-accent/5 border border-accent/20 rounded-xl p-5 mb-8 max-w-md mx-auto">
               <p className="text-accent text-sm font-semibold mb-2">Upgrade to Pro to get:</p>
               <ul className="text-gray-400 text-xs space-y-1.5 text-left">
-                <li>✦ Priority load alerts in your corridors</li>
+                <li>✦ Priority run alerts in your corridors</li>
                 <li>✦ Verified badge &amp; higher search rank</li>
                 <li>✦ Escrow-protected payments</li>
                 <li>✦ Profile boost credits</li>
@@ -89,7 +89,7 @@ function SuccessContent() {
             href="/loads"
             className="text-gray-400 hover:text-accent px-4 py-2 text-sm transition-colors"
           >
-            Browse Loads →
+            Browse Runs →
           </Link>
         </div>
       </main>

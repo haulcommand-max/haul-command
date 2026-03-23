@@ -53,7 +53,7 @@ export function HCAlertSignupModule({
         setSubmitted(true);
       } else {
         const data = await res.json();
-        setError(data.error || 'Something went wrong');
+        setError(data.error || 'Hit a snag — try again');
       }
     } catch {
       setError('Network error. Please try again.');

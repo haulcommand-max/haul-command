@@ -157,7 +157,7 @@ export default function ComplianceCardPage() {
                                 <a href="/directory"
                                     className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-accent/50 transition-all text-left">
                                     <p className="text-accent font-black text-sm">📍 FIND ESCORTS</p>
-                                    <p className="text-gray-400 text-xs mt-1">Browse available operators near you</p>
+                                    <p className="text-gray-400 text-xs mt-1">Browse pilots on standby near you</p>
                                 </a>
                             </div>
                         </div>

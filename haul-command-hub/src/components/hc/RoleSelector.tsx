@@ -24,7 +24,7 @@ export default function RoleSelector() {
           What&apos;s Your <span className="text-accent">Role?</span>
         </h2>
         <p className="text-[#b0b0b0] text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-          Choose your role and we&apos;ll arrange everything for you — questions, actions, and tools that match what you actually do.
+          Pick your role. We&apos;ll set up the right tools, actions, and intel for what you actually do.
         </p>
       </div>
 

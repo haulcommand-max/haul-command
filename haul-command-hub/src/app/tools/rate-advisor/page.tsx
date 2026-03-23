@@ -56,7 +56,7 @@ export default function RateAdvisorPage() {
       if (!res.ok) throw new Error(data.error || 'Advisory failed');
       setResult(data);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setError(err instanceof Error ? err.message : 'Hit a snag — try again');
     } finally {
       setLoading(false);
     }

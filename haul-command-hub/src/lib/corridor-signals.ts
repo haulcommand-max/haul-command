@@ -66,10 +66,10 @@ export function computeCorridorSignals(data: {
 
 export function getCorridorSignalBadge(signal: CorridorSignal): { label: string; color: string; icon: string } | null {
   if (signal.hardFill) {
-    return { label: 'Hard Fill', color: 'bg-red-500/15 text-red-400 border-red-500/20', icon: '🔴' };
+    return { label: 'Thin Coverage — Boots Needed', color: 'bg-red-500/15 text-red-400 border-red-500/20', icon: '🔴' };
   }
   if (signal.hotCorridor) {
-    return { label: 'Hot Corridor', color: 'bg-orange-500/15 text-orange-400 border-orange-500/20', icon: '🔥' };
+    return { label: 'Running Hot', color: 'bg-orange-500/15 text-orange-400 border-orange-500/20', icon: '🔥' };
   }
   if (signal.thinCorridor) {
     return { label: 'Coverage Needed', color: 'bg-amber-500/15 text-amber-400 border-amber-500/20', icon: '⚠️' };

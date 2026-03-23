@@ -215,6 +215,41 @@ export async function POST(request: NextRequest) {
           }
         }
 
+        // ── Standing Order Pre-Funding ──────────────────────────
+        if (type === 'standing_order_prefund') {
+          const scheduleId = metadata.schedule_id;
+          const escrowAmount = parseFloat(metadata.escrow_amount ?? '0');
+
+          if (scheduleId) {
+            try {
+              // Mark prefunding as completed
+              await sb
+                .from('schedule_prefunding')
+                .update({
+                  status: 'completed',
+                  funded_at: new Date().toISOString(),
+                  stripe_payment_intent_id: session.payment_intent,
+                })
+                .eq('schedule_id', scheduleId)
+                .eq('status', 'pending');
+
+              // Activate the schedule with full escrow balance
+              await sb
+                .from('recurring_schedules')
+                .update({
+                  status: 'active',
+                  escrow_balance: escrowAmount,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq('id', scheduleId);
+
+              console.log(`✅ Standing Order funded: schedule=${scheduleId} escrow=$${escrowAmount}`);
+            } catch (e) {
+              console.error('Standing Order funding error:', e);
+            }
+          }
+        }
+
         break;
       }
 

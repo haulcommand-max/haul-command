@@ -15,7 +15,7 @@ export default function NotFound() {
     <main className="max-w-3xl mx-auto px-4 py-16 min-h-screen text-center">
       <h1 className="text-5xl font-black text-white mb-4">Page Not Found</h1>
       <p className="text-gray-400 text-lg mb-8">
-        The page you're looking for doesn't exist or has moved. Here's where you might find what you need:
+        That route may have moved or already been covered. Here's where you might find what you need:
       </p>
 
       <div className="mb-8">

@@ -26,14 +26,14 @@ async function loadHomepageData() {
     sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published'),
     sb.rpc('hc_list_all_jurisdictions'),
     sb.from('corridors').select('id, name, corridor_type').limit(6),
-    sb.from('global_countries').select('country_code, name, status, tier, flag').order('tier').order('name'),
+    sb.from('global_countries').select('iso2, name, activation_phase, is_active_market, launch_status, tier, slug').order('tier').order('name'),
   ]);
 
   const totalListings = placesResult.count ?? 0;
   const jurisdictions = jurisdictionResult.data ?? [];
   const totalJurisdictions = jurisdictions.length;
   const allCountries = countriesResult.data ?? [];
-  const liveCountries = allCountries.filter((c: { status: string }) => c.status === 'live');
+  const liveCountries = allCountries.filter((c: { is_active_market?: boolean; activation_phase?: string }) => c.is_active_market || c.activation_phase === 'active');
   const totalCountries = allCountries.length || 57;
   const corridors = corridorsResult.data ?? [];
 
@@ -132,15 +132,15 @@ export default async function HomePage() {
   const faqItems: HCFaqItem[] = [
     {
       question: 'What is Haul Command?',
-      answer: 'Haul Command is the world\'s largest directory for pilot car operators, escort vehicle services, and heavy haul transport professionals. We cover 57 countries with verified listings, escort requirements, corridor intelligence, and compliance data.',
+      answer: 'Haul Command is the world\'s largest directory for pilot car operators, escort vehicle services, and heavy haul transport professionals. We cover 57 countries with verified listings, escort requirements, corridor intel, and compliance data.',
     },
     {
       question: 'How do I find a pilot car or escort service?',
-      answer: 'Use our directory to search by state, country, or service type. Each listing includes contact information, service areas, capabilities, and verification status. You can call or text operators directly from their profile.',
+      answer: 'Use our directory to search by state, country, or service type. Each listing includes contact info, service areas, capabilities, and verification status. Call or text operators directly from their profile.',
     },
     {
       question: 'How do I claim my business listing?',
-      answer: 'Click "Claim Listing" and verify your identity via phone. Once claimed, you can update your profile, respond to loads, and access premium features like priority placement and verified badges.',
+      answer: 'Click "Claim Listing" and verify your identity via phone. Once claimed, you can update your profile, respond to runs, and access premium features like priority placement and verified badges.',
     },
     {
       question: 'What escort requirements does my load need?',
@@ -186,7 +186,7 @@ export default async function HomePage() {
         <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
-              Operational <span className="text-accent">Intelligence</span>
+              Operational <span className="text-accent">Intel</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
               Real-time tools for movement risk, cost estimation, and regulatory compliance.
@@ -326,7 +326,7 @@ export default async function HomePage() {
         {/* Corridor Intelligence */}
         <section className="py-8 px-4 max-w-7xl mx-auto">
           <HCCorridorSnapshot
-            heading="Corridor Intelligence"
+            heading="Corridor Intel"
             corridors={corridorSummaries}
             cta={{
               id: 'view_corridors',
@@ -392,31 +392,33 @@ export default async function HomePage() {
               </span>
             </div>
             <p className="text-gray-500 text-sm mb-6">
-              {liveCountries.length} live · {allCountries.filter((c: { status: string }) => c.status === 'next').length} launching · {allCountries.filter((c: { status: string }) => c.status === 'planned').length} planned
+              {liveCountries.length} live · {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} expanding · {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} planned
             </p>
             <div className="flex flex-wrap gap-2">
               {(allCountries.length > 0 ? allCountries.slice(0, 16) : [
-                { flag: '🇺🇸', country_code: 'US', status: 'live' },
-                { flag: '🇨🇦', country_code: 'CA', status: 'live' },
-                { flag: '🇦🇺', country_code: 'AU', status: 'live' },
-                { flag: '🇬🇧', country_code: 'GB', status: 'live' },
-              ]).map((c: { flag?: string; country_code: string; status: string }) => (
+                { iso2: 'US', name: 'United States', activation_phase: 'active', is_active_market: true },
+                { iso2: 'CA', name: 'Canada', activation_phase: 'active', is_active_market: true },
+                { iso2: 'AU', name: 'Australia', activation_phase: 'active', is_active_market: true },
+                { iso2: 'GB', name: 'United Kingdom', activation_phase: 'active', is_active_market: true },
+              ]).map((c: { iso2: string; name?: string; activation_phase?: string; is_active_market?: boolean; slug?: string }) => {
+                const isLive = c.is_active_market || c.activation_phase === 'active';
+                const isExpanding = c.activation_phase === 'expanding';
+                return (
                 <Link
-                  key={c.country_code}
-                  href={`/directory/${c.country_code.toLowerCase()}`}
+                  key={c.iso2}
+                  href={`/directory/${c.iso2.toLowerCase()}`}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:border-accent/30 ${
-                    c.status === 'live'
+                    isLive
                       ? 'bg-green-500/10 border-green-500/20 text-green-400'
-                      : c.status === 'next'
+                      : isExpanding
                       ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
                       : 'bg-white/[0.02] border-white/[0.06] text-gray-500'
                   }`}
                 >
-                  <span>{c.flag ?? '🌍'}</span>
-                  <span>{c.country_code}</span>
-                  {c.status === 'live' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+                  <span>{c.iso2}</span>
+                  {isLive && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
                 </Link>
-              ))}
+              );})}
               {allCountries.length > 16 && (
                 <Link href="/countries" className="text-accent text-xs self-center ml-2 hover:underline font-bold">
                   + {allCountries.length - 16} more countries →
@@ -434,7 +436,7 @@ export default async function HomePage() {
                 Ready to Go <span className="text-accent">Pro</span>?
               </h3>
               <p className="text-gray-400 text-sm">
-                Get verified, get priority loads, get paid faster.
+                Get verified, get priority runs, get paid faster.
               </p>
             </div>
             <Link
@@ -500,7 +502,7 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 pt-6 border-t border-white/5">
             <div className="text-accent font-black tracking-tighter text-xl">HAUL COMMAND</div>
             <div className="text-[10px] text-gray-600">
-              The world&apos;s largest pilot car &amp; escort vehicle directory
+              Built for the corridor. Not the crowd.
             </div>
           </div>
         </div>

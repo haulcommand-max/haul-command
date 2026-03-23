@@ -52,8 +52,8 @@ export default async function LoadsPage() {
             Heavy Haul <span className="text-accent">Load Board</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl">
-            Post oversize and heavy haul loads for escort coverage, or find available loads in your service area. 
-            When live, the load board connects shippers and brokers with verified escort operators.
+            Post oversize and heavy haul loads for pilot coverage, or find available runs in your AO. 
+            When live, the board connects brokers with verified pilots on standby.
           </p>
         </header>
 
@@ -62,7 +62,7 @@ export default async function LoadsPage() {
           <div className="bg-accent/5 border border-accent/15 rounded-xl px-5 py-4 mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-white text-sm font-bold">{liveVehicleCount} Escort Vehicles Tracked Live</span>
+              <span className="text-white text-sm font-bold">{liveVehicleCount} Pilot Vehicles Tracked Live</span>
             </div>
             <span className="text-gray-500 text-xs">ELD-verified positions · Updated every 15 min</span>
           </div>
@@ -72,9 +72,9 @@ export default async function LoadsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 text-center">
             <div className="text-4xl mb-4">📦</div>
-            <h2 className="text-white font-bold text-xl mb-2">I Need Escort Coverage</h2>
+            <h2 className="text-white font-bold text-xl mb-2">I Need Pilot Coverage</h2>
             <p className="text-gray-400 text-sm mb-4">
-              Post your oversize load details and get connected with verified escort operators near your route.
+              Post your oversize load details and get connected with verified pilots on standby near your route.
             </p>
             <div className="bg-accent/10 border border-accent/20 rounded-xl px-4 py-3 text-accent text-sm font-bold">
               Coming Soon — Join Waitlist ↓
@@ -82,9 +82,9 @@ export default async function LoadsPage() {
           </div>
           <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 text-center">
             <div className="text-4xl mb-4">🔍</div>
-            <h2 className="text-white font-bold text-xl mb-2">I Want Loads in My Area</h2>
+            <h2 className="text-white font-bold text-xl mb-2">I Want Runs in My AO</h2>
             <p className="text-gray-400 text-sm mb-4">
-              Browse available loads that need escort coverage. Filter by location, dimensions, and time.
+              Browse available runs that need pilot coverage. Filter by location, dimensions, and time.
             </p>
             <div className="bg-accent/10 border border-accent/20 rounded-xl px-4 py-3 text-accent text-sm font-bold">
               Coming Soon — Join Waitlist ↓
@@ -137,9 +137,9 @@ export default async function LoadsPage() {
 
         {/* Alert Capture */}
         <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-8 mb-12 text-center">
-          <h2 className="text-white font-bold text-2xl mb-3">Get Load Board Alerts</h2>
+          <h2 className="text-white font-bold text-2xl mb-3">Get Run Alerts</h2>
           <p className="text-gray-400 text-sm mb-6 max-w-lg mx-auto">
-            Be the first to know when loads are posted in your area. Set up alerts by state, corridor, or service type.
+            Be the first to know when runs are posted in your AO. Set up alerts by state, corridor, or service type.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <input
@@ -168,7 +168,7 @@ export default async function LoadsPage() {
             >
               <span className="text-2xl">🔍</span>
               <h3 className="text-white font-bold text-sm mt-2">Browse Directory</h3>
-              <p className="text-gray-500 text-xs mt-1">Find escort operators by country and category</p>
+              <p className="text-gray-500 text-xs mt-1">Find pilots by country and category</p>
             </Link>
             <Link
               href="/escort-requirements"
@@ -184,22 +184,22 @@ export default async function LoadsPage() {
             >
               <span className="text-2xl">✅</span>
               <h3 className="text-white font-bold text-sm mt-2">Claim Your Listing</h3>
-              <p className="text-gray-500 text-xs mt-1">Get found by shippers and brokers</p>
+              <p className="text-gray-500 text-xs mt-1">Get found by brokers and shippers</p>
             </Link>
           </div>
         </div>
 
         <HCClaimCorrectVerifyPanel
           claimAction={{ id: 'claim', label: 'Claim Your Listing', href: '/claim', type: 'claim', priority: 'primary' }}
-          contextCopy="List your escort service to receive loads when the board goes live."
+          contextCopy="Claim your profile so you're on the board when runs start posting."
         />
 
         <HCFaqModule
           items={[
             { question: 'When will the load board launch?', answer: 'The Haul Command load board is in development. Join our waitlist to be notified when it goes live. In the meantime, you can browse the directory and claim your listing to be ready.' },
-            { question: 'How does posting a load work?', answer: 'When live, you\'ll enter load dimensions, route, and timing. We\'ll match you with verified escort operators who cover your corridor and meet the regulatory requirements for your route.' },
-            { question: 'How do escort operators find loads?', answer: 'Operators set their service area, capabilities, and availability. When a load matches their profile, they receive an alert with full details and can respond instantly.' },
-            { question: 'What is HC Verified?', answer: 'HC Verified operators have connected their ELD (Electronic Logging Device) through Motive, proving they are a real fleet with live tracking. Verified operators get priority in load matching and display trust badges on their listings.' },
+            { question: 'How does posting a load work?', answer: 'When live, you\'ll enter load dimensions, route, and timing. We\'ll match you with verified pilots on standby who cover your corridor and meet the regulatory requirements for your route.' },
+            { question: 'How do pilots find runs?', answer: 'Pilots set their AO, capabilities, and availability. When a run matches their profile, they get an alert with full details and can respond instantly.' },
+            { question: 'What is HC Verified?', answer: 'HC Verified pilots have connected their ELD (Electronic Logging Device) through Motive, proving they are a real fleet with live tracking. Verified pilots get priority in run matching and display trust badges on their listings.' },
           ]}
         />
 
