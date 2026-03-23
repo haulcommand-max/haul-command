@@ -5,8 +5,8 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { getServiceData } from '@/lib/seo/programmatic-data';
 import { notFound } from 'next/navigation';
 
-export default async function ServiceVerticalPage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
+export default async function ServiceVerticalPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const service = await getServiceData(slug);
 
     if (!service) {

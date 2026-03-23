@@ -1,285 +1,319 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Search, MapPin, ShieldCheck, Star, Filter, X,
   ChevronDown, Users, ArrowRight, Clock, DollarSign,
-  Zap, CheckCircle, Award,
+  Zap, CheckCircle, Award, Truck, Globe, Shield,
+  TrendingUp, Bot, Phone,
 } from 'lucide-react';
-import { AISearchBar, AIAssistantDrawer } from '@/components/ai/AISearchBar';
 
 /* ═══════════════════════════════════════════════════════════════════
-   PUBLIC DIRECTORY — Haul Command
+   PUBLIC DIRECTORY — Haul Command v2
    Full public-facing operator directory with:
-   - Hero search bar with filters
-   - Operator cards grid (real data + seed placeholders)
-   - Sponsored listing slots (gold border, every 6th card)
-   - Filter sidebar: verified, escrow, available, service type, state
-   - Social proof bar: operator count, median fill time, escrow tag
+   - Command Black #0B0B0C background, Gold #C6923A accent
+   - HOT / WARM / COOL corridor badge system
+   - Metrics row: corridor rank, response time, rate, job count
+   - Filter sidebar with toggles
+   - AdGrid slot at position 7
+   - AG card hover animation
+   - Wired to /api/directory/listings
    ═══════════════════════════════════════════════════════════════════ */
 
+// ── Design Tokens (Command Black + Gold system) ──────────────────
 const T = {
-  bg: '#060b12',
-  bgCard: '#0f1a26',
-  bgSection: '#0a1520',
-  border: 'rgba(255,255,255,0.07)',
-  borderStrong: 'rgba(255,255,255,0.13)',
-  gold: '#f5b942',
-  goldDim: 'rgba(245,185,66,0.15)',
-  goldBorder: 'rgba(245,185,66,0.35)',
-  green: '#27d17f',
-  text: '#f0f4f8',
-  muted: '#8fa3b8',
-  subtle: '#556070',
+  bg: '#0B0B0C',
+  bgCard: '#111114',
+  bgSurface: '#161619',
+  bgElevated: '#1A1A1E',
+  border: 'rgba(255,255,255,0.06)',
+  borderMid: 'rgba(255,255,255,0.10)',
+  borderStrong: 'rgba(255,255,255,0.14)',
+  gold: '#C6923A',
+  goldLight: '#E4B872',
+  goldDim: 'rgba(198,146,58,0.12)',
+  goldBorder: 'rgba(198,146,58,0.30)',
+  green: '#22c55e',
+  greenDim: 'rgba(34,197,94,0.10)',
+  blue: '#3b82f6',
+  blueDim: 'rgba(59,130,246,0.10)',
+  red: '#ef4444',
+  redDim: 'rgba(239,68,68,0.10)',
+  orange: '#f59e0b',
+  orangeDim: 'rgba(245,158,11,0.10)',
+  text: '#F0F0F2',
+  textSecondary: '#A0A0A8',
+  muted: '#6B6B75',
+  subtle: '#45454D',
 } as const;
 
-// ─── Seed operators for when DB is empty ─────────────────────────────────────
-const SEED_OPERATORS = [
-  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car', 'height_pole', 'wide_load'], verified: true, escrow: true, corridorRank: 1, avgResponse: 14, sponsored: false, isSeed: true },
-  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Texas', services: ['pilot_car', 'route_survey'], verified: true, escrow: false, corridorRank: 2, avgResponse: 22, sponsored: false, isSeed: true },
-  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Georgia', services: ['pilot_car', 'wide_load'], verified: false, escrow: false, corridorRank: 5, avgResponse: 31, sponsored: false, isSeed: true },
-  { id: 'seed-4', name: 'Pacific Northwest Pilot Cars', state: 'WA', region: 'Washington', services: ['pilot_car', 'height_pole', 'route_survey'], verified: true, escrow: true, corridorRank: 3, avgResponse: 18, sponsored: false, isSeed: true },
-  { id: 'seed-5', name: 'Midwest Heavy Haul Escorts', state: 'IL', region: 'Illinois', services: ['pilot_car', 'wide_load', 'oversize'], verified: true, escrow: false, corridorRank: 4, avgResponse: 25, sponsored: false, isSeed: true },
-  { id: 'seed-6', name: 'Sunshine State Pilot Cars', state: 'FL', region: 'Florida', services: ['pilot_car', 'height_pole'], verified: false, escrow: false, corridorRank: 8, avgResponse: 45, sponsored: false, isSeed: true },
+// ── Corridor status config ──────────────────────────────────────
+const CORRIDOR_STATUS = {
+  HOT:  { label: 'HOT', color: '#ef4444', bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.25)', cls: 'ag-badge-hot' },
+  WARM: { label: 'WARM', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)', cls: 'ag-badge-warm' },
+  COOL: { label: 'COOL', color: '#6b7280', bg: 'rgba(107,114,128,0.10)', border: 'rgba(107,114,128,0.20)', cls: 'ag-badge-cool' },
+} as const;
+
+type CorridorHeat = 'HOT' | 'WARM' | 'COOL';
+
+// ── Seed operators ──────────────────────────────────────────────
+const SEED_OPERATORS: Operator[] = [
+  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true },
+  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true },
+  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true },
+  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true },
+  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true },
+  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true },
+  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true },
+  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true },
+  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true },
+  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true },
 ];
 
 const SERVICE_LABELS: Record<string, string> = {
-  pilot_car: 'Pilot Car',
-  height_pole: 'Height Pole',
-  route_survey: 'Route Survey',
-  wide_load: 'Wide Load',
-  oversize: 'Oversize',
+  pilot_car: 'Pilot Car', height_pole: 'Height Pole', route_survey: 'Route Survey',
+  wide_load: 'Wide Load', oversize: 'Oversize', av_escort: 'AV Escort',
 };
 
-const US_STATES = [
-  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
-  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
-  'VA','WA','WV','WI','WY',
-];
-
 interface Operator {
-  id: string;
-  name: string;
-  state: string;
-  region?: string;
-  services: string[];
-  verified: boolean;
-  escrow: boolean;
-  corridorRank?: number;
-  avgResponse?: number;
-  sponsored?: boolean;
-  isSeed?: boolean;
-  trustScore?: number;
-  slug?: string;
+  id: string; name: string; state: string; region?: string;
+  services: string[]; verified: boolean; escrow: boolean; avReady: boolean;
+  corridorRank?: number; avgResponse?: number; rate?: number; jobCount?: number;
+  corridorHeat?: CorridorHeat; corridors?: string[];
+  sponsored?: boolean; isSeed?: boolean; trustScore?: number; slug?: string;
 }
 
 interface Filters {
-  search: string;
-  state: string;
-  serviceType: string;
-  verifiedOnly: boolean;
-  escrowOnly: boolean;
-  availableNow: boolean;
-  sortBy: 'rank' | 'response' | 'newest';
+  search: string; state: string; serviceType: string;
+  verifiedOnly: boolean; escrowOnly: boolean; availableNow: boolean; avCertified: boolean;
+  corridorHeat: CorridorHeat | '';
+  sortBy: 'rank' | 'response' | 'rate' | 'newest';
 }
 
-// ─── Sponsored Ad Card ────────────────────────────────────────────────────────
-function SponsoredCard({ index }: { index: number }) {
+// ═══════════════════════════════════════════════════════════════
+// CORRIDOR HEAT BADGE
+// ═══════════════════════════════════════════════════════════════
+function CorridorBadge({ heat }: { heat: CorridorHeat }) {
+  const cfg = CORRIDOR_STATUS[heat];
+  return (
+    <span className={cfg.cls} style={{
+      display: 'inline-flex', alignItems: 'center', gap: 4,
+      padding: '2px 8px', borderRadius: 6, fontSize: 9, fontWeight: 800,
+      background: cfg.bg, border: `1px solid ${cfg.border}`, color: cfg.color,
+      textTransform: 'uppercase', letterSpacing: '0.08em',
+    }}>
+      <span style={{ width: 5, height: 5, borderRadius: '50%', background: cfg.color }} />
+      {cfg.label}
+    </span>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADGRID SLOT — Position 7 in the grid
+// ═══════════════════════════════════════════════════════════════
+function AdGridSlot() {
   return (
     <div className="ag-sponsored-glow ag-slide-up" style={{
-      background: `linear-gradient(135deg, rgba(245,185,66,0.06), rgba(245,185,66,0.02))`,
+      background: `linear-gradient(135deg, rgba(198,146,58,0.06), rgba(198,146,58,0.02))`,
       border: `1px solid ${T.goldBorder}`,
-      borderRadius: 16,
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12,
-      position: 'relative',
+      borderRadius: 16, padding: '20px', display: 'flex', flexDirection: 'column', gap: 14,
+      position: 'relative', overflow: 'hidden',
     }}>
+      {/* Gold top accent bar */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: `linear-gradient(90deg, ${T.gold}, ${T.goldLight}, ${T.gold})`,
+      }} />
       <div style={{
         position: 'absolute', top: 10, right: 12,
-        fontSize: 9, fontWeight: 800, color: T.gold,
-        textTransform: 'uppercase', letterSpacing: '0.1em',
-        background: 'rgba(245,185,66,0.12)', padding: '2px 8px', borderRadius: 4,
-      }}>
-        Sponsored
-      </div>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        fontSize: 8, fontWeight: 800, color: T.gold,
+        textTransform: 'uppercase', letterSpacing: '0.12em',
+        background: T.goldDim, padding: '2px 8px', borderRadius: 4,
+      }}>Sponsored</div>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingTop: 6 }}>
         <div style={{
           width: 44, height: 44, borderRadius: 10,
-          background: 'rgba(245,185,66,0.12)', border: '1px solid rgba(245,185,66,0.25)',
+          background: T.goldDim, border: `1px solid ${T.goldBorder}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 20, flexShrink: 0,
-        }}>📋</div>
+        }}>🛡️</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 800, color: T.gold }}>
-            Advertise Your Business
+            Fleet Insurance Solutions
           </div>
-          <div style={{ fontSize: 12, color: T.muted, marginTop: 3 }}>
-            Reach 7,000+ operators and brokers
+          <div style={{ fontSize: 12, color: T.textSecondary, marginTop: 3 }}>
+            Specialized oversize load coverage starting at $89/mo
           </div>
         </div>
       </div>
-      <div style={{ fontSize: 12, color: T.muted, lineHeight: 1.5 }}>
-        Boost your listing to the top of search results for your state or corridor. Plans from 7-day to 90-day.
+      <div style={{ fontSize: 11, color: T.muted, lineHeight: 1.6 }}>
+        Get instant quotes for pilot car liability, cargo coverage, and fleet policies. Trusted by 2,400+ operators nationwide.
       </div>
       <Link href="/sponsor" style={{
         display: 'inline-flex', alignItems: 'center', gap: 6,
-        padding: '8px 14px', borderRadius: 10,
-        background: 'rgba(245,185,66,0.15)', border: `1px solid ${T.goldBorder}`,
-        color: T.gold, fontSize: 12, fontWeight: 800, textDecoration: 'none',
-        width: 'fit-content',
-      }}>
-        Boost Your Listing <ArrowRight size={12} />
+        padding: '10px 18px', borderRadius: 10,
+        background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
+        color: '#000', fontSize: 12, fontWeight: 800, textDecoration: 'none',
+        width: 'fit-content', transition: 'transform 0.15s ease',
+      }} className="ag-press">
+        Get Quote <ArrowRight size={12} />
       </Link>
     </div>
   );
 }
 
-// ─── Operator Card ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// OPERATOR CARD — Full design with metrics row + badges
+// ═══════════════════════════════════════════════════════════════
 function OperatorCard({ op, position }: { op: Operator; position: number }) {
-  const isSponsored = op.sponsored;
-
   return (
-    <div
-      className="operator-card ag-card-hover"
-      style={{
-        background: isSponsored
-          ? `linear-gradient(135deg, rgba(245,185,66,0.06), rgba(245,185,66,0.02))`
-          : T.bgCard,
-        border: isSponsored
-          ? `1px solid ${T.goldBorder}`
-          : `1px solid ${T.border}`,
-        borderRadius: 16,
-        padding: '18px 18px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        cursor: 'pointer',
-        position: 'relative',
-        animation: `slide-in-card 0.4s ease-out both`,
-        animationDelay: `${Math.min(position * 50, 400)}ms`,
-      }}
-    >
-      {isSponsored && (
+    <div className="ag-card-hover ag-slide-up" style={{
+      background: op.sponsored
+        ? `linear-gradient(135deg, rgba(198,146,58,0.05), rgba(198,146,58,0.02))`
+        : T.bgCard,
+      border: `1px solid ${op.sponsored ? T.goldBorder : T.border}`,
+      borderRadius: 16, padding: '18px', display: 'flex', flexDirection: 'column', gap: 12,
+      position: 'relative', cursor: 'pointer',
+      animationDelay: `${Math.min(position * 60, 480)}ms`,
+    }}>
+      {op.sponsored && (
         <div style={{
-          position: 'absolute', top: 10, right: 12,
-          fontSize: 9, fontWeight: 800, color: T.gold,
-          textTransform: 'uppercase', letterSpacing: '0.1em',
-          background: 'rgba(245,185,66,0.12)', padding: '2px 8px', borderRadius: 4,
-          animation: 'pulse-gold-border 3s ease-in-out infinite',
-        }}>
-          Sponsored
-        </div>
+          position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+          background: `linear-gradient(90deg, ${T.gold}, transparent)`,
+        }} />
       )}
 
-      {/* Header */}
+      {/* Header: Avatar + Name + Location */}
       <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
         <div style={{
           width: 44, height: 44, borderRadius: 10, flexShrink: 0,
-          background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
+          background: T.bgElevated, border: `1px solid ${T.border}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 18,
-        }}>
-          🚗
-        </div>
-        <div style={{ flex: 1, minWidth: 0, paddingRight: isSponsored ? 60 : 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: T.text }}>
-              {op.name}
-            </span>
-            {op.verified && (
-              <ShieldCheck size={13} style={{ color: T.green, flexShrink: 0 }} />
-            )}
+        }}>🚗</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 14, fontWeight: 800, color: T.text }}>{op.name}</span>
+            {op.verified && <ShieldCheck size={13} style={{ color: T.green, flexShrink: 0 }} />}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3 }}>
             <MapPin size={11} style={{ color: T.muted }} />
-            <span style={{ fontSize: 12, color: T.muted }}>
-              {op.region || op.state}
-            </span>
+            <span style={{ fontSize: 12, color: T.textSecondary }}>{op.region || op.state}</span>
           </div>
         </div>
+        {/* Corridor Rank Badge */}
+        {op.corridorRank != null && op.corridorRank <= 10 && (
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, flexShrink: 0,
+          }}>
+            <div className="ag-rank-glow" style={{
+              fontSize: 18, fontWeight: 900, color: op.corridorRank <= 3 ? T.gold : T.textSecondary,
+              fontVariantNumeric: 'tabular-nums', lineHeight: 1,
+            }}>#{op.corridorRank}</div>
+            <div style={{ fontSize: 8, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Rank</div>
+          </div>
+        )}
+      </div>
+
+      {/* Badge Row: Verified, Escrow, AV Ready, Corridor Heat */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+        {op.verified && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 3,
+            fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
+            background: T.greenDim, border: '1px solid rgba(34,197,94,0.20)',
+            color: T.green, textTransform: 'uppercase', letterSpacing: '0.05em',
+          }}><ShieldCheck size={9} /> Verified</span>
+        )}
+        {op.escrow && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 3,
+            fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
+            background: T.blueDim, border: '1px solid rgba(59,130,246,0.20)',
+            color: T.blue, textTransform: 'uppercase', letterSpacing: '0.05em',
+          }}><Shield size={9} /> Escrow</span>
+        )}
+        {op.avReady && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 3,
+            fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
+            background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.20)',
+            color: '#a855f7', textTransform: 'uppercase', letterSpacing: '0.05em',
+          }}><Bot size={9} /> AV Ready</span>
+        )}
+        {op.corridorHeat && <CorridorBadge heat={op.corridorHeat} />}
       </div>
 
       {/* Services */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
         {op.services.slice(0, 4).map(s => (
           <span key={s} style={{
-            fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
-            background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
-            color: T.muted, textTransform: 'uppercase', letterSpacing: '0.05em',
-          }}>
-            {SERVICE_LABELS[s] || s}
-          </span>
+            fontSize: 10, fontWeight: 600, padding: '3px 7px', borderRadius: 5,
+            background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`,
+            color: T.muted,
+          }}>{SERVICE_LABELS[s] || s}</span>
         ))}
       </div>
 
-      {/* Stats row */}
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        {op.corridorRank != null && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Award size={11} style={{ color: T.gold }} />
-            <span style={{ fontSize: 11, color: T.gold, fontWeight: 700 }}>
-              #{op.corridorRank} Corridor
-            </span>
+      {/* Metrics Row */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8,
+        padding: '10px 0', borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`,
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: T.text, fontVariantNumeric: 'tabular-nums' }}>
+            {op.avgResponse != null ? `${op.avgResponse}m` : '—'}
           </div>
-        )}
-        {op.avgResponse != null && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Clock size={11} style={{ color: T.muted }} />
-            <span style={{ fontSize: 11, color: T.muted }}>
-              ~{op.avgResponse}m response
-            </span>
+          <div style={{ fontSize: 9, fontWeight: 600, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 2 }}>Response</div>
+        </div>
+        <div style={{ textAlign: 'center', borderLeft: `1px solid ${T.border}`, borderRight: `1px solid ${T.border}` }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: T.gold, fontVariantNumeric: 'tabular-nums' }}>
+            {op.rate != null ? `$${op.rate}` : '—'}
           </div>
-        )}
-        {op.escrow && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <CheckCircle size={11} style={{ color: '#60a5fa' }} />
-            <span style={{ fontSize: 11, color: '#60a5fa', fontWeight: 700 }}>
-              Escrow
-            </span>
+          <div style={{ fontSize: 9, fontWeight: 600, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 2 }}>Per Hour</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: T.text, fontVariantNumeric: 'tabular-nums' }}>
+            {op.jobCount != null ? op.jobCount.toLocaleString() : '—'}
           </div>
-        )}
+          <div style={{ fontSize: 9, fontWeight: 600, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 2 }}>Jobs</div>
+        </div>
       </div>
 
-      {/* Action row */}
-      <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
+      {/* Corridor Tags */}
+      {op.corridors && op.corridors.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {op.corridors.map(c => (
+            <span key={c} style={{
+              fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+              background: 'rgba(198,146,58,0.06)', border: `1px solid rgba(198,146,58,0.15)`,
+              color: T.goldLight,
+            }}>{c}</span>
+          ))}
+        </div>
+      )}
+
+      {/* Action Row */}
+      <div style={{ display: 'flex', gap: 8 }}>
         {op.isSeed ? (
-          <Link
-            href="/claim"
-            style={{
-              flex: 1, padding: '8px 12px', borderRadius: 10, textAlign: 'center',
-              background: 'rgba(245,185,66,0.1)', border: `1px solid rgba(245,185,66,0.2)`,
-              color: T.gold, fontSize: 12, fontWeight: 800, textDecoration: 'none',
-            }}
-          >
-            Claim This Listing
-          </Link>
+          <Link href="/claim" style={{
+            flex: 1, padding: '10px 14px', borderRadius: 10, textAlign: 'center',
+            background: T.goldDim, border: `1px solid ${T.goldBorder}`,
+            color: T.gold, fontSize: 12, fontWeight: 800, textDecoration: 'none',
+          }} className="ag-press">Claim This Listing</Link>
         ) : (
           <>
-            <Link
-              href={`/directory/profile/${op.slug || op.id}`}
-              style={{
-                flex: 1, padding: '8px 12px', borderRadius: 10, textAlign: 'center',
-                background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`,
-                color: T.text, fontSize: 12, fontWeight: 700, textDecoration: 'none',
-              }}
-            >
-              View Profile
-            </Link>
-            <Link
-              href={`/inbox?to=${op.id}`}
-              style={{
-                padding: '8px 12px', borderRadius: 10, textAlign: 'center',
-                background: 'rgba(34,209,127,0.08)', border: '1px solid rgba(34,209,127,0.2)',
-                color: T.green, fontSize: 12, fontWeight: 800, textDecoration: 'none',
-              }}
-            >
-              DM
-            </Link>
+            <Link href={`/directory/profile/${op.slug || op.id}`} style={{
+              flex: 1, padding: '10px 14px', borderRadius: 10, textAlign: 'center',
+              background: T.bgElevated, border: `1px solid ${T.borderMid}`,
+              color: T.text, fontSize: 12, fontWeight: 700, textDecoration: 'none',
+            }} className="ag-press">View Profile</Link>
+            <button style={{
+              padding: '10px 16px', borderRadius: 10,
+              background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
+              border: 'none', color: '#000', fontSize: 12, fontWeight: 800, cursor: 'pointer',
+            }} className="ag-press">Request</button>
           </>
         )}
       </div>
@@ -287,47 +321,70 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
   );
 }
 
-// ─── Filter Chip ──────────────────────────────────────────────────────────────
-function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+// ═══════════════════════════════════════════════════════════════
+// FILTER TOGGLE SWITCH
+// ═══════════════════════════════════════════════════════════════
+function ToggleSwitch({ label, active, onChange, icon }: {
+  label: string; active: boolean; onChange: () => void; icon: React.ReactNode;
+}) {
   return (
-    <button
-      onClick={onClick}
-      className="filter-chip ag-chip-snap"
-      style={{
-        padding: '6px 14px', borderRadius: 999, cursor: 'pointer', border: 'none',
-        fontSize: 12, fontWeight: 700,
-        background: active ? T.gold : 'rgba(255,255,255,0.05)',
-        color: active ? '#000' : T.muted,
-        transition: 'all 0.15s ease',
-      }}
-    >
-      {label}
+    <button onClick={onChange} style={{
+      display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+      padding: '10px 12px', borderRadius: 10, cursor: 'pointer', border: 'none',
+      background: active ? T.goldDim : 'transparent',
+      transition: 'all 0.15s ease',
+    }}>
+      <span style={{ color: active ? T.gold : T.muted, flexShrink: 0 }}>{icon}</span>
+      <span style={{ flex: 1, textAlign: 'left', fontSize: 12, fontWeight: 600, color: active ? T.text : T.textSecondary }}>{label}</span>
+      <div style={{
+        width: 32, height: 18, borderRadius: 9, position: 'relative',
+        background: active ? T.gold : T.subtle, transition: 'background 0.2s ease',
+      }}>
+        <div style={{
+          width: 14, height: 14, borderRadius: '50%', background: '#fff',
+          position: 'absolute', top: 2,
+          left: active ? 16 : 2,
+          transition: 'left 0.2s cubic-bezier(0.34,1.56,0.64,1)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+        }} />
+      </div>
     </button>
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// FILTER CHIP
+// ═══════════════════════════════════════════════════════════════
+function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="ag-chip-snap" style={{
+      padding: '6px 14px', borderRadius: 999, cursor: 'pointer',
+      fontSize: 11, fontWeight: 700, border: 'none',
+      background: active ? T.gold : 'rgba(255,255,255,0.04)',
+      color: active ? '#000' : T.muted,
+      transition: 'all 0.15s ease',
+    }}>{label}</button>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN COMPONENT
+// ═══════════════════════════════════════════════════════════════
 export function PublicDirectory() {
   const [operators, setOperators] = useState<Operator[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<Filters>({
-    search: '',
-    state: '',
-    serviceType: '',
-    verifiedOnly: false,
-    escrowOnly: false,
-    availableNow: false,
-    sortBy: 'rank',
+    search: '', state: '', serviceType: '',
+    verifiedOnly: false, escrowOnly: false, availableNow: false, avCertified: false,
+    corridorHeat: '', sortBy: 'rank',
   });
-  const [showFilters, setShowFilters] = useState(false);
-  const [socialProof, setSocialProof] = useState({ operators: 0, fillTime: 47, escrowCount: 0 });
 
-  // Fetch operators
+  // Fetch operators from API
   const fetchOperators = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ limit: '24' });
+      const params = new URLSearchParams({ limit: '30' });
       if (filters.state) params.set('region', filters.state);
       if (filters.serviceType) params.set('entity_type', filters.serviceType);
       if (filters.search) params.set('q', filters.search);
@@ -336,329 +393,285 @@ export function PublicDirectory() {
       if (res.ok) {
         const data = await res.json();
         const listings: Operator[] = (data.listings || []).map((l: any) => ({
-          id: l.id,
-          name: l.name || 'Verified Operator',
-          state: l.region_code || '',
-          region: l.region_code || '',
+          id: l.id, name: l.name || 'Verified Operator',
+          state: l.region_code || '', region: l.city ? `${l.city}, ${l.region_code}` : l.region_code,
           services: l.metadata?.services || ['pilot_car'],
           verified: l.claim_status === 'claimed' || l.claim_status === 'verified',
           escrow: l.metadata?.escrow_enabled || false,
+          avReady: l.metadata?.av_certified || false,
           corridorRank: l.rank_score ? Math.ceil(l.rank_score * 10) : undefined,
           avgResponse: l.metadata?.avg_response_minutes || undefined,
+          rate: l.metadata?.hourly_rate || undefined,
+          jobCount: l.metadata?.total_jobs || undefined,
+          corridorHeat: getHeatFromScore(l.rank_score),
+          corridors: l.metadata?.corridors || [],
           sponsored: l.metadata?.is_sponsored || false,
           slug: l.slug,
-          trustScore: l.rank_score ? Math.round(l.rank_score * 100) : undefined,
         }));
-
-        if (listings.length === 0) {
-          // Show seeds so the page is never empty
-          setOperators(SEED_OPERATORS);
-          setTotal(SEED_OPERATORS.length);
-        } else {
-          setOperators(listings);
-          setTotal(data.total || listings.length);
-        }
-        setSocialProof(prev => ({ ...prev, operators: data.total || listings.length || SEED_OPERATORS.length }));
-      } else {
-        setOperators(SEED_OPERATORS);
-        setTotal(SEED_OPERATORS.length);
-      }
-    } catch {
-      setOperators(SEED_OPERATORS);
-      setTotal(SEED_OPERATORS.length);
-    }
+        if (listings.length === 0) { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
+        else { setOperators(listings); setTotal(data.total || listings.length); }
+      } else { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
+    } catch { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
     setLoading(false);
   }, [filters.state, filters.serviceType, filters.search]);
 
-  useEffect(() => {
-    const t = setTimeout(fetchOperators, 300);
-    return () => clearTimeout(t);
-  }, [fetchOperators]);
+  useEffect(() => { const t = setTimeout(fetchOperators, 300); return () => clearTimeout(t); }, [fetchOperators]);
 
-  // Build grid with sponsored slots
-  const buildGrid = () => {
-    const items: Array<{ type: 'operator' | 'sponsored'; data?: Operator; index: number }> = [];
-    let opIdx = 0;
-    let gridPos = 0;
-
-    // First slot is always sponsored
-    items.push({ type: 'sponsored', index: gridPos++ });
-
-    for (let i = 0; i < operators.length; i++) {
-      items.push({ type: 'operator', data: operators[i], index: gridPos++ });
-      opIdx++;
-      // Every 6 items after the first, insert a sponsored slot
-      if (opIdx > 0 && opIdx % 5 === 0) {
-        items.push({ type: 'sponsored', index: gridPos++ });
-      }
+  // Client-side filtering + sorting
+  const filteredOps = useMemo(() => {
+    let ops = [...operators];
+    if (filters.verifiedOnly) ops = ops.filter(o => o.verified);
+    if (filters.escrowOnly) ops = ops.filter(o => o.escrow);
+    if (filters.avCertified) ops = ops.filter(o => o.avReady);
+    if (filters.corridorHeat) ops = ops.filter(o => o.corridorHeat === filters.corridorHeat);
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      ops = ops.filter(o =>
+        o.name.toLowerCase().includes(q) ||
+        (o.region || '').toLowerCase().includes(q) ||
+        o.services.some(s => (SERVICE_LABELS[s] || s).toLowerCase().includes(q))
+      );
     }
+    // Sort
+    switch (filters.sortBy) {
+      case 'response': ops.sort((a, b) => (a.avgResponse ?? 999) - (b.avgResponse ?? 999)); break;
+      case 'rate': ops.sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0)); break;
+      case 'newest': ops.reverse(); break;
+      default: ops.sort((a, b) => (a.corridorRank ?? 999) - (b.corridorRank ?? 999));
+    }
+    return ops;
+  }, [operators, filters]);
 
+  // Build grid with AdGrid slot at position 7
+  const gridItems = useMemo(() => {
+    const items: Array<{ type: 'operator' | 'ad'; data?: Operator; idx: number }> = [];
+    filteredOps.forEach((op, i) => {
+      if (i === 6) items.push({ type: 'ad', idx: items.length });
+      items.push({ type: 'operator', data: op, idx: items.length });
+    });
+    if (filteredOps.length < 7) items.push({ type: 'ad', idx: items.length });
     return items;
-  };
+  }, [filteredOps]);
 
-  const gridItems = buildGrid();
+  const activeFilterCount = [
+    filters.verifiedOnly, filters.escrowOnly, filters.availableNow,
+    filters.avCertified, !!filters.corridorHeat, !!filters.serviceType,
+  ].filter(Boolean).length;
 
   return (
     <>
       <style>{`
-        @keyframes slide-in-card {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse-gold-border {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(245,185,66,0); }
-          50% { box-shadow: 0 0 12px 2px rgba(245,185,66,0.15); }
-        }
-        @keyframes filter-snap {
-          0% { transform: scale(1); }
-          40% { transform: scale(0.93); }
-          100% { transform: scale(1); }
-        }
-        .operator-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 8px 32px rgba(245,185,66,0.12);
-        }
-        .filter-chip:active {
-          animation: filter-snap 0.2s ease-out;
-        }
-        .dir-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-        }
+        .dir-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
         @media (min-width: 640px) { .dir-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .dir-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1280px) { .dir-grid { grid-template-columns: repeat(4, 1fr); } }
-        .dir-layout {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-        @media (min-width: 1024px) {
-          .dir-layout { flex-direction: row; align-items: flex-start; }
-          .dir-sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 80px; }
-          .dir-main { flex: 1; min-width: 0; }
-        }
+        @media (min-width: 1400px) { .dir-grid { grid-template-columns: repeat(4, 1fr); } }
         .dir-sidebar { display: none; }
-        @media (min-width: 1024px) { .dir-sidebar { display: block; } }
+        @media (min-width: 1024px) { .dir-sidebar { display: block; width: 260px; flex-shrink: 0; position: sticky; top: 80px; } }
       `}</style>
 
       <div style={{ background: T.bg, minHeight: '100vh', color: T.text }}>
 
         {/* ── Social Proof Bar ── */}
-        <div style={{
-          background: 'rgba(255,255,255,0.02)',
-          borderBottom: `1px solid ${T.border}`,
-          padding: '10px 0',
-        }}>
-          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px', display: 'flex', flexWrap: 'wrap', gap: '12px 24px', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.02)', borderBottom: `1px solid ${T.border}`, padding: '10px 0' }}>
+          <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 20px', display: 'flex', flexWrap: 'wrap', gap: '10px 24px', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: T.muted }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, boxShadow: `0 0 6px ${T.green}` }} />
-              <span style={{ fontWeight: 700, color: T.text }}>{(socialProof.operators || 7335).toLocaleString()}</span> verified operators
+              <span style={{ fontWeight: 700, color: T.text }}>7,335</span> verified operators
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
               <Clock size={12} style={{ color: T.gold }} />
-              Median fill time <span style={{ fontWeight: 700, color: T.gold, margin: '0 3px' }}>{socialProof.fillTime}min</span>
+              Median fill <span style={{ fontWeight: 700, color: T.gold, margin: '0 2px' }}>47min</span>
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
-              <CheckCircle size={12} style={{ color: '#60a5fa' }} />
-              <span style={{ fontWeight: 700, color: '#60a5fa' }}>Escrow protected</span> payments available
+              <Globe size={12} style={{ color: T.blue }} />
+              <span style={{ fontWeight: 700, color: T.blue }}>57 countries</span>
+            </div>
+            <div style={{ width: 1, height: 14, background: T.border }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
+              <Shield size={12} style={{ color: '#a855f7' }} />
+              <span style={{ fontWeight: 700, color: '#a855f7' }}>Escrow protected</span>
             </div>
           </div>
         </div>
 
-        {/* ── Hero Search ── */}
+        {/* ── Hero Search Section ── */}
         <div style={{
-          background: 'linear-gradient(180deg, rgba(245,185,66,0.04) 0%, transparent 100%)',
-          borderBottom: `1px solid ${T.border}`,
-          padding: '40px 20px 32px',
+          background: `linear-gradient(180deg, rgba(198,146,58,0.03) 0%, transparent 100%)`,
+          borderBottom: `1px solid ${T.border}`, padding: '36px 20px 28px',
         }}>
-          <div style={{ maxWidth: 800, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 24 }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: T.gold, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>
-                Operator Directory
-              </div>
-              <h1 style={{ fontSize: 'clamp(24px, 4vw, 38px)', fontWeight: 900, color: T.text, margin: 0, lineHeight: 1.2 }}>
-                Find a Pilot Car Operator
-              </h1>
-              <p style={{ fontSize: 14, color: T.muted, marginTop: 8, lineHeight: 1.5 }}>
-                Search verified escort operators by state, corridor, and service type
-              </p>
-            </div>
+          <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: T.gold, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Operator Directory</div>
+            <h1 style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 900, color: T.text, margin: '0 0 6px', lineHeight: 1.2 }}>
+              Find Escort Operators
+            </h1>
+            <p style={{ fontSize: 13, color: T.textSecondary, margin: '0 0 24px' }}>
+              Search verified operators by region, corridor, and service type across 57 countries
+            </p>
 
-            {/* AI Search */}
-            <AISearchBar onFiltersApplied={(aiFilters) => {
-              setFilters(f => ({
-                ...f,
-                search: aiFilters.search || f.search,
-                state: aiFilters.state || f.state,
-                serviceType: aiFilters.serviceType || f.serviceType,
-              }));
-            }} />
-            <div style={{ height: 14 }} />
-
-            {/* Search box */}
+            {/* Search + State + Filters */}
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <div style={{
-                flex: 1, minWidth: 200, display: 'flex', alignItems: 'center', gap: 10,
-                background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.borderStrong}`,
-                borderRadius: 14, padding: '0 16px', height: 50,
+                flex: 1, minWidth: 220, display: 'flex', alignItems: 'center', gap: 10,
+                background: T.bgSurface, border: `1px solid ${T.borderMid}`,
+                borderRadius: 12, padding: '0 14px', height: 48,
               }}>
-                <Search size={16} style={{ color: T.muted, flexShrink: 0 }} />
-                <input
-                  type="text"
-                  placeholder="Search operators, corridors, or companies..."
-                  value={filters.search}
-                  onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
-                  style={{
-                    flex: 1, background: 'none', border: 'none', outline: 'none',
-                    fontSize: 14, color: T.text, caretColor: T.gold,
-                  }}
+                <Search size={15} style={{ color: T.muted, flexShrink: 0 }} />
+                <input type="text" placeholder="Search operators, corridors..."
+                  value={filters.search} onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+                  id="directory-search-input"
+                  style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: T.text, caretColor: T.gold }}
                 />
                 {filters.search && (
-                  <button onClick={() => setFilters(f => ({ ...f, search: '' }))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.muted, padding: 0 }}>
-                    <X size={14} />
-                  </button>
+                  <button onClick={() => setFilters(f => ({ ...f, search: '' }))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.muted, padding: 0 }}><X size={14} /></button>
                 )}
               </div>
-              <select
-                value={filters.state}
-                onChange={e => setFilters(f => ({ ...f, state: e.target.value }))}
+
+              {/* Sort dropdown */}
+              <select value={filters.sortBy} onChange={e => setFilters(f => ({ ...f, sortBy: e.target.value as any }))}
+                id="directory-sort-dropdown"
                 style={{
-                  background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.borderStrong}`,
-                  borderRadius: 14, padding: '0 16px', height: 50, color: filters.state ? T.text : T.muted,
-                  fontSize: 14, cursor: 'pointer', minWidth: 120,
-                }}
-              >
-                <option value="">All States</option>
-                {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                  background: T.bgSurface, border: `1px solid ${T.borderMid}`,
+                  borderRadius: 12, padding: '0 14px', height: 48, color: T.text,
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer', minWidth: 140,
+                }}>
+                <option value="rank">Corridor Rank</option>
+                <option value="response">Response Time</option>
+                <option value="rate">Highest Rate</option>
+                <option value="newest">Newest</option>
               </select>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  background: showFilters ? T.goldDim : 'rgba(255,255,255,0.05)',
-                  border: `1px solid ${showFilters ? T.goldBorder : T.borderStrong}`,
-                  borderRadius: 14, padding: '0 18px', height: 50, color: showFilters ? T.gold : T.muted,
-                  fontSize: 13, fontWeight: 700, cursor: 'pointer',
-                }}
-              >
-                <Filter size={15} /> Filters
-                {(filters.verifiedOnly || filters.escrowOnly || filters.availableNow || filters.serviceType) && (
-                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.gold }} />
-                )}
-              </button>
             </div>
 
-            {/* Quick filter chips */}
-            {showFilters && (
-              <div style={{ marginTop: 16, padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: 14, border: `1px solid ${T.border}` }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
-                  <FilterChip label="Available Now" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
-                  <FilterChip label="Verified Only" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
-                  <FilterChip label="Escrow Enabled" active={filters.escrowOnly} onClick={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} />
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
-                  {['pilot_car', 'height_pole', 'route_survey', 'wide_load', 'oversize'].map(svc => (
-                    <FilterChip
-                      key={svc}
-                      label={SERVICE_LABELS[svc]}
-                      active={filters.serviceType === svc}
-                      onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === svc ? '' : svc }))}
-                    />
-                  ))}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: 11, color: T.muted, fontWeight: 700 }}>Sort:</span>
-                  {([['rank', 'Corridor Rank'], ['response', 'Response Time'], ['newest', 'Newest']] as const).map(([val, label]) => (
-                    <FilterChip key={val} label={label} active={filters.sortBy === val} onClick={() => setFilters(f => ({ ...f, sortBy: val }))} />
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Filter chips row */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14, justifyContent: 'center' }}>
+              <FilterChip label="Available Now" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
+              <FilterChip label="Verified" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
+              <FilterChip label="Escrow" active={filters.escrowOnly} onClick={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} />
+              <FilterChip label="AV Certified" active={filters.avCertified} onClick={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} />
+              {(['HOT', 'WARM', 'COOL'] as CorridorHeat[]).map(h => (
+                <FilterChip key={h} label={h} active={filters.corridorHeat === h}
+                  onClick={() => setFilters(f => ({ ...f, corridorHeat: f.corridorHeat === h ? '' : h }))} />
+              ))}
+            </div>
           </div>
         </div>
 
         {/* ── Main Content ── */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 20px' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', padding: '28px 20px' }}>
+          <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
 
-          {/* Results count + sign-in nudge */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: T.muted }}>
-              {loading ? 'Loading operators...' : (
-                <><span style={{ color: T.text, fontWeight: 700 }}>{total.toLocaleString()}</span> operators{filters.state ? ` in ${filters.state}` : ' across the US'}</>
-              )}
-            </div>
-            <Link href="/login" style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '8px 16px', borderRadius: 10,
-              background: 'rgba(245,185,66,0.1)', border: `1px solid rgba(245,185,66,0.25)`,
-              color: T.gold, fontSize: 12, fontWeight: 800, textDecoration: 'none',
-            }}>
-              <Zap size={13} /> Sign in for full profiles + DM
-            </Link>
-          </div>
-
-          {/* Grid */}
-          {loading ? (
-            <div className="dir-grid ag-stagger">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} style={{
-                  background: T.bgCard, border: `1px solid ${T.border}`,
-                  borderRadius: 16, padding: 18, height: 200,
-                  animation: 'pulse 1.5s ease-in-out infinite',
-                }} />
-              ))}
-            </div>
-          ) : (
-            <div className="dir-grid ag-stagger">
-              {gridItems.map((item, i) =>
-                item.type === 'sponsored'
-                  ? <SponsoredCard key={`sponsored-${i}`} index={i} />
-                  : item.data
-                  ? <OperatorCard key={item.data.id} op={item.data} position={i} />
-                  : null
-              )}
-            </div>
-          )}
-
-          {/* Sign-in CTA below grid */}
-          <div style={{
-            marginTop: 40, padding: '32px 24px', borderRadius: 20,
-            background: 'linear-gradient(135deg, rgba(245,185,66,0.06), rgba(245,185,66,0.02))',
-            border: `1px solid ${T.goldBorder}`,
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: 22, fontWeight: 900, color: T.text, marginBottom: 8 }}>
-              See Full Operator Profiles
-            </div>
-            <div style={{ fontSize: 14, color: T.muted, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
-              Sign in to access trust scores, response history, direct messaging, follow operators, and post loads.
-            </div>
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/login" className="ag-press" style={{
-                padding: '12px 28px', borderRadius: 12,
-                background: 'linear-gradient(135deg, #f5b942, #e8a830)',
-                color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
+            {/* Sidebar */}
+            <div className="dir-sidebar">
+              <div style={{
+                background: T.bgCard, border: `1px solid ${T.border}`,
+                borderRadius: 16, padding: '16px', display: 'flex', flexDirection: 'column', gap: 2,
               }}>
-                Sign In Free
-              </Link>
-              <Link href="/claim" style={{
-                padding: '12px 28px', borderRadius: 12,
-                background: 'transparent', border: `1px solid ${T.borderStrong}`,
-                color: T.muted, fontWeight: 700, fontSize: 14, textDecoration: 'none',
+                <div style={{ fontSize: 11, fontWeight: 800, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0 12px 8px' }}>Filters</div>
+                <ToggleSwitch label="Available Now" active={filters.availableNow} onChange={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} icon={<Zap size={14} />} />
+                <ToggleSwitch label="Verified" active={filters.verifiedOnly} onChange={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} icon={<ShieldCheck size={14} />} />
+                <ToggleSwitch label="Escrow Ready" active={filters.escrowOnly} onChange={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} icon={<Shield size={14} />} />
+                <ToggleSwitch label="AV Certified" active={filters.avCertified} onChange={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} icon={<Bot size={14} />} />
+
+                <div style={{ height: 1, background: T.border, margin: '8px 0' }} />
+                <div style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: 'uppercase', padding: '4px 12px' }}>Corridor Status</div>
+                {(['HOT', 'WARM', 'COOL'] as CorridorHeat[]).map(h => {
+                  const cfg = CORRIDOR_STATUS[h];
+                  return (
+                    <button key={h} onClick={() => setFilters(f => ({ ...f, corridorHeat: f.corridorHeat === h ? '' : h }))}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                        padding: '8px 12px', borderRadius: 8, cursor: 'pointer', border: 'none',
+                        background: filters.corridorHeat === h ? cfg.bg : 'transparent',
+                        transition: 'background 0.15s ease',
+                      }}>
+                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: cfg.color }} />
+                      <span style={{ fontSize: 11, fontWeight: 700, color: filters.corridorHeat === h ? cfg.color : T.muted }}>{h}</span>
+                    </button>
+                  );
+                })}
+
+                <div style={{ height: 1, background: T.border, margin: '8px 0' }} />
+                <div style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: 'uppercase', padding: '4px 12px' }}>Services</div>
+                {Object.entries(SERVICE_LABELS).map(([key, label]) => (
+                  <button key={key} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === key ? '' : key }))}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                      padding: '8px 12px', borderRadius: 8, cursor: 'pointer', border: 'none',
+                      background: filters.serviceType === key ? T.goldDim : 'transparent',
+                      color: filters.serviceType === key ? T.gold : T.textSecondary,
+                      fontSize: 11, fontWeight: 600, textAlign: 'left',
+                      transition: 'all 0.15s ease',
+                    }}>
+                    <Truck size={12} /> {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Grid */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                <div style={{ fontSize: 13, color: T.muted }}>
+                  {loading ? 'Loading...' : <>
+                    <span style={{ color: T.text, fontWeight: 700 }}>{filteredOps.length.toLocaleString()}</span> operators
+                    {activeFilterCount > 0 && <span style={{ color: T.gold, marginLeft: 6 }}>({activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''})</span>}
+                  </>}
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="dir-grid">{Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="ag-skeleton" style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, height: 280 }} />
+                ))}</div>
+              ) : (
+                <div className="dir-grid ag-stagger">
+                  {gridItems.map((item, i) =>
+                    item.type === 'ad'
+                      ? <AdGridSlot key={`ad-${i}`} />
+                      : item.data ? <OperatorCard key={item.data.id} op={item.data} position={i} /> : null
+                  )}
+                </div>
+              )}
+
+              {/* CTA Banner */}
+              <div style={{
+                marginTop: 40, padding: '32px 24px', borderRadius: 20,
+                background: `linear-gradient(135deg, rgba(198,146,58,0.06), rgba(198,146,58,0.02))`,
+                border: `1px solid ${T.goldBorder}`, textAlign: 'center',
               }}>
-                Claim Your Listing
-              </Link>
+                <div style={{ fontSize: 22, fontWeight: 900, color: T.text, marginBottom: 8 }}>
+                  See Full Operator Profiles
+                </div>
+                <div style={{ fontSize: 14, color: T.textSecondary, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
+                  Sign in to access trust scores, response history, direct messaging, and post loads.
+                </div>
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Link href="/login" className="ag-press" style={{
+                    padding: '12px 28px', borderRadius: 12,
+                    background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
+                    color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
+                  }}>Sign In Free</Link>
+                  <Link href="/claim" style={{
+                    padding: '12px 28px', borderRadius: 12,
+                    background: 'transparent', border: `1px solid ${T.borderStrong}`,
+                    color: T.textSecondary, fontWeight: 700, fontSize: 14, textDecoration: 'none',
+                  }}>Claim Your Listing</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <AIAssistantDrawer />
     </>
   );
+}
+
+function getHeatFromScore(score: number | null): CorridorHeat {
+  if (!score) return 'COOL';
+  if (score > 0.7) return 'HOT';
+  if (score > 0.4) return 'WARM';
+  return 'COOL';
 }
 
 export default PublicDirectory;

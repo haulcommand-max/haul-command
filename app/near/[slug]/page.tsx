@@ -5,9 +5,9 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { getCityData, getProviderStats } from '@/lib/seo/programmatic-data';
 import { notFound } from 'next/navigation';
 
-export default async function RadiusPage({ params }: { params: { slug: string } }) {
+export default async function RadiusPage({ params }: { params: Promise<{ slug: string }> }) {
     // Expected slug format: "miami-50-miles" or "gainesville-25-miles"
-    const { slug } = params;
+    const { slug } = await params;
 
     // Simple parser for the slug
     // In production, use robust regex or a database lookup for "valid radius slugs"

@@ -10,15 +10,16 @@ import { GreenlightBanner } from '@/components/load-board/GreenlightBanner';
 export const revalidate = 60;
 
 interface PageProps {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params;
     const supabase = supabaseServer();
     const { data } = await supabase
         .from('v_loads_teaser')
         .select('origin_city, origin_state, dest_city, dest_state, service_required, rate_band')
-        .eq('load_id', params.slug)
+        .eq('load_id', slug)
         .single();
 
     if (!data) return { title: 'Load Not Found | Haul Command' };
@@ -30,12 +31,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function LoadDetailPage({ params }: PageProps) {
+    const { slug } = await params;
     const supabase = supabaseServer();
 
     const { data: load } = await supabase
         .from('v_loads_teaser')
         .select('*')
-        .eq('load_id', params.slug)
+        .eq('load_id', slug)
         .single();
 
     if (!load) notFound();
@@ -190,7 +192,7 @@ export default async function LoadDetailPage({ params }: PageProps) {
             {isAuthed && (
                 <div style={{ marginBottom: 32, textAlign: 'center' }}>
                     <a
-                        href={`/loads/${params.slug}/apply`}
+                        href={`/loads/${slug}/apply`}
                         style={{
                             display: 'inline-block', padding: '16px 48px',
                             background: 'linear-gradient(135deg, #d97706, #b45309)',

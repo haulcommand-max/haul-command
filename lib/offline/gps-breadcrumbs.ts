@@ -53,7 +53,7 @@ export async function getUnuploadedBreadcrumbs(): Promise<GpsBreadcrumb[]> {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readonly');
   const index = tx.objectStore(STORE_NAME).index('by_uploaded');
-  const req = index.getAll(false);
+  const req = index.getAll(IDBKeyRange.only(0)); // 0 = false in IndexedDB
   return new Promise((resolve, reject) => {
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);

@@ -66,14 +66,15 @@ interface Terminal {
 // ── Metadata ───────────────────────────────────────────────────────────────────
 
 export async function generateMetadata(
-    { params }: { params: { country: string; state: string; port_slug: string } }
+    { params }: { params: Promise<{ country: string; state: string; port_slug: string }> }
 ): Promise<Metadata> {
-    const port = await getPort(params.port_slug);
+    const { country, state, port_slug } = await params;
+    const port = await getPort(port_slug);
     if (!port) return { title: "Port Not Found | Haul Command" };
     return {
         title: `${port.port_name} — TWIC Escort Directory | Haul Command`,
         description: `Find TWIC-verified pilot car and escort operators near ${port.port_name}. Live availability, trust scores, and gate-ready matching.`,
-        alternates: { canonical: `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}` },
+        alternates: { canonical: `https://haulcommand.com/ports/${country}/${state}/${port_slug}` },
     };
 }
 
@@ -130,9 +131,10 @@ async function getPortBundle(port: Port) {
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default async function PortGatePage(
-    { params }: { params: { country: string; state: string; port_slug: string } }
+    { params }: { params: Promise<{ country: string; state: string; port_slug: string }> }
 ) {
-    const port = await getPort(params.port_slug);
+    const { country, state, port_slug } = await params;
+    const port = await getPort(port_slug);
     if (!port) notFound();
 
     const { operators, terminals } = await getPortBundle(port);
@@ -154,14 +156,14 @@ export default async function PortGatePage(
         "@graph": [
             {
                 "@type": ["CivicStructure", "Place"],
-                "@id": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}`,
+                "@id": `https://haulcommand.com/ports/${country}/${state}/${port_slug}`,
                 "name": port.port_name,
                 "description": `${port.port_name} — TWIC-verified escort directory and gate intelligence. ${twicCount} verified operators available.`,
-                "url": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}`,
+                "url": `https://haulcommand.com/ports/${country}/${state}/${port_slug}`,
                 "address": {
                     "@type": "PostalAddress",
                     "addressRegion": port.state_region,
-                    "addressCountry": params.country.toUpperCase(),
+                    "addressCountry": country.toUpperCase(),
                 },
             },
             {
@@ -176,9 +178,9 @@ export default async function PortGatePage(
                 "@type": "BreadcrumbList",
                 "itemListElement": [
                     { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" },
-                    { "@type": "ListItem", "position": 2, "name": port.state_region, "item": `https://haulcommand.com/directory/${params.country}/${params.state}` },
+                    { "@type": "ListItem", "position": 2, "name": port.state_region, "item": `https://haulcommand.com/directory/${country}/${state}` },
                     { "@type": "ListItem", "position": 3, "name": "Ports", "item": "https://haulcommand.com/ports" },
-                    { "@type": "ListItem", "position": 4, "name": port.port_name, "item": `https://haulcommand.com/ports/${params.country}/${params.state}/${params.port_slug}` },
+                    { "@type": "ListItem", "position": 4, "name": port.port_name, "item": `https://haulcommand.com/ports/${country}/${state}/${port_slug}` },
                 ],
             },
         ],
@@ -193,7 +195,7 @@ export default async function PortGatePage(
                 <div className="flex items-center gap-2 text-[11px] text-white/30 font-mono uppercase tracking-widest">
                     <Link href="/directory" className="hover:text-white/60 transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link href={`/directory/${params.country}/${params.state}`} className="hover:text-white/60 transition-colors">
+                    <Link href={`/directory/${country}/${state}`} className="hover:text-white/60 transition-colors">
                         {port.state_region}
                     </Link>
                     <ChevronRight className="w-3 h-3" />
@@ -268,7 +270,7 @@ export default async function PortGatePage(
                             <AlertTriangle className="w-8 h-8 text-orange-400 mx-auto mb-3" />
                             <p className="text-white/50 text-sm">No TWIC-verified escorts currently listed in this region.</p>
                             <p className="text-white/30 text-xs mt-1">Check back soon or browse all {port.state_region} operators.</p>
-                            <Link href={`/directory/${params.country}/${params.state}`}
+                            <Link href={`/directory/${country}/${state}`}
                                 className="inline-block mt-4 px-4 py-2 rounded-xl text-xs font-bold text-[#F1A91B]"
                                 style={{ background: "rgba(241,169,27,0.10)", border: "1px solid rgba(241,169,27,0.20)" }}>
                                 Browse all {port.state_region} operators →
@@ -280,7 +282,7 @@ export default async function PortGatePage(
                                 : op.availability_status === "busy" ? "#f97316" : "#6b7280";
                             return (
                                 <Link key={op.user_id}
-                                    href={`/directory/${params.country}/${params.state}/${(op.home_base_city ?? "unknown").toLowerCase()}`}
+                                    href={`/directory/${country}/${state}/${(op.home_base_city ?? "unknown").toLowerCase()}`}
                                     className="group rounded-2xl p-4 flex items-center gap-4 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
                                     style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}
                                 >
@@ -325,7 +327,7 @@ export default async function PortGatePage(
                             {terminals.map(t => (
                                 <div key={t.id} className="pb-3 border-b border-white/[0.04] last:border-0 last:pb-0">
                                     <Link
-                                        href={`/ports/${params.country}/${params.state}/${params.port_slug}/${t.terminal_slug}`}
+                                        href={`/ports/${country}/${state}/${port_slug}/${t.terminal_slug}`}
                                         className="font-bold text-white/70 text-sm hover:text-[#F1A91B] transition-colors"
                                     >
                                         {t.terminal_name} →
@@ -368,7 +370,7 @@ export default async function PortGatePage(
                     </div>
 
                     {/* Back link */}
-                    <Link href={`/directory/${params.country}/${params.state}`}
+                    <Link href={`/directory/${country}/${state}`}
                         className="block text-center rounded-xl px-4 py-3 text-xs font-bold text-white/40 hover:text-white/70 transition-colors"
                         style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
                         View all {port.state_region} operators →

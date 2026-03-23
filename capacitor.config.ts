@@ -8,16 +8,16 @@ const config: CapacitorConfig = {
     // which requires a server and can't produce a static export).
     webDir: 'dist-capacitor',
     server: {
-        androidScheme: 'http', // Must be http for local IP testing
-        hostname: '192.168.1.129',
-        // Hardcoded to your laptop's Wi-Fi IP so the phone can reach the dev server
-        url: 'http://192.168.1.129:3000',
-        cleartext: true,
+        androidScheme: 'https',
+        hostname: 'haulcommand.com',
+        // Production: load from live server
+        url: 'https://haulcommand.com',
+        cleartext: false,
         errorPath: '/offline',
         allowNavigation: [
             '*.haulcommand.com',
             '*.supabase.co',
-            '192.168.1.129',
+            '*.stripe.com',
         ],
     },
     plugins: {

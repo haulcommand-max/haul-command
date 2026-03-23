@@ -54,11 +54,12 @@ const STATE_NAMES_FULL: Record<string, string> = {
 export default async function RegulatoryDbPage({
     searchParams,
 }: {
-    searchParams: { q?: string; country?: string };
+    searchParams: Promise<{ q?: string; country?: string }>;
 }) {
+    const resolvedParams = await searchParams;
     const supabase = supabaseServer();
-    const country = searchParams.country?.toUpperCase();
-    const query = searchParams.q?.trim() ?? '';
+    const country = resolvedParams.country?.toUpperCase();
+    const query = resolvedParams.q?.trim() ?? '';
 
     let dbQuery = supabase
         .from('state_regulations')

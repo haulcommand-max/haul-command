@@ -15,8 +15,9 @@ import { TrustStrip } from '@/components/trust/TrustStrip';
 // No slate-*, no bg-white, no hardcoded colors.
 // ══════════════════════════════════════════════════════════════
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-    const row = await getDirectoryDriverBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const row = await getDirectoryDriverBySlug(slug);
     if (!row) return { title: 'Escort Operator | Haul Command' };
     const p = mapDriverProfile(row);
     if (!p) return { title: 'Escort Operator | Haul Command' };
@@ -26,8 +27,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-export default async function ProviderPage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
+export default async function ProviderPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const row = await getDirectoryDriverBySlug(slug);
     if (!row) notFound();
 

@@ -56,13 +56,14 @@ export const dynamic = 'force-dynamic';
 
 // ── Metadata ───────────────────────────────────────────────────────────────────
 
-export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
-    const name = STATE_NAMES[params.state.toLowerCase()] ?? params.state.toUpperCase();
+export async function generateMetadata({ params }: { params: Promise<{ state: string }> }): Promise<Metadata> {
+    const { state } = await params;
+    const name = STATE_NAMES[state.toLowerCase()] ?? state.toUpperCase();
     return {
         title: `${name} Escort Vehicle Requirements (2026) | Haul Command`,
         description: `Official ${name} pilot car and escort vehicle requirements. Certification, width thresholds, night/weekend rules, insurance minimums, and reciprocity.`,
         keywords: [`${name} pilot car requirements`, `escort vehicle rules ${name}`, `pilot car certification ${name}`],
-        alternates: { canonical: `https://haulcommand.com/requirements/${params.state}/escort-vehicle-rules` },
+        alternates: { canonical: `https://haulcommand.com/requirements/${state}/escort-vehicle-rules` },
     };
 }
 
@@ -85,8 +86,9 @@ async function getStateReg(stateCode: string): Promise<StateReg | null> {
 
 // ── Page ───────────────────────────────────────────────────────────────────────
 
-export default async function StateRequirementsPage({ params }: { params: { state: string } }) {
-    const st = params.state.toLowerCase();
+export default async function StateRequirementsPage({ params }: { params: Promise<{ state: string }> }) {
+    const { state } = await params;
+    const st = state.toLowerCase();
     const name = STATE_NAMES[st] ?? st.toUpperCase();
     const reg = await getStateReg(st);
 

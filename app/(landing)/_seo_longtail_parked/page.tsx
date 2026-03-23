@@ -89,8 +89,9 @@ function titleize(s: string): string {
     return s.replace(/\b\w/g, c => c.toUpperCase());
 }
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
-    const config = findPageConfig(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const config = findPageConfig(slug);
     if (!config) return { title: 'Not Found' };
 
     const { primaryTerm, geo, equipment, modifier, countryName } = config;
@@ -112,8 +113,9 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
     };
 }
 
-export default function LongTailPage({ params }: { params: { slug: string[] } }) {
-    const config = findPageConfig(params.slug);
+export default async function LongTailPage({ params }: { params: Promise<{ slug: string[] }> }) {
+    const { slug } = await params;
+    const config = findPageConfig(slug);
     if (!config) notFound();
 
     const { service, equipment, modifier, country, state, city, countryName, primaryTerm, geo, localTerms, seed } = config;
