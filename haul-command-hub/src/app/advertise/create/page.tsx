@@ -36,6 +36,9 @@ export default function AdGridCreatePage() {
   const [dailyBudget, setDailyBudget] = useState(50);
   const [duration, setDuration] = useState(30);
 
+  const [companyName, setCompanyName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+
   const durationConfig = DURATIONS.find(d => d.days === duration) ?? DURATIONS[1];
   const totalSpend = Math.round(dailyBudget * duration * durationConfig.multiplier);
   const estImpressions = Math.round(dailyBudget * 12 * duration);
@@ -45,21 +48,27 @@ export default function AdGridCreatePage() {
   }
 
   async function handlePayment() {
+    if (!companyName || !contactEmail) {
+      alert('Please enter your company name and email.');
+      return;
+    }
     try {
-      const res = await fetch('/api/stripe/checkout?plan=ad_campaign', {
+      const res = await fetch('/api/adgrid/campaign-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          companyName,
+          contactEmail,
           adType,
-          corridors,
-          audience,
-          dailyBudget,
-          duration,
-          totalSpend,
+          durationDays: duration,
+          targetCorridors: corridors,
+          targetCountries: [],
+          targetAudience: audience,
         }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
+      else alert(data.error || 'Failed to create checkout session.');
     } catch {
       alert('Failed to create checkout session. Please try again.');
     }
@@ -257,7 +266,17 @@ export default function AdGridCreatePage() {
             <h2 className="text-white font-bold text-lg mb-6">Review & Pay</h2>
 
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-6 mb-6 text-left max-w-md mx-auto">
-              <div className="space-y-3 text-sm">
+              <div className="space-y-3 mb-4">
+                <div>
+                  <label className="block text-gray-500 text-[10px] mb-1.5">Company Name</label>
+                  <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="Your Company" className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 text-[10px] mb-1.5">Email</label>
+                  <input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} type="email" placeholder="you@company.com" className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50" />
+                </div>
+              </div>
+              <div className="space-y-3 text-sm border-t border-white/[0.06] pt-4">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Ad Type</span>
                   <span className="text-white font-medium">{AD_TYPES.find(t => t.id === adType)?.name}</span>
@@ -287,7 +306,8 @@ export default function AdGridCreatePage() {
 
             <button
               onClick={handlePayment}
-              className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors shadow-lg shadow-accent/20 mb-4"
+              disabled={!companyName || !contactEmail}
+              className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors shadow-lg shadow-accent/20 mb-4 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Pay ${totalSpend.toLocaleString()} via Stripe →
             </button>

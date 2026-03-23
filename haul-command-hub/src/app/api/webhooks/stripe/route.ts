@@ -2,21 +2,33 @@
  * POST /api/webhooks/stripe
  * GET  /api/webhooks/stripe
  *
- * Canonical webhook URL — redirects to /api/stripe/webhook
- * This is the URL configured in the Stripe Dashboard.
+ * Canonical webhook URL configured in Stripe Dashboard.
+ * Proxies directly to /api/stripe/webhook to keep one source of truth.
+ *
+ * Uses raw body passthrough to preserve Stripe signature verification.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
-  // Forward to the actual handler
-  const url = new URL('/api/stripe/webhook', request.url);
-  const body = await request.text();
-  
-  const res = await fetch(url.toString(), {
+  // Read raw body once (needed for signature verification)
+  const rawBody = await request.text();
+
+  // Construct internal URL to the real webhook handler
+  const targetUrl = new URL('/api/stripe/webhook', request.url);
+
+  // Forward with all original headers (especially stripe-signature)
+  const headers = new Headers();
+  request.headers.forEach((value, key) => {
+    headers.set(key, value);
+  });
+
+  const res = await fetch(targetUrl.toString(), {
     method: 'POST',
-    headers: Object.fromEntries(request.headers.entries()),
-    body,
+    headers,
+    body: rawBody,
   });
 
   const responseBody = await res.text();
@@ -31,6 +43,7 @@ export async function GET() {
     status: 'ok',
     service: 'haul-command-stripe-webhook',
     timestamp: new Date().toISOString(),
+    handler: '/api/stripe/webhook',
     events: [
       'checkout.session.completed',
       'customer.subscription.created',

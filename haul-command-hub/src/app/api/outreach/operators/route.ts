@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase-server';
 import { captureError } from '@/lib/monitoring/error';
+import { sendEmail } from '@/lib/integrations/resend';
 
 const CRON_KEY = process.env.HC_CRON_KEY ?? 'hc_cron_2026_s3cure_r4ndom_k3y_9x';
 
@@ -51,26 +52,7 @@ function buildClaimEmail(operatorName: string, stateName: string, claimUrl: stri
   };
 }
 
-async function sendViaResend(to: string, subject: string, html: string, resendKey: string): Promise<boolean> {
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Haul Command <hello@haulcommand.com>',
-        to: [to],
-        subject,
-        html,
-      }),
-    });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
+// sendEmail imported from lib/integrations/resend
 
 export async function POST(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -136,7 +118,7 @@ export async function POST(request: NextRequest) {
         const services = op.surface_category_key ?? 'Pilot Car Services';
 
         const { subject, html } = buildClaimEmail(op.name, stateName, claimUrl, services);
-        const sent = await sendViaResend(op.email, subject, html, resendKey);
+        const sent = await sendEmail(op.email, subject, html, resendKey);
 
         if (sent) {
           await sb.from('operator_outreach_log').insert({
