@@ -104,3 +104,8 @@ function autoSync(): void {
 }
 
 export const offlineQueue = { enqueue, getAll, remove, count, replay, autoSync };
+
+/** Named export aliases used by ConnectionStatusBar */
+export const getPendingCount = count;
+export const replayQueue = replay;
+
