@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseServer } from '@/lib/supabase-server';
 
 /* ══════════════════════════════════════════════════════
    /api/schedules/occurrence/complete
    Marks a schedule occurrence as completed.
    The DB trigger automatically deducts from escrow.
    ══════════════════════════════════════════════════════ */
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
 
 export async function POST(req: Request) {
   try {
@@ -20,6 +15,8 @@ export async function POST(req: Request) {
     if (!occurrence_id) {
       return NextResponse.json({ error: 'occurrence_id is required' }, { status: 400 });
     }
+
+    const supabase = supabaseServer();
 
     // Update the occurrence status to 'completed'
     // The DB trigger `decrement_escrow_on_occurrence_completion` fires automatically
@@ -38,11 +35,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Log the event
+    // Log the event (non-blocking)
     supabase.from('hc_events').insert({
       event_type: 'occurrence_completed',
       payload: { occurrence_id, completed_at: new Date().toISOString() },
-    }).then(() => {}); // Non-blocking logging
+    }).then(() => {});
 
     return NextResponse.json({
       success: true,

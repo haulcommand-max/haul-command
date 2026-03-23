@@ -1,18 +1,14 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseServer } from '@/lib/supabase-server';
 
 /* ══════════════════════════════════════════════════════
    /api/fleet/positions
    Returns live vehicle positions from Motive telematics
    ══════════════════════════════════════════════════════ */
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
-
 export async function GET() {
   try {
+    const supabase = supabaseServer();
     const { data, error } = await supabase
       .from('motive_vehicle_positions')
       .select('*')
@@ -28,7 +24,7 @@ export async function GET() {
     const positions = (data || []).map(row => ({
       id: row.id,
       vehicle_id: row.vehicle_id || row.vehicle_number || `V-${row.id?.slice(0, 6)}`,
-      driver_name: row.driver_name || row.driver_first_name ? `${row.driver_first_name || ''} ${row.driver_last_name || ''}`.trim() : 'Unknown Driver',
+      driver_name: row.driver_name || (row.driver_first_name ? `${row.driver_first_name || ''} ${row.driver_last_name || ''}`.trim() : 'Unknown Driver'),
       vehicle_type: row.vehicle_type || 'unknown',
       latitude: row.latitude || row.lat || 0,
       longitude: row.longitude || row.lng || row.lon || 0,
