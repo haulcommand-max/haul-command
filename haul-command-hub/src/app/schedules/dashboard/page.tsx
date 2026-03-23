@@ -2,7 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 /* ══════════════════════════════════════════════════════
    STANDING ORDERS — Broker Dashboard
@@ -69,12 +69,52 @@ const DEMO: Schedule[] = [{
 export default function StandingOrdersDashboard() {
   const [schedules, setSchedules] = useState<Schedule[]>(DEMO);
   const [sel, setSel] = useState<string | null>(null);
+  const [completing, setCompleting] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchSchedules = useCallback(() => {
     fetch('/api/schedules/broker/demo-broker').then(r => r.json()).then(d => {
       if (d.schedules?.length) setSchedules(d.schedules);
     }).catch(() => {});
   }, []);
+
+  useEffect(() => { fetchSchedules(); }, [fetchSchedules]);
+
+  async function handleMarkCompleted(occurrenceId: string) {
+    setCompleting(occurrenceId);
+    try {
+      const res = await fetch('/api/schedules/occurrence/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ occurrence_id: occurrenceId }),
+      });
+      if (res.ok) {
+        // Refresh schedule data to reflect escrow deduction
+        fetchSchedules();
+        // Optimistically update local state
+        setSchedules(prev => prev.map(s => ({
+          ...s,
+          occurrences: s.occurrences.map(o =>
+            o.id === occurrenceId ? { ...o, status: 'completed' } : o
+          ),
+          completed_occurrences: s.occurrences.some(o => o.id === occurrenceId)
+            ? s.completed_occurrences + 1 : s.completed_occurrences,
+        })));
+      }
+    } catch { /* handled gracefully */ }
+    setCompleting(null);
+  }
+
+  async function handleTopUpEscrow(scheduleId: string) {
+    try {
+      const res = await fetch('/api/schedules/topup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ schedule_id: scheduleId }),
+      });
+      const data = await res.json();
+      if (data.checkoutUrl) window.location.href = data.checkoutUrl;
+    } catch { /* handled gracefully */ }
+  }
 
   const active = schedules.find(s => s.id === sel) ?? schedules[0];
 
@@ -120,15 +160,24 @@ export default function StandingOrdersDashboard() {
           <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-white font-bold text-lg">{active.title} — Occurrences</h2>
-              {active.status === 'active' && <button className="bg-accent/10 text-accent px-4 py-2 rounded-lg text-xs font-bold hover:bg-accent/20">Top Up Escrow</button>}
+              {active.status === 'active' && <button onClick={() => handleTopUpEscrow(active.id)} className="bg-accent/10 text-accent px-4 py-2 rounded-lg text-xs font-bold hover:bg-accent/20 transition-all">💰 Top Up Escrow</button>}
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
               {active.occurrences.map(o => (
-                <div key={o.id} className={`${OCC_COLOR[o.status] ?? 'bg-gray-500/20'} rounded-xl p-3 text-center relative group`}>
+                <div key={o.id} className={`${OCC_COLOR[o.status] ?? 'bg-gray-500/20'} rounded-xl p-3 text-center relative group transition-all hover:scale-105`}>
                   {(o.compliance_flags?.length ?? 0) > 0 && <span className="absolute -top-1 -right-1 text-xs">⚠️</span>}
                   <div className="text-white font-bold text-xs">{o.scheduled_date.split('-').slice(1).join('/')}</div>
                   <div className="text-[10px] text-gray-400 capitalize mt-0.5">{o.status.replace('_', ' ')}</div>
                   <div className="text-accent text-[10px] font-bold">${o.operator_payout}</div>
+                  {(o.status === 'in_progress' || o.status === 'dispatched' || o.status === 'accepted') && (
+                    <button
+                      onClick={() => handleMarkCompleted(o.id)}
+                      disabled={completing === o.id}
+                      className="mt-1.5 w-full bg-green-500/20 text-green-400 text-[10px] font-bold py-1 rounded-lg hover:bg-green-500/30 transition-all disabled:opacity-50"
+                    >
+                      {completing === o.id ? '⏳' : '✅ Complete'}
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
