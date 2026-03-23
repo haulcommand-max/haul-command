@@ -38,7 +38,7 @@ function getTimeAgo(dateStr: string): string {
  * NearbyVehicles — shows nearby ELD-connected escort vehicles.
  * Powers the load board "Available Near You" section.
  */
-export default function NearbyVehicles({ vehicles, title = 'Nearby Escort Vehicles', maxShow = 8 }: NearbyVehiclesProps) {
+export default function NearbyVehicles({ vehicles, title = 'Nearby Pilot Vehicles', maxShow = 8 }: NearbyVehiclesProps) {
   if (!vehicles.length) return null;
 
   return (
@@ -48,7 +48,7 @@ export default function NearbyVehicles({ vehicles, title = 'Nearby Escort Vehicl
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           {title}
         </h3>
-        <span className="text-[10px] text-gray-500">{vehicles.length} vehicles tracked</span>
+        <span className="text-[10px] text-gray-500">{vehicles.length} rigs tracked</span>
       </div>
       <div className="divide-y divide-white/[0.03]">
         {vehicles.slice(0, maxShow).map((v) => (
@@ -81,7 +81,7 @@ export default function NearbyVehicles({ vehicles, title = 'Nearby Escort Vehicl
         ))}
       </div>
       <div className="px-5 py-2 bg-white/[0.01] text-[10px] text-gray-600 text-center">
-        Positions from verified ELD devices · Refreshed every 15 minutes
+        Positions from verified ELD devices · Refreshes every 15 min
       </div>
     </div>
   );

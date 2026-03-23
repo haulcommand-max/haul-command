@@ -47,7 +47,7 @@ export default function MotiveConnectButton({
           Connect Your ELD
         </div>
         <div className="text-gray-500 text-[11px]">
-          Verify via Motive — unlock safety badge & load priority
+          Verify via Motive — unlock safety badge & run priority
         </div>
       </div>
       <svg className="w-4 h-4 text-gray-600 group-hover:text-accent transition-colors ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
