@@ -76,7 +76,7 @@ export default async function LeaderboardsPage() {
                 </svg>
                 Safest Operators — ELD Verified
               </h2>
-              <span className="text-[10px] text-gray-500">powered by Motive AI Dashcam</span>
+              <span className="text-[10px] text-gray-500">powered by Haul Command AI</span>
             </div>
             <p className="text-xs text-[#8b95a5] mb-3 sm:mb-4 break-words">
               Ranked by composite safety score from ELD data: harsh braking, speeding, idle time, and overall driving behavior.

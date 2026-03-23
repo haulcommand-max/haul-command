@@ -29,7 +29,7 @@ export default function FuelPriceWidget({ prices, title = 'Live Diesel Prices' }
           <span className="text-lg">⛽</span>
           {title}
         </h3>
-        <span className="text-[10px] text-gray-500">powered by fleet data</span>
+        <span className="text-[10px] text-gray-500">powered by Haul Command fleet data</span>
       </div>
       <div className="divide-y divide-white/[0.03]">
         {prices.slice(0, 10).map((p) => (

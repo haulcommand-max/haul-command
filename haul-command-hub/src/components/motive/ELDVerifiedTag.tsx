@@ -28,7 +28,7 @@ export default function ELDVerifiedTag({ fleetSize, lastSyncedAt, variant = 'inl
             </svg>
           </div>
           <span className="text-blue-400 text-sm font-bold">HC Verified</span>
-          <span className="text-[10px] text-gray-500 ml-auto">powered by Motive</span>
+          <span className="text-[10px] text-gray-500 ml-auto">HC Verified</span>
         </div>
         <div className="flex items-center gap-4 text-xs text-gray-400">
           {fleetSize != null && (

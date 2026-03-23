@@ -246,6 +246,44 @@ export default function EarningsTrackerPage() {
               ))}
             </div>
 
+            {/* Haul Command Pay (Stripe Connect) */}
+            <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-6 mb-8 relative overflow-hidden">
+              <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent/10 blur-3xl rounded-full"></div>
+              <div className="flex flex-col md:flex-row justify-between md:items-end mb-6 relative z-10">
+                <div>
+                  <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                    Haul Command Pay <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Active</span>
+                  </h2>
+                  <p className="text-gray-400 text-sm mt-1">Stripe Connect Express • Bank: Chase (**** 4242)</p>
+                </div>
+                <div className="mt-4 md:mt-0 flex flex-wrap gap-3">
+                  <button className="bg-white/5 border border-white/10 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition-colors">
+                    Standard Payout (2-day, Free)
+                  </button>
+                  <button className="bg-accent text-black px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:bg-yellow-500 transition-colors">
+                    Instant Payout (1.5% Fee)
+                  </button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
+                <div className="bg-black/40 rounded-xl p-4 border border-white/5">
+                  <div className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Available to Withdraw</div>
+                  <div className="text-3xl font-black text-white">$4,250.00</div>
+                </div>
+                <div className="bg-black/40 rounded-xl p-4 border border-white/5">
+                  <div className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Pending Escrow</div>
+                  <div className="text-2xl font-bold text-gray-400">$1,840.00</div>
+                  <div className="text-[10px] text-gray-500 mt-1">Clearing from 3 completed runs</div>
+                </div>
+                <div className="bg-black/40 rounded-xl p-4 border border-white/5 flex flex-col justify-center">
+                  <div className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Recent Withdrawal</div>
+                  <div className="text-sm font-bold text-white">$2,100.00 <span className="text-gray-500 font-normal">→ Chase 4242</span></div>
+                  <div className="text-[10px] text-green-400 font-medium mt-1">Cleared Yesterday</div>
+                </div>
+              </div>
+            </div>
+
             {/* Corridor Intelligence */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <div className="bg-green-500/5 border border-green-500/15 rounded-xl p-5">
