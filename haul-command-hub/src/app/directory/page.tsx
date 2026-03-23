@@ -67,13 +67,20 @@ export default async function DirectoryPage() {
             <Navbar />
             <main className="flex-grow">
                 {/* Hero */}
-                <section className="relative py-20 px-4 overflow-hidden border-b border-white/5">
-                    <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent" />
+                <section className="relative py-24 sm:py-32 px-4 overflow-hidden border-b border-white/5 bg-[#05080f]">
+                    {/* Background Image Setup */}
+                    <div 
+                        className="absolute inset-0 z-0 opacity-40 mix-blend-screen bg-cover bg-center bg-no-repeat"
+                        style={{ backgroundImage: 'url(/ads/directory_hero.png)' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[#05080f] z-0" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent,black_80%)] z-0" />
+
                     <div className="max-w-7xl mx-auto relative z-10 text-center">
-                        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 sm:mb-6 leading-[0.9] drop-shadow-2xl">
                             Global <span className="text-accent">Directory</span>
                         </h1>
-                        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                        <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 drop-shadow-md">
                             The world&apos;s largest heavy haul logistics directory. Browse ports, truck stops, industrial zones, and
                             more across 57 countries.
                         </p>

@@ -383,19 +383,23 @@ export default async function HomePage() {
         {/* 57-Country Status Ticker — Dynamic from global_countries */}
         <section className="py-8 px-4 overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">
                 Global <span className="text-accent">Network</span>
               </h2>
-              <span className="bg-accent/10 border border-accent/20 text-accent text-[10px] font-bold px-3 py-1 rounded-full">
+              <span className="bg-accent/10 border border-accent/20 text-accent text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
                 57 countries tracked
               </span>
             </div>
-            <p className="text-gray-500 text-sm mb-6">
-              {liveCountries.length} live · {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} expanding · {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} planned
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {(allCountries.length > 0 ? allCountries.slice(0, 16) : [
+            
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base font-medium text-gray-400 mb-6">
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500"></span> {liveCountries.length} Live</div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} Expanding</div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gray-600"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} Planned</div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {(allCountries.length > 0 ? allCountries.slice(0, 18) : [
                 { iso2: 'US', name: 'United States', activation_phase: 'active', is_active_market: true },
                 { iso2: 'CA', name: 'Canada', activation_phase: 'active', is_active_market: true },
                 { iso2: 'AU', name: 'Australia', activation_phase: 'active', is_active_market: true },
@@ -407,24 +411,26 @@ export default async function HomePage() {
                 <Link
                   key={c.iso2}
                   href={`/directory/${c.iso2.toLowerCase()}`}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:border-accent/30 ${
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold border transition-all shadow-sm ${
                     isLive
-                      ? 'bg-green-500/10 border-green-500/20 text-green-400'
+                      ? 'bg-green-500/10 border-green-500/30 text-green-400 hover:bg-green-500/20'
                       : isExpanding
-                      ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
-                      : 'bg-white/[0.02] border-white/[0.06] text-gray-500'
+                      ? 'bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20'
+                      : 'bg-white/[0.03] border-white/[0.08] text-gray-400 hover:bg-white/[0.06]'
                   }`}
                 >
-                  <span>{c.iso2}</span>
-                  {isLive && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+                  <span className="truncate pr-2">{c.name || c.iso2}</span>
+                  {isLive && <span className="w-2 h-2 flex-shrink-0 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />}
                 </Link>
               );})}
-              {allCountries.length > 16 && (
-                <Link href="/countries" className="text-accent text-xs self-center ml-2 hover:underline font-bold">
-                  + {allCountries.length - 16} more countries →
-                </Link>
-              )}
             </div>
+            {allCountries.length > 18 && (
+              <div className="mt-5 text-center sm:text-left">
+                <Link href="/countries" className="inline-block bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-xl px-6 py-3 text-white text-sm font-bold transition-colors">
+                  View All Directory Corridors →
+                </Link>
+              </div>
+            )}
           </div>
         </section>
 
