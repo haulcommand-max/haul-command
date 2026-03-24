@@ -172,6 +172,14 @@ export default function HomeClient({
                         <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Tools</Link>
                         <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Requirements</Link>
                         <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
+                        <Link href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
+                            Training
+                            <span style={{
+                                background: 'linear-gradient(135deg, #F5A623, #e08820)',
+                                color: '#000', fontSize: '8px', fontWeight: 800,
+                                padding: '1px 5px', borderRadius: 4, letterSpacing: '0.06em',
+                            }}>NEW</span>
+                        </Link>
                     </div>
                     <div className="flex items-center" style={{ flexShrink: 0 }}>
                         <Link href="/login" className="hover:text-white transition-colors hc-btn hc-btn--black" style={{ fontSize: '12px', padding: '10px 18px', borderRadius: '12px' }}>

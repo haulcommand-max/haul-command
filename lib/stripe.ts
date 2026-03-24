@@ -33,6 +33,10 @@ export const STRIPE_PRICE_IDS = {
   broker_seat_yearly:   process.env.STRIPE_PRICE_BROKER_SEAT_YEARLY   || 'price_1TDGZoRiV0LOCA36qvviObj4',
   // One-time
   load_boost:           process.env.STRIPE_PRICE_LOAD_BOOST           || 'price_1TDGZpRiV0LOCA36F8yt0svI',
+  // HC Certified Training (one-time payments / annual subscriptions)
+  hc_certified:         process.env.STRIPE_PRICE_HC_CERTIFIED         || '',
+  av_ready:             process.env.STRIPE_PRICE_AV_READY             || '',
+  hc_elite:             process.env.STRIPE_PRICE_HC_ELITE             || '',
 } as const;
 
 export type StripePriceKey = keyof typeof STRIPE_PRICE_IDS;
