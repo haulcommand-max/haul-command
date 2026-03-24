@@ -85,6 +85,12 @@ const nextConfig: NextConfig = {
             { source: '/directory/united_states/:state', destination: '/directory/us/:state', permanent: true },
         ];
 
+        // Corridor URL corrections
+        const CORRIDOR_REDIRECTS = [
+            { source: '/corridors', destination: '/corridor', permanent: true },
+            { source: '/corridors/:slug', destination: '/corridor/:slug', permanent: true },
+        ];
+
         return [
             // Legacy URL patterns → canonical
             {
@@ -109,13 +115,11 @@ const nextConfig: NextConfig = {
             },
             ...US_STATE_REDIRECTS,
             ...COUNTRY_REDIRECTS,
+            ...CORRIDOR_REDIRECTS,
             // NOTE: www → apex redirect is handled by Vercel domain settings at the CDN edge.
             // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
         ];
     },
-
-    // Turbopack disabled via NEXT_USE_TURBOPACK=0 env var on Vercel
-    // to avoid TurbopackInternalError in production builds
 };
 
 export default nextConfig;
