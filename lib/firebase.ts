@@ -1,12 +1,24 @@
 /**
- * Firebase Client Configuration — HAUL COMMAND
- * 
- * Architecture role:
- * - FCM Push (topic subscriptions + digest delivery)
- * - Remote Config (feature flags, throttles, A/B tests)
- * - App Check (anti-abuse on token registration)
- * - Analytics (money events only — 9 approved events)
- * - Crashlytics (future PWA/native builds)
+ * Firebase Client — HAUL COMMAND (FCM + AppCheck only)
+ *
+ * WHAT FIREBASE DOES HERE (and nothing else):
+ *   ✔ FCM push notifications (web + iOS/Android via Capacitor)
+ *   ✔ App Check (anti-abuse reCAPTCHA on token registration)
+ *   ✔ Firebase Analytics (9 approved money events)
+ *
+ * WHAT SUPABASE OWNS (not Firebase):
+ *   ✘ Auth → Supabase Auth
+ *   ✘ Database → Supabase Postgres
+ *   ✘ Storage → Supabase Storage
+ *   ✘ Realtime → Supabase Realtime channels
+ *   ✘ Presence / heartbeat → Supabase `presence` table
+ *   ✘ Feature flags → lib/feature-flags.ts (Supabase-backed)
+ *
+ * Push token lifecycle:
+ *   1. User grants permission → requestPushPermission() returns FCM token
+ *   2. Token saved to Supabase: profiles.fcm_token (NOT Firestore)
+ *   3. Server sends push via firebase-admin/messaging directly
+ *   4. Token refresh handled by onTokenRefresh in SW
  */
 
 import { initializeApp, getApps } from 'firebase/app';
@@ -14,25 +26,20 @@ import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getAnalytics, logEvent as fbLogEvent } from 'firebase/analytics';
 
-const rawAppId = process.env.NEXT_PUBLIC_FIREBASE_APP_ID || '';
-if (typeof window !== 'undefined' && rawAppId.includes(':android:')) {
-    console.warn('[Firebase] ⚠️ FIREBASE_APP_ID looks like an Android ID. Get a Web app ID from Firebase Console → Project Settings → Add App → Web');
-}
-
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '',
+    apiKey:            process.env.NEXT_PUBLIC_FIREBASE_API_KEY            || '',
+    authDomain:        process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN        || '',
+    projectId:         process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID         || '',
+    storageBucket:     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET     || '', // kept for SDK compat, NOT used for storage
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
-    appId: rawAppId,
-    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || '',
+    appId:             process.env.NEXT_PUBLIC_FIREBASE_APP_ID             || '',
+    measurementId:     process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID     || '',
 };
 
-// Singleton
+// Singleton (safe to call multiple times)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-// ═══ App Check ═══
+// App Check (anti-abuse)
 let appCheck = null;
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
     appCheck = initializeAppCheck(app, {
@@ -41,11 +48,8 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY)
     });
 }
 
-// ═══ Analytics ═══
-// Delegates to the canonical analytics module (lib/firebase/analytics.ts)
-// which has lazy loading, user properties, and comprehensive event coverage.
-// Money-event validation is kept as a dev warning, not a hard block.
-const MONEY_EVENTS = new Set([
+// ── Analytics (9 money events only) ─────────────────────────────────
+const APPROVED_EVENTS = new Set([
     'view_city_service_page',
     'signup_started',
     'signup_completed',
@@ -53,34 +57,33 @@ const MONEY_EVENTS = new Set([
     'claim_completed',
     'lead_sent',
     'lead_accepted',
-    'watch_replay_started',
-    'watch_replay_completed',
+    'route_check_used',         // Route Check free tool
+    'partner_inquiry_submitted', // Partner portal
 ]);
 
 export function trackEvent(eventName: string, params: Record<string, any> = {}) {
-    if (process.env.NODE_ENV === 'development' && !MONEY_EVENTS.has(eventName)) {
-        console.debug(`[Analytics] Non-money event via firebase.ts: ${eventName} — consider using lib/firebase/analytics.ts directly`);
+    if (typeof window === 'undefined') return;
+    if (!APPROVED_EVENTS.has(eventName) && process.env.NODE_ENV === 'development') {
+        console.warn(`[Firebase] Unapproved event: ${eventName} — add to APPROVED_EVENTS or use GA4 directly`);
     }
-    if (typeof window !== 'undefined') {
-        try {
-            const analytics = getAnalytics(app);
-            fbLogEvent(analytics, eventName, params);
-        } catch (e) {
-            // Analytics not loaded yet
-        }
-    }
+    try {
+        const analytics = getAnalytics(app);
+        fbLogEvent(analytics, eventName, params);
+    } catch { /* analytics not ready yet */ }
 }
 
-// ═══ FCM Push ═══
-export async function requestPushPermission() {
+// ── FCM Web Push ─────────────────────────────────────────────────────
+export async function requestPushPermission(): Promise<string | null> {
     if (typeof window === 'undefined') return null;
     try {
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') return null;
 
+        const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
         const messaging = getMessaging(app);
         const token = await getToken(messaging, {
             vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || '',
+            serviceWorkerRegistration: swReg,
         });
         return token;
     } catch (err) {
@@ -89,35 +92,56 @@ export async function requestPushPermission() {
     }
 }
 
-export function onPushMessage(callback: any) {
-    if (typeof window === 'undefined') return () => { };
+export function onPushMessage(callback: (payload: any) => void): () => void {
+    if (typeof window === 'undefined') return () => {};
     try {
         const messaging = getMessaging(app);
         return onMessage(messaging, callback);
     } catch {
-        return () => { };
+        return () => {};
     }
 }
 
-// ═══ Register device token with Supabase ═══
-export async function registerPushToken(supabase: any, token: string, profileId: string, countryCode?: string, role?: string, state?: string) {
+/**
+ * Save FCM token to Supabase profiles table (NOT Firestore).
+ * Called after requestPushPermission() succeeds.
+ */
+export async function registerPushToken(
+    supabase: any,
+    token: string,
+    profileId: string,
+    meta?: { countryCode?: string; role?: string; state?: string }
+) {
     if (!token || !profileId) return;
 
-    // Register token
-    await supabase.rpc('hc_push_register', {
-        p_profile_id: profileId,
-        p_token: token,
-        p_platform: 'web',
-        p_country_code: countryCode || 'US',
-    });
+    // 1. Save token to profiles.fcm_token (Supabase, not Firestore)
+    const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ fcm_token: token, fcm_token_updated_at: new Date().toISOString() })
+        .eq('id', profileId);
 
-    // Auto-subscribe to topics
-    await supabase.rpc('hc_fcm_auto_subscribe', {
-        p_profile_id: profileId,
-        p_role: role || 'operator',
-        p_country_code: countryCode || 'US',
-        p_state: state || null,
-    });
+    if (profileError) {
+        console.error('[FCM] Failed to save token to profiles:', profileError);
+    }
+
+    // 2. Also upsert to push_tokens table for topic subscriptions
+    await supabase.from('push_tokens').upsert({
+        profile_id: profileId,
+        token,
+        platform: 'web',
+        country_code: meta?.countryCode ?? 'US',
+        updated_at: new Date().toISOString(),
+    }, { onConflict: 'profile_id' });
+
+    // 3. Auto-subscribe to role/region topics via RPC
+    if (meta?.role) {
+        await supabase.rpc('hc_fcm_auto_subscribe', {
+            p_profile_id: profileId,
+            p_role: meta.role,
+            p_country_code: meta.countryCode ?? 'US',
+            p_state: meta.state ?? null,
+        }).catch(() => {}); // non-fatal if RPC doesn't exist yet
+    }
 }
 
 export { app, appCheck };
