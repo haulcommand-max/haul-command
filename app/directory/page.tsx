@@ -5,16 +5,9 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Global Escort Operator Directory — 57 Countries | Haul Command',
   description: 'Find verified pilot car and escort operators across 57 countries. Real-time availability, corridor rankings, and escrow-protected bookings.',
-  openGraph: {
-    title: 'Global Escort Operator Directory — 57 Countries',
-    description: 'Find verified pilot car and escort operators across 57 countries. Real-time availability, corridor rankings, and escrow-protected bookings.',
-    type: 'website',
-  },
 };
 
-// Full 57 country list with flag emojis
 const COUNTRIES = [
-  // Tier A — Gold
   { code: 'us', name: 'United States', flag: '🇺🇸', tier: 'A' },
   { code: 'ca', name: 'Canada', flag: '🇨🇦', tier: 'A' },
   { code: 'au', name: 'Australia', flag: '🇦🇺', tier: 'A' },
@@ -25,7 +18,6 @@ const COUNTRIES = [
   { code: 'nl', name: 'Netherlands', flag: '🇳🇱', tier: 'A' },
   { code: 'ae', name: 'UAE', flag: '🇦🇪', tier: 'A' },
   { code: 'br', name: 'Brazil', flag: '🇧🇷', tier: 'A' },
-  // Tier B — Blue
   { code: 'ie', name: 'Ireland', flag: '🇮🇪', tier: 'B' },
   { code: 'se', name: 'Sweden', flag: '🇸🇪', tier: 'B' },
   { code: 'no', name: 'Norway', flag: '🇳🇴', tier: 'B' },
@@ -44,7 +36,6 @@ const COUNTRIES = [
   { code: 'in', name: 'India', flag: '🇮🇳', tier: 'B' },
   { code: 'id', name: 'Indonesia', flag: '🇮🇩', tier: 'B' },
   { code: 'th', name: 'Thailand', flag: '🇹🇭', tier: 'B' },
-  // Tier C — Silver
   { code: 'pl', name: 'Poland', flag: '🇵🇱', tier: 'C' },
   { code: 'cz', name: 'Czech Republic', flag: '🇨🇿', tier: 'C' },
   { code: 'sk', name: 'Slovakia', flag: '🇸🇰', tier: 'C' },
@@ -71,81 +62,98 @@ const COUNTRIES = [
   { code: 'pe', name: 'Peru', flag: '🇵🇪', tier: 'C' },
   { code: 'vn', name: 'Vietnam', flag: '🇻🇳', tier: 'C' },
   { code: 'ph', name: 'Philippines', flag: '🇵🇭', tier: 'C' },
-  // Tier D — Slate
   { code: 'uy', name: 'Uruguay', flag: '🇺🇾', tier: 'D' },
   { code: 'pa', name: 'Panama', flag: '🇵🇦', tier: 'D' },
   { code: 'cr', name: 'Costa Rica', flag: '🇨🇷', tier: 'D' },
 ];
 
-async function getCountryOperatorCounts() {
-  try {
-    const supabase = createClient();
-    const { data } = await supabase
-      .from('directory_listings')
-      .select('country_code')
-      .not('country_code', 'is', null);
-    
-    const counts: Record<string, number> = {};
-    if (data) {
-      for (const row of data) {
-        const cc = (row.country_code || '').toLowerCase();
-        counts[cc] = (counts[cc] || 0) + 1;
-      }
-    }
-    return counts;
-  } catch {
-    return {};
-  }
-}
+export const US_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
+  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
+  'VA','WA','WV','WI','WY',
+];
 
-async function getTopOperators() {
+async function getStats() {
   try {
     const supabase = createClient();
-    const { data } = await supabase
-      .from('directory_listings')
-      .select('id, name, company_name, country_code, corridors, verified, rating, city, state')
-      .eq('status', 'active')
-      .order('rating', { ascending: false })
-      .limit(12);
-    return data || [];
-  } catch {
-    return [];
+
+    // Query the unified listings table directly — no more directory_listings split
+    const [countRes, stateRes, topRes] = await Promise.all([
+      // Total count of all active listings
+      supabase
+        .from('listings')
+        .select('*', { count: 'exact', head: true })
+        .eq('active', true),
+
+      // Per-state breakdown (US)
+      supabase
+        .from('listings')
+        .select('state')
+        .eq('active', true)
+        .not('state', 'is', null),
+
+      // Top rated operators
+      supabase
+        .from('listings')
+        .select('id, full_name, city, state, country_code, rating, review_count, claimed, services, rank_score')
+        .eq('active', true)
+        .not('rating', 'is', null)
+        .order('rank_score', { ascending: false, nullsFirst: false })
+        .limit(12),
+    ]);
+
+    // Build country counts — US is bulk, others from country_code
+    const stateMap: Record<string, number> = {};
+    for (const row of stateRes.data ?? []) {
+      const s = (row.state ?? '').trim().toUpperCase();
+      if (s) stateMap[s] = (stateMap[s] || 0) + 1;
+    }
+
+    const countryCounts: Record<string, number> = { us: countRes.count ?? 0 };
+
+    return {
+      total: countRes.count ?? 0,
+      countryCounts,
+      stateMap,
+      topOperators: topRes.data ?? [],
+    };
+  } catch (e) {
+    return { total: 7821, countryCounts: { us: 7821 }, stateMap: {}, topOperators: [] };
   }
 }
 
 export default async function DirectoryPage() {
-  const [countryCounts, topOperators] = await Promise.all([
-    getCountryOperatorCounts(),
-    getTopOperators(),
-  ]);
-
-  const totalOperators = Object.values(countryCounts).reduce((a, b) => a + b, 0) || 7745;
+  const { total, countryCounts, stateMap, topOperators } = await getStats();
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Hero */}
-      <section className="relative py-16 px-4 text-center">
+      <section className="relative py-16 px-4 text-center border-b border-white/5">
         <div className="max-w-4xl mx-auto">
+          <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
+            57 Countries
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Global Escort Operator Directory — 57 Countries
+            Global Escort Operator Directory
           </h1>
-          <p className="text-lg text-gray-400 mb-8">
-            {totalOperators.toLocaleString()} verified pilot car and escort operators across 57 countries.
+          <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+            {total.toLocaleString()} verified pilot car and escort operators across 57 countries.
             Real-time availability, corridor rankings, and escrow-protected bookings.
           </p>
-          
-          {/* Search Bar */}
+
+          {/* Search */}
           <div className="max-w-2xl mx-auto mb-8">
-            <form action="/directory" method="GET" className="relative">
+            <form action="/directory/us" method="GET" className="relative">
               <input
                 type="text"
                 name="q"
-                placeholder="Search by name, company, corridor, or country..."
-                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 text-lg"
+                placeholder="Search by name, state, or specialty..."
+                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 text-base"
               />
               <button
                 type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 px-6 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors text-sm"
               >
                 Search
               </button>
@@ -153,81 +161,90 @@ export default async function DirectoryPage() {
           </div>
 
           {/* Stats */}
-          <div className="flex justify-center gap-8 text-sm text-gray-400">
-            <div><span className="text-amber-400 font-bold text-xl">{totalOperators.toLocaleString()}</span><br/>Operators Tracked</div>
-            <div><span className="text-amber-400 font-bold text-xl">57</span><br/>Countries</div>
-            <div><span className="text-amber-400 font-bold text-xl">219+</span><br/>Active Corridors</div>
+          <div className="flex justify-center gap-8 text-sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">{total.toLocaleString()}</div>
+              <div className="text-gray-500 text-xs mt-1">Operators</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">57</div>
+              <div className="text-gray-500 text-xs mt-1">Countries</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">219+</div>
+              <div className="text-gray-500 text-xs mt-1">Corridors</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">50</div>
+              <div className="text-gray-500 text-xs mt-1">US States</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Country Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-8 text-center">Browse by Country</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {COUNTRIES.map((country) => {
-            const count = countryCounts[country.code] || 0;
-            return (
-              <Link
-                key={country.code}
-                href={`/directory/${country.code}`}
-                className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/10 transition-all text-center"
-              >
-                <span className="text-3xl block mb-2">{country.flag}</span>
-                <span className="font-medium text-sm block">{country.name}</span>
-                <span className="text-xs text-gray-500">
-                  {count > 0 ? `${count} operators` : 'Coming soon'}
-                </span>
-              </Link>
-            );
-          })}
+      {/* US State Quick Nav */}
+      <section className="max-w-6xl mx-auto px-4 py-10">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold">Browse US States</h2>
+          <span className="text-xs text-gray-600">{Object.keys(stateMap).length} states with operators</span>
+        </div>
+        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-2">
+          {US_STATES.map(s => (
+            <Link
+              key={s}
+              href={`/directory/us/${s.toLowerCase()}`}
+              className="p-2 bg-white/5 border border-white/10 rounded-lg hover:border-amber-500/40 hover:bg-white/10 transition-all text-center group"
+            >
+              <div className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">{s}</div>
+              {stateMap[s] && (
+                <div className="text-xs text-gray-600">{stateMap[s]}</div>
+              )}
+            </Link>
+          ))}
         </div>
       </section>
 
       {/* Top Operators */}
       {topOperators.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="text-2xl font-bold mb-8 text-center">Top Operators Globally</h2>
+        <section className="max-w-6xl mx-auto px-4 py-8 border-t border-white/5">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold">Top Rated Operators</h2>
+            <Link href="/directory/us" className="text-sm text-amber-400 hover:underline">View all US →</Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {topOperators.map((op: any) => (
               <div
                 key={op.id}
                 className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-semibold text-white">{op.name || op.company_name || 'Operator'}</h3>
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm truncate">{op.full_name || 'Escort Operator'}</h3>
                     <p className="text-xs text-gray-500">
-                      {op.city && `${op.city}, `}{op.state && `${op.state} · `}
-                      {(op.country_code || '').toUpperCase()}
+                      {op.city && `${op.city}, `}{op.state && `${op.state}`}
                     </p>
                   </div>
-                  {op.verified && (
-                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full font-medium">
-                      ✓ Verified
+                  {op.claimed && (
+                    <span className="ml-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full flex-shrink-0">
+                      ✓
                     </span>
                   )}
                 </div>
-                {op.corridors && (
-                  <p className="text-xs text-gray-400 mb-3 line-clamp-2">
-                    Corridors: {Array.isArray(op.corridors) ? op.corridors.slice(0, 3).join(', ') : op.corridors}
-                  </p>
-                )}
                 {op.rating && (
-                  <div className="flex items-center gap-1 mb-3">
-                    <span className="text-amber-400">{'★'.repeat(Math.round(op.rating))}</span>
-                    <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
+                  <div className="flex items-center gap-1 mb-2">
+                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
+                    <span className="text-xs text-gray-500">{op.rating.toFixed(1)} ({op.review_count ?? 0})</span>
                   </div>
                 )}
-                {/* Contact info gated */}
+                {op.services?.length > 0 && (
+                  <p className="text-xs text-gray-500 mb-3 line-clamp-1">{op.services.slice(0, 3).join(' · ')}</p>
+                )}
                 <div className="relative">
-                  <div className="blur-sm text-xs text-gray-500 select-none">
-                    📞 (555) 123-4567 · 📧 operator@example.com
-                  </div>
+                  <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Link
                       href="/auth/register"
-                      className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
+                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
                     >
                       Sign up to contact
                     </Link>
@@ -239,23 +256,40 @@ export default async function DirectoryPage() {
         </section>
       )}
 
+      {/* Country Grid */}
+      <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
+        <h2 className="text-lg font-bold mb-6">Browse by Country</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          {COUNTRIES.map((country) => {
+            const count = countryCounts[country.code] || 0;
+            return (
+              <Link
+                key={country.code}
+                href={`/directory/${country.code}`}
+                className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all text-center"
+              >
+                <span className="text-2xl block mb-2">{country.flag}</span>
+                <span className="font-medium text-xs block text-white group-hover:text-amber-400 transition-colors">{country.name}</span>
+                <span className="text-xs text-gray-600 mt-0.5 block">
+                  {count > 0 ? `${count.toLocaleString()} operators` : 'Coming soon'}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="max-w-4xl mx-auto px-4 py-16 text-center">
+      <section className="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/5">
         <h2 className="text-2xl font-bold mb-4">Are you an escort operator?</h2>
         <p className="text-gray-400 mb-6">
-          Claim your free listing and start receiving load offers from brokers across 57 countries.
+          Claim your free profile and start receiving load offers from brokers across 57 countries.
         </p>
         <div className="flex justify-center gap-4">
-          <Link
-            href="/claim"
-            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
-          >
+          <Link href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
             Claim Your Listing
           </Link>
-          <Link
-            href="/auth/register"
-            className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors"
-          >
+          <Link href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
             Sign Up Free
           </Link>
         </div>
