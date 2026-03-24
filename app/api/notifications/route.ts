@@ -1,71 +1,68 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
-/**
- * GET /api/notifications
- * Fetches notifications for the authenticated user.
- * Supports polling or can be replaced with Supabase realtime.
- */
+// GET /api/notifications
 export async function GET(req: NextRequest) {
-    try {
-        const userId = req.nextUrl.searchParams.get("user_id");
-        const unread = req.nextUrl.searchParams.get("unread");
-        const limit = parseInt(req.nextUrl.searchParams.get("limit") || "25");
+  try {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!userId) {
-            return NextResponse.json({ error: "user_id required" }, { status: 400 });
-        }
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50);
+    const offset = (page - 1) * limit;
+    const filter = searchParams.get('filter'); // 'unread', 'offers', 'system'
 
-        const sb = getSupabaseAdmin();
+    let query = supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
-        let query = sb
-            .from("hc_notifications")
-            .select("*")
-            .eq("identity_id", userId)
-            .order("created_at", { ascending: false })
-            .limit(limit);
-
-        if (unread === "true") {
-            query = query.is("read_at", null);
-        }
-
-        const { data, error } = await query;
-
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        }
-
-        return NextResponse.json({
-            ok: true,
-            notifications: data,
-            unread_count: data?.filter((n: { read_at: string | null }) => !n.read_at).length || 0,
-        });
-    } catch {
-        return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    if (filter === 'unread') {
+      query = query.is('read_at', null);
+    } else if (filter === 'offers') {
+      query = query.in('type', ['load_offer', 'offer_accepted', 'offer_declined', 'counter_offer']);
+    } else if (filter === 'system') {
+      query = query.eq('type', 'system');
     }
+
+    const { data: notifications, error } = await query;
+    if (error) throw error;
+
+    return NextResponse.json({ notifications: notifications || [], page, limit });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
-/**
- * POST /api/notifications — Mark notifications as read
- */
+// POST /api/notifications (mark read)
 export async function POST(req: NextRequest) {
-    try {
-        const { notification_ids, user_id } = await req.json();
+  try {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        const sb = getSupabaseAdmin();
+    const { notification_ids, mark_all_read } = await req.json();
 
-        const { error } = await sb
-            .from("hc_notifications")
-            .update({ read_at: new Date().toISOString() })
-            .eq("identity_id", user_id)
-            .in("notification_id", notification_ids);
-
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        }
-
-        return NextResponse.json({ ok: true });
-    } catch {
-        return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    if (mark_all_read) {
+      await supabase
+        .from('notifications')
+        .update({ read_at: new Date().toISOString() })
+        .eq('user_id', user.id)
+        .is('read_at', null);
+    } else if (notification_ids && Array.isArray(notification_ids)) {
+      await supabase
+        .from('notifications')
+        .update({ read_at: new Date().toISOString() })
+        .in('id', notification_ids)
+        .eq('user_id', user.id);
     }
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
