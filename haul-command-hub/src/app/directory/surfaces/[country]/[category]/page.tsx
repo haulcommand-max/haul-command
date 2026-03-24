@@ -42,7 +42,7 @@ const CLASS_LABELS: Record<string, string> = {
 export async function generateMetadata({
     params,
 }: {
-    params: { country: string; category: string };
+    params: Promise<{ country: string; category: string }>;
 }) {
     const { country, category } = await params;
     const cc = country.toUpperCase();
@@ -58,7 +58,7 @@ export async function generateMetadata({
 export default async function CategoryCountryPage({
     params,
 }: {
-    params: { country: string; category: string };
+    params: Promise<{ country: string; category: string }>;
 }) {
     const { country, category } = await params;
     const cc = country.toUpperCase();

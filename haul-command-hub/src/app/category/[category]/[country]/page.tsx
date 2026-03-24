@@ -52,7 +52,7 @@ const CLASS_LABELS: Record<string, string> = {
 export async function generateMetadata({
     params,
 }: {
-    params: { category: string; country: string };
+    params: Promise<{ category: string; country: string }>;
 }) {
     const { category, country } = await params;
     if (!VALID_CATEGORIES.includes(category)) notFound();
@@ -69,7 +69,7 @@ export async function generateMetadata({
 export default async function CategoryCountryPage({
     params,
 }: {
-    params: { category: string; country: string };
+    params: Promise<{ category: string; country: string }>;
 }) {
     const { category, country } = await params;
     if (!VALID_CATEGORIES.includes(category)) notFound();
