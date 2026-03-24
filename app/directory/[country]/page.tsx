@@ -1,336 +1,293 @@
-import React from 'react';
 import { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { supabaseServer } from '@/lib/supabase/server';
-import {
-  Globe, MapPin, Users, TrendingUp, Shield, ArrowRight,
-  ShieldCheck, Zap, CheckCircle, Flag,
-} from 'lucide-react';
-
-/* ═══════════════════════════════════════════════════════════════════
-   /directory/[country] — Country-level Directory Landing Pages
-   High-value SEO targets for Tier A countries
-   ═══════════════════════════════════════════════════════════════════ */
+import { notFound } from 'next/navigation';
 
 interface Props {
-  params: Promise<{ country: string }>;
+  params: { country: string };
+  searchParams: { q?: string; state?: string; page?: string };
 }
 
-interface CountryConfig {
-  code: string;
-  name: string;
-  flag: string;
-  tier: 'A' | 'B' | 'C';
-  states: { abbr: string; name: string }[];
-  compliance: string;
-  corridors: string[];
-  seedOperators: number;
-}
-
-const TIER_A_COUNTRIES: Record<string, CountryConfig> = {
-  us: {
-    code: 'US', name: 'United States', flag: '🇺🇸', tier: 'A',
-    states: [
-      { abbr: 'TX', name: 'Texas' }, { abbr: 'CA', name: 'California' }, { abbr: 'FL', name: 'Florida' },
-      { abbr: 'OH', name: 'Ohio' }, { abbr: 'PA', name: 'Pennsylvania' }, { abbr: 'IL', name: 'Illinois' },
-      { abbr: 'GA', name: 'Georgia' }, { abbr: 'NC', name: 'North Carolina' }, { abbr: 'MI', name: 'Michigan' },
-      { abbr: 'NY', name: 'New York' }, { abbr: 'AZ', name: 'Arizona' }, { abbr: 'WA', name: 'Washington' },
-      { abbr: 'IN', name: 'Indiana' }, { abbr: 'TN', name: 'Tennessee' }, { abbr: 'MO', name: 'Missouri' },
-      { abbr: 'LA', name: 'Louisiana' }, { abbr: 'OK', name: 'Oklahoma' }, { abbr: 'AL', name: 'Alabama' },
-    ],
-    compliance: 'FHWA requires pilot car escorts for loads exceeding 12ft wide in most states. Night movement restrictions apply broadly. State DOTs issue OS/OW permits.',
-    corridors: ['I-10 Gulf Coast', 'I-35 Central', 'I-40 Cross-Country', 'I-75 Southeast', 'I-20 Southern', 'I-95 East Coast'],
-    seedOperators: 4200,
-  },
-  ca: {
-    code: 'CA', name: 'Canada', flag: '🇨🇦', tier: 'A',
-    states: [
-      { abbr: 'ON', name: 'Ontario' }, { abbr: 'AB', name: 'Alberta' }, { abbr: 'BC', name: 'British Columbia' },
-      { abbr: 'QC', name: 'Quebec' }, { abbr: 'SK', name: 'Saskatchewan' }, { abbr: 'MB', name: 'Manitoba' },
-    ],
-    compliance: 'Transport Canada oversees heavy load regulations. Provincial permits required for oversize loads. Pilot car requirements vary by province.',
-    corridors: ['Trans-Canada Highway', 'Highway 401', 'Highway 2 Alberta'],
-    seedOperators: 820,
-  },
-  au: {
-    code: 'AU', name: 'Australia', flag: '🇦🇺', tier: 'A',
-    states: [
-      { abbr: 'NSW', name: 'New South Wales' }, { abbr: 'VIC', name: 'Victoria' }, { abbr: 'QLD', name: 'Queensland' },
-      { abbr: 'WA', name: 'Western Australia' }, { abbr: 'SA', name: 'South Australia' },
-    ],
-    compliance: 'NHVR manages oversize vehicle permits nationally. State-specific pilot vehicle requirements. Class 1 and Class 2 OSOM frameworks.',
-    corridors: ['Pacific Highway', 'Hume Highway', 'Stuart Highway'],
-    seedOperators: 450,
-  },
-  gb: {
-    code: 'GB', name: 'United Kingdom', flag: '🇬🇧', tier: 'A',
-    states: [
-      { abbr: 'ENG', name: 'England' }, { abbr: 'SCT', name: 'Scotland' }, { abbr: 'WLS', name: 'Wales' },
-    ],
-    compliance: 'DVSA regulates abnormal loads. ESDAL notification system required. Police escort for largest category movements.',
-    corridors: ['M1 Corridor', 'M6 Corridor', 'A1 North'],
-    seedOperators: 210,
-  },
-  nz: {
-    code: 'NZ', name: 'New Zealand', flag: '🇳🇿', tier: 'A',
-    states: [
-      { abbr: 'AKL', name: 'Auckland Region' }, { abbr: 'WGN', name: 'Wellington Region' }, { abbr: 'CAN', name: 'Canterbury' },
-    ],
-    compliance: 'Waka Kotahi NZ Transport Agency issues overlength and overweight permits. Pilot vehicle requirements for loads over-dimension.',
-    corridors: ['State Highway 1', 'State Highway 2'],
-    seedOperators: 85,
-  },
-  za: {
-    code: 'ZA', name: 'South Africa', flag: '🇿🇦', tier: 'A',
-    states: [
-      { abbr: 'GP', name: 'Gauteng' }, { abbr: 'WC', name: 'Western Cape' }, { abbr: 'KZN', name: 'KwaZulu-Natal' },
-    ],
-    compliance: 'National Road Traffic Act governs abnormal load permits. Provincial road authorities issue specific routes. Escort requirements based on load dimensions.',
-    corridors: ['N1 Johannesburg-Cape Town', 'N3 Durban Corridor', 'N4 Maputo Corridor'],
-    seedOperators: 120,
-  },
-  de: {
-    code: 'DE', name: 'Germany', flag: '🇩🇪', tier: 'A',
-    states: [
-      { abbr: 'NRW', name: 'North Rhine-Westphalia' }, { abbr: 'BAV', name: 'Bavaria' }, { abbr: 'BW', name: 'Baden-Württemberg' },
-    ],
-    compliance: 'StVO regulations govern Schwertransport permits. BF3/BF4 escort categories. Federal highway authority (BASt) coordinates oversized loads.',
-    corridors: ['A1 Hamburg-Cologne', 'A7 North-South', 'A3 Rhine Corridor'],
-    seedOperators: 180,
-  },
-  nl: {
-    code: 'NL', name: 'Netherlands', flag: '🇳🇱', tier: 'A',
-    states: [
-      { abbr: 'NH', name: 'North Holland' }, { abbr: 'ZH', name: 'South Holland' }, { abbr: 'NB', name: 'North Brabant' },
-    ],
-    compliance: 'RDW manages exceptioneel transport permits. CROW guidelines for escort vehicles. Rotterdam port corridor is highest volume.',
-    corridors: ['A15 Rotterdam Corridor', 'A2 Amsterdam-Maastricht'],
-    seedOperators: 95,
-  },
-  ae: {
-    code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪', tier: 'A',
-    states: [
-      { abbr: 'DXB', name: 'Dubai' }, { abbr: 'AUH', name: 'Abu Dhabi' }, { abbr: 'SHJ', name: 'Sharjah' },
-    ],
-    compliance: 'RTA and DOT manage heavy vehicle permits by emirate. Escort vehicle requirements for loads exceeding 3.5m width. Night movement preferred.',
-    corridors: ['E11 Sheikh Zayed Road', 'E311 Emirates Road'],
-    seedOperators: 60,
-  },
-  br: {
-    code: 'BR', name: 'Brazil', flag: '🇧🇷', tier: 'A',
-    states: [
-      { abbr: 'SP', name: 'São Paulo' }, { abbr: 'RJ', name: 'Rio de Janeiro' }, { abbr: 'MG', name: 'Minas Gerais' },
-    ],
-    compliance: 'DNIT and ANTT regulate AET (Autorização Especial de Trânsito) for oversize loads. Escort vehicle (batedor) requirements vary by state.',
-    corridors: ['BR-101 Coastal', 'BR-116 Rio-Bahia', 'SP-348 Anhanguera'],
-    seedOperators: 340,
-  },
+const COUNTRY_NAMES: Record<string, string> = {
+  us: 'United States', ca: 'Canada', au: 'Australia', gb: 'United Kingdom',
+  nz: 'New Zealand', za: 'South Africa', de: 'Germany', nl: 'Netherlands',
+  ae: 'UAE', br: 'Brazil', ie: 'Ireland', se: 'Sweden', no: 'Norway',
+  dk: 'Denmark', fi: 'Finland', be: 'Belgium', at: 'Austria', ch: 'Switzerland',
+  es: 'Spain', fr: 'France', it: 'Italy', pt: 'Portugal', sa: 'Saudi Arabia',
+  qa: 'Qatar', mx: 'Mexico', 'in': 'India', id: 'Indonesia', th: 'Thailand',
+  pl: 'Poland', cz: 'Czech Republic', sk: 'Slovakia', hu: 'Hungary', si: 'Slovenia',
+  ee: 'Estonia', lv: 'Latvia', lt: 'Lithuania', hr: 'Croatia', ro: 'Romania',
+  bg: 'Bulgaria', gr: 'Greece', tr: 'Turkey', kw: 'Kuwait', om: 'Oman',
+  bh: 'Bahrain', sg: 'Singapore', my: 'Malaysia', jp: 'Japan', kr: 'South Korea',
+  cl: 'Chile', ar: 'Argentina', co: 'Colombia', pe: 'Peru', vn: 'Vietnam',
+  ph: 'Philippines', uy: 'Uruguay', pa: 'Panama', cr: 'Costa Rica',
 };
 
-// Normalize country code
-function resolveCountry(slug: string): CountryConfig | null {
-  const lower = slug.toLowerCase();
-  // Direct match
-  if (TIER_A_COUNTRIES[lower]) return TIER_A_COUNTRIES[lower];
-  // Alternate codes/names
-  const aliases: Record<string, string> = {
-    'united-states': 'us', 'usa': 'us', 'canada': 'ca', 'australia': 'au',
-    'united-kingdom': 'gb', 'uk': 'gb', 'new-zealand': 'nz', 'south-africa': 'za',
-    'germany': 'de', 'deutschland': 'de', 'netherlands': 'nl', 'holland': 'nl',
-    'uae': 'ae', 'brazil': 'br', 'brasil': 'br',
-  };
-  if (aliases[lower]) return TIER_A_COUNTRIES[aliases[lower]] ?? null;
-  return null;
-}
+const US_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
+  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
+  'VA','WA','WV','WI','WY',
+];
+
+const PAGE_SIZE = 48;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { country } = await params;
-  const cfg = resolveCountry(country);
-  if (!cfg) return { title: 'Directory | Haul Command' };
+  const country = params.country.toLowerCase();
+  const countryName = COUNTRY_NAMES[country] ?? country.toUpperCase();
   return {
-    title: `${cfg.flag} ${cfg.name} Pilot Car & Escort Operators | Haul Command`,
-    description: `Find verified pilot car, escort, and heavy haul operators across ${cfg.name}. ${cfg.seedOperators}+ operators, top corridors, compliance guides.`,
+    title: `${countryName} Escort Operators | Haul Command`,
+    description: `Find verified pilot car and heavy haul escort operators in ${countryName}. Browse all operators, filter by state/region, and contact directly.`,
   };
 }
 
-const T = {
-  bg: '#060b12', bgCard: '#0f1a26', border: 'rgba(255,255,255,0.07)',
-  gold: '#f5b942', green: '#27d17f', blue: '#3ba4ff', purple: '#a78bfa',
-  text: '#f0f4f8', muted: '#8fa3b8', subtle: '#556070',
-} as const;
+export default async function CountryDirectoryPage({ params, searchParams }: Props) {
+  const country = params.country.toLowerCase();
+  const countryName = COUNTRY_NAMES[country];
+  if (!countryName) notFound();
 
-export default async function CountryDirectoryPage({ params }: Props) {
-  const { country } = await params;
-  const cfg = resolveCountry(country);
+  const isUS = country === 'us';
+  const supabase = createClient();
+  const page = Math.max(parseInt(searchParams.page ?? '1'), 1);
+  const q = searchParams.q ?? '';
+  const stateFilter = searchParams.state?.toUpperCase() ?? '';
+  const offset = (page - 1) * PAGE_SIZE;
 
-  // Redirect alternate slugs to canonical
-  if (cfg && country.toLowerCase() !== cfg.code.toLowerCase()) {
-    redirect(`/directory/${cfg.code.toLowerCase()}`);
+  // Build query on listings (single source of truth)
+  let query = supabase
+    .from('listings')
+    .select('id, full_name, city, state, country_code, rating, review_count, claimed, services, rank_score, featured, slug', { count: 'exact' })
+    .eq('active', true);
+
+  if (isUS) {
+    // US: filter by state column (all rows have state set)
+    if (stateFilter) query = query.eq('state', stateFilter);
+    // Only include rows that have a US state code (are actual US listings)
+    else query = query.in('state', US_STATES);
+  } else {
+    query = query.eq('country_code', country);
   }
 
-  if (!cfg) {
-    // Non-Tier-A country — show waitlist
+  if (q) {
+    query = query.or(`full_name.ilike.%${q}%,city.ilike.%${q}%,bio.ilike.%${q}%`);
+  }
+
+  query = query
+    .order('featured', { ascending: false, nullsFirst: false })
+    .order('rank_score', { ascending: false, nullsFirst: false })
+    .order('claimed', { ascending: false, nullsFirst: false })
+    .range(offset, offset + PAGE_SIZE - 1);
+
+  const { data: operators, count: total, error } = await query;
+
+  if (error) {
     return (
-      <main style={{ background: T.bg, minHeight: '100vh', color: T.text }}>
-        <div style={{ maxWidth: 600, margin: '0 auto', padding: '100px 20px', textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🌍</div>
-          <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>
-            Coming Soon to {country.charAt(0).toUpperCase() + country.slice(1)}
-          </h1>
-          <p style={{ fontSize: 14, color: T.muted, marginBottom: 24, lineHeight: 1.6 }}>
-            We're expanding Haul Command to new countries. Join the waitlist and be first to know.
-          </p>
-          <Link href="/login" className="ag-press" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '12px 24px', borderRadius: 12,
-            background: 'linear-gradient(135deg, #f5b942, #e8a830)',
-            color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
-          }}>
-            <Flag size={14} /> Join Waitlist
-          </Link>
-        </div>
-      </main>
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+        <p className="text-red-400">Error loading operators: {error.message}</p>
+      </div>
     );
   }
 
-  // Fetch real operator count from Supabase
-  let realCount = 0;
-  try {
-    const sb = supabaseServer();
-    const { count } = await sb
-      .from('directory_listings')
-      .select('*', { count: 'exact', head: true })
-      .eq('country_code', cfg.code);
-    realCount = count || 0;
-  } catch { /* use seed */ }
+  const totalPages = Math.ceil((total ?? 0) / PAGE_SIZE);
 
-  const displayCount = realCount > 0 ? realCount : cfg.seedOperators;
+  // Per-state breakdown for US sidebar
+  let stateCounts: Record<string, number> = {};
+  if (isUS && !stateFilter) {
+    const { data: statData } = await supabase
+      .from('listings')
+      .select('state')
+      .eq('active', true)
+      .in('state', US_STATES);
+    for (const row of statData ?? []) {
+      const s = row.state?.toUpperCase();
+      if (s) stateCounts[s] = (stateCounts[s] || 0) + 1;
+    }
+  }
 
   return (
-    <main style={{ background: T.bg, minHeight: '100vh', color: T.text }}>
-      {/* Hero */}
-      <div style={{
-        padding: '64px 20px 48px', textAlign: 'center',
-        background: 'linear-gradient(180deg, rgba(245,185,66,0.04), transparent)',
-        borderBottom: `1px solid ${T.border}`,
-      }}>
-        <div style={{ fontSize: 56, marginBottom: 12 }}>{cfg.flag}</div>
-        <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.2 }}>
-          {cfg.name} <span style={{ color: T.gold }}>Directory</span>
-        </h1>
-        <p style={{ fontSize: 15, color: T.muted, maxWidth: 500, margin: '0 auto 20px', lineHeight: 1.6 }}>
-          Pilot car operators, escort vehicles, and heavy haul support across {cfg.name}
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-          <div className="ag-tick" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 28, fontWeight: 900, color: T.gold }}>{displayCount.toLocaleString()}</div>
-            <div style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Operators</div>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Header */}
+      <section className="py-10 px-4 border-b border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 mb-4 text-xs text-gray-600">
+            <Link href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
+            <span>/</span>
+            <span className="text-gray-400">{countryName}</span>
+            {stateFilter && (
+              <>
+                <span>/</span>
+                <span className="text-gray-400">{stateFilter}</span>
+              </>
+            )}
           </div>
-          <div className="ag-tick" style={{ textAlign: 'center', animationDelay: '100ms' }}>
-            <div style={{ fontSize: 28, fontWeight: 900, color: T.green }}>{cfg.corridors.length}</div>
-            <div style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Top Corridors</div>
+          <div className="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <h1 className="text-3xl font-bold">
+                {stateFilter ? `${stateFilter} Escort Operators` : `${countryName} Escort & Pilot Car Operators`}
+              </h1>
+              <p className="text-gray-500 mt-1">
+                {(total ?? 0).toLocaleString()} operators found{stateFilter ? ` in ${stateFilter}` : ''}
+              </p>
+            </div>
+            {/* Search */}
+            <form method="GET" className="flex gap-2">
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Search operators..."
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
+              />
+              {stateFilter && <input type="hidden" name="state" value={stateFilter} />}
+              <button type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+                Search
+              </button>
+            </form>
           </div>
-          <div className="ag-tick" style={{ textAlign: 'center', animationDelay: '200ms' }}>
-            <div style={{ fontSize: 28, fontWeight: 900, color: T.blue }}>{cfg.states.length}</div>
-            <div style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Regions</div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="flex gap-8">
+          {/* State sidebar for US */}
+          {isUS && !stateFilter && Object.keys(stateCounts).length > 0 && (
+            <aside className="hidden lg:block w-48 flex-shrink-0">
+              <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Filter by State</h2>
+              <div className="space-y-1 max-h-[70vh] overflow-y-auto pr-2">
+                {US_STATES.filter(s => stateCounts[s]).sort((a, b) => (stateCounts[b] || 0) - (stateCounts[a] || 0)).map(s => (
+                  <Link
+                    key={s}
+                    href={`/directory/us/${s.toLowerCase()}`}
+                    className="flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-white/5 text-sm transition-colors"
+                  >
+                    <span className="text-gray-300">{s}</span>
+                    <span className="text-xs text-gray-600">{(stateCounts[s] || 0).toLocaleString()}</span>
+                  </Link>
+                ))}
+              </div>
+            </aside>
+          )}
+
+          {/* Main grid */}
+          <div className="flex-1 min-w-0">
+            {/* Mobile state scroll */}
+            {isUS && !stateFilter && (
+              <div className="flex gap-2 overflow-x-auto pb-3 mb-6 lg:hidden">
+                {US_STATES.filter(s => stateCounts[s]).map(s => (
+                  <Link
+                    key={s}
+                    href={`/directory/us/${s.toLowerCase()}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 hover:border-amber-500/30 transition-colors"
+                  >
+                    {s} ({stateCounts[s]})
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {operators && operators.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {operators.map((op: any) => (
+                  <div
+                    key={op.id}
+                    className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
+                      op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-sm text-white truncate">
+                          {op.full_name || 'Escort Operator'}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          {op.city && `${op.city}, `}{op.state}
+                        </p>
+                      </div>
+                      <div className="flex gap-1 flex-shrink-0 ml-2">
+                        {op.featured && (
+                          <span className="px-1.5 py-0.5 bg-amber-500/30 text-amber-300 text-xs rounded">★</span>
+                        )}
+                        {op.claimed && (
+                          <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">✓</span>
+                        )}
+                      </div>
+                    </div>
+                    {op.rating && (
+                      <div className="flex items-center gap-1 mb-2">
+                        <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
+                        <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
+                        {op.review_count > 0 && (
+                          <span className="text-xs text-gray-700">({op.review_count})</span>
+                        )}
+                      </div>
+                    )}
+                    {op.services?.length > 0 && (
+                      <p className="text-xs text-gray-600 mb-3 line-clamp-1">
+                        {op.services.slice(0, 3).join(' · ')}
+                      </p>
+                    )}
+                    {/* Claim pressure */}
+                    {!op.claimed && (
+                      <div className="text-xs text-gray-700 mb-3">
+                        <Link href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
+                          Unclaimed — Is this you? →
+                        </Link>
+                      </div>
+                    )}
+                    <div className="relative">
+                      <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info hidden</div>
+                      <div className="absolute inset-0 flex items-center">
+                        <Link
+                          href="/auth/register"
+                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                        >
+                          Sign up to contact
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500">
+                  {q ? `No operators found for "${q}"` : `No operators found${stateFilter ? ` in ${stateFilter}` : ''}.`}
+                </p>
+                {q && (
+                  <Link href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
+                    Clear search
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-10">
+                {page > 1 && (
+                  <Link
+                    href={`/directory/${country}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
+                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
+                  >
+                    ← Previous
+                  </Link>
+                )}
+                <span className="text-sm text-gray-500">
+                  Page {page} of {totalPages} · {(total ?? 0).toLocaleString()} operators
+                </span>
+                {page < totalPages && (
+                  <Link
+                    href={`/directory/${country}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
+                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
+                  >
+                    Next →
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 20px' }}>
-        {/* Compliance Summary */}
-        <section className="ag-section-enter" style={{ marginBottom: 40 }}>
-          <div style={{
-            background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 18,
-            padding: '24px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <Shield size={16} style={{ color: T.gold }} />
-              <h2 style={{ fontSize: 16, fontWeight: 800, margin: 0 }}>Compliance Overview</h2>
-            </div>
-            <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7 }}>{cfg.compliance}</p>
-          </div>
-        </section>
-
-        {/* Top Corridors */}
-        <section className="ag-section-enter" style={{ marginBottom: 40 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 16 }}>
-            <TrendingUp size={18} style={{ color: T.gold, marginRight: 8, verticalAlign: 'middle' }} />
-            Top Corridors in {cfg.name}
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
-            {cfg.corridors.map(corridor => (
-              <div key={corridor} className="ag-card-hover" style={{
-                background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14,
-                padding: '16px', cursor: 'pointer',
-              }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: T.text, marginBottom: 4 }}>🛣 {corridor}</div>
-                <div style={{ fontSize: 11, color: T.muted }}>View escorts & rates →</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Browse by Region */}
-        <section className="ag-section-enter" style={{ marginBottom: 40 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 16 }}>
-            <MapPin size={18} style={{ color: T.gold, marginRight: 8, verticalAlign: 'middle' }} />
-            Browse by Region
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12 }}>
-            {cfg.states.map(state => (
-              <Link
-                key={state.abbr}
-                href={`/directory/${cfg.code.toLowerCase()}/${state.abbr.toLowerCase()}`}
-                className="ag-card-hover"
-                style={{
-                  display: 'block', background: T.bgCard, border: `1px solid ${T.border}`,
-                  borderRadius: 14, padding: '16px', textDecoration: 'none',
-                }}
-              >
-                <div style={{ fontSize: 14, fontWeight: 700, color: T.text, marginBottom: 4 }}>
-                  {state.name}
-                </div>
-                <div style={{ fontSize: 11, color: T.muted }}>{state.abbr} →</div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Get Listed CTA */}
-        <section className="ag-section-enter" style={{ marginBottom: 40 }}>
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(245,185,66,0.05), rgba(245,185,66,0.02))',
-            border: '1px solid rgba(245,185,66,0.2)', borderRadius: 20,
-            padding: '32px 24px', textAlign: 'center',
-          }}>
-            <Zap size={24} style={{ color: T.gold, margin: '0 auto 12px' }} />
-            <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 8 }}>
-              Get Listed in {cfg.name}
-            </h2>
-            <p style={{ fontSize: 14, color: T.muted, marginBottom: 20, maxWidth: 400, margin: '0 auto 20px' }}>
-              Join {displayCount.toLocaleString()} operators already on Haul Command. Free listing, verified badge available.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <Link href="/login" className="ag-press" style={{
-                padding: '12px 24px', borderRadius: 12,
-                background: 'linear-gradient(135deg, #f5b942, #e8a830)',
-                color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
-              }}>
-                Create Free Profile
-              </Link>
-              <Link href="/boost" className="ag-press" style={{
-                padding: '12px 24px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.06)', border: `1px solid ${T.border}`,
-                color: T.text, fontWeight: 700, fontSize: 14, textDecoration: 'none',
-              }}>
-                Boost Listing →
-              </Link>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
+    </div>
   );
 }

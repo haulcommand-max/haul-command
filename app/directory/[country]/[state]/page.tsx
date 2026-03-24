@@ -1,327 +1,253 @@
-import React from 'react';
-import { notFound, redirect } from 'next/navigation';
+import { Metadata } from 'next';
+import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { supabaseServer } from '@/lib/supabase/server';
-import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-/* ═══════════════════════════════════════════════════════════════════
-   /directory/[country]/[state] — State Directory Page
-
-   Handles both abbreviations and full names:
-   - /directory/us/tx  ✓
-   - /directory/us/texas  → redirects to /directory/us/tx
-   - /directory/canada/ab ✓
-   ═══════════════════════════════════════════════════════════════════ */
-
-// ─── State lookup maps ────────────────────────────────────────────────────────
-const US_STATES: Record<string, string> = {
-  al: 'Alabama', ak: 'Alaska', az: 'Arizona', ar: 'Arkansas',
-  ca: 'California', co: 'Colorado', ct: 'Connecticut', de: 'Delaware',
-  fl: 'Florida', ga: 'Georgia', hi: 'Hawaii', id: 'Idaho',
-  il: 'Illinois', in: 'Indiana', ia: 'Iowa', ks: 'Kansas',
-  ky: 'Kentucky', la: 'Louisiana', me: 'Maine', md: 'Maryland',
-  ma: 'Massachusetts', mi: 'Michigan', mn: 'Minnesota', ms: 'Mississippi',
-  mo: 'Missouri', mt: 'Montana', ne: 'Nebraska', nv: 'Nevada',
-  nh: 'New Hampshire', nj: 'New Jersey', nm: 'New Mexico', ny: 'New York',
-  nc: 'North Carolina', nd: 'North Dakota', oh: 'Ohio', ok: 'Oklahoma',
-  or: 'Oregon', pa: 'Pennsylvania', ri: 'Rhode Island', sc: 'South Carolina',
-  sd: 'South Dakota', tn: 'Tennessee', tx: 'Texas', ut: 'Utah',
-  vt: 'Vermont', va: 'Virginia', wa: 'Washington', wv: 'West Virginia',
-  wi: 'Wisconsin', wy: 'Wyoming',
-};
-
-// Full name → abbreviation (for redirect)
-const US_FULL_TO_ABBR: Record<string, string> = Object.fromEntries(
-  Object.entries(US_STATES).map(([abbr, full]) => [full.toLowerCase().replace(/\s+/g, '-'), abbr])
-);
-
-const CA_PROVINCES: Record<string, string> = {
-  ab: 'Alberta', bc: 'British Columbia', mb: 'Manitoba', nb: 'New Brunswick',
-  nl: 'Newfoundland and Labrador', ns: 'Nova Scotia', on: 'Ontario',
-  pe: 'Prince Edward Island', qc: 'Quebec', sk: 'Saskatchewan',
-  nt: 'Northwest Territories', nu: 'Nunavut', yt: 'Yukon',
-};
-const CA_FULL_TO_ABBR: Record<string, string> = Object.fromEntries(
-  Object.entries(CA_PROVINCES).map(([abbr, full]) => [full.toLowerCase().replace(/\s+/g, '-'), abbr])
-);
-
-// ─── Top corridors by state ───────────────────────────────────────────────────
-const TOP_CORRIDORS_BY_STATE: Record<string, string[]> = {
-  tx: ['Texas Triangle (DFW–HOU–SA)', 'I-10 Gulf Coast', 'I-35 Central Texas'],
-  ca: ['I-5 Pacific Coast', 'I-15 Southern California', 'SR-99 Central Valley'],
-  fl: ['I-95 Treasure Coast', 'I-75 Alligator Alley', 'Florida Turnpike'],
-  ga: ['I-85 Atlanta Metro', 'I-75 South Georgia', 'I-16 Coastal Georgia'],
-  il: ['I-90/94 Chicago Corridor', 'I-55 Route 66', 'I-80 Northern Illinois'],
-  pa: ['I-76 Pennsylvania Turnpike', 'I-78 Allentown–NYC', 'I-81 Mountain Corridor'],
-  oh: ['I-71 Columbus–Cleveland', 'I-75 Dayton Corridor', 'I-80 Northern Ohio'],
-  wa: ['I-5 Puget Sound', 'SR-2 Stevens Pass', 'US-97 Eastern Washington'],
-  ny: ['I-87 Thruway', 'I-90 Buffalo Corridor', 'I-81 Syracuse Route'],
-  nc: ['I-85 Charlotte–Raleigh', 'I-40 Piedmont', 'I-95 Eastern NC'],
-};
-
-function resolveState(country: string, state: string): { abbr: string; name: string; countryCode: string } | null {
-  const c = country.toLowerCase().replace(/\+/g, '-');
-  const s = state.toLowerCase().replace(/\+/g, '-');
-
-  if (c === 'us' || c === 'united-states') {
-    if (US_STATES[s]) return { abbr: s, name: US_STATES[s], countryCode: 'US' };
-    if (US_FULL_TO_ABBR[s]) return { abbr: US_FULL_TO_ABBR[s], name: US_STATES[US_FULL_TO_ABBR[s]], countryCode: 'US' };
-  }
-  if (c === 'canada' || c === 'ca') {
-    if (CA_PROVINCES[s]) return { abbr: s, name: CA_PROVINCES[s], countryCode: 'CA' };
-    if (CA_FULL_TO_ABBR[s]) return { abbr: CA_FULL_TO_ABBR[s], name: CA_PROVINCES[CA_FULL_TO_ABBR[s]], countryCode: 'CA' };
-  }
-  return null;
+interface Props {
+  params: { country: string; state: string };
+  searchParams: { q?: string; page?: string; sort?: string };
 }
 
-// ─── Metadata ─────────────────────────────────────────────────────────────────
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ country: string; state: string }>;
-}): Promise<Metadata> {
-  const { country, state } = await params;
-  const resolved = resolveState(country, state);
-  if (!resolved) return { title: 'Directory | Haul Command' };
+const STATE_NAMES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
+  HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa',
+  KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland',
+  MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi',
+  MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire',
+  NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York', NC: 'North Carolina',
+  ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania',
+  RI: 'Rhode Island', SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee',
+  TX: 'Texas', UT: 'Utah', VT: 'Vermont', VA: 'Virginia', WA: 'Washington',
+  WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+};
+
+const PAGE_SIZE = 48;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const stateCode = params.state.toUpperCase();
+  const stateName = STATE_NAMES[stateCode] ?? stateCode;
   return {
-    title: `Pilot Car Operators in ${resolved.name} — Verified Directory | Haul Command`,
-    description: `Find verified pilot car escort operators in ${resolved.name}. See ratings, response times, corridors, and contact verified operators directly on Haul Command.`,
-    alternates: {
-      canonical: `/directory/us/${resolved.abbr}`,
-    },
+    title: `${stateName} Escort & Pilot Car Operators | Haul Command`,
+    description: `Find verified heavy haul escort and pilot car operators in ${stateName}. ${stateName} oversize load escorts with real ratings, permit experience, and instant contact.`,
   };
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-export default async function StateDirectoryPage({
-  params,
-}: {
-  params: Promise<{ country: string; state: string }>;
-}) {
-  const { country, state } = await params;
-  const resolved = resolveState(country, state);
+export default async function StateDirectoryPage({ params, searchParams }: Props) {
+  const stateCode = params.state.toUpperCase();
+  const stateName = STATE_NAMES[stateCode];
+  if (!stateName) notFound();
 
-  if (!resolved) return notFound();
+  const supabase = createClient();
+  const page = Math.max(parseInt(searchParams.page ?? '1'), 1);
+  const q = searchParams.q ?? '';
+  const sortBy = searchParams.sort ?? 'rank';
+  const offset = (page - 1) * PAGE_SIZE;
 
-  // Redirect full names → abbreviations for URL canonicalization
-  const countrySlug = country.toLowerCase();
-  if (
-    (countrySlug === 'us' || countrySlug === 'united-states') &&
-    state.toLowerCase() !== resolved.abbr
-  ) {
-    redirect(`/directory/us/${resolved.abbr}`);
-  }
-  if (
-    (countrySlug === 'canada' || countrySlug === 'ca') &&
-    state.toLowerCase() !== resolved.abbr
-  ) {
-    redirect(`/directory/canada/${resolved.abbr}`);
+  let query = supabase
+    .from('listings')
+    .select(
+      'id, full_name, city, state, rating, review_count, claimed, services, rank_score, featured, bio, slug',
+      { count: 'exact' }
+    )
+    .eq('active', true)
+    .eq('state', stateCode);
+
+  if (q) {
+    query = query.or(`full_name.ilike.%${q}%,city.ilike.%${q}%,bio.ilike.%${q}%`);
   }
 
-  // Normalize country in URL
-  const canonicalCountry = resolved.countryCode === 'US' ? 'us' : 'canada';
-  if (countrySlug !== canonicalCountry) {
-    redirect(`/directory/${canonicalCountry}/${resolved.abbr}`);
+  if (sortBy === 'rating') {
+    query = query.order('rating', { ascending: false, nullsFirst: false });
+  } else if (sortBy === 'reviews') {
+    query = query.order('review_count', { ascending: false, nullsFirst: false });
+  } else {
+    query = query
+      .order('featured', { ascending: false, nullsFirst: false })
+      .order('rank_score', { ascending: false, nullsFirst: false })
+      .order('claimed', { ascending: false, nullsFirst: false });
   }
 
-  // Fetch real operator data
-  const sb = supabaseServer();
-  let operators: any[] = [];
-  let total = 0;
+  query = query.range(offset, offset + PAGE_SIZE - 1);
 
-  try {
-    const { data, count } = await sb
-      .from('directory_listings')
-      .select('id, name, slug, entity_type, city, region_code, rank_score, claim_status, metadata', { count: 'exact' })
-      .eq('region_code', resolved.abbr.toUpperCase())
-      .neq('is_visible', false)
-      .order('rank_score', { ascending: false })
-      .limit(24);
-    operators = data ?? [];
-    total = count ?? 0;
-  } catch {
-    // Table may be empty — show placeholders
-  }
+  const { data: operators, count: total, error } = await query;
+  if (error) notFound();
 
-  // If no real data, fall back to seed operators for this state
-  const seeds = operators.length === 0 ? [
-    { id: `seed-${resolved.abbr}-1`, name: `${resolved.name} Pilot Car Services`, state: resolved.abbr.toUpperCase(), services: ['Pilot Car', 'Wide Load'], verified: false, isSeed: true },
-    { id: `seed-${resolved.abbr}-2`, name: `${resolved.name} Oversize Escorts`, state: resolved.abbr.toUpperCase(), services: ['Pilot Car', 'Height Pole'], verified: false, isSeed: true },
-    { id: `seed-${resolved.abbr}-3`, name: `${resolved.name} Heavy Haul Escort`, state: resolved.abbr.toUpperCase(), services: ['Route Survey', 'Pilot Car'], verified: false, isSeed: true },
-  ] : [];
+  const totalPages = Math.ceil((total ?? 0) / PAGE_SIZE);
 
-  const topCorridors = TOP_CORRIDORS_BY_STATE[resolved.abbr.toLowerCase()] ?? [
-    `${resolved.name} Freight Corridor`,
-    `${resolved.name} East-West Route`,
-    `${resolved.name} Interstate Network`,
+  const corridorLinks = [
+    { label: `${stateCode} oversize load regulations`, href: `/regulations/${stateName.toLowerCase().replace(/\s+/g, '-')}` },
+    { label: `Route Check — ${stateCode}`, href: `/route-check?state=${stateCode}` },
+    { label: `Post a load in ${stateCode}`, href: '/loads/new' },
   ];
 
-  const displayOperators = operators.length > 0
-    ? operators.map((o: any) => ({
-        id: o.id,
-        name: o.name,
-        state: o.region_code,
-        slug: o.slug,
-        services: o.metadata?.services || ['Pilot Car'],
-        verified: o.claim_status === 'claimed' || o.claim_status === 'verified',
-        isSeed: false,
-        rank: o.rank_score,
-      }))
-    : seeds;
-
   return (
-    <div style={{ background: '#060b12', minHeight: '100vh', color: '#f0f4f8' }}>
-      <style>{`
-        @keyframes slide-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        .state-op-card { background:#0f1a26; border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:18px; transition:transform 0.2s,box-shadow 0.2s; }
-        .state-op-card:hover { transform:translateY(-4px); box-shadow:0 8px 28px rgba(245,185,66,0.12); }
-        .op-grid { display:grid; grid-template-columns:1fr; gap:14px; }
-        @media(min-width:640px){.op-grid{grid-template-columns:repeat(2,1fr);}}
-        @media(min-width:1024px){.op-grid{grid-template-columns:repeat(3,1fr);}}
-      `}</style>
-
-      {/* Breadcrumb */}
-      <div style={{ padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)', fontSize: 12, color: '#8fa3b8' }}>
-        <Link href="/" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Home</Link>
-        {' / '}
-        <Link href="/directory" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Directory</Link>
-        {' / '}
-        <span style={{ color: '#f0f4f8' }}>{resolved.name}</span>
-      </div>
-
-      {/* Hero */}
-      <div style={{ padding: '48px 24px 36px', maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-        <div style={{ fontSize: 11, fontWeight: 800, color: '#f5b942', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>
-          State Directory — {resolved.countryCode === 'US' ? 'United States' : 'Canada'}
-        </div>
-        <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.15 }}>
-          Pilot Car Operators in{' '}
-          <span style={{ color: '#f5b942' }}>{resolved.name}</span>
-        </h1>
-        <p style={{ fontSize: 15, color: '#8fa3b8', maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
-          Find and contact verified oversize load escort operators based in {resolved.name}.
-          All operators verified by Haul Command trust score system.
-        </p>
-
-        {/* Stats bar */}
-        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', marginTop: 24 }}>
-          {[
-            { value: total > 0 ? `${total}+` : 'Growing', label: 'Operators' },
-            { value: topCorridors.length, label: 'Active Corridors' },
-            { value: 'Verified', label: 'Trust System' },
-          ].map((s, i) => (
-            <div key={i} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#f5b942' }}>{s.value}</div>
-              <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2, fontWeight: 600 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px 60px' }}>
-
-        {/* Top Corridors */}
-        <section style={{ marginBottom: 40 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: '#f0f4f8', marginBottom: 14 }}>
-            Top Corridors in {resolved.name}
-          </h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {topCorridors.map((corridor, i) => (
-              <div key={i} style={{
-                padding: '8px 16px', borderRadius: 10,
-                background: 'rgba(245,185,66,0.06)', border: '1px solid rgba(245,185,66,0.2)',
-                fontSize: 13, fontWeight: 600, color: '#f5b942',
-              }}>
-                {corridor}
-              </div>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Header */}
+      <section className="py-10 px-4 border-b border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 mb-4 text-xs text-gray-600">
+            <Link href="/directory" className="hover:text-amber-400">Directory</Link>
+            <span>/</span>
+            <Link href="/directory/us" className="hover:text-amber-400">United States</Link>
+            <span>/</span>
+            <span className="text-gray-400">{stateName}</span>
+          </div>
+          <h1 className="text-3xl font-bold mb-2">
+            {stateName} Escort & Pilot Car Operators
+          </h1>
+          <p className="text-gray-500">
+            {(total ?? 0).toLocaleString()} operators in {stateName} — oversize/overweight load escorts
+          </p>
+          <div className="flex flex-wrap gap-3 mt-4">
+            {corridorLinks.map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 hover:border-amber-500/30 hover:text-amber-400 transition-colors"
+              >
+                {l.label} →
+              </Link>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Operators Grid */}
-        <section>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 800, color: '#f0f4f8', margin: 0 }}>
-              Operators in {resolved.name}
-              {total > 0 && <span style={{ fontSize: 12, fontWeight: 600, color: '#8fa3b8', marginLeft: 8 }}>({total} listed)</span>}
-            </h2>
-            <Link href={`/directory?state=${resolved.abbr.toUpperCase()}`} style={{ fontSize: 12, color: '#f5b942', textDecoration: 'none', fontWeight: 700 }}>
-              View all →
-            </Link>
-          </div>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Filters */}
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <form method="GET" className="flex gap-2">
+            <input
+              type="text"
+              name="q"
+              defaultValue={q}
+              placeholder={`Search ${stateName} operators...`}
+              className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
+            />
+            <select
+              name="sort"
+              defaultValue={sortBy}
+              className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-gray-400 focus:outline-none"
+            >
+              <option value="rank">Best match</option>
+              <option value="rating">Highest rated</option>
+              <option value="reviews">Most reviewed</option>
+            </select>
+            <button type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+              Filter
+            </button>
+          </form>
+          <span className="text-xs text-gray-600 ml-auto">
+            {(total ?? 0).toLocaleString()} results · Page {page}/{totalPages}
+          </span>
+        </div>
 
-          <div className="op-grid">
-            {displayOperators.map((op: any, i: number) => (
-              <div key={op.id} className="state-op-card" style={{ animationDelay: `${i * 60}ms`, animation: 'slide-in 0.4s ease-out both' }}>
-                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 12 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>🚗</div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: '#f0f4f8' }}>{op.name}</div>
-                    <div style={{ fontSize: 12, color: '#8fa3b8', marginTop: 2 }}>{op.state} · {op.services.slice(0, 2).join(', ')}</div>
+        {/* Grid */}
+        {operators && operators.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {operators.map((op: any) => (
+              <div
+                key={op.id}
+                className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
+                  op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-semibold text-sm text-white truncate">{op.full_name || 'Escort Operator'}</h2>
+                    <p className="text-xs text-gray-600">{op.city ? `${op.city}, ` : ''}{stateCode}</p>
+                  </div>
+                  <div className="flex gap-1 flex-shrink-0 ml-2">
+                    {op.featured && <span className="px-1.5 py-0.5 bg-amber-500/30 text-amber-300 text-xs rounded">★ Featured</span>}
+                    {op.claimed && <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">✓ Claimed</span>}
                   </div>
                 </div>
-                {op.verified && (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 700, color: '#27d17f', background: 'rgba(39,209,127,0.1)', padding: '3px 8px', borderRadius: 6, marginBottom: 10 }}>
-                    ✓ Verified
+                {op.rating && (
+                  <div className="flex items-center gap-1 mb-2">
+                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
+                    <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
+                    {op.review_count > 0 && <span className="text-xs text-gray-700">({op.review_count} reviews)</span>}
                   </div>
                 )}
-                {op.isSeed ? (
-                  <Link href="/claim" style={{ display: 'block', textAlign: 'center', padding: '8px', borderRadius: 10, background: 'rgba(245,185,66,0.1)', border: '1px solid rgba(245,185,66,0.2)', color: '#f5b942', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
-                    Claim This Listing
-                  </Link>
-                ) : (
-                  <Link href={`/directory/profile/${op.slug || op.id}`} style={{ display: 'block', textAlign: 'center', padding: '8px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#f0f4f8', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
-                    View Profile
-                  </Link>
+                {op.bio && (
+                  <p className="text-xs text-gray-600 mb-3 line-clamp-2">{op.bio}</p>
                 )}
+                {op.services?.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {op.services.slice(0, 3).map((s: string) => (
+                      <span key={s} className="px-2 py-0.5 bg-white/5 rounded text-xs text-gray-500">{s}</span>
+                    ))}
+                  </div>
+                )}
+                {!op.claimed && (
+                  <p className="text-xs text-gray-700 mb-2">
+                    <Link href={`/claim/${op.id}`} className="text-amber-600 hover:underline">Unclaimed — Is this you? →</Link>
+                  </p>
+                )}
+                <div className="relative mt-2">
+                  <div className="blur-sm text-xs text-gray-600 select-none">📞 (555) *** ****</div>
+                  <div className="absolute inset-0 flex items-center">
+                    <Link
+                      href="/auth/register"
+                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                    >
+                      Sign up to contact
+                    </Link>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </section>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-gray-500 mb-4">
+              {q ? `No operators found for "${q}" in ${stateName}` : `No operators found in ${stateName} yet.`}
+            </p>
+            <Link href="/directory/us" className="text-amber-400 hover:underline text-sm">View all US operators →</Link>
+          </div>
+        )}
 
-        {/* Get Listed CTA */}
-        <div style={{ marginTop: 48, padding: '32px 24px', borderRadius: 18, background: 'linear-gradient(135deg, rgba(245,185,66,0.07), rgba(245,185,66,0.02))', border: '1px solid rgba(245,185,66,0.25)', textAlign: 'center' }}>
-          <h3 style={{ fontSize: 20, fontWeight: 900, color: '#f0f4f8', marginBottom: 8 }}>
-            Get Listed in {resolved.name}
-          </h3>
-          <p style={{ fontSize: 14, color: '#8fa3b8', marginBottom: 20 }}>
-            Join thousands of verified operators. Claim your free listing and start receiving job requests.
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-10">
+            {page > 1 && (
+              <Link
+                href={`/directory/us/${params.state}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
+              >
+                ← Previous
+              </Link>
+            )}
+            <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
+            {page < totalPages && (
+              <Link
+                href={`/directory/us/${params.state}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
+              >
+                Next →
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* SEO footer links */}
+        <div className="mt-12 p-5 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
+          <p className="font-bold text-white mb-2">
+            Are you a {stateName} escort operator?
           </p>
-          <Link href="/claim" style={{ display: 'inline-block', padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>
-            Claim Your Free Listing
-          </Link>
-        </div>
-
-        {/* SEO content */}
-        <div style={{ marginTop: 48, padding: '24px', borderRadius: 14, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: '#f0f4f8', marginBottom: 10 }}>
-            Pilot Car Requirements in {resolved.name}
-          </h2>
-          <p style={{ fontSize: 13, color: '#8fa3b8', lineHeight: 1.7, margin: 0 }}>
-            {resolved.name} has specific regulations for oversize and overweight load movements. Escort vehicle requirements vary by load dimensions, route type, and time of day. All operators listed in the Haul Command {resolved.name} directory have been verified against state-specific requirements. View the complete{' '}
-            <Link href={`/escort-requirements/${resolved.name.toLowerCase().replace(/\s+/g, '-')}`} style={{ color: '#f5b942', textDecoration: 'none' }}>
-              {resolved.name} escort requirements guide
+          <p className="text-sm text-gray-400 mb-3">
+            Claim your free Haul Command profile and get found by brokers hauling through {stateName}.
+          </p>
+          <div className="flex gap-3">
+            <Link href="/claim" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+              Claim Free Listing
             </Link>
-            {' '}for full regulations.
-          </p>
+            <Link href={`/route-check?state=${stateCode}`} className="px-4 py-2 border border-white/20 text-white text-sm rounded-xl hover:border-white/40 transition-colors">
+              {stateCode} Route Check
+            </Link>
+          </div>
         </div>
       </div>
-
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com' },
-              { '@type': 'ListItem', position: 2, name: 'Directory', item: 'https://haulcommand.com/directory' },
-              { '@type': 'ListItem', position: 3, name: resolved.name, item: `https://haulcommand.com/directory/${canonicalCountry}/${resolved.abbr}` },
-            ],
-          }),
-        }}
-      />
     </div>
   );
 }
