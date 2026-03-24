@@ -311,6 +311,51 @@ export default async function LoadsPage() {
           </div>
         </div>
 
+        {/* Specialty Project Load Types */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-white">Specialty Project Load Types</h2>
+            <span className="text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full font-bold">New 2025</span>
+          </div>
+          <p className="text-gray-500 text-sm mb-5">High-value load categories now bookable as named projects — giga-factory builds, offshore wind, AV loads, and precision equipment moves.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { icon: '🏭', name: 'Giga-Factory Build', desc: 'Presses, furnaces, reactors — multi-load project tracking', badge: 'LIVE', badgeClass: 'bg-accent/10 text-accent' },
+              { icon: '🌊', name: 'Offshore Wind', desc: 'Monopiles, tower sections, nacelles — wind farm logistics', badge: 'LIVE', badgeClass: 'bg-blue-500/10 text-blue-400' },
+              { icon: '🤖', name: 'AV Escort', desc: 'Human escort for autonomous heavy haul vehicles', badge: 'AV-CERT', badgeClass: 'bg-cyan-500/10 text-cyan-400' },
+              { icon: '🔬', name: 'Precision Equipment', desc: 'EUV machines, semiconductor fab equipment, 5-axis mills', badge: 'PREMIUM', badgeClass: 'bg-purple-500/10 text-purple-400' },
+            ].map(t => (
+              <div key={t.name} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:border-white/[0.15] transition-all">
+                <div className="text-2xl mb-2">{t.icon}</div>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-white font-bold text-xs">{t.name}</span>
+                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded ${t.badgeClass}`}>{t.badge}</span>
+                </div>
+                <p className="text-gray-600 text-[10px] leading-relaxed">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Revenue Stream Strip */}
+        <section className="mb-12">
+          <h2 className="text-lg font-bold text-white mb-4">More from Haul Command</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { icon: '⛽', label: 'Fuel Card', sub: 'Rebates on every gallon', href: '/fuel-card' },
+              { icon: '📊', label: 'Carbon Reports', sub: 'Scope 3 ESG documentation', href: '/carbon' },
+              { icon: '🛡️', label: 'Dispute Resolution', sub: 'GPS-certified incident reports', href: '/dispute' },
+              { icon: '🛍️', label: 'Equipment Exchange', sub: 'Buy/sell verified gear', href: '/exchange' },
+            ].map(s => (
+              <Link key={s.label} href={s.href} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4 hover:border-accent/20 transition-all group">
+                <div className="text-2xl mb-1.5">{s.icon}</div>
+                <div className="text-white text-xs font-bold group-hover:text-accent transition-colors">{s.label}</div>
+                <div className="text-gray-600 text-[10px]">{s.sub}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* HC Verified CTA */}
         <div className="mb-12">
           <MotiveReferralCTA variant="banner" />
