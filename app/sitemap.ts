@@ -1,127 +1,82 @@
 import { MetadataRoute } from 'next';
-import { getAllAVSEOSlugs } from '@/lib/seo/av-keywords';
+import { createClient } from '@/lib/supabase/server';
 
-// ── US State codes (50 states + DC)
-const US_STATES = [
-  'al','ak','az','ar','ca','co','ct','de','fl','ga','hi','id','il','in','ia','ks',
-  'ky','la','me','md','ma','mi','mn','ms','mo','mt','ne','nv','nh','nj','nm','ny',
-  'nc','nd','oh','ok','or','pa','ri','sc','sd','tn','tx','ut','vt','va','wa','wv',
-  'wi','wy','dc',
-];
+export const dynamic = 'force-dynamic';
 
-// ── Tier A countries for AV regulations
-const AV_REGULATION_COUNTRIES = ['us','gb','de','au','ae','ca','sg','jp','se','no','nl','za','br','in','kr'];
+const BASE = 'https://haulcommand.com';
 
-// ── Oilfield corridor slugs
-const OILFIELD_CORRIDORS = ['permian','eagle-ford','bakken','marcellus','gulf-coast','dj-basin','haynesville','anadarko'];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const supabase = createClient();
 
-// ── AV company slugs (for dedicated pages)
-const AV_COMPANY_SLUGS = [
-  'aurora-innovation','kodiak-robotics','waabi','waymo','torc-robotics','gatik','plus-ai',
-  'bot-auto','einride','wayve','weride','rio-tinto-autohаul','fortescue','bhp','pony-ai',
-];
+  // Fetch blog posts
+  const { data: posts } = await supabase
+    .from('blog_posts')
+    .select('slug, updated_at, published_at')
+    .eq('published', true)
+    .order('published_at', { ascending: false })
+    .limit(500);
 
+  // Fetch active corridors
+  const { data: corridors } = await supabase
+    .from('corridors')
+    .select('id, origin_state, destination_state, updated_at')
+    .limit(300);
 
-const BASE_URL = 'https://haulcommand.com';
+  // Fetch regulation pages
+  const { data: regPages } = await supabase
+    .from('regulation_pages')
+    .select('jurisdiction, generated_at')
+    .limit(100);
 
-// Hardcoded company slugs from migration seed data
-const COMPANY_SLUGS = [
-  'aurora-innovation','waymo-via','kodiak-robotics','plus-ai','gatik','einride',
-  'volvo-autonomous','daimler-autonomous','torc-robotics','locomation',
-  'mammoet','sarens','ale-heavylift','fagioli','barnhart','landstar','daseke',
-  'vestas','ge-vernova','siemens-gamesa','nordex','enercon',
-  'deep-south-crane','omega-morgan','keen-transport','nussbaum-transportation','buchanan-hauling','goldhofer','max-bogl','cts-nordics',
-  'wabtec','scheuerle','nooteboom','bnsf-logistics','xpo-logistics','schneider-national',
-  'perth-heavy-haulage','macs-heavy-haulage','pratt-industries','collett-transport',
-  'abnormal-loads','hs2-transport','saudi-heavy-lift','enercon-brazil','suzlon-energy',
-  'tata-projects','saipem','lamprell','jumbo-maritime','ti-group',
-];
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date().toISOString();
-
-  // Core pages
-  const corePages: MetadataRoute.Sitemap = [
-    { url: BASE_URL, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
-    { url: `${BASE_URL}/companies`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/permits`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/permits/agents`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${BASE_URL}/intel`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${BASE_URL}/enterprise/autonomous`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE_URL}/press`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
-    { url: `${BASE_URL}/security`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE_URL}/sla`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
-    // ── Training + Certification
-    { url: `${BASE_URL}/training`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/training/av-certification`, lastModified: now, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${BASE_URL}/training/corporate`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    // ── Partners
-    { url: `${BASE_URL}/partners/av-companies`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
-    // ── AV Regulations Hub
-    { url: `${BASE_URL}/regulations/autonomous-vehicles`, lastModified: now, changeFrequency: 'weekly', priority: 0.95 },
-    // ── Oilfield hub
-    { url: `${BASE_URL}/corridors/oilfield`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+  // Static high-value pages
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: BASE, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+    { url: `${BASE}/directory`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/loads`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
+    { url: `${BASE}/route-check`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/corridors`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/regulations`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/partners`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/partners/autonomous-vehicles`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/enterprise`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/autonomous`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/rates`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${BASE}/press`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE}/legal/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE}/legal/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
 
-  // Company claim pages (50 companies)
-  const companyPages: MetadataRoute.Sitemap = COMPANY_SLUGS.map(slug => ({
-    url: `${BASE_URL}/companies/${slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
-
-  // Multilingual AV SEO pages (hundreds of combinations)
-  const avSeoSlugs = getAllAVSEOSlugs();
-  const avPages: MetadataRoute.Sitemap = avSeoSlugs.map(({ country, slug }) => ({
-    url: `${BASE_URL}/autonomous/${country}/${slug}`,
-    lastModified: now,
+  // Blog posts
+  const blogPages: MetadataRoute.Sitemap = (posts ?? []).map(post => ({
+    url: `${BASE}/blog/${post.slug}`,
+    lastModified: post.updated_at ? new Date(post.updated_at) : new Date(post.published_at),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  // US state regulation pages (50 states + DC)
-  const usStateRegPages: MetadataRoute.Sitemap = US_STATES.map(state => ({
-    url: `${BASE_URL}/regulations/us/${state}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.85,
-  }));
-
-  // AV regulations country pages
-  const avRegCountryPages: MetadataRoute.Sitemap = AV_REGULATION_COUNTRIES.map(cc => ({
-    url: `${BASE_URL}/regulations/autonomous-vehicles/${cc}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  // Oilfield corridor pages
-  const oilfieldCorridorPages: MetadataRoute.Sitemap = OILFIELD_CORRIDORS.map(slug => ({
-    url: `${BASE_URL}/corridors/us/${slug}`,
-    lastModified: now,
+  // Corridor intel pages
+  const corridorPages: MetadataRoute.Sitemap = (corridors ?? []).map(c => ({
+    url: `${BASE}/corridors/${c.origin_state?.toLowerCase()}-${c.destination_state?.toLowerCase()}`,
+    lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.85,
+    priority: 0.7,
   }));
 
-  // AV company dedicated pages
-  const avCompanyPages: MetadataRoute.Sitemap = AV_COMPANY_SLUGS.map(slug => ({
-    url: `${BASE_URL}/regulations/autonomous-vehicles/company/${slug}`,
-    lastModified: now,
+  // Regulation pages (57 countries)
+  const regSitemapPages: MetadataRoute.Sitemap = (regPages ?? []).map(r => ({
+    url: `${BASE}/regulations/${encodeURIComponent(r.jurisdiction.toLowerCase().replace(/\s+/g, '-'))}`,
+    lastModified: r.generated_at ? new Date(r.generated_at) : new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.75,
+    priority: 0.7,
   }));
 
   return [
-    ...corePages,
-    ...companyPages,
-    ...avPages,
-    ...usStateRegPages,
-    ...avRegCountryPages,
-    ...oilfieldCorridorPages,
-    ...avCompanyPages,
+    ...staticPages,
+    ...blogPages,
+    ...corridorPages,
+    ...regSitemapPages,
   ];
 }
-
