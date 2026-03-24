@@ -80,3 +80,30 @@ export function getClientFlags(): ClientFlags {
     userAckGate:        flags.userAckGate,
   };
 }
+
+// ─── Auth + Dev feature flags shape (used by LoginClient) ────
+export type FeatureFlags = {
+  auth: {
+    google_enabled: boolean;
+    facebook_enabled: boolean;
+    linkedin_enabled: boolean;
+  };
+  dev: {
+    auth_status_banner: boolean;
+  };
+};
+
+/** Returns auth + dev flags for the login flow. */
+export function getFeatureFlags(): FeatureFlags {
+  return {
+    auth: {
+      google_enabled:   envFlag('AUTH_GOOGLE', true),
+      facebook_enabled: envFlag('AUTH_FACEBOOK', false),
+      linkedin_enabled: envFlag('AUTH_LINKEDIN', false),
+    },
+    dev: {
+      auth_status_banner: process.env.NODE_ENV === 'development',
+    },
+  };
+}
+

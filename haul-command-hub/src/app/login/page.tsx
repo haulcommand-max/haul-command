@@ -1,4 +1,4 @@
-import { getFeatureFlagsServer } from "@/lib/flags";
+import { getFeatureFlags } from "@/lib/flags";
 import LoginClient from "./LoginClient";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,6 @@ export const metadata = {
 };
 
 export default function LoginPage() {
-    const flags = getFeatureFlagsServer();
+    const flags = getFeatureFlags();
     return <LoginClient flags={flags} />;
 }
