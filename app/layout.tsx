@@ -11,6 +11,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import PostHogProvider from "@/components/providers/PostHogProvider";
 import { AuthStatusBanner } from "@/components/dev/AuthStatusBanner";
 import SmartAppBanner from "@/components/growth/SmartAppBanner";
+import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -125,7 +126,7 @@ export const metadata: Metadata = {
             { url: '/brand/generated/pwa-icon-192.png', sizes: '192x192', type: 'image/png' },
         ],
         shortcut: '/brand/generated/favicon-48.png',
-        apple: '/apple-touch-icon.png', // Bound to /brand/generated/ios-appicon-180.png
+        apple: '/apple-touch-icon.png',
     },
     manifest: '/manifest.json',
 };
@@ -135,7 +136,7 @@ export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 5,
-    viewportFit: 'cover', // PATCH-002: Required for env(safe-area-inset-*) to work
+    viewportFit: 'cover',
 };
 
 import { RoleProvider } from "@/lib/role-context";
@@ -162,11 +163,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             "@type": "ContactPoint",
                             "contactType": "customer support",
                             "url": "https://haulcommand.com/contact",
-                            "areaServed": ["US", "CA", "GB", "AU", "NZ", "ZA", "DE", "NL", "AE", "BR", "IE", "SE", "NO", "DK", "FI", "BE", "AT", "CH", "ES", "FR", "IT", "PT", "SA", "QA", "MX", "PL", "CZ", "SK", "HU", "SI", "EE", "LV", "LT", "HR", "RO", "BG", "GR", "TR", "KW", "OM", "BH", "SG", "MY", "JP", "KR", "CL", "AR", "CO", "PE", "UY", "PA", "CR"],
-                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese", "Dutch", "Italian", "Arabic", "Japanese", "Korean", "Turkish", "Polish"],
+                            "areaServed": ["US", "CA", "GB", "AU", "NZ", "ZA", "DE", "NL", "AE", "BR"],
+                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese"],
                         },
                     })
                 }} />
+                {/* Inbound Authority Machine — Tracking Pixels */}
+                <AnalyticsProvider />
             </head>
             <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
                 <RoleProvider>
