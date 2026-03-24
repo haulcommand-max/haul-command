@@ -1,72 +1,129 @@
-
-import React from 'react';
-import Link from 'next/link';
-import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
-import { getServiceData } from '@/lib/seo/programmatic-data';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
-export default async function ServiceVerticalPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
-    const service = await getServiceData(slug);
+const SERVICES: Record<string, {
+  title: string;
+  description: string;
+  longDescription: string;
+  features: string[];
+  icon: string;
+  relatedCorridors: string[];
+}> = {
+  'pilot-car': {
+    title: 'Pilot Car Services',
+    description: 'Certified pilot car operators for oversize and overweight loads across 57 countries.',
+    longDescription: 'Pilot car (also called escort car, lead vehicle, or chase car) services are the backbone of heavy haul transport. Every jurisdiction requires escort vehicles for loads exceeding specific dimension thresholds. Our network of 7,745+ verified pilot car operators provides lead and follow escort services across every major corridor in all 57 countries we serve.\n\nWhether you need a single pilot car for a standard overwidth load or a multi-vehicle escort team for a superload, Haul Command connects you with pre-vetted operators who know the local regulations, road conditions, and permit requirements for your specific route.',
+    features: ['Lead vehicle escort', 'Follow vehicle escort', 'Route surveying', 'Height pole operation', 'Communication relay', 'AM/FM radio equipped', 'Oversize signage (PILOT CAR / OVERSIZE LOAD)', 'First aid and safety equipment', 'GPS tracking and reporting', 'Multi-language capability'],
+    icon: '\ud83d\ude97',
+    relatedCorridors: ['I-10 Corridor', 'I-40 Corridor', 'Trans-Canada Highway', 'M1 Motorway', 'Pacific Highway'],
+  },
+  'wide-load-escort': {
+    title: 'Wide Load Escort Services',
+    description: 'Professional wide load escort operators for permitted oversize cargo transport.',
+    longDescription: 'Wide load escort services ensure safe passage for oversized cargo through highways, urban areas, and restricted zones. Loads exceeding 8\u20196\u201d (2.6m) in width typically require at minimum one escort vehicle, with additional escorts required for wider loads or complex routes.\n\nOur wide load escort operators are trained in local regulations, proper signage requirements, traffic control procedures, and emergency protocols for all 57 countries in the Haul Command network.',
+    features: ['Oversize banners and flags', 'Traffic control and intersection clearing', 'Bridge height and width verification', 'Night escort with amber lighting', 'Construction zone navigation', 'Two-way radio communication', 'Emergency response coordination', 'Real-time route updates', 'Digital trip logs and reporting'],
+    icon: '\ud83d\udea8',
+    relatedCorridors: ['I-95 Corridor', 'I-75 Corridor', 'A1 Motorway (DE)', 'Bruce Highway (AU)'],
+  },
+  'heavy-haul': {
+    title: 'Heavy Haul Transport Escort',
+    description: 'End-to-end heavy haul logistics escort services for industrial equipment, transformers, and machinery.',
+    longDescription: 'Heavy haul transport escort services are essential for moving the most challenging loads on our roads \u2014 transformers, reactor vessels, mining equipment, bridge beams, and other superloads that may exceed 200,000 lbs.\n\nOur heavy haul escort operators understand bridge weight limits, route restrictions, utility clearances, and the complex permit requirements that vary by jurisdiction. They coordinate with police escorts, utility companies, and transportation departments to ensure safe passage.',
+    features: ['Multi-axle load escorts', 'Bridge weight verification', 'Utility coordination and lifts', 'Police escort coordination', 'Route engineering support', 'Night moves and curfew compliance', 'Multi-state/province coordination', 'Emergency pull-off identification', 'Communication with transport driver'],
+    icon: '\ud83d\uddfb',
+    relatedCorridors: ['I-20 Heavy Haul Corridor', 'Alberta Oil Sands Corridor', 'Pilbara Mining Corridor (AU)'],
+  },
+  'wind-energy': {
+    title: 'Wind Energy Transport Escort',
+    description: 'Specialized escort services for wind turbine blade, tower, and nacelle transportation.',
+    longDescription: 'Wind energy component transport represents some of the most challenging oversize hauls in the industry. Modern wind turbine blades can exceed 260 feet (80+ meters), requiring highly specialized escort operators with extensive experience in complex turning movements, rural road navigation, and multi-vehicle escort coordination.\n\nHaul Command\u2019s wind energy escort network includes operators certified in blade transport protocols across all major wind energy corridors worldwide.',
+    features: ['Blade transport escorts (200+ ft)', 'Tower section escorts', 'Nacelle and hub escorts', 'Rural road and county road navigation', 'Multi-escort coordination (3-5 vehicles)', 'Turning movement assistance', 'Night and early morning operations', 'Landowner coordination', 'Environmental compliance'],
+    icon: '\ud83c\udf2c\ufe0f',
+    relatedCorridors: ['Texas Wind Corridor', 'Midwest Wind Belt', 'North Sea Coast (GB/DE/NL)'],
+  },
+  'route-survey': {
+    title: 'Route Survey Services',
+    description: 'Pre-haul route surveys to verify clearances, hazards, and permit compliance.',
+    longDescription: 'Route surveys are the critical first step before any oversize or overweight transport. Professional route surveyors drive the planned route, measuring bridge clearances, utility heights, road widths, turning radii, and identifying construction zones, detours, and other hazards.\n\nThe resulting survey report provides the documentation required for permit applications and gives the transport team critical intelligence for a safe and successful move.',
+    features: ['Bridge height verification', 'Road width measurement', 'Turning radius assessment', 'Utility clearance check', 'Construction zone identification', 'Digital survey reports with photos', 'GPS route documentation', 'Alternate route identification', 'Permit application support'],
+    icon: '\ud83d\udccd',
+    relatedCorridors: ['All corridors'],
+  },
+  'autonomous-escort': {
+    title: 'Autonomous Vehicle Escort',
+    description: 'Certified escort services for autonomous and self-driving vehicle testing convoys.',
+    longDescription: 'As autonomous vehicle testing expands globally, qualified escort operators are in increasingly high demand. AV testing typically requires certified escort vehicles to provide a safety perimeter, monitor public road conditions, and maintain emergency override capability.\n\nHaul Command\u2019s AV escort operators are trained in SAE Level 4/5 testing protocols, equipped with professional two-way communication systems, and experienced in multi-vehicle convoy management on public roads.',
+    features: ['SAE-certified operators', 'Real-time telemetry monitoring', 'Multi-vehicle convoy management', 'Safety perimeter vehicles', 'Incident documentation and reporting', 'Emergency intervention capability', 'Public road test support', 'Closed course support', 'Regulatory compliance documentation'],
+    icon: '\ud83e\udd16',
+    relatedCorridors: ['Silicon Valley Test Routes', 'Phoenix AV Corridor', 'Munich Test Zone (DE)'],
+  },
+};
 
-    if (!service) {
-        notFound();
-    }
+type Props = { params: Promise<{ slug: string }> };
 
-    return (
-        <div className="max-w-4xl mx-auto py-12 px-4">
-            <SchemaGenerator type="ServiceVertical" data={{ service }} />
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const service = SERVICES[slug];
+  if (!service) return { title: 'Service | Haul Command' };
+  return {
+    title: `${service.title} \u2014 57 Countries | Haul Command`,
+    description: service.description,
+  };
+}
 
-            <nav className="text-sm breadcrumbs mb-6 text-slate-500">
-                <ul className="flex gap-2">
-                    <li><Link href="/" className="hover:underline">Home</Link></li>
-                    <li>/</li>
-                    <li><Link href="/services" className="hover:underline">Services</Link></li>
-                    <li>/</li>
-                    <li className="font-bold text-slate-900">{service.name}</li>
-                </ul>
-            </nav>
+export async function generateStaticParams() {
+  return Object.keys(SERVICES).map((slug) => ({ slug }));
+}
 
-            <header className="mb-12">
-                <h1 className="text-4xl font-extrabold text-slate-900 mb-6">
-                    {service.name} Services: The Complete Guide
-                </h1>
-                <p className="text-xl text-slate-600">
-                    Everything you need to know about hiring {service.name.toLowerCase()} providers for oversize loads.
-                    Regulations, requirements, and verified operators.
-                </p>
-            </header>
+export default async function ServiceDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const service = SERVICES[slug];
+  if (!service) notFound();
 
-            <section className="prose prose-slate max-w-none mb-12">
-                <h2>What is a {service.name}?</h2>
-                <p>{service.description} Essential for safe transport of over-dimensional freight...</p>
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-5xl block mb-4">{service.icon}</span>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{service.title}</h1>
+          <p className="text-gray-400 whitespace-pre-line mb-8">{service.longDescription}</p>
 
-                <h2>When is it required?</h2>
-                <p>State regulations vary, but generally...</p>
-
-                <h2>Equipment Standards</h2>
-                <ul>
-                    <li>Amber lights (SAE J845 Class 1)</li>
-                    <li>CB Radio</li>
-                    <li>Height pole (if applicable)</li>
-                </ul>
-            </section>
-
-            <section className="bg-blue-50 p-8 rounded-xl border border-blue-100">
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">Find {service.name} Providers by State</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {/* Mock State Links */}
-                    {['Florida', 'Texas', 'Georgia', 'California'].map(state => (
-                        <Link
-                            key={state}
-                            href={`/us/${state.toLowerCase().substring(0, 2)}/cross-city/${slug}`} // Mock city link for demo
-                            className="text-blue-600 hover:underline"
-                        >
-                            {state}
-                        </Link>
-                    ))}
+          <div className="mb-12">
+            <h2 className="text-xl font-bold mb-4">What\u2019s Included</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {service.features.map((f) => (
+                <div key={f} className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
+                  <span className="text-amber-400">\u2713</span>
+                  <span className="text-sm">{f}</span>
                 </div>
-            </section>
+              ))}
+            </div>
+          </div>
+
+          {service.relatedCorridors.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-xl font-bold mb-4">Popular Corridors</h2>
+              <div className="flex flex-wrap gap-2">
+                {service.relatedCorridors.map((c) => (
+                  <span key={c} className="px-3 py-1.5 bg-amber-500/10 text-amber-400 text-sm rounded-lg">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-4">
+            <Link href="/loads" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+              Post a Load
+            </Link>
+            <Link href="/directory" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
+              Find Operators
+            </Link>
+          </div>
         </div>
-    );
+      </section>
+    </div>
+  );
 }
