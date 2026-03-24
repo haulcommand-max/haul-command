@@ -13,16 +13,16 @@
             "schedule": "0 6 * * *"
         },
         {
-            "path": "/api/content/generate",
-            "schedule": "0 6 * * *"
+            "path": "/api/cron/email-sequences",
+            "schedule": "0 9 * * *"
+        },
+        {
+            "path": "/api/cron/av-briefings",
+            "schedule": "0 7 * * 1"
         },
         {
             "path": "/api/video/poll",
             "schedule": "*/5 * * * *"
-        },
-        {
-            "path": "/api/cron/email-sequences",
-            "schedule": "0 9 * * *"
         }
     ]
 }
