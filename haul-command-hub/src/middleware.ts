@@ -1,0 +1,82 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+/**
+ * Haul Command — Global Route Guard Middleware
+ * 
+ * Eliminates 404s by redirecting known broken patterns to working alternatives.
+ * Implements the "No Dead End" rule from the dominance audit.
+ * 
+ * Pattern: intercept → redirect → preserve intent
+ */
+
+// Known broken patterns → working destination
+const ROUTE_FALLBACKS: [RegExp, string][] = [
+  // Legacy profile URLs → directory with claim prompt
+  [/^\/directory\/profile\/(.+)$/, '/directory?claim=1'],
+  
+  // Old onboarding start → claim page
+  [/^\/onboarding\/start$/, '/claim'],
+  
+  // Legacy rate detail pages → rates hub
+  [/^\/rates\/([a-z]{2})\/pilot-car-cost$/, '/rates'],
+  [/^\/rates\/([a-z]{2})\/(.+)$/, '/rates'],
+  
+  // Legacy requirement pages → canonical requirements
+  [/^\/requirements\/([a-z]{2})\/escort-vehicle-rules$/, '/requirements/us/$1'],
+  
+  // Legacy jobs page → loads
+  [/^\/jobs$/, '/loads'],
+  
+  // Old tool routes → current tool routes
+  [/^\/tools\/compliance-copilot$/, '/tools/escort-calculator'],
+  [/^\/tools\/permit-checker$/, '/tools/escort-calculator'],
+  [/^\/tools\/permit-calculator$/, '/tools/escort-calculator'],
+  [/^\/tools\/route-complexity$/, '/tools/superload-meter'],
+  [/^\/tools\/route-iq$/, '/tools/load-analyzer'],
+  [/^\/tools\/state-requirements$/, '/requirements'],
+  [/^\/tools\/heavy-haul-index$/, '/corridors'],
+  [/^\/tools\/rate-lookup$/, '/tools/rate-advisor'],
+  
+  // Old services marketplace → services hub
+  [/^\/services\/marketplace$/, '/services'],
+  
+  // Old map jurisdiction → map
+  [/^\/map\/jurisdiction$/, '/map'],
+  
+  // Legacy home route
+  [/^\/home$/, '/'],
+  
+  // Old start page → claim
+  [/^\/start$/, '/claim'],
+];
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  for (const [pattern, destination] of ROUTE_FALLBACKS) {
+    const match = pathname.match(pattern);
+    if (match) {
+      // Replace capture groups in destination
+      let finalDest = destination;
+      for (let i = 1; i < match.length; i++) {
+        finalDest = finalDest.replace(`$${i}`, match[i]);
+      }
+      
+      const url = request.nextUrl.clone();
+      url.pathname = finalDest;
+      
+      // Preserve any existing query params
+      return NextResponse.redirect(url, { status: 301 });
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    // Match all routes except static files, API routes, and Next.js internals
+    '/((?!api|_next/static|_next/image|favicon.ico|icons|images|manifest|robots|sitemap).*)',
+  ],
+};

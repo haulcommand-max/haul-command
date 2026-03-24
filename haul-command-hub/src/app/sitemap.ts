@@ -43,6 +43,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // Future Waves
         { url: `${siteUrl}/av-escort`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
         { url: `${siteUrl}/av-escort/certify`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        // Sprint 2 Revenue Waves
+        { url: `${siteUrl}/insurance`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${siteUrl}/insurance/quote`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${siteUrl}/drone-survey`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${siteUrl}/drone-survey/order`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${siteUrl}/drone-survey/become-operator`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
         { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
         { url: `${siteUrl}/terms`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
         { url: `${siteUrl}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },

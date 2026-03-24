@@ -11,6 +11,7 @@ import { HeroBillboard } from '@/components/hc/HeroBillboard';
 import { InlineBillboard } from '@/components/hc/InlineBillboard';
 import { getCreativesForSlot } from '@/lib/ad-engine';
 import HomeHero from '@/components/hc/HomeHero';
+import ActivityTicker from '@/components/ActivityTicker';
 import type { HCMetric, HCFaqItem, HCCorridorSummary, HCRequirementsSummary } from '@/lib/hc-types';
 
 export const revalidate = 900; // 15 minute ISR
@@ -155,6 +156,7 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
+      <ActivityTicker />
       <main className="flex-grow overflow-x-hidden">
         {/* Market Status */}
         <div className="w-full max-w-7xl mx-auto px-4 pt-4">
@@ -497,6 +499,7 @@ export default async function HomePage() {
               <div className="space-y-2 text-sm">
                 <Link href="/blog" className="block text-gray-500 hover:text-white transition-colors">Intelligence Blog</Link>
                 <Link href="/claim" className="block text-gray-500 hover:text-white transition-colors">Claim Listing</Link>
+                <Link href="/contact" className="block text-gray-500 hover:text-white transition-colors">Contact Us</Link>
                 <Link href="/report-data-issue" className="block text-gray-500 hover:text-white transition-colors">Report Issue</Link>
                 <Link href="/remove-listing" className="block text-gray-500 hover:text-white transition-colors">Remove Listing</Link>
               </div>
