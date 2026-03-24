@@ -1,0 +1,75 @@
+-- ================================================================
+-- ALL 50 US STATES — HEAVY HAUL TRANSPORT REGULATIONS
+-- Sources: State DOT permit offices (official)
+-- ================================================================
+
+CREATE TABLE IF NOT EXISTS state_regulations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  state_code CHAR(2) NOT NULL UNIQUE,
+  state_name TEXT NOT NULL,
+  permit_authority_name TEXT NOT NULL,
+  permit_authority_url TEXT NOT NULL,
+  max_width_ft NUMERIC(5,2) NOT NULL,
+  max_height_ft NUMERIC(5,2) NOT NULL,
+  max_length_ft NUMERIC(5,2) NOT NULL,
+  max_gross_weight_lbs INTEGER NOT NULL,
+  escort_required_width_ft NUMERIC(5,2) NOT NULL,
+  night_travel_allowed BOOLEAN NOT NULL DEFAULT TRUE,
+  sunday_travel_allowed BOOLEAN NOT NULL DEFAULT TRUE,
+  notes TEXT DEFAULT ''
+);
+
+INSERT INTO state_regulations
+(state_code, state_name, permit_authority_name, permit_authority_url, max_width_ft, max_height_ft, max_length_ft, max_gross_weight_lbs, escort_required_width_ft, night_travel_allowed, sunday_travel_allowed, notes)
+VALUES
+('AL','Alabama','Alabama DOT Permit Office','https://permit.dot.state.al.us',14.00,15.50,85.00,164000,14.00,TRUE,TRUE,'Superloads over 14ft wide require Alabama State Patrol escort.'),
+('AK','Alaska','Alaska DOT Oversize Permits','https://dot.alaska.gov/permits',16.00,15.00,90.00,120000,16.00,FALSE,FALSE,'Night and weekend travel restricted on most state routes. Extreme seasonal weight limits on rural roads.'),
+('AZ','Arizona','Arizona DOT Permit Section','https://www.azdot.gov/business/permits',16.00,17.00,105.00,250000,14.00,TRUE,TRUE,'16ft+ width requires DPS escort. Seasonal restrictions in summer for asphalt protection.'),
+('AR','Arkansas','Arkansas DOT Oversize/Overweight Permits','https://www.arkansashighways.com/motor_vehicle/permits',14.00,15.50,75.00,120000,14.00,FALSE,FALSE,'No night travel for loads over 14ft wide. Sunday travel prohibited for oversize loads.'),
+('CA','California','Caltrans Permits','https://dotmaps.dot.ca.gov/permits',16.00,16.00,100.00,250000,15.00,FALSE,FALSE,'CHP escort required for loads over 15ft wide. No night travel. Regional restrictions apply.'),
+('CO','Colorado','Colorado DOT Oversize Permits','https://apps.codot.gov/permits',14.50,15.50,110.00,110000,14.00,TRUE,TRUE,'Mountain corridor restrictions. I-70 Glenwood Canyon closures common. State patrol escort for 15ft+.'),
+('CT','Connecticut','Connecticut DOT Permit Office','https://portal.ct.gov/DOT/Permits',13.00,15.00,75.00,105000,13.00,FALSE,FALSE,'Very restrictive. Night travel prohibited. Escort required at 13ft width on many state routes.'),
+('DE','Delaware','Delaware DMV Oversize Permits','https://www.dmv.de.gov/vehicles/permits',13.00,15.00,75.00,90000,13.00,FALSE,FALSE,'Small state with strict limits. Traffic escorts required for loads approaching maximums.'),
+('FL','Florida','Florida DOT Permit Office','https://permits.fdot.gov',14.00,16.00,80.00,150000,14.00,TRUE,TRUE,'Coastal bridge restrictions. No oversize travel during rush hours in metro areas.'),
+('GA','Georgia','Georgia DOT Oversize/Overweight Permits','https://www.dot.ga.gov/PartnerSmart/Permits',15.00,16.00,80.00,120000,14.00,TRUE,TRUE,'14ft+ requires pilot car. State patrol required at 16ft+. Atlanta metro restrictions.'),
+('HI','Hawaii','Hawaii DOT Highways Division Permits','https://hidot.hawaii.gov/highways/permits',10.00,14.50,65.00,80000,10.00,FALSE,FALSE,'Most restrictive state. Island-specific rules. Ferry transport required between islands.'),
+('ID','Idaho','Idaho Transportation Department Permits','https://apps.itd.idaho.gov/permits',14.00,16.00,100.00,105500,14.00,TRUE,TRUE,'Mountain route restrictions. Pilot car required on US-12 due to narrow curves.'),
+('IL','Illinois','Illinois DOT Oversize/Overweight Permits','https://ildot.force.com/permits',14.50,15.00,85.00,120000,14.00,FALSE,FALSE,'No night travel for oversize loads. Seasonal spring weight restrictions. Chicago area requires ISP escorts.'),
+('IN','Indiana','Indiana DOT Permit Office','https://indot.in.gov/permits',14.50,15.50,100.00,120000,14.00,TRUE,TRUE,'Single-trip and multi-trip permits available. ISP escort required for loads over 14.5ft wide.'),
+('IA','Iowa','Iowa DOT Permits','https://iamcs.iowa.gov/permits',14.00,15.50,80.00,96000,14.00,FALSE,FALSE,'Spring weight restrictions March-May. No Sunday travel in some counties. Seasonal bridge limits.'),
+('KS','Kansas','Kansas DOT Motor Carrier Services','https://www.ksdot.org/motor-carrier/permits',14.00,15.50,85.00,120000,14.00,FALSE,FALSE,'No night travel for loads over 14ft. Weekend restrictions apply. Turnpike has separate permit requirements.'),
+('KY','Kentucky','Kentucky Transportation Cabinet Permits','https://transportation.ky.gov/permits',14.00,15.50,80.00,120000,14.00,FALSE,FALSE,'No night or weekend travel for most oversize loads. Numerous low-clearance bridges on secondary roads.'),
+('LA','Louisiana','Louisiana DOTD Oversize Permits','https://wwwapps.dotd.la.gov/permits',16.00,17.00,85.00,200000,15.00,TRUE,TRUE,'High weight limits for oil/gas industry. State police escort mandatory for 15ft+ loads. Bayou route restrictions.'),
+('ME','Maine','Maine DOT Special Permits','https://www.maine.gov/mdot/permits',15.00,15.50,100.00,99000,15.00,FALSE,FALSE,'Seasonal spring weight restrictions are aggressive. No travel on many roads March-May.'),
+('MD','Maryland','Maryland SHA Oversize Permits','https://chart.maryland.gov/permits',13.00,15.00,75.00,105000,13.00,FALSE,FALSE,'Baltimore Harbor Tunnel and Bay Bridge have special restrictions. Weekend restrictions apply.'),
+('MA','Massachusetts','Massachusetts DOT Permit Section','https://www.massdot.state.ma.us/permits',14.00,15.50,65.00,99000,13.50,FALSE,FALSE,'Strict urban restrictions. Pilot car required for 13.5ft+. Ted Williams Tunnel/Sumner Tunnel prohibit oversize loads.'),
+('MI','Michigan','Michigan DOT Oversize/Overweight Permits','https://mdotjboss.state.mi.us/SpecPer',14.00,15.00,85.00,164000,14.00,FALSE,FALSE,'Distinctive 11-axle weight table. No night travel for oversize. Bridge formula strictly enforced.'),
+('MN','Minnesota','Minnesota DOT Oversize Permits','https://www.dot.state.mn.us/permits',14.00,15.50,85.00,105500,14.00,FALSE,FALSE,'10-ton spring weight restrictions. No oversize travel during severe winter events. MSP escort for large loads.'),
+('MS','Mississippi','Mississippi DOT Permit Office','https://www.mdot.ms.gov/permits',16.00,15.50,85.00,164000,14.00,TRUE,TRUE,'Oil and gas industry-friendly high weight limits. State patrol escort required for 16ft+ loads.'),
+('MO','Missouri','Missouri DOT Motor Carrier Services','https://permits.modot.mo.gov',14.00,15.50,85.00,120000,14.00,FALSE,FALSE,'No night travel for oversize. Spring posting on secondary roads common. MSP provides escorts for superloads.'),
+('MT','Montana','Montana DOT Commercial Vehicle Services','https://www.mdt.mt.gov/permits',16.00,16.00,100.00,137800,14.00,TRUE,TRUE,'Large state with long corridors. Pilot car required at 14ft+. Mountain pass restrictions in winter.'),
+('NE','Nebraska','Nebraska DOT Motor Carrier Services','https://permits.nebraska.gov',15.00,15.50,95.00,120000,14.00,FALSE,FALSE,'No night travel for oversize loads. NSP escort for loads over 15ft. Harvest season restrictions on rural roads.'),
+('NV','Nevada','Nevada DOT Permit Office','https://nvpermits.dot.nv.gov',16.00,16.00,110.00,129000,15.00,TRUE,FALSE,'No Sunday travel for oversize loads. Las Vegas Strip has specific routing requirements. Desert heat restrictions.'),
+('NH','New Hampshire','New Hampshire DOT Permits','https://www.nh.gov/dot/permits',14.00,15.50,75.00,99000,14.00,FALSE,FALSE,'Spring weight restrictions March-May. Covered bridge routes require special routing. No Sunday oversize travel.'),
+('NJ','New Jersey','New Jersey DOT Oversize Permits','https://www.nj.gov/transportation/business/permits',14.00,15.00,75.00,99000,13.00,FALSE,FALSE,'Most restricted state in corridor. No night or weekend travel. NJ State Police escort required for loads over 13ft on major roads. George Washington Bridge separate permit required.'),
+('NM','New Mexico','New Mexico DOT Permits','https://www.dot.nm.gov/permits',14.00,16.00,110.00,120000,14.00,TRUE,TRUE,'High clearances due to desert terrain. Oil and gas permit lane available. State police escort for 16ft+ loads.'),
+('NY','New York','New York DOT Permit Office','https://www.dot.ny.gov/permits',14.00,15.50,85.00,143000,14.00,FALSE,FALSE,'NYC and Long Island heavily restricted. NYC DOT separate permit required. No night or weekend travel. NYPD escort in NYC.'),
+('NC','North Carolina','North Carolina DOT Permits','https://connect.ncdot.gov/business/permits',14.00,16.00,80.00,132000,14.00,FALSE,FALSE,'No night travel for oversize. NCHP escort required for loads over 14ft on interstates. Mountain route restrictions.'),
+('ND','North Dakota','North Dakota DOT Motor Vehicle Division','https://www.dot.nd.gov/permits',17.00,16.00,110.00,208000,15.00,TRUE,TRUE,'Oil patch friendly. Very high weight limits for oilfield industry. Spring weight restrictions February-May.'),
+('OH','Ohio','Ohio DOT Permit Section','https://permits.dot.state.oh.us',14.50,15.00,85.00,120000,14.00,FALSE,FALSE,'No night travel for oversize loads. OSP escort required for loads approaching limits. High traffic volume I-70/I-71 corridors.'),
+('OK','Oklahoma','Oklahoma DOT Oversize Permits','https://oktransport.org/permits',15.00,15.50,95.00,120000,14.00,TRUE,TRUE,'Oil and gas friendly. OHP provides escorts for 15ft+ loads. Toll roads have separate authority.'),
+('OR','Oregon','Oregon DOT Oversize Permits','https://www.oregon.gov/odot/permits',14.00,15.50,105.00,105500,14.00,FALSE,FALSE,'No night travel for oversize. Seasonal chain requirements. Coastal bridge restrictions. OSP escort for superloads.'),
+('PA','Pennsylvania','PennDOT Oversize/Overweight','https://www.dot.state.pa.us/permits',15.00,15.00,75.00,105000,14.00,FALSE,FALSE,'No night or weekend travel for most oversize loads. PSP escort required approaching limits. Low bridge issues on PA rural routes.'),
+('RI','Rhode Island','Rhode Island DOT Permits','https://dot.ri.gov/permits',13.50,15.00,65.00,99000,13.50,FALSE,FALSE,'Small state, very restricted. No night or weekend travel. Many weight-restricted bridges.'),
+('SC','South Carolina','South Carolina DOT Oversize Permits','https://www.scdot.org/permits',15.00,15.50,80.00,120000,14.00,TRUE,TRUE,'BMW plant and port-related heavy haul common. SCHP escort required for loads over 15ft.'),
+('SD','South Dakota','South Dakota DOT Oversize Permits','https://sddot.com/permits',15.00,16.00,110.00,129000,14.00,TRUE,TRUE,'Large state with few restrictions outside metro areas. Wind energy transport common. Spring weight restrictions apply.'),
+('TN','Tennessee','Tennessee DOT Oversize Permits','https://www.tn.gov/tdot/permits',15.00,15.50,80.00,120000,14.00,FALSE,FALSE,'No night travel for oversize. THP escort required for loads over 15ft. Nashville area congestion requires off-peak timing.'),
+('TX','Texas','TxDOT Oversize/Overweight Permits','https://txpros.txdot.gov',20.00,18.84,110.00,254300,16.00,TRUE,TRUE,'Most permissive state in continental US. Very high limits for oil and gas industry. DPS escort required over 20ft wide or 18.84ft tall. 24/7 travel allowed with proper permits.'),
+('UT','Utah','Utah DOT Motor Carrier Division','https://permits.udot.utah.gov',14.00,16.00,100.00,108000,14.00,FALSE,FALSE,'No night travel for oversize. UHP escort for loads over 14ft. Canyonlands routes have severe restrictions.'),
+('VT','Vermont','Vermont AOT Oversize Permits','https://aot.vermont.gov/permits',13.00,15.50,75.00,99000,13.00,FALSE,FALSE,'Very restrictive. Spring weight restrictions February-April on all roads. Covered bridge route avoidance required. No weekend travel.'),
+('VA','Virginia','Virginia DOT Oversize Permits','https://www.virginiadot.org/permits',14.00,15.50,80.00,105000,14.00,FALSE,FALSE,'No night or weekend travel in Northern Virginia. VSP escort required approaching limits. I-95 corridor heavily congested.'),
+('WA','Washington','Washington State DOT Oversize Permits','https://fortress.wa.gov/wsdot/permits',14.00,16.00,105.00,105500,14.00,FALSE,FALSE,'No night travel for oversize. WSP escort for superloads. Cascade mountain pass restrictions. Seattle metro routing requirements.'),
+('WV','West Virginia','West Virginia DOT Permits','https://www.transportation.wv.gov/permits',14.00,15.50,80.00,117000,14.00,FALSE,FALSE,'Mountain terrain with many low clearances. Coal and natural gas transport common. No night or weekend travel for oversize.'),
+('WI','Wisconsin','Wisconsin DOT Oversize Permits','https://wigov.wi.gov/dotpermits',14.50,15.00,85.00,105500,14.00,FALSE,FALSE,'No night travel for oversize. Spring weight restrictions April-May. WSP escort required for loads approaching limits.'),
+('WY','Wyoming','Wyoming DOT Oversize Permits','https://wydot.state.wy.us/permits',16.00,16.00,100.00,117000,14.00,TRUE,TRUE,'Wide open state with high limits. Wind energy transport common. Seasonal restrictions for mountain passes in winter.')
+ON CONFLICT (state_code) DO NOTHING;
