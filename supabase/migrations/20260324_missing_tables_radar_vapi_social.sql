@@ -18,6 +18,10 @@
 --    Powers GlobalEscortSupplyRadar and radar.ts data access layer
 -- ============================================================================
 
+DROP TABLE IF EXISTS hc_rm_radar_geo CASCADE;
+DROP TABLE IF EXISTS hc_rm_radar_us_states CASCADE;
+DROP TABLE IF EXISTS hc_csn_signals CASCADE;
+
 -- Country-level radar data (one row per country)
 CREATE TABLE IF NOT EXISTS hc_rm_radar_geo (
   id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -214,6 +218,11 @@ ON CONFLICT (state_abbr) DO NOTHING;
 -- 2. RADAR RPCs — 4 stored procedures called by lib/supabase/radar.ts
 -- ============================================================================
 
+DROP FUNCTION IF EXISTS rpc_radar_country_summary CASCADE;
+DROP FUNCTION IF EXISTS rpc_radar_us_states CASCADE;
+DROP FUNCTION IF EXISTS rpc_radar_live_signals CASCADE;
+DROP FUNCTION IF EXISTS rpc_radar_stats CASCADE;
+
 -- rpc_radar_country_summary: returns country-level radar data
 CREATE OR REPLACE FUNCTION rpc_radar_country_summary()
 RETURNS TABLE (
@@ -313,13 +322,13 @@ ALTER TABLE hc_rm_radar_geo        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE hc_rm_radar_us_states  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE hc_csn_signals         ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "radar_geo_public_read"    ON hc_rm_radar_geo        FOR SELECT USING (TRUE);
-CREATE POLICY IF NOT EXISTS "radar_states_public_read" ON hc_rm_radar_us_states  FOR SELECT USING (TRUE);
-CREATE POLICY IF NOT EXISTS "csn_signals_public_read"  ON hc_csn_signals         FOR SELECT USING (TRUE);
-CREATE POLICY IF NOT EXISTS "csn_signals_auth_insert"  ON hc_csn_signals         FOR INSERT TO authenticated WITH CHECK (TRUE);
-CREATE POLICY IF NOT EXISTS "radar_geo_service"        ON hc_rm_radar_geo        FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "radar_states_service"     ON hc_rm_radar_us_states  FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "csn_signals_service"      ON hc_csn_signals         FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "radar_geo_public_read"    ON hc_rm_radar_geo        FOR SELECT USING (TRUE);
+CREATE POLICY "radar_states_public_read" ON hc_rm_radar_us_states  FOR SELECT USING (TRUE);
+CREATE POLICY "csn_signals_public_read"  ON hc_csn_signals         FOR SELECT USING (TRUE);
+CREATE POLICY "csn_signals_auth_insert"  ON hc_csn_signals         FOR INSERT TO authenticated WITH CHECK (TRUE);
+CREATE POLICY "radar_geo_service"        ON hc_rm_radar_geo        FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "radar_states_service"     ON hc_rm_radar_us_states  FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "csn_signals_service"      ON hc_csn_signals         FOR ALL USING (auth.role() = 'service_role');
 
 -- ============================================================================
 -- 3. VAPI TABLES — Voice AI pipeline
@@ -402,19 +411,19 @@ ALTER TABLE vapi_call_transcripts   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vapi_call_intelligence  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vapi_offer_log          ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "vapi_events_service"      ON vapi_call_events        FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "vapi_transcripts_service" ON vapi_call_transcripts   FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "vapi_intel_service"       ON vapi_call_intelligence  FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "vapi_offer_service"       ON vapi_offer_log          FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "vapi_events_service"      ON vapi_call_events        FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "vapi_transcripts_service" ON vapi_call_transcripts   FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "vapi_intel_service"       ON vapi_call_intelligence  FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "vapi_offer_service"       ON vapi_offer_log          FOR ALL USING (auth.role() = 'service_role');
 
 -- Operators can see their own call logs
-CREATE POLICY IF NOT EXISTS "vapi_events_operator_read" ON vapi_call_events
+CREATE POLICY "vapi_events_operator_read" ON vapi_call_events
   FOR SELECT TO authenticated
-  USING (operator_id IN (SELECT id FROM escort_operators WHERE user_id = auth.uid()));
+  USING (operator_id = auth.uid());
 
-CREATE POLICY IF NOT EXISTS "vapi_intel_operator_read" ON vapi_call_intelligence
+CREATE POLICY "vapi_intel_operator_read" ON vapi_call_intelligence
   FOR SELECT TO authenticated
-  USING (operator_id IN (SELECT id FROM escort_operators WHERE user_id = auth.uid()));
+  USING (operator_id = auth.uid());
 
 -- ============================================================================
 -- 4. SOCIAL DISTRIBUTION TABLES
@@ -496,9 +505,9 @@ ALTER TABLE distribution_posts  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE social_post_queue   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE push_queue          ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "dist_posts_service"   ON distribution_posts FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "social_queue_service" ON social_post_queue  FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "push_queue_service"   ON push_queue         FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "dist_posts_service"   ON distribution_posts FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "social_queue_service" ON social_post_queue  FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "push_queue_service"   ON push_queue         FOR ALL USING (auth.role() = 'service_role');
 
 -- ============================================================================
 -- 5. WAITLIST SIGNUPS — /api/waitlist route
@@ -529,9 +538,9 @@ CREATE INDEX IF NOT EXISTS idx_waitlist_status  ON waitlist_signups(status);
 CREATE INDEX IF NOT EXISTS idx_waitlist_created ON waitlist_signups(created_at DESC);
 
 ALTER TABLE waitlist_signups ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "waitlist_service" ON waitlist_signups FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "waitlist_service" ON waitlist_signups FOR ALL USING (auth.role() = 'service_role');
 -- Allow anonymous inserts for the public waitlist form
-CREATE POLICY IF NOT EXISTS "waitlist_anon_insert" ON waitlist_signups FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "waitlist_anon_insert" ON waitlist_signups FOR INSERT WITH CHECK (TRUE);
 
 -- ============================================================================
 -- 6. EMAIL SEQUENCE ENROLLMENTS — used by /api/cron/email-sequences
@@ -589,8 +598,8 @@ ON CONFLICT (name) DO NOTHING;
 ALTER TABLE email_sequences             ENABLE ROW LEVEL SECURITY;
 ALTER TABLE email_sequence_enrollments  ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "email_seq_service"         ON email_sequences            FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY IF NOT EXISTS "email_enrollments_service" ON email_sequence_enrollments FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "email_seq_service"         ON email_sequences            FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "email_enrollments_service" ON email_sequence_enrollments FOR ALL USING (auth.role() = 'service_role');
 
 -- ============================================================================
 -- 7. COUNTRY COMPLIANCE — used by lib/vapi/compliance-enforcer.ts
@@ -644,12 +653,14 @@ VALUES
 ON CONFLICT (country_code) DO NOTHING;
 
 ALTER TABLE country_compliance ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "compliance_public_read" ON country_compliance FOR SELECT USING (TRUE);
-CREATE POLICY IF NOT EXISTS "compliance_service"     ON country_compliance FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "compliance_public_read" ON country_compliance FOR SELECT USING (TRUE);
+CREATE POLICY "compliance_service"     ON country_compliance FOR ALL USING (auth.role() = 'service_role');
 
 -- ============================================================================
 -- 8. BEHAVIORAL EVENTS — lib/telemetry.ts + lib/vapi/pipeline.ts
 -- ============================================================================
+
+DROP TABLE IF EXISTS behavioral_events CASCADE;
 
 CREATE TABLE IF NOT EXISTS behavioral_events (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -665,11 +676,7 @@ CREATE TABLE IF NOT EXISTS behavioral_events (
   device_type     TEXT CHECK (device_type IN ('mobile','tablet','desktop','unknown')),
   platform        TEXT CHECK (platform IN ('web','ios','android','api')),
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-) PARTITION BY RANGE (created_at);
-
--- Default partition — catches all current data
-CREATE TABLE IF NOT EXISTS behavioral_events_default
-  PARTITION OF behavioral_events DEFAULT;
+);
 
 CREATE INDEX IF NOT EXISTS idx_beh_events_type    ON behavioral_events(event_type);
 CREATE INDEX IF NOT EXISTS idx_beh_events_user    ON behavioral_events(user_id);
@@ -678,9 +685,9 @@ CREATE INDEX IF NOT EXISTS idx_beh_events_country ON behavioral_events(country_c
 CREATE INDEX IF NOT EXISTS idx_beh_events_created ON behavioral_events(created_at DESC);
 
 ALTER TABLE behavioral_events ENABLE ROW LEVEL SECURITY;
-CREATE POLICY IF NOT EXISTS "beh_events_service" ON behavioral_events FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "beh_events_service" ON behavioral_events FOR ALL USING (auth.role() = 'service_role');
 -- Allow anon/auth inserts for client-side telemetry
-CREATE POLICY IF NOT EXISTS "beh_events_insert" ON behavioral_events FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "beh_events_insert" ON behavioral_events FOR INSERT WITH CHECK (TRUE);
 
 -- ============================================================================
 -- 9. AD REVENUE ROLLUP FUNCTION — called by /api/cron/ad-revenue-rollup
