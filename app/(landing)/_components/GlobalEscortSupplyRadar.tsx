@@ -158,6 +158,69 @@ const CORRIDOR_LINES: CorridorLine[] = [
     { name: "Trans-Canada", points: [[14, 26], [18, 26], [22, 26], [26, 28]], intensity: 0.7 },
 ];
 
+// ── Static country seed: all 56 non-US markets always rendered ──
+// Live DB data overrides wave/escortCount when available.
+// This ensures all 57 countries show on the radar even if the DB only has US data.
+const STATIC_COUNTRY_SEED: Omit<CountryNode, 'cx' | 'cy'>[] = [
+    { iso2: 'CA', name: 'Canada',          wave: 2 },
+    { iso2: 'AU', name: 'Australia',       wave: 2 },
+    { iso2: 'GB', name: 'United Kingdom',  wave: 3 },
+    { iso2: 'DE', name: 'Germany',         wave: 3 },
+    { iso2: 'FR', name: 'France',          wave: 3 },
+    { iso2: 'NL', name: 'Netherlands',     wave: 3 },
+    { iso2: 'BE', name: 'Belgium',         wave: 3 },
+    { iso2: 'ES', name: 'Spain',           wave: 3 },
+    { iso2: 'IT', name: 'Italy',           wave: 3 },
+    { iso2: 'PT', name: 'Portugal',        wave: 3 },
+    { iso2: 'PL', name: 'Poland',          wave: 3 },
+    { iso2: 'CZ', name: 'Czech Republic',  wave: 3 },
+    { iso2: 'AT', name: 'Austria',         wave: 3 },
+    { iso2: 'CH', name: 'Switzerland',     wave: 3 },
+    { iso2: 'SE', name: 'Sweden',          wave: 3 },
+    { iso2: 'NO', name: 'Norway',          wave: 3 },
+    { iso2: 'DK', name: 'Denmark',         wave: 3 },
+    { iso2: 'FI', name: 'Finland',         wave: 3 },
+    { iso2: 'IE', name: 'Ireland',         wave: 3 },
+    { iso2: 'HU', name: 'Hungary',         wave: 3 },
+    { iso2: 'RO', name: 'Romania',         wave: 3 },
+    { iso2: 'BG', name: 'Bulgaria',        wave: 3 },
+    { iso2: 'HR', name: 'Croatia',         wave: 3 },
+    { iso2: 'SK', name: 'Slovakia',        wave: 3 },
+    { iso2: 'SI', name: 'Slovenia',        wave: 3 },
+    { iso2: 'EE', name: 'Estonia',         wave: 3 },
+    { iso2: 'LV', name: 'Latvia',          wave: 3 },
+    { iso2: 'LT', name: 'Lithuania',       wave: 3 },
+    { iso2: 'GR', name: 'Greece',          wave: 3 },
+    { iso2: 'TR', name: 'Turkey',          wave: 3 },
+    { iso2: 'BR', name: 'Brazil',          wave: 4 },
+    { iso2: 'MX', name: 'Mexico',          wave: 4 },
+    { iso2: 'AR', name: 'Argentina',       wave: 4 },
+    { iso2: 'CL', name: 'Chile',           wave: 4 },
+    { iso2: 'CO', name: 'Colombia',        wave: 4 },
+    { iso2: 'PE', name: 'Peru',            wave: 4 },
+    { iso2: 'UY', name: 'Uruguay',         wave: 4 },
+    { iso2: 'CR', name: 'Costa Rica',      wave: 4 },
+    { iso2: 'PA', name: 'Panama',          wave: 4 },
+    { iso2: 'AE', name: 'UAE',             wave: 4 },
+    { iso2: 'SA', name: 'Saudi Arabia',    wave: 4 },
+    { iso2: 'QA', name: 'Qatar',           wave: 4 },
+    { iso2: 'KW', name: 'Kuwait',          wave: 4 },
+    { iso2: 'BH', name: 'Bahrain',         wave: 4 },
+    { iso2: 'OM', name: 'Oman',            wave: 4 },
+    { iso2: 'IN', name: 'India',           wave: 4 },
+    { iso2: 'ID', name: 'Indonesia',       wave: 4 },
+    { iso2: 'TH', name: 'Thailand',        wave: 4 },
+    { iso2: 'MY', name: 'Malaysia',        wave: 4 },
+    { iso2: 'SG', name: 'Singapore',       wave: 4 },
+    { iso2: 'PH', name: 'Philippines',     wave: 4 },
+    { iso2: 'VN', name: 'Vietnam',         wave: 4 },
+    { iso2: 'JP', name: 'Japan',           wave: 4 },
+    { iso2: 'KR', name: 'South Korea',     wave: 4 },
+    { iso2: 'ZA', name: 'South Africa',    wave: 4 },
+    { iso2: 'NZ', name: 'New Zealand',     wave: 5 },
+    { iso2: 'NG', name: 'Nigeria',         wave: 5 },
+];
+
 function getWaveStyle(wave: WaveLevel) {
     switch (wave) {
         case 1: return { opacity: 1, glow: true, pulse: false, interactive: true, dotColor: "#22c55e", label: "LIVE" };
@@ -247,29 +310,55 @@ export function GlobalEscortSupplyRadar() {
         return () => ob.disconnect();
     }, []);
 
-    // ── Build country nodes from live data ──
+
+    // ── Build country nodes — static seed + live DB override ──
+
     const COUNTRY_NODES: CountryNode[] = useMemo(() => {
-        return countries.map((c) => {
+        // Build a map from live DB data
+        const liveMap = new Map<string, CountryNode>();
+        for (const c of countries) {
             const pos = COUNTRY_POSITIONS[c.country_code] || { cx: 50, cy: 50 };
             const wave: WaveLevel = c.is_active_market ? 1
                 : c.launch_wave && c.launch_wave <= 2 ? 2
                     : c.launch_wave && c.launch_wave <= 3 ? 3
-                        : c.tier === "A" || c.tier === "B" ? 4
+                        : c.tier === 'A' || c.tier === 'B' ? 4
                             : 5;
-            const demandLevel = c.demand_level === "high" ? "high"
-                : c.demand_level === "medium" || c.demand_level === "med" ? "medium"
-                    : c.demand_level === "low" ? "low" : "none";
-            return {
+            const demandLevel = c.demand_level === 'high' ? 'high'
+                : c.demand_level === 'medium' || c.demand_level === 'med' ? 'medium'
+                    : c.demand_level === 'low' ? 'low' : 'none';
+            liveMap.set(c.country_code, {
                 iso2: c.country_code,
                 name: c.country_name,
                 wave,
                 cx: pos.cx,
                 cy: pos.cy,
                 escortCount: c.operator_count || undefined,
-                demandLevel: demandLevel as CountryNode["demandLevel"],
+                demandLevel: demandLevel as CountryNode['demandLevel'],
                 href: `/directory/${c.country_code.toLowerCase()}`,
+            });
+        }
+
+        // Merge: start from static seed, override with live data
+        const merged = STATIC_COUNTRY_SEED.map((seed): CountryNode => {
+            if (liveMap.has(seed.iso2)) return liveMap.get(seed.iso2)!;
+            const pos = COUNTRY_POSITIONS[seed.iso2] || { cx: 50, cy: 50 };
+            return {
+                ...seed,
+                cx: pos.cx,
+                cy: pos.cy,
+                href: `/directory/${seed.iso2.toLowerCase()}`,
             };
         });
+
+        // Also add any live countries not in our static seed
+        for (const [iso2, node] of liveMap.entries()) {
+            if (iso2 === 'US') continue; // US shown via state dots
+            if (!STATIC_COUNTRY_SEED.find(s => s.iso2 === iso2)) {
+                merged.push(node);
+            }
+        }
+
+        return merged;
     }, [countries]);
 
     // ── Build US state nodes from live data ──

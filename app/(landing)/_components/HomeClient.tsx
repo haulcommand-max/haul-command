@@ -192,36 +192,71 @@ export default function HomeClient({
             {/* 1. MARKET TERMINAL RIBBON */}
             <MarketTerminalRibbon />
 
-            {/* 2. EXPANSION STATUS */}
+            {/* 2. EXPANSION STATUS — All 57 countries */}
             <section className="relative z-10 py-4 sm:py-6">
-                <div className="hc-container max-w-3xl">
-                    <div className="rounded-2xl border border-white/[0.06] p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                        <div className="flex items-center justify-center gap-2 mb-3">
-                            <Globe className="w-3.5 h-3.5 text-blue-400" />
-                            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
-                                Expanding Across {totalCountries} Countries
-                            </span>
+                <div className="hc-container max-w-5xl">
+                    <div className="rounded-2xl border border-white/[0.06] overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                        {/* Header row */}
+                        <div className="flex items-center justify-between gap-3 px-4 sm:px-5 pt-4 pb-3 border-b border-white/[0.04]">
+                            <div className="flex items-center gap-2">
+                                <Globe className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em] whitespace-nowrap">
+                                    {totalCountries} Countries
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 flex-shrink-0" style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em' }}>
+                                {[
+                                    { label: 'LIVE', color: '#22c55e' },
+                                    { label: 'NEXT', color: '#F59E0B' },
+                                    { label: 'PLANNED', color: '#60a5fa' },
+                                    { label: 'FUTURE', color: '#6b7280' },
+                                ].map(s => (
+                                    <span key={s.label} className="hidden sm:flex items-center gap-1" style={{ color: s.color }}>
+                                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.color, display: 'inline-block', flexShrink: 0 }} />
+                                        {s.label}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-5 gap-y-2 sm:gap-y-2">
-                            {[
-                                { region: 'United States', status: 'live', color: '#22c55e' },
-                                { region: 'Canada', status: 'next', color: '#F59E0B' },
-                                { region: 'Australia', status: 'next', color: '#F59E0B' },
-                                { region: 'United Kingdom', status: 'planned', color: '#60a5fa' },
-                                { region: 'Germany', status: 'planned', color: '#60a5fa' },
-                                { region: 'Brazil', status: 'future', color: '#6b7280' },
-                            ].map(({ region, status, color }) => (
-                                <div key={region} className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-[0.1em] flex-shrink-0"
-                                        style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>
-                                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: color, boxShadow: status === 'live' ? `0 0 4px ${color}60` : 'none' }} />
-                                        {status === 'live' ? 'LIVE' : status === 'next' ? 'NEXT' : status === 'planned' ? 'PLANNED' : 'FUTURE'}
-                                    </span>
-                                    <span className="text-[11px] font-medium truncate" style={{ color: status === 'live' ? '#E5E7EB' : '#9CA3AF' }}>
-                                        {region}
-                                    </span>
-                                </div>
-                            ))}
+                        {/* Country pill grid */}
+                        <div className="px-3 sm:px-4 py-3 overflow-x-hidden">
+                            <div className="flex flex-wrap gap-1.5" style={{ maxHeight: '8.5rem', overflow: 'hidden' }}>
+                                {[
+                                    { c: 'United States', s: 'live' }, { c: 'Canada', s: 'next' }, { c: 'Australia', s: 'next' },
+                                    { c: 'United Kingdom', s: 'planned' }, { c: 'Germany', s: 'planned' }, { c: 'France', s: 'planned' },
+                                    { c: 'Netherlands', s: 'planned' }, { c: 'Belgium', s: 'planned' }, { c: 'Spain', s: 'planned' },
+                                    { c: 'Italy', s: 'planned' }, { c: 'Portugal', s: 'planned' }, { c: 'Poland', s: 'planned' },
+                                    { c: 'Czech Rep.', s: 'planned' }, { c: 'Austria', s: 'planned' }, { c: 'Switzerland', s: 'planned' },
+                                    { c: 'Sweden', s: 'planned' }, { c: 'Norway', s: 'planned' }, { c: 'Denmark', s: 'planned' },
+                                    { c: 'Finland', s: 'planned' }, { c: 'Ireland', s: 'planned' }, { c: 'Hungary', s: 'planned' },
+                                    { c: 'Romania', s: 'planned' }, { c: 'Bulgaria', s: 'planned' }, { c: 'Croatia', s: 'planned' },
+                                    { c: 'Slovakia', s: 'planned' }, { c: 'Slovenia', s: 'planned' }, { c: 'Estonia', s: 'planned' },
+                                    { c: 'Latvia', s: 'planned' }, { c: 'Lithuania', s: 'planned' }, { c: 'Greece', s: 'planned' },
+                                    { c: 'Brazil', s: 'future' }, { c: 'Mexico', s: 'future' }, { c: 'Argentina', s: 'future' },
+                                    { c: 'Chile', s: 'future' }, { c: 'Colombia', s: 'future' }, { c: 'Peru', s: 'future' },
+                                    { c: 'Uruguay', s: 'future' }, { c: 'Costa Rica', s: 'future' }, { c: 'Panama', s: 'future' },
+                                    { c: 'UAE', s: 'future' }, { c: 'Saudi Arabia', s: 'future' }, { c: 'Qatar', s: 'future' },
+                                    { c: 'Kuwait', s: 'future' }, { c: 'Bahrain', s: 'future' }, { c: 'Oman', s: 'future' },
+                                    { c: 'India', s: 'future' }, { c: 'Indonesia', s: 'future' }, { c: 'Thailand', s: 'future' },
+                                    { c: 'Malaysia', s: 'future' }, { c: 'Singapore', s: 'future' }, { c: 'Philippines', s: 'future' },
+                                    { c: 'Vietnam', s: 'future' }, { c: 'Japan', s: 'future' }, { c: 'South Korea', s: 'future' },
+                                    { c: 'Turkey', s: 'future' }, { c: 'South Africa', s: 'future' }, { c: 'New Zealand', s: 'future' },
+                                ].map(({ c, s }) => {
+                                    const color = s === 'live' ? '#22c55e' : s === 'next' ? '#F59E0B' : s === 'planned' ? '#60a5fa' : '#6b7280';
+                                    const label = s === 'live' ? 'LIVE' : s === 'next' ? 'NEXT' : s === 'planned' ? 'PLAN' : '—';
+                                    return (
+                                        <div key={c} style={{
+                                            display: 'inline-flex', alignItems: 'center', gap: 4,
+                                            background: `${color}10`, border: `1px solid ${color}25`,
+                                            borderRadius: 6, padding: '2px 7px',
+                                            flexShrink: 0,
+                                        }}>
+                                            <span style={{ width: 4, height: 4, borderRadius: '50%', background: color, flexShrink: 0, boxShadow: s === 'live' ? `0 0 4px ${color}80` : 'none' }} />
+                                            <span style={{ fontSize: 10, fontWeight: 600, color: s === 'live' ? '#E5E7EB' : s === 'next' ? '#fcd34d' : s === 'planned' ? '#93c5fd' : '#6b7280', whiteSpace: 'nowrap' }}>{c}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
