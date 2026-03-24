@@ -5,8 +5,20 @@
             "schedule": "0 6 * * *"
         },
         {
+            "path": "/api/cron/rss-alerts",
+            "schedule": "0 5 * * *"
+        },
+        {
             "path": "/api/cron/content-engine",
             "schedule": "0 6 * * *"
+        },
+        {
+            "path": "/api/content/generate",
+            "schedule": "0 6 * * *"
+        },
+        {
+            "path": "/api/video/poll",
+            "schedule": "*/5 * * * *"
         },
         {
             "path": "/api/cron/email-sequences",
