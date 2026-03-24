@@ -186,7 +186,7 @@ export default function InboxPage() {
         ) : activeTab === 'system' ? (
           /* System Tab — Notifications */
           notifications.length === 0 ? (
-            <EmptyState isOperator={isOperator} tab="system" />
+            <EmptyState isOperator={isOperator} tab="system" onSwitchTab={setActiveTab} />
           ) : (
             <div className="space-y-2">
               {notifications.map((n) => (
@@ -213,7 +213,7 @@ export default function InboxPage() {
         ) : (
           /* Conversations Tabs (All / Offers / Messages) */
           filteredConversations.length === 0 ? (
-            <EmptyState isOperator={isOperator} tab={activeTab} />
+            <EmptyState isOperator={isOperator} tab={activeTab} onSwitchTab={setActiveTab} />
           ) : (
             <div className="space-y-2">
               {filteredConversations.map((conv) => (
@@ -260,7 +260,7 @@ export default function InboxPage() {
 // Empty State — Role-aware, with correct button order
 // ──────────────────────────────────────────────────────────────
 
-function EmptyState({ isOperator, tab }: { isOperator: boolean; tab: Tab }) {
+function EmptyState({ isOperator, tab, onSwitchTab }: { isOperator: boolean; tab: Tab; onSwitchTab?: (tab: Tab) => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="text-5xl mb-5">
@@ -295,7 +295,7 @@ function EmptyState({ isOperator, tab }: { isOperator: boolean; tab: Tab }) {
             </Link>
             <Link
               href="#system"
-              onClick={(e) => { e.preventDefault(); }}
+              onClick={(e) => { e.preventDefault(); onSwitchTab?.('system'); }}
               className="w-full bg-transparent text-gray-400 px-5 py-3 rounded-xl font-medium text-sm text-center border border-white/[0.04] hover:text-white hover:border-white/[0.08] transition-all"
             >
               System Alerts
