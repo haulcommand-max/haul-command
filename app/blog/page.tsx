@@ -1,0 +1,80 @@
+import { Metadata } from 'next';
+import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Heavy Haul Intelligence Blog — Regulations, Corridors & Escort Guides | Haul Command',
+  description: 'Expert guides on pilot car regulations, escort requirements, autonomous trucking corridors, and oversize transport across 57 countries. Updated daily.',
+};
+
+async function getBlogPosts(limit = 24) {
+  try {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from('blog_posts')
+      .select('id, slug, title, meta_description, target_keyword, country_code, published_at')
+      .eq('published', true)
+      .order('published_at', { ascending: false })
+      .limit(limit);
+    return data || [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function BlogIndexPage() {
+  const posts = await getBlogPosts();
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <section className="py-16 px-4 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
+          Heavy Haul Intelligence
+        </h1>
+        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          Regulation guides, corridor intelligence, and escort industry insights — updated daily from the Haul Command global network.
+        </p>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        {posts.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-500 text-lg">Content publishing soon. Check back tomorrow.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post: any) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all"
+              >
+                {post.country_code && (
+                  <span className="text-xs text-amber-500 font-medium uppercase tracking-wider">
+                    {post.country_code}
+                  </span>
+                )}
+                <h2 className="text-lg font-bold mt-2 mb-2 group-hover:text-amber-400 transition-colors line-clamp-2">
+                  {post.title}
+                </h2>
+                <p className="text-sm text-gray-400 line-clamp-3">
+                  {post.meta_description}
+                </p>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="text-xs text-gray-600">
+                    {new Date(post.published_at).toLocaleDateString('en-US', {
+                      month: 'short', day: 'numeric', year: 'numeric'
+                    })}
+                  </span>
+                  <span className="text-amber-400 text-sm group-hover:translate-x-1 transition-transform">
+                    Read →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
