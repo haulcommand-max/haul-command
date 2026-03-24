@@ -16,6 +16,7 @@ const TOOL_SUITES = [
     title: 'Suite 1 — Load Planning',
     icon: '📦',
     tools: [
+      { href: '/tools/route-planner',        icon: '🗺️', title: 'Multi-State Route Planner', desc: 'Auto-detect transit states & combined permit costs',         hot: true },
       { href: '/tools/load-analyzer',       icon: '🔍', title: 'Load Analyzer',         desc: 'Profit score, risk, and hidden costs for any load',          hot: true },
       { href: '/tools/axle-weight',          icon: '⚖️',  title: 'Axle Weight Distribution', desc: 'Per-axle weight check across trailer configurations',    hot: true },
       { href: '/tools/bridge-formula',       icon: '🌉', title: 'Bridge Formula',        desc: 'Federal Formula B — axle legality instant check',            hot: true },
