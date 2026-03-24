@@ -1,11 +1,12 @@
 'use client';
 
-import MobileInbox from '@/components/mobile/screens/MobileInbox';
+import InboxContainer from '@/components/inbox/InboxContainer';
 
 /**
- * /inbox — Mobile-first Inbox
- * Frame 11 spec: Segment tabs, notification cards
+ * /inbox — Full messaging inbox with conversation threads
+ * Supports: text messages, load offers, counter-offers, accept/decline
+ * Features: real-time via Supabase, unread counts, offer action buttons
  */
 export default function InboxPage() {
-  return <MobileInbox />;
+  return <InboxContainer />;
 }
