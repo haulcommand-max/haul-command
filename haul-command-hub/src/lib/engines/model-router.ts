@@ -1,129 +1,179 @@
 /**
  * lib/engines/model-router.ts
  *
- * Intelligent multi-model API routing for Haul Command.
- * Same output quality at lowest possible cost.
- *
- * No OpenAI — only Claude (Anthropic) and Gemini.
- *
- * Cost math:
- *   80% Haiku ($0.00025/1k) + 15% Sonnet ($0.003/1k) + 5% Opus ($0.015/1k)
- *   = ~$47/month at 73,350 calls vs $1,100 all-Opus
+ * MULTI-MODEL ROUTING ENGINE (HAUL COMMAND)
+ * Purpose: Dynamically route each request to the optimal AI model (Gemini, GPT, Claude)
+ * based on cost, latency, task type, and expected output quality.
+ * "AI infrastructure arbitrage"
  */
 
-export type TaskComplexity = 'instant' | 'standard' | 'deep' | 'creative';
+export type ModelProvider = 'gemini' | 'gpt' | 'claude';
+export type TaskCategory = 
+  | 'geo_enrichment' 
+  | 'localization_translation' 
+  | 'batch_data_processing' 
+  | 'multimodal_processing' 
+  | 'structured_reasoning' 
+  | 'code_generation' 
+  | 'system_design' 
+  | 'long_form_analysis' 
+  | 'document_review' 
+  | 'safety_sensitive';
 
-export interface ModelConfig {
-  model: string;
-  provider: 'anthropic' | 'gemini';
-  costPer1kTokens: number;
-  maxTokens: number;
-  description: string;
+export interface RouteConstraints {
+  cost_priority: 'high' | 'medium' | 'low';
+  latency_priority: 'high' | 'medium' | 'low';
+  quality_priority: 'high' | 'medium' | 'low';
 }
 
-const MODEL_MAP: Record<TaskComplexity, ModelConfig> = {
-  instant: {
-    model: 'claude-haiku-4-5-20251001',
-    provider: 'anthropic',
-    costPer1kTokens: 0.00025,
-    maxTokens: 2048,
-    description: 'Simple Q&A, lookups, yes/no compliance checks',
-  },
-  standard: {
-    model: 'claude-sonnet-4-6-20250514',
-    provider: 'anthropic',
-    costPer1kTokens: 0.003,
-    maxTokens: 4096,
-    description: 'Most tasks — analysis, summaries, search interpretation',
-  },
-  deep: {
-    model: 'claude-opus-4-6-20250514',
-    provider: 'anthropic',
-    costPer1kTokens: 0.015,
-    maxTokens: 8192,
-    description: 'Legal, contracts, complex multi-step reasoning',
-  },
-  creative: {
-    model: 'gemini-2.5-flash',
-    provider: 'gemini',
-    costPer1kTokens: 0.001,
-    maxTokens: 4096,
-    description: 'Ad creative, image analysis, visual content generation',
-  },
-};
-
-// ═══════════════════════════════════════════════════════════════
-// Agent → Complexity Routing
-// ═══════════════════════════════════════════════════════════════
-
-const AGENT_ROUTING: Record<string, TaskComplexity> = {
-  support_bot: 'instant',
-  regulation_rag: 'instant',
-  load_enhancer: 'standard',
-  review_analyzer: 'standard',
-  anomaly_detector: 'standard',
-  onboarding_copilot: 'standard',
-  dispatch_brain: 'standard',
-  route_survey: 'standard',
-  content_factory: 'standard',
-  ad_copy_gen: 'creative',
-  contract_gen: 'deep',
-  invoice_gen: 'deep',
-  compliance_copilot: 'standard', // deep for new queries, instant for cache hits
-};
-
-/**
- * Get the optimal model config for a given agent or task complexity.
- */
-export function getModelForAgent(agentId: string): ModelConfig {
-  const complexity = AGENT_ROUTING[agentId] ?? 'standard';
-  return MODEL_MAP[complexity];
+export interface RouteInput {
+  task_type: TaskCategory;
+  prompt: string;
+  token_estimate: number;
+  constraints: RouteConstraints;
 }
 
-export function getModelForComplexity(complexity: TaskComplexity): ModelConfig {
-  return MODEL_MAP[complexity];
-}
-
-/**
- * Determine complexity from task characteristics for dynamic routing.
- */
-export function inferComplexity(opts: {
-  tokenEstimate?: number;
-  isLegal?: boolean;
-  isCreative?: boolean;
-  isCached?: boolean;
-  questionLength?: number;
-}): TaskComplexity {
-  if (opts.isCached) return 'instant';
-  if (opts.isCreative) return 'creative';
-  if (opts.isLegal) return 'deep';
-  if ((opts.tokenEstimate ?? 0) > 3000) return 'deep';
-  if ((opts.questionLength ?? 0) < 50) return 'instant';
-  return 'standard';
-}
-
-/**
- * Estimate cost for a given call.
- */
-export function estimateCost(complexity: TaskComplexity, inputTokens: number, outputTokens: number): number {
-  const model = MODEL_MAP[complexity];
-  const totalTokens = inputTokens + outputTokens;
-  return (totalTokens / 1000) * model.costPer1kTokens;
-}
-
-/**
- * Block OpenAI usage at runtime.
- */
-export function assertNoOpenAI() {
-  if (process.env.OPENAI_API_KEY) {
-    console.warn(
-      '⚠️ OPENAI_API_KEY detected but OpenAI is not supported. ' +
-      'Use ANTHROPIC_API_KEY for reasoning tasks and GEMINI_API_KEY for creative tasks.',
-    );
+export interface ModelProfile {
+  id: string;
+  provider: ModelProvider;
+  cost_profile: 'low' | 'medium_high' | 'high';
+  latency: 'low' | 'medium_high' | 'medium' | 'high';
+  strengths: string[];
+  weaknesses: string[];
+  base_scores: {
+    cost: number;        // Higher is better (cheaper)
+    quality: number;     // Higher is better
+    latency: number;     // Higher is better (faster)
+    reliability: number; // Higher is better
   }
 }
 
-// Run assertion on module load
-assertNoOpenAI();
+const REGISTRY: Record<ModelProvider, ModelProfile> = {
+  gemini: {
+    id: 'gemini-1.5-pro',
+    provider: 'gemini',
+    cost_profile: 'low',
+    latency: 'low',
+    strengths: ['low_cost_high_volume', 'multimodal_processing', 'localization_translation', 'long_context', 'data_enrichment', 'map_and_geo_processing'],
+    weaknesses: ['ultra_precise_reasoning_edge_cases', 'complex_chain_logic'],
+    base_scores: { cost: 100, quality: 75, latency: 95, reliability: 85 }
+  },
+  gpt: {
+    id: 'gpt-4o',
+    provider: 'gpt',
+    cost_profile: 'high',
+    latency: 'medium',
+    strengths: ['structured_reasoning', 'system_design', 'code_generation', 'high_precision_logic'],
+    weaknesses: ['higher_cost', 'less_efficient_at_large_batch_enrichment'],
+    base_scores: { cost: 40, quality: 95, latency: 70, reliability: 90 }
+  },
+  claude: {
+    id: 'claude-3-opus-20240229',
+    provider: 'claude',
+    cost_profile: 'medium_high',
+    latency: 'medium_high',
+    strengths: ['long_form_reasoning', 'safety_consistency', 'document_analysis', 'nuanced_thinking'],
+    weaknesses: ['slower', 'higher_cost_for_scale_tasks'],
+    base_scores: { cost: 50, quality: 90, latency: 60, reliability: 95 }
+  }
+};
 
-export { MODEL_MAP, AGENT_ROUTING };
+const TASK_PREFERRED_MODELS: Record<TaskCategory, ModelProvider> = {
+  geo_enrichment: 'gemini',
+  localization_translation: 'gemini',
+  batch_data_processing: 'gemini',
+  multimodal_processing: 'gemini',
+  structured_reasoning: 'gpt',
+  code_generation: 'gpt',
+  system_design: 'gpt',
+  long_form_analysis: 'claude',
+  document_review: 'claude',
+  safety_sensitive: 'claude'
+};
+
+const WEIGHTS = {
+  cost: 0.4,
+  quality: 0.3,
+  latency: 0.2,
+  reliability: 0.1
+};
+
+function mapPriorityToWeight(priority: 'high' | 'medium' | 'low'): number {
+  if (priority === 'high') return 1.5;
+  if (priority === 'low') return 0.5;
+  return 1.0;
+}
+
+/**
+ * Calculates a dynamic score for a model based on constraints and baseline capabilities.
+ */
+export function selectModel(input: RouteInput): ModelProfile {
+  let bestModel: ModelProfile | null = null;
+  let highestScore = -Infinity;
+
+  const costMultiplier = mapPriorityToWeight(input.constraints.cost_priority);
+  const latencyMultiplier = mapPriorityToWeight(input.constraints.latency_priority);
+  const qualityMultiplier = mapPriorityToWeight(input.constraints.quality_priority);
+
+  // Hard overrides based on rules
+  if (input.token_estimate > 32000) {
+    // Large context heavily biases towards Gemini or Claude, but let's let the math decide, 
+    // we just aggressively modify the cost parameters to favor cheaper high-volume models.
+  }
+
+  const preferredProvider = TASK_PREFERRED_MODELS[input.task_type];
+
+  // Evaluate each model like a hedge fund routing trades
+  for (const [providerKey, profile] of Object.entries(REGISTRY)) {
+    const provider = providerKey as ModelProvider;
+    
+    // Base formula calculations
+    let scoreCost = profile.base_scores.cost * WEIGHTS.cost * costMultiplier;
+    let scoreQuality = profile.base_scores.quality * WEIGHTS.quality * qualityMultiplier;
+    let scoreLatency = profile.base_scores.latency * WEIGHTS.latency * latencyMultiplier;
+    let scoreReliability = profile.base_scores.reliability * WEIGHTS.reliability;
+
+    // Task Preference Bonus
+    if (provider === preferredProvider) {
+      scoreQuality += 20; // 20 point logical bonus for being the preferred engine for this task
+    }
+
+    // Token batching penalties (if huge tokens and model is expensive, penalize heavily)
+    if (input.token_estimate > 10000 && profile.cost_profile === 'high') {
+      scoreCost -= 30; // GPT penalty for massive long-context where it gets super expensive
+    }
+
+    const totalScore = scoreCost + scoreQuality + scoreLatency + scoreReliability;
+    
+    if (totalScore > highestScore) {
+      highestScore = totalScore;
+      bestModel = profile;
+    }
+  }
+
+  return bestModel!;
+}
+
+/**
+ * Split execution logic placeholder (15X feature)
+ */
+export function createHybridExecutionPlan(taskType: TaskCategory) {
+  if (taskType === 'structured_reasoning') {
+    return {
+      step1: { provider: 'gemini', action: 'enrich_data_and_context' },
+      step2: { provider: 'gpt', action: 'structure_output_and_logic' },
+      step3: { provider: 'claude', action: 'validate_reasoning_and_safety' }
+    };
+  }
+  return { step1: { provider: TASK_PREFERRED_MODELS[taskType], action: 'execute_all' } };
+}
+
+export function estimateCost(provider: ModelProvider, tokens: number): number {
+  // Rough baseline per 1k total tokens for estimation
+  const rates = {
+    gemini: 0.0005,
+    gpt: 0.01,
+    claude: 0.008
+  };
+  return (tokens / 1000) * rates[provider];
+}
