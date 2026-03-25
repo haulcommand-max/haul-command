@@ -27,8 +27,6 @@ export async function GET(request: Request) {
     const sb = supabaseServer();
 
     // ── Step 1: Find expired ad_boosts ──────────────────────────────────
-    // Schema: id, profile_id, duration_days, amount_cents, stripe_session_id,
-    //         status, starts_at, expires_at, created_at
     const { data: expired, error: findErr } = await sb
       .from('ad_boosts')
       .select('id, profile_id')
@@ -55,9 +53,22 @@ export async function GET(request: Request) {
       }
 
       expiredBoostCount = ids.length;
+
+      // ── Step 3: Downgrade operator boost flags (non-fatal) ──────────────
+      const profileIds = [...new Set(expired.map(b => b.profile_id).filter(Boolean))];
+      if (profileIds.length > 0) {
+        const { error: placeErr } = await sb
+          .from('hc_places')
+          .update({ is_boosted: false, boost_tier: null })
+          .in('id', profileIds);
+
+        if (placeErr) {
+          console.warn('[Boost Expiry] Operator downgrade warning:', placeErr.message);
+        }
+      }
     }
 
-    // ── Step 3: Also expire AdGrid campaigns ─────────────────────────────
+    // ── Step 4: Also expire AdGrid campaigns ─────────────────────────────
     const { data: expiredCampaigns, error: campErr } = await sb
       .from('adgrid_campaigns')
       .select('id')
@@ -65,7 +76,6 @@ export async function GET(request: Request) {
       .lt('end_date', now);
 
     if (campErr) {
-      // Non-fatal — log but don't fail the whole cron
       console.warn('[Boost Expiry] adgrid_campaigns query warning:', campErr.message);
     } else if (expiredCampaigns && expiredCampaigns.length > 0) {
       const campaignIds = expiredCampaigns.map(c => c.id);
