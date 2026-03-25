@@ -19,12 +19,22 @@ export async function generateSearchKeywordsForRegion(countryCode: string) {
     ];
 }
 
-export async function queueGlobalExpansionTasks(countryCodes: string[]) {
+export async function queueGlobalExpansionTasks(countryCodes?: string[]) {
     const supabase = getSupabaseAdmin();
+
+    // If no countries specified, pull from country_tiers by priority
+    let codes = countryCodes;
+    if (!codes || codes.length === 0) {
+        const { data: tiers } = await supabase
+            .from('country_tiers')
+            .select('country_code, tier, expansion_priority')
+            .order('expansion_priority', { ascending: false });
+        codes = tiers?.map(t => t.country_code) || ['US', 'CA'];
+    }
 
     const tasks = [];
 
-    for (const code of countryCodes) {
+    for (const code of codes) {
         const keywords = await generateSearchKeywordsForRegion(code);
         
         // Translates Google Maps / Local Directories searches into queue URLs representing search endpoints
@@ -41,7 +51,7 @@ export async function queueGlobalExpansionTasks(countryCodes: string[]) {
         }
     }
 
-    // Insert search queue jobs into the crawl\_queue for execution
+    // Insert search queue jobs into the crawl_queue for execution
     const { error } = await supabase.from('crawl_queue').upsert(tasks, { onConflict: 'url', ignoreDuplicates: true });
     
     if (error) {
@@ -50,6 +60,21 @@ export async function queueGlobalExpansionTasks(countryCodes: string[]) {
     }
     
     return true;
+}
+
+/**
+ * Auto-launch expansion for a specific tier (gold, blue, silver, slate)
+ */
+export async function expandByTier(tier: 'gold' | 'blue' | 'silver' | 'slate') {
+    const supabase = getSupabaseAdmin();
+    const { data: tiers } = await supabase
+        .from('country_tiers')
+        .select('country_code')
+        .eq('tier', tier)
+        .order('expansion_priority', { ascending: false });
+    
+    if (!tiers || tiers.length === 0) return false;
+    return queueGlobalExpansionTasks(tiers.map(t => t.country_code));
 }
 
 export async function phaseThreeGraphExpansion(entityId: string) {

@@ -17,4 +17,4 @@ export { processCrawlJob } from "./global-crawler";
 export { aiExtractFromText, type AgentExtractionResult } from "./ai-extractor";
 export { matchAndInsertEntity } from "./dedupe-engine";
 export { processClaimTriggers, enrichEntityProfile } from "./trigger-engine";
-export { generateSearchKeywordsForRegion, queueGlobalExpansionTasks, phaseThreeGraphExpansion } from "./global-expansion";
+export { generateSearchKeywordsForRegion, queueGlobalExpansionTasks, phaseThreeGraphExpansion, expandByTier } from "./global-expansion";
