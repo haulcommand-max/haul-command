@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: '/loads', label: 'Loads' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/blog', label: 'Intelligence' },
+  { href: '/broker', label: 'Brokers' },
 ];
 
 export default function Navbar() {
