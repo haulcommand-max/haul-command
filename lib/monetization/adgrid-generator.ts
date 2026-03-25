@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '../../supabase/admin';
+import { getSupabaseAdmin } from '../supabase/admin';
 
 /**
  * AdGrid Monetization Engine 
