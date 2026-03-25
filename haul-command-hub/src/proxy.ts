@@ -65,6 +65,13 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
 
   // Escrow standalone → pricing
   [/^\/escrow\/checkout$/, '/pricing'],
+
+  // Pilot car regulations → requirements (SEO capture from competitor URLs)
+  [/^\/pilot-car-regulations$/, '/requirements/us'],
+  [/^\/state-pilot-car-guidelines$/, '/requirements/us'],
+  [/^\/pilot-car-regulations\/([a-z-]+)$/, '/requirements/us'],
+  [/^\/escort-regulations$/, '/requirements/us'],
+  [/^\/regulations$/, '/requirements'],
 ];
 
 export function proxy(request: NextRequest) {
