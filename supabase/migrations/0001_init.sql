@@ -293,7 +293,12 @@ create table if not exists public.hazards (
   expires_at timestamptz
 );
 
-create index if not exists idx_hazards_geo on public.hazards(lat, lng);
+do $$ 
+begin
+  if exists (select 1 from information_schema.columns where table_schema='public' and table_name='hazards' and column_name='lat') then
+    create index if not exists idx_hazards_geo on public.hazards(lat, lng);
+  end if;
+end $$;
 
 create table if not exists public.hazard_reports (
   id uuid primary key default gen_random_uuid(),
