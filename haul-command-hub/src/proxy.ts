@@ -92,6 +92,10 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
   [/^\/superload-routing$/, '/tools/route-planner'],
   [/^\/oversize-io$/, '/alternatives/oversize-io'],
   [/^\/oversize\.io$/, '/alternatives/oversize-io'],
+  [/^\/osowhaven$/, '/alternatives/osowhaven'],
+  [/^\/osow-haven$/, '/alternatives/osowhaven'],
+  [/^\/pilot-car-directory$/, '/alternatives/osowhaven'],
+  [/^\/pilot-car-directory\/(.+)$/, '/directory'],
 ];
 
 export function proxy(request: NextRequest) {
