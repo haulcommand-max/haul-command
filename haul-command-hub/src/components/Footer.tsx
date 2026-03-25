@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import HaulCommandLogo from '@/components/hc/HaulCommandLogo';
+import SocialLinks from '@/components/hc/SocialLinks';
 
 const FOOTER_SECTIONS = [
   {
@@ -77,11 +79,13 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-white/5">
-          <div className="text-accent font-black tracking-tighter text-xl">
-            HAUL COMMAND
+          <div className="flex flex-col items-center sm:items-start gap-2">
+            <HaulCommandLogo variant="full" size="sm" />
+            <p className="text-sm text-white/40">Built for the corridor. Not the crowd.</p>
+            <SocialLinks />
           </div>
           <div className="text-[10px] text-gray-600">
-            Built for the corridor. Not the crowd.
+            © {new Date().getFullYear()} Haul Command. All rights reserved.
           </div>
         </div>
       </div>

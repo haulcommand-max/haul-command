@@ -5,12 +5,15 @@ import { createClient } from '@supabase/supabase-js';
 // Haul Command Pro Stripe Master Implementation
 // Handles multi-party billing + dynamic algorithmic surge pricing
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' });
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' as any });
+}
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function POST(req: Request) {
   try {
+    const stripe = getStripe();
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { escortStripeAccountId, basePriceUsd, regionCode, loadDescription } = await req.json();
 

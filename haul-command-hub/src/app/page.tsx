@@ -12,6 +12,11 @@ import { InlineBillboard } from '@/components/hc/InlineBillboard';
 import { getCreativesForSlot } from '@/lib/ad-engine';
 import HomeHero from '@/components/hc/HomeHero';
 import ActivityTicker from '@/components/ActivityTicker';
+import LiveDashboard from '@/components/hc/LiveDashboard';
+import HaulCommandLogo from '@/components/hc/HaulCommandLogo';
+import SocialLinks from '@/components/hc/SocialLinks';
+import { CinematicMap } from '@/components/hc/CinematicMap';
+import ScrollReveal from '@/components/hc/ScrollReveal';
 import type { HCMetric, HCFaqItem, HCCorridorSummary, HCRequirementsSummary } from '@/lib/hc-types';
 
 export const revalidate = 900; // 15 minute ISR
@@ -177,6 +182,11 @@ export default async function HomePage() {
           locationChips={locationChips}
         />
 
+        {/* Live Dashboard Widgets — Fix A */}
+        <div className="max-w-7xl mx-auto px-4">
+          <LiveDashboard />
+        </div>
+
         {/* Early Tools */}
         <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
@@ -249,7 +259,7 @@ export default async function HomePage() {
                   {'hot' in tool && tool.hot && (
                     <span className="absolute top-3 right-3 bg-red-500/20 text-red-400 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ag-hot-pulse">New</span>
                   )}
-                  <div className="text-2xl mb-3">{tool.icon}</div>
+                  <div className="text-4xl mb-3" role="img" aria-label={tool.title}>{tool.icon}</div>
                   <h3 className="text-white font-bold text-base mb-1.5 group-hover:text-accent transition-colors">
                     {tool.title}
                   </h3>
@@ -262,6 +272,7 @@ export default async function HomePage() {
         </section>
 
         {/* State Protocols — Quick Access */}
+        <ScrollReveal>
         <section className="py-10 sm:py-16 px-4 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
@@ -272,18 +283,29 @@ export default async function HomePage() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
               {[
-                'Florida', 'Texas', 'California', 'Ohio', 'Pennsylvania',
-                'Georgia', 'North Carolina', 'Illinois', 'Washington', 'Oregon',
+                { name: 'Florida', icon: '🌴' },
+                { name: 'Texas', icon: '⛽' },
+                { name: 'California', icon: '🌉' },
+                { name: 'Ohio', icon: '🏭' },
+                { name: 'Pennsylvania', icon: '🏗️' },
+                { name: 'Georgia', icon: '🍑' },
+                { name: 'North Carolina', icon: '🌲' },
+                { name: 'Illinois', icon: '🏙️' },
+                { name: 'Washington', icon: '🌧️' },
+                { name: 'Oregon', icon: '🦫' },
               ].map((state) => (
                 <Link
-                  key={state}
-                  href={`/state/${state.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="group bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
+                  key={state.name}
+                  href={`/state/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="group ag-glass ag-spring-hover rounded-xl px-4 py-4 hover:border-accent/30 transition-all"
                 >
-                  <span className="text-white text-sm font-semibold group-hover:text-accent transition-colors">
-                    {state}
-                  </span>
-                  <div className="text-[10px] text-gray-500 mt-0.5">Escort Rules →</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{state.icon}</span>
+                    <span className="text-white text-sm font-semibold group-hover:text-accent transition-colors">
+                      {state.name}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-gray-500 mt-1 ml-8">Escort Rules · Permits · Thresholds →</div>
                 </Link>
               ))}
             </div>
@@ -297,11 +319,44 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
 
         {/* Inline Billboard */}
         <div className="max-w-7xl mx-auto px-4">
           <InlineBillboard creatives={inlineAds} />
         </div>
+
+        {/* ═══ CINEMATIC MAP — Route Intelligence ═══ */}
+        <ScrollReveal>
+        <section className="py-10 sm:py-16 px-4 overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tighter">
+                Route <span className="text-accent">Intelligence</span>
+              </h2>
+              <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">3D Interactive</span>
+            </div>
+            <CinematicMap
+              markers={[
+                { lng: -81.38, lat: 28.54, label: 'Orlando FL Hub', type: 'staging' },
+                { lng: -97.74, lat: 30.27, label: 'Austin TX Corridor', type: 'corridor' },
+                { lng: -118.24, lat: 34.05, label: 'Los Angeles CA', type: 'operator' },
+                { lng: -95.37, lat: 29.76, label: 'Houston TX', type: 'staging' },
+                { lng: -84.39, lat: 33.75, label: 'Atlanta GA', type: 'operator' },
+                { lng: -87.63, lat: 41.88, label: 'Chicago IL', type: 'corridor' },
+                { lng: -122.33, lat: 47.61, label: 'Seattle WA', type: 'operator' },
+                { lng: -73.99, lat: 40.73, label: 'New York NY', type: 'border' },
+              ]}
+              center={[-98.5, 39.8]}
+              zoom={3.5}
+              className="min-h-[350px] sm:min-h-[450px]"
+            />
+            <div className="mt-4 text-center">
+              <Link href="/map" className="text-accent text-sm font-bold hover:underline ag-magnetic inline-block">Explore Full Interactive Map →</Link>
+            </div>
+          </div>
+        </section>
+        </ScrollReveal>
 
         {/* Corridor Intelligence */}
         <section className="py-8 px-4 max-w-7xl mx-auto">
@@ -368,7 +423,7 @@ export default async function HomePage() {
                 Global <span className="text-accent">Network</span>
               </h2>
               <span className="bg-accent/10 border border-accent/20 text-accent text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
-                57 countries tracked
+                {allCountries.length} countries tracked
               </span>
             </div>
             
@@ -415,11 +470,12 @@ export default async function HomePage() {
         </section>
 
         {/* Pricing CTA */}
+        <ScrollReveal>
         <section className="py-8 px-4 max-w-7xl mx-auto">
-          <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="bg-gradient-to-r from-accent/10 via-accent/5 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 ag-glow-gold ag-spring-hover">
             <div>
               <h3 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-1">
-                Ready to Go <span className="text-accent">Pro</span>?
+                Ready to Go <span className="text-accent ag-text-glow">Pro</span>?
               </h3>
               <p className="text-gray-400 text-sm">
                 Get verified, get priority runs, get paid faster.
@@ -427,12 +483,13 @@ export default async function HomePage() {
             </div>
             <Link
               href="/pricing"
-              className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors flex-shrink-0"
+              className="bg-accent text-black px-8 py-4 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all flex-shrink-0 ag-magnetic shadow-[0_0_24px_rgba(245,159,10,0.3)] hover:shadow-[0_0_40px_rgba(245,159,10,0.5)]"
             >
               View Pricing →
             </Link>
           </div>
         </section>
+        </ScrollReveal>
 
         {/* FAQ */}
         <section className="py-4 px-4 max-w-7xl mx-auto">
@@ -487,9 +544,13 @@ export default async function HomePage() {
           <HCTrustGuardrailsModule />
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 pt-6 border-t border-white/5">
-            <div className="text-accent font-black tracking-tighter text-xl">HAUL COMMAND</div>
+            <div className="flex flex-col items-center sm:items-start gap-2">
+              <HaulCommandLogo variant="full" size="sm" />
+              <p className="text-sm text-white/40">Built for the corridor. Not the crowd.</p>
+              <SocialLinks />
+            </div>
             <div className="text-[10px] text-gray-600">
-              Built for the corridor. Not the crowd.
+              © {new Date().getFullYear()} Haul Command. All rights reserved.
             </div>
           </div>
         </div>

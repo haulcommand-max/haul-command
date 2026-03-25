@@ -354,8 +354,8 @@ a[class*="rounded-xl"], a[class*="rounded-2xl"] {
   background: #000000 !important;
 }
 
-[data-cab-mode="true"] .bg-\[#0a0a0a\],
-[data-cab-mode="true"] .bg-\[#111\] {
+[data-cab-mode="true"] [class*="bg-[#0a0a0a]"],
+[data-cab-mode="true"] [class*="bg-[#111]"] {
   background: #000000 !important;
 }
 

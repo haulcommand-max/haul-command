@@ -16,7 +16,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
     title: "Global Heavy Haul Directory — Ports, Truck Stops, Industrial Zones",
     description:
-        "Browse the world's largest heavy haul logistics directory. 1,300+ verified listings across 57 countries — ports, truck stops, weigh stations, industrial zones, and more.",
+        "Browse the world's largest heavy haul logistics directory — pilot cars, brokers, ports, truck stops, and more across the US, Canada, and growing.",
 };
 
 type Agg = { key: string; count: number };
@@ -82,8 +82,8 @@ export default async function DirectoryPage() {
                             Global <span className="text-accent">Directory</span>
                         </h1>
                         <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 drop-shadow-md">
-                            The world&apos;s largest heavy haul logistics directory. Browse ports, truck stops, industrial zones, and
-                            more across 57 countries.
+                            The world&apos;s largest heavy haul logistics directory. Browse pilot cars, brokers, ports, and
+                            more across the US, Canada, and growing.
                         </p>
 
                         {/* Stats */}
@@ -112,6 +112,31 @@ export default async function DirectoryPage() {
                     <div className="max-w-7xl mx-auto">
                         <h2 className="text-2xl font-bold text-white mb-8">Browse by Category</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {/* Ensure Pilot Car Operators and Brokers appear even if not yet in hc_places */}
+                            {!categories.some(c => c.key === 'escort_staging') && (
+                                <Link
+                                    href="/directory/all/escort_staging"
+                                    className="group bg-amber-500/5 border border-amber-500/20 rounded-xl p-5 hover:border-accent/40 hover:bg-accent/[0.05] transition-all"
+                                >
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <span className="text-2xl">🚗</span>
+                                        <span className="text-white font-semibold group-hover:text-accent transition-colors">Pilot Car Operators</span>
+                                    </div>
+                                    <div className="text-sm text-amber-400/70">Browse all →</div>
+                                </Link>
+                            )}
+                            {!categories.some(c => c.key === 'freight_broker') && (
+                                <Link
+                                    href="/broker"
+                                    className="group bg-amber-500/5 border border-amber-500/20 rounded-xl p-5 hover:border-accent/40 hover:bg-accent/[0.05] transition-all"
+                                >
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <span className="text-2xl">📋</span>
+                                        <span className="text-white font-semibold group-hover:text-accent transition-colors">Freight Brokers</span>
+                                    </div>
+                                    <div className="text-sm text-amber-400/70">Browse all →</div>
+                                </Link>
+                            )}
                             {categories.map((c) => (
                                 <Link
                                     key={c.key}

@@ -15,6 +15,8 @@ export const COUNTRY_NAMES: Record<string, string> = {
 
 /** Surface category key → nice display label */
 export const CATEGORY_LABELS: Record<string, { label: string; icon: string; description: string }> = {
+    pilot_car_operator: { label: "Pilot Car Operators", icon: "🚗", description: "Licensed pilot car and escort vehicle operators for oversize loads" },
+    freight_broker: { label: "Freight Brokers", icon: "📋", description: "Freight brokers specializing in heavy haul and oversize transport" },
     port: { label: "Ports & Marine Terminals", icon: "🚢", description: "Commercial ports handling heavy freight, project cargo, and breakbulk operations" },
     truck_stop: { label: "Truck Stops", icon: "⛽", description: "Full-service truck stops with diesel fuel, parking, and driver amenities" },
     truck_parking: { label: "Truck Parking", icon: "🅿️", description: "Designated heavy vehicle parking facilities and secure lots" },
@@ -30,6 +32,9 @@ export const CATEGORY_LABELS: Record<string, { label: string; icon: string; desc
     permit_office: { label: "Permit Offices", icon: "📋", description: "Transportation permit offices for oversize and overweight loads" },
     escort_staging: { label: "Escort Staging Areas", icon: "🚗", description: "Designated staging and meetup points for pilot car and escort vehicles" },
     twic_enrollment: { label: "TWIC Enrollment Centers", icon: "🪪", description: "Transportation Worker Identification Credential enrollment locations" },
+    hotels_lodging: { label: "Hotels & Lodging", icon: "🏨", description: "Hotels, motels, and lodging for heavy haul crews and drivers" },
+    permit_services: { label: "Permit Services", icon: "📄", description: "Third-party permit services for oversize and overweight loads" },
+    training_schools: { label: "Training Schools", icon: "🎓", description: "CDL, pilot car, and heavy haul training schools and certification programs" },
 };
 
 export function countryName(code: string): string {

@@ -15,8 +15,9 @@ export function generateStaticParams() {
 /**
  * Dynamic Metadata targeting exact Perplexity/Google queries
  */
-export function generateMetadata({ params }: { params: { id: string } }) {
-  const term = getAllTerms().find(t => t.id === params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const term = getAllTerms().find(t => t.id === id);
   if (!term) return { title: 'Term Not Found' };
   
   return {
@@ -26,8 +27,9 @@ export function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
-export default function DictionaryTermPage({ params }: { params: { id: string } }) {
-  const term = getAllTerms().find(t => t.id === params.id);
+export default async function DictionaryTermPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const term = getAllTerms().find(t => t.id === id);
   
   if (!term) {
     notFound();
