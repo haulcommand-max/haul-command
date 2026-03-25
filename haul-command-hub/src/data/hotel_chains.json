@@ -1,0 +1,23 @@
+[
+  { "name": "Baymont Inns & Suites", "phone": "1-888-288-5090", "url": "https://www.wyndhamhotels.com/baymont", "pilotFriendly": true },
+  { "name": "Best Western", "phone": "1-800-528-1234", "url": "https://www.bestwestern.com/", "pilotFriendly": true },
+  { "name": "Choice Hotels (Comfort Inn, Quality Inn, Econo Lodge, Clarion)", "phone": "1-800-4-CHOICE", "url": "https://www.choicehotels.com/", "pilotFriendly": true },
+  { "name": "Country Inns & Suites", "phone": "1-800-456-4000", "url": "https://www.radissonhotelsamericas.com/en-us/brand/country-inn", "pilotFriendly": true },
+  { "name": "Courtyard by Marriott", "phone": "1-800-321-2211", "url": "https://www.marriott.com/courtyard/", "pilotFriendly": false },
+  { "name": "Days Inn", "phone": "1-800-329-7466", "url": "https://www.wyndhamhotels.com/days-inn", "pilotFriendly": true },
+  { "name": "DoubleTree by Hilton", "phone": "1-800-222-8733", "url": "https://www.hilton.com/en/doubletree/", "pilotFriendly": false },
+  { "name": "Econo Lodge", "phone": "1-800-553-2666", "url": "https://www.choicehotels.com/econo-lodge", "pilotFriendly": true },
+  { "name": "Hampton Inn", "phone": "1-800-426-7866", "url": "https://www.hilton.com/en/hampton/", "pilotFriendly": true },
+  { "name": "Holiday Inn", "phone": "1-800-465-4329", "url": "https://www.ihg.com/holidayinn/", "pilotFriendly": true },
+  { "name": "La Quinta Inns & Suites", "phone": "1-800-753-3757", "url": "https://www.wyndhamhotels.com/laquinta", "pilotFriendly": true },
+  { "name": "Magnuson Hotels", "phone": "1-866-904-1309", "url": "https://www.magnusonhotels.com/", "pilotFriendly": true },
+  { "name": "Marriott Hotels", "phone": "1-800-228-9290", "url": "https://www.marriott.com/", "pilotFriendly": false },
+  { "name": "Motel 6 / Studio 6", "phone": "1-800-466-8356", "url": "https://www.motel6.com/", "pilotFriendly": true },
+  { "name": "My Place Hotels", "phone": "1-855-200-5685", "url": "https://www.myplacehotels.com/", "pilotFriendly": true },
+  { "name": "Quality Inn", "phone": "1-877-424-6423", "url": "https://www.choicehotels.com/quality-inn", "pilotFriendly": true },
+  { "name": "Radisson Hotels", "phone": "1-800-333-3333", "url": "https://www.radissonhotels.com/", "pilotFriendly": false },
+  { "name": "Ramada", "phone": "1-800-272-6232", "url": "https://www.wyndhamhotels.com/ramada", "pilotFriendly": true },
+  { "name": "Red Lion Hotels", "phone": "1-800-547-8010", "url": "https://www.redlion.com/", "pilotFriendly": true },
+  { "name": "Red Roof Inn", "phone": "1-800-843-7663", "url": "https://www.redroof.com/", "pilotFriendly": true },
+  { "name": "Travelodge", "phone": "1-800-578-7878", "url": "https://www.wyndhamhotels.com/travelodge", "pilotFriendly": true }
+]

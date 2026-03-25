@@ -58,7 +58,15 @@ const TOOL_SUITES = [
   },
   {
     id: 'suite-5',
-    title: 'Suite 5 — Emerging & Future',
+    title: 'Suite 5 — Operator Life',
+    icon: '🏨',
+    tools: [
+      { href: '/tools/hotel-finder',         icon: '🏨', title: 'Hotel Finder',         desc: 'Truck-friendly hotels with pilot car discounts by state',    hot: true },
+    ],
+  },
+  {
+    id: 'suite-6',
+    title: 'Suite 6 — Emerging & Future',
     icon: '🚀',
     tools: [
       { href: '/tools/av-readiness',        icon: '🤖', title: 'AV Readiness Checker', desc: 'Is your route eligible for autonomous heavy haul?',        hot: true },

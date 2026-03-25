@@ -1,0 +1,278 @@
+[
+  {
+    "state": "TX", "city": "Amarillo", "name": "Atrea Inn", "phone": "806-803-2590", "pilotRate": 45, "address": "Paramount Blvd & I-40",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Newly Renovated"],
+    "nearbyHighways": ["I-40", "I-27"], "nearDining": true, "nearShopping": true,
+    "chain": null, "truckParking": true, "laundry": false
+  },
+  {
+    "state": "TX", "city": "Amarillo", "name": "Baymont by Wyndham", "phone": "806-372-1425", "pilotRate": null, "address": "1700 I-40 East",
+    "amenities": ["Free Parking", "Free Hot Breakfast", "Pet Friendly", "Guest Laundry", "Remodeled"],
+    "nearbyHighways": ["I-40"], "nearDining": true, "nearShopping": false,
+    "chain": "Wyndham", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "TX", "city": "Borger", "name": "Motel 6 / Studio 6", "phone": "806-273-9556", "pilotRate": null, "address": "100 Bulldog Blvd.",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Remodeled"],
+    "nearbyHighways": ["TX-152", "TX-207"], "nearDining": false, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "TX", "city": "Dumas", "name": "Motel 6 / Studio 6", "phone": "806-935-0212", "pilotRate": null, "address": "1712 S. Dumas Ave.",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Remodeled"],
+    "nearbyHighways": ["US-287", "US-87"], "nearDining": false, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "TX", "city": "El Paso", "name": "La Quinta Inn & Suites", "phone": "915-585-2999", "pilotRate": 47, "address": "7620 N Mesa St, I-10 Exit 11",
+    "amenities": ["Free Self Parking", "Free Hot Breakfast", "Continental Breakfast"],
+    "nearbyHighways": ["I-10", "US-54"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "TX", "city": "New Braunfels", "name": "Quality Inn", "phone": "830-643-9300", "pilotRate": null, "address": "I-35 Corridor",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly"],
+    "nearbyHighways": ["I-35"], "nearDining": true, "nearShopping": true,
+    "chain": "Choice Hotels", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "TX", "city": "Houston", "name": "Red Roof Inn Houston Brookhollow", "phone": "713-688-3000", "pilotRate": 52, "address": "9005 Northwest Fwy",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-10", "I-45", "US-290"], "nearDining": true, "nearShopping": true,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "TX", "city": "Dallas", "name": "Motel 6 Dallas South", "phone": "972-296-3331", "pilotRate": null, "address": "4220 Independence Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Truck Parking"],
+    "nearbyHighways": ["I-20", "I-35E", "I-45"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "TX", "city": "San Antonio", "name": "La Quinta Inn San Antonio I-35 N", "phone": "210-661-0200", "pilotRate": 49, "address": "6410 I-35 North",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-35", "I-10"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "FL", "city": "Jacksonville", "name": "Red Roof Inn Jacksonville Airport", "phone": "904-741-4488", "pilotRate": 48, "address": "14701 Airport Rd S",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-95", "I-10"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "FL", "city": "Orlando", "name": "Motel 6 Orlando International Dr", "phone": "407-351-6500", "pilotRate": null, "address": "5909 American Way",
+    "amenities": ["Free Parking", "Pet Friendly", "Pool", "Guest Laundry"],
+    "nearbyHighways": ["I-4", "FL-528"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "FL", "city": "Tampa", "name": "La Quinta Inn Tampa Near Busch Gardens", "phone": "813-930-6900", "pilotRate": 52, "address": "9202 N 30th St",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-75", "I-275", "I-4"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "CA", "city": "Los Angeles", "name": "Motel 6 Los Angeles LAX", "phone": "310-419-1234", "pilotRate": null, "address": "5101 W Century Blvd",
+    "amenities": ["Free Parking", "Pet Friendly", "Pool", "Guest Laundry"],
+    "nearbyHighways": ["I-405", "I-105"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "CA", "city": "Bakersfield", "name": "Motel 6 Bakersfield East", "phone": "661-366-7231", "pilotRate": null, "address": "8223 E Brundage Ln",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Truck Parking"],
+    "nearbyHighways": ["CA-99", "CA-58"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "CA", "city": "Barstow", "name": "Quality Inn Barstow", "phone": "760-256-6891", "pilotRate": 55, "address": "1520 E Main St",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool", "Truck Parking"],
+    "nearbyHighways": ["I-15", "I-40"], "nearDining": true, "nearShopping": false,
+    "chain": "Choice Hotels", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "OH", "city": "Columbus", "name": "Red Roof Inn Columbus West", "phone": "614-878-9245", "pilotRate": 45, "address": "5001 Renner Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-70", "I-270"], "nearDining": true, "nearShopping": true,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "OH", "city": "Cleveland", "name": "Motel 6 Cleveland Middleburg Heights", "phone": "440-234-0990", "pilotRate": null, "address": "7219 Engle Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-71", "I-77", "I-480"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "GA", "city": "Atlanta", "name": "Red Roof Inn Atlanta South", "phone": "404-761-9701", "pilotRate": 49, "address": "1200 Virginia Ave",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-75", "I-85", "I-285"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "GA", "city": "Savannah", "name": "La Quinta Inn Savannah I-95", "phone": "912-925-9505", "pilotRate": 52, "address": "8484 Abercorn St",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-95", "I-16"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "PA", "city": "Harrisburg", "name": "Red Roof Inn Harrisburg Hershey", "phone": "717-939-1331", "pilotRate": 47, "address": "950 Eisenhower Blvd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-76", "I-83", "I-81"], "nearDining": true, "nearShopping": true,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "PA", "city": "Pittsburgh", "name": "Motel 6 Pittsburgh Crafton", "phone": "412-922-9400", "pilotRate": null, "address": "211 Beecham Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-376", "I-79"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "OK", "city": "Oklahoma City", "name": "Motel 6 Oklahoma City Airport", "phone": "405-946-6662", "pilotRate": null, "address": "820 S Meridian Ave",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Truck Parking"],
+    "nearbyHighways": ["I-40", "I-44", "I-35"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "OK", "city": "Tulsa", "name": "La Quinta Inn Tulsa Central", "phone": "918-665-2630", "pilotRate": 46, "address": "6030 E Skelly Dr",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-44", "US-75"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "WV", "city": "Triadelphia", "name": "Comfort Inn & Suites", "phone": "304-547-0610", "pilotRate": null, "address": "Next to TA Wheeling (#032)",
+    "amenities": ["Free Parking", "Free Hot Breakfast", "Pet Friendly", "Guest Laundry", "Fitness Center", "Newly Remodeled"],
+    "nearbyHighways": ["I-70"], "nearDining": true, "nearShopping": false,
+    "chain": "Choice Hotels", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "TN", "city": "Nashville", "name": "Red Roof Inn Nashville Fairgrounds", "phone": "615-832-0093", "pilotRate": 48, "address": "4271 Sidco Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-24", "I-40", "I-65"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "TN", "city": "Memphis", "name": "Motel 6 Memphis Downtown", "phone": "901-528-0650", "pilotRate": null, "address": "210 S Pauline St",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-40", "I-55", "I-240"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "NC", "city": "Charlotte", "name": "Red Roof Inn Charlotte Airport", "phone": "704-392-0600", "pilotRate": 50, "address": "3300 Queen City Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-85", "I-77", "I-485"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "NC", "city": "Raleigh", "name": "La Quinta Inn Raleigh Crabtree", "phone": "919-785-0071", "pilotRate": 52, "address": "2211 Summit Park Ln",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-40", "I-440"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "AL", "city": "Birmingham", "name": "Red Roof Inn Birmingham South", "phone": "205-942-9414", "pilotRate": 44, "address": "151 Vulcan Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-65", "I-20/59"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "AL", "city": "Mobile", "name": "Motel 6 Mobile", "phone": "251-343-8448", "pilotRate": null, "address": "400 S Beltline Hwy",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Pool"],
+    "nearbyHighways": ["I-10", "I-65"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "LA", "city": "Baton Rouge", "name": "La Quinta Inn Baton Rouge", "phone": "225-924-9600", "pilotRate": 48, "address": "2333 S Acadian Thwy",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-10", "I-12", "US-61"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "AR", "city": "Little Rock", "name": "Motel 6 Little Rock South", "phone": "501-568-8888", "pilotRate": null, "address": "7501 I-30",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Truck Parking"],
+    "nearbyHighways": ["I-30", "I-40", "I-440"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "AZ", "city": "Phoenix", "name": "Red Roof Inn Phoenix West", "phone": "602-233-8004", "pilotRate": 50, "address": "5215 W Indian School Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Pool"],
+    "nearbyHighways": ["I-10", "I-17"], "nearDining": true, "nearShopping": true,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "AZ", "city": "Tucson", "name": "Motel 6 Tucson Congress Street", "phone": "520-628-1339", "pilotRate": null, "address": "960 S Freeway",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Pool"],
+    "nearbyHighways": ["I-10", "I-19"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "NM", "city": "Albuquerque", "name": "La Quinta Inn Albuquerque Airport", "phone": "505-243-5500", "pilotRate": 49, "address": "2116 Yale Blvd SE",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-25", "I-40"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "CO", "city": "Denver", "name": "Motel 6 Denver Central", "phone": "303-455-8888", "pilotRate": null, "address": "480 Wadsworth Blvd",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-25", "I-70", "US-6"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "MS", "city": "Jackson", "name": "Red Roof Inn Jackson Downtown", "phone": "601-969-5006", "pilotRate": 42, "address": "533 Greymont Ave",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-20", "I-55"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "VA", "city": "Richmond", "name": "La Quinta Inn Richmond South", "phone": "804-271-1281", "pilotRate": 50, "address": "6910 Midlothian Turnpike",
+    "amenities": ["Free Parking", "Free Breakfast", "Pet Friendly", "Pool"],
+    "nearbyHighways": ["I-95", "I-64", "I-85"], "nearDining": true, "nearShopping": true,
+    "chain": "La Quinta", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "SC", "city": "Columbia", "name": "Red Roof Inn Columbia West", "phone": "803-798-9220", "pilotRate": 46, "address": "10 Berryhill Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-20", "I-26", "I-77"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "KS", "city": "Wichita", "name": "Motel 6 Wichita Airport", "phone": "316-945-8440", "pilotRate": null, "address": "5551 W Kellogg Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Truck Parking"],
+    "nearbyHighways": ["I-35", "I-135", "US-54"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": true, "laundry": true
+  },
+  {
+    "state": "MO", "city": "Kansas City", "name": "Red Roof Inn Kansas City Sports Complex", "phone": "816-353-8880", "pilotRate": 47, "address": "3636 Randy Rd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk", "Truck Parking"],
+    "nearbyHighways": ["I-70", "I-435"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "IN", "city": "Indianapolis", "name": "Red Roof Inn Indianapolis South", "phone": "317-788-9551", "pilotRate": 46, "address": "5221 Victory Dr",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-65", "I-70", "I-465"], "nearDining": true, "nearShopping": false,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "IL", "city": "Chicago", "name": "Motel 6 Chicago O'Hare", "phone": "847-827-8480", "pilotRate": null, "address": "5300 Touhy Ave",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-90", "I-294", "I-190"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "WA", "city": "Seattle", "name": "Red Roof Inn Seattle Airport", "phone": "206-248-0901", "pilotRate": 55, "address": "16838 International Blvd",
+    "amenities": ["Free Parking", "Pet Friendly", "24-Hour Front Desk"],
+    "nearbyHighways": ["I-5", "WA-99", "I-405"], "nearDining": true, "nearShopping": true,
+    "chain": "Red Roof Inn", "truckParking": true, "laundry": false
+  },
+  {
+    "state": "OR", "city": "Portland", "name": "Motel 6 Portland Central", "phone": "503-238-6600", "pilotRate": null, "address": "3104 SE Powell Blvd",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry"],
+    "nearbyHighways": ["I-5", "I-84", "I-205"], "nearDining": true, "nearShopping": false,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  },
+  {
+    "state": "NV", "city": "Las Vegas", "name": "Motel 6 Las Vegas I-15", "phone": "702-457-8051", "pilotRate": null, "address": "195 E Tropicana Ave",
+    "amenities": ["Free Parking", "Pet Friendly", "Guest Laundry", "Pool"],
+    "nearbyHighways": ["I-15", "US-95"], "nearDining": true, "nearShopping": true,
+    "chain": "Motel 6", "truckParking": false, "laundry": true
+  }
+]
