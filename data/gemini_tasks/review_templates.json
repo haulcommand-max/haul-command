@@ -1,0 +1,62 @@
+[
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  },
+  {
+    "type": "broker_review",
+    "template": "Outstanding service from {{name}}. They handled the {{load_type}} perfectly with great communication."
+  }
+]
