@@ -7,6 +7,10 @@
 -- Feeds the live activity ticker on homepage and key pages.
 -- Records every meaningful platform action for "alive system" signals.
 
+DROP TABLE IF EXISTS activity_events CASCADE;
+DROP TABLE IF EXISTS contact_submissions CASCADE;
+DROP TABLE IF EXISTS tool_cta_clicks CASCADE;
+
 CREATE TABLE IF NOT EXISTS activity_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   event_type TEXT NOT NULL,  -- claim, load_posted, load_accepted, escort_matched, rate_update, corridor_alert, tool_usage
@@ -14,9 +18,13 @@ CREATE TABLE IF NOT EXISTS activity_events (
   geo_country TEXT,
   geo_state TEXT,
   geo_city TEXT,
-  visibility TEXT NOT NULL DEFAULT 'public',  -- public, internal
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+ALTER TABLE activity_events ADD COLUMN IF NOT EXISTS geo_country TEXT;
+ALTER TABLE activity_events ADD COLUMN IF NOT EXISTS geo_state TEXT;
+ALTER TABLE activity_events ADD COLUMN IF NOT EXISTS geo_city TEXT;
+ALTER TABLE activity_events ADD COLUMN IF NOT EXISTS visibility TEXT NOT NULL DEFAULT 'public';
 
 -- Index for fast ticker queries (most recent first)
 CREATE INDEX IF NOT EXISTS idx_activity_events_created 
@@ -66,22 +74,26 @@ ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tool_cta_clicks ENABLE ROW LEVEL SECURITY;
 
 -- Public read for activity_events (ticker needs unauthenticated access)
-CREATE POLICY IF NOT EXISTS "activity_events_public_read"
+DROP POLICY IF EXISTS "activity_events_public_read" ON activity_events;
+CREATE POLICY "activity_events_public_read"
   ON activity_events FOR SELECT
   USING (visibility = 'public');
 
 -- Service role insert for activity_events
-CREATE POLICY IF NOT EXISTS "activity_events_service_insert"
+DROP POLICY IF EXISTS "activity_events_service_insert" ON activity_events;
+CREATE POLICY "activity_events_service_insert"
   ON activity_events FOR INSERT
   WITH CHECK (true);
 
 -- Contact submissions: anyone can insert, only service can read
-CREATE POLICY IF NOT EXISTS "contact_submissions_public_insert"
+DROP POLICY IF EXISTS "contact_submissions_public_insert" ON contact_submissions;
+CREATE POLICY "contact_submissions_public_insert"
   ON contact_submissions FOR INSERT
   WITH CHECK (true);
 
 -- Tool CTA clicks: anyone can insert
-CREATE POLICY IF NOT EXISTS "tool_cta_clicks_public_insert"
+DROP POLICY IF EXISTS "tool_cta_clicks_public_insert" ON tool_cta_clicks;
+CREATE POLICY "tool_cta_clicks_public_insert"
   ON tool_cta_clicks FOR INSERT
   WITH CHECK (true);
 

@@ -90,16 +90,19 @@ ALTER TABLE pricing_rules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE supply_alerts ENABLE ROW LEVEL SECURITY;
 
 -- Job queue: service role only
-CREATE POLICY IF NOT EXISTS "job_queue_service_only"
+DROP POLICY IF EXISTS "job_queue_service_only" ON job_queue;
+CREATE POLICY "job_queue_service_only"
   ON job_queue FOR ALL
   USING (false);  -- only service role key bypasses RLS
 
 -- Pricing rules: public read
-CREATE POLICY IF NOT EXISTS "pricing_rules_public_read"
+DROP POLICY IF EXISTS "pricing_rules_public_read" ON pricing_rules;
+CREATE POLICY "pricing_rules_public_read"
   ON pricing_rules FOR SELECT
   USING (active = true);
 
 -- Supply alerts: public read
-CREATE POLICY IF NOT EXISTS "supply_alerts_public_read"
+DROP POLICY IF EXISTS "supply_alerts_public_read" ON supply_alerts;
+CREATE POLICY "supply_alerts_public_read"
   ON supply_alerts FOR SELECT
   USING (active = true AND (expires_at IS NULL OR expires_at > now()));

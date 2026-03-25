@@ -62,7 +62,6 @@ const TOOL_SUITES = [
     icon: '🚀',
     tools: [
       { href: '/tools/av-readiness',        icon: '🤖', title: 'AV Readiness Checker', desc: 'Is your route eligible for autonomous heavy haul?',        hot: true },
-      { href: '/tools/wind-turbine-planner', icon: '🌬️', title: 'Wind Turbine Planner', desc: 'Specialized routing for the wind energy boom',            hot: true },
     ],
   },
 ];
