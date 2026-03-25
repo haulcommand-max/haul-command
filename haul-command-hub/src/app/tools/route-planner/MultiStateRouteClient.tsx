@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ToolResultCTA from '@/components/hc/ToolResultCTA';
+import ToolResultCTA, { TOOL_CTAS } from '@/components/hc/ToolResultCTA';
 
 // Rough state adjacency graph for rudimentary pathfinding in Continental US
 // (Highly simplified for demo tool; production uses full GIS or Google Maps Directions API)
@@ -166,11 +166,7 @@ export default function MultiStateRouteClient() {
             </div>
           </div>
 
-          <ToolResultCTA
-            context="Need pilot cars across multiple states?"
-            primary={{ label: "Find Escorts", href: "/directory", icon: "🔍" }}
-            secondary={{ label: "View State Rules", href: "/requirements", icon: "📋" }}
-          />
+          <ToolResultCTA {...TOOL_CTAS.arrangementResult()} />
         </div>
       )}
     </div>

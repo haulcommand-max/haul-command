@@ -79,6 +79,16 @@ const PLANS: Record<string, PlanConfig> = {
     monthPriceId: 'price_1TEgPTRiV0LOCA365xw8STTa',
     mode: 'subscription',
   },
+  managed_permit: {
+    name: 'Managed Permit Procurement',
+    onetimePriceId: 'price_1TEgrERiV0LOCA36uPnO4wvC',
+    mode: 'payment',
+  },
+  managed_dispatch: {
+    name: 'Full-Service Escort Dispatch',
+    onetimePriceId: 'price_1TEgrERiV0LOCA36hsyycSAQ',
+    mode: 'payment',
+  },
 };
 
 async function createCheckoutSession(request: NextRequest, method: 'GET' | 'POST') {

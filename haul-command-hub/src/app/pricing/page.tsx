@@ -113,6 +113,25 @@ const ADDONS = [
   },
 ];
 
+const MANAGED_SERVICES = [
+  {
+    name: 'Managed Permit Procurement',
+    price: '$65',
+    period: 'per permit',
+    description: 'Turnkey application, DOT follow-up, and delivery for any state.',
+    href: '/api/stripe/checkout?plan=managed_permit',
+    icon: '🎫',
+  },
+  {
+    name: 'Full-Service Escort Dispatch',
+    price: '$150',
+    period: 'per load',
+    description: 'We source, vet, and dispatch certified pilot cars for your route.',
+    href: '/api/stripe/checkout?plan=managed_dispatch',
+    icon: '🚀',
+  },
+];
+
 const COMPARISON_FEATURES = [
   { feature: 'Directory Listing', free: true, basic: true, pro: true, elite: true, broker: true },
   { feature: 'Contact Info Visible', free: true, basic: true, pro: true, elite: true, broker: true },
@@ -363,7 +382,7 @@ export default function PricingPage() {
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter text-center mb-8">
               Power <span className="text-accent">Add-ons</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
               {ADDONS.map((addon, i) => (
                 <Link key={i} href={addon.href} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 transition-all group block">
                   <span className="text-2xl mb-3 block">{addon.icon}</span>
@@ -373,6 +392,29 @@ export default function PricingPage() {
                     {addon.price}<span className="text-gray-500 text-xs font-normal ml-1">{addon.period}</span>
                   </p>
                   <span className="text-accent text-xs font-bold group-hover:underline">Purchase →</span>
+                </Link>
+              ))}
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter text-center mb-8">
+              Managed <span className="text-accent">Services</span> (Do It For Me)
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {MANAGED_SERVICES.map((service, i) => (
+                <Link key={i} href={service.href} className="bg-gradient-to-br from-white/[0.05] to-transparent border border-white/[0.1] rounded-xl p-6 hover:border-accent/30 transition-all group block shadow-xl border-l-4 border-l-accent">
+                  <div className="flex items-start gap-4">
+                    <span className="text-3xl">{service.icon}</span>
+                    <div>
+                      <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">{service.name}</h3>
+                      <p className="text-gray-400 text-sm mb-4">{service.description}</p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-accent font-black text-xl">
+                          {service.price}<span className="text-gray-500 text-xs font-normal ml-1">{service.period}</span>
+                        </p>
+                        <span className="bg-accent/10 border border-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold group-hover:bg-accent group-hover:text-black transition-colors">Start Order →</span>
+                      </div>
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>

@@ -79,6 +79,17 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
   [/^\/witpac$/, '/tools/certifications'],
   [/^\/flagger$/, '/tools/certifications'],
   [/^\/pilot-car-certification$/, '/tools/certifications'],
+
+  // Competitor Capture (ODSNA, HeavyHaulers, WideloadShipping, WCS Permits, Truckstop, Oversize.io)
+  [/^\/heavy-haul-load-board$/, '/loads'],
+  [/^\/heavy-haulers$/, '/loads'],
+  [/^\/oversize-load-directory$/, '/directory'],
+  [/^\/managed-pilot-cars$/, '/pricing'],
+  [/^\/pilot-car-services$/, '/services'],
+  [/^\/buy-oversize-permits$/, '/tools/permit-cost'],
+  [/^\/wcs-permits$/, '/tools/permit-cost'],
+  [/^\/oversize-routing$/, '/tools/route-planner'],
+  [/^\/superload-routing$/, '/tools/route-planner'],
 ];
 
 export function proxy(request: NextRequest) {

@@ -142,4 +142,32 @@ export const TOOL_CTAS = {
       icon: '📅',
     },
   }),
+
+  permitResult: (): ToolCTAProps => ({
+    context: 'We handle USDOT regulations and all 50 state permits. Let us order your permits today.',
+    primary: {
+      label: 'Order Permits ($65)',
+      href: '/api/stripe/checkout?plan=managed_permit',
+      icon: '🎫',
+    },
+    secondary: {
+      label: 'Find Pilot Cars',
+      href: '/directory',
+      icon: '🔍',
+    },
+  }),
+
+  arrangementResult: (): ToolCTAProps => ({
+    context: 'Need turnkey dispatch? We will source, vet, and arrange all pilot cars for your route.',
+    primary: {
+      label: 'Managed Dispatch ($150)',
+      href: '/api/stripe/checkout?plan=managed_dispatch',
+      icon: '🚀',
+    },
+    secondary: {
+      label: 'Post to Load Board',
+      href: '/loads',
+      icon: '📦',
+    },
+  }),
 };

@@ -180,7 +180,7 @@ export default function PermitCostPage() {
               </div>
             )}
 
-            <ToolResultCTA {...TOOL_CTAS.escortResult()} />
+            <ToolResultCTA {...TOOL_CTAS.permitResult()} />
           </div>
         )}
 
