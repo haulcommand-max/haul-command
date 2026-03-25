@@ -41,6 +41,776 @@
       },
       "weekend_travel": "Banned on Autobahns from Friday 15:00 to Monday 09:00.",
       "notes": "Police escorts often substituted by private BF4 certified escort vehicles."
+    },
+    "canada": {
+      "country_code": "CA",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Canada.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Canada"
+    },
+    "australia": {
+      "country_code": "AU",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Australia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Australia"
+    },
+    "united-kingdom": {
+      "country_code": "GB",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in United Kingdom.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for United Kingdom"
+    },
+    "new-zealand": {
+      "country_code": "NZ",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in New Zealand.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for New Zealand"
+    },
+    "south-africa": {
+      "country_code": "ZA",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in South Africa.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for South Africa"
+    },
+    "netherlands": {
+      "country_code": "NL",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Netherlands.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Netherlands"
+    },
+    "united-arab-emirates": {
+      "country_code": "AE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in United Arab Emirates.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for United Arab Emirates"
+    },
+    "brazil": {
+      "country_code": "BR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Brazil.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Brazil"
+    },
+    "ireland": {
+      "country_code": "IE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Ireland.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Ireland"
+    },
+    "sweden": {
+      "country_code": "SE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Sweden.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Sweden"
+    },
+    "norway": {
+      "country_code": "NO",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Norway.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Norway"
+    },
+    "denmark": {
+      "country_code": "DK",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Denmark.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Denmark"
+    },
+    "finland": {
+      "country_code": "FI",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Finland.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Finland"
+    },
+    "belgium": {
+      "country_code": "BE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Belgium.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Belgium"
+    },
+    "austria": {
+      "country_code": "AT",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Austria.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Austria"
+    },
+    "switzerland": {
+      "country_code": "CH",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Switzerland.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Switzerland"
+    },
+    "spain": {
+      "country_code": "ES",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Spain.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Spain"
+    },
+    "france": {
+      "country_code": "FR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in France.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for France"
+    },
+    "italy": {
+      "country_code": "IT",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Italy.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Italy"
+    },
+    "portugal": {
+      "country_code": "PT",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Portugal.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Portugal"
+    },
+    "saudi-arabia": {
+      "country_code": "SA",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Saudi Arabia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Saudi Arabia"
+    },
+    "qatar": {
+      "country_code": "QA",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Qatar.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Qatar"
+    },
+    "poland": {
+      "country_code": "PL",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Poland.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Poland"
+    },
+    "czech-republic": {
+      "country_code": "CZ",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Czech Republic.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Czech Republic"
+    },
+    "slovakia": {
+      "country_code": "SK",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Slovakia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Slovakia"
+    },
+    "hungary": {
+      "country_code": "HU",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Hungary.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Hungary"
+    },
+    "slovenia": {
+      "country_code": "SI",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Slovenia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Slovenia"
+    },
+    "estonia": {
+      "country_code": "EE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Estonia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Estonia"
+    },
+    "latvia": {
+      "country_code": "LV",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Latvia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Latvia"
+    },
+    "lithuania": {
+      "country_code": "LT",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Lithuania.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Lithuania"
+    },
+    "croatia": {
+      "country_code": "HR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Croatia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Croatia"
+    },
+    "romania": {
+      "country_code": "RO",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Romania.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Romania"
+    },
+    "bulgaria": {
+      "country_code": "BG",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Bulgaria.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Bulgaria"
+    },
+    "greece": {
+      "country_code": "GR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Greece.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Greece"
+    },
+    "turkey": {
+      "country_code": "TR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Turkey.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Turkey"
+    },
+    "kuwait": {
+      "country_code": "KW",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Kuwait.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Kuwait"
+    },
+    "oman": {
+      "country_code": "OM",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Oman.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Oman"
+    },
+    "bahrain": {
+      "country_code": "BH",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Bahrain.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Bahrain"
+    },
+    "singapore": {
+      "country_code": "SG",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Singapore.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Singapore"
+    },
+    "malaysia": {
+      "country_code": "MY",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Malaysia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Malaysia"
+    },
+    "japan": {
+      "country_code": "JP",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Japan.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Japan"
+    },
+    "south-korea": {
+      "country_code": "KR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in South Korea.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for South Korea"
+    },
+    "chile": {
+      "country_code": "CL",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Chile.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Chile"
+    },
+    "argentina": {
+      "country_code": "AR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Argentina.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Argentina"
+    },
+    "colombia": {
+      "country_code": "CO",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Colombia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Colombia"
+    },
+    "peru": {
+      "country_code": "PE",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Peru.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Peru"
+    },
+    "india": {
+      "country_code": "IN",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in India.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for India"
+    },
+    "indonesia": {
+      "country_code": "ID",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Indonesia.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Indonesia"
+    },
+    "thailand": {
+      "country_code": "TH",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Thailand.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Thailand"
+    },
+    "vietnam": {
+      "country_code": "VN",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Vietnam.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Vietnam"
+    },
+    "philippines": {
+      "country_code": "PH",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Philippines.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Philippines"
+    },
+    "uruguay": {
+      "country_code": "UY",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Uruguay.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Uruguay"
+    },
+    "panama": {
+      "country_code": "PA",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Panama.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Panama"
+    },
+    "costa-rica": {
+      "country_code": "CR",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Costa Rica.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Costa Rica"
+    },
+    "nigeria": {
+      "country_code": "NG",
+      "general": "Permits issued by the National Ministry of Transport or respective regional authorities in Nigeria.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Conditional. Often restricted from Friday sunset to Monday sunrise.",
+      "notes": "Generated regulatory baseline rule set for Nigeria"
     }
   }
 }
