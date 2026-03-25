@@ -28,7 +28,7 @@ let _claude: Anthropic | null = null;
 let _gemini: GoogleGenAI | null = null;
 let _openai: OpenAI | null = null;
 
-function claude(): Anthropic {
+export function claude(): Anthropic {
   if (!_claude) {
     if (!process.env.ANTHROPIC_API_KEY) throw new Error('Missing ANTHROPIC_API_KEY');
     _claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
