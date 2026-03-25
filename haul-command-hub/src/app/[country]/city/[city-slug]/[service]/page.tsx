@@ -51,8 +51,8 @@ export async function generateMetadata({
   if (!city || !service) return { title: 'Not Found' };
 
   const localTerm = country.terms[service.termKey] || service.label;
-  const title = `${localTerm} in ${city}, ${country.name} | Haul Command`;
-  const description = `Need a ${localTerm.toLowerCase()} in ${city}? Find verified operators, get instant quotes, and check ${country.terms.oversize_load.toLowerCase()} regulations. Compare pricing from local ${country.terms.escort_vehicle.toLowerCase()} professionals. Updated March 2026.`;
+  const title = `${localTerm} Near Me in ${city}, ${country.name} | Haul Command`;
+  const description = `Looking for a ${localTerm.toLowerCase()} near me in ${city}? Find verified operators, get instant quotes, and check ${country.terms.oversize_load.toLowerCase()} regulations. Compare pricing from local ${country.terms.escort_vehicle.toLowerCase()} professionals. Updated March 2026.`;
   const url = `https://haulcommand.com/${countrySlug}/city/${citySlug}/${serviceSlug}`;
 
   return {
@@ -123,8 +123,8 @@ export default async function CityServicePage({
         ]}
       />
       <ServiceSchema
-        serviceName={`${localTerm} in ${city}, ${country.name}`}
-        description={`Professional ${localTerm.toLowerCase()} services for ${country.terms.oversize_load.toLowerCase()} transport in ${city}, ${country.name}. Verified operators, competitive rates, instant availability.`}
+        serviceName={`${localTerm} Near Me in ${city}, ${country.name}`}
+        description={`Professional ${localTerm.toLowerCase()} services for ${country.terms.oversize_load.toLowerCase()} transport near me in ${city}, ${country.name}. Verified operators, competitive rates, instant availability.`}
         areaServed={`${city}, ${country.name}`}
         url={`${baseUrl}/${countrySlug}/city/${citySlug}/${serviceSlug}`}
       />
@@ -146,7 +146,7 @@ export default async function CityServicePage({
             </nav>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-4 tracking-tight">
-              {localTerm}
+              {localTerm} Near Me
               <br />
               <span className="text-accent">in {city}, {country.name}</span>
             </h1>

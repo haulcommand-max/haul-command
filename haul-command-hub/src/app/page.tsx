@@ -271,6 +271,58 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* ═══ CORE 30 ENTITY MATCHING — Service Hierarchy ═══ */}
+        <ScrollReveal>
+        <section className="py-10 sm:py-16 px-4 bg-gradient-to-b from-transparent to-accent/5 overflow-hidden">
+          <div className="w-full max-w-7xl mx-auto border border-white/10 rounded-3xl p-6 sm:p-10 bg-[#0a0e17] shadow-xl relative">
+            <div className="absolute top-0 right-10 w-64 h-64 bg-accent/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
+              Global <span className="text-accent">Services</span>
+            </h2>
+            <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
+              Verified operators across 57 countries specializing in the core disciplines of oversize transport and escort operations.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 relative z-10">
+              {[
+                { name: 'Pilot Car Services', slug: 'pilot-car-service', icon: '🚙', desc: 'Certified lead and chase vehicles for dimensional loads.' },
+                { name: 'Escort Vehicles', slug: 'escort-vehicle', icon: '🚓', desc: 'Civilian and off-duty police units for traffic control.' },
+                { name: 'Heavy Haul Escorts', slug: 'heavy-haul-escort', icon: '🚛', desc: 'Specialized escort configurations for multi-axle moves.' },
+                { name: 'Oversize Load Support', slug: 'oversize-load-escort', icon: '📏', desc: 'Compliance tracking, permitting, and physical escorts combined.' },
+                { name: 'Route Surveys', slug: 'route-survey', icon: '🗺️', desc: 'Pre-trip physical infrastructure checks and bridge clearances.' },
+                { name: 'Wide Load Escorts', slug: 'wide-load-escort', icon: '🛣️', desc: 'Single and multi-lane rolling roadblocks for extreme widths.' }
+              ].map((svc) => (
+                <Link
+                  key={svc.slug}
+                  href={`/services/${svc.slug}`}
+                  className="group block p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-accent/[0.05] hover:border-accent/30 transition-all ag-slide-up"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="text-4xl">{svc.icon}</div>
+                    <div>
+                      <h3 className="text-white font-bold text-lg group-hover:text-accent transition-colors mb-2">
+                        {svc.name}
+                      </h3>
+                      <p className="text-gray-400 text-sm leading-relaxed">
+                        {svc.desc}
+                      </p>
+                      <div className="mt-4 text-xs font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                        View Coverage →
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-8 pt-6 border-t border-white/10 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-gray-400 text-sm">Need a specific configuration?</span>
+              <Link href="/directory" className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-6 py-3 rounded-lg text-sm font-bold transition-colors">
+                Search All Operators
+              </Link>
+            </div>
+          </div>
+        </section>
+        </ScrollReveal>
+
         {/* State Protocols — Quick Access */}
         <ScrollReveal>
         <section className="py-10 sm:py-16 px-4 overflow-hidden">
@@ -505,6 +557,7 @@ export default async function HomePage() {
               <h4 className="text-white font-bold text-sm mb-3">Directory</h4>
               <div className="space-y-2 text-sm">
                 <Link href="/directory" className="block text-gray-500 hover:text-white transition-colors">Browse Directory</Link>
+                <Link href="/dictionary/us/pilot-car" className="block text-gray-500 hover:text-white transition-colors">Haul Command Dictionary</Link>
                 <Link href="/escort-requirements" className="block text-gray-500 hover:text-white transition-colors">Requirements</Link>
                 <Link href="/corridors" className="block text-gray-500 hover:text-white transition-colors">Corridors</Link>
                 <Link href="/countries" className="block text-gray-500 hover:text-white transition-colors">Countries</Link>

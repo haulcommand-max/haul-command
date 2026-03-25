@@ -91,13 +91,21 @@ function buildJsonLd(place: Place) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: place.name,
+    name: `${place.name} - ${categoryLabel(place.surface_category_key)} Near Me`,
     ...(place.description && { description: place.description }),
     ...(place.website && { url: place.website }),
     ...(place.phone && { telephone: place.phone }),
     address,
     ...(geo && { geo }),
-    ...(cc && { areaServed: { "@type": "Country", name: countryName(place.country_code) } }),
+    ...(cc && { areaServed: [{ "@type": "City", name: place.locality }, { "@type": "Country", name: countryName(place.country_code) }] }),
+    priceRange: "$$",
+    knowsAbout: [
+      "Oversize Load Escorts",
+      "Pilot Car Services",
+      "Route Surveys",
+      "Heavy Haul Regulations",
+      "Height Pole Operations"
+    ]
   };
 }
 
@@ -108,9 +116,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { data } = await sb.from("hc_places").select("name, surface_category_key, locality, admin1_code, country_code").eq("slug", slug).eq("status", "published").maybeSingle();
   if (!data) return { title: "Place Not Found" };
   const location = [data.locality, data.admin1_code, countryName(data.country_code)].filter(Boolean).join(", ");
+  const cat = categoryLabel(data.surface_category_key);
+  
   return {
-    title: `${data.name} — ${categoryLabel(data.surface_category_key)} in ${location} | HAUL COMMAND`,
-    description: `${data.name} provides ${categoryLabel(data.surface_category_key).toLowerCase()} services in ${location}. View contact info, capabilities, corridors, and claim this listing on Haul Command.`,
+    title: `${data.name} — Best ${cat} Near Me in ${location} | HAUL COMMAND`,
+    description: `Hire ${data.name} for top-rated ${cat.toLowerCase()} services near me in ${location}. View contact info, verified capabilities, oversize load experience, and corridors on Haul Command. Instant availability and rate quotes.`,
+    keywords: `${cat} near me, ${cat.toLowerCase()} in ${location}, best ${data.surface_category_key.replace('_', ' ')}, oversize load escort near me`,
   };
 }
 

@@ -21,17 +21,15 @@ export const metadata: Metadata = {
   },
   description: "Find pilot car operators, escort vehicles, and oversize load professionals across 57 countries. The world's largest directory for heavy haul transport.",
   keywords: [
-    'pilot car',
-    'escort vehicle',
-    'oversize load',
-    'heavy haul',
-    'wide load escort',
-    'pilot car service',
-    'escort vehicle directory',
-    'oversize load permit',
-    'heavy haul escort',
-    'route survey',
-    'superload escort',
+    // Core
+    'pilot car', 'escort vehicle', 'oversize load', 'heavy haul',
+    // Intent & Money (Near Me)
+    'pilot car near me', 'best escort vehicle operator', 'oversize load escort near me', 'heavy haul pilot car rates', 
+    'escort vehicle cost per mile', 'find local pilot car',
+    // Future & Autonomous
+    'autonomous vehicle escort', 'av test route escort', 'self-driving truck pilot car', 
+    // Industry & Compliance
+    'route survey', 'superload escort', 'height pole car', 'oversize permit restrictions', 'state curfew pilot car'
   ],
   authors: [{ name: 'Haul Command' }],
   creator: 'Haul Command',
@@ -60,6 +58,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: "pending-gsc-verification",
+    yandex: "yandex-verification-pending",
+    yahoo: "yahoo-site-verification-pending",
+    other: {
+      "msvalidate.01": "bing-verification-pending",
+      "baidu-site-verification": "baidu-verification-pending",
+    }
+  }
 };
 
 export default function RootLayout({

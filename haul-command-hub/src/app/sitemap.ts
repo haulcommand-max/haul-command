@@ -160,5 +160,64 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
         }
     }
 
-    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes];
+    // City × Service pages (~3,420 URLs)
+    const cityServiceRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap(c =>
+        c.cities.flatMap(city => {
+            const citySlug = city.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            return [
+                // City landing page
+                { url: `${siteUrl}/${c.slug}/city/${encodeURIComponent(citySlug)}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.6 },
+                // City × Service pages
+                ...SEO_SERVICES.map(svc => ({
+                    url: `${siteUrl}/${c.slug}/city/${encodeURIComponent(citySlug)}/${svc.slug}`,
+                    lastModified: now,
+                    changeFrequency: 'weekly' as const,
+                    priority: 0.5,
+                })),
+            ];
+        })
+    );
+
+    // 500+ Glossary term pages
+    let glossaryTerms: MetadataRoute.Sitemap = [];
+    try {
+        glossaryTerms = getAllTerms().map(t => ({
+            url: `${siteUrl}/dictionary/term/${t.id}`,
+            lastModified: now,
+            changeFrequency: 'monthly' as const,
+            priority: 0.6,
+        }));
+    } catch { /* glossary module may not be available */ }
+
+    // Dynamic routes from hc_page_keys (if Supabase available)
+    let dynamicRoutes: MetadataRoute.Sitemap = [];
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        try {
+            const supabase = supabaseServer();
+            const { data } = await supabase
+                .from("hc_page_keys")
+                .select("canonical_slug,updated_at")
+                .eq("indexable", true)
+                .eq("page_status", "active")
+                .order("updated_at", { ascending: false })
+                .limit(50000);
+            if (data) {
+                dynamicRoutes = data.map((row) => ({
+                    url: `${siteUrl}${row.canonical_slug}`,
+                    lastModified: row.updated_at,
+                }));
+            }
+        } catch { /* Supabase unavailable — skip dynamic routes */ }
+    }
+
+    return [
+        ...staticRoutes,
+        ...liveRegionRoutes,
+        ...countryRoutes,
+        ...serviceRoutes,
+        ...infraRoutes,
+        ...cityServiceRoutes,
+        ...glossaryTerms,
+        ...dynamicRoutes,
+    ];
 }

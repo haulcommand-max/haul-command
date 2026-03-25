@@ -24,27 +24,15 @@ export default function HaulCommandLogo({
   const { icon, height, wordmarkWidth } = sizes[size];
 
   const content = (
-    <span className={`flex items-center gap-2 ${className}`}>
-      {variant !== 'text-only' && (
-        <Image
-          src="/icon-transparent.png"
-          alt="Haul Command"
-          width={icon}
-          height={icon}
-          priority
-          className="object-contain"
-        />
-      )}
-      {variant !== 'icon' && (
-        <Image
-          src="/logo-full.png"
-          alt="Haul Command"
-          width={wordmarkWidth}
-          height={height}
-          priority
-          className="object-contain"
-        />
-      )}
+    <span className={`flex items-center justify-center ${className}`}>
+      <Image
+        src="/logo-transparent.png"
+        alt="Haul Command"
+        width={wordmarkWidth}
+        height={height}
+        priority
+        className="object-contain"
+      />
     </span>
   );
 
