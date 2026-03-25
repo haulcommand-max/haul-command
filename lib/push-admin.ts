@@ -11,6 +11,7 @@ async function getAdmin() {
   if (admin) return admin;
 
   try {
+    // @ts-ignore
     const firebaseAdmin = await import('firebase-admin');
 
     if (!firebaseAdmin.default.apps.length) {

@@ -15,8 +15,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { country: string } }): Promise<Metadata> {
-  const code = params.country.toLowerCase();
+export async function generateMetadata({ params }: { params: Promise<{ country: string }> }): Promise<Metadata> {
+  const { country } = await params;
+  const code = country.toLowerCase();
   const name = COUNTRY_NAMES[code] || code.toUpperCase();
 
   return {
@@ -28,8 +29,9 @@ export async function generateMetadata({ params }: { params: { country: string }
   };
 }
 
-export default async function PermitCheckerPage({ params }: { params: { country: string } }) {
-  const code = params.country.toLowerCase();
+export default async function PermitCheckerPage({ params }: { params: Promise<{ country: string }> }) {
+  const { country } = await params;
+  const code = country.toLowerCase();
   if (!ALL_COUNTRY_CODES.includes(code)) {
     notFound();
   }

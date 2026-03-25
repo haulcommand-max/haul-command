@@ -165,8 +165,6 @@ export default function OilfieldCorridorsPage() {
               borderRadius: 20, overflow: 'hidden',
               transition: 'border-color 0.2s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(255,149,0,0.3)')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}
             >
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -244,8 +242,6 @@ export default function OilfieldCorridorsPage() {
                   borderRadius: 16, padding: '18px 20px',
                   transition: 'border-color 0.2s',
                 }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(255,149,0,0.25)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <span style={{ fontSize: 28 }}>{lt.icon}</span>
