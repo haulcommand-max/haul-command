@@ -1,0 +1,92 @@
+[
+  {
+    "type": "Pilot Car (PEVO)",
+    "state": "Washington",
+    "provider": "Evergreen Safety Council (ESC)",
+    "description": "Required for all pilot car operators in Washington State. Valid for 3 years.",
+    "url": "https://www.esc.org/program/pilot-car/washington-online",
+    "format": "Online & In-Person",
+    "price": "$150 - $200"
+  },
+  {
+    "type": "Pilot Car (PEVO)",
+    "state": "Utah",
+    "provider": "Utah DOT / Associated Providers",
+    "description": "Required for all pilot car operations in Utah. Reciprocates with WA, CO, NC.",
+    "url": "https://www.udot.utah.gov",
+    "format": "Online",
+    "price": "$125 - $175"
+  },
+  {
+    "type": "Pilot Car (PEVO)",
+    "state": "Colorado",
+    "provider": "Colorado DOT / Associated Providers",
+    "description": "Required for all pilot car operations in Colorado.",
+    "url": "https://www.codot.gov",
+    "format": "Online",
+    "price": "$125 - $150"
+  },
+  {
+    "type": "Pilot Car (PEVO)",
+    "state": "New York",
+    "provider": "New York State DOT",
+    "description": "Required for all escort vehicles operating on state highways.",
+    "url": "https://www.dot.ny.gov",
+    "format": "In-Person",
+    "price": "Varies"
+  },
+  {
+    "type": "Pilot Car (PEVO)",
+    "state": "Florida",
+    "provider": "Florida DOT",
+    "description": "Certification required. Includes defensive driving and MOT components.",
+    "url": "https://www.fdot.gov",
+    "format": "Online & In-Person",
+    "price": "Varies"
+  },
+  {
+    "type": "Flagger",
+    "state": "Washington",
+    "provider": "Evergreen Safety Council (ESC)",
+    "description": "Washington State Flagger Certification. Valid for 3 years.",
+    "url": "https://www.esc.org/program/flagger/wa-state-certification",
+    "format": "Online & In-Person",
+    "price": "$75 - $100"
+  },
+  {
+    "type": "Flagger",
+    "state": "Idaho",
+    "provider": "Evergreen Safety Council (ESC)",
+    "description": "Idaho State Flagger Certification. Essential for traffic control.",
+    "url": "https://www.esc.org/program/flagger/idaho-certification",
+    "format": "Online",
+    "price": "$75 - $100"
+  },
+  {
+    "type": "Flagger",
+    "state": "National",
+    "provider": "ATSSA",
+    "description": "American Traffic Safety Services Association National Flagger Certification. Accepted in many states.",
+    "url": "https://www.atssa.com",
+    "format": "Online",
+    "price": "$100"
+  },
+  {
+    "type": "Specialized",
+    "state": "National",
+    "provider": "WITPAC (via ESC)",
+    "description": "Wind Industry Transportation Professional Advanced Certification. Required by major windmill manufacturers for escorts and drivers.",
+    "url": "https://www.esc.org/program/pilot-car/witpac",
+    "format": "In-Person (2 Days)",
+    "price": "$450"
+  },
+  {
+    "type": "Specialized",
+    "state": "National",
+    "provider": "Defensive Driving (ESC)",
+    "description": "EverSafe Defensive Driving Certification. Highly recommended for all heavy haul operators.",
+    "url": "https://www.esc.org/program/eversafe",
+    "format": "Online",
+    "price": "$50"
+  }
+]

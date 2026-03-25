@@ -72,6 +72,13 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
   [/^\/pilot-car-regulations\/([a-z-]+)$/, '/requirements/us'],
   [/^\/escort-regulations$/, '/requirements/us'],
   [/^\/regulations$/, '/requirements'],
+
+  // Certifications SEO capture
+  [/^\/certifications$/, '/tools/certifications'],
+  [/^\/certification$/, '/tools/certifications'],
+  [/^\/witpac$/, '/tools/certifications'],
+  [/^\/flagger$/, '/tools/certifications'],
+  [/^\/pilot-car-certification$/, '/tools/certifications'],
 ];
 
 export function proxy(request: NextRequest) {

@@ -62,6 +62,7 @@ const TOOL_SUITES = [
     icon: '🏨',
     tools: [
       { href: '/tools/hotel-finder',         icon: '🏨', title: 'Lodging & Truck Stops', desc: 'Hotels with pilot car rates + truck stops with showers, scales & WiFi', hot: true },
+      { href: '/tools/certifications',       icon: '🎓', title: 'Certification Finder', desc: 'Find PEVO, Flagger, and WITPAC training courses by state', hot: true },
     ],
   },
   {
