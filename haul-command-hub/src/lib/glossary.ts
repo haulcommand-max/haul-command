@@ -57,9 +57,11 @@ export type GlossaryCategory =
 import { HC_GLOSSARY_EXPANSION } from './glossary-expansion';
 
 import { MILITARY_ESC_TERMS } from './glossary-military-esc';
+import { INTERNATIONAL_TERMS } from './glossary-international';
 
 export const HC_GLOSSARY: GlossaryEntry[] = [
   ...MILITARY_ESC_TERMS,
+  ...INTERNATIONAL_TERMS,
 
   ...HC_GLOSSARY_EXPANSION,
 
