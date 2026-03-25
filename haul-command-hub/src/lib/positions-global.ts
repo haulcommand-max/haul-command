@@ -290,7 +290,7 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'law_enforcement',
     label_en: 'Local / Municipal Police Escort',
     description: 'City or county police providing escort through municipal jurisdictions, intersections, and urban areas.',
-    countries: ['US','CA','MX','BR','AR','CL','CO'],
+    countries: ['US','CA','MX','BR','AR','CL','CO','CR','PA','UY','PE'],
   },
   {
     id: 'traffic_police_eu',
@@ -298,7 +298,7 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     label_en: 'Traffic Police Escort (Europe)',
     label_local: 'Polizeibegleitung (DE) / Escorte de Police (FR)',
     description: 'National or regional traffic police providing escort for highest-category oversize loads. Mandatory above certain dimensional thresholds.',
-    countries: ['DE','FR','IT','ES','PT','AT','CH','NL','BE','PL','CZ','SK','HU','RO','BG','GR','HR','SI'],
+    countries: ['DE','FR','IT','ES','PT','AT','CH','NL','BE','PL','CZ','SK','HU','RO','BG','GR','HR','SI','EE','LV','LT'],
   },
   {
     id: 'traffic_police_gulf',
@@ -338,7 +338,7 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'traffic_control',
     label_en: 'Flagger / Traffic Controller',
     description: 'Certified flagger providing traffic control at intersections, construction zones, and tight turns during oversize moves.',
-    countries: ['US','CA','AU','NZ','GB','IE','ZA','DE','NL'],
+    countries: ['US','CA','AU','NZ','GB','IE','ZA','DE','NL','EE','LV','LT','HR','SI','BG','DK','FI'],
     certifications: ['Flagger certification (ATSSA/state)', 'Traffic controller ticket (AU/NZ)'],
   },
   {
@@ -353,14 +353,14 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'traffic_control',
     label_en: 'Intersection Controller',
     description: 'Manages traffic flow at specific intersections along the route, stopping cross-traffic as loads make wide turns.',
-    countries: ['US','CA','AU','GB','NZ','DE','NL','BE','FR','IT','ES','ZA','BR','MX','JP','KR'],
+    countries: ['US','CA','AU','GB','NZ','DE','NL','BE','FR','IT','ES','ZA','BR','MX','JP','KR','KW','OM','BH','DK','FI','PL','CZ','SK','HU','SI','HR','RO','BG','GR'],
   },
   {
     id: 'road_closure_crew',
     category: 'traffic_control',
     label_en: 'Road Closure / Rolling Block Crew',
     description: 'Team that performs rolling road closures and lane blocks for superloads occupying multiple lanes.',
-    countries: ['US','CA','AU','GB','DE','NL','FR','IT','JP','KR','AE','SA'],
+    countries: ['US','CA','AU','GB','DE','NL','FR','IT','JP','KR','AE','SA','KW','OM','BH','QA'],
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -414,21 +414,21 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'logistics',
     label_en: 'Permit Runner / Expediter',
     description: 'Procures oversize/overweight permits from DOTs, provincial agencies, or national transport authorities. Manages all regulatory paperwork and approvals.',
-    countries: ['US','CA','AU','GB','DE','NL','FR','IT','ES','BR','MX','ZA','NZ','IN','AE','SA','JP','KR'],
+    countries: ['US','CA','AU','GB','DE','NL','FR','IT','ES','BR','MX','ZA','NZ','IN','AE','SA','JP','KR','CL','AR','CO','PE','UY','PA','CR'],
   },
   {
     id: 'customs_broker',
     category: 'logistics',
     label_en: 'Customs Broker / Border Specialist',
     description: 'Manages customs clearance, bond documentation, and border crossing coordination for international oversize shipments.',
-    countries: ['US','CA','MX','AU','NZ','GB','IE','DE','NL','BE','FR','AT','CH','BR','AR','CL','CO','AE','SA','IN','JP','KR','SG','MY','TH'],
+    countries: ['US','CA','MX','AU','NZ','GB','IE','DE','NL','BE','FR','AT','CH','BR','AR','CL','CO','AE','SA','IN','JP','KR','SG','MY','TH','PA','CR','UY','PE','EE','LV','LT'],
   },
   {
     id: 'port_coordinator',
     category: 'logistics',
     label_en: 'Port Logistics Coordinator',
     description: 'Coordinates port-to-site or site-to-port logistics for oversize cargo arriving/departing via maritime shipping. Manages stevedoring, lay-down areas, and port exit routing.',
-    countries: ['US','CA','AU','GB','NL','DE','BE','FR','IT','ES','BR','MX','AE','SA','IN','JP','KR','ZA','NZ','SG','TH','VN','PH','ID','CL','AR','CO','PE'],
+    countries: ['US','CA','AU','GB','NL','DE','BE','FR','IT','ES','BR','MX','AE','SA','IN','JP','KR','ZA','NZ','SG','TH','VN','PH','ID','CL','AR','CO','PE','UY','PA','CR','EE','LV','LT'],
   },
   {
     id: 'utility_coordinator',
@@ -468,14 +468,14 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'safety',
     label_en: 'Safety Officer / Spotter',
     description: 'On-site safety management for superloads. Provides real-time hazard identification, coordinates crew safety, and ensures regulatory compliance.',
-    countries: ['US','CA','AU','GB','DE','FR','NZ','ZA','BR','NL','BE','AE','SA','IN','JP','IT','ES','MX'],
+    countries: ['US','CA','AU','GB','DE','FR','NZ','ZA','BR','NL','BE','AE','SA','IN','JP','IT','ES','MX','EE','LV','LT','UY','PA','CR'],
   },
   {
     id: 'load_inspector',
     category: 'safety',
     label_en: 'Load Securement Inspector',
     description: 'Inspects chains, binders, straps, and blocking/bracing before departure. Verifies compliance with DOT/national securement standards.',
-    countries: ['US','CA','AU','GB','DE','NL','NZ','ZA','BR','MX','FR','IT','IN','JP','KR','AE'],
+    countries: ['US','CA','AU','GB','DE','NL','NZ','ZA','BR','MX','FR','IT','IN','JP','KR','AE','EE','LV','LT','UY','PA','CR'],
     certifications: ['FMCSA securement (US)', 'Chain of Responsibility (AU)'],
   },
   {
@@ -483,7 +483,7 @@ export const GLOBAL_POSITIONS: GlobalPosition[] = [
     category: 'safety',
     label_en: 'DOT / Regulatory Compliance Officer',
     description: 'Ensures all transport documentation, permits, vehicle inspections, driver qualifications, and load configurations meet regulatory requirements.',
-    countries: ['US','CA','AU','GB','DE','NL','FR','NZ','ZA','IT','ES','BR','MX','IN','JP','AE','SA'],
+    countries: ['US','CA','AU','GB','DE','NL','FR','NZ','ZA','IT','ES','BR','MX','IN','JP','AE','SA','KW','OM','BH','QA','PL','CZ','SK','HU','SI','HR','RO','BG','GR','DK','FI'],
   },
   {
     id: 'environmental_monitor',
