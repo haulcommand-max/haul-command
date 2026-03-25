@@ -1,0 +1,44 @@
+{
+  "curfews": {
+    "TX": {
+      "weekend": "No travel from 30 mins after sunset Friday to 30 mins before sunrise Monday for loads over 14' wide.",
+      "holidays": ["New Year's Day", "Memorial Day", "Independence Day", "Labor Day", "Thanksgiving", "Christmas"],
+      "holiday_rules": "No travel from noon the day before the holiday until 30 mins before sunrise the day after.",
+      "metro_restrictions": {
+        "Houston": "No travel 6:00 AM - 9:00 AM and 4:00 PM - 7:00 PM on weekdays.",
+        "Dallas": "No travel 6:30 AM - 9:00 AM and 4:00 PM - 6:30 PM on weekdays."
+      }
+    },
+    "FL": {
+      "weekend": "No travel from 12:00 PM (noon) Saturday to 30 mins before sunrise Monday for all permitted loads.",
+      "holidays": ["New Year's Day", "Memorial Day", "Independence Day", "Labor Day", "Thanksgiving", "Christmas"],
+      "holiday_rules": "No travel authorized on specified holidays. Travel resumes next business day at sunrise.",
+      "metro_restrictions": {}
+    },
+    "CA": {
+      "weekend": "Travel permitted on weekends unless restricted by specific route conditions (e.g., LA Basin).",
+      "holidays": ["New Year's Day", "Memorial Day", "Independence Day", "Labor Day", "Thanksgiving", "Christmas"],
+      "holiday_rules": "No travel allowed from 6:00 AM on the holiday until 12:01 AM the following day.",
+      "metro_restrictions": {
+        "Los Angeles Area": "No travel 6:00 AM - 9:00 AM and 3:00 PM - 6:00 PM.",
+        "San Francisco Bay Area": "No travel 6:30 AM - 8:30 AM and 3:30 PM - 6:30 PM."
+      }
+    },
+    "WA": {
+      "weekend": "No travel allowed on weekends for loads exceeding 10' wide or 14'6\" high.",
+      "holidays": ["New Year's Day", "Memorial Day", "Independence Day", "Labor Day", "Thanksgiving", "Christmas"],
+      "holiday_rules": "No travel from noon the day before the holiday until noon the day after the holiday.",
+      "metro_restrictions": {
+        "Seattle & King County": "No travel 6:00 AM - 9:00 AM and 3:00 PM - 6:00 PM on I-5."
+      }
+    },
+    "NY": {
+      "weekend": "No travel from noon Friday to sunrise Monday.",
+      "holidays": ["New Year's Day", "Memorial Day", "Independence Day", "Labor Day", "Thanksgiving", "Christmas"],
+      "holiday_rules": "No movement allowed from 12:00 noon the day before a holiday until sunrise the day after.",
+      "metro_restrictions": {
+        "New York City": "All movement handled by NYC DOT with specific night-time routing. Day travel severely restricted."
+      }
+    }
+  }
+}

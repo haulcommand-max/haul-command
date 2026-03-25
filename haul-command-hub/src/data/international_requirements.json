@@ -1,0 +1,46 @@
+{
+  "international": {
+    "mexico": {
+      "country_code": "MX",
+      "general": "Permits issued by SCT (Secretaría de Comunicaciones y Transportes). Specialized federal plates required.",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.1 meters (10.1 feet)",
+      "escort_trigger_length": "20.0 meters (65.6 feet)",
+      "axle_weights": {
+        "single": "10.0 tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "22.5 tonnes"
+      },
+      "weekend_travel": "Federally restricted from sunset Friday to sunrise Monday.",
+      "notes": "Customs broker strictly required for US-MX border crossings."
+    },
+    "uae": {
+      "country_code": "AE",
+      "general": "Permits issued by MoEI (Ministry of Energy and Infrastructure) or local RTA (e.g., Dubai).",
+      "max_width_without_escort": "2.6 meters (8.5 feet)",
+      "escort_trigger_width": "3.0 meters (9.8 feet)",
+      "escort_trigger_length": "18.0 meters (59 feet)",
+      "axle_weights": {
+        "single": "13.0 tonnes",
+        "tandem": "21.0 tonnes",
+        "tridem": "26.0 tonnes"
+      },
+      "weekend_travel": "Friday prayer restrictions apply. Typically allowed otherwise outside peak hours.",
+      "notes": "Police escort heavily regulated and required for loads >4.0 meters wide."
+    },
+    "germany": {
+      "country_code": "DE",
+      "general": "VEMAGS system for Großraum- und Schwertransporte. § 29 StVO permits.",
+      "max_width_without_escort": "2.55 meters (8.36 feet)",
+      "escort_trigger_width": "3.0 meters (BF3 required)",
+      "escort_trigger_length": "20.0 meters",
+      "axle_weights": {
+        "single": "10.0. tonnes",
+        "tandem": "18.0 tonnes",
+        "tridem": "24.0 tonnes"
+      },
+      "weekend_travel": "Banned on Autobahns from Friday 15:00 to Monday 09:00.",
+      "notes": "Police escorts often substituted by private BF4 certified escort vehicles."
+    }
+  }
+}

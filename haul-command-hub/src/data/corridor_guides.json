@@ -1,0 +1,56 @@
+[
+  {
+    "corridor_id": "tx-to-fl",
+    "route_name": "Texas to Florida Oversize Load Corridor Guide",
+    "distance": "1,350+ Miles",
+    "states_crossed": ["TX", "LA", "MS", "AL", "FL"],
+    "summary": "This I-10 corridor is the most active heavy haul route connecting the Gulf Coast industrial sectors to Florida's booming infrastructure market. Transporting transformers, construction equipment, and marine vessels requires deep knowledge of five distinct DOT regulations.",
+    "key_challenges": [
+      {
+        "title": "Louisiana Night Permitting & Escort Swaps",
+        "description": "Crossing into Louisiana from Texas introduces strict night travel bans. Loads exceeding 12 feet wide require daytime movement only. Escort handoffs frequently happen at the Beaumont/Lake Charles line due to certification requirements."
+      },
+      {
+        "title": "Mobile, AL Tunnel Restrictions",
+        "description": "Hazardous materials and oversize loads over 14 feet wide face heavy restrictions near the George Wallace Tunnel on I-10. Re-routing via I-65 and the Africatown bridge is mandatory, adding significant time."
+      },
+      {
+        "title": "Florida Ag Station Clearances",
+        "description": "All commercial vehicles must clear the Florida Agricultural Inspection stations. Failure to pre-clear oversized loads with wide turning radii can lead to hour-long bottlenecks."
+      }
+    ],
+    "permit_economics": {
+      "avg_total_fees": "$350 - $480",
+      "max_lead_time": "3-5 Days (LA & MS)",
+      "superload_impact": "Superloads on this route can see permit fees jump to $1,500+ due to structural bridge analysis required crossing the Atchafalaya Basin Bridge."
+    },
+    "seo_keywords": ["I-10 oversize routing", "Texas to Florida heavy haul", "Louisiana oversize permits", "escort rules TX to FL", "superload permits AL"]
+  },
+  {
+    "corridor_id": "ca-to-wa",
+    "route_name": "California to Washington West Coast Corridor Guide",
+    "distance": "1,100+ Miles",
+    "states_crossed": ["CA", "OR", "WA"],
+    "summary": "The I-5 corridor moves primarily aerospace, wind energy components, and heavy timber equipment. It presents unique topographical challenges, chain requirements in winter, and hyper-strict environmental and size constraints in California and Oregon.",
+    "key_challenges": [
+      {
+        "title": "Siskiyou Pass Elevations",
+        "description": "Crossing the CA/OR border introduces extreme elevation changes and weather volatility. During winter months, heavy haul operators must calculate chain-up delays and traction requirements."
+      },
+      {
+        "title": "Oregon Weight Taxation",
+        "description": "Oregon does not participate in the IFTA in the same way, requiring heavy vehicle use tax permits per trip. Their scale enforcement is the strictest on the I-5 corridor."
+      },
+      {
+        "title": "Washington Tacoma/Seattle Curfews",
+        "description": "Approaching Seattle, WA mandates strict travel curfews. Loads exceeding 10 feet wide are banned from I-5 through King and Pierce counties during 6:00-9:00 AM and 3:00-6:00 PM."
+      }
+    ],
+    "permit_economics": {
+      "avg_total_fees": "$121 - $210",
+      "max_lead_time": "10 Days (CA Caltrans)",
+      "superload_impact": "CA Caltrans takes exceptionally long for superload approval. Expect 14-21 days for anything exceeding 15 feet width."
+    },
+    "seo_keywords": ["I-5 heavy haul route", "California to Washington oversize permits", "Siskiyou Pass towing", "Oregon heavy vehicle tax", "Seattle travel curfew"]
+  }
+]
