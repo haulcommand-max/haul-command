@@ -1,9 +1,9 @@
 /**
  * GET /api/cron/boost-expiry
  *
- * Cron job to expire ad boosts that have passed their end_date.
+ * Cron job to expire ad boosts that have passed their expires_at.
  * Runs every 6 hours via Vercel Cron.
- * Updates status from 'active' to 'expired' and cleans listing flags.
+ * Updates status from 'active' to 'expired'.
  */
 
 import { NextResponse } from 'next/server';
@@ -27,11 +27,13 @@ export async function GET(request: Request) {
     const sb = supabaseServer();
 
     // ── Step 1: Find expired ad_boosts ──────────────────────────────────
+    // Schema: id, profile_id, duration_days, amount_cents, stripe_session_id,
+    //         status, starts_at, expires_at, created_at
     const { data: expired, error: findErr } = await sb
       .from('ad_boosts')
-      .select('id, operator_id, listing_id')
+      .select('id, profile_id')
       .eq('status', 'active')
-      .lt('end_date', now);
+      .lt('expires_at', now);
 
     if (findErr) {
       console.error('[Boost Expiry] Query error on ad_boosts:', findErr.message, findErr.details);
@@ -53,23 +55,9 @@ export async function GET(request: Request) {
       }
 
       expiredBoostCount = ids.length;
-
-      // ── Step 3: Downgrade listing flags (non-fatal) ────────────────────
-      const listingIds = [...new Set(expired.map(b => b.listing_id).filter(Boolean))];
-      if (listingIds.length > 0) {
-        const { error: listingErr } = await sb
-          .from('listings')
-          .update({ is_boosted: false, boost_tier: null })
-          .in('id', listingIds);
-
-        if (listingErr) {
-          // Non-fatal — log but continue
-          console.warn('[Boost Expiry] Listing downgrade warning:', listingErr.message);
-        }
-      }
     }
 
-    // ── Step 4: Also expire AdGrid campaigns ─────────────────────────────
+    // ── Step 3: Also expire AdGrid campaigns ─────────────────────────────
     const { data: expiredCampaigns, error: campErr } = await sb
       .from('adgrid_campaigns')
       .select('id')
@@ -107,4 +95,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unexpected server error', details: message }, { status: 500 });
   }
 }
-

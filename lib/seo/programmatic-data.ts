@@ -45,9 +45,10 @@ export async function getCityData(country: string, state: string, citySlug: stri
     const supabase = supabaseServer();
     const cityName = citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
 
+    // DB schema uses `latitude` / `longitude`, not `lat` / `lng`
     const { data, error } = await supabase
         .from("directory_listings")
-        .select("city,lat,lng")
+        .select("city,latitude,longitude")
         .ilike("country_code", country)
         .ilike("region_code", state)
         .ilike("city", cityName)
@@ -79,8 +80,8 @@ export async function getCityData(country: string, state: string, citySlug: stri
         country,
         state,
         city: data.city ?? cityName,
-        lat: Number(data.lat ?? 0),
-        lng: Number(data.lng ?? 0),
+        lat: Number(data.latitude ?? 0),
+        lng: Number(data.longitude ?? 0),
         slug: citySlug,
         nearbyCities,
     };
