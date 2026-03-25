@@ -3,6 +3,7 @@ import { COUNTRIES } from "@/lib/seo-countries";
 import { SEO_SERVICES } from "@/lib/seo-countries";
 import { INFRASTRUCTURE_TYPES } from "@/lib/hc-loaders/infrastructure";
 import type { MetadataRoute } from "next";
+import { getAllTerms } from "@/lib/glossary";
 
 export const dynamic = "force-dynamic";
 
@@ -105,6 +106,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // Dynamic routes from hc_page_keys (if Supabase available)
+    
+    // 500+ Glossary Programmatic Sitemaps
+    const glossaryTerms: MetadataRoute.Sitemap = getAllTerms().map(t => ({ url: \/dictionary/term/\, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.6 }));
+
     let dynamicRoutes: MetadataRoute.Sitemap = [];
     if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
         try {
@@ -128,5 +133,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes, ...dynamicRoutes];
+    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes, ...glossaryTerms, ...dynamicRoutes];
 }
