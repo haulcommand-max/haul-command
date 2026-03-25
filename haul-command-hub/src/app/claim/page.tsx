@@ -44,11 +44,11 @@ export default async function ClaimPage() {
 
         <header className="mb-8 sm:mb-10 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
-            Claim Your <span className="text-accent">Listing</span>
+            Claim Your <span className="text-accent">Tier A Listing</span>
           </h1>
-          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-xl mx-auto break-words">
-            Take ownership of your business profile on the world&apos;s largest pilot car and escort vehicle directory.
-            Claiming is free. Verification unlocks premium features.
+          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl mx-auto break-words">
+            We are actively recruiting operators from our Phase 1 expansion block (US, CA, AU, GB, NZ, ZA, DE, NL, AE, BR).
+            Take ownership of your profile on the world's first global oversize OS. Verification unlocks direct multi-currency payments.
           </p>
           {unclaimedCount > 0 && (
             <div className="mt-4 inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5">
@@ -158,10 +158,10 @@ export default async function ClaimPage() {
         <HCFaqModule
           items={[
             { question: 'Is claiming free?', answer: 'Yes, claiming your listing is completely free. Premium features like boost credits and enhanced analytics are available through paid plans, but the core claim and verification is always free.' },
-            { question: 'How long does verification take?', answer: 'Phone verification is instant — you\'ll receive a code via call or SMS. Document verification (for enhanced trust badges) typically takes 1-2 business days.' },
-            { question: 'What if my business isn\'t listed yet?', answer: 'You can add your business directly through the claim flow. We\'ll create your profile and you can claim it immediately.' },
-            { question: 'Can I remove my listing?', answer: 'Yes. You can request listing removal at any time through our Remove Listing page. We comply with all applicable privacy regulations.' },
-            { question: 'How many operators are on Haul Command?', answer: `Our directory includes ${unclaimedCount > 0 ? unclaimedCount.toLocaleString() : 'thousands of'} listings across 57 countries. Most listings are unclaimed — which means there\'s a huge opportunity for operators who claim early.` },
+            { question: 'When will other countries be added?', answer: 'We are currently running the "Claim Campaign" for our 10 Tier A countries (US, Canada, Australia, UK, New Zealand, South Africa, Germany, Netherlands, UAE, Brazil). Tier B and C will unlock progressively.' },
+            { question: 'What if my business isn\'t listed yet?', answer: 'If you operate inside a Tier A country, you can add your business directly through the claim flow. We\'ll create your profile and you can claim it immediately.' },
+            { question: 'Can I route multi-currency loads?', answer: 'Yes. Upon claiming, operators can accept loads globally using our automated 30-day currency conversion index.' },
+            { question: 'How many operators are on Haul Command?', answer: `Our directory tracks ${unclaimedCount > 0 ? unclaimedCount.toLocaleString() : 'thousands of'} nodes across 57 countries. Claiming early grants dominant lane positioning during the global rollout.` },
           ]}
         />
 
