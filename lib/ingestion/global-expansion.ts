@@ -1,4 +1,4 @@
-import { createAdminClient } from '../supabase/admin';
+import { getSupabaseAdmin } from '../supabase/admin';
 
 export async function generateSearchKeywordsForRegion(countryCode: string) {
     // Phase 1 (FASTEST SCALE)
@@ -20,7 +20,7 @@ export async function generateSearchKeywordsForRegion(countryCode: string) {
 }
 
 export async function queueGlobalExpansionTasks(countryCodes: string[]) {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     const tasks = [];
 
@@ -53,7 +53,7 @@ export async function queueGlobalExpansionTasks(countryCodes: string[]) {
 }
 
 export async function phaseThreeGraphExpansion(entityId: string) {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // Pull from entities
     const { data: operator } = await supabase

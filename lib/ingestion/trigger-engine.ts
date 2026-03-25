@@ -1,7 +1,7 @@
-import { createAdminClient } from '../supabase/admin';
+import { getSupabaseAdmin } from '../supabase/admin';
 
 export async function processClaimTriggers() {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // 1. Find all newly scraped entities that haven't been claimed yet
     const { data: pendingClaims, error } = await supabase
@@ -41,7 +41,7 @@ export async function processClaimTriggers() {
 }
 
 export async function enrichEntityProfile(entityId: string) {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // Get basic operator details
     const { data: entity, error } = await supabase

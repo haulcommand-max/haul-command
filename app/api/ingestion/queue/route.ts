@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processCrawlJob } from '../../../../lib/ingestion/global-crawler';
 import { aiExtractFromText, AgentExtractionResult } from '../../../../lib/ingestion/ai-extractor';
 import { matchAndInsertEntity } from '../../../../lib/ingestion/dedupe-engine';
-import { createAdminClient } from '../../../../lib/supabase/admin';
+import { getSupabaseAdmin } from '../../../../lib/supabase/admin';
 
 // Vercel max duration for Cron
 export const maxDuration = 300; // 5 minutes
 
 export async function POST(req: NextRequest) {
     try {
-        const supabase = createAdminClient();
+        const supabase = getSupabaseAdmin();
 
         // 1. Fetch pending crawl jobs from the queue (limit 5 for time)
         const { data: jobs, error } = await supabase

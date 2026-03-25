@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 import crypto from 'crypto';
-import { createAdminClient } from '../supabase/admin';
+import { getSupabaseAdmin } from '../supabase/admin';
 
 export interface CrawlResult {
     url: string;
@@ -120,7 +120,7 @@ export async function crawlPage(targetUrl: string): Promise<CrawlResult> {
  * Orchestrates a queue item: fetches, updates state, writes new discovered links.
  */
 export async function processCrawlJob(queueId: string) {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // 1. Lock job
     const { data: job, error: updateErr } = await supabase

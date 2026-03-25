@@ -1,4 +1,4 @@
-import { createAdminClient } from '../supabase/admin';
+import { getSupabaseAdmin } from '../supabase/admin';
 import type { AgentExtractionResult } from './ai-extractor';
 
 /**
@@ -9,7 +9,7 @@ export async function matchAndInsertEntity(
     extracted: AgentExtractionResult, 
     sourceUrl: string
 ): Promise<void> {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     for (const ent of extracted.entities) {
         // Step 1: Normalize key matching fields

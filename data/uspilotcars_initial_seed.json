@@ -1,0 +1,39 @@
+{
+  "seedOperators": [
+    {
+      "companyName": "C B PILOTING SERVICES, LLC",
+      "phoneNumbers": [
+        "479-670-2176",
+        "(631) 669-3742",
+        "866-259-2750",
+        "318-432-4270",
+        "806-372-1425",
+        "806-273-9556",
+        "806-935-0212"
+      ],
+      "emails": [],
+      "serviceRegions": [
+        "US",
+        "NY",
+        "WA",
+        "TX"
+      ],
+      "certifications": [
+        "NY Cert",
+        "TX Flagging Cert"
+      ],
+      "outboundLinks": [],
+      "sourceUrl": "https://uspilotcars.com/"
+    }
+  ],
+  "outboundExpansionQueueLength": 7,
+  "outboundExpansionQueue": [
+    "https://www.facebook.com/USPCars/",
+    "http://vidaliadispatch.com",
+    "https://www.cayias.com/",
+    "http://na-pcs.com",
+    "http://www.rc-websitedesign.com",
+    "https://www.mypevo.com/",
+    "http://www.pilotsforoversize.com/"
+  ]
+}

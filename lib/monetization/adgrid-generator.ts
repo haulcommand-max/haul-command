@@ -1,4 +1,4 @@
-import { createAdminClient } from '../../supabase/admin';
+import { getSupabaseAdmin } from '../../supabase/admin';
 
 /**
  * AdGrid Monetization Engine 
@@ -6,7 +6,7 @@ import { createAdminClient } from '../../supabase/admin';
  * targeted advertising opportunities and market gaps.
  */
 export async function generateCoverageHeatmap() {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // 1. Group entities by Region to find density
     const { data: regions, error } = await supabase
@@ -45,7 +45,7 @@ export async function generateCoverageHeatmap() {
  * Targets operators in highly competitive regions to sell Dominance/AdGrid placements
  */
 export async function triggerAdGridUpsell(region: string) {
-    const supabase = createAdminClient();
+    const supabase = getSupabaseAdmin();
 
     // Find all operators in a competitive region who don't have premium
     const { data: operators, error } = await supabase
