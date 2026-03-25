@@ -20,7 +20,11 @@ export default function Navbar() {
         <div className="flex justify-between h-14 sm:h-16 items-center min-w-0">
           <div className="flex items-center gap-2 sm:gap-4">
             <Link href="/" className="flex items-center py-1">
-              <img src="/logo-full.png" alt="Haul Command" className="h-[52px] sm:h-[72px] w-auto object-contain" />
+              <img 
+                src="/logo-full.png" 
+                alt="Haul Command" 
+                className="h-[52px] sm:h-[72px] w-auto object-contain mix-blend-screen contrast-125 brightness-110 drop-shadow-[0_0_10px_rgba(255,200,0,0.2)]" 
+              />
             </Link>
             <RoleSwitcher />
           </div>
