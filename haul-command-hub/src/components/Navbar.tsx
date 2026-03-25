@@ -18,9 +18,9 @@ export default function Navbar() {
     <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50 overflow-hidden max-w-full">
       <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex justify-between h-14 sm:h-16 items-center min-w-0">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/" className="flex items-center">
-              <img src="/logo-full.png" alt="Haul Command" className="h-[36px] w-[36px] md:w-auto object-contain" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/" className="flex items-center py-1">
+              <img src="/logo-full.png" alt="Haul Command" className="h-[52px] sm:h-[72px] w-auto object-contain" />
             </Link>
             <RoleSwitcher />
           </div>
