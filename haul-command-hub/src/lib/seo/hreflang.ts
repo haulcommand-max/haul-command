@@ -78,10 +78,23 @@ export function generateCityServiceHreflang(
     const languages: Record<string, string> = {};
 
     for (const c of COUNTRIES) {
-        languages[toHreflang(c)] = `${BASE_URL}/${c.slug}/${citySlug}/${serviceSlug}`;
+        languages[toHreflang(c)] = `${BASE_URL}/${c.slug}/city/${citySlug}/${serviceSlug}`;
     }
 
     languages['x-default'] = `${BASE_URL}/countries`;
+
+    return languages;
+}
+
+// ─── Dictionary Term hreflang ───
+export function generateDictionaryTermHreflang(termId: string): Record<string, string> {
+    const languages: Record<string, string> = {};
+
+    for (const c of COUNTRIES) {
+        languages[toHreflang(c)] = `${BASE_URL}/dictionary/${c.slug}/${termId}`;
+    }
+
+    languages['x-default'] = `${BASE_URL}/dictionary`;
 
     return languages;
 }

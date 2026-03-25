@@ -7,11 +7,68 @@ import { getAllTerms } from "@/lib/glossary";
 
 export const dynamic = "force-dynamic";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function generateSitemaps() {
+  return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
+}
+
+export default async function sitemap({ id = 0 }: { id?: number }): Promise<MetadataRoute.Sitemap> {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://haulcommand.com";
     const now = new Date();
 
-    // Static core routes
+    // ─── ID 1: 28,500-page Dictionary SEO Factory ───
+    if (id === 1) {
+        const terms = getAllTerms();
+        return terms.flatMap((t) =>
+            COUNTRIES.map((c) => ({
+                url: `${siteUrl}/dictionary/${c.slug}/${t.id}`,
+                lastModified: now,
+                changeFrequency: 'monthly' as const,
+                priority: 0.6,
+            }))
+        );
+    }
+
+    // ─── ID 2: 4,500 City-Level Landing Pages ───
+    if (id === 2) {
+        return COUNTRIES.flatMap((c) =>
+            c.cities.flatMap((city) =>
+                SEO_SERVICES.map((svc) => ({
+                    url: `${siteUrl}/${c.slug}/city/${encodeURIComponent(city.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}/${svc.slug}`,
+                    lastModified: now,
+                    changeFrequency: 'weekly' as const,
+                    priority: 0.6,
+                }))
+            )
+        );
+    }
+
+    // ─── ID 3: Dynamic routes from Supabase ───
+    if (id === 3) {
+        if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+            try {
+                const supabase = supabaseServer();
+                const { data } = await supabase
+                    .from("hc_page_keys")
+                    .select("canonical_slug,updated_at")
+                    .eq("indexable", true)
+                    .eq("page_status", "active")
+                    .order("updated_at", { ascending: false })
+                    .limit(50000);
+
+                if (data) {
+                    return data.map((row) => ({
+                        url: `${siteUrl}${row.canonical_slug}`,
+                        lastModified: row.updated_at,
+                    }));
+                }
+            } catch {
+                return [];
+            }
+        }
+        return [];
+    }
+
+    // ─── ID 0: Core Static & Matrix Routes ───
     const staticRoutes: MetadataRoute.Sitemap = [
         { url: siteUrl, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
         { url: `${siteUrl}/directory`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
@@ -88,7 +145,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${siteUrl}/rates/${c.slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     ]);
 
-    // Service × Country matrix
     const serviceRoutes: MetadataRoute.Sitemap = [];
     for (const svc of SEO_SERVICES) {
         serviceRoutes.push({ url: `${siteUrl}/services/${svc.slug}`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 });
@@ -97,7 +153,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    // Infrastructure × Country matrix
     const infraRoutes: MetadataRoute.Sitemap = [];
     for (const infra of INFRASTRUCTURE_TYPES) {
         for (const c of COUNTRIES) {
@@ -105,33 +160,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    // Dynamic routes from hc_page_keys (if Supabase available)
-    
-    // 500+ Glossary Programmatic Sitemaps
-    const glossaryTerms: MetadataRoute.Sitemap = getAllTerms().map(t => ({ url: `${siteUrl}/dictionary/term/${t.id}`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.6 }));
-
-    let dynamicRoutes: MetadataRoute.Sitemap = [];
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        try {
-            const supabase = supabaseServer();
-            const { data } = await supabase
-                .from("hc_page_keys")
-                .select("canonical_slug,updated_at")
-                .eq("indexable", true)
-                .eq("page_status", "active")
-                .order("updated_at", { ascending: false })
-                .limit(50000);
-
-            if (data) {
-                dynamicRoutes = data.map((row) => ({
-                    url: `${siteUrl}${row.canonical_slug}`,
-                    lastModified: row.updated_at,
-                }));
-            }
-        } catch {
-            // Supabase unavailable — skip dynamic routes
-        }
-    }
-
-    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes, ...glossaryTerms, ...dynamicRoutes];
+    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...serviceRoutes, ...infraRoutes];
 }

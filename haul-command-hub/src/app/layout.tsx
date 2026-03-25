@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { RoleProvider } from "@/lib/role-context";
 import CookieConsent from "@/components/CookieConsent";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -91,6 +92,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased selection:bg-accent selection:text-accent-foreground overflow-x-hidden max-w-full min-w-0`}
       >
+        <ServiceWorkerRegister />
         <RoleProvider>
           <OrganizationSchema />
           <WebSiteSchema />
