@@ -126,7 +126,7 @@ export default function RoleSelector() {
       {/* Ad Grid Button */}
       <div className="mt-6 sm:mt-8 flex justify-center">
         <Link
-          href="/ad-grid"
+          href="/advertise"
           className="group relative flex w-full max-w-sm items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#1A73E8] px-6 py-4 text-white shadow-[0_0_20px_rgba(26,115,232,0.3)] transition-all hover:scale-[1.02] hover:bg-[#155fc2] hover:shadow-[0_0_30px_rgba(26,115,232,0.5)]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-500 group-hover:animate-[shimmer_2s_infinite] group-hover:opacity-100" />
