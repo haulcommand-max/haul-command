@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         dateNeeded: date_needed || 'TBD',
         holdId: hold.id,
     });
-    trySendNotification({ userId: operator_id, ...fcmHold }).catch(() => {});
+    trySendNotification({ userId: operator_id, ...fcmHold }).then(()=>{});
 
     // Queue push notification to operator (fallback)
     try {

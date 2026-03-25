@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { country: string };
-  searchParams: { q?: string; state?: string; page?: string };
+  params: Promise<{ country: string }>;
+  searchParams: Promise<{ q?: string; state?: string; page?: string }>;
 }
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -33,7 +33,8 @@ const US_STATES = [
 const PAGE_SIZE = 48;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const country = params.country.toLowerCase();
+  const { country: rawCountry } = await params;
+  const country = rawCountry.toLowerCase();
   const countryName = COUNTRY_NAMES[country] ?? country.toUpperCase();
   return {
     title: `${countryName} Escort Operators | Haul Command`,
@@ -42,15 +43,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CountryDirectoryPage({ params, searchParams }: Props) {
-  const country = params.country.toLowerCase();
+  const { country: rawCountry } = await params;
+  const country = rawCountry.toLowerCase();
   const countryName = COUNTRY_NAMES[country];
   if (!countryName) notFound();
 
   const isUS = country === 'us';
   const supabase = createClient();
-  const page = Math.max(parseInt(searchParams.page ?? '1'), 1);
-  const q = searchParams.q ?? '';
-  const stateFilter = searchParams.state?.toUpperCase() ?? '';
+  const sp = await searchParams;
+  const page = Math.max(parseInt(sp.page ?? '1'), 1);
+  const q = sp.q ?? '';
+  const stateFilter = sp.state?.toUpperCase() ?? '';
   const offset = (page - 1) * PAGE_SIZE;
 
   // Build query on listings (single source of truth)

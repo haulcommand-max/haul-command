@@ -121,7 +121,7 @@ export async function POST(
       broker_id: brokerId,
       escort_ids: escorts,
       payment_captured: paymentCaptured,
-    }).catch(() => {});
+    }).then(()=>{});
   }
 
   // ── 6. Deactivate tracking ──
@@ -149,13 +149,13 @@ export async function POST(
   BookingEvents.jobCompleted(brokerId || 'system', {
     job_id: jobId,
     payment_captured: paymentCaptured,
-  }).catch(() => {});
+  }).then(()=>{});
 
   for (const escortId of escorts) {
     BookingEvents.payoutReady(escortId, {
       job_id: jobId,
       amount_cents: (jobData.net_payout_cents || 0) / escorts.length,
-    }).catch(() => {});
+    }).then(()=>{});
   }
 
   return NextResponse.json({

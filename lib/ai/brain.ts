@@ -36,7 +36,7 @@ function claude(): Anthropic {
   return _claude;
 }
 
-function gemini(): GoogleGenAI {
+export function gemini(): GoogleGenAI {
   if (!_gemini) {
     if (!process.env.GEMINI_API_KEY) throw new Error('Missing GEMINI_API_KEY');
     _gemini = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -163,9 +163,9 @@ export async function see(
 
   const res = await gemini().models.generateContent({
     model,
-    systemInstruction,
     contents: [{ role: 'user', parts }],
     config: {
+      systemInstruction,
       maxOutputTokens: opts.maxTokens ?? (tier === 'nano' ? 500 : tier === 'fast' ? 2000 : 8192),
       temperature: opts.temperature ?? (opts.json ? 0 : 0.7),
       tools: tools.length ? tools : undefined,
@@ -209,7 +209,7 @@ export async function act(
 
   if (opts.json || opts.schema) {
     params.response_format = opts.schema
-      ? { type: 'json_schema', json_schema: { name: 'response', schema: opts.schema, strict: true } }
+      ? { type: 'json_schema', json_schema: { name: 'response', schema: opts.schema as Record<string, any>, strict: true } }
       : { type: 'json_object' };
   }
 

@@ -7,7 +7,6 @@
 
 import { getAdminMessaging } from '@/lib/firebase/admin';
 import { supabaseServer } from '@/lib/supabase/server';
-import type { MulticastMessage } from 'firebase-admin/messaging';
 
 // ── Notification Types ──
 
@@ -57,7 +56,7 @@ export async function sendNotification(opts: SendNotificationOptions): Promise<{
 
     const tokens = tokenRows.map((r: any) => r.token);
 
-    const message: MulticastMessage = {
+    const message: any = {
         tokens,
         notification: {
             title: opts.title,
@@ -85,7 +84,7 @@ export async function sendNotification(opts: SendNotificationOptions): Promise<{
 
     // Deactivate invalid / unregistered tokens
     const invalidTokens: string[] = [];
-    response.responses.forEach((resp, idx) => {
+    response.responses.forEach((resp: any, idx: number) => {
         if (!resp.success) {
             const code = resp.error?.code;
             if (
@@ -106,8 +105,9 @@ export async function sendNotification(opts: SendNotificationOptions): Promise<{
     }
 
     // Audit log
-    const sentCount = response.responses.filter((r) => r.success).length;
-    const failedCount = response.responses.filter((r) => !r.success).length;
+    // Audit log
+    const sentCount = response.responses.filter((r: any) => r.success).length;
+    const failedCount = response.responses.filter((r: any) => !r.success).length;
 
     await supabase.from('push_log').insert({
         user_id: opts.userId,
@@ -115,10 +115,10 @@ export async function sendNotification(opts: SendNotificationOptions): Promise<{
         title: opts.title,
         body: opts.body,
         data: opts.data ?? {},
-        fcm_message_id: response.responses.find(r => r.success)?.messageId ?? null,
+        fcm_message_id: response.responses.find((r: any) => r.success)?.messageId ?? null,
         status: sentCount > 0 ? 'sent' : 'failed',
         error_message: failedCount > 0
-            ? response.responses.find(r => !r.success)?.error?.message ?? null
+            ? response.responses.find((r: any) => !r.success)?.error?.message ?? null
             : null,
     });
 

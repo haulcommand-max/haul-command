@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         accepted: action === 'accept',
         holdId: hold_id,
     });
-    trySendNotification({ userId: hold.broker_id, ...fcmResponse }).catch(() => {});
+    trySendNotification({ userId: hold.broker_id, ...fcmResponse }).then(()=>{});
 
     // Notify broker of response (fallback queue)
     try {

@@ -203,7 +203,7 @@ Claim URL: https://haulcommand.com/claim/${listing.id}`;
   };
 
   // Upsert to DB
-  await supabase.from('listing_claim_assets').upsert(analysis, { onConflict: 'listing_id' }).catch(() => {});
+  await supabase.from('listing_claim_assets').upsert(analysis, { onConflict: 'listing_id' }).then(()=>{});
 
   return NextResponse.json(analysis);
 }

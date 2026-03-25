@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
             jurisdiction,
             content: text,
             generated_at: new Date().toISOString(),
-          }, { onConflict: 'jurisdiction' }).catch(() => {});
+          }, { onConflict: 'jurisdiction' }).then(() => {});
         }
 
         return { jurisdiction, chars: text.length };
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
         content: res.text,
         generated_at: new Date().toISOString(),
         week_of: new Date().toISOString().split('T')[0],
-      }, { onConflict: 'corridor_name,week_of' }).catch(() => {});
+      }, { onConflict: 'corridor_name,week_of' }).then(() => {});
 
       results.push({ corridor: corridor.name, chars: res.text.length });
     }

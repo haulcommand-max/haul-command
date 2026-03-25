@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
 <hr/>
 <p><a href="https://haulcommand.com/partners/autonomous-vehicles">View full AV partner resources →</a></p>
 <p style="color:#888;font-size:12px">Haul Command — haulcommand.com | Unsubscribe</p>`,
-        }).catch(() => {}); // non-fatal per partner
+        }).then(()=>{}); // non-fatal per partner
       }
     }
   }

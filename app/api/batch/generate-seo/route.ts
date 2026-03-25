@@ -59,7 +59,7 @@ Rules:
           contents: prompt,
         });
 
-        const metaText = res.text()?.trim().replace(/^"|"$/g, '');
+        const metaText = res.text?.trim().replace(/^"|"$/g, '');
 
         if (!metaText) throw new Error('Empty Gemini output');
 

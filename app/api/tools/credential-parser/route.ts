@@ -53,7 +53,7 @@ Return ONLY a JSON object with this shape (omit missing fields, do NOT wrap in m
       },
     });
 
-    const textPayload = response.text();
+    const textPayload = response.text;
     if (!textPayload) throw new Error("Empty response from Gemini Vision");
     
     // Attempt to parse exactly as JSON

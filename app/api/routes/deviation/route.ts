@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
           body: `${operatorName} has deviated ${Math.round(distance_from_route_m)}m from permitted route on "${loadTitle}". ${severity === 'critical' ? 'IMMEDIATE ATTENTION REQUIRED.' : ''}`,
           data: { type: 'route_deviation', load_id, deviation_id: deviation.id },
         }),
-      }).catch(() => {});
+      }).then(()=>{});
     }
 
     // Send push to the operator themselves
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
         body: `You have left your permitted route by ${Math.round(distance_from_route_m)}m. Return to route immediately to avoid permit violations.`,
         data: { type: 'route_deviation', load_id, deviation_id: deviation.id },
       }),
-    }).catch(() => {});
+    }).then(()=>{});
 
     return NextResponse.json({
       deviation,

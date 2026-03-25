@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { country: string; state: string };
-  searchParams: { q?: string; page?: string; sort?: string };
+  params: Promise<{ country: string; state: string }>;
+  searchParams: Promise<{ q?: string; page?: string; sort?: string }>;
 }
 
 const STATE_NAMES: Record<string, string> = {
@@ -25,7 +25,8 @@ const STATE_NAMES: Record<string, string> = {
 const PAGE_SIZE = 48;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const stateCode = params.state.toUpperCase();
+  const { state } = await params;
+  const stateCode = state.toUpperCase();
   const stateName = STATE_NAMES[stateCode] ?? stateCode;
   return {
     title: `${stateName} Escort & Pilot Car Operators | Haul Command`,
@@ -34,14 +35,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function StateDirectoryPage({ params, searchParams }: Props) {
-  const stateCode = params.state.toUpperCase();
+  const { state, country } = await params;
+  const stateCode = state.toUpperCase();
   const stateName = STATE_NAMES[stateCode];
   if (!stateName) notFound();
 
   const supabase = createClient();
-  const page = Math.max(parseInt(searchParams.page ?? '1'), 1);
-  const q = searchParams.q ?? '';
-  const sortBy = searchParams.sort ?? 'rank';
+  const sp = await searchParams;
+  const page = Math.max(parseInt(sp.page ?? '1'), 1);
+  const q = sp.q ?? '';
+  const sortBy = sp.sort ?? 'rank';
   const offset = (page - 1) * PAGE_SIZE;
 
   let query = supabase
@@ -212,7 +215,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
           <div className="flex items-center justify-center gap-2 mt-10">
             {page > 1 && (
               <Link
-                href={`/directory/us/${params.state}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
+                href={`/directory/us/${state}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
               >
                 ← Previous
@@ -221,7 +224,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
             <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
             {page < totalPages && (
               <Link
-                href={`/directory/us/${params.state}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
+                href={`/directory/us/${state}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
               >
                 Next →

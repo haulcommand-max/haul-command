@@ -3,12 +3,13 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = createClient();
-  const [origin, destination] = params.slug.split('-');
+  const { slug } = await params;
+  const [origin, destination] = slug.split('-');
   const { data: corridor } = await supabase
     .from('corridors')
     .select('origin_state, destination_state, load_count, operator_count, intel_content')
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CorridorIntelPage({ params }: Props) {
   const supabase = createClient();
-  const [origin, destination] = params.slug.split('-');
+  const { slug } = await params;
+  const [origin, destination] = slug.split('-');
 
   if (!origin || !destination) notFound();
 

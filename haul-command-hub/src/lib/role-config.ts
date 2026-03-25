@@ -201,9 +201,9 @@ export const ROLE_CONFIGS: Record<HCRole, RoleConfig> = {
     ],
     primaryActions: [
       { id: 'obs_dashboard', label: 'Market Dashboard', href: '/leaderboards', icon: '📊', description: 'Live market rankings and trends' },
-      { id: 'obs_corridors', label: 'Track Corridors', href: '/corridors', icon: '🛤️', description: 'Follow corridor activity over time' },
-      { id: 'obs_reports', label: 'Read Reports', href: '/blog', icon: '📰', description: 'Intelligence reports and analysis' },
-      { id: 'obs_density', label: 'Explore Density', href: '/map', icon: '🗺️', description: 'Operator and service density maps' },
+      { id: 'obs_data_mon', label: 'Data Monetization', href: '/data-monetization', icon: '💰', description: 'Sell your anonymized data' },
+      { id: 'obs_av_tracker', label: 'AV Trend Tracker', href: '/av-readiness', icon: '🤖', description: 'Track autonomous freight corridors' },
+      { id: 'obs_reports', label: 'Intelligence Reports', href: '/blog', icon: '📰', description: 'Self-serve data export and analysis' },
     ],
     secondaryActions: [
       { id: 'obs_save_markets', label: 'Save Markets', href: '/map', icon: '⭐', description: 'Bookmark markets to watch' },

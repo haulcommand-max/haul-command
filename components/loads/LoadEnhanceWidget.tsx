@@ -29,7 +29,7 @@ export default function LoadEnhanceWidget({ onEnhanced }: LoadEnhanceWidgetProps
   const [description, setDescription] = useState('');
   const [enhanced, setEnhanced] = useState<EnhancedLoad | null>(null);
   const [loading, setLoading] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-enhance as user types (debounced 1.5s)
   useEffect(() => {

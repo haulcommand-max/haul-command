@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
               body: `Emergency escort replacement on active corridor. $${premiumRate.toFixed(0)}/day premium rate. ${miles_remaining || '?'} miles remaining.`,
               data: { type: 'emergency_replacement', replacement_id: replacement.id, job_id },
             }),
-          }).catch(() => {});
+          }).then(()=>{});
         }
       } catch { /* FCM failure is non-fatal */ }
     }

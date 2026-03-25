@@ -2,6 +2,7 @@
 
 import { useRole } from '@/lib/role-context';
 import { ROLE_LIST, ROLE_CONFIGS, type HCRole } from '@/lib/role-config';
+import Link from 'next/link';
 
 /**
  * RoleSelector — First-screen role picker.
@@ -122,8 +123,22 @@ export default function RoleSelector() {
         })()}
       </div>
 
+      {/* Ad Grid Button */}
+      <div className="mt-6 sm:mt-8 flex justify-center">
+        <Link
+          href="/ad-grid"
+          className="group relative flex w-full max-w-sm items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#1A73E8] px-6 py-4 text-white shadow-[0_0_20px_rgba(26,115,232,0.3)] transition-all hover:scale-[1.02] hover:bg-[#155fc2] hover:shadow-[0_0_30px_rgba(26,115,232,0.5)]"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-500 group-hover:animate-[shimmer_2s_infinite] group-hover:opacity-100" />
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span className="font-bold tracking-tight">Ad Grid — Self Serve Advertising</span>
+        </Link>
+      </div>
+
       {/* Skip hint */}
-      <p className="text-center text-[#6b7280] text-[11px] mt-4 sm:mt-6">
+      <p className="text-center text-[#6b7280] text-[11px] mt-4">
         You can change this anytime from the menu.
       </p>
     </div>

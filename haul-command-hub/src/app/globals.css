@@ -330,3 +330,9 @@ a[class*="rounded-xl"], a[class*="rounded-2xl"] {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ── CTA Button Text Fix ─────────────────────────────── */
+.btn-primary, .cta-button, button[class*="bg-accent"], a[class*="bg-accent"], button[class*="yellow"], button[class*="gold"] {
+  color: #000000 !important;
+  font-weight: 700;
+}

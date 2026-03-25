@@ -158,14 +158,7 @@ export default async function HomePage() {
       <Navbar />
       <ActivityTicker />
       <main className="flex-grow overflow-x-hidden">
-        {/* Market Status */}
-        <div className="w-full max-w-7xl mx-auto px-4 pt-4">
-          <HCMarketMaturityBanner
-            state={totalListings > 0 ? 'live' : 'data_only'}
-            countryName="Heavy Haul Directory — 57-Country Framework"
-            message="Directory infrastructure live across all markets. Depth varies by region."
-          />
-        </div>
+
 
         {/* Hero Billboard (homepage ad slot) */}
         <div className="max-w-7xl mx-auto px-4 mt-4">
@@ -184,83 +177,68 @@ export default async function HomePage() {
           locationChips={locationChips}
         />
 
-        {/* Operational Intelligence Tools */}
+        {/* Early Tools */}
         <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
-              Operational <span className="text-accent">Intel</span>
+              Early <span className="text-accent">Tools</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Real-time tools for movement risk, cost estimation, and regulatory compliance.
+              Specialized heavy haul tools deployed during our early access period.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 ag-stagger">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 ag-stagger">
               {[
                 {
-                  href: '/tools/load-analyzer',
-                  icon: '🔍',
-                  title: 'Load Analyzer',
-                  desc: 'Paste a load and get profit score, risk assessment, hidden cost breakdown.',
-                  cta: 'Analyze →',
+                  href: '/tools/permit-checker/us',
+                  icon: '📜',
+                  title: 'Permit Checker',
+                  desc: 'Look up state/country permit requirements instantly based on load.',
+                  cta: 'Check Permits →',
                   hot: true,
                 },
                 {
-                  href: '/tools/rate-advisor',
+                  href: '/tools/axle-weight/us',
+                  icon: '⚖️',
+                  title: 'Route Weight Calculator',
+                  desc: 'Calculate legal load weight per jurisdiction based on axle configuration.',
+                  cta: 'Calculate Weight →',
+                },
+                {
+                  href: '/tools/escort-rules/us',
+                  icon: '🚓',
+                  title: 'Escort Requirement Finder',
+                  desc: 'Find precise pilot car rules per state or province.',
+                  cta: 'Find Rules →',
+                },
+                {
+                  href: '/tools/rate-estimator/us',
                   icon: '💰',
-                  title: 'Rate Advisor',
-                  desc: 'What should I charge? Corridor-specific rate recommendations.',
-                  cta: 'Get Rate →',
-                  hot: true,
+                  title: 'Rate Estimator',
+                  desc: 'Estimate pilot car or load haul rates instantly.',
+                  cta: 'Get Estimate →',
                 },
                 {
-                  href: '/tools/regulation-alerts',
-                  icon: '🚨',
-                  title: 'Corridor Alerts',
-                  desc: 'Weather delays, DOT shutdowns, curfews — before they cost you.',
+                  href: '/tools/superload-alerts',
+                  icon: '⚠️',
+                  title: 'Superload Alert Feed',
+                  desc: 'Live feed of superload moves causing closures by region.',
                   cta: 'View Alerts →',
+                },
+                {
+                  href: '/tools/broker-verify',
+                  icon: '🛡️',
+                  title: 'Broker Verify Tool',
+                  desc: 'Check broker and dispatcher legitimacy instantly.',
+                  cta: 'Verify Broker →',
                   hot: true,
                 },
                 {
-                  href: '/tools/escort-calculator',
-                  icon: '🧮',
-                  title: 'Route Calculator',
-                  desc: 'Enter your load once, see every escort requirement on your entire route.',
-                  cta: 'Calculate →',
-                },
-                {
-                  href: '/dashboard/earnings',
-                  icon: '📊',
-                  title: 'Earnings Tracker',
-                  desc: 'Track every run. Know your real hourly rate and best corridors.',
-                  cta: 'Track Earnings →',
+                  href: '/av-readiness',
+                  icon: '🤖',
+                  title: 'Autonomous Route Monitor',
+                  desc: 'Track active autonomous freight corridors and testing zones.',
+                  cta: 'Monitor AV →',
                   hot: true,
-                },
-                {
-                  href: '/tools/friday-checker',
-                  icon: '📅',
-                  title: 'Can I Move Friday?',
-                  desc: 'Weekend-adjacent curfews and metro zone movement windows.',
-                  cta: 'Check →',
-                },
-                {
-                  href: '/tools/superload-meter',
-                  icon: '🌡️',
-                  title: 'Superload Risk Meter',
-                  desc: 'Predictive feasibility scoring for massive transportation projects.',
-                  cta: 'Score →',
-                },
-                {
-                  href: '/tools/cost-estimator',
-                  icon: '🧾',
-                  title: 'Cost Estimator',
-                  desc: 'Transparent convoy overhead based on state-specific market data.',
-                  cta: 'Estimate →',
-                },
-                {
-                  href: '/escort-requirements',
-                  icon: '📋',
-                  title: 'Requirements Hub',
-                  desc: 'Dimension-based escort rules across 57 countries and 67+ jurisdictions.',
-                  cta: 'Browse →',
                 },
               ].map((tool) => (
                 <Link

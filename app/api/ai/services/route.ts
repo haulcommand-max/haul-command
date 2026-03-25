@@ -57,17 +57,10 @@ export async function POST(req: NextRequest) {
         }
 
         // Call the AI agent
-        const result = await queryAI({
-            agentId: service.agent_id,
-            userMessage: message,
-            context: context || undefined,
-            jsonMode: options?.json_mode || false,
-            maxTokens: options?.max_tokens || undefined,
-        });
-
-        if (result.error) {
-            return NextResponse.json({ error: result.error }, { status: 503 });
-        }
+        const result = await queryAI(
+            `Agent: ${service.agent_id}\n\nContext: ${context || 'None'}\n\nMessage: ${message}`,
+            { tier: 'fast', json: options?.json_mode || false, maxTokens: options?.max_tokens || undefined }
+        );
 
         // Increment usage counter (non-blocking)
         try {
@@ -81,9 +74,13 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: true,
             service: { id: service.id, name: service.name, is_premium: service.is_premium },
-            content: result.content,
+            content: result.text,
             model: result.model,
-            usage: result.usage,
+            usage: {
+                prompt_tokens: result.input_tokens || 0,
+                completion_tokens: result.output_tokens || 0,
+                total_tokens: (result.input_tokens || 0) + (result.output_tokens || 0)
+            },
         });
     } catch (error) {
         const msg = error instanceof Error ? error.message : 'Unknown error';

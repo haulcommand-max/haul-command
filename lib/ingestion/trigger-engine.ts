@@ -19,7 +19,7 @@ export async function processClaimTriggers() {
 
     // 2. Loop and generate personalized SMS/Email outreach
     for (const claim of pendingClaims) {
-        const entity = claim.entities;
+        const entity = claim.entities as any;
         if (!entity || Array.isArray(entity)) continue;
 
         // Skip if no contact info

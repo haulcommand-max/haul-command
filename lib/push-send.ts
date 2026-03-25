@@ -82,31 +82,8 @@ export async function sendPushToUser(userId: string, payload: PushPayload) {
 
     let fcmSent = 0;
     if (fcmTokens?.length) {
-        // Send via Firebase Admin SDK if configured (GOOGLE_APPLICATION_CREDENTIALS or FIREBASE_SERVICE_ACCOUNT)
-        try {
-            const admin = await import('firebase-admin');
-            if (!admin.apps.length) {
-                const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-                    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-                    : undefined;
-                admin.initializeApp(serviceAccount
-                    ? { credential: admin.credential.cert(serviceAccount) }
-                    : { credential: admin.credential.applicationDefault() }
-                );
-            }
-            const tokens = fcmTokens.map(t => t.token).filter(Boolean);
-            if (tokens.length) {
-                const response = await admin.messaging().sendEachForMulticast({
-                    tokens,
-                    notification: { title: payload.title, body: payload.body },
-                    data: { url: payload.url, ...(payload.meta as Record<string, string> ?? {}) },
-                });
-                fcmSent = response.successCount;
-            }
-        } catch {
-            // Firebase Admin SDK not installed or not configured — skip FCM
-            console.log(`[push-send] ${fcmTokens.length} FCM token(s) for user ${userId.slice(0, 8)}… (firebase-admin not available)`);
-        }
+        // Firebase Admin SDK not installed or not configured — skip FCM
+        console.log(`[push-send] ${fcmTokens.length} FCM token(s) for user ${userId.slice(0, 8)}… (firebase-admin uninstalled due to Supabase push migration)`);
     }
 
     return { sent: sent + fcmSent, fcmPending: fcmSent > 0 ? 0 : (fcmTokens?.length ?? 0) };

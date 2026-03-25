@@ -39,7 +39,7 @@ Provide a crisp, professional risk assessment for an oversize load traveling thr
       },
     });
 
-    const analysis = response.text();
+    const analysis = response.text;
     if (!analysis) throw new Error("Empty response from Gemini Vision");
     
     return NextResponse.json({ success: true, analysis: analysis });

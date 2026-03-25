@@ -12,8 +12,16 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
     const { country } = await params;
     const name = countryName(country);
     return {
-        title: `${name} Heavy Haul Directory — Ports, Truck Stops & More`,
-        description: `Browse ${name}'s heavy haul logistics infrastructure. Find ports, truck stops, weigh stations, industrial zones, and more.`,
+        title: `${name} Heavy Haul Directory & Pilot Cars | Haul Command`,
+        description: `Browse ${name}'s heavy haul logistics infrastructure. Find pilot cars, escort vehicles, ports, and weigh stations for oversize loads.`,
+        keywords: [`${name} pilot cars`, `${name} heavy haul directory`, `oversize load escorts in ${name}`, `heavy haul logistics ${name}`],
+        openGraph: {
+            title: `${name} Heavy Haul Directory | Haul Command`,
+            description: `The complete directory of pilot cars and heavy haul services in ${name}.`,
+            url: `https://haulcommand.com/directory/${country.toLowerCase()}`,
+            siteName: 'Haul Command',
+            type: 'website',
+        },
     };
 }
 
@@ -67,8 +75,38 @@ export default async function DirectoryCountryPage({
     const total = count ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
+    // Structured JSON-LD Data for Heavy Haul Directory
+    const jsonLdData = {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: `${name} Heavy Haul & Pilot Car Directory`,
+        description: `Search ${name}'s verified listing of pilot cars, escort vehicles, truck stops, and heavy haul infrastructure.`,
+        url: `https://haulcommand.com/directory/${cc}`,
+        publisher: {
+            '@type': 'Organization',
+            name: 'Haul Command',
+            logo: {
+                '@type': 'ImageObject',
+                url: 'https://haulcommand.com/logo-full.png'
+            }
+        },
+        mainEntity: {
+            '@type': 'Service',
+            name: `Heavy Haul Logistics in ${name}`,
+            serviceOutput: 'Pilot Car, Escort Vehicle, Port, Weigh Station',
+            provider: {
+                '@type': 'Organization',
+                name: 'Haul Command Directory'
+            }
+        }
+    };
+
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+            />
             <Navbar />
             <main className="flex-grow">
                 {/* Header */}
@@ -80,7 +118,7 @@ export default async function DirectoryCountryPage({
                             <span className="text-white">{name}</span>
                         </div>
                         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
-                            {name}
+                            {name} Heavy Haul Logistics
                         </h1>
                         <p className="text-gray-400 text-lg">
                             {total > 0

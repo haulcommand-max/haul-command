@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     user_id: user?.id || null,
     partner,
     placement: placement || null,
-  }).then(() => {}).catch(console.error);
+  }).then(() => {});
 
   return NextResponse.json({ redirect_url: redirectUrl });
 }

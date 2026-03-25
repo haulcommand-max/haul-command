@@ -19,8 +19,8 @@ export default function Navbar() {
       <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex justify-between h-14 sm:h-16 items-center min-w-0">
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/" className="text-accent text-xl font-black tracking-tighter">
-              HAUL COMMAND
+            <Link href="/" className="flex items-center">
+              <img src="/logo-full.png" alt="Haul Command" className="h-[36px] w-[36px] md:w-auto object-contain" />
             </Link>
             <RoleSwitcher />
           </div>

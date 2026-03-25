@@ -137,7 +137,7 @@ export async function POST(req: NextRequest) {
                 referenceId: payment.reference_id ?? '',
                 screen: '/wallet',
             },
-        }).catch(() => {});
+        }).then(()=>{});
 
         console.log(
             `[HC Pay IPN] Credited $${netToOperator} to ${payment.payee_user_id} ` +

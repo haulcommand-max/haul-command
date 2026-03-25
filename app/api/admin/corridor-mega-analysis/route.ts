@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
       output_tokens: outputTokens,
       cost_cents: costCents,
       generated_at: new Date().toISOString(),
-    }, { onConflict: 'report_type,corridor_state' }).catch(() => {});
+    }, { onConflict: 'report_type,corridor_state' }).then(()=>{});
 
     return NextResponse.json({
       report: text,

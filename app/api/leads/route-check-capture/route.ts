@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         trigger_event: 'route_check_lead',
         context: { name, company, state, query, source },
       }),
-    }).catch(() => {}); // non-fatal
+    }).then(()=>{}); // non-fatal
 
     // 4. High-value lead alert (AV operators, large companies)
     const isHighValue = isHighValueLead({ query, company, load_type });
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 <p><strong>State:</strong> ${state ?? '—'}</p>
 <p><strong>Load type:</strong> ${load_type ?? '—'}</p>
 <p><strong>Score:</strong> ${scoreLeadIntent({ query, load_type, company })}</p>`,
-      }).catch(() => {});
+      }).then(()=>{});
     }
 
     return NextResponse.json({
@@ -115,6 +115,5 @@ function detectSequence(ctx: { query?: string; load_type?: string; company?: str
 
 function isHighValueLead(ctx: { query?: string; company?: string; load_type?: string }): boolean {
   const combined = `${ctx.query ?? ''} ${ctx.company ?? ''}`.toLowerCase();
-  return /aurora|kodiak|waymo|ryder|swift|schneider|convoy|uber|amazon|walmart|tesla|
-    autonomous|superload|200k|300k|enterprise|corporation|corp|inc\.|llc|logistics/.test(combined);
+  return /aurora|kodiak|waymo|ryder|swift|schneider|convoy|uber|amazon|walmart|tesla|autonomous|superload|200k|300k|enterprise|corporation|corp|inc\.|llc|logistics/.test(combined);
 }

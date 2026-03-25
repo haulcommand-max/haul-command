@@ -32,22 +32,20 @@ export async function POST(
             return NextResponse.json({ error: `Unknown agent: ${agent}` }, { status: 400 });
         }
 
-        const result = await queryAI({
-            agentId: agent,
-            userMessage: message,
-            context: context || undefined,
-            jsonMode: json_mode || false,
-        });
-
-        if (result.error) {
-            return NextResponse.json({ error: result.error }, { status: 503 });
-        }
+        const result = await queryAI(
+            `Agent: ${agent}\n\nContext: ${context || 'None'}\n\nMessage: ${message}`,
+            { tier: 'fast', json: json_mode || false }
+        );
 
         return NextResponse.json({
             success: true,
-            content: result.content,
+            content: result.text,
             model: result.model,
-            usage: result.usage,
+            usage: {
+                prompt_tokens: result.input_tokens || 0,
+                completion_tokens: result.output_tokens || 0,
+                total_tokens: (result.input_tokens || 0) + (result.output_tokens || 0)
+            },
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';

@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
               deviation_lng: lng,
               distance_from_route_m: distanceFromRoute,
             }),
-          }).catch(() => {});
+          }).then(()=>{});
         }
       }
     }

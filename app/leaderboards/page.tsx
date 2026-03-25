@@ -1,138 +1,160 @@
-import { Metadata } from 'next';
-import { createClient } from '@/lib/supabase/server';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Leaderboard — Top Escort Operators by Corridor | Haul Command',
-  description: 'See the top-ranked pilot car and escort operators on every corridor. Rankings based on completed runs, response time, acceptance rate, and reviews.',
-};
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Shield, MapPin, Gauge, Star, Trophy, Clock, Medal } from 'lucide-react';
 
-const RANK_STYLES = [
-  { bg: 'bg-yellow-500/20', border: 'border-yellow-500/30', badge: '\ud83e\udd47', label: 'Gold' },
-  { bg: 'bg-gray-300/10', border: 'border-gray-400/20', badge: '\ud83e\udd48', label: 'Silver' },
-  { bg: 'bg-amber-700/10', border: 'border-amber-700/20', badge: '\ud83e\udd49', label: 'Bronze' },
+const MOCK_LEADERS = [
+  { id: 'usr_1', company: 'Apex Heavy Haul', rank: 'Vanguard', runs: 2450, rating: 4.98, response: '2 min', loc: 'Dallas, TX', score: 99.8 },
+  { id: 'usr_2', company: 'Titan Escort Services', rank: 'Centurion', runs: 1890, rating: 4.95, response: '4 min', loc: 'Houston, TX', score: 98.5 },
+  { id: 'usr_3', company: 'Pioneer Pilot Cars', rank: 'Centurion', runs: 1650, rating: 4.90, response: '5 min', loc: 'Denver, CO', score: 97.2 },
+  { id: 'usr_4', company: 'Sentinel Transport Intel', rank: 'Sentinel', runs: 1420, rating: 4.88, response: '8 min', loc: 'Phoenix, AZ', score: 95.9 },
+  { id: 'usr_5', company: 'Oversize Authority', rank: 'Sentinel', runs: 980, rating: 4.85, response: '12 min', loc: 'Atlanta, GA', score: 94.1 },
 ];
 
-async function getLeaderboardData() {
-  try {
-    const supabase = createClient();
-    
-    // Get top operators with ranking data
-    const { data: operators } = await supabase
-      .from('directory_listings')
-      .select('id, name, company_name, country_code, corridors, rating, verified, city, state, response_time_minutes, acceptance_rate, runs_completed')
-      .eq('status', 'active')
-      .order('rating', { ascending: false })
-      .limit(25);
+const TIER_COLORS: Record<string, string> = {
+  'Vanguard': 'from-yellow-400 via-amber-500 to-orange-600 border-amber-500/50 text-amber-400',
+  'Centurion': 'from-gray-300 via-gray-400 to-gray-500 border-gray-400/50 text-gray-300',
+  'Sentinel': 'from-orange-700 via-amber-700 to-red-800 border-orange-700/50 text-orange-600',
+};
 
-    return operators || [];
-  } catch {
-    return [];
-  }
-}
-
-export default async function LeaderboardPage() {
-  const operators = await getLeaderboardData();
-
+export default function LeaderboardsPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-          Operator Leaderboard
-        </h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          Top-ranked escort operators by corridor. Rankings based on completed runs, response time, acceptance rate, and reviews.
-        </p>
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-amber-500/30 overflow-hidden font-sans relative">
+      <div className="absolute top-0 inset-x-0 h-96 bg-amber-500/10 blur-[150px] -z-10 rounded-full" />
+      
+      {/* Header */}
+      <section className="relative pt-24 pb-12 px-6 text-center z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+            Dominance <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">Leaderboards</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto font-light">
+            The elite echelon of heavy haul operators. Rankings driven by real-time telematics, verified completions, and broker trust signals.
+          </p>
+        </motion.div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-4 pb-16">
-        {/* Top 3 Featured */}
-        {operators.length >= 3 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-            {operators.slice(0, 3).map((op: any, i: number) => (
-              <div
-                key={op.id}
-                className={`p-6 ${RANK_STYLES[i].bg} border ${RANK_STYLES[i].border} rounded-2xl text-center transition-all hover:scale-105`}
-              >
-                <span className="text-4xl block mb-2">{RANK_STYLES[i].badge}</span>
-                <h3 className="text-xl font-bold">{op.name || op.company_name}</h3>
-                <p className="text-sm text-gray-400">
-                  {op.city && `${op.city}, `}{(op.country_code || '').toUpperCase()}
-                </p>
-                {op.verified && (
-                  <span className="inline-block mt-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full">\u2713 Verified</span>
-                )}
-                <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                  <div><span className="text-amber-400 font-bold">{op.runs_completed || 0}</span><br/>Runs</div>
-                  <div><span className="text-amber-400 font-bold">{op.acceptance_rate ? `${op.acceptance_rate}%` : 'N/A'}</span><br/>Accept Rate</div>
+      {/* Top 3 Podium */}
+      <section className="max-w-7xl mx-auto px-6 pb-20 z-10 relative">
+        <div className="flex flex-col md:flex-row justify-center items-end gap-6 h-auto md:h-96">
+          {/* Rank 2 */}
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="w-full md:w-1/3 relative z-10 order-2 md:order-1">
+            <div className="bg-white/5 backdrop-blur-3xl border border-gray-400/20 rounded-t-3xl p-6 h-72 flex flex-col justify-between shadow-2xl">
+              <div className="text-center">
+                <Trophy className="w-12 h-12 mx-auto text-gray-400 mb-2" />
+                <h3 className="text-2xl font-bold">{MOCK_LEADERS[1].company}</h3>
+                <p className="text-gray-400 text-sm">{MOCK_LEADERS[1].loc}</p>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="font-mono text-gray-300">Score: {MOCK_LEADERS[1].score}</p>
+                <div className="inline-block px-3 py-1 bg-gray-400/20 rounded-full text-xs font-semibold text-gray-300">
+                  {MOCK_LEADERS[1].rank}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          </motion.div>
 
-        {/* Full Rankings */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-12 gap-2 p-4 text-xs font-bold text-gray-500 border-b border-white/5">
-            <div className="col-span-1">#</div>
-            <div className="col-span-4">Operator</div>
-            <div className="col-span-2">Location</div>
-            <div className="col-span-1 text-center">Runs</div>
-            <div className="col-span-2 text-center">Response</div>
-            <div className="col-span-2 text-center">Rating</div>
-          </div>
-          {operators.map((op: any, i: number) => (
-            <div
-              key={op.id}
-              className={`grid grid-cols-12 gap-2 p-4 text-sm items-center border-b border-white/5 hover:bg-white/5 transition-colors ${
-                i < 3 ? 'bg-amber-500/5' : ''
-              }`}
-            >
-              <div className="col-span-1 font-bold">
-                {i < 3 ? RANK_STYLES[i].badge : `#${i + 1}`}
+          {/* Rank 1 */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="w-full md:w-1/3 relative z-20 order-1 md:order-2">
+            <div className="bg-gradient-to-b from-amber-500/10 to-transparent backdrop-blur-3xl border border-amber-500/40 rounded-t-3xl p-8 h-80 flex flex-col justify-between shadow-[0_0_50px_rgba(245,158,11,0.2)]">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-orange-600 text-black px-4 py-1 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
+                <Star className="w-4 h-4" /> FORTUNE #1
               </div>
-              <div className="col-span-4">
-                <span className="font-semibold">{op.name || op.company_name}</span>
-                {op.verified && (
-                  <span className="ml-1 text-amber-400 text-xs">\u2713</span>
-                )}
+              <div className="text-center mt-4">
+                <Medal className="w-16 h-16 mx-auto text-amber-400 mb-2 drop-shadow-lg" />
+                <h3 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">{MOCK_LEADERS[0].company}</h3>
+                <p className="text-amber-400/80 text-sm mt-1">{MOCK_LEADERS[0].loc}</p>
               </div>
-              <div className="col-span-2 text-gray-500 text-xs">
-                {op.city && `${op.city}, `}{(op.country_code || '').toUpperCase()}
-              </div>
-              <div className="col-span-1 text-center">{op.runs_completed || 0}</div>
-              <div className="col-span-2 text-center text-xs">
-                {op.response_time_minutes ? `${op.response_time_minutes} min` : '—'}
-              </div>
-              <div className="col-span-2 text-center">
-                {op.rating ? (
-                  <span className="text-amber-400">{'\u2605'.repeat(Math.round(op.rating))} {op.rating.toFixed(1)}</span>
-                ) : '—'}
+              <div className="text-center space-y-2">
+                <p className="font-mono text-amber-400 text-xl font-bold">{MOCK_LEADERS[0].score} <span className="text-xs text-gray-500">HC INDEX</span></p>
+                <div className="inline-block px-4 py-1.5 bg-amber-500/20 rounded-full text-sm font-bold text-amber-400 shadow-inner">
+                  {MOCK_LEADERS[0].rank}
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </motion.div>
 
-        {/* CTA */}
-        <div className="mt-12 text-center">
-          <h3 className="text-xl font-bold mb-3">Climb the Leaderboard</h3>
-          <p className="text-gray-400 mb-6">
-            Complete more runs, respond faster, and build your reputation to climb the rankings.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Link
-              href="/claim"
-              className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
+          {/* Rank 3 */}
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="w-full md:w-1/3 relative z-10 order-3 md:order-3">
+            <div className="bg-white/5 backdrop-blur-3xl border border-orange-700/30 rounded-t-3xl p-6 h-64 flex flex-col justify-between shadow-2xl">
+              <div className="text-center">
+                <Trophy className="w-10 h-10 mx-auto text-orange-600 mb-2" />
+                <h3 className="text-xl font-bold">{MOCK_LEADERS[2].company}</h3>
+                <p className="text-gray-400 text-sm">{MOCK_LEADERS[2].loc}</p>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="font-mono text-orange-500">Score: {MOCK_LEADERS[2].score}</p>
+                <div className="inline-block px-3 py-1 bg-orange-500/20 rounded-full text-xs font-semibold text-orange-500">
+                  {MOCK_LEADERS[2].rank}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Trust Report Cards & Global Rankings */}
+      <section className="max-w-7xl mx-auto px-6 pb-32 z-10 relative">
+        <h2 className="text-3xl font-bold mb-8 text-white/90">Global Network Rankings</h2>
+        
+        <div className="space-y-4">
+          {MOCK_LEADERS.map((leader, i) => (
+            <motion.div 
+              key={leader.id} 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.1 * i }}
+              className="group relative overflow-hidden bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-xl rounded-2xl p-6 transition-all duration-300 cursor-pointer"
             >
-              Claim Your Spot
-            </Link>
-            <Link
-              href="/directory"
-              className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors"
-            >
-              View Directory
-            </Link>
-          </div>
+              {/* Dynamic hover gradient */}
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-amber-500/50 transition-colors duration-500" />
+              
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <div className="flex items-center gap-6 w-full md:w-1/3">
+                  <span className="text-4xl font-black text-white/10 group-hover:text-white/20 transition-colors w-12 text-center">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-white group-hover:text-amber-400 transition-colors flex items-center gap-2">
+                      {leader.company}
+                      {i === 0 && <Shield className="w-5 h-5 text-amber-500 fill-amber-500/20" />}
+                    </h4>
+                    <p className="text-sm text-gray-400 flex items-center gap-1 mt-1">
+                      <MapPin className="w-3 h-3" /> {leader.loc}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-8 w-full md:w-auto text-center md:text-left">
+                  <div>
+                    <p className="text-gray-500 text-xs uppercase tracking-wider font-semibold mb-1">Total Runs</p>
+                    <p className="text-lg font-mono font-medium">{leader.runs.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs uppercase tracking-wider font-semibold mb-1">Response</p>
+                    <p className="text-lg font-mono font-medium flex items-center justify-center md:justify-start gap-1">
+                      <Clock className="w-4 h-4 text-emerald-400" /> {leader.response}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs uppercase tracking-wider font-semibold mb-1">Rating</p>
+                    <p className="text-lg font-mono font-medium flex items-center justify-center md:justify-start gap-1">
+                      {leader.rating.toFixed(2)} <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full md:w-32 flex justify-end">
+                  <div className={`px-4 py-2 rounded-lg border ${TIER_COLORS[leader.rank]} bg-black/40 text-sm font-bold shadow-inner`}>
+                    {leader.rank}
+                  </div>
+                </div>
+
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
     </div>

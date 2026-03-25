@@ -3,11 +3,12 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { jurisdiction: string };
+  params: Promise<{ jurisdiction: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const jurisdiction = decodeURIComponent(params.jurisdiction).replace(/-/g, ' ');
+  const { jurisdiction: rawJur } = await params;
+  const jurisdiction = decodeURIComponent(rawJur).replace(/-/g, ' ');
   return {
     title: `${jurisdiction} Oversize Load Regulations | Haul Command`,
     description: `Complete oversize and overweight load regulations for ${jurisdiction}. Permit requirements, escort rules, max dimensions, and DOT authority contacts.`,
@@ -16,7 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RegulationPage({ params }: Props) {
   const supabase = createClient();
-  const jurisdiction = decodeURIComponent(params.jurisdiction).replace(/-/g, ' ');
+  const { jurisdiction: rawJur } = await params;
+  const jurisdiction = decodeURIComponent(rawJur).replace(/-/g, ' ');
 
   const { data: page } = await supabase
     .from('regulation_pages')

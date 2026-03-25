@@ -4,12 +4,7 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
-  }
-}
+
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 

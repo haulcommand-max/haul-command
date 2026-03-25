@@ -9,6 +9,7 @@ import {
     ALL_COUNTRY_CODES,
     COUNTRY_NAMES,
 } from "@/lib/directory-helpers";
+import DirectorySearchForm from "@/components/hc/DirectorySearchForm";
 
 export const revalidate = 3600;
 
@@ -99,12 +100,9 @@ export default async function DirectoryPage() {
                             ))}
                         </div>
 
-                        {/* Search teaser */}
-                        <div className="max-w-xl mx-auto">
-                            <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 flex items-center gap-3">
-                                <span className="text-gray-500 text-xl">🔍</span>
-                                <span className="text-gray-500 text-sm">Search coming soon — browse by country or category below</span>
-                            </div>
+                        {/* Voice Search Form */}
+                        <div className="mt-8 z-20">
+                            <DirectorySearchForm />
                         </div>
                     </div>
                 </section>
