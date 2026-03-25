@@ -43,7 +43,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -65,7 +64,6 @@ BEGIN
     VALUES (v_op_id, '+15032822902', true);
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
@@ -89,7 +87,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -264,7 +261,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -307,7 +303,6 @@ BEGIN
     VALUES (v_op_id, '+15032696705', true);
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -439,7 +434,6 @@ BEGIN
     VALUES (v_op_id, '+19198092313', true);
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'lead') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'chase') ON CONFLICT DO NOTHING;
   END IF;
@@ -593,7 +587,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -703,7 +696,6 @@ BEGIN
     VALUES (v_op_id, '+12819238136', true);
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -726,7 +718,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -919,7 +910,6 @@ BEGIN
     INSERT INTO operator_phones(operator_id, phone, is_primary)
     VALUES (v_op_id, '+18015550234', true);
 
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -943,7 +933,6 @@ BEGIN
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'lead') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'chase') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
@@ -1051,7 +1040,6 @@ BEGIN
 
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'height_pole') ON CONFLICT DO NOTHING;
     INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'route_survey') ON CONFLICT DO NOTHING;
-    INSERT INTO operator_capabilities(operator_id, capability) VALUES (v_op_id, 'steerman') ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 
