@@ -97,9 +97,9 @@ export type FeatureFlags = {
 export function getFeatureFlags(): FeatureFlags {
   return {
     auth: {
-      google_enabled:   envFlag('AUTH_GOOGLE', true),
-      facebook_enabled: envFlag('AUTH_FACEBOOK', false),
-      linkedin_enabled: envFlag('AUTH_LINKEDIN', false),
+      google_enabled:   process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === 'true' || envFlag('AUTH_GOOGLE', true),
+      facebook_enabled: process.env.NEXT_PUBLIC_AUTH_FACEBOOK_ENABLED === 'true' || envFlag('AUTH_FACEBOOK', false),
+      linkedin_enabled: process.env.NEXT_PUBLIC_AUTH_LINKEDIN_ENABLED === 'true' || envFlag('AUTH_LINKEDIN', false),
     },
     dev: {
       auth_status_banner: process.env.NODE_ENV === 'development',

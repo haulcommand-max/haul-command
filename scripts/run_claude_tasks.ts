@@ -6,6 +6,7 @@ import {
     runCSeo04_LongTailCorridorPages,
     runCSeo05_IndustryVerticalPages,
     runCSeo06_OperatorAcquisition,
+    runCSeo07_SchemaQualityReview,
     runCSeo08_AiEntityEstablishment,
     runCSeo09_MultilingualAudit,
     runCSeo10_MoneyLeftStrategicReview
@@ -23,6 +24,9 @@ async function main() {
 
     console.log('[Day 1-2] Running C-SEO-08 Entity Definition Pages...');
     await runCSeo08_AiEntityEstablishment();
+
+    console.log('\n[C-SEO-07] Running Schema validation...');
+    await runCSeo07_SchemaQualityReview();
 
     console.log('\n[Day 3] Running C-SEO-02 Regulatory Pages for Tier A...');
     for (const c of coreCountries) await runCSeo02_RegulatoryPageCheck(c);
