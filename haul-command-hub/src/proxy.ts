@@ -90,6 +90,8 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
   [/^\/wcs-permits$/, '/tools/permit-cost'],
   [/^\/oversize-routing$/, '/tools/route-planner'],
   [/^\/superload-routing$/, '/tools/route-planner'],
+  [/^\/oversize-io$/, '/alternatives/oversize-io'],
+  [/^\/oversize\.io$/, '/alternatives/oversize-io'],
 ];
 
 export function proxy(request: NextRequest) {
