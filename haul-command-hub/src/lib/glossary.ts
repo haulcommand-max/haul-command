@@ -47,13 +47,20 @@ export type GlossaryCategory =
   | 'safety_compliance'
   | 'autonomous_future_tech'
   | 'trailers'
-  | 'hardware_rigging';
+  | 'hardware_rigging'
+  | 'tactical_logistics'
+  | 'informal_lingo'
+  | 'infrastructure';
 
 // ─── THE HC DICTIONARY™ ──────────────────────────────────────
 
 import { HC_GLOSSARY_EXPANSION } from './glossary-expansion';
 
+import { MILITARY_ESC_TERMS } from './glossary-military-esc';
+
 export const HC_GLOSSARY: GlossaryEntry[] = [
+  ...MILITARY_ESC_TERMS,
+
   ...HC_GLOSSARY_EXPANSION,
 
 
