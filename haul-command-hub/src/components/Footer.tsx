@@ -14,6 +14,16 @@ const FOOTER_SECTIONS = [
     ],
   },
   {
+    title: 'Platform',
+    links: [
+      { href: '/dispatch', label: '⚡ Live Dispatch' },
+      { href: '/loads', label: 'Load Board' },
+      { href: '/dictionary', label: 'HC Dictionary' },
+      { href: '/map', label: 'Fleet Map' },
+      { href: '/leaderboards', label: 'Leaderboards' },
+    ],
+  },
+  {
     title: 'Tools',
     links: [
       { href: '/tools/escort-calculator', label: 'Route Calculator' },
