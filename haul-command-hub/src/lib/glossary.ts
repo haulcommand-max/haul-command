@@ -42,11 +42,20 @@ export type GlossaryCategory =
   | 'business'
   | 'technology'
   | 'geography'
-  ;
+  | 'physics_geometry'
+  | 'business_finance'
+  | 'safety_compliance'
+  | 'autonomous_future_tech'
+  | 'trailers'
+  | 'hardware_rigging';
 
 // ─── THE HC DICTIONARY™ ──────────────────────────────────────
 
+import { HC_GLOSSARY_EXPANSION } from './glossary-expansion';
+
 export const HC_GLOSSARY: GlossaryEntry[] = [
+  ...HC_GLOSSARY_EXPANSION,
+
 
   // ══════════════ POSITIONS ══════════════════════════════════════
 
