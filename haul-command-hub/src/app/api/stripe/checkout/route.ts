@@ -69,6 +69,16 @@ const PLANS: Record<string, PlanConfig> = {
     onetimePriceId: 'price_1TDGZpRiV0LOCA36F8yt0svI',
     mode: 'payment',
   },
+  corridor_sponsor: {
+    name: 'Corridor Sponsor',
+    monthPriceId: 'price_1TEgPTRiV0LOCA36JnQcDrD1',
+    mode: 'subscription',
+  },
+  directory_featured: {
+    name: 'Directory Featured',
+    monthPriceId: 'price_1TEgPTRiV0LOCA365xw8STTa',
+    mode: 'subscription',
+  },
 };
 
 async function createCheckoutSession(request: NextRequest, method: 'GET' | 'POST') {

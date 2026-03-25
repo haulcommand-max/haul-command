@@ -92,7 +92,7 @@ const ADDONS = [
     price: '$14',
     period: 'per boost',
     description: 'Push to top of feed for 24 hours',
-    href: '/api/stripe/boost',
+    href: '/api/stripe/checkout?plan=boost',
     icon: '🚀',
   },
   {
@@ -100,6 +100,7 @@ const ADDONS = [
     price: '$199',
     period: '/month',
     description: 'Premium placement on corridor pages',
+    href: '/api/stripe/checkout?plan=corridor_sponsor&interval=month',
     icon: '⭐',
   },
   {
@@ -107,6 +108,7 @@ const ADDONS = [
     price: '$99',
     period: '/month',
     description: 'Top placement in your state directory',
+    href: '/api/stripe/checkout?plan=directory_featured&interval=month',
     icon: '📍',
   },
 ];
@@ -363,14 +365,15 @@ export default function PricingPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {ADDONS.map((addon, i) => (
-                <div key={i} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 transition-all">
+                <Link key={i} href={addon.href} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 transition-all group block">
                   <span className="text-2xl mb-3 block">{addon.icon}</span>
-                  <h3 className="text-white font-bold text-sm mb-1">{addon.name}</h3>
+                  <h3 className="text-white font-bold text-sm mb-1 group-hover:text-accent transition-colors">{addon.name}</h3>
                   <p className="text-gray-500 text-xs mb-3">{addon.description}</p>
-                  <p className="text-accent font-black text-lg">
+                  <p className="text-accent font-black text-lg mb-3">
                     {addon.price}<span className="text-gray-500 text-xs font-normal ml-1">{addon.period}</span>
                   </p>
-                </div>
+                  <span className="text-accent text-xs font-bold group-hover:underline">Purchase →</span>
+                </Link>
               ))}
             </div>
           </div>
