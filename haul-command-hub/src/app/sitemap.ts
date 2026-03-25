@@ -209,6 +209,16 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
             }
         } catch { /* Supabase unavailable — skip dynamic routes */ }
     }
+    // Dictionary × Country pages (~28,500 URLs)
+    const allTerms = getAllTerms();
+    const dictionaryCountryRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap(c =>
+        allTerms.map(t => ({
+            url: `${siteUrl}/dictionary/${c.slug}/${t.id}`,
+            lastModified: now,
+            changeFrequency: 'monthly' as const,
+            priority: 0.4,
+        }))
+    );
 
     return [
         ...staticRoutes,
@@ -218,6 +228,7 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
         ...infraRoutes,
         ...cityServiceRoutes,
         ...glossaryTerms,
+        ...dictionaryCountryRoutes,
         ...dynamicRoutes,
     ];
 }
