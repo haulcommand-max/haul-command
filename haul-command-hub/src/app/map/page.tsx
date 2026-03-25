@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { COUNTRIES } from '@/lib/seo-countries';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
+import { CinematicMap } from '@/components/hc/CinematicMap';
+import { supabaseServer } from '@/lib/supabase-server';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Corridor Map — Browse by Country & Region',
@@ -11,11 +13,37 @@ export const metadata: Metadata = {
     'Browse the world\'s most complete heavy haul logistics map. Find pilot car operators, escort services, and infrastructure across 57 countries.',
 };
 
-export default function MapPage() {
+export const revalidate = 3600;
+
+export default async function MapPage() {
   const tierA = COUNTRIES.filter((c) => c.tier === 'A');
   const tierB = COUNTRIES.filter((c) => c.tier === 'B');
   const tierC = COUNTRIES.filter((c) => c.tier === 'C');
   const tierD = COUNTRIES.filter((c) => c.tier === 'D');
+
+  // Load operator positions for map markers
+  let mapMarkers: { lng: number; lat: number; label: string; type: "operator" | "corridor" | "staging" | "border" }[] = [];
+  try {
+    const sb = supabaseServer();
+    const { data } = await sb
+      .from('hc_places')
+      .select('name, lat, lng, surface_category_key')
+      .eq('status', 'published')
+      .not('lat', 'is', null)
+      .not('lng', 'is', null)
+      .limit(200);
+
+    if (data) {
+      mapMarkers = data.map((p: any) => ({
+        lng: p.lng,
+        lat: p.lat,
+        label: p.name,
+        type: (p.surface_category_key === 'staging_yard' ? 'staging' : 'operator') as "operator" | "staging",
+      }));
+    }
+  } catch {
+    // Non-fatal: map renders without markers
+  }
 
   return (
     <>
@@ -37,6 +65,17 @@ export default function MapPage() {
           </p>
         </header>
 
+        {/* ═══ CINEMATIC 3D MAP ═══ */}
+        <section className="mb-12">
+          <CinematicMap
+            markers={mapMarkers}
+            center={[-98.5, 39.8]}
+            zoom={3.5}
+            showGlobe={false}
+            className="min-h-[400px] sm:min-h-[500px]"
+          />
+        </section>
+
         {/* Market Tiers */}
         {[
           { label: 'Tier A — Primary Markets', countries: tierA, tone: 'accent' },
@@ -56,7 +95,7 @@ export default function MapPage() {
                 <Link
                   key={c.code}
                   href={`/directory/${c.slug}`}
-                  className="group bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
+                  className="group ag-spring-hover bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-lg">{c.flag}</span>
@@ -84,7 +123,7 @@ export default function MapPage() {
               <Link
                 key={state}
                 href={`/state/${state.toLowerCase().replace(/\s+/g, '-')}`}
-                className="bg-white/[0.04] hover:bg-accent/10 border border-white/[0.06] hover:border-accent/30 text-gray-300 hover:text-accent rounded-full px-4 py-1.5 text-xs font-medium transition-all"
+                className="ag-magnetic bg-white/[0.04] hover:bg-accent/10 border border-white/[0.06] hover:border-accent/30 text-gray-300 hover:text-accent rounded-full px-4 py-1.5 text-xs font-medium transition-all"
               >
                 {state}
               </Link>

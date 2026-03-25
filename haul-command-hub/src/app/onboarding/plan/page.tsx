@@ -107,9 +107,9 @@ function PlanContent() {
           {PLANS.map((plan) => (
             <div
               key={plan.id}
-              className={`relative rounded-2xl p-[1px] ${
+              className={`relative rounded-2xl p-[1px] ag-tilt ${
                 plan.highlighted
-                  ? 'bg-gradient-to-b from-accent/60 via-accent/20 to-accent/5 shadow-[0_0_30px_rgba(245,159,10,0.12)]'
+                  ? 'bg-gradient-to-b from-accent/60 via-accent/20 to-accent/5 ag-glow-gold-intense'
                   : 'bg-white/[0.06]'
               }`}
             >
@@ -140,9 +140,9 @@ function PlanContent() {
                 </ul>
                 <Link
                   href={plan.href}
-                  className={`block text-center py-2.5 rounded-xl font-bold text-sm transition-all ${
+                  className={`block text-center py-2.5 rounded-xl font-bold text-sm transition-all ag-magnetic ag-ripple ${
                     plan.highlighted
-                      ? 'bg-accent text-black hover:bg-yellow-500'
+                      ? 'bg-accent text-black hover:bg-yellow-500 shadow-[0_0_20px_rgba(245,159,10,0.2)]'
                       : 'bg-white/[0.06] text-white border border-white/[0.1] hover:border-accent/30'
                   }`}
                 >

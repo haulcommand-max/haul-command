@@ -336,3 +336,241 @@ a[class*="rounded-xl"], a[class*="rounded-2xl"] {
   color: #000000 !important;
   font-weight: 700;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   IN-CAB DARK MODE — OPERATOR NIGHT VISION
+   Optimized for truckers operating at 60mph+ in dark cabs.
+   High contrast. Anti-glare. Large touch targets.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Force OLED black background on all surfaces */
+[data-cab-mode="true"] {
+  --background: #000000;
+  --surface-card: rgba(255, 255, 255, 0.02);
+  --surface-card-border: rgba(255, 255, 255, 0.04);
+}
+
+[data-cab-mode="true"] body {
+  background: #000000 !important;
+}
+
+[data-cab-mode="true"] .bg-\[#0a0a0a\],
+[data-cab-mode="true"] .bg-\[#111\] {
+  background: #000000 !important;
+}
+
+/* Enlarged touch targets for gloved hands */
+[data-cab-mode="true"] button,
+[data-cab-mode="true"] [role="button"],
+[data-cab-mode="true"] a[class*="rounded"] {
+  min-height: 52px;
+  min-width: 52px;
+}
+
+/* Boost critical text contrast for high-ambient environments */
+[data-cab-mode="true"] .text-gray-400 { color: #d1d5db !important; }
+[data-cab-mode="true"] .text-gray-500 { color: #b0b7c3 !important; }
+[data-cab-mode="true"] .text-gray-600 { color: #9ca3af !important; }
+
+/* Red-shift for night vision preservation */
+[data-cab-mode="true"][data-night-shift="true"] {
+  filter: sepia(0.3) saturate(1.5) hue-rotate(-10deg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SPRING-PHYSICS MICRO-INTERACTIONS
+   Framer Motion-inspired CSS transitions for $100M feel
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Spring Hover (cards, buttons) ───────────────────── */
+.ag-spring-hover {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+.ag-spring-hover:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(245, 159, 10, 0.06);
+}
+.ag-spring-hover:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* ── Magnetic Button Effect ──────────────────────────── */
+.ag-magnetic {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.ag-magnetic:hover {
+  transform: scale(1.05);
+}
+.ag-magnetic:active {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
+}
+
+/* ── Pricing Card Tilt ───────────────────────────────── */
+.ag-tilt {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.ag-tilt:hover {
+  transform: rotateY(-2deg) rotateX(2deg) translateY(-4px);
+}
+
+/* ── Button Ripple ───────────────────────────────────── */
+@keyframes ag-ripple {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+.ag-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ag-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(245, 159, 10, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+}
+.ag-ripple:active::after {
+  animation: ag-ripple 0.5s ease-out;
+}
+
+/* ── Typewriter flash for stats ──────────────────────── */
+@keyframes ag-number-flash {
+  0% { color: var(--accent); text-shadow: 0 0 20px rgba(245, 159, 10, 0.8); }
+  100% { color: inherit; text-shadow: none; }
+}
+.ag-number-flash {
+  animation: ag-number-flash 1s ease-out;
+}
+
+/* ── Glassmorphism Surfaces ──────────────────────────── */
+.ag-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ag-glass-accent {
+  background: rgba(245, 159, 10, 0.04);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(245, 159, 10, 0.12);
+}
+
+/* ── Neon Glow System ────────────────────────────────── */
+.ag-glow-gold {
+  box-shadow:
+    0 0 8px rgba(245, 159, 10, 0.15),
+    0 0 24px rgba(245, 159, 10, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ag-glow-gold-intense {
+  box-shadow:
+    0 0 12px rgba(245, 159, 10, 0.3),
+    0 0 40px rgba(245, 159, 10, 0.15),
+    0 0 80px rgba(245, 159, 10, 0.05);
+}
+
+.ag-glow-blue {
+  box-shadow:
+    0 0 8px rgba(59, 130, 246, 0.15),
+    0 0 24px rgba(59, 130, 246, 0.08);
+}
+
+.ag-glow-green {
+  box-shadow:
+    0 0 8px rgba(34, 197, 94, 0.15),
+    0 0 24px rgba(34, 197, 94, 0.08);
+}
+
+/* ── Text Glow ───────────────────────────────────────── */
+.ag-text-glow {
+  text-shadow: 0 0 12px rgba(245, 159, 10, 0.4), 0 0 40px rgba(245, 159, 10, 0.1);
+}
+
+/* ── Gradient Border System ──────────────────────────── */
+.ag-gradient-border {
+  position: relative;
+  background: #0a0a0a;
+  border-radius: 16px;
+}
+.ag-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(245, 159, 10, 0.5), transparent 50%, rgba(59, 130, 246, 0.3));
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+}
+
+/* ── Scroll-Triggered Fade In ────────────────────────── */
+.ag-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.ag-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Smooth container scroll ─────────────────────────── */
+.ag-smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 159, 10, 0.2) transparent;
+}
+
+/* ── Custom scrollbar for search dropdowns ───────────── */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 159, 10, 0.3);
+}
+
+/* ── Loading Skeleton ────────────────────────────────── */
+.ag-skeleton {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.03) 0%,
+    rgba(255,255,255,0.06) 50%,
+    rgba(255,255,255,0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+/* ── Map marker animations ───────────────────────────── */
+@keyframes hc-marker-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+@keyframes hc-marker-ring {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(2); opacity: 0; }
+}

@@ -244,7 +244,7 @@ export default async function HomePage() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className={`group bg-white/[0.03] border border-white/[0.06] p-6 rounded-2xl hover:border-accent/30 hover:bg-accent/[0.03] transition-all ag-card-hover ag-slide-up ${'hot' in tool && tool.hot ? 'relative' : ''}`}
+                  className={`group ag-glass ag-spring-hover p-6 rounded-2xl hover:border-accent/30 hover:bg-accent/[0.03] transition-all ag-slide-up ${'hot' in tool && tool.hot ? 'relative' : ''}`}
                 >
                   {'hot' in tool && tool.hot && (
                     <span className="absolute top-3 right-3 bg-red-500/20 text-red-400 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ag-hot-pulse">New</span>
