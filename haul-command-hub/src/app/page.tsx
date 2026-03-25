@@ -197,10 +197,10 @@ export default async function HomePage() {
                   hot: true,
                 },
                 {
-                  href: '/tools/axle-weight/us',
+                  href: '/tools/axle-weight',
                   icon: '⚖️',
                   title: 'Route Weight Calculator',
-                  desc: 'Calculate legal load weight per jurisdiction based on axle configuration.',
+                  desc: 'Calculate legal load weight based on axle configuration.',
                   cta: 'Calculate Weight →',
                 },
                 {
