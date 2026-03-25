@@ -108,7 +108,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic routes from hc_page_keys (if Supabase available)
     
     // 500+ Glossary Programmatic Sitemaps
-    const glossaryTerms: MetadataRoute.Sitemap = getAllTerms().map(t => ({ url: \/dictionary/term/\, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.6 }));
+    const glossaryTerms: MetadataRoute.Sitemap = getAllTerms().map(t => ({ url: `${siteUrl}/dictionary/term/${t.id}`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.6 }));
 
     let dynamicRoutes: MetadataRoute.Sitemap = [];
     if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
