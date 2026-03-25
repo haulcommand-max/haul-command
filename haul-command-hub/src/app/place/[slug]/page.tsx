@@ -12,6 +12,8 @@ import HCRequirementsSnapshot from "@/components/hc/RequirementsSnapshot";
 import HCClaimCorrectVerifyPanel from "@/components/hc/ClaimCorrectVerifyPanel";
 import { HCStickyContactBar } from "@/components/hc/StickyContactBar";
 import { HCAlertSignupModule } from "@/components/hc/AlertSignupModule";
+import { CarrierReportCard } from "@/components/hc/social/CarrierReportCard";
+import { EndorsementModule } from "@/components/hc/social/EndorsementModule";
 import { InlineBillboard } from "@/components/hc/InlineBillboard";
 import { SidecarSponsor } from "@/components/hc/SidecarSponsor";
 import { StickyMobileChipRail } from "@/components/hc/StickyMobileChipRail";
@@ -286,8 +288,14 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
               </section>
             )}
 
-            {/* Capability Matrix */}
-            <HCCapabilityMatrix capabilities={capabilities} title="Services & Capabilities" />
+            {/* Operational Report Card */}
+            <CarrierReportCard entityType={profile.entityType} claimStatus={profile.claimStatus} />
+
+            {/* Capability Matrix & Social Endorsements combined */}
+            <EndorsementModule capabilities={capabilities} />
+            <div className="hidden lg:block">
+              <HCCapabilityMatrix capabilities={capabilities} title="Technical Classifications" />
+            </div>
 
             {/* Details Grid */}
             <section className="mb-8">
