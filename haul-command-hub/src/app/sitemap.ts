@@ -222,6 +222,17 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
         }))
     );
 
+    // Equipment × Country pages (~570 URLs)
+    const equipSlugs = (equip: string) => equip.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const equipmentRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap(c =>
+        c.equipment_focus.map(equip => ({
+            url: `${siteUrl}/equipment/${equipSlugs(equip)}/${c.slug}`,
+            lastModified: now,
+            changeFrequency: 'weekly' as const,
+            priority: 0.5,
+        }))
+    );
+
     return [
         ...staticRoutes,
         ...liveRegionRoutes,
@@ -231,6 +242,7 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
         ...cityServiceRoutes,
         ...glossaryTerms,
         ...dictionaryCountryRoutes,
+        ...equipmentRoutes,
         ...dynamicRoutes,
     ];
 }
