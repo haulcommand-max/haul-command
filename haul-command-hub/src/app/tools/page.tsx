@@ -61,7 +61,7 @@ const TOOL_SUITES = [
     title: 'Suite 5 — Operator Life',
     icon: '🏨',
     tools: [
-      { href: '/tools/hotel-finder',         icon: '🏨', title: 'Hotel Finder',         desc: 'Truck-friendly hotels with pilot car discounts by state',    hot: true },
+      { href: '/tools/hotel-finder',         icon: '🏨', title: 'Lodging & Truck Stops', desc: 'Hotels with pilot car rates + truck stops with showers, scales & WiFi', hot: true },
     ],
   },
   {

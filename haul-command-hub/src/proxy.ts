@@ -45,6 +45,11 @@ const ROUTE_FALLBACKS: [RegExp, string][] = [
   [/^\/tools\/trucker-hotel$/, '/tools/hotel-finder'],
   [/^\/find-a-hotel$/, '/tools/hotel-finder'],
   [/^\/hotels$/, '/tools/hotel-finder'],
+  [/^\/truck-stops$/, '/tools/hotel-finder'],
+  [/^\/truck-stop$/, '/tools/hotel-finder'],
+  [/^\/truckstops$/, '/tools/hotel-finder'],
+  [/^\/tools\/truck-stops$/, '/tools/hotel-finder'],
+  [/^\/tools\/truck-stop$/, '/tools/hotel-finder'],
   
   // Old services marketplace → services hub
   [/^\/services\/marketplace$/, '/services'],
