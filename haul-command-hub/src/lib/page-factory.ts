@@ -67,10 +67,14 @@ export async function getPageKey(
         .eq('page_status', 'active');
 
     for (const [key, val] of Object.entries(filters)) {
-        q = q.eq(key, val);
+        q = q.eq(key, val.toLowerCase());
     }
 
-    const { data } = await q.limit(1).single();
+    const { data, error } = await q.limit(1).maybeSingle();
+    if (error) {
+        console.error(`[PageFactory] getPageKey error for ${pageType}:`, error.message);
+        return null;
+    }
     return data as PageKey | null;
 }
 
@@ -133,13 +137,17 @@ export async function getCityRollups(countryCode: string, surfaceClass: string) 
 // ─── Country Hub Stats ────────────────────────────────────
 
 export async function getCountryRollup(countryCode: string, surfaceClass: string) {
-    const { data } = await getSupabase()
+    const { data, error } = await getSupabase()
         .from('hc_surface_rollups_country')
         .select('*')
         .eq('country_code', countryCode)
         .eq('surface_class', surfaceClass)
         .limit(1)
-        .single();
+        .maybeSingle();
+    if (error) {
+        console.error(`[PageFactory] getCountryRollup error for ${countryCode}:`, error.message);
+        return null;
+    }
     return data;
 }
 

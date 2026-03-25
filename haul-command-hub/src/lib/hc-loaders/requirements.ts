@@ -35,11 +35,15 @@ export async function getRequirementsPublic(countrySlug: string): Promise<Public
 
 export async function getRequirementsSeoContract(canonicalUrl: string) {
   const sb = supabaseServer();
-  const { data } = await sb
+  const { data, error } = await sb
     .from('hc_page_seo_contracts')
     .select('title, meta_description, h1, intro_copy')
     .eq('canonical_url', canonicalUrl)
-    .single();
+    .maybeSingle();
+  if (error) {
+    console.error(`[Requirements] SEO contract error for ${canonicalUrl}:`, error.message);
+    return null;
+  }
   return data;
 }
 
@@ -51,9 +55,18 @@ export async function getRequirementsByCountry(countryCode: string) {
 }
 
 export async function getRequirementsByJurisdiction(jurisdictionCode: string) {
-  const sb = supabaseServer();
-  const { data } = await sb.rpc('hc_get_jurisdiction_requirements', { p_jurisdiction: jurisdictionCode.toUpperCase() });
-  return data ?? [];
+  try {
+    const sb = supabaseServer();
+    const { data, error } = await sb.rpc('hc_get_jurisdiction_requirements', { p_jurisdiction: jurisdictionCode.toUpperCase() });
+    if (error) {
+      console.error(`[Requirements] RPC error for ${jurisdictionCode}:`, error.message);
+      return [];
+    }
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error(`[Requirements] Unexpected error for ${jurisdictionCode}:`, err);
+    return [];
+  }
 }
 
 export async function getAllJurisdictions() {
