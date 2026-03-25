@@ -20,9 +20,14 @@ CREATE TABLE IF NOT EXISTS public.entities (
   lng double precision,
   source text,
   source_url text,
+  metadata jsonb DEFAULT '{}',
   confidence_score double precision DEFAULT 0,
   freshness_score double precision DEFAULT 0,
   source_reliability_score double precision DEFAULT 0,
+  claim_priority_score double precision DEFAULT 0,
+  monetization_value_score double precision DEFAULT 0,
+  is_claimed boolean DEFAULT false,
+  claimed_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now()
 );
@@ -192,15 +197,15 @@ CREATE POLICY "state_rules_public_read" ON public.state_rules FOR SELECT USING (
 CREATE POLICY "infra_nodes_public_read" ON public.infrastructure_nodes FOR SELECT USING (true);
 
 -- Allow service role full access to everything
-CREATE POLICY "service_role_all" ON public.entities FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.contacts FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.services FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.entity_certifications FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.locations FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.infrastructure_nodes FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.state_rules FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.entity_relationships FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.claims FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.ad_slots FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.ingestion_jobs FOR ALL USING (auth.role() = 'service_role');
-CREATE POLICY "service_role_all" ON public.crawl_queue FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_entities" ON public.entities FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_contacts" ON public.contacts FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_services" ON public.services FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_entity_certs" ON public.entity_certifications FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_locations" ON public.locations FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_infra_nodes" ON public.infrastructure_nodes FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_state_rules" ON public.state_rules FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_entity_rels" ON public.entity_relationships FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_claims" ON public.claims FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_ad_slots" ON public.ad_slots FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_ingestion_jobs" ON public.ingestion_jobs FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "sr_crawl_queue" ON public.crawl_queue FOR ALL USING (auth.role() = 'service_role');

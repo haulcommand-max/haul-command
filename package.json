@@ -26,7 +26,11 @@
         "verify": "node scripts/verify-no-regressions.mjs",
         "brand:facebook": "node scripts/brand/facebook-cover.mjs",
         "test:visual": "npx playwright test tests/e2e/visual-regression.spec.ts",
-        "test:visual:update": "npx playwright test tests/e2e/visual-regression.spec.ts --update-snapshots"
+        "test:visual:update": "npx playwright test tests/e2e/visual-regression.spec.ts --update-snapshots",
+        "ingest:scrape": "node scripts/seed/scrape-all-states.mjs",
+        "ingest:expand": "node scripts/seed/crawl-outbound-sites.mjs",
+        "ingest:seed": "node scripts/seed/load-seed-to-supabase.mjs",
+        "ingest:pipeline": "node scripts/seed/run-full-pipeline.mjs"
     },
     "keywords": [],
     "author": "",
