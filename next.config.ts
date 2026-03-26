@@ -2,9 +2,27 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     // ── Output ──────────────────────────────────────────────────────────────────
-    // NOTE: "standalone" removed — Vercel uses its own serverless bundler.
-    // Standalone was causing "Body exceeded 80000kb limit" on deploy.
-    // For Docker/Capacitor, re-enable via NEXT_OUTPUT=standalone env var.
+    // Vercel uses its own builder. No output mode needed.
+
+    // ── Bundle Optimization ─────────────────────────────────────────────────────
+    // Fix: "Body exceeded 80000kb limit" — externalize heavy packages from
+    // serverless function bundles so they're loaded from the layer instead.
+    serverExternalPackages: [
+        "mapbox-gl",
+        "sharp",
+        "@sentry/nextjs",
+        "@livekit/components-react",
+        "livekit-client",
+    ],
+
+    experimental: {
+        // Tree-shake barrel exports so each route only includes used icons/utils
+        optimizePackageImports: [
+            "lucide-react",
+            "date-fns",
+            "@supabase/supabase-js",
+        ],
+    },
 
     // ── Performance ─────────────────────────────────────────────────────────────
     reactStrictMode: true,
