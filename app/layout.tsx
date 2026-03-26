@@ -168,6 +168,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         },
                     })
                 }} />
+                {/* WebSite + SearchAction → Google Sitelinks Search Box */}
+                <script type="application/ld+json" dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        "name": "Haul Command",
+                        "url": "https://haulcommand.com",
+                        "potentialAction": {
+                            "@type": "SearchAction",
+                            "target": {
+                                "@type": "EntryPoint",
+                                "urlTemplate": "https://haulcommand.com/search?q={search_term_string}",
+                            },
+                            "query-input": "required name=search_term_string",
+                        },
+                    })
+                }} />
+                {/* SpeakableSpecification → Voice Search Eligibility */}
+                <script type="application/ld+json" dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebPage",
+                        "name": "Haul Command — The Operating System for Heavy Haul",
+                        "url": "https://haulcommand.com",
+                        "speakable": {
+                            "@type": "SpeakableSpecification",
+                            "cssSelector": [".speakable-headline", ".speakable-summary", "h1", "[data-speakable]"],
+                        },
+                    })
+                }} />
+                {/* OpenSearch — Browser Search Integration */}
+                <link rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
                 {/* Inbound Authority Machine — Tracking Pixels */}
                 <AnalyticsProvider />
             </head>
