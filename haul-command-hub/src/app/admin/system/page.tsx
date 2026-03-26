@@ -4,7 +4,14 @@
  * Real-time environment health checker.
  * Shows integration status, recent errors, and system configuration.
  * Server component — never exposes secret values.
+ *
+ * CRITICAL FIX: Admin pages MUST be force-dynamic. They require auth,
+ * live data, and always-fresh state. DO NOT remove these exports.
  */
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const runtime = 'nodejs' // Full Node.js runtime — required for Supabase admin patterns
 
 import { supabaseServer } from '@/lib/supabase-server';
 import Navbar from '@/components/Navbar';

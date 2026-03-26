@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { resolve } from "path";
 
 const nextConfig: NextConfig = {
 
@@ -23,43 +22,36 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // ─── AUDIT FIX: Legacy broken routes ───────────────────
-      // /jobs was in sitemap at 0.85 priority — dead
       {
         source: '/jobs',
         destination: '/loads',
         permanent: true,
       },
-      // /onboarding/start — primary CTA on 404 page was broken
       {
         source: '/onboarding/start',
         destination: '/claim',
         permanent: true,
       },
-      // /home — was rendering same as / causing confusion
       {
         source: '/home',
         destination: '/',
         permanent: true,
       },
-      // /start — legacy onboarding entry
       {
         source: '/start',
         destination: '/claim',
         permanent: true,
       },
-      // /services/marketplace → services hub
       {
         source: '/services/marketplace',
         destination: '/services',
         permanent: true,
       },
-      // /map/jurisdiction → map
       {
         source: '/map/jurisdiction',
         destination: '/map',
         permanent: true,
       },
-      // Legacy tool routes → current tool names
       {
         source: '/tools/compliance-copilot',
         destination: '/tools/escort-calculator',
@@ -99,6 +91,99 @@ const nextConfig: NextConfig = {
         source: '/tools/rate-lookup',
         destination: '/tools/rate-advisor',
         permanent: true,
+      },
+    ];
+  },
+
+  // ─── Build behavior ────────────────────────────────────────────────────────
+
+  /**
+   * CRITICAL: Kill static generation workers after 45 seconds.
+   * Vercel's hard limit is 60s. This gives a 15s buffer so you get a clean
+   * error instead of a mysterious hanging build.
+   *
+   * If a page hits this timeout, it MUST be set to force-dynamic.
+   * Do NOT increase this value — fix the page instead.
+   */
+  staticPageGenerationTimeout: 45,
+
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  // ─── Packages ─────────────────────────────────────────────────────────────
+
+  /**
+   * These packages must run in the Node.js runtime, not bundled by webpack.
+   * Bundling them causes build failures or huge lambda sizes.
+   */
+  serverExternalPackages: [
+    'mapbox-gl',
+    '@mapbox/mapbox-gl-geocoder',
+    'sharp',
+    'canvas',
+    '@supabase/supabase-js',
+  ],
+
+  // ─── Bundle size protection ────────────────────────────────────────────────
+
+  outputFileTracingExcludes: {
+    '*': [
+      'node_modules/@swc/core-linux-x64-gnu',
+      'node_modules/@swc/core-linux-x64-musl',
+      'node_modules/esbuild-linux-64',
+      'node_modules/webpack',
+      'node_modules/rollup',
+    ],
+  },
+
+  // ─── Image optimization ────────────────────────────────────────────────────
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.supabase.in',
+      },
+    ],
+  },
+
+  // ─── Headers ──────────────────────────────────────────────────────────────
+
+  async headers() {
+    return [
+      {
+        // Admin routes: never cache, never index
+        source: '/admin/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+      {
+        // API routes: no caching (they handle their own cache headers)
+        source: '/api/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store' },
+        ],
+      },
+      {
+        // Directory: allow CDN caching for 5 min (CDN handles revalidation)
+        source: '/directory/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=600',
+          },
+        ],
       },
     ];
   },

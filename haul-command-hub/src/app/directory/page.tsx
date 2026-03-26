@@ -1,3 +1,11 @@
+// CRITICAL FIX: This page was timing out during static generation while querying
+// 50,000+ hc_places rows from Supabase. With 1.56M+ entities, static gen is
+// architecturally impossible here. This page MUST be dynamic.
+// DO NOT add generateStaticParams() to this route or its subdirectories.
+// DO NOT remove the dynamic export or revert to revalidate = 3600.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import Link from "next/link";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
@@ -11,7 +19,6 @@ import {
 } from "@/lib/directory-helpers";
 import DirectorySearchForm from "@/components/hc/DirectorySearchForm";
 
-export const revalidate = 3600;
 
 export const metadata: Metadata = {
     title: "Global Heavy Haul Directory — Ports, Truck Stops, Industrial Zones",

@@ -1,0 +1,148 @@
+# .github/workflows/build-guard.yml
+#
+# PURPOSE: Catch build-crashing regressions BEFORE they reach Vercel.
+# Runs on every push to main and every PR.
+#
+# WHAT IT CHECKS:
+# 1. Scans for new pages that make DB calls without force-dynamic
+# 2. Scans for generateStaticParams() on high-entity-count routes
+# 3. Validates that all protected routes have the correct exports
+# 4. Runs TypeScript type check and ESLint
+
+name: Build Guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Job 1: Scan for dangerous static page patterns ─────────────────────────
+  scan-static-patterns:
+    name: Scan for static gen regressions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for missing dynamic exports on protected routes
+        run: |
+          echo "Checking protected routes for force-dynamic export..."
+
+          FAILED=0
+
+          # List of route prefixes that MUST have force-dynamic
+          PROTECTED_ROUTES=(
+            "src/app/admin"
+            "src/app/dashboard"
+            "src/app/directory"
+            "src/app/escort-requirements"
+            "src/app/dispatch"
+            "src/app/loads"
+            "src/app/messages"
+            "src/app/notifications"
+          )
+
+          for route in "${PROTECTED_ROUTES[@]}"; do
+            if [ -d "$route" ]; then
+              # Find all page.tsx files in this route
+              while IFS= read -r -d '' pagefile; do
+                # Check if it has force-dynamic
+                if ! grep -q "dynamic = 'force-dynamic'" "$pagefile" && \
+                   ! grep -q 'dynamic = "force-dynamic"' "$pagefile"; then
+                  echo "::error file=$pagefile::Missing 'export const dynamic = force-dynamic' in protected route $pagefile"
+                  FAILED=1
+                fi
+              done < <(find "$route" -name "page.tsx" -print0)
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            echo ""
+            echo "FAILED: One or more protected routes are missing 'export const dynamic = \"force-dynamic\"'"
+            echo "These pages WILL cause build timeouts on Vercel."
+            echo ""
+            echo "Fix: Add this to the TOP of the failing page file:"
+            echo "  export const dynamic = 'force-dynamic'"
+            echo "  export const revalidate = 0"
+            exit 1
+          fi
+
+          echo "✓ All protected routes have correct dynamic exports"
+
+      - name: Check for dangerous generateStaticParams on large routes
+        run: |
+          echo "Checking for dangerous static params generation..."
+
+          FAILED=0
+
+          # Routes where generateStaticParams is BANNED
+          BANNED_STATIC_ROUTES=(
+            "src/app/directory"
+            "src/app/escort-requirements"
+            "src/app/dispatch"
+          )
+
+          for route in "${BANNED_STATIC_ROUTES[@]}"; do
+            if [ -d "$route" ]; then
+              if grep -r "generateStaticParams" "$route" --include="*.tsx" --include="*.ts" -l 2>/dev/null; then
+                echo "::error::generateStaticParams() found in $route — this will crash your build at scale."
+                echo "Remove generateStaticParams() from all files in $route."
+                FAILED=1
+              fi
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+
+          echo "✓ No dangerous static params found"
+
+      - name: Verify next.config.ts has staticPageGenerationTimeout
+        run: |
+          if ! grep -q "staticPageGenerationTimeout" next.config.ts 2>/dev/null && \
+             ! grep -q "staticPageGenerationTimeout" next.config.js 2>/dev/null && \
+             ! grep -q "staticPageGenerationTimeout" next.config.mjs 2>/dev/null; then
+            echo "::warning::next.config.ts is missing staticPageGenerationTimeout."
+            echo "Add: staticPageGenerationTimeout: 45"
+            echo "This ensures builds fail fast instead of hanging indefinitely."
+          else
+            echo "✓ staticPageGenerationTimeout is configured"
+          fi
+
+  # ─── Job 2: Type check ───────────────────────────────────────────────────────
+  typecheck:
+    name: TypeScript check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+        # This catches TS errors BEFORE Vercel tries to build.
+        # Don't skip this step. TypeScript errors = build failures.
+
+  # ─── Job 3: Lint ─────────────────────────────────────────────────────────────
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Lint
+        run: npm run lint

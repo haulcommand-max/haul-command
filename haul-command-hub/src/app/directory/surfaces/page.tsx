@@ -1,7 +1,13 @@
+// CRITICAL FIX: Querying hc_surface_rollups at build time exceeds Vercel's 60s
+// static generation timeout. This page MUST render at request time.
+// DO NOT revert to revalidate = 3600 or add generateStaticParams().
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { supabaseServer } from "@/lib/supabase-server";
 import Link from "next/link";
 
-export const revalidate = 3600; // ISR: 1 hour
+
 
 export const metadata = {
     title: "Global Logistics Surface Directory — HAUL COMMAND",

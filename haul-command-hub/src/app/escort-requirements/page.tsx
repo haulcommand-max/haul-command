@@ -1,3 +1,9 @@
+// CRITICAL FIX: This page was crashing the entire Vercel build because it attempted
+// to statically generate while querying the database, exceeding the 60s worker timeout.
+// DO NOT remove these exports — the build will fail again if you do.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { supabaseServer } from '@/lib/supabase-server';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
