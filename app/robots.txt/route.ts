@@ -31,6 +31,15 @@ Disallow: /settings/
 Disallow: /onboarding/
 Disallow: /chat/
 
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
 Sitemap: ${DOMAIN}/sitemap.xml
 Sitemap: ${DOMAIN}/sitemap-seo.xml
 
