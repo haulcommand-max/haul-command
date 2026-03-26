@@ -3,32 +3,28 @@ import { Metadata } from "next";
 
 // The 57 Tiered Growth Countries defined in Haul Command expansion specs
 const TIERED_COUNTRIES = [
-  // Tier A (Gold) - Primary execution markets
+  // Tier A - Gold (10)
   "US", "CA", "AU", "GB", "NZ", "ZA", "DE", "NL", "AE", "BR",
-  // Tier B (Blue)
-  "IE", "SE", "NO", "DK", "FI", "CH", "AT", "FR", "BE", "MX",
-  "CL", "PE", "CO", "SA", "QA",
-  // Tier C (Silver) 
-  "IT", "ES", "PL", "CZ", "RO", "HU", "GR", "TR", "IN", "MY",
-  "SG", "ID", "PH", "VN", "TH", "KR", "JP", "TW", "HK",
-  // Emerging (Steel)
-  "AR", "ZA", "NG", "KE", "EG", "MA", "IL", "KW", "OM", "BH",
-  "UY", "PY"
+  // Tier B - Blue (18)
+  "IE", "SE", "NO", "DK", "FI", "BE", "AT", "CH", "ES", "FR", "IT", "PT", "SA", "QA", "MX", "IN", "ID", "TH",
+  // Tier C - Silver (26)
+  "PL", "CZ", "SK", "HU", "SI", "EE", "LV", "LT", "HR", "RO", "BG", "GR", "TR", "KW", "OM", "BH", "SG", "MY", "JP", "KR", "CL", "AR", "CO", "PE", "VN", "PH",
+  // Tier D - Slate (3)
+  "UY", "PA", "CR"
 ];
 
-// Map codes to display names (Sample mappings, can enhance later)
+// Map codes to display names (Top logic placeholder)
 const countryNames: Record<string, string> = {
   "US": "United States",
   "CA": "Canada",
   "AU": "Australia",
   "GB": "United Kingdom",
   "DE": "Germany",
-  // Add fallback logic for the rest
+  // Fallbacks handled dynamically below
 };
 
-// 1. GENERATE STATIC PARAMS: Build these 57 pages at compile time!
+// 1. GENERATE STATIC PARAMS: Build these exact 57 pages at compile time!
 export async function generateStaticParams() {
-  // Removes standard duplicate codes if accidentally mapped
   const uniqueCodes = Array.from(new Set(TIERED_COUNTRIES));
   
   return uniqueCodes.map((code) => ({
@@ -67,7 +63,6 @@ export default function CountryDirectoryPage({ params }: { params: { countryCode
           </p>
         </header>
         
-        {/* Placeholder for the interactive Map or FilterDropdowns (Loaded via Client Component later) */}
         <div className="bg-slate-900 shadow rounded-xl p-8 text-center border border-slate-800">
            <p className="text-emerald-400 font-mono">
              [ SEO Scaffold Activated ] 
