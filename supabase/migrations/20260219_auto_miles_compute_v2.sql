@@ -220,7 +220,7 @@ BEGIN
     PERFORM cron.schedule(
       'miles_stale_refresh',
       '0 3 * * *',
-      $$
+      $cron$
         UPDATE public.loads
         SET miles_status = 'stale', updated_at = now()
         WHERE miles_source = 'here'
@@ -229,7 +229,7 @@ BEGIN
           AND origin_lat IS NOT NULL AND dest_lat IS NOT NULL
           AND miles_status = 'computed'
         LIMIT 2000;
-      $$
+      $cron$
     );
   END IF;
 END;

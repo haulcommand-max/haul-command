@@ -4,8 +4,8 @@
 -- 1) Seed launch gating settings
 INSERT INTO public.app_settings (key, value, description) VALUES
     ('seed_launch_enabled', 'false', 'Gate: set to true to begin sending seed claim emails'),
-    ('seed_launch_at', '2026-02-26T09:00:00-05:00', 'Hard date: seed claim emails start after this timestamp (ET)'),
-    ('facebook_group_url', 'https://www.facebook.com/groups/haulcommand', 'Facebook group URL for claimed operators')
+    ('seed_launch_at', '"2026-02-26T09:00:00-05:00"', 'Hard date: seed claim emails start after this timestamp (ET)'),
+    ('facebook_group_url', '"https://www.facebook.com/groups/haulcommand"', 'Facebook group URL for claimed operators')
 ON CONFLICT (key) DO NOTHING;
 
 -- 2) Email sequence tracking table

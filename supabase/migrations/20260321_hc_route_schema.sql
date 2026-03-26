@@ -178,8 +178,8 @@ CREATE INDEX IF NOT EXISTS idx_permit_routes_geo
   ON permit_routes USING GIST (route_geometry);
 CREATE INDEX IF NOT EXISTS idx_permit_routes_operator ON permit_routes(operator_id);
 CREATE INDEX IF NOT EXISTS idx_permit_routes_state ON permit_routes(issuing_state);
-CREATE INDEX IF NOT EXISTS idx_permit_routes_valid 
-  ON permit_routes(valid_from, valid_until) WHERE valid_until >= CURRENT_DATE;
+CREATE INDEX IF NOT EXISTS idx_permit_routes_valid
+  ON permit_routes(valid_from, valid_until) WHERE valid_until IS NOT NULL;
 
 -- ─── 4. HAZARD REPORTS (HC WAZE) ──────────────────────────────────────
 

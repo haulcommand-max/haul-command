@@ -72,6 +72,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+DROP FUNCTION IF EXISTS public.freshness_01(timestamptz) CASCADE;
 CREATE OR REPLACE FUNCTION public.freshness_01(posted_at timestamptz)
 RETURNS numeric AS $$
 DECLARE
@@ -84,6 +85,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
+DROP FUNCTION IF EXISTS public.rate_bonus(text) CASCADE;
 CREATE OR REPLACE FUNCTION public.rate_bonus(rate_signal text)
 RETURNS numeric AS $$
 BEGIN
@@ -95,6 +97,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+DROP FUNCTION IF EXISTS public.distance_bonus(text) CASCADE;
 CREATE OR REPLACE FUNCTION public.distance_bonus(distance_confidence text)
 RETURNS numeric AS $$
 BEGIN

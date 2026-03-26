@@ -264,13 +264,13 @@ BEGIN
     PERFORM cron.schedule(
       'cert_auto_expire',
       '0 4 * * *',
-      $$
+      $cron$
         UPDATE public.vendor_certifications
         SET status = 'expired', updated_at = now()
         WHERE status = 'active'
           AND expires_at IS NOT NULL
           AND expires_at < CURRENT_DATE;
-      $$
+      $cron$
     );
   END IF;
 END;

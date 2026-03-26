@@ -176,15 +176,15 @@ insert into public.load_type_definitions (tag, label, description, typical_escor
 ('wind_blade', 'Wind Turbine Blade', 'Wind turbine blade transport (extreme length)', 2, array['route_survey','height_pole'], array['wind_turbine_blade_transport','wind_farm_epc_contractors']),
 ('transformer', 'Power Transformer', 'Large utility transformers', 3, array['route_survey','police','night_move'], array['power_transformer_transport','substation_equipment_movers']),
 ('oversize', 'Oversize Load', 'General oversize loads exceeding standard dimensions', 1, array['height_pole'], array['heavy_haul_trucking_companies']),
-('overweight', 'Overweight Load', 'Loads exceeding standard weight limits', 1, array[], array['heavy_haul_trucking_companies']),
+('overweight', 'Overweight Load', 'Loads exceeding standard weight limits', 1, array[]::text[], array['heavy_haul_trucking_companies']),
 ('bridge_beam', 'Bridge Beam / Girder', 'Precast bridge beams and girders', 2, array['route_survey'], array['bridge_beam_transport','precast_concrete_companies']),
-('mobile_home', 'Mobile / Modular Home', 'Manufactured or modular home transport', 1, array[], array['mobile_home_transport']),
+('mobile_home', 'Mobile / Modular Home', 'Manufactured or modular home transport', 1, array[]::text[], array['mobile_home_transport']),
 ('crane', 'Crane Transport', 'Mobile or crawler crane transport', 2, array['height_pole'], array['crane_rental_companies']),
 ('drilling_rig', 'Drilling Rig', 'Oil/gas drilling rig transport', 2, array['route_survey'], array['oilfield_service_companies']),
 ('yacht', 'Yacht / Large Vessel', 'Overland yacht or large boat transport', 1, array['height_pole'], array['yacht_transport_companies']),
 ('aircraft', 'Aircraft Component', 'Fuselage, wing, or aerospace component', 3, array['route_survey','police','night_move'], array['aircraft_fuselage_transport']),
-('farm_equipment', 'Farm Equipment', 'Combine, tractor, or large agriculture equipment', 1, array[], array['combine_harvester_transport']),
-('general_heavy', 'General Heavy Haul', 'General heavy or oversized freight', 1, array[], array['heavy_haul_trucking_companies']),
+('farm_equipment', 'Farm Equipment', 'Combine, tractor, or large agriculture equipment', 1, array[]::text[], array['combine_harvester_transport']),
+('general_heavy', 'General Heavy Haul', 'General heavy or oversized freight', 1, array[]::text[], array['heavy_haul_trucking_companies']),
 ('project_cargo', 'Project Cargo', 'Large-scale project freight', 2, array['route_survey'], array['project_logistics_firms','heavy_freight_forwarders'])
 on conflict (tag) do nothing;
 

@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS public.enterprise_usage_events (
 );
 
 CREATE INDEX IF NOT EXISTS idx_usage_events_customer_day
-    ON public.enterprise_usage_events(customer_id, (created_at::date));
+    ON public.enterprise_usage_events(customer_id, (timezone('UTC', created_at)::date));
 CREATE INDEX IF NOT EXISTS idx_usage_events_key
     ON public.enterprise_usage_events(api_key_id, created_at DESC);
 

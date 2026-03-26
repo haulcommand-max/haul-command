@@ -414,10 +414,12 @@ $$;
 -- 7) DISPUTES + LOCKS
 -- ============================
 
+DROP FUNCTION IF EXISTS public.open_claim_dispute(uuid, uuid, uuid, text, timestamptz) CASCADE;
+DROP FUNCTION IF EXISTS public.open_claim_dispute(uuid, uuid, uuid, text, timestamp with time zone) CASCADE;
 CREATE OR REPLACE FUNCTION public.open_claim_dispute(
   p_surface_id uuid,
-  p_existing_owner_id uuid default null,
   p_new_claim_id uuid,
+  p_existing_owner_id uuid default null,
   p_reason text default 'conflict',
   p_opened_at timestamptz default now()
 ) RETURNS uuid

@@ -8,25 +8,27 @@
 DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
-    -- Remove any existing schedule to avoid duplicates
-    PERFORM cron.unschedule('leaderboard-snapshot-hourly');
-  EXCEPTION WHEN OTHERS THEN
-    NULL; -- schedule doesn't exist yet, safe to ignore
+    BEGIN
+      PERFORM cron.unschedule('leaderboard-snapshot-hourly');
+    EXCEPTION WHEN OTHERS THEN
+      NULL; -- schedule doesn't exist yet, safe to ignore
+    END;
   END IF;
 END $$;
 
 -- Schedule the edge function to fire every hour at minute :05
+DO $$ BEGIN PERFORM cron.unschedule('leaderboard-snapshot-hourly'); EXCEPTION WHEN OTHERS THEN NULL; END $$;
 SELECT cron.schedule(
   'leaderboard-snapshot-hourly',
   '5 * * * *',
-  $$SELECT net.http_post(
+  $cron$SELECT net.http_post(
     url := current_setting('app.settings.supabase_url') || '/functions/v1/leaderboard-snapshot-hourly',
     headers := jsonb_build_object(
       'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key'),
       'Content-Type', 'application/json'
     ),
     body := '{}'::jsonb
-  );$$
+  );$cron$
 );
 
 -- 2. Marketplace Liquidity Prediction View
@@ -100,15 +102,16 @@ FULL OUTER JOIN demand_heat dh ON dh.geo_key = COALESCE(dd.geo_key, mv.geo_key);
 GRANT SELECT ON public.v_market_liquidity TO anon, authenticated;
 
 -- 3. Schedule compliance reminders (while we're at it)
+DO $$ BEGIN PERFORM cron.unschedule('compliance-reminders-daily'); EXCEPTION WHEN OTHERS THEN NULL; END $$;
 SELECT cron.schedule(
   'compliance-reminders-daily',
   '0 9 * * *',
-  $$SELECT net.http_post(
+  $cron$SELECT net.http_post(
     url := current_setting('app.settings.supabase_url') || '/functions/v1/compliance-reminders-run',
     headers := jsonb_build_object(
       'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key'),
       'Content-Type', 'application/json'
     ),
     body := '{}'::jsonb
-  );$$
+  );$cron$
 );

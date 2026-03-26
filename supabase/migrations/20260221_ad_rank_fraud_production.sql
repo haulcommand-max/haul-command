@@ -265,6 +265,7 @@ $$;
 -- ============================================================
 -- confirm_impression RPC — marks impression billable after dwell
 -- ============================================================
+DROP FUNCTION IF EXISTS public.confirm_impression(text, integer, text) CASCADE;
 CREATE OR REPLACE FUNCTION public.confirm_impression(
     p_impression_token text,
     p_dwell_ms integer DEFAULT 0,

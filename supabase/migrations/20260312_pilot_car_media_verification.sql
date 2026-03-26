@@ -61,12 +61,8 @@ CREATE TABLE IF NOT EXISTS operator_media (
     -- Asset URLs (stable, versioned)
     original_url    TEXT NOT NULL,
     optimized_url   TEXT,
-    stable_asset_url TEXT GENERATED ALWAYS AS (
-        '/media/operators/' || listing_id || '/' || slot_type || '.webp'
-    ) STORED,
-    seo_filename    TEXT GENERATED ALWAYS AS (
-        'haul-command-' || REPLACE(slot_type::text, '_', '-') || '-' || SUBSTRING(listing_id::text, 1, 8)
-    ) STORED,
+    stable_asset_url TEXT,
+    seo_filename    TEXT,
 
     -- Dimensions
     width           INT,

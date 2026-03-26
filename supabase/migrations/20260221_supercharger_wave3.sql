@@ -150,11 +150,7 @@ CREATE TABLE public.compliance_documents (
     -- Expiry tracking
     issued_at DATE,
     expires_at DATE,
-    days_until_expiry INT GENERATED ALWAYS AS (
-        CASE WHEN expires_at IS NOT NULL
-             THEN (expires_at - CURRENT_DATE)
-             ELSE NULL END
-    ) STORED,
+    days_until_expiry INT,
 
     -- Status
     status TEXT DEFAULT 'active' CHECK (status IN ('active', 'expiring_soon', 'expired', 'pending_review', 'rejected')),

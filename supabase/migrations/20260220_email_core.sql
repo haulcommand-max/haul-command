@@ -72,14 +72,14 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_email_jobs_dedupe ON public.email_jobs(ded
 
 -- ─── Feature Flag Keys (seed into app_settings) ───
 INSERT INTO public.app_settings (key, value) VALUES
-    ('email.provider', 'brevo_smtp'),
-    ('email.from_name', 'Haul Command'),
-    ('email.from_email', 'dispatch@haulcommand.com'),
-    ('email.reply_to', 'support@haulcommand.com'),
-    ('email.quiet_hours_start', '21:00'),
-    ('email.quiet_hours_end', '07:00'),
-    ('email.daily_cap_per_user', '3'),
-    ('email.weekly_cap_per_user', '10'),
+    ('email.provider', '"brevo_smtp"'),
+    ('email.from_name', '"Haul Command"'),
+    ('email.from_email', '"dispatch@haulcommand.com"'),
+    ('email.reply_to', '"support@haulcommand.com"'),
+    ('email.quiet_hours_start', '"21:00"'),
+    ('email.quiet_hours_end', '"07:00"'),
+    ('email.daily_cap_per_user', '"3"'),
+    ('email.weekly_cap_per_user', '"10"'),
     ('email.enable_open_tracking', 'true'),
     ('email.enable_click_tracking', 'true'),
     ('email.enable_listmonk_campaigns', 'true'),

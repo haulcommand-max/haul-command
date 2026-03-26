@@ -26,9 +26,7 @@ CREATE TABLE IF NOT EXISTS public.uncovered_load_alerts (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     load_id uuid NOT NULL REFERENCES public.loads(id) ON DELETE CASCADE,
     uncovered_since timestamptz NOT NULL,
-    duration_minutes integer GENERATED ALWAYS AS (
-        EXTRACT(EPOCH FROM (now() - uncovered_since))::integer / 60
-    ) STORED,
+    duration_minutes integer,
     alert_tier text DEFAULT 'warning' CHECK (alert_tier IN ('warning','critical','emergency')),
     notified boolean DEFAULT false,
     resolved_at timestamptz,

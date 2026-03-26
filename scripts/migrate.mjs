@@ -73,12 +73,52 @@ function preprocessSQL(sql) {
     sql = sql.replace(/CREATE\s+POLICY\s+IF\s+NOT\s+EXISTS\s+/gi, 'CREATE POLICY ');
 
     // 2. Before each CREATE POLICY, inject a DROP POLICY IF EXISTS
-    //    Matches:  CREATE POLICY "quoted name" ON [public.]table
-    //          or: CREATE POLICY unquoted_name ON [public.]table
     sql = sql.replace(
         /\bCREATE\s+POLICY\s+("(?:[^"\\]|\\.)*"|[\w$]+)\s+ON\s+((?:public\.)?[\w$"]+)/gi,
         (match, policyName, tableName) =>
             `DROP POLICY IF EXISTS ${policyName} ON ${tableName} CASCADE;\n${match}`
+    );
+
+    // 3. CREATE TABLE → CREATE TABLE IF NOT EXISTS
+    sql = sql.replace(/\bCREATE\s+TABLE\s+(?!IF\s+NOT\s+EXISTS\b)/gi, 'CREATE TABLE IF NOT EXISTS ');
+
+    // 4. CREATE [UNIQUE] INDEX → CREATE [UNIQUE] INDEX IF NOT EXISTS
+    sql = sql.replace(/\bCREATE\s+UNIQUE\s+INDEX\s+(?!IF\s+NOT\s+EXISTS\b)(?!CONCURRENTLY\b)/gi, 'CREATE UNIQUE INDEX IF NOT EXISTS ');
+    sql = sql.replace(/\bCREATE\s+INDEX\s+(?!IF\s+NOT\s+EXISTS\b)(?!CONCURRENTLY\b)/gi, 'CREATE INDEX IF NOT EXISTS ');
+
+    // 5. CREATE SEQUENCE → CREATE SEQUENCE IF NOT EXISTS
+    sql = sql.replace(/\bCREATE\s+SEQUENCE\s+(?!IF\s+NOT\s+EXISTS\b)/gi, 'CREATE SEQUENCE IF NOT EXISTS ');
+
+    // 6. CREATE TRIGGER → CREATE OR REPLACE TRIGGER (PG14+, skip CONSTRAINT TRIGGER)
+    sql = sql.replace(/\bCREATE\s+(?!OR\s+REPLACE\b)(?!CONSTRAINT\s+)TRIGGER\s+/gi, 'CREATE OR REPLACE TRIGGER ');
+
+    // 7. CREATE FUNCTION → CREATE OR REPLACE FUNCTION
+    sql = sql.replace(/\bCREATE\s+FUNCTION\s+/gi, 'CREATE OR REPLACE FUNCTION ');
+
+    // 8. ADD COLUMN → ADD COLUMN IF NOT EXISTS (idempotent ALTER TABLE)
+    sql = sql.replace(/\bADD\s+COLUMN\s+(?!IF\s+NOT\s+EXISTS\b)/gi, 'ADD COLUMN IF NOT EXISTS ');
+
+    // 9. Before CREATE OR REPLACE VIEW, drop existing view OR table to allow recreation
+    sql = sql.replace(
+        /\bCREATE\s+OR\s+REPLACE\s+VIEW\s+((?:[\w$"]+\.)?[\w$"]+)/gi,
+        (match, viewName) =>
+            `DROP VIEW IF EXISTS ${viewName} CASCADE;\nDROP TABLE IF EXISTS ${viewName} CASCADE;\n${match}`
+    );
+
+    // 10. ALTER FUNCTION IF EXISTS → ALTER FUNCTION (IF EXISTS invalid in PG15)
+    //    The callers already wrap in DO blocks with EXCEPTION handlers.
+    sql = sql.replace(/\bALTER\s+FUNCTION\s+IF\s+EXISTS\s+/gi, 'ALTER FUNCTION ');
+
+    // 10. CREATE TYPE ... AS ENUM → guard against duplicate_object.
+    //     Replaces `CREATE TYPE schema.name AS ENUM` with a DO block that
+    //     silently skips if the type already exists.
+    sql = sql.replace(
+        /\bCREATE\s+TYPE\s+((?:[\w$"]+\.)?[\w$"]+)\s+AS\s+ENUM\s*(\([^)]*\))\s*;/gis,
+        (match, typeName, enumValues) => {
+            // Strip schema prefix and double-quotes to get bare type name for pg_type lookup
+            const bareTypeName = typeName.replace(/^[\w$"]+\./, '').replace(/"/g, '');
+            return `DO $type_guard$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = '${bareTypeName}') THEN\n    CREATE TYPE ${typeName} AS ENUM ${enumValues};\n  END IF;\nEND $type_guard$;`;
+        }
     );
 
     return sql;

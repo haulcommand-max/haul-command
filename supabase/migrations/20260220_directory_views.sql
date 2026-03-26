@@ -13,12 +13,12 @@ CREATE TABLE IF NOT EXISTS public.directory_views (
 CREATE INDEX IF NOT EXISTS idx_directory_views_recent ON public.directory_views(profile_id, created_at DESC);
 
 -- Throttle view counting (only 1 view per viewer per profile per hour) to prevent abuse
-CREATE UNIQUE INDEX IF NOT EXISTS unq_directory_views_throttle 
-ON public.directory_views(profile_id, viewer_id, date_trunc('hour', created_at))
+CREATE UNIQUE INDEX IF NOT EXISTS unq_directory_views_throttle
+ON public.directory_views(profile_id, viewer_id, date_trunc('hour', timezone('UTC', created_at)))
 WHERE viewer_id IS NOT NULL;
 
-CREATE UNIQUE INDEX IF NOT EXISTS unq_directory_views_throttle_anon 
-ON public.directory_views(profile_id, viewer_ip, date_trunc('hour', created_at))
+CREATE UNIQUE INDEX IF NOT EXISTS unq_directory_views_throttle_anon
+ON public.directory_views(profile_id, viewer_ip, date_trunc('hour', timezone('UTC', created_at)))
 WHERE viewer_id IS NULL;
 
 -- Enable RLS

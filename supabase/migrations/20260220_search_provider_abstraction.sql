@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS public.app_settings (
 );
 
 -- Insert default search provider
-INSERT INTO public.app_settings (key, value) VALUES ('search_provider', 'typesense') ON CONFLICT DO NOTHING;
+INSERT INTO public.app_settings (key, value) VALUES ('search_provider', '"typesense"') ON CONFLICT (key) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS public.search_jobs (
     id uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,

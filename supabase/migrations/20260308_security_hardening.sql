@@ -338,9 +338,8 @@ BEGIN
         WHERE n.nspname = 'public'
           AND p.prokind = 'f'
           AND NOT EXISTS (
-              SELECT 1 FROM pg_proc_info pi 
-              WHERE pi.oid = p.oid 
-              AND pi.proconfig @> ARRAY['search_path=']
+              SELECT 1 FROM unnest(COALESCE(p.proconfig, '{}')) AS c
+              WHERE c LIKE 'search_path=%'
           )
     LOOP
         BEGIN

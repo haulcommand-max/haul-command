@@ -6,6 +6,7 @@
 begin;
 
 -- Helper: generate slug from name
+drop function if exists public.slugify(text) cascade;
 create or replace function public.slugify(text) returns text as $$
   select lower(regexp_replace(regexp_replace($1, '[^a-zA-Z0-9\s-]', '', 'g'), '\s+', '-', 'g'));
 $$ language sql immutable;

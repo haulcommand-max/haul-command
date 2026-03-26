@@ -10,9 +10,7 @@ CREATE TABLE IF NOT EXISTS public.boost_sla_log (
   boost_purchased_at        timestamptz DEFAULT now(),
   -- Computed guarantee window (stored at purchase time)
   guaranteed_window_minutes int NOT NULL,
-  guaranteed_window_expires_at timestamptz GENERATED ALWAYS AS (
-    boost_purchased_at + (guaranteed_window_minutes * interval '1 minute')
-  ) STORED,
+  guaranteed_window_expires_at timestamptz,
   -- Eligibility gate results (stored at purchase time)
   p_fill_60m_at_purchase    numeric(6,4),
   confidence_at_purchase    numeric(6,4),
