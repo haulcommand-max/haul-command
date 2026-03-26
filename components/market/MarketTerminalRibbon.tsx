@@ -54,7 +54,7 @@ export function MarketTerminalRibbon() {
         let alive = true;
         (async () => {
             try {
-                const res = await fetch("/api/stats/global", { cache: "no-store" });
+                const res = await fetch("/api/stats/global");
                 const json = await res.json();
                 if (alive) { setStats(json); setLoaded(true); }
             } catch {
