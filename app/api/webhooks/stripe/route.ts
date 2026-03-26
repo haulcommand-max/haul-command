@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-12-18.acacia' as any });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' as any });
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: NextRequest) {
@@ -110,6 +110,32 @@ export async function POST(req: NextRequest) {
               data: { invoice_id: invoice.id },
             });
           }
+        }
+        break;
+      }
+
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        
+        // Handle AdGrid Boost Activation
+        if (session.metadata?.type === 'ad_boost' && session.metadata?.boost_id) {
+          await supabase
+            .from('ad_boosts')
+            .update({ 
+              status: 'active',
+              starts_at: new Date().toISOString()
+            })
+            .eq('id', session.metadata.boost_id);
+            
+          console.log(`[Stripe Webhook] Activated AdGrid Boost: ${session.metadata.boost_id}`);
+        }
+
+        // Handle Claim / Setup Intent (if needed down the line)
+        if (session.metadata?.type === 'tier2_claim' && session.metadata?.profile_id) {
+           await supabase
+             .from('profiles')
+             .update({ is_claimed: true, claim_status: 'verified' })
+             .eq('id', session.metadata.profile_id);
         }
         break;
       }

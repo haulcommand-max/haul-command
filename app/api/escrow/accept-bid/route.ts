@@ -16,7 +16,7 @@ import Stripe from "stripe";
  */
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-12-18.acacia", // Upgrading to the latest robust API
+  apiVersion: "2026-02-25.clover", // Upgrading to the latest robust API
 });
 
 export async function POST(req: NextRequest) {
