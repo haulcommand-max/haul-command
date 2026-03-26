@@ -42,16 +42,24 @@ export async function GET(req: NextRequest) {
     const supabase = createClient();
     const { searchParams } = new URL(req.url);
 
+    // Filter params
     const q = searchParams.get('q') || '';
     const country = searchParams.get('country') || '';
     const state = searchParams.get('state') || '';
     const service = searchParams.get('service') || '';
     const claimedOnly = searchParams.get('claimed') === 'true';
     const ratedOnly = searchParams.get('rated') === 'true';
+    
+    // Pagination params
     const page = Math.max(parseInt(searchParams.get('page') || '1'), 1);
     const limit = Math.min(parseInt(searchParams.get('limit') || '48'), 100);
-    const offset = (page - 1) * limit;
+    const startRange = (page - 1) * limit;
+    const endRange = startRange + limit - 1;
     const sortBy = searchParams.get('sort') ?? 'rank';
+
+    // 💰 Profit-Aware Defense Check (Is the requester Authenticated?)
+    const authHeader = req.headers.get('authorization');
+    const isAuthenticated = !!authHeader;
 
     // Build query on `directory_listings`
     let query = supabase
@@ -61,7 +69,8 @@ export async function GET(req: NextRequest) {
         { count: 'exact' }
       )
       .eq('is_visible', true)
-      .eq('entity_type', 'pilot_car_operator');
+      .not('region_code', 'is', null) // Ensure we only get real locations
+      .not('city', 'is', null);
 
     // Text search
     if (q) {
@@ -70,17 +79,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Filters
+    // Apply filters
     if (country) query = query.eq('country_code', country.toUpperCase());
     if (state) query = query.eq('region_code', state.toUpperCase());
-    
-    // Services are stored in metadata->services, which in Supabase PostgREST requires a specific JSONB syntax if filtering server-side
-    // For simplicity & robustness (and since we index metadata), we can filter using contains if it was structured, 
-    // but typically we can skip deep JSONB array filtering if traffic is low, or use `.contains('metadata->services', ...)`
-    // if (service) query = query.contains('metadata->services', `["${service}"]`);
-    
+    if (service) query = query.contains('metadata->services', [service]);
     if (claimedOnly) query = query.eq('claim_status', 'claimed');
-    // Note: Ratings isn't tracked in directory_listings natively yet, so we ignore ratedOnly for now.
 
     // Sort
     if (sortBy === 'name') {
@@ -90,38 +93,54 @@ export async function GET(req: NextRequest) {
       query = query.order('rank_score', { ascending: false, nullsFirst: false });
     }
 
-    query = query.range(offset, offset + limit - 1);
+    query = query.range(startRange, endRange);
 
-    const { data, count, error } = await query;
-    if (error) throw error;
+    const { data: rawData, error, count } = await query;
+
+    if (error) {
+      console.error("Directory Search Error:", error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
+
+    // 💰 PROFIT-AWARE CENSORSHIP ENGINE 💰
+    // High-value data is heavily protected. Low-value stays open.
+    const sanitizedData = (rawData || []).map((operator) => {
+      // Create a safely cloned metadata object
+      let safeMetadata = operator.metadata ? JSON.parse(JSON.stringify(operator.metadata)) : {};
+      
+      if (!isAuthenticated) {
+        // Censor high-value fields (Data Value Score > 8)
+        if (safeMetadata.phone) safeMetadata.phone = "[LOCKED - LOGIN TO VIEW]";
+        if (safeMetadata.email) safeMetadata.email = "[LOCKED - LOGIN TO VIEW]";
+        if (safeMetadata.exact_address) safeMetadata.exact_address = "Address Hidden (Geo-Fenced)";
+        safeMetadata.is_censored = true;
+      }
+
+      return {
+        id: operator.id,
+        slug: operator.slug,
+        name: operator.name,
+        city: operator.city,
+        state: operator.region_code,
+        country_code: operator.country_code,
+        services: safeMetadata?.services || [],
+        is_claimed: operator.claim_status === 'claimed',
+        rating: 5.0, // Default for now
+        review_count: 0,
+        rank_score: operator.rank_score,
+        is_featured: operator.rank_score > 80,
+        profile_completeness: safeMetadata?.phone ? 80 : 40,
+        metadata: safeMetadata
+      };
+    });
 
     return NextResponse.json({
-      operators: (data ?? []).map(op => {
-        // Safe parse metadata
-        const meta = op.metadata || {};
-        return {
-          id: op.id,
-          slug: op.slug || '',
-          name: op.name || 'Unknown Operator',
-          city: op.city || '',
-          state: op.region_code || '',
-          country_code: op.country_code ?? 'US',
-          services: meta.services || [],
-          is_claimed: op.claim_status === 'claimed',
-          rating: 0, // Fallback until review engine engages
-          review_count: 0,
-          rank_score: op.rank_score ?? 0,
-          is_featured: (op.rank_score ?? 0) > 50,
-          profile_completeness: op.profile_completeness ?? 0,
-          phone: meta.phone || null,
-          company: meta.company || null
-        };
-      }),
-      total: count ?? 0,
+      operators: sanitizedData,
+      total: count || 0,
       page,
       limit,
-      total_pages: Math.ceil((count ?? 0) / limit),
-      has_more: page < Math.ceil((count ?? 0) / limit),
+      total_pages: Math.ceil((count || 0) / limit),
+      has_more: (startRange + limit) < (count || 0)
     }, {
       headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },
     });

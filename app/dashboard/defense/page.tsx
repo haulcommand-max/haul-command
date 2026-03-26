@@ -168,6 +168,21 @@ export default function ScraperDefenseDashboard() {
             </table>
           </div>
         </div>
+
+        {/* Global Attack Vector Map (Placeholder for Mapbox/Leaflet Integration) */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mt-8 min-h-[400px] flex items-center justify-center relative">
+           <div className="absolute inset-0 opacity-10 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=39.8283,-98.5795&zoom=4&size=800x400&maptype=roadmap&style=feature:all|element:labels|visibility:off&style=feature:water|element:geometry|color:0x000000&style=feature:landscape|element:geometry|color:0x111111&key=YOUR_API_KEY')] bg-cover bg-center"></div>
+           <div className="z-10 text-center space-y-4">
+              <div className="mx-auto w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700">
+                 <ShieldAlert className="h-6 w-6 text-slate-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-300">Geo-Based Attack Visualization</h3>
+              <p className="text-slate-500 max-w-md mx-auto">
+                Real-time map layer initializing. Incoming scraper coordinates will be plotted here structurally to identify hostile region clusters.
+              </p>
+           </div>
+        </div>
+
       </div>
     </div>
   );
