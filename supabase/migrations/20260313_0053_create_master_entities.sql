@@ -54,8 +54,7 @@ CREATE TABLE IF NOT EXISTS public.hc_entity_aliases (
   language         text,                     -- BCP 47 locale
   country_code     text,
   confidence_score numeric(6,3) NOT NULL DEFAULT 0,
-  created_at       timestamptz NOT NULL DEFAULT now(),
-  UNIQUE(entity_type, entity_id, alias_text, COALESCE(language, '__null__'))
+  created_at       timestamptz NOT NULL DEFAULT now()
 );
 
 DO $$ BEGIN
@@ -64,6 +63,8 @@ DO $$ BEGIN
 EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
 
+-- COALESCE required for null-safe uniqueness, so use a unique index not an inline constraint
+CREATE UNIQUE INDEX IF NOT EXISTS idx_hc_entity_aliases_uniq ON public.hc_entity_aliases (entity_type, entity_id, alias_text, COALESCE(language, '__null__'));
 CREATE INDEX IF NOT EXISTS idx_hc_aliases_text ON public.hc_entity_aliases(alias_text);
 -- pg_trgm already enabled in 20260225_glossary_tables.sql (may be in extensions schema)
 CREATE INDEX IF NOT EXISTS idx_hc_aliases_text_trgm ON public.hc_entity_aliases USING gin(alias_text public.gin_trgm_ops);

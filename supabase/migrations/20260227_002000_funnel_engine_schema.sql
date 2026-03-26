@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS funnel_supply_records (
 
 CREATE INDEX idx_supply_country ON funnel_supply_records(country_iso2);
 CREATE INDEX idx_supply_stage ON funnel_supply_records(stage);
-CREATE INDEX idx_supply_corridor ON funnel_supply_records(corridor_id);
+CREATE INDEX IF NOT EXISTS idx_supply_corridor ON funnel_supply_records(corridor_id);
 CREATE INDEX idx_supply_source ON funnel_supply_records(source);
 CREATE INDEX idx_supply_created ON funnel_supply_records(created_at);
 

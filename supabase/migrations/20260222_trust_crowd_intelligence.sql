@@ -21,15 +21,15 @@ CREATE TABLE IF NOT EXISTS public.escort_reviews (
     would_use_again       BOOLEAN NOT NULL DEFAULT true,
     review_text           TEXT CHECK (char_length(review_text) <= 500),
     verified_job          BOOLEAN NOT NULL DEFAULT false,
-    created_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
-    -- Anti-gaming: one review per job pair
-    UNIQUE (escort_id, broker_id, COALESCE(load_id, '00000000-0000-0000-0000-000000000000'::uuid))
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS idx_escort_reviews_escort  ON public.escort_reviews(escort_id);
 CREATE INDEX IF NOT EXISTS idx_escort_reviews_broker  ON public.escort_reviews(broker_id);
 CREATE INDEX IF NOT EXISTS idx_escort_reviews_load    ON public.escort_reviews(load_id);
 CREATE INDEX IF NOT EXISTS idx_escort_reviews_created ON public.escort_reviews(created_at DESC);
+-- Anti-gaming: one review per job pair (COALESCE required, so use unique index not constraint)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_escort_reviews_uniq ON public.escort_reviews (escort_id, broker_id, COALESCE(load_id, '00000000-0000-0000-0000-000000000000'::uuid));
 
 ALTER TABLE public.escort_reviews ENABLE ROW LEVEL SECURITY;
 
@@ -68,15 +68,15 @@ CREATE TABLE IF NOT EXISTS public.broker_reviews (
     would_work_again         BOOLEAN NOT NULL DEFAULT true,
     review_text              TEXT CHECK (char_length(review_text) <= 500),
     verified_job             BOOLEAN NOT NULL DEFAULT false,
-    created_at               TIMESTAMPTZ NOT NULL DEFAULT now(),
-    -- Anti-gaming: one review per job pair
-    UNIQUE (broker_id, escort_id, COALESCE(load_id, '00000000-0000-0000-0000-000000000000'::uuid))
+    created_at               TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS idx_broker_reviews_broker  ON public.broker_reviews(broker_id);
 CREATE INDEX IF NOT EXISTS idx_broker_reviews_escort  ON public.broker_reviews(escort_id);
 CREATE INDEX IF NOT EXISTS idx_broker_reviews_load    ON public.broker_reviews(load_id);
 CREATE INDEX IF NOT EXISTS idx_broker_reviews_created ON public.broker_reviews(created_at DESC);
+-- Anti-gaming: one review per job pair (COALESCE required, so use unique index not constraint)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_broker_reviews_uniq ON public.broker_reviews (broker_id, escort_id, COALESCE(load_id, '00000000-0000-0000-0000-000000000000'::uuid));
 
 ALTER TABLE public.broker_reviews ENABLE ROW LEVEL SECURITY;
 

@@ -30,7 +30,8 @@
         "ingest:scrape": "node scripts/seed/scrape-all-states.mjs",
         "ingest:expand": "node scripts/seed/crawl-outbound-sites.mjs",
         "ingest:seed": "node scripts/seed/load-seed-to-supabase.mjs",
-        "ingest:pipeline": "node scripts/seed/run-full-pipeline.mjs"
+        "ingest:pipeline": "node scripts/seed/run-full-pipeline.mjs",
+        "migrate": "node scripts/migrate.mjs"
     },
     "keywords": [],
     "author": "",

@@ -78,9 +78,10 @@ CREATE TABLE IF NOT EXISTS public.feature_quantile_bounds (
   p75           numeric(14,6),
   p90           numeric(14,6),
   n_samples     int DEFAULT 0,
-  computed_at   timestamptz DEFAULT now(),
-  UNIQUE (geo_key, feature_name, COALESCE(lane_key, ''))
+  computed_at   timestamptz DEFAULT now()
 );
+-- COALESCE required for null-safe uniqueness, so use a unique index not an inline constraint
+CREATE UNIQUE INDEX IF NOT EXISTS idx_feature_quantile_bounds_uniq ON public.feature_quantile_bounds (geo_key, feature_name, COALESCE(lane_key, ''));
 
 CREATE INDEX IF NOT EXISTS quantile_bounds_geo_feature_idx
   ON public.feature_quantile_bounds (geo_key, feature_name);

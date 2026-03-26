@@ -1,0 +1,127 @@
+/**
+ * HAUL COMMAND — Tier C (Silver) + Tier D (Slate) Cities
+ * Tier C (26): PL·CZ·SK·HU·SI·EE·LV·LT·HR·RO·BG·GR·TR·KW·OM·BH·SG·MY·JP·KR·CL·AR·CO·PE·VN·PH
+ * Tier D (3):  UY·PA·CR
+ */
+
+import type { CountryConfig } from './geo-expansion-v2';
+import {
+  KEYWORDS_EN, KEYWORDS_ES, KEYWORDS_AR, KEYWORDS_TR, KEYWORDS_PL,
+  KEYWORDS_JA, KEYWORDS_KO, KEYWORDS_PT,
+} from './keywords';
+
+export const TIER_C: CountryConfig[] = [
+  // ── Central/Eastern Europe ──
+  { code: 'PL', name: 'Poland', tier: 'C', languages: ['pl','en'], keywords: [...KEYWORDS_PL,...KEYWORDS_EN],
+    cities: ['Warsaw','Kraków','Gdańsk','Wrocław','Poznań','Łódź','Katowice','Szczecin','Lublin','Bydgoszcz','Gdynia','Rzeszów'],
+    corridors: ['A2 motorway','A1 motorway','A4 motorway','S3 expressway'], borderCrossings: ['Świecko','Zgorzelec','Terespol'] },
+  { code: 'CZ', name: 'Czech Republic', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Prague','Brno','Ostrava','Plzeň','Liberec','Olomouc','Pardubice','Ústí nad Labem'],
+    corridors: ['D1 motorway','D5 motorway','D8 motorway'], borderCrossings: ['Rozvadov','Břeclav'] },
+  { code: 'SK', name: 'Slovakia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Bratislava','Košice','Žilina','Banská Bystrica','Prešov','Nitra','Trnava'],
+    corridors: ['D1 motorway','D2 motorway'], borderCrossings: ['Čunovo','Svrčinovec'] },
+  { code: 'HU', name: 'Hungary', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Budapest','Debrecen','Szeged','Miskolc','Pécs','Győr','Székesfehérvár','Kecskemét','Dunaújváros'],
+    corridors: ['M1 motorway','M3 motorway','M5 motorway','Danube corridor'], borderCrossings: ['Hegyeshalom','Röszke','Záhony'] },
+  { code: 'SI', name: 'Slovenia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Ljubljana','Maribor','Koper','Celje','Kranj','Novo Mesto'],
+    corridors: ['A1 motorway','A2 motorway','Koper port corridor'], borderCrossings: ['Karavanke tunnel','Obrežje'] },
+  { code: 'EE', name: 'Estonia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Tallinn','Tartu','Narva','Pärnu','Sillamäe','Muuga'],
+    corridors: ['Tallinn-Tartu corridor','Via Baltica'], borderCrossings: ['Narva crossing','Luhamaa'] },
+  { code: 'LV', name: 'Latvia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Riga','Daugavpils','Liepāja','Ventspils','Jelgava','Jūrmala'],
+    corridors: ['Via Baltica','A6 highway','Riga port corridor'], borderCrossings: ['Terehova','Grenctāle'] },
+  { code: 'LT', name: 'Lithuania', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Vilnius','Kaunas','Klaipėda','Šiauliai','Panevėžys','Alytus'],
+    corridors: ['Via Baltica','A1 motorway','Klaipėda port corridor'], borderCrossings: ['Medininkai','Kybartai'] },
+  { code: 'HR', name: 'Croatia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Zagreb','Split','Rijeka','Osijek','Zadar','Slavonski Brod','Ploče'],
+    corridors: ['A1 motorway','A3 motorway','Rijeka port corridor'], borderCrossings: ['Bregana','Bajakovo'] },
+  { code: 'RO', name: 'Romania', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Bucharest','Cluj-Napoca','Timișoara','Constanța','Iași','Brașov','Craiova','Galați','Ploiești','Sibiu'],
+    corridors: ['A1 motorway','A2 motorway','A3 motorway','Danube corridor'], borderCrossings: ['Nădlac','Giurgiu','Constanța port'] },
+  { code: 'BG', name: 'Bulgaria', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Sofia','Plovdiv','Varna','Burgas','Ruse','Stara Zagora','Pleven'],
+    corridors: ['Trakia motorway','Struma motorway','Maritsa motorway'], borderCrossings: ['Kalotina','Kapitan Andreevo','Vidin'] },
+  { code: 'GR', name: 'Greece', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Athens','Thessaloniki','Piraeus','Patras','Heraklion','Volos','Larissa','Alexandroupoli'],
+    corridors: ['Egnatia Odos','A1 Pathe motorway','A2 motorway'], borderCrossings: ['Kipi','Promachonas','Kakavia'] },
+  { code: 'TR', name: 'Turkey', tier: 'C', languages: ['tr','en'], keywords: [...KEYWORDS_TR,...KEYWORDS_EN],
+    cities: ['Istanbul','Ankara','Izmir','Bursa','Antalya','Mersin','Adana','Kocaeli','Gaziantep','Trabzon',
+      'Samsun','Iskenderun','Aliağa','Derince','Gebze'],
+    corridors: ['O-4 motorway','O-2 motorway','O-52 motorway','Bosphorus crossing corridor','Mersin port corridor'],
+    borderCrossings: ['Kapıkule','Habur','Çıldır','İpsala'] },
+  // ── Gulf States ──
+  { code: 'KW', name: 'Kuwait', tier: 'C', languages: ['en','ar'], keywords: [...KEYWORDS_EN,...KEYWORDS_AR],
+    cities: ['Kuwait City','Shuwaikh','Mina Abdullah','Ahmadi','Shuaiba'],
+    corridors: ['Shuaiba industrial corridor'], borderCrossings: ['Abdali border'] },
+  { code: 'OM', name: 'Oman', tier: 'C', languages: ['en','ar'], keywords: [...KEYWORDS_EN,...KEYWORDS_AR],
+    cities: ['Muscat','Sohar','Salalah','Duqm','Sur','Nizwa'],
+    corridors: ['Sohar-Muscat corridor','Duqm SEZ corridor','Batinah coastal corridor'], borderCrossings: ['Buraimi','Wajajah'] },
+  { code: 'BH', name: 'Bahrain', tier: 'C', languages: ['en','ar'], keywords: [...KEYWORDS_EN,...KEYWORDS_AR],
+    cities: ['Manama','Muharraq','Riffa','Sitra','Hidd','Mina Salman','Alba Industrial'],
+    corridors: ['King Fahd Causeway corridor'], borderCrossings: ['King Fahd Causeway'] },
+  // ── Southeast Asia ──
+  { code: 'SG', name: 'Singapore', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Singapore','Jurong','Tuas','Changi','Sembawang','Pasir Panjang'],
+    corridors: ['Jurong industrial corridor','Tuas port corridor'], borderCrossings: ['Woodlands','Tuas Second Link'] },
+  { code: 'MY', name: 'Malaysia', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Kuala Lumpur','Penang','Johor Bahru','Port Klang','Tanjung Pelepas','Kota Kinabalu',
+      'Kuantan','Kuching','Bintulu','Kemaman','Pasir Gudang'],
+    corridors: ['North-South Expressway','East Coast corridor','Sarawak corridor'], borderCrossings: ['Bukit Kayu Hitam','Rantau Panjang'] },
+  { code: 'JP', name: 'Japan', tier: 'C', languages: ['ja','en'], keywords: [...KEYWORDS_JA,...KEYWORDS_EN],
+    cities: ['Tokyo','Osaka','Nagoya','Yokohama','Kobe','Fukuoka','Kitakyushu','Sendai','Hiroshima','Chiba',
+      'Kawasaki','Niigata','Kashima','Muroran','Mizushima'],
+    corridors: ['Tōmei Expressway','Meishin Expressway','Tōhoku Expressway','San-yō Expressway'],
+    borderCrossings: [] },
+  { code: 'KR', name: 'South Korea', tier: 'C', languages: ['ko','en'], keywords: [...KEYWORDS_KO,...KEYWORDS_EN],
+    cities: ['Seoul','Busan','Incheon','Ulsan','Gwangyang','Pohang','Daejeon','Daegu','Changwon','Pyeongtaek',
+      'Gunsan','Dangjin'],
+    corridors: ['Gyeongbu Expressway','West Coast Expressway','Honam Expressway'], borderCrossings: [] },
+  // ── Latin America ──
+  { code: 'CL', name: 'Chile', tier: 'C', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Santiago','Valparaíso','Antofagasta','Concepción','Calama','Iquique','San Antonio',
+      'Copiapó','Mejillones','Coquimbo','Talcahuano','Punta Arenas'],
+    corridors: ['Ruta 5','Ruta 1 mining corridor','Atacama mining corridor'], borderCrossings: ['Los Libertadores','Chungará'] },
+  { code: 'AR', name: 'Argentina', tier: 'C', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Buenos Aires','Córdoba','Rosario','Mendoza','Bahía Blanca','San Nicolás','La Plata',
+      'Tucumán','Neuquén','Comodoro Rivadavia','San Juan','Mar del Plata','Campana','Zárate'],
+    corridors: ['Ruta 9','Ruta 3','Ruta 7','Ruta 40','Paraná waterway corridor'], borderCrossings: ['Paso de los Libres','Cristo Redentor','Posadas'] },
+  { code: 'CO', name: 'Colombia', tier: 'C', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Bogotá','Medellín','Cali','Barranquilla','Cartagena','Bucaramanga','Santa Marta',
+      'Buenaventura','Barrancabermeja','Cúcuta','Manizales'],
+    corridors: ['Ruta del Sol','4G highway corridor','Magdalena River corridor'], borderCrossings: ['Cúcuta-San Antonio','Ipiales-Tulcán'] },
+  { code: 'PE', name: 'Peru', tier: 'C', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Lima','Callao','Arequipa','Trujillo','Piura','Chimbote','Cusco','Ica','Tacna','Ilo','Moquegua','Paita'],
+    corridors: ['Pan-American Highway','Central Highway','Interoceánica corridor','Southern mining corridor'],
+    borderCrossings: ['Desaguadero','Santa Rosa','Aguas Verdes'] },
+  { code: 'VN', name: 'Vietnam', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Ho Chi Minh City','Hanoi','Hai Phong','Da Nang','Vung Tau','Binh Duong',
+      'Dong Nai','Can Tho','Nha Trang','Quy Nhon','Ba Ria'],
+    corridors: ['North-South Expressway','AH1 highway','Mekong Delta corridor'], borderCrossings: ['Moc Bai','Lao Bao','Huu Nghi'] },
+  { code: 'PH', name: 'Philippines', tier: 'C', languages: ['en'], keywords: KEYWORDS_EN,
+    cities: ['Manila','Cebu','Davao','Batangas','Subic Bay','Clark','General Santos','Cagayan de Oro',
+      'Iloilo','Zamboanga','Bacolod'],
+    corridors: ['NLEX-SLEX corridor','TPLEX corridor','Cebu-Mactan corridor'], borderCrossings: [] },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// TIER D — Slate (3 Countries)
+// 🇺🇾 UY · 🇵🇦 PA · 🇨🇷 CR
+// ═══════════════════════════════════════════════════════════════
+
+export const TIER_D: CountryConfig[] = [
+  { code: 'UY', name: 'Uruguay', tier: 'D', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Montevideo','Punta del Este','Colonia','Salto','Rivera','Durazno','Fray Bentos','Nueva Palmira'],
+    corridors: ['Ruta 1','Ruta 5','Ruta 3'], borderCrossings: ['Chuy','Rivera-Livramento','Fray Bentos-Puerto Unzué'] },
+  { code: 'PA', name: 'Panama', tier: 'D', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['Panama City','Colón','David','Santiago','Balboa','Cristóbal','Howard'],
+    corridors: ['Panama Canal corridor','Pan-American Highway','Colón Free Zone corridor'],
+    borderCrossings: ['Paso Canoas','Guabito'] },
+  { code: 'CR', name: 'Costa Rica', tier: 'D', languages: ['es'], keywords: KEYWORDS_ES,
+    cities: ['San José','Limón','Puntarenas','Alajuela','Heredia','Cartago','Liberia','Caldera'],
+    corridors: ['Ruta 1 Interamericana','Ruta 32 corridor','Ruta 27 corridor'],
+    borderCrossings: ['Peñas Blancas','Paso Canoas','Sixaola'] },
+];

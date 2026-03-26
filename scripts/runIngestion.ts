@@ -10,9 +10,18 @@ import { processQuery } from '../packages/ingestion/worker';
 import { createClient } from '@supabase/supabase-js';
 
 const args = process.argv.slice(2);
-const tierFilter = args.find(a => a.startsWith('--tier'))?.split(' ')[1] || args[args.indexOf('--tier') + 1];
-const countryFilter = args.find(a => a.startsWith('--country'))?.split(' ')[1] || args[args.indexOf('--country') + 1];
 const dryRun = args.includes('--dry-run');
+
+function getArgValue(flag: string): string | undefined {
+  const idx = args.indexOf(flag);
+  if (idx === -1 || idx + 1 >= args.length) return undefined;
+  const val = args[idx + 1];
+  if (val.startsWith('--')) return undefined;
+  return val;
+}
+
+const tierFilter = getArgValue('--tier');
+const countryFilter = getArgValue('--country');
 
 async function main() {
   console.log('🚀 HAUL COMMAND INGESTION RUNNER');

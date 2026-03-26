@@ -383,13 +383,13 @@ create table if not exists public.gsc_query_metrics (
   ctr numeric(8,6),
   avg_position numeric(8,3),
 
-  country_code char(2),
-  device text,
-  search_type text,
+  country_code char(2) not null default '--',
+  device text not null default '--',
+  search_type text not null default '--',
 
   created_at timestamptz not null default now(),
 
-  primary key (day, page_path, query, coalesce(country_code,'--'), coalesce(device,'--'), coalesce(search_type,'--'))
+  primary key (day, page_path, query, country_code, device, search_type)
 );
 
 create index if not exists gsc_page_day_idx on public.gsc_query_metrics(page_path, day desc);
