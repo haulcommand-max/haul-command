@@ -1,0 +1,28 @@
+name: AntiGravity Defense Agent
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # Every 5 minutes instead of 1 minute (Github Free tier gets slow and uses high minutes if 1m)
+  workflow_dispatch:      # Allow manual triggering
+
+jobs:
+  defense_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Execute Autonomous Defense Agent
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npx tsx agents/defenseAgent.ts

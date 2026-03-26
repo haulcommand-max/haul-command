@@ -12,6 +12,33 @@ import { createClient } from '@/lib/supabase/server';
  */
 export async function GET(req: NextRequest) {
   try {
+    const ua = req.headers.get("user-agent") || "";
+    const isBot = ua.includes("Headless") || ua.includes("Python") || ua.includes("curl") || ua.includes("scrapy") || ua.includes("bot");
+
+    // 🍯 RESPONSE POISONING
+    // If we detect a headless scraper, silently feed them fake competitor data
+    if (isBot && !req.url.includes("webhook")) {
+      return NextResponse.json({
+        operators: [
+          {
+            id: 'honeytoken-01', slug: 'apex-logistics-fake', name: 'Apex Logistics (Honeytrap)', 
+            city: 'Nowhere', state: 'ZZ', country_code: 'US', services: ['pilot_car_operator'],
+            is_claimed: true, rating: 5.0, review_count: 999, rank_score: 100, is_featured: true, profile_completeness: 100
+          },
+          {
+            id: 'honeytoken-02', slug: 'titan-escort-fake', name: 'Titan Escort Services', 
+            city: 'Void', state: 'XX', country_code: 'US', services: ['flagger_traffic_control'],
+            is_claimed: false, rating: 4.8, review_count: 50, rank_score: 80, is_featured: false, profile_completeness: 50
+          }
+        ],
+        total: 2, page: 1, limit: 48, total_pages: 1, has_more: false
+      }, {
+        headers: {
+          'Cache-Control': 'no-store', // Don't cache poisoned data for real users!
+        }
+      });
+    }
+
     const supabase = createClient();
     const { searchParams } = new URL(req.url);
 
