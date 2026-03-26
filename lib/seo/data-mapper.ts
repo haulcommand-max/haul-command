@@ -17,6 +17,7 @@ export interface DriverProfileModel {
     contact: {
         phone: string | null;
         website: string | null;
+        appLink: string | null;
     };
     verification: {
         tier: string;
@@ -49,8 +50,9 @@ export function mapDriverProfile(row: DirectoryProfileRow): DriverProfileModel {
             yearsInBusiness: row.years_in_business || 0,
         },
         contact: {
-            phone: row.public_phone,
-            website: row.public_website,
+            phone: row.public_phone || row.metadata?.phone || null,
+            website: row.public_website || row.metadata?.website || null,
+            appLink: row.metadata?.app_link || null,
         },
         verification: {
             tier: row.verified_tier || 'V0',

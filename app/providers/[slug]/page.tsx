@@ -5,7 +5,7 @@ import { getDirectoryDriverBySlug } from '@/lib/data/directory';
 import { mapDriverProfile } from '@/lib/seo/data-mapper';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { MapPin, ChevronRight, CheckCircle2, ArrowUpRight, ShieldCheck, Wrench, Zap } from 'lucide-react';
+import { MapPin, ChevronRight, CheckCircle2, ArrowUpRight, ShieldCheck, Wrench, Zap, Phone, Globe, Smartphone } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { TrustStrip } from '@/components/trust/TrustStrip';
 
@@ -190,8 +190,59 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                         )}
                     </div>
 
-                    {/* Service Area sidebar */}
-                    <div className="hc-card p-6 h-fit">
+                    {/* Sidebar Stack */}
+                    <div className="flex flex-col gap-6 h-fit">
+
+                        {/* Contact & Apps Card */}
+                        <div className="hc-card p-6">
+                            <h3 className="text-sm font-black text-hc-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <Phone className="w-4 h-4 text-hc-gold-500" />
+                                Contact Information
+                            </h3>
+                            <ul className="space-y-4">
+                                {provider.contact.phone ? (
+                                    <li>
+                                        <a href={`tel:${provider.contact.phone}`} className="group flex items-center gap-3">
+                                            <span className="w-8 h-8 rounded-full bg-hc-elevated border border-hc-border flex items-center justify-center shrink-0 group-hover:bg-hc-gold-500/10 transition-colors">
+                                                <Phone className="w-4 h-4 text-hc-text group-hover:text-hc-gold-400" />
+                                            </span>
+                                            <span className="text-sm font-bold text-hc-text group-hover:text-hc-gold-400 transition-colors">{provider.contact.phone}</span>
+                                        </a>
+                                    </li>
+                                ) : null}
+
+                                {provider.contact.website ? (
+                                    <li>
+                                        <a href={provider.contact.website.startsWith('http') ? provider.contact.website : `https://${provider.contact.website}`} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3">
+                                            <span className="w-8 h-8 rounded-full bg-hc-elevated border border-hc-border flex items-center justify-center shrink-0 group-hover:bg-hc-gold-500/10 transition-colors">
+                                                <Globe className="w-4 h-4 text-hc-text group-hover:text-hc-gold-400" />
+                                            </span>
+                                            <span className="text-sm font-bold text-hc-text group-hover:text-hc-gold-400 transition-colors truncate max-w-[200px]">
+                                                {provider.contact.website.replace(/^https?:\/\//, '')}
+                                            </span>
+                                        </a>
+                                    </li>
+                                ) : null}
+
+                                {provider.contact.appLink ? (
+                                    <li>
+                                        <a href={provider.contact.appLink} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3">
+                                            <span className="w-8 h-8 rounded-full bg-hc-elevated border border-hc-border flex items-center justify-center shrink-0 group-hover:bg-hc-gold-500/10 transition-colors">
+                                                <Smartphone className="w-4 h-4 text-hc-text group-hover:text-hc-gold-400" />
+                                            </span>
+                                            <span className="text-sm font-bold text-hc-text group-hover:text-hc-gold-400 transition-colors">Download App</span>
+                                        </a>
+                                    </li>
+                                ) : null}
+
+                                {!provider.contact.phone && !provider.contact.website && !provider.contact.appLink && (
+                                    <li className="text-sm text-hc-muted italic">No public contact options provided.</li>
+                                )}
+                            </ul>
+                        </div>
+
+                        {/* Service Area sidebar */}
+                        <div className="hc-card p-6">
                         <h3 className="text-sm font-black text-hc-muted uppercase tracking-widest mb-4 flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-hc-gold-500" />
                             Service Area
@@ -226,6 +277,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                                 <ArrowUpRight className="w-3 h-3" />
                             </Link>
                         </div>
+                    </div>
                     </div>
                 </div>
 

@@ -21,6 +21,7 @@ export type DirectoryProfileRow = {
     joined_at: string;
     public_phone: string | null;
     public_website: string | null;
+    metadata?: any;
 };
 
 export async function getDirectoryDriverBySlug(slug: string): Promise<DirectoryProfileRow | null> {
