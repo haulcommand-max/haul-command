@@ -5,6 +5,8 @@ export const metadata: Metadata = {
     title: 'Ad Fraud Shield — Haul Command Admin',
 };
 
+export const dynamic = 'force-dynamic';
+
 interface FraudSession {
     session_id: string;
     viewer_ip_hash: string;

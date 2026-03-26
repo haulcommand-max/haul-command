@@ -516,8 +516,8 @@ create policy comment_insert on public.comments for insert with check (user_id =
 
 alter table public.follows enable row level security;
 create policy follow_read on public.follows for select using (true);
-create policy follow_insert on public.follows for insert with check (follower_user_id = auth.uid());
-create policy follow_delete on public.follows for delete using (follower_user_id = auth.uid());
+create policy follow_insert on public.follows for insert with check (follower_id = auth.uid());
+create policy follow_delete on public.follows for delete using (follower_id = auth.uid());
 
 alter table public.notifications enable row level security;
 create policy notif_read on public.notifications for select using (user_id = auth.uid());

@@ -288,9 +288,9 @@ CREATE INDEX IF NOT EXISTS idx_corridor_memory_type
   ON public.hc_corridor_memory(signal_type);
 CREATE INDEX IF NOT EXISTS idx_corridor_memory_severity
   ON public.hc_corridor_memory(severity) WHERE severity IN ('high','critical');
+-- Note: removed now() from predicate — STABLE function not allowed in index predicate
 CREATE INDEX IF NOT EXISTS idx_corridor_memory_active
-  ON public.hc_corridor_memory(corridor_id)
-  WHERE expires_at IS NULL OR expires_at > now();
+  ON public.hc_corridor_memory(corridor_id, expires_at);
 
 ALTER TABLE public.hc_corridor_memory ENABLE ROW LEVEL SECURITY;
 CREATE POLICY cm_read ON public.hc_corridor_memory FOR SELECT USING (true);

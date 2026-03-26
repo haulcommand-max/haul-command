@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Browse companies that rely on escort vehicles and pilot car services. Autonomous trucking, heavy haul, wind energy, and more.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function CompaniesIndexPage() {
   const supabase = await createClient();
   const { data: companies } = await supabase.from('company_listings').select('slug, company_name, company_type, country_code, estimated_annual_escorts, status').order('estimated_annual_escorts', { ascending: false });

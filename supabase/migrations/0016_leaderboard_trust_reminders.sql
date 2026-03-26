@@ -181,13 +181,13 @@ using (true);
 create policy "users read their own reminders"
 on public.compliance_reminders for select
 to authenticated
-using (actor_id = auth.uid());
+using (user_id = auth.uid());
 
 create policy "users dismiss their own reminders"
 on public.compliance_reminders for update
 to authenticated
-using (actor_id = auth.uid())
-with check (actor_id = auth.uid());
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
 
 create policy "brokers read own profile"
 on public.broker_profiles for select

@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'hvjyfyzotqobfkakjozp';
-const TOKEN = process.env.SUPABASE_ACCESS_TOKEN || 'sbp_c6b18d697dc25e7677e2b3e7b3c545355f95d4aa';
+const TOKEN = process.env.SUPABASE_ACCESS_TOKEN || 'sbp_d972902f39e92a8e1f979ee1ce6703ae43f2ec9c';
 const MIGRATIONS_DIR = path.join(__dirname, '..', 'supabase', 'migrations');
 
 // ── API helper ────────────────────────────────────────────────────────────────
@@ -76,12 +76,29 @@ function preprocessSQL(sql) {
         return `--_COMMENT_${commentPlaceholders.length - 1}_`;
     });
 
+    // 0b. Rewrite standalone `ALTER FUNCTION schema.name SET search_path ...` with no arg list
+    //     to a DO block that alters ALL overloads, tolerating "does not exist" and ambiguity.
+    let altFnCounter = 0;
+    sql = sql.replace(
+        /^([ \t]*)ALTER\s+FUNCTION\s+((?:[\w$"]+\.)?[\w$"]+)\s+(SET\s+search_path[^;]*;)/gim,
+        (match, _indent, funcRef, setting) => {
+            // Only rewrite when there are NO parentheses (i.e., no arg list specified)
+            if (/\(/.test(funcRef)) return match; // has arg list — leave alone
+            const parts = funcRef.split('.');
+            const schema = parts.length > 1 ? parts[0].replace(/"/g, '') : 'public';
+            const name   = parts[parts.length - 1].replace(/"/g, '');
+            const tag    = `_af${++altFnCounter}_`;
+            const settingClean = setting.replace(/;$/, '').replace(/'/g, "''");
+            return `DO $${tag}$ DECLARE _sig TEXT; BEGIN FOR _sig IN SELECT p.oid::regprocedure::text FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = '${schema}' AND p.proname = '${name}' LOOP BEGIN EXECUTE 'ALTER FUNCTION ' || _sig || ' ${settingClean}'; EXCEPTION WHEN OTHERS THEN NULL; END; END LOOP; END $${tag}$;`;
+        }
+    );
+
     // 1. Strip invalid IF NOT EXISTS from CREATE POLICY
     sql = sql.replace(/CREATE\s+POLICY\s+IF\s+NOT\s+EXISTS\s+/gi, 'CREATE POLICY ');
 
     // 2. Before each CREATE POLICY, inject a DROP POLICY IF EXISTS
     sql = sql.replace(
-        /\bCREATE\s+POLICY\s+("(?:[^"\\]|\\.)*"|[\w$]+)\s+ON\s+((?:public\.)?[\w$"]+)/gi,
+        /\bCREATE\s+POLICY\s+("(?:[^"\\]|\\.)*"|[\w$]+)\s+ON\s+((?:[\w$"]+\.)?[\w$"]+)/gi,
         (match, policyName, tableName) =>
             `DROP POLICY IF EXISTS ${policyName} ON ${tableName} CASCADE;\n${match}`
     );
@@ -135,6 +152,13 @@ function preprocessSQL(sql) {
             const bareTypeName = typeName.replace(/^[\w$"]+\./, '').replace(/"/g, '');
             return `DO $type_guard$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = '${bareTypeName}') THEN\n    CREATE TYPE ${typeName} AS ENUM ${enumValues};\n  END IF;\nEND $type_guard$;`;
         }
+    );
+
+    // 11. Wrap COMMENT ON FUNCTION in exception handler to avoid "not unique" errors
+    //     when a function has multiple overloads and no argument types are specified.
+    sql = sql.replace(
+        /^([ \t]*COMMENT\s+ON\s+FUNCTION\s+[^\n]+?;)[ \t]*$/gim,
+        (match) => `DO $hc_comment$ BEGIN ${match} EXCEPTION WHEN OTHERS THEN NULL; END $hc_comment$;`
     );
 
     // Restore -- line comments

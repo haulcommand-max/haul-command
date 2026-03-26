@@ -99,10 +99,10 @@ DO $$ BEGIN
       AND table_name = 'hc_reputation_events'
       AND column_name = 'window_bucket'
   ) THEN
+    -- Note: GENERATED ALWAYS AS with date_trunc on timestamptz is not IMMUTABLE.
+    -- Using a plain date column instead; application code or trigger sets it if needed.
     ALTER TABLE public.hc_reputation_events
-      ADD COLUMN window_bucket DATE GENERATED ALWAYS AS (
-        (date_trunc('month', created_at))::date
-      ) STORED;
+      ADD COLUMN window_bucket DATE;
   END IF;
 END $$;
 

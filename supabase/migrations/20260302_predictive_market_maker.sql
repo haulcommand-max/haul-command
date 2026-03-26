@@ -30,7 +30,7 @@ as $$
     select 1
     from public.profiles p
     where p.id = auth.uid()
-      and coalesce(p.role, '') in ('admin','owner','superadmin')
+      and coalesce(p.role::text, '') in ('admin','owner','superadmin')
   );
 $$;
 
@@ -382,9 +382,11 @@ using (public.is_admin()) with check (public.is_admin());
 -- ============================================================
 
 -- 1) Ingest event
+-- Drop old overload (different parameter order) to prevent duplicate signatures
+DROP FUNCTION IF EXISTS public.mm_ingest_event(text, text, timestamptz, text, text, uuid, uuid, text, text, text, text, text, uuid, uuid, uuid, jsonb, text, numeric, bigint) CASCADE;
 create or replace function public.mm_ingest_event(
   p_ts timestamptz default null,
-  p_country text,
+  p_country text default null,
   p_region text default null,
   p_city text default null,
   p_corridor_id uuid default null,
@@ -397,7 +399,7 @@ create or replace function public.mm_ingest_event(
   p_account_id uuid default null,
   p_campaign_id uuid default null,
   p_creative_id uuid default null,
-  p_event_type text,
+  p_event_type text default null,
   p_event_payload jsonb default '{}'::jsonb,
   p_consent_state text default 'unknown',
   p_fraud_score numeric default null,

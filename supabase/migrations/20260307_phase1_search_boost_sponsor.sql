@@ -19,13 +19,9 @@ CREATE TABLE IF NOT EXISTS public.profile_boosts (
 );
 
 -- One active boost per operator
-CREATE UNIQUE INDEX IF NOT EXISTS idx_profile_boosts_operator
-    ON public.profile_boosts(operator_id)
-    WHERE status = 'active';
-
-CREATE INDEX IF NOT EXISTS idx_profile_boosts_expires
-    ON public.profile_boosts(expires_at)
-    WHERE status = 'active';
+-- Note: indexes skipped — profile_boosts exists as a VIEW in this DB (cannot index views)
+-- CREATE UNIQUE INDEX IF NOT EXISTS idx_profile_boosts_operator ON public.profile_boosts(operator_id) WHERE status = 'active';
+-- CREATE INDEX IF NOT EXISTS idx_profile_boosts_expires ON public.profile_boosts(expires_at) WHERE status = 'active';
 
 -- Territory sponsorships — companies sponsor territories
 CREATE TABLE IF NOT EXISTS public.territory_sponsorships (

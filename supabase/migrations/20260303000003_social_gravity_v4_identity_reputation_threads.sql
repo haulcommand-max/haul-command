@@ -114,11 +114,11 @@ CREATE TABLE IF NOT EXISTS public.hc_reputation_events (
   created_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Anti-spam: one reaction_tag per actor per subject per 30 days
+-- Anti-spam: one reaction_tag per actor per subject (per-active status)
+-- Note: removed date_trunc expression — STABLE on timestamptz, not allowed in index
 CREATE UNIQUE INDEX IF NOT EXISTS idx_hc_rep_event_anti_spam
   ON public.hc_reputation_events (
-    actor_identity_id, subject_type, subject_id, reaction_tag,
-    (date_trunc('month', created_at))
+    actor_identity_id, subject_type, subject_id, reaction_tag
   )
   WHERE status = 'active';
 

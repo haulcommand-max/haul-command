@@ -42,10 +42,10 @@ CREATE OR REPLACE FUNCTION public.hc_ingest_convoy_ping(
 RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = public, extensions
 AS $$
 DECLARE
-  v_geo GEOGRAPHY;
+  v_geo extensions.geography;
 BEGIN
   -- AuthZ: operator must be self
   IF NOT EXISTS (

@@ -66,12 +66,7 @@ alter table source_connectors add constraint fk_login_profile foreign key (login
 -- ==============================================================================
 
 create type parse_status as enum ('new', 'parsed', 'rejected');
--- Ensure job_status enum has the values this module needs (type may already exist from core schema)
-ALTER TYPE public.job_status ADD VALUE IF NOT EXISTS 'queued';
-ALTER TYPE public.job_status ADD VALUE IF NOT EXISTS 'running';
-ALTER TYPE public.job_status ADD VALUE IF NOT EXISTS 'success';
-ALTER TYPE public.job_status ADD VALUE IF NOT EXISTS 'failed';
-ALTER TYPE public.job_status ADD VALUE IF NOT EXISTS 'paused';
+-- job_status enum values ('queued','running','success','failed','paused') added to DB before this migration runs
 create type job_status as enum ('queued', 'running', 'success', 'failed', 'paused');
 create type job_type as enum ('fetch_http', 'fetch_playwright');
 

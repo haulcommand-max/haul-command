@@ -58,24 +58,25 @@ as $$
     end;
 $$;
 
--- Rollup view (current score + last 30d + lifetime)
-create or replace view public.trust_report_cards as
-with base as (
-  select
-    subject_actor_type,
-    subject_actor_id,
-    sum(weight)::bigint as score_lifetime,
-    sum(case when occurred_at >= now() - interval '30 days' then weight else 0 end)::bigint as score_30d,
-    max(occurred_at) as last_event_at
-  from public.trust_events
-  group by 1,2
+-- Rollup view (adapted to actual trust_events schema)
+DROP VIEW IF EXISTS public.trust_report_cards CASCADE;
+CREATE VIEW public.trust_report_cards AS
+WITH base AS (
+  SELECT
+    role                                                         AS subject_actor_type,
+    entity_profile_id                                           AS subject_actor_id,
+    count(*)::bigint                                            AS score_lifetime,
+    count(CASE WHEN occurred_at >= now() - interval '30 days' THEN 1 END)::bigint AS score_30d,
+    max(occurred_at)                                            AS last_event_at
+  FROM public.trust_events
+  GROUP BY 1, 2
 )
-select
+SELECT
   b.*,
-  case
-    when b.score_lifetime >= 250 then 'gold'
-    when b.score_lifetime >= 100 then 'silver'
-    when b.score_lifetime >= 25 then 'bronze'
-    else 'new'
-  end as trust_tier
-from base b;
+  CASE
+    WHEN b.score_lifetime >= 250 THEN 'gold'
+    WHEN b.score_lifetime >= 100 THEN 'silver'
+    WHEN b.score_lifetime >= 25  THEN 'bronze'
+    ELSE 'new'
+  END AS trust_tier
+FROM base b;

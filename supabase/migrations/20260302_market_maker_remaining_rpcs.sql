@@ -381,6 +381,8 @@ comment on function public.mm_list_pending_decisions is
 -- ============================================================
 -- 5) mm_reject_decision
 -- ============================================================
+-- Drop old overload with different signature (had p_actor_id param)
+DROP FUNCTION IF EXISTS public.mm_reject_decision(uuid, uuid, text) CASCADE;
 create or replace function public.mm_reject_decision(
   p_decision_id uuid,
   p_reason text default null

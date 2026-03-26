@@ -22,10 +22,9 @@ export function createClient(url?: string, key?: string, options?: Record<string
     if (url && key) {
         return _createClient(url, key, options);
     }
-    // Zero-arg: prefer Supavisor transaction-mode pooler URL over direct connection.
-    // Supavisor multiplexes serverless connections — critical at 3M+ entity scale.
+    // Zero-arg: use the REST API url. The Supabase REST API internally uses connection pooling automatically.
+    // SUPABASE_DB_POOLER_URL is only for direct database connections (Prisma, pg, etc), NOT the @supabase/supabase-js client.
     const envUrl =
-        process.env.SUPABASE_DB_POOLER_URL ||   // ← Transaction-mode pooler (port 6543)
         process.env.NEXT_PUBLIC_SUPABASE_URL ||
         process.env.SUPABASE_URL!;
     const envKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
