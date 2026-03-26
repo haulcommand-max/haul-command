@@ -1,0 +1,26 @@
+Initialising login role...
+Connecting to remote database...
+Skipping migration fix_cron_schedule.sql... (file name must match pattern "<timestamp>_name.sql")
+Found local migration files to be inserted before the last migration on remote database.
+
+Rerun the command with --include-all flag to apply these migrations:
+supabase\migrations\20260213000000_initial_schema.sql                
+supabase\migrations\20260317000000_load_board_ingestion_v2.sql       
+supabase\migrations\20260317170000_broker_surfaces.sql               
+supabase\migrations\20260317170001_combined_lb_migration.sql         
+supabase\migrations\20260318120100_hc_market_truth_flags.sql         
+supabase\migrations\20260318120200_hc_page_seo_contracts.sql         
+supabase\migrations\20260318120300_hc_sponsor_inventory.sql          
+supabase\migrations\20260318120400_hc_provider_best_public_record.sql
+supabase\migrations\20260318120500_hc_provider_search_index.sql      
+supabase\migrations\20260318120600_hc_broker_public_profile.sql      
+supabase\migrations\20260318120700_hc_rates_public.sql               
+supabase\migrations\20260318120800_hc_requirements_public.sql        
+supabase\migrations\20260318120900_hc_public_helpers.sql             
+supabase\migrations\20260318121000_remaining_tables.sql              
+supabase\migrations\20260318200000_rls_hardening_phase1.sql          
+supabase\migrations\20260318200100_function_search_path_hardening.sql
+supabase\migrations\20260318200200_revoke_mv_api_access.sql          
+supabase\migrations\20260318200300_rls_hardening_ALL_PHASES.sql      
+supabase\migrations\20260318200400_rls_verify.sql                    
+

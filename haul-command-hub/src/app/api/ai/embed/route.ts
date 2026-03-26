@@ -69,7 +69,7 @@ async function embedDictionary(
   let embedded = 0;
   let failed = 0;
 
-  for (const term of (terms as any[])) {
+  for (const term of terms as any[]) {
     const text = `${term.term}: ${term.definition}`;
     const embedding = await generateEmbedding(genai, text);
 
@@ -121,7 +121,7 @@ async function embedRegulations(
   let embedded = 0;
   let failed = 0;
 
-  for (const reg of (regs as any[])) {
+  for (const reg of regs as any[]) {
     const text = [
       reg.title || reg.requirement_name,
       reg.requirement_text,
