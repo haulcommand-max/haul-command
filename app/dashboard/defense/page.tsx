@@ -17,6 +17,10 @@ interface RequestLog {
   is_bot: boolean;
   user_agent: string;
   created_at: string;
+  country?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export default function ScraperDefenseDashboard() {
@@ -169,18 +173,52 @@ export default function ScraperDefenseDashboard() {
           </div>
         </div>
 
-        {/* Global Attack Vector Map (Placeholder for Mapbox/Leaflet Integration) */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mt-8 min-h-[400px] flex items-center justify-center relative">
-           <div className="absolute inset-0 opacity-10 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=39.8283,-98.5795&zoom=4&size=800x400&maptype=roadmap&style=feature:all|element:labels|visibility:off&style=feature:water|element:geometry|color:0x000000&style=feature:landscape|element:geometry|color:0x111111&key=YOUR_API_KEY')] bg-cover bg-center"></div>
-           <div className="z-10 text-center space-y-4">
-              <div className="mx-auto w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700">
-                 <ShieldAlert className="h-6 w-6 text-slate-400" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-300">Geo-Based Attack Visualization</h3>
-              <p className="text-slate-500 max-w-md mx-auto">
-                Real-time map layer initializing. Incoming scraper coordinates will be plotted here structurally to identify hostile region clusters.
-              </p>
+        {/* Global Attack Vector Map (Zero-Dependency SVG Scatter Plot) */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl mt-8 flex flex-col items-center justify-center p-6 space-y-4">
+           
+           <div className="w-full flex justify-between items-center mb-2">
+             <div className="flex items-center space-x-2">
+                <ShieldAlert className="h-5 w-5 text-slate-400" />
+                <h3 className="text-lg font-bold text-slate-300">Live Global Attack Vectors</h3>
+             </div>
+             <div className="flex space-x-4 text-xs font-mono">
+               <span className="flex items-center text-rose-500"><span className="h-2 w-2 rounded-full bg-rose-500 mr-2"></span> Hostile Bots</span>
+               <span className="flex items-center text-emerald-400"><span className="h-2 w-2 rounded-full bg-emerald-400 mr-2"></span> Humans</span>
+             </div>
            </div>
+
+           <div className="relative w-full aspect-[2/1] bg-slate-950 rounded-lg overflow-hidden border border-slate-800">
+             {/* Equirectangular Map Grid Background (Dots) */}
+             <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '20px 20px' }}></div>
+             
+             {/* Dynamic Scatter Points */}
+             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 360 180" preserveAspectRatio="none">
+                {logs.filter(l => l.latitude != null && l.longitude != null).map(log => {
+                   // Classic Equirectangular Projection
+                   const x = log.longitude! + 180;
+                   const y = 90 - log.latitude!;
+                   return (
+                     <circle 
+                        key={`map-${log.id}`}
+                        cx={x} 
+                        cy={y} 
+                        r={log.is_bot ? "2.5" : "1.5"} 
+                        className={`${log.is_bot ? 'fill-rose-500 animate-pulse' : 'fill-emerald-400 opacity-60'}`}
+                     >
+                       <title>{log.city}, {log.country} ({log.ip})</title>
+                     </circle>
+                   );
+                })}
+             </svg>
+
+             {/* Map Equator & Prime Meridian overlays for structure */}
+             <div className="absolute top-1/2 left-0 w-full border-t border-slate-800/50"></div>
+             <div className="absolute left-1/2 top-0 h-full border-l border-slate-800/50"></div>
+           </div>
+
+           <p className="text-slate-500 text-xs w-full text-left font-mono">
+             * Map plotting utilizes Vercel Edge 0-latency edge-node resolution. Rendering standard Equirectangular projection.
+           </p>
         </div>
 
       </div>

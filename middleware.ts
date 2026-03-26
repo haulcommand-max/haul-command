@@ -47,6 +47,16 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     // Fail open if the query times out or fails (so site doesn't crash)
   }
 
+  // Vercel Edge IP Geolocation (Zero latency or cost)
+  const country = req.headers.get("x-vercel-ip-country") || "US";
+  const city = req.headers.get("x-vercel-ip-city") || "Unknown";
+  
+  // Try to parse headers safely or default to null
+  const latStr = req.headers.get("x-vercel-ip-latitude");
+  const lngStr = req.headers.get("x-vercel-ip-longitude");
+  const latitude = latStr ? parseFloat(latStr) : null;
+  const longitude = lngStr ? parseFloat(lngStr) : null;
+
   // 2. Log request (Fire-and-forget using waitUntil to not slow down the response)
   ev.waitUntil(
     fetch(`${supabaseUrl}/rest/v1/request_log`, {
@@ -55,7 +65,11 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
         ip,
         user_agent: ua,
         path: req.nextUrl.pathname,
-        is_bot: isBot
+        is_bot: isBot,
+        country,
+        city,
+        latitude,
+        longitude
       }),
       headers: { 
         'Content-Type': 'application/json',
