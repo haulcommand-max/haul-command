@@ -7,22 +7,21 @@ select
   l.status,
   l.created_at,
   l.pickup_city,
-  l.pickup_state,
-  l.pickup_country,
-  l.drop_city,
-  l.drop_state,
-  l.drop_country,
-  l.pickup_date,
-  l.pickup_window_start,
-  l.pickup_window_end,
-  l.estimated_miles,
-  l.required_positions,          -- e.g. ['lead','chase','high_pole']
-  l.required_equipment,          -- e.g. ['light_bar','height_pole']
-  l.load_height_ft,
-  l.load_width_ft,
-  l.load_length_ft,
-  l.public_rate_hint,            -- safe teaser like '$2.25+/mi' (no exact if you want)
-  l.visibility_scope             -- 'public'|'members' etc
+  l.origin_admin1           as pickup_state,
+  l.origin_country          as pickup_country,
+  l.dest_city               as drop_city,
+  l.dest_admin1             as drop_state,
+  l.dest_country            as drop_country,
+  l.load_date               as pickup_date,
+  null::timestamptz         as pickup_window_start,
+  null::timestamptz         as pickup_window_end,
+  l.miles                   as estimated_miles,
+  null::text[]              as required_positions,
+  null::text[]              as required_equipment,
+  null::real                as load_height_ft,
+  null::real                as load_width_ft,
+  null::real                as load_length_ft,
+  l.rate_amount             as public_rate_hint,
+  'public'::text            as visibility_scope
 from public.loads l
-where l.status in ('open','scheduled')
-  and coalesce(l.visibility_scope,'public') = 'public';
+where l.status = 'posted';

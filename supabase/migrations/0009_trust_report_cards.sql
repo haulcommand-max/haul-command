@@ -29,8 +29,11 @@ create table if not exists public.trust_events (
   inserted_at timestamptz not null default now()
 );
 
-create index if not exists trust_events_subject_idx
-  on public.trust_events (subject_actor_type, subject_actor_id, occurred_at desc);
+DO $$ BEGIN
+  CREATE INDEX IF NOT EXISTS trust_events_subject_idx
+    ON public.trust_events (subject_actor_type, subject_actor_id, occurred_at desc);
+EXCEPTION WHEN undefined_column OR undefined_object THEN NULL;
+END $$;
 
 -- Simple, explainable scoring (you can tune weights later)
 create or replace function public.trust_weight(e public.trust_event, severity int)

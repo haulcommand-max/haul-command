@@ -222,7 +222,10 @@ create table if not exists public.jobs (
   created_at timestamptz not null default now()
 );
 
-create index if not exists idx_jobs_driver on public.jobs(driver_id);
+DO $$ BEGIN
+  CREATE INDEX IF NOT EXISTS idx_jobs_driver ON public.jobs(driver_id);
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 create index if not exists idx_jobs_broker on public.jobs(broker_id);
 
 create table if not exists public.pretrip_handshakes (

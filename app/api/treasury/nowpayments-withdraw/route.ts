@@ -15,11 +15,11 @@ import { createClient } from "@/lib/supabase/server";
  * 2. THE RED (LIQUIDITY & GAS PROTECTION):
  *    - A broker can chargeback on Stripe up to 120 days later. Crypto is irreversible.
  *    - We enforce a T+3 (3-Day) holding period before Escrow funds unlock.
- *    - We explicitly BLOCK Ethereum (ERC-20) payouts because a $25 gas fee will put
- *      Haul Command into the red on small escorts. We force TRC20, SOL, or BEP20.
+ *    - We constrain payouts strictly to the pre-approved operational stablecoins configured 
+ *      in the Database to prevent uncontrolled network/spread loss.
  */
 
-const ALLOWED_NETWORKS = ['trx', 'sol', 'bsc', 'matic']; // Strict Block on ETH/ERC20 to prevent Gas Burn
+const ALLOWED_COINS = ['usdt_trx', 'usdt_bsc', 'usdc_sol', 'usdc_matic']; 
 const T_PLUS_LOCK_DAYS = 3;
 
 export async function POST(req: NextRequest) {
@@ -60,22 +60,16 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. THE RED CHECK: Ensure Balance Exists and T+3 hold is respected
-    // Wait, the ledger handles standard available balance, but let's check pending lockouts.
-    // Realistically `balance_usd` only gets credited AFTER T+3, but as a secondary guard:
     if (wallet.balance_usd < amount_usd) {
       return NextResponse.json({ 
         error: "LIQUIDITY_BLOCK: Insufficient settled funds. Recent escrow unlocks are held for T+3 (72 hours) to protect against credit card chargebacks."
       }, { status: 400 });
     }
 
-    // 4. THE RED CHECK: Gas Network Bloat
-    const networkBase = payout_currency.split('_')[1] || payout_currency; 
-    // e.g., usdt_trx = trx (tron)
-    
-    if (!ALLOWED_NETWORKS.includes(networkBase.toLowerCase())) {
+    // 4. THE RED CHECK: Approved Coins Check
+    if (!ALLOWED_COINS.includes(payout_currency.toLowerCase())) {
       return NextResponse.json({ 
-        error: `GAS_LIMIT_EXCEEDED: Haul Command has blocked ${networkBase.toUpperCase()} to protect against exorbitant gas fees. You cannot go in the red. Use TRC20, SOL, or BSC.`,
-        safe_alternatives: ALLOWED_NETWORKS
+        error: `INVALID_COIN: Haul Command only utilizes approved low-gas stable networks to guarantee platform liquidity. Select from: ${ALLOWED_COINS.join(', ')}`
       }, { status: 400 });
     }
 

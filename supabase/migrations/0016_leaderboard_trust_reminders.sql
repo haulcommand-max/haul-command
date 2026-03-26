@@ -36,7 +36,7 @@ create table if not exists public.broker_profiles (
 );
 
 create table if not exists public.broker_trust_scores (
-  broker_id uuid primary key references public.broker_profiles(broker_id) on delete cascade,
+  broker_id uuid primary key references public.broker_profiles(user_id) on delete cascade,
   score numeric(6,2) not null default 0,                -- 0..100
   payment_speed_days numeric(6,2),                      -- rollup median
   cancellation_rate numeric(6,4),                       -- 0..1
@@ -131,21 +131,21 @@ create index if not exists leaderboard_snapshots_lookup_idx
 
 create or replace view public.public_leaderboards as
 select
-  timeframe,
+  period                      as timeframe,
   country_code,
-  region_code,
-  metric,
+  admin1_code                 as region_code,
+  null::text                  as metric,
   actor_type,
   actor_id,
   rank,
-  score,
-  delta_rank,
-  delta_score,
-  last_event_at,
-  period_start,
-  period_end,
-  season_start,
-  season_end,
+  points                      as score,
+  0::int                      as delta_rank,
+  0::numeric(14,2)            as delta_score,
+  null::timestamptz           as last_event_at,
+  null::date                  as period_start,
+  null::date                  as period_end,
+  null::date                  as season_start,
+  null::date                  as season_end,
   updated_at
 from public.leaderboard_rollups;
 

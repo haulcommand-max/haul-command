@@ -2,22 +2,27 @@
 -- This is the SEO-safe public directory view (no contact info).
 begin;
 
-create or replace view public.directory_drivers as
+-- Drop first to handle any column-count mismatch from prior definitions
+drop view if exists public.directory_drivers cascade;
+
+create view public.directory_drivers as
 select
-  dp.driver_id,
-  dp.country_code,
-  dp.region_code,
-  dp.city,
-  dp.city_slug,
-  dp.company_name,
-  dp.rig_type,
-  dp.equipment,
-  dp.insurance_level,
-  dp.is_verified,
-  dp.last_active_bucket,
-  dp.opted_in_contact,
+  p.user_id              as driver_id,
+  p.display_name,
+  p.home_base_city,
+  p.home_base_state,
+  null::text             as home_base_country,
+  null::text             as profile_slug,
+  p.photo_url            as avatar_url,
+  dp.verified_badge      as is_verified,
+  p.last_active_bucket,
+  p.lifetime_runs,
+  p.lifetime_verified_miles,
+  p.public_tags,
+  null::text             as public_phone_masked,
   dp.updated_at
-from public.driver_profiles dp;
+from public.driver_profiles dp
+join public.profiles p on p.user_id = dp.user_id;
 
 grant select on public.directory_drivers to anon, authenticated;
 

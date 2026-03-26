@@ -19,7 +19,8 @@ INSERT INTO vertical_profiles (vertical, avg_ticket_size, complexity_score, seas
 ('cranes', 'medium', 5, 'steady_local', 0.22, 6),
 ('military', 'very_high', 10, 'contract_cycle', 0.35, 10),
 ('ports_drayage', 'low', 4, 'constant', 0.15, 3),
-('standard_oversize', 'medium', 3, 'seasonal', 0.18, 2);
+('standard_oversize', 'medium', 3, 'seasonal', 0.18, 2)
+ON CONFLICT (vertical) DO NOTHING;
 
 
 -- 2. LANE PROFITABILITY ENGINE

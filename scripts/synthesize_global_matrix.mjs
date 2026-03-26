@@ -135,11 +135,12 @@ function buildRow(type) {
   };
 }
 
-// --- HTTP POSTER ---
-function postBatch(tablePath, rows) {
+// --- RPC POSTER (bypasses statement_timeout via SECURITY DEFINER function) ---
+function postBatch(_tablePath, rows) {
   return new Promise((resolve, reject) => {
-    const url = new URL(`/rest/v1/${tablePath}`, SUPABASE_URL);
-    const postData = JSON.stringify(rows);
+    // Call the bulk_ingest RPC which has SET statement_timeout = '0'
+    const url = new URL(`/rest/v1/rpc/bulk_ingest_directory_listings`, SUPABASE_URL);
+    const postData = JSON.stringify({ p_rows: rows });
     const req = https.request({
       hostname: url.hostname,
       path: url.pathname,
@@ -148,20 +149,19 @@ function postBatch(tablePath, rows) {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Prefer': 'resolution=ignore-duplicates,return=minimal',
         'Content-Length': Buffer.byteLength(postData)
       },
-      timeout: 60000
+      timeout: 120000  // 2 min socket timeout
     }, (res) => {
       let d = '';
       res.on('data', c => d += c);
       res.on('end', () => {
-        if (res.statusCode < 300) resolve({ status: res.statusCode });
-        else reject(new Error(`HTTP ${res.statusCode}: ${d.substring(0, 200)}`));
+        if (res.statusCode < 300) resolve({ status: res.statusCode, count: JSON.parse(d || '0') });
+        else reject(new Error(`HTTP ${res.statusCode}: ${d.substring(0, 300)}`));
       });
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+    req.on('timeout', () => { req.destroy(); reject(new Error('Socket Timeout')); });
     req.write(postData);
     req.end();
   });

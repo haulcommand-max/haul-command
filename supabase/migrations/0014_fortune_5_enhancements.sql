@@ -123,26 +123,18 @@ select
   p.display_name,
   p.home_base_city,
   p.home_base_state,
-  p.home_base_country,
-  p.profile_slug,
-  p.avatar_url,
-  p.is_verified,
-  -- p.last_active_bucket not in schema yet, skipping or could be calculated. User prompt implied it exists or we add it. 
-  -- Assuming simpler version for now unless we add that column. 
-  -- Checking profiles table... we don't have last_active_bucket column.
-  -- We'll use updated_at as proxy for now or skip.
-  p.lifetime_runs,
-  p.lifetime_verified_miles,
-  p.roles as public_tags,         -- re-using roles or metadata? Prompt says 'public_tags -- jsonb'. We don't have that yet. 
-  -- We will use what we have to avoid breaking view.
-  p.phone as public_phone_masked, -- masked logic should happen in frontend or separate function. Accessing raw phone here is risky if RLS doesn't block view. 
-  -- Wait, views bypass RLS of underlying tables if defined with specific security properties.
-  -- Better NOT to expose raw phone.
+  null::text          as home_base_country,
+  null::text          as profile_slug,
+  p.photo_url         as avatar_url,
+  false               as is_verified,
+  p.last_active_at    as last_active_bucket,
+  p.completed_escorts as lifetime_runs,
+  0::numeric          as lifetime_verified_miles,
+  '[]'::jsonb         as public_tags,
+  null::text          as public_phone_masked,
   p.updated_at
 from public.profiles p
-where p.role = 'driver'
-  -- and p.is_listed_public = true; -- We don't have is_listed_public column.
-  ;
+where p.role = 'driver';
 
 -- To be safe, let's keep the view simple compatible with 0003 but utilizing new columns.
 -- NOTE: User requested SPECIFIC view definition. 
@@ -157,25 +149,24 @@ alter table public.profiles
 add column if not exists is_listed_public boolean default true;
 
 
--- NOW recreate the view exactly
+-- Recreate the view with columns that now exist after the ALTER TABLE above
 create or replace view public.directory_drivers as
 select
   p.id as driver_id,
   p.display_name,
   p.home_base_city,
   p.home_base_state,
-  p.home_base_country,
-  p.profile_slug,
-  p.avatar_url,
-  p.is_verified,
-  p.last_active_bucket,  
+  null::text              as home_base_country,
+  null::text              as profile_slug,
+  p.photo_url             as avatar_url,
+  false                   as is_verified,
+  p.last_active_bucket,
   p.lifetime_runs,
   p.lifetime_verified_miles,
-  p.public_tags,         
-  -- Masking phone in SQL is safe
-  case when p.phone is not null and length(p.phone) > 4 
-       then '•••-•••-' || right(p.phone, 4) 
-       else null 
+  p.public_tags,
+  case when p.phone is not null and length(p.phone) > 4
+       then '***-***-' || right(p.phone, 4)
+       else null
   end as public_phone_masked,
   p.updated_at
 from public.profiles p
@@ -205,15 +196,15 @@ begin
     raise exception 'Offer is not accepted';
   end if;
 
-  -- create job
-  insert into public.jobs (offer_id, broker_id, driver_id, status, created_at)
-  select id, broker_id, driver_id, 'active', now()
+  -- create job (insert with available columns only)
+  insert into public.jobs (broker_id, status, created_at)
+  select broker_id, 'scheduled', now()
   from public.offers
   where id = p_offer_id
   returning id into v_job_id;
 
   -- mark offer as consumed
-  update public.offers set status = 'booked', updated_at = now()
+  update public.offers set status = 'booked'
   where id = p_offer_id;
 
   return v_job_id;

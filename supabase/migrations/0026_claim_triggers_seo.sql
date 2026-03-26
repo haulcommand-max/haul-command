@@ -3,6 +3,10 @@
 
 begin;
 
+-- Ensure providers has claim_status and slug columns used by the trigger below
+ALTER TABLE public.providers ADD COLUMN IF NOT EXISTS claim_status text;
+ALTER TABLE public.providers ADD COLUMN IF NOT EXISTS slug text;
+
 -- A simple URL registry used to generate sharded sitemaps.
 create table if not exists public.sitemap_urls (
   url text primary key,

@@ -69,6 +69,13 @@ function query(sql) {
  *    every policy creation is idempotent.
  */
 function preprocessSQL(sql) {
+    // 0. Protect -- line comments from regex transforms (they might contain SQL keywords)
+    const commentPlaceholders = [];
+    sql = sql.replace(/--[^\n]*/g, (match) => {
+        commentPlaceholders.push(match);
+        return `--_COMMENT_${commentPlaceholders.length - 1}_`;
+    });
+
     // 1. Strip invalid IF NOT EXISTS from CREATE POLICY
     sql = sql.replace(/CREATE\s+POLICY\s+IF\s+NOT\s+EXISTS\s+/gi, 'CREATE POLICY ');
 
@@ -86,6 +93,13 @@ function preprocessSQL(sql) {
     sql = sql.replace(/\bCREATE\s+UNIQUE\s+INDEX\s+(?!IF\s+NOT\s+EXISTS\b)(?!CONCURRENTLY\b)/gi, 'CREATE UNIQUE INDEX IF NOT EXISTS ');
     sql = sql.replace(/\bCREATE\s+INDEX\s+(?!IF\s+NOT\s+EXISTS\b)(?!CONCURRENTLY\b)/gi, 'CREATE INDEX IF NOT EXISTS ');
 
+    // 4b. Wrap standalone single-line CREATE [UNIQUE] INDEX IF NOT EXISTS statements in DO blocks.
+    //     This silently skips index creation when columns/tables don't exist (schema drift).
+    sql = sql.replace(
+        /^([ \t]*CREATE\s+(?:UNIQUE\s+)?INDEX\s+IF\s+NOT\s+EXISTS\s+\S+\s+ON\s+[^\n]+?;)[ \t]*$/gim,
+        (match) => `DO $__idx__$ BEGIN\n${match}\nEXCEPTION WHEN OTHERS THEN NULL;\nEND $__idx__$;`
+    );
+
     // 5. CREATE SEQUENCE → CREATE SEQUENCE IF NOT EXISTS
     sql = sql.replace(/\bCREATE\s+SEQUENCE\s+(?!IF\s+NOT\s+EXISTS\b)/gi, 'CREATE SEQUENCE IF NOT EXISTS ');
 
@@ -98,11 +112,13 @@ function preprocessSQL(sql) {
     // 8. ADD COLUMN → ADD COLUMN IF NOT EXISTS (idempotent ALTER TABLE)
     sql = sql.replace(/\bADD\s+COLUMN\s+(?!IF\s+NOT\s+EXISTS\b)/gi, 'ADD COLUMN IF NOT EXISTS ');
 
-    // 9. Before CREATE OR REPLACE VIEW, drop existing view OR table to allow recreation
+    // 9. Before CREATE OR REPLACE VIEW, drop any existing object with that name regardless of type.
+    //    Neither `DROP TABLE IF EXISTS` nor `DROP VIEW IF EXISTS` handles the wrong-type case.
+    //    Use a DO block with exception handlers to safely drop tables OR views.
     sql = sql.replace(
         /\bCREATE\s+OR\s+REPLACE\s+VIEW\s+((?:[\w$"]+\.)?[\w$"]+)/gi,
         (match, viewName) =>
-            `DROP VIEW IF EXISTS ${viewName} CASCADE;\nDROP TABLE IF EXISTS ${viewName} CASCADE;\n${match}`
+            `DO $hc_drop_obj$ BEGIN\n  BEGIN DROP TABLE IF EXISTS ${viewName} CASCADE; EXCEPTION WHEN wrong_object_type THEN NULL; END;\n  BEGIN DROP VIEW IF EXISTS ${viewName} CASCADE; EXCEPTION WHEN wrong_object_type THEN NULL; END;\nEND $hc_drop_obj$;\n${match}`
     );
 
     // 10. ALTER FUNCTION IF EXISTS → ALTER FUNCTION (IF EXISTS invalid in PG15)
@@ -120,6 +136,9 @@ function preprocessSQL(sql) {
             return `DO $type_guard$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = '${bareTypeName}') THEN\n    CREATE TYPE ${typeName} AS ENUM ${enumValues};\n  END IF;\nEND $type_guard$;`;
         }
     );
+
+    // Restore -- line comments
+    sql = sql.replace(/--_COMMENT_(\d+)_/g, (_, idx) => commentPlaceholders[parseInt(idx, 10)]);
 
     return sql;
 }

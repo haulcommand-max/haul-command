@@ -182,7 +182,7 @@ with check (public.is_admin());
 create policy "loads_select_posted"
 on public.loads for select
 to authenticated
-using (deleted_at is null and status in ('posted','paused','filled','cancelled','draft'));
+using (status in ('posted','paused','filled','cancelled','draft'));
 
 -- Broker can manage own loads
 create policy "loads_broker_write_own"
@@ -203,7 +203,7 @@ with check (public.is_admin());
 create policy "offers_driver_select"
 on public.offers for select
 to authenticated
-using (driver_id = auth.uid() and deleted_at is null);
+using (driver_id = auth.uid());
 
 -- Broker sees offers for their load
 create policy "offers_broker_select"
@@ -214,7 +214,6 @@ using (
     select 1 from public.loads l
     where l.id = load_id and l.broker_id = auth.uid()
   )
-  and deleted_at is null
 );
 
 -- System creates offers (use service role in Edge Functions) OR admin
@@ -235,7 +234,7 @@ with check (driver_id = auth.uid());
 create policy "jobs_select_parties"
 on public.jobs for select
 to authenticated
-using (deleted_at is null and (driver_id = auth.uid() or broker_id = auth.uid() or public.is_admin()));
+using (assigned_operator_id = auth.uid() or broker_id = auth.uid() or public.is_admin());
 
 -- Broker can create jobs (from accepted offer) + update statuses
 create policy "jobs_broker_write"
@@ -246,15 +245,15 @@ with check (broker_id = auth.uid());
 create policy "jobs_parties_update"
 on public.jobs for update
 to authenticated
-using (driver_id = auth.uid() or broker_id = auth.uid() or public.is_admin())
-with check (driver_id = auth.uid() or broker_id = auth.uid() or public.is_admin());
+using (assigned_operator_id = auth.uid() or broker_id = auth.uid() or public.is_admin())
+with check (assigned_operator_id = auth.uid() or broker_id = auth.uid() or public.is_admin());
 
 -- ---------- PRETRIP / EVIDENCE ----------
 create policy "pretrip_select_parties"
 on public.pretrip_handshakes for select
 to authenticated
 using (
-  exists (select 1 from public.jobs j where j.id = job_id and (j.driver_id = auth.uid() or j.broker_id = auth.uid()))
+  exists (select 1 from public.jobs j where j.id = job_id and (j.assigned_operator_id = auth.uid() or j.broker_id = auth.uid()))
   or public.is_admin()
 );
 
@@ -262,7 +261,7 @@ create policy "pretrip_insert_driver_or_broker"
 on public.pretrip_handshakes for insert
 to authenticated
 with check (
-  exists (select 1 from public.jobs j where j.id = job_id and (j.driver_id = auth.uid() or j.broker_id = auth.uid()))
+  exists (select 1 from public.jobs j where j.id = job_id and (j.assigned_operator_id = auth.uid() or j.broker_id = auth.uid()))
   or public.is_admin()
 );
 
@@ -270,7 +269,7 @@ create policy "evidence_select_parties"
 on public.evidence_artifacts for select
 to authenticated
 using (
-  exists (select 1 from public.jobs j where j.id = job_id and (j.driver_id = auth.uid() or j.broker_id = auth.uid()))
+  exists (select 1 from public.jobs j where j.id = job_id and (j.assigned_operator_id = auth.uid() or j.broker_id = auth.uid()))
   or public.is_admin()
 );
 
@@ -278,7 +277,7 @@ create policy "evidence_insert_parties"
 on public.evidence_artifacts for insert
 to authenticated
 with check (
-  exists (select 1 from public.jobs j where j.id = job_id and (j.driver_id = auth.uid() or j.broker_id = auth.uid()))
+  exists (select 1 from public.jobs j where j.id = job_id and (j.assigned_operator_id = auth.uid() or j.broker_id = auth.uid()))
   or public.is_admin()
 );
 
@@ -287,7 +286,7 @@ create policy "gps_select_parties"
 on public.gps_breadcrumbs for select
 to authenticated
 using (
-  exists (select 1 from public.jobs j where j.id = job_id and (j.driver_id = auth.uid() or j.broker_id = auth.uid()))
+  exists (select 1 from public.jobs j where j.id = job_id and (j.assigned_operator_id = auth.uid() or j.broker_id = auth.uid()))
   or public.is_admin()
 );
 
@@ -295,7 +294,7 @@ create policy "gps_insert_driver_only"
 on public.gps_breadcrumbs for insert
 to authenticated
 with check (
-  exists (select 1 from public.jobs j where j.id = job_id and j.driver_id = auth.uid())
+  exists (select 1 from public.jobs j where j.id = job_id and j.assigned_operator_id = auth.uid())
   or public.is_admin()
 );
 
@@ -323,14 +322,14 @@ using (true);
 create policy "hazards_insert_any"
 on public.hazards for insert
 to authenticated
-with check (created_by = auth.uid() or created_by is null);
+with check (reporter_id = auth.uid() or reporter_id is null);
 
 -- Update only by creator or admin
 create policy "hazards_update_creator_or_admin"
 on public.hazards for update
 to authenticated
-using (created_by = auth.uid() or public.is_admin())
-with check (created_by = auth.uid() or public.is_admin());
+using (reporter_id = auth.uid() or public.is_admin())
+with check (reporter_id = auth.uid() or public.is_admin());
 
 create policy "hazard_reports_select_all"
 on public.hazard_reports for select
@@ -404,51 +403,8 @@ to authenticated
 using (public.is_admin())
 with check (public.is_admin());
 
--- ---------- STORAGE POLICIES (run after creating buckets) ----------
--- Buckets recommended:
--- 1) public-assets (public)
--- 2) private-docs (private)
--- 3) evidence-private (private)
-
--- NOTE: Supabase Storage policies apply to storage.objects
--- This assumes you create buckets named exactly as above.
-
--- Allow authenticated users to upload to their own folder path:
--- private-docs/{auth.uid()}/...
-create policy "private_docs_upload_own"
-on storage.objects for insert
-to authenticated
-with check (
-  bucket_id = 'private-docs'
-  and (storage.foldername(name))[1] = auth.uid()::text
-);
-
-create policy "private_docs_read_own_or_admin"
-on storage.objects for select
-to authenticated
-using (
-  bucket_id = 'private-docs'
-  and (
-    (storage.foldername(name))[1] = auth.uid()::text
-    or public.is_admin()
-  )
-);
-
-create policy "evidence_upload_job_scoped"
-on storage.objects for insert
-to authenticated
-with check (
-  bucket_id = 'evidence-private'
-  and (storage.foldername(name))[1] = auth.uid()::text
-);
-
-create policy "evidence_read_own_or_admin"
-on storage.objects for select
-to authenticated
-using (
-  bucket_id = 'evidence-private'
-  and (
-    (storage.foldername(name))[1] = auth.uid()::text
-    or public.is_admin()
-  )
-);
+-- ---------- STORAGE POLICIES (skipped — apply manually after creating buckets) ----------
+-- Storage policies require storage.objects which may not be accessible via migrations.
+-- Apply these manually in Supabase Dashboard > Storage after creating buckets:
+-- 1) private-docs (private)
+-- 2) evidence-private (private)

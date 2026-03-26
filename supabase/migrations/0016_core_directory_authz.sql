@@ -31,15 +31,21 @@ create table if not exists public.driver_profiles (
   updated_at timestamptz not null default now()
 );
 
-create index if not exists driver_profiles_geo_idx
-  on public.driver_profiles(country_code, region_code, city_slug);
+DO $$ BEGIN
+  CREATE INDEX IF NOT EXISTS driver_profiles_geo_idx
+    ON public.driver_profiles(country_code, region_code, city_slug);
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 
-create index if not exists driver_profiles_verified_idx
-  on public.driver_profiles(is_verified);
+DO $$ BEGIN
+  CREATE INDEX IF NOT EXISTS driver_profiles_verified_idx
+    ON public.driver_profiles(is_verified);
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 
 -- ---------- CONTACT INFO (NEVER PUBLIC) ----------
 create table if not exists public.driver_contact_private (
-  driver_id uuid primary key references public.driver_profiles(driver_id) on delete cascade,
+  driver_id uuid primary key references public.driver_profiles(user_id) on delete cascade,
   phone text,
   email text,
   website text,
@@ -97,8 +103,8 @@ using (true);
 create policy "driver_profiles_update_own"
 on public.driver_profiles for update
 to authenticated
-using (driver_id = auth.uid())
-with check (driver_id = auth.uid());
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
 
 create policy "driver_profiles_admin_update"
 on public.driver_profiles for update

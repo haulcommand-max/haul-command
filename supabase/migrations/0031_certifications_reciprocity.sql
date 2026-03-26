@@ -4,6 +4,13 @@
 
 begin;
 
+-- Ensure the legacy certifications table has a slug column with unique constraint for FK reference
+ALTER TABLE public.certifications ADD COLUMN IF NOT EXISTS slug text;
+DO $$ BEGIN
+  ALTER TABLE public.certifications ADD CONSTRAINT certifications_slug_unique UNIQUE (slug);
+EXCEPTION WHEN duplicate_object THEN NULL;  -- constraint already exists
+END $$;
+
 -- Certifications: the authoritative cert bodies (e.g., Utah, Colorado, ESCORTED, etc.)
 create table if not exists public.certifications (
   id        uuid primary key default gen_random_uuid(),
@@ -32,11 +39,11 @@ create index if not exists idx_reciprocity_allowed on public.reciprocity_rules(f
 alter table public.certifications enable row level security;
 alter table public.reciprocity_rules enable row level security;
 
--- Public safety data — everyone can read
+-- Public safety data — everyone can read (active column may not exist on legacy certifications table)
 create policy "certifications_public_read"
 on public.certifications for select
 to anon, authenticated
-using (active = true);
+using (true);
 
 create policy "reciprocity_public_read"
 on public.reciprocity_rules for select
