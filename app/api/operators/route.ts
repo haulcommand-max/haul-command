@@ -74,20 +74,28 @@ export async function GET(req: NextRequest) {
 
   // 4. Build Supabase query (server-side only)
   let query = supabase
-    .from('operator_profile')
-    .select(fields.join(','), { count: 'exact' })
-    .order(sort.field, { ascending: sort.dir === 'asc' })
+    .from('directory_listings')
+    .select('id, name, city, region_code, country_code, claim_status, metadata, rank_score, profile_completeness, slug, created_at', { count: 'exact' })
+    .eq('is_visible', true)
+    .eq('entity_type', 'pilot_car_operator')
     .range((page - 1) * pageSize, page * pageSize - 1);
 
   // Apply filters
-  if (searchParams.state) query = query.eq('service_states', searchParams.state);
+  if (searchParams.state) query = query.eq('region_code', searchParams.state);
   if (searchParams.country) query = query.eq('country_code', searchParams.country);
-  if (searchParams.verified === 'true') query = query.eq('verified', true);
+  if (searchParams.verified === 'true') query = query.eq('claim_status', 'claimed');
   if (searchParams.search) {
     query = query.or(
-      `display_name.ilike.%${searchParams.search}%,company_name.ilike.%${searchParams.search}%`,
+      `name.ilike.%${searchParams.search}%,city.ilike.%${searchParams.search}%`,
     );
   }
+
+  // Handle Sort Mapping
+  let mappedSort = 'rank_score';
+  if (sort.field === 'display_name') mappedSort = 'name';
+  else if (sort.field === 'created_at') mappedSort = 'created_at';
+  // Fallbacks: trust_score -> rank_score, rating -> rank_score
+  query = query.order(mappedSort, { ascending: sort.dir === 'asc' });
 
   const { data: records, count, error } = await query;
 
@@ -95,8 +103,33 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Query failed' }, { status: 500 });
   }
 
-  // 5. Apply PII masking
-  let results = (records || []).map(record =>
+  // 5. Transform raw directory_listings format to the standard operator_profile format
+  // so that the frontend schema doesn't break
+  const transformedRecords = (records || []).map((op: any) => {
+    const meta = op.metadata || {};
+    return {
+      id: op.id,
+      display_name: op.name || 'Unknown Operator',
+      company_name: meta.company || op.name,
+      state: op.region_code,
+      country: op.country_code || 'US',
+      service_area: meta.additional_regions || [],
+      equipment_types: meta.services || [],
+      rating: 0,
+      verified: op.claim_status === 'claimed',
+      badge_level: 'none',
+      trust_score: op.rank_score || 0,
+      availability_status: 'AVAILABLE',
+      created_at: op.created_at,
+      profile_photo_url: null,
+      phone: meta.phone || null,
+      email: meta.email || null,
+      address_street: meta.address || null
+    };
+  });
+
+  // 6. Apply PII masking
+  let results = transformedRecords.map(record =>
     maskRecord(record as unknown as Record<string, unknown>, MASK_CONFIG, isAuthenticated, false, false),
   );
 
