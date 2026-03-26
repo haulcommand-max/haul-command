@@ -61,7 +61,7 @@ export async function POST(req: Request) {
       const slug = `${op.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${op.locality.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
 
       // Insert autonomous profile
-      const { error } = await sb.from('hc_places').insert({
+      const payload: any = {
         slug,
         name: op.name,
         phone: op.phone,
@@ -77,7 +77,9 @@ export async function POST(req: Request) {
         hc_trust_number: hcNumber, // New field for authoritative trust
         source_system: 'autonomous_scraper',
         updated_at: new Date().toISOString()
-      });
+      };
+      
+      const { error } = await sb.from('hc_places').insert(payload as any);
 
       if (error) {
         console.error(`Failed to insert ${op.name}:`, error);

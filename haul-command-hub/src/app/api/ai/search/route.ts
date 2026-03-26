@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+// @ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
@@ -82,7 +83,7 @@ interface SearchRequest {
 // ─── Semantic Search Across Tables ───────────────────────────
 
 async function searchDictionary(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   embedding: number[],
   threshold: number,
   limit: number,
@@ -111,7 +112,7 @@ async function searchDictionary(
 }
 
 async function searchRegulations(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   embedding: number[],
   threshold: number,
   limit: number,
@@ -119,7 +120,7 @@ async function searchRegulations(
 ): Promise<SearchResult[]> {
   try {
     // Custom RPC for regulations search (if available)
-    const { data, error } = await supabase.rpc('match_regulations', {
+    const { data, error } = await supabase.rpc('match_regulations' as any, {
       query_embedding: `[${embedding.join(',')}]`,
       match_threshold: threshold,
       match_count: limit,
@@ -146,7 +147,7 @@ async function searchRegulations(
 }
 
 async function keywordSearchProviders(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   query: string,
   limit: number,
   country?: string,
@@ -185,7 +186,7 @@ async function keywordSearchProviders(
 }
 
 async function keywordSearchLoads(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   query: string,
   limit: number,
 ): Promise<SearchResult[]> {

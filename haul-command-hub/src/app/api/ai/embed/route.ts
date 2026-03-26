@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+// @ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
@@ -50,7 +51,7 @@ async function generateEmbedding(genai: GoogleGenerativeAI, text: string): Promi
 // ─── Dictionary Embedder ─────────────────────────────────────
 
 async function embedDictionary(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   genai: GoogleGenerativeAI,
   batchSize: number,
 ) {
@@ -68,7 +69,7 @@ async function embedDictionary(
   let embedded = 0;
   let failed = 0;
 
-  for (const term of terms) {
+  for (const term of (terms as any[])) {
     const text = `${term.term}: ${term.definition}`;
     const embedding = await generateEmbedding(genai, text);
 
@@ -103,7 +104,7 @@ async function embedDictionary(
 // ─── Regulations Embedder ────────────────────────────────────
 
 async function embedRegulations(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   genai: GoogleGenerativeAI,
   batchSize: number,
 ) {
@@ -120,7 +121,7 @@ async function embedRegulations(
   let embedded = 0;
   let failed = 0;
 
-  for (const reg of regs) {
+  for (const reg of (regs as any[])) {
     const text = [
       reg.title || reg.requirement_name,
       reg.requirement_text,

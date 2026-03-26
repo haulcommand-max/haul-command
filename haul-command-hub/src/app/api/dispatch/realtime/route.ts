@@ -197,13 +197,13 @@ export async function POST(req: Request) {
     // Also store in Supabase for audit trail
     const supabase = getSupabase();
     if (supabase) {
-      await supabase.from('hc_dispatch_events').insert({
+      try { await supabase.from('hc_dispatch_events').insert({
         event_type: type,
         payload,
         region_code: region || null,
         event_id: event.eventId,
         created_at: event.timestamp,
-      }).catch(() => {}); // Non-blocking
+      }); } catch(e) {}
     }
 
     return NextResponse.json({

@@ -146,7 +146,7 @@ export async function POST(req: Request) {
     // ── 4. Log transaction attempt (optional) ──────────────────
     const supabase = getSupabase();
     if (supabase && jobId) {
-      await supabase.from('hc_payment_log').insert({
+      try { await supabase.from('hc_payment_log').insert({
         job_id: jobId,
         checkout_session_id: session.id,
         region_code: regionCode,
@@ -157,7 +157,7 @@ export async function POST(req: Request) {
         provider_payout_usd: providerPayoutCents / 100,
         escort_stripe_account: escortStripeAccountId,
         status: 'checkout_created',
-      }).catch(() => {}); // Non-blocking log
+      }); } catch(e) {}
     }
 
     return NextResponse.json({

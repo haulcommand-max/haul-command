@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+// @ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**

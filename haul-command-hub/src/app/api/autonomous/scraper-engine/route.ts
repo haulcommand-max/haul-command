@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+// @ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
@@ -141,7 +142,7 @@ async function enrichOperator(
 // ─── Stage 3: Deduplication & Upsert ─────────────────────────
 
 async function deduplicateAndLoad(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   enriched: EnrichedOperator,
 ): Promise<'inserted' | 'updated' | 'duplicate' | 'error'> {
   try {
