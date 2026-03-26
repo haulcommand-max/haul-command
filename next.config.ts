@@ -2,9 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     // ── Output ──────────────────────────────────────────────────────────────────
-    // "standalone" bundles everything needed to run without node_modules.
-    // Required for Vercel, Docker, and Capacitor native builds.
-    output: "standalone",
+    // NOTE: "standalone" removed — Vercel uses its own serverless bundler.
+    // Standalone was causing "Body exceeded 80000kb limit" on deploy.
+    // For Docker/Capacitor, re-enable via NEXT_OUTPUT=standalone env var.
 
     // ── Performance ─────────────────────────────────────────────────────────────
     reactStrictMode: true,
