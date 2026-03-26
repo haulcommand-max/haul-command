@@ -24,16 +24,19 @@ function findService(slug: string) {
   return SEO_SERVICES.find(s => s.slug === slug) ?? null;
 }
 
-// ─── Static Params: 57 countries × cities × 6 services ≈ 3,420 pages ───
+// ─── Static Params: CAPPED to US top 8 cities × 6 services ≈ 48 pages ───
+// All other combos still work via ISR on first visit.
+// This prevents exceeding Vercel's 80MB deployment artifact limit.
 export function generateStaticParams() {
-  return COUNTRIES.flatMap((country) =>
-    country.cities.flatMap((city) =>
-      SEO_SERVICES.map((service) => ({
-        country: country.slug,
-        'city-slug': slugifyCity(city),
-        service: service.slug,
-      }))
-    )
+  const usCountry = COUNTRIES.find(c => c.slug === 'us');
+  if (!usCountry) return [];
+  const topCities = usCountry.cities.slice(0, 8);
+  return topCities.flatMap((city) =>
+    SEO_SERVICES.map((service) => ({
+      country: 'us',
+      'city-slug': slugifyCity(city),
+      service: service.slug,
+    }))
   );
 }
 

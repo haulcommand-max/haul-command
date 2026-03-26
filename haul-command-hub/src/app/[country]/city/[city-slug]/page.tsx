@@ -19,14 +19,14 @@ function findCity(country: CountryConfig, citySlug: string): string | null {
     return country.cities.find(c => slugifyCity(c) === citySlug) ?? null;
 }
 
-// ─── Static Params ───
+// ─── Static Params (CAPPED: US cities only to stay under 80MB limit) ───
 export function generateStaticParams() {
-    return COUNTRIES.flatMap((country) =>
-        country.cities.map((city) => ({
-            country: country.slug,
-            'city-slug': slugifyCity(city),
-        }))
-    );
+    const usCountry = COUNTRIES.find(c => c.slug === 'us');
+    if (!usCountry) return [];
+    return usCountry.cities.map((city) => ({
+        country: 'us',
+        'city-slug': slugifyCity(city),
+    }));
 }
 
 // ─── Metadata ───
@@ -47,8 +47,8 @@ export async function generateMetadata({
     return {
         title,
         description,
-        openGraph: { title, description, url: `https://hub.haulcommand.com/${countrySlug}/city/${citySlug}` },
-        alternates: { canonical: `https://hub.haulcommand.com/${countrySlug}/city/${citySlug}` },
+        openGraph: { title, description, url: `https://haulcommand.com/${countrySlug}/city/${citySlug}` },
+        alternates: { canonical: `https://haulcommand.com/${countrySlug}/city/${citySlug}` },
     };
 }
 
@@ -64,7 +64,7 @@ export default async function CityPage({
     const city = findCity(country, citySlug);
     if (!city) notFound();
 
-    const baseUrl = 'https://hub.haulcommand.com';
+    const baseUrl = 'https://haulcommand.com';
     const nearbyCities = country.cities.filter(c => c !== city).slice(0, 8);
 
     const faqs = [

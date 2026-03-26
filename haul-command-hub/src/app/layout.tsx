@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://hub.haulcommand.com'),
+  metadataBase: new URL('https://haulcommand.com'),
   title: {
     default: "Haul Command | World's Largest Pilot Car & Escort Vehicle Directory",
     template: "%s | Haul Command",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://hub.haulcommand.com',
+    url: 'https://haulcommand.com',
     siteName: 'Haul Command',
     title: "Haul Command | World's Largest Pilot Car & Escort Vehicle Directory",
     description: 'Find verified pilot car operators and escort vehicle professionals across 57 countries.',

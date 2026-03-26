@@ -11,13 +11,12 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 import { generateGuideHreflang } from '@/lib/seo/hreflang';
 
-// ─── Static Params ───
+// ─── Static Params (CAPPED: US only to stay under 80MB limit) ───
 export function generateStaticParams() {
     const paths: { country: string; slug: string }[] = [];
-    for (const countrySlug of getAllCountrySlugs()) {
-        for (const topic of SNIPPET_TOPICS) {
-            paths.push({ country: countrySlug, slug: topic.slug });
-        }
+    // Only pre-render US guides — highest SEO value
+    for (const topic of SNIPPET_TOPICS) {
+        paths.push({ country: 'us', slug: topic.slug });
     }
     return paths;
 }
@@ -51,12 +50,12 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
-            url: `https://hub.haulcommand.com/${countrySlug}/guide/${topicSlug}`,
+            url: `https://haulcommand.com/${countrySlug}/guide/${topicSlug}`,
             siteName: 'Haul Command',
             type: 'article',
         },
         alternates: {
-            canonical: `https://hub.haulcommand.com/${countrySlug}/guide/${topicSlug}`,
+            canonical: `https://haulcommand.com/${countrySlug}/guide/${topicSlug}`,
             languages: generateGuideHreflang(topicSlug),
         },
     };
@@ -181,7 +180,7 @@ export default async function GuidePage({
 
     const localTerm = country.terms[topic.termKey] || topic.title;
     const content = getGuideContent(topicSlug, country);
-    const baseUrl = 'https://hub.haulcommand.com';
+    const baseUrl = 'https://haulcommand.com';
 
     // Generate FAQs from content sections
     const faqs = content.sections.map((section) => ({

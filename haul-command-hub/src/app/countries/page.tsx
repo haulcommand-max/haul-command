@@ -20,12 +20,12 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Pilot Car & Escort Vehicle Directory — 57 Countries | Haul Command',
         description: 'Find verified oversize load transport professionals across 57 countries worldwide.',
-        url: 'https://hub.haulcommand.com/countries',
+        url: 'https://haulcommand.com/countries',
         siteName: 'Haul Command',
         type: 'website',
     },
     alternates: {
-        canonical: 'https://hub.haulcommand.com/countries',
+        canonical: 'https://haulcommand.com/countries',
     },
 };
 
@@ -37,7 +37,7 @@ const TIER_CONFIG = {
 } as const;
 
 export default function CountriesPage() {
-    const baseUrl = 'https://hub.haulcommand.com';
+    const baseUrl = 'https://haulcommand.com';
 
     return (
         <>

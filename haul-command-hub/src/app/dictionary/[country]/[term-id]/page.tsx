@@ -8,14 +8,18 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 import { generateDictionaryTermHreflang } from '@/lib/seo/hreflang';
 
+/**
+ * BUILD SIZE GUARD: Only pre-render US dictionary terms at build time.
+ * All 57 countries still work via ISR (on-demand rendering on first visit).
+ * This prevents the 80MB Vercel deployment artifact limit from being exceeded.
+ */
 export function generateStaticParams() {
   const terms = getAllTerms();
-  return COUNTRIES.flatMap((country) =>
-    terms.map((term) => ({
-      country: country.slug,
-      'term-id': term.id,
-    }))
-  );
+  // Only pre-render US — the highest-traffic country
+  return terms.map((term) => ({
+    country: 'us',
+    'term-id': term.id,
+  }));
 }
 
 export async function generateMetadata({

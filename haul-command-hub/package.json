@@ -16,7 +16,8 @@
     "qa:linksmin": "node scripts/qa/check-internal-link-thresholds.mjs",
     "qa:mobile": "node scripts/qa/check-mobile-overflow.mjs",
     "qa:sponsors": "node scripts/qa/check-sponsor-labels.mjs",
-    "qa:seo": "node scripts/qa/check-seo-contracts.mjs"
+    "qa:seo": "node scripts/qa/check-seo-contracts.mjs",
+    "qa:canonical-enforce": "node scripts/qa/check-canonical-enforcement.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

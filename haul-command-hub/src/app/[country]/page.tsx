@@ -89,7 +89,7 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
-            url: `https://hub.haulcommand.com/${slug}`,
+            url: `https://haulcommand.com/${slug}`,
             siteName: 'Haul Command',
             type: 'website',
             locale: country.lang === 'en' ? 'en_US' : `${country.lang}_${country.code}`,
@@ -100,7 +100,7 @@ export async function generateMetadata({
             description,
         },
         alternates: {
-            canonical: `https://hub.haulcommand.com/${slug}`,
+            canonical: `https://haulcommand.com/${slug}`,
             languages: generateCountryHubHreflang(),
         },
     };
@@ -129,7 +129,7 @@ export default async function CountryPage({
 
     const tier = getTierStyle(country.tier);
     const faqs = generateCountryFAQs(country);
-    const baseUrl = 'https://hub.haulcommand.com';
+    const baseUrl = 'https://haulcommand.com';
 
     return (
         <>

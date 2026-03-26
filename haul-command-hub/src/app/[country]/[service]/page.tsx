@@ -12,13 +12,12 @@ import BreadcrumbSchema, { ServiceSchema } from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 import { generateServiceHreflang } from '@/lib/seo/hreflang';
 
-// ─── Static Params ───
+// ─── Static Params (CAPPED: US only to stay under 80MB limit) ───
 export function generateStaticParams() {
     const paths: { country: string; service: string }[] = [];
-    for (const slug of getAllCountrySlugs()) {
-        for (const service of SEO_SERVICES) {
-            paths.push({ country: slug, service: service.slug });
-        }
+    // Only pre-render US service pages — highest SEO value
+    for (const service of SEO_SERVICES) {
+        paths.push({ country: 'us', service: service.slug });
     }
     return paths;
 }
@@ -52,12 +51,12 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
-            url: `https://hub.haulcommand.com/${countrySlug}/${serviceSlug}`,
+            url: `https://haulcommand.com/${countrySlug}/${serviceSlug}`,
             siteName: 'Haul Command',
             type: 'website',
         },
         alternates: {
-            canonical: `https://hub.haulcommand.com/${countrySlug}/${serviceSlug}`,
+            canonical: `https://haulcommand.com/${countrySlug}/${serviceSlug}`,
             languages: generateServiceHreflang(serviceSlug),
         },
     };
@@ -77,7 +76,7 @@ export default async function ServicePage({
 
     const localTerm = country.terms[service.termKey] || service.label;
     const faqs = generateServiceFAQs(service.label, service.termKey, country);
-    const baseUrl = 'https://hub.haulcommand.com';
+    const baseUrl = 'https://haulcommand.com';
 
     return (
         <>

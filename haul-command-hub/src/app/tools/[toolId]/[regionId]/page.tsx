@@ -88,13 +88,14 @@ type Props = {
 };
 
 // Generate static routes for the edge network
-// 7 tools x 50 states = 350 static pages
-// Edge functions don't actually use generateStaticParams in the same way Node does, 
-// but we leave it for standard caching architecture mapping.
+// CAPPED: 7 tools × 50 US states = 350 pages (down from 700+)
+// Country-level tool pages still work via ISR on first visit.
 export function generateStaticParams() {
   const params: { toolId: string; regionId: string }[] = [];
+  // Only pre-render US states — the highest SEO value regions
+  const usStates = STATES.filter(s => s.label === 'State');
   for (const tool of TARGET_TOOLS) {
-    for (const state of STATES) {
+    for (const state of usStates) {
       params.push({ toolId: tool.id, regionId: state.id });
     }
   }
@@ -114,7 +115,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     title: `${state.name} ${tool.name} | Heavy Haul Rules & Requirements - Haul Command`,
     description: `Use our free ${state.name} ${tool.name}. Get instant heavy haul compliance logic, permit estimates, escort requirements, and routing intelligence for oversize loads in ${state.name}.`,
     alternates: {
-      canonical: `https://www.haulcommand.com/tools/${tool.id}/${state.id}`,
+      canonical: `https://haulcommand.com/tools/${tool.id}/${state.id}`,
     }
   };
 }

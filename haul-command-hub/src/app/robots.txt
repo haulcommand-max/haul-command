@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://hub.haulcommand.com/sitemap.xml',
+    sitemap: 'https://haulcommand.com/sitemap.xml',
   };
 }
