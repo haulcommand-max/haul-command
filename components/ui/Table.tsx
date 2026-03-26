@@ -38,9 +38,10 @@ export function TableHead({ className = "", children }: { className?: string; ch
   );
 }
 
-export function TableCell({ className = "", children }: { className?: string; children: React.ReactNode }) {
+export function TableCell({ className = "", children, colSpan }: { className?: string; children: React.ReactNode; colSpan?: number }) {
   return (
     <td
+      colSpan={colSpan}
       className={`p-4 align-middle [&:has([role=checkbox])]:pr-0 ${className}`}
     >
       {children}

@@ -33,8 +33,8 @@ export { AdGridPushCampaignSender } from './AdGridPushCampaignSender';
 // Existing components
 export { NativeAdCard } from './NativeAdCard';
 export { default as AdGridPartnerSignup } from './AdGridPartnerSignup';
-export { default as HeroBillboard } from './HeroBillboard';
-export { default as StickyMobileChipRail } from './StickyMobileChipRail';
+export { HeroBillboard } from './HeroBillboard';
+export { StickyMobileChipRail } from './StickyMobileChipRail';
 
 // §10 — Crypto Checkout (in payments/)
 // Import from: '@/components/payments/CryptoCheckoutModal'
