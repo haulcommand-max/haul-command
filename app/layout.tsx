@@ -12,6 +12,7 @@ import PostHogProvider from "@/components/providers/PostHogProvider";
 import { AuthStatusBanner } from "@/components/dev/AuthStatusBanner";
 import SmartAppBanner from "@/components/growth/SmartAppBanner";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
+import { SessionDNATracker } from "@/components/security/SessionDNATracker";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -218,6 +219,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Analytics />
                 <SpeedInsights />
                 <AuthStatusBanner />
+                <SessionDNATracker />
                 </RoleProvider>
             </body>
         </html>

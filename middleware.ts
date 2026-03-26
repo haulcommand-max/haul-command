@@ -9,9 +9,24 @@ export const config = {
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   const ip = req.headers.get("x-forwarded-for") || "unknown"
   const ua = req.headers.get("user-agent") || ""
+  
+  // Advanced DNA Fingerprinting Check 
+  // (We check what the React frontend told us about their physical mouse/scroll movement)
+  const dnaCookie = req.cookies.get("hc_dna")?.value;
+  let hasBotDna = false;
+  if (dnaCookie) {
+    const [scoreStr] = dnaCookie.split('.');
+    const score = parseInt(scoreStr, 10);
+    // If the client's measured humanity score is artificially low (<10), they are a script
+    if (score < 10) hasBotDna = true;
+  } else {
+    // No DNA cookie? Could be a blind API scraper skipping the React execution layer entirely
+    // We don't instantly block on missing cookie (some browsers block cookies), but it contributes to suspicion.
+  }
 
-  // basic bot detection based on headless agents
+  // basic bot detection based on headless agents or failed DNA
   const isBot =
+    hasBotDna ||
     ua.includes("Headless") ||
     ua.includes("Python") ||
     ua.includes("curl") ||
