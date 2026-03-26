@@ -1,0 +1,2402 @@
+[
+  {
+    "source_id": "UK-GEN-91572290",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 46 Industrial Estate",
+    "city": "London",
+    "postal_code": "B24 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-50846850",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 91 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B40 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-53819869",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 19 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B6 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-54794788",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 89 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B80 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-77627097",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 92 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B18 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-30564480",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 28 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B31 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-27987715",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 74 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B19 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-58133614",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 84 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B10 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-42138885",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 54 Industrial Estate",
+    "city": "London",
+    "postal_code": "B4 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-92950774",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 56 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B20 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-91655947",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 73 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B14 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-81389144",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 51 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B45 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-16398284",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 5 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B10 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-35619975",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 28 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B66 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-19797575",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 92 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B8 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-20724989",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 9 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B87 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-80509602",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 75 Industrial Estate",
+    "city": "London",
+    "postal_code": "B98 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-77339911",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 2 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B48 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-25760722",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 85 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B48 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-71306652",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 16 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B43 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-24348913",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 23 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B64 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-47299760",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 85 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B28 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-14695336",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 67 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B83 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-51335524",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 26 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B67 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-81692321",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 55 Industrial Estate",
+    "city": "London",
+    "postal_code": "B23 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-90399973",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 85 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B70 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-38193513",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 66 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B47 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-37521929",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 34 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B72 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-13375759",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 1 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B57 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-91998971",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 70 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B13 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-62124605",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 14 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B98 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-85646480",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 79 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B20 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-39612283",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 21 Industrial Estate",
+    "city": "London",
+    "postal_code": "B87 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-39364981",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 30 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B68 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-99280464",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 97 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B29 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-27997830",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 21 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B16 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-97425359",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 58 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B97 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-94499364",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 41 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B76 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-75651613",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B49 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-79602082",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 46 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B98 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-47890576",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 13 Industrial Estate",
+    "city": "London",
+    "postal_code": "B66 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-10141414",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 49 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B84 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-13389434",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 57 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B77 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-51560946",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B92 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-75018085",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 97 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B49 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-96247746",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 90 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B68 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-31653639",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 34 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B43 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-75069360",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 13 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B8 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-69225823",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 8 Industrial Estate",
+    "city": "London",
+    "postal_code": "B36 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-11749192",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 48 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B36 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-13117997",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 96 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B92 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-96869342",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 65 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B36 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-66469960",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 2 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B18 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-89618563",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 73 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B24 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-52814492",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 86 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B91 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-37463073",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 26 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B41 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-65382821",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 52 Industrial Estate",
+    "city": "London",
+    "postal_code": "B11 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-27115357",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 26 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B72 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-30889414",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 76 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B71 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-25731666",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 91 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B5 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-59248764",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 94 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B5 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-84225507",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 63 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B54 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-22190921",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B69 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-90984762",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 30 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B56 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-93909302",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 72 Industrial Estate",
+    "city": "London",
+    "postal_code": "B84 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-91494174",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 15 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B87 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-17786880",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 53 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B60 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-75185678",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 86 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B16 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-79634800",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 94 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B98 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-31231080",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 60 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B86 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-64166307",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 30 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B47 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-46535881",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 55 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B10 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-57377191",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 99 Industrial Estate",
+    "city": "London",
+    "postal_code": "B86 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-62074300",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 29 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B97 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-94185544",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 29 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B90 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-88433932",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 89 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B69 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-85546409",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 14 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B64 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-71717539",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 14 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B16 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-76885838",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 96 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B11 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-66466259",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 63 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B17 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-96743478",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 18 Industrial Estate",
+    "city": "London",
+    "postal_code": "B31 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-18759690",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 95 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B35 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-67424547",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 82 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B23 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-12029753",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 71 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B14 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-92813378",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 95 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B1 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-37339803",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 70 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B24 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-84066393",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 64 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B72 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-88840670",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 81 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B23 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-61383109",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 79 Industrial Estate",
+    "city": "London",
+    "postal_code": "B10 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-33024512",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 75 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B92 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-80740544",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B44 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-94478587",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 61 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B23 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-62622856",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 74 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B93 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-41652496",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 99 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B11 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-72922101",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 8 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B56 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-44300637",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 36 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B15 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-35928159",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 99 Industrial Estate",
+    "city": "London",
+    "postal_code": "B56 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-64776435",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 61 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B2 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-97582159",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 8 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B48 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-11353359",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 70 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B21 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-19179479",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 40 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B52 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-50929990",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 59 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B37 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-80368280",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 43 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B13 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-96669226",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 16 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B31 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-78908730",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "London",
+    "postal_code": "B98 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-99649157",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 17 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B13 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-65353884",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 1 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B47 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-62944792",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 4 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B80 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-85706772",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 20 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B52 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-54798783",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 66 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B0 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-88093562",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 25 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B64 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-77853395",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 38 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B39 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-40263587",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 46 Industrial Estate",
+    "city": "London",
+    "postal_code": "B25 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-71065926",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 22 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B98 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-25511577",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 6 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B95 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-66459832",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 28 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B78 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-15212930",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 18 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B47 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-46373593",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 50 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B76 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-45052147",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 1 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B18 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-84084411",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 90 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B44 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-90104563",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 31 Industrial Estate",
+    "city": "London",
+    "postal_code": "B81 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-12937665",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 94 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B4 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-57804531",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 13 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B59 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-37146560",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 6 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B70 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-13078513",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 1 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B16 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-36242612",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 73 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B37 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-10489002",
+    "company_name": "Odin Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 88 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B38 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-56529845",
+    "company_name": "Imperial Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 30 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B74 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-79311562",
+    "company_name": "Vanguard Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 75 Industrial Estate",
+    "city": "London",
+    "postal_code": "B34 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-74672186",
+    "company_name": "Apex Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 79 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B24 1AA",
+    "creation_date": "2016-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.1
+  },
+  {
+    "source_id": "UK-GEN-87236561",
+    "company_name": "Titan Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 63 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B2 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-33975585",
+    "company_name": "Britannia Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 69 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B36 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-41649589",
+    "company_name": "Highlands Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 69 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B43 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.5
+  },
+  {
+    "source_id": "UK-GEN-80465334",
+    "company_name": "Atlas Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 26 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B89 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4
+  },
+  {
+    "source_id": "UK-GEN-32044490",
+    "company_name": "Odin Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 66 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B22 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 5
+  },
+  {
+    "source_id": "UK-GEN-92019328",
+    "company_name": "Imperial Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 0 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B91 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-90481535",
+    "company_name": "Vanguard Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 77 Industrial Estate",
+    "city": "London",
+    "postal_code": "B23 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-76271094",
+    "company_name": "Apex Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 48 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B43 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-92336771",
+    "company_name": "Titan Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 1 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B40 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-93014669",
+    "company_name": "Britannia Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 52 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B14 1AA",
+    "creation_date": "2017-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-78692953",
+    "company_name": "Highlands Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 24 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B2 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.2
+  },
+  {
+    "source_id": "UK-GEN-71988590",
+    "company_name": "Atlas Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 40 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B50 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-28671669",
+    "company_name": "Odin Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 46 Industrial Estate",
+    "city": "Bristol",
+    "postal_code": "B14 1AA",
+    "creation_date": "2014-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.4
+  },
+  {
+    "source_id": "UK-GEN-66281475",
+    "company_name": "Imperial Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 93 Industrial Estate",
+    "city": "Liverpool",
+    "postal_code": "B22 1AA",
+    "creation_date": "2012-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.9
+  },
+  {
+    "source_id": "UK-GEN-73984857",
+    "company_name": "Vanguard Heavy Haulage Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 63 Industrial Estate",
+    "city": "London",
+    "postal_code": "B61 1AA",
+    "creation_date": "2013-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-53251430",
+    "company_name": "Apex Abnormal Loads Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 55 Industrial Estate",
+    "city": "Birmingham",
+    "postal_code": "B12 1AA",
+    "creation_date": "2011-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.8
+  },
+  {
+    "source_id": "UK-GEN-26587089",
+    "company_name": "Titan Specialized Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 70 Industrial Estate",
+    "city": "Manchester",
+    "postal_code": "B48 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.3
+  },
+  {
+    "source_id": "UK-GEN-75454841",
+    "company_name": "Britannia Heavy Logistics Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 16 Industrial Estate",
+    "city": "Glasgow",
+    "postal_code": "B62 1AA",
+    "creation_date": "2010-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  },
+  {
+    "source_id": "UK-GEN-82578327",
+    "company_name": "Highlands Freight Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 23 Industrial Estate",
+    "city": "Newcastle",
+    "postal_code": "B17 1AA",
+    "creation_date": "2015-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.6
+  },
+  {
+    "source_id": "UK-GEN-57650931",
+    "company_name": "Atlas Transport Ltd",
+    "country": "GB_UK",
+    "status": "active",
+    "address_line_1": "Unit 85 Industrial Estate",
+    "city": "Leeds",
+    "postal_code": "B50 1AA",
+    "creation_date": "2018-01-01",
+    "sic_codes": [
+      "49410"
+    ],
+    "is_claimed": false,
+    "ingestion_source": "synthetic_uk_calibration",
+    "reputation_score": 4.7
+  }
+]

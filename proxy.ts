@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, NextFetchEvent } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { supabaseMiddleware } from "./lib/supabase/middleware";
 
 // ═══════════════════════════════════════════════════════════════
 // HAUL COMMAND PROXY — Next.js 16 Edge Middleware
-// Merged: locale detection (57 countries), RTL, redirects, auth
+// Merged: locale detection (57 countries), RTL, redirects, auth,
+//         bot DNA fingerprinting, IP block check, request logging
 // ═══════════════════════════════════════════════════════════════
 
 // ── Locale Configuration ───────────────────────────────────────
@@ -40,7 +41,6 @@ const COUNTRY_LOCALE_MAP: Record<string, string> = {
 const VALID_LOCALES = new Set(Object.values(COUNTRY_LOCALE_MAP));
 
 function resolveLocale(req: NextRequest): { locale: string; country: string; isRTL: boolean } {
-  // 1. Explicit user choice (cookie)
   const cookieLocale = req.cookies.get(LOCALE_COOKIE)?.value;
   const cookieCountry = req.cookies.get(COUNTRY_COOKIE)?.value;
 
@@ -50,26 +50,20 @@ function resolveLocale(req: NextRequest): { locale: string; country: string; isR
     return { locale: cookieLocale, country, isRTL: RTL_LANGUAGES.has(langCode) };
   }
 
-  // 2. Edge geo detection (Vercel provides geo headers)
   const geoCountry = (req as any).geo?.country || req.headers.get('x-vercel-ip-country') || '';
 
-  // Canada: auto-detect French from Accept-Language
   if (geoCountry === 'CA') {
     const acceptLang = req.headers.get('accept-language') || '';
     const prefersFrench = /fr/i.test(acceptLang.split(',')[0] || '');
     return { locale: prefersFrench ? 'fr-CA' : 'en-CA', country: 'CA', isRTL: false };
   }
 
-  // Arabic countries: check if user prefers English
   if (ARABIC_COUNTRIES.has(geoCountry)) {
     const acceptLang = req.headers.get('accept-language') || '';
     const prefersEnglish = /^en/i.test(acceptLang.split(',')[0] || '');
-    if (prefersEnglish) {
-      return { locale: `en-${geoCountry}`, country: geoCountry, isRTL: false };
-    }
+    if (prefersEnglish) return { locale: `en-${geoCountry}`, country: geoCountry, isRTL: false };
   }
 
-  // All other markets
   const defaultLocale = COUNTRY_LOCALE_MAP[geoCountry];
   if (defaultLocale) {
     const langCode = defaultLocale.split('-')[0];
@@ -79,11 +73,74 @@ function resolveLocale(req: NextRequest): { locale: string; country: string; isR
   return { locale: 'en-US', country: geoCountry || 'US', isRTL: false };
 }
 
+// ── Anti-Gravity Defense: Bot Detection ───────────────────────────────────────
+
+function detectBot(req: NextRequest): boolean {
+  const ua = req.headers.get('user-agent') || '';
+  const dnaCookie = req.cookies.get('hc_dna')?.value;
+
+  if (dnaCookie) {
+    const score = parseInt(dnaCookie.split('.')[0], 10);
+    if (score < 10) return true;
+  }
+
+  return (
+    ua.includes('Headless') || ua.includes('Python') || ua.includes('curl') ||
+    ua.includes('scrapy') || ua.toLowerCase().includes('bot') || ua.includes('spider')
+  );
+}
+
 // ── Proxy ──────────────────────────────────────────────────────
 
-export async function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest, ev?: NextFetchEvent) {
   const url = new URL(req.url);
   const path = url.pathname;
+
+  // ── Anti-Gravity Defense Layer ──────────────────────────────
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const isBot = detectBot(req);
+
+  if (supabaseUrl && supabaseKey) {
+    // 1. Block known bad IPs (fail-open on timeout)
+    try {
+      const blockedRes = await fetch(`${supabaseUrl}/rest/v1/blocked_ips?select=id&ip=eq.${encodeURIComponent(ip)}`, {
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` },
+        signal: AbortSignal.timeout(800)
+      });
+      if (blockedRes.ok) {
+        const blockedData = await blockedRes.json();
+        if (blockedData.length > 0) {
+          return new NextResponse('Blocked by Anti-Gravity Defense System.', { status: 403 });
+        }
+      }
+    } catch {}
+
+    // 2. Fire-and-forget request log
+    const logPayload = {
+      ip,
+      user_agent: req.headers.get('user-agent') || '',
+      path: url.pathname,
+      is_bot: isBot,
+      country: req.headers.get('x-vercel-ip-country') || 'US',
+      city: req.headers.get('x-vercel-ip-city') || 'Unknown',
+      latitude: parseFloat(req.headers.get('x-vercel-ip-latitude') || '0') || null,
+      longitude: parseFloat(req.headers.get('x-vercel-ip-longitude') || '0') || null,
+    };
+    if (ev?.waitUntil) {
+      ev.waitUntil(
+        fetch(`${supabaseUrl}/rest/v1/request_log`, {
+          method: 'POST',
+          body: JSON.stringify(logPayload),
+          headers: { 'Content-Type': 'application/json', 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Prefer': 'return=minimal' }
+        }).catch(() => {})
+      );
+    }
+
+    // 3. Tarpit bots
+    if (isBot) await new Promise(r => setTimeout(r, 1500));
+  }
 
   // ── REDIRECT MATRIX (Legacy → Canonical) ──
 
