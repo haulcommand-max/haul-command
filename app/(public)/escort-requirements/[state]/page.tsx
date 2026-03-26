@@ -14,9 +14,7 @@ import {
 
 // ── Static generation ─────────────────────────────────────────────────────────
 
-export async function generateStaticParams() {
-    return getAllStateSlugs().map((slug) => ({ state: slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     params,

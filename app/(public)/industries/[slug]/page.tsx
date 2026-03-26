@@ -14,9 +14,7 @@ import { CoverageEstimateForm } from "@/components/ports/CoverageEstimateForm";
 
 // ── Static generation ─────────────────────────────────────────────────────────
 
-export async function generateStaticParams() {
-    return LOAD_TYPES.map((lt) => ({ slug: lt.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     params,

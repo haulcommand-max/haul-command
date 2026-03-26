@@ -139,9 +139,7 @@ const ALTERNATIVES: Record<string, {
   },
 };
 
-export async function generateStaticParams() {
-  return Object.keys(ALTERNATIVES).map(competitor => ({ competitor }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const p = await params;

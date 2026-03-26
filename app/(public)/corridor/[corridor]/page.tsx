@@ -19,14 +19,7 @@ interface Props {
 }
 
 // Pre-render known corridors at build time (ISR)
-export async function generateStaticParams() {
-    try {
-        return getAllCorridorSlugs().map(slug => ({ corridor: slug }));
-
-    } catch {
-        return []; // ISR handles at runtime
-    }
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { corridor } = await params;

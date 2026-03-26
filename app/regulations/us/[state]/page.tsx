@@ -163,9 +163,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  return Object.keys(ALL_STATES).map(state => ({ state }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function StateRegulationPage({ params }: Props) {
   const { state } = await params;

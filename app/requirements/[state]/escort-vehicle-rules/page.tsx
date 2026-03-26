@@ -42,14 +42,7 @@ const STATE_NAMES: Record<string, string> = {
 
 // ── Static params ──────────────────────────────────────────────────────────────
 
-export async function generateStaticParams() {
-    try {    
-        return Object.keys(STATE_NAMES).map(s => ({ state: s }));
-    
-    } catch {
-        return []; // ISR handles at runtime
-    }
-}
+// Removed generateStaticParams to fix Vercel bundle limit
 
 export const dynamic = 'force-dynamic';
 

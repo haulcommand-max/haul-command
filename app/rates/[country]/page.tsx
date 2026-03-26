@@ -89,9 +89,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  return Object.keys(COUNTRY_DATA).map((code) => ({ country: code }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function CountryRatePage({ params }: Props) {
   const { country } = await params;

@@ -13,9 +13,7 @@ import {
 
 // ── Static generation ─────────────────────────────────────────────────────────
 
-export async function generateStaticParams() {
-    return AI_ANSWER_SEEDS.map((a) => ({ slug: a.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     params,
