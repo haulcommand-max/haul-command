@@ -4,12 +4,15 @@ import { generateDefinedTermSchema } from '@/lib/seo-schema';
 import DictionaryTermView from '@/components/hc/DictionaryTermView';
 
 /**
- * Massive Server-Side SEO Generation
- * Generates all 500+ static routes at build-time.
+ * BUILD SIZE GUARD: Only pre-render first 50 dictionary terms at build.
+ * The rest still work perfectly via ISR (on-demand rendering on first visit).
+ * This prevents exceeding the 80MB Vercel deployment artifact limit.
+ * The primary dictionary route is /dictionary/[country]/[term-id] — this
+ * legacy route exists for backwards compatibility and search engines.
  */
 export function generateStaticParams() {
   const terms = getAllTerms();
-  return terms.map((t) => ({ id: t.id }));
+  return terms.slice(0, 50).map((t) => ({ id: t.id }));
 }
 
 /**
