@@ -7,7 +7,8 @@ import HCFaqModule from '@/components/hc/FaqModule';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 import { MotiveReferralCTA } from '@/components/motive';
 
-export const revalidate = 3600;
+// Force dynamic — queries Supabase for rate benchmarks and fuel prices.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Rate Intelligence — Escort Rate Index',
