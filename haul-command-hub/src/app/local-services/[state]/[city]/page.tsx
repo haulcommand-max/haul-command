@@ -67,10 +67,10 @@ export async function generateMetadata({ params }: PageProps) {
             item.city.toLowerCase() === decodedCity.toLowerCase()
     );
 
-    if (!pageData) return { title:'Service Not Found |' };
+    if (!pageData) return { title:'Service Not Found' };
 
     return {
-        title:`${pageData.service} in ${pageData.city}, ${pageData.state} |`,
+        title:`${pageData.service} in ${pageData.city}, ${pageData.state}`,
         description: `Verified ${pageData.service} services in ${pageData.city}, ${pageData.state}. Ground-truth logistics intelligence for Superload and Oversize transport.`,
         openGraph: {
             title: `${pageData.service} - ${pageData.city}, ${pageData.state}`,

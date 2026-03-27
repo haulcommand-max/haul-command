@@ -3,6 +3,12 @@
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 /* ══════════════════════════════════════════════════════
    ADGRID — Advertiser Dashboard + Creative Upload
@@ -63,6 +69,16 @@ export default function AdvertiserDashboard() {
   const [uploadTarget, setUploadTarget] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [authed, setAuthed] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
+
+  // Auth gate — don't expose campaign data publicly
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setAuthed(!!data.session);
+      setAuthChecking(false);
+    });
+  }, []);
 
   // Fetch live campaigns from Supabase
   const fetchCampaigns = useCallback(async () => {
@@ -116,6 +132,46 @@ export default function AdvertiserDashboard() {
   const totalClicks = campaigns.reduce((s, c) => s + c.clicks, 0);
   const totalSpend = campaigns.reduce((s, c) => s + c.spend, 0);
   const avgCTR = totalImpressions > 0 ? (totalClicks / totalImpressions * 100).toFixed(2) : '0';
+
+  if (authChecking) {
+    return (
+      <>
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center min-h-screen">
+          <div className="w-8 h-8 border-2 border-accent/40 border-t-accent rounded-full animate-spin" />
+        </main>
+      </>
+    );
+  }
+
+  if (!authed) {
+    return (
+      <>
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center min-h-screen px-4">
+          <div className="max-w-md w-full bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 text-center">
+            <div className="text-5xl mb-4">🔒</div>
+            <h1 className="text-2xl font-black text-white mb-2">AdGrid Dashboard</h1>
+            <p className="text-gray-400 text-sm mb-6">
+              Sign in to access your campaign analytics, audience targeting, and creative uploads.
+            </p>
+            <Link
+              href="/login"
+              className="block bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors mb-3"
+            >
+              Sign In to Dashboard
+            </Link>
+            <Link
+              href="/advertise"
+              className="block text-gray-500 hover:text-white text-sm transition-colors"
+            >
+              ← Back to Advertise
+            </Link>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
@@ -171,7 +227,7 @@ export default function AdvertiserDashboard() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white">Your Active Campaigns</h2>
             <div className="text-xs text-gray-500">
-              Pricing: $19/mo (Network), $59/mo (Corridor), $149/mo (Exclusive)
+              Pricing: From $25/day (Sponsored), $50/day (Corridor), $100/day (Data Sponsor)
             </div>
           </div>
 
@@ -268,12 +324,12 @@ export default function AdvertiserDashboard() {
 
         {/* ── Pricing CTA ── */}
         <div className="mt-12 bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-8 text-center">
-          <h2 className="text-white font-bold text-2xl mb-3">Ready to Reach 14,670+ Operators?</h2>
+          <h2 className="text-white font-bold text-2xl mb-3">Ready to Reach 7,335+ Operators?</h2>
           <p className="text-gray-400 text-sm mb-6 max-w-lg mx-auto">
             Launch your campaign in minutes. Target operators by corridor, certification level, and equipment type.
           </p>
           <Link href="/advertise/create" className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors inline-block">
-            Launch Campaign — From $19/mo
+            Launch Campaign — From $25/day
           </Link>
         </div>
       </main>

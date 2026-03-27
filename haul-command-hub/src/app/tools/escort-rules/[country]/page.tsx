@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const name = COUNTRY_NAMES[code] || code.toUpperCase();
 
   return {
-    title:`${name} Escort Requirements & Rules |`,
+    title:`${name} Escort Requirements & Rules`,
     description: `Lookup precise pilot car, escort vehicle, and superload requirements for ${name}. Calculate trigger dimensions and regulations instantly.`,
     alternates: {
       canonical: `https://haulcommand.com/tools/escort-rules/${code}`,

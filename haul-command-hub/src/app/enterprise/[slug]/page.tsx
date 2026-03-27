@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const company = AUTONOMOUS_COMPANIES.find((c) => c.slug === slug);
   const name = company?.name || slug;
   return {
-    title:`${name}— Escort & Heavy Haul Services |`,
+    title:`${name} — Escort & Heavy Haul Services`,
     description: `Find escort vehicles and pilot car services for ${name} operations. Verified operators with ELD tracking covering key corridors.`,
   };
 }

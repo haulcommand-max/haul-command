@@ -501,7 +501,7 @@ export default function PricingPage() {
                 href="/claim"
                 className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors"
               >
-                Claim Your Free Listing
+                Claim Your Free Profile
               </Link>
               <Link
                 href="/directory"

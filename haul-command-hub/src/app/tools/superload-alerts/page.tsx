@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title:'Live Superload Alerts & Route Closures |',
+  title:'Live Superload Alerts & Route Closures',
   description: 'Track massive superload movements, active route surveys, and emergency highway closures related to oversize freight operations.',
   alternates: {
     canonical: 'https://haulcommand.com/tools/superload-alerts',

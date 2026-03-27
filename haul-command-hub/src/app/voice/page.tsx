@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title:'AI Voice Answers — Heavy Haul Regulatory Intelligence |',
+  title:'AI Voice Answers — Heavy Haul Regulatory Intelligence',
   description: 'Get instant AI-powered voice answers to heavy haul regulatory questions. Permits, escorts, compliance, and operational requirements for 120 countries.',
 };
 

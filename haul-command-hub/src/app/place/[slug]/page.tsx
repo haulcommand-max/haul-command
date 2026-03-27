@@ -119,7 +119,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cat = categoryLabel(data.surface_category_key);
   
   return {
-    title:`${data.name}— Best ${cat} Near Me in ${location} |`,
+    title:`${data.name} — Best ${cat} Near Me in ${location}`,
     description: `Hire ${data.name} for top-rated ${cat.toLowerCase()} services near me in ${location}. View contact info, verified capabilities, oversize load experience, and corridors on Haul Command. Instant availability and rate quotes.`,
     keywords: `${cat} near me, ${cat.toLowerCase()} in ${location}, best ${data.surface_category_key.replace('_', ' ')}, oversize load escort near me`,
   };

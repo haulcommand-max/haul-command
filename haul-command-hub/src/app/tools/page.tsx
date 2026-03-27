@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const runtime = 'edge';
 
 export const metadata: Metadata = {
-  title:'30 Heavy Haul Tools — Route Calculators, Permit Cost, Bridge Formula |',
+  title:'30 Heavy Haul Tools — Route Calculators, Permit Cost, Bridge Formula',
   description:
     'Free oversize load tools: escort calculator, bridge formula, permit cost estimator, curfew calculator, superload meter, axle weight distribution, wind turbine planner, and more. 30 tools for heavy haul professionals.',
 };

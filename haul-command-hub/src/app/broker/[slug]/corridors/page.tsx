@@ -8,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  return { title:`${slug}Corridors — Broker |`, description: `Active corridors for broker ${slug}.` };
+  return { title:`${slug}Corridors — Broker`, description: `Active corridors for broker ${slug}.` };
 }
 
 export default async function BrokerCorridorsPage({ params }: Props) {

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Escort Requirements by Country & State — 120 countries',
     description: 'Complete escort vehicle requirements for oversize loads across 120 countries and 67+ jurisdictions. Dimension thresholds, height pole rules, police escort requirements, and authority contacts.',
     openGraph: {
-        title:'Escort Requirements by Country & State — 120 countries |',
+        title:'Escort Requirements by Country & State — 120 countries',
         description: 'The most comprehensive escort requirement guide in the world. 120 countries, 67+ jurisdictions.',
     },
 };

@@ -6,11 +6,11 @@ import CertificationsClient from './CertificationsClient';
 export const runtime = 'edge';
 
 export const metadata: Metadata = {
-  title:'PEVO & Flagger Certification Finder — WITPAC, WA, UT, CO |',
+  title:'PEVO & Flagger Certification Finder — WITPAC, WA, UT, CO',
   description:
     'Find approved Pilot Escort Vehicle Operator (PEVO), Flagger, and WITPAC certifications. Compare providers like Evergreen Safety Council (ESC) and state DOTs.',
   openGraph: {
-    title:'PEVO & Flagger Certification Finder |',
+    title:'PEVO & Flagger Certification Finder',
     description: 'Find approved Pilot Escort Vehicle Operator (PEVO), Flagger, and Specialized (WITPAC) certifications across the US.',
   },
 };

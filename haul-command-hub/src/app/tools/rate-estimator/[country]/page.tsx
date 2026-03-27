@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const name = COUNTRY_NAMES[code] || code.toUpperCase();
 
   return {
-    title:`${name} Pilot Car Rate Estimator & Calculator |`,
+    title:`${name} Pilot Car Rate Estimator & Calculator`,
     description: `Instantly calculate pilot car rates and escort vehicle costs for ${name}. Estimate deadhead, layovers, base rates, and toll costs based on local standards.`,
     alternates: {
       canonical: `https://haulcommand.com/tools/rate-estimator/${code}`,

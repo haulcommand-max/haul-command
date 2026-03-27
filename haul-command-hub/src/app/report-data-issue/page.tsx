@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title:'Reporta Data Issue |',
+  title:'Report a Data Issue',
   description: 'Report inaccurate, outdated, or incorrect data on Haul Command. Help us maintain the most accurate heavy haul directory.',
 };
 

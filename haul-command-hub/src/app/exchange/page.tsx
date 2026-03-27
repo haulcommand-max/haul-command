@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title:'Equipment Exchange — Buy & Sell Pilot Car Equipment |',
+  title:'Equipment Exchange — Buy & Sell Pilot Car Equipment',
   description:
     'Verified peer-to-peer marketplace for pilot car equipment. Escort vehicles, height poles, light bars, and safety gear. Every seller is Haul Command verified.',
 };

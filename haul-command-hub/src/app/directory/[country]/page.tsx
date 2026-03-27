@@ -12,11 +12,11 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
     const { country } = await params;
     const name = countryName(country);
     return {
-        title:`${name} Heavy Haul Directory & Pilot Cars |`,
+        title:`${name} Heavy Haul Directory & Pilot Cars`,
         description: `Browse ${name}'s heavy haul logistics infrastructure. Find pilot cars, escort vehicles, ports, and weigh stations for oversize loads.`,
         keywords: [`${name} pilot cars`, `${name} heavy haul directory`, `oversize load escorts in ${name}`, `heavy haul logistics ${name}`],
         openGraph: {
-            title:`${name} Heavy Haul Directory |`,
+            title:`${name} Heavy Haul Directory`,
             description: `The complete directory of pilot cars and heavy haul services in ${name}.`,
             url: `https://haulcommand.com/directory/${country.toLowerCase()}`,
             siteName: 'Haul Command',

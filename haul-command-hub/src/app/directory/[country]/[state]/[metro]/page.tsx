@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const metroName = metro.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return {
-    title:`${metroName},${stateName} — Heavy Haul Directory |`,
+    title:`${metroName}, ${stateName} — Heavy Haul Directory`,
     description: `Find pilot car operators and escort services in the ${metroName} metro area, ${stateName}, ${cc.name}.`,
   };
 }

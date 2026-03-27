@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title:'Removea Listing |',
+  title:'Remove a Listing',
   description: 'Request removal of a business listing from the Haul Command directory.',
 };
 

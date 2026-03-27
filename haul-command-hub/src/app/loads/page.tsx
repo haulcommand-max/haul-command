@@ -317,7 +317,7 @@ export default async function LoadsPage() {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white">Specialty Project Load Types</h2>
-            <span className="text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full font-bold">New 2025</span>
+            <span className="text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full font-bold">New 2026</span>
           </div>
           <p className="text-gray-500 text-sm mb-5">High-value load categories now bookable as named projects — giga-factory builds, offshore wind, AV loads, and precision equipment moves.</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

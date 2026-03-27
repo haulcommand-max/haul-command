@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const STATS = [
   { value: '7,335+', label: 'Operators Tracked' },
   { value: '50k+', label: 'Monthly Searches' },
-  { value: '57', label: 'Countries' },
+  { value: '120', label: 'Countries' },
   { value: '$4.20', label: 'Avg. CPM' },
 ];
 

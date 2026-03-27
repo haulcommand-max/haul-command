@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title:'PrivacyPolicy — GDPR, UK GDPR, Australian Privacy Act |',
+  title:'Privacy Policy — GDPR, UK GDPR, Australian Privacy Act',
   description: 'Haul Command privacy policy covering GDPR (EU), UK GDPR, Australian Privacy Act, and data processing across 120 countries.',
 };
 

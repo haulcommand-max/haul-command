@@ -8,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  return { title:`${slug}Loads — Broker |`, description: `Recent load patterns for broker ${slug}.` };
+  return { title:`${slug}Loads — Broker`, description: `Recent load patterns for broker ${slug}.` };
 }
 
 export default async function BrokerLoadsPage({ params }: Props) {
