@@ -29,12 +29,12 @@ const ALTERNATIVES: Record<string, {
     hcAdvantages: [
       'AI-powered permit route optimization — instant route analysis',
       'Integrated load board connects permits directly to qualified escorts',
-      'Real-time compliance tracking across 57 countries, not just North America',
+      'Real-time compliance tracking across 120 countries, not just North America',
       'Digital permit processing with automated state requirement checking',
       'Operator matching: find certified escorts in under 47 minutes median fill time',
       'One-stop: permits + escorts + route planning + payment in a single platform',
     ],
-    metaDescription: 'Looking for an ODS North America alternative? Haul Command combines AI-powered permitting with integrated escort dispatch across 57 countries.',
+    metaDescription: 'Looking for an ODS North America alternative? Haul Command combines AI-powered permitting with integrated escort dispatch across 120 countries.',
     metaTitle: 'ODS North America Alternatives — Haul Command vs ODS',
   },
   'wcs-permits': {
@@ -49,7 +49,7 @@ const ALTERNATIVES: Record<string, {
     ],
     hcAdvantages: [
       'Digital-first: real-time permit status tracking and push notifications',
-      'Multi-country support: 57 countries with jurisdiction-specific compliance',
+      'Multi-country support: 120 countries with jurisdiction-specific compliance',
       'Automated route analysis identifies bridge restrictions and height clearances',
       'Same-platform escort matching eliminates separate vendor coordination',
       'Escrow-protected payments ensure operator and broker security',
@@ -69,7 +69,7 @@ const ALTERNATIVES: Record<string, {
       'Limited pilot car operator directory and matching',
     ],
     hcAdvantages: [
-      '7,335+ verified operators across 57 countries — the largest escort directory',
+      '1.5M+ verified operators across 120 countries — the largest escort directory',
       'HOT/WARM/COOL corridor intelligence shows real-time market demand',
       'Escrow payments protect both operators and brokers on every job',
       'AV escort certification system ready for autonomous fleet regulation',
@@ -77,7 +77,7 @@ const ALTERNATIVES: Record<string, {
       'Emergency Fill: blast urgent loads to all available operators in seconds',
       'White label API for enterprise integration ($999/mo)',
     ],
-    metaDescription: 'Looking for an Oversize.io alternative? Haul Command serves 7,335+ operators across 57 countries with AI-powered dispatch and escrow payments.',
+    metaDescription: 'Looking for an Oversize.io alternative? Haul Command serves 1.5M+ operators across 120 countries with AI-powered dispatch and escrow payments.',
     metaTitle: 'Oversize.io Alternatives — Haul Command vs Oversize.io',
   },
   truckstop: {
@@ -225,7 +225,7 @@ export default async function CompetitorInterceptPage({ params }: any) {
         {/* Key differentiators */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 36 }}>
           {[
-            { icon: <Globe size={18} />, label: '57 Countries', sub: 'Global coverage' },
+            { icon: <Globe size={18} />, label: '120 Countries', sub: 'Global coverage' },
             { icon: <Shield size={18} />, label: 'Escrow Protected', sub: 'Every verified job' },
             { icon: <Zap size={18} />, label: '47min Fill Time', sub: 'Median response' },
             { icon: <Bot size={18} />, label: 'AV Ready', sub: 'Autonomous fleet escorts' },

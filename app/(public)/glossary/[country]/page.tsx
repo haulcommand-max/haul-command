@@ -201,7 +201,7 @@ export default async function GlossaryCountryPage({ params }: { params: Promise<
                     {(!terms || terms.length === 0) && (
                         <div style={{ textAlign: 'center', padding: '4rem 2rem', color: '#6b7b8e' }}>
                             <p style={{ fontSize: '1.2rem' }}>No glossary terms localized for {name} yet.</p>
-                            <p style={{ fontSize: '0.9rem' }}>Check back soon — we&apos;re expanding coverage to all 57 countries.</p>
+                            <p style={{ fontSize: '0.9rem' }}>Check back soon — we&apos;re expanding coverage to all 120 countries.</p>
                         </div>
                     )}
                 </div>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function PressPage() {
   const releases = [
     { date: '2025-03', title: 'Haul Command Launches Autonomous Freight Partner Portal', desc: 'New enterprise platform enables autonomous trucking companies to programmatically dispatch certified escort vehicles across active AV corridors.' },
-    { date: '2025-02', title: 'Platform Expands to 57 Countries', desc: 'Haul Command now supports escort dispatch operations in 57 countries, including all major heavy haul markets in North America, Europe, and Asia-Pacific.' },
+    { date: '2025-02', title: 'Platform Expands to 120 countries', desc: 'Haul Command now supports escort dispatch operations in 120 countries, including all major heavy haul markets in North America, Europe, and Asia-Pacific.' },
     { date: '2025-01', title: 'Industry Intelligence Feed Goes Live', desc: 'Real-time regulatory tracking and trend analysis for autonomous freight, oversize loads, and escort compliance requirements.' },
   ];
 

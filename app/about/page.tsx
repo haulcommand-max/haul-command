@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Haul Command | The Escort Dispatch Platform',
-  description: 'Haul Command is the leading dispatch platform for oversize and heavy haul escort services, connecting operators with loads across 57 countries.',
+  description: 'Haul Command is the leading dispatch platform for oversize and heavy haul escort services, connecting operators with loads across 120 countries.',
 };
 
 export default function AboutPage() {
@@ -12,7 +12,7 @@ export default function AboutPage() {
         <h1 style={{ fontSize: 40, fontWeight: 800, marginBottom: 24 }}>About Haul Command</h1>
         <div style={{ fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>
           <p>Haul Command is the operating system for oversize and heavy haul escort services. We connect certified escort operators with loads that need to move — safely, legally, and on time.</p>
-          <p>Founded to solve the fragmentation in the escort vehicle industry, Haul Command provides real-time dispatch, automated compliance verification, rate intelligence, and trust scoring for operators across 57 countries.</p>
+          <p>Founded to solve the fragmentation in the escort vehicle industry, Haul Command provides real-time dispatch, automated compliance verification, rate intelligence, and trust scoring for operators across 120 countries.</p>
           <h2 style={{ fontSize: 24, fontWeight: 700, color: '#fff', margin: '40px 0 16px' }}>Our Mission</h2>
           <p>To make every oversize load move safely by connecting it with the best available escort operator in real time.</p>
           <h2 style={{ fontSize: 24, fontWeight: 700, color: '#fff', margin: '40px 0 16px' }}>The Autonomous Future</h2>

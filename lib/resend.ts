@@ -59,7 +59,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
         html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;background:#0B1120;color:#E5E7EB;padding:32px;border-radius:12px">
             <div style="text-align:center;margin-bottom:24px"><span style="font-size:12px;font-weight:800;letter-spacing:0.2em;color:#F59E0B">HAUL COMMAND</span></div>
             <h2 style="color:#F9FAFB;margin:0 0 16px">Welcome to HAUL COMMAND, ${name}! 🎉</h2>
-            <p>You just joined the world's largest network of heavy haul escort operators across 57 countries.</p>
+            <p>You just joined the world's largest network of heavy haul escort operators across 120 countries.</p>
             <h3 style="color:#F59E0B;margin:20px 0 8px">Complete your profile to start getting loads:</h3>
             <ul style="padding-left:20px">
                 <li>✅ Add your service areas</li>
@@ -68,7 +68,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
                 <li>✅ Toggle availability</li>
             </ul>
             <a href="https://haulcommand.com/settings" style="display:inline-block;background:#F59E0B;color:#030712;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:12px">Complete Profile →</a>
-            <p style="font-size:12px;color:#6B7280;margin-top:24px">The Heavy Haul Operating System — 57 Countries. 358K Surfaces. One Platform.</p>
+            <p style="font-size:12px;color:#6B7280;margin-top:24px">The Heavy Haul Operating System — 120 countries. 358K Surfaces. One Platform.</p>
         </div>`,
     });
 }
@@ -103,7 +103,7 @@ export async function sendPaymentReceipt(to: string, data: {
 // ════════════════════════════════════════════════════════════
 
 const CLAIM_HEADER = `<div style="text-align:center;margin-bottom:24px"><span style="font-size:12px;font-weight:800;letter-spacing:0.2em;color:#F59E0B">HAUL COMMAND</span></div>`;
-const CLAIM_FOOTER = `<p style="font-size:12px;color:#6B7280;margin-top:24px;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px">HAUL COMMAND — The Heavy Haul Operating System<br/>57 Countries. 358,000+ Surfaces. One Platform.</p>`;
+const CLAIM_FOOTER = `<p style="font-size:12px;color:#6B7280;margin-top:24px;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px">HAUL COMMAND — The Heavy Haul Operating System<br/>120 countries. 358,000+ Surfaces. One Platform.</p>`;
 const CLAIM_CTA = (url: string, text: string) =>
     `<a href="${url}" style="display:inline-block;background:#F59E0B;color:#030712;font-weight:700;padding:14px 28px;border-radius:8px;text-decoration:none;margin-top:16px;font-size:15px">${text}</a>`;
 const EMAIL_WRAP = (inner: string) =>

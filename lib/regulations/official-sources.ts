@@ -1,7 +1,7 @@
 /**
  * lib/regulations/official-sources.ts
  * 
- * Official government regulatory source URLs for all 57 countries.
+ * Official government regulatory source URLs for all 120 countries.
  * These are the actual .gov / official authority links where operators
  * can find the legal requirements that govern pilot car / escort operations.
  * 

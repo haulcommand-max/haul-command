@@ -173,7 +173,7 @@ export async function GET(req: NextRequest) {
 }
 
 function blogPrompt(topic: string, keyword: string, audience: string, country: string) {
-  return `You are a content writer for Haul Command — the global operating system for heavy haul escort operations across 57 countries.
+  return `You are a content writer for Haul Command — the global operating system for heavy haul escort operations across 120 countries.
 
 Write a 1,200-word SEO article about: "${topic}"
 Target keyword: "${keyword || topic}"

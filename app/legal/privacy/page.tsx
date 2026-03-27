@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy | HAUL COMMAND',
-    description: 'HAUL COMMAND Privacy Policy — how we collect, use, and protect your data across 57 countries.',
+    description: 'HAUL COMMAND Privacy Policy — how we collect, use, and protect your data across 120 countries.',
 };
 
 export default function PrivacyPage() {
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
                     <p>We never sell your personal data to third parties.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>5. International Data Transfers</h2>
-                    <p>HAUL COMMAND operates across 57 countries. Your data may be transferred and processed in the United States and other countries where our service providers operate. We implement appropriate safeguards including encryption in transit and at rest.</p>
+                    <p>HAUL COMMAND operates across 120 countries. Your data may be transferred and processed in the United States and other countries where our service providers operate. We implement appropriate safeguards including encryption in transit and at rest.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>6. GDPR Compliance (EU/EEA Users)</h2>
                     <p>If you are located in the EU/EEA, you have the right to: access your data, rectify inaccuracies, request deletion, restrict processing, data portability, and object to processing. Contact <a href="mailto:privacy@haulcommand.com" style={{ color: '#F59E0B' }}>privacy@haulcommand.com</a> to exercise these rights.</p>

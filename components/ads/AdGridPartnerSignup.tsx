@@ -77,7 +77,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
             {step === 1 && (
                 <div className="step-content">
                     <h2>Partner with <span className="brand">HAUL COMMAND</span></h2>
-                    <p className="step-desc">Reach 358,000+ pilot car & escort operators across 57 countries</p>
+                    <p className="step-desc">Reach 358,000+ pilot car & escort operators across 120 countries</p>
 
                     <div className="form-group">
                         <label>Company Name</label>
@@ -218,7 +218,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                         <div className="feature">📊 Real-time analytics</div>
                         <div className="feature">🎯 Corridor targeting</div>
                         <div className="feature">💰 Automated billing</div>
-                        <div className="feature">🌍 57-country reach</div>
+                        <div className="feature">🌍 120-country reach</div>
                     </div>
                 </div>
             )}

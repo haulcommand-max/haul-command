@@ -4,7 +4,7 @@
  * POST /api/admin/surface-explosion
  * Body: { tiers?: ["A","B","C","D"], concurrency?: 4, surface_types?: [...] }
  * 
- * Triggers the Overpass surface ingest across 57 countries.
+ * Triggers the Overpass surface ingest across 120 countries.
  * Use tiers to control which countries to process.
  */
 import { NextResponse } from 'next/server';
@@ -48,7 +48,7 @@ export async function GET() {
     return NextResponse.json({
         endpoint: '/api/admin/surface-explosion',
         method: 'POST',
-        description: 'Triggers Overpass surface ingest across 57 countries',
+        description: 'Triggers Overpass surface ingest across 120 countries',
         body: {
             tiers: ['A', 'B', 'C', 'D'],
             concurrency: 4,

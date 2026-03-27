@@ -283,7 +283,7 @@ export async function runGAuditFinal() {
     console.log(`[G-AUDIT-FINAL] Creating Final Scorecard...`);
     const supabase = getSupabaseAdmin();
     const prompt = `
-        TASK G-AUDIT-FINAL: Are we future-proof for all 57 countries? Are we hyper-local? Are we positioned for best SEO and AI search?
+        TASK G-AUDIT-FINAL: Are we future-proof for all 120 countries? Are we hyper-local? Are we positioned for best SEO and AI search?
         Evaluate and output a structured JSON with 'future_proof_score', 'hyper_local_score', 'seo_readiness_score', 'ai_search_readiness_score', 'revenue_capture_score', 'overall_score', 'top_3_fixes_this_week', 'top_3_fixes_this_month', 'estimated_revenue_unlocked_if_all_fixed'.
     `;
 

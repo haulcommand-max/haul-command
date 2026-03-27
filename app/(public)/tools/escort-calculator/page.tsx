@@ -178,7 +178,7 @@ export default function EscortCalculatorPage() {
                 <div style={{ maxWidth: 1200, margin: '0 auto' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                         <span style={{ fontSize: 9, fontWeight: 900, color: '#C6923A', textTransform: 'uppercase', letterSpacing: '0.2em', background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.2)', padding: '3px 8px', borderRadius: 6 }}>Free Tool</span>
-                        <span style={{ fontSize: 9, fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.2em', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', padding: '3px 8px', borderRadius: 6 }}>57 Countries</span>
+                        <span style={{ fontSize: 9, fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.2em', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', padding: '3px 8px', borderRadius: 6 }}>120 countries</span>
                     </div>
                     <h1 style={{ fontSize: 'clamp(20px, 5vw, 32px)', fontWeight: 900, color: 'white', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: 'var(--font-display)', marginBottom: 6 }}>
                         Route Escort Requirements
@@ -385,7 +385,7 @@ export default function EscortCalculatorPage() {
                     {/* Trust signals */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 12px', justifyContent: 'center', marginTop: 12 }}>
                         {[
-                            { icon: HcIconMap, text: '57 countries' },
+                            { icon: HcIconMap, text: '120 countries' },
                             { icon: HcIconLegalCompliance, text: 'Jurisdiction-aware' },
                             { icon: HcIconVerified, text: 'No signup needed' },
                         ].map(({ icon: Icon, text }) => (

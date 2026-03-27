@@ -3,14 +3,14 @@
 /**
  * components/intelligence/SupplyRadarStrip.tsx
  *
- * GLOBAL Supply Radar — covers all 57 countries + US corridors.
+ * GLOBAL Supply Radar — covers all 120 countries + US corridors.
  * Shows corridor/region shortage index, available escorts, avg response time.
  * Used on /directory, /map, and homepage.
  *
  * Data: pulls from /api/supply/recommendations and /api/supply/global,
- * falls back to comprehensive static data spanning 57 countries.
+ * falls back to comprehensive static data spanning 120 countries.
  *
- * Phase 1: Static fallback data across 57 countries ✅
+ * Phase 1: Static fallback data across 120 countries ✅
  * Phase 2: Wire to live API endpoints via useEffect
  */
 

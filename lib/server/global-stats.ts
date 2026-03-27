@@ -24,14 +24,14 @@ export interface GlobalStats {
 
 // Safe fallback when DB is unavailable
 const FALLBACK: GlobalStats = {
-    totalCountries: 57,
+    totalCountries: 120,
     liveCountries: 2,
-    coveredCountries: 3,
-    nextCountries: 1,
-    plannedCountries: 51,
-    futureCountries: 3,
-    totalOperators: 7335,
-    totalCorridors: 142,
+    coveredCountries: 120,
+    nextCountries: 5,
+    plannedCountries: 60,
+    futureCountries: 53,
+    totalOperators: 1566000,
+    totalCorridors: 219,
     avgRatePerDay: 380,
 };
 

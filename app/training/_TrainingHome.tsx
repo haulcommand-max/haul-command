@@ -34,7 +34,7 @@ const TIER_CONFIG = {
     href: '/training/platform-fundamentals',
     benefits: [
       'HC Certified badge on your profile',
-      'Recognized across all 57 countries',
+      'Recognized across all 120 countries',
       'Built on FMCSA + SC&RA Best Practices',
       'Digital credential with verification link',
     ],
@@ -97,7 +97,7 @@ const FAQS = [
   },
   {
     q: 'Does the HC AV-Ready certification really cover autonomous trucks?',
-    a: 'Yes. Module 4 is the only escort operator training in existence specifically covering how to work alongside Aurora, Kodiak, Waabi, and other AV freight systems. It covers communication protocols, sensor field awareness, emergency procedures, and country-specific AV regulations across all 57 countries.',
+    a: 'Yes. Module 4 is the only escort operator training in existence specifically covering how to work alongside Aurora, Kodiak, Waabi, and other AV freight systems. It covers communication protocols, sensor field awareness, emergency procedures, and country-specific AV regulations across all 120 countries.',
   },
   {
     q: 'What happens when my certification expires?',
@@ -185,7 +185,7 @@ export default function TrainingHome() {
         }}>
           {[
             { icon: '🛡️', text: 'Built on FMCSA + SC&RA Standards' },
-            { icon: '🌐', text: '57 Countries' },
+            { icon: '🌐', text: '120 countries' },
             { icon: '⚡', text: 'AV-Ready Certified Available' },
           ].map((b, i) => (
             <div key={i} style={{
@@ -491,7 +491,7 @@ export default function TrainingHome() {
           {[
             { icon: '🛡️', text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
             { icon: '📋', text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
-            { icon: '🌍', text: '57 Countries', sub: 'Global recognition' },
+            { icon: '🌍', text: '120 countries', sub: 'Global recognition' },
             { icon: '🏛️', text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
           ].map((item, i) => (
             <div key={i} style={{

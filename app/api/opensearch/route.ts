@@ -11,7 +11,7 @@ import { generateOpenSearchXML } from '@/lib/seo/structured-data-factory';
 export async function GET() {
   const xml = generateOpenSearchXML(
     'Haul Command',
-    'Search the #1 directory for pilot cars, escort vehicles, and oversize load services across 57 countries.',
+    'Search the #1 directory for pilot cars, escort vehicles, and oversize load services across 120 countries.',
     'https://haulcommand.com',
   );
 

@@ -21,7 +21,7 @@ export const APP_STORE_METADATA = {
     en: {
       name: 'Haul Command',
       subtitle: 'Heavy Haul Escort Marketplace',
-      description: 'Find verified pilot car operators and escort vehicles for oversize and heavy haul transport across 57 countries.',
+      description: 'Find verified pilot car operators and escort vehicles for oversize and heavy haul transport across 120 countries.',
       keywords: 'pilot car,escort vehicle,oversize load,heavy haul,ELD,HOS,trucking,freight,dispatch,compliance',
     },
     es: {

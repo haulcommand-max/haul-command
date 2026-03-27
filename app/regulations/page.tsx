@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Oversize Load Regulations by Country | Haul Command',
-  description: 'Oversize and overweight load regulations for 57 countries. Permit requirements, escort rules, max dimensions, and DOT authority contacts for heavy haul transport worldwide.',
+  description: 'Oversize and overweight load regulations for 120 countries. Permit requirements, escort rules, max dimensions, and DOT authority contacts for heavy haul transport worldwide.',
 };
 
 export default async function RegulationsPage() {
@@ -19,14 +19,14 @@ export default async function RegulationsPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <section className="py-16 px-4 text-center border-b border-white/5">
         <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
-          57 Countries
+          120 countries
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Oversize Load Regulations
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto">
           Permit requirements, escort rules, and DOT authority contacts for heavy haul transport
-          across 57 countries. Updated regularly with live data.
+          across 120 countries. Updated regularly with live data.
         </p>
       </section>
 

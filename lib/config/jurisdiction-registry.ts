@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════════════
-// GLOBAL JURISDICTION REGISTRY — All 57 Countries
+// GLOBAL JURISDICTION REGISTRY — All 120 countries
 // ISO 3166-2 compliant. Every administrative subdivision.
 // ══════════════════════════════════════════════════════════════
 

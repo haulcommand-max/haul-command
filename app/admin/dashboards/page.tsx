@@ -18,7 +18,7 @@ const DASHBOARDS = [
     },
     {
         name: 'Country Readiness',
-        description: '57 countries • Market modes • Transition status',
+        description: '120 countries • Market modes • Transition status',
         href: '/admin/dashboards/country-readiness',
         icon: '🌍',
         color: '#3B82F6',

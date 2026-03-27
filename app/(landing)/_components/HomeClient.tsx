@@ -74,7 +74,7 @@ const FEATURES = [
         color: "#ef4444", hcIcon: true,
     },
     {
-        icon: HcIconDirectory, title: "57-Country Expansion",
+        icon: HcIconDirectory, title: "120-Country Expansion",
         desc: "Heavy haul doesn't stop at borders. Same intelligence engine, localized compliance, global reach.",
         color: "#F1A91B", hcIcon: true,
     },
@@ -103,7 +103,7 @@ const HOW_IT_WORKS = [
 // ===== FREE TOOLS =====
 const FREE_TOOLS = [
     { href: '/tools/escort-calculator', IconCmp: HcIconRoutePlanner, title: 'Do I Need an Escort?', desc: 'Enter load + route, get exact escort counts for every state.', color: '#F1A91B', cta: 'Check Now' },
-    { href: '/escort-requirements', IconCmp: HcIconPermitServices, title: 'Escort Requirements', desc: '57 countries, 67+ jurisdictions. All escort rules in one place.', color: '#22c55e', cta: 'Look Up' },
+    { href: '/escort-requirements', IconCmp: HcIconPermitServices, title: 'Escort Requirements', desc: '120 countries, 67+ jurisdictions. All escort rules in one place.', color: '#22c55e', cta: 'Look Up' },
     { href: '/tools/compliance-card', IconCmp: HcIconLegalCompliance, title: 'Compliance Card', desc: 'Free one-page PDF with every threshold for your state.', color: '#3b82f6', cta: 'Download' },
     { href: '/tools/regulation-alerts', IconCmp: HcIconUrgentServices, title: 'Regulation Alerts', desc: 'Get notified when escort rules change. Never get fined.', color: '#ef4444', cta: 'Subscribe' },
 ];
@@ -192,7 +192,7 @@ export default function HomeClient({
             {/* 1. MARKET TERMINAL RIBBON */}
             <MarketTerminalRibbon />
 
-            {/* 2. EXPANSION STATUS — All 57 countries */}
+            {/* 2. EXPANSION STATUS — All 120 countries */}
             <section className="relative z-10 py-4 sm:py-6">
                 <div className="hc-container max-w-5xl">
                     <div className="rounded-2xl border border-white/[0.06] overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)' }}>

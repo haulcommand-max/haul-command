@@ -62,7 +62,7 @@ export default async function RatesPage() {
           Pilot Car & Escort Vehicle Rates \u2014 2026
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          Current day rates across 57 countries. Data sourced from Haul Command\u2019s global heavy haul intelligence network.
+          Current day rates across 120 countries. Data sourced from Haul Command\u2019s global heavy haul intelligence network.
         </p>
       </section>
 

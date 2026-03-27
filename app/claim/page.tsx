@@ -10,7 +10,7 @@ const STEPS = [
   {
     step: 1,
     title: 'Find Your Listing',
-    desc: 'Search our directory of 7,745+ operator listings across 57 countries. Your company may already be listed.',
+    desc: 'Search our directory of 1.5M+ operator listings across 120 countries. Your company may already be listed.',
     icon: '\ud83d\udd0d',
   },
   {
@@ -51,7 +51,7 @@ const BENEFITS = [
   { title: 'Escrow Protection', desc: 'Every payment goes through escrow. Get paid when the job is done, guaranteed.', icon: '\ud83d\udd12' },
   { title: 'Real-Time Alerts', desc: 'Get instant notifications when new loads are posted on your corridors.', icon: '\ud83d\udd14' },
   { title: 'Analytics Dashboard', desc: 'Track your response time, acceptance rate, and earnings over time.', icon: '\ud83d\udcca' },
-  { title: '57 Country Network', desc: 'Access the global heavy haul network spanning 57 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
+  { title: '57 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
 ];
 
 export default function ClaimPage() {
@@ -110,7 +110,7 @@ export default function ClaimPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <div className="grid grid-cols-3 gap-6">
           <div>
-            <p className="text-3xl font-bold text-amber-400">7,745+</p>
+            <p className="text-3xl font-bold text-amber-400">1.5M+</p>
             <p className="text-sm text-gray-500">Listings to claim</p>
           </div>
           <div>

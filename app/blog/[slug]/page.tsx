@@ -132,7 +132,7 @@ export default async function BlogArticlePage({ params }: Props) {
         <div className="mt-16 p-6 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
           <h3 className="text-xl font-bold mb-2">Ready to find escort operators?</h3>
           <p className="text-gray-400 text-sm mb-4">
-            Search 7,745+ verified operators across 57 countries. Post your load in 90 seconds.
+            Search 1.5M+ verified operators across 120 countries. Post your load in 90 seconds.
           </p>
           <div className="flex gap-3">
             <Link

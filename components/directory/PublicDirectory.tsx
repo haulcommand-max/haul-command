@@ -490,7 +490,7 @@ export function PublicDirectory() {
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
               <Globe size={12} style={{ color: T.blue }} />
-              <span style={{ fontWeight: 700, color: T.blue }}>48 states + {COUNTRIES.length} countries</span>
+              <span style={{ fontWeight: 700, color: T.blue }}>120 countries</span>
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
@@ -511,7 +511,7 @@ export function PublicDirectory() {
               Find a Pilot Car Near Your Route
             </h1>
             <p style={{ fontSize: 13, color: T.textSecondary, margin: '0 0 24px' }}>
-              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators
+              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators across 120 countries
             </p>
 
             {/* Search + State + Filters */}

@@ -1,7 +1,7 @@
 /**
  * EscortSupplyRadar — GLOBAL Map overlay for real-time escort availability.
  *
- * UPGRADED: Now covers all 57 countries (was US-only with 8 static zones).
+ * UPGRADED: Now covers all 120 countries (was US-only with 8 static zones).
  * 
  * Renders as an overlay panel with escort density zones, shortage pulses,
  * and corridor thickness across all tiers.

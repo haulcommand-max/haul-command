@@ -280,7 +280,7 @@ export async function extractThenEnrich(
 export async function analyzeCompliance(question: string, context: string) {
   return think(`${question}\n\nRegulation context:\n${context}`, {
     tier: 'fast',
-    system: 'You are a DOT compliance expert specializing in oversize/overweight permits for 57 countries. Be precise, cite specific regulations.',
+    system: 'You are a DOT compliance expert specializing in oversize/overweight permits for 120 countries. Be precise, cite specific regulations.',
   });
 }
 

@@ -310,7 +310,7 @@ export function WorldMapView() {
             Global Coverage
           </span>
         </div>
-        <div style={{ fontSize: 22, fontWeight: 900, color: T.text }}>57 Countries</div>
+        <div style={{ fontSize: 22, fontWeight: 900, color: T.text }}>120 countries</div>
       </div>
 
       {/* Country count badge */}

@@ -3,7 +3,7 @@
 /**
  * ADMIN COUNTRY READINESS DASHBOARD
  *
- * Shows all 57 countries with their:
+ * Shows all 120 countries with their:
  * - Market mode (live/seed/dormant)
  * - Operator count
  * - CDS band
@@ -101,7 +101,7 @@ export default function CountryReadinessDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Country Readiness</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 57 countries • Market modes • Transition status</p>
+                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 120 countries • Market modes • Transition status</p>
                 </div>
             </div>
 

@@ -63,7 +63,7 @@ export default function AdminPage() {
         {/* Quick stats strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {[
-            { label: 'Directory Listings', value: '7,745', sub: 'across 57 countries' },
+            { label: 'Directory Listings', value: '1.5M+', sub: 'across 120 countries' },
             { label: 'AI Cost Dashboard', value: '👁️', href: '/admin/ai-costs', sub: 'Monitor 3-brain spend' },
             { label: 'Batch Jobs', value: '🚀', href: '/admin/batch-jobs', sub: '$1.76 total to fill all' },
             { label: 'Route Check Tool', value: '✔', href: '/route-check', sub: 'SEO inbound trap' },

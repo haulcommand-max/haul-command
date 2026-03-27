@@ -358,7 +358,7 @@ export default function LeadParserPage() {
         <div style={{ background: '#151820', border: '1px solid #252c3f', borderLeft: '3px solid #f5a623', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid #252c3f', fontFamily: "'Barlow Condensed', sans-serif", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase', color: '#64748b' }}>
             <span>Raw Load Board Text</span>
-            <span style={{ fontSize: 10, color: '#64748b' }}>Load alerts, structured listings, mixed formats — all 57 countries</span>
+            <span style={{ fontSize: 10, color: '#64748b' }}>Load alerts, structured listings, mixed formats — all 120 countries</span>
           </div>
           <textarea
             value={rawInput}
@@ -559,7 +559,7 @@ export default function LeadParserPage() {
                 { title: '📊 Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99–299/mo per subscriber' },
                 { title: '⚡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
                 { title: '🚗 Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
-                { title: '🌍 Global Expansion', desc: 'Same pipeline for 57 countries. Each market = new network.', value: '57 countries, same system' },
+                { title: '🌍 Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: '120 countries, same system' },
               ].map((c, i) => (
                 <div key={i} style={{ background: '#1c2030', padding: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', color: '#e2e8f0' }}>{c.title}</div>

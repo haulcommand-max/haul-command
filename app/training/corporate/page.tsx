@@ -120,7 +120,7 @@ export default function CorporateTrainingPage() {
           {[
             { val: '$5K–$25K', label: 'Per cohort' },
             { val: '7 Modules', label: 'Full curriculum' },
-            { val: '57 Countries', label: 'Global recognition' },
+            { val: '120 countries', label: 'Global recognition' },
             { val: '24h', label: 'Response time' },
           ].map((s, i) => (
             <div key={i} style={{ textAlign: 'center' }}>

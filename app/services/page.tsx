@@ -6,8 +6,8 @@ const SERVICES = [
   {
     slug: 'pilot-car',
     title: 'Pilot Car Services',
-    description: 'Certified pilot car operators for oversize and overweight loads across 57 countries.',
-    longDescription: 'Pilot car (also called escort car or lead vehicle) services are essential for any oversize, overweight, or wide load transport. Our network of verified pilot car operators provides professional lead and follow escort services across every major corridor in all 57 countries we serve.',
+    description: 'Certified pilot car operators for oversize and overweight loads across 120 countries.',
+    longDescription: 'Pilot car (also called escort car or lead vehicle) services are essential for any oversize, overweight, or wide load transport. Our network of verified pilot car operators provides professional lead and follow escort services across every major corridor in all 120 countries we serve.',
     features: ['Lead vehicle escort', 'Follow vehicle escort', 'Route surveying', 'Height pole operation', 'Communication relay'],
     icon: '\ud83d\ude97',
   },
@@ -54,8 +54,8 @@ const SERVICES = [
 ];
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Escort Services \u2014 57 Countries | Haul Command',
-  description: 'Professional pilot car, wide load, heavy haul, wind energy, and route survey escort services across 57 countries. Find verified operators now.',
+  title: 'Heavy Haul Escort Services \u2014 120 countries | Haul Command',
+  description: 'Professional pilot car, wide load, heavy haul, wind energy, and route survey escort services across 120 countries. Find verified operators now.',
 };
 
 export default function ServicesPage() {
@@ -63,7 +63,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <section className="py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-          Professional Escort Services \u2014 57 Countries
+          Professional Escort Services \u2014 120 countries
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto">
           From pilot cars to autonomous vehicle escorts, find the right operator for every load type.

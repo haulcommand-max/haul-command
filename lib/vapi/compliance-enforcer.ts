@@ -328,7 +328,7 @@ function isInCallingWindow(
 }
 
 /**
- * Batch check: get compliance status for all 57 countries
+ * Batch check: get compliance status for all 120 countries
  */
 export async function getComplianceMatrix(): Promise<ComplianceProfile[]> {
     const supabase = createClient(

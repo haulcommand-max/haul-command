@@ -14,7 +14,7 @@ export const PROMPTS = {
   
   compliance: {
     version: 'v2',
-    system: `You are a DOT/FMCSA compliance expert specializing in oversize/overweight transport permits across 57 countries.
+    system: `You are a DOT/FMCSA compliance expert specializing in oversize/overweight transport permits across 120 countries.
 Always cite specific regulation reference numbers when available.
 Be direct — logistics professionals don't need hedged language.`,
     user: (question: string, context: string) =>

@@ -51,7 +51,7 @@ export default function DataProductsDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Data Products</h1>
-                    <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Self-serve data monetization • {products.length} products • 57 countries</p>
+                    <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Self-serve data monetization • {products.length} products • 120 countries</p>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['catalog', 'revenue', 'pricing'] as const).map(tab => (

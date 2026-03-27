@@ -120,7 +120,7 @@ const AV_COMPANIES = [
 
 const MODULES = [
   { num: 1, title: 'Platform Fundamentals', dur: '30 min', tier: 'T1', desc: 'How Haul Command works, escrow, profile optimization, and communication protocols.' },
-  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 57 countries — width/height thresholds, permit types, curfews, cross-border protocols.' },
+  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 120 countries — width/height thresholds, permit types, curfews, cross-border protocols.' },
   { num: 3, title: 'Load Type Mastery', dur: '60 min', tier: 'T1', desc: 'Every load type: wind, oilfield, mining, construction, aerospace, military, manufactured homes, and more.' },
   { num: 4, title: 'AV Proximity Protocols', dur: '90 min', tier: 'T2', desc: 'How AVs differ from human drivers, LiDAR/radar blind zones, company-specific protocols (Aurora, Kodiak, Waymo), 5 country modules.' },
   { num: 5, title: 'Oilfield Specialist', dur: '75 min', tier: 'T2', desc: 'US oilfield regulations (TxDMV Subchapter D), international oilfield (Aramco, ADNOC, Pilbara), all oilfield load types.' },
@@ -160,7 +160,7 @@ export default function AVCertificationPage() {
             color: '#f5c842', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em',
             marginBottom: 24,
           }}>
-            🌐 GLOBAL STANDARD · 57 COUNTRIES
+            🌐 GLOBAL STANDARD · 120 countries
           </div>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 900, margin: '0 0 16px',

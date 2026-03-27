@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers';
 
 /**
- * Global locale system — All 57 countries.
+ * Global locale system — All 120 countries.
  *
  * Detection chain:
  *   1. Cookie (user explicitly chose via language switcher)
@@ -32,7 +32,7 @@ const LOCALE_HEADER = 'x-hc-locale';
 const COUNTRY_HEADER = 'x-hc-country';
 const DIR_HEADER = 'x-hc-dir';
 
-/** Default locale per country code — all 57 countries */
+/** Default locale per country code — all 120 countries */
 export const COUNTRY_DEFAULT_LOCALE: Record<string, SupportedLocale> = {
     US: 'en-US', CA: 'en-CA', AU: 'en-AU', GB: 'en-GB', NZ: 'en-NZ',
     ZA: 'en-ZA', DE: 'de-DE', NL: 'nl-NL', AE: 'ar-AE', BR: 'pt-BR',
@@ -104,7 +104,7 @@ export function isValidLocale(v: string): v is SupportedLocale {
     return v in LOCALE_LABELS;
 }
 
-/** Locale display names for toggles — all 57 countries. */
+/** Locale display names for toggles — all 120 countries. */
 export const LOCALE_LABELS: Record<SupportedLocale, string> = {
     'en-US': 'English (US)', 'en-CA': 'English (CA)', 'fr-CA': 'Français (CA)',
     'en-AU': 'English (AU)', 'en-GB': 'English (UK)', 'en-NZ': 'English (NZ)',

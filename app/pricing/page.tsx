@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Pricing — Haul Command | Plans for Operators & Brokers',
-  description: 'Choose your plan on Haul Command. Free directory listing for operators, Pro for priority ranking, and Broker seats for unlimited load posting. Escrow-protected payments across 57 countries.',
+  description: 'Choose your plan on Haul Command. Free directory listing for operators, Pro for priority ranking, and Broker seats for unlimited load posting. Escrow-protected payments across 120 countries.',
 };
 
 const PLANS = [
@@ -97,7 +97,7 @@ const FAQ = [
   { q: 'How does escrow work?', a: 'When a broker accepts an operator for a load, the payment is held in escrow by Stripe. Once the job is confirmed complete, funds are released to the operator. Haul Command takes a 5% platform fee.' },
   { q: 'Can I upgrade or downgrade at any time?', a: 'Yes. You can change your plan at any time. Upgrades are prorated, and downgrades take effect at the end of your billing cycle.' },
   { q: 'What is a corridor?', a: 'A corridor is a common transport route between two locations. For example, I-10 Houston to Beaumont or the M1 London to Leeds.' },
-  { q: 'Do you operate internationally?', a: 'Yes! Haul Command operates across 57 countries worldwide including the US, Canada, Australia, UK, Germany, UAE, Brazil, and more.' },
+  { q: 'Do you operate internationally?', a: 'Yes! Haul Command operates across 120 countries worldwide including the US, Canada, Australia, UK, Germany, UAE, Brazil, and more.' },
   { q: 'What is Standing Orders?', a: 'Standing Orders allow brokers to automatically book recurring escort services on the same corridor. The system auto-creates escrow, auto-dispatches to matched operators, and auto-captures the fee.' },
   { q: 'How does the Verified badge work?', a: 'Pro operators receive a verified badge after confirming their phone number and identity. Elite operators get an enhanced badge after additional background and insurance verification.' },
   { q: 'What is Emergency Fill Blast?', a: 'When you urgently need an escort, Emergency Fill Blast sends your load to ALL available operators on the corridor simultaneously. First to accept wins the job.' },
@@ -166,7 +166,7 @@ export default function PricingPage() {
         <div className="flex flex-wrap justify-center gap-6 mt-12 text-sm text-gray-500">
           <span className="flex items-center gap-1">\ud83d\udd12 Escrow Protected</span>
           <span className="flex items-center gap-1">\u2713 Verified Operators</span>
-          <span className="flex items-center gap-1">\ud83c\udf0d 57 Countries</span>
+          <span className="flex items-center gap-1">\ud83c\udf0d 120 countries</span>
           <span className="flex items-center gap-1">\ud83d\udcb3 No card required to start</span>
         </div>
       </section>
@@ -208,7 +208,7 @@ export default function PricingPage() {
       {/* Bottom CTA */}
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
-        <p className="text-gray-400 mb-8">Join 7,745+ operators across 57 countries.</p>
+        <p className="text-gray-400 mb-8">Join 1.5M+ operators across 120 countries.</p>
         <Link
           href="/auth/register"
           className="px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"

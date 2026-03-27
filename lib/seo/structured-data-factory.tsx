@@ -11,7 +11,7 @@
  *   - BreadcrumbList (navigation)
  *   - WebSite + SearchAction (sitelinks search box)
  * 
- * Coverage: All 57 countries, all major search engines + AI systems
+ * Coverage: All 120 countries, all major search engines + AI systems
  * ═══════════════════════════════════════════════════════════════
  */
 

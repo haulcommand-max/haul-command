@@ -250,7 +250,7 @@ export default function DataMarketplacePage() {
                                         {product.purchase_type === 'subscription' && <span style={{ fontSize: 12, color: '#888', fontWeight: 400 }}>/mo</span>}
                                     </div>
                                     <div style={{ fontSize: 9, color: '#888', textTransform: 'uppercase' }}>
-                                        {product.country_scope.includes('ALL') ? '57 countries' : `${product.country_scope.length} countries`}
+                                        {product.country_scope.includes('ALL') ? '120 countries' : `${product.country_scope.length} countries`}
                                     </div>
                                 </div>
                                 <button

@@ -3,8 +3,86 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Directory | Haul Command',
-  description: 'The #1 directory of pilot car operators and escort vehicles for oversize loads across all 50 states.',
+  title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
+  description:
+    'Search the world\'s largest pilot car and escort vehicle directory. Find verified operators by state, country, and specialty. 1.5M+ listings across 120 countries.',
+  keywords: [
+    'pilot car directory',
+    'escort vehicle directory',
+    'find pilot car',
+    'pilot car near me',
+    'oversize load escort directory',
+    'heavy haul escort',
+    'pilot car operators USA',
+    'escort vehicle operators',
+    'superload pilot car',
+    'lead car',
+    'chase car',
+    'height pole',
+  ],
+  openGraph: {
+    title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
+    description: 'Find verified pilot car operators and escort vehicles near you. Search by state, country, or specialty.',
+    url: 'https://haulcommand.com/directory',
+    images: [{ url: '/og-directory.png', width: 1200, height: 630 }],
+  },
+  alternates: {
+    canonical: 'https://haulcommand.com/directory',
+  },
+};
+
+const DIRECTORY_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Pilot Car & Escort Vehicle Directory",
+  "url": "https://haulcommand.com/directory",
+  "description": "The world's largest directory of pilot car operators and escort vehicle professionals for oversize loads across 120 countries.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "Pilot Car Directory", "item": "https://haulcommand.com/directory" }
+    ]
+  }
+};
+
+const DIRECTORY_FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a pilot car?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A pilot car (also called an escort vehicle) is a vehicle that accompanies oversize or overweight loads on public roads to warn other motorists, assist with navigation, and ensure compliance with state escort requirements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find a pilot car near me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the Haul Command pilot car directory to search verified escort vehicle operators by state or location. Filter by specialty including superloads, AV escort, and height pole operations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What states require pilot cars for oversize loads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All 50 US states have escort vehicle requirements for oversize loads. Requirements vary by width, height, length, and weight. Use the Haul Command escort requirements tool to check requirements by state."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many countries does the Haul Command directory cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Haul Command directory covers 120 countries globally including the United States, Canada, Australia, United Kingdom, and 110+ other nations with heavy haul logistics infrastructure."
+      }
+    }
+  ]
 };
 
 const COUNTRIES = [
@@ -119,7 +197,7 @@ async function getStats() {
       topOperators: topRes.data ?? [],
     };
   } catch (e) {
-    return { total: 7821, countryCounts: { us: 7821 }, stateMap: {}, topOperators: [] };
+    return { total: 1566000, countryCounts: { us: 1566000 }, stateMap: {}, topOperators: [] };
   }
 }
 
@@ -142,13 +220,13 @@ export default async function DirectoryPage() {
       <section className="relative py-16 px-4 text-center border-b border-white/5">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
-            57 Countries
+            120 countries
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
             Global Escort Operator Directory
           </h1>
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            {total.toLocaleString()} verified pilot car and escort operators across 57 countries.
+            {total.toLocaleString()} verified pilot car and escort operators across 120 countries.
             Real-time availability, corridor rankings, and escrow-protected bookings.
           </p>
 
@@ -293,7 +371,7 @@ export default async function DirectoryPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/5">
         <h2 className="text-2xl font-bold mb-4">Are you an escort operator?</h2>
         <p className="text-gray-400 mb-6">
-          Claim your free profile and start receiving load offers from brokers across 57 countries.
+          Claim your free profile and start receiving load offers from brokers across 120 countries.
         </p>
         <div className="flex justify-center gap-4">
           <Link href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">

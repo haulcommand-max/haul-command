@@ -18,7 +18,7 @@ export default function TermsPage() {
                     <p>By accessing or using HAUL COMMAND (&quot;the Platform&quot;), you agree to be bound by these Terms of Service. The Platform is operated by HAUL COMMAND LLC. If you do not agree to these terms, do not use the Platform.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>2. Description of Service</h2>
-                    <p>HAUL COMMAND is a digital marketplace connecting oversize load brokers with certified escort vehicle operators (pilot cars) across 57 countries. Services include directory listings, load matching, AI-powered dispatch, route surveys, compliance verification, and payment processing.</p>
+                    <p>HAUL COMMAND is a digital marketplace connecting oversize load brokers with certified escort vehicle operators (pilot cars) across 120 countries. Services include directory listings, load matching, AI-powered dispatch, route surveys, compliance verification, and payment processing.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>3. User Accounts</h2>
                     <p>You must provide accurate, complete information when creating an account. You are responsible for maintaining the confidentiality of your credentials. You must be at least 18 years old to use the Platform. HAUL COMMAND reserves the right to suspend or terminate accounts that violate these terms.</p>

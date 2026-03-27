@@ -123,7 +123,7 @@ export default function AvailabilityPage() {
                     >
                         {[
                             { icon: Navigation, label: "191 Corridors", color: "text-emerald-400" },
-                            { icon: Shield, label: "57 Countries", color: "text-cyan-400" },
+                            { icon: Shield, label: "120 countries", color: "text-cyan-400" },
                             { icon: TrendingUp, label: "Instant Matching", color: "text-violet-400" },
                         ].map((stat) => (
                             <div key={stat.label} className="flex items-center gap-2">

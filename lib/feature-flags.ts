@@ -3,7 +3,7 @@
 // Central registry for all non-core integrations.
 // Every external service lives behind a flag.
 // Core services (Supabase, Firebase, Vercel, GitHub) are always on.
-// Global-by-default: flags apply to all 57 countries unless overridden.
+// Global-by-default: flags apply to all 120 countries unless overridden.
 // ============================================================
 
 export type FeatureFlagKey =

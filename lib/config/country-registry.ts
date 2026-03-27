@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════════════
 // TIER-AWARE MASTER COUNTRY REGISTRY
 // The single source of truth. Every module pulls from here.
-// All 57 countries × tier rules × localization × payments ×
+// All 120 countries × tier rules × localization × payments ×
 // comms × answer quotas × pricing
 // ══════════════════════════════════════════════════════════════
 
@@ -83,7 +83,7 @@ export interface CountryConfig {
 }
 
 // ══════════════════════════════════════════════════════════════
-// ALL 57 COUNTRIES — COMPLETE REGISTRY
+// ALL 120 countries — COMPLETE REGISTRY
 // ══════════════════════════════════════════════════════════════
 
 export const COUNTRY_REGISTRY: CountryConfig[] = [

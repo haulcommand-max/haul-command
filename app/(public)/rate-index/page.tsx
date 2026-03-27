@@ -3,7 +3,7 @@ import RateIndexPageClient from './RateIndexPageClient';
 
 export const metadata: Metadata = {
     title: 'Escort Rate Index — Live Oversize Escort Pricing by Corridor | Haul Command',
-    description: 'Free, live escort pricing intelligence for oversize and heavy haul corridors across 57 countries. See average pilot car rates per mile, corridor trends, and demand signals. Updated daily.',
+    description: 'Free, live escort pricing intelligence for oversize and heavy haul corridors across 120 countries. See average pilot car rates per mile, corridor trends, and demand signals. Updated daily.',
     keywords: ['escort rate index', 'pilot car rates', 'oversize escort pricing', 'heavy haul rates', 'corridor pricing', 'load board rates'],
     openGraph: {
         title: 'Escort Rate Index — Live Corridor Pricing | Haul Command',

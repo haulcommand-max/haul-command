@@ -81,7 +81,7 @@ export function GlobalTiersSection() {
     <section className="py-24 px-4 relative z-10 w-full">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">57 Countries Supported</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">120 countries Supported</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Our route intelligence engine processes complex compliance logic across our tiered global network.
           </p>

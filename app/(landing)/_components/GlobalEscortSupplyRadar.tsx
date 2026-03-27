@@ -160,7 +160,7 @@ const CORRIDOR_LINES: CorridorLine[] = [
 
 // ── Static country seed: all 56 non-US markets always rendered ──
 // Live DB data overrides wave/escortCount when available.
-// This ensures all 57 countries show on the radar even if the DB only has US data.
+// This ensures all 120 countries show on the radar even if the DB only has US data.
 const STATIC_COUNTRY_SEED: Omit<CountryNode, 'cx' | 'cy'>[] = [
     { iso2: 'CA', name: 'Canada',          wave: 2 },
     { iso2: 'AU', name: 'Australia',       wave: 2 },

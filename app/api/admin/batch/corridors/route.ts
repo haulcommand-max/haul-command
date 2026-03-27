@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ type, processed: results.length, results });
   }
 
-  // ── TYPE: regulation summaries (57 countries) ──────────────────
+  // ── TYPE: regulation summaries (120 countries) ──────────────────
   if (type === 'regulations') {
     const { data: jurisdictions } = await supabase
       .from('jurisdictions')

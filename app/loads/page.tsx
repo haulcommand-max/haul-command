@@ -81,7 +81,7 @@ export default async function LoadBoardPage() {
       <section className="py-16 px-4 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Heavy Haul Load Board — Open Escort Jobs Across 57 Countries
+            Heavy Haul Load Board — Open Escort Jobs Across 120 countries
           </h1>
           <p className="text-lg text-gray-400 mb-8">
             Find pilot car and escort vehicle opportunities. Respond to loads, accept offers, and get paid through escrow.
@@ -177,7 +177,7 @@ export default async function LoadBoardPage() {
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
           <p className="text-gray-400 mb-4">
-            Looking to post a load? Reach verified operators across 57 countries.
+            Looking to post a load? Reach verified operators across 120 countries.
           </p>
           <div className="flex justify-center gap-4">
             <Link

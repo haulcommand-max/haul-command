@@ -112,22 +112,20 @@ export const metadata: Metadata = {
         siteName: 'Haul Command',
         title: 'Haul Command — Real-Time Escort Intelligence for Heavy Haul',
         description: 'Find verified pilot cars & escort vehicles. Post loads. Get matched in minutes. The #1 oversize load operating system.',
-        images: [{ url: '/brand/generated/og-1200x630.png', width: 1200, height: 630, alt: 'Haul Command' }],
+        images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Haul Command' }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Haul Command — Real-Time Escort Intelligence for Heavy Haul',
         description: 'Find verified pilot cars & escort vehicles. Post loads. Get matched in minutes.',
-        images: ['/brand/generated/og-1200x630.png'],
+        images: ['/og-image.png'],
     },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     icons: {
         icon: [
-            { url: '/brand/generated/favicon-32.png', sizes: '32x32', type: 'image/png' },
-            { url: '/brand/generated/pwa-icon-192.png', sizes: '192x192', type: 'image/png' },
+            { url: '/icon.png', sizes: 'any', type: 'image/png' },
         ],
-        shortcut: '/brand/generated/favicon-48.png',
-        apple: '/apple-touch-icon.png',
+        apple: '/apple-icon.png',
     },
     manifest: '/manifest.json',
 };
@@ -155,7 +153,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "name": "Haul Command",
                         "url": "https://haulcommand.com",
                         "logo": "https://haulcommand.com/logo.png",
-                        "description": "The operating system for heavy haul — the world's largest directory of pilot car operators, escort vehicles, and oversize load transport professionals across 57 countries.",
+                        "description": "The operating system for heavy haul — the world's largest directory of pilot car operators, escort vehicles, and oversize load transport professionals across 120 countries.",
                         "sameAs": [
                             "https://x.com/haulcommand",
                             "https://linkedin.com/company/haulcommand",
@@ -170,7 +168,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         },
                         "areaServed": {
                             "@type": "GeoShape",
-                            "description": "57 countries worldwide"
+                            "description": "120 countries worldwide"
                         },
                         "foundingDate": "2024",
                         "knowsAbout": [

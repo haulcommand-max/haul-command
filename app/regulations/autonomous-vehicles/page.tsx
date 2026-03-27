@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Autonomous Vehicle Escort Requirements — Global Guide | Haul Command',
   description:
-    'The only global resource tracking how autonomous vehicle deployments intersect with escort and oversize load regulations in 57 countries. Updated as laws change. Free.',
+    'The only global resource tracking how autonomous vehicle deployments intersect with escort and oversize load regulations in 120 countries. Updated as laws change. Free.',
   keywords: [
     'autonomous vehicle escort requirements',
     'do autonomous trucks need pilot cars',
@@ -95,7 +95,7 @@ export default function AVRegulationsPage() {
           background: 'rgba(0,204,255,0.1)', border: '1px solid rgba(0,204,255,0.25)',
           color: '#00ccff', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24,
         }}>
-          🌐 57 COUNTRIES · UPDATED MARCH 2026
+          🌐 120 countries · UPDATED MARCH 2026
         </div>
         <h1 style={{
           fontSize: 'clamp(26px, 4vw, 48px)', fontWeight: 900, margin: '0 0 16px',
@@ -155,7 +155,7 @@ export default function AVRegulationsPage() {
       <div style={{ maxWidth: 920, margin: '0 auto', padding: '64px 24px' }}>
         <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Country-by-Country AV Regulations</h2>
         <p style={{ color: '#8fa3c0', marginBottom: 40, fontSize: 15 }}>
-          Click any country for escort-specific AV guidance. All 57 countries →{' '}
+          Click any country for escort-specific AV guidance. All 120 countries →{' '}
           <Link href="/regulations" style={{ color: '#00ccff' }}>full regulation database</Link>
         </p>
 

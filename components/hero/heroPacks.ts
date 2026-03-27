@@ -93,7 +93,7 @@ export const FALLBACK_PACK: HeroPack = {
     country: "ZZ",
     title: "Heavy Haul Escort Intelligence — Worldwide",
     subtitle:
-        "Country-ready escort matching, compliance routing, and verified operator coverage across 57 countries.",
+        "Country-ready escort matching, compliance routing, and verified operator coverage across 120 countries.",
     ctaLabel: "Explore Directory",
     ctaHref: "/directory",
     posterBase: "/hero/_fallback/fallback-poster",
