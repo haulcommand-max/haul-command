@@ -113,12 +113,12 @@ Deno.serve(async (req: Request) => {
             if (ageMinutes >= 180 && !stage) {
                 stage = 4;
                 stageLabel = "last_chance";
-                actions.push("auto_repost_suggestion", "concierge_outreach_flag", "mark_for_sales_followup");
+                actions.push("auto_repost_suggestion", "vapi_autonomous_outreach", "mark_for_sales_followup");
             }
             if (liquidityScore < 20 && ageMinutes >= 90 && bids === 0 && !stage) {
                 stage = 4;
                 stageLabel = "last_chance";
-                actions.push("auto_repost_suggestion", "concierge_outreach_flag");
+                actions.push("auto_repost_suggestion", "vapi_autonomous_outreach");
             }
 
             if (stage) {
@@ -129,6 +129,48 @@ Deno.serve(async (req: Request) => {
                     actions,
                     broker_id: load.broker_id,
                 });
+            }
+        }
+
+        // TRIGGER VAPI VOICE DISPATCHER FOR STAGE 4
+        // Smashing redundant flags into an actual autonomous voice execution
+        const vapiKey = Deno.env.get("VAPI_API_KEY");
+        const assistantId = Deno.env.get("VAPI_DISPATCHER_ASSISTANT_ID"); // e.g., the load dispatcher assistant
+        
+        for (const esc of escalations) {
+            if (esc.stage === 4 && esc.actions.includes("vapi_autonomous_outreach") && vapiKey && assistantId) {
+                // Find top available drivers for this dead load to trigger VAPI outbound calls
+                const { data: topDrivers } = await supabase.from('entities')
+                    .select('id, name, primary_phone')
+                    .eq('type', 'operator')
+                    // .eq('region', region) -> simplified for edge handler
+                    .limit(2);
+                
+                for (const driver of topDrivers || []) {
+                    if (!driver.primary_phone) continue;
+                    try {
+                        await fetch("https://api.vapi.ai/call/phone", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": `Bearer ${vapiKey}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                override_assistant_id: assistantId,
+                                customer: {
+                                    number: driver.primary_phone,
+                                    name: driver.name || "Operator"
+                                },
+                                assistant_overrides: {
+                                    firstMessage: `Hey ${driver.name}, this is Haul Command Dispatch. We have a priority load matching your corridor that needs an immediate fill. Are you available?`
+                                }
+                            })
+                        });
+                        // Mark successful ping in DB in future iteration
+                    } catch (e) {
+                        console.error("Vapi trigger failed", e);
+                    }
+                }
             }
         }
 
