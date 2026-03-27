@@ -44,9 +44,9 @@ export default async function RatesCountryPage({ params }: Props) {
       />
       {!range && <HCAlertSignupModule context={`${cc.name} rate data`} />}
       <section className="mt-8 flex flex-wrap gap-2">
-        <Link href={`/requirements/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Requirements →</Link>
-        <Link href={`/directory/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Directory →</Link>
-        <Link href="/rates" className="text-xs text-gray-500 hover:text-accent">All Rates →</Link>
+        <Link href={`/requirements/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Requirements &rarr;</Link>
+        <Link href={`/directory/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Directory &rarr;</Link>
+        <Link href="/rates" className="text-xs text-gray-500 hover:text-accent">All Rates &rarr;</Link>
       </section>
     </main>
   );

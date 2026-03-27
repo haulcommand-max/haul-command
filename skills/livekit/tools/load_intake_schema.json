@@ -1,0 +1,97 @@
+{
+  "name": "load_intake",
+  "description": "Captures load posting information from a voice call. Used by the LiveKit agent when a shipper or broker calls to post a load.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "shipper_name": {
+        "type": "string",
+        "description": "Name of the shipper or broker"
+      },
+      "shipper_company": {
+        "type": "string",
+        "description": "Company name"
+      },
+      "shipper_phone": {
+        "type": "string",
+        "description": "Contact phone in E.164 format"
+      },
+      "shipper_email": {
+        "type": "string",
+        "description": "Contact email"
+      },
+      "country_code": {
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+      },
+      "origin_city": {
+        "type": "string",
+        "description": "Origin city/location"
+      },
+      "origin_state": {
+        "type": "string",
+        "description": "Origin state/province/region"
+      },
+      "destination_city": {
+        "type": "string",
+        "description": "Destination city/location"
+      },
+      "destination_state": {
+        "type": "string",
+        "description": "Destination state/province/region"
+      },
+      "load_dimensions": {
+        "type": "object",
+        "properties": {
+          "height_ft": { "type": "number" },
+          "width_ft": { "type": "number" },
+          "length_ft": { "type": "number" },
+          "weight_lbs": { "type": "number" },
+          "axle_count": { "type": "integer" }
+        },
+        "description": "Cargo dimensions and weight"
+      },
+      "load_type": {
+        "type": "string",
+        "description": "Type of cargo: wind turbine, transformer, prefab house, etc."
+      },
+      "escort_requirements": {
+        "type": "object",
+        "properties": {
+          "lead_cars": { "type": "integer" },
+          "chase_cars": { "type": "integer" },
+          "high_pole": { "type": "boolean" },
+          "police_escort": { "type": "boolean" }
+        },
+        "description": "Required escort configuration"
+      },
+      "pickup_date": {
+        "type": "string",
+        "description": "Requested pickup date (ISO 8601)"
+      },
+      "delivery_date": {
+        "type": "string",
+        "description": "Requested delivery date (ISO 8601)"
+      },
+      "budget_range": {
+        "type": "string",
+        "description": "Budget range if stated"
+      },
+      "permits_status": {
+        "type": "string",
+        "enum": ["have_permits", "need_permits", "unknown"],
+        "description": "Whether permits are already secured"
+      },
+      "special_requirements": {
+        "type": "string",
+        "description": "Any special requirements: night travel, curfews, bridge restrictions, etc."
+      },
+      "urgency": {
+        "type": "string",
+        "enum": ["standard", "rush", "emergency"],
+        "description": "How urgent is the load"
+      }
+    },
+    "required": ["shipper_name", "shipper_phone", "country_code", "origin_city", "destination_city", "load_type"]
+  }
+}

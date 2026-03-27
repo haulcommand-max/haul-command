@@ -98,7 +98,7 @@ export default async function EquipmentCountryPage({
     },
     {
       question: `How much does ${equip.label.toLowerCase()} escort cost in ${country.name}?`,
-      answer: `${equip.label} escort rates in ${country.name} range from ${country.currency} ${country.units === 'imperial' ? '1.75–4.00 per mile' : '1.50–3.50 per km'} depending on load configuration, number of escorts required, and route complexity. Multi-day moves include layover charges. Get exact quotes from verified operators on Haul Command.`,
+      answer: `${equip.label} escort rates in ${country.name} range from ${country.currency} ${country.units === 'imperial' ? '1.75\u20134.00 per mile' : '1.50\u20133.50 per km'} depending on load configuration, number of escorts required, and route complexity. Multi-day moves include layover charges. Get exact quotes from verified operators on Haul Command.`,
     },
     {
       question: `Which cities in ${country.name} handle the most ${equip.label.toLowerCase()} transport?`,
@@ -157,7 +157,7 @@ export default async function EquipmentCountryPage({
                 href={`/directory/${countrySlug}`}
                 className="inline-flex items-center justify-center px-8 py-4 bg-accent hover:bg-yellow-500 text-black font-black rounded-xl transition-all shadow-lg shadow-accent/20 text-sm"
               >
-                Find {equip.label} Escort Operators →
+                Find {equip.label} Escort Operators &rarr;
               </Link>
               <Link
                 href={`/requirements/${countrySlug}`}
@@ -213,7 +213,7 @@ export default async function EquipmentCountryPage({
                     className="group p-4 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-accent/[0.03] hover:border-accent/20 transition-all"
                   >
                     <span className="text-sm text-white group-hover:text-accent font-medium">{city}</span>
-                    <span className="block text-xs text-slate-500 mt-1">{equip.label} escort →</span>
+                    <span className="block text-xs text-slate-500 mt-1">{equip.label} escort &rarr;</span>
                   </Link>
                 );
               })}
@@ -236,7 +236,7 @@ export default async function EquipmentCountryPage({
                     className="group p-4 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-accent/[0.03] hover:border-accent/20 transition-all text-center"
                   >
                     <span className="text-sm text-white group-hover:text-accent font-medium capitalize">{eq.label}</span>
-                    <span className="block text-xs text-slate-500 mt-1">Transport escort →</span>
+                    <span className="block text-xs text-slate-500 mt-1">Transport escort &rarr;</span>
                   </Link>
                 ))}
               </div>
@@ -248,14 +248,14 @@ export default async function EquipmentCountryPage({
         <section className="py-16 border-t border-white/5">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <h2 className="text-2xl font-bold text-white mb-8">
-              FAQ — {equip.label} Transport in {country.name}
+              FAQ &mdash; {equip.label} Transport in {country.name}
             </h2>
             <div className="space-y-4">
               {faqs.map((faq, i) => (
                 <details key={i} className="group rounded-xl border border-white/5 bg-white/[0.02] overflow-hidden">
                   <summary className="cursor-pointer px-6 py-4 text-white font-medium hover:bg-white/[0.03] transition-colors flex items-center justify-between">
                     {faq.question}
-                    <span className="text-slate-500 group-open:rotate-180 transition-transform ml-4">▾</span>
+                    <span className="text-slate-500 group-open:rotate-180 transition-transform ml-4">&#9662;</span>
                   </summary>
                   <div className="px-6 pb-4 text-slate-300 leading-relaxed border-t border-white/5 pt-4">
                     {faq.answer}
@@ -277,7 +277,7 @@ export default async function EquipmentCountryPage({
               who know the equipment, the routes, and the regulations.
             </p>
             <Link href="/claim" className="bg-accent text-black px-8 py-4 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all shadow-[0_0_24px_rgba(245,159,10,0.3)]">
-              List Your {equip.label} Escort Company — Free
+              List Your {equip.label} Escort Company &mdash; Free
             </Link>
           </div>
         </section>
