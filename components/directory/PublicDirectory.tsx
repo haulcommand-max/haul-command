@@ -6,8 +6,9 @@ import {
   Search, MapPin, ShieldCheck, Star, Filter, X,
   ChevronDown, Users, ArrowRight, Clock, DollarSign,
   Zap, CheckCircle, Award, Truck, Globe, Shield,
-  TrendingUp, Bot, Phone,
+  TrendingUp, Bot, Phone, Navigation, AlertTriangle,
 } from 'lucide-react';
+import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command v2
@@ -72,16 +73,11 @@ const SEED_OPERATORS: Operator[] = [
 ];
 
 const SERVICE_LABELS: Record<string, string> = {
-  pilot_car: 'Pilot Car', height_pole: 'Height Pole', route_survey: 'Route Survey',
-  wide_load: 'Wide Load', oversize: 'Oversize', av_escort: 'AV Escort',
-  flagger: 'Flagger / Traffic Control', witpac: 'WITPAC / Interstate',
-  bucket_truck: 'Bucket Truck', permit_service: 'Permits',
-  traffic_control_supervisor: 'Traffic Control Supervisor', police_escort: 'Police Escort',
-  steer_car: 'Steer Car', freight_broker: 'Freight Broker',
-  mobile_mechanic: 'Mobile Mechanic', tow_truck: 'Heavy Towing',
-  truck_stop: 'Truck Stop', staging_yard: 'Staging Yard',
-  hazmat_response: 'HAZMAT Response', autonomous_fleet: 'Autonomous Fleet',
-  crane_service: 'Crane Service', heavy_haul_carrier: 'Heavy Haul',
+  lead_car: 'Lead Car', chase_car: 'Chase Car', pilot_car: 'Pilot Car',
+  height_pole: 'Height Pole', route_survey: 'Route Survey',
+  wide_load: 'Wide Load', oversize: 'OS/OW',
+  superload_cert: 'Superload Cert', av_escort: 'AV Escort',
+  night_escort: 'Night Moves', bucket_truck: 'Bucket Truck',
 };
 
 interface Operator {
@@ -479,22 +475,22 @@ export function PublicDirectory() {
 
       <div style={{ background: T.bg, minHeight: '100vh', color: T.text }}>
 
-        {/* ── Social Proof Bar ── */}
+        {/* ── Social Proof Bar — Industry-Native ── */}
         <div style={{ background: 'rgba(255,255,255,0.02)', borderBottom: `1px solid ${T.border}`, padding: '10px 0' }}>
           <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 20px', display: 'flex', flexWrap: 'wrap', gap: '10px 24px', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: T.muted }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, boxShadow: `0 0 6px ${T.green}` }} />
-              <span style={{ fontWeight: 700, color: T.text }}>7,335</span> verified operators
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, boxShadow: `0 0 6px ${T.green}`, animation: 'pulse-gold 2s infinite' }} />
+              <span style={{ fontWeight: 700, color: T.text }}>{total > 0 ? total.toLocaleString() : '—'}</span> escort vehicles staged
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
               <Clock size={12} style={{ color: T.gold }} />
-              Median fill <span style={{ fontWeight: 700, color: T.gold, margin: '0 2px' }}>47min</span>
+              Avg dispatch <span style={{ fontWeight: 700, color: T.gold, margin: '0 2px' }}>47 min</span>
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
               <Globe size={12} style={{ color: T.blue }} />
-              <span style={{ fontWeight: 700, color: T.blue }}>57 countries</span>
+              <span style={{ fontWeight: 700, color: T.blue }}>48 states + {COUNTRIES.length} countries</span>
             </div>
             <div style={{ width: 1, height: 14, background: T.border }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: T.muted }}>
@@ -510,12 +506,12 @@ export function PublicDirectory() {
           borderBottom: `1px solid ${T.border}`, padding: '36px 20px 28px',
         }}>
           <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-            <div style={{ fontSize: 10, fontWeight: 800, color: T.gold, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Operator Directory</div>
+            <div style={{ fontSize: 10, fontWeight: 800, color: T.gold, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Pilot Car Directory</div>
             <h1 style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 900, color: T.text, margin: '0 0 6px', lineHeight: 1.2 }}>
-              Find Escort Operators
+              Find a Pilot Car Near Your Route
             </h1>
             <p style={{ fontSize: 13, color: T.textSecondary, margin: '0 0 24px' }}>
-              Search verified operators by region, corridor, and service type across 57 countries
+              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators
             </p>
 
             {/* Search + State + Filters */}
@@ -526,7 +522,7 @@ export function PublicDirectory() {
                 borderRadius: 12, padding: '0 14px', height: 48,
               }}>
                 <Search size={15} style={{ color: T.muted, flexShrink: 0 }} />
-                <input type="text" placeholder="Search operators, corridors..."
+                <input type="text" placeholder="Search by city, state, corridor, or interstate..."
                   value={filters.search} onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
                   id="directory-search-input"
                   style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: T.text, caretColor: T.gold }}
@@ -544,19 +540,22 @@ export function PublicDirectory() {
                   borderRadius: 12, padding: '0 14px', height: 48, color: T.text,
                   fontSize: 12, fontWeight: 600, cursor: 'pointer', minWidth: 140,
                 }}>
-                <option value="rank">Corridor Rank</option>
-                <option value="response">Response Time</option>
+                <option value="rank">Route Rank</option>
+                <option value="response">Fastest Response</option>
                 <option value="rate">Highest Rate</option>
-                <option value="newest">Newest</option>
+                <option value="newest">Recently Active</option>
               </select>
             </div>
 
             {/* Filter chips row */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14, justifyContent: 'center' }}>
-              <FilterChip label="Available Now" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
-              <FilterChip label="Verified" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
+              <FilterChip label="Wheels Ready" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
+              <FilterChip label="DOT Verified" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
               <FilterChip label="Escrow" active={filters.escrowOnly} onClick={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} />
-              <FilterChip label="AV Certified" active={filters.avCertified} onClick={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} />
+              <FilterChip label="Lead Car" active={filters.serviceType === 'lead_car'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'lead_car' ? '' : 'lead_car' }))} />
+              <FilterChip label="Chase Car" active={filters.serviceType === 'chase_car'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'chase_car' ? '' : 'chase_car' }))} />
+              <FilterChip label="Height Pole" active={filters.serviceType === 'height_pole'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'height_pole' ? '' : 'height_pole' }))} />
+              <FilterChip label="Superload Cert" active={filters.serviceType === 'superload_cert'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'superload_cert' ? '' : 'superload_cert' }))} />
               {(['HOT', 'WARM', 'COOL'] as CorridorHeat[]).map(h => (
                 <FilterChip key={h} label={h} active={filters.corridorHeat === h}
                   onClick={() => setFilters(f => ({ ...f, corridorHeat: f.corridorHeat === h ? '' : h }))} />
@@ -576,10 +575,10 @@ export function PublicDirectory() {
                 borderRadius: 16, padding: '16px', display: 'flex', flexDirection: 'column', gap: 2,
               }}>
                 <div style={{ fontSize: 11, fontWeight: 800, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0 12px 8px' }}>Filters</div>
-                <ToggleSwitch label="Available Now" active={filters.availableNow} onChange={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} icon={<Zap size={14} />} />
-                <ToggleSwitch label="Verified" active={filters.verifiedOnly} onChange={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} icon={<ShieldCheck size={14} />} />
+                <ToggleSwitch label="Wheels Ready" active={filters.availableNow} onChange={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} icon={<Zap size={14} />} />
+                <ToggleSwitch label="DOT Verified" active={filters.verifiedOnly} onChange={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} icon={<ShieldCheck size={14} />} />
                 <ToggleSwitch label="Escrow Ready" active={filters.escrowOnly} onChange={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} icon={<Shield size={14} />} />
-                <ToggleSwitch label="AV Certified" active={filters.avCertified} onChange={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} icon={<Bot size={14} />} />
+                <ToggleSwitch label="Superload Cert" active={filters.avCertified} onChange={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} icon={<Award size={14} />} />
 
                 <div style={{ height: 1, background: T.border, margin: '8px 0' }} />
                 <div style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: 'uppercase', padding: '4px 12px' }}>Corridor Status</div>
@@ -649,10 +648,10 @@ export function PublicDirectory() {
                 border: `1px solid ${T.goldBorder}`, textAlign: 'center',
               }}>
                 <div style={{ fontSize: 22, fontWeight: 900, color: T.text, marginBottom: 8 }}>
-                  See Full Operator Profiles
+                  Need a Pilot Car? Post Your Load.
                 </div>
                 <div style={{ fontSize: 14, color: T.textSecondary, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
-                  Sign in to access trust scores, response history, direct messaging, and post loads.
+                  Sign in to see trust scores, dispatch history, and request operators directly. Free for escorts.
                 </div>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                   <Link href="/login" className="ag-press" style={{

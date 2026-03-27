@@ -183,7 +183,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         ]
                     })
                 }} />
-                {/* WebSite + SearchAction → Google Sitelinks Search Box */}
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",

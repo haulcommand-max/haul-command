@@ -8,7 +8,9 @@ import HCClaimCorrectVerifyPanel from '@/components/hc/ClaimCorrectVerifyPanel';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 import { MotiveReferralCTA } from '@/components/motive';
 
-export const revalidate = 900; // 15 min ISR — matches Motive sync cadence
+// Force dynamic — 4 parallel Supabase queries time out during static builds.
+// Live data should always be fresh anyway. CDN handles caching.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Load Board — Post & Find Oversize Loads',

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ESCORT_REQUIREMENTS_JSONLD = {
+export const ESCORT_REQUIREMENTS_JSONLD = `{
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "State Escort Requirements for Oversize Loads",
@@ -44,7 +44,7 @@ const ESCORT_REQUIREMENTS_JSONLD = {
     "name": "Oversize Load Escort Requirements",
     "description": "Legal requirements for pilot cars and escort vehicles when transporting oversize loads on public roads in the United States."
   }
-};
+}`;
 
 const FLAG: Record<string, string> = { US: '🇺🇸', CA: '🇨🇦', AU: '🇦🇺', GB: '🇬🇧', NZ: '🇳🇿', ZA: '🇿🇦', DE: '🇩🇪', NL: '🇳🇱', AE: '🇦🇪', BR: '🇧🇷', IE: '🇮🇪', SE: '🇸🇪', NO: '🇳🇴', DK: '🇩🇰', FI: '🇫🇮', BE: '🇧🇪', AT: '🇦🇹', CH: '🇨🇭', ES: '🇪🇸', FR: '🇫🇷', IT: '🇮🇹', PT: '🇵🇹', SA: '🇸🇦', QA: '🇶🇦', MX: '🇲🇽', IN: '🇮🇳', ID: '🇮🇩', TH: '🇹🇭', JP: '🇯🇵', KR: '🇰🇷', PL: '🇵🇱', CZ: '🇨🇿', SK: '🇸🇰', HU: '🇭🇺', SI: '🇸🇮', EE: '🇪🇪', LV: '🇱🇻', LT: '🇱🇹', HR: '🇭🇷', RO: '🇷🇴', BG: '🇧🇬', GR: '🇬🇷', TR: '🇹🇷', KW: '🇰🇼', OM: '🇴🇲', BH: '🇧🇭', SG: '🇸🇬', MY: '🇲🇾', CL: '🇨🇱', AR: '🇦🇷', CO: '🇨🇴', PE: '🇵🇪', VN: '🇻🇳', PH: '🇵🇭', UY: '🇺🇾', PA: '🇵🇦', CR: '🇨🇷' };
 const NAME: Record<string, string> = { US: 'United States', CA: 'Canada', AU: 'Australia', GB: 'United Kingdom', NZ: 'New Zealand', ZA: 'South Africa', DE: 'Germany', NL: 'Netherlands', AE: 'UAE', BR: 'Brazil', IE: 'Ireland', SE: 'Sweden', NO: 'Norway', DK: 'Denmark', FI: 'Finland', BE: 'Belgium', AT: 'Austria', CH: 'Switzerland', ES: 'Spain', FR: 'France', IT: 'Italy', PT: 'Portugal', SA: 'Saudi Arabia', QA: 'Qatar', MX: 'Mexico', IN: 'India', ID: 'Indonesia', TH: 'Thailand', JP: 'Japan', KR: 'South Korea', PL: 'Poland', CZ: 'Czechia', SK: 'Slovakia', HU: 'Hungary', SI: 'Slovenia', EE: 'Estonia', LV: 'Latvia', LT: 'Lithuania', HR: 'Croatia', RO: 'Romania', BG: 'Bulgaria', GR: 'Greece', TR: 'Turkey', KW: 'Kuwait', OM: 'Oman', BH: 'Bahrain', SG: 'Singapore', MY: 'Malaysia', CL: 'Chile', AR: 'Argentina', CO: 'Colombia', PE: 'Peru', VN: 'Vietnam', PH: 'Philippines', UY: 'Uruguay', PA: 'Panama', CR: 'Costa Rica' };
@@ -65,7 +65,7 @@ export default async function EscortRequirementsIndex() {
     return (
         <RouteCalcMobileGate>
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ESCORT_REQUIREMENTS_JSONLD) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ESCORT_REQUIREMENTS_JSONLD }} />
             <header className="mb-12 sm:mb-16">
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">GLOBAL COVERAGE</span><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">{totalJ} JURISDICTIONS</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">REQUIREMENTS</span></h1>

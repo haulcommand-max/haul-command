@@ -5,7 +5,9 @@ import { supabaseServer } from '@/lib/supabase-server';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 
-export const revalidate = 3600;
+// Force dynamic — multiple Supabase queries (RPC, providers, corridors)
+// time out during static builds. CDN handles caching automatically.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Leaderboards — Top Corridors, Markets & Operators',

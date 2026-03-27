@@ -42,9 +42,8 @@ const DEFAULT_PLAN: Plan = {
 const CRYPTO_COINS = [
   { code: 'ada', name: 'Cardano', symbol: '₳', color: '#0033AD', gradient: 'linear-gradient(135deg, #0033AD, #0052FF)' },
   { code: 'btc', name: 'Bitcoin', symbol: '₿', color: '#F7931A', gradient: 'linear-gradient(135deg, #F7931A, #E8850F)' },
-  { code: 'eth', name: 'Ethereum', symbol: 'Ξ', color: '#627EEA', gradient: 'linear-gradient(135deg, #627EEA, #4A6BDB)' },
   { code: 'usdc', name: 'USD Coin', symbol: '$', color: '#2775CA', gradient: 'linear-gradient(135deg, #2775CA, #1A5FA8)' },
-  { code: 'sol', name: 'Solana', symbol: '◎', color: '#9945FF', gradient: 'linear-gradient(135deg, #9945FF, #14F195)' },
+  // Solana and Ethereum explicitly blocked per internal policy
 ];
 
 export default function CryptoCheckoutModal({

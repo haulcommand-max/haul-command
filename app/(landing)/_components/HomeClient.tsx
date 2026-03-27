@@ -169,9 +169,8 @@ export default function HomeClient({
                     <div className="landing-desktop-only items-center" style={{ gap: '2rem', fontSize: '11px', color: '#888', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.15em' }}>
                         <Link href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Pilot Car Directory</Link>
                         <Link href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Oversize Load Board</Link>
-                        <Link href="/rates" className="hover:text-[#C6923A] transition-colors py-2">Pilot Car Rates</Link>
-                        <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Tools</Link>
-                        <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Requirements</Link>
+                        <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Permit & Route Tools</Link>
+                        <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">State Escort Requirements</Link>
                         <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
                         <Link href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
                             Training

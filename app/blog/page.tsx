@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Heavy Haul Intelligence — News & Guides | Haul Command',
   description:
     'Heavy haul industry news, permit guides, escort vehicle regulations, and market intelligence. The authoritative source for oversize load transport professionals.',

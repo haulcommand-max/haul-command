@@ -15,7 +15,7 @@ const COUNTRIES = [
   { code: 'br', name: 'Brazil', flag: '\ud83c\udde7\ud83c\uddf7', currency: 'BRL', symbol: 'R$', avgRate: '1,200-2,000' },
 ];
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Pilot Car Rates & Escort Vehicle Pricing | Haul Command',
   description:
     'Real-time pilot car rates and escort vehicle pricing across all 50 states. Cost per mile, day rates, and market intelligence for heavy haul transport.',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RATES_JSONLD = {
+export const RATES_JSONLD = `{
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Pilot Car Rates & Escort Vehicle Pricing",
@@ -51,12 +51,12 @@ const RATES_JSONLD = {
       { "@type": "ListItem", "position": 2, "name": "Pilot Car Rates", "item": "https://haulcommand.com/rates" }
     ]
   }
-};
+}`;
 
 export default async function RatesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(RATES_JSONLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />
       <section className="py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
           Pilot Car & Escort Vehicle Rates \u2014 2026

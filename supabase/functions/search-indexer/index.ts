@@ -28,6 +28,7 @@ function typesenseUrl(cfg: TypesenseConfig, path: string): string {
 /** Table name → Typesense collection name */
 const COLLECTION_MAP: Record<string, string> = {
     driver_profiles: "driver_profiles",
+    provider_directory: "provider_directory",
     loads: "loads",
     corridors: "corridors",
 };
@@ -98,6 +99,18 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         doc.risk_score = row.risk_score || 0;
         doc.liquidity_score = row.liquidity_score || 0;
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
+    } else if (tableName === "provider_directory") {
+        doc.slug = row.slug || "";
+        doc.display_name = row.display_name || "";
+        doc.state = row.state || "";
+        doc.city = row.city || "";
+        doc.service_tags = row.service_tags || [];
+        doc.coverage_status = row.coverage_status || "coming_soon";
+        doc.verified = row.verified ?? false;
+        doc.phone = row.phone || "";
+        if (row.lat && row.lng) {
+            doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
+        }
     }
 
     return doc;

@@ -16,7 +16,6 @@ import {
 const STABLECOIN_NETWORKS = [
   { id: 'usdt_trx', label: 'USDT', network: 'Tron (TRC-20)', icon: '₮', color: '#26A17B', gradient: 'linear-gradient(135deg, #26A17B, #1a7a5e)', gasFee: '~$0.001', confirmTime: '~3 min', minWithdraw: 10 },
   { id: 'usdt_bsc', label: 'USDT', network: 'BNB Chain (BEP-20)', icon: '₮', color: '#F0B90B', gradient: 'linear-gradient(135deg, #F0B90B, #c4960a)', gasFee: '~$0.05', confirmTime: '~15 sec', minWithdraw: 10 },
-  { id: 'usdc_sol', label: 'USDC', network: 'Solana (SPL)', icon: '$', color: '#2775CA', gradient: 'linear-gradient(135deg, #2775CA, #1a5fa8)', gasFee: '~$0.00025', confirmTime: '~30 sec', minWithdraw: 5 },
   { id: 'usdc_matic', label: 'USDC', network: 'Polygon (PoS)', icon: '$', color: '#8247E5', gradient: 'linear-gradient(135deg, #8247E5, #6a35c7)', gasFee: '~$0.001', confirmTime: '~2 min', minWithdraw: 5 },
 ];
 
@@ -37,7 +36,7 @@ interface TreasuryWithdrawalFormProps {
 export function TreasuryWithdrawalForm({ operatorId, onSuccess }: TreasuryWithdrawalFormProps) {
   const [wallet, setWallet] = useState<WalletBalance | null>(null);
   const [walletLoading, setWalletLoading] = useState(true);
-  const [selectedNetwork, setSelectedNetwork] = useState(STABLECOIN_NETWORKS[2]);
+  const [selectedNetwork, setSelectedNetwork] = useState(STABLECOIN_NETWORKS[0]);
   const [amount, setAmount] = useState('');
   const [address, setAddress] = useState('');
   const [addressError, setAddressError] = useState('');
@@ -194,7 +193,7 @@ export function TreasuryWithdrawalForm({ operatorId, onSuccess }: TreasuryWithdr
           <div style={S.fieldGroup}>
             <label style={S.label}>{selectedNetwork.network} Destination Address</label>
             <input style={{ ...S.addressInput, borderColor: addressError ? '#f87171' : 'rgba(255,255,255,0.08)' }}
-              placeholder={selectedNetwork.id === 'usdt_trx' ? 'T...' : selectedNetwork.id === 'usdc_sol' ? 'Solana wallet address...' : '0x...'}
+              placeholder={selectedNetwork.id === 'usdt_trx' ? 'T...' : '0x...'}
               value={address} onChange={e => { setAddress(e.target.value); validateAddress(e.target.value); }} />
             {addressError && <p style={S.fieldError}>{addressError}</p>}
           </div>

@@ -1,50 +1,44 @@
 Add-Type -AssemblyName System.Windows.Forms
-$sql = Get-Content -Raw "C:\Users\PC User\Biz\haul-command-hub\supabase\migrations\20260326100000_rls_and_security_hardening.sql"
+$sql = Get-Content -Raw "C:\Users\PC User\Biz\supabase\migrations\20260326_rls_and_security_hardening.sql"
 [System.Windows.Forms.Clipboard]::SetText($sql)
 
+# Define native methods to click the mouse and move cursor
 $signature = @'
-[DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
-[DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+[DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y);
+[DllImport("user32.dll")] public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
 '@
-$win32 = Add-Type -MemberDefinition $signature -Name "Win32API" -PassThru
+$win32 = Add-Type -MemberDefinition $signature -Name "Mouse" -PassThru
 
-# Find ANY Chrome process that has a window
-$chromeProcess = Get-Process chrome | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1
+# Open the Supabase query editor window
+Start-Process "https://supabase.com/dashboard/project/hvjyfyzotqobfkakjozp/sql/new"
 
-if ($chromeProcess) {
-    Write-Host "Activating Chrome window..."
-    $win32::SetForegroundWindow($chromeProcess.MainWindowHandle)
-    Start-Sleep -Seconds 1
+Write-Host "Waiting 8 seconds for page to load..."
+Start-Sleep -Seconds 8
 
-    $found = $false
-    for ($i = 0; $i -lt 15; $i++) {
-        $title = (Get-Process chrome | Where-Object { $_.MainWindowHandle -eq $chromeProcess.MainWindowHandle } | Select-Object -ExpandProperty MainWindowTitle)
-        Write-Host "Current Tab: $title"
-        
-        if ($title -match "SQL Editor") {
-            $found = $true
-            break
-        }
-        
-        # Switch tab
-        [System.Windows.Forms.SendKeys]::SendWait("^{TAB}")
-        Start-Sleep -Milliseconds 500
-    }
+# Move to roughly the center-right of a 1920x1080 screen (where the editor pane is)
+$x = 1000
+$y = 500
+$win32::SetCursorPos($x, $y)
+Start-Sleep -Milliseconds 500
 
-    if ($found) {
-        Write-Host "Found Supabase tab! Sending keys..."
-        Start-Sleep -Milliseconds 500
-        [System.Windows.Forms.SendKeys]::SendWait("^{a}")
-        Start-Sleep -Milliseconds 200
-        [System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE}")
-        Start-Sleep -Milliseconds 200
-        [System.Windows.Forms.SendKeys]::SendWait("^{v}")
-        Start-Sleep -Milliseconds 500
-        [System.Windows.Forms.SendKeys]::SendWait("^{ENTER}")
-        Write-Host "Pasted & Ran Query!"
-    } else {
-        Write-Host "Could not find the Supabase SQL Editor tab."
-    }
-} else {
-    Write-Host "Could not find Chrome process."
-}
+# Left click down and up (0x02 = LDOWN, 0x04 = LUP)
+Write-Host "Clicking to focus editor..."
+$win32::mouse_event(0x02, 0, 0, 0, 0)
+$win32::mouse_event(0x04, 0, 0, 0, 0)
+Start-Sleep -Milliseconds 500
+
+Write-Host "Select All..."
+[System.Windows.Forms.SendKeys]::SendWait("^{a}")
+Start-Sleep -Milliseconds 200
+
+Write-Host "Backspace..."
+[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE}")
+Start-Sleep -Milliseconds 200
+
+Write-Host "Pasting SQL..."
+[System.Windows.Forms.SendKeys]::SendWait("^{v}")
+Start-Sleep -Milliseconds 1500
+
+Write-Host "Running Query..."
+[System.Windows.Forms.SendKeys]::SendWait("^{ENTER}")
+Write-Host "DONE!"

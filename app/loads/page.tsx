@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Oversize Load Board — Post & Find Heavy Haul Loads | Haul Command',
   description:
     'Post oversize loads and find pilot car jobs on the #1 heavy haul load board. Real-time matching between carriers, brokers, and escort vehicle operators.',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LOADS_JSONLD = {
+export const LOADS_JSONLD = `{
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Oversize Load Board",
@@ -39,7 +39,7 @@ const LOADS_JSONLD = {
       { "@type": "ListItem", "position": 2, "name": "Oversize Load Board", "item": "https://haulcommand.com/loads" }
     ]
   }
-};
+}`;
 
 const COUNTRY_FLAGS: Record<string, string> = {
   us: '🇺🇸', ca: '🇨🇦', au: '🇦🇺', gb: '🇬🇧', nz: '🇳🇿', za: '🇿🇦',
@@ -76,7 +76,7 @@ export default async function LoadBoardPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(LOADS_JSONLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LOADS_JSONLD }} />
       {/* Hero */}
       <section className="py-16 px-4 text-center">
         <div className="max-w-4xl mx-auto">

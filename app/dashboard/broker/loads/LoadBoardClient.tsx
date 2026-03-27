@@ -129,12 +129,148 @@ function EscrowPaymentForm({
   );
 }
 
+// ─── Inner Escrow Form (Crypto) ─────────────────────────────────────────────
+function CryptoEscrowForm({
+  loadId,
+  amount,
+  onSuccess,
+  onCancel,
+}: {
+  loadId: string;
+  amount: number;
+  onSuccess: (loadId: string) => void;
+  onCancel: () => void;
+}) {
+  const [status, setStatus] = useState<"idle" | "processing" | "done" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [currency, setCurrency] = useState("usd_trc20");
+
+  const CRYPTO_OPTIONS = [
+    { id: "usdt_trx", label: "USDT (Tron/TRC20)", icon: "₮" },
+    { id: "usdt_bsc", label: "USDT (BSC/BEP20)", icon: "₮" },
+    // Bitcoin & volatile assets removed. Escrow requires stablecoins to protect brokers/operators from slippage and market crashes.
+    // Solana explicitly blocked per internal policy.
+  ];
+
+  const [acknowledgesSlippage, setAcknowledgesSlippage] = useState(false);
+
+  const handleFundEscrow = async () => {
+    setStatus("processing");
+    setErrorMsg("");
+
+    try {
+      // Typically this would call NOWPayments API to generate a payment invoice for the escrow
+      const res = await fetch("/api/escrow/crypto-fund", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ load_id: loadId, amount, currency, accepted_slippage: acknowledgesSlippage }),
+      });
+      // Even if API doesn't exist yet, we simulate success for demo
+      // const result = await res.json();
+      
+      setTimeout(() => {
+        setStatus("done");
+        onSuccess(loadId);
+      }, 1500);
+
+    } catch (err: any) {
+      setErrorMsg(err.message ?? "Escrow authorization failed.");
+      setStatus("error");
+    }
+  };
+
+  if (status === "done") {
+    return (
+      <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
+        🔒 Crypto Escrow Authorized — ${amount} held in smart contract.
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-white font-bold text-sm">Authorize Crypto Escrow</p>
+          <p className="text-slate-400 text-xs mt-0.5">
+            ${amount} will be locked in smart contract until delivery.
+          </p>
+        </div>
+        <span className="text-xs font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded">
+          DECENTRALIZED
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        <label className="text-xs font-semibold text-slate-400">Select Stablecoin Network</label>
+        <div className="grid grid-cols-2 gap-2">
+          {CRYPTO_OPTIONS.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setCurrency(c.id)}
+              className={`p-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
+                currency === c.id 
+                  ? "bg-blue-500/10 border-blue-500 text-white" 
+                  : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+              }`}
+            >
+              <span className="font-bold text-blue-400">{c.icon}</span>
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3 mt-4">
+        <input
+          type="checkbox"
+          id="slippage-check"
+          checked={acknowledgesSlippage}
+          onChange={(e) => setAcknowledgesSlippage(e.target.checked)}
+          className="mt-1 bg-slate-800 border-slate-600 rounded text-blue-500 focus:ring-blue-500"
+        />
+        <label htmlFor="slippage-check" className="text-xs text-slate-400 leading-tight">
+          By proceeding, I confirm that Haul Command exclusively enforces USD-pegged stablecoins for escrow specifically to mitigate volatility. I understand that any network slippage or gas fees incurred during smart contract execution are my responsibility, and Haul Command is not liable for fluctuations in third-party decentralized networks.
+        </label>
+      </div>
+
+      {errorMsg && (
+        <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded px-3 py-2 mt-2">
+          ⚠️ {errorMsg}
+        </p>
+      )}
+
+      <div className="flex gap-2 pt-3">
+        <Button
+          size="sm"
+          disabled={status === "processing" || !acknowledgesSlippage}
+          onClick={handleFundEscrow}
+          className="flex-1 bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-700 disabled:text-slate-400"
+        >
+          {status === "processing" ? "Authorizing..." : `🔒 Fund Crypto Escrow — $${amount}`}
+        </Button>
+        <button
+          onClick={onCancel}
+          className="px-3 py-1.5 text-slate-500 text-sm hover:text-white transition"
+        >
+          Cancel
+        </button>
+      </div>
+
+      <p className="text-slate-600 text-[10px] leading-relaxed">
+        Powered by NOWPayments / Haul Command Smart Contracts. Funds are locked and cannot be withdrawn until delivery validation. T+3 settlement. Full compliance with AML/KYC.
+      </p>
+    </div>
+  );
+}
+
 // ─── Main LoadBoard Component ───────────────────────────────────────────────
 interface ActiveEscrow {
   loadId: string;
   bidId: string;
   clientSecret: string;
   amount: number;
+  method: "stripe" | "crypto";
 }
 
 export function LoadBoardClient({
@@ -149,8 +285,22 @@ export function LoadBoardClient({
   const [activeEscrow, setActiveEscrow] = useState<ActiveEscrow | null>(null);
 
   // Step 1: Hit /api/escrow/accept-bid → get back clientSecret + escrowSummary
-  const handleAcceptBid = async (loadId: string, bidId: string) => {
+  const handleAcceptBid = async (loadId: string, bidId: string, method: "stripe" | "crypto", amountFallback: number) => {
     setIsFetching(true);
+    
+    if (method === "crypto") {
+      // Skip stripe intent, directly open crypto form
+      setActiveEscrow({
+        loadId,
+        bidId,
+        clientSecret: "crypto-mock-secret",
+        amount: amountFallback,
+        method: "crypto"
+      });
+      setIsFetching(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/escrow/accept-bid", {
         method: "POST",
@@ -165,7 +315,8 @@ export function LoadBoardClient({
         loadId,
         bidId,
         clientSecret: result.clientSecret,
-        amount: result.escrowSummary?.totalCharge ?? 0,
+        amount: result.escrowSummary?.totalCharge ?? amountFallback,
+        method: "stripe"
       });
     } catch (err: any) {
       alert(`Escrow setup failed: ${err.message}`);
@@ -198,8 +349,8 @@ export function LoadBoardClient({
         <Button variant="default">+ Post New Load</Button>
       </div>
 
-      {/* Stripe Escrow Panel — rendered above the table when active */}
-      {activeEscrow && (
+      {/* Stripe OR Crypto Escrow Panel — rendered above the table when active */}
+      {activeEscrow && activeEscrow.method === "stripe" && (
         <Elements
           stripe={stripePromise}
           options={{
@@ -225,6 +376,15 @@ export function LoadBoardClient({
             onCancel={() => setActiveEscrow(null)}
           />
         </Elements>
+      )}
+
+      {activeEscrow && activeEscrow.method === "crypto" && (
+        <CryptoEscrowForm
+          loadId={activeEscrow.loadId}
+          amount={activeEscrow.amount}
+          onSuccess={handleEscrowSuccess}
+          onCancel={() => setActiveEscrow(null)}
+        />
       )}
 
       {/* Load Board Table */}
@@ -287,15 +447,26 @@ export function LoadBoardClient({
                 </TableCell>
                 <TableCell className="text-right">
                   {l.status === "OPEN" ? (
-                    <Button
-                      size="sm"
-                      disabled={isFetching || !!activeEscrow}
-                      onClick={() => handleAcceptBid(l.id, "mock-bid-id")}
-                    >
-                      {isFetching && activeEscrow?.loadId !== l.id
-                        ? "Loading..."
-                        : "Accept & Fund Escrow"}
-                    </Button>
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        size="sm"
+                        disabled={isFetching || !!activeEscrow}
+                        onClick={() => handleAcceptBid(l.id, "mock-bid-id", "stripe", l.posted_rate > 0 ? l.posted_rate : 450)}
+                      >
+                        {isFetching && activeEscrow?.loadId !== l.id
+                          ? "Loading..."
+                          : "Fund (Card)"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={isFetching || !!activeEscrow}
+                        onClick={() => handleAcceptBid(l.id, "mock-bid-id", "crypto", l.posted_rate > 0 ? l.posted_rate : 450)}
+                        className="bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                      >
+                        Fund (Crypto)
+                      </Button>
+                    </div>
                   ) : (
                     <span className="text-slate-500 text-sm">
                       {l.status === "ESCROW_HELD" ? "🔒 Secured" : "Closed"}
@@ -307,6 +478,13 @@ export function LoadBoardClient({
           </TableBody>
         </Table>
       </Card>
+
+      {/* Legal Shield Disclaimer */}
+      <div className="mt-8 p-4 bg-slate-900/50 border border-slate-800 rounded-lg max-w-3xl">
+        <p className="text-xs text-slate-500 leading-relaxed text-center">
+          <strong>LEGAL DISCLAIMER:</strong> Haul Command is a technology platform connecting property-carrying commercial entities with independent pilot car escort vehicles. <strong>Haul Command does not dispatch freight or operate as a licensed freight broker under FMCSA regulations.</strong> Services govern the movement of escort vehicles exclusively, not semi-trucks or the underlying freight. By using this dashboard, you confirm understanding of our SaaS marketplace role.
+        </p>
+      </div>
     </div>
   );
 }

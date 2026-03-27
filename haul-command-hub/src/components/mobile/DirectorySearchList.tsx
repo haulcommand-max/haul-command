@@ -4,17 +4,16 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 
 interface Operator {
   id: string;
-  name: string;
+  slug: string;
+  display_name: string;
+  state: string;
+  city: string;
+  service_tags: string[];
   phone?: string;
-  last_name?: string;
-  locality: string;
-  admin1_code: string;
-  surface_category_key: string;
-  claim_status: string;
-  hc_trust_number?: string;
+  coverage_status: string;
+  verified: boolean;
   lat?: number;
   lng?: number;
-  // censorship flag injected by backend for unauthenticated users
   censored?: boolean;
 }
 
@@ -139,8 +138,10 @@ function OperatorCard({
   censored: boolean;
   onRevealPII: () => void;
 }) {
-  const categoryLabel = CATEGORY_LABELS[operator.surface_category_key] || operator.surface_category_key;
-  const isVerified = operator.claim_status === 'claimed' || operator.claim_status === 'verified';
+  const categoryLabel = operator.service_tags?.length > 0
+    ? CATEGORY_LABELS[operator.service_tags[0]] || operator.service_tags[0]
+    : 'Operator';
+  const isVerified = operator.verified;
 
   return (
     <div style={{
@@ -154,7 +155,7 @@ function OperatorCard({
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ color: '#fff', fontWeight: 700, fontSize: '15px' }}>{operator.name}</span>
+            <span style={{ color: '#fff', fontWeight: 700, fontSize: '15px' }}>{operator.display_name}</span>
             {isVerified && (
               <span style={{
                 background: 'rgba(0,200,100,0.15)', color: '#00c864',
@@ -164,7 +165,7 @@ function OperatorCard({
             )}
           </div>
           <div style={{ color: '#888', fontSize: '12px' }}>
-            {operator.locality}, {operator.admin1_code}
+            {operator.city}, {operator.state}
           </div>
         </div>
         <span style={{
@@ -189,12 +190,6 @@ function OperatorCard({
           </a>
         )}
       </div>
-
-      {operator.hc_trust_number && (
-        <div style={{ marginTop: '8px', fontSize: '10px', color: '#555', fontFamily: 'monospace' }}>
-          HC# {operator.hc_trust_number}
-        </div>
-      )}
     </div>
   );
 }
