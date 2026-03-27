@@ -34,14 +34,18 @@ function findEquipType(slug: string) {
   return ALL_EQUIPMENT.find(e => e.slug === slug) ?? null;
 }
 
-// Only generate pages where the country has that equipment_focus
+// BUILD SIZE GUARD: Only generate pages for Tier A countries at build time.
+// All 57 countries still work via ISR (on-demand rendering on first visit).
+const TIER_A_SLUGS = new Set(['us', 'ca', 'au', 'gb', 'nz', 'za', 'de', 'nl', 'ae', 'br']);
 export function generateStaticParams() {
-  return COUNTRIES.flatMap((country) =>
-    country.equipment_focus.map((equip) => ({
-      type: slugify(equip),
-      country: country.slug,
-    }))
-  );
+  return COUNTRIES
+    .filter((country) => TIER_A_SLUGS.has(country.slug))
+    .flatMap((country) =>
+      country.equipment_focus.map((equip) => ({
+        type: slugify(equip),
+        country: country.slug,
+      }))
+    );
 }
 
 export async function generateMetadata({
