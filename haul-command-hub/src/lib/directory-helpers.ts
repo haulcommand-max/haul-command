@@ -1,16 +1,34 @@
-/** Country code → display name mapping (57 countries) */
+/** Country code → display name mapping (120 countries — 5 tiers) */
 export const COUNTRY_NAMES: Record<string, string> = {
+    // Tier A — Gold (10)
     us: "United States", ca: "Canada", au: "Australia", gb: "United Kingdom", nz: "New Zealand",
     za: "South Africa", de: "Germany", nl: "Netherlands", ae: "United Arab Emirates", br: "Brazil",
+    // Tier B — Blue (18)
     ie: "Ireland", se: "Sweden", no: "Norway", dk: "Denmark", fi: "Finland", be: "Belgium",
     at: "Austria", ch: "Switzerland", es: "Spain", fr: "France", it: "Italy", pt: "Portugal",
-    sa: "Saudi Arabia", qa: "Qatar", mx: "Mexico", pl: "Poland", cz: "Czech Republic",
-    sk: "Slovakia", hu: "Hungary", si: "Slovenia", ee: "Estonia", lv: "Latvia", lt: "Lithuania",
-    hr: "Croatia", ro: "Romania", bg: "Bulgaria", gr: "Greece", tr: "Turkey", kw: "Kuwait",
-    om: "Oman", bh: "Bahrain", sg: "Singapore", my: "Malaysia", jp: "Japan", kr: "South Korea",
-    cl: "Chile", ar: "Argentina", co: "Colombia", pe: "Peru",
-    in: "India", id: "Indonesia", th: "Thailand", vn: "Vietnam", ph: "Philippines",
-    uy: "Uruguay", pa: "Panama", cr: "Costa Rica", ng: "Nigeria",
+    sa: "Saudi Arabia", qa: "Qatar", mx: "Mexico", in: "India", id: "Indonesia", th: "Thailand",
+    // Tier C — Silver (26)
+    pl: "Poland", cz: "Czech Republic", sk: "Slovakia", hu: "Hungary", si: "Slovenia",
+    ee: "Estonia", lv: "Latvia", lt: "Lithuania", hr: "Croatia", ro: "Romania",
+    bg: "Bulgaria", gr: "Greece", tr: "Turkey", kw: "Kuwait", om: "Oman", bh: "Bahrain",
+    sg: "Singapore", my: "Malaysia", jp: "Japan", kr: "South Korea",
+    cl: "Chile", ar: "Argentina", co: "Colombia", pe: "Peru", vn: "Vietnam", ph: "Philippines",
+    // Tier D — Slate (25)
+    uy: "Uruguay", pa: "Panama", cr: "Costa Rica", il: "Israel", ng: "Nigeria",
+    eg: "Egypt", ke: "Kenya", ma: "Morocco", rs: "Serbia", ua: "Ukraine",
+    kz: "Kazakhstan", tw: "Taiwan", pk: "Pakistan", bd: "Bangladesh", mn: "Mongolia",
+    tt: "Trinidad and Tobago", jo: "Jordan", gh: "Ghana", tz: "Tanzania", ge: "Georgia",
+    az: "Azerbaijan", cy: "Cyprus", is: "Iceland", lu: "Luxembourg", ec: "Ecuador",
+    // Tier E — Copper (41)
+    bo: "Bolivia", py: "Paraguay", gt: "Guatemala", do: "Dominican Republic", hn: "Honduras",
+    sv: "El Salvador", ni: "Nicaragua", jm: "Jamaica", gy: "Guyana", sr: "Suriname",
+    ba: "Bosnia and Herzegovina", me: "Montenegro", mk: "North Macedonia", al: "Albania", md: "Moldova",
+    iq: "Iraq", na: "Namibia", ao: "Angola", mz: "Mozambique", et: "Ethiopia",
+    ci: "Ivory Coast", sn: "Senegal", bw: "Botswana", zm: "Zambia", ug: "Uganda",
+    cm: "Cameroon", kh: "Cambodia", lk: "Sri Lanka", uz: "Uzbekistan", la: "Laos",
+    np: "Nepal", dz: "Algeria", tn: "Tunisia", mt: "Malta", bn: "Brunei",
+    rw: "Rwanda", mg: "Madagascar", pg: "Papua New Guinea", tm: "Turkmenistan", kg: "Kyrgyzstan",
+    mw: "Malawi",
 };
 
 export const CATEGORY_LABELS: Record<string, { label: string; icon: string; description: string }> = {
@@ -77,6 +95,5 @@ export function categoryDescription(key: string): string {
     return CATEGORY_LABELS[key]?.description ?? "";
 }
 
-/** All 57 countries for empty-page rendering */
+/** All 120 countries for page rendering */
 export const ALL_COUNTRY_CODES = Object.keys(COUNTRY_NAMES);
-

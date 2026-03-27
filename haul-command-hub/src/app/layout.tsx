@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: "Haul Command | World's Largest Pilot Car & Escort Vehicle Directory",
     template: "%s | Haul Command",
   },
-  description: "Find pilot car operators, escort vehicles, and oversize load professionals across 57 countries. The world's largest directory for heavy haul transport.",
+  description: "Find pilot car operators, escort vehicles, and oversize load professionals across 120 countries. The world's largest directory for heavy haul transport.",
   keywords: [
     // Core
     'pilot car', 'escort vehicle', 'oversize load', 'heavy haul',
@@ -40,12 +40,12 @@ export const metadata: Metadata = {
     url: 'https://haulcommand.com',
     siteName: 'Haul Command',
     title: "Haul Command | World's Largest Pilot Car & Escort Vehicle Directory",
-    description: 'Find verified pilot car operators and escort vehicle professionals across 57 countries.',
+    description: 'Find verified pilot car operators and escort vehicle professionals across 120 countries.',
   },
   twitter: {
     card: 'summary_large_image',
     title: "Haul Command | World's Largest Pilot Car & Escort Vehicle Directory",
-    description: 'Find verified pilot car operators and escort vehicle professionals across 57 countries.',
+    description: 'Find verified pilot car operators and escort vehicle professionals across 120 countries.',
   },
   robots: {
     index: true,

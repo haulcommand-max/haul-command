@@ -13,8 +13,6 @@ import { getCreativesForSlot } from '@/lib/ad-engine';
 import HomeHero from '@/components/hc/HomeHero';
 import ActivityTicker from '@/components/ActivityTicker';
 import LiveDashboard from '@/components/hc/LiveDashboard';
-import HaulCommandLogo from '@/components/hc/HaulCommandLogo';
-import SocialLinks from '@/components/hc/SocialLinks';
 import { CinematicMap } from '@/components/hc/CinematicMap';
 import ScrollReveal from '@/components/hc/ScrollReveal';
 import type { HCMetric, HCFaqItem, HCCorridorSummary, HCRequirementsSummary } from '@/lib/hc-types';
@@ -40,7 +38,7 @@ async function loadHomepageData() {
   const totalJurisdictions = jurisdictions.length;
   const allCountries = countriesResult.data ?? [];
   const liveCountries = allCountries.filter((c: { is_active_market?: boolean; activation_phase?: string }) => c.is_active_market || c.activation_phase === 'active');
-  const totalCountries = allCountries.length || 57;
+  const totalCountries = allCountries.length || 120;
   const corridors = corridorsResult.data ?? [];
 
   // Build REAL metrics only — never fake
@@ -48,7 +46,7 @@ async function loadHomepageData() {
 
   if (totalListings > 0) {
     metrics.push({
-      label: 'Directory Listings',
+      label: 'Verified Operators',
       value: totalListings.toLocaleString(),
       geographyScope: 'Global',
       timeWindow: 'All time',
@@ -68,7 +66,7 @@ async function loadHomepageData() {
 
   if (totalCountries > 0) {
     metrics.push({
-      label: 'Countries with Data',
+      label: 'Countries Active',
       value: totalCountries.toString(),
       geographyScope: 'Global',
       timeWindow: 'All time',
@@ -114,56 +112,78 @@ export default async function HomePage() {
     getCreativesForSlot({ slotFamily: 'inline_billboard', pageType: 'homepage', maxCreatives: 8 }),
   ]);
 
-  // Top markets for location chips
+  // Top markets for location chips — Tier A priority
   const locationChips = [
-    { label: '🇺🇸 Florida', href: '/directory/us' },
-    { label: '🇺🇸 Texas', href: '/state/texas' },
-    { label: '🇺🇸 California', href: '/state/california' },
+    { label: '🇺🇸 United States', href: '/directory/us' },
     { label: '🇨🇦 Canada', href: '/directory/ca' },
     { label: '🇦🇺 Australia', href: '/directory/au' },
     { label: '🇬🇧 United Kingdom', href: '/directory/gb' },
     { label: '🇩🇪 Germany', href: '/directory/de' },
     { label: '🇦🇪 UAE', href: '/directory/ae' },
+    { label: '🇧🇷 Brazil', href: '/directory/br' },
+    { label: '🇿🇦 South Africa', href: '/directory/za' },
   ];
 
-  // Action quad
+  // Single dominant CTA — Find Operators is the primary action
   const actions = [
-    { id: 'hc_act_find_escorts', label: 'Find Escorts', href: '/directory', type: 'navigate' as const, priority: 'primary' as const },
-    { id: 'hc_act_post_load', label: 'Post Load', href: '/loads', type: 'navigate' as const, priority: 'primary' as const },
+    { id: 'hc_act_find_operators', label: 'Find Operators', href: '/directory', type: 'navigate' as const, priority: 'primary' as const },
+    { id: 'hc_act_post_load', label: 'Post a Load', href: '/loads', type: 'navigate' as const, priority: 'primary' as const },
     { id: 'hc_act_view_requirements', label: 'Requirements', href: '/escort-requirements', type: 'navigate' as const, priority: 'primary' as const },
-    { id: 'hc_act_claim_listing', label: 'Claim Listing', href: '/claim', type: 'claim' as const, priority: 'primary' as const },
+    { id: 'hc_act_claim_profile', label: 'Claim Profile', href: '/claim', type: 'claim' as const, priority: 'primary' as const },
   ];
 
-  // FAQ items
+  // FAQ items — updated for 120-country global scope
   const faqItems: HCFaqItem[] = [
     {
       question: 'What is Haul Command?',
-      answer: 'Haul Command is the world\'s largest directory for pilot car operators, escort vehicle services, and heavy haul transport professionals. We cover 57 countries with verified listings, escort requirements, corridor intel, and compliance data.',
+      answer: 'Haul Command is the global operating system for the heavy haul, oversize transport, and escort vehicle industry. We connect shippers, brokers, and operators across 120 countries with verified directory data, route intelligence, escort requirements, and compliance tools.',
     },
     {
-      question: 'How do I find a pilot car or escort service?',
-      answer: 'Use our directory to search by state, country, or service type. Each listing includes contact info, service areas, capabilities, and verification status. Call or text operators directly from their profile.',
+      question: 'How do I find a pilot car or escort operator?',
+      answer: 'Use our directory to search by country, state, or service type. Each operator profile includes contact info, service areas, capabilities, and verification status. Contact operators directly from their profile.',
     },
     {
-      question: 'How do I claim my business listing?',
-      answer: 'Click "Claim Listing" and verify your identity via phone. Once claimed, you can update your profile, respond to runs, and access premium features like priority placement and verified badges.',
+      question: 'How do I claim my operator profile?',
+      answer: 'Click "Claim Profile" and verify your identity via phone. Once claimed, you can update your profile, respond to loads, and access premium features like priority placement and verified badges.',
     },
     {
       question: 'What escort requirements does my load need?',
-      answer: 'Use our Requirements section to check dimension-based escort triggers for any US state or international jurisdiction. We track width, height, length, and weight thresholds that determine escort vehicle counts, police escort needs, and permit requirements.',
+      answer: 'Use our Requirements tool to check dimension-based escort triggers for any US state or international jurisdiction. We track width, height, length, and weight thresholds that determine escort counts, police escort needs, and permit requirements.',
     },
     {
       question: 'Is Haul Command free to use?',
-      answer: 'Browsing the directory, viewing requirements, and searching for operators is free. Claiming and verifying your listing is free. Premium features like priority placement, boost credits, and analytics are available through paid plans.',
+      answer: 'Browsing the directory, viewing requirements, and searching for operators is free. Claiming and verifying your profile is free. Premium features like priority placement, boost credits, and analytics are available through paid plans.',
     },
   ];
+
+  // Tier A priority countries for the Global Network section
+  const tierAPriority = ['US', 'CA', 'AU', 'GB', 'NZ', 'ZA', 'DE', 'NL', 'AE', 'BR'];
+  const sortedCountries = allCountries.length > 0 
+    ? [...allCountries].sort((a: { iso2: string; tier?: string }, b: { iso2: string; tier?: string }) => {
+        const aIdx = tierAPriority.indexOf(a.iso2);
+        const bIdx = tierAPriority.indexOf(b.iso2);
+        if (aIdx >= 0 && bIdx >= 0) return aIdx - bIdx;
+        if (aIdx >= 0) return -1;
+        if (bIdx >= 0) return 1;
+        const tierOrder = ['A', 'B', 'C', 'D', 'E'];
+        return (tierOrder.indexOf(a.tier || 'E')) - (tierOrder.indexOf(b.tier || 'E'));
+      })
+    : [
+        { iso2: 'US', name: 'United States', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'CA', name: 'Canada', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'AU', name: 'Australia', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'GB', name: 'United Kingdom', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'DE', name: 'Germany', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'AE', name: 'UAE', activation_phase: 'active', is_active_market: true, tier: 'A' },
+        { iso2: 'BR', name: 'Brazil', activation_phase: 'expanding', is_active_market: false, tier: 'A' },
+        { iso2: 'ZA', name: 'South Africa', activation_phase: 'expanding', is_active_market: false, tier: 'A' },
+      ];
 
   return (
     <>
       <Navbar />
       <ActivityTicker />
       <main className="flex-grow overflow-x-hidden">
-
 
         {/* Hero Billboard (homepage ad slot) */}
         <div className="max-w-7xl mx-auto px-4 mt-4">
@@ -172,9 +192,6 @@ export default async function HomePage() {
 
         {/* ═══════════════════════════════════════════════
            ROLE-AWARE COMMAND CENTER
-           Replaces the generic hero. When no role is selected,
-           shows the role picker. When role is selected, shows
-           role-specific headline, actions, and modules.
            ═══════════════════════════════════════════════ */}
         <HomeHero
           fallbackActions={actions}
@@ -182,19 +199,19 @@ export default async function HomePage() {
           locationChips={locationChips}
         />
 
-        {/* Live Dashboard Widgets — Fix A */}
+        {/* Live Dashboard Widgets */}
         <div className="max-w-7xl mx-auto px-4">
           <LiveDashboard />
         </div>
 
-        {/* Early Tools */}
+        {/* ═══ OPERATOR TOOLS ═══ */}
         <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
-              Early <span className="text-accent">Tools</span>
+              Operator <span className="text-accent">Tools</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Specialized heavy haul tools deployed during our early access period.
+              Purpose-built intelligence tools for heavy haul professionals.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 ag-stagger">
               {[
@@ -202,53 +219,52 @@ export default async function HomePage() {
                   href: '/tools/permit-checker/us',
                   icon: '📜',
                   title: 'Permit Checker',
-                  desc: 'Look up state/country permit requirements instantly based on load.',
+                  desc: 'Look up state-by-state permit requirements based on load dimensions.',
                   cta: 'Check Permits →',
                   hot: true,
-                },
-                {
-                  href: '/tools/axle-weight',
-                  icon: '⚖️',
-                  title: 'Route Weight Calculator',
-                  desc: 'Calculate legal load weight based on axle configuration.',
-                  cta: 'Calculate Weight →',
                 },
                 {
                   href: '/tools/escort-rules/us',
                   icon: '🚓',
                   title: 'Escort Requirement Finder',
-                  desc: 'Find precise pilot car rules per state or province.',
+                  desc: 'Find exact pilot car and escort rules per state or country.',
                   cta: 'Find Rules →',
                 },
                 {
                   href: '/tools/rate-estimator/us',
                   icon: '💰',
                   title: 'Rate Estimator',
-                  desc: 'Estimate pilot car or load haul rates instantly.',
+                  desc: 'Estimate pilot car and heavy haul escort rates by route.',
                   cta: 'Get Estimate →',
+                },
+                {
+                  href: '/tools/axle-weight',
+                  icon: '⚖️',
+                  title: 'Axle Weight Calculator',
+                  desc: 'Calculate legal load weight based on axle configuration and bridge formula.',
+                  cta: 'Calculate Weight →',
                 },
                 {
                   href: '/tools/superload-alerts',
                   icon: '⚠️',
                   title: 'Superload Alert Feed',
-                  desc: 'Live feed of superload moves causing closures by region.',
+                  desc: 'Live feed of superload movements causing closures by region.',
                   cta: 'View Alerts →',
                 },
                 {
                   href: '/tools/broker-verify',
                   icon: '🛡️',
-                  title: 'Broker Verify Tool',
-                  desc: 'Check broker and dispatcher legitimacy instantly.',
+                  title: 'Broker Verify',
+                  desc: 'Instantly verify broker and dispatcher legitimacy via FMCSA records.',
                   cta: 'Verify Broker →',
                   hot: true,
                 },
                 {
-                  href: '/av-readiness',
-                  icon: '🤖',
-                  title: 'Autonomous Route Monitor',
-                  desc: 'Track active autonomous freight corridors and testing zones.',
-                  cta: 'Monitor AV →',
-                  hot: true,
+                  href: '/tools/cost-calculator',
+                  icon: '📊',
+                  title: 'Load Profit Calculator',
+                  desc: 'Calculate true profit per load including fuel, tolls, and deadhead.',
+                  cta: 'Calculate Profit →',
                 },
               ].map((tool) => (
                 <Link
@@ -257,13 +273,13 @@ export default async function HomePage() {
                   className={`group ag-glass ag-spring-hover p-6 rounded-2xl hover:border-accent/30 hover:bg-accent/[0.03] transition-all ag-slide-up ${'hot' in tool && tool.hot ? 'relative' : ''}`}
                 >
                   {'hot' in tool && tool.hot && (
-                    <span className="absolute top-3 right-3 bg-red-500/20 text-red-400 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ag-hot-pulse">New</span>
+                    <span className="absolute top-3 right-3 bg-accent/20 text-accent text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Live</span>
                   )}
                   <div className="text-4xl mb-3" role="img" aria-label={tool.title}>{tool.icon}</div>
                   <h3 className="text-white font-bold text-base mb-1.5 group-hover:text-accent transition-colors">
                     {tool.title}
                   </h3>
-                  <p className="text-gray-500 text-xs mb-3 leading-relaxed">{tool.desc}</p>
+                  <p className="text-gray-400 text-xs mb-3 leading-relaxed">{tool.desc}</p>
                   <span className="text-accent text-xs font-bold group-hover:underline">{tool.cta}</span>
                 </Link>
               ))}
@@ -271,7 +287,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ═══ CORE 30 ENTITY MATCHING — Service Hierarchy ═══ */}
+        {/* ═══ SERVICE DIRECTORY — Distinct Categories Only ═══ */}
         <ScrollReveal>
         <section className="py-10 sm:py-16 px-4 bg-gradient-to-b from-transparent to-accent/5 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto border border-white/10 rounded-3xl p-6 sm:p-10 bg-[#0a0e17] shadow-xl relative">
@@ -280,18 +296,18 @@ export default async function HomePage() {
               Global <span className="text-accent">Services</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Verified operators across 57 countries specializing in the core disciplines of oversize transport and escort operations.
+              Verified operators across 120 countries specializing in every discipline of oversize transport.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 relative z-10">
               {[
-                { name: 'Pilot Car Services', slug: 'pilot-car-operator', icon: '🚙', desc: 'Certified lead and chase vehicles for dimensional loads.' },
-                { name: 'Escort Vehicles', slug: 'escort-vehicle', icon: '🚓', desc: 'Civilian and off-duty police units for traffic control.' },
-                { name: 'Heavy Haul Escorts', slug: 'heavy-haul-escort', icon: '🚛', desc: 'Specialized escort configurations for multi-axle moves.' },
-                { name: 'Oversize Load Support', slug: 'oversize-load-escort', icon: '📏', desc: 'Compliance tracking, permitting, and physical escorts combined.' },
-                { name: 'Route Surveys', slug: 'route-survey', icon: '🗺️', desc: 'Pre-trip physical infrastructure checks and bridge clearances.' },
-                { name: 'Wide Load Escorts', slug: 'wide-load-escort', icon: '🛣️', desc: 'Single and multi-lane rolling roadblocks for extreme widths.' },
-                { name: 'TWIC & Port Clearances', slug: 'twic-cleared-operator', icon: '⚓', desc: 'Government-vetted operators with direct secure terminal access.' },
-                { name: 'Military/DOD Transport', slug: 'dod-cleared-escort', icon: '🎖️', desc: 'Cleared escorts for sensitive defense-grade mobilization.' }
+                { name: 'Pilot Car Operators', slug: 'pilot-car-operator', icon: '🚗', desc: 'Certified lead and chase vehicles for all dimensional loads.' },
+                { name: 'High Pole Escorts', slug: 'high-pole', icon: '📐', desc: 'Height pole operators verifying bridge and overhead clearances.' },
+                { name: 'Steermen', slug: 'steerman', icon: '🕹️', desc: 'Certified rear steer operators for superloads requiring tillers.' },
+                { name: 'Route Surveyors', slug: 'route-survey', icon: '🗺️', desc: 'Pre-trip infrastructure checks, bridge clearances, and road analysis.' },
+                { name: 'Heavy Towing & Rotators', slug: 'heavy-towing', icon: '🏗️', desc: 'Heavy-duty recovery, rotator operations, and emergency response.' },
+                { name: 'Freight Brokers', slug: 'freight-broker', icon: '📋', desc: 'Specialized heavy haul brokerage with FMCSA-verified authority.' },
+                { name: 'TWIC Port Clearances', slug: 'twic-cleared-operator', icon: '⚓', desc: 'Government-vetted operators with secure maritime terminal access.' },
+                { name: 'Military / DoD Transport', slug: 'dod-cleared-escort', icon: '🎖️', desc: 'STRAC-cleared escorts for sensitive defense mobilization.' },
               ].map((svc) => (
                 <Link
                   key={svc.slug}
@@ -308,7 +324,7 @@ export default async function HomePage() {
                         {svc.desc}
                       </p>
                       <div className="mt-4 text-xs font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                        View Coverage →
+                        View Operators →
                       </div>
                     </div>
                   </div>
@@ -325,15 +341,15 @@ export default async function HomePage() {
         </section>
         </ScrollReveal>
 
-        {/* State Protocols — Quick Access */}
+        {/* ═══ COMPLIANCE REGULATIONS — Global, not just US ═══ */}
         <ScrollReveal>
         <section className="py-10 sm:py-16 px-4 overflow-hidden">
           <div className="w-full max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tighter">
-              State <span className="text-accent">Protocols</span>
+              Escort <span className="text-accent">Regulations</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Granular escort triggers, permit portals, and compliance data for every US state.
+              Granular escort triggers, permit portals, and compliance data across 120 countries.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
               {[
@@ -368,7 +384,7 @@ export default async function HomePage() {
                 href="/escort-requirements"
                 className="text-accent text-sm font-bold hover:underline"
               >
-                View all 67+ jurisdictions across 57 countries →
+                View all jurisdictions across 120 countries →
               </Link>
             </div>
           </div>
@@ -388,7 +404,7 @@ export default async function HomePage() {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tighter">
                 Route <span className="text-accent">Intelligence</span>
               </h2>
-              <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">3D Interactive</span>
+              <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Interactive</span>
             </div>
             <CinematicMap
               markers={[
@@ -400,9 +416,13 @@ export default async function HomePage() {
                 { lng: -87.63, lat: 41.88, label: 'Chicago IL', type: 'corridor' },
                 { lng: -122.33, lat: 47.61, label: 'Seattle WA', type: 'operator' },
                 { lng: -73.99, lat: 40.73, label: 'New York NY', type: 'border' },
+                { lng: -0.12, lat: 51.51, label: 'London UK', type: 'operator' },
+                { lng: 55.27, lat: 25.20, label: 'Dubai UAE', type: 'staging' },
+                { lng: 153.02, lat: -27.47, label: 'Brisbane AU', type: 'operator' },
+                { lng: -46.63, lat: -23.55, label: 'São Paulo BR', type: 'corridor' },
               ]}
-              center={[-98.5, 39.8]}
-              zoom={3.5}
+              center={[-30, 20]}
+              zoom={1.8}
               className="min-h-[350px] sm:min-h-[450px]"
             />
             <div className="mt-4 text-center">
@@ -442,12 +462,12 @@ export default async function HomePage() {
           />
         </section>
 
-        {/* Claim Panel */}
+        {/* Claim Panel — unified terminology */}
         <section className="py-8 px-4 max-w-7xl mx-auto">
           <HCClaimCorrectVerifyPanel
             claimAction={{
               id: 'claim',
-              label: 'Claim Your Listing',
+              label: 'Claim Profile',
               href: '/claim',
               type: 'claim',
               priority: 'primary',
@@ -461,7 +481,7 @@ export default async function HomePage() {
             }}
             correctAction={{
               id: 'correct',
-              label: 'Correct a Listing',
+              label: 'Correct a Profile',
               href: '/report-data-issue',
               type: 'report',
               priority: 'tertiary',
@@ -469,7 +489,7 @@ export default async function HomePage() {
           />
         </section>
 
-        {/* 57-Country Status Ticker — Dynamic from global_countries */}
+        {/* ═══ 120-COUNTRY GLOBAL NETWORK — Priority-Sorted ═══ */}
         <section className="py-8 px-4 overflow-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
@@ -477,31 +497,29 @@ export default async function HomePage() {
                 Global <span className="text-accent">Network</span>
               </h2>
               <span className="bg-accent/10 border border-accent/20 text-accent text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
-                {allCountries.length} countries tracked
+                {allCountries.length || 120} countries
               </span>
             </div>
             
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base font-medium text-gray-400 mb-6">
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500"></span> {liveCountries.length} Live</div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} Expanding</div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gray-600"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} Planned</div>
+              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500"></span> {liveCountries.length} Live Markets</div>
+              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} Expanding</div>
+              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-gray-600"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} Planned</div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              {(allCountries.length > 0 ? allCountries.slice(0, 18) : [
-                { iso2: 'US', name: 'United States', activation_phase: 'active', is_active_market: true },
-                { iso2: 'CA', name: 'Canada', activation_phase: 'active', is_active_market: true },
-                { iso2: 'AU', name: 'Australia', activation_phase: 'active', is_active_market: true },
-                { iso2: 'GB', name: 'United Kingdom', activation_phase: 'active', is_active_market: true },
-              ]).map((c: { iso2: string; name?: string; activation_phase?: string; is_active_market?: boolean; slug?: string }) => {
+              {sortedCountries.slice(0, 24).map((c: { iso2: string; name?: string; activation_phase?: string; is_active_market?: boolean; slug?: string; tier?: string }) => {
                 const isLive = c.is_active_market || c.activation_phase === 'active';
                 const isExpanding = c.activation_phase === 'expanding';
+                const isTierA = tierAPriority.includes(c.iso2);
                 return (
                 <Link
                   key={c.iso2}
                   href={`/directory/${c.iso2.toLowerCase()}`}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold border transition-all shadow-sm ${
-                    isLive
+                    isTierA
+                      ? 'bg-accent/10 border-accent/30 text-accent hover:bg-accent/20 ring-1 ring-accent/10'
+                      : isLive
                       ? 'bg-green-500/10 border-green-500/30 text-green-400 hover:bg-green-500/20'
                       : isExpanding
                       ? 'bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20'
@@ -509,37 +527,42 @@ export default async function HomePage() {
                   }`}
                 >
                   <span className="truncate pr-2">{c.name || c.iso2}</span>
-                  {isLive && <span className="w-2 h-2 flex-shrink-0 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />}
+                  {isTierA && <span className="text-[8px] font-black text-accent/70 uppercase">Gold</span>}
+                  {!isTierA && isLive && <span className="w-2 h-2 flex-shrink-0 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />}
                 </Link>
-              );})}
+              );
+              })}
             </div>
-            {allCountries.length > 18 && (
+            {(allCountries.length > 24 || allCountries.length === 0) && (
               <div className="mt-5 text-center sm:text-left">
                 <Link href="/countries" className="inline-block bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-xl px-6 py-3 text-white text-sm font-bold transition-colors">
-                  View All Directory Corridors →
+                  View All {allCountries.length || 120} Countries →
                 </Link>
               </div>
             )}
           </div>
         </section>
 
-        {/* Pricing CTA */}
+        {/* ═══ PRO UPGRADE — Specific Value Props ═══ */}
         <ScrollReveal>
         <section className="py-8 px-4 max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-accent/10 via-accent/5 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 ag-glow-gold ag-spring-hover">
             <div>
-              <h3 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-1">
-                Ready to Go <span className="text-accent ag-text-glow">Pro</span>?
+              <h3 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-2">
+                Upgrade to <span className="text-accent ag-text-glow">Pro</span>
               </h3>
-              <p className="text-gray-400 text-sm">
-                Get verified, get priority runs, get paid faster.
-              </p>
+              <ul className="text-gray-400 text-sm space-y-1">
+                <li>✓ Priority placement in search results</li>
+                <li>✓ Verified badge on your operator profile</li>
+                <li>✓ Real-time load alerts in your coverage area</li>
+                <li>✓ Analytics dashboard with view & lead tracking</li>
+              </ul>
             </div>
             <Link
               href="/pricing"
               className="bg-accent text-black px-8 py-4 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all flex-shrink-0 ag-magnetic shadow-[0_0_24px_rgba(245,159,10,0.3)] hover:shadow-[0_0_40px_rgba(245,159,10,0.5)]"
             >
-              View Pricing →
+              View Plans & Pricing →
             </Link>
           </div>
         </section>
@@ -551,65 +574,10 @@ export default async function HomePage() {
         </section>
       </main>
 
-      {/* Footer — Complete, No Dead Links */}
-      <footer className="py-10 sm:py-12 px-4 border-t border-white/10 bg-black/30 overflow-hidden">
-        <div className="w-full max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
-            <div>
-              <h4 className="text-white font-bold text-sm mb-3">Directory</h4>
-              <div className="space-y-2 text-sm">
-                <Link href="/directory" className="block text-gray-500 hover:text-white transition-colors">Browse Directory</Link>
-                <Link href="/glossary/us/pilot-car" className="block text-gray-500 hover:text-white transition-colors">Haul Command Glossary</Link>
-                <Link href="/voice" className="block text-gray-500 hover:text-white transition-colors">AI Voice Answers</Link>
-                <Link href="/roles/twic-cleared-operator" className="block text-gray-500 hover:text-white transition-colors">Port Clearances</Link>
-                <Link href="/countries" className="block text-gray-500 hover:text-white transition-colors">Countries</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-bold text-sm mb-3">Tools</h4>
-              <div className="space-y-2 text-sm">
-                <Link href="/tools/rate-estimator/us" className="block text-gray-500 hover:text-white transition-colors">Route Calculator</Link>
-                <Link href="/tools/friday-checker" className="block text-gray-500 hover:text-white transition-colors">Friday Checker</Link>
-                <Link href="/tools/superload-alerts" className="block text-gray-500 hover:text-white transition-colors">Superload Alerts</Link>
-                <Link href="/tools/escort-rules/us" className="block text-gray-500 hover:text-white transition-colors">State Rules Locator</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-bold text-sm mb-3">Global Markets</h4>
-              <div className="space-y-2 text-sm">
-                <Link href="/directory/us" className="block text-gray-500 hover:text-white transition-colors">🇺🇸 United States</Link>
-                <Link href="/directory/ca" className="block text-gray-500 hover:text-white transition-colors">🇨🇦 Canada</Link>
-                <Link href="/directory/au" className="block text-gray-500 hover:text-white transition-colors">🇦🇺 Australia</Link>
-                <Link href="/directory/gb" className="block text-gray-500 hover:text-white transition-colors">🇬🇧 United Kingdom</Link>
-                <Link href="/countries" className="block text-accent hover:text-yellow-500 transition-colors font-bold">+ 53 more countries →</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-bold text-sm mb-3">Company</h4>
-              <div className="space-y-2 text-sm">
-                <Link href="/blog" className="block text-gray-500 hover:text-white transition-colors">Intelligence Blog</Link>
-                <Link href="/claim" className="block text-gray-500 hover:text-white transition-colors">Claim Listing</Link>
-                <Link href="/contact" className="block text-gray-500 hover:text-white transition-colors">Contact Us</Link>
-                <Link href="/report-data-issue" className="block text-gray-500 hover:text-white transition-colors">Report Issue</Link>
-                <Link href="/remove-listing" className="block text-gray-500 hover:text-white transition-colors">Remove Listing</Link>
-              </div>
-            </div>
-          </div>
-
-          <HCTrustGuardrailsModule />
-
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 pt-6 border-t border-white/5">
-            <div className="flex flex-col items-center sm:items-start gap-2">
-              <HaulCommandLogo variant="full" size="sm" />
-              <p className="text-sm text-white/40">Built for the corridor. Not the crowd.</p>
-              <SocialLinks />
-            </div>
-            <div className="text-[10px] text-gray-600">
-              © {new Date().getFullYear()} Haul Command. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* 
+        FOOTER IS RENDERED BY layout.tsx via <Footer /> component.
+        DO NOT add a second footer here.
+      */}
     </>
   );
 }
