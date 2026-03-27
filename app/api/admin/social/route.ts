@@ -54,11 +54,26 @@ export async function PATCH(req: NextRequest) {
       scheduled_for: next.toISOString(),
     }).eq('id', post_id);
 
-    // TODO: If Buffer API key is set, create the Buffer post here
+    const { data: post } = await supabase.from('social_posts').select('*').eq('id', post_id).single();
+
     const bufferKey = process.env.BUFFER_API_KEY;
-    if (bufferKey) {
-      // Buffer API call would go here
-      // POST https://api.bufferapp.com/1/updates/create.json
+    const bufferProfileId = process.env.BUFFER_PROFILE_ID;
+    
+    if (bufferKey && bufferProfileId && post) {
+      try {
+        const body = new URLSearchParams();
+        body.append('text', post.content || 'Update from Haul Command');
+        body.append('profile_ids[]', bufferProfileId);
+        body.append('scheduled_at', next.toISOString());
+        
+        await fetch(`https://api.bufferapp.com/1/updates/create.json?access_token=${bufferKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
+      } catch (e) {
+        console.error('Failed to dispatch to Buffer:', e);
+      }
     }
 
     return NextResponse.json({ ok: true, action: 'scheduled', scheduled_for: next.toISOString() });

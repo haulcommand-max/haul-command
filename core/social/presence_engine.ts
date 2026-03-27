@@ -468,10 +468,19 @@ export class PresenceEngine {
             source_signal: 'false_availability_penalty',
         }).eq('operator_id', operatorId);
 
-        // Apply leaderboard penalty
-        await this.db.from('operator_momentum').update({
-            total_score: 0, // TODO: Use RPC decrement in production
-        }).eq('user_id', operatorId);
+        // Apply leaderboard penalty (decrement via RPC)
+        try {
+            await this.db.rpc('increment_momentum_points', {
+                p_user_id: operatorId,
+                p_points: POINTS.false_availability_penalty,
+                p_source: 'false_availability_penalty',
+            });
+        } catch {
+            // Fallback if RPC fails
+            await this.db.from('operator_momentum').update({
+                total_score: 0,
+            }).eq('user_id', operatorId);
+        }
 
         // Apply temporary visibility downgrade
         const expiresAt = new Date(

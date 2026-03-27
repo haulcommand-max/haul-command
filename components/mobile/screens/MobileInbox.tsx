@@ -260,10 +260,20 @@ export default function MobileInbox() {
     track('inbox_action_taken' as any, { metadata: { message_id: notifId, action } });
 
     if (action === 'accept' || action === 'decline') {
-      // Mark as read and update state
+      const offerId = openThread?.payload?.offer_id || openThread?.payload?.id || notifId;
       await markAsRead(notifId);
       setOpenThread(null);
-      // TODO: Wire to real accept/decline endpoints when available
+      
+      try {
+        await fetch('/api/offers', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ offer_id: offerId, action })
+        });
+        track(`offer_${action}` as any, { metadata: { offer_id: offerId } });
+      } catch (e) {
+        console.error(`Failed to ${action} offer`, e);
+      }
     } else if (action === 'reply') {
       // For now, close thread — message reply flow TBD
       setOpenThread(null);

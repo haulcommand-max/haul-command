@@ -26,6 +26,8 @@ export const metadata = {
   },
 };
 
+export const dynamic = 'force-dynamic';
+
 export const LOADS_JSONLD = `{
   "@context": "https://schema.org",
   "@type": "WebPage",

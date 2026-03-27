@@ -233,8 +233,25 @@ export async function startClaim(input: ClaimStartInput): Promise<ClaimStartResu
             claimRecord.verification_method = 'voice_callback_verification';
             result.nextStep = 'voice_callback_scheduled';
             result.callbackScheduled = true;
-            // TODO: Schedule Vapi callback to speak the code
-            console.log(`[CLAIM VOICE CALLBACK] Place ${input.placeId}: code ${callbackCode} — calling ${phone}`);
+            
+            const vapiKey = process.env.VAPI_PRIVATE_KEY;
+            const phoneNumberId = process.env.VAPI_PHONE_NUMBER_ID;
+            if (vapiKey && phoneNumberId) {
+                fetch('https://api.vapi.ai/call/phone', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${vapiKey}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phoneNumberId,
+                        customer: { number: phone },
+                        assistant: {
+                            firstMessage: `Hello. You requested a voice verification code for Haul Command. Your code is ${callbackCode.split('').join(', ')}. Again, your code is ${callbackCode.split('').join(', ')}. Thank you.`,
+                            model: { provider: 'openai', model: 'gpt-4o-mini', messages: [{ role: 'system', content: 'You are an automated verification system for Haul Command.' }] },
+                            voice: { provider: '11labs', voiceId: 'bIHbv24MWmeRgasZH58o' }
+                        }
+                    })
+                }).catch(e => console.error('[CLAIM VOICE CALLBACK] Vapi Dispatch Failed:', e));
+            }
+            console.log(`[CLAIM VOICE CALLBACK] Place ${input.placeId}: calling ${phone}`);
             break;
         }
     }

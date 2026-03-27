@@ -99,7 +99,39 @@ export class ControlTower {
             priority: 0 // Absolute highest priority
         };
         console.error('[CONTROL TOWER] *** EMERGENCY STOP DIRECTIVE ISSUED ***', directive);
-        // TODO: Integrate with Vapi-Broker-Blocker to auto-dial safety manager
+        this.dispatchEmergencyVoiceAgent(signal.source, `Safety Critical Event detected. Vault ID ${signal.hash}. Immediate stop order issued.`);
+    }
+
+    private async dispatchEmergencyVoiceAgent(source: string, message: string) {
+        const vapiKey = process.env.VAPI_PRIVATE_KEY;
+        const safetyPhone = process.env.EMERGENCY_SAFETY_PHONE;
+        
+        if (!vapiKey || !safetyPhone) {
+            console.log('[CONTROL TOWER] Missing Vapi configuration for auto-dial (VAPI_PRIVATE_KEY or EMERGENCY_SAFETY_PHONE).');
+            return;
+        }
+
+        try {
+            await fetch('https://api.vapi.ai/call/phone', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${vapiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
+                    customer: { number: safetyPhone },
+                    assistant: {
+                        firstMessage: `Attention Safety Manager. This is the Haul Command Control Tower. You have an active Emergency Hold. ${message}. Please review the active directive immediately.`,
+                        model: { provider: 'openai', model: 'gpt-4o-mini', messages: [{ role: 'system', content: 'You are the Haul Command emergency dispatcher auto-dialing a safety manager to confirm an emergency stop directive.' }] },
+                        voice: { provider: '11labs', voiceId: 'bIHbv24MWmeRgasZH58o' }
+                    }
+                })
+            });
+            console.log(`[CONTROL TOWER] Vapi Emergency Auto-Dial Dispatched to ${safetyPhone}`);
+        } catch (e) {
+            console.error('[CONTROL TOWER] Vapi Dispatch Failed:', e);
+        }
     }
 }
 

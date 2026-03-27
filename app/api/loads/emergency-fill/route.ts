@@ -61,10 +61,31 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single();
 
-    // 4. TODO: Trigger push notifications to all operators
-    // This would integrate with Firebase Cloud Messaging or OneSignal
-    // For now, log the intent
-    console.log(`[EMERGENCY FILL] Load ${loadId}: blasting to ${operatorCount} operators in ${corridor}`);
+    // 4. Trigger push notifications to all operators via Novu
+    if (process.env.NOVU_API_KEY && operators && operators.length > 0) {
+      try {
+        const { Novu } = await import('@novu/node');
+        const novu = new Novu(process.env.NOVU_API_KEY);
+        
+        const subscriberIds = operators.map((o: any) => o.id);
+        
+        await novu.trigger('emergency-load-blast', {
+          to: subscriberIds,
+          payload: {
+            loadId,
+            maxRate,
+            corridor,
+            urgencyLevel: urgencyLevel || 'urgent',
+            message: `🚨 URGENT: High priority load in ${corridor} paying up to $${maxRate}. Reply immediately to claim.`
+          }
+        });
+        console.log(`[EMERGENCY FILL] Triggered Novu push to ${subscriberIds.length} operators.`);
+      } catch (err) {
+        console.error('[EMERGENCY FILL] Failed to trigger push via Novu:', err);
+      }
+    } else {
+      console.log(`[EMERGENCY FILL] Load ${loadId}: blazing intent to ${operatorCount} operators in ${corridor} (No API KEY or NO OP)`);
+    }
 
     return NextResponse.json({
       success: true,

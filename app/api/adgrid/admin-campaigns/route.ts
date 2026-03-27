@@ -21,18 +21,26 @@ export async function GET() {
     .order('created_at', { ascending: false })
     .limit(200);
 
-  // Impression/click totals per placement
+  // Impression/click totals per placement & per campaign
   const { data: placementStats } = await supabase
     .from('hc_ad_events')
-    .select('surface, event_type')
+    .select('surface, event_type, campaign_id')
     .limit(50000);
 
-  // Aggregate by placement
+  // Aggregate by placement and campaign
   const placementMap: Record<string, { impressions: number; clicks: number }> = {};
+  const campaignStats: Record<string, { impressions: number; clicks: number }> = {};
+
   for (const ev of (placementStats || [])) {
     if (!placementMap[ev.surface]) placementMap[ev.surface] = { impressions: 0, clicks: 0 };
     if (ev.event_type === 'impression') placementMap[ev.surface].impressions++;
     if (ev.event_type === 'click')      placementMap[ev.surface].clicks++;
+
+    if (ev.campaign_id) {
+      if (!campaignStats[ev.campaign_id]) campaignStats[ev.campaign_id] = { impressions: 0, clicks: 0 };
+      if (ev.event_type === 'impression') campaignStats[ev.campaign_id].impressions++;
+      if (ev.event_type === 'click')      campaignStats[ev.campaign_id].clicks++;
+    }
   }
   const topPlacements = Object.entries(placementMap).map(([placement, p]) => ({
     placement,
@@ -42,11 +50,11 @@ export async function GET() {
   })).sort((a, b) => b.impressions - a.impressions).slice(0, 6);
 
   // Flatten campaigns for response
-  const flatCampaigns = (campaigns || []).map((c: Record<string, unknown>) => ({
+  const flatCampaigns = (campaigns || []).map((c: any) => ({
     ...c,
-    company_name: (c.ad_advertisers as { company_name: string } | null)?.company_name || '',
-    impressions: 0, // TODO: join with ad_events aggregates
-    clicks: 0,
+    company_name: c.ad_advertisers?.company_name || '',
+    impressions: campaignStats[c.id]?.impressions || 0,
+    clicks: campaignStats[c.id]?.clicks || 0,
   }));
 
   return NextResponse.json({ campaigns: flatCampaigns, top_placements: topPlacements });
