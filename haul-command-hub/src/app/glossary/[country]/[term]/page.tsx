@@ -25,7 +25,7 @@ export async function generateMetadata(
   const termCapitalized = data.country_alias.replace(/\b\w/g, l => l.toUpperCase());
 
   return {
-    title: `${termCapitalized} Requirements & Directory in ${params.country.toUpperCase()} | Haul Command`,
+    title:`${termCapitalized} Requirements & Directory in ${params.country.toUpperCase()} |`,
     description: `Learn about ${data.country_alias} rules and definitions in ${params.country.toUpperCase()}. Discover verified operators, route restrictions, and exact cost estimates using Haul Command's 120-country glossary network.`,
     alternates: {
       canonical: `https://haulcommand.com/glossary/${params.country}/${params.term}`,

@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return {
-    title: `${stateName}, ${cc.name} — Heavy Haul Directory | HAUL COMMAND`,
+    title:`${stateName},${cc.name} — Heavy Haul Directory |`,
     description: `Browse pilot car operators, escort services, and heavy haul infrastructure in ${stateName}, ${cc.name}.`,
   };
 }

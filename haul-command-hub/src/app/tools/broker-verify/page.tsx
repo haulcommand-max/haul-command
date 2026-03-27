@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import BrokerVerifyClient from './BrokerVerifyClient';
 
 export const metadata: Metadata = {
-  title: 'Broker & Dispatcher Verification Tool | Haul Command',
+  title:'Broker & Dispatcher Verification Tool |',
   description: 'Instantly verify heavy haul and oversize freight brokers via MC Number. Check risk scores, bond status, and business legitimacy.',
   alternates: {
     canonical: 'https://haulcommand.com/tools/broker-verify',

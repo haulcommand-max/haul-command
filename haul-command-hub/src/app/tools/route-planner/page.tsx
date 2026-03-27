@@ -7,7 +7,7 @@ import MultiStateRouteClient from './MultiStateRouteClient';
 export const runtime = 'edge';
 
 export const metadata: Metadata = {
-  title: 'Multi-State Route Planner & Permit Cost Calculator | Haul Command',
+  title:'Multi-State Route Planner & Permit Cost Calculator |',
   description: 'Enter your origin and destination to automatically calculate multi-state route requirements, total permit costs, and escort needs for oversize loads.',
 };
 

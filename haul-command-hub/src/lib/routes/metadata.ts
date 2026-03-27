@@ -6,7 +6,7 @@ export function buildMetadataFromPageKey(pageKey: any): Metadata {
         : { index: false, follow: true };
 
     return {
-        title: `${pageKey.title} | HAUL COMMAND`,
+        title:`${pageKey.title}|`,
         description: pageKey.meta_description || undefined,
         alternates: {
             canonical: pageKey.canonical_slug,

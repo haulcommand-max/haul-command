@@ -54,7 +54,7 @@ export async function generateMetadata({
   if (!city || !service) return { title: 'Not Found' };
 
   const localTerm = country.terms[service.termKey] || service.label;
-  const title = `${localTerm} Near Me in ${city}, ${country.name} | Haul Command`;
+  const title = `${localTerm} Near Me in ${city}, ${country.name}`;
   const description = `Looking for a ${localTerm.toLowerCase()} near me in ${city}? Find verified operators, get instant quotes, and check ${country.terms.oversize_load.toLowerCase()} regulations. Compare pricing from local ${country.terms.escort_vehicle.toLowerCase()} professionals. Updated March 2026.`;
   const url = `https://haulcommand.com/${countrySlug}/city/${citySlug}/${serviceSlug}`;
 

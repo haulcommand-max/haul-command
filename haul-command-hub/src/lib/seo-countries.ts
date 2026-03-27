@@ -1,4 +1,4 @@
-// Haul Command — 57-Country SEO Engine
+// Haul Command — 120-Country SEO Engine
 // Localized terminology + tier system for programmatic page generation
 
 export interface CountryConfig {
@@ -36,7 +36,7 @@ export const COUNTRIES: CountryConfig[] = [
         code: 'US', name: 'United States', slug: 'us', flag: '🇺🇸', tier: 'A', lang: 'en', currency: 'USD', units: 'imperial',
         terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Oversize Load', heavy_haul: 'Heavy Haul', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Oversize Permit' },
         regions: ['Florida', 'Texas', 'California', 'Ohio', 'Pennsylvania', 'Illinois', 'Georgia', 'North Carolina', 'Washington', 'Oregon', 'New York', 'Michigan', 'Indiana', 'Alabama', 'Louisiana', 'Tennessee', 'Virginia', 'Kentucky', 'Missouri', 'Arizona', 'Colorado', 'Minnesota', 'Wisconsin', 'Iowa', 'Oklahoma', 'Arkansas', 'Mississippi', 'Kansas', 'Nevada', 'Utah', 'New Mexico', 'Nebraska', 'West Virginia', 'Montana', 'Wyoming', 'South Dakota', 'North Dakota', 'Maine', 'Idaho', 'New Hampshire', 'Hawaii', 'Rhode Island', 'Delaware', 'Vermont', 'Connecticut', 'New Jersey', 'Maryland', 'Massachusetts', 'South Carolina', 'Mississippi'],
-        cities: ['Houston', 'Dallas', 'Jacksonville', 'Phoenix', 'Denver', 'Seattle', 'El Paso', 'Mobile', 'Cleveland', 'Charleston', 'Savannah', 'Gary', 'Toronto', 'Vancouver', 'Atlanta', 'Chicago', 'Los Angeles', 'San Francisco', 'Portland', 'Tampa', 'Miami', 'Orlando', 'Nashville', 'Charlotte', 'Indianapolis', 'Columbus', 'Detroit', 'Minneapolis', 'St. Louis', 'Kansas City', 'Oklahoma City', 'Memphis', 'Baton Rouge', 'New Orleans', 'Las Vegas', 'Salt Lake City', 'Albuquerque', 'Tulsa', 'Raleigh', 'Pittsburgh', 'Philadelphia', 'Baltimore', 'Richmond', 'Norfolk', 'Birmingham', 'Little Rock', 'Shreveport', 'Lubbock', 'Midland', 'Odessa'],
+        cities: ['Houston', 'Dallas', 'Jacksonville', 'Phoenix', 'Denver', 'Seattle', 'El Paso', 'Mobile', 'Cleveland', 'Charleston', 'Savannah', 'Gary', 'Anchorage', 'Honolulu', 'Atlanta', 'Chicago', 'Los Angeles', 'San Francisco', 'Portland', 'Tampa', 'Miami', 'Orlando', 'Nashville', 'Charlotte', 'Indianapolis', 'Columbus', 'Detroit', 'Minneapolis', 'St. Louis', 'Kansas City', 'Oklahoma City', 'Memphis', 'Baton Rouge', 'New Orleans', 'Las Vegas', 'Salt Lake City', 'Albuquerque', 'Tulsa', 'Raleigh', 'Pittsburgh', 'Philadelphia', 'Baltimore', 'Richmond', 'Norfolk', 'Birmingham', 'Little Rock', 'Shreveport', 'Lubbock', 'Midland', 'Odessa'],
         equipment_focus: ['wind turbine', 'mobile home', 'transformer', 'bridge beam', 'crane', 'heavy equipment', 'modular building', 'mining equipment', 'prefab house', 'construction equipment'],
     },
     {

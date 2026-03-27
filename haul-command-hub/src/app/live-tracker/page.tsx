@@ -3,7 +3,7 @@ import LiveVehicleMap from '@/components/motive/LiveVehicleMap';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Live Pilot Tracker — Real-Time Vehicle Positions | Haul Command',
+  title:'Live Pilot Tracker — Real-Time Vehicle Positions |',
   description:
     'Track escort vehicles in real time. ELD-verified positions from Motive plus phone GPS from pilots on standby. Know who\'s near your run before you post it.',
 };

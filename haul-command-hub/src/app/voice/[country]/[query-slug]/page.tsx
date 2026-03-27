@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: VoicePageProps): Promise<Meta
   const title = querySlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   const cc = country.toUpperCase();
   return {
-    title: `${title} — ${cc} Voice Answer | Haul Command`,
+    title:`${title} — ${cc} Voice Answer |`,
     description: `AI-powered regulatory answer for "${title}" in ${cc}. Get instant voice answers for heavy haul compliance, permits, and escort requirements.`,
   };
 }

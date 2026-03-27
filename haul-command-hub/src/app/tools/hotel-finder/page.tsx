@@ -4,11 +4,11 @@ import type { Metadata } from 'next';
 import HotelFinderClient from './HotelFinderClient';
 
 export const metadata: Metadata = {
-  title: 'Trucker Hotel & Truck Stop Finder — Pilot Car Rates + Amenities by State | Haul Command',
+  title:'Trucker Hotel & Truck Stop Finder — Pilot Car Rates + Amenities by State |',
   description:
     'Find truck-friendly hotels with pilot car discounts and truck stops with showers, scales, and WiFi near major interstates. 140+ verified locations across 20+ states.',
   openGraph: {
-    title: 'Trucker Hotel & Truck Stop Finder | Haul Command',
+    title:'Trucker Hotel & Truck Stop Finder |',
     description: 'Discounted hotel rates for pilot car operators and a comprehensive truck stop directory with parking, showers, and scales.',
   },
 };

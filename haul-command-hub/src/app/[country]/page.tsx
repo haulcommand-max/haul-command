@@ -22,43 +22,43 @@ export function generateStaticParams() {
 
 // ─── Exact Title Map (Tier A) ───
 const COUNTRY_TITLES: Record<string, string> = {
-    us: 'Pilot Car Services in the United States | Haul Command',
-    ca: 'Pilot Car Services in Canada | Haul Command',
-    au: 'Pilot Vehicle Services in Australia | Haul Command',
-    gb: 'Abnormal Load Escort UK | Haul Command',
-    nz: 'Pilot Vehicle Services New Zealand | Haul Command',
-    za: 'Abnormal Load Escort South Africa | Haul Command',
-    de: 'Schwertransport Begleitfahrzeug Deutschland | Haul Command',
-    nl: 'Exceptioneel Transport Begeleiding Nederland | Haul Command',
-    ae: 'Oversized Load Escort UAE | Haul Command',
-    br: 'Escolta para Cargas Especiais Brasil | Haul Command',
+    us: 'Pilot Car Services in the United States',
+    ca: 'Pilot Car Services in Canada',
+    au: 'Pilot Vehicle Services in Australia',
+    gb: 'Abnormal Load Escort UK',
+    nz: 'Pilot Vehicle Services New Zealand',
+    za: 'Abnormal Load Escort South Africa',
+    de: 'Schwertransport Begleitfahrzeug Deutschland',
+    nl: 'Exceptioneel Transport Begeleiding Nederland',
+    ae: 'Oversized Load Escort UAE',
+    br: 'Escolta para Cargas Especiais Brasil',
     // Tier B
-    ie: 'Abnormal Load Escort Ireland | Haul Command',
-    se: 'Special Transport Escort Sweden | Haul Command',
-    no: 'Spesialtransport Eskorte Norway | Haul Command',
-    dk: 'Særtransport Eskorte Denmark | Haul Command',
-    fi: 'Erikoiskuljetus Saattopalvelu Finland | Haul Command',
-    be: 'Convoi Exceptionnel Escorte Belgium | Haul Command',
-    at: 'Schwertransport Begleitung Austria | Haul Command',
-    ch: 'Schwertransport Begleitfahrzeug Switzerland | Haul Command',
-    es: 'Escolta Transporte Especial España | Haul Command',
-    fr: 'Convoi Exceptionnel Escorte France | Haul Command',
-    it: 'Scorta Trasporti Eccezionali Italia | Haul Command',
-    pt: 'Escolta Transporte Especial Portugal | Haul Command',
-    sa: 'Oversized Load Escort Saudi Arabia | Haul Command',
-    qa: 'Oversize Load Escort Qatar | Haul Command',
-    mx: 'Escolta Carga Sobredimensionada México | Haul Command',
+    ie: 'Abnormal Load Escort Ireland',
+    se: 'Special Transport Escort Sweden',
+    no: 'Spesialtransport Eskorte Norway',
+    dk: 'Særtransport Eskorte Denmark',
+    fi: 'Erikoiskuljetus Saattopalvelu Finland',
+    be: 'Convoi Exceptionnel Escorte Belgium',
+    at: 'Schwertransport Begleitung Austria',
+    ch: 'Schwertransport Begleitfahrzeug Switzerland',
+    es: 'Escolta Transporte Especial España',
+    fr: 'Convoi Exceptionnel Escorte France',
+    it: 'Scorta Trasporti Eccezionali Italia',
+    pt: 'Escolta Transporte Especial Portugal',
+    sa: 'Oversized Load Escort Saudi Arabia',
+    qa: 'Oversize Load Escort Qatar',
+    mx: 'Escolta Carga Sobredimensionada México',
     // Tier D
-    uy: 'Escolta Carga Sobredimensionada Uruguay | Haul Command',
-    pa: 'Escolta Carga Sobredimensionada Panamá | Haul Command',
-    cr: 'Escolta Transporte Especial Costa Rica | Haul Command',
+    uy: 'Escolta Carga Sobredimensionada Uruguay',
+    pa: 'Escolta Carga Sobredimensionada Panamá',
+    cr: 'Escolta Transporte Especial Costa Rica',
 };
 
 function getCountryTitle(country: CountryConfig): string {
     // Exact title if defined
     if (COUNTRY_TITLES[country.slug]) return COUNTRY_TITLES[country.slug];
     // Tier C auto-template: {Localized Special Transport Escort} in {Country}
-    return `${country.terms.escort_vehicle} in ${country.name} | Haul Command`;
+    return `${country.terms.escort_vehicle} in ${country.name}`;
 }
 
 // ─── Dynamic Metadata ───

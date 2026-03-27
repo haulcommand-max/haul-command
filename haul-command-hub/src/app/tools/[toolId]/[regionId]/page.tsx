@@ -108,7 +108,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const state = STATES.find(s => s.id === params.regionId);
 
   if (!tool || !state) {
-    return { title: 'Not Found | Haul Command' };
+    return { title:'Not Found |' };
   }
 
   return {

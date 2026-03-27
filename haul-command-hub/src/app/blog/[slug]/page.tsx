@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: `${title} | Haul Command Intelligence` };
   }
   return {
-    title: `${data.title} | Haul Command`,
+    title:`${data.title} |`,
     description: `${data.title} — Expert analysis from Haul Command's global intelligence database.`,
   };
 }

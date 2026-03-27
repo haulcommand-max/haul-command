@@ -8,7 +8,7 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'Pilot Car & Escort Vehicle Directory — 120 countries | Haul Command',
+    title:'Pilot Car & Escort Vehicle Directory — 120 countries |',
     description: 'Find pilot car operators and escort vehicle professionals across 120 countries. The world\'s largest oversize load transport directory covering North America, Europe, Middle East, Asia Pacific, and Latin America.',
     keywords: [
         'pilot car directory',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         'pilot car service global',
     ],
     openGraph: {
-        title: 'Pilot Car & Escort Vehicle Directory — 120 countries | Haul Command',
+        title:'Pilot Car & Escort Vehicle Directory — 120 countries |',
         description: 'Find verified oversize load transport professionals across 120 countries worldwide.',
         url: 'https://haulcommand.com/countries',
         siteName: 'Haul Command',

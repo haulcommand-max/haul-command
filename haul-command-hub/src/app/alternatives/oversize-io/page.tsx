@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 export const runtime = 'edge';
 
 export const metadata: Metadata = {
-  title: 'Oversize.io Alternative — The Free routing & permitting OS | Haul Command',
+  title:'Oversize.io Alternative — The Free routing & permitting OS |',
   description: 'Looking for an Oversize.io alternative? Haul Command gives you the 30 heaviest routing, permit, and escort calculators completely free, backed by a live 7,800+ directory.',
   openGraph: {
     title: 'Oversize.io Alternative: Upgrade to Haul Command',

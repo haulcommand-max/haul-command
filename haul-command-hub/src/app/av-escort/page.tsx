@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AV Escort Protocol — Autonomous Vehicle Escort Services | Haul Command',
+  title:'AV Escort Protocol — Autonomous Vehicle Escort Services |',
   description:
     'The first platform to match human pilot car operators with autonomous heavy haul loads. AV Escort certification, compliance standards, and load matching for the autonomous freight transition.',
 };

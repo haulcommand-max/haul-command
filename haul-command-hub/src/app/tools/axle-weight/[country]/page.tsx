@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const name = COUNTRY_NAMES[code] || code.toUpperCase();
 
   return {
-    title: `${name} Axle Weight Calculator & Bridge Formula Checker | Haul Command`,
+    title:`${name} Axle Weight Calculator & Bridge Formula Checker |`,
     description: `Calculate your gross weight, tandem grouping limits, and superload structural engineering thresholds for heavy haul transport in ${name}.`,
     alternates: {
       canonical: `https://haulcommand.com/tools/axle-weight/${code}`,

@@ -35,7 +35,7 @@ export async function generateMetadata({
     if (!country || !service) return { title: 'Not Found' };
 
     const localTerm = country.terms[service.termKey] || service.label;
-    const title = `${localTerm} in ${country.name} | Find Verified Operators | Haul Command`;
+    const title = `${localTerm} in ${country.name} | Find Verified Operators`;
     const description = `Search for ${localTerm.toLowerCase()} operators across ${country.name}. Compare verified professionals in ${country.cities.slice(0, 4).join(', ')} and more. Instant quotes, certifications, and reviews on Haul Command.`;
 
     return {

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const pk = await getPageKey('city_class', { country_slug: country, city_slug: city, surface_class: surfaceClass });
     if (!pk) return { title: 'Not Found' };
     return {
-        title: pk.title + ' | HAUL COMMAND',
+        title: pk.title + '',
         description: pk.meta_description,
         robots: pk.indexable ? 'index,follow' : 'noindex,nofollow',
         alternates: { canonical: pk.canonical_slug },

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const broker = await getBrokerProfile(slug);
   const name = broker?.name ?? slug;
   return {
-    title: `${name} — Broker Profile | HAUL COMMAND`,
+    title:`${name}— Broker Profile |`,
     description: `View ${name}'s broker profile, load patterns, and corridor activity on Haul Command.`,
   };
 }

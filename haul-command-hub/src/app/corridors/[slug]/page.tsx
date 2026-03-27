@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = c?.name ?? slug;
   const desc = c ? `${c.origin_city}, ${c.origin_state} to ${c.dest_city}, ${c.dest_state}${c.miles ? ` — ${c.miles} miles` : ''}.` : '';
   return {
-    title: `${name} — Heavy Haul Corridor Intelligence | HAUL COMMAND`,
+    title:`${name}— Heavy Haul Corridor Intelligence |`,
     description: `Corridor intelligence for ${name}. ${desc} View operators, rates, escort requirements, and market activity.`,
   };
 }

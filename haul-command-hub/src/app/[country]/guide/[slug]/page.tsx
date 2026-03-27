@@ -34,7 +34,7 @@ export async function generateMetadata({
     if (!country || !topic) return { title: 'Not Found' };
 
     const localTerm = country.terms[topic.termKey] || topic.title;
-    const title = `${topic.title} in ${country.name} — ${localTerm} Guide | Haul Command`;
+    const title = `${topic.title} in ${country.name} — ${localTerm} Guide`;
     const description = `Complete guide to ${localTerm.toLowerCase()} in ${country.name}. Learn about requirements, costs, certifications, and how to find verified operators. Updated for ${new Date().getFullYear()}.`;
 
     return {

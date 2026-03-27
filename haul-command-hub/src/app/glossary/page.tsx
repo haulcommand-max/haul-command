@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Glossary — 200+ Industry Terms | HAUL COMMAND',
+  title:'HeavyHaul Glossary — 200+ Industry Terms |',
   description: 'Complete heavy haul and oversize load glossary. Learn 200+ industry terms including pilot car, escort vehicle, superload, and more.',
 };
 

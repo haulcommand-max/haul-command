@@ -41,7 +41,7 @@ export async function generateMetadata({
     const city = findCity(country, citySlug);
     if (!city) return { title: 'Not Found' };
 
-    const title = `${country.terms.pilot_car} in ${city}, ${country.name} | Haul Command`;
+    const title = `${country.terms.pilot_car} in ${city}, ${country.name}`;
     const description = `Find verified ${country.terms.pilot_car.toLowerCase()} operators and ${country.terms.escort_vehicle.toLowerCase()} services in ${city}, ${country.name}. Get instant quotes for ${country.terms.oversize_load.toLowerCase()} transport. Updated 2026.`;
 
     return {
@@ -70,7 +70,7 @@ export default async function CityPage({
     const faqs = [
         {
             question: `How much does a ${country.terms.pilot_car.toLowerCase()} cost in ${city}?`,
-            answer: `${country.terms.pilot_car} rates in ${city}, ${country.name} typically range from ${country.currency} 1.50–3.50 per mile depending on load dimensions, route complexity, and urgency. Use our cost estimator for a personalized quote.`,
+            answer: `${country.terms.pilot_car} rates in ${city}, ${country.name} typically range from ${country.currency} ${country.units === 'imperial' ? '1.50–3.50 per mile' : '1.20–2.80 per km'} depending on load dimensions, route complexity, and urgency. Use our cost estimator for a personalized quote.`,
         },
         {
             question: `Do I need a ${country.terms.pilot_car.toLowerCase()} in ${city}?`,

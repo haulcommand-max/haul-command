@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const name = COUNTRY_NAMES[code] || code.toUpperCase();
 
   return {
-    title: `${name} Heavy Haul Permit Authority Directory | Haul Command`,
+    title:`${name} Heavy Haul Permit Authority Directory |`,
     description: `Lookup official OSOW permit portals, police escort authorities, and municipal curfews for heavy haul transport in ${name}.`,
     alternates: {
       canonical: `https://haulcommand.com/tools/permit-checker/${code}`,

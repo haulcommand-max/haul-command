@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const pk = await getPageKey('nearby_cluster', { anchor_type: anchorType, anchor_slug: anchorSlug, surface_class: surfaceClass });
     if (!pk) return { title: 'Not Found' };
     return {
-        title: pk.title + ' | HAUL COMMAND',
+        title: pk.title + '',
         description: pk.meta_description,
         robots: pk.indexable ? 'index,follow' : 'noindex,nofollow',
         alternates: { canonical: pk.canonical_slug },

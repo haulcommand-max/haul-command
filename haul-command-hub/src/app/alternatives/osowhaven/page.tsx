@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 export const runtime = 'edge';
 
 export const metadata: Metadata = {
-  title: 'OSOW Haven Alternative — The Global Pilot Car Network | Haul Command',
+  title:'OSOW Haven Alternative — The Global Pilot Car Network |',
   description: 'Looking for an OSOW Haven alternative? Unfetter your logistics with Haul Command’s live directory of 7,800+ verified pilot cars and autonomous 57-country routing.',
   openGraph: {
     title: 'OSOW Haven Alternative: Upgrade to Haul Command',
