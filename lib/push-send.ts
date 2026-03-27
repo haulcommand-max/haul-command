@@ -1,16 +1,9 @@
 import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 
-// ── Push Send (Consolidated) ──────────────────────────────────────────────────
-//
-// Sends push notifications to a user across all registered channels:
-//   1. Web Push (service worker subscriptions via web_push_subscriptions)
-//   2. FCM tokens (via push_tokens — used by firebase-push.ts and usePushRegistration)
-//
-// Canonical token table: push_tokens
-// Legacy web push table: web_push_subscriptions (stores endpoint/keys for web-push lib)
-//
-// VAPID keys are initialized lazily to avoid build crashes when keys aren't set.
+// ── NATIVE PUSH ENGINE (V2) ──────────────────────────────────────────────────
+// Re-established Firebase Admin SDK for Native APNs/FCM delivery.
+// Features immutable delivery logging, token invalidation, and urgency prioritization.
 
 let _vapidInitialized = false;
 function ensureVapid() {
@@ -18,73 +11,137 @@ function ensureVapid() {
     const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
     const priv = process.env.VAPID_PRIVATE_KEY;
     if (!pub || !priv) {
-        console.warn('[push-send] VAPID keys not configured — web push disabled.');
         return false;
     }
-    webpush.setVapidDetails(
-        'mailto:support@haulcommand.com',
-        pub,
-        priv.replace(/=+$/, ''),
-    );
+    webpush.setVapidDetails('mailto:support@haulcommand.com', pub, priv.replace(/=+$/, ''));
     _vapidInitialized = true;
     return true;
 }
 
+let fbAdmin: any = null;
+async function getFirebaseAdmin() {
+    if (fbAdmin) return fbAdmin;
+    try {
+        const firebaseAdminImport = await import('firebase-admin');
+        if (!firebaseAdminImport.default.apps.length) {
+            const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
+            if (serviceAccount) {
+                firebaseAdminImport.default.initializeApp({
+                    credential: firebaseAdminImport.default.credential.cert(JSON.parse(serviceAccount)),
+                });
+            } else {
+                firebaseAdminImport.default.initializeApp();
+            }
+        }
+        fbAdmin = firebaseAdminImport.default;
+        return fbAdmin;
+    } catch (e) {
+        console.warn('[push-engine] Firebase Admin init failed:', e);
+        return null;
+    }
+}
+
+export type PushPriority = 'urgent' | 'high' | 'normal';
+
 export type PushPayload = {
     title: string;
     body: string;
-    url: string;
-    meta?: Record<string, unknown>;
+    url?: string;
+    priority?: PushPriority;
+    loadId?: string;
+    meta?: Record<string, string>;
 };
 
-/**
- * Send push to a user across all their registered devices.
- * Queries both push_tokens (canonical) and web_push_subscriptions (legacy web push).
- * Returns count of successful sends.
- */
-export async function sendPushToUser(userId: string, payload: PushPayload) {
-    const supabase = createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    let sent = 0;
-
-    // ── 1. Web Push Subscriptions (endpoint/keys — for web-push library) ──
-    if (ensureVapid()) {
-        const { data: webSubs } = await supabase
-            .from('web_push_subscriptions')
-            .select('endpoint, p256dh, auth')
-            .eq('user_id', userId);
-
-        if (webSubs?.length) {
-            const results = await Promise.allSettled(
-                webSubs.map(async (sub) => {
-                    const subscription = {
-                        endpoint: sub.endpoint,
-                        keys: { p256dh: sub.p256dh, auth: sub.auth },
-                    } as any;
-                    await webpush.sendNotification(subscription, JSON.stringify(payload));
-                })
-            );
-            sent += results.filter(r => r.status === 'fulfilled').length;
-        }
-    }
-
-    // ── 2. FCM Tokens (from canonical push_tokens table) ──────────────────
-    // These tokens can be sent via Firebase Admin SDK when configured.
-    // For now, log the intent — FCM Admin SDK integration plugs in here.
+export async function sendNativePush(userId: string, payload: PushPayload) {
+    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const priority = payload.priority || 'normal';
+    
+    // 1. Fetch Tokens
     const { data: fcmTokens } = await supabase
         .from('push_tokens')
-        .select('token, platform_new')
+        .select('token, platform')
         .eq('profile_id', userId)
         .eq('enabled', true);
 
-    let fcmSent = 0;
-    if (fcmTokens?.length) {
-        // Firebase Admin SDK not installed or not configured — skip FCM
-        console.log(`[push-send] ${fcmTokens.length} FCM token(s) for user ${userId.slice(0, 8)}… (firebase-admin uninstalled due to Supabase push migration)`);
+    const { data: webSubs } = await supabase
+        .from('web_push_subscriptions')
+        .select('endpoint, p256dh, auth')
+        .eq('user_id', userId);
+
+    const fb = await getFirebaseAdmin();
+    let sentCount = 0;
+    
+    // 2. Deliver Native Firebase (FCM / APNs)
+    if (fb && fcmTokens && fcmTokens.length > 0) {
+        for (const fcm of fcmTokens) {
+            try {
+                // Construct platform-specific payload payload shaping
+                const message = {
+                    token: fcm.token,
+                    notification: { title: payload.title, body: payload.body },
+                    data: { url: payload.url || '', ...payload.meta },
+                    android: {
+                        priority: priority === 'urgent' ? 'high' : 'normal',
+                        notification: { channelId: priority === 'urgent' ? 'critical_alerts' : 'default' }
+                    },
+                    apns: {
+                        headers: priority === 'urgent' ? { 'apns-priority': '10', 'apns-push-type': 'alert' } : { 'apns-priority': '5' },
+                        payload: {
+                            aps: {
+                                sound: priority === 'urgent' ? 'critical_sound.wav' : 'default',
+                                badge: 1,
+                                'interruption-level': priority === 'urgent' ? 'critical' : 'active'
+                            }
+                        }
+                    }
+                };
+
+                await fb.messaging().send(message);
+                
+                // Track success delivery log
+                await supabase.from('push_delivery_log').insert({
+                    profile_id: userId,
+                    load_id: payload.loadId || null,
+                    token_id: fcm.token.substring(0, 32),
+                    platform: fcm.platform || 'mobile',
+                    delivery_status: 'sent',
+                    priority: priority
+                }).catch(()=>null);
+                
+                sentCount++;
+
+            } catch (err: any) {
+                const errorCode = err.errorInfo?.code;
+                
+                // Token Invalidation logic
+                if (errorCode === 'messaging/invalid-registration-token' || errorCode === 'messaging/registration-token-not-registered') {
+                    await supabase.from('push_tokens').update({
+                        enabled: false, last_failed_at: new Date().toISOString(), invalid_reason: errorCode
+                    }).eq('token', fcm.token);
+                    
+                    await supabase.from('push_delivery_log').insert({
+                        profile_id: userId, delivery_status: 'invalid_token', prioriy: priority, error_message: errorCode
+                    }).catch(()=>null);
+                } else {
+                    await supabase.from('push_delivery_log').insert({
+                        profile_id: userId, delivery_status: 'failed', priority: priority, error_message: err.message
+                    }).catch(()=>null);
+                }
+            }
+        }
     }
 
-    return { sent: sent + fcmSent, fcmPending: fcmSent > 0 ? 0 : (fcmTokens?.length ?? 0) };
+    // 3. Fallback Web Push
+    if (ensureVapid() && webSubs && webSubs.length > 0) {
+        for (const sub of webSubs) {
+            try {
+                await webpush.sendNotification({ endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } }, JSON.stringify(payload));
+                sentCount++;
+            } catch (err) {
+                // handle expiration if needed
+            }
+        }
+    }
+
+    return { sent: sentCount, fcmChecked: fcmTokens?.length || 0, webChecked: webSubs?.length || 0 };
 }
