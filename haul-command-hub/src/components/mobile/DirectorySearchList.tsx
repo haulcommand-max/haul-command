@@ -34,16 +34,26 @@ interface DirectorySearchListProps {
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  pilot_car: '🚗 Pilot Car',
+  pilot_car: '🚗 Pilot Car / Escort',
   escort_vehicle: '🚙 Escort Vehicle',
-  route_survey: '📍 Route Survey',
-  bucket_truck: '🚛 Bucket Truck',
-  height_pole: '📏 Height Pole',
+  flagger: '🦺 Flagger / Traffic Control',
+  height_pole: '📏 Height Pole / Specialized',
+  witpac: '🛣️ WITPAC / Interstate',
+  bucket_truck: '🚛 Bucket Truck (Utility)',
+  permit_service: '📋 Permit Service / Expediter',
+  route_survey: '📍 Route Survey (Engineering)',
+  traffic_control_supervisor: '🚧 Traffic Control Supervisor',
   police_escort: '🚔 Police Escort',
-  tow_truck: '🚚 Tow Truck',
+  steer_car: '🏎️ Steer Car / Rear Escort',
+  freight_broker: '🏢 Freight Broker / Carrier',
+  mobile_mechanic: '🔧 Heavy-Duty Mobile Mechanics',
+  tow_truck: '🚚 Heavy Towing & Rotators',
+  truck_stop: '⛽ Truck Stops / Travel Plazas',
+  staging_yard: '🅿️ Secure Staging / Layover Yards',
+  hazmat_response: '☣️ HAZMAT & Spill Response',
+  autonomous_fleet: '🤖 Autonomous Fleet Responders',
   crane_service: '🏗️ Crane Service',
-  heavy_haul_carrier: '🏋️ Heavy Haul',
-  permit_service: '📋 Permits',
+  heavy_haul_carrier: '🏋️ Heavy Haul Carrier',
 };
 
 function BlurredPII({ value, onReveal }: { value?: string; onReveal: () => void }) {

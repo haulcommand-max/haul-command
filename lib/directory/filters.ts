@@ -41,7 +41,7 @@ export type EquipmentType =
     | "background_checked"
     | "insurance_verified";
 
-export type ServiceType = "lead" | "chase" | "both" | "steerman" | "emergency_response" | "route_survey";
+export type ServiceType = "lead" | "chase" | "both" | "steerman" | "emergency_response" | "route_survey" | "flagger" | "height_pole" | "witpac" | "bucket_truck" | "permit_service" | "police_escort" | "freight_broker" | "mobile_mechanic" | "tow_truck" | "truck_stop" | "staging_yard" | "hazmat_response" | "autonomous_fleet";
 
 export const EQUIPMENT_OPTIONS: { key: EquipmentType; label: string; icon: string }[] = [
     { key: "high_pole", label: "High Pole", icon: "📡" },
@@ -60,6 +60,19 @@ export const SERVICE_TYPE_OPTIONS: { key: ServiceType; label: string; icon?: str
     { key: "steerman", label: "Steerman", icon: "🏗️" },
     { key: "route_survey", label: "Route Survey", icon: "🗺️" },
     { key: "emergency_response", label: "Emergency Response", icon: "🚨" },
+    { key: "flagger", label: "Flagger / Traffic Control", icon: "🦺" },
+    { key: "height_pole", label: "Height Pole / Specialized", icon: "📏" },
+    { key: "witpac", label: "WITPAC / Interstate", icon: "🛣️" },
+    { key: "bucket_truck", label: "Bucket Truck (Utility)", icon: "🚛" },
+    { key: "permit_service", label: "Permit Service / Expediter", icon: "📋" },
+    { key: "police_escort", label: "Police Escort", icon: "🚔" },
+    { key: "freight_broker", label: "Freight Broker", icon: "🏢" },
+    { key: "mobile_mechanic", label: "Mobile Mechanic", icon: "🔧" },
+    { key: "tow_truck", label: "Heavy Towing", icon: "🚚" },
+    { key: "truck_stop", label: "Truck Stops", icon: "⛽" },
+    { key: "staging_yard", label: "Staging Yards", icon: "🅿️" },
+    { key: "hazmat_response", label: "HAZMAT Response", icon: "☣️" },
+    { key: "autonomous_fleet", label: "Autonomous Fleet", icon: "🤖" },
 ];
 
 export const VERIFICATION_OPTIONS: { key: keyof Pick<DirectoryFilters, 'witpacCertified' | 'cevoCertified' | 'backgroundChecked' | 'insuranceVerified'>; label: string; color: string }[] = [

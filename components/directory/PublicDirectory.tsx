@@ -74,6 +74,14 @@ const SEED_OPERATORS: Operator[] = [
 const SERVICE_LABELS: Record<string, string> = {
   pilot_car: 'Pilot Car', height_pole: 'Height Pole', route_survey: 'Route Survey',
   wide_load: 'Wide Load', oversize: 'Oversize', av_escort: 'AV Escort',
+  flagger: 'Flagger / Traffic Control', witpac: 'WITPAC / Interstate',
+  bucket_truck: 'Bucket Truck', permit_service: 'Permits',
+  traffic_control_supervisor: 'Traffic Control Supervisor', police_escort: 'Police Escort',
+  steer_car: 'Steer Car', freight_broker: 'Freight Broker',
+  mobile_mechanic: 'Mobile Mechanic', tow_truck: 'Heavy Towing',
+  truck_stop: 'Truck Stop', staging_yard: 'Staging Yard',
+  hazmat_response: 'HAZMAT Response', autonomous_fleet: 'Autonomous Fleet',
+  crane_service: 'Crane Service', heavy_haul_carrier: 'Heavy Haul',
 };
 
 interface Operator {

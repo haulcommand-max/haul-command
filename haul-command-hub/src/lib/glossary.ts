@@ -58,11 +58,12 @@ import { HC_GLOSSARY_EXPANSION } from './glossary-expansion';
 
 import { MILITARY_ESC_TERMS } from './glossary-military-esc';
 import { INTERNATIONAL_TERMS } from './glossary-international';
+import { GENERATED_TERMS } from './glossary-generated-500';
 
 export const HC_GLOSSARY: GlossaryEntry[] = [
   ...MILITARY_ESC_TERMS,
   ...INTERNATIONAL_TERMS,
-
+  ...GENERATED_TERMS,
   ...HC_GLOSSARY_EXPANSION,
 
 
