@@ -9,11 +9,10 @@ import { getCountryConfig, getMarketMaturity } from '@/lib/hc-loaders/geography'
 import { getRatesBenchmark, computeRateRange } from '@/lib/hc-loaders/rates';
 import { COUNTRIES } from '@/lib/seo-countries';
 
-export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  return COUNTRIES.map(c => ({ country: c.slug }));
-}
+// Force dynamic — these pages query Supabase for rate benchmarks which
+// times out during static builds when the DB is under load.
+// Vercel's CDN handles caching automatically.
+export const dynamic = 'force-dynamic';
 
 type Props = { params: Promise<{ country: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -45,9 +44,9 @@ export default async function RatesCountryPage({ params }: Props) {
       />
       {!range && <HCAlertSignupModule context={`${cc.name} rate data`} />}
       <section className="mt-8 flex flex-wrap gap-2">
-        <Link href={`/requirements/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Requirements →</Link>
-        <Link href={`/directory/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Directory →</Link>
-        <Link href="/rates" className="text-xs text-gray-500 hover:text-accent">All Rates →</Link>
+        <Link href={`/requirements/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Requirements &rarr;</Link>
+        <Link href={`/directory/${cc.slug}`} className="text-xs text-gray-500 hover:text-accent">Directory &rarr;</Link>
+        <Link href="/rates" className="text-xs text-gray-500 hover:text-accent">All Rates &rarr;</Link>
       </section>
     </main>
   );
