@@ -79,6 +79,7 @@ export async function GET(req: NextRequest) {
               elai_video_id: translateRes[lang]?.id || '',
               language: lang,
               status: 'rendering',
+              format: job.format,
             }));
             await supabase.from('video_jobs').insert(translationJobs);
             await supabase.from('blog_posts').update({ video_status: 'translating' }).eq('id', job.blog_post_id);
@@ -90,8 +91,9 @@ export async function GET(req: NextRequest) {
           const { data: post } = await supabase.from('blog_posts')
             .select('video_urls').eq('id', job.blog_post_id).single();
           const existing = (post?.video_urls as Record<string, string>) || {};
+          const langKey = `${job.language}_${job.format === '9:16' ? 'vertical' : 'horizontal'}`;
           await supabase.from('blog_posts').update({
-            video_urls: { ...existing, [job.language]: videoUrl },
+            video_urls: { ...existing, [langKey]: videoUrl },
           }).eq('id', job.blog_post_id);
         }
 

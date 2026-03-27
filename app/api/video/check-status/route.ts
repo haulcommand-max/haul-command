@@ -141,6 +141,7 @@ export async function GET(req: NextRequest) {
               status: 'rendering',
               heygen_status: 'rendering',
               topic_slug: job.topic_slug,
+              format: job.format, // retain orientation metadata
               attempts: 0,
             }));
             if (translationJobs.length) {
@@ -153,14 +154,18 @@ export async function GET(req: NextRequest) {
           }
         }
       } else {
-        // Translation complete — store language-specific URL
-        const lang = job.language;
-        const langCol = `video_url_${lang}`;
+        // Translation complete — store variant-specific URL inside `video_urls` jsonb
+        const langKey = `${job.language}_${job.format === '9:16' ? 'vertical' : 'horizontal'}`;
+        
         if (job.blog_post_id) {
-          await supabase.from('blog_posts').update({ [langCol]: videoUrl }).eq('id', job.blog_post_id);
+          const { data: b } = await supabase.from('blog_posts').select('video_urls').eq('id', job.blog_post_id).single();
+          const existing = (b?.video_urls as Record<string, string>) || {};
+          await supabase.from('blog_posts').update({ video_urls: { ...existing, [langKey]: videoUrl } }).eq('id', job.blog_post_id);
         }
         if (job.content_queue_id) {
-          await supabase.from('content_queue').update({ [langCol]: videoUrl }).eq('id', job.content_queue_id);
+          const { data: c } = await supabase.from('content_queue').select('video_urls').eq('id', job.content_queue_id).single();
+          const existing = (c?.video_urls as Record<string, string>) || {};
+          await supabase.from('content_queue').update({ video_urls: { ...existing, [langKey]: videoUrl } }).eq('id', job.content_queue_id);
         }
       }
       results.push(`${job.id}: COMPLETE (${job.language}) → ${videoUrl?.slice(0,60)}`);
