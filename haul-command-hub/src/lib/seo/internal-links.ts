@@ -121,7 +121,7 @@ export function getCountryHubLinks(country: CountryConfig): InternalLink[] {
     // 5. Countries index
     links.push({
         href: '/countries',
-        anchor: 'All 57 Countries',
+        anchor: 'All 120 countries',
         rel: 'nav',
         priority: 4,
     });
@@ -282,7 +282,7 @@ export function getHomepageLinks(): InternalLink[] {
     links.push(
         { href: '/tools/cost-estimator', anchor: 'Cost Estimator', rel: 'nav', priority: 8 },
         { href: '/tools/superload-meter', anchor: 'Superload Meter', rel: 'nav', priority: 8 },
-        { href: '/countries', anchor: 'All 57 Countries', rel: 'nav', priority: 7 },
+        { href: '/countries', anchor: 'All 120 countries', rel: 'nav', priority: 7 },
         { href: '/directory', anchor: 'Operator Directory', rel: 'nav', priority: 9 },
         { href: '/leaderboards', anchor: 'Corridor Leaderboards', rel: 'nav', priority: 7 },
     );

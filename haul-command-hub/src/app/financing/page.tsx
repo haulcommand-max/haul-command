@@ -24,7 +24,7 @@ const LENDER_PARTNERS = [
   { name: 'Pipe', specialty: 'Revenue-based financing', regions: ['US', 'CA', 'AU', 'EU'], logo: '⚡' },
   { name: 'Capchase', specialty: 'Equipment & working capital', regions: ['US', 'EU'], logo: '📈' },
   { name: 'WEX Capital', specialty: 'Fleet & equipment', regions: ['US', 'CA'], logo: '🏦' },
-  { name: 'Regional Partners', specialty: 'Local financing, 57 countries', regions: ['Global'], logo: '🌍' },
+  { name: 'Regional Partners', specialty: 'Local financing, 120 countries', regions: ['Global'], logo: '🌍' },
 ];
 
 const HOW_IT_WORKS = [
@@ -263,7 +263,7 @@ export default async function FinancingPage() {
               View Platform Plans
             </Link>
           </div>
-          <p className="text-gray-600 text-xs mt-4">Available to Haul Command verified operators only · 57 countries</p>
+          <p className="text-gray-600 text-xs mt-4">Available to Haul Command verified operators only · 120 countries</p>
         </div>
       </main>
     </>

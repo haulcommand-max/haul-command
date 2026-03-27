@@ -109,7 +109,7 @@ export default function ToolsPage() {
             </div>
             <div className="text-xs text-gray-500 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              57 countries covered
+              120 countries covered
             </div>
             <div className="text-xs text-gray-500 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
@@ -159,7 +159,7 @@ export default function ToolsPage() {
             href="/claim"
             className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors flex-shrink-0"
           >
-            Claim Your Listing →
+            Claim Your Profile →
           </Link>
         </div>
       </main>

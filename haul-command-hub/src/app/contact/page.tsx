@@ -137,7 +137,7 @@ export default function ContactPage() {
           <p className="text-gray-500 text-sm text-center mb-6">Common requests — no email needed</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { href: '/claim', icon: '🏷️', label: 'Claim Listing' },
+              { href: '/claim', icon: '🏷️', label: 'Claim Profile' },
               { href: '/report-data-issue', icon: '📝', label: 'Fix Data' },
               { href: '/remove-listing', icon: '🗑️', label: 'Remove Listing' },
               { href: '/pricing', icon: '💎', label: 'View Pricing' },
@@ -157,7 +157,7 @@ export default function ContactPage() {
         <HCFaqModule
           items={[
             { question: 'How do I remove my listing?', answer: 'Visit the Remove Listing page and submit your request. We process removals within 48 hours and comply with all applicable privacy regulations.' },
-            { question: 'I found incorrect data on my listing. How do I fix it?', answer: 'Use the Report Data Issue page to flag inaccuracies. If you claim your listing, you can edit your profile directly at any time.' },
+            { question: 'I found incorrect data on my listing. How do I fix it?', answer: 'Use the Report Data Issue page to flag inaccuracies. If you claim your profile, you can edit your profile directly at any time.' },
             { question: 'How do I advertise on Haul Command?', answer: 'Visit our Advertise page to see available sponsorship slots including directory placements, corridor sponsorships, and tool-page banners. Pricing starts at $49/month.' },
             { question: 'Do you offer an API?', answer: 'Yes. Our API provides escort lookup, rate intelligence, and corridor data. Visit the Developer docs for authentication guides, rate limits, and endpoint references.' },
           ]}

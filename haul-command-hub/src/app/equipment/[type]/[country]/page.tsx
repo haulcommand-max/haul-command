@@ -6,7 +6,7 @@ import FAQSchema from '@/components/FAQSchema';
 import BreadcrumbSchema, { ServiceSchema } from '@/components/BreadcrumbSchema';
 import Navbar from '@/components/Navbar';
 
-// All unique equipment types across 57 countries
+// All unique equipment types across 120 countries
 const ALL_EQUIPMENT: { slug: string; label: string }[] = [
   { slug: 'wind-turbine', label: 'Wind Turbine' },
   { slug: 'transformer', label: 'Transformer' },
@@ -35,7 +35,7 @@ function findEquipType(slug: string) {
 }
 
 // BUILD SIZE GUARD: Only generate pages for Tier A countries at build time.
-// All 57 countries still work via ISR (on-demand rendering on first visit).
+// All 120 countries still work via ISR (on-demand rendering on first visit).
 const TIER_A_SLUGS = new Set(['us', 'ca', 'au', 'gb', 'nz', 'za', 'de', 'nl', 'ae', 'br']);
 export function generateStaticParams() {
   return COUNTRIES

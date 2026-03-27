@@ -23,7 +23,7 @@ export default function HCClaimCorrectVerifyPanel({
             Own Your Profile on Haul Command
           </h3>
           <p className="text-[#b0b0b0] text-sm leading-relaxed break-words">
-            {contextCopy || 'Claim your listing to unlock premium features, respond to loads, and build your verified reputation in the heavy haul industry.'}
+            {contextCopy || 'Claim your profile to unlock premium features, respond to loads, and build your verified reputation in the heavy haul industry.'}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">

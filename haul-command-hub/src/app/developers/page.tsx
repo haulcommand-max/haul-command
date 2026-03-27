@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'API & Developer Portal — Haul Command',
-  description: 'Corridor intelligence APIs for logistics platforms. Access real-time operator availability, rate benchmarks, compliance data, and corridor density for 57 countries.',
+  description: 'Corridor intelligence APIs for logistics platforms. Access real-time operator availability, rate benchmarks, compliance data, and corridor density for 120 countries.',
 };
 
 /* ══════════════════════════════════════════════════════
@@ -67,7 +67,7 @@ console.log(data.avg_rate_per_mile, data.median_daily_rate);`,
     id: 'compliance',
     icon: '📋',
     name: 'Compliance API',
-    desc: 'Escort requirements by jurisdiction, 57 countries. Get dimension-based escort triggers for any route.',
+    desc: 'Escort requirements by jurisdiction, 120 countries. Get dimension-based escort triggers for any route.',
     price: '$149/mo',
     priceValue: 149,
     endpoint: '/v1/compliance/{jurisdiction}',
@@ -187,7 +187,7 @@ export default function DevelopersPage() {
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
               Corridor intelligence for logistics platforms. Real-time escort availability,
-              rate benchmarks, and compliance data across 57 countries.
+              rate benchmarks, and compliance data across 120 countries.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

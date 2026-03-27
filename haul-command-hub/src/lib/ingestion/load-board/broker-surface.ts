@@ -7,7 +7,7 @@
  *
  * scrape → normalize → create broker surface → enrich → score → activate
  *
- * Global: country-agnostic, all 57 countries.
+ * Global: country-agnostic, all 120 countries.
  */
 
 import type {

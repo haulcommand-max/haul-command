@@ -52,7 +52,7 @@ export default function Navbar() {
               href="/claim"
               className="hidden sm:inline-flex bg-accent text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-500 transition-colors ag-magnetic"
             >
-              Claim Listing
+              Claim Profile
             </Link>
             <Link
               href="/login"

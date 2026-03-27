@@ -9,7 +9,7 @@
  *   - date_context segments (date headers)
  *   - noise segments (anything else — preserved, never dropped)
  *
- * Global: country-agnostic, all 57 countries.
+ * Global: country-agnostic, all 120 countries.
  */
 
 import { DATE_HEADER_PATTERNS } from './dictionaries';

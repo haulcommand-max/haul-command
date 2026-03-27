@@ -7,10 +7,10 @@ const FOOTER_SECTIONS = [
     title: 'Directory',
     links: [
       { href: '/directory', label: 'Browse Directory' },
-      { href: '/requirements', label: 'Requirements' },
+      { href: '/escort-requirements', label: 'Requirements' },
       { href: '/corridors', label: 'Corridors' },
-      { href: '/services', label: 'Services' },
-      { href: '/rates', label: 'Rate Intelligence' },
+      { href: '/roles/pilot-car-operator', label: 'Pilot Car Operators' },
+      { href: '/countries', label: '120 Countries' },
     ],
   },
   {
@@ -18,18 +18,19 @@ const FOOTER_SECTIONS = [
     links: [
       { href: '/dispatch', label: '⚡ Live Dispatch' },
       { href: '/loads', label: 'Load Board' },
-      { href: '/dictionary', label: 'HC Dictionary' },
-      { href: '/map', label: 'Fleet Map' },
+      { href: '/glossary/us/pilot-car', label: 'HC Glossary' },
+      { href: '/map', label: 'Route Intelligence' },
       { href: '/leaderboards', label: 'Leaderboards' },
     ],
   },
   {
     title: 'Tools',
     links: [
-      { href: '/tools/escort-calculator', label: 'Route Calculator' },
-      { href: '/tools/friday-checker', label: 'Friday Checker' },
-      { href: '/tools/superload-meter', label: 'Superload Meter' },
-      { href: '/tools/cost-estimator', label: 'Cost Estimator' },
+      { href: '/tools/permit-checker/us', label: 'Permit Checker' },
+      { href: '/tools/escort-rules/us', label: 'Escort Rule Finder' },
+      { href: '/tools/rate-estimator/us', label: 'Rate Estimator' },
+      { href: '/tools/broker-verify', label: 'Broker Verify' },
+      { href: '/tools/superload-alerts', label: 'Superload Alerts' },
     ],
   },
   {
@@ -40,6 +41,8 @@ const FOOTER_SECTIONS = [
       { href: '/directory/au', label: '🇦🇺 Australia' },
       { href: '/directory/gb', label: '🇬🇧 United Kingdom' },
       { href: '/directory/de', label: '🇩🇪 Germany' },
+      { href: '/directory/ae', label: '🇦🇪 UAE' },
+      { href: '/directory/br', label: '🇧🇷 Brazil' },
     ],
   },
   {
@@ -47,10 +50,9 @@ const FOOTER_SECTIONS = [
     links: [
       { href: '/blog', label: 'Intelligence Blog' },
       { href: '/pricing', label: 'Pricing' },
-      { href: '/claim', label: 'Claim Listing' },
+      { href: '/claim', label: 'Claim Profile' },
       { href: '/contact', label: 'Contact Us' },
       { href: '/advertise/create', label: 'Advertise' },
-      { href: '/developers', label: 'API & Developers' },
       { href: '/report-data-issue', label: 'Report Issue' },
     ],
   },

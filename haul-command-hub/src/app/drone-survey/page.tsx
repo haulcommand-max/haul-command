@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Haul Command Drone Survey Marketplace — Route Survey Automation',
   description:
-    'Connect with drone-certified route surveyors for oversize load permit surveys. Automated clearance mapping, obstacle detection, and bridge height verification across 57 countries.',
+    'Connect with drone-certified route surveyors for oversize load permit surveys. Automated clearance mapping, obstacle detection, and bridge height verification across 120 countries.',
 };
 
 const SURVEY_TYPES = [
@@ -67,7 +67,7 @@ const HOW_IT_WORKS = [
 ];
 
 const OPERATOR_TYPES = [
-  { icon: '🚁', name: 'FAA Part 107 Certified', desc: 'All US operators are Part 107 certified and insured. Equivalent certification required in all 57 countries.' },
+  { icon: '🚁', name: 'FAA Part 107 Certified', desc: 'All US operators are Part 107 certified and insured. Equivalent certification required in all 120 countries.' },
   { icon: '📡', name: 'LiDAR Equipped', desc: 'Operators in our marketplace are equipped with commercial-grade LiDAR for precise clearance measurements.' },
   { icon: '🛡️', name: 'Liability Insured', desc: '$1M+ coverage per flight. Required for all operators. Insurance verified during marketplace onboarding.' },
   { icon: '⭐', name: 'Rated & Reviewed', desc: 'Every completed survey gets rated by the broker or operator who ordered it. Ratings visible before booking.' },
@@ -78,7 +78,7 @@ const FUTURE_STATE = [
   { year: '2025', desc: 'Drone surveys in select US corridors (2–8 hours, $150–$575)' },
   { year: '2026', desc: 'AI-automated survey interpretation, instant permit recommendations' },
   { year: '2027', desc: 'Permanent route monitoring — drones resurvey key corridors automatically when routes change' },
-  { year: '2030+', desc: 'Digital twin of every permitted corridor in 57 countries, continuously updated' },
+  { year: '2030+', desc: 'Digital twin of every permitted corridor in 120 countries, continuously updated' },
 ];
 
 export default function DroneSurveyPage() {
@@ -276,7 +276,7 @@ export default function DroneSurveyPage() {
         <div className="bg-gradient-to-r from-indigo-500/10 to-transparent border border-indigo-500/20 rounded-2xl p-8 sm:p-12 text-center">
           <h2 className="text-white font-black text-3xl tracking-tighter mb-3">Order a Survey. Get Results Tomorrow.</h2>
           <p className="text-gray-400 text-sm mb-8 max-w-xl mx-auto">
-            Available in the US now, expanding to 57 countries in 2025–2026. Enter your route
+            Available in the US now, expanding to 120 countries in 2025–2026. Enter your route
             and get matched with a certified operator within 15 minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -293,7 +293,7 @@ export default function DroneSurveyPage() {
               Join as Drone Operator
             </Link>
           </div>
-          <p className="text-gray-600 text-xs mt-4">Results delivered within 24 hours · FAA/CASA/CAA certified operators · 57 countries expanding</p>
+          <p className="text-gray-600 text-xs mt-4">Results delivered within 24 hours · FAA/CASA/CAA certified operators · 120 countries expanding</p>
         </div>
       </main>
     </>

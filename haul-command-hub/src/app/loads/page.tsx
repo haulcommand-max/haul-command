@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Heavy Haul Load Board — Post & Find Oversize Loads',
   description:
-    'Post oversize loads for escort coverage or find loads in your area. Connect with verified pilot car operators and escort services across 57 countries.',
+    'Post oversize loads for escort coverage or find loads in your area. Connect with verified pilot car operators and escort services across 120 countries.',
 };
 
 export default async function LoadsPage() {
@@ -384,7 +384,7 @@ export default async function LoadsPage() {
         </section>
 
         <HCClaimCorrectVerifyPanel
-          claimAction={{ id: 'claim', label: 'Claim Your Listing', href: '/claim', type: 'claim', priority: 'primary' }}
+          claimAction={{ id: 'claim', label: 'Claim Your Profile', href: '/claim', type: 'claim', priority: 'primary' }}
           contextCopy="Claim your profile so you're on the board when runs start posting."
         />
 

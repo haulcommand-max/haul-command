@@ -115,7 +115,7 @@ export default async function CorridorsPage() {
                   Browse Directory
                 </Link>
                 <Link href="/claim" className="bg-white/5 text-gray-300 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/10 transition-colors">
-                  Claim Listing
+                  Claim Profile
                 </Link>
               </div>
             </div>

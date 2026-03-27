@@ -2,7 +2,7 @@ import { GlossaryEntry } from './glossary';
 
 /**
  * Haul Command — 3000 Term Massive Global Semantic Expansion
- * Represents absolute SEO domination for 57 countries globally across 53 concepts.
+ * Represents absolute SEO domination for 120 countries globally across 53 concepts.
  */
 export const GENERATED_TERMS: GlossaryEntry[] = [
   {

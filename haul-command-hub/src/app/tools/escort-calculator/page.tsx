@@ -190,14 +190,14 @@ export default function EscortCalculatorPage() {
                 <header className="mb-16">
                     <div className="flex items-center space-x-4 mb-4">
                         <span className="bg-accent text-black text-[10px] font-black px-2 py-0.5 rounded italic">FREE TOOL</span>
-                        <span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">57 COUNTRIES</span>
+                        <span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">120 countries</span>
                     </div>
                     <h1 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter">
                         DO I NEED AN <span className="text-accent underline decoration-4 underline-offset-4">ESCORT?</span>
                     </h1>
                     <p className="text-gray-400 text-lg max-w-3xl mt-4">
                         Enter your load dimensions and route — instantly see how many escorts you need in each state,
-                        whether you need a height pole, police escort, or route survey. Covers all 57 countries.
+                        whether you need a height pole, police escort, or route survey. Covers all 120 countries.
                     </p>
                 </header>
 

@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Broker Logistics OS | Haul Command Global 57-Country Network',
-  description: 'Automate your entire oversize load dispatch pipeline. Connect with pre-vetted pilot cars in 57 countries, calculate instant route costs, and dominate your lane operations.',
+  description: 'Automate your entire oversize load dispatch pipeline. Connect with pre-vetted pilot cars in 120 countries, calculate instant route costs, and dominate your lane operations.',
   alternates: {
     canonical: 'https://haulcommand.com/broker',
   },
@@ -23,7 +23,7 @@ export default function BrokerCapturePage() {
             <div className="md:w-1/2 space-y-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium">
                 <Globe className="w-4 h-4" />
-                Now expanding into 57 Countries
+                Now expanding into 120 countries
               </div>
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
                 Stop chasing pilot cars. <br/>
@@ -127,7 +127,7 @@ export default function BrokerCapturePage() {
               </div>
               <h3 className="text-xl font-bold text-white mb-3">Deterministic Lane Routing</h3>
               <p className="text-slate-400 leading-relaxed">
-                We eliminated probability. Our engine matches operators based strictly on verified proximity, past performance, and exact multi-lingual capability matrices across 57 countries.
+                We eliminated probability. Our engine matches operators based strictly on verified proximity, past performance, and exact multi-lingual capability matrices across 120 countries.
               </p>
             </div>
 

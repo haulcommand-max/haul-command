@@ -191,7 +191,7 @@ export default function DisputeResolutionPage() {
               Talk to a Specialist
             </Link>
           </div>
-          <p className="text-gray-600 text-xs mt-4">Reports available for all jobs on the Haul Command platform · 57 countries · 24h delivery SLA</p>
+          <p className="text-gray-600 text-xs mt-4">Reports available for all jobs on the Haul Command platform · 120 countries · 24h delivery SLA</p>
         </div>
       </main>
     </>

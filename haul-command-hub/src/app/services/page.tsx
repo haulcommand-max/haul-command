@@ -7,7 +7,7 @@ import { COUNTRIES } from '@/lib/seo-countries';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul & Escort Services — HAUL COMMAND',
-  description: 'Find pilot car services, escort vehicle services, oversize load escorts, route surveys, and more across 57 countries.',
+  description: 'Find pilot car services, escort vehicle services, oversize load escorts, route surveys, and more across 120 countries.',
 };
 
 export default function ServicesIndexPage() {

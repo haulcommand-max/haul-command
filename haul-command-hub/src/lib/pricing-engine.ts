@@ -353,7 +353,7 @@ export const TOLL_ESTIMATES: Record<string, number> = {
   '407 ETR (ON, Canada)': 40,
 };
 
-// ─── Service Position Catalog (US + Canada + 57 Countries) ───
+// ─── Service Position Catalog (US + Canada + 120 countries) ───
 
 export type PositionCode =
   | 'lead_car'
@@ -405,7 +405,7 @@ export const POSITIONS: Position[] = [
   { code: 'military_escort', label: 'Military / Government Escort', description: 'Government or military personnel providing armed escort for high-security or defense-related oversize cargo.',     countries: ['US', 'CA', 'AU', 'GB', 'FR', 'DE', 'SA', 'AE', 'IN', 'TR', 'BR'] },
 ];
 
-// ─── International Position Extensions (57 Countries) ────────
+// ─── International Position Extensions (120 countries) ────────
 // These are additional escort/support positions found in specific international markets
 
 export const INTERNATIONAL_POSITIONS: Position[] = [

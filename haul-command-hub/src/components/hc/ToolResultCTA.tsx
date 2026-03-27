@@ -109,7 +109,7 @@ export const TOOL_CTAS = {
       icon: '🚛',
     },
     secondary: {
-      label: 'Claim Your Listing',
+      label: 'Claim Your Profile',
       href: '/claim',
       icon: '🏷️',
     },

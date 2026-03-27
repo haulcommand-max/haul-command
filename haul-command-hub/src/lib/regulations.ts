@@ -1,7 +1,7 @@
 /**
  * Haul Command — 57-Country Regulations Database
  * 
- * Regulatory framework for oversize/overweight transport across all 57 countries.
+ * Regulatory framework for oversize/overweight transport across all 120 countries.
  * Covers: governing authority, standard limits, escort thresholds, permit types,
  * operating hours, and key regulatory citations.
  */

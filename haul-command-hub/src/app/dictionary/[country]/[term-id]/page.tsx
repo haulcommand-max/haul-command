@@ -10,7 +10,7 @@ import { generateDictionaryTermHreflang } from '@/lib/seo/hreflang';
 
 /**
  * BUILD SIZE GUARD: Only pre-render US dictionary terms at build time.
- * All 57 countries still work via ISR (on-demand rendering on first visit).
+ * All 120 countries still work via ISR (on-demand rendering on first visit).
  * This prevents the 80MB Vercel deployment artifact limit from being exceeded.
  */
 export function generateStaticParams() {

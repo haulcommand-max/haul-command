@@ -23,7 +23,7 @@ const SLIDES: OnboardingSlide[] = [
   {
     icon: "🌎",
     title: "Global Coverage",
-    subtitle: "57 Countries. One Platform.",
+    subtitle: "120 countries. One Platform.",
     description:
       "Haul Command is the world's largest pilot car and escort vehicle network. Find verified operators anywhere on the planet.",
     bgGradient: "from-blue-900/20 via-transparent to-transparent",

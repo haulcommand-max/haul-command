@@ -44,7 +44,7 @@ function buildClaimEmail(operatorName: string, stateName: string, claimUrl: stri
     </p>
   </div>
   <p style="color:#444;font-size:10px;text-align:center;margin-top:24px">
-    © Haul Command · 57 Countries · <a href="https://haulcommand.com/remove-listing" style="color:#444">Unsubscribe</a>
+    © Haul Command · 120 countries · <a href="https://haulcommand.com/remove-listing" style="color:#444">Unsubscribe</a>
   </p>
 </div>
 </body>

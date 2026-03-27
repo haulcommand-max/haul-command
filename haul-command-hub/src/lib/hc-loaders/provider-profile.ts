@@ -46,7 +46,7 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
       claimStatus: pubRecord.claim_status ?? 'unclaimed',
       primaryActions: [
         ...(pubRecord.phone_e164 ? [{ id: 'call', label: 'Call', href: `tel:${pubRecord.phone_e164}`, type: 'call' as const, priority: 'primary' as const }] : []),
-        { id: 'claim', label: 'Claim Listing', href: `/claim?slug=${slug}`, type: 'claim' as const, priority: 'secondary' as const },
+        { id: 'claim', label: 'Claim Profile', href: `/claim?slug=${slug}`, type: 'claim' as const, priority: 'secondary' as const },
       ],
     };
   }
@@ -87,7 +87,7 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
     claimStatus: data.claim_status === 'claimed' ? 'claimed' : 'unclaimed',
     primaryActions: [
       ...(data.phone ? [{ id: 'call', label: 'Call', href: `tel:${data.phone}`, type: 'call' as const, priority: 'primary' as const }] : []),
-      { id: 'claim', label: 'Claim Listing', href: `/claim?slug=${slug}`, type: 'claim' as const, priority: 'secondary' as const },
+      { id: 'claim', label: 'Claim Profile', href: `/claim?slug=${slug}`, type: 'claim' as const, priority: 'secondary' as const },
     ],
   };
 }

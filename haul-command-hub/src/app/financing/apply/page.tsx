@@ -230,7 +230,7 @@ export default function FinancingApplyPage() {
                   <option value="ZA">South Africa</option>
                   <option value="BR">Brazil</option>
                   <option value="IN">India</option>
-                  <option value="other">Other (57 countries)</option>
+                  <option value="other">Other (120 countries)</option>
                 </select>
               </div>
             </div>

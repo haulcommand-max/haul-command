@@ -2,7 +2,7 @@
  * Haul Command — Industry Glossary & Dictionary
  * 
  * The definitive reference for heavy haul, oversize load, and escort
- * industry terminology. Covers all 57 countries with local-language
+ * industry terminology. Covers all 120 countries with local-language
  * equivalents. Branded as "The HC Dictionary™".
  * 
  * SEO targets: PEVO, pilot car, escort vehicle, oversize load, wide load,

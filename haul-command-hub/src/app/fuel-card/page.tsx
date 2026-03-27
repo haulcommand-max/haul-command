@@ -13,7 +13,7 @@ const FUEL_CARD_FEATURES = [
   { icon: '📊', title: 'Auto-Categorized', desc: 'Every fuel purchase automatically categorized and synced to your earnings dashboard alongside job income.' },
   { icon: '🧾', title: 'Tax Deduction Tracking', desc: 'Auto-calculates IRS Schedule C and equivalent international deductions for every fill-up. Tax season = one click.' },
   { icon: '💰', title: 'Rebates Per Gallon', desc: 'Earn cash back on every gallon. More jobs = higher rebate tier. No minimum spend required.' },
-  { icon: '🌍', title: 'Global Coverage', desc: 'Regional fuel card partnerships in 57 countries. One card, one dashboard, everywhere you work.' },
+  { icon: '🌍', title: 'Global Coverage', desc: 'Regional fuel card partnerships in 120 countries. One card, one dashboard, everywhere you work.' },
   { icon: '📱', title: 'Real-Time Alerts', desc: 'Instant transaction alerts, spending limits, and fraud detection. Full visibility from the Haul Command app.' },
 ];
 
@@ -26,7 +26,7 @@ const REBATE_TIERS = [
 const CARD_PARTNERS = [
   { name: 'WEX', coverage: 'US & Canada', network: '45,000+ stations' },
   { name: 'Fleetcor', coverage: 'US, Europe, Brazil, AU', network: 'Multi-network' },
-  { name: 'Regional Partners', coverage: '57 Countries', network: 'Local networks' },
+  { name: 'Regional Partners', coverage: '120 countries', network: 'Local networks' },
 ];
 
 export default function FuelCardPage() {
@@ -160,7 +160,7 @@ export default function FuelCardPage() {
           >
             Join Early Access →
           </Link>
-          <p className="text-gray-600 text-xs mt-4">Available to all Haul Command verified operators · 57 countries</p>
+          <p className="text-gray-600 text-xs mt-4">Available to all Haul Command verified operators · 120 countries</p>
         </div>
       </main>
     </>

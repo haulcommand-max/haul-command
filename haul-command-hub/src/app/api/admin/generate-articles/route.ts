@@ -24,7 +24,7 @@ const INTRO_TEMPLATES = [
   (term: string, country: string) =>
     `Understanding ${term} is essential for anyone operating in ${country}'s heavy haul and oversize transport industry. Whether you're a seasoned pilot car operator or a broker coordinating your first superload, knowing the precise definition and legal context of ${term} can mean the difference between a smooth corridor run and a costly compliance violation.`,
   (term: string, country: string) =>
-    `In ${country}'s oversize and overweight (OSOW) transport ecosystem, ${term} represents a critical concept that every escort vehicle professional must master. This comprehensive guide breaks down exactly what ${term} means, how it applies to your daily operations, and why Haul Command tracks it across all 57 countries in our global intelligence database.`,
+    `In ${country}'s oversize and overweight (OSOW) transport ecosystem, ${term} represents a critical concept that every escort vehicle professional must master. This comprehensive guide breaks down exactly what ${term} means, how it applies to your daily operations, and why Haul Command tracks it across all 120 countries in our global intelligence database.`,
   (term: string, country: string) =>
     `The term "${term}" comes up constantly in ${country}'s heavy haul logistics conversations — from dispatch calls to DOT inspections to permit applications. But what does it actually mean in practice? This guide provides the definitive, field-tested explanation used by the world's leading pilot car professionals on Haul Command.`,
 ];
@@ -46,7 +46,7 @@ const BODY_SECTIONS = [
 
 const CLOSING_TEMPLATES = [
   (term: string) =>
-    `## Master ${term} and Every Other Term\n\nHaul Command's Dictionary is the industry's largest, most accurate glossary for heavy haul and oversize transport professionals. With 500+ definitions covering 57 countries, it's the reference source trusted by operators, brokers, and regulators worldwide.\n\n**Ready to level up your expertise?** [Browse the full Dictionary →](/dictionary)\n\n**Want to get found by brokers?** [Claim your free operator profile →](/claim)\n\n---\n\n*This article was produced by Haul Command's editorial intelligence system and reviewed for accuracy against official regulatory documentation. Last updated: ${new Date().toISOString().split('T')[0]}.*`,
+    `## Master ${term} and Every Other Term\n\nHaul Command's Dictionary is the industry's largest, most accurate glossary for heavy haul and oversize transport professionals. With 500+ definitions covering 120 countries, it's the reference source trusted by operators, brokers, and regulators worldwide.\n\n**Ready to level up your expertise?** [Browse the full Dictionary →](/dictionary)\n\n**Want to get found by brokers?** [Claim your free operator profile →](/claim)\n\n---\n\n*This article was produced by Haul Command's editorial intelligence system and reviewed for accuracy against official regulatory documentation. Last updated: ${new Date().toISOString().split('T')[0]}.*`,
 ];
 
 function generateArticle(term: { id: string; term: string; definition: string; category: string }, country: { country: string; name: string; authority?: string; standardLimits?: any }): string {

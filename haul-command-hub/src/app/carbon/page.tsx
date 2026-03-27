@@ -160,7 +160,7 @@ export default function CarbonReportsPage() {
         {/* Who Pays */}
         <section className="mb-16">
           <h2 className="text-3xl font-black text-white tracking-tighter mb-2 text-center">Who Needs This</h2>
-          <p className="text-gray-500 text-sm text-center mb-10">Scope 3 reporting is now mandatory or imminently mandatory for large corporations in most of your 57 countries</p>
+          <p className="text-gray-500 text-sm text-center mb-10">Scope 3 reporting is now mandatory or imminently mandatory for large corporations in most of your 120 countries</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {WHO_PAYS.map(w => (
               <div key={w.name} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-green-500/20 transition-all">
@@ -218,7 +218,7 @@ export default function CarbonReportsPage() {
           <p className="text-gray-400 text-sm mb-4">
             Carbon reporting regulations tighten every year in every jurisdiction. CSRD in Europe, SEC rules in the US,
             equivalent mandates in Australia, the UK, and Singapore. Every Fortune 500 company shipping equipment through
-            your 57 countries will need this data.
+            your 120 countries will need this data.
           </p>
           <div className="grid grid-cols-3 gap-4">
             {[

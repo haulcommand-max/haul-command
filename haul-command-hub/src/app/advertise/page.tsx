@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Advertise on Haul Command — Reach the Heavy Haul Industry',
-  description: 'Self-serve advertising for equipment OEMs, fleet suppliers, insurance providers, and permit services. Reach 7,335+ operators and 50k+ monthly searches across 57 countries.',
+  description: 'Self-serve advertising for equipment OEMs, fleet suppliers, insurance providers, and permit services. Reach 7,335+ operators and 50k+ monthly searches across 120 countries.',
 };
 
 /* ══════════════════════════════════════════════════════
@@ -51,7 +51,7 @@ const AD_FORMATS = [
 ];
 
 const AUDIENCE_SEGMENTS = [
-  { emoji: '🚛', name: 'Pilot Car Operators', count: '7,335+', desc: 'Independent escort vehicle operators across all US states and 57 countries' },
+  { emoji: '🚛', name: 'Pilot Car Operators', count: '7,335+', desc: 'Independent escort vehicle operators across all US states and 120 countries' },
   { emoji: '📋', name: 'Freight Brokers', count: '2,500+', desc: 'Brokers sourcing pilot car and escort services for oversize loads' },
   { emoji: '🏗️', name: 'Project Managers', count: '1,200+', desc: 'Construction and energy project managers moving heavy equipment' },
   { emoji: '📦', name: 'Logistics Teams', count: '800+', desc: 'Corporate logistics teams managing specialized transport' },

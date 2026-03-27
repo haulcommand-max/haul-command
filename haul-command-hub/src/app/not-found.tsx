@@ -53,7 +53,7 @@ export default function NotFound() {
         </Link>
         <Link href="/claim" className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 hover:border-accent/30 transition-all">
           <span className="text-lg">🏷️</span>
-          <p className="text-xs text-gray-300 mt-1">Claim Listing</p>
+          <p className="text-xs text-gray-300 mt-1">Claim Profile</p>
         </Link>
       </div>
 

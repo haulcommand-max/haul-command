@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const name = reg?.country_name || country.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
   return {
     title: `Heavy Haul Regulations in ${name} — Pilot Cars, Brokers & Permits | Diesel Blood USA`,
-    description: `Find oversize load rules, escort requirements, and permit offices in ${name}. Updated heavy haul directory powered by Diesel Blood USA — covering 57 countries.`,
+    description: `Find oversize load rules, escort requirements, and permit offices in ${name}. Updated heavy haul directory powered by Diesel Blood USA — covering 120 countries.`,
     openGraph: {
       title: `Heavy Haul Regulations in ${name}`,
       description: `Oversize load escort rules and permit contacts for ${name}.`,

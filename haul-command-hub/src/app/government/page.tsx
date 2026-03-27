@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Government & DOT Data Partnerships — Haul Command',
   description:
-    'Permit intelligence, infrastructure stress reporting, and oversize freight analytics for transport ministries, state DOTs, and infrastructure agencies across 57 countries.',
+    'Permit intelligence, infrastructure stress reporting, and oversize freight analytics for transport ministries, state DOTs, and infrastructure agencies across 120 countries.',
 };
 
 const DATA_PRODUCTS = [
@@ -73,7 +73,7 @@ export default function GovernmentPage() {
 
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 mb-6">
-            <span className="text-blue-400 text-xs font-bold uppercase tracking-wider">🏛️ 57 Countries · Government Grade Data</span>
+            <span className="text-blue-400 text-xs font-bold uppercase tracking-wider">🏛️ 120 countries · Government Grade Data</span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-4">
             Think of Governments<br />
@@ -81,7 +81,7 @@ export default function GovernmentPage() {
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
             The world's most comprehensive oversize load intelligence database — built from actual jobs,
-            actual permits, and actual GPS data across 57 countries. Transport ministries,
+            actual permits, and actual GPS data across 120 countries. Transport ministries,
             DOTs, and infrastructure agencies will pay for this. Permanently.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -105,7 +105,7 @@ export default function GovernmentPage() {
           <h2 className="text-2xl font-black text-white tracking-tighter mb-4">What Haul Command Has That No Government Can Build</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              { stat: '57 countries', desc: 'Cross-border data that no single country\'s permit system can provide' },
+              { stat: '120 countries', desc: 'Cross-border data that no single country\'s permit system can provide' },
               { stat: 'Real GPS data', desc: 'Actual route paths and timestamps, not permit applications or estimates' },
               { stat: '12-month trend', desc: 'Seasonal patterns, peak corridors, and infrastructure stress accumulation over time' },
               { stat: 'Operator-level', desc: 'Performance data on individual operators that permit offices never see' },

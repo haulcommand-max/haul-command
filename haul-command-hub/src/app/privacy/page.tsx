@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — GDPR, UK GDPR, Australian Privacy Act | HAUL COMMAND',
-  description: 'Haul Command privacy policy covering GDPR (EU), UK GDPR, Australian Privacy Act, and data processing across 57 countries.',
+  description: 'Haul Command privacy policy covering GDPR (EU), UK GDPR, Australian Privacy Act, and data processing across 120 countries.',
 };
 
 const DATA_CATEGORIES = [
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-16 min-h-screen">
         <h1 className="text-4xl font-black text-white tracking-tight mb-2">Privacy Policy</h1>
-        <p className="text-gray-500 text-sm mb-10">Last updated: March 21, 2026 · Effective across 57 countries</p>
+        <p className="text-gray-500 text-sm mb-10">Last updated: March 21, 2026 · Effective across 120 countries</p>
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-gray-400">
           <section>

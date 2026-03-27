@@ -216,7 +216,7 @@ export default function PricingPage() {
             </span>
             <span className="hidden sm:inline">·</span>
             <span className="hidden sm:flex items-center gap-1.5">
-              🌍 57 countries
+              🌍 120 countries
             </span>
           </div>
         </div>

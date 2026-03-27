@@ -67,7 +67,7 @@ const CARRIERS = [
   { name: 'Intact Insurance', specialty: 'Commercial auto + specialty lines', regions: ['CA', 'US'] },
   { name: 'Markel', specialty: 'Specialty transport & excess lines', regions: ['US', 'UK', 'AU'] },
   { name: 'Great American Insurance', specialty: 'Motor carrier & transport specialty', regions: ['US'] },
-  { name: 'Regional Carriers', specialty: 'In-country specialty insurers', regions: ['57 countries'] },
+  { name: 'Regional Carriers', specialty: 'In-country specialty insurers', regions: ['120 countries'] },
 ];
 
 const WHY_DIFFERENT = [
@@ -89,7 +89,7 @@ const WHY_DIFFERENT = [
   {
     icon: '🌍',
     title: 'Multi-Country Capability',
-    desc: 'Operating in Brazil? Saudi Arabia? Australia? We have carrier relationships in 57 countries and growing. One marketplace, everywhere you work.',
+    desc: 'Operating in Brazil? Saudi Arabia? Australia? We have carrier relationships in 120 countries and growing. One marketplace, everywhere you work.',
   },
 ];
 
@@ -118,7 +118,7 @@ export default async function InsurancePage() {
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-red-400 text-xs font-bold uppercase tracking-wider">🛡️ Escort-Specific Coverage · 57 Countries</span>
+            <span className="text-red-400 text-xs font-bold uppercase tracking-wider">🛡️ Escort-Specific Coverage · 120 countries</span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-4">
             Insurance That Knows<br />
@@ -296,7 +296,7 @@ export default async function InsurancePage() {
               Talk to Coverage Advisor
             </Link>
           </div>
-          <p className="text-gray-600 text-xs mt-4">No commitment required · Multi-carrier comparison · 57 countries</p>
+          <p className="text-gray-600 text-xs mt-4">No commitment required · Multi-carrier comparison · 120 countries</p>
         </div>
       </main>
     </>

@@ -11,7 +11,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 /**
  * HAUL COMMAND OMNI-SYNC ENGINE (GEMINI PIPELINE)
  * Aggregates the completely disjointed TypeScript arrays (Positions, Regulations, Glossary) 
- * across 57 countries and smashes them into unified Supabase tables. 
+ * across 120 countries and smashes them into unified Supabase tables. 
  * Allows immediate high-speed cross-referencing by the UI and the upcoming mobile app.
  */
 export async function POST(req: Request) {

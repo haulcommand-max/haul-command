@@ -1,7 +1,7 @@
 /**
  * Haul Command — Global Position Catalog
  * 
- * Complete catalog of every escort/support position across all 57 countries.
+ * Complete catalog of every escort/support position across all 120 countries.
  * Includes country-specific roles, international variants, and future positions.
  * 
  * Tier A (Gold): US, CA, AU, GB, NZ, ZA, DE, NL, AE, BR

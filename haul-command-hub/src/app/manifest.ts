@@ -15,7 +15,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Haul Command',
     short_name: 'Haul Command',
-    description: "The world's largest pilot car & escort vehicle directory. Find operators, post loads, and track corridors across 57 countries.",
+    description: "The world's largest pilot car & escort vehicle directory. Find operators, post loads, and track corridors across 120 countries.",
     start_url: '/',
     display: 'standalone',
     background_color: '#000000',

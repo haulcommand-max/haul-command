@@ -35,7 +35,7 @@ export async function GET() {
   return NextResponse.json({
     name: 'Haul Command Dynamic Pricing Calculator',
     version: '2.0',
-    description: 'Calculate escort/PEVO service rates across US, Canada, and 57 countries.',
+    description: 'Calculate escort/PEVO service rates across US, Canada, and 120 countries.',
     endpoint: '/api/tools/pricing-calculator',
     method: 'POST',
     schema: {

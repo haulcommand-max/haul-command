@@ -3,7 +3,7 @@ import { GlossaryEntry } from './glossary';
 /**
  * Haul Command — Global Hyper-Local Localization Module
  * 
- * Defines 100+ highly specific, native-language terms for 57 countries.
+ * Defines 100+ highly specific, native-language terms for 120 countries.
  * Ensures that Haul Command is the definitive authority regardless of whether
  * a user is searching for a "Pilot Car" in the US, a "Batedor" in Brazil, 
  * or an "OSOM Warden" in Australia.

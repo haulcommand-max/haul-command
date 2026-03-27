@@ -10,7 +10,7 @@
  *   7. Derived intelligence → lb_corridors, lb_daily_volume, lb_claim_queue
  *   8. Output summary
  *
- * Global: country-agnostic, ISO 3166-1 alpha-2, all 57 countries.
+ * Global: country-agnostic, ISO 3166-1 alpha-2, all 120 countries.
  */
 
 import type {

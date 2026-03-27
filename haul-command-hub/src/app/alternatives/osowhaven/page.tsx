@@ -33,7 +33,7 @@ export default function OsowHavenAlternativePage() {
               The only <span className="text-blue-400">OSOW Haven Alternative</span> that actively dispatches.
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
-              Stop relying on static lists and outdated phone numbers. Haul Command gives you access to the world's most advanced pilot car network, featuring <strong className="text-white">live availability, automated compliance matching, and instant deployment</strong> across 57 countries.
+              Stop relying on static lists and outdated phone numbers. Haul Command gives you access to the world's most advanced pilot car network, featuring <strong className="text-white">live availability, automated compliance matching, and instant deployment</strong> across 120 countries.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/directory" className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-500 transition-colors shadow-[0_0_30px_rgba(37,99,235,0.3)]">

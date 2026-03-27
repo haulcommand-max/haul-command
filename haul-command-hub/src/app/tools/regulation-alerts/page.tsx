@@ -216,7 +216,7 @@ export default function RegulationAlertsPage() {
         <header className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
-            <span className="text-accent text-xs font-bold uppercase tracking-wider">57 Countries</span>
+            <span className="text-accent text-xs font-bold uppercase tracking-wider">120 countries</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3">
             Route <span className="text-accent">Intelligence</span>
@@ -259,7 +259,7 @@ export default function RegulationAlertsPage() {
                   <input
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    placeholder="Search 57 countries..."
+                    placeholder="Search 120 countries..."
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/40 mb-3"
                   />
                   {loading ? (

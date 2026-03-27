@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Haul Command Academy — Pilot Car & Escort Operator Certification',
   description:
-    'Online certification for pilot car and escort vehicle operators. Country-specific courses in local languages. Recognized by transport ministries across 57 countries.',
+    'Online certification for pilot car and escort vehicle operators. Country-specific courses in local languages. Recognized by transport ministries across 120 countries.',
 };
 
 const COURSES = [
@@ -32,7 +32,7 @@ export default function AcademyPage() {
 
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 mb-6">
-            <span className="text-purple-400 text-xs font-bold uppercase tracking-wider">🎓 57 Countries · Local Languages</span>
+            <span className="text-purple-400 text-xs font-bold uppercase tracking-wider">🎓 120 countries · Local Languages</span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-4">
             Get Certified.<br />

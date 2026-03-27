@@ -126,7 +126,7 @@ export default function CrossBorderComparatorPage() {
 
         <header className="mb-8 text-center">
           <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-3 py-1 mb-4">
-            <span className="text-blue-400 text-xs font-bold">🌍 57 COUNTRIES</span>
+            <span className="text-blue-400 text-xs font-bold">🌍 120 countries</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter mb-3">
             Cross-Border <span className="text-accent">Comparator</span>

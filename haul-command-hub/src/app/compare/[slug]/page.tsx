@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 const VS_COMPARISONS = [
   { slug: 'pilot-car-loads', competitor: 'Pilot Car Loads', strengths: ['57-country global coverage vs US-only', 'ELD-verified operator profiles', 'Rate intelligence with real market data', 'Corridor sponsorship & premium placements', 'AI-powered load matching (coming)', 'Full escrow & QuickPay payment system'] },
   { slug: 'truckstop-heavy-haul', competitor: 'Truckstop Heavy Haul', strengths: ['Niche focus on oversize/heavy haul only', 'Real-time ELD tracking via Motive integration', 'Escort-specific compliance data per state', 'Free operator listings with verified upgrades', 'Heavy haul corridor intelligence', 'Purpose-built for pilot car operators'] },
-  { slug: 'oversize-io', competitor: 'Oversize.io', strengths: ['Larger operator directory (7,300+ operators)', 'Multi-country coverage (57 countries)', 'Integrated payment & escrow system', 'Programmatic advertising platform', 'Developer API for third-party integration', 'Live vehicle tracking via ELD'] },
+  { slug: 'oversize-io', competitor: 'Oversize.io', strengths: ['Larger operator directory (7,300+ operators)', 'Multi-country coverage (120 countries)', 'Integrated payment & escrow system', 'Programmatic advertising platform', 'Developer API for third-party integration', 'Live vehicle tracking via ELD'] },
   { slug: 'heavy-haul-load-board', competitor: 'Heavy Haul Load Boards', strengths: ['Dedicated to oversize & escort matching', 'Not a general freight board — no LTL noise', 'Escort requirement data per jurisdiction', 'Rate intelligence from verified market data', 'Operator safety scores from ELD data', 'Corridor-level market analytics'] },
   { slug: 'landstar', competitor: 'Landstar System', strengths: ['Purpose-built for escort & pilot car ops', 'No agent middleman — direct operator connection', 'Hyperlocal corridor intel vs national generalist', 'Escort-specific rate data vs general freight rates', 'Free basic listing vs agent-only model', 'Real-time escort requirement compliance data'] },
   { slug: 'bennett-motor-express', competitor: 'Bennett Motor Express', strengths: ['Independent operator marketplace vs single-carrier', 'Multi-carrier rate comparison in real time', '57-country coverage vs US-only fleet', 'Operator-owned profiles with direct contact', 'No exclusive contracts required', 'Transparent pricing with no hidden dispatch fees'] },
@@ -13,14 +13,14 @@ const VS_COMPARISONS = [
   { slug: 'berger-transfer', competitor: 'Berger Transfer & Storage', strengths: ['Open marketplace vs proprietary carrier network', 'Escort-specific tools (not bundled with warehousing)', 'Real-time availability from independent operators', 'Rate comparison across competing providers', 'No minimum volume requirements', 'Dedicated pilot car & escort vehicle matching'] },
   { slug: 'daseke', competitor: 'Daseke Inc.', strengths: ['Independent operator access vs subsidiary fleet only', 'Transparent per-mile escort rates', 'No corporate overhead passed to shippers', 'Direct operator communication', 'Flexible one-time or standing order booking', 'Escort requirement compliance data per state'] },
   { slug: 'escort-dispatch', competitor: 'Escort Dispatch Services', strengths: ['Self-service booking vs phone-only dispatch', 'Real-time operator availability dashboard', 'Transparent rate comparison across operators', 'Multi-state compliance data built in', 'Digital payment & escrow vs check/COD only', 'Corridor intelligence for route planning'] },
-  { slug: 'escort-online', competitor: 'EscortOnline.com', strengths: ['Verified operator profiles with safety scores', 'Rate intelligence with market-rate benchmarks', 'Integrated payment processing & QuickPay', 'Multi-country coverage (57 countries vs US-only)', 'Real-time ELD tracking integration', 'Escort requirement database per jurisdiction'] },
+  { slug: 'escort-online', competitor: 'EscortOnline.com', strengths: ['Verified operator profiles with safety scores', 'Rate intelligence with market-rate benchmarks', 'Integrated payment processing & QuickPay', 'Multi-country coverage (120 countries vs US-only)', 'Real-time ELD tracking integration', 'Escort requirement database per jurisdiction'] },
   { slug: 'pilot-car-registry', competitor: 'PilotCarRegistry.com', strengths: ['Active marketplace vs static directory listing', 'ELD-verified real-time availability', 'Integrated booking & payment system', 'Rate intelligence with market context', 'Corridor analytics & demand forecasting', 'Multi-country coverage vs US-only registry'] },
   { slug: 'wide-load-magazine', competitor: 'Wide Load Magazine', strengths: ['Interactive tools vs static editorial content', 'Real-time operator directory with booking', 'Rate calculator with live market data', 'Escort requirement database (not just articles)', 'Operator profiles with direct messaging', 'Revenue-generating platform vs ad-supported magazine'] },
   { slug: 'truck-permits', competitor: 'Truck Permits / Permit Services', strengths: ['Escort + permit combined workflow', 'Automated dimension-based escort requirements', 'Multi-state permit coordination integrated', 'Operator matching alongside permit processing', 'Rate transparency for escort + permit bundles', 'Digital permit document management'] },
   { slug: 'permit-pro', competitor: 'Permit Pro / Permits Plus', strengths: ['Escort matching integrated with permit workflow', 'Automated escort count calculation from dimensions', 'One platform for permits AND escort booking', 'Rate comparison for escort services', 'Multi-jurisdiction compliance in one dashboard', 'Digital document vault for permits & insurance'] },
   { slug: 'transapi-de', competitor: 'TransAPI (Germany)', strengths: ['Broader DACH + EU coverage beyond Germany', 'BF3/BF4 operator certification tracking', 'Multi-language interface (DE, EN, NL, FR)', 'Schwertransport-specific rate intelligence', 'StVO § 29 compliance database', 'Cross-border escort coordination (DACH + Benelux)'] },
   { slug: 'convois-exceptionnels-fr', competitor: 'ConvoisExceptionnels.com (France)', strengths: ['Pan-European coverage vs France-only', 'Multi-language UI for cross-border ops', 'Integrated escort booking & payment', 'Prefectural regulation database', 'Real-time operator availability', 'Cross-border Convoi Exceptionnel coordination'] },
-  { slug: 'abnormal-loads-uk', competitor: 'AbnormalLoads.com (UK)', strengths: ['Global coverage (57 countries vs UK-only)', 'ESDAL2-integrated notification tracking', 'STGO category compliance database', 'Integrated payment & escrow system', 'Multi-platform operator profiles', 'Rate intelligence with UK market benchmarks'] },
+  { slug: 'abnormal-loads-uk', competitor: 'AbnormalLoads.com (UK)', strengths: ['Global coverage (120 countries vs UK-only)', 'ESDAL2-integrated notification tracking', 'STGO category compliance database', 'Integrated payment & escrow system', 'Multi-platform operator profiles', 'Rate intelligence with UK market benchmarks'] },
   { slug: 'heavy-haul-magazine', competitor: 'Heavy Haul Magazine / Publications', strengths: ['Interactive platform vs static publication', 'Real-time operator directory & booking', 'Rate data from live transactions vs survey estimates', 'Escort requirement database vs editorial articles', 'Operator profiles with direct contact', 'Revenue tool for operators vs advertiser-funded media'] },
   { slug: 'overdrive-tonnage', competitor: 'Overdrive / Tonnage', strengths: ['Purpose-built for oversize/escort niche', 'Escort-specific rate intelligence', 'Operator safety scores & verification', 'Integrated booking & payment system', 'Corridor analytics for route planning', 'Not a general trucking platform — 100% escort/pilot car focus'] },
 ];
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const name = comp?.competitor || slug;
   return {
     title: `Haul Command vs ${name} — Heavy Haul Platform Comparison`,
-    description: `Compare Haul Command with ${name}. See why operators choose HC for oversize load coverage, escort matching, and corridor intelligence across 57 countries.`,
+    description: `Compare Haul Command with ${name}. See why operators choose HC for oversize load coverage, escort matching, and corridor intelligence across 120 countries.`,
   };
 }
 
@@ -74,7 +74,7 @@ export default async function VsPage({ params }: { params: Promise<{ slug: strin
             </thead>
             <tbody>
               {[
-                ['Global coverage (57 countries)', true, false],
+                ['Global coverage (120 countries)', true, false],
                 ['ELD-verified operator profiles', true, false],
                 ['Real-time vehicle tracking', true, false],
                 ['Escort requirement database', true, false],
@@ -118,7 +118,7 @@ export default async function VsPage({ params }: { params: Promise<{ slug: strin
           <p className="text-gray-400 text-sm mb-6">Join 7,300+ operators already on Haul Command. Free to list, paid to dominate.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/claim" className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors">
-              Claim Your Listing — Free
+              Claim Your Profile — Free
             </Link>
             <Link href="/pricing" className="border border-white/10 text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-white/5 transition-colors">
               View Plans

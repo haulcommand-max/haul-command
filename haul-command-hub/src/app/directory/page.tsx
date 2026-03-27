@@ -203,7 +203,7 @@ export default async function DirectoryPage() {
                                     name: "What is the Haul Command Directory?",
                                     acceptedAnswer: {
                                         "@type": "Answer",
-                                        text: "The Haul Command Directory is the world's largest heavy haul logistics directory, with verified listings for ports, truck stops, weigh stations, industrial zones, and more across 57 countries.",
+                                        text: "The Haul Command Directory is the world's largest heavy haul logistics directory, with verified listings for ports, truck stops, weigh stations, industrial zones, and more across 120 countries.",
                                     },
                                 },
                                 {
@@ -211,7 +211,7 @@ export default async function DirectoryPage() {
                                     name: "How many countries does the directory cover?",
                                     acceptedAnswer: {
                                         "@type": "Answer",
-                                        text: "The directory covers 57 countries globally including the United States, Canada, Australia, United Kingdom, and 48 other nations with heavy haul logistics infrastructure.",
+                                        text: "The directory covers 120 countries globally including the United States, Canada, Australia, United Kingdom, and 48 other nations with heavy haul logistics infrastructure.",
                                     },
                                 },
                             ],

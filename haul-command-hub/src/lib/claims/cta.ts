@@ -11,7 +11,7 @@ export function getClaimCTACopy(variant: ClaimCTAVariant) {
     return {
         headline: "Own a Listing Here?",
         body: "Verified operators get priority placement, lead routing, and corridor visibility.",
-        cta: "Claim Your Listing",
+        cta: "Claim Your Profile",
     };
 }
 

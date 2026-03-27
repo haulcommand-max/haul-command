@@ -19,7 +19,7 @@ export default function TermsPage() {
           <h2 className="text-white text-lg font-bold">1. Scope</h2>
           <p>
             Haul Command operates a directory and intelligence platform for the global heavy haul transport industry.
-            Our coverage spans 57 countries at varying levels of data maturity. Market depth varies by region —
+            Our coverage spans 120 countries at varying levels of data maturity. Market depth varies by region —
             some markets are fully live with verified listings, while others are in data-collection or planning phases.
           </p>
 

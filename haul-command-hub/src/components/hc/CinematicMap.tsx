@@ -211,7 +211,7 @@ export function CinematicMap({
               Global Route Intelligence
             </h3>
             <p className="text-gray-400 text-sm max-w-md mx-auto mb-4">
-              Interactive 3D map with MSR routing, corridor heatmaps, and live operator positions across 57 countries.
+              Interactive 3D map with MSR routing, corridor heatmaps, and live operator positions across 120 countries.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {markers.slice(0, 6).map((m, i) => (

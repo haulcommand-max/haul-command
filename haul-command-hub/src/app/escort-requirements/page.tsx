@@ -10,11 +10,11 @@ import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Escort Requirements by Country & State — 57 Countries',
-    description: 'Complete escort vehicle requirements for oversize loads across 57 countries and 67+ jurisdictions. Dimension thresholds, height pole rules, police escort requirements, and authority contacts.',
+    title: 'Escort Requirements by Country & State — 120 countries',
+    description: 'Complete escort vehicle requirements for oversize loads across 120 countries and 67+ jurisdictions. Dimension thresholds, height pole rules, police escort requirements, and authority contacts.',
     openGraph: {
-        title: 'Escort Requirements by Country & State — 57 Countries | Haul Command',
-        description: 'The most comprehensive escort requirement guide in the world. 57 countries, 67+ jurisdictions.',
+        title: 'Escort Requirements by Country & State — 120 countries | Haul Command',
+        description: 'The most comprehensive escort requirement guide in the world. 120 countries, 67+ jurisdictions.',
     },
 };
 

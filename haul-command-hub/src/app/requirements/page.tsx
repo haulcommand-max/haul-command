@@ -9,7 +9,7 @@ import { COUNTRIES } from '@/lib/seo-countries';
 export const revalidate = 86400;
 export const metadata: Metadata = {
   title: 'Escort & Oversize Load Requirements by Country — HAUL COMMAND',
-  description: 'Find escort vehicle, pilot car, and oversize load requirements for all jurisdictions across 57 countries. Updated regulations, permit info, and compliance guides.',
+  description: 'Find escort vehicle, pilot car, and oversize load requirements for all jurisdictions across 120 countries. Updated regulations, permit info, and compliance guides.',
 };
 
 export default async function RequirementsIndexPage() {
@@ -27,7 +27,7 @@ export default async function RequirementsIndexPage() {
       <HCLocalIntroCopy
         h1="Oversize Load & Escort Requirements"
         intro="Find pilot car and escort vehicle requirements for every jurisdiction. Regulations, permit thresholds, equipment mandates, and official source links — all in one place."
-        badge="57 Countries"
+        badge="120 countries"
       />
 
       {countriesWithReqs.length > 0 && (

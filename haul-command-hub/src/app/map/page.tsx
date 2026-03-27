@@ -10,7 +10,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 export const metadata: Metadata = {
   title: 'Heavy Haul Corridor Map — Browse by Country & Region',
   description:
-    'Browse the world\'s most complete heavy haul logistics map. Find pilot car operators, escort services, and infrastructure across 57 countries.',
+    'Browse the world\'s most complete heavy haul logistics map. Find pilot car operators, escort services, and infrastructure across 120 countries.',
 };
 
 export const revalidate = 3600;
@@ -60,7 +60,7 @@ export default async function MapPage() {
             Global <span className="text-accent">Coverage Map</span>
           </h1>
           <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl break-words">
-            Explore heavy haul markets, escort services, and corridor intelligence across 57 countries.
+            Explore heavy haul markets, escort services, and corridor intelligence across 120 countries.
             Select a region to browse verified operators, requirements, and infrastructure.
           </p>
         </header>
@@ -133,7 +133,7 @@ export default async function MapPage() {
 
         <HCFaqModule
           items={[
-            { question: 'What countries does Haul Command cover?', answer: 'Our directory framework covers 57 countries across North America, Europe, Asia-Pacific, Middle East, Latin America, and Africa. Coverage depth varies by market tier.' },
+            { question: 'What countries does Haul Command cover?', answer: 'Our directory framework covers 120 countries across North America, Europe, Asia-Pacific, Middle East, Latin America, and Africa. Coverage depth varies by market tier.' },
             { question: 'How do I navigate the map?', answer: 'Click on any country to browse its directory of verified operators, escort services, and infrastructure. You can drill down by state/province, metro area, and service type.' },
             { question: 'Can I see escort requirements on the map?', answer: 'Yes — each country and jurisdiction page includes escort requirement summaries with dimension thresholds, permit links, and authority contacts.' },
           ]}

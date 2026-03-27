@@ -95,7 +95,7 @@ export default function EquipmentExchangePage() {
         {/* Categories */}
         <section className="mb-12">
           <h2 className="text-2xl font-black text-white tracking-tighter mb-2">Browse by Category</h2>
-          <p className="text-gray-500 text-sm mb-6">3,000+ listings from verified operators across 57 countries</p>
+          <p className="text-gray-500 text-sm mb-6">3,000+ listings from verified operators across 120 countries</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {CATEGORIES.map(c => (
               <Link

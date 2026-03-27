@@ -44,11 +44,11 @@ export default function ReportDataIssuePage() {
         padding: '2rem',
       }}>
         <h2 style={{ color: '#c8cdd8', fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem' }}>
-          Claim Your Listing
+          Claim Your Profile
         </h2>
         <p style={{ color: '#9ca3af', lineHeight: 1.6 }}>
           If this is your company and the data is outdated, the fastest way to fix it is to{' '}
-          <a href="/claim" style={{ color: '#8090ff' }}>claim your listing</a>. Verified operators
+          <a href="/claim" style={{ color: '#8090ff' }}>claim your profile</a>. Verified operators
           can update their own information in real time.
         </p>
       </section>

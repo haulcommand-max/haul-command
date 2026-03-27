@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!svc) return { title: 'Not Found' };
   return {
     title: `${svc.label} — Find Providers Worldwide | HAUL COMMAND`,
-    description: `Find ${svc.label.toLowerCase()} providers across 57 countries. Browse operators, rates, and escort requirements for ${svc.label.toLowerCase()}.`,
+    description: `Find ${svc.label.toLowerCase()} providers across 120 countries. Browse operators, rates, and escort requirements for ${svc.label.toLowerCase()}.`,
   };
 }
 

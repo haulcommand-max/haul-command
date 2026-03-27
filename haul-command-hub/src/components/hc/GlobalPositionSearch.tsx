@@ -41,7 +41,7 @@ export function GlobalPositionSearch() {
           <input
             type="text"
             className="bg-transparent border-none appearance-none outline-none text-white w-full placeholder-gray-500 font-medium py-3 text-lg"
-            placeholder="Search 73 positions across 57 countries (e.g., 'Flagger Texas' or 'Schwertsransport')"
+            placeholder="Search 73 positions across 120 countries (e.g., 'Flagger Texas' or 'Schwertsransport')"
             value={query}
             onChange={e => setQuery(e.target.value)}
           />
