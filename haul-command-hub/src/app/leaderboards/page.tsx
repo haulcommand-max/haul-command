@@ -5,7 +5,9 @@ import { supabaseServer } from '@/lib/supabase-server';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 
-export const revalidate = 3600;
+// Force dynamic — multiple Supabase queries (RPC, providers, corridors)
+// time out during static builds. CDN handles caching automatically.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Leaderboards — Top Corridors, Markets & Operators',
@@ -45,7 +47,7 @@ export default async function LeaderboardsPage() {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
         <nav className="text-xs text-gray-500 mb-4 sm:mb-6">
           <Link href="/" className="hover:text-accent">Home</Link>
-          <span className="mx-2">›</span>
+          <span className="mx-2">&rsaquo;</span>
           <span className="text-white">Leaderboards</span>
         </nav>
 
@@ -66,7 +68,7 @@ export default async function LeaderboardsPage() {
           See individual ranking sections for specific methodology.
         </div>
 
-        {/* 🏆 Safety Leaderboard — Motive-powered */}
+        {/* Safety Leaderboard */}
         {hasSafetyData && (
           <section className="mb-8 sm:mb-12">
             <div className="flex items-center justify-between mb-2">
@@ -74,7 +76,7 @@ export default async function LeaderboardsPage() {
                 <svg className="w-5 h-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Safest Operators — ELD Verified
+                Safest Operators &mdash; ELD Verified
               </h2>
               <span className="text-[10px] text-gray-500">powered by Haul Command AI</span>
             </div>
@@ -100,13 +102,13 @@ export default async function LeaderboardsPage() {
                       return (
                         <tr key={op.id} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
                           <td className="text-gray-500 px-5 py-3 tabular-nums">
-                            {i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}
+                            {i < 3 ? ['\u{1F947}','\u{1F948}','\u{1F949}'][i] : i + 1}
                           </td>
                           <td className="px-5 py-3">
                             <div className="flex items-center gap-2">
                               <span className="text-white font-medium">{op.name || `Operator ${op.id.slice(0,6)}`}</span>
                               <span className="inline-flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 rounded px-1.5 py-0.5 text-[10px] text-blue-400 font-bold">
-                                ✓ Verified
+                                &#10003; Verified
                               </span>
                             </div>
                           </td>
@@ -114,7 +116,7 @@ export default async function LeaderboardsPage() {
                             {scorePct}/100
                           </td>
                           <td className="text-gray-500 px-5 py-3 text-right tabular-nums">
-                            {op.motive_fleet_size ?? '—'} vehicles
+                            {op.motive_fleet_size ?? '\u2014'} vehicles
                           </td>
                         </tr>
                       );
@@ -124,7 +126,7 @@ export default async function LeaderboardsPage() {
               </div>
               <div className="px-5 py-2 bg-white/[0.01] flex items-center justify-between text-[10px] text-gray-600">
                 <span>Score = composite of harsh braking, speeding, idle time, and driving behavior</span>
-                <Link href="/claim" className="text-blue-400 hover:text-blue-300 font-medium">Get HC Verified to qualify →</Link>
+                <Link href="/claim" className="text-blue-400 hover:text-blue-300 font-medium">Get HC Verified to qualify &rarr;</Link>
               </div>
             </div>
           </section>
