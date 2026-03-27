@@ -48,27 +48,30 @@ export default async function DirectoryCountryPage({
     const to = from + PAGE_SIZE - 1;
 
     // Category facets
-    const { data: facetRows } = await sb
-        .from("hc_places")
-        .select("surface_category_key")
-        .eq("status", "published")
-        .eq("country_code", cc.toUpperCase());
+    let facetQuery = sb
+        .from("directory_listings")
+        .select("entity_type")
+        .eq("is_visible", true);
+    if (cc.slug !== 'all') facetQuery = facetQuery.eq("country_code", cc.code);
+    const { data: facetRows } = await facetQuery;
 
     const facets = new Map<string, number>();
     for (const r of facetRows ?? []) {
-        const cat = r.surface_category_key;
+        const cat = r.entity_type;
         if (cat) facets.set(cat, (facets.get(cat) ?? 0) + 1);
     }
     const facetList = Array.from(facets.entries()).sort((a, b) => b[1] - a[1]);
 
     // Paginated listings
-    const { data: rows, count } = await sb
-        .from("hc_places")
-        .select("id, slug, name, surface_category_key, locality, admin1_code, country_code, phone, website, updated_at", {
+    let listQuery = sb
+        .from("directory_listings")
+        .select("id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at", {
             count: "exact",
         })
-        .eq("status", "published")
-        .eq("country_code", cc.toUpperCase())
+        .eq("is_visible", true);
+    if (cc.slug !== 'all') listQuery = listQuery.eq("country_code", cc.code);
+
+    const { data: rows, count } = await listQuery
         .order("updated_at", { ascending: false })
         .range(from, to);
 

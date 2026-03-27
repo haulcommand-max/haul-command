@@ -59,25 +59,32 @@ export async function getGlobalStats(): Promise<GlobalStats> {
         // Operator count — try multiple tables in cascade
         let opCount: number | null = 0;
         try {
-            const { count: c1 } = await sb
-                .from('directory_listings')
-                .select('id', { count: 'exact', head: true })
-                .neq('is_visible', false);
-            if ((c1 ?? 0) > 0) {
-                opCount = c1;
+            const { count: c0 } = await sb
+                .from('provider_directory')
+                .select('id', { count: 'exact', head: true });
+            if ((c0 ?? 0) > 0) {
+                opCount = c0;
             } else {
-                // fallback: hc_identities
-                const { count: c2 } = await sb
-                    .from('hc_identities')
-                    .select('id', { count: 'exact', head: true });
-                if ((c2 ?? 0) > 0) {
-                    opCount = c2;
+                const { count: c1 } = await sb
+                    .from('directory_listings')
+                    .select('id', { count: 'exact', head: true })
+                    .neq('is_visible', false);
+                if ((c1 ?? 0) > 0) {
+                    opCount = c1;
                 } else {
-                    // last resort: profiles
-                    const { count: c3 } = await sb
-                        .from('profiles')
+                    // fallback: hc_identities
+                    const { count: c2 } = await sb
+                        .from('hc_identities')
                         .select('id', { count: 'exact', head: true });
-                    opCount = c3 ?? 0;
+                    if ((c2 ?? 0) > 0) {
+                        opCount = c2;
+                    } else {
+                        // last resort: profiles
+                        const { count: c3 } = await sb
+                            .from('profiles')
+                            .select('id', { count: 'exact', head: true });
+                        opCount = c3 ?? 0;
+                    }
                 }
             }
         } catch { opCount = 0; }

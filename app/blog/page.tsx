@@ -3,8 +3,17 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Intelligence Blog — Regulations, Corridors & Escort Guides | Haul Command',
-  description: 'Expert guides on pilot car regulations, escort requirements, autonomous trucking corridors, and oversize transport across 57 countries. Updated daily.',
+  title: 'Heavy Haul Intelligence — News & Guides | Haul Command',
+  description:
+    'Heavy haul industry news, permit guides, escort vehicle regulations, and market intelligence. The authoritative source for oversize load transport professionals.',
+  openGraph: {
+    title: 'Heavy Haul Intelligence | Haul Command',
+    description: 'Industry news, permit guides, and market intelligence for heavy haul professionals.',
+    url: 'https://haulcommand.com/blog',
+  },
+  alternates: {
+    canonical: 'https://haulcommand.com/blog',
+  },
 };
 
 async function getBlogPosts(limit = 24) {

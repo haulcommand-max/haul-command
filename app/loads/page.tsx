@@ -3,13 +3,42 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Load Board — Open Escort Jobs Across 57 Countries | Haul Command',
-  description: 'Browse open heavy haul escort jobs across 57 countries. Find pilot car, wide load, and oversize load escort opportunities with escrow-protected payments.',
+  title: 'Oversize Load Board — Post & Find Heavy Haul Loads | Haul Command',
+  description:
+    'Post oversize loads and find pilot car jobs on the #1 heavy haul load board. Real-time matching between carriers, brokers, and escort vehicle operators.',
+  keywords: [
+    'oversize load board',
+    'heavy haul load board',
+    'pilot car jobs',
+    'escort vehicle jobs',
+    'oversize load dispatch',
+    'heavy haul freight',
+    'superload board',
+    'oversize freight board',
+  ],
   openGraph: {
-    title: 'Heavy Haul Load Board — Open Escort Jobs Across 57 Countries',
-    description: 'Browse open heavy haul escort jobs across 57 countries. Find pilot car, wide load, and oversize load escort opportunities.',
-    type: 'website',
+    title: 'Oversize Load Board | Haul Command',
+    description: 'Post oversize loads and find pilot car jobs. Real-time matching for heavy haul.',
+    url: 'https://haulcommand.com/loads',
   },
+  alternates: {
+    canonical: 'https://haulcommand.com/loads',
+  },
+};
+
+const LOADS_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Oversize Load Board",
+  "url": "https://haulcommand.com/loads",
+  "description": "Post oversize loads and find pilot car jobs on the #1 heavy haul load board.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "Oversize Load Board", "item": "https://haulcommand.com/loads" }
+    ]
+  }
 };
 
 const COUNTRY_FLAGS: Record<string, string> = {
@@ -47,6 +76,7 @@ export default async function LoadBoardPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(LOADS_JSONLD) }} />
       {/* Hero */}
       <section className="py-16 px-4 text-center">
         <div className="max-w-4xl mx-auto">

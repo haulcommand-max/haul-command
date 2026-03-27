@@ -31,12 +31,11 @@ type Agg = { key: string; count: number };
 export default async function DirectoryPage() {
     const sb = supabaseServer();
 
-    // Pull all published rows (lightweight select)
+    // Pull all visible rows from unified directory
     const { data: rows } = await sb
-        .from("hc_places")
-        .select("country_code, surface_category_key")
-        .eq("status", "published")
-        .eq("is_search_indexable", true)
+        .from("directory_listings")
+        .select("country_code, entity_type")
+        .eq("is_visible", true)
         .limit(50000);
 
     // Aggregate
@@ -45,7 +44,7 @@ export default async function DirectoryPage() {
 
     for (const r of rows ?? []) {
         const cc = (r.country_code ?? "").toLowerCase();
-        const cat = r.surface_category_key ?? "";
+        const cat = r.entity_type ?? "";
         if (cc) countryCounts.set(cc, (countryCounts.get(cc) ?? 0) + 1);
         if (cat) categoryCounts.set(cat, (categoryCounts.get(cat) ?? 0) + 1);
     }

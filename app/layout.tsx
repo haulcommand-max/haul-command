@@ -154,19 +154,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "@type": "Organization",
                         "name": "Haul Command",
                         "url": "https://haulcommand.com",
-                        "logo": "https://haulcommand.com/brand/logo.svg",
-                        "description": "The global operating system for heavy haul. Verified pilot car directory, oversize load board, and corridor intelligence.",
+                        "logo": "https://haulcommand.com/logo.png",
+                        "description": "The operating system for heavy haul — the world's largest directory of pilot car operators, escort vehicles, and oversize load transport professionals across 57 countries.",
                         "sameAs": [
-                            "https://twitter.com/haulcommand",
+                            "https://x.com/haulcommand",
                             "https://linkedin.com/company/haulcommand",
+                            "https://instagram.com/haulcommand",
+                            "https://facebook.com/haulcommand",
+                            "https://www.facebook.com/groups/pilotcarjobs"
                         ],
                         "contactPoint": {
                             "@type": "ContactPoint",
-                            "contactType": "customer support",
-                            "url": "https://haulcommand.com/contact",
-                            "areaServed": ["US", "CA", "GB", "AU", "NZ", "ZA", "DE", "NL", "AE", "BR"],
-                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese"],
+                            "contactType": "customer service",
+                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese"]
                         },
+                        "areaServed": {
+                            "@type": "GeoShape",
+                            "description": "57 countries worldwide"
+                        },
+                        "foundingDate": "2024",
+                        "knowsAbout": [
+                            "Pilot Car Operations",
+                            "Escort Vehicle Services",
+                            "Oversize Load Transport",
+                            "Heavy Haul Logistics",
+                            "Superload Permits",
+                            "Route Surveys"
+                        ]
                     })
                 }} />
                 {/* WebSite + SearchAction → Google Sitelinks Search Box */}
@@ -176,14 +190,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "@type": "WebSite",
                         "name": "Haul Command",
                         "url": "https://haulcommand.com",
+                        "description": "The operating system for heavy haul — find pilot cars, escort vehicles, and oversize load professionals worldwide.",
                         "potentialAction": {
                             "@type": "SearchAction",
                             "target": {
                                 "@type": "EntryPoint",
-                                "urlTemplate": "https://haulcommand.com/search?q={search_term_string}",
+                                "urlTemplate": "https://haulcommand.com/directory?q={search_term_string}"
                             },
-                            "query-input": "required name=search_term_string",
-                        },
+                            "query-input": "required name=search_term_string"
+                        }
                     })
                 }} />
                 {/* SpeakableSpecification → Voice Search Eligibility */}

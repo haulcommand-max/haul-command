@@ -4,9 +4,46 @@ import type { Metadata } from 'next';
 import { RouteCalcMobileGate } from '@/components/mobile/gates/RouteCalcMobileGate';
 
 export const metadata: Metadata = {
-    title: 'Escort Requirements by Country & State — 57 Countries',
-    description: 'Complete escort vehicle requirements for oversize loads across 57 countries and 67+ jurisdictions. Dimension thresholds, height pole rules, police escort requirements, and authority contacts.',
-    openGraph: { title: 'Escort Requirements by Country & State | Haul Command', description: 'The most comprehensive escort requirement guide in the world. 57 countries, 67+ jurisdictions.' },
+  title: 'State Escort Requirements for Oversize Loads | Haul Command',
+  description:
+    'Check pilot car and escort vehicle requirements for all 50 US states. Width, height, length, and weight thresholds that trigger escort requirements — updated in real time.',
+  keywords: [
+    'state escort requirements',
+    'oversize load escort requirements by state',
+    'pilot car requirements by state',
+    'escort vehicle requirements',
+    'oversize load permit requirements',
+    'superload escort requirements',
+    'wide load escort requirements',
+  ],
+  openGraph: {
+    title: 'State Escort Requirements for Oversize Loads | Haul Command',
+    description: 'Pilot car and escort vehicle requirements for all 50 US states. Check width, height, and weight thresholds.',
+    url: 'https://haulcommand.com/escort-requirements',
+  },
+  alternates: {
+    canonical: 'https://haulcommand.com/escort-requirements',
+  },
+};
+
+const ESCORT_REQUIREMENTS_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "State Escort Requirements for Oversize Loads",
+  "url": "https://haulcommand.com/escort-requirements",
+  "description": "Pilot car and escort vehicle requirements for all 50 US states.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "State Escort Requirements", "item": "https://haulcommand.com/escort-requirements" }
+    ]
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "Oversize Load Escort Requirements",
+    "description": "Legal requirements for pilot cars and escort vehicles when transporting oversize loads on public roads in the United States."
+  }
 };
 
 const FLAG: Record<string, string> = { US: '🇺🇸', CA: '🇨🇦', AU: '🇦🇺', GB: '🇬🇧', NZ: '🇳🇿', ZA: '🇿🇦', DE: '🇩🇪', NL: '🇳🇱', AE: '🇦🇪', BR: '🇧🇷', IE: '🇮🇪', SE: '🇸🇪', NO: '🇳🇴', DK: '🇩🇰', FI: '🇫🇮', BE: '🇧🇪', AT: '🇦🇹', CH: '🇨🇭', ES: '🇪🇸', FR: '🇫🇷', IT: '🇮🇹', PT: '🇵🇹', SA: '🇸🇦', QA: '🇶🇦', MX: '🇲🇽', IN: '🇮🇳', ID: '🇮🇩', TH: '🇹🇭', JP: '🇯🇵', KR: '🇰🇷', PL: '🇵🇱', CZ: '🇨🇿', SK: '🇸🇰', HU: '🇭🇺', SI: '🇸🇮', EE: '🇪🇪', LV: '🇱🇻', LT: '🇱🇹', HR: '🇭🇷', RO: '🇷🇴', BG: '🇧🇬', GR: '🇬🇷', TR: '🇹🇷', KW: '🇰🇼', OM: '🇴🇲', BH: '🇧🇭', SG: '🇸🇬', MY: '🇲🇾', CL: '🇨🇱', AR: '🇦🇷', CO: '🇨🇴', PE: '🇵🇪', VN: '🇻🇳', PH: '🇵🇭', UY: '🇺🇾', PA: '🇵🇦', CR: '🇨🇷' };
@@ -28,6 +65,7 @@ export default async function EscortRequirementsIndex() {
     return (
         <RouteCalcMobileGate>
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ESCORT_REQUIREMENTS_JSONLD) }} />
             <header className="mb-12 sm:mb-16">
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">GLOBAL COVERAGE</span><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">{totalJ} JURISDICTIONS</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">REQUIREMENTS</span></h1>

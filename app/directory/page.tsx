@@ -1,10 +1,86 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { CategoryGrid } from '@/components/directory/CategoryGrid';
 
 export const metadata: Metadata = {
-  title: 'Global Escort Operator Directory — 57 Countries | Haul Command',
-  description: 'Find verified pilot car and escort operators across 57 countries. Real-time availability, corridor rankings, and escrow-protected bookings.',
+  title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
+  description:
+    'Search the world\'s largest pilot car and escort vehicle directory. Find verified operators by state, country, and specialty. 1,000+ listings across 57 countries.',
+  keywords: [
+    'pilot car directory',
+    'escort vehicle directory',
+    'find pilot car',
+    'pilot car near me',
+    'oversize load escort directory',
+    'heavy haul escort',
+    'pilot car operators USA',
+    'escort vehicle operators',
+    'superload pilot car',
+  ],
+  openGraph: {
+    title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
+    description: 'Find verified pilot car operators and escort vehicles near you. Search by state, country, or specialty.',
+    url: 'https://haulcommand.com/directory',
+    images: [{ url: '/og-directory.png', width: 1200, height: 630 }],
+  },
+  alternates: {
+    canonical: 'https://haulcommand.com/directory',
+  },
+};
+
+const DIRECTORY_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Pilot Car & Escort Vehicle Directory",
+  "url": "https://haulcommand.com/directory",
+  "description": "The world's largest directory of pilot car operators and escort vehicle professionals for oversize loads across 57 countries.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "Pilot Car Directory", "item": "https://haulcommand.com/directory" }
+    ]
+  }
+};
+
+const DIRECTORY_FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a pilot car?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A pilot car (also called an escort vehicle) is a vehicle that accompanies oversize or overweight loads on public roads to warn other motorists, assist with navigation, and ensure compliance with state escort requirements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find a pilot car near me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the Haul Command pilot car directory to search verified escort vehicle operators by state or location. Filter by specialty including superloads, AV escort, and height pole operations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What states require pilot cars for oversize loads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All 50 US states have escort vehicle requirements for oversize loads. Requirements vary by width, height, length, and weight. Use the Haul Command escort requirements tool to check requirements by state."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many countries does the Haul Command directory cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Haul Command directory covers 57 countries globally including the United States, Canada, Australia, United Kingdom, and 48 other nations with heavy haul logistics infrastructure."
+      }
+    }
+  ]
 };
 
 const COUNTRIES = [
@@ -80,11 +156,10 @@ async function getStats() {
 
     // Query the unified listings table directly — no more directory_listings split
     const [countRes, stateRes, topRes] = await Promise.all([
-      // Total count of all active listings
+      // Total count of all operators/places from the new source of truth
       supabase
-        .from('listings')
-        .select('*', { count: 'exact', head: true })
-        .eq('active', true),
+        .from('provider_directory')
+        .select('*', { count: 'exact', head: true }),
 
       // Per-state breakdown (US)
       supabase
@@ -128,6 +203,8 @@ export default async function DirectoryPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_JSONLD) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_FAQ_JSONLD) }} />
       {/* Hero */}
       <section className="relative py-16 px-4 text-center border-b border-white/5">
         <div className="max-w-4xl mx-auto">
@@ -182,8 +259,13 @@ export default async function DirectoryPage() {
         </div>
       </section>
 
+      {/* Global Category Grid */}
+      <section className="max-w-6xl mx-auto px-4 pt-10 pb-4">
+          <CategoryGrid country="global" region="all" regionName="Global" />
+      </section>
+
       {/* US State Quick Nav */}
-      <section className="max-w-6xl mx-auto px-4 py-10">
+      <section className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">Browse US States</h2>
           <span className="text-xs text-gray-600">{Object.keys(stateMap).length} states with operators</span>

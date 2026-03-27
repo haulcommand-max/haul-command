@@ -14,8 +14,9 @@ const FOOTER_SECTIONS = [
     {
         title: "Market",
         links: [
-            { href: "/loads", label: "Load Board" },
-            { href: "/directory", label: "Escort Directory" },
+            { href: "/loads", label: "Oversize Load Board" },
+            { href: "/directory", label: "Pilot Car Directory" },
+            { href: "/rates", label: "Pilot Car Rates" },
             { href: "/leaderboards", label: "Leaderboard" },
             { href: "/corridors", label: "Corridors" },
             { href: "/map", label: "Live Map" },

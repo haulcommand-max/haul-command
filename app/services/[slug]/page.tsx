@@ -26,7 +26,7 @@ const SERVICES: Record<string, {
     icon: '\ud83d\udea8',
     relatedCorridors: ['I-95 Corridor', 'I-75 Corridor', 'A1 Motorway (DE)', 'Bruce Highway (AU)'],
   },
-  'heavy-haul': {
+  'heavy-haul-escort': {
     title: 'Heavy Haul Transport Escort',
     description: 'End-to-end heavy haul logistics escort services for industrial equipment, transformers, and machinery.',
     longDescription: 'Heavy haul transport escort services are essential for moving the most challenging loads on our roads \u2014 transformers, reactor vessels, mining equipment, bridge beams, and other superloads that may exceed 200,000 lbs.\n\nOur heavy haul escort operators understand bridge weight limits, route restrictions, utility clearances, and the complex permit requirements that vary by jurisdiction. They coordinate with police escorts, utility companies, and transportation departments to ensure safe passage.',
@@ -57,6 +57,46 @@ const SERVICES: Record<string, {
     features: ['SAE-certified operators', 'Real-time telemetry monitoring', 'Multi-vehicle convoy management', 'Safety perimeter vehicles', 'Incident documentation and reporting', 'Emergency intervention capability', 'Public road test support', 'Closed course support', 'Regulatory compliance documentation'],
     icon: '\ud83e\udd16',
     relatedCorridors: ['Silicon Valley Test Routes', 'Phoenix AV Corridor', 'Munich Test Zone (DE)'],
+  },
+  'escort-vehicle': {
+    title: 'Escort Vehicle Services',
+    description: 'Professional escort vehicle operators for commercial, heavy haul, and specialized transport needs.',
+    longDescription: 'Escort vehicles play a critical safety role in the transport of non-standard freight. Whether managing traffic at complex intersections, providing early warning for oncoming vehicles, or ensuring correct route adherence, skilled escort operators keep the convoy and general public safe.\n\nOur extensive international network ensures you can find fully-equipped and insured escort vehicles wherever your route begins or ends.',
+    features: ['Amber warning lights', 'Traffic control procedures', 'Convoy communication relay', 'Safety perimeter establishment', 'VHF / CB radio deployment', 'Pre-trip safety briefings', 'GPS live tracking'],
+    icon: '🚨',
+    relatedCorridors: ['I-35 Corridor', 'I-65 Corridor', 'Florida Toll Roads'],
+  },
+  'oversize-escort': {
+    title: 'Oversize Load Escort',
+    description: 'Specialized escort services precisely engineered for oversized, overdimensional, and unconventional load structures.',
+    longDescription: 'Transporting oversized dimensions (beyond 8\'6" width, 13\'6" height, or 80k lbs) introduces unique logistical constraints across every municipal line, county border, and state boundary. \n\nOversize load escort operators in our network carry necessary endorsements and liability coverage. They pre-emptively identify overhead obstructions, narrow bridges, and weight-limited structures well before the transport arrives.',
+    features: ['Turn-by-turn guidance', 'Clearance monitoring', 'Height pole operations', 'Municipal coordination', 'Pedestrian control', 'Incident management'],
+    icon: '⚠️',
+    relatedCorridors: ['I-10 Corridor', 'I-70 Corridor', 'Trans-Canada Highway'],
+  },
+  'super-load-escort': {
+    title: 'Super-Load Escort Operations',
+    description: 'Expert, multi-vehicle escort teams for mega-projects, transformers, space equipment, and super-loads.',
+    longDescription: 'A super-load is the apex of heavy haul logistics — loads that are so massive they dictate their own rules of the road. Super-load escorts require highly coordinated teams, often involving 3 to 10 pilot cars, police escorts, and bucket trucks for wire-lifting.\n\nHaul Command’s network includes the industry\'s most experienced super-load teams capable of managing highway closures, bridge structural crossings, and civilian traffic diversion protocols.',
+    features: ['Multi-jurisdiction continuity', 'Full road closure management', 'Police escort liaising', 'Utility wire lifting coordination', 'Axle-weight distribution spacing', 'Counter-flow traffic control'],
+    icon: '🏗️',
+    relatedCorridors: ['Texas Heavy Haul Network', 'Alberta Mega-Corridors'],
+  },
+  'high-pole': {
+    title: 'High Pole Car Services',
+    description: 'Height-aware pilot cars equipped with calibrated high poles for bridge and utility wire clearance verification.',
+    longDescription: 'When a load is exceptionally tall, it runs the constant risk of striking bridges, overpasses, traffic lights, and utility cables. High pole car services precede the transport with a rigidly mounted, calibrated fiberglass pole set precisely 3 to 6 inches higher than the load itself.\n\nHigh pole operators provide the critical "first strike" warning, giving the driver vital seconds to stop before a catastrophic bridge or wire strike occurs.',
+    features: ['Calibrated fiberglass pole operation', 'Overhead obstruction detection', 'VHF communication of strikes', 'Lane-shift guidance', 'Emergency stop signaling', 'Clearance documentation'],
+    icon: '📏',
+    relatedCorridors: ['I-95 Northeast Corridor', 'Urban Ring Roads'],
+  },
+  'mobile-home-escort': {
+    title: 'Mobile Home & Modular Escorts',
+    description: 'Certified escorts for the safe transport of manufactured housing, tiny homes, and modular structures.',
+    longDescription: 'The manufactured housing industry relies heavily on escort vehicles to safely move 14-wide, 16-wide, and 18-wide structures through narrow residential streets, winding county roads, and multi-lane highways.\n\nOur network provides operators specifically experienced with the unique aerodynamics, turning radius, and sway characteristics of manufactured homes and modular buildings.',
+    features: ['Toter-truck communication', 'Wind sway monitoring', 'Wide-turn traffic blocking', 'Residential street navigation', 'Multi-section coordination', 'Setup-site guidance'],
+    icon: '🏠',
+    relatedCorridors: ['Southeast US Housing Corridor', 'I-40 Sunbelt Corridor', 'Pacific Northwest'],
   },
 };
 

@@ -4,6 +4,7 @@
  *
  * Links route to /directory/{country}/{region}/{category-slug}
  */
+"use client";
 import React from "react";
 import Link from "next/link";
 import {
@@ -12,45 +13,73 @@ import {
 
 const CATEGORIES = [
     {
-        slug: "escort-operators",
-        label: "Escort Operators",
+        slug: "pilot-car-operators",
+        label: "Pilot Car Operators",
         icon: Car,
-        description: "Verified pilot car & escort drivers",
+        description: "Verified escort vehicles",
         hot: true,
+    },
+    {
+        slug: "freight-brokers",
+        label: "Freight Brokers",
+        icon: HeartHandshake,
+        description: "Heavy haul logistics brokers",
+        hot: false,
+    },
+    {
+        slug: "diesel-mechanics",
+        label: "Diesel Mechanics",
+        icon: Wrench,
+        description: "Heavy duty repair & towing",
+        hot: false,
     },
     {
         slug: "permit-services",
         label: "Permit Services",
         icon: FileText,
-        description: "Routing permits & multi-state filings",
+        description: "Oversize routing & filings",
         hot: false,
     },
     {
-        slug: "pilot-car-equipment",
-        label: "Pilot Car Equipment",
-        icon: Wrench,
-        description: "Flags, signs, height poles & gear",
-        hot: false,
-    },
-    {
-        slug: "hotels-motels",
-        label: "Hotels & Motels",
-        icon: BedDouble,
-        description: "Oversized-load friendly overnight stops",
-        hot: false,
-    },
-    {
-        slug: "support-services",
-        label: "Support Services",
-        icon: HeartHandshake,
-        description: "Fuel, breakdown, towing & more",
-        hot: false,
-    },
-    {
-        slug: "route-compliance",
-        label: "Route & Compliance",
+        slug: "heavy-haul-carriers",
+        label: "Heavy Haul Carriers",
         icon: Map,
-        description: "Route surveys, compliance, consulting",
+        description: "Specialized transport companies",
+        hot: false,
+    },
+    {
+        slug: "weigh-stations",
+        label: "Weigh Stations",
+        icon: Map, // Will use map or something else
+        description: "DOT scales and inspection",
+        hot: false,
+    },
+    {
+        slug: "travel-plazas",
+        label: "Travel Plazas",
+        icon: BedDouble,
+        description: "Oversize load friendly stops",
+        hot: false,
+    },
+    {
+        slug: "ports-borders",
+        label: "Ports & Borders",
+        icon: Map,
+        description: "POE details & infrastructure",
+        hot: false,
+    },
+    {
+        slug: "equipment-dealers",
+        label: "Equipment Dealers",
+        icon: Wrench,
+        description: "Trailers, signs, flags & gear",
+        hot: false,
+    },
+    {
+        slug: "escort-vehicles",
+        label: "Escort Vehicles",
+        icon: Car,
+        description: "Lead & chase vehicle services",
         hot: false,
     },
 ] as const;

@@ -52,9 +52,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         Core OS
                     </div>
                     {[
-                        { href: '/loads', label: '📋 Load Board' },
+                        { href: '/loads', label: '📋 Oversize Load Board' },
                         { href: '/map', label: '🗺 Live Map' },
-                        { href: '/directory', label: '🔍 Directory' },
+                        { href: '/directory', label: '🔍 Pilot Car Directory' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
                         { href: '/corridor', label: '📊 Corridors' },
                     ].map(link => (
@@ -68,7 +68,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         Free Tools
                     </div>
                     {[
-                        { href: '/rates', label: '💵 Rate Guides' },
+                        { href: '/rates', label: '💵 Pilot Car Rates' },
                         { href: '/tools/permit-calculator', label: '🧮 Permit Calculator' },
                         { href: '/tools/rate-lookup', label: '💰 Rate Lookup' },
                     ].map(link => (

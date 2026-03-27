@@ -66,11 +66,11 @@ export default function EnhancedFooter() {
                         <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Product</h3>
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                             {[
-                                { href: '/loads', label: 'Load Board' },
-                                { href: '/directory', label: 'Escort Directory' },
+                                { href: '/loads', label: 'Oversize Load Board' },
+                                { href: '/directory', label: 'Pilot Car Directory' },
                                 { href: '/leaderboards', label: 'Leaderboard' },
                                 { href: '/corridor', label: 'Corridor Intelligence' },
-                                { href: '/rates', label: 'Rate Guides (Free)' },
+                                { href: '/rates', label: 'Pilot Car Rates (Free)' },
                                 { href: '/tools/permit-checker', label: 'Permit Checker (Free)' },
                             ].map(l => (
                                 <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}

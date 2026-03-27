@@ -61,12 +61,15 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 
-    const { data: rows, count } = await sb
-      .from("hc_places")
-      .select("id, slug, name, surface_category_key, locality, admin1_code, phone, website, updated_at", { count: "exact" })
-      .eq("status", "published")
-      .eq("country_code", cc.code)
-      .eq("surface_category_key", cat)
+    let query = sb
+      .from("directory_listings")
+      .select("id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at", { count: "exact" })
+      .eq("is_visible", true)
+      .eq("entity_type", cat);
+
+    if (cc.code !== 'ALL') query = query.eq("country_code", cc.code);
+
+    const { data: rows, count } = await query
       .order("name", { ascending: true })
       .range(from, to);
 
@@ -120,11 +123,11 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
   const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   const { data: listings, count } = await sb
-    .from('hc_places')
-    .select('id, slug, name, surface_category_key, locality, admin1_code, phone, updated_at', { count: 'exact' })
-    .eq('status', 'published')
+    .from('directory_listings')
+    .select('id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at', { count: 'exact' })
+    .eq('is_visible', true)
     .eq('country_code', cc.code)
-    .ilike('admin1_code', state.replace(/-/g, ' '))
+    .ilike('region_code', state.replace(/-/g, ' '))
     .order('updated_at', { ascending: false })
     .limit(50);
 

@@ -81,14 +81,14 @@ const NAV_TABS: NavTab[] = [
   },
   {
     href: '/loads',
-    label: 'Loads',
+    label: 'Load Board',
     icon: <LoadsIcon active={false} />,
     match: /^\/loads/,
   },
   // FAB goes here (index 2) — handled separately
   {
     href: '/directory',
-    label: 'Directory',
+    label: 'Pilot Cars',
     icon: <DirectoryIcon active={false} />,
     match: /^\/(directory|united-states|place|escort)/,
   },

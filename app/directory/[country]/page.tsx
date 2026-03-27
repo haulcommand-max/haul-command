@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { CategoryGrid } from '@/components/directory/CategoryGrid';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -151,6 +152,13 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
       </section>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Category Grid (places & operators) */}
+        {!stateFilter && !q && (
+          <div className="mb-10">
+            <CategoryGrid country={country} region="all" regionName={countryName} />
+          </div>
+        )}
+
         <div className="flex gap-8">
           {/* State sidebar for US */}
           {isUS && !stateFilter && Object.keys(stateCounts).length > 0 && (

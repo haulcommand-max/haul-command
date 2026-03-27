@@ -3,6 +3,17 @@ import { COUNTRIES, type CountryConfig } from '@/lib/seo-countries';
 import type { MarketMaturityState } from '@/lib/hc-types';
 
 export function getCountryConfig(slug: string): CountryConfig | undefined {
+  if (slug === 'all') {
+    return {
+      name: 'Global',
+      slug: 'all',
+      code: 'ALL',
+      flag: '🌍',
+      continent: 'Global',
+      drivingDirection: 'right',
+      unitSystem: 'metric'
+    };
+  }
   return COUNTRIES.find(c => c.slug === slug);
 }
 
