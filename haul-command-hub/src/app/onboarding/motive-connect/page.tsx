@@ -28,7 +28,7 @@ function MotiveConnectContent() {
         </p>
         <div className="space-y-3">
           <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-sm text-green-400">
-            ✓ Safety badge added to your listing<br />
+            ✓ Safety badge added to your profile<br />
             ✓ Priority run matching enabled<br />
             ✓ Live position tracking active<br />
             ✓ Leaderboard eligible
@@ -38,7 +38,7 @@ function MotiveConnectContent() {
           href="/directory"
           className="inline-flex mt-8 bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors"
         >
-          View Your Listing →
+          View your profile →
         </Link>
       </div>
     );
@@ -86,7 +86,7 @@ function MotiveConnectContent() {
 
       <div className="space-y-4 mb-10">
         {[
-          { icon: '🛡️', title: 'Verified Safety Badge', desc: 'Display a trust badge on your listing backed by real ELD data' },
+          { icon: '🛡️', title: 'Verified Safety Badge', desc: 'Display a trust badge on your profile backed by real ELD data' },
           { icon: '🏆', title: 'Safety Leaderboard', desc: 'Rank on the leaderboard by your composite safety score' },
           { icon: '📦', title: 'Priority Run Matching', desc: 'Verified pilots get matched to runs before unverified ones' },
           { icon: '📍', title: 'Live Position Tracking', desc: 'Brokers can see your real-time location for faster dispatch' },

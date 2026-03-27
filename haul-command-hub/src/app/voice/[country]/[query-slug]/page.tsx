@@ -259,7 +259,7 @@ export default async function VoiceAnswerPage({ params }: VoicePageProps) {
               <div className="bg-gradient-to-b from-accent/[0.06] to-transparent border border-accent/20 rounded-2xl p-5">
                 <h3 className="text-white font-bold text-sm mb-1">Are You an Operator?</h3>
                 <p className="text-gray-500 text-[11px] mb-3">
-                  Claim your listing to get verified, receive load alerts, and rank in {cc}.
+                  Claim your profile to get verified, receive load alerts, and rank in {cc}.
                 </p>
                 <Link
                   href="/claim"

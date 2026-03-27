@@ -46,7 +46,7 @@ export default function RemoveListingPage() {
           Consider Claiming Instead
         </h2>
         <p style={{ color: '#9ca3af', lineHeight: 1.6 }}>
-          Rather than removing your listing, you can{' '}
+          Rather than removing your profile, you can{' '}
           <a href="/claim" style={{ color: '#8090ff' }}>claim it</a> to take full control of the
           information displayed, add services, and receive leads.
         </p>

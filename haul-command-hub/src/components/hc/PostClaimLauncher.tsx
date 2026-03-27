@@ -75,7 +75,7 @@ export default function PostClaimLauncher({ className = '' }: { className?: stri
           Now <span className="text-accent">Activate Revenue</span>
         </h2>
         <p className="text-gray-500 text-sm max-w-lg mx-auto">
-          Your profile is live. These tools turn your listing into a revenue engine.
+          Your profile is live. These tools turn your profile into a revenue engine.
         </p>
       </div>
 

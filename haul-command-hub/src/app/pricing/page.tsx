@@ -161,7 +161,7 @@ const FAQS = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'You can claim and verify your listing for free with no credit card required. Premium features are available immediately upon subscribing.',
+    a: 'You can claim and verify your profile for free with no credit card required. Premium features are available immediately upon subscribing.',
   },
   {
     q: 'Can I switch plans later?',

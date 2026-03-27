@@ -42,7 +42,7 @@ const ladderItems = [
     label: 'Unverified',
     desc: 'Unclaimed profile with estimated data. Claim to start building trust.',
     color: 'red',
-    actions: ['Claim your listing today'],
+    actions: ['Claim your profile today'],
   },
 ];
 

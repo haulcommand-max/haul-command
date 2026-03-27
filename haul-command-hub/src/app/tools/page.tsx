@@ -153,7 +153,7 @@ export default function ToolsPage() {
             <h3 className="text-white font-black text-xl tracking-tighter mb-1">
               Operator on <span className="text-accent">Haul Command</span>?
             </h3>
-            <p className="text-gray-400 text-sm">Claim your listing and get load alerts when shippers need you.</p>
+            <p className="text-gray-400 text-sm">Claim your profile and get load alerts when shippers need you.</p>
           </div>
           <Link
             href="/claim"

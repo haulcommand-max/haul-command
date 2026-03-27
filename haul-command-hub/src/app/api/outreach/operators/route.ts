@@ -29,7 +29,7 @@ function buildClaimEmail(operatorName: string, stateName: string, claimUrl: stri
     <span style="color:#f59f0a;font-weight:900;font-size:24px;letter-spacing:-1px">HAUL COMMAND</span>
   </div>
   <div style="background:#111;border:1px solid #222;border-radius:16px;padding:32px">
-    <h1 style="color:#fff;font-size:20px;margin:0 0 8px">Your listing is live, ${operatorName}</h1>
+    <h1 style="color:#fff;font-size:20px;margin:0 0 8px">your profile is live, ${operatorName}</h1>
     <p style="color:#888;font-size:14px;line-height:1.6;margin:0 0 24px">
       Brokers in <strong style="color:#f59f0a">${stateName}</strong> are searching for
       <strong style="color:#f59f0a">${services}</strong> providers right now.

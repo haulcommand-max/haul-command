@@ -319,7 +319,7 @@ export default async function ClaimPage() {
           <div className="max-w-4xl mx-auto">
             <HCFaqModule
               items={[
-                { question: 'Is claiming free?', answer: 'Yes, claiming your listing is completely free. Premium features like boost credits and enhanced analytics are available through paid plans, but the core claim and verification is always free.' },
+                { question: 'Is claiming free?', answer: 'Yes, claiming your profile is completely free. Premium features like boost credits and enhanced analytics are available through paid plans, but the core claim and verification is always free.' },
                 { question: 'How does the Trust Score work?', answer: 'Every profile in Haul Command gets a Trust Score from F to A. It\'s calculated from reliability, compliance, dispute risk, and activity signals. Claiming your profile is the first step to upgrading from Estimated to Verified.' },
                 { question: 'When will other countries be added?', answer: 'We are currently running the "Claim Campaign" for our Tier A countries (US, Canada, Australia, UK, New Zealand, South Africa, Germany, Netherlands, UAE, Brazil). Our system tracks 120 countries with autonomous expansion.' },
                 { question: 'What if my business isn\'t listed yet?', answer: 'If you operate inside a tracked country, you can add your business directly through the claim flow. We\'ll create your profile and you can claim it immediately.' },

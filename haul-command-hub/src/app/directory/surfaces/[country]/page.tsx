@@ -38,7 +38,7 @@ export async function generateMetadata({
     const name = COUNTRY_NAMES[country] ?? country.toUpperCase();
     return {
         title: `${name} Logistics Surfaces — HAUL COMMAND`,
-        description: `Browse truck stops, ports, industrial zones, and freight infrastructure in ${name}. Claim your listing on the world's largest heavy-haul directory.`,
+        description: `Browse truck stops, ports, industrial zones, and freight infrastructure in ${name}. Claim your profile on the world's largest heavy-haul directory.`,
     };
 }
 

@@ -76,7 +76,7 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
       </div>
       <ul className="space-y-2 mb-5 text-xs text-gray-400">
         <li className="flex items-center gap-2">
-          <span className="text-green-400">✓</span> Verified safety badge on your listing
+          <span className="text-green-400">✓</span> Verified safety badge on your profile
         </li>
         <li className="flex items-center gap-2">
           <span className="text-green-400">✓</span> Priority placement in load matching

@@ -38,7 +38,7 @@ const CONTACT_CHANNELS = [
   {
     icon: '🛡️',
     title: 'Data Issues & Listing Removal',
-    desc: 'Report incorrect data, request listing corrections, or remove your listing.',
+    desc: 'Report incorrect data, request listing corrections, or remove your profile.',
     action: '/report-data-issue',
     actionLabel: 'Report a data issue →',
     type: 'link' as const,

@@ -6,7 +6,7 @@
  *
  * Email 1 (Day 0): "Your profile is ready — claim it"  (sent by /api/outreach/operators)
  * Email 2 (Day 3): "Brokers searched your state"
- * Email 3 (Day 7): "Your listing expires in 48 hours"
+ * Email 3 (Day 7): "your profile expires in 48 hours"
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -58,7 +58,7 @@ function buildEmail2(name: string, state: string, claimUrl: string, searchCount:
 
 function buildEmail3(name: string, claimUrl: string) {
   return {
-    subject: `${name} — your listing expires in 48 hours`,
+    subject: `${name} — your profile expires in 48 hours`,
     html: `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#0a0a0a;font-family:system-ui,-apple-system,sans-serif">
