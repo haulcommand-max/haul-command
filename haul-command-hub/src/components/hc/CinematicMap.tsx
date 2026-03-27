@@ -193,10 +193,10 @@ export function CinematicMap({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Fallback: Static premium SVG map when no Mapbox token
+  // Fallback: Professional static world map when no Mapbox token
   if (!MAPBOX_TOKEN) {
     return (
-      <div className={`relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] ${className}`}>
+      <div className={`relative rounded-2xl overflow-hidden border border-white/10 bg-[#060a14] ${className}`}>
         <div className="aspect-[16/9] flex items-center justify-center relative">
           {/* Background grid pattern */}
           <div className="absolute inset-0 opacity-10"
@@ -205,13 +205,57 @@ export function CinematicMap({
               backgroundSize: "24px 24px",
             }}
           />
+          {/* SVG World Map Silhouette */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-20">
+            <svg viewBox="0 0 1000 500" className="w-full h-full" fill="none">
+              {/* Simplified world continents */}
+              <g fill="rgba(245,159,10,0.4)" stroke="rgba(245,159,10,0.2)" strokeWidth="0.5">
+                {/* North America */}
+                <ellipse cx="250" cy="180" rx="120" ry="80" opacity="0.3" />
+                {/* South America */}
+                <ellipse cx="300" cy="340" rx="60" ry="90" opacity="0.25" />
+                {/* Europe */}
+                <ellipse cx="500" cy="160" rx="60" ry="50" opacity="0.35" />
+                {/* Africa */}
+                <ellipse cx="510" cy="290" rx="55" ry="80" opacity="0.25" />
+                {/* Asia */}
+                <ellipse cx="680" cy="190" rx="120" ry="70" opacity="0.3" />
+                {/* Australia */}
+                <ellipse cx="800" cy="360" rx="50" ry="35" opacity="0.25" />
+              </g>
+              {/* Connection arcs */}
+              <g stroke="rgba(245,159,10,0.15)" strokeWidth="1" fill="none">
+                <path d="M250,180 Q400,80 500,160" />
+                <path d="M500,160 Q600,120 680,190" />
+                <path d="M250,180 Q280,260 300,340" />
+                <path d="M680,190 Q750,280 800,360" />
+              </g>
+              {/* Pulsing marker dots */}
+              {markers.slice(0, 8).map((m, i) => {
+                const x = ((m.lng + 180) / 360) * 1000;
+                const y = ((90 - m.lat) / 180) * 500;
+                return (
+                  <g key={i}>
+                    <circle cx={x} cy={y} r="4" fill={NEON_GOLD} opacity="0.8">
+                      <animate attributeName="r" values="4;8;4" dur="3s" repeatCount="indefinite" begin={`${i * 0.4}s`} />
+                      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite" begin={`${i * 0.4}s`} />
+                    </circle>
+                    <circle cx={x} cy={y} r="2" fill={NEON_GOLD} />
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
           <div className="relative z-10 text-center px-6">
-            <div className="text-6xl mb-4">🌍</div>
+            <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-1.5 mb-4">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              <span className="text-accent text-xs font-bold uppercase tracking-wider">Live Network</span>
+            </div>
             <h3 className="text-white font-black text-2xl tracking-tight mb-2">
               Global Route Intelligence
             </h3>
             <p className="text-gray-400 text-sm max-w-md mx-auto mb-4">
-              Interactive 3D map with MSR routing, corridor heatmaps, and live operator positions across 120 countries.
+              Real-time corridor tracking, operator positions, and route analytics across 120 countries.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {markers.slice(0, 6).map((m, i) => (
@@ -220,9 +264,6 @@ export function CinematicMap({
                 </span>
               ))}
             </div>
-            <p className="text-[10px] text-gray-600 mt-4">
-              Set NEXT_PUBLIC_MAPBOX_TOKEN to activate 3D Cinematic Mode
-            </p>
           </div>
         </div>
       </div>

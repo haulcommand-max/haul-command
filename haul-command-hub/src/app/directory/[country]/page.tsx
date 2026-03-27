@@ -52,7 +52,7 @@ export default async function DirectoryCountryPage({
         .from("directory_listings")
         .select("entity_type")
         .eq("is_visible", true);
-    if (cc.slug !== 'all') facetQuery = facetQuery.eq("country_code", cc.code);
+    if (cc !== 'all') facetQuery = facetQuery.eq("country_code", cc);
     const { data: facetRows } = await facetQuery;
 
     const facets = new Map<string, number>();
@@ -65,11 +65,11 @@ export default async function DirectoryCountryPage({
     // Paginated listings
     let listQuery = sb
         .from("directory_listings")
-        .select("id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at", {
+        .select("id, slug, name, entity_type, city, region_code, updated_at", {
             count: "exact",
         })
         .eq("is_visible", true);
-    if (cc.slug !== 'all') listQuery = listQuery.eq("country_code", cc.code);
+    if (cc !== 'all') listQuery = listQuery.eq("country_code", cc);
 
     const { data: rows, count } = await listQuery
         .order("updated_at", { ascending: false })
@@ -125,8 +125,8 @@ export default async function DirectoryCountryPage({
                         </h1>
                         <p className="text-gray-400 text-lg">
                             {total > 0
-                                ? `${total.toLocaleString()} verified listing${total !== 1 ? "s" : ""} across ${facetList.length} categories`
-                                : "Coverage expanding soon — this country is in our 52-nation network"}
+                                ? `${total.toLocaleString()} verified operator${total !== 1 ? "s" : ""} across ${facetList.length} service types`
+                                : `${name} is part of the Haul Command 120-country logistics network. Directory seeding in progress.`}
                         </p>
                     </div>
                 </section>
@@ -167,11 +167,13 @@ export default async function DirectoryCountryPage({
                         {total === 0 ? (
                             <div className="bg-white/[0.02] border border-white/[0.05] rounded-2xl p-12 text-center">
                                 <div className="text-4xl mb-4">🌍</div>
-                                <h3 className="text-xl font-bold text-white mb-2">Coming Soon</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Directory Seeding</h3>
                                 <p className="text-gray-500 max-w-md mx-auto">
-                                    {name} is part of our 52-country logistics network. Listings are being verified and will appear here
-                                    shortly.
+                                    {name} is part of the Haul Command 120-country logistics network. Operator profiles are being verified and will appear here as the market activates.
                                 </p>
+                                <Link href="/claim" className="inline-block mt-6 bg-accent text-black px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors">
+                                    Claim Your Profile in {name} →
+                                </Link>
                             </div>
                         ) : (
                             <>
@@ -190,10 +192,10 @@ export default async function DirectoryCountryPage({
                                                     <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                                                         <span>{categoryIcon(p.entity_type)}</span>
                                                         <span>{categoryLabel(p.entity_type)}</span>
-                                                        {p.locality && (
+                                                        {p.city && (
                                                             <>
                                                                 <span>·</span>
-                                                                <span>{[p.locality, p.admin1_code].filter(Boolean).join(", ")}</span>
+                                                                <span>{[p.city, p.region_code].filter(Boolean).join(", ")}</span>
                                                             </>
                                                         )}
                                                     </div>

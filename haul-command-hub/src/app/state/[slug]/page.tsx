@@ -140,14 +140,6 @@ export default async function StateProfilePage({ params }: PageProps) {
                     }}
                 />
             </main>
-
-            <footer className="border-t border-white/10 py-12 bg-black">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                    <p className="text-gray-500 text-sm">
-                        &copy; 2026 Haul Command. Built as a central operational node within the oversized transport economy.
-                    </p>
-                </div>
-            </footer>
         </>
     );
 }

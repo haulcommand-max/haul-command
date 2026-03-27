@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+
 
 export const runtime = 'edge';
 
@@ -92,7 +92,7 @@ export default function OversizeIoAlternativePage() {
                     <span className="text-accent mt-1">✅</span>
                     <div>
                       <strong className="text-white block">30 Ultra-Tools. 100% Free.</strong>
-                      <span className="text-gray-400 text-sm">Route planners, multi-state permit estimators, 57-country regulations, bridge formulas—all free forever.</span>
+                      <span className="text-gray-400 text-sm">Route planners, multi-state permit estimators, 120-country regulations, bridge formulas—all free forever.</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
@@ -138,7 +138,7 @@ export default function OversizeIoAlternativePage() {
         </section>
         
       </main>
-      <Footer />
+
     </div>
   );
 }

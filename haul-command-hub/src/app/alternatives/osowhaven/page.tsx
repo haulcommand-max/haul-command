@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+
 
 export const runtime = 'edge';
 
@@ -138,7 +138,7 @@ export default function OsowHavenAlternativePage() {
         </section>
         
       </main>
-      <Footer />
+
     </div>
   );
 }

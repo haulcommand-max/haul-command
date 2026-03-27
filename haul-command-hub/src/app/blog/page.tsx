@@ -56,14 +56,6 @@ export default function BlogIndex() {
                     ))}
                 </div>
             </main>
-
-            <footer className="border-t border-white/10 py-12 bg-black">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                    <p className="text-gray-500 text-sm">
-                        &copy; 2026 Haul Command. Information advantage is a competitive moat.
-                    </p>
-                </div>
-            </footer>
         </>
     );
 }
