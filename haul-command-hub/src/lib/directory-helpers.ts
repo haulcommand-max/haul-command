@@ -13,28 +13,52 @@ export const COUNTRY_NAMES: Record<string, string> = {
     uy: "Uruguay", pa: "Panama", cr: "Costa Rica", ng: "Nigeria",
 };
 
-/** Surface category key → nice display label */
 export const CATEGORY_LABELS: Record<string, { label: string; icon: string; description: string }> = {
+    // US & Core Highway Operations
     pilot_car_operator: { label: "Pilot Car Operators", icon: "🚗", description: "Licensed pilot car and escort vehicle operators for oversize loads" },
     freight_broker: { label: "Freight Brokers", icon: "📋", description: "Freight brokers specializing in heavy haul and oversize transport" },
+    steerman: { label: "Steermen", icon: "🕹️", description: "Certified tillermen and rear steer operators for superloads" },
+    high_pole: { label: "High Pole Escorts", icon: "📐", description: "Height pole operators for routing bridges and physical obstacles" },
+    route_survey: { label: "Route Surveyors", icon: "🗺️", description: "Engineering route survey services for oversize corridors" },
+    heavy_towing: { label: "Heavy Towing & Rotators", icon: "🏗️", description: "Heavy-duty towing, recovery, and rotator operations" },
+    dod_cleared_escort: { label: "DoD Cleared Transports", icon: "🇺🇸", description: "Department of Defense STRAC cleared hauling and escort" },
+    twic_cleared_operator: { label: "TWIC Cleared Port Transports", icon: "🚢", description: "Transportation Worker Identification Credential port operators" },
+    
+    // Arctic & Nordic Operations
+    winter_road_escort: { label: "Winter Road Escorts", icon: "❄️", description: "Specialized pilot cars equipped for extreme negative temperatures and ice roads" },
+    ice_bridge_engineer: { label: "Ice Bridge Engineers", icon: "🧊", description: "Route surveyors calculating ice thickness for frozen lake crossings" },
+    
+    // Desert & Arid Operations
+    desert_navigator: { label: "Desert Navigators", icon: "🏜️", description: "Escorts trained in off-grid sand navigation without paved markers" },
+    sand_recovery_rotator: { label: "Sand Recovery Rotators", icon: "🪝", description: "Heavy towing units with tracks for dune and sand superload recovery" },
+    extreme_heat_monitor: { label: "Extreme Heat Monitors", icon: "🌡️", description: "Specialists maintaining tire and axle temperature compliance on 60°C asphalt" },
+
+    // Jungle & Monsoon Operations
+    monsoon_route_surveyor: { label: "Monsoon Route Surveyors", icon: "🌧️", description: "Engineers calculating flood risk, mudslide potential, and bridge washouts" },
+    off_road_winch_operator: { label: "Off-Road Winch Operators", icon: "🚜", description: "Specialists required to physically drag multi-axle trailers through unpaved zones" },
+    barge_transfer_coordinator: { label: "Barge Transfer Coordinators", icon: "⛴️", description: "Archipelago specialists managing roll-on/roll-off superloads onto ferries" },
+
+    // High Altitude Operations
+    high_altitude_pilot: { label: "High Altitude Pilots", icon: "🏔️", description: "Escorts managing convoys through single-lane mountain passes above 10,000 feet" },
+    mountain_brake_specialist: { label: "Mountain Brake Specialists", icon: "⚙️", description: "Mechanics riding with convoys to manage runaway risks on extreme downgrades" },
+
+    // European & High-Regulation Operations
+    bf3_bf4_certified_escort: { label: "BF3/BF4 Certified Escorts", icon: "🇩🇪", description: "Highly regulated, government-certified pilot vehicles (Germany/Austria)" },
+    police_convoi_exceptionnel: { label: "Convoi Exceptionnel Coordination", icon: "🇫🇷", description: "Direct coordination roles with privatized or state Gendarmerie" },
+    chapter_8_compliant: { label: "Chapter 8 Highway Management", icon: "🇬🇧", description: "Highway management specifically certified for UK Chapter 8 traffic control" },
+
+    // Geopolitical / High-Risk Areas
+    armed_convoy_escort: { label: "Armed Convoy Escorts", icon: "🛡️", description: "Private military contractors required for safe passage in conflict zones" },
+    border_customs_expediter: { label: "Border Customs Expediters", icon: "🛂", description: "Fixers stationed at borders to ensure heavy machinery clears customs" },
+
+    // Future Tech
+    drone_survey: { label: "Drone Route Survey", icon: "🚁", description: "Unmanned aerial vehicle surveying for megaprojects" },
+    
+    // Infrastructure
     port: { label: "Ports & Marine Terminals", icon: "🚢", description: "Commercial ports handling heavy freight, project cargo, and breakbulk operations" },
     truck_stop: { label: "Truck Stops", icon: "⛽", description: "Full-service truck stops with diesel fuel, parking, and driver amenities" },
     truck_parking: { label: "Truck Parking", icon: "🅿️", description: "Designated heavy vehicle parking facilities and secure lots" },
-    trucker_hotel: { label: "Trucker Hotels", icon: "🏨", description: "Hotels and accommodations catering to commercial truck drivers" },
-    weigh_station: { label: "Weigh Stations", icon: "⚖️", description: "State and provincial weigh stations for commercial vehicle compliance" },
-    rest_area: { label: "Rest Areas", icon: "🛑", description: "Highway rest areas and service plazas for commercial vehicles" },
-    oil_gas_facility: { label: "Oil & Gas Facilities", icon: "🛢️", description: "Petroleum refineries, gas plants, and energy extraction sites" },
-    industrial_zone: { label: "Industrial Zones", icon: "🏭", description: "Manufacturing clusters, heavy industry parks, and production facilities" },
-    rail_intermodal: { label: "Rail Intermodal", icon: "🚂", description: "Rail yards, intermodal terminals, and transload facilities" },
-    crane_service: { label: "Crane Services", icon: "🏗️", description: "Crane rental, rigging, and heavy lift service providers" },
-    heavy_equipment_dealer: { label: "Heavy Equipment Dealers", icon: "🚜", description: "Sales, rental, and service of heavy construction and mining equipment" },
-    fuel_station_diesel: { label: "Diesel Fuel Stations", icon: "⛽", description: "Commercial diesel fueling stations for heavy vehicles" },
-    permit_office: { label: "Permit Offices", icon: "📋", description: "Transportation permit offices for oversize and overweight loads" },
-    escort_staging: { label: "Escort Staging Areas", icon: "🚗", description: "Designated staging and meetup points for pilot car and escort vehicles" },
-    twic_enrollment: { label: "TWIC Enrollment Centers", icon: "🪪", description: "Transportation Worker Identification Credential enrollment locations" },
-    hotels_lodging: { label: "Hotels & Lodging", icon: "🏨", description: "Hotels, motels, and lodging for heavy haul crews and drivers" },
     permit_services: { label: "Permit Services", icon: "📄", description: "Third-party permit services for oversize and overweight loads" },
-    training_schools: { label: "Training Schools", icon: "🎓", description: "CDL, pilot car, and heavy haul training schools and certification programs" },
 };
 
 export function countryName(code: string): string {

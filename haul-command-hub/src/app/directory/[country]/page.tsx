@@ -188,8 +188,8 @@ export default async function DirectoryCountryPage({
                                                         {p.name}
                                                     </h3>
                                                     <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                                                        <span>{categoryIcon(p.surface_category_key)}</span>
-                                                        <span>{categoryLabel(p.surface_category_key)}</span>
+                                                        <span>{categoryIcon(p.entity_type)}</span>
+                                                        <span>{categoryLabel(p.entity_type)}</span>
                                                         {p.locality && (
                                                             <>
                                                                 <span>·</span>

@@ -282,18 +282,20 @@ export default async function HomePage() {
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
               Verified operators across 57 countries specializing in the core disciplines of oversize transport and escort operations.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 relative z-10">
               {[
-                { name: 'Pilot Car Services', slug: 'pilot-car-service', icon: '🚙', desc: 'Certified lead and chase vehicles for dimensional loads.' },
+                { name: 'Pilot Car Services', slug: 'pilot-car-operator', icon: '🚙', desc: 'Certified lead and chase vehicles for dimensional loads.' },
                 { name: 'Escort Vehicles', slug: 'escort-vehicle', icon: '🚓', desc: 'Civilian and off-duty police units for traffic control.' },
                 { name: 'Heavy Haul Escorts', slug: 'heavy-haul-escort', icon: '🚛', desc: 'Specialized escort configurations for multi-axle moves.' },
                 { name: 'Oversize Load Support', slug: 'oversize-load-escort', icon: '📏', desc: 'Compliance tracking, permitting, and physical escorts combined.' },
                 { name: 'Route Surveys', slug: 'route-survey', icon: '🗺️', desc: 'Pre-trip physical infrastructure checks and bridge clearances.' },
-                { name: 'Wide Load Escorts', slug: 'wide-load-escort', icon: '🛣️', desc: 'Single and multi-lane rolling roadblocks for extreme widths.' }
+                { name: 'Wide Load Escorts', slug: 'wide-load-escort', icon: '🛣️', desc: 'Single and multi-lane rolling roadblocks for extreme widths.' },
+                { name: 'TWIC & Port Clearances', slug: 'twic-cleared-operator', icon: '⚓', desc: 'Government-vetted operators with direct secure terminal access.' },
+                { name: 'Military/DOD Transport', slug: 'dod-cleared-escort', icon: '🎖️', desc: 'Cleared escorts for sensitive defense-grade mobilization.' }
               ].map((svc) => (
                 <Link
                   key={svc.slug}
-                  href={`/services/${svc.slug}`}
+                  href={`/roles/${svc.slug}`}
                   className="group block p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-accent/[0.05] hover:border-accent/30 transition-all ag-slide-up"
                 >
                   <div className="flex items-start gap-4">
@@ -557,19 +559,19 @@ export default async function HomePage() {
               <h4 className="text-white font-bold text-sm mb-3">Directory</h4>
               <div className="space-y-2 text-sm">
                 <Link href="/directory" className="block text-gray-500 hover:text-white transition-colors">Browse Directory</Link>
-                <Link href="/dictionary/us/pilot-car" className="block text-gray-500 hover:text-white transition-colors">Haul Command Dictionary</Link>
-                <Link href="/escort-requirements" className="block text-gray-500 hover:text-white transition-colors">Requirements</Link>
-                <Link href="/corridors" className="block text-gray-500 hover:text-white transition-colors">Corridors</Link>
+                <Link href="/glossary/us/pilot-car" className="block text-gray-500 hover:text-white transition-colors">Haul Command Glossary</Link>
+                <Link href="/voice" className="block text-gray-500 hover:text-white transition-colors">AI Voice Answers</Link>
+                <Link href="/roles/twic-cleared-operator" className="block text-gray-500 hover:text-white transition-colors">Port Clearances</Link>
                 <Link href="/countries" className="block text-gray-500 hover:text-white transition-colors">Countries</Link>
               </div>
             </div>
             <div>
               <h4 className="text-white font-bold text-sm mb-3">Tools</h4>
               <div className="space-y-2 text-sm">
-                <Link href="/tools/escort-calculator" className="block text-gray-500 hover:text-white transition-colors">Route Calculator</Link>
+                <Link href="/tools/rate-estimator/us" className="block text-gray-500 hover:text-white transition-colors">Route Calculator</Link>
                 <Link href="/tools/friday-checker" className="block text-gray-500 hover:text-white transition-colors">Friday Checker</Link>
-                <Link href="/tools/superload-meter" className="block text-gray-500 hover:text-white transition-colors">Superload Meter</Link>
-                <Link href="/tools/cost-estimator" className="block text-gray-500 hover:text-white transition-colors">Cost Estimator</Link>
+                <Link href="/tools/superload-alerts" className="block text-gray-500 hover:text-white transition-colors">Superload Alerts</Link>
+                <Link href="/tools/escort-rules/us" className="block text-gray-500 hover:text-white transition-colors">State Rules Locator</Link>
               </div>
             </div>
             <div>

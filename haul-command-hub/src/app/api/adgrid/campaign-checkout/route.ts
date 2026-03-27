@@ -41,6 +41,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // [DUMMY-PROOFING OVERHAUL] Validate Country Tiers
+    if (targetCountries && Array.isArray(targetCountries) && targetCountries.length > 0) {
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+        process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+      );
+      
+      const { data: validCountries, error: countryErr } = await supabase
+        .from('country_market')
+        .select('country_code, payments_pack_status, status')
+        .in('country_code', targetCountries.map((c: string) => c.toUpperCase()));
+        
+      if (countryErr) {
+        console.error('[AdGrid] DB Error validating countries:', countryErr);
+        return NextResponse.json({ error: 'System error validating market scope' }, { status: 500 });
+      }
+
+      const invalid = targetCountries.filter((c: string) => {
+        const match = validCountries?.find(vc => vc.country_code === c.toUpperCase());
+        // Require the country to be fully live or monetizing
+        return !match || (match.status !== 'monetize_now' && match.status !== 'live' && match.payments_pack_status !== 'active');
+      });
+
+      if (invalid.length > 0) {
+        return NextResponse.json({ 
+          error: `The following markets are not yet cleared for monetization: ${invalid.join(', ')}` 
+        }, { status: 403 });
+      }
+    }
+
     const dailyRate = AD_TYPE_RATES[adType] ?? 25;
     const totalAmount = dailyRate * (durationDays || 30);
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://haulcommand.com';
