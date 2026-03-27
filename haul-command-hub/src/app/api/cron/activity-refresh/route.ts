@@ -59,11 +59,16 @@ export async function GET() {
       });
     }
 
-    // Check total listing count for milestone events
+    // Count real operators from directory_listings (the canonical operator store)
+    // hc_places = physical locations only (ports, hotels, truck stops)
+    // directory_listings = operators + service providers (correct source)
     const { count: totalListings } = await sb
-      .from('hc_places')
+      .from('directory_listings')
       .select('id', { count: 'exact', head: true })
-      .eq('status', 'published');
+      .eq('is_visible', true)
+      .in('entity_type', ['operator', 'pilot_car_operator', 'pilot_driver',
+                          'freight_broker', 'flagger', 'permit_service',
+                          'heavy_towing', 'mobile_mechanic']);
 
     if (totalListings && totalListings > 0) {
       events.push({
