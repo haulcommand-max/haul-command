@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { X, Globe, Users, TrendingUp, ExternalLink, Mail, MapPin, ChevronRight } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════════
-   WorldMapView — 57-Country Global Map with Tier Coloring
+   WorldMapView — 120-Country Global Map with Tier Coloring
    MapLibre GL JS map showing country boundaries colored by tier
    ═══════════════════════════════════════════════════════════════════ */
 

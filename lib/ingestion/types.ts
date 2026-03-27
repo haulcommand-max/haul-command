@@ -2,7 +2,7 @@
  * lib/ingestion/types.ts
  *
  * Core types for the Historical Market Observation Ingestion Engine.
- * Designed for global 57-country operation with no US-only logic.
+ * Designed for global 120-country operation with no US-only logic.
  */
 
 // ════════════════════════════════════════════════════════════════

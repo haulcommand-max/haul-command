@@ -224,7 +224,7 @@ export const DATA_PRODUCT_CATALOG: DataProduct[] = [
         id: 'rate-benchmarks-by-country',
         type: 'rate_benchmark',
         name: 'Rate Benchmarks by Country',
-        description: '57-country average escort rates by distance band, equipment type, and season. Priced per country tier (Gold/Blue/Silver/Slate).',
+        description: '120-country average escort rates by distance band, equipment type, and season. Priced per country tier (Gold/Blue/Silver/Slate).',
         price_usd: 39,
         purchase_type: 'one_time',
         tier_required: 'pro',

@@ -1,62 +1,24 @@
 // lib/geo/countries.ts
-//
-// ████████████████████████████████████████████████████████████████████
-// THE SINGLE SOURCE OF TRUTH FOR ALL 52 HAUL COMMAND COUNTRIES.
-// ████████████████████████████████████████████████████████████████████
-//
-// RULES:
-//   1. Every module that needs country data MUST import from here.
-//   2. Do NOT duplicate country lists anywhere else in the codebase.
-//   3. When adding a new country, add it HERE and it flows everywhere:
-//      - Pricing (PPP tiers)
-//      - Geo isolation (visibility & cross-border)
-//      - Map (sidebar rail, heatmaps, clustering)
-//      - SEO (directory pages, meta tags, breadcrumbs)
-//      - Compliance (localization, legal zones)
-//      - Strategy (priority scoring, install targets)
-//      - Localization (currencies, admin1 labels, date formats)
-//
-// FILE IMPORTS THIS: None (root dependency — zero imports from Haul Command)
-// FILES THAT IMPORT THIS: everything.
+// THE SINGLE SOURCE OF TRUTH FOR ALL 120 HAUL COMMAND COUNTRIES.
 
-// ============================================================
-// CORE TYPES
-// ============================================================
-
-export type CountryTier = "A" | "B" | "C" | "D";
+export type CountryTier = "A" | "B" | "C" | "D" | "E";
 
 export interface HCCountry {
-    /** ISO 3166-1 alpha-2 */
     iso2: string;
-    /** Full English name */
     name: string;
-    /** HC priority tier */
     tier: CountryTier;
-    /** ISO 4217 currency code */
     currency: string;
-    /** What admin1 divisions are called (State, Province, Region, etc.) */
     admin1_label: string | null;
-    /** Whether admin1-level geo isolation is enforced */
     admin1_enforced: boolean;
-    /** HC continent/region bucket for UI grouping */
     region: HCRegion;
-    /** PPP multiplier for pricing (1.00 = full price) */
     ppp_multiplier: number;
-    /** Composite priority score (0–10) */
     priority_score: number;
-    /** Year 1 install target (0 = proportional allocation) */
     year1_target: number;
-    /** Pre-approved cross-border corridor ISO2 codes */
     cross_border_corridors: string[];
-    /** Country calling code (for phone validation) */
     calling_code: string;
-    /** Primary locale for this country */
     primary_locale: string;
-    /** Driving side (for route planning) */
     drive_side: "right" | "left";
-    /** Distance unit preference */
     distance_unit: "mi" | "km";
-    /** Weight unit preference */
     weight_unit: "lbs" | "kg" | "tonnes";
 }
 
@@ -72,12 +34,8 @@ export type HCRegion =
     | "africa"
     | "oceania";
 
-// ============================================================
-// THE 52 COUNTRIES
-// ============================================================
-
 export const HC_COUNTRIES: readonly HCCountry[] = [
-    // ── TIER A (Top 10 — explicit install targets) ──────────────────
+    // ── TIER A (10 countries) ────────────────────────────────
 
     {
         iso2: "US", name: "United States", tier: "A",
@@ -160,7 +118,7 @@ export const HC_COUNTRIES: readonly HCCountry[] = [
         drive_side: "right", distance_unit: "km", weight_unit: "kg",
     },
 
-    // ── TIER B (15 countries) ───────────────────────────────────────
+    // ── TIER B (18 countries) ────────────────────────────────
 
     {
         iso2: "IE", name: "Ireland", tier: "B",
@@ -282,8 +240,32 @@ export const HC_COUNTRIES: readonly HCCountry[] = [
         calling_code: "+52", primary_locale: "es-MX",
         drive_side: "right", distance_unit: "km", weight_unit: "kg",
     },
+    {
+        iso2: "IN", name: "India", tier: "B",
+        currency: "INR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.80, priority_score: 6.42,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+91", primary_locale: "eng-IN",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "ID", name: "Indonesia", tier: "B",
+        currency: "IDR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.80, priority_score: 6.76,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+62", primary_locale: "ind-ID",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TH", name: "Thailand", tier: "B",
+        currency: "THB", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.80, priority_score: 6.39,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+66", primary_locale: "tha-TH",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
 
-    // ── TIER C (24 countries) ───────────────────────────────────────
+    // ── TIER C (26 countries) ────────────────────────────────
 
     {
         iso2: "PL", name: "Poland", tier: "C",
@@ -294,7 +276,7 @@ export const HC_COUNTRIES: readonly HCCountry[] = [
         drive_side: "right", distance_unit: "km", weight_unit: "kg",
     },
     {
-        iso2: "CZ", name: "Czech Republic", tier: "C",
+        iso2: "CZ", name: "Czechia", tier: "C",
         currency: "CZK", admin1_label: "Kraj", admin1_enforced: false,
         region: "europe_east", ppp_multiplier: 0.82, priority_score: 4.60,
         year1_target: 0, cross_border_corridors: ["DE", "PL", "SK", "AT"],
@@ -477,8 +459,24 @@ export const HC_COUNTRIES: readonly HCCountry[] = [
         calling_code: "+51", primary_locale: "es-PE",
         drive_side: "right", distance_unit: "km", weight_unit: "kg",
     },
+    {
+        iso2: "VN", name: "Vietnam", tier: "C",
+        currency: "VND", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 4.59,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+84", primary_locale: "vie-VN",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "PH", name: "Philippines", tier: "C",
+        currency: "PHP", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 4.66,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+63", primary_locale: "eng-PH",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
 
-    // ── TIER D (3 countries) ────────────────────────────────────────
+    // ── TIER D (25 countries) ────────────────────────────────
 
     {
         iso2: "UY", name: "Uruguay", tier: "D",
@@ -504,93 +502,533 @@ export const HC_COUNTRIES: readonly HCCountry[] = [
         calling_code: "+506", primary_locale: "es-CR",
         drive_side: "right", distance_unit: "km", weight_unit: "kg",
     },
-] as const;
+    {
+        iso2: "IL", name: "Israel", tier: "D",
+        currency: "ILS", admin1_label: null, admin1_enforced: false,
+        region: "middle_east", ppp_multiplier: 0.40, priority_score: 3.62,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+972", primary_locale: "ara-IL",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "NG", name: "Nigeria", tier: "D",
+        currency: "NGN", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.00,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+234", primary_locale: "eng-NG",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "EG", name: "Egypt", tier: "D",
+        currency: "EGP", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.85,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+20", primary_locale: "ara-EG",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "KE", name: "Kenya", tier: "D",
+        currency: "KES", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.81,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+254", primary_locale: "eng-KE",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MA", name: "Morocco", tier: "D",
+        currency: "MAD", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.03,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+212", primary_locale: "ara-MA",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "RS", name: "Serbia", tier: "D",
+        currency: "RSD", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 3.05,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+381", primary_locale: "srp-RS",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "UA", name: "Ukraine", tier: "D",
+        currency: "UAH", admin1_label: null, admin1_enforced: false,
+        region: "europe_east", ppp_multiplier: 0.40, priority_score: 3.27,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+380", primary_locale: "ukr-UA",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "KZ", name: "Kazakhstan", tier: "D",
+        currency: "KZT", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 3.27,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+7", primary_locale: "kaz-KZ",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TW", name: "Taiwan", tier: "D",
+        currency: "TWD", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 3.21,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+886", primary_locale: "zho-TW",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "PK", name: "Pakistan", tier: "D",
+        currency: "PKR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 3.34,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+92", primary_locale: "eng-PK",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "BD", name: "Bangladesh", tier: "D",
+        currency: "BDT", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 3.25,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+880", primary_locale: "ben-BD",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MN", name: "Mongolia", tier: "D",
+        currency: "MNT", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 3.86,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+976", primary_locale: "mon-MN",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TT", name: "Trinidad and Tobago", tier: "D",
+        currency: "TTD", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 3.48,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+1868", primary_locale: "eng-TT",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "JO", name: "Jordan", tier: "D",
+        currency: "JOD", admin1_label: null, admin1_enforced: false,
+        region: "middle_east", ppp_multiplier: 0.40, priority_score: 3.46,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+962", primary_locale: "ara-JO",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "GH", name: "Ghana", tier: "D",
+        currency: "GHS", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.12,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+233", primary_locale: "eng-GH",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TZ", name: "Tanzania", tier: "D",
+        currency: "TZS", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 3.25,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+255", primary_locale: "eng-TZ",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "GE", name: "Georgia", tier: "D",
+        currency: "GEL", admin1_label: null, admin1_enforced: false,
+        region: "middle_east", ppp_multiplier: 0.40, priority_score: 3.27,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+995", primary_locale: "kat-GE",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "AZ", name: "Azerbaijan", tier: "D",
+        currency: "AZN", admin1_label: null, admin1_enforced: false,
+        region: "middle_east", ppp_multiplier: 0.40, priority_score: 3.67,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+994", primary_locale: "aze-AZ",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "CY", name: "Cyprus", tier: "D",
+        currency: "EUR", admin1_label: null, admin1_enforced: false,
+        region: "europe_south", ppp_multiplier: 0.40, priority_score: 3.01,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+357", primary_locale: "ell-CY",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "IS", name: "Iceland", tier: "D",
+        currency: "ISK", admin1_label: null, admin1_enforced: false,
+        region: "europe_north", ppp_multiplier: 0.40, priority_score: 3.56,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+354", primary_locale: "isl-IS",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "LU", name: "Luxembourg", tier: "D",
+        currency: "EUR", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 3.48,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+352", primary_locale: "deu-LU",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "EC", name: "Ecuador", tier: "D",
+        currency: "USD", admin1_label: null, admin1_enforced: false,
+        region: "latin_america", ppp_multiplier: 0.40, priority_score: 3.57,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+593", primary_locale: "spa-EC",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
 
-// ============================================================
-// DERIVED LOOKUPS (zero-cost at import — computed once)
-// ============================================================
+    // ── TIER E (41 countries) ────────────────────────────────
 
-/** Fast O(1) lookup by ISO2 code */
-export const COUNTRY_BY_ISO2: ReadonlyMap<string, HCCountry> = new Map(
-    HC_COUNTRIES.map((c) => [c.iso2, c])
-);
+    {
+        iso2: "BO", name: "Bolivia", tier: "E",
+        currency: "BOB", admin1_label: null, admin1_enforced: false,
+        region: "latin_america", ppp_multiplier: 0.40, priority_score: 2.35,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+591", primary_locale: "aym-BO",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "PY", name: "Paraguay", tier: "E",
+        currency: "PYG", admin1_label: null, admin1_enforced: false,
+        region: "latin_america", ppp_multiplier: 0.40, priority_score: 1.94,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+595", primary_locale: "grn-PY",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "GT", name: "Guatemala", tier: "E",
+        currency: "GTQ", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 2.40,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+502", primary_locale: "spa-GT",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "DO", name: "Dominican Republic", tier: "E",
+        currency: "DOP", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 1.92,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+1", primary_locale: "spa-DO",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "HN", name: "Honduras", tier: "E",
+        currency: "HNL", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 1.86,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+504", primary_locale: "spa-HN",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "SV", name: "El Salvador", tier: "E",
+        currency: "USD", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 2.02,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+503", primary_locale: "spa-SV",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "NI", name: "Nicaragua", tier: "E",
+        currency: "NIO", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 1.97,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+505", primary_locale: "spa-NI",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "JM", name: "Jamaica", tier: "E",
+        currency: "JMD", admin1_label: null, admin1_enforced: false,
+        region: "north_america", ppp_multiplier: 0.40, priority_score: 2.34,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+1", primary_locale: "eng-JM",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "GY", name: "Guyana", tier: "E",
+        currency: "GYD", admin1_label: null, admin1_enforced: false,
+        region: "latin_america", ppp_multiplier: 0.40, priority_score: 2.20,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+592", primary_locale: "eng-GY",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "SR", name: "Suriname", tier: "E",
+        currency: "SRD", admin1_label: null, admin1_enforced: false,
+        region: "latin_america", ppp_multiplier: 0.40, priority_score: 1.96,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+597", primary_locale: "nld-SR",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "BA", name: "Bosnia and Herzegovina", tier: "E",
+        currency: "BAM", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 2.29,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+387", primary_locale: "bos-BA",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "ME", name: "Montenegro", tier: "E",
+        currency: "EUR", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 2.02,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+382", primary_locale: "cnr-ME",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MK", name: "North Macedonia", tier: "E",
+        currency: "MKD", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 2.12,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+389", primary_locale: "mkd-MK",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "AL", name: "Albania", tier: "E",
+        currency: "ALL", admin1_label: null, admin1_enforced: false,
+        region: "europe_west", ppp_multiplier: 0.40, priority_score: 2.05,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+355", primary_locale: "sqi-AL",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MD", name: "Moldova", tier: "E",
+        currency: "MDL", admin1_label: null, admin1_enforced: false,
+        region: "europe_east", ppp_multiplier: 0.40, priority_score: 2.21,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+373", primary_locale: "ron-MD",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "IQ", name: "Iraq", tier: "E",
+        currency: "IQD", admin1_label: null, admin1_enforced: false,
+        region: "middle_east", ppp_multiplier: 0.40, priority_score: 2.09,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+964", primary_locale: "ara-IQ",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "NA", name: "Namibia", tier: "E",
+        currency: "NAD", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.96,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+264", primary_locale: "afr-NA",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "AO", name: "Angola", tier: "E",
+        currency: "AOA", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.63,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+244", primary_locale: "por-AO",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MZ", name: "Mozambique", tier: "E",
+        currency: "MZN", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.12,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+258", primary_locale: "por-MZ",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "ET", name: "Ethiopia", tier: "E",
+        currency: "ETB", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.91,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+251", primary_locale: "amh-ET",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "CI", name: "Ivory Coast", tier: "E",
+        currency: "XOF", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.01,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+225", primary_locale: "fra-CI",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "SN", name: "Senegal", tier: "E",
+        currency: "XOF", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.36,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+221", primary_locale: "fra-SN",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "BW", name: "Botswana", tier: "E",
+        currency: "BWP", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.71,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+267", primary_locale: "eng-BW",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "ZM", name: "Zambia", tier: "E",
+        currency: "ZMW", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.79,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+260", primary_locale: "eng-ZM",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "UG", name: "Uganda", tier: "E",
+        currency: "UGX", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 1.64,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+256", primary_locale: "eng-UG",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "CM", name: "Cameroon", tier: "E",
+        currency: "XAF", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.30,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+237", primary_locale: "eng-CM",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "KH", name: "Cambodia", tier: "E",
+        currency: "KHR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 2.21,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+855", primary_locale: "khm-KH",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "LK", name: "Sri Lanka", tier: "E",
+        currency: "LKR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 1.93,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+94", primary_locale: "sin-LK",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "UZ", name: "Uzbekistan", tier: "E",
+        currency: "UZS", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 1.70,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+998", primary_locale: "rus-UZ",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "LA", name: "Laos", tier: "E",
+        currency: "LAK", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 1.67,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+856", primary_locale: "lao-LA",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "NP", name: "Nepal", tier: "E",
+        currency: "NPR", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 1.69,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+977", primary_locale: "nep-NP",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "DZ", name: "Algeria", tier: "E",
+        currency: "DZD", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.15,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+213", primary_locale: "ara-DZ",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TN", name: "Tunisia", tier: "E",
+        currency: "TND", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.33,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+216", primary_locale: "ara-TN",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MT", name: "Malta", tier: "E",
+        currency: "EUR", admin1_label: null, admin1_enforced: false,
+        region: "europe_south", ppp_multiplier: 0.40, priority_score: 1.56,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+356", primary_locale: "eng-MT",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "BN", name: "Brunei", tier: "E",
+        currency: "BND", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 2.26,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+673", primary_locale: "msa-BN",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "RW", name: "Rwanda", tier: "E",
+        currency: "RWF", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.13,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+250", primary_locale: "eng-RW",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MG", name: "Madagascar", tier: "E",
+        currency: "MGA", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.00,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+261", primary_locale: "fra-MG",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "PG", name: "Papua New Guinea", tier: "E",
+        currency: "PGK", admin1_label: null, admin1_enforced: false,
+        region: "oceania", ppp_multiplier: 0.40, priority_score: 1.92,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+675", primary_locale: "eng-PG",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "TM", name: "Turkmenistan", tier: "E",
+        currency: "TMT", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 1.81,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+993", primary_locale: "rus-TM",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "KG", name: "Kyrgyzstan", tier: "E",
+        currency: "KGS", admin1_label: null, admin1_enforced: false,
+        region: "asia_pacific", ppp_multiplier: 0.40, priority_score: 2.09,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+996", primary_locale: "kir-KG",
+        drive_side: "right", distance_unit: "km", weight_unit: "kg",
+    },
+    {
+        iso2: "MW", name: "Malawi", tier: "E",
+        currency: "MWK", admin1_label: null, admin1_enforced: false,
+        region: "africa", ppp_multiplier: 0.40, priority_score: 2.28,
+        year1_target: 0, cross_border_corridors: [],
+        calling_code: "+265", primary_locale: "eng-MW",
+        drive_side: "left", distance_unit: "km", weight_unit: "kg",
+    },
 
-/** All ISO2 codes */
-export const ALL_ISO2_CODES: readonly string[] = HC_COUNTRIES.map((c) => c.iso2);
+];
 
-/** Count */
-export const COUNTRY_COUNT = HC_COUNTRIES.length; // 52
+export const COUNTRY_BY_ISO2: ReadonlyMap<string, HCCountry> = new Map(HC_COUNTRIES.map(c => [c.iso2, c]));
+export const ALL_ISO2_CODES: readonly string[] = HC_COUNTRIES.map(c => c.iso2);
+export const COUNTRY_COUNT = HC_COUNTRIES.length;
 
-/** By tier */
-export function getCountriesByTier(tier: CountryTier): HCCountry[] {
-    return HC_COUNTRIES.filter((c) => c.tier === tier);
-}
-
-/** By region */
-export function getCountriesByRegion(region: HCRegion): HCCountry[] {
-    return HC_COUNTRIES.filter((c) => c.region === region);
-}
-
-/** PPP multiplier for a country */
-export function getPPPMultiplier(iso2: string): number {
-    return COUNTRY_BY_ISO2.get(iso2)?.ppp_multiplier ?? 0.58;
-}
-
-/** Cross-border corridors for a country */
-export function getCrossCorridors(iso2: string): string[] {
-    return COUNTRY_BY_ISO2.get(iso2)?.cross_border_corridors ?? [];
-}
-
-/** Admin1 enforced? */
-export function isAdmin1Enforced(iso2: string): boolean {
-    return COUNTRY_BY_ISO2.get(iso2)?.admin1_enforced ?? false;
-}
-
-/** Get currency code */
-export function getCurrency(iso2: string): string {
-    return COUNTRY_BY_ISO2.get(iso2)?.currency ?? "USD";
-}
-
-/** Get primary locale */
-export function getLocale(iso2: string): string {
-    return COUNTRY_BY_ISO2.get(iso2)?.primary_locale ?? "en-US";
-}
-
-/** Flag emoji from ISO2 */
+export function getCountriesByTier(tier: CountryTier): HCCountry[] { return HC_COUNTRIES.filter(c => c.tier === tier); }
+export function getCountriesByRegion(region: HCRegion): HCCountry[] { return HC_COUNTRIES.filter(c => c.region === region); }
+export function getPPPMultiplier(iso2: string): number { return COUNTRY_BY_ISO2.get(iso2)?.ppp_multiplier ?? 0.58; }
+export function getCrossCorridors(iso2: string): string[] { return COUNTRY_BY_ISO2.get(iso2)?.cross_border_corridors ?? []; }
+export function isAdmin1Enforced(iso2: string): boolean { return COUNTRY_BY_ISO2.get(iso2)?.admin1_enforced ?? false; }
+export function getCurrency(iso2: string): string { return COUNTRY_BY_ISO2.get(iso2)?.currency ?? "USD"; }
+export function getLocale(iso2: string): string { return COUNTRY_BY_ISO2.get(iso2)?.primary_locale ?? "en-US"; }
 export function countryFlag(iso2: string): string {
-    const codePoints = [...iso2.toUpperCase()].map(
-        (c) => 0x1f1e6 + c.charCodeAt(0) - 65
-    );
-    try {
-        return String.fromCodePoint(...codePoints);
-    } catch {
-        return "🌍";
-    }
+    const codePoints = [...iso2.toUpperCase()].map(c => 0x1f1e6 + c.charCodeAt(0) - 65);
+    try { return String.fromCodePoint(...codePoints); } catch { return "🌍"; }
 }
-
-/** Is this a valid HC country? */
-export function isHCCountry(iso2: string): boolean {
-    return COUNTRY_BY_ISO2.has(iso2);
-}
-
-/** Get display name */
-export function getCountryName(iso2: string): string {
-    return COUNTRY_BY_ISO2.get(iso2)?.name ?? iso2;
-}
-
-/** Get distance unit for a country */
-export function getDistanceUnit(iso2: string): "mi" | "km" {
-    return COUNTRY_BY_ISO2.get(iso2)?.distance_unit ?? "km";
-}
-
-/** Tier A countries (highest priority) */
-export function getTierACountries(): HCCountry[] {
-    return getCountriesByTier("A");
-}
-
-/** Top N countries by priority score */
-export function getTopCountries(n: number = 10): HCCountry[] {
-    return [...HC_COUNTRIES]
-        .sort((a, b) => b.priority_score - a.priority_score)
-        .slice(0, n);
-}
+export function isHCCountry(iso2: string): boolean { return COUNTRY_BY_ISO2.has(iso2); }
+export function getCountryName(iso2: string): string { return COUNTRY_BY_ISO2.get(iso2)?.name ?? iso2; }
+export function getDistanceUnit(iso2: string): "mi" | "km" { return COUNTRY_BY_ISO2.get(iso2)?.distance_unit ?? "km"; }
+export function getTierACountries(): HCCountry[] { return getCountriesByTier("A"); }
+export function getTopCountries(n: number = 10): HCCountry[] { return [...HC_COUNTRIES].sort((a, b) => b.priority_score - a.priority_score).slice(0, n); }

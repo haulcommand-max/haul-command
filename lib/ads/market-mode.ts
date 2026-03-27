@@ -1,6 +1,6 @@
 // lib/ads/market-mode.ts
 // ══════════════════════════════════════════════════════════════
-// MARKET MODE SYSTEM — 57-Country State Machine
+// MARKET MODE SYSTEM — 120-Country State Machine
 //
 // Every country has a mode that controls what surfaces, CTAs,
 // and monetization paths are available.

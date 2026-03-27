@@ -63,7 +63,7 @@ export interface CreativeFactoryResult {
     usage?: { prompt_tokens: number; completion_tokens: number; total_tokens: number };
 }
 
-// ── Country Meta (expanded from all 57) ────────────────────
+// ── Country Meta (expanded from all 120) ────────────────────
 
 const COUNTRY_META: Record<string, { name: string; term: string; currency: string; locale: string }> = {
     US: { name: 'United States', term: 'Pilot Car', currency: 'USD', locale: 'en' },

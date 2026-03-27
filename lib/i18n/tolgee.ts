@@ -1,5 +1,5 @@
 // ============================================================
-// Tolgee — Localization & i18n for 57-Country Expansion
+// Tolgee — Localization & i18n for 120-Country Expansion
 // The global-by-default tool. Without this, 80%+ of the
 // pilot car market is locked out.
 // Feature flag: TOLGEE

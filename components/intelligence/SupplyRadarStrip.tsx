@@ -28,7 +28,7 @@ interface CorridorSupply {
     avgResponseMin: number;
 }
 
-// ── 57-Country Global Supply Data ──────────────────────
+// ── 120-Country Global Supply Data ──────────────────────
 // Organized by tier: Gold (10) → Blue (18) → Silver (26) → Slate (3)
 const GLOBAL_SUPPLY: CorridorSupply[] = [
     // ─── TIER A — GOLD (10 Countries) ───

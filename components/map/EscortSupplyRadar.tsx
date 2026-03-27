@@ -38,7 +38,7 @@ interface RadarProps {
     className?: string;
 }
 
-// ── 57-Country Global Zone Data ───────────────────────────────────────────────
+// ── 120-Country Global Zone Data ───────────────────────────────────────────────
 const GLOBAL_ZONES: EscortZone[] = [
     // TIER A — GOLD
     { id: "us-gulf", label: "Gulf Coast, TX", region: "TX", countryCode: "US", lat: 29.7, lng: -95.4, escortCount: 12, availableCount: 3, demandPressure: 94, shortage: true },

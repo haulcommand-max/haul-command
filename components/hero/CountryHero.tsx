@@ -27,7 +27,7 @@ export default function CountryHero({
     showSearch = true,
     totalOperators = 0,
     totalCorridors = 0,
-    totalCountries = 57,
+    totalCountries = 120,
     liveCountries = 2,
 }: Props) {
     const [canVideo, setCanVideo] = useState(false);

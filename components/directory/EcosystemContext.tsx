@@ -27,7 +27,7 @@ export default function EcosystemContext({
     corridors = [],
     category,
     relatedCategories = [],
-    totalCountries = 57,
+    totalCountries = 120,
     totalSurfaces = 358000,
 }: EcosystemContextProps) {
     return (

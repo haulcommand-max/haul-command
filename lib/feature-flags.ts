@@ -128,7 +128,7 @@ const FLAG_REGISTRY: Record<FeatureFlagKey, FlagConfig> = {
   TOLGEE: {
     envKey: 'FEATURE_TOLGEE',
     fallback: true,
-    description: 'Tolgee — i18n and localization for 57-country expansion',
+    description: 'Tolgee — i18n and localization for 120-country expansion',
     requiredEnvVars: ['TOLGEE_API_KEY'],
   },
   TELNYX: {

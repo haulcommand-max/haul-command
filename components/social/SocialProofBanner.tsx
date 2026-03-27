@@ -12,7 +12,7 @@ type Stats = {
 export default function SocialProofBanner() {
   const [stats, setStats] = useState<Stats>({
     operators: 7745,
-    countries: 57,
+    countries: 120,
     corridors: 219,
     loads_completed: 0,
   });
