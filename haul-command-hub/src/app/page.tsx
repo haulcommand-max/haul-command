@@ -572,6 +572,131 @@ export default async function HomePage() {
         </section>
         </ScrollReveal>
 
+        {/* ═══ MANAGED SERVICES — Direct Revenue ═══ */}
+        <ScrollReveal>
+        <section className="py-8 px-4 max-w-7xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter mb-2">
+            Managed <span className="text-accent">Services</span>
+          </h2>
+          <p className="text-gray-400 text-sm mb-6 max-w-xl">
+            Skip the complexity. We handle the hard parts so you can focus on moving freight.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link
+              href="/api/stripe/checkout?plan=managed_permit"
+              className="group bg-gradient-to-br from-white/[0.05] to-transparent border border-white/[0.1] rounded-2xl p-6 hover:border-accent/30 transition-all shadow-xl border-l-4 border-l-accent"
+            >
+              <div className="flex items-start gap-4">
+                <span className="text-3xl">🎫</span>
+                <div>
+                  <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">Managed Permit Procurement</h3>
+                  <p className="text-gray-400 text-sm mb-3">Turnkey application, DOT follow-up, and delivery for any state.</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-accent font-black text-xl">$65<span className="text-gray-500 text-xs font-normal ml-1">per permit</span></p>
+                    <span className="bg-accent/10 border border-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold group-hover:bg-accent group-hover:text-black transition-colors">Start Order →</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+            <Link
+              href="/api/stripe/checkout?plan=managed_dispatch"
+              className="group bg-gradient-to-br from-white/[0.05] to-transparent border border-white/[0.1] rounded-2xl p-6 hover:border-accent/30 transition-all shadow-xl border-l-4 border-l-accent"
+            >
+              <div className="flex items-start gap-4">
+                <span className="text-3xl">🚀</span>
+                <div>
+                  <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">Full-Service Escort Dispatch</h3>
+                  <p className="text-gray-400 text-sm mb-3">We source, vet, and dispatch certified pilot cars for your route.</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-accent font-black text-xl">$150<span className="text-gray-500 text-xs font-normal ml-1">per load</span></p>
+                    <span className="bg-accent/10 border border-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold group-hover:bg-accent group-hover:text-black transition-colors">Start Order →</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+        </ScrollReveal>
+
+        {/* ═══ INTELLIGENCE HUB — Blog Cards + Leaderboard Trust ═══ */}
+        <ScrollReveal>
+        <section className="py-8 px-4 max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter mb-1">
+                Intelligence <span className="text-accent">Hub</span>
+              </h2>
+              <p className="text-gray-400 text-sm">Expert analysis trusted by the heavy haul industry.</p>
+            </div>
+            <Link href="/blog" className="text-accent text-sm font-bold hover:underline hidden sm:block">
+              View All →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { icon: '🔄', title: 'Pilot Car Reciprocity', desc: 'Which states honor out-of-state certifications and which require re-testing.', href: '/blog/pilot-car-reciprocity-map' },
+              { icon: '🚔', title: 'Police Escort Lead Times', desc: 'Median wait times by state and strategies to cut scheduling delays.', href: '/blog/police-escort-scheduling' },
+              { icon: '💰', title: 'Friday Move Premiums', desc: 'Why Friday loads cost 15-40% more and how to negotiate the premium.', href: '/blog/friday-premium-analysis' },
+              { icon: '🌍', title: 'Global Escort Standards', desc: 'How escort requirements differ across US, EU, AU, and Gulf markets.', href: '/blog/international-escort-standards' },
+            ].map((card) => (
+              <Link
+                key={card.href}
+                href={card.href}
+                className="group bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 hover:bg-accent/[0.03] transition-all"
+              >
+                <span className="text-2xl mb-2 block">{card.icon}</span>
+                <h3 className="text-white font-bold text-sm mb-1 group-hover:text-accent transition-colors">{card.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed">{card.desc}</p>
+                <span className="mt-3 block text-accent text-xs font-bold group-hover:underline">Read Analysis →</span>
+              </Link>
+            ))}
+          </div>
+          {/* Leaderboard Trust Strip */}
+          <div className="mt-6 bg-white/[0.02] border border-white/[0.06] rounded-xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">🏆</span>
+              <div>
+                <span className="text-white font-bold text-sm">Operator Leaderboard</span>
+                <span className="text-gray-500 text-xs ml-2">ELD-verified rankings by response time, coverage area, and compliance score.</span>
+              </div>
+            </div>
+            <Link href="/leaderboard" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">
+              View Rankings →
+            </Link>
+          </div>
+        </section>
+        </ScrollReveal>
+
+        {/* ═══ DEVELOPER / API MONETIZATION ═══ */}
+        <ScrollReveal>
+        <section className="py-8 px-4 max-w-7xl mx-auto">
+          <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-2">
+                <span className="text-lg">⚡</span>
+                <span className="text-purple-400 text-xs font-bold uppercase tracking-wider">Developer API</span>
+              </div>
+              <h3 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-2">
+                Build on <span className="text-purple-400">Haul Command</span> Data
+              </h3>
+              <p className="text-gray-400 text-sm max-w-lg">
+                5 production APIs: Directory Search, Escort Requirements, Rate Intelligence, Route Planning, and 
+                Voice. Power your logistics platform with the industry&apos;s deepest heavy haul dataset.
+              </p>
+            </div>
+            <div className="flex flex-col items-center gap-2 flex-shrink-0">
+              <Link
+                href="/developers"
+                className="bg-purple-500 text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-purple-400 transition-colors"
+              >
+                View API Docs →
+              </Link>
+              <span className="text-gray-600 text-[10px]">From $99/mo · 10K calls included</span>
+            </div>
+          </div>
+        </section>
+        </ScrollReveal>
+
         {/* FAQ */}
         <section className="py-4 px-4 max-w-7xl mx-auto">
           <HCFaqModule items={faqItems} />
