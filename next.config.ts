@@ -17,10 +17,11 @@ const nextConfig: NextConfig = {
 
     experimental: {
         // Tree-shake barrel exports so each route only includes used icons/utils
+        // NOTE: Do NOT add @supabase/supabase-js here — it breaks PostgrestBuilder's
+        // PromiseLike chain (.then/.catch) causing "a.rpc(...).catch is not a function"
         optimizePackageImports: [
             "lucide-react",
             "date-fns",
-            "@supabase/supabase-js",
         ],
     },
 
