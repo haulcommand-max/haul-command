@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     // Falls back to direct MV query if RPC doesn't exist yet
     let result: { state: string; total: number; claimed: number; unclaimed: number; avg_rating: number | null }[] = [];
 
-    const { data: rpcData, error: rpcError } = await supabase.rpc('rpc_state_counts');
+    const { data: rpcData, error: rpcError } = await Promise.resolve(supabase.rpc('rpc_state_counts'));
 
     if (!rpcError && rpcData) {
       result = (rpcData as any[]).map(row => ({

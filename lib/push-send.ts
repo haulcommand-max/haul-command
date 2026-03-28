@@ -99,14 +99,14 @@ export async function sendNativePush(userId: string, payload: PushPayload) {
                 await fb.messaging().send(message);
                 
                 // Track success delivery log
-                await supabase.from('push_delivery_log').insert({
+                try { await supabase.from('push_delivery_log').insert({
                     profile_id: userId,
                     load_id: payload.loadId || null,
                     token_id: fcm.token.substring(0, 32),
                     platform: fcm.platform || 'mobile',
                     delivery_status: 'sent',
                     priority: priority
-                }).catch(()=>null);
+                }); } catch {}
                 
                 sentCount++;
 
@@ -119,13 +119,13 @@ export async function sendNativePush(userId: string, payload: PushPayload) {
                         enabled: false, last_failed_at: new Date().toISOString(), invalid_reason: errorCode
                     }).eq('token', fcm.token);
                     
-                    await supabase.from('push_delivery_log').insert({
+                    try { await supabase.from('push_delivery_log').insert({
                         profile_id: userId, delivery_status: 'invalid_token', prioriy: priority, error_message: errorCode
-                    }).catch(()=>null);
+                    }); } catch {}
                 } else {
-                    await supabase.from('push_delivery_log').insert({
+                    try { await supabase.from('push_delivery_log').insert({
                         profile_id: userId, delivery_status: 'failed', priority: priority, error_message: err.message
-                    }).catch(()=>null);
+                    }); } catch {}
                 }
             }
         }

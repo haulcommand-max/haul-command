@@ -165,7 +165,9 @@ async function getStats() {
         .eq('active', true),
 
       // Per-state breakdown via materialized view RPC (no full scan)
-      supabase.rpc('rpc_state_counts'),
+      // Wrap in Promise.resolve() because PostgrestBuilder is PromiseLike, not Promise,
+      // and Next.js SSR internally calls .catch() which doesn't exist on PromiseLike.
+      Promise.resolve(supabase.rpc('rpc_state_counts')),
 
       // Top rated operators
       supabase
