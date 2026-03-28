@@ -156,7 +156,7 @@ async function getStats() {
   try {
     const supabase = createClient();
 
-    // Query the unified listings table directly — no more directory_listings split
+    // Query the unified listings table — use MV for state counts (audit 2026-03-28)
     const [countRes, stateRes, topRes] = await Promise.all([
       // Total count of all active listings
       supabase
@@ -164,12 +164,8 @@ async function getStats() {
         .select('*', { count: 'exact', head: true })
         .eq('active', true),
 
-      // Per-state breakdown (US)
-      supabase
-        .from('listings')
-        .select('state')
-        .eq('active', true)
-        .not('state', 'is', null),
+      // Per-state breakdown via materialized view RPC (no full scan)
+      supabase.rpc('rpc_state_counts'),
 
       // Top rated operators
       supabase
@@ -181,11 +177,23 @@ async function getStats() {
         .limit(12),
     ]);
 
-    // Build country counts — US is bulk, others from country_code
+    // Build state map from materialized view data
     const stateMap: Record<string, number> = {};
-    for (const row of stateRes.data ?? []) {
-      const s = (row.state ?? '').trim().toUpperCase();
-      if (s) stateMap[s] = (stateMap[s] || 0) + 1;
+    if (!stateRes.error && stateRes.data) {
+      for (const row of stateRes.data as any[]) {
+        if (row.state) stateMap[row.state] = row.total;
+      }
+    } else {
+      // Fallback: direct lightweight query (still better than SELECT state FROM all)
+      const { data: fallback } = await supabase
+        .from('listings')
+        .select('state')
+        .eq('active', true)
+        .not('state', 'is', null);
+      for (const row of fallback ?? []) {
+        const s = (row.state ?? '').trim().toUpperCase();
+        if (s) stateMap[s] = (stateMap[s] || 0) + 1;
+      }
     }
 
     const countryCounts: Record<string, number> = { us: countRes.count ?? 0 };

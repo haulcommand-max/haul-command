@@ -15,7 +15,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import {
   defaultRateLimit,
   maskRecord,
@@ -27,11 +27,6 @@ import {
   type MaskConfig,
   type QueryGuard,
 } from '@/lib/security/anti-scrape-middleware';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!, // SERVER ONLY — never exposed to client
-);
 
 const QUERY_GUARD: QueryGuard = {
   maxPageSize: 50,
@@ -51,6 +46,11 @@ const MASK_CONFIG: MaskConfig = {
 };
 
 export async function GET(req: NextRequest) {
+  // Create client per-request (prevents connection leaks in serverless)
+  const supabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
   // 1. Rate limit
   const rl = defaultRateLimit(req);
   if (!rl.allowed) {
@@ -72,27 +72,26 @@ export async function GET(req: NextRequest) {
     QUERY_GUARD,
   );
 
-  // 4. Build Supabase query (server-side only)
+  // 4. Build Supabase query — unified to 'listings' table (audit 2026-03-28)
   let query = supabase
-    .from('directory_listings')
-    .select('id, name, city, region_code, country_code, claim_status, metadata, rank_score, profile_completeness, slug, created_at', { count: 'exact' })
-    .eq('is_visible', true)
-    .eq('entity_type', 'pilot_car_operator')
+    .from('listings')
+    .select('id, full_name, city, state, country_code, claimed, claim_status, services, rank_score, profile_completeness, slug, created_at', { count: 'exact' })
+    .eq('active', true)
     .range((page - 1) * pageSize, page * pageSize - 1);
 
   // Apply filters
-  if (searchParams.state) query = query.eq('region_code', searchParams.state);
+  if (searchParams.state) query = query.eq('state', searchParams.state);
   if (searchParams.country) query = query.eq('country_code', searchParams.country);
-  if (searchParams.verified === 'true') query = query.eq('claim_status', 'claimed');
+  if (searchParams.verified === 'true') query = query.eq('claimed', true);
   if (searchParams.search) {
     query = query.or(
-      `name.ilike.%${searchParams.search}%,city.ilike.%${searchParams.search}%`,
+      `full_name.ilike.%${searchParams.search}%,city.ilike.%${searchParams.search}%`,
     );
   }
 
   // Handle Sort Mapping
   let mappedSort = 'rank_score';
-  if (sort.field === 'display_name') mappedSort = 'name';
+  if (sort.field === 'display_name') mappedSort = 'full_name';
   else if (sort.field === 'created_at') mappedSort = 'created_at';
   // Fallbacks: trust_score -> rank_score, rating -> rank_score
   query = query.order(mappedSort, { ascending: sort.dir === 'asc' });
@@ -103,28 +102,26 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Query failed' }, { status: 500 });
   }
 
-  // 5. Transform raw directory_listings format to the standard operator_profile format
-  // so that the frontend schema doesn't break
+  // 5. Transform listings format to the standard operator_profile format
   const transformedRecords = (records || []).map((op: any) => {
-    const meta = op.metadata || {};
     return {
       id: op.id,
-      display_name: op.name || 'Unknown Operator',
-      company_name: meta.company || op.name,
-      state: op.region_code,
+      display_name: op.full_name || 'Unknown Operator',
+      company_name: op.full_name,
+      state: op.state,
       country: op.country_code || 'US',
-      service_area: meta.additional_regions || [],
-      equipment_types: meta.services || [],
+      service_area: [],
+      equipment_types: op.services || [],
       rating: 0,
-      verified: op.claim_status === 'claimed',
+      verified: op.claimed === true || op.claim_status === 'claimed',
       badge_level: 'none',
       trust_score: op.rank_score || 0,
       availability_status: 'AVAILABLE',
       created_at: op.created_at,
       profile_photo_url: null,
-      phone: meta.phone || null,
-      email: meta.email || null,
-      address_street: meta.address || null
+      phone: null,
+      email: null,
+      address_street: null
     };
   });
 

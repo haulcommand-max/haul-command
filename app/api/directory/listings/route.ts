@@ -97,6 +97,7 @@ export async function GET(req: NextRequest) {
     name: row.full_name,
     city: row.city,
     state: row.state,
+    region_code: row.state, // alias for mobile compatibility (MobileDirectory expects region_code)
     country_code: row.country_code ?? 'us',
     rating: row.rating,
     review_count: row.review_count ?? 0,
@@ -105,6 +106,7 @@ export async function GET(req: NextRequest) {
     services: row.services ?? [],
     rank_score: row.rank_score ?? 0,
     profile_completeness: row.profile_completeness ?? 0,
+    completeness: row.profile_completeness ?? 0, // alias for MobileDirectory
     is_sponsored: boostedIds.has(row.id),
     is_featured: row.featured ?? false,
   }));

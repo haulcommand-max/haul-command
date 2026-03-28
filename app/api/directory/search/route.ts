@@ -61,33 +61,33 @@ export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
     const isAuthenticated = !!authHeader;
 
-    // Build query on `directory_listings`
+    // Build query on `listings` — single source of truth (unified per audit 2026-03-28)
     let query = supabase
-      .from('directory_listings')
+      .from('listings')
       .select(
-        'id, name, city, region_code, country_code, claim_status, metadata, rank_score, profile_completeness, slug',
+        'id, full_name, city, state, country_code, claimed, claim_status, services, rank_score, profile_completeness, slug',
         { count: 'exact' }
       )
-      .eq('is_visible', true)
-      .not('region_code', 'is', null) // Ensure we only get real locations
+      .eq('active', true)
+      .not('state', 'is', null)
       .not('city', 'is', null);
 
     // Text search
     if (q) {
       query = query.or(
-        `name.ilike.%${q}%,city.ilike.%${q}%,region_code.ilike.%${q}%`
+        `full_name.ilike.%${q}%,city.ilike.%${q}%,state.ilike.%${q}%`
       );
     }
 
     // Apply filters
     if (country) query = query.eq('country_code', country.toUpperCase());
-    if (state) query = query.eq('region_code', state.toUpperCase());
-    if (service) query = query.contains('metadata->services', [service]);
-    if (claimedOnly) query = query.eq('claim_status', 'claimed');
+    if (state) query = query.eq('state', state.toUpperCase());
+    if (service) query = query.contains('services', [service]);
+    if (claimedOnly) query = query.eq('claimed', true);
 
     // Sort
     if (sortBy === 'name') {
-      query = query.order('name', { ascending: true });
+      query = query.order('full_name', { ascending: true });
     } else {
       // Default rank: rank_score
       query = query.order('rank_score', { ascending: false, nullsFirst: false });
@@ -104,33 +104,22 @@ export async function GET(req: NextRequest) {
 
     // 💰 PROFIT-AWARE CENSORSHIP ENGINE 💰
     // High-value data is heavily protected. Low-value stays open.
-    const sanitizedData = (rawData || []).map((operator) => {
-      // Create a safely cloned metadata object
-      let safeMetadata = operator.metadata ? JSON.parse(JSON.stringify(operator.metadata)) : {};
-      
-      if (!isAuthenticated) {
-        // Censor high-value fields (Data Value Score > 8)
-        if (safeMetadata.phone) safeMetadata.phone = "[LOCKED - LOGIN TO VIEW]";
-        if (safeMetadata.email) safeMetadata.email = "[LOCKED - LOGIN TO VIEW]";
-        if (safeMetadata.exact_address) safeMetadata.exact_address = "Address Hidden (Geo-Fenced)";
-        safeMetadata.is_censored = true;
-      }
-
+    const sanitizedData = (rawData || []).map((operator: any) => {
       return {
         id: operator.id,
         slug: operator.slug,
-        name: operator.name,
+        name: operator.full_name,
         city: operator.city,
-        state: operator.region_code,
+        state: operator.state,
+        region_code: operator.state, // ← alias for mobile compatibility
         country_code: operator.country_code,
-        services: safeMetadata?.services || [],
-        is_claimed: operator.claim_status === 'claimed',
+        services: operator.services || [],
+        is_claimed: operator.claimed === true || operator.claim_status === 'claimed',
         rating: 5.0, // Default for now
         review_count: 0,
         rank_score: operator.rank_score,
         is_featured: operator.rank_score > 80,
-        profile_completeness: safeMetadata?.phone ? 80 : 40,
-        metadata: safeMetadata
+        profile_completeness: operator.profile_completeness ?? 40,
       };
     });
 

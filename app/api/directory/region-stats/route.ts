@@ -11,36 +11,55 @@ export async function GET(req: NextRequest) {
   try {
     const supabase = createClient();
 
-    const { data, error } = await supabase
-      .from('listings')
-      .select('state, claimed, rating')
-      .eq('active', true)
-      .not('state', 'is', null);
+    // Use the materialized view RPC instead of scanning every row (audit 2026-03-28)
+    // Falls back to direct MV query if RPC doesn't exist yet
+    let result: { state: string; total: number; claimed: number; unclaimed: number; avg_rating: number | null }[] = [];
 
-    if (error) throw error;
+    const { data: rpcData, error: rpcError } = await supabase.rpc('rpc_state_counts');
 
-    // Aggregate per state
-    const stats: Record<string, { count: number; claimed: number; avg_rating: number | null; ratings: number[] }> = {};
+    if (!rpcError && rpcData) {
+      result = (rpcData as any[]).map(row => ({
+        state: row.state,
+        total: row.total,
+        claimed: row.claimed_count,
+        unclaimed: row.unclaimed_count,
+        avg_rating: row.avg_rating ? Number(row.avg_rating) : null,
+      }));
+    } else {
+      // Fallback: try direct MV read
+      const { data: mvData, error: mvError } = await supabase
+        .from('mv_state_counts')
+        .select('*')
+        .order('total', { ascending: false });
 
-    for (const row of data ?? []) {
-      const s = (row.state ?? '').toUpperCase().trim();
-      if (!s) continue;
-      if (!stats[s]) stats[s] = { count: 0, claimed: 0, avg_rating: null, ratings: [] };
-      stats[s].count++;
-      if (row.claimed) stats[s].claimed++;
-      if (row.rating) stats[s].ratings.push(row.rating);
+      if (!mvError && mvData) {
+        result = (mvData as any[]).map(row => ({
+          state: row.state,
+          total: row.total,
+          claimed: row.claimed_count,
+          unclaimed: row.unclaimed_count,
+          avg_rating: row.avg_rating ? Number(row.avg_rating) : null,
+        }));
+      } else {
+        // Last resort: lightweight count query (NOT full scan)
+        const { data, error } = await supabase
+          .from('listings')
+          .select('state', { count: 'exact' })
+          .eq('active', true)
+          .not('state', 'is', null);
+
+        if (error) throw error;
+
+        const counts: Record<string, number> = {};
+        for (const row of data ?? []) {
+          const s = (row.state ?? '').toUpperCase().trim();
+          if (s) counts[s] = (counts[s] || 0) + 1;
+        }
+        result = Object.entries(counts)
+          .map(([state, total]) => ({ state, total, claimed: 0, unclaimed: total, avg_rating: null }))
+          .sort((a, b) => b.total - a.total);
+      }
     }
-
-    // Calculate avg_rating
-    const result = Object.entries(stats).map(([state, s]) => ({
-      state,
-      total: s.count,
-      claimed: s.claimed,
-      unclaimed: s.count - s.claimed,
-      avg_rating: s.ratings.length
-        ? Math.round((s.ratings.reduce((a, b) => a + b, 0) / s.ratings.length) * 10) / 10
-        : null,
-    })).sort((a, b) => b.total - a.total);
 
     return NextResponse.json({
       states: result,

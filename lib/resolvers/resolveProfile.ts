@@ -211,6 +211,42 @@ function normalizeEntity(row: any): NormalizedProfile {
     };
 }
 
+/** Normalize from the canonical 'listings' table (audit 2026-03-28) */
+function normalizeListingsRow(row: any): NormalizedProfile {
+    return {
+        id: row.id,
+        display_name: row.full_name || "Unknown Operator",
+        company_name: row.full_name ?? null,
+        home_base_city: row.city ?? null,
+        home_base_state: row.state ?? null,
+        country_code: row.country_code ?? null,
+        vehicle_type: null,
+        us_dot_number: null,
+        trust_score: row.rank_score ?? 0,
+        verification_status: row.claimed ? "verified" : null,
+        is_claimed: row.claimed ?? false,
+        is_seeded: !row.claimed,
+        claim_hash: null,
+        certifications_json: {},
+        insurance_status: null,
+        compliance_status: null,
+        latitude: null,
+        longitude: null,
+        coverage_radius_miles: null,
+        reliability_score: 0,
+        responsiveness_score: 0,
+        integrity_score: 0,
+        customer_signal_score: 0,
+        compliance_score: 0,
+        market_fit_score: 0,
+        completed_escorts: 0,
+        rating_score: row.rating ?? 0,
+        review_count: row.review_count ?? 0,
+        fill_probability: null,
+        updated_at: row.updated_at ?? null,
+    };
+}
+
 /* ── Helpers ── */
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -247,11 +283,11 @@ export async function resolveProfile(
     if (isUUID(id)) {
         // ── UUID Resolution Chain ──
 
-        // 1. driver_profiles
+        // 1. driver_profiles (by UUID — column-specific, not SELECT *)
         path.push("driver_profiles");
         const { data: dp } = await supabase
             .from("driver_profiles")
-            .select("*")
+            .select("id, display_name, company_name, home_base_city, home_base_state, country_code, vehicle_type, us_dot_number, trust_score, verification_status, is_claimed, is_seeded, claim_hash, certifications_json, insurance_status, compliance_status, latitude, longitude, coverage_radius_miles, reliability_score, responsiveness_score, integrity_score, customer_signal_score, compliance_score, market_fit_score, completed_escorts, rating_score, review_count, fill_probability, updated_at")
             .eq("id", id)
             .single();
 
@@ -266,11 +302,11 @@ export async function resolveProfile(
             };
         }
 
-        // 2. hc_identities
+        // 2. hc_identities (by UUID — column-specific)
         path.push("hc_identities");
         const { data: ident } = await supabase
             .from("hc_identities")
-            .select("*")
+            .select("id, display_name, company_name, city, region_code, country_code, trust_score, verification_status, is_claimed, is_seeded, latitude, longitude, slug, updated_at")
             .eq("id", id)
             .single();
 
@@ -285,11 +321,11 @@ export async function resolveProfile(
             };
         }
 
-        // 3. directory_listings (by UUID id)
+        // 3. directory_listings (by UUID — column-specific)
         path.push("directory_listings");
         const { data: dl } = await supabase
             .from("directory_listings")
-            .select("*")
+            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, claim_status, latitude, longitude, slug, updated_at")
             .eq("id", id)
             .single();
 
@@ -304,11 +340,11 @@ export async function resolveProfile(
             };
         }
 
-        // 4. hc_entity
+        // 4. hc_entity (by entity_id — column-specific)
         path.push("hc_entity");
         const { data: ent } = await supabase
             .from("hc_entity")
-            .select("*")
+            .select("entity_id, id, name, country_code, metadata, updated_at")
             .eq("entity_id", id)
             .single();
 
@@ -349,13 +385,32 @@ export async function resolveProfile(
             };
         }
 
-        // 2. directory_listings by slug (primary slug source)
-        //    Use .limit(1) instead of .single() because duplicate slugs exist
-        //    (e.g. port-of-los-angeles appears twice). .single() errors on >1 row.
-        path.push("directory_listings");
+        // 1.5 listings table by slug — CANONICAL SOURCE (audit 2026-03-28)
+        //     99% of mobile/web lookups resolve here in 1 query
+        path.push("directory_listings"); // keep path compat
+        const { data: listingsSlugRows } = await supabase
+            .from("listings")
+            .select("id, full_name, city, state, country_code, claimed, claim_status, rating, review_count, rank_score, slug, services, profile_completeness, updated_at")
+            .eq("slug", id)
+            .eq("active", true)
+            .limit(1);
+
+        const listingsSlug = listingsSlugRows?.[0];
+        if (listingsSlug) {
+            return {
+                resolved: true,
+                resolved_table: "directory_listings",
+                entity_type: "listing",
+                resolution_path: path,
+                profile: normalizeListingsRow(listingsSlug),
+                failure_reason: null,
+            };
+        }
+
+        // 2. directory_listings by slug (fallback for entities not in listings)
         const { data: dlSlugRows } = await supabase
             .from("directory_listings")
-            .select("*")
+            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at")
             .eq("slug", id)
             .limit(1);
 
@@ -371,11 +426,11 @@ export async function resolveProfile(
             };
         }
 
-        // 3. hc_identities by slug (if the table has a slug column)
+        // 3. hc_identities by slug
         path.push("hc_identities");
         const { data: identSlugRows } = await supabase
             .from("hc_identities")
-            .select("*")
+            .select("id, display_name, company_name, city, region_code, country_code, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at")
             .eq("slug", id)
             .limit(1);
 
@@ -391,11 +446,11 @@ export async function resolveProfile(
             };
         }
 
-        // 4. driver_profiles by slug (if the table has a slug column)
+        // 4. driver_profiles by slug (rarely needed)
         path.push("driver_profiles");
         const { data: dpSlugRows } = await supabase
             .from("driver_profiles")
-            .select("*")
+            .select("id, display_name, company_name, home_base_city, home_base_state, country_code, vehicle_type, us_dot_number, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at")
             .eq("slug", id)
             .limit(1);
 
