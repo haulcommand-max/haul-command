@@ -114,3 +114,29 @@ CREATE TABLE IF NOT EXISTS seo_content_strategy_reviews (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- EXPANSION: Hyper-Local Spiderwebs (Proving Physical Presence to Google)
+CREATE TABLE IF NOT EXISTS seo_content_infrastructure_nodes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    country_code VARCHAR(2),
+    node_type VARCHAR(50), -- port, border_crossing, weigh_station, esc_staging_area
+    node_name TEXT UNIQUE,
+    geo_coordinates TEXT,
+    local_procedures TEXT,
+    nearby_cities JSONB DEFAULT '[]'::jsonb, -- Internal link spiders to city pages
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- EXPANSION: Distributed Local Backlink Architecture (DA 90 Strategy)
+CREATE TABLE IF NOT EXISTS seo_content_local_backlinks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    country_code VARCHAR(2),
+    target_entity_type VARCHAR(50), -- chamber_of_commerce, local_dot, municipal_trade, operator_website
+    target_domain TEXT,
+    backlink_strategy TEXT, -- e.g., 'Provide free API access to DOT', 'Verified Operator Badge Embed'
+    acquisition_status VARCHAR(50) DEFAULT 'uncontacted',
+    authority_score INT, -- Expected Domain Authority value to push us to DA 90
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);

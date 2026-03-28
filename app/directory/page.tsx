@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
   description:
-    'Search the world\'s largest pilot car and escort vehicle directory. Find verified operators by state, country, and specialty. 1.5M+ listings across 120 countries.',
+    'Search the world\'s largest pilot car and escort vehicle directory. Find verified operators by state, country, and specialty. 4.6M+ profiles across 120 countries.',
   keywords: [
     'pilot car directory',
     'escort vehicle directory',
@@ -197,7 +197,7 @@ async function getStats() {
       topOperators: topRes.data ?? [],
     };
   } catch (e) {
-    return { total: 1566000, countryCounts: { us: 1566000 }, stateMap: {}, topOperators: [] };
+    return { total: 4653372, countryCounts: { us: 4653372 }, stateMap: {}, topOperators: [] };
   }
 }
 
@@ -255,7 +255,7 @@ export default async function DirectoryPage() {
               <div className="text-gray-500 text-xs mt-1">Operators</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">57</div>
+              <div className="text-2xl font-bold text-amber-400">120</div>
               <div className="text-gray-500 text-xs mt-1">Countries</div>
             </div>
             <div className="text-center">
@@ -375,7 +375,7 @@ export default async function DirectoryPage() {
         </p>
         <div className="flex justify-center gap-4">
           <Link href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
-            Claim Your Listing
+            Claim Your Profile
           </Link>
           <Link href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
             Sign Up Free

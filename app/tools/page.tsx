@@ -40,6 +40,42 @@ const TOOLS = [
         icon: '📊', badges: ['Free', 'All 50 States'],
         color: '#ef4444',
     },
+    {
+        title: 'Geo-Fenced Compliance Sentinel (T-33)',
+        description: 'Real-time GPS-based compliance monitoring. Cross-references vehicle position against jurisdiction rules to detect violations before fines.',
+        href: '/tools/compliance-sentinel',
+        icon: '🛰️', badges: ['Premium', 'Real-Time', '120 Countries'],
+        color: '#f5b942',
+        featured: true,
+    },
+    {
+        title: 'Railroad Grade Crossing Profiler (T-34)',
+        description: 'Cross-references load ground clearance against DOT crossing hump profiles and grade data to prevent high-center accidents.',
+        href: '/tools/railroad-profiler',
+        icon: '🚆', badges: ['Premium', 'Safety'],
+        color: '#10b981',
+    },
+    {
+        title: 'CRC Black Box Recorder (T-35)',
+        description: 'Voice recording and transcription for critical operational commands (Command-Response-Confirm) with legal chain of custody.',
+        href: '/tools/crc-recorder',
+        icon: '🎙️', badges: ['Premium', 'Audit'],
+        color: '#818cf8',
+    },
+    {
+        title: 'Bridge Weight Overlay (T-36)',
+        description: 'Cross-references axle weight and spacing against NBI and DOT bridge load capacity ratings along your route.',
+        href: '/tools/bridge-weight',
+        icon: '🌉', badges: ['Premium', 'Routing'],
+        color: '#ef4444',
+    },
+    {
+        title: 'Dynamic Terminology Switcher (T-37)',
+        description: 'Region-aware localization converting industry terms instantly based on active jurisdiction (e.g., Pilot Car vs Abnormal Load Escort).',
+        href: '/tools/terminology',
+        icon: '🌐', badges: ['Premium', '120 Countries'],
+        color: '#F1A91B',
+    },
 ];
 
 export default function ToolsLandingPage() {
@@ -54,7 +90,7 @@ export default function ToolsLandingPage() {
                         Heavy Haul Intelligence, <span style={{ color: '#F1A91B' }}>Free</span>
                     </h1>
                     <p style={{ margin: '12px 0 0', fontSize: 15, color: '#6b7280', maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
-                        Tools built from millions of data points across the oversize/overweight hauling industry. No account required.
+                        Access 37 tools built from millions of data points across the oversize/overweight hauling industry. No account required.
                     </p>
                 </header>
 

@@ -64,29 +64,6 @@ export const metadata = {
 
 export const revalidate = 60; // ISR: refresh every 60 seconds
 
-const HOMEPAGE_JSONLD = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Haul Command — The Operating System for Heavy Haul",
-    "url": "https://haulcommand.com",
-    "description": "The #1 pilot car directory and load board for oversize loads across 120 countries.",
-    "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" }
-        ]
-    },
-    "mainEntity": {
-        "@type": "SiteLinksSearchBox",
-        "url": "https://haulcommand.com",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://haulcommand.com/directory?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-};
-
 export default async function LandingPage() {
     const countryCode = await getCountryFromHeaders();
     const heroPack = resolveHeroPack(countryCode);
@@ -106,7 +83,7 @@ export default async function LandingPage() {
                   "@type": "WebPage",
                   "name": "Haul Command — The Operating System for Heavy Haul",
                   "url": "https://haulcommand.com",
-                  "description": "The #1 pilot car directory and load board for oversize loads across 57 countries.",
+                  "description": "Haul Command is the global operating system and #1 pilot car directory for the heavy haul, oversize load, and specialized freight transportation industries. Our routing platform provides real-time route surveys, DOT permit compliance, height pole escort verification, and an active oversize load board to match freight brokers with certified PEVO professionals across 120 countries.",
                   "breadcrumb": {
                     "@type": "BreadcrumbList",
                     "itemListElement": [

@@ -45,7 +45,8 @@ INSERT INTO public.glossary_terms (term, definition, category, source_url) VALUE
 ('Tillerman', 'An individual physically located on the trailer, steering the rear axles of a Commercial Motor Vehicle at highway speeds.', 'official', 'https://www.esc.org/safety-library/pilot-car-pevo-terms-to-know'),
 ('Traffic Control Plan (TCP)', 'Depicts the route and specific procedures to be followed to provide safe movement along the route, including lane restrictions and use of flaggers.', 'official', 'https://www.esc.org/safety-library/pilot-car-pevo-terms-to-know'),
 ('Temporary Traffic Control (TTC)', 'Planning, equipment, and actions that provide for the safe movement of road users during times when normal use of the roadway is suspended.', 'official', 'https://www.esc.org/safety-library/pilot-car-pevo-terms-to-know'),
-('TWIC Card', 'Transportation Workers Identification Credential. Required since 2009 for anyone entering a secured area of a maritime port.', 'official', 'https://www.esc.org/safety-library/pilot-car-pevo-terms-to-know')
+('TWIC Card', 'Transportation Workers Identification Credential. Required since 2009 for anyone entering a secured area of a maritime port.', 'official', 'https://www.esc.org/safety-library/pilot-car-pevo-terms-to-know'),
+('Haul Command', 'Haul Command is the global operating system and #1 pilot car directory for the heavy haul, oversize load, and specialized freight transportation industries. Our routing platform provides real-time route surveys, DOT permit compliance, height pole escort verification, and an active oversize load board to match freight brokers with certified PEVO (Pilot/Escort Vehicle Operator) professionals across 120 countries.', 'official', 'https://haulcommand.com')
 ON CONFLICT (term, category) DO NOTHING;
 
 -- ── INFORMAL LINGO ──

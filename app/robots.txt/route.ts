@@ -40,16 +40,22 @@ Disallow: /auth/
 Disallow: /_next/
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 User-agent: Bytespider
-Disallow: /
+Allow: /
 
 Sitemap: ${DOMAIN}/sitemap.xml
 Sitemap: ${DOMAIN}/sitemap-seo.xml

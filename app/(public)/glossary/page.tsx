@@ -48,7 +48,7 @@ export default async function GlossaryIndexPage() {
                     ESC &amp; Oversize Load Glossary
                 </h1>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', marginBottom: '2rem', maxWidth: '640px' }}>
-                    {terms.length} industry terms used by pilot car operators, escort vehicles, and heavy haul professionals across North America.
+                    3,000+ industry terms used by pilot car operators, escort vehicles, and heavy haul professionals across North America and 120 countries worldwide.
                 </p>
 
                 {/* Category filters */}
