@@ -176,7 +176,7 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
     description: p.description ?? undefined,
     verificationState: isClaimed ? "claimed" : "unverified",
     contact: {
-      phoneE164: p.phone?.replace(/\s/g, "") ?? undefined,
+      phoneE164: p.phone?.replace(/[^\d+]/g, "") ?? undefined,
       phoneDisplay: p.phone ?? undefined,
       websiteUrl: p.website ?? undefined,
     },
@@ -320,7 +320,7 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
               <h2 className="text-lg font-bold text-white mb-4">Details</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {p.address_line1 && <DetailCard icon="📍" label="Address" value={[p.address_line1, p.locality, p.admin1_code, p.postal_code].filter(Boolean).join(", ")} />}
-                {p.phone && <DetailCard icon="📞" label="Phone" value={p.phone} href={`tel:${p.phone.replace(/\s/g, "")}`} />}
+                {p.phone && <DetailCard icon="📞" label="Phone" value={p.phone} href={`tel:${p.phone.replace(/[^\d+]/g, "")}`} />}
                 {p.website && <DetailCard icon="🌐" label="Website" value={(() => { try { return new URL(p.website).hostname; } catch { return p.website; } })()} href={p.website} external />}
                 <DetailCard icon="🏷️" label="Category" value={categoryLabel(cat)} />
                 <DetailCard icon="🌍" label="Country" value={countryName(p.country_code)} />
@@ -381,12 +381,12 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 space-y-3">
               <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Contact</h3>
               {p.phone && (
-                <a href={`tel:${p.phone.replace(/\s/g, "")}`} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-600/10 hover:bg-green-600/20 border border-green-500/15 transition-all text-sm text-green-400 font-bold">
+                <a href={`tel:${p.phone.replace(/[^\d+]/g, "")}`} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-600/10 hover:bg-green-600/20 border border-green-500/15 transition-all text-sm text-green-400 font-bold">
                   <span>📞</span> Call Now
                 </a>
               )}
               {p.phone && (
-                <a href={`sms:${p.phone.replace(/\s/g, "")}`} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/15 transition-all text-sm text-blue-400 font-bold">
+                <a href={`sms:${p.phone.replace(/[^\d+]/g, "")}`} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/15 transition-all text-sm text-blue-400 font-bold">
                   <span>💬</span> Text
                 </a>
               )}
@@ -458,8 +458,8 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
       {/* Sticky Contact Bar (mobile) */}
       <HCStickyContactBar
         contact={{
-          phoneE164: p.phone?.replace(/\s/g, "") ?? undefined,
-          smsE164: p.phone?.replace(/\s/g, "") ?? undefined,
+          phoneE164: p.phone?.replace(/[^\d+]/g, "") ?? undefined,
+          smsE164: p.phone?.replace(/[^\d+]/g, "") ?? undefined,
         }}
         claimHref={`/claim?place=${p.slug}`}
         entityName={p.name}
