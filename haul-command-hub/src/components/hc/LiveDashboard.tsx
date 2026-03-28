@@ -23,7 +23,7 @@ export default function LiveDashboard() {
     // Fetch all 4 in parallel — one failure doesn't block others
     const fetchAll = async () => {
       const [runsResult, corridorsResult, pilotsResult, rankResult] = await Promise.allSettled([
-        supabase.from('hc_places').select('id, surface_category_key, city, country_code, name')
+        supabase.from('hc_places').select('id, surface_category_key, city, country_code, name, created_at')
           .eq('status', 'published').order('created_at', { ascending: false }).limit(5),
         supabase.from('corridors').select('id, name, corridor_type')
           .limit(5),
@@ -43,7 +43,7 @@ export default function LiveDashboard() {
           load_type: r.surface_category_key ?? 'general',
           origin: r.city ?? r.name ?? 'Unknown',
           destination: r.country_code?.toUpperCase() ?? '',
-          posted_at: '',
+          posted_at: r.created_at ?? '',
         })));
       } else {
         setRuns([]);
@@ -95,11 +95,14 @@ export default function LiveDashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <DashCard title="Nearby Listings" icon="📦" error={errors.runs}>
+        <DashCard title="Nearby Profiles" icon="📦" error={errors.runs}>
           {runs === null ? <Spinner /> : runs.length === 0 ? (
-            <p className="text-xs text-white/40">No listings nearby yet.</p>
-          ) : runs.map(r => (
-            <p key={r.id} className="text-xs text-white/70 truncate">{r.origin} · {r.destination}</p>
+            <p className="text-xs text-white/40">No profiles nearby yet.</p>
+          ) : runs.map((r: any) => (
+            <div key={r.id} className="flex justify-between items-center">
+              <p className="text-xs text-white/70 truncate">{r.origin} · {r.destination}</p>
+              <span className="text-[10px] text-white/40">{r.posted_at ? new Date(r.posted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'}</span>
+            </div>
           ))}
         </DashCard>
 

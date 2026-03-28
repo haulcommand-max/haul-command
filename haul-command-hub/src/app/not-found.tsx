@@ -14,8 +14,11 @@ export default function NotFound() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-16 min-h-screen text-center">
       <h1 className="text-5xl font-black text-white mb-4">Page Not Found</h1>
-      <p className="text-gray-400 text-lg mb-8">
-        That route may have moved or already been covered. Here's where you might find what you need:
+      <p className="text-gray-400 text-lg mb-4 leading-relaxed">
+        The page you are looking for may have been moved, or the feature is currently under active development for our 120-country global rollout. 
+      </p>
+      <p className="text-gray-500 text-sm mb-8">
+        We log all missing routes to accelerate our platform expansion. In the meantime, here's where you might find what you need:
       </p>
 
       <div className="mb-8">

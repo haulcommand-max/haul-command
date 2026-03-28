@@ -28,8 +28,8 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
             </svg>
           </div>
           <div>
-            <p className="text-white text-sm font-semibold">Get HC Verified — unlock priority loads</p>
-            <p className="text-gray-500 text-[11px]">Connect your ELD to verify your fleet and earn trust badges</p>
+            <p className="text-white text-sm font-semibold">Get HC Verified — powered by Motive ELD</p>
+            <p className="text-gray-500 text-[11px]">Connect your ELD to verify your fleet. (Opens external Motive site)</p>
           </div>
         </div>
         <a
@@ -38,7 +38,7 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
           rel="noopener noreferrer"
           className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors flex-shrink-0"
         >
-          Get Verified →
+          Get Verified via Motive ↗
         </a>
       </div>
     );
@@ -55,7 +55,7 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
         <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
         </svg>
-        Get HC Verified →
+        Get HC Verified (via Motive) ↗
       </a>
     );
   }
@@ -71,7 +71,7 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
         </div>
         <div>
           <h3 className="text-white font-bold text-sm">Become HC Verified</h3>
-          <p className="text-gray-500 text-[11px]">Stand out with a verified badge</p>
+          <p className="text-gray-500 text-[11px]">Powered by our official partner, Motive ELD</p>
         </div>
       </div>
       <ul className="space-y-2 mb-5 text-xs text-gray-400">
@@ -95,7 +95,7 @@ export default function MotiveReferralCTA({ variant = 'card', className = '' }: 
           rel="noopener noreferrer"
           className="flex-1 bg-blue-500 text-white text-center px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors"
         >
-          Get Verified →
+          Get Verified (Opens Motive site) ↗
         </a>
       </div>
       <div className="mt-3 flex items-center justify-center gap-1 text-[10px] text-gray-600">

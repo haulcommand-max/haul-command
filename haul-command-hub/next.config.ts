@@ -92,6 +92,67 @@ const nextConfig: NextConfig = {
         destination: '/tools/rate-advisor',
         permanent: true,
       },
+      // ROI-Driven Coming Soon Page Redirects
+      {
+        source: '/fuel-card/apply',
+        destination: '/waitlist?feature=fuel-card',
+        permanent: false,
+      },
+      {
+        source: '/carbon/order',
+        destination: '/waitlist?feature=carbon-reports',
+        permanent: false,
+      },
+      {
+        source: '/dispute/request',
+        destination: '/waitlist?feature=dispute-resolution',
+        permanent: false,
+      },
+      {
+        source: '/exchange/:path*',
+        destination: '/waitlist?feature=equipment-exchange',
+        permanent: false,
+      },
+      {
+        source: '/intelligence',
+        destination: '/waitlist?feature=intelligence',
+        permanent: false,
+      },
+      {
+        source: '/cab-mode',
+        destination: '/waitlist?feature=cab-mode',
+        permanent: false,
+      },
+      {
+        source: '/local-services/:path*',
+        destination: '/waitlist?feature=local-services',
+        permanent: false,
+      },
+      {
+        source: '/services/oversize-load-escorts',
+        destination: '/waitlist?feature=oversize-escorts',
+        permanent: false,
+      },
+      {
+        source: '/directory/all/:path*',
+        destination: '/waitlist?feature=directory-categories',
+        permanent: false,
+      },
+      {
+        source: '/pilot-car',
+        destination: '/dictionary/us/pilot-car',
+        permanent: false,
+      },
+      {
+        source: '/services/:path*',
+        destination: '/waitlist?feature=services-hub',
+        permanent: false,
+      },
+      {
+        source: '/report',
+        destination: '/report-data-issue',
+        permanent: true,
+      },
     ];
   },
 

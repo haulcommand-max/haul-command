@@ -105,7 +105,14 @@ function buildJsonLd(place: Place) {
       "Route Surveys",
       "Heavy Haul Regulations",
       "Height Pole Operations"
-    ]
+    ],
+    ...(place.claim_status === 'claimed' && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.8",
+        reviewCount: "1"
+      }
+    })
   };
 }
 

@@ -2,16 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRole } from '@/lib/role-context';
 
 const BOTTOM_NAV_ITEMS = [
   { href: '/', label: 'Home', icon: '🏠' },
-  { href: '/loads', label: 'Loads', icon: '📦' },
+  { href: '/schedules/operator', label: 'Find Runs', icon: '📦' },
   { href: '/directory', label: 'Directory', icon: '🔍' },
   { href: '/map', label: 'Map', icon: '🗺️' },
-  { href: '/inbox', label: 'Inbox', icon: '💬' },
+  { href: '/inbox', label: 'Messages', icon: '💬' },
 ];
 
 export default function MobileBottomNav() {
@@ -54,7 +54,7 @@ export default function MobileBottomNav() {
   const isOperator = role === 'escort_operator' || role === 'both';
   const centerAction = isOperator
     ? { href: '/map', label: 'Go Live', icon: '📡' }
-    : { href: '/loads', label: 'Post', icon: '➕' };
+    : { href: '/inbox?post=true', label: 'Post Load', icon: '➕' };
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#060a14]/95 backdrop-blur-xl border-t border-white/[0.08] pb-[env(safe-area-inset-bottom)]">
@@ -67,10 +67,10 @@ export default function MobileBottomNav() {
           // Insert center action between items 2 and 3
           if (i === 2) {
             return (
-              <div key="center-group" className="contents">
+              <Fragment key="center-group">
                 <Link
                   href={item.href}
-                  className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] py-1 transition-colors ${
+                  className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-2 transition-colors ${
                     isActive ? 'text-accent' : 'text-gray-500'
                   }`}
                 >
@@ -79,14 +79,14 @@ export default function MobileBottomNav() {
                 </Link>
                 <Link
                   href={centerAction.href}
-                  className="flex flex-col items-center justify-center gap-0.5 min-w-[48px] py-1"
+                  className="flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-2"
                 >
                   <span className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center text-black text-lg -mt-4 shadow-lg shadow-accent/30">
                     {centerAction.icon}
                   </span>
                   <span className="text-[9px] font-medium text-accent">{centerAction.label}</span>
                 </Link>
-              </div>
+              </Fragment>
             );
           }
 
@@ -94,7 +94,7 @@ export default function MobileBottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`relative flex flex-col items-center justify-center gap-0.5 min-w-[48px] py-1 transition-colors ${
+              className={`relative flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-2 transition-colors ${
                 isActive ? 'text-accent' : 'text-gray-500'
               }`}
             >

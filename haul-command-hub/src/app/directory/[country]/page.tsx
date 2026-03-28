@@ -12,11 +12,11 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
     const { country } = await params;
     const name = countryName(country);
     return {
-        title:`${name} Heavy Haul Directory & Pilot Cars`,
+        title: `${name} Heavy Haul Directory & Pilot Cars | Haul Command`,
         description: `Browse ${name}'s heavy haul logistics infrastructure. Find pilot cars, escort vehicles, ports, and weigh stations for oversize loads.`,
         keywords: [`${name} pilot cars`, `${name} heavy haul directory`, `oversize load escorts in ${name}`, `heavy haul logistics ${name}`],
         openGraph: {
-            title:`${name} Heavy Haul Directory`,
+            title: `${name} Heavy Haul Directory | Haul Command`,
             description: `The complete directory of pilot cars and heavy haul services in ${name}.`,
             url: `https://haulcommand.com/directory/${country.toLowerCase()}`,
             siteName: 'Haul Command',
@@ -52,7 +52,7 @@ export default async function DirectoryCountryPage({
         .from("directory_listings")
         .select("entity_type")
         .eq("is_visible", true);
-    if (cc !== 'all') facetQuery = facetQuery.eq("country_code", cc);
+    if (cc !== 'all') facetQuery = facetQuery.eq("country_code", country.toUpperCase());
     const { data: facetRows } = await facetQuery;
 
     const facets = new Map<string, number>();
@@ -65,15 +65,17 @@ export default async function DirectoryCountryPage({
     // Paginated listings
     let listQuery = sb
         .from("directory_listings")
-        .select("id, slug, name, entity_type, city, region_code, updated_at", {
+        .select("id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at, surface_category_key", {
             count: "exact",
         })
         .eq("is_visible", true);
-    if (cc !== 'all') listQuery = listQuery.eq("country_code", cc);
-
-    const { data: rows, count } = await listQuery
+    if (cc !== 'all') listQuery = listQuery.eq("country_code", country.toUpperCase());
+    
+    const { data: rawRows, count } = await listQuery
         .order("updated_at", { ascending: false })
         .range(from, to);
+        
+    const rows = rawRows as any[];
 
     const total = count ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -125,8 +127,8 @@ export default async function DirectoryCountryPage({
                         </h1>
                         <p className="text-gray-400 text-lg">
                             {total > 0
-                                ? `${total.toLocaleString()} verified operator${total !== 1 ? "s" : ""} across ${facetList.length} service types`
-                                : `${name} is part of the Haul Command 120-country logistics network. Directory seeding in progress.`}
+                                ? `${total.toLocaleString()} verified listing${total !== 1 ? "s" : ""} across ${facetList.length} categories`
+                                : "Coverage expanding soon — this country is in our 52-nation network"}
                         </p>
                     </div>
                 </section>
@@ -167,13 +169,27 @@ export default async function DirectoryCountryPage({
                         {total === 0 ? (
                             <div className="bg-white/[0.02] border border-white/[0.05] rounded-2xl p-12 text-center">
                                 <div className="text-4xl mb-4">🌍</div>
-                                <h3 className="text-xl font-bold text-white mb-2">Directory Seeding</h3>
-                                <p className="text-gray-500 max-w-md mx-auto">
-                                    {name} is part of the Haul Command 120-country logistics network. Operator profiles are being verified and will appear here as the market activates.
+                                <h3 className="text-xl font-bold text-white mb-2">{name} Expansion in Progress</h3>
+                                <p className="text-gray-500 max-w-md mx-auto mb-8">
+                                    {name} is part of our 120-country logistics network rollout. Listings are currently being verified and will go live shortly. 
+                                    Are you a local pilot car or heavy haul operator?
                                 </p>
-                                <Link href="/claim" className="inline-block mt-6 bg-accent text-black px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors">
-                                    Claim Your Profile in {name} →
-                                </Link>
+                                <form action="/api/waitlist" method="POST" className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                                    <input type="hidden" name="feature" value={`${cc}-directory`} />
+                                    <input 
+                                        type="email" 
+                                        name="email"
+                                        placeholder="Enter email to claim early placement" 
+                                        required
+                                        className="flex-1 px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
+                                    />
+                                    <button 
+                                        type="submit" 
+                                        className="px-6 py-3 bg-[#F1A91B] text-black font-bold rounded-xl hover:bg-[#d97706] transition-colors whitespace-nowrap"
+                                    >
+                                        Join Waitlist
+                                    </button>
+                                </form>
                             </div>
                         ) : (
                             <>
@@ -190,12 +206,12 @@ export default async function DirectoryCountryPage({
                                                         {p.name}
                                                     </h3>
                                                     <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                                                        <span>{categoryIcon(p.entity_type)}</span>
-                                                        <span>{categoryLabel(p.entity_type)}</span>
-                                                        {p.city && (
+                                                        <span>{categoryIcon(p.surface_category_key)}</span>
+                                                        <span>{categoryLabel(p.surface_category_key)}</span>
+                                                        {p.locality && (
                                                             <>
                                                                 <span>·</span>
-                                                                <span>{[p.city, p.region_code].filter(Boolean).join(", ")}</span>
+                                                                <span>{[p.locality, p.admin1_code].filter(Boolean).join(", ")}</span>
                                                             </>
                                                         )}
                                                     </div>

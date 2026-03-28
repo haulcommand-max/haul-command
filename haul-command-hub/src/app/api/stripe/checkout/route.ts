@@ -110,14 +110,20 @@ async function createCheckoutSession(request: NextRequest, method: 'GET' | 'POST
   const operatorId = body.operatorId ?? searchParams.get('operator_id') ?? 'unknown';
   const email = body.email ?? searchParams.get('email');
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://haulcommand.com';
+
+  // If the user isn't identified, redirect them to login page
+  if (operatorId === 'unknown' && !email) {
+    if (method === 'GET') return NextResponse.redirect(`${siteUrl}/auth/login?next=/pricing&message=Please sign in or create an account to continue.`);
+    return NextResponse.json({ error: 'Authentication required. Please log in.' }, { status: 401 });
+  }
+
   const planConfig = PLANS[plan];
   if (!planConfig) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://haulcommand.com';
     if (method === 'GET') return NextResponse.redirect(`${siteUrl}/pricing`);
     return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://haulcommand.com';
   const isOneTime = planConfig.mode === 'payment';
 
   // Determine the correct Stripe price ID
