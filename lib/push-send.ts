@@ -145,3 +145,6 @@ export async function sendNativePush(userId: string, payload: PushPayload) {
 
     return { sent: sentCount, fcmChecked: fcmTokens?.length || 0, webChecked: webSubs?.length || 0 };
 }
+
+// Backward-compatible alias — 3 modules still import the old name
+export const sendPushToUser = sendNativePush;

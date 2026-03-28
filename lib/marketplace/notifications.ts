@@ -101,7 +101,7 @@ export async function sendOfferNotifications(
                 type: "escort_offer",
                 offer_id: notif.offer_id,
                 request_id: notif.request_id,
-                accept_deadline_seconds: notif.accept_deadline_seconds,
+                accept_deadline_seconds: String(notif.accept_deadline_seconds),
             },
         };
 

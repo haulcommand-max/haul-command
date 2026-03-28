@@ -113,10 +113,10 @@ export class EntitlementEngine {
             price_key: priceKey,
             plan_id: priceKey,
             status: sub.status,
-            current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
-            current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+            current_period_start: new Date(((sub as any).current_period_start ?? 0) * 1000).toISOString(),
+            current_period_end: new Date(((sub as any).current_period_end ?? 0) * 1000).toISOString(),
             cancel_at_period_end: sub.cancel_at_period_end,
-            latest_invoice_id: typeof sub.latest_invoice === 'string' ? sub.latest_invoice : undefined
+            latest_invoice_id: typeof sub.latest_invoice === 'string' ? sub.latest_invoice : (sub.latest_invoice as any)?.id
         }, { onConflict: 'user_id' });
 
         // 2. Derive to Profiles Cache (ReadOnly / Display Mode)

@@ -62,7 +62,7 @@ export const metadata = {
   },
 };
 
-export const revalidate = 60; // ISR: refresh every 60 seconds
+export const dynamic = 'force-dynamic'; // SSR-only — uses geo headers + live DB queries
 
 export default async function LandingPage() {
     const countryCode = await getCountryFromHeaders();
