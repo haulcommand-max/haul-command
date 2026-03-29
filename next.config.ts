@@ -1,6 +1,31 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    // ── Webpack override ─────────────────────────────────────────────────────────
+    // Patch PostgrestBuilder.prototype.catch for webpack SSR builds.
+    // PostgrestBuilder implements .then() (PromiseLike) but NOT .catch().
+    // webpack's bundled prerender code calls .catch() on it, causing TypeError.
+    webpack(config, { isServer, webpack: wp }) {
+        if (isServer && wp?.BannerPlugin) {
+            config.plugins = config.plugins || [];
+            config.plugins.push(
+                new wp.BannerPlugin({
+                    banner: [
+                        'try {',
+                        '  var _pgMod = require("@supabase/postgrest-js");',
+                        '  var _PB = _pgMod.PostgrestBuilder || (_pgMod.default && _pgMod.default.PostgrestBuilder);',
+                        '  if (_PB && _PB.prototype && !_PB.prototype.catch) {',
+                        '    _PB.prototype.catch = function(r) { return this.then(void 0, r); };',
+                        '  }',
+                        '} catch(_e) {}',
+                    ].join('\n'),
+                    raw: true,
+                    entryOnly: false,
+                }),
+            );
+        }
+        return config;
+    },
     // ── Output ──────────────────────────────────────────────────────────────────
     // Vercel uses its own builder. No output mode needed.
 
