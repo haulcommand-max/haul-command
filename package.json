@@ -6,7 +6,7 @@
     "scripts": {
         "postinstall": "node scripts/postinstall-patch.mjs",
         "dev": "next dev",
-        "build": "next build",
+        "build": "node scripts/postinstall-patch.mjs && next build",
         "start": "next start",
         "lint": "next lint",
         "typecheck": "tsc --noEmit",
