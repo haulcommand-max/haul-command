@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         "@sentry/nextjs",
         "@livekit/components-react",
         "livekit-client",
+        // Prevent webpack from mangling PostgrestBuilder's PromiseLike prototype
+        // which only has .then() — webpack's SSR prerenderer calls .catch() on it
+        "@supabase/supabase-js",
+        "@supabase/postgrest-js",
     ],
 
     experimental: {
