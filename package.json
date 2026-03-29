@@ -4,6 +4,7 @@
     "description": "Automation bots for Haul Command",
     "main": "index.js",
     "scripts": {
+        "postinstall": "node scripts/postinstall-patch.mjs",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
