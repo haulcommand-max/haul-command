@@ -8,10 +8,10 @@ import { useRole } from '@/lib/role-context';
 
 const BOTTOM_NAV_ITEMS = [
   { href: '/', label: 'Home', icon: '🏠' },
-  { href: '/schedules/operator', label: 'Find Runs', icon: '📦' },
+  { href: '/glossary', label: 'Glossary', icon: '📖' },
   { href: '/directory', label: 'Directory', icon: '🔍' },
   { href: '/map', label: 'Map', icon: '🗺️' },
-  { href: '/inbox', label: 'Messages', icon: '💬' },
+  { href: '/tools', label: 'Tools', icon: '🛠️' },
 ];
 
 export default function MobileBottomNav() {
@@ -100,12 +100,6 @@ export default function MobileBottomNav() {
             >
               <span className="text-lg">{item.icon}</span>
               <span className="text-[9px] font-medium">{item.label}</span>
-              {/* Unread badge on Inbox */}
-              {item.href === '/inbox' && unreadCount > 0 && (
-                <span className="absolute -top-0.5 right-0.5 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center px-1">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
             </Link>
           );
         })}

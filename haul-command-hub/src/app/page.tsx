@@ -43,7 +43,9 @@ async function loadHomepageData() {
   const totalJurisdictions = jurisdictions.length;
   const allCountries = countriesResult.data ?? [];
   const liveCountries = allCountries.filter((c: { is_active_market?: boolean; activation_phase?: string }) => c.is_active_market || c.activation_phase === 'active');
-  const totalCountries = allCountries.length || 120;
+  // Show real live count — never inflate to 120 when data is missing
+  const activeLiveCount = liveCountries.length;
+  const totalCountries = allCountries.length || 0;
   const corridors = corridorsResult.data ?? [];
 
   // Build metrics — show real data when available, strategic counts when seeded, NEVER show zeros
@@ -59,14 +61,25 @@ async function loadHomepageData() {
     });
   }
 
-  // Countries always have a value (120 from our taxonomy)
-  metrics.push({
-    label: 'Countries Active',
-    value: totalCountries.toString(),
-    geographyScope: 'Global',
-    timeWindow: 'All time',
-    freshness: { lastUpdatedAt: now, updateLabel: allCountries.length > 0 ? 'Live count' : 'System seeded' },
-  });
+  // Only show country count if we have real data
+  if (activeLiveCount > 0) {
+    metrics.push({
+      label: 'Active Markets',
+      value: activeLiveCount.toString(),
+      geographyScope: 'Global',
+      timeWindow: 'Live',
+      freshness: { lastUpdatedAt: now, updateLabel: 'Live count' },
+    });
+  } else {
+    // Fallback: show US + Canada as known live markets
+    metrics.push({
+      label: 'Active Markets',
+      value: '2',
+      geographyScope: 'U.S. & Canada',
+      timeWindow: 'Live',
+      freshness: { lastUpdatedAt: now, updateLabel: 'Verified' },
+    });
+  }
 
   if (totalJurisdictions > 0) {
     metrics.push({
@@ -102,13 +115,13 @@ async function loadHomepageData() {
     disclaimer: 'Requirements are verified against official sources. Always confirm with state DOT before movement.',
   };
 
-  return { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries };
+  return { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries, activeLiveCount, totalCountries };
 }
 
 // ─── Page Component ──────────────────────────────────────────
 
 export default async function HomePage() {
-  const { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries } = await loadHomepageData();
+  const { metrics, corridorSummaries, reqSummary, totalListings, allCountries, liveCountries, activeLiveCount, totalCountries } = await loadHomepageData();
 
   // Load ad creatives in parallel
   const [heroAds, inlineAds] = await Promise.all([
@@ -136,11 +149,11 @@ export default async function HomePage() {
     { id: 'hc_act_claim_profile', label: 'Claim Profile', href: '/claim', type: 'claim' as const, priority: 'primary' as const },
   ];
 
-  // FAQ items — updated for 120-country global scope
+  // FAQ items — accurate geographic scope
   const faqItems: HCFaqItem[] = [
     {
       question: 'What is Haul Command?',
-      answer: 'Haul Command is the global operating system for the heavy haul, oversize transport, and escort vehicle industry. We connect shippers, brokers, and operators across 120 countries with verified directory data, route intelligence, escort requirements, and compliance tools.',
+      answer: 'Haul Command is the heavy haul operating system for the oversize transport and escort vehicle industry. We connect shippers, brokers, and operators with a verified directory, escort regulations, compliance tools, and route intelligence. Currently live in the U.S. and Canada, with more markets expanding.',
     },
     {
       question: 'How do I find a pilot car or escort operator?',
@@ -152,11 +165,11 @@ export default async function HomePage() {
     },
     {
       question: 'What escort requirements does my load need?',
-      answer: 'Use our Requirements tool to check dimension-based escort triggers for any US state or international jurisdiction. We track width, height, length, and weight thresholds that determine escort counts, police escort needs, and permit requirements.',
+      answer: 'Use our Requirements tool to check dimension-based escort triggers by U.S. state. We track width, height, length, and weight thresholds that determine escort counts, police escort needs, and permit requirements. International jurisdictions are being added.',
     },
     {
       question: 'Is Haul Command free to use?',
-      answer: 'Browsing the directory, viewing requirements, and searching for operators is free. Claiming and verifying your profile is free. Premium features like priority placement, boost credits, and analytics are available through paid plans.',
+      answer: 'Browsing the directory, viewing requirements, and using our tools is free. Claiming and verifying your profile is free. Premium features like priority placement, boost credits, and analytics are available through paid plans.',
     },
   ];
 
@@ -203,10 +216,8 @@ export default async function HomePage() {
           locationChips={locationChips}
         />
 
-        {/* Live Dashboard Widgets */}
-        <div className="max-w-7xl mx-auto px-4">
-          <LiveDashboard />
-        </div>
+        {/* Live Dashboard — only shown to signed-in users; hides gracefully for guests */}
+        {/* <div className="max-w-7xl mx-auto px-4"><LiveDashboard /></div> */}
 
         {/* ═══ OPERATOR TOOLS ═══ */}
         <section className="py-10 sm:py-16 px-4 bg-black/20 overflow-hidden">
@@ -288,6 +299,10 @@ export default async function HomePage() {
                 </Link>
               ))}
             </div>
+            <div className="mt-6 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-gray-500 text-sm">26 tools total — purpose-built for heavy haul professionals.</span>
+              <Link href="/tools" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">View All Tools →</Link>
+            </div>
           </div>
         </section>
 
@@ -300,7 +315,7 @@ export default async function HomePage() {
               Global <span className="text-accent">Services</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Verified operators across 120 countries specializing in every discipline of oversize transport.
+              Browse verified operators in our active markets. Specialized escort, towing, route survey, and more.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 relative z-10">
               {[
@@ -315,7 +330,7 @@ export default async function HomePage() {
               ].map((svc) => (
                 <Link
                   key={svc.slug}
-                  href={`/roles/${svc.slug}`}
+                  href={`/directory?service=${svc.slug}`}
                   className="group block p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-accent/[0.05] hover:border-accent/30 transition-all ag-slide-up"
                 >
                   <div className="flex items-start gap-4">
@@ -353,7 +368,7 @@ export default async function HomePage() {
               Escort <span className="text-accent">Regulations</span>
             </h2>
             <p className="text-[#b0b0b0] text-sm mb-6 sm:mb-8 max-w-xl">
-              Granular escort triggers, permit portals, and compliance data across 120 countries.
+              Escort triggers, permit portals, and compliance thresholds by U.S. state. International coverage expanding.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
               {[
@@ -385,10 +400,10 @@ export default async function HomePage() {
             </div>
             <div className="mt-4">
               <Link
-                href="/escort-requirements"
+                href="/requirements"
                 className="text-accent text-sm font-bold hover:underline"
               >
-                View all jurisdictions across 120 countries →
+                View all U.S. jurisdictions and requirements →
               </Link>
             </div>
           </div>
@@ -498,17 +513,20 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">
-                Global <span className="text-accent">Network</span>
+                Active <span className="text-accent">Markets</span>
               </h2>
-              <span className="bg-accent/10 border border-accent/20 text-accent text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
-                {allCountries.length || 120} countries
-              </span>
+              {(activeLiveCount > 0 || totalCountries > 0) && (
+                <span className="bg-accent/10 border border-accent/20 text-accent text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
+                  {activeLiveCount > 0 ? `${activeLiveCount} live` : '2 live'} · {totalCountries > 0 ? `${totalCountries} mapped` : '120 mapped'}
+                </span>
+              )}
             </div>
-            
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base font-medium text-gray-400 mb-6">
-              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500"></span> {liveCountries.length} Live Markets</div>
-              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'expanding').length} Expanding</div>
-              <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-gray-600"></span> {allCountries.filter((c: { activation_phase?: string }) => c.activation_phase === 'planned').length} Planned</div>
+
+            {/* Market status legend */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm font-medium text-gray-400 mb-6">
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500"></span> Live — operators verified</div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500"></span> Expanding — data being verified</div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gray-600"></span> Mapped — coming soon</div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -651,17 +669,17 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-          {/* Leaderboard Trust Strip */}
+          {/* Glossary crosslink strip */}
           <div className="mt-6 bg-white/[0.02] border border-white/[0.06] rounded-xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-xl">🏆</span>
+              <span className="text-xl">📖</span>
               <div>
-                <span className="text-white font-bold text-sm">Operator Leaderboard</span>
-                <span className="text-gray-500 text-xs ml-2">ELD-verified rankings by response time, coverage area, and compliance score.</span>
+                <span className="text-white font-bold text-sm">Heavy Haul Glossary</span>
+                <span className="text-gray-500 text-xs ml-2">3,000+ industry terms defined — pilot car, superload, PEVO, escort vehicle, and more.</span>
               </div>
             </div>
-            <Link href="/leaderboard" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">
-              View Rankings →
+            <Link href="/glossary" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">
+              Browse Glossary →
             </Link>
           </div>
         </section>
