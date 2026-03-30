@@ -138,11 +138,117 @@ const nextConfig: NextConfig = {
         destination: '/waitlist?feature=directory-categories',
         permanent: false,
       },
+      // ─── GLOSSARY ARCHITECTURE: Legacy → Canonical Redirects ───────
+      // All glossary/dictionary traffic funnels to /glossary/[term-slug]/
       {
         source: '/pilot-car',
-        destination: '/dictionary/us/pilot-car',
-        permanent: false,
+        destination: '/glossary/pilot-car/',
+        permanent: true,
       },
+      // Legacy /dictionary hub → /glossary
+      {
+        source: '/dictionary',
+        destination: '/glossary',
+        permanent: true,
+      },
+      // Legacy /dictionary/term/:id → /glossary/:id (slug normalization in page)
+      {
+        source: '/dictionary/term/:id',
+        destination: '/glossary/:id/',
+        permanent: true,
+      },
+      // Legacy /glossary/term/:id → /glossary/:id
+      {
+        source: '/glossary/term/:id',
+        destination: '/glossary/:id/',
+        permanent: true,
+      },
+      // Legacy /dictionary/:country/:term → /glossary/:term/:country
+      // (slug normalization happens in the page component via redirect())
+      {
+        source: '/dictionary/us/:term',
+        destination: '/glossary/:term/united-states/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/ca/:term',
+        destination: '/glossary/:term/canada/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/au/:term',
+        destination: '/glossary/:term/australia/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/gb/:term',
+        destination: '/glossary/:term/united-kingdom/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/de/:term',
+        destination: '/glossary/:term/germany/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/nl/:term',
+        destination: '/glossary/:term/netherlands/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/nz/:term',
+        destination: '/glossary/:term/new-zealand/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/za/:term',
+        destination: '/glossary/:term/south-africa/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/ae/:term',
+        destination: '/glossary/:term/united-arab-emirates/',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/br/:term',
+        destination: '/glossary/:term/brazil/',
+        permanent: true,
+      },
+      // Catch-all for remaining /dictionary/:country/:term patterns
+      {
+        source: '/dictionary/:country/:term',
+        destination: '/glossary/:term/',
+        permanent: true,
+      },
+      // Legacy /glossary/:country/:term-id → /glossary/:term-id/:country
+      // (flips country-first to topic-first; slug normalization in-page)
+      {
+        source: '/glossary/us/:term',
+        destination: '/glossary/:term/united-states/',
+        permanent: true,
+      },
+      {
+        source: '/glossary/ca/:term',
+        destination: '/glossary/:term/canada/',
+        permanent: true,
+      },
+      {
+        source: '/glossary/au/:term',
+        destination: '/glossary/:term/australia/',
+        permanent: true,
+      },
+      {
+        source: '/glossary/gb/:term',
+        destination: '/glossary/:term/united-kingdom/',
+        permanent: true,
+      },
+      {
+        source: '/glossary/de/:term',
+        destination: '/glossary/:term/germany/',
+        permanent: true,
+      },
+      // ─── END GLOSSARY REDIRECTS ─────────────────
       {
         source: '/services/:path*',
         destination: '/waitlist?feature=services-hub',
