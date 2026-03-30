@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, Shield, AlertTriangle, CheckCircle2, FileText, MapPin, Truck } from "lucide-react";
-import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import {
     getStateBySlug,
     getAllStateSlugs,

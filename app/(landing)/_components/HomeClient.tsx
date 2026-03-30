@@ -27,7 +27,7 @@ import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
 import MarketConditionsPanel from "@/components/intelligence/MarketConditionsPanel";
 import { MarketTerminalRibbon } from "@/components/market/MarketTerminalRibbon";
 import { CorridorLeaderboard } from "@/components/gamification/CorridorLeaderboard";
-import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { FooterAccordion } from "./FooterAccordion";
 
 // ===== ANIMATION VARIANTS =====

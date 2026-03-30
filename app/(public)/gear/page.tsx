@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import { ShoppingCart, Star, ShieldCheck, Zap, ArrowRight, ExternalLink } from 'lucide-react';
-import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import Link from 'next/link';
 
 export const metadata = {

@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpCircle, ChevronRight, BookOpen } from "lucide-react";
-import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { AI_ANSWER_SEEDS, LOAD_TYPES } from "@/lib/seo/pilot-car-taxonomy";
 
 export const metadata: Metadata = {

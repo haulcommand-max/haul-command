@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Shield, Calculator, Zap, AlertTriangle, CheckCircle2, XCircle, Info, ChevronDown } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { estimateEscortCost } from '@/lib/data/corridors';
 
 // ── Types ────────────────────────────────────────────────────────────────────

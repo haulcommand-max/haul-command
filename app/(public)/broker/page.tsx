@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getCorridorData, getAllCorridorSlugs, estimateEscortCost } from '@/lib/data/corridors';
-import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { WatchButton } from '@/components/social/WatchButton';
 import { CorridorDetailMobileGate } from '@/components/mobile/gates/CorridorDetailMobileGate';
 import { CorridorHeartbeatStrip } from '@/components/market/CorridorHeartbeatStrip';

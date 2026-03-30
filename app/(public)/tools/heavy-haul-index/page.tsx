@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart3, TrendingUp, AlertTriangle, ShieldCheck, Download, Link, Share2 } from 'lucide-react';
-import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

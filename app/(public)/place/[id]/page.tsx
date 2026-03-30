@@ -18,7 +18,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import AdSlot from "@/components/monetization/AdSlot";
 import { WatchButton } from "@/components/social/WatchButton";
-import { NativeAdCard } from "@/components/ads/NativeAdCard";
+import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { track } from "@/lib/telemetry";
 import ClaimBanner from "@/components/growth/ClaimBanner";
 import { UrgencyIndicator } from "@/components/psychology/GrowthHooks";
