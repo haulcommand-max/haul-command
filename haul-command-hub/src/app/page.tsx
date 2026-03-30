@@ -29,9 +29,9 @@ async function loadHomepageData() {
   const [placesResult, providerResult, jurisdictionResult, corridorsResult, countriesResult] = await Promise.all([
     sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published'),
     sb.from('provider_directory').select('id', { count: 'exact', head: true }),
-    sb.rpc('hc_list_all_jurisdictions').catch(() => ({ data: [] })),
-    sb.from('corridors').select('id, name, corridor_type').limit(6).catch(() => ({ data: [] })),
-    sb.from('global_countries').select('iso2, name, activation_phase, is_active_market, launch_status, tier, slug').order('tier').order('name').catch(() => ({ data: [] })),
+    Promise.resolve(sb.rpc('hc_list_all_jurisdictions')).catch(() => ({ data: [] })),
+    Promise.resolve(sb.from('corridors').select('id, name, corridor_type').limit(6)).catch(() => ({ data: [] })),
+    Promise.resolve(sb.from('global_countries').select('iso2, name, activation_phase, is_active_market, launch_status, tier, slug').order('tier').order('name')).catch(() => ({ data: [] })),
   ]);
 
   // Use the larger of the two directory counts
