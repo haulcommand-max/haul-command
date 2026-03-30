@@ -40,7 +40,8 @@ export default async function FinancingPage() {
   // Aggregate platform stats for social proof
   const { count: verifiedOperators } = await sb
     .from('providers')
-    .select('id', { count: 'exact', head: true })
+    // FIX: Changed from 'exact' count to 'estimated' count to fix slow fetch causing build time timeout.
+    .select('id', { count: 'estimated', head: true })
     .not('motive_connected_at', 'is', null);
 
   const operatorCount = verifiedOperators ?? 0;

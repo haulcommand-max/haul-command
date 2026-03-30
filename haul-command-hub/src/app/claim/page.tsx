@@ -14,12 +14,15 @@ export const metadata: Metadata = {
     'Claim and verify your escort, pilot car, or heavy haul business listing on Haul Command. Free to claim. Unlock premium features, respond to loads, and build your verified reputation across 120 countries.',
 };
 
+export const revalidate = 3600;
+
 export default async function ClaimPage() {
   const sb = supabaseServer();
 
   // Count total unclaimed listings for urgency messaging
   const [listingsResult, claimsResult] = await Promise.all([
-    sb.from('directory_listings').select('id', { count: 'exact', head: true }).eq('is_visible', true),
+    // FIX: Using 'estimated' count instead of 'exact' fixes the slow fetch on 1.5M row tables preventing build timeouts
+    sb.from('directory_listings').select('id', { count: 'estimated', head: true }).eq('is_visible', true),
     sb.from('listing_claims').select('id, claim_status, claimed_at').eq('claim_status', 'verified').order('claimed_at', { ascending: false }).limit(10),
   ]);
 

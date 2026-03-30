@@ -12,7 +12,9 @@ import { COUNTRIES } from '@/lib/seo-countries';
 export const revalidate = 86400;
 
 export async function generateStaticParams() {
-  return COUNTRIES.map(c => ({ country: c.slug }));
+  // CRITICAL: Return empty array to skip 120 concurrent DB RPCs during build.
+  // Next.js ISR (dynamicParams=true + revalidate) will build and cache these on demand natively, preserving SEO.
+  return [];
 }
 
 type Props = { params: Promise<{ country: string }> };
