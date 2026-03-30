@@ -1,93 +1,110 @@
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getGlossaryTerms, getGlossaryCategories } from '@/lib/glossary-unified';
+import { COUNTRIES } from '@/lib/seo-countries';
+import { COUNTRY_SLUG_MAP } from '@/lib/glossary-slugs';
+
+export const revalidate = 86400; // 1 day ISR
 
 export const metadata: Metadata = {
-  title:'Heavy Haul Glossary — 200+ Industry Terms',
-  description: 'Complete heavy haul and oversize load glossary. Learn 200+ industry terms including pilot car, escort vehicle, superload, and more.',
+  title: 'Heavy Haul Glossary, Definitions, Terms & Rules | Haul Command',
+  description: 'The definitive heavy haul and oversize load glossary. 3,000+ industry terms defined across 120 countries. Pilot car, escort vehicle, superload, and more.',
+  openGraph: {
+    title: 'Heavy Haul Glossary, Definitions, Terms & Rules | Haul Command',
+    description: 'The definitive heavy haul and oversize load glossary. 3,000+ industry terms defined across 120 countries.',
+    url: 'https://haulcommand.com/glossary/',
+  },
+  alternates: { canonical: 'https://haulcommand.com/glossary/' },
 };
 
-const GLOSSARY_TERMS = [
-  { term: 'Pilot Car', slug: 'pilot-car', definition: 'A vehicle that leads or follows an oversize load to warn other motorists and guide the transport through obstacles.' },
-  { term: 'Escort Vehicle', slug: 'escort-vehicle', definition: 'A vehicle accompanying an oversize or overweight load to provide safety and traffic control.' },
-  { term: 'Superload', slug: 'superload', definition: 'A load that exceeds standard oversize permit limits, requiring special routing, engineering studies, and multiple escorts.' },
-  { term: 'Oversize Load', slug: 'oversize-load', definition: 'A load that exceeds standard legal width, height, length, or weight limits, requiring a special permit.' },
-  { term: 'Overweight Load', slug: 'overweight-load', definition: 'A load that exceeds the standard gross vehicle weight limit on public roadways.' },
-  { term: 'Wide Load', slug: 'wide-load', definition: 'A load exceeding the standard width limit (typically 8\'6" in the US), requiring oversize permits and often escort vehicles.' },
-  { term: 'Route Survey', slug: 'route-survey', definition: 'A pre-trip inspection of the planned transport route to identify obstacles, low clearances, tight turns, and road conditions.' },
-  { term: 'Height Pole', slug: 'height-pole', definition: 'A pole mounted on a pilot car set to the height of the load behind it, used to check clearances under bridges and power lines.' },
-  { term: 'Amber Light', slug: 'amber-light', definition: 'Flashing yellow/amber warning lights mounted on pilot cars and escort vehicles as required by most jurisdictions.' },
-  { term: 'Oversize Banner', slug: 'oversize-banner', definition: 'A fluorescent orange or yellow sign reading "OVERSIZE LOAD" or "WIDE LOAD" displayed on the transport vehicle and escort cars.' },
-  { term: 'ELD', slug: 'eld', definition: 'Electronic Logging Device — a device that automatically records a driver\'s driving time and Hours of Service (HOS) compliance.' },
-  { term: 'HOS', slug: 'hos', definition: 'Hours of Service — federal regulations limiting how long a commercial driver can operate a vehicle before required rest.' },
-  { term: 'Dead Head', slug: 'dead-head', definition: 'Driving without a load, typically returning from a delivery. A significant cost factor in heavy haul operations.' },
-  { term: 'Corridor', slug: 'corridor', definition: 'A frequently used transport route between two cities or regions, often with established escort operator coverage.' },
-  { term: 'FMCSA', slug: 'fmcsa', definition: 'Federal Motor Carrier Safety Administration — the US agency that regulates the trucking industry.' },
-  { term: 'DOT Number', slug: 'dot-number', definition: 'A unique identifier assigned by the FMCSA to commercial motor carriers for identification and safety monitoring.' },
-  { term: 'MC Number', slug: 'mc-number', definition: 'Motor Carrier number — operating authority granted by FMCSA for interstate commerce.' },
-  { term: 'Axle Weight', slug: 'axle-weight', definition: 'The total weight bearing on a single axle of a vehicle, subject to legal limits per axle configuration.' },
-  { term: 'Gross Vehicle Weight (GVW)', slug: 'gross-vehicle-weight', definition: 'The total weight of a vehicle including the load, fuel, passengers, and equipment.' },
-  { term: 'Bridge Formula', slug: 'bridge-formula', definition: 'Federal formula that determines the maximum weight any set of axles can carry based on the number and spacing of axles.' },
-  { term: 'Permit', slug: 'permit', definition: 'Government authorization to transport an oversize or overweight load on public roads, specifying route, dimensions, and conditions.' },
-  { term: 'Single Trip Permit', slug: 'single-trip-permit', definition: 'A permit valid for one specific trip, specifying exact origin, destination, route, and time frame.' },
-  { term: 'Annual Permit', slug: 'annual-permit', definition: 'A permit valid for one year, allowing multiple trips within specified dimension and weight limits.' },
-  { term: 'Multi-State Permit', slug: 'multi-state-permit', definition: 'A permit covering transport across multiple states, sometimes available through regional agreements.' },
-  { term: 'Lowboy', slug: 'lowboy', definition: 'A semi-trailer with a very low deck height, used for hauling tall equipment like excavators and bulldozers.' },
-  { term: 'Flatbed', slug: 'flatbed', definition: 'An open trailer with a flat deck and no sides, used for hauling construction materials, steel, and equipment.' },
-  { term: 'RGN (Removable Gooseneck)', slug: 'rgn', definition: 'A trailer where the gooseneck detaches for ground-level loading of heavy equipment.' },
-  { term: 'Step Deck', slug: 'step-deck', definition: 'A trailer with an upper and lower deck, allowing taller cargo while maintaining overall height compliance.' },
-  { term: 'Perimeter Trailer', slug: 'perimeter-trailer', definition: 'A heavy-haul trailer that carries weight around the perimeter rather than on the deck surface.' },
-  { term: 'Schnabel', slug: 'schnabel', definition: 'A specialized trailer that connects to the load itself, making the load part of the trailer structure. Used for transformers and heavy industrial equipment.' },
-  { term: 'Beam Trailer', slug: 'beam-trailer', definition: 'An extendable trailer designed for extremely long loads like bridge beams, wind turbine blades, and industrial columns.' },
-  { term: 'Dual Lane', slug: 'dual-lane', definition: 'When an oversize load occupies two lanes of traffic, requiring additional escort vehicles and traffic control.' },
-  { term: 'Curfew', slug: 'curfew', definition: 'Time restrictions on oversize load movement, typically prohibiting travel during rush hours, nighttime, or holidays.' },
-  { term: 'Wind Speed Restriction', slug: 'wind-speed-restriction', definition: 'Maximum wind speed at which an oversize load can safely travel, particularly relevant for tall or wide loads.' },
-  { term: 'High Pole', slug: 'high-pole', definition: 'The practice of measuring heights along a route using a height pole to ensure clearance for tall loads.' },
-  { term: 'Bucket Truck', slug: 'bucket-truck', definition: 'A utility vehicle with an elevated bucket used to lift power lines for oversize load passage.' },
-  { term: 'Utility Clearance', slug: 'utility-clearance', definition: 'The process of coordinating with utility companies to temporarily raise or de-energize power lines along a transport route.' },
-  { term: 'LEA Escort', slug: 'lea-escort', definition: 'Law Enforcement Agency escort — a police officer who accompanies an oversize load, often required for superloads.' },
-  { term: 'Flag Car', slug: 'flag-car', definition: 'Another term for pilot car/escort vehicle, particularly common in Australian heavy haul terminology.' },
-  { term: 'NHVR', slug: 'nhvr', definition: 'National Heavy Vehicle Regulator — the Australian agency responsible for regulating heavy vehicles.' },
-  { term: 'Abnormal Load', slug: 'abnormal-load', definition: 'UK/EU terminology for a load that exceeds standard dimensions or weight limits.' },
-  { term: 'STGO', slug: 'stgo', definition: 'Special Types General Order — UK regulation governing the movement of abnormal loads on public roads.' },
-  { term: 'Bondable', slug: 'bondable', definition: 'An operator who can obtain a surety bond, demonstrating financial responsibility and trustworthiness.' },
-  { term: 'Cargo Insurance', slug: 'cargo-insurance', definition: 'Insurance covering damage to freight during transport, separate from vehicle liability insurance.' },
-  { term: 'IFTA', slug: 'ifta', definition: 'International Fuel Tax Agreement — a system for collecting and distributing fuel taxes among US states and Canadian provinces.' },
-  { term: 'Bobtail', slug: 'bobtail', definition: 'Operating a truck tractor without a trailer attached.' },
-  { term: 'Tandem', slug: 'tandem', definition: 'A pair of axles close together, distributing weight more evenly across the road surface.' },
-  { term: 'Tri-Axle', slug: 'tri-axle', definition: 'A trailer or truck with three axles, allowing it to carry heavier loads while distributing weight.' },
-  { term: 'Kingpin', slug: 'kingpin', definition: 'The coupling pin on a trailer that connects to the fifth wheel on a truck tractor.' },
-  { term: 'Fifth Wheel', slug: 'fifth-wheel', definition: 'The coupling device on a tractor that connects to the trailer kingpin, allowing articulation.' },
-];
+export default async function GlossaryPage() {
+  const terms = await getGlossaryTerms();
+  const categories = await getGlossaryCategories();
 
-export default function GlossaryPage() {
-  const grouped = GLOSSARY_TERMS.reduce((acc, term) => {
-    const letter = term.term[0].toUpperCase();
+  // Group terms alphabetically
+  const grouped = terms.reduce((acc, term) => {
+    const letter = (term.term[0] || '#').toUpperCase();
     if (!acc[letter]) acc[letter] = [];
     acc[letter].push(term);
     return acc;
-  }, {} as Record<string, typeof GLOSSARY_TERMS>);
+  }, {} as Record<string, typeof terms>);
 
   const letters = Object.keys(grouped).sort();
+
+  // Flagship topic hubs for prominent display
+  const flagshipHubs = [
+    { slug: 'pilot-car', label: 'Pilot Car Terms', icon: '🚗' },
+    { slug: 'escort-vehicle', label: 'Escort Vehicle Terms', icon: '🚐' },
+    { slug: 'pevo', label: 'PEVO Lingo', icon: '🎓' },
+    { slug: 'oversize-load', label: 'Oversize Load Terms', icon: '📦' },
+    { slug: 'superload', label: 'Superload Terms', icon: '⚡' },
+    { slug: 'height-pole', label: 'Height Pole Terms', icon: '📏' },
+    { slug: 'route-survey', label: 'Route Survey Terms', icon: '🗺️' },
+    { slug: 'bridge-formula', label: 'Bridge & Weight Terms', icon: '🌉' },
+    { slug: 'wide-load', label: 'Wide Load Terms', icon: '🔶' },
+    { slug: 'deadhead', label: 'Operations Lingo', icon: '🛣️' },
+    { slug: 'curfew', label: 'Travel Restriction Terms', icon: '⏰' },
+    { slug: 'overweight-load', label: 'Overweight Load Terms', icon: '⚖️' },
+  ];
+
+  // Tier A countries for country nav
+  const tierACountries = COUNTRIES.filter(c => c.tier === 'A');
 
   return (
     <>
       <Navbar />
-      <main className="max-w-5xl mx-auto px-4 py-12 min-h-screen">
+      <main className="max-w-6xl mx-auto px-4 py-12 min-h-screen">
         <nav className="text-xs text-gray-500 mb-6">
           <Link href="/" className="hover:text-accent">Home</Link>
           <span className="mx-2">›</span>
-          <span className="text-white">Glossary</span>
+          <span className="text-white">Heavy Haul Glossary</span>
         </nav>
 
         <header className="mb-12">
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
             Heavy Haul <span className="text-accent">Glossary</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl">
-            {GLOSSARY_TERMS.length}+ industry terms defined. The most comprehensive heavy haul and oversize load terminology reference.
+          <p className="text-gray-400 text-lg max-w-3xl">
+            {terms.length.toLocaleString()}+ industry terms defined across 120 countries.
+            The most comprehensive heavy haul, oversize load, and escort terminology reference.
           </p>
         </header>
+
+        {/* Topic Hub Cards */}
+        <section className="mb-16">
+          <h2 className="text-xl font-bold text-white mb-6">Browse by Topic</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {flagshipHubs.map(hub => (
+              <Link
+                key={hub.slug}
+                href={`/glossary/${hub.slug}/`}
+                className="bg-[#111823] border border-white/10 rounded-xl p-5 hover:border-accent/30 transition-all hover:scale-[1.02] group"
+              >
+                <span className="text-2xl mb-2 block">{hub.icon}</span>
+                <span className="font-semibold text-white group-hover:text-accent transition-colors text-sm">
+                  {hub.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Country Quick Nav */}
+        <section className="mb-16">
+          <h2 className="text-xl font-bold text-white mb-6">Browse by Country</h2>
+          <div className="flex flex-wrap gap-3">
+            {tierACountries.map(c => (
+              <Link
+                key={c.code}
+                href={`/glossary/pilot-car/${COUNTRY_SLUG_MAP[c.slug]}/`}
+                className="px-4 py-2 bg-[#111823] border border-white/10 rounded-lg hover:border-accent/30 text-sm text-slate-300 hover:text-white transition-colors"
+              >
+                {c.flag} {c.name}
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Letter Quick Nav */}
         <div className="flex flex-wrap gap-2 mb-10 sticky top-16 bg-[#0B0F14]/95 backdrop-blur-md py-3 z-10">
@@ -103,16 +120,33 @@ export default function GlossaryPage() {
           {letters.map((letter) => (
             <section key={letter} id={`letter-${letter}`}>
               <h2 className="text-3xl font-black text-accent mb-6 border-b border-white/5 pb-2">{letter}</h2>
-              <div className="space-y-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {grouped[letter].map((item) => (
-                  <div key={item.slug} id={item.slug} className="scroll-mt-24">
-                    <h3 className="text-lg font-bold text-white mb-1">{item.term}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{item.definition}</p>
-                  </div>
+                  <Link
+                    key={item.slug}
+                    href={`/glossary/${item.slug}/`}
+                    className="bg-[#111823]/50 border border-white/5 rounded-xl p-4 hover:border-accent/20 transition-colors group"
+                  >
+                    <h3 className="text-sm font-bold text-white group-hover:text-accent transition-colors mb-1">{item.term}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-2">{item.shortDefinition}</p>
+                  </Link>
                 ))}
               </div>
             </section>
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 text-center bg-[#111823] border border-white/10 rounded-2xl p-8">
+          <h2 className="text-2xl font-bold text-white mb-4">Need Heavy Haul Services?</h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/directory" className="inline-block bg-accent text-black font-black px-6 py-3 rounded-xl hover:bg-yellow-500 transition-colors">
+              Find Verified Operators
+            </Link>
+            <Link href="/tools" className="inline-block bg-white/10 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/20 transition-colors">
+              Free Industry Tools
+            </Link>
+          </div>
         </div>
 
         {/* Schema markup */}
@@ -123,13 +157,14 @@ export default function GlossaryPage() {
               '@context': 'https://schema.org',
               '@type': 'DefinedTermSet',
               name: 'Heavy Haul & Oversize Load Glossary',
-              description: `${GLOSSARY_TERMS.length}+ industry terms for heavy haul transport, pilot car operations, and oversize load escort services.`,
-              hasDefinedTerm: GLOSSARY_TERMS.map((t) => ({
-                '@type': 'DefinedTerm',
-                name: t.term,
-                description: t.definition,
-                url: `https://haulcommand.com/glossary#${t.slug}`,
-              })),
+              description: `${terms.length}+ industry terms for heavy haul transport, pilot car operations, and oversize load escort services across 120 countries.`,
+              url: 'https://haulcommand.com/glossary/',
+              publisher: {
+                '@type': 'Organization',
+                name: 'Haul Command',
+                url: 'https://haulcommand.com',
+              },
+              numberOfItems: terms.length,
             }),
           }}
         />
