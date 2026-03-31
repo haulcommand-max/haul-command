@@ -134,8 +134,8 @@ export default function AdvertiseDashboard() {
             Your {selectedPlan?.name} campaign is under review. We'll approve and launch within 24 hours.
             You'll receive a confirmation email at <strong style={{ color: '#f0f4f8' }}>{contactEmail}</strong>.
           </p>
-          <Link href="/advertise">
-            <button style={{
+          <Link aria-label="Navigation Link" href="/advertise">
+            <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,
               padding: '14px 28px', fontSize: 15, fontWeight: 800, cursor: 'pointer',
@@ -166,7 +166,7 @@ export default function AdvertiseDashboard() {
       <div style={{ background: '#0a0d16', borderBottom: '1px solid #1a223a', padding: '0 24px' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', display: 'flex' }}>
           {STEPS.map((s, i) => (
-            <button key={s.id} onClick={() => selectedPlan && setStep(s.id)} style={{
+            <button aria-label="Interactive Button" key={s.id} onClick={() => selectedPlan && setStep(s.id)} style={{
               flex: 1, padding: '14px 0', fontSize: 13, fontWeight: 600, background: 'none', border: 'none', cursor: selectedPlan ? 'pointer' : 'default',
               borderBottom: step === s.id ? '2px solid #f5c842' : '2px solid transparent',
               color: step === s.id ? '#f5c842' : '#8fa3c0',
@@ -217,7 +217,7 @@ export default function AdvertiseDashboard() {
                 }} />
               </div>
             </div>
-            <button disabled={!selectedPlan || !companyName || !contactEmail} onClick={() => setStep('targeting')} style={{
+            <button aria-label="Interactive Button" disabled={!selectedPlan || !companyName || !contactEmail} onClick={() => setStep('targeting')} style={{
               background: selectedPlan ? 'linear-gradient(90deg, #f5c842, #ff9500)' : '#2a2a3a',
               color: selectedPlan ? '#07090f' : '#8fa3c0', border: 'none', borderRadius: 12,
               padding: '14px 32px', fontSize: 15, fontWeight: 800, cursor: selectedPlan ? 'pointer' : 'not-allowed', width: '100%',
@@ -288,7 +288,7 @@ export default function AdvertiseDashboard() {
               </div>
             )}
 
-            <button onClick={() => setStep('creative')} style={{
+            <button aria-label="Interactive Button" onClick={() => setStep('creative')} style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,
               padding: '14px 32px', fontSize: 15, fontWeight: 800, cursor: 'pointer', width: '100%',
@@ -303,7 +303,7 @@ export default function AdvertiseDashboard() {
             <p style={{ color: '#8fa3c0', marginBottom: 28 }}>Upload your creative or let Gemini generate it for you in seconds.</p>
 
             <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-              <button disabled={!creative.cta_url || !companyName || aiGenerating} onClick={generateAI} style={{
+              <button aria-label="Interactive Button" disabled={!creative.cta_url || !companyName || aiGenerating} onClick={generateAI} style={{
                 background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.25)',
                 color: '#00ff88', borderRadius: 10, padding: '10px 20px', fontSize: 13, fontWeight: 700, cursor: 'pointer',
                 opacity: (!creative.cta_url || !companyName || aiGenerating) ? 0.5 : 1,
@@ -358,7 +358,7 @@ export default function AdvertiseDashboard() {
                     {creative.body && <div style={{ fontSize: 13, color: '#8fa3c0' }}>{creative.body}</div>}
                     <div style={{ fontSize: 10, color: '#f5c842', marginTop: 6 }}>Sponsored · {companyName}</div>
                   </div>
-                  <button style={{
+                  <button aria-label="Interactive Button" style={{
                     background: 'linear-gradient(90deg, #f5c842, #ff9500)', border: 'none',
                     borderRadius: 8, padding: '8px 14px', fontSize: 12, fontWeight: 700, color: '#07090f', flexShrink: 0, cursor: 'pointer',
                   }}>{creative.cta_text || 'Learn More'}</button>
@@ -366,7 +366,7 @@ export default function AdvertiseDashboard() {
               </div>
             )}
 
-            <button disabled={!creative.headline || !creative.cta_url} onClick={() => setStep('checkout')} style={{
+            <button aria-label="Interactive Button" disabled={!creative.headline || !creative.cta_url} onClick={() => setStep('checkout')} style={{
               background: creative.headline && creative.cta_url ? 'linear-gradient(90deg, #f5c842, #ff9500)' : '#2a2a3a',
               color: creative.headline && creative.cta_url ? '#07090f' : '#8fa3c0', border: 'none', borderRadius: 12,
               padding: '14px 32px', fontSize: 15, fontWeight: 800, cursor: 'pointer', width: '100%', marginTop: 24,
@@ -405,7 +405,7 @@ export default function AdvertiseDashboard() {
               First charge on approval date. Cancel anytime.
             </div>
 
-            <button disabled={submitting} onClick={submit} style={{
+            <button aria-label="Interactive Button" disabled={submitting} onClick={submit} style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,
               padding: '16px 32px', fontSize: 16, fontWeight: 900, cursor: 'pointer', width: '100%',

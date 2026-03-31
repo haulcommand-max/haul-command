@@ -118,7 +118,7 @@ export default async function RegionRulePage({ params }: Props) {
                                         {i > 0 && <span className="text-slate-600">/</span>}
                                         {i === breadcrumbs.length - 1
                                             ? <span className="text-slate-300">{b.name}</span>
-                                            : <Link href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
+                                            : <Link aria-label="Navigation Link" href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
                                         }
                                     </li>
                                 ))}
@@ -168,7 +168,7 @@ export default async function RegionRulePage({ params }: Props) {
                             <p className="text-slate-400 text-sm mb-4">
                                 Post your move and get matched with certified {regionDisplay} escorts in minutes.
                             </p>
-                            <Link href="/start?role=broker"
+                            <Link aria-label="Navigation Link" href="/start?role=broker"
                                 className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Post a Move →
                             </Link>
@@ -179,7 +179,7 @@ export default async function RegionRulePage({ params }: Props) {
                             <p className="text-slate-400 text-sm mb-4">
                                 Create your free verified profile and start receiving job offers in {regionDisplay}.
                             </p>
-                            <Link href="/start?role=escort"
+                            <Link aria-label="Navigation Link" href="/start?role=escort"
                                 className="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Claim Your Profile →
                             </Link>
@@ -192,7 +192,7 @@ export default async function RegionRulePage({ params }: Props) {
                             <h2 className="text-2xl font-bold text-white mb-6">Related Resources</h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {relatedPages.map(p => (
-                                    <Link key={p.slug} href={`/${p.slug}`}
+                                    <Link aria-label="Navigation Link" key={p.slug} href={`/${p.slug}`}
                                         className="flex items-center gap-3 bg-slate-800/60 border border-slate-700 hover:border-amber-500/40 hover:bg-slate-800 rounded-lg px-4 py-3 transition-all group">
                                         <span className="text-amber-400 group-hover:translate-x-1 transition-transform">→</span>
                                         <span className="text-slate-300 text-sm">{p.title}</span>
@@ -210,7 +210,7 @@ export default async function RegionRulePage({ params }: Props) {
                         <p className="text-slate-400 mb-6">
                             Browse verified escort operators who know {regionDisplay} regulations inside and out.
                         </p>
-                        <Link href={`/directory/us/${region}`}
+                        <Link aria-label="Navigation Link" href={`/directory/us/${region}`}
                             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors">
                             Browse {regionDisplay} Escorts →
                         </Link>

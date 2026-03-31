@@ -96,7 +96,7 @@ export default function ToolsLandingPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
                     {TOOLS.map(tool => (
-                        <Link key={tool.href} href={tool.href} style={{ textDecoration: 'none', display: 'block' }}>
+                        <Link aria-label="Navigation Link" key={tool.href} href={tool.href} style={{ textDecoration: 'none', display: 'block' }}>
                             <div style={{
                                 position: 'relative',
                                 background: (tool as any).featured ? `rgba(245,185,66,0.04)` : 'rgba(255,255,255,0.03)',
@@ -132,7 +132,7 @@ export default function ToolsLandingPage() {
                 {/* CTA */}
                 <div style={{ textAlign: 'center', marginTop: 48 }}>
                     <p style={{ marginBottom: 16, fontSize: 13, color: '#6b7280' }}>Ready to go beyond the free tools?</p>
-                    <Link href="/start" style={{ padding: '12px 32px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 14, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>Create Free Account →</Link>
+                    <Link aria-label="Navigation Link" href="/start" style={{ padding: '12px 32px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 14, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>Create Free Account →</Link>
                 </div>
             </div>
         </div>

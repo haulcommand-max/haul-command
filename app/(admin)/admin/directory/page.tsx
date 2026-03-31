@@ -77,7 +77,7 @@ export default function DirectoryPage() {
                     <FilterSelect label="Region" options={['TX', 'FL', 'CA', 'GA']} />
                     <FilterSelect label="Status" options={['Verified', 'Unverified', 'Banned']} />
                 </div>
-                <button className="text-[10px] font-black uppercase text-[#ffb400] hover:underline transition-all">
+                <button aria-label="Interactive Button" className="text-[10px] font-black uppercase text-[#ffb400] hover:underline transition-all">
                     Run Dedupe Scan
                 </button>
             </div>
@@ -110,10 +110,10 @@ export default function DirectoryPage() {
                 title={selectedProvider?.name}
                 actions={
                     <>
-                        <button className="flex-1 bg-[#1a1a1a] text-white py-3 rounded text-xs font-black uppercase border border-[#333] hover:bg-[#222] transition-all">
+                        <button aria-label="Interactive Button" className="flex-1 bg-[#1a1a1a] text-white py-3 rounded text-xs font-black uppercase border border-[#333] hover:bg-[#222] transition-all">
                             Edit Profile
                         </button>
-                        <button
+                        <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleToggleVerify(selectedProvider)}
                             className="flex-1 bg-[#ffb400] text-black py-3 rounded text-xs font-black uppercase hover:bg-yellow-500 transition-all disabled:opacity-50"

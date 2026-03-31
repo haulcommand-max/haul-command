@@ -71,7 +71,7 @@ export function ComplianceWallet({ documents, onUpload }: { documents: Complianc
                         </span>
                     )}
                     {onUpload && (
-                        <button onClick={onUpload}
+                        <button aria-label="Interactive Button" onClick={onUpload}
                             className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition-colors flex items-center gap-1.5">
                             <Upload className="w-3.5 h-3.5" /> Upload
                         </button>

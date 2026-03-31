@@ -55,7 +55,7 @@ export default function PermitRequestPage() {
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Destination States (tap all that apply)</label>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {US_STATES.map(s => (
-              <button key={s} onClick={() => toggleState(s)} style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid', borderColor: destinations.includes(s) ? '#00ff88' : 'rgba(255,255,255,0.15)', background: destinations.includes(s) ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.04)', color: destinations.includes(s) ? '#00ff88' : 'rgba(255,255,255,0.6)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{s}</button>
+              <button aria-label="Interactive Button" key={s} onClick={() => toggleState(s)} style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid', borderColor: destinations.includes(s) ? '#00ff88' : 'rgba(255,255,255,0.15)', background: destinations.includes(s) ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.04)', color: destinations.includes(s) ? '#00ff88' : 'rgba(255,255,255,0.6)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{s}</button>
             ))}
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function PermitRequestPage() {
           <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', fontSize: 14, resize: 'vertical' }} placeholder="Any special requirements..." />
         </div>
 
-        <button onClick={handleSubmit} disabled={!origin || destinations.length === 0} style={{ width: '100%', padding: '14px', borderRadius: 10, border: 'none', background: origin && destinations.length > 0 ? 'linear-gradient(135deg, #00ff88, #00d4ff)' : 'rgba(255,255,255,0.1)', color: origin && destinations.length > 0 ? '#000' : 'rgba(255,255,255,0.3)', fontSize: 16, fontWeight: 700, cursor: origin && destinations.length > 0 ? 'pointer' : 'not-allowed' }}>Submit Permit Request</button>
+        <button aria-label="Interactive Button" onClick={handleSubmit} disabled={!origin || destinations.length === 0} style={{ width: '100%', padding: '14px', borderRadius: 10, border: 'none', background: origin && destinations.length > 0 ? 'linear-gradient(135deg, #00ff88, #00d4ff)' : 'rgba(255,255,255,0.1)', color: origin && destinations.length > 0 ? '#000' : 'rgba(255,255,255,0.3)', fontSize: 16, fontWeight: 700, cursor: origin && destinations.length > 0 ? 'pointer' : 'not-allowed' }}>Submit Permit Request</button>
       </div>
     </div>
   );

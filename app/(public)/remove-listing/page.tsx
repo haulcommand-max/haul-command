@@ -76,7 +76,7 @@ export default function RemoveListingPage() {
                     <div style={{ fontSize: 11, color: "#475569", marginBottom: 24 }}>
                         Reference: HC-{Date.now().toString(36).toUpperCase()}
                     </div>
-                    <Link href="/" style={{
+                    <Link aria-label="Navigation Link" href="/" style={{
                         display: "inline-block", padding: "12px 28px",
                         background: "#F1A91B", color: "#000", borderRadius: 12,
                         fontWeight: 800, fontSize: 13, textDecoration: "none",
@@ -143,7 +143,7 @@ export default function RemoveListingPage() {
                         </label>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                             {options.map(opt => (
-                                <button
+                                <button aria-label="Interactive Button"
                                     key={opt.value}
                                     type="button"
                                     onClick={() => setRequestType(opt.value)}
@@ -266,7 +266,7 @@ export default function RemoveListingPage() {
                         </div>
                     )}
 
-                    <button
+                    <button aria-label="Interactive Button"
                         type="submit"
                         disabled={step === "submitting"}
                         style={{

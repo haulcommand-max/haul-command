@@ -159,7 +159,7 @@ export function AdGridInstantLeadForm({
       </div>
 
       <div className="agilf-actions">
-        <button className="agilf-submit" onClick={handleSubmit} disabled={loading}>
+        <button aria-label="Interactive Button" className="agilf-submit" onClick={handleSubmit} disabled={loading}>
           {loading ? (
             <span className="agilf-spinner" />
           ) : (
@@ -167,7 +167,7 @@ export function AdGridInstantLeadForm({
           )}
         </button>
         {onCancel && (
-          <button className="agilf-cancel" onClick={onCancel}>No thanks</button>
+          <button aria-label="Interactive Button" className="agilf-cancel" onClick={onCancel}>No thanks</button>
         )}
       </div>
 

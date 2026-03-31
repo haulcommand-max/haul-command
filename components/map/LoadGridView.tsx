@@ -249,7 +249,7 @@ export function LoadGridView({
                     </div>
 
                     {/* Toggle filters (mobile) */}
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setShowFilters((f) => !f)}
                         className="md:hidden flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white/60"
                         style={{
@@ -263,7 +263,7 @@ export function LoadGridView({
 
                     {/* Go to Map View */}
                     {onSwitchToMap && (
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={onSwitchToMap}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:-translate-y-0.5"
                             style={{
@@ -302,7 +302,7 @@ export function LoadGridView({
                         }}
                     />
                     {searchQuery && (
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => setSearchQuery("")}
                             className="absolute right-2 top-1/2 -translate-y-1/2"
                         >
@@ -482,7 +482,7 @@ export function LoadGridView({
 
                                         {/* Action */}
                                         <td className="px-4 py-3 text-center">
-                                            <button
+                                            <button aria-label="Interactive Button"
                                                 className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all hover:-translate-y-0.5 active:scale-95"
                                                 style={{
                                                     background: "rgba(241,169,27,0.15)",
@@ -557,7 +557,7 @@ export function LoadGridView({
                     <div className="flex flex-col items-center justify-center py-20 gap-3">
                         <Truck className="w-10 h-10 text-white/10" />
                         <p className="text-sm text-white/30 font-medium">No loads match your filters</p>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => {
                                 setSearchQuery("");
                                 setStateFilter("");

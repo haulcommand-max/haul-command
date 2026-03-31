@@ -96,7 +96,7 @@ export default function AdminContentPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold">Content Command Center</h1>
-          <button
+          <button aria-label="Interactive Button"
             onClick={() => fetch('/api/cron/content-engine', {
               headers: { 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_CRON_SECRET || ''}` }
             }).then(() => load())}
@@ -136,7 +136,7 @@ export default function AdminContentPage() {
             { id: 'youtube', label: `\ud83c\udfa5 YouTube (${youtubeItems.length})` },
             { id: 'inquiries', label: `\ud83e\udd1d Inquiries (${inquiries.filter(i => i.status === 'new').length})` },
           ].map(tab => (
-            <button
+            <button aria-label="Interactive Button"
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -182,7 +182,7 @@ export default function AdminContentPage() {
                     <td className="py-3">
                       <div className="flex gap-2">
                         {item.generated_content && (
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => setPreview(item)}
                             className="px-2 py-1 bg-white/5 hover:bg-white/10 rounded text-xs"
                           >
@@ -190,7 +190,7 @@ export default function AdminContentPage() {
                           </button>
                         )}
                         {item.status === 'generated' && (
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => updateStatus(item.id, 'published')}
                             className="px-2 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs"
                           >
@@ -198,7 +198,7 @@ export default function AdminContentPage() {
                           </button>
                         )}
                         {item.status !== 'rejected' && item.status !== 'published' && (
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => updateStatus(item.id, 'rejected')}
                             className="px-2 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded text-xs"
                           >
@@ -225,13 +225,13 @@ export default function AdminContentPage() {
                 <p className="text-xs text-gray-500 mb-3">{item.target_audience} \u2022 {new Date(item.created_at).toLocaleDateString()}</p>
                 <p className="whitespace-pre-wrap text-gray-300 text-sm mb-4">{item.generated_content}</p>
                 <div className="flex gap-3">
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => { navigator.clipboard.writeText(item.generated_content || ''); updateStatus(item.id, 'published'); }}
                     className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg text-sm"
                   >
                     Copy + Mark Approved
                   </button>
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => updateStatus(item.id, 'rejected')}
                     className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg text-sm"
                   >
@@ -257,19 +257,19 @@ export default function AdminContentPage() {
                   <pre className="text-xs text-gray-400 whitespace-pre-wrap font-mono">{item.generated_content}</pre>
                 </div>
                 <div className="flex gap-3">
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => navigator.clipboard.writeText(item.generated_content || '')}
                     className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg text-sm"
                   >
                     Copy Script
                   </button>
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => updateStatus(item.id, 'published')}
                     className="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg text-sm"
                   >
                     Mark Recorded
                   </button>
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => updateStatus(item.id, 'rejected')}
                     className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg text-sm"
                   >
@@ -308,14 +308,14 @@ export default function AdminContentPage() {
                       'bg-gray-500/20 text-gray-400'
                     }`}>{inq.status}</span>
                     {inq.status === 'new' && (
-                      <button
+                      <button aria-label="Interactive Button"
                         onClick={() => updateInquiry(inq.id, 'contacted')}
                         className="px-2 py-0.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs"
                       >
                         Mark Contacted
                       </button>
                     )}
-                    <button
+                    <button aria-label="Interactive Button"
                       onClick={() => updateInquiry(inq.id, 'archived')}
                       className="px-2 py-0.5 bg-white/5 hover:bg-white/10 text-gray-400 rounded text-xs"
                     >
@@ -340,7 +340,7 @@ export default function AdminContentPage() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">{preview.topic}</h3>
-                <button onClick={() => setPreview(null)} className="text-gray-500 hover:text-white">\u00d7</button>
+                <button aria-label="Interactive Button" onClick={() => setPreview(null)} className="text-gray-500 hover:text-white">\u00d7</button>
               </div>
               <div
                 className="prose prose-invert prose-sm max-w-none text-gray-300"

@@ -22,7 +22,7 @@ export default function WeightedLinkList({
         <ul className={className ?? "grid gap-2"}>
             {items.map((item) => (
                 <li key={item.path}>
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={item.path}
                         className="text-sm text-hc-gold-400 hover:text-hc-gold-300 hover:underline transition-colors"
                     >

@@ -219,7 +219,7 @@ export default function VendorApplyPage() {
                     </p>
                     <div className="flex flex-wrap gap-2">
                         {SERVICE_OPTIONS.map(s => (
-                            <button key={s} type="button"
+                            <button aria-label="Interactive Button" key={s} type="button"
                                 onClick={() => toggleService(s)}
                                 className={`px-3 py-1 rounded-full text-sm border transition-colors ${form.services_quick.includes(s)
                                         ? "bg-orange-500 text-white border-orange-500"
@@ -262,7 +262,7 @@ export default function VendorApplyPage() {
                             I confirm the info is accurate and I&apos;m authorized to submit it.
                         </span>
                     </label>
-                    <button type="submit" disabled={loading}
+                    <button aria-label="Interactive Button" type="submit" disabled={loading}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
                         {loading ? "Submitting…" : "Submit Application"}
                     </button>

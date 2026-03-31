@@ -160,10 +160,10 @@ export default async function FCCCountyCoveragePage(
 
                 {/* CTAs */}
                 <div style={{ display: 'flex', gap: 12, marginBottom: 28, flexWrap: 'wrap' }}>
-                    <Link href="/directory/us/fl" style={{ display: 'inline-block', padding: '12px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/directory/us/fl" style={{ display: 'inline-block', padding: '12px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
                         Find FL Escorts →
                     </Link>
-                    <Link href="/quote" style={{ display: 'inline-block', padding: '12px 28px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#e5e7eb', fontSize: 13, fontWeight: 700, borderRadius: 12, textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/quote" style={{ display: 'inline-block', padding: '12px 28px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#e5e7eb', fontSize: 13, fontWeight: 700, borderRadius: 12, textDecoration: 'none' }}>
                         Get Rural Coverage Quote
                     </Link>
                 </div>
@@ -173,7 +173,7 @@ export default async function FCCCountyCoveragePage(
                     <div style={{ fontSize: 10, fontWeight: 800, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>Other FCC Counties</div>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         {Object.entries(FCC_COUNTIES).filter(([s]) => s !== slug).slice(0, 10).map(([s, c]) => (
-                            <Link key={s} href={`/rural-escort-coverage/${s}`} style={{ fontSize: 11, color: '#6b7280', textDecoration: 'none', padding: '4px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 8 }}>
+                            <Link aria-label="Navigation Link" key={s} href={`/rural-escort-coverage/${s}`} style={{ fontSize: 11, color: '#6b7280', textDecoration: 'none', padding: '4px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 8 }}>
                                 {c.name}
                             </Link>
                         ))}

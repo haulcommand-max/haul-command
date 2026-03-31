@@ -123,7 +123,7 @@ export default function PermitCheckerPage() {
                                 {US_STATES.map(st => {
                                     const active = form.states_crossed.includes(st);
                                     return (
-                                        <button
+                                        <button aria-label="Interactive Button"
                                             key={st}
                                             onClick={() => toggleState(st)}
                                             style={{
@@ -140,7 +140,7 @@ export default function PermitCheckerPage() {
                         </div>
 
                         {/* Calculate Button */}
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={calculate}
                             disabled={calculating || form.states_crossed.length === 0}
                             style={{

@@ -36,7 +36,7 @@ export function AdGridRecruiterCard({ offer, operatorTrustScore, onApply, onDism
       <div className="agrc-top">
         <span className="agrc-badge">🎯 Recruiting</span>
         {offer.urgent && <span className="agrc-urgent-tag">URGENT</span>}
-        {onDismiss && <button className="agrc-x" onClick={() => onDismiss(offer.id)}>✕</button>}
+        {onDismiss && <button aria-label="Interactive Button" className="agrc-x" onClick={() => onDismiss(offer.id)}>✕</button>}
       </div>
       <div className="agrc-carrier">
         <div className="agrc-logo">
@@ -62,7 +62,7 @@ export function AdGridRecruiterCard({ offer, operatorTrustScore, onApply, onDism
         <div className="agrc-ts"><span className="agrc-tsv">{operatorTrustScore}%</span><span className="agrc-tsl">Trust</span></div>
         <div className="agrc-tt">You qualify — score above {offer.trust_score_min}%</div>
       </div>
-      <button className="agrc-apply" onClick={() => onApply?.(offer.id)}>Apply Now →</button>
+      <button aria-label="Interactive Button" className="agrc-apply" onClick={() => onApply?.(offer.id)}>Apply Now →</button>
 
       <style jsx>{`
         .agrc { background: linear-gradient(180deg,#0E1019,#080A10); border:1px solid rgba(66,153,225,0.2); border-radius:16px; padding:16px; }

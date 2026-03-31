@@ -226,7 +226,7 @@ export default function MapPage() {
                 style={{ top: tickerHeight + 8 }}
             >
                 {(["operations", "jurisdictions", "corridors", "grid", "global"] as MapView[]).map((v) => (
-                    <button
+                    <button aria-label="Interactive Button"
                         key={v}
                         data-testid={`map-toggle-${v}`}
                         onClick={() => { setView(v); if (v !== "jurisdictions") setSelectedCode(null); }}
@@ -280,7 +280,7 @@ export default function MapPage() {
                             <MapLegend />
 
                             {/* "Go to Grid" link — JBH-style */}
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={() => { setGridStateFilter(null); setView("grid"); }}
                                 className="absolute top-3 right-[88px] z-20 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all hover:-translate-y-0.5"
                                 style={{

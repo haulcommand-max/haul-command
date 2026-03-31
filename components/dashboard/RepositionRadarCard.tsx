@@ -262,7 +262,7 @@ export function RepositionRadarCard() {
                     {hasPlays ? `${data.plays.length} plays available` : 'Watching market signals…'}
                 </span>
                 {hasPlays && (
-                    <Link href="/dashboard/map" style={{ marginLeft: 'auto', fontSize: 11, color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/dashboard/map" style={{ marginLeft: 'auto', fontSize: 11, color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>
                         View map →
                     </Link>
                 )}

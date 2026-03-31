@@ -334,7 +334,7 @@ export function TerritoryDashboard({ stateCode }: { stateCode: string }) {
 
                         {/* Claim button */}
                         {!county.my_claim && county.remaining > 0 && selectedCounty === county.county_fips && (
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={(e) => { e.stopPropagation(); handleClaim(county.county_fips); }}
                                 disabled={claiming === county.county_fips}
                                 style={{

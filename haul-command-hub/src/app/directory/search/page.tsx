@@ -31,12 +31,11 @@ export default async function DirectorySearchPage({
 
   const sb = supabaseServer();
 
-  // Search by name, city, state, or category key
+  // Real operators from hc_public_operators
   const { data: results } = await sb
-    .from('hc_places')
-    .select('id, name, city, state_province, country_code, surface_category_key, slug')
-    .eq('status', 'published')
-    .or(`name.ilike.%${query}%,city.ilike.%${query}%,state_province.ilike.%${query}%,surface_category_key.ilike.%${query}%`)
+    .from('hc_public_operators')
+    .select('id, name, city, state_code, country_code, entity_type, slug')
+    .or(`name.ilike.%${query}%,city.ilike.%${query}%,state_code.ilike.%${query}%,entity_type.ilike.%${query}%`)
     .limit(50);
 
   return (
@@ -68,7 +67,7 @@ export default async function DirectorySearchPage({
                 >
                   <div className="flex items-start gap-3">
                     <span className="text-2xl flex-shrink-0">
-                      {categoryIcon(r.surface_category_key ?? '')}
+                      {categoryIcon(r.entity_type ?? '')}
                     </span>
                     <div className="min-w-0">
                       <p className="font-semibold text-white group-hover:text-amber-400 transition-colors truncate">
@@ -76,9 +75,9 @@ export default async function DirectorySearchPage({
                       </p>
                       <p className="text-sm text-white/50 mt-0.5">
                         {r.city && `${r.city}, `}
-                        {r.state_province ?? ''}
+                        {r.state_code ?? ''}
                         {r.country_code ? ` · ${r.country_code.toUpperCase()}` : ''}
-                        {r.surface_category_key ? ` · ${categoryLabel(r.surface_category_key)}` : ''}
+                        {r.entity_type ? ` · ${categoryLabel(r.entity_type)}` : ''}
                       </p>
                     </div>
                   </div>

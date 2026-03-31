@@ -1,15 +1,14 @@
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 import { supabaseServer } from '@/lib/supabase-server';
 
 /**
- * Directory loader — must read:
- *   - hc_provider_search_index (ranked browse results)
- *   - hc_page_seo_contracts (SEO metadata)
+ * Directory loader — stats now come from get_canonical_stats() RPC only.
+ * directory_listings is quarantined (654K synthetic rows). Do NOT count it.
  */
 
 export async function getDirectoryStats() {
-  const sb = supabaseServer();
-  const { count } = await sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published');
-  return { totalPlaces: count ?? 0 };
+  const stats = await getCanonicalStats();
+  return { totalPlaces: stats.total_real_operators };
 }
 
 export async function getDirectoryByCountry() {
@@ -27,17 +26,14 @@ export async function getDirectorySearchResults(filters: {
 }) {
   const sb = supabaseServer();
   let q = sb
-    .from('hc_provider_search_index')
-    .select('provider_id, provider_slug, title, subtitle, location_label, badges_json, organic_rank_score, quality_guardrail_pass')
-    .eq('quality_guardrail_pass', true);
+    .from('hc_public_operators')
+    .select('id, slug, display_name, entity_type, phone, email, city, state_code, country_code, trust_classification, claim_status');
 
-  if (filters.countrySlug) q = q.eq('country_slug', filters.countrySlug);
-  if (filters.jurisdictionSlug) q = q.eq('jurisdiction_slug', filters.jurisdictionSlug);
-  if (filters.metroSlug) q = q.eq('metro_slug', filters.metroSlug);
-  if (filters.serviceSlug) q = q.eq('service_slug', filters.serviceSlug);
+  if (filters.countrySlug) q = q.eq('country_code', filters.countrySlug.toUpperCase());
+  if (filters.metroSlug) q = q.ilike('city', `%${filters.metroSlug}%`);
 
   const { data } = await q
-    .order('organic_rank_score', { ascending: false })
+    .order('trust_score', { ascending: false, nullsFirst: false })
     .limit(filters.limit ?? 50);
 
   return data ?? [];

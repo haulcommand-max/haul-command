@@ -58,7 +58,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         { href: '/corridor', label: '📊 Corridors' },
                         { href: '/map/jurisdiction', label: '🌎 Jurisdiction Map' },
                     ].map(link => (
-                        <Link key={link.href} href={link.href}
+                        <Link aria-label="Navigation Link" key={link.href} href={link.href}
                             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.625rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#6b7280', transition: 'all 0.15s' }}>
                             {link.label}
                         </Link>
@@ -72,7 +72,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         { href: '/tools/permit-calculator', label: '🧮 Permit Calculator' },
                         { href: '/tools/rate-lookup', label: '💰 Rate Lookup' },
                     ].map(link => (
-                        <Link key={link.href} href={link.href}
+                        <Link aria-label="Navigation Link" key={link.href} href={link.href}
                             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#9CA3AF', transition: 'all 0.15s' }}>
                             {link.label}
                         </Link>
@@ -81,7 +81,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '1.5rem', marginBottom: '0.75rem', padding: '0 0.5rem' }}>
                         Payments
                     </div>
-                    <Link href="/escrow/checkout"
+                    <Link aria-label="Navigation Link" href="/escrow/checkout"
                         style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#9CA3AF', transition: 'all 0.15s' }}>
                         💳 Escrow Checkout
                     </Link>
@@ -102,7 +102,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         backdropFilter: 'blur(20px) saturate(1.4)',
                     }}
                 >
-                    <Link href="/home" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                    <Link aria-label="Navigation Link" href="/home" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
                         <Image
                             src={LOGO_MARK_SRC}
                             alt={ALT_TEXT}

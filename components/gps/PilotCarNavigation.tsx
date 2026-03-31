@@ -39,7 +39,7 @@ export default function PilotCarNavigation({ originLat, originLng, destLat, dest
         Export this approved heavy-haul permit route directly to Waze for turn-by-turn navigation that avoids low clearances.
       </p>
 
-      <button 
+      <button aria-label="Interactive Button" 
         onClick={launchWazeForHeavyHaul}
         disabled={loading}
         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition-colors flex justify-center items-center gap-2"

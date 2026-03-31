@@ -837,7 +837,7 @@ function ActionLink({
         };
 
   return (
-    <Link
+    <Link aria-label="Navigation Link"
       href={href}
       style={{
         display: 'flex',
@@ -884,7 +884,7 @@ export default function MobileMapView() {
       <MobileScreenHeader
         title="Radar"
         rightAction={
-          <Link
+          <Link aria-label="Navigation Link"
             href="/corridor"
             style={{
               textDecoration: 'none',

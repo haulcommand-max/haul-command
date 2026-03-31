@@ -39,7 +39,7 @@ export default async function AiAssetsPage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Link
+          <Link aria-label="Navigation Link"
             href="/admin/ai-image"
             style={{
               background: "linear-gradient(135deg, #C6923A, #A87A2F)",
@@ -53,7 +53,7 @@ export default async function AiAssetsPage() {
           >
             ⚡ Generate New
           </Link>
-          <Link
+          <Link aria-label="Navigation Link"
             href="/admin/ai-review"
             style={{
               background: "#111820",

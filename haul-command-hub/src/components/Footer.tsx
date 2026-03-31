@@ -9,7 +9,7 @@ const FOOTER_SECTIONS = [
       { href: '/directory', label: 'Browse Directory' },
       { href: '/escort-requirements', label: 'Requirements' },
       { href: '/corridors', label: 'Corridors' },
-      { href: '/roles/pilot-car-operator', label: 'Pilot Car Operators' },
+      { href: '/services/pilot-car-operator', label: 'Pilot Car Operators' },
       { href: '/countries', label: '120 Countries' },
     ],
   },

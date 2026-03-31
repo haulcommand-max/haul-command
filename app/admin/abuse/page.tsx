@@ -86,7 +86,7 @@ export default function AdminAbusePage() {
                                             {flag.entity_id && <> · entity: {flag.entity_id.slice(0, 8)}…</>}
                                         </p>
                                     </div>
-                                    <button
+                                    <button aria-label="Interactive Button"
                                         onClick={() => resolve(flag.id)}
                                         disabled={resolving === flag.id}
                                         className="shrink-0 text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors disabled:opacity-60"

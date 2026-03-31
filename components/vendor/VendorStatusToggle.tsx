@@ -89,7 +89,7 @@ export default function VendorStatusToggle({
     return (
         <div className="relative inline-block">
             {/* Current status button */}
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setOpen(!open)}
                 disabled={working}
                 className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-white transition-all ${current.color} ${working ? "opacity-50" : "hover:brightness-110"
@@ -106,7 +106,7 @@ export default function VendorStatusToggle({
             {open && (
                 <div className="absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
                     {STATUS_OPTIONS.map(opt => (
-                        <button
+                        <button aria-label="Interactive Button"
                             key={opt.value}
                             onClick={() => handleChange(opt.value)}
                             className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-left transition-colors ${opt.value === status ? "bg-gray-50 font-medium" : "hover:bg-gray-50"

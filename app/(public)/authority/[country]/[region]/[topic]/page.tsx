@@ -245,7 +245,7 @@ export default async function AuthorityHubPage({ params }: Props) {
                                         {i > 0 && <ChevronRight className="w-3 h-3 text-slate-600" />}
                                         {i === breadcrumbs.length - 1
                                             ? <span className="text-slate-300">{b.name}</span>
-                                            : <Link href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
+                                            : <Link aria-label="Navigation Link" href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
                                         }
                                     </li>
                                 ))}
@@ -443,7 +443,7 @@ export default async function AuthorityHubPage({ params }: Props) {
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {otherCategories.map(cat => (
-                                    <Link
+                                    <Link aria-label="Navigation Link"
                                         key={cat}
                                         href={`/authority/${country}/${region}/${cat.replace(/_/g, '-')}`}
                                         className="flex items-center gap-3 bg-slate-800/60 border border-slate-700 hover:border-amber-500/40 hover:bg-slate-800 rounded-lg px-4 py-3 transition-all group"
@@ -502,7 +502,7 @@ export default async function AuthorityHubPage({ params }: Props) {
                                     If you notice incorrect contact info, outdated rules, or missing data, report it
                                     and we&apos;ll verify within 24 hours.
                                 </p>
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     href={`/authority/${country}/${region}/report?topic=${topic}&jid=${jurisdiction.id}`}
                                     className="inline-flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-400 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                                 >
@@ -520,7 +520,7 @@ export default async function AuthorityHubPage({ params }: Props) {
                         <p className="text-slate-400 mb-6">
                             Browse verified escort operators who know {regionDisplay} regulations inside and out.
                         </p>
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={`/directory/${country}/${region}`}
                             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors"
                         >

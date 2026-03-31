@@ -224,9 +224,9 @@ export default async function CorridorDetailPage({ params }: Props) {
                     <div className="flex items-center justify-between">
                       <div>
                         <h3 className="text-sm font-bold text-white">{op.name}</h3>
-                        <p className="text-[10px] text-gray-500 mt-0.5">{[op.locality, op.admin1_code].filter(Boolean).join(', ')}</p>
+                        <p className="text-[10px] text-gray-500 mt-0.5">{[op.city, op.state_code].filter(Boolean).join(', ')}</p>
                       </div>
-                      {op.phone && (
+                      {(op as any).phone && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-green-500/10 text-green-400">📞 Contact</span>
                       )}
                     </div>

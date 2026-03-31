@@ -75,7 +75,7 @@ function Section({ title, children, className }: { title?: string; children: Rea
 function AtRiskAlert({ count }: { count: number }) {
     if (!count) return null;
     return (
-        <Link href="/loads?filter=at_risk">
+        <Link aria-label="Navigation Link" href="/loads?filter=at_risk">
             <div className="flex items-center gap-3 px-4 py-3 hc-card border-hc-danger/40 bg-hc-danger/5 hover:border-hc-danger/60 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-hc-danger/20 flex items-center justify-center shrink-0">
                     <AlertTriangle className="w-4 h-4 text-hc-danger" />

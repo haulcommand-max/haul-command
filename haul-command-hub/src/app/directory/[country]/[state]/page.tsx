@@ -62,9 +62,8 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
     const to = from + PAGE_SIZE - 1;
 
     let query = sb
-      .from("directory_listings")
-      .select("id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at", { count: "exact" })
-      .eq("is_visible", true)
+      .from("hc_public_operators")
+      .select("id, slug, name, entity_type, city as locality, state_code as admin1_code", { count: "exact" })
       .eq("entity_type", cat);
 
     if (cc.code !== 'ALL') query = query.eq("country_code", cc.code);
@@ -123,12 +122,11 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
   const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   const { data: listings, count } = await sb
-    .from('directory_listings')
-    .select('id, slug, name, entity_type, city as locality, region_code as admin1_code, updated_at', { count: 'exact' })
-    .eq('is_visible', true)
+    .from('hc_public_operators')
+    .select('id, slug, name, entity_type, city as locality, state_code as admin1_code', { count: 'exact' })
     .eq('country_code', cc.code)
-    .ilike('region_code', state.replace(/-/g, ' '))
-    .order('updated_at', { ascending: false })
+    .ilike('state_code', state.replace(/-/g, ' '))
+    .order('name', { ascending: true })
     .limit(50);
 
   const total = count ?? 0;

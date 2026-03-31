@@ -99,7 +99,7 @@ export default function InfrastructureIndexPage() {
                         const count = categorySummary[cat.key] || 0;
                         const isActive = selectedCategory === cat.key;
                         return (
-                            <button
+                            <button aria-label="Interactive Button"
                                 key={cat.key}
                                 onClick={() => setSelectedCategory(isActive ? null : cat.key)}
                                 style={{
@@ -148,7 +148,7 @@ export default function InfrastructureIndexPage() {
                         <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', maxWidth: 400, margin: '0 auto', lineHeight: 1.5 }}>
                             Know a location that should be listed? Help us build the most complete heavy haul support network.
                         </div>
-                        <Link href="/partner/apply" style={{
+                        <Link aria-label="Navigation Link" href="/partner/apply" style={{
                             display: 'inline-flex', marginTop: 16, padding: '10px 20px', borderRadius: 12,
                             background: 'rgba(241,169,27,0.1)', border: '1px solid rgba(241,169,27,0.2)',
                             color: '#F1A91B', fontWeight: 800, fontSize: 12, textDecoration: 'none',
@@ -217,14 +217,14 @@ export default function InfrastructureIndexPage() {
                         Claim your location, reach heavy haul carriers, and get priority visibility on corridor routes.
                     </div>
                     <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
-                        <Link href="/partner/apply" style={{
+                        <Link aria-label="Navigation Link" href="/partner/apply" style={{
                             padding: '10px 20px', borderRadius: 10,
                             background: '#F1A91B', color: '#000', fontWeight: 800, fontSize: 12,
                             textDecoration: 'none',
                         }}>
                             Become a Partner
                         </Link>
-                        <Link href="/claim" style={{
+                        <Link aria-label="Navigation Link" href="/claim" style={{
                             padding: '10px 20px', borderRadius: 10,
                             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                             color: '#fff', fontWeight: 700, fontSize: 12,

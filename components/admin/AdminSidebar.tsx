@@ -56,7 +56,7 @@ export function AdminSidebar() {
                         const Icon = item.icon;
 
                         return (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={item.href}
                                 href={item.href}
                                 style={{

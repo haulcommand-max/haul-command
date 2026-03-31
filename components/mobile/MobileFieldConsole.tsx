@@ -53,7 +53,7 @@ export function FieldActionBar({
                 maxWidth: 400, margin: '0 auto',
             }}>
                 {actions.map(a => (
-                    <Link
+                    <Link aria-label="Navigation Link"
                         key={a.key}
                         href={a.href}
                         onClick={() => {
@@ -186,7 +186,7 @@ export function SavedShortcutsModule({
             </div>
             <div style={{ display: 'flex', gap: 8, overflowX: 'auto', scrollbarWidth: 'none' }}>
                 {items.map(s => (
-                    <Link key={s.href} href={s.href} style={{
+                    <Link aria-label="Navigation Link" key={s.href} href={s.href} style={{
                         flex: '0 0 auto', padding: '10px 16px', borderRadius: 12,
                         background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
                         textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8,
@@ -220,7 +220,7 @@ export function UrgentShortcuts({
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {rescueCount > 0 && (
-                    <Link href="/loads" style={{
+                    <Link aria-label="Navigation Link" href="/loads" style={{
                         display: 'flex', alignItems: 'center', gap: 10,
                         padding: '12px 14px', borderRadius: 12,
                         background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)',
@@ -237,7 +237,7 @@ export function UrgentShortcuts({
                     </Link>
                 )}
                 {urgentOffers > 0 && (
-                    <Link href="#inbox" style={{
+                    <Link aria-label="Navigation Link" href="#inbox" style={{
                         display: 'flex', alignItems: 'center', gap: 10,
                         padding: '12px 14px', borderRadius: 12,
                         background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.12)',

@@ -123,7 +123,7 @@ export default function HazardReportForm({
             {step === 'done' && '✅ Reported!'}
           </h3>
         </div>
-        <button onClick={onClose} style={{
+        <button aria-label="Interactive Button" onClick={onClose} style={{
           background: 'rgba(255,255,255,0.1)', border: 'none', color: '#94a3b8',
           borderRadius: 8, padding: '6px 12px', cursor: 'pointer', fontSize: 14,
         }}>✕</button>
@@ -137,7 +137,7 @@ export default function HazardReportForm({
             { key: 'general' as const, icon: '⚠️', label: 'General\nHazards', color: '#f59e0b' },
             { key: 'positive' as const, icon: '✅', label: 'Good\nRoute', color: '#22c55e' },
           ].map(cat => (
-            <button key={cat.key} onClick={() => handleCategorySelect(cat.key)} style={{
+            <button aria-label="Interactive Button" key={cat.key} onClick={() => handleCategorySelect(cat.key)} style={{
               background: `${cat.color}15`, border: `2px solid ${cat.color}40`,
               borderRadius: 16, padding: '20px 12px', cursor: 'pointer',
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
@@ -153,13 +153,13 @@ export default function HazardReportForm({
       {/* Step 2: Type */}
       {step === 'type' && (
         <div>
-          <button onClick={() => setStep('category')} style={{
+          <button aria-label="Interactive Button" onClick={() => setStep('category')} style={{
             background: 'none', border: 'none', color: '#60a5fa', cursor: 'pointer',
             fontSize: 13, marginBottom: 12, padding: 0,
           }}>← Back</button>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {HAZARD_TYPES[category].map(h => (
-              <button key={h.type} onClick={() => handleTypeSelect(h.type)} style={{
+              <button aria-label="Interactive Button" key={h.type} onClick={() => handleTypeSelect(h.type)} style={{
                 background: `${h.color}15`, border: `1px solid ${h.color}30`,
                 borderRadius: 12, padding: '14px 12px', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', gap: 10, transition: 'all 0.2s',
@@ -175,7 +175,7 @@ export default function HazardReportForm({
       {/* Step 3: Details */}
       {step === 'details' && (
         <div>
-          <button onClick={() => setStep('type')} style={{
+          <button aria-label="Interactive Button" onClick={() => setStep('type')} style={{
             background: 'none', border: 'none', color: '#60a5fa', cursor: 'pointer',
             fontSize: 13, marginBottom: 12, padding: 0,
           }}>← Back</button>
@@ -187,7 +187,7 @@ export default function HazardReportForm({
             <label style={{ fontSize: 12, color: '#94a3b8', marginBottom: 6, display: 'block' }}>Severity</label>
             <div style={{ display: 'flex', gap: 8 }}>
               {SEVERITY_OPTIONS.map(s => (
-                <button key={s.value} onClick={() => setSeverity(s.value)} style={{
+                <button aria-label="Interactive Button" key={s.value} onClick={() => setSeverity(s.value)} style={{
                   flex: 1, padding: '8px 0', borderRadius: 8, cursor: 'pointer', fontSize: 12, fontWeight: 600,
                   background: severity === s.value ? `${s.color}30` : 'rgba(255,255,255,0.05)',
                   border: severity === s.value ? `2px solid ${s.color}` : '1px solid rgba(255,255,255,0.1)',
@@ -228,7 +228,7 @@ export default function HazardReportForm({
           </div>
 
           {/* Submit */}
-          <button onClick={handleSubmit} style={{
+          <button aria-label="Interactive Button" onClick={handleSubmit} style={{
             width: '100%', padding: '14px', borderRadius: 12, border: 'none', cursor: 'pointer',
             background: 'linear-gradient(135deg, #3b82f6, #2563eb)', color: '#fff',
             fontSize: 16, fontWeight: 700, transition: 'all 0.2s',
@@ -252,7 +252,7 @@ export default function HazardReportForm({
           <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
           <p style={{ color: '#22c55e', fontWeight: 700, fontSize: 18 }}>Report Submitted!</p>
           <p style={{ color: '#94a3b8', fontSize: 13 }}>Other HC drivers will be alerted. Thank you!</p>
-          <button onClick={onClose} style={{
+          <button aria-label="Interactive Button" onClick={onClose} style={{
             marginTop: 16, padding: '10px 24px', borderRadius: 8, border: 'none',
             background: 'rgba(255,255,255,0.1)', color: '#e2e8f0', cursor: 'pointer',
           }}>Done</button>

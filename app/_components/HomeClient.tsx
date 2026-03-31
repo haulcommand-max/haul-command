@@ -147,7 +147,7 @@ export default function HomeClient({
             }}>
                 <div className="hc-container h-16 flex items-center justify-between">
                     {/* LEFT: Brand */}
-                    <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+                    <Link aria-label="Navigation Link" href="/" className="flex items-center gap-3 flex-shrink-0">
                         <Image
                             src={LOGO_MARK_SRC}
                             alt={ALT_TEXT}
@@ -162,19 +162,19 @@ export default function HomeClient({
 
                     {/* CENTER: Nav links (desktop only) */}
                     <div className="hidden md:flex items-center gap-8 text-[11px] text-[#888] font-semibold uppercase tracking-[0.15em]">
-                        <Link href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
-                        <Link href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
-                        <Link href="/corridors" className="hover:text-[#C6923A] transition-colors py-2">Corridors</Link>
-                        <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
+                        <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
+                        <Link aria-label="Navigation Link" href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
+                        <Link aria-label="Navigation Link" href="/corridors" className="hover:text-[#C6923A] transition-colors py-2">Corridors</Link>
+                        <Link aria-label="Navigation Link" href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
                     </div>
 
                     {/* RIGHT: Auth + CTA */}
                     <div className="flex items-center gap-4 flex-shrink-0">
-                        <Link href="/login"
+                        <Link aria-label="Navigation Link" href="/login"
                             className="text-[11px] text-[#888] font-semibold uppercase tracking-[0.15em] hover:text-white transition-colors hidden md:block py-2">
                             Sign In
                         </Link>
-                        <Link href="/onboarding/start"
+                        <Link aria-label="Navigation Link" href="/onboarding/start"
                             className="px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all press-scale text-black"
                             style={{
                                 background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
@@ -251,7 +251,7 @@ export default function HomeClient({
                         className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
                     >
                         {/* PRIMARY: Escort — dominant */}
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=escort"
                             className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
                             style={{
@@ -265,7 +265,7 @@ export default function HomeClient({
                         </Link>
 
                         {/* SECONDARY: Broker — outline */}
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=broker"
                             className="group flex items-center justify-center gap-2.5 px-10 py-4 bg-transparent border-2 border-white/10 hover:border-[#C6923A]/40 text-white font-bold text-sm rounded-2xl transition-all hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(198,146,58,0.1)]"
                         >
@@ -425,7 +425,7 @@ export default function HomeClient({
                             ))}
                         </motion.div>
                         <div className="text-center mt-8">
-                            <Link href="/corridors" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
+                            <Link aria-label="Navigation Link" href="/corridors" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
                                 View all {corridorCount} corridors <ArrowRight className="w-3.5 h-3.5" />
                             </Link>
                         </div>
@@ -466,7 +466,7 @@ export default function HomeClient({
                             ))}
                         </motion.div>
                         <div className="text-center mt-8">
-                            <Link href="/directory"
+                            <Link aria-label="Navigation Link" href="/directory"
                                 className="inline-flex items-center gap-2 px-8 py-3 bg-transparent border border-white/10 hover:border-[#22c55e]/30 text-white font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all hover:bg-white/[0.02]">
                                 Browse full directory <ArrowRight className="w-3.5 h-3.5" />
                             </Link>
@@ -565,7 +565,7 @@ export default function HomeClient({
                             <p className="text-[#8fa3b8] text-sm mb-10 max-w-sm mx-auto leading-relaxed font-medium">
                                 Free for escorts. Brokers get 10 boost credits on activation. No card required.
                             </p>
-                            <Link href="/onboarding/start"
+                            <Link aria-label="Navigation Link" href="/onboarding/start"
                                 className="inline-flex items-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale"
                                 style={{
                                     background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
@@ -595,7 +595,7 @@ export default function HomeClient({
                                     { href: "/corridors", label: "Corridors" },
                                     { href: "/map", label: "Live Map" },
                                 ].map(l => (
-                                    <Link key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
+                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
                                 ))}
                             </div>
                         </div>
@@ -603,7 +603,7 @@ export default function HomeClient({
                             <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Popular Regions</h4>
                             <div className="space-y-2.5">
                                 {["Texas", "Florida", "California", "Louisiana", "North Carolina", "Oklahoma"].map(s => (
-                                    <Link key={s} href={`/directory/us/${s.toLowerCase().replace(/\s/g, '-')}`} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{s} Pilot Cars</Link>
+                                    <Link aria-label="Navigation Link" key={s} href={`/directory/us/${s.toLowerCase().replace(/\s/g, '-')}`} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{s} Pilot Cars</Link>
                                 ))}
                             </div>
                         </div>
@@ -618,7 +618,7 @@ export default function HomeClient({
                                     { href: "/services/route-survey", label: "Route Surveys" },
                                     { href: "/services/height-pole", label: "Height Pole Services" },
                                 ].map(l => (
-                                    <Link key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
+                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
                                 ))}
                             </div>
                         </div>
@@ -631,7 +631,7 @@ export default function HomeClient({
                                     { href: "/contact", label: "Contact Us" },
                                     { href: "/about", label: "About" },
                                 ].map(l => (
-                                    <Link key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
+                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
                                 ))}
                             </div>
                         </div>
@@ -648,9 +648,9 @@ export default function HomeClient({
                             </span>
                         </div>
                         <div className="flex gap-6 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                            <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                            <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                            <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+                            <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+                            <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+                            <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                         </div>
                     </div>
                 </div>

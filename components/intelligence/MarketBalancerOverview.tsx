@@ -61,16 +61,16 @@ export default function MarketBalancerOverview() {
                     <span style={{ fontWeight: 800, fontSize: 14, color: '#d1d5db' }}>Autonomous Market Balancer</span>
                     <span style={{ fontSize: 9, color: '#4b5563', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', padding: '2px 8px', borderRadius: 6, fontWeight: 700, textTransform: 'uppercase' }}>LIVE</span>
                 </div>
-                <button onClick={() => mutate()} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, padding: '4px 10px', color: '#4b5563', cursor: 'pointer', display: 'flex', gap: 4, alignItems: 'center', fontSize: 10, fontWeight: 700 }}>
+                <button aria-label="Interactive Button" onClick={() => mutate()} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, padding: '4px 10px', color: '#4b5563', cursor: 'pointer', display: 'flex', gap: 4, alignItems: 'center', fontSize: 10, fontWeight: 700 }}>
                     <RefreshCw style={{ width: 10, height: 10 }} /> Refresh
                 </button>
             </div>
 
             {/* State summary pills */}
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
-                <button onClick={() => setStateFilter('all')} style={{ padding: '3px 10px', borderRadius: 8, fontSize: 10, fontWeight: 700, border: 'none', cursor: 'pointer', background: stateFilter === 'all' ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)', color: stateFilter === 'all' ? '#F1A91B' : '#6b7280' }}>All ({data?.length ?? 0})</button>
+                <button aria-label="Interactive Button" onClick={() => setStateFilter('all')} style={{ padding: '3px 10px', borderRadius: 8, fontSize: 10, fontWeight: 700, border: 'none', cursor: 'pointer', background: stateFilter === 'all' ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)', color: stateFilter === 'all' ? '#F1A91B' : '#6b7280' }}>All ({data?.length ?? 0})</button>
                 {Object.entries(STATE_CONFIG).map(([state, cfg]) => counts[state] ? (
-                    <button key={state} onClick={() => setStateFilter(state)} style={{ padding: '3px 10px', borderRadius: 8, fontSize: 10, fontWeight: 700, border: `1px solid ${cfg.color}25`, cursor: 'pointer', background: stateFilter === state ? cfg.bg : 'rgba(255,255,255,0.02)', color: cfg.color }}>
+                    <button aria-label="Interactive Button" key={state} onClick={() => setStateFilter(state)} style={{ padding: '3px 10px', borderRadius: 8, fontSize: 10, fontWeight: 700, border: `1px solid ${cfg.color}25`, cursor: 'pointer', background: stateFilter === state ? cfg.bg : 'rgba(255,255,255,0.02)', color: cfg.color }}>
                         {cfg.icon} {cfg.label} ({counts[state]})
                     </button>
                 ) : null)}
@@ -79,7 +79,7 @@ export default function MarketBalancerOverview() {
             {/* View tabs */}
             <div style={{ display: 'flex', gap: 4, marginBottom: 16, background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 3, width: 'fit-content' }}>
                 {(['overview', 'actions', 'guardrails'] as const).map(v => (
-                    <button key={v} onClick={() => setView(v)} style={{ padding: '5px 14px', borderRadius: 7, border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 700, background: view === v ? 'rgba(241,169,27,0.12)' : 'transparent', color: view === v ? '#F1A91B' : '#6b7280', textTransform: 'capitalize' }}>{v}</button>
+                    <button aria-label="Interactive Button" key={v} onClick={() => setView(v)} style={{ padding: '5px 14px', borderRadius: 7, border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 700, background: view === v ? 'rgba(241,169,27,0.12)' : 'transparent', color: view === v ? '#F1A91B' : '#6b7280', textTransform: 'capitalize' }}>{v}</button>
                 ))}
             </div>
 

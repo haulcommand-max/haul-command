@@ -224,7 +224,7 @@ export default function TrainingHome() {
         </p>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/training/platform-fundamentals" style={{
+          <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             background: 'linear-gradient(135deg, #F5A623, #e08820)',
             color: '#000', fontWeight: 800, fontSize: 16,
@@ -335,7 +335,7 @@ export default function TrainingHome() {
                 </div>
 
                 {/* CTA */}
-                <button
+                <button aria-label="Interactive Button"
                   id={`enroll-${tierKey}`}
                   onClick={() => handleEnroll(tierKey)}
                   disabled={enrolling === tierKey}
@@ -395,7 +395,7 @@ export default function TrainingHome() {
             };
             const status = m.progress?.status || 'not_started';
             return (
-              <Link key={m.id} href={`/training/${m.slug}`}
+              <Link aria-label="Navigation Link" key={m.id} href={`/training/${m.slug}`}
                 style={{ textDecoration: 'none', display: 'block', marginBottom: 12 }}
               >
                 <div style={{
@@ -587,7 +587,7 @@ export default function TrainingHome() {
             overflow: 'hidden',
             transition: 'all 0.2s',
           }}>
-            <button
+            <button aria-label="Interactive Button"
               onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
               style={{
                 width: '100%', textAlign: 'left',
@@ -638,7 +638,7 @@ export default function TrainingHome() {
           Module 1 is completely free. Your badge goes live the moment you pass. 
           Brokers and AV companies can verify it instantly.
         </p>
-        <Link href="/training/platform-fundamentals" style={{
+        <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{
           display: 'inline-flex', alignItems: 'center', gap: 10,
           background: 'linear-gradient(135deg, #F5A623, #e08820)',
           color: '#000', fontWeight: 800, fontSize: 18,
@@ -661,7 +661,7 @@ export default function TrainingHome() {
         </Link>
 
         <div style={{ marginTop: 32 }}>
-          <Link href="/training/corporate" style={{
+          <Link aria-label="Navigation Link" href="/training/corporate" style={{
             color: '#6a6a7a', fontSize: 14,
             textDecoration: 'none',
             borderBottom: '1px solid rgba(255,255,255,0.1)',

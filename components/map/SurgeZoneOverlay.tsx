@@ -216,7 +216,7 @@ function TooltipRow({ label, value, highlight }: { label: string; value: string;
 
 export function SurgeZoneToggle({ active, onToggle }: { active: boolean; onToggle: () => void }) {
     return (
-        <button
+        <button aria-label="Interactive Button"
             onClick={onToggle}
             className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border",

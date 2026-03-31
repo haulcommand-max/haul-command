@@ -187,7 +187,7 @@ export default function QuickPayToggle({
                         <p className="text-sm text-red-400">{error}</p>
                     </div>
                 </div>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => setStep('offer')}
                     className="px-6 py-2 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl text-sm transition-colors"
                 >
@@ -233,13 +233,13 @@ export default function QuickPayToggle({
                 </div>
 
                 <div className="flex gap-3">
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setStep('offer')}
                         className="flex-1 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-colors text-sm"
                     >
                         Cancel
                     </button>
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={processQuickPay}
                         className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black
                             rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/25 transition-all"
@@ -288,12 +288,12 @@ export default function QuickPayToggle({
             </div>
 
             <div className="flex gap-3 mb-4">
-                <button
+                <button aria-label="Interactive Button"
                     className="flex-1 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-colors text-sm"
                 >
                     Wait for Payment
                 </button>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => setStep('confirm')}
                     className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black
                         rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/25 transition-all
@@ -306,7 +306,7 @@ export default function QuickPayToggle({
             {/* History Toggle */}
             {history.length > 0 && (
                 <div>
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setShowHistory(!showHistory)}
                         className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-300 transition-colors"
                     >

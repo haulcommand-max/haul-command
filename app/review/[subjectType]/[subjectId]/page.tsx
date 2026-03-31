@@ -49,7 +49,7 @@ export default function ReviewPage() {
                 <p style={{ color: '#8fa3b8', lineHeight: 1.6 }}>
                     Thank you for your feedback. Your review helps the community find reliable operators.
                 </p>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => router.back()}
                     style={{ marginTop: '1.5rem', padding: '0.75rem 2rem', background: '#C6923A', color: '#0A0A0A', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
                 >

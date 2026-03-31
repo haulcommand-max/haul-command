@@ -182,9 +182,9 @@ export default async function StateRegulationPage({ params }: Props) {
       {/* Breadcrumb */}
       <div style={{ background: '#0a0d16', borderBottom: '1px solid #1a223a', padding: '12px 24px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', fontSize: 13, color: '#8fa3c0' }}>
-          <Link href="/regulations" style={{ color: '#8fa3c0', textDecoration: 'none' }}>Regulations</Link>
+          <Link aria-label="Navigation Link" href="/regulations" style={{ color: '#8fa3c0', textDecoration: 'none' }}>Regulations</Link>
           {' / '}
-          <Link href="/regulations/us" style={{ color: '#8fa3c0', textDecoration: 'none' }}>United States</Link>
+          <Link aria-label="Navigation Link" href="/regulations/us" style={{ color: '#8fa3c0', textDecoration: 'none' }}>United States</Link>
           {' / '}
           <span style={{ color: '#f0f4f8' }}>{data.name}</span>
         </div>
@@ -350,8 +350,8 @@ export default async function StateRegulationPage({ params }: Props) {
             47-minute median fill time. Escrow-protected. Verified operators.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link href={`/directory?state=${data.abbr.toLowerCase()}`}>
-              <button style={{
+            <Link aria-label="Navigation Link" href={`/directory?state=${data.abbr.toLowerCase()}`}>
+              <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #f5c842, #ff9500)',
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '12px 24px', fontSize: 15, fontWeight: 800, cursor: 'pointer',
@@ -359,8 +359,8 @@ export default async function StateRegulationPage({ params }: Props) {
                 Find {data.name} Escorts
               </button>
             </Link>
-            <Link href="/app/loads/post">
-              <button style={{
+            <Link aria-label="Navigation Link" href="/app/loads/post">
+              <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(245,200,66,0.3)',
                 color: '#f5c842', borderRadius: 12,
                 padding: '12px 20px', fontSize: 15, cursor: 'pointer',
@@ -372,9 +372,9 @@ export default async function StateRegulationPage({ params }: Props) {
         </div>
 
         <div style={{ marginTop: 40, textAlign: 'center', fontSize: 13, color: '#8fa3c0' }}>
-          <Link href="/regulations/us" style={{ color: '#8fa3c0', textDecoration: 'none' }}>← All US State Regulation Guides</Link>
+          <Link aria-label="Navigation Link" href="/regulations/us" style={{ color: '#8fa3c0', textDecoration: 'none' }}>← All US State Regulation Guides</Link>
           {' · '}
-          <Link href="/regulations/autonomous-vehicles" style={{ color: '#00ccff', textDecoration: 'none' }}>AV Regulations →</Link>
+          <Link aria-label="Navigation Link" href="/regulations/autonomous-vehicles" style={{ color: '#00ccff', textDecoration: 'none' }}>AV Regulations →</Link>
         </div>
       </div>
 

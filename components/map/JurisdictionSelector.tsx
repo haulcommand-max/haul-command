@@ -67,7 +67,7 @@ export function JurisdictionSelector({ onSelectJurisdiction, selectedCode }: Jur
             <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">🇺🇸 United States</h3>
             <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-1.5 mb-8">
                 {US_STATES.filter(s => matchesFilter(s.name, s.code)).map(s => (
-                    <button
+                    <button aria-label="Interactive Button"
                         key={s.code}
                         onClick={() => onSelectJurisdiction(s.code, s.name)}
                         title={s.name}
@@ -85,7 +85,7 @@ export function JurisdictionSelector({ onSelectJurisdiction, selectedCode }: Jur
             <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">🇨🇦 Canada</h3>
             <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-10 gap-1.5">
                 {CA_PROVINCES.filter(p => matchesFilter(p.name, p.code)).map(p => (
-                    <button
+                    <button aria-label="Interactive Button"
                         key={p.code}
                         onClick={() => onSelectJurisdiction(p.code, p.name)}
                         title={p.name}

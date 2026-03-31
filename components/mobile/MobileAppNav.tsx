@@ -147,7 +147,7 @@ export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
         })}
 
         {/* Center FAB */}
-        <button
+        <button aria-label="Interactive Button"
           className="m-bottom-nav__fab"
           onClick={onFabPress ?? (() => router.push('/loads/post'))}
           aria-label="Post a load"

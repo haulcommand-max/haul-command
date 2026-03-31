@@ -207,7 +207,7 @@ export default function ProfilePage() {
                             <span className="ml-3 text-[10px]" style={{ color: T.textSubtle }}>Last active: {lastActive}</span>
                         )}
                     </div>
-                    <Link href="/onboarding/start"
+                    <Link aria-label="Navigation Link" href="/onboarding/start"
                         className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all"
                         style={{ background: `${T.gold}12`, border: `1px solid ${T.gold}28`, color: T.gold }}>
                         <Edit className="w-3 h-3" />
@@ -259,12 +259,12 @@ export default function ProfilePage() {
                             )}
 
                             <div className="flex flex-wrap gap-2 mt-3">
-                                <Link href="/loads"
+                                <Link aria-label="Navigation Link" href="/loads"
                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all"
                                     style={{ background: T.gold, color: "#000" }}>
                                     Browse Loads <ChevronRight className="w-3 h-3" />
                                 </Link>
-                                <Link href="/directory"
+                                <Link aria-label="Navigation Link" href="/directory"
                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all"
                                     style={{ background: T.surfaceElevated, border: `1px solid ${T.border}`, color: T.textBody }}>
                                     View Directory
@@ -336,7 +336,7 @@ export default function ProfilePage() {
                                     Service Capabilities
                                 </h2>
                             </div>
-                            <Link href="/onboarding/start" className="text-[10px] font-bold uppercase tracking-wider transition-colors" style={{ color: T.gold }}>
+                            <Link aria-label="Navigation Link" href="/onboarding/start" className="text-[10px] font-bold uppercase tracking-wider transition-colors" style={{ color: T.gold }}>
                                 Edit â†’
                             </Link>
                         </div>
@@ -348,7 +348,7 @@ export default function ProfilePage() {
                                     <EquipmentBadge key={s} label={s} />
                                 ))
                             }
-                            <Link href="/onboarding/start"
+                            <Link aria-label="Navigation Link" href="/onboarding/start"
                                 className="px-3 py-1.5 rounded-xl text-[11px] font-bold uppercase tracking-wide border-dashed transition-colors hover:opacity-70"
                                 style={{ border: `1px dashed ${T.border}`, color: T.textSubtle }}>
                                 + Add More
@@ -410,7 +410,7 @@ export default function ProfilePage() {
                                     { label: "Check Leaderboard", href: "/leaderboards", icon: Radio },
                                     { label: "Browse Directory", href: "/directory", icon: Users },
                                 ].map(({ label, href, icon: Icon }) => (
-                                    <Link key={href} href={href}
+                                    <Link aria-label="Navigation Link" key={href} href={href}
                                         className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors"
                                         style={{ background: T.surfaceElevated, border: `1px solid ${T.border}`, color: T.textBody }}>
                                         <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: T.gold }} />
@@ -427,7 +427,7 @@ export default function ProfilePage() {
                 <div className="mt-10 text-center">
                     <p className="text-xs" style={{ color: T.textSubtle }}>
                         Trust scores update every 24 hours from job completion data and platform signals.
-                        <Link href="/leaderboards" className="ml-1 font-bold hover:text-white transition-colors" style={{ color: T.gold }}>
+                        <Link aria-label="Navigation Link" href="/leaderboards" className="ml-1 font-bold hover:text-white transition-colors" style={{ color: T.gold }}>
                             See how you rank â†’
                         </Link>
                     </p>

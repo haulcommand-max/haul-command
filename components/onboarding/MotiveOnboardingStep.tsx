@@ -41,7 +41,7 @@ export function MotiveOnboardingStep() {
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
       </a>
 
-      <button className="block mx-auto mt-4 text-gray-500 text-xs hover:text-gray-400 transition-colors">
+      <button aria-label="Interactive Button" className="block mx-auto mt-4 text-gray-500 text-xs hover:text-gray-400 transition-colors">
         Skip for now
       </button>
     </div>

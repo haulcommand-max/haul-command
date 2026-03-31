@@ -175,9 +175,9 @@ export default async function CompetitorInterceptPage({ params }: any) {
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
         {/* Breadcrumb */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: muted, marginBottom: 28, fontWeight: 700 }}>
-          <Link href="/directory" style={{ color: muted, textDecoration: 'none' }}>Directory</Link>
+          <Link aria-label="Navigation Link" href="/directory" style={{ color: muted, textDecoration: 'none' }}>Directory</Link>
           <ChevronRight style={{ width: 12, height: 12 }} />
-          <Link href="/alternatives" style={{ color: muted, textDecoration: 'none' }}>Alternatives</Link>
+          <Link aria-label="Navigation Link" href="/alternatives" style={{ color: muted, textDecoration: 'none' }}>Alternatives</Link>
           <ChevronRight style={{ width: 12, height: 12 }} />
           <span style={{ color: text }}>{alt.companyLabel}</span>
         </nav>
@@ -252,7 +252,7 @@ export default async function CompetitorInterceptPage({ params }: any) {
 
         {/* CTA */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
-          <Link href="/start" className="ag-press" style={{
+          <Link aria-label="Navigation Link" href="/start" className="ag-press" style={{
             display: 'inline-flex', padding: '14px 36px', borderRadius: 12,
             background: `linear-gradient(135deg, ${gold}, #E4B872)`,
             color: '#000', fontSize: 15, fontWeight: 800, textDecoration: 'none',
@@ -266,7 +266,7 @@ export default async function CompetitorInterceptPage({ params }: any) {
           <div style={{ fontSize: 10, fontWeight: 700, color: muted, textTransform: 'uppercase', marginBottom: 12, letterSpacing: '0.1em' }}>More Comparisons</div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {Object.entries(ALTERNATIVES).filter(([s]) => s !== slug).map(([s, a]) => (
-              <Link key={s} href={`/alternatives/${s}`} style={{
+              <Link aria-label="Navigation Link" key={s} href={`/alternatives/${s}`} style={{
                 padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
                 textDecoration: 'none', background: 'rgba(255,255,255,0.03)',
                 border: `1px solid ${border}`, color: muted,

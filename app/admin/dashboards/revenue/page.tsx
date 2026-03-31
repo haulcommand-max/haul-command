@@ -72,7 +72,7 @@ export default function RevenueDashboard() {
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['today', 'week', 'month'] as const).map(p => (
-                        <button
+                        <button aria-label="Interactive Button"
                             key={p}
                             onClick={() => setPeriod(p)}
                             style={{

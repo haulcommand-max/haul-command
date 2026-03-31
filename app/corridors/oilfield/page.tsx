@@ -132,8 +132,8 @@ export default function OilfieldCorridorsPage() {
           ))}
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/app/loads/post">
-            <button style={{
+          <Link aria-label="Navigation Link" href="/app/loads/post">
+            <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #ff6b00, #ff9500)',
               color: '#fff', border: 'none', borderRadius: 12,
               padding: '14px 28px', fontSize: 15, fontWeight: 800, cursor: 'pointer',
@@ -141,8 +141,8 @@ export default function OilfieldCorridorsPage() {
               Post an Oilfield Load
             </button>
           </Link>
-          <Link href="/directory?specialty=oilfield">
-            <button style={{
+          <Link aria-label="Navigation Link" href="/directory?specialty=oilfield">
+            <button aria-label="Interactive Button" style={{
               background: 'transparent', border: '1px solid rgba(255,149,0,0.3)',
               color: '#ff9500', borderRadius: 12, padding: '14px 24px', fontSize: 15, cursor: 'pointer',
             }}>
@@ -331,8 +331,8 @@ export default function OilfieldCorridorsPage() {
             Module 5 of the Haul Command training covers everything above — plus international basins and safety protocols.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link href="/training/av-certification">
-              <button style={{
+            <Link aria-label="Navigation Link" href="/training/av-certification">
+              <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #ff6b00, #ff9500)',
                 color: '#fff', border: 'none', borderRadius: 12,
                 padding: '14px 28px', fontSize: 15, fontWeight: 800, cursor: 'pointer',
@@ -340,8 +340,8 @@ export default function OilfieldCorridorsPage() {
                 View Oilfield Specialist Training
               </button>
             </Link>
-            <Link href="/app/loads/post">
-              <button style={{
+            <Link aria-label="Navigation Link" href="/app/loads/post">
+              <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(255,149,0,0.3)',
                 color: '#ff9500', borderRadius: 12,
                 padding: '14px 24px', fontSize: 15, cursor: 'pointer',

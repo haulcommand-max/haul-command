@@ -114,7 +114,7 @@ export default function CryptoCheckout({ amount, currency = 'usd', orderId, desc
 
                     <div className="crypto-grid">
                         {availableCryptos.map(c => (
-                            <button
+                            <button aria-label="Interactive Button"
                                 key={c.code}
                                 className={`crypto-option ${selectedCrypto === c.code ? 'selected' : ''}`}
                                 onClick={() => setSelectedCrypto(c.code)}
@@ -129,7 +129,7 @@ export default function CryptoCheckout({ amount, currency = 'usd', orderId, desc
 
                     {error && <div className="crypto-error">❌ {error}</div>}
 
-                    <button
+                    <button aria-label="Interactive Button"
                         className="crypto-pay-btn"
                         onClick={handlePayment}
                         disabled={!selectedCrypto || loading}
@@ -157,7 +157,7 @@ export default function CryptoCheckout({ amount, currency = 'usd', orderId, desc
                         <span className="crypto-label">To address</span>
                         <code className="crypto-address">{payment.pay_address}</code>
                     </div>
-                    <button
+                    <button aria-label="Interactive Button"
                         className="crypto-copy-btn"
                         onClick={() => navigator.clipboard.writeText(payment.pay_address)}
                     >

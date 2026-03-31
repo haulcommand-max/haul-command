@@ -119,7 +119,7 @@ export function ClaimPressureEngine({
                     <span className="font-semibold text-white">Is this your business?</span>{' '}
                     {urgencyCopy}
                 </p>
-                <Link
+                <Link aria-label="Navigation Link"
                     href={claimUrl}
                     onClick={handleClick}
                     className="shrink-0 px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs rounded-lg transition-colors"
@@ -155,7 +155,7 @@ export function ClaimPressureEngine({
                                 </span>
                             </div>
                         )}
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={claimUrl}
                             onClick={handleClick}
                             className="inline-flex items-center gap-2 mt-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-5 py-2.5 rounded-lg transition-colors text-sm group"
@@ -195,7 +195,7 @@ export function ClaimPressureEngine({
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={claimUrl}
                             onClick={handleClick}
                             className="px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider text-black"
@@ -203,7 +203,7 @@ export function ClaimPressureEngine({
                         >
                             Claim
                         </Link>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => setDismissed(true)}
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-white transition-colors"
                             style={{ background: 'rgba(255,255,255,0.05)' }}
@@ -271,7 +271,7 @@ export function ClaimPressureEngine({
 
             {/* CTA */}
             <div className="p-6 pt-3 border-t border-white/5">
-                <Link
+                <Link aria-label="Navigation Link"
                     href={claimUrl}
                     onClick={handleClick}
                     className="flex items-center justify-center gap-2 w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl transition-colors text-sm group"

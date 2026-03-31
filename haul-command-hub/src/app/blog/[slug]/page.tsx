@@ -157,7 +157,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Related Navigation */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="/state/texas" className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent/50 transition-all flex flex-col items-center group text-center ag-spring-hover">
+            <Link href="/escort-requirements?state=texas" className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent/50 transition-all flex flex-col items-center group text-center ag-spring-hover">
               <span className="text-gray-500 mb-2 uppercase tracking-widest font-black text-[10px]">Real-time Database</span>
               <span className="text-xl font-black group-hover:text-accent transition-colors italic tracking-tighter">Texas Rules Registry &rarr;</span>
             </Link>

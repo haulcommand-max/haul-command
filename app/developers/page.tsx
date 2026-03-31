@@ -25,13 +25,13 @@ export default function DevelopersPage() {
                         pricing benchmarks, and risk analytics for the oversize load ecosystem.
                     </p>
                     <div className="flex gap-4 justify-center">
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/developers/getting-started"
                             className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-500 transition"
                         >
                             Get Started →
                         </Link>
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/api/enterprise/openapi.json"
                             className="rounded-lg border border-gray-700 px-6 py-3 text-sm font-semibold text-gray-300 hover:border-gray-500 transition"
                         >
@@ -175,7 +175,7 @@ export default function DevelopersPage() {
 
 function QuickLink({ title, href, description }: { title: string; href: string; description: string }) {
     return (
-        <Link href={href} className="block rounded-xl bg-gray-900 border border-gray-800 p-5 hover:border-blue-500/50 transition group">
+        <Link aria-label="Navigation Link" href={href} className="block rounded-xl bg-gray-900 border border-gray-800 p-5 hover:border-blue-500/50 transition group">
             <h3 className="font-semibold text-white group-hover:text-blue-400 transition mb-2">{title}</h3>
             <p className="text-sm text-gray-400">{description}</p>
         </Link>
@@ -216,7 +216,7 @@ function TrustLink({ title, href, description, icon }: {
     title: string; href: string; description: string; icon: string;
 }) {
     return (
-        <Link href={href} className="flex gap-4 rounded-xl bg-gray-900 border border-gray-800 p-5 hover:border-gray-700 transition group">
+        <Link aria-label="Navigation Link" href={href} className="flex gap-4 rounded-xl bg-gray-900 border border-gray-800 p-5 hover:border-gray-700 transition group">
             <span className="text-2xl">{icon}</span>
             <div>
                 <h3 className="font-semibold text-white group-hover:text-blue-400 transition mb-1">{title}</h3>

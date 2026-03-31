@@ -50,13 +50,13 @@ export default function SettingsPage() {
                         <p className="text-sm text-[#333]">Apply bulk configuration changes.</p>
                     </header>
                     <div className="flex gap-4">
-                        <button className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-[#ffb400]/50 transition-all">
+                        <button aria-label="Interactive Button" className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-[#ffb400]/50 transition-all">
                             Max Adoption
                         </button>
-                        <button className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-green-500/50 transition-all text-green-500">
+                        <button aria-label="Interactive Button" className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-green-500/50 transition-all text-green-500">
                             Max Trust
                         </button>
-                        <button className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-red-500/50 transition-all text-red-500">
+                        <button aria-label="Interactive Button" className="flex-1 py-4 border border-[#1a1a1a] bg-[#0c0c0c] rounded-lg text-[10px] font-black uppercase hover:border-red-500/50 transition-all text-red-500">
                             Max Revenue
                         </button>
                     </div>
@@ -73,7 +73,7 @@ function Toggle({ label, active, description }: any) {
                 <p className="text-xs font-black uppercase tracking-tight">{label}</p>
                 <p className="text-[10px] text-[#444]">{description}</p>
             </div>
-            <button className={`w-12 h-6 rounded-full relative transition-all ${active ? 'bg-[#ffb400]' : 'bg-[#1a1a1a]'}`}>
+            <button aria-label="Interactive Button" className={`w-12 h-6 rounded-full relative transition-all ${active ? 'bg-[#ffb400]' : 'bg-[#1a1a1a]'}`}>
                 <div className={`absolute top-1 w-4 h-4 bg-black rounded-full transition-all ${active ? 'right-1' : 'left-1'}`}></div>
             </button>
         </div>
@@ -95,7 +95,7 @@ function Input({ label, value }: any) {
 
 function Tab({ label, active }: any) {
     return (
-        <button className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
+        <button aria-label="Interactive Button" className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
             {label}
         </button>
     );

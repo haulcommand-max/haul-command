@@ -152,7 +152,7 @@ export const LiveMatchFlow: React.FC<{ loadId?: string }> = ({ loadId }) => {
                         </div>
 
                         {selectedMatch === c.id && (
-                            <button
+                            <button aria-label="Interactive Button"
                                 disabled={isMatching}
                                 onClick={(e) => { e.stopPropagation(); handleDispatch(c.id); }}
                                 className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black uppercase tracking-widest text-xs rounded-xl transition-all flex items-center justify-center gap-2 group"
@@ -187,7 +187,7 @@ export const LiveMatchFlow: React.FC<{ loadId?: string }> = ({ loadId }) => {
 
             {/* Footer */}
             <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
-                <button className="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest flex items-center gap-1">
+                <button aria-label="Interactive Button" className="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest flex items-center gap-1">
                     <ChevronRight className="w-3 h-3 rotate-180" />
                     Back to Manual
                 </button>

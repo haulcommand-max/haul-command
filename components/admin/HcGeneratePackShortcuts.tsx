@@ -111,7 +111,7 @@ export function HcGeneratePackShortcuts({
           </span>
         ))}
         <div style={{ flex: 1 }} />
-        <button
+        <button aria-label="Interactive Button"
           onClick={handleGenPack}
           disabled={loading || !prompt.trim()}
           style={{

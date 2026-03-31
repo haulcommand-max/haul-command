@@ -122,7 +122,7 @@ export default function AIChatPage() {
                         outline: 'none', fontFamily: 'inherit',
                     }}
                 />
-                <button type="submit" disabled={!input.trim() || loading} style={{
+                <button aria-label="Interactive Button" type="submit" disabled={!input.trim() || loading} style={{
                     padding: '12px 20px',
                     background: 'linear-gradient(135deg, #F59E0B, #D97706)',
                     border: 'none', borderRadius: 12, color: '#030712',

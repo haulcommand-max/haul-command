@@ -200,7 +200,7 @@ export function DensityScoreboard({
                         <span style={{ fontSize: 14 }}>🌱</span>
                         <span style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B' }}>{founderPrompt}</span>
                     </div>
-                    <Link href="/claim" onClick={() => {
+                    <Link aria-label="Navigation Link" href="/claim" onClick={() => {
                         track('density_claim_clicked' as any, { metadata: { market_mode: data.market_mode, state, corridor } });
                     }} style={{
                         display: 'inline-flex', marginTop: 10, padding: '8px 18px', borderRadius: 10,

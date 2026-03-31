@@ -30,8 +30,8 @@ export default function AdminApprovals() {
                     <div><strong>driver:</strong> {c.driver_id}</div>
                     <pre>{JSON.stringify(c.submitted_payload, null, 2)}</pre>
                     <div style={{ display: "flex", gap: 10 }}>
-                        <button onClick={() => decide(c.id, "approved")}>approve</button>
-                        <button onClick={() => decide(c.id, "rejected")}>reject</button>
+                        <button aria-label="Interactive Button" onClick={() => decide(c.id, "approved")}>approve</button>
+                        <button aria-label="Interactive Button" onClick={() => decide(c.id, "rejected")}>reject</button>
                     </div>
                 </div>
             ))}

@@ -296,7 +296,7 @@ export default function MobileMarketHeartbeat({
                         padding: '10px 16px 14px',
                         borderTop: '1px solid var(--m-border-subtle, rgba(255,255,255,0.06))',
                     }}>
-                        <Link href={mode.ctaHref} style={{
+                        <Link aria-label="Navigation Link" href={mode.ctaHref} style={{
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             width: '100%', height: 40, borderRadius: 10,
                             background: data.market_mode === 'live'

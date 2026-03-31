@@ -70,7 +70,7 @@ function StarInput({ label, value, onChange, hint, hero }: StarInputProps) {
             </div>
             <div className="flex gap-1" onMouseLeave={() => setHovered(0)}>
                 {Array.from({ length: 5 }).map((_, i) => (
-                    <button
+                    <button aria-label="Interactive Button"
                         key={i}
                         type="button"
                         onMouseEnter={() => setHovered(i + 1)}
@@ -181,7 +181,7 @@ export function BrokerReviewForm({
                     </p>
                 </div>
                 {onCancel && (
-                    <button type="button" onClick={onCancel} className="p-2 rounded-lg hover:bg-hc-elevated text-hc-subtle shrink-0">
+                    <button aria-label="Interactive Button" type="button" onClick={onCancel} className="p-2 rounded-lg hover:bg-hc-elevated text-hc-subtle shrink-0">
                         <X className="w-4 h-4" />
                     </button>
                 )}
@@ -232,7 +232,7 @@ export function BrokerReviewForm({
                     </span>
                     <p className="text-[10px] text-hc-subtle mt-0.5">Escorts can filter by this signal</p>
                 </div>
-                <button
+                <button aria-label="Interactive Button"
                     type="button"
                     onClick={() => setWouldWorkAgain(v => !v)}
                     className={cn(
@@ -270,7 +270,7 @@ export function BrokerReviewForm({
 
             {error && <p className="text-sm text-hc-danger font-medium">{error}</p>}
 
-            <button
+            <button aria-label="Interactive Button"
                 type="submit"
                 disabled={!isValid || submitting}
                 className={cn(

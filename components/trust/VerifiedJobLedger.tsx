@@ -143,7 +143,7 @@ export function VerifiedJobLedger({
             {/* Show more / gated */}
             {hasMore && !expanded && (
                 <div className="px-5 pb-4">
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setExpanded(true)}
                         className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold text-white/40 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] transition-all"
                     >

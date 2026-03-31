@@ -71,7 +71,7 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                             placeholder={`Search providers in ${countryData.name}...`}
                             className="flex-1 bg-transparent text-white text-sm placeholder:text-hc-subtle outline-none"
                         />
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={`/directory?country=${countryData.iso2}`}
                             className="px-5 py-2.5 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
                         >
@@ -90,7 +90,7 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                             {regions.map((region) => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={region.code}
                                     href={getStateUrl(country, region.code.toLowerCase())}
                                     className="group flex items-center justify-between p-4 bg-hc-surface border border-hc-border rounded-2xl hover:border-hc-gold-500/40 hover:shadow-gold-sm transition-all"
@@ -116,7 +116,7 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                             We&apos;re expanding our verified provider network in {countryData.name}.
                             Region-level browsing will be available soon.
                         </p>
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/directory"
                             className="inline-block px-6 py-3 bg-hc-gold-500 text-black font-bold text-sm rounded-xl hover:bg-hc-gold-400 transition-colors"
                         >

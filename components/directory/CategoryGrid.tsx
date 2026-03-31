@@ -108,7 +108,7 @@ export function CategoryGrid({ country, region, regionName, counts }: CategoryGr
                 {CATEGORIES.map(({ slug, label, icon: Icon, description, hot }) => {
                     const count = counts?.[slug];
                     return (
-                        <Link
+                        <Link aria-label="Navigation Link"
                             key={slug}
                             href={`/directory/${country}/${region}/${slug}`}
                             className="group relative flex flex-col gap-3 p-4 rounded-2xl transition-all duration-200 hover:-translate-y-0.5"

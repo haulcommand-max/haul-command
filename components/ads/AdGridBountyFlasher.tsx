@@ -64,8 +64,8 @@ export function AdGridBountyFlasher({ load, onAccept, onDetails }: Props) {
           {isFlash && <span className="agbf-boost">BOUNTY BOOST</span>}
         </div>
         <div className="agbf-actions">
-          <button className="agbf-details" onClick={() => onDetails?.(load.id)}>Details</button>
-          <button className="agbf-accept" onClick={() => onAccept?.(load.id)}>Accept Load</button>
+          <button aria-label="Interactive Button" className="agbf-details" onClick={() => onDetails?.(load.id)}>Details</button>
+          <button aria-label="Interactive Button" className="agbf-accept" onClick={() => onAccept?.(load.id)}>Accept Load</button>
         </div>
       </div>
 

@@ -188,7 +188,7 @@ export function NextBestAction({ role, compact = false, className, ...props }: N
                     <p className="text-sm font-bold text-hc-text truncate">{action.headline}</p>
                     <p className="text-xs text-hc-muted truncate">{action.subline}</p>
                 </div>
-                <Link href={action.href}>
+                <Link aria-label="Navigation Link" href={action.href}>
                     <HCButton variant={action.variant} size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
                         {action.cta}
                     </HCButton>
@@ -232,7 +232,7 @@ export function NextBestAction({ role, compact = false, className, ...props }: N
                 </p>
 
                 {/* Single CTA — always full width on mobile */}
-                <Link href={action.href} className="block">
+                <Link aria-label="Navigation Link" href={action.href} className="block">
                     <HCButton
                         variant={action.variant}
                         size="lg"

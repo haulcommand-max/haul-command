@@ -147,11 +147,11 @@ export default function AdminPlacementsNewPage() {
                 {error && <p className="text-sm text-red-600">{error}</p>}
 
                 <div className="flex gap-3 pt-2">
-                    <button type="submit" disabled={working}
+                    <button aria-label="Interactive Button" type="submit" disabled={working}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                         {working ? "Creating…" : "Create Placement"}
                     </button>
-                    <button type="button" onClick={() => router.back()}
+                    <button aria-label="Interactive Button" type="button" onClick={() => router.back()}
                         className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>

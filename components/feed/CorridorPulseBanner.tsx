@@ -126,7 +126,7 @@ export function CorridorPulseBanner({ corridors, className }: CorridorPulseBanne
                     {/* Corridor dots indicator */}
                     <div className="flex gap-1.5 shrink-0">
                         {feed.map((_, i) => (
-                            <button
+                            <button aria-label="Interactive Button"
                                 key={i}
                                 onClick={() => setActiveIdx(i)}
                                 className={cn(

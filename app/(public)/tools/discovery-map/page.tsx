@@ -37,10 +37,10 @@ export default function AvailabilityMapPage() {
             </header>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                 <div className="bg-white/5 border border-white/10 rounded-xl p-1 flex">
-                    <button onClick={() => setViewMode('broker')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'broker' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🏢 Broker</button>
-                    <button onClick={() => setViewMode('operator')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'operator' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🚗 Operator</button>
+                    <button aria-label="Interactive Button" onClick={() => setViewMode('broker')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'broker' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🏢 Broker</button>
+                    <button aria-label="Interactive Button" onClick={() => setViewMode('operator')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'operator' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🚗 Operator</button>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-1">{countries.map(c => (<button key={c} onClick={() => setSelectedCountry(c)} className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${selectedCountry === c ? 'bg-[var(--color-accent)] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{c === 'ALL' ? 'All' : `${FLAG[c] || '🌍'} ${c}`}</button>))}</div>
+                <div className="flex gap-2 overflow-x-auto pb-1">{countries.map(c => (<button aria-label="Interactive Button" key={c} onClick={() => setSelectedCountry(c)} className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${selectedCountry === c ? 'bg-[var(--color-accent)] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{c === 'ALL' ? 'All' : `${FLAG[c] || '🌍'} ${c}`}</button>))}</div>
             </div>
             {loading ? (
                 <div className="text-center py-20"><div className="w-16 h-16 border-4 border-[var(--color-accent)]/20 border-t-[var(--color-accent)] rounded-full animate-spin mx-auto mb-6"></div><p className="text-gray-500 font-black uppercase tracking-widest text-sm">Loading Discovery Map...</p></div>

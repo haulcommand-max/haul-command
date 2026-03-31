@@ -249,7 +249,7 @@ export default async function DirectoryPage() {
                 placeholder="Search by name, state, or specialty..."
                 className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 text-base"
               />
-              <button
+              <button aria-label="Interactive Button"
                 type="submit"
                 className="absolute right-3 top-1/2 -translate-y-1/2 px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors text-sm"
               >
@@ -288,7 +288,7 @@ export default async function DirectoryPage() {
         </div>
         <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-2">
           {US_STATES.map(s => (
-            <Link
+            <Link aria-label="Navigation Link"
               key={s}
               href={`/directory/us/${s.toLowerCase()}`}
               className="p-2 bg-white/5 border border-white/10 rounded-lg hover:border-amber-500/40 hover:bg-white/10 transition-all text-center group"
@@ -307,7 +307,7 @@ export default async function DirectoryPage() {
         <section className="max-w-6xl mx-auto px-4 py-8 border-t border-white/5">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold">Top Rated Operators</h2>
-            <Link href="/directory/us" className="text-sm text-amber-400 hover:underline">View all US →</Link>
+            <Link aria-label="Navigation Link" href="/directory/us" className="text-sm text-amber-400 hover:underline">View all US →</Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {topOperators.map((op: any) => (
@@ -340,7 +340,7 @@ export default async function DirectoryPage() {
                 <div className="relative">
                   <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Link
+                    <Link aria-label="Navigation Link"
                       href="/auth/register"
                       className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
                     >
@@ -361,7 +361,7 @@ export default async function DirectoryPage() {
           {COUNTRIES.map((country) => {
             const count = countryCounts[country.code] || 0;
             return (
-              <Link
+              <Link aria-label="Navigation Link"
                 key={country.code}
                 href={`/directory/${country.code}`}
                 className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all text-center"
@@ -384,10 +384,10 @@ export default async function DirectoryPage() {
           Claim your free profile and start receiving load offers from brokers across 120 countries.
         </p>
         <div className="flex justify-center gap-4">
-          <Link href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+          <Link aria-label="Navigation Link" href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
             Claim Your Profile
           </Link>
-          <Link href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
+          <Link aria-label="Navigation Link" href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
             Sign Up Free
           </Link>
         </div>

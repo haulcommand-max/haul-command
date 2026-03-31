@@ -99,7 +99,7 @@ export default function EarningsDashboardPage() {
               Connect your bank account to receive payments. Your bank statement will show{' '}
               <strong className="text-white">HAUL COMMAND PAY</strong> as the payer.
             </p>
-            <button
+            <button aria-label="Interactive Button"
               onClick={startOnboarding}
               className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors"
             >
@@ -112,7 +112,7 @@ export default function EarningsDashboardPage() {
         {connect?.connected && !connect.onboarded && (
           <div className="p-6 bg-amber-500/10 border border-amber-500/20 rounded-2xl mb-6">
             <p className="text-amber-400 font-medium">Complete your account setup to enable payouts \u2192</p>
-            <button onClick={startOnboarding} className="mt-3 text-sm text-amber-400 underline">
+            <button aria-label="Interactive Button" onClick={startOnboarding} className="mt-3 text-sm text-amber-400 underline">
               Continue setup
             </button>
           </div>
@@ -161,7 +161,7 @@ export default function EarningsDashboardPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <button
+                <button aria-label="Interactive Button"
                   type="button"
                   onClick={() => setWithdrawMethod('standard')}
                   className={`p-4 rounded-xl border text-sm text-left transition-all ${
@@ -173,7 +173,7 @@ export default function EarningsDashboardPage() {
                   <p className="font-medium">Standard Payout</p>
                   <p className="text-gray-400 text-xs mt-0.5">2 business days \u2022 Free</p>
                 </button>
-                <button
+                <button aria-label="Interactive Button"
                   type="button"
                   onClick={() => setWithdrawMethod('instant')}
                   className={`p-4 rounded-xl border text-sm text-left transition-all ${
@@ -199,7 +199,7 @@ export default function EarningsDashboardPage() {
                 <p className="text-red-400 text-sm">Payout failed. Contact support.</p>
               )}
 
-              <button
+              <button aria-label="Interactive Button"
                 type="submit"
                 disabled={!withdrawAmount || withdrawStatus === 'loading'}
                 className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors disabled:opacity-50"

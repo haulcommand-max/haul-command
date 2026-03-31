@@ -74,7 +74,7 @@ export default function VendorProfilePage() {
                         {avgRating && ` · ⭐ ${avgRating} (${reviews.length} reviews)`}
                     </p>
                 </div>
-                <Link href={`/vendors/${vendorId}/upgrade`}
+                <Link aria-label="Navigation Link" href={`/vendors/${vendorId}/upgrade`}
                     className="shrink-0 px-4 py-2 border border-orange-400 text-orange-600 rounded-lg text-sm font-medium hover:bg-orange-50 transition-colors">
                     Upgrade Plan
                 </Link>
@@ -84,7 +84,7 @@ export default function VendorProfilePage() {
             <div className="border-b border-gray-200">
                 <div className="flex gap-6">
                     {(["overview", "locations", "reviews"] as TabId[]).map(t => (
-                        <button key={t} onClick={() => setTab(t)}
+                        <button aria-label="Interactive Button" key={t} onClick={() => setTab(t)}
                             className={`pb-3 text-sm font-medium border-b-2 transition-colors ${tab === t
                                     ? "border-orange-500 text-orange-600"
                                     : "border-transparent text-gray-500 hover:text-gray-700"

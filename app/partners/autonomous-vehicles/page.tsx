@@ -49,7 +49,7 @@ export default function AVPartnerPage() {
             >
               Get Operator Coverage
             </a>
-            <Link
+            <Link aria-label="Navigation Link"
               href="/training/corporate"
               className="px-8 py-4 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors"
             >

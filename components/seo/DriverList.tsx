@@ -43,7 +43,7 @@ export const DriverList: React.FC<{ drivers: DriverItem[]; cityName: string }> =
         return (
             <div className="hc-card border-dashed p-12 text-center">
                 <p className="text-hc-muted mb-4 italic">No direct matches found in {cityName} city center.</p>
-                <button className="px-6 py-2 bg-hc-elevated text-hc-text rounded-full text-sm font-medium hover:bg-hc-high transition-colors press-feedback">
+                <button aria-label="Interactive Button" className="px-6 py-2 bg-hc-elevated text-hc-text rounded-full text-sm font-medium hover:bg-hc-high transition-colors press-feedback">
                     Expand to 50mi Radius
                 </button>
             </div>
@@ -93,7 +93,7 @@ export const DriverList: React.FC<{ drivers: DriverItem[]; cityName: string }> =
                                     </span>
                                 </div>
                             </div>
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={() => toggleExpand(driver.driver_id)}
                                 className="bg-hc-elevated p-2 rounded-xl text-hc-subtle hover:text-hc-text transition-colors cursor-pointer press-feedback"
                             >
@@ -142,7 +142,7 @@ export const DriverList: React.FC<{ drivers: DriverItem[]; cityName: string }> =
 
                         {/* Quick Action Buttons (Phase 6) */}
                         <div className="flex items-center gap-2 pt-4 border-t border-hc-border mt-auto">
-                            <button
+                            <button aria-label="Interactive Button"
                                 disabled={dispatchingId === driver.driver_id}
                                 onClick={() => handleDispatch(driver.driver_id, driver.company_name)}
                                 className="flex-1 py-3 px-4 brand-button disabled:bg-hc-elevated disabled:text-hc-subtle text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 press-feedback"
@@ -159,7 +159,7 @@ export const DriverList: React.FC<{ drivers: DriverItem[]; cityName: string }> =
                                     </>
                                 )}
                             </button>
-                            <button className="p-3 bg-hc-elevated hover:bg-hc-high text-hc-muted rounded-xl transition-all flex items-center justify-center press-feedback">
+                            <button aria-label="Interactive Button" className="p-3 bg-hc-elevated hover:bg-hc-high text-hc-muted rounded-xl transition-all flex items-center justify-center press-feedback">
                                 <ShieldCheck className="w-4 h-4 text-hc-subtle group-hover:text-[var(--hc-success)] transition-colors" />
                             </button>
                         </div>

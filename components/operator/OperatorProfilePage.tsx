@@ -183,7 +183,7 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <FollowButton operatorId={operatorId} />
-            <Link href={`/loads/new?operator=${operatorId}`} className="ag-press" style={{
+            <Link aria-label="Navigation Link" href={`/loads/new?operator=${operatorId}`} className="ag-press" style={{
               padding: '8px 18px', borderRadius: 10,
               background: 'linear-gradient(135deg, #f5b942, #e8a830)',
               color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
@@ -267,7 +267,7 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
           ) : (
             <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 12, padding: '20px', textAlign: 'center' }}>
               <div style={{ fontSize: 13, color: T.muted }}>No endorsements yet</div>
-              <Link href="/login" style={{ fontSize: 12, color: T.gold, textDecoration: 'none', fontWeight: 700, marginTop: 6, display: 'inline-block' }}>
+              <Link aria-label="Navigation Link" href="/login" style={{ fontSize: 12, color: T.gold, textDecoration: 'none', fontWeight: 700, marginTop: 6, display: 'inline-block' }}>
                 Sign in to endorse this operator →
               </Link>
             </div>

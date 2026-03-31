@@ -261,7 +261,7 @@ export default function SponsorPage() {
                         {SPONSOR_PLANS.map((plan) => {
                             const active = plan.key === activePlan.key;
                             return (
-                                <button
+                                <button aria-label="Interactive Button"
                                     key={plan.key}
                                     type="button"
                                     onClick={() => handlePlanSelect(plan.key)}
@@ -373,7 +373,7 @@ export default function SponsorPage() {
                             {marketOptions.map((market) => {
                                 const active = market.value === selectedMarket;
                                 return (
-                                    <button
+                                    <button aria-label="Interactive Button"
                                         key={market.value}
                                         type="button"
                                         onClick={() => setSelectedMarket(market.value)}
@@ -501,7 +501,7 @@ export default function SponsorPage() {
                             )}
                         </div>
                         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 href={{
                                     pathname: '/sponsor/checkout',
                                     query: {
@@ -514,7 +514,7 @@ export default function SponsorPage() {
                             >
                                 Continue to checkout
                             </Link>
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 href="/directory"
                                 className="m-btn m-btn--secondary"
                                 style={{ textDecoration: 'none', justifyContent: 'center', flex: '1 1 180px' }}

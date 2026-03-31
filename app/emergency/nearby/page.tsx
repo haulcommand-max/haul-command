@@ -187,11 +187,11 @@ export default function EmergencyNearbyPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <button type="button" onClick={useMyLocation} disabled={locating}
+                    <button aria-label="Interactive Button" type="button" onClick={useMyLocation} disabled={locating}
                         className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50">
                         {locating ? "Locating…" : "📍 Use my location"}
                     </button>
-                    <button type="submit" disabled={loading}
+                    <button aria-label="Interactive Button" type="submit" disabled={loading}
                         className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                         {loading ? "Searching…" : "Find Help Now"}
                     </button>

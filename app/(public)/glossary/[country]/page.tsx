@@ -122,7 +122,7 @@ export default async function GlossaryCountryPage({ params }: { params: Promise<
                 <nav style={{ padding: '1rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.06)', overflow: 'auto' }}>
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                         {Object.entries(FLAG).map(([code, f]) => (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={code}
                                 href={`/glossary/${code.toLowerCase()}`}
                                 style={{
@@ -209,9 +209,9 @@ export default async function GlossaryCountryPage({ params }: { params: Promise<
                 {/* Breadcrumbs */}
                 <nav style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem 2rem' }}>
                     <div style={{ fontSize: '0.8rem', color: '#5a6a7e' }}>
-                        <Link href="/" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Home</Link>
+                        <Link aria-label="Navigation Link" href="/" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Home</Link>
                         {' → '}
-                        <Link href="/glossary" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Glossary</Link>
+                        <Link aria-label="Navigation Link" href="/glossary" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Glossary</Link>
                         {' → '}
                         <span style={{ color: '#C6923A' }}>{flag} {name}</span>
                     </div>

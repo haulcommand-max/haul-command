@@ -120,15 +120,27 @@ function buildJsonLd(place: Place) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const sb = supabaseServer();
-  const { data } = await sb.from("hc_places").select("name, surface_category_key, locality, admin1_code, country_code").eq("slug", slug).eq("status", "published").maybeSingle();
-  if (!data) return { title: "Place Not Found" };
-  const location = [data.locality, data.admin1_code, countryName(data.country_code)].filter(Boolean).join(", ");
+  
+  // Real operators from hc_public_operators
+  let data: { name: string; surface_category_key: string; locality: string | null; admin1_code: string | null; country_code: string | null } | null = null;
+  const { data: dl } = await sb.from("hc_public_operators").select("name, entity_type, city, state_code, country_code").eq("slug", slug).maybeSingle();
+  if (dl) {
+    data = { name: dl.name, surface_category_key: dl.entity_type, locality: dl.city, admin1_code: dl.state_code, country_code: dl.country_code };
+  }
+  
+  // Fallback: hc_places (infrastructure/legacy profiles)
+  if (!data) {
+    data = (await sb.from("hc_places").select("name, surface_category_key, locality, admin1_code, country_code").eq("slug", slug).eq("status", "published").maybeSingle()).data;
+  }
+  
+  if (!data) return { title: "Operator Not Found | Haul Command" };
+  const location = [data.locality, data.admin1_code, data.country_code ? countryName(data.country_code) : null].filter(Boolean).join(", ");
   const cat = categoryLabel(data.surface_category_key);
   
   return {
-    title:`${data.name} — Best ${cat} Near Me in ${location}`,
-    description: `Hire ${data.name} for top-rated ${cat.toLowerCase()} services near me in ${location}. View contact info, verified capabilities, oversize load experience, and corridors on Haul Command. Instant availability and rate quotes.`,
-    keywords: `${cat} near me, ${cat.toLowerCase()} in ${location}, best ${data.surface_category_key.replace('_', ' ')}, oversize load escort near me`,
+    title:`${data.name} — ${cat} in ${location}`,
+    description: `${data.name} provides ${cat.toLowerCase()} services in ${location}. View contact info, capabilities, and service area on Haul Command.`,
+    keywords: `${cat} near me, ${cat.toLowerCase()} in ${location}, oversize load escort`,
   };
 }
 
@@ -137,15 +149,46 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
   const { slug } = await params;
   const sb = supabaseServer();
 
-  const { data: place, error } = await sb
-    .from("hc_places")
-    .select("id, slug, name, description, surface_category_key, country_code, admin1_code, admin2_name, locality, postal_code, address_line1, address_line2, lat, lng, phone, website, claim_status, status, updated_at")
-    .eq("slug", slug).eq("status", "published").maybeSingle();
+  // Real operators from hc_public_operators (verified data)
+  const { data: opPlace } = await sb
+    .from("hc_public_operators")
+    .select("id, slug, name, entity_type, city, state_code, country_code, phone, email, claim_status")
+    .eq("slug", slug).maybeSingle();
 
-  if (error) throw new Error(error.message);
-  if (!place) return notFound();
+  let p: Place;
+  if (opPlace) {
+    // Normalize hc_public_operators shape to Place shape
+    p = {
+      id: opPlace.id,
+      slug: opPlace.slug,
+      name: opPlace.name,
+      description: `${opPlace.name} — Professional heavy haul and oversize load services.`,
+      surface_category_key: opPlace.entity_type ?? 'pilot_car_operator',
+      country_code: opPlace.country_code ?? 'US',
+      admin1_code: opPlace.state_code ?? null,
+      admin2_name: null,
+      locality: opPlace.city ?? null,
+      postal_code: null,
+      address_line1: null,
+      address_line2: null,
+      lat: null,
+      lng: null,
+      phone: opPlace.phone ?? null,
+      website: null,
+      claim_status: opPlace.claim_status ?? 'unclaimed',
+      status: 'published',
+      updated_at: new Date().toISOString(),
+    };
+  } else {
+    // Fallback: hc_places (infrastructure/legacy claimed profiles)
+    const { data: place, error } = await sb
+      .from("hc_places")
+      .select("id, slug, name, description, surface_category_key, country_code, admin1_code, admin2_name, locality, postal_code, address_line1, address_line2, lat, lng, phone, website, claim_status, status, updated_at")
+      .eq("slug", slug).eq("status", "published").maybeSingle();
 
-  const p = place as Place;
+    if (error || !place) return notFound();
+    p = place as Place;
+  }
   const jsonLd = buildJsonLd(p);
   const cc = p.country_code?.toLowerCase() ?? "";
   const cat = p.surface_category_key ?? "";
@@ -189,15 +232,14 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
     secondaryActions: [],
   };
 
-  /* ── Build nearby entities ── */
+  /* ── Build nearby entities (real operators from hc_public_operators) ── */
   let nearbyEntities: HCLink[] = [];
   if (p.country_code) {
     const { data: nearby } = await sb
-      .from("hc_places")
+      .from("hc_public_operators")
       .select("slug, name")
       .eq("country_code", p.country_code)
-      .eq("surface_category_key", cat)
-      .eq("status", "published")
+      .eq("entity_type", p.surface_category_key)
       .neq("slug", p.slug)
       .limit(6);
     if (nearby) {

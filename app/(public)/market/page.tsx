@@ -84,7 +84,7 @@ export default function MarketIndexPage() {
                         const name = STATE_NAMES[code] || code;
                         const isHot = HOT_STATES.includes(code);
                         return (
-                            <Link key={code} href={`/market/${code.toLowerCase()}`} style={{
+                            <Link aria-label="Navigation Link" key={code} href={`/market/${code.toLowerCase()}`} style={{
                                 display: 'block',
                                 padding: '16px 14px', borderRadius: 14,
                                 border: `1px solid ${isHot ? 'rgba(241,169,27,0.2)' : 'rgba(255,255,255,0.06)'}`,

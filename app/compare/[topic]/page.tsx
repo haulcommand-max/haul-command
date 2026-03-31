@@ -76,7 +76,7 @@ export default function ComparisonPage({ params }: any) {
                     <h3 style={{ fontSize: 12, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>More Comparisons</h3>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         {Object.entries(TOPICS).map(([slug, t]) => (
-                            <Link key={slug} href={`/compare/${slug}`} style={{
+                            <Link aria-label="Navigation Link" key={slug} href={`/compare/${slug}`} style={{
                                 padding: '6px 14px', borderRadius: 8, textDecoration: 'none',
                                 background: slug === params.topic ? 'rgba(241,169,27,0.1)' : 'rgba(255,255,255,0.04)',
                                 border: `1px solid ${slug === params.topic ? 'rgba(241,169,27,0.3)' : 'rgba(255,255,255,0.08)'}`,

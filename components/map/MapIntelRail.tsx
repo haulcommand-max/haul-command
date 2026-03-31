@@ -110,7 +110,7 @@ export function MapIntelRail({ className = "" }: MapIntelRailProps) {
         <div className={`relative flex ${className}`} style={{ zIndex: 15 }}>
 
             {/* ── Collapsed toggle ──────────────────────────────────────────────── */}
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setCollapsed((c) => !c)}
                 className="absolute -right-8 top-1/2 -translate-y-1/2 w-8 h-16 flex items-center justify-center rounded-r-xl transition-colors"
                 style={{
@@ -254,7 +254,7 @@ export function MapIntelRail({ className = "" }: MapIntelRailProps) {
 
                             {/* CTA */}
                             <div className="p-4 mt-auto">
-                                <button
+                                <button aria-label="Interactive Button"
                                     className="w-full h-10 rounded-xl text-xs font-black uppercase tracking-wider text-black transition-all hover:-translate-y-0.5 active:scale-[0.98]"
                                     style={{
                                         background: "#F1A91B",

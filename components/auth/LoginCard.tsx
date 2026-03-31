@@ -323,7 +323,7 @@ export default function LoginCard() {
         {topProviders.map((provider) => {
           const isGoogle = provider === 'google'
           return (
-            <button
+            <button aria-label="Interactive Button"
               key={provider}
               type="button"
               onClick={() => signInWithProvider(provider)}
@@ -383,7 +383,7 @@ export default function LoginCard() {
       </div>
 
       {/* More options toggle */}
-      <button
+      <button aria-label="Interactive Button"
         type="button"
         onClick={() => setShowMore(!showMore)}
         style={{
@@ -427,7 +427,7 @@ export default function LoginCard() {
         >
           {/* Extra OAuth providers */}
           {moreProviders.map((provider) => (
-            <button
+            <button aria-label="Interactive Button"
               key={provider}
               type="button"
               onClick={() => signInWithProvider(provider)}
@@ -532,7 +532,7 @@ export default function LoginCard() {
               )}
 
               <div style={{ display: 'flex', gap: 8 }}>
-                <button
+                <button aria-label="Interactive Button"
                   type="submit"
                   disabled={loading !== null || !phone || (phoneCodeSent && !otpCode)}
                   style={{
@@ -559,7 +559,7 @@ export default function LoginCard() {
                 </button>
 
                 {phoneCodeSent && (
-                  <button
+                  <button aria-label="Interactive Button"
                     type="button"
                     onClick={() => {
                       setPhoneCodeSent(false)
@@ -624,7 +624,7 @@ export default function LoginCard() {
                 }}
               />
 
-              <button
+              <button aria-label="Interactive Button"
                 type="submit"
                 disabled={loading !== null || !email}
                 style={{

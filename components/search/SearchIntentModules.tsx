@@ -73,7 +73,7 @@ export function IntentToActionBar({
             gap: 8,
         }}>
             {items.map(a => (
-                <Link
+                <Link aria-label="Navigation Link"
                     key={a.label}
                     href={a.href}
                     onClick={() => {
@@ -119,7 +119,7 @@ export function RelatedLinksModule({
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {links.map(link => (
-                    <Link
+                    <Link aria-label="Navigation Link"
                         key={link.href}
                         href={link.href}
                         style={{
@@ -196,7 +196,7 @@ export function ReadinessState({
                     {config.desc}
                 </div>
             </div>
-            <Link href={config.cta.href} style={{
+            <Link aria-label="Navigation Link" href={config.cta.href} style={{
                 padding: '6px 12px', borderRadius: 8, fontSize: 10, fontWeight: 800,
                 background: `${config.color}12`, border: `1px solid ${config.color}20`,
                 color: config.color, textDecoration: 'none', whiteSpace: 'nowrap',
@@ -234,7 +234,7 @@ export function SearchLandingHeader({
                     {breadcrumbs.map((bc, i) => (
                         <span key={bc.href} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                             {i > 0 && <span style={{ color: '#444' }}>›</span>}
-                            <Link href={bc.href} style={{ color: '#888', textDecoration: 'none' }}>
+                            <Link aria-label="Navigation Link" href={bc.href} style={{ color: '#888', textDecoration: 'none' }}>
                                 {bc.label}
                             </Link>
                         </span>

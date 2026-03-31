@@ -186,7 +186,7 @@ export default function ReactivationModal({
                             </p>
 
                             {/* Primary CTA */}
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={handleAvailable}
                                 style={{
                                     width: '100%',
@@ -215,7 +215,7 @@ export default function ReactivationModal({
                             </button>
 
                             {/* Secondary CTA */}
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={handleLater}
                                 style={{
                                     width: '100%',
@@ -242,7 +242,7 @@ export default function ReactivationModal({
                             </button>
 
                             {/* Dismiss */}
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={onDismiss}
                                 style={{
                                     width: '100%',

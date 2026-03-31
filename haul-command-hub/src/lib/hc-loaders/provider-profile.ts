@@ -5,6 +5,7 @@ import { countryName } from '@/lib/directory-helpers';
 /**
  * Provider profile loader — must read:
  *   - hc_provider_best_public_record (primary)
+ *   - hc_public_operators (real verified fallback)
  *   - hc_page_seo_contracts (SEO metadata)
  */
 
@@ -51,7 +52,45 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
     };
   }
 
-  // Fallback to hc_places
+  // Fallback to hc_public_operators (real verified data)
+  const { data: opData } = await sb.from('hc_public_operators')
+    .select('id, slug, name, entity_type, city, state_code, country_code, phone, email, claim_status')
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (opData) {
+    const freshness: HCFreshness = {
+      lastUpdatedAt: new Date().toISOString(),
+      updateLabel: 'Verified data',
+      sourceCount: 1,
+    };
+    return {
+      id: opData.id,
+      slug: opData.slug,
+      entityType: opData.entity_type ?? 'operator',
+      displayName: opData.name,
+      tagline: undefined,
+      description: undefined,
+      verificationState: opData.claim_status === 'claimed' ? 'claimed' : 'unverified',
+      contact: {
+        phoneE164: opData.phone ?? undefined,
+        phoneDisplay: opData.phone ?? undefined,
+        websiteUrl: undefined,
+        email: opData.email ?? undefined,
+      },
+      serviceAreaLabels: [opData.city, opData.state_code, countryName(opData.country_code)].filter(Boolean) as string[],
+      capabilities: opData.entity_type ? [opData.entity_type] : [],
+      badges: [],
+      freshness,
+      claimStatus: opData.claim_status === 'claimed' ? 'claimed' : 'unclaimed',
+      primaryActions: [
+        ...(opData.phone ? [{ id: 'call', label: 'Call', href: `tel:${opData.phone}`, type: 'call' as const, priority: 'primary' as const }] : []),
+        { id: 'claim', label: 'Claim Profile', href: `/claim?slug=${slug}`, type: 'claim' as const, priority: 'secondary' as const },
+      ],
+    };
+  }
+
+  // Last resort fallback to hc_places (infrastructure/legacy)
   const { data } = await sb.from('hc_places')
     .select('*')
     .eq('slug', slug)
@@ -60,7 +99,7 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
 
   if (!data) return null;
 
-  const freshness: HCFreshness = {
+  const fallbackFreshness: HCFreshness = {
     lastUpdatedAt: data.updated_at ?? new Date().toISOString(),
     updateLabel: data.updated_at ? `Updated ${timeSince(data.updated_at)}` : 'Recently added',
     sourceCount: 1,
@@ -83,7 +122,7 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
     serviceAreaLabels: [data.locality, data.admin1_code, countryName(data.country_code)].filter(Boolean) as string[],
     capabilities: data.surface_category_key ? [data.surface_category_key] : [],
     badges: [],
-    freshness,
+    freshness: fallbackFreshness,
     claimStatus: data.claim_status === 'claimed' ? 'claimed' : 'unclaimed',
     primaryActions: [
       ...(data.phone ? [{ id: 'call', label: 'Call', href: `tel:${data.phone}`, type: 'call' as const, priority: 'primary' as const }] : []),
@@ -104,12 +143,12 @@ export async function getProviderSeoContract(slug: string) {
 
 export async function getNearbyProviders(countryCode: string, category: string, excludeId: string, limit = 6) {
   const sb = supabaseServer();
-  const { data } = await sb.from('hc_places')
-    .select('id, slug, name, locality, admin1_code')
+  // Real operators from hc_public_operators
+  const { data } = await sb.from('hc_public_operators')
+    .select('id, slug, name, city, state_code')
     .eq('country_code', countryCode)
-    .eq('surface_category_key', category)
+    .eq('entity_type', category)
     .neq('id', excludeId)
-    .eq('status', 'published')
     .limit(limit);
   return data ?? [];
 }

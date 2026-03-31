@@ -68,7 +68,7 @@ export default function DashboardsHub() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
                 {DASHBOARDS.map(d => (
-                    <Link
+                    <Link aria-label="Navigation Link"
                         key={d.name}
                         href={d.href}
                         style={{

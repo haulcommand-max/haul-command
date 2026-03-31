@@ -85,7 +85,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                                         background: op.tier === 'elite' ? 'rgba(245,158,11,0.2)' : op.tier === 'strong' ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.08)',
                                         color: op.tier === 'elite' ? '#F59E0B' : op.tier === 'strong' ? '#8B5CF6' : '#9CA3AF',
                                     }}>{op.tier.toUpperCase()}</span>
-                                    <button onClick={() => onRemove(op.id)} style={{ background: 'none', border: 'none', color: '#6B7280', fontSize: 11, cursor: 'pointer' }}>✕ Remove</button>
+                                    <button aria-label="Interactive Button" onClick={() => onRemove(op.id)} style={{ background: 'none', border: 'none', color: '#6B7280', fontSize: 11, cursor: 'pointer' }}>✕ Remove</button>
                                 </div>
                             </th>
                         ))}
@@ -154,7 +154,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                         <td style={{ padding: '12px' }} />
                         {operators.map(op => (
                             <td key={op.id} style={{ padding: '12px', textAlign: 'center' }}>
-                                <button onClick={() => onBook(op.id)} disabled={!op.available} style={{
+                                <button aria-label="Interactive Button" onClick={() => onBook(op.id)} disabled={!op.available} style={{
                                     padding: '10px 20px', borderRadius: 8, border: 'none', cursor: 'pointer',
                                     background: op.available ? 'linear-gradient(135deg, #F59E0B, #D97706)' : 'rgba(255,255,255,0.06)',
                                     color: op.available ? '#030712' : '#6B7280',

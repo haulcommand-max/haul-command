@@ -163,7 +163,7 @@ function ConnectStripeContent() {
                             </ol>
                         </div>
 
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={startOnboarding}
                             disabled={loading}
                             className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-black"

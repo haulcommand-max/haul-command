@@ -101,7 +101,7 @@ export default async function CountryGlossaryPage({ params }: Props) {
 
             <div style={{ maxWidth: '960px', margin: '0 auto', padding: '2rem 1rem' }}>
                 <nav style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '1.5rem' }}>
-                    <Link href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Glossary</Link>
+                    <Link aria-label="Navigation Link" href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Glossary</Link>
                     <span style={{ margin: '0 8px' }}>›</span>
                     <span>{meta.name}</span>
                 </nav>
@@ -125,7 +125,7 @@ export default async function CountryGlossaryPage({ params }: Props) {
                         </h2>
                         <div style={{ display: 'grid', gap: '6px' }}>
                             {items.map((item, i) => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={`${item.concept_slug}-${i}`}
                                     href={`/glossary/${item.concept_slug}`}
                                     style={{
@@ -168,7 +168,7 @@ export default async function CountryGlossaryPage({ params }: Props) {
                             {meta.flag} {meta.name} terminology is being mapped.
                         </p>
                         <p style={{ fontSize: '0.9rem' }}>
-                            <Link href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Browse the global glossary →</Link>
+                            <Link aria-label="Navigation Link" href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Browse the global glossary →</Link>
                         </p>
                     </div>
                 )}
@@ -181,7 +181,7 @@ export default async function CountryGlossaryPage({ params }: Props) {
                         {Object.entries(COUNTRY_META)
                             .filter(([k]) => k !== code.toLowerCase())
                             .map(([k, v]) => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={k}
                                     href={`/glossary/country/${k}`}
                                     style={{

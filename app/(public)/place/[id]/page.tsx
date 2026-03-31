@@ -173,7 +173,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                     <div style={{ background: 'var(--m-bg, #060b12)', minHeight: '100dvh' }}>
                         {/* Back nav */}
                         <div style={{ padding: '12px var(--m-screen-pad, 16px) 0' }}>
-                            <Link href="/directory" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+                            <Link aria-label="Navigation Link" href="/directory" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--m-text-secondary, #c7ccd7)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                                     <polyline points="15 18 9 12 15 6" />
                                 </svg>
@@ -239,7 +239,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                             </div>
 
                             {/* Claim CTA */}
-                            <Link href="/claim" style={{
+                            <Link aria-label="Navigation Link" href="/claim" style={{
                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                                 width: '100%', padding: '16px 20px', borderRadius: 14,
                                 background: 'linear-gradient(135deg, #F1A91B, #f1c27b)',
@@ -286,7 +286,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
 
                         {/* Action links */}
                         <div style={{ padding: '0 var(--m-screen-pad, 16px)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                            <Link href="/directory" style={{
+                            <Link aria-label="Navigation Link" href="/directory" style={{
                                 padding: '14px 16px', borderRadius: 14,
                                 background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -294,7 +294,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                                 <div style={{ fontSize: 18, marginBottom: 4 }}>📖</div>
                                 <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>Browse Directory</div>
                             </Link>
-                            <Link href="/home" style={{
+                            <Link aria-label="Navigation Link" href="/home" style={{
                                 padding: '14px 16px', borderRadius: 14,
                                 background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -346,7 +346,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                             </div>
 
                             {/* Claim CTA */}
-                            <Link href="/claim"
+                            <Link aria-label="Navigation Link" href="/claim"
                                 className="block w-full text-center py-4 rounded-xl font-black text-base"
                                 style={{ background: 'linear-gradient(135deg, #F1A91B, #f1c27b)', color: '#000' }}>
                                 🔒 Is this you? Claim this profile →
@@ -362,11 +362,11 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
 
                             {/* Navigation */}
                             <div className="flex gap-4 mt-8">
-                                <Link href="/directory" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
+                                <Link aria-label="Navigation Link" href="/directory" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
                                     style={{ background: '#111', border: '1px solid #333', color: '#fff' }}>
                                     Browse Directory
                                 </Link>
-                                <Link href="/" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
+                                <Link aria-label="Navigation Link" href="/" className="flex-1 text-center py-3 rounded-xl font-bold text-sm"
                                     style={{ background: '#111', border: '1px solid #333', color: '#fff' }}>
                                     Home
                                 </Link>
@@ -595,7 +595,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                                             />
                                         </div>
                                         {completenessValue < 80 && isClaimed && (
-                                            <button className="mt-3 text-[10px] text-[#F1A91B] hover:text-[#f0b93a] font-bold uppercase tracking-wider">
+                                            <button aria-label="Interactive Button" className="mt-3 text-[10px] text-[#F1A91B] hover:text-[#f0b93a] font-bold uppercase tracking-wider">
                                                 + Add documents to boost score
                                             </button>
                                         )}
@@ -648,10 +648,10 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
 
                                 {/* Call to action buttons */}
                                 <div className="flex flex-col gap-2">
-                                    <button className="w-full h-14 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(241,169,27,0.15)] hover:shadow-[0_0_30px_rgba(241,169,27,0.3)] hover:-translate-y-0.5 focus:scale-[0.98]">
+                                    <button aria-label="Interactive Button" className="w-full h-14 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(241,169,27,0.15)] hover:shadow-[0_0_30px_rgba(241,169,27,0.3)] hover:-translate-y-0.5 focus:scale-[0.98]">
                                         Request Escort
                                     </button>
-                                    <button className="w-full h-12 flex items-center justify-center gap-2 bg-[#111] hover:bg-[#1a1a1a] border border-[#222] hover:border-[#333] text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all">
+                                    <button aria-label="Interactive Button" className="w-full h-12 flex items-center justify-center gap-2 bg-[#111] hover:bg-[#1a1a1a] border border-[#222] hover:border-[#333] text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all">
                                         <PhoneCall className="w-4 h-4 text-hc-subtle" />
                                         Click to Call
                                     </button>
@@ -852,7 +852,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                     <p className="text-sm text-[#888] mb-4 max-w-lg mx-auto">
                         Claim this listing to manage your profile, add photos, respond to reviews, and get priority placement in directory search results.
                     </p>
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={`/claim/${profile.claim_hash || id}`}
                         className="inline-block bg-[#F1A91B] text-black font-bold text-sm px-8 py-3 rounded-xl hover:bg-[#f0b93a] transition-all hover:scale-105"
                     >

@@ -9,9 +9,14 @@ export function getCountryConfig(slug: string): CountryConfig | undefined {
       slug: 'all',
       code: 'ALL',
       flag: '🌍',
-      continent: 'Global',
-      drivingDirection: 'right',
-      unitSystem: 'metric'
+      tier: 'A',
+      lang: 'en',
+      currency: 'USD',
+      units: 'metric',
+      terms: { pilot_car: 'Pilot Car', escort_vehicle: 'Escort Vehicle', oversize_load: 'Oversize Load', heavy_haul: 'Heavy Haul', wide_load: 'Wide Load', route_survey: 'Route Survey', superload: 'Superload', permit: 'Permit' },
+      regions: [],
+      cities: [],
+      equipment_focus: [],
     };
   }
   return COUNTRIES.find(c => c.slug === slug);
@@ -27,8 +32,9 @@ export function getAllCountrySlugs(): string[] {
 
 export async function getCountryPlaceCount(countryCode: string): Promise<number> {
   const sb = supabaseServer();
-  const { count } = await sb.from('hc_places').select('id', { count: 'exact', head: true })
-    .eq('country_code', countryCode.toUpperCase()).eq('status', 'published');
+  // Real operators from hc_public_operators
+  const { count } = await sb.from('hc_public_operators').select('id', { count: 'exact', head: true })
+    .eq('country_code', countryCode.toUpperCase());
   return count ?? 0;
 }
 
@@ -41,11 +47,10 @@ export async function getMarketMaturity(countryCode: string): Promise<MarketMatu
 
 export async function getCountryPlaces(countryCode: string, limit = 50) {
   const sb = supabaseServer();
-  const { data } = await sb.from('hc_places')
-    .select('id, slug, name, surface_category_key, locality, admin1_code, phone, claim_status, updated_at')
+  // Real operators from hc_public_operators
+  const { data } = await sb.from('hc_public_operators')
+    .select('id, slug, name, entity_type, city, state_code, claim_status')
     .eq('country_code', countryCode.toUpperCase())
-    .eq('status', 'published')
-    .order('updated_at', { ascending: false })
     .limit(limit);
   return data ?? [];
 }

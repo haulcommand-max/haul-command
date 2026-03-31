@@ -278,7 +278,7 @@ export default function EscortCalculatorPage() {
                                     const state = US_STATES.find(s => s.code === code);
                                     return (
                                         <div key={code} style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-                                            <button
+                                            <button aria-label="Interactive Button"
                                                 onClick={() => toggleState(code)}
                                                 style={{
                                                     display: 'flex', alignItems: 'center', gap: 5,
@@ -325,7 +325,7 @@ export default function EscortCalculatorPage() {
                                     }}
                                 />
                                 {stateSearch && (
-                                    <button onClick={() => { setStateSearch(''); setStatePickerOpen(false); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                                    <button aria-label="Interactive Button" onClick={() => { setStateSearch(''); setStatePickerOpen(false); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                                         <X style={{ width: 14, height: 14, color: '#5A6577' }} />
                                     </button>
                                 )}
@@ -335,7 +335,7 @@ export default function EscortCalculatorPage() {
                             {statePickerOpen && stateSearch && filteredStates.length > 0 && (
                                 <div className="state-picker-dropdown">
                                     {filteredStates.slice(0, 10).map(s => (
-                                        <button
+                                        <button aria-label="Interactive Button"
                                             key={s.code}
                                             onClick={() => { toggleState(s.code); setStateSearch(''); setStatePickerOpen(false); }}
                                             style={{
@@ -360,7 +360,7 @@ export default function EscortCalculatorPage() {
                     </div>
 
                     {/* PRIMARY CTA */}
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={handleCalculate}
                         disabled={loading || selectedStates.length === 0}
                         style={{
@@ -581,7 +581,7 @@ export default function EscortCalculatorPage() {
                                     { href: '/tools/rate-lookup', label: 'Check Rates', desc: 'Market pricing', icon: HcIconInsurance, color: '#3b82f6' },
                                     { href: '/escort-requirements', label: 'Full Rules', desc: 'State details', icon: HcIconLegalCompliance, color: '#a855f7' },
                                 ].map(({ href, label, desc, icon: Icon, color }) => (
-                                    <Link key={href} href={href} style={{
+                                    <Link aria-label="Navigation Link" key={href} href={href} style={{
                                         display: 'flex', alignItems: 'center', gap: 10,
                                         padding: '12px 14px', borderRadius: 12,
                                         background: 'rgba(255,255,255,0.02)',

@@ -130,7 +130,7 @@ export default async function CountryRatePage({ params }: Props) {
             <h2 className="text-xl font-bold mb-4">Rates by Region</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {data.regions.map((region) => (
-                <Link
+                <Link aria-label="Navigation Link"
                   key={region.code}
                   href={`/rates/${country}/${region.code}`}
                   className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
@@ -143,10 +143,10 @@ export default async function CountryRatePage({ params }: Props) {
           </div>
 
           <div className="flex gap-4">
-            <Link href="/loads" className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+            <Link aria-label="Navigation Link" href="/loads" className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
               Post a Load in {data.name}
             </Link>
-            <Link href={`/directory/${country}`} className="px-6 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
+            <Link aria-label="Navigation Link" href={`/directory/${country}`} className="px-6 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
               Find Operators in {data.name}
             </Link>
           </div>

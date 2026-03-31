@@ -66,7 +66,7 @@ export default function ToolsSidebar({ currentPath }: ToolsSidebarProps) {
                 {filteredTools.map((tool) => {
                     const Icon = tool.icon;
                     return (
-                        <Link
+                        <Link aria-label="Navigation Link"
                             key={tool.href}
                             href={tool.href}
                             className="block p-4 rounded-lg border border-transparent hover:border-hc-industrial-charcoal hover:bg-hc-elevated transition-all group"
@@ -90,7 +90,7 @@ export default function ToolsSidebar({ currentPath }: ToolsSidebarProps) {
             </div>
 
             <div className="mt-6 pt-6 border-t border-hc-industrial-charcoal">
-                <Link href="/loads" className="w-full flex items-center justify-between px-4 py-3 bg-hc-bg rounded-lg border border-hc-industrial-charcoal hover:border-hc-primary-gold transition-all group">
+                <Link aria-label="Navigation Link" href="/loads" className="w-full flex items-center justify-between px-4 py-3 bg-hc-bg rounded-lg border border-hc-industrial-charcoal hover:border-hc-primary-gold transition-all group">
                     <span className="text-sm font-bold text-hc-text">View Live Load Board</span>
                     <ChevronRight className="w-4 h-4 text-hc-primary-gold group-hover:translate-x-1 transition-transform" />
                 </Link>

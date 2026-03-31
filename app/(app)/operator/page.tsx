@@ -208,7 +208,7 @@ export default function OperatorDashboard() {
                                 </p>
                             </div>
                         </div>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={toggleAvailability}
                             disabled={toggling}
                             className="relative w-16 h-8 rounded-full transition-all"

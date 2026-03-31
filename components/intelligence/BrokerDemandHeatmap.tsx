@@ -89,7 +89,7 @@ export default function BrokerDemandHeatmap() {
             {/* Tab bar */}
             <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4, width: 'fit-content' }}>
                 {tabs.map(t => (
-                    <button key={t.id} onClick={() => setActiveView(t.id)}
+                    <button aria-label="Interactive Button" key={t.id} onClick={() => setActiveView(t.id)}
                         style={{
                             display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 700,
                             background: activeView === t.id ? 'rgba(241,169,27,0.15)' : 'transparent',

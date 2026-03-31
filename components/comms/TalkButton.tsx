@@ -97,7 +97,7 @@ export function TalkButton({
                     50% { box-shadow: 0 0 48px rgba(34,197,94,0.8), 0 0 96px rgba(34,197,94,0.3); }
                 }
             `}</style>
-            <button
+            <button aria-label="Interactive Button"
                 onPointerDown={handlePointerDown}
                 onPointerUp={handlePointerUp}
                 onPointerLeave={handlePointerUp}

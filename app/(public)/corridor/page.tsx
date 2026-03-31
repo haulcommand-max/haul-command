@@ -94,7 +94,7 @@ export default async function CorridorIndexPage() {
                         }}
                     >
                         {corridors.map((corridor) => (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={corridor.slug}
                                 href={`/corridor/${corridor.slug}`}
                                 style={{

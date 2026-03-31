@@ -37,7 +37,7 @@ export function ReporterDial() {
     return (
         <>
             {/* FAB Button */}
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setIsOpen(true)}
                 className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl transition-all z-50 flex items-center justify-center
                     ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 bg-[#ffb400] text-black hover:bg-yellow-400 hover:scale-105'}`}
@@ -59,7 +59,7 @@ export function ReporterDial() {
                             <p className="text-[10px] text-green-400 font-bold uppercase tracking-widest">● Online — Claude</p>
                         </div>
                     </div>
-                    <button onClick={() => setIsOpen(false)} className="text-[#666] hover:text-white transition-colors">
+                    <button aria-label="Interactive Button" onClick={() => setIsOpen(false)} className="text-[#666] hover:text-white transition-colors">
                         <X size={20} />
                     </button>
                 </div>
@@ -102,7 +102,7 @@ export function ReporterDial() {
                         placeholder="Ask anything..."
                         className="flex-1 bg-[#111] border border-[#222] rounded-lg px-3 py-2 text-xs text-white placeholder-[#444] focus:outline-none focus:border-[#ffb400]/40"
                     />
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={sendMessage}
                         disabled={loading || !input.trim()}
                         className="bg-[#ffb400] text-black rounded-lg px-3 py-2 disabled:opacity-30 hover:bg-yellow-400 transition-colors"

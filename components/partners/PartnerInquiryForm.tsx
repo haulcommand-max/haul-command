@@ -154,7 +154,7 @@ export function PartnerInquiryForm({ defaultInterest = '' }: { defaultInterest?:
         <p className="text-red-400 text-sm">{errorMsg}</p>
       )}
 
-      <button
+      <button aria-label="Interactive Button"
         type="submit"
         disabled={status === 'submitting'}
         className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors disabled:opacity-50"

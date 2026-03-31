@@ -133,10 +133,10 @@ export default function LiveDispatchPage() {
                 <h3 className="font-bold text-red-400 mb-1">Route Interference Detected</h3>
                 <p className="text-sm text-red-200/80 mb-3">Weather delay triggering automatic rerouting prompts for 3 active loads near Dallas.</p>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold rounded-lg hover:bg-red-500/30">
+                  <button aria-label="Interactive Button" className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold rounded-lg hover:bg-red-500/30">
                     Acknowledge
                   </button>
-                  <button className="px-3 py-1 text-red-300 text-xs font-bold hover:text-white">
+                  <button aria-label="Interactive Button" className="px-3 py-1 text-red-300 text-xs font-bold hover:text-white">
                     View Impact
                   </button>
                 </div>

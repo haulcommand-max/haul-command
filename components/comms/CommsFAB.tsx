@@ -57,7 +57,7 @@ export function CommsFAB({
     // Collapsed FAB
     if (!expanded) {
         return (
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setExpanded(true)}
                 style={{
                     position: 'fixed',
@@ -150,7 +150,7 @@ export function CommsFAB({
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <StatusBanner status={status} compact />
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setExpanded(false)}
                         style={{
                             padding: '4px 8px',
@@ -209,7 +209,7 @@ export function CommsFAB({
                 }}
             >
                 <EmergencyBroadcast onEmergency={onEmergency} disabled={disabled} />
-                <button
+                <button aria-label="Interactive Button"
                     onClick={onLeave}
                     style={{
                         width: '100%',

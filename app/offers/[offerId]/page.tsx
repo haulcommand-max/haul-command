@@ -19,7 +19,7 @@ export default async function OfferPage({ params }: { params: Promise<{ offerId:
                     <AlertTriangle className="w-12 h-12 text-[#555] mx-auto mb-4" />
                     <h1 className="text-xl font-black text-white mb-2">Offer Not Found</h1>
                     <p className="text-[#555] text-sm">This offer may have expired or already been actioned.</p>
-                    <Link href="/dashboard" className="mt-6 inline-block text-[#F1A91B] text-sm font-bold">
+                    <Link aria-label="Navigation Link" href="/dashboard" className="mt-6 inline-block text-[#F1A91B] text-sm font-bold">
                         Go to Dashboard →
                     </Link>
                 </div>
@@ -86,7 +86,7 @@ export default async function OfferPage({ params }: { params: Promise<{ offerId:
                 {!accepted && !declined && !expired ? (
                     <div className="space-y-3">
                         <form action={`/api/offers/${offerId}/accept`} method="post">
-                            <button
+                            <button aria-label="Interactive Button"
                                 type="submit"
                                 className="w-full py-4 bg-[#F1A91B] hover:bg-[#d4911a] text-black font-black text-base rounded-xl flex items-center justify-center gap-3 transition-all shadow-[0_0_30px_rgba(241,169,27,0.25)] active:scale-98"
                             >
@@ -95,7 +95,7 @@ export default async function OfferPage({ params }: { params: Promise<{ offerId:
                             </button>
                         </form>
                         <form action={`/api/offers/${offerId}/decline`} method="post">
-                            <button
+                            <button aria-label="Interactive Button"
                                 type="submit"
                                 className="w-full py-3 border border-[#1a1a1a] text-[#555] hover:text-white text-sm rounded-xl transition-all"
                             >

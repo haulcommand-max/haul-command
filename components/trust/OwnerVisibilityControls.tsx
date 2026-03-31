@@ -81,7 +81,7 @@ function ToggleSwitch({
     disabled?: boolean;
 }) {
     return (
-        <button
+        <button aria-label="Interactive Button"
             type="button"
             role="switch"
             aria-checked={checked}

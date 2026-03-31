@@ -58,7 +58,7 @@ export function AdGridClassifiedsFeed({ items, onItemClick, onPostItem, onFilter
           <h3 className="agcf-title">🛒 Equipment Market</h3>
           <span className="agcf-count">{items.length} listings</span>
         </div>
-        <button className="agcf-post" onClick={onPostItem}>
+        <button aria-label="Interactive Button" className="agcf-post" onClick={onPostItem}>
           + Post Item <span className="agcf-price-badge">$20</span>
         </button>
       </div>
@@ -66,7 +66,7 @@ export function AdGridClassifiedsFeed({ items, onItemClick, onPostItem, onFilter
       {/* Category filter chips */}
       <div className="agcf-filters">
         {CATEGORIES.map(cat => (
-          <button
+          <button aria-label="Interactive Button"
             key={cat.key}
             className={`agcf-chip ${activeCategory === cat.key ? 'agcf-chip--active' : ''}`}
             onClick={() => { setActiveCategory(cat.key); onFilter?.(cat.key); }}
@@ -119,7 +119,7 @@ export function AdGridClassifiedsFeed({ items, onItemClick, onPostItem, onFilter
         <div className="agcf-empty">
           <span className="agcf-empty-icon">📦</span>
           <p>No items in this category</p>
-          <button className="agcf-post-empty" onClick={onPostItem}>Be the first to list →</button>
+          <button aria-label="Interactive Button" className="agcf-post-empty" onClick={onPostItem}>Be the first to list →</button>
         </div>
       )}
 

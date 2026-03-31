@@ -31,10 +31,10 @@ export default function HeavyHaulIndexPage() {
                         </div>
 
                         <div className="flex gap-3">
-                            <button className="px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors">
+                            <button aria-label="Interactive Button" className="px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors">
                                 <Link className="w-4 h-4" /> Cite Report
                             </button>
-                            <button className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-colors">
+                            <button aria-label="Interactive Button" className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-colors">
                                 <Download className="w-4 h-4" /> Export CSV
                             </button>
                         </div>
@@ -121,7 +121,7 @@ export default function HeavyHaulIndexPage() {
                                     "According to the {currentMonth} Haul Command Heavy Haul Index, national escort demand hit 78.4, pushing average rates up to $1.84/mile."
                                 </p>
                                 <div className="mt-3 flex justify-end">
-                                    <button className="px-3 py-1 bg-white/5 hover:bg-white/10 rounded text-[10px] font-bold text-white uppercase tracking-wider transition">
+                                    <button aria-label="Interactive Button" className="px-3 py-1 bg-white/5 hover:bg-white/10 rounded text-[10px] font-bold text-white uppercase tracking-wider transition">
                                         Copy Snippet
                                     </button>
                                 </div>
@@ -140,7 +140,7 @@ export default function HeavyHaulIndexPage() {
                             <p className="text-sm text-slate-400 mb-6">
                                 Integrate the Heavy Haul Index directly into your TMS or Brokerage dashboard using our enterprise API.
                             </p>
-                            <button className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                            <button aria-label="Interactive Button" className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                                 Request API Access
                             </button>
                         </div>

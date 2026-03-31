@@ -144,8 +144,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className="dark">
             <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                <Link aria-label="Navigation Link" rel="preconnect" href="https://fonts.googleapis.com" />
+                <Link aria-label="Navigation Link" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
@@ -212,26 +212,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     })
                 }} />
                 {/* OpenSearch — Browser Search Integration */}
-                <link rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
+                <Link aria-label="Navigation Link" rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
                 {/* Inbound Authority Machine — Tracking Pixels */}
                 <AnalyticsProvider />
             </head>
             <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
                 <RoleProvider>
-                <SmartAppBanner />
-                <PostHogProvider>
-                    {children}
-                </PostHogProvider>
+                    <SmartAppBanner />
+                    <PostHogProvider>
+                        {children}
+                    </PostHogProvider>
 
-                <ServiceWorkerRegister />
-                <A2HSPrompt />
-                <HeartbeatMount />
-                <FastWinContainer />
-                <NativeBootstrap />
-                <Analytics />
-                <SpeedInsights />
-                <AuthStatusBanner />
-                <SessionDNATracker />
+                    <ServiceWorkerRegister />
+                    <A2HSPrompt />
+                    <HeartbeatMount />
+                    <FastWinContainer />
+                    <NativeBootstrap />
+                    <Analytics />
+                    <SpeedInsights />
+                    <AuthStatusBanner />
+                    <SessionDNATracker />
                 </RoleProvider>
             </body>
         </html>

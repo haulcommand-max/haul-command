@@ -98,7 +98,7 @@ export default function ProfileFeaturedPage() {
                     <p className="font-semibold mb-3">Daily Spend Cap</p>
                     <div className="flex gap-2">
                         {DAILY_CAPS.map((cap) => (
-                            <button
+                            <button aria-label="Interactive Button"
                                 key={cap}
                                 onClick={() => setDailyCap(cap)}
                                 className={`flex-1 py-2 rounded-xl border text-sm font-bold transition-all ${dailyCap === cap
@@ -115,7 +115,7 @@ export default function ProfileFeaturedPage() {
                     </p>
                 </div>
 
-                <button
+                <button aria-label="Interactive Button"
                     onClick={activate}
                     disabled={submitting || !qualifies}
                     className="w-full py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 text-white font-black text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"

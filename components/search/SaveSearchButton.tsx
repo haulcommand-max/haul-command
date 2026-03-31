@@ -90,7 +90,7 @@ export default function SaveSearchButton({
 
     return (
         <div className="relative">
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setShowConfig(!showConfig)}
                 className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
             >
@@ -104,7 +104,7 @@ export default function SaveSearchButton({
                         <label className="block text-xs text-slate-400 mb-1.5 font-medium">Alert frequency</label>
                         <div className="grid grid-cols-3 gap-1.5">
                             {(['instant', 'daily_digest', 'weekly_digest'] as AlertFrequency[]).map((f) => (
-                                <button
+                                <button aria-label="Interactive Button"
                                     key={f}
                                     onClick={() => setFrequency(f)}
                                     className={`px-2 py-1.5 rounded-md text-xs font-medium transition-colors ${frequency === f
@@ -122,7 +122,7 @@ export default function SaveSearchButton({
                         <label className="block text-xs text-slate-400 mb-1.5 font-medium">Receive via</label>
                         <div className="grid grid-cols-3 gap-1.5">
                             {(['push', 'email', 'both'] as AlertChannel[]).map((c) => (
-                                <button
+                                <button aria-label="Interactive Button"
                                     key={c}
                                     onClick={() => setChannel(c)}
                                     className={`px-2 py-1.5 rounded-md text-xs font-medium transition-colors capitalize ${channel === c
@@ -136,7 +136,7 @@ export default function SaveSearchButton({
                         </div>
                     </div>
 
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={handleSave}
                         disabled={saving}
                         className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-slate-900 font-bold px-4 py-2.5 rounded-lg transition-colors text-sm"

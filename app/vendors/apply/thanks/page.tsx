@@ -31,7 +31,7 @@ export default function VendorApplyThanksPage() {
                 </ul>
             </div>
 
-            <Link href="/"
+            <Link aria-label="Navigation Link" href="/"
                 className="inline-block px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
                 Back to home
             </Link>

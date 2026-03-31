@@ -35,7 +35,7 @@ export function QuickCallBar({ onSend, disabled = false, lastReceivedType }: Qui
                 const isHighlighted = lastReceivedType === type;
 
                 return (
-                    <button
+                    <button aria-label="Interactive Button"
                         key={type}
                         onClick={() => onSend(type)}
                         disabled={disabled}

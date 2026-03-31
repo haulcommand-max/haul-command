@@ -49,14 +49,14 @@ export default function ClaimBanner({
                             Claim &amp; verify to unlock premium features
                         </p>
                     </div>
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={claimUrl}
                         onClick={handleClick}
                         className="shrink-0 px-5 py-2 bg-white hover:bg-slate-50 text-amber-700 font-bold text-sm rounded-lg transition-colors shadow-md"
                     >
                         Claim Now
                     </Link>
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setDismissed(true)}
                         className="text-amber-100/60 hover:text-white text-xs shrink-0 transition-colors"
                         aria-label="Dismiss"
@@ -96,7 +96,7 @@ export default function ClaimBanner({
                     </div>
                 </div>
 
-                <Link
+                <Link aria-label="Navigation Link"
                     href={claimUrl}
                     onClick={handleClick}
                     className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors text-sm group"
@@ -116,7 +116,7 @@ export default function ClaimBanner({
                 <span className="font-semibold text-white">Is this your business?</span>{' '}
                 Claim to verify, update details, and boost your rank.
             </p>
-            <Link
+            <Link aria-label="Navigation Link"
                 href={claimUrl}
                 onClick={handleClick}
                 className="shrink-0 px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs rounded-lg transition-colors"

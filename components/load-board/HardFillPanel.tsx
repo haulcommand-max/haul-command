@@ -57,7 +57,7 @@ export function HardFillPanel({ label, score, load_id, top_reasons = [], recomme
             {recommended_fixes.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
                     {recommended_fixes.map(fix => (
-                        <button
+                        <button aria-label="Interactive Button"
                             key={fix.action}
                             onClick={() => handleFix(fix.action)}
                             className="text-xs px-2 py-1 bg-hc-primary-gold/20 hover:bg-hc-primary-gold/30 text-hc-primary-gold rounded border border-hc-primary-gold/30 transition-colors"

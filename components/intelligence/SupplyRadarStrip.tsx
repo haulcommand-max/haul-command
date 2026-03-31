@@ -250,7 +250,7 @@ export default function SupplyRadarStrip({
                                 {criticalCount} critical
                             </span>
                         )}
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href="/corridor"
                             onClick={() => trackEvent('directory_scroll_cta_shown', { surface })}
                             style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }}
@@ -266,7 +266,7 @@ export default function SupplyRadarStrip({
                         const color = scarcityColor(c.scarcityIndex);
                         const flag = FLAG_MAP[c.countryCode] || '🌍';
                         return (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={c.slug}
                                 href={c.countryCode === 'US' ? `/corridors/${c.slug}` : `/directory/${c.countryCode.toLowerCase()}`}
                                 onClick={() => trackEvent('corridor_viewed', { corridor_slug: c.slug, country: c.countryCode, surface })}
@@ -330,7 +330,7 @@ export default function SupplyRadarStrip({
                                 {criticalCount > 3 && ` +${criticalCount - 3} more`}
                             </strong>
                             .{' '}
-                            <Link href="/onboarding/start?role=escort" style={{ color: '#f87171', fontWeight: 700, textDecoration: 'underline' }}>
+                            <Link aria-label="Navigation Link" href="/onboarding/start?role=escort" style={{ color: '#f87171', fontWeight: 700, textDecoration: 'underline' }}>
                                 Escort operators: claim these corridors
                             </Link>
                         </span>

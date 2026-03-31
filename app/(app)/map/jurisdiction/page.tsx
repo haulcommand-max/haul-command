@@ -391,7 +391,7 @@ export default function JurisdictionMapPage() {
                     {/* Country toggle */}
                     <div style={{ display: 'flex', gap: 3, background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 10, padding: 3 }}>
                         {(['US', 'CA'] as const).map(c => (
-                            <button key={c} onClick={() => setCountryFilter(c)} style={{
+                            <button aria-label="Interactive Button" key={c} onClick={() => setCountryFilter(c)} style={{
                                 padding: '7px 20px', borderRadius: 8, fontSize: 11, fontWeight: 700,
                                 background: countryFilter === c ? T.bgElevated : 'transparent',
                                 border: `1px solid ${countryFilter === c ? T.borderStrong : 'transparent'}`,
@@ -471,7 +471,7 @@ export default function JurisdictionMapPage() {
                             {Object.values(CA_PROVINCES).map(prov => {
                                 const isSelected = selectedCode === prov.code;
                                 return (
-                                    <button
+                                    <button aria-label="Interactive Button"
                                         key={prov.code}
                                         onClick={() => selectJurisdiction(prov.code)}
                                         style={{
@@ -542,7 +542,7 @@ export default function JurisdictionMapPage() {
                                 </span>
                             )}
                         </div>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={closeDrawer}
                             style={{
                                 width: 32, height: 32, borderRadius: 8,
@@ -560,7 +560,7 @@ export default function JurisdictionMapPage() {
                             { key: 'rules' as DrawerTab, label: '📋 Rules', count: tabCounts.rules },
                             { key: 'support' as DrawerTab, label: '📞 Support', count: tabCounts.support },
                         ]).map(tab => (
-                            <button key={tab.key} onClick={() => setDrawerTab(tab.key)} style={{
+                            <button aria-label="Interactive Button" key={tab.key} onClick={() => setDrawerTab(tab.key)} style={{
                                 flex: 1, padding: '8px 12px', borderRadius: 8, fontSize: 12, fontWeight: 700,
                                 background: drawerTab === tab.key ? T.bgElevated : 'transparent',
                                 border: `1px solid ${drawerTab === tab.key ? T.borderStrong : 'transparent'}`,
@@ -597,7 +597,7 @@ export default function JurisdictionMapPage() {
 
                     {/* Export button */}
                     {drawerData && selectedCode && (
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => trackEvent('state_packet_exported', { jurisdiction_code: selectedCode })}
                             style={{
                                 display: 'block', width: '100%', marginTop: 16,

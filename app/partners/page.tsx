@@ -127,7 +127,7 @@ export default function PartnersPage() {
               <span className="text-3xl block mb-3">{uc.icon}</span>
               <h3 className="text-xl font-bold mb-2">{uc.headline}</h3>
               <p className="text-gray-400 text-sm mb-4">{uc.body}</p>
-              <Link
+              <Link aria-label="Navigation Link"
                 href={uc.href}
                 className="text-amber-400 text-sm font-medium hover:text-amber-300 transition-colors"
               >

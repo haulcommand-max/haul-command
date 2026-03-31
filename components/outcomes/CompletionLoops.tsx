@@ -121,7 +121,7 @@ export function ActionResult({
                     </div>
                 </div>
                 {onDismiss && (
-                    <button onClick={onDismiss} style={{
+                    <button aria-label="Interactive Button" onClick={onDismiss} style={{
                         width: 28, height: 28, borderRadius: 8, border: 'none',
                         background: 'rgba(255,255,255,0.05)', color: '#888',
                         cursor: 'pointer', fontSize: 14, fontWeight: 700,
@@ -197,7 +197,7 @@ export function NextStepEngine({
     return (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {steps.map(step => (
-                <Link
+                <Link aria-label="Navigation Link"
                     key={step.label}
                     href={step.href}
                     onClick={() => {
@@ -258,7 +258,7 @@ export function CompletionToast({
             <span style={{ flex: 1, fontSize: 13, fontWeight: 700, color: '#fff' }}>
                 {message}
             </span>
-            <button onClick={() => { setVisible(false); onClose?.(); }} style={{
+            <button aria-label="Interactive Button" onClick={() => { setVisible(false); onClose?.(); }} style={{
                 background: 'none', border: 'none', color: '#888', cursor: 'pointer',
                 fontSize: 14, fontWeight: 700, padding: 4,
             }}>

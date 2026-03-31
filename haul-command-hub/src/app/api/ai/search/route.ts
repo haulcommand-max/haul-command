@@ -11,7 +11,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  * Full-stack semantic search across the Haul Command knowledge graph:
  *   - Dictionary terms & glossary (768-dim embeddings)
  *   - Regulations database (768-dim embeddings)
- *   - Provider directory
+ *   - Provider directory (canonical: directory_listings)
  *   - Load board
  * 
  * Architecture:
@@ -119,7 +119,6 @@ async function searchRegulations(
   country?: string,
 ): Promise<SearchResult[]> {
   try {
-    // Custom RPC for regulations search (if available)
     const { data, error } = await supabase.rpc('match_regulations' as any, {
       query_embedding: `[${embedding.join(',')}]`,
       match_threshold: threshold,
@@ -153,11 +152,11 @@ async function keywordSearchProviders(
   country?: string,
 ): Promise<SearchResult[]> {
   try {
+    // Real operators from hc_public_operators (verified data)
     let q = supabase
-      .from('hc_places')
-      .select('id, slug, name, locality, admin1_code, country_code, surface_category_key, hc_trust_number')
-      .or(`name.ilike.%${query}%,locality.ilike.%${query}%,surface_category_key.ilike.%${query}%`)
-      .eq('status', 'published')
+      .from('hc_public_operators')
+      .select('id, slug, name, city, state_code, country_code, entity_type')
+      .or(`name.ilike.%${query}%,city.ilike.%${query}%,entity_type.ilike.%${query}%`)
       .limit(limit);
 
     if (country) {
@@ -171,13 +170,12 @@ async function keywordSearchProviders(
       id: row.id,
       type: 'provider' as const,
       title: row.name,
-      snippet: `${row.surface_category_key?.replace(/_/g, ' ')} in ${row.locality}, ${row.admin1_code} (${row.country_code})`,
-      score: 0.7, // Keyword match gets base score
+      snippet: `${row.entity_type?.replace(/_/g, ' ')} in ${row.city}, ${row.state_code} (${row.country_code})`,
+      score: 0.7,
       url: `/place/${row.slug}`,
       metadata: {
-        hcTrustNumber: row.hc_trust_number,
         country: row.country_code,
-        state: row.admin1_code,
+        state: row.state_code,
       },
     }));
   } catch {

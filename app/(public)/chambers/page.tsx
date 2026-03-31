@@ -71,7 +71,7 @@ export default async function ChambersLandingPage() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                         {US_STATES.map(code => (
-                            <Link href={`/chambers/${code.toLowerCase()}`} key={code}
+                            <Link aria-label="Navigation Link" href={`/chambers/${code.toLowerCase()}`} key={code}
                                 className="group p-4 bg-slate-800/30 hover:bg-slate-800/80 border border-slate-700 hover:border-amber-500/50 rounded-xl transition-all">
                                 <div className="font-bold text-white group-hover:text-amber-400 transition-colors">
                                     {code}
@@ -99,7 +99,7 @@ export default async function ChambersLandingPage() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {CA_PROVINCES.map(code => (
-                            <Link href={`/chambers/${code.toLowerCase()}`} key={code}
+                            <Link aria-label="Navigation Link" href={`/chambers/${code.toLowerCase()}`} key={code}
                                 className="group p-4 bg-slate-800/30 hover:bg-slate-800/80 border border-slate-700 hover:border-amber-500/50 rounded-xl transition-all">
                                 <div className="font-bold text-white group-hover:text-amber-400 transition-colors">
                                     {code}
@@ -115,7 +115,7 @@ export default async function ChambersLandingPage() {
 
                 {/* Internal Link Footer */}
                 <div className="border-t border-slate-800 pt-8 text-sm text-slate-500">
-                    <p>Looking for specific regulations? Check our <Link href="/tools/state-requirements" className="text-amber-500 hover:underline">State Requirements Tool</Link> or browse <Link href="/map" className="text-amber-500 hover:underline">the jurisdiction map</Link>.</p>
+                    <p>Looking for specific regulations? Check our <Link aria-label="Navigation Link" href="/tools/state-requirements" className="text-amber-500 hover:underline">State Requirements Tool</Link> or browse <Link aria-label="Navigation Link" href="/map" className="text-amber-500 hover:underline">the jurisdiction map</Link>.</p>
                 </div>
             </div>
         </main>

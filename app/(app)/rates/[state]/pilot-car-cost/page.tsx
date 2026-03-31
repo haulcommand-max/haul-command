@@ -45,7 +45,7 @@ export default function StateRatePage({ params }: any) {
         <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '2rem 1rem' }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link href="/rates" style={{ color: '#6b7280', textDecoration: 'none' }}>Rates</Link>
+                    <Link aria-label="Navigation Link" href="/rates" style={{ color: '#6b7280', textDecoration: 'none' }}>Rates</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
                     <span style={{ color: '#d1d5db' }}>{name}</span>
                 </nav>
@@ -107,8 +107,8 @@ export default function StateRatePage({ params }: any) {
 
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, padding: '2rem', textAlign: 'center' }}>
                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Get real-time rate intelligence</h3>
-                    <Link href="/tools/rate-lookup" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#10b981,#059669)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none', marginRight: 8 }}>Free Rate Lookup →</Link>
-                    <Link href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post a Load →</Link>
+                    <Link aria-label="Navigation Link" href="/tools/rate-lookup" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#10b981,#059669)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none', marginRight: 8 }}>Free Rate Lookup →</Link>
+                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post a Load →</Link>
                 </div>
             </div>
         </div>

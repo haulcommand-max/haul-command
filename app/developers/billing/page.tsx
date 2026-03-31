@@ -10,7 +10,7 @@ export default function BillingPage() {
     return (
         <div className="max-w-4xl mx-auto py-12 px-6">
             <div className="mb-10">
-                <Link
+                <Link aria-label="Navigation Link"
                     href="/developers"
                     className="text-amber-500 hover:text-amber-400 font-medium text-sm transition-colors mb-4 inline-block"
                 >
@@ -105,7 +105,7 @@ export default function BillingPage() {
                     </div>
                     <p className="text-sm text-neutral-500 mt-3 flex justify-between">
                         <span>Returns daily rollup hashes and batched quantities.</span>
-                        <Link href="/developers/authentication" className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4">Read about Auth headers</Link>
+                        <Link aria-label="Navigation Link" href="/developers/authentication" className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4">Read about Auth headers</Link>
                     </p>
                 </section>
             </div>

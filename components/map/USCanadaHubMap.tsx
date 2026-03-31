@@ -177,7 +177,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                         </div>
                     ))}
                 </div>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => setShowCorridors(v => !v)}
                     className={cn(
                         "flex items-center gap-2 px-3 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all",
@@ -403,7 +403,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                     {Object.entries(STATE_NAMES).map(([code, _name]) => {
                         const heat = getHeat(code);
                         return (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={code}
                                 href={`/directory/us/${code.toLowerCase()}`}
                                 className={cn(

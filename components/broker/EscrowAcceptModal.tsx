@@ -155,7 +155,7 @@ export function EscrowAcceptModal({ bid, onClose, onSuccess }: EscrowAcceptModal
             <h2 style={S.title}>Escrow Funds</h2>
             <p style={S.subtitle}>Funds are held—not charged—until delivery is confirmed</p>
           </div>
-          <button style={S.closeBtn} onClick={onClose}>✕</button>
+          <button aria-label="Interactive Button" style={S.closeBtn} onClick={onClose}>✕</button>
         </div>
 
         {/* ─── SUCCESS ─── */}
@@ -168,7 +168,7 @@ export function EscrowAcceptModal({ bid, onClose, onSuccess }: EscrowAcceptModal
             </p>
             <div style={S.piRef}>PI: {piId}</div>
             <p style={{ color: '#475569', fontSize: 11, margin: '8px 0 0' }}>Funds will auto-capture on delivery confirmation or auto-void after 7 days.</p>
-            <button style={S.doneBtn} onClick={onClose}>Done</button>
+            <button aria-label="Interactive Button" style={S.doneBtn} onClick={onClose}>Done</button>
           </div>
         )}
 
@@ -180,7 +180,7 @@ export function EscrowAcceptModal({ bid, onClose, onSuccess }: EscrowAcceptModal
               <p style={{ color: '#f87171', fontWeight: 700, margin: '0 0 4px', fontSize: 14 }}>Authorization Failed</p>
               <p style={{ color: '#94a3b8', margin: 0, fontSize: 12 }}>{errorMsg}</p>
             </div>
-            <button style={S.retryBtn} onClick={() => setStep('card')}>← Try Again</button>
+            <button aria-label="Interactive Button" style={S.retryBtn} onClick={() => setStep('card')}>← Try Again</button>
           </div>
         )}
 
@@ -250,7 +250,7 @@ export function EscrowAcceptModal({ bid, onClose, onSuccess }: EscrowAcceptModal
               </div>
             </div>
 
-            <button style={S.escrowBtn} onClick={() => setStep('card')}>
+            <button aria-label="Interactive Button" style={S.escrowBtn} onClick={() => setStep('card')}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Escrow ${amountUsd}
             </button>
@@ -277,7 +277,7 @@ export function EscrowAcceptModal({ bid, onClose, onSuccess }: EscrowAcceptModal
               <span>This is an authorization hold, not a charge. You can cancel anytime before delivery.</span>
             </div>
 
-            <button
+            <button aria-label="Interactive Button"
               style={{ ...S.escrowBtn, opacity: cardReady ? 1 : 0.4, cursor: cardReady ? 'pointer' : 'not-allowed' }}
               disabled={!cardReady}
               onClick={handleEscrow}

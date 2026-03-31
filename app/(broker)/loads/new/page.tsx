@@ -239,7 +239,7 @@ export default function CreateLoadPage() {
             </div>
 
             <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center" }}>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => onSubmit("active")}
                     disabled={submitting || showMilesWarning}
                     style={{
@@ -259,7 +259,7 @@ export default function CreateLoadPage() {
                 >
                     {submitting ? "Processing..." : instantMatch ? "Confirm & One-Tap Dispatch" : "Activate & Publish"}
                 </button>
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => onSubmit("draft")}
                     disabled={submitting}
                     style={{

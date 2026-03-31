@@ -99,8 +99,8 @@ export default function AVPartnersPage() {
             Haul Command is the platform that makes that requirement effortless.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-            <Link href="/training/corporate">
-              <button style={{
+            <Link aria-label="Navigation Link" href="/training/corporate">
+              <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #00ff88, #00ccff)',
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
@@ -109,7 +109,7 @@ export default function AVPartnersPage() {
               </button>
             </Link>
             <a href="mailto:partners@haulcommand.com">
-              <button style={{
+              <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(0,255,136,0.3)',
                 color: '#00ff88', borderRadius: 12,
                 padding: '14px 28px', fontSize: 16, fontWeight: 600, cursor: 'pointer',
@@ -230,8 +230,8 @@ export default function AVPartnersPage() {
             We work with AV companies and logistics partners directly. Response within 24 hours.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link href="/training/corporate">
-              <button style={{
+            <Link aria-label="Navigation Link" href="/training/corporate">
+              <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #00ff88, #00ccff)',
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
@@ -240,7 +240,7 @@ export default function AVPartnersPage() {
               </button>
             </Link>
             <a href="mailto:partners@haulcommand.com" style={{ textDecoration: 'none' }}>
-              <button style={{
+              <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(0,255,136,0.3)',
                 color: '#00ff88', borderRadius: 12, padding: '14px 24px', fontSize: 16, cursor: 'pointer',
               }}>
@@ -251,7 +251,7 @@ export default function AVPartnersPage() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: 40 }}>
-          <Link href="/training/av-certification" style={{ color: '#8fa3c0', fontSize: 14, textDecoration: 'none' }}>
+          <Link aria-label="Navigation Link" href="/training/av-certification" style={{ color: '#8fa3c0', fontSize: 14, textDecoration: 'none' }}>
             ← AV-Ready Certification for Individual Operators
           </Link>
         </div>

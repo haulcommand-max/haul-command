@@ -96,7 +96,7 @@ export function CorridorSponsorCard({ corridorName, corridorSlug, operatorCount 
           }}>
             {sponsor.sponsor_name} provides specialized services along the {corridorName} corridor.
           </div>
-          <Link
+          <Link aria-label="Navigation Link"
             href={`/directory`}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -136,7 +136,7 @@ export function CorridorSponsorCard({ corridorName, corridorSlug, operatorCount 
             {foundingAvailable && ' As the first sponsor, you lock in founding pricing.'}
           </div>
 
-          <Link
+          <Link aria-label="Navigation Link"
             href="/sponsor"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,

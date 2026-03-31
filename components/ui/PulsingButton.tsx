@@ -27,7 +27,7 @@ export default function PulsingButton({
     };
 
     return (
-        <button
+        <button aria-label="Interactive Button"
             className={`${baseClasses} ${variants[variant]} ${className} group`}
             {...props}
         >

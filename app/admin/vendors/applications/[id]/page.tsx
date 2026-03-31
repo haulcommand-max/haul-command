@@ -108,15 +108,15 @@ export default function AdminApplicationReviewPage() {
             {/* Actions */}
             {app.status !== "approved" && (
                 <div className="flex items-center gap-3 pt-2">
-                    <button onClick={approve} disabled={working}
+                    <button aria-label="Interactive Button" onClick={approve} disabled={working}
                         className="px-5 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                         {working ? "Working…" : "Approve & Publish"}
                     </button>
-                    <button onClick={() => setStatus("needs_info")} disabled={working}
+                    <button aria-label="Interactive Button" onClick={() => setStatus("needs_info")} disabled={working}
                         className="px-5 py-2 bg-blue-50 hover:bg-blue-100 disabled:opacity-50 text-blue-700 border border-blue-200 rounded-lg text-sm font-medium transition-colors">
                         Needs Info
                     </button>
-                    <button onClick={() => setStatus("rejected")} disabled={working}
+                    <button aria-label="Interactive Button" onClick={() => setStatus("rejected")} disabled={working}
                         className="px-5 py-2 bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-700 border border-red-200 rounded-lg text-sm font-medium transition-colors">
                         Reject
                     </button>

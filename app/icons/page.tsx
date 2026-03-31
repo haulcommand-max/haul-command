@@ -57,7 +57,7 @@ export default function IconPreviewPage() {
                                 <span className="text-[#C6923A] font-bold">{HC_ICON_REGISTRY.length}</span> icons &middot; <span className="text-[#C6923A] font-bold">8</span> variants &middot; <span className="text-[#C6923A] font-bold">{HC_ICON_REGISTRY.length * 8}</span> total states
                             </p>
                         </div>
-                        <button onClick={() => setDarkMode(!darkMode)} className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-all ${darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-100 border-gray-200 hover:bg-gray-200'}`}>
+                        <button aria-label="Interactive Button" onClick={() => setDarkMode(!darkMode)} className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-all ${darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-100 border-gray-200 hover:bg-gray-200'}`}>
                             {darkMode ? '☀ Light' : '🌙 Dark'}
                         </button>
                     </div>
@@ -65,10 +65,10 @@ export default function IconPreviewPage() {
                     <div className="flex flex-wrap items-center gap-3">
                         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search icons..." className={`px-3 py-1.5 rounded-lg text-sm border ${darkMode ? 'bg-white/5 border-white/10 placeholder:text-gray-600' : 'bg-gray-50 border-gray-200'}`} />
                         <div className="flex gap-1 flex-wrap">
-                            <button onClick={() => setActiveGroup('all')} className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase transition-all ${activeGroup === 'all' ? 'bg-[#C6923A]/20 text-[#C6923A] border border-[#C6923A]/30' : `${mutedText} border border-transparent`}`}>All ({HC_ICON_REGISTRY.length})</button>
+                            <button aria-label="Interactive Button" onClick={() => setActiveGroup('all')} className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase transition-all ${activeGroup === 'all' ? 'bg-[#C6923A]/20 text-[#C6923A] border border-[#C6923A]/30' : `${mutedText} border border-transparent`}`}>All ({HC_ICON_REGISTRY.length})</button>
                             {groups.map(g => {
                                 const count = HC_ICON_REGISTRY.filter(i => i.group === g).length;
-                                return <button key={g} onClick={() => setActiveGroup(g)} className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${activeGroup === g ? 'bg-[#C6923A]/20 text-[#C6923A] border border-[#C6923A]/30' : `${mutedText} border border-transparent`}`}>{g.replace(/_/g, ' ')} ({count})</button>;
+                                return <button aria-label="Interactive Button" key={g} onClick={() => setActiveGroup(g)} className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${activeGroup === g ? 'bg-[#C6923A]/20 text-[#C6923A] border border-[#C6923A]/30' : `${mutedText} border border-transparent`}`}>{g.replace(/_/g, ' ')} ({count})</button>;
                             })}
                         </div>
                     </div>
@@ -77,13 +77,13 @@ export default function IconPreviewPage() {
                         <div className="flex items-center gap-1.5">
                             <span className={`text-[9px] font-bold uppercase tracking-widest ${mutedText}`}>Size</span>
                             {SIZES.map(s => (
-                                <button key={s} onClick={() => setActiveSize(s)} className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${activeSize === s ? 'bg-[#C6923A]/20 text-[#C6923A]' : mutedText}`}>{s}</button>
+                                <button aria-label="Interactive Button" key={s} onClick={() => setActiveSize(s)} className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${activeSize === s ? 'bg-[#C6923A]/20 text-[#C6923A]' : mutedText}`}>{s}</button>
                             ))}
                         </div>
                         <div className="flex items-center gap-1.5">
                             <span className={`text-[9px] font-bold uppercase tracking-widest ${mutedText}`}>Variant</span>
                             {VARIANTS.map(v => (
-                                <button key={v} onClick={() => setActiveVariant(v)} className={`px-2 py-0.5 rounded text-[10px] font-bold capitalize transition-all ${activeVariant === v ? 'bg-[#C6923A]/20 text-[#C6923A]' : mutedText}`}>{v.replace(/_/g, ' ')}</button>
+                                <button aria-label="Interactive Button" key={v} onClick={() => setActiveVariant(v)} className={`px-2 py-0.5 rounded text-[10px] font-bold capitalize transition-all ${activeVariant === v ? 'bg-[#C6923A]/20 text-[#C6923A]' : mutedText}`}>{v.replace(/_/g, ' ')}</button>
                             ))}
                         </div>
                     </div>

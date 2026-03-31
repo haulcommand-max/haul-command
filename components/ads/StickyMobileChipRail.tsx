@@ -53,7 +53,7 @@ export function StickyMobileChipRail({ ads, scrollMs = 6000 }: StickyMobileChipR
         }
       `}</style>
       {ads.map((ad, i) => (
-        <button
+        <button aria-label="Interactive Button"
           key={ad.ad_id}
           onClick={() => handleClick(ad)}
           style={{

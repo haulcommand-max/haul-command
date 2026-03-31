@@ -43,8 +43,8 @@ export default function UnitedStatesPage() {
                     Haul Command is the only platform that verifies escort operators against real permit corridors, live GPS breadcrumbs, and 5-axis trust scores — coast to coast.
                 </p>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Link href="/directory/us" style={primaryBtn}>Browse Full Directory</Link>
-                    <Link href="/loads" style={secondaryBtn}>View Open Loads</Link>
+                    <Link aria-label="Navigation Link" href="/directory/us" style={primaryBtn}>Browse Full Directory</Link>
+                    <Link aria-label="Navigation Link" href="/loads" style={secondaryBtn}>View Open Loads</Link>
                 </div>
             </section>
 
@@ -84,7 +84,7 @@ export default function UnitedStatesPage() {
                     Every US state sets its own escort vehicle requirements for oversize loads. Haul Command tracks
                     permit rules, reciprocity agreements, and driver certification standards across all 50 states so
                     you never run blind into a curfew or a credentialing mismatch. Browse by state or{' '}
-                    <Link href="/regulatory-db" style={{ color: '#d97706' }}>search the regulatory database</Link>.
+                    <Link aria-label="Navigation Link" href="/regulatory-db" style={{ color: '#d97706' }}>search the regulatory database</Link>.
                 </p>
             </section>
         </main>

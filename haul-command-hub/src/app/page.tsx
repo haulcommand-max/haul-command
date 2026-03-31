@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase-server';
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 import HCClaimCorrectVerifyPanel from '@/components/hc/ClaimCorrectVerifyPanel';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCMarketMaturityBanner from '@/components/hc/MarketMaturityBanner';
@@ -25,56 +26,50 @@ async function loadHomepageData() {
   const sb = supabaseServer();
   const now = new Date().toISOString();
 
-  // Query BOTH data sources in parallel — use whichever has data
-  const [placesResult, providerResult, jurisdictionResult, corridorsResult, countriesResult] = await Promise.all([
-    sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published'),
-    sb.from('provider_directory').select('id', { count: 'exact', head: true }),
-    Promise.resolve(sb.rpc('hc_list_all_jurisdictions')).catch(() => ({ data: [] })),
-    Promise.resolve(sb.from('corridors').select('id, name, corridor_type').limit(6)).catch(() => ({ data: [] })),
-    Promise.resolve(sb.from('global_countries').select('iso2, name, activation_phase, is_active_market, launch_status, tier, slug').order('tier').order('name')).catch(() => ({ data: [] })),
+  // ONE canonical source of truth — get_canonical_stats() RPC
+  // directory_listings is quarantined (654K synthetic rows).
+  // Only hc_real_operators counts are shown publicly.
+  const [stats, jurisdictionResult, corridorsResult, countriesResult] = await Promise.all([
+    getCanonicalStats(),
+    sb.rpc('hc_list_all_jurisdictions').then(r => r, () => ({ data: [] })),
+    sb.from('corridors').select('id, name, corridor_type').limit(6).then(r => r, () => ({ data: [] })),
+    sb.from('global_countries').select('iso2, name, activation_phase, is_active_market, launch_status, tier, slug').order('tier').order('name').then(r => r, () => ({ data: [] })),
   ]);
 
-  // Use the larger of the two directory counts
-  const hcPlacesCount = placesResult.count ?? 0;
-  const providerCount = (providerResult as any)?.count ?? 0;
-  const totalListings = Math.max(hcPlacesCount, providerCount);
-  
+  const totalListings = stats.total_real_operators;
   const jurisdictions = jurisdictionResult.data ?? [];
-  const totalJurisdictions = jurisdictions.length;
+  const totalJurisdictions = stats.jurisdictions;
   const allCountries = countriesResult.data ?? [];
   const liveCountries = allCountries.filter((c: { is_active_market?: boolean; activation_phase?: string }) => c.is_active_market || c.activation_phase === 'active');
-  const totalCountries = allCountries.length || 120;
   const corridors = corridorsResult.data ?? [];
 
-  // Build metrics — show real data when available, strategic counts when seeded, NEVER show zeros
+  // Build metrics — ONLY from canonical real data. No fake fallbacks.
   const metrics: HCMetric[] = [];
 
-  if (totalListings > 0) {
-    metrics.push({
-      label: 'Verified Operators',
-      value: totalListings.toLocaleString(),
-      geographyScope: 'Global',
-      timeWindow: 'All time',
-      freshness: { lastUpdatedAt: now, updateLabel: 'Live count' },
-    });
-  }
-
-  // Countries always have a value (120 from our taxonomy)
   metrics.push({
-    label: 'Countries Active',
-    value: totalCountries.toString(),
+    label: 'Verified Operators',
+    value: totalListings.toLocaleString(),
     geographyScope: 'Global',
     timeWindow: 'All time',
-    freshness: { lastUpdatedAt: now, updateLabel: allCountries.length > 0 ? 'Live count' : 'System seeded' },
+    freshness: { lastUpdatedAt: now, updateLabel: 'Verified data' },
+  });
+
+  // Show only countries with REAL verified operator data
+  metrics.push({
+    label: 'Countries with Verified Data',
+    value: stats.active_countries.toLocaleString(),
+    geographyScope: 'Global',
+    timeWindow: 'All time',
+    freshness: { lastUpdatedAt: now, updateLabel: 'Live data' },
   });
 
   if (totalJurisdictions > 0) {
     metrics.push({
       label: 'Jurisdictions Covered',
-      value: totalJurisdictions.toString(),
+      value: totalJurisdictions.toLocaleString(),
       geographyScope: 'Global',
       timeWindow: 'All time',
-      freshness: { lastUpdatedAt: now, updateLabel: 'Live count' },
+      freshness: { lastUpdatedAt: now, updateLabel: 'Regulatory data' },
     });
   }
 
@@ -131,7 +126,7 @@ export default async function HomePage() {
   // Single dominant CTA — Find Operators is the primary action
   const actions = [
     { id: 'hc_act_find_operators', label: 'Find Operators', href: '/directory', type: 'navigate' as const, priority: 'primary' as const },
-    { id: 'hc_act_post_load', label: 'Post a Load', href: '/loads', type: 'navigate' as const, priority: 'primary' as const },
+    { id: 'hc_act_post_load', label: 'Post a Load', href: '/inbox?post=true', type: 'navigate' as const, priority: 'primary' as const },
     { id: 'hc_act_view_requirements', label: 'Requirements', href: '/escort-requirements', type: 'navigate' as const, priority: 'primary' as const },
     { id: 'hc_act_claim_profile', label: 'Claim Profile', href: '/claim', type: 'claim' as const, priority: 'primary' as const },
   ];
@@ -315,7 +310,7 @@ export default async function HomePage() {
               ].map((svc) => (
                 <Link
                   key={svc.slug}
-                  href={`/roles/${svc.slug}`}
+                  href={`/services/${svc.slug}`}
                   className="group block p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-accent/[0.05] hover:border-accent/30 transition-all ag-slide-up"
                 >
                   <div className="flex items-start gap-4">
@@ -370,7 +365,7 @@ export default async function HomePage() {
               ].map((state) => (
                 <Link
                   key={state.name}
-                  href={`/state/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/escort-requirements?state=${encodeURIComponent(state.name.toLowerCase().replace(/\s+/g, '-'))}`}
                   className="group ag-glass ag-spring-hover rounded-xl px-4 py-4 hover:border-accent/30 transition-all"
                 >
                   <div className="flex items-center gap-2">
@@ -583,7 +578,7 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link
-              href="/api/stripe/checkout?plan=managed_permit"
+              href="/pricing#managed-services"
               className="group bg-gradient-to-br from-white/[0.05] to-transparent border border-white/[0.1] rounded-2xl p-6 hover:border-accent/30 transition-all shadow-xl border-l-4 border-l-accent"
             >
               <div className="flex items-start gap-4">
@@ -599,7 +594,7 @@ export default async function HomePage() {
               </div>
             </Link>
             <Link
-              href="/api/stripe/checkout?plan=managed_dispatch"
+              href="/pricing#managed-services"
               className="group bg-gradient-to-br from-white/[0.05] to-transparent border border-white/[0.1] rounded-2xl p-6 hover:border-accent/30 transition-all shadow-xl border-l-4 border-l-accent"
             >
               <div className="flex items-start gap-4">
@@ -660,7 +655,7 @@ export default async function HomePage() {
                 <span className="text-gray-500 text-xs ml-2">ELD-verified rankings by response time, coverage area, and compliance score.</span>
               </div>
             </div>
-            <Link href="/leaderboard" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">
+            <Link href="/leaderboards" className="text-accent text-sm font-bold hover:underline whitespace-nowrap">
               View Rankings →
             </Link>
           </div>

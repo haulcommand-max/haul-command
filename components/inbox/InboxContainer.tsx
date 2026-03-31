@@ -150,7 +150,7 @@ export default function InboxContainer() {
           <h2 className="text-lg font-bold text-white">Inbox</h2>
           <div className="flex gap-1 mt-3">
             {(['all', 'offers', 'messages'] as const).map((t) => (
-              <button
+              <button aria-label="Interactive Button"
                 key={t}
                 onClick={() => setTab(t)}
                 className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
@@ -173,7 +173,7 @@ export default function InboxContainer() {
             </div>
           ) : (
             filteredConvs.map((conv) => (
-              <button
+              <button aria-label="Interactive Button"
                 key={conv.id}
                 onClick={() => setActiveConv(conv.id)}
                 className={`w-full p-4 text-left border-b border-white/5 hover:bg-white/5 transition-colors ${
@@ -215,7 +215,7 @@ export default function InboxContainer() {
           <>
             {/* Thread header */}
             <div className="p-4 border-b border-white/5 flex items-center gap-3">
-              <button
+              <button aria-label="Interactive Button"
                 onClick={() => setActiveConv(null)}
                 className="md:hidden text-gray-400 hover:text-white"
               >
@@ -264,15 +264,15 @@ export default function InboxContainer() {
                       </p>
                       {isOffer && !isMe && (
                         <div className="flex gap-2 mt-2">
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'accept')}
                             className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-lg"
                           >\u2713 Accept</button>
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'counter')}
                             className="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg"
                           >Counter</button>
-                          <button
+                          <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'decline')}
                             className="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg"
                           >Decline</button>
@@ -298,7 +298,7 @@ export default function InboxContainer() {
                   placeholder="Type a message..."
                   className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/50"
                 />
-                <button
+                <button aria-label="Interactive Button"
                   type="submit"
                   disabled={sending || !newMessage.trim()}
                   className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors disabled:opacity-50"

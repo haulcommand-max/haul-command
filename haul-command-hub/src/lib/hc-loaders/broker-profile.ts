@@ -3,6 +3,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 /**
  * Broker profile loader — must read:
  *   - hc_broker_public_profile (primary)
+ *   - hc_public_operators (real operators — fallback)
  *   - hc_page_seo_contracts (SEO metadata)
  */
 
@@ -18,7 +19,16 @@ export async function getBrokerProfile(slug: string) {
 
   if (broker) return broker;
 
-  // Fallback to hc_places
+  // Fallback to hc_public_operators (real verified data only)
+  const { data: opBroker } = await sb.from('hc_public_operators')
+    .select('*')
+    .eq('slug', slug)
+    .eq('entity_type', 'broker')
+    .maybeSingle();
+
+  if (opBroker) return opBroker;
+
+  // Last resort: hc_places (infrastructure/legacy)
   const { data } = await sb.from('hc_places')
     .select('*')
     .eq('slug', slug)

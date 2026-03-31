@@ -51,7 +51,7 @@ export default function GlobalPermitPage({ countries }: { countries: CountryPerm
               </div>
 
               {country.permitLink ? (
-                <Link href={country.permitLink} style={{ display: 'block', width: '100%', padding: '12px 0', textAlign: 'center', background: 'rgba(0,255,136,0.1)', color: '#00ff88', textDecoration: 'none', borderRadius: 8, fontWeight: 600, fontSize: 14 }}>
+                <Link aria-label="Navigation Link" href={country.permitLink} style={{ display: 'block', width: '100%', padding: '12px 0', textAlign: 'center', background: 'rgba(0,255,136,0.1)', color: '#00ff88', textDecoration: 'none', borderRadius: 8, fontWeight: 600, fontSize: 14 }}>
                   Start Filing Process
                 </Link>
               ) : (

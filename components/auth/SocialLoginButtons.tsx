@@ -76,7 +76,7 @@ export function SocialLoginButtons({ onProvider, enabledOverrides }: Props) {
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%" }}>
         {PROVIDERS.map((p) => (
-          <button
+          <button aria-label="Interactive Button"
             key={p.id}
             onClick={() => handleClick(p.id)}
             style={{
@@ -136,7 +136,7 @@ export function SocialLoginButtons({ onProvider, enabledOverrides }: Props) {
               {comingSoonFor.charAt(0).toUpperCase() + comingSoonFor.slice(1)} sign-in
               is not enabled yet. We&apos;re working on it.
             </p>
-            <button
+            <button aria-label="Interactive Button"
               onClick={() => setComingSoonFor(null)}
               className="brand-button"
               style={{ width: "100%", padding: "0.75rem" }}

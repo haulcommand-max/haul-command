@@ -91,7 +91,7 @@ export function AdGridPushCampaignSender({ campaigns = [], onSend, onSave }: Pro
             <label>Target Segment</label>
             <div className="agps-segments">
               {SEGMENTS.map(s => (
-                <button
+                <button aria-label="Interactive Button"
                   key={s.key}
                   className={`agps-seg ${form.target_segment === s.key ? 'agps-seg--active' : ''}`}
                   onClick={() => update({ target_segment: s.key })}
@@ -107,7 +107,7 @@ export function AdGridPushCampaignSender({ campaigns = [], onSend, onSave }: Pro
             <label>Schedule</label>
             <div className="agps-schedule">
               {(['immediate', 'scheduled', 'trigger'] as const).map(t => (
-                <button key={t} className={`agps-sched ${form.schedule_type === t ? 'agps-sched--active' : ''}`} onClick={() => update({ schedule_type: t })}>
+                <button aria-label="Interactive Button" key={t} className={`agps-sched ${form.schedule_type === t ? 'agps-sched--active' : ''}`} onClick={() => update({ schedule_type: t })}>
                   {t === 'immediate' ? '⚡ Now' : t === 'scheduled' ? '📅 Schedule' : '🎯 Trigger'}
                 </button>
               ))}
@@ -119,7 +119,7 @@ export function AdGridPushCampaignSender({ campaigns = [], onSend, onSave }: Pro
               <label>Trigger Event</label>
               <div className="agps-triggers">
                 {TRIGGERS.map(t => (
-                  <button key={t.key} className={`agps-trig ${form.trigger_event === t.key ? 'agps-trig--active' : ''}`} onClick={() => update({ trigger_event: t.key })}>
+                  <button aria-label="Interactive Button" key={t.key} className={`agps-trig ${form.trigger_event === t.key ? 'agps-trig--active' : ''}`} onClick={() => update({ trigger_event: t.key })}>
                     {t.label}
                   </button>
                 ))}
@@ -139,9 +139,9 @@ export function AdGridPushCampaignSender({ campaigns = [], onSend, onSave }: Pro
           </div>
 
           <div className="agps-actions">
-            <button className="agps-save" onClick={() => onSave?.(form)}>💾 Save Draft</button>
-            <button className="agps-preview" onClick={() => setPreview(!preview)}>👁️ Preview</button>
-            <button className="agps-send" onClick={() => onSend?.(form)} disabled={!form.message || !form.advertiser_name}>
+            <button aria-label="Interactive Button" className="agps-save" onClick={() => onSave?.(form)}>💾 Save Draft</button>
+            <button aria-label="Interactive Button" className="agps-preview" onClick={() => setPreview(!preview)}>👁️ Preview</button>
+            <button aria-label="Interactive Button" className="agps-send" onClick={() => onSend?.(form)} disabled={!form.message || !form.advertiser_name}>
               🚀 {form.schedule_type === 'immediate' ? 'Send Now' : 'Schedule'}
             </button>
           </div>

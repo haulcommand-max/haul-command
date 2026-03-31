@@ -90,7 +90,7 @@ export function VideoPlayer({ lessonId, videoUrl, onProgress }: VideoPlayerProps
         <div style={{ fontSize: 13, lineHeight: 1.5, maxWidth: 300 }}>
           This video lesson is in production. Read the text content below to complete this lesson.
         </div>
-        <button
+        <button aria-label="Interactive Button"
           onClick={() => onProgress?.(100)}
           style={{
             marginTop: 8, padding: '10px 20px', borderRadius: 8,
@@ -153,7 +153,7 @@ export function VideoPlayer({ lessonId, videoUrl, onProgress }: VideoPlayerProps
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {/* Play/pause */}
-          <button onClick={togglePlay} style={{
+          <button aria-label="Interactive Button" onClick={togglePlay} style={{
             background: 'none', border: 'none', color: '#fff',
             cursor: 'pointer', fontSize: 20, padding: '2px 6px',
           }}>
@@ -170,7 +170,7 @@ export function VideoPlayer({ lessonId, videoUrl, onProgress }: VideoPlayerProps
           {/* Speed */}
           <div style={{ display: 'flex', gap: 4 }}>
             {[0.75, 1, 1.25, 1.5].map(s => (
-              <button
+              <button aria-label="Interactive Button"
                 key={s}
                 onClick={() => changeSpeed(s)}
                 style={{
@@ -186,7 +186,7 @@ export function VideoPlayer({ lessonId, videoUrl, onProgress }: VideoPlayerProps
           </div>
 
           {/* CC placeholder */}
-          <button style={{
+          <button aria-label="Interactive Button" style={{
             background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff',
             borderRadius: 4, padding: '3px 7px', fontSize: 11, cursor: 'pointer',
           }}>

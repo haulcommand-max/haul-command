@@ -155,7 +155,7 @@ export default async function PressHubPage({ params }: Props) {
                                         {i > 0 && <ChevronRight className="w-3 h-3 text-slate-600" />}
                                         {i === breadcrumbs.length - 1
                                             ? <span className="text-slate-300">{b.name}</span>
-                                            : <Link href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
+                                            : <Link aria-label="Navigation Link" href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
                                         }
                                     </li>
                                 ))}
@@ -208,7 +208,7 @@ export default async function PressHubPage({ params }: Props) {
                                             }`}>
                                             {r.status === 'active' ? 'Live Data' : 'Estimates'}
                                         </span>
-                                        <Link
+                                        <Link aria-label="Navigation Link"
                                             href={`/${country}/press/reports#${r.id}`}
                                             className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
                                         >
@@ -238,7 +238,7 @@ export default async function PressHubPage({ params }: Props) {
                                 <p className="text-slate-400 text-xs mb-3">
                                     Need a quote, stat, or expert commentary? Request it directly.
                                 </p>
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     href={`/${country}/press/media-kit`}
                                     className="text-indigo-400 hover:text-indigo-300 text-xs font-semibold transition-colors"
                                 >
@@ -250,7 +250,7 @@ export default async function PressHubPage({ params }: Props) {
                                 <p className="text-slate-400 text-xs mb-3">
                                     Rate cards, corridor difficulty widgets, and seasonal alerts — ready to embed.
                                 </p>
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     href="/embed"
                                     className="text-indigo-400 hover:text-indigo-300 text-xs font-semibold transition-colors"
                                 >
@@ -293,7 +293,7 @@ export default async function PressHubPage({ params }: Props) {
                         <p className="text-slate-400 mb-6">
                             {jurisdictionCount ?? 0}+ jurisdictions with verified permit rules, escort thresholds, and authority contacts.
                         </p>
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={`/authority/${country}`}
                             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors"
                         >

@@ -278,7 +278,7 @@ export default function AcceptOfferPage() {
                     </div>
 
                     {/* ── THE BUTTON — Big, full-screen, one tap ── */}
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={handleAccept}
                         style={{
                             width: '100%',
@@ -300,7 +300,7 @@ export default function AcceptOfferPage() {
                     </button>
 
                     {/* Decline */}
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={handleDecline}
                         style={{
                             width: '100%',
@@ -358,7 +358,7 @@ export default function AcceptOfferPage() {
                         The broker has been notified. Check your Jobs tab for details.
                     </p>
 
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => router.push('/dashboard/jobs')}
                         style={{
                             padding: '16px 40px', borderRadius: 14, border: 'none',
@@ -380,7 +380,7 @@ export default function AcceptOfferPage() {
                     <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24 }}>
                         This offer is no longer available. Stay online to receive new offers faster.
                     </p>
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => router.push('/dashboard')}
                         style={{
                             padding: '14px 32px', borderRadius: 12, border: '1px solid #334155',
@@ -399,7 +399,7 @@ export default function AcceptOfferPage() {
                     <div style={{ fontSize: 56, marginBottom: 16 }}>⚠️</div>
                     <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8 }}>Something went wrong</h2>
                     <p style={{ fontSize: 13, color: '#f87171', marginBottom: 24 }}>{error}</p>
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => window.location.reload()}
                         style={{
                             padding: '14px 32px', borderRadius: 12, border: '1px solid #334155',

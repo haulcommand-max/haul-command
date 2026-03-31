@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { supabaseServer } from '@/lib/supabase-server';
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -49,15 +50,18 @@ interface CountryRow {
 export default async function CommandCenterPage() {
   const sb = supabaseServer();
 
-  // Fetch all countries with their latest score snapshot
-  const { data: countries, error } = await sb
-    .from('country_market')
-    .select(`
-      country_code, country_name, tier, status, country_domination_score, next_recommended_action,
-      country_market_score_snapshot ( alive_profile_score, seo_indexation_visibility_score, claim_conversion_score, listing_density_score, supply_liquidity_score, monetization_readiness_score )
-    `)
-    .order('country_domination_score', { ascending: false });
+  const [countriesResult, liveStats] = await Promise.all([
+    sb
+      .from('country_market')
+      .select(`
+        country_code, country_name, tier, status, country_domination_score, next_recommended_action,
+        country_market_score_snapshot ( alive_profile_score, seo_indexation_visibility_score, claim_conversion_score, listing_density_score, supply_liquidity_score, monetization_readiness_score )
+      `)
+      .order('country_domination_score', { ascending: false }),
+    getCanonicalStats(),
+  ]);
 
+  const { data: countries, error } = countriesResult;
   const rows: CountryRow[] = (countries as CountryRow[] | null) ?? [];
 
   // Aggregate stats
@@ -303,14 +307,17 @@ export default async function CommandCenterPage() {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 {[
-                  { label: 'US Anchor', value: '1,566,000', pct: '47.5%', desc: '51.8% of original density' },
-                  { label: 'Original 56 Countries', value: '1,452,900', pct: '44%', desc: '~25,944 avg/country' },
-                  { label: 'New 63 Countries', value: '~300,000', pct: '8.5%', desc: 'Weighted C/D/E tiers' },
-                  { label: 'Global Target', value: '3.3M', pct: '100%', desc: 'High-quality, geo-dense' },
+                  { label: 'Live Verified Operators', value: liveStats.total_real_operators.toLocaleString(), pct: `${liveStats.active_countries} countries`, desc: 'Real data — hc_real_operators', isLive: true },
+                  { label: 'US Anchor Target', value: '1,566,000', pct: '47.5%', desc: 'Expansion goal (not yet seeded)', isLive: false },
+                  { label: '56-Country Target', value: '1,452,900', pct: '44%', desc: '~25,944 avg/country (planned)', isLive: false },
+                  { label: 'Global Target', value: '3.3M', pct: '100%', desc: 'Long-term expansion goal', isLive: false },
                 ].map((item) => (
-                  <div key={item.label} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4">
-                    <div className="text-accent font-black text-xl mb-1">{item.value}</div>
-                    <div className="text-white text-xs font-bold">{item.label}</div>
+                  <div key={item.label} className={`bg-white/[0.02] border ${item.isLive ? 'border-emerald-500/30' : 'border-white/[0.06]'} rounded-xl p-4`}>
+                    <div className={`font-black text-xl mb-1 ${item.isLive ? 'text-emerald-400' : 'text-accent'}`}>{item.value}</div>
+                    <div className="text-white text-xs font-bold flex items-center gap-1.5">
+                      {item.isLive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />}
+                      {item.label}
+                    </div>
                     <div className="text-[10px] text-gray-600 mt-1">{item.desc}</div>
                     <div className="text-[9px] text-gray-500 font-mono mt-0.5">{item.pct}</div>
                   </div>

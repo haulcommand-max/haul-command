@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
 function AdminNavLink({ href, label, icon }: { href: string; label: string; icon: string }) {
     return (
-        <Link
+        <Link aria-label="Navigation Link"
             href={href}
             className="flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-all hover:bg-[#1a1a1a] hover:text-white group"
         >

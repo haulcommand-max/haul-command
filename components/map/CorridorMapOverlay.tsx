@@ -91,7 +91,7 @@ export default function CorridorMapOverlay({ className = "" }: CorridorMapOverla
                     const left = ((center.lng + 130) / 80) * 100;
                     const top = ((60 - center.lat) / 40) * 100;
                     return (
-                        <button
+                        <button aria-label="Interactive Button"
                             key={c.corridor_slug}
                             onClick={() => setSelected(selected === c.corridor_slug ? null : c.corridor_slug)}
                             title={`${center.label} — ${BAND_LABELS[c.band]}`}
@@ -144,7 +144,7 @@ export default function CorridorMapOverlay({ className = "" }: CorridorMapOverla
                                 <div className="text-[9px] text-slate-500 uppercase tracking-wide">Loads 24h</div>
                             </div>
                         </div>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => setSelected(null)}
                             className="text-slate-500 hover:text-white transition-colors text-sm"
                         >✕</button>

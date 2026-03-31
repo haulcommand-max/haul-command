@@ -36,35 +36,24 @@ const TIER_B = ['ie', 'se', 'no', 'dk', 'fi', 'be', 'at', 'ch', 'es', 'fr', 'it'
 export default async function DirectoryPage() {
     const sb = supabaseServer();
 
-    // Pull from BOTH tables — use whichever has data
+    // Real operators from hc_public_operators (verified data only)
     let listingRows: any[] = [];
-    let providerRows: any[] = [];
-    
     try {
-        const lr = await sb.from("directory_listings").select("country_code, entity_type").eq("is_visible", true).limit(50000);
+        const lr = await sb.from("hc_public_operators").select("country_code, entity_type").limit(50000);
         listingRows = lr.data ?? [];
-    } catch { /* table may not exist yet */ }
-    
-    try {
-        const pr = await sb.from("provider_directory").select("country_code, service_type").limit(50000);
-        providerRows = pr.data ?? [];
-    } catch { /* table may not exist yet */ }
+    } catch { /* table may not exist during build */ }
 
-    // Aggregate from whichever source has more data
     const countryCounts = new Map<string, number>();
     const categoryCounts = new Map<string, number>();
-    
-    const primaryRows = listingRows.length > providerRows.length ? listingRows : providerRows;
-    const entityTypeField = listingRows.length > providerRows.length ? 'entity_type' : 'service_type';
 
-    for (const r of primaryRows) {
+    for (const r of listingRows) {
         const cc = (r.country_code ?? "").toLowerCase();
-        const cat = r[entityTypeField] ?? "";
+        const cat = r.entity_type ?? "";
         if (cc) countryCounts.set(cc, (countryCounts.get(cc) ?? 0) + 1);
         if (cat) categoryCounts.set(cat, (categoryCounts.get(cat) ?? 0) + 1);
     }
 
-    const totalListings = primaryRows.length;
+    const totalListings = listingRows.length;
     const totalCountries = countryCounts.size || Object.keys(COUNTRY_NAMES).length;
     const totalCategories = categoryCounts.size || Object.keys(CATEGORY_LABELS).length;
 
@@ -178,7 +167,7 @@ export default async function DirectoryPage() {
                             {categories.map((c) => (
                                 <Link
                                     key={c.key}
-                                    href={`/roles/${c.key.replace(/_/g, '-')}`}
+                                    href={`/services/${c.key.replace(/_/g, '-')}`}
                                     className="group bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
                                 >
                                     <div className="flex items-center gap-3 mb-2">

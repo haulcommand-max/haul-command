@@ -184,7 +184,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: T.textSecondary, flexWrap: 'wrap' }}>
                         {breadcrumbs.map((b, i) => (
                             <li key={b.href} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <Link href={b.href} style={{ color: T.accent, textDecoration: 'none', fontWeight: 500 }}>{b.label}</Link>
+                                <Link aria-label="Navigation Link" href={b.href} style={{ color: T.accent, textDecoration: 'none', fontWeight: 500 }}>{b.label}</Link>
                                 {i < breadcrumbs.length - 1 && <span>›</span>}
                             </li>
                         ))}
@@ -219,7 +219,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                 <div style={{
                     display: 'flex', gap: 12, marginBottom: 40, flexWrap: 'wrap',
                 }}>
-                    <Link href="/directory" style={{
+                    <Link aria-label="Navigation Link" href="/directory" style={{
                         padding: '14px 28px', borderRadius: 12,
                         background: T.accent, color: '#fff',
                         fontSize: 15, fontWeight: 800, textDecoration: 'none',
@@ -227,7 +227,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     }}>
                         Find Operators in {geo} →
                     </Link>
-                    <Link href="/available-now" style={{
+                    <Link aria-label="Navigation Link" href="/available-now" style={{
                         padding: '14px 28px', borderRadius: 12,
                         background: '#fff', color: T.green,
                         fontSize: 15, fontWeight: 800, textDecoration: 'none',
@@ -302,7 +302,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         </h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
                             {relatedEquipment.map(e => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={e.slug}
                                     href={`/${service.slug}/${e.slug}/${country.toLowerCase()}${state ? `/${state}` : ''}`}
                                     style={{
@@ -328,7 +328,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         </h2>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                             {nearbyStates.map(r => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={r}
                                     href={`/${service.slug}/${country.toLowerCase()}/${r.toLowerCase().replace(/\s+/g, '-')}`}
                                     style={{
@@ -351,7 +351,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     </h2>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {relatedModifiers.slice(0, 8).map(m => (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={m.slug}
                                 href={`/${service.slug}/${m.slug}/${country.toLowerCase()}${state ? `/${state}` : ''}`}
                                 style={{
@@ -379,7 +379,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     <p style={{ fontSize: 16, color: T.textSecondary, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
                         Haul Command connects you with verified operators in minutes, not hours.
                     </p>
-                    <Link href="/directory" style={{
+                    <Link aria-label="Navigation Link" href="/directory" style={{
                         display: 'inline-block', padding: '16px 36px', borderRadius: 12,
                         background: T.accent, color: '#fff',
                         fontSize: 16, fontWeight: 900, textDecoration: 'none',

@@ -133,7 +133,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                                         {i > 0 && <ChevronRight className="w-3 h-3 text-slate-600" />}
                                         {i === breadcrumbs.length - 1
                                             ? <span className="text-slate-300">{b.name}</span>
-                                            : <Link href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
+                                            : <Link aria-label="Navigation Link" href={b.href} className="hover:text-amber-400 transition-colors">{b.name}</Link>
                                         }
                                     </li>
                                 ))}
@@ -174,7 +174,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                                     const bestConf = Math.max(...rs.map(r => r.confidence_score ?? 0));
                                     const anyVerified = rs.some(r => r.verification === 'verified');
                                     return (
-                                        <Link
+                                        <Link aria-label="Navigation Link"
                                             key={cat}
                                             href={`/authority/${country}/${region}/${cat.replace(/_/g, '-')}`}
                                             className="group bg-slate-800/60 border border-slate-700 hover:border-amber-500/40 rounded-xl p-6 transition-all hover:bg-slate-800"
@@ -216,7 +216,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                             </h2>
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                                 {children.map(ch => (
-                                    <Link
+                                    <Link aria-label="Navigation Link"
                                         key={ch.slug}
                                         href={`/authority/${country}/${ch.slug}`}
                                         className="flex items-center gap-2 bg-slate-800/40 border border-slate-700 hover:border-slate-600 rounded-lg px-4 py-3 text-sm text-slate-300 hover:text-amber-400 transition-all"
@@ -237,7 +237,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                             <p className="text-slate-400 text-sm mb-4">
                                 Post your move and get matched with certified {regionDisplay} escorts in minutes.
                             </p>
-                            <Link href="/start?role=broker" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
+                            <Link aria-label="Navigation Link" href="/start?role=broker" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Post a Move →
                             </Link>
                         </div>
@@ -247,7 +247,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                             <p className="text-slate-400 text-sm mb-4">
                                 Claim your free profile and get discovered by shippers and brokers.
                             </p>
-                            <Link href="/start?role=escort" className="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors">
+                            <Link aria-label="Navigation Link" href="/start?role=escort" className="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Claim Your Profile →
                             </Link>
                         </div>
@@ -262,7 +262,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                                 <p className="text-sm text-slate-400 mb-4">
                                     If you operate in {regionDisplay} and know of rules, contacts, or changes we should track, tell us.
                                 </p>
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     href={`/authority/${country}/${region}/report?jid=${jurisdiction.id}`}
                                     className="inline-flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-400 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                                 >

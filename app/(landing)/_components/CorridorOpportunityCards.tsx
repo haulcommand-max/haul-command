@@ -113,7 +113,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                             Where to Run Right Now
                         </h2>
                     </div>
-                    <Link href="/corridors" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors hidden sm:inline-flex items-center gap-1">
+                    <Link aria-label="Navigation Link" href="/corridors" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors hidden sm:inline-flex items-center gap-1">
                         All {corridorCount} corridors <ArrowRight className="w-3 h-3" />
                     </Link>
                 </motion.div>
@@ -131,7 +131,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                         const heat = getHeatLevel(corridor.heat_score);
                         const rate = estimateRate(corridor.heat_score);
                         return (
-                            <Link
+                            <Link aria-label="Navigation Link"
                                 key={corridor.id}
                                 href={`/corridors/${corridor.id}`}
                                 className="corridor-card-mobile group rounded-xl border overflow-hidden transition-all"
@@ -212,14 +212,14 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                                         <span className="text-base font-black text-emerald-400 font-mono">${rate}/day</span>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Link
+                                        <Link aria-label="Navigation Link"
                                             href={`/corridors/${corridor.id}`}
                                             className="flex-1 flex items-center justify-center gap-1.5 text-[11px] font-bold text-black rounded-xl py-2.5 transition-all"
                                             style={{ background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)" }}
                                         >
                                             Run This Corridor <ChevronRight className="w-3 h-3" />
                                         </Link>
-                                        <Link
+                                        <Link aria-label="Navigation Link"
                                             href={`/corridors/${corridor.id}`}
                                             className="flex items-center justify-center w-10 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-all"
                                             title="Watch corridor"
@@ -234,7 +234,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                 </div>
 
                 <div className="text-center mt-4 sm:hidden">
-                    <Link href="/corridors" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
+                    <Link aria-label="Navigation Link" href="/corridors" className="inline-flex items-center gap-2 text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors">
                         View all {corridorCount} corridors <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                 </div>

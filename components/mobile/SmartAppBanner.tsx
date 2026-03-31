@@ -12,8 +12,8 @@ export function SmartAppBanner() {
       {/* Android - manifest handles this, but meta as fallback */}
       <meta name="google-play-app" content="app-id=com.haulcommand.app" />
       {/* Deep link fallbacks */}
-      <link rel="alternate" href="android-app://com.haulcommand.app/https/haulcommand.com" />
-      <link rel="alternate" href="ios-app://TBD/https/haulcommand.com" />
+      <Link aria-label="Navigation Link" rel="alternate" href="android-app://com.haulcommand.app/https/haulcommand.com" />
+      <Link aria-label="Navigation Link" rel="alternate" href="ios-app://TBD/https/haulcommand.com" />
     </>
   );
 }

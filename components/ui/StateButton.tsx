@@ -44,7 +44,7 @@ export function StateButton({ href, label, emoji, sublabel, count, hot, isNew, a
             : "none";
 
     return (
-        <Link
+        <Link aria-label="Navigation Link"
             href={href}
             className="state-btn"
             style={{

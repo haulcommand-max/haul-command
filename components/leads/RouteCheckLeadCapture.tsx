@@ -103,7 +103,7 @@ export default function RouteCheckLeadCapture({
         )}
 
         <div className="flex gap-2">
-          <button
+          <button aria-label="Interactive Button"
             type="submit"
             disabled={loading || !email}
             className="flex-1 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-lg transition-colors disabled:opacity-50"
@@ -111,7 +111,7 @@ export default function RouteCheckLeadCapture({
             {loading ? 'Sending...' : 'Get Updates'}
           </button>
           {!expanded && (
-            <button
+            <button aria-label="Interactive Button"
               type="button"
               onClick={() => setExpanded(true)}
               className="px-3 py-2 border border-white/10 text-gray-400 text-xs rounded-lg hover:border-white/20 transition-colors"

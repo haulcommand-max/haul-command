@@ -7,5 +7,36 @@ export const metadata: Metadata = {
 };
 
 export default function LiveMapPage() {
-  return <LiveMapClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How often is the live dispatch map updated?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Our live map aggregates data in near real-time from active oversize loads and escort vehicles."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I see permit routes on the map?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, active permit route overlays are available to authorized operators and dispatchers."
+                }
+              }
+            ]
+          }),
+        }}
+      />
+      <LiveMapClient />
+    </>
+  );
 }

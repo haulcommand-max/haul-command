@@ -117,7 +117,7 @@ export default function BrokerUrgencyEngine({
             position: 'relative',
         }}>
             {/* Dismiss */}
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setDismissed(true)}
                 style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.25)' }}
             >
@@ -149,7 +149,7 @@ export default function BrokerUrgencyEngine({
             </div>
 
             {/* CTA */}
-            <Link
+            <Link aria-label="Navigation Link"
                 href={signal.ctaHref}
                 onClick={() => trackEvent('urgency_boost_clicked', { corridor_slug: corridorSlug, surface: 'urgency_engine' })}
                 style={{

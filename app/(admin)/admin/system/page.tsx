@@ -194,7 +194,7 @@ export default async function SystemHealthPage() {
                         <h1 style={{ margin: '8px 0 4px', fontSize: 26, fontWeight: 900, color: '#f9fafb' }}>Haul Command — System Monitor</h1>
                         <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Rendered: {new Date(now).toLocaleString()} · force-dynamic</p>
                     </div>
-                    <Link href="/admin" style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, color: '#9ca3af', textDecoration: 'none' }}>← Admin</Link>
+                    <Link aria-label="Navigation Link" href="/admin" style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, color: '#9ca3af', textDecoration: 'none' }}>← Admin</Link>
                 </div>
 
                 {/* Stripe Mode Banner — MOVE 1 */}
@@ -378,8 +378,8 @@ export default async function SystemHealthPage() {
                     <h2 style={sectionHeader}>Quick Actions</h2>
                     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                         <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer" style={actionBtn}>Enable pg_cron ↗</a>
-                        <Link href="/admin" style={{ ...actionBtn, background: 'rgba(255,255,255,0.05)', color: '#9ca3af' }}>Admin Home</Link>
-                        <Link href="/regulatory-db" style={{ ...actionBtn, background: 'rgba(255,255,255,0.05)', color: '#9ca3af' }}>Regulatory DB</Link>
+                        <Link aria-label="Navigation Link" href="/admin" style={{ ...actionBtn, background: 'rgba(255,255,255,0.05)', color: '#9ca3af' }}>Admin Home</Link>
+                        <Link aria-label="Navigation Link" href="/regulatory-db" style={{ ...actionBtn, background: 'rgba(255,255,255,0.05)', color: '#9ca3af' }}>Regulatory DB</Link>
                     </div>
                 </section>
             </div>

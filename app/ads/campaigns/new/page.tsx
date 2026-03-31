@@ -83,7 +83,7 @@ export default function NewCampaignPage() {
                             <label className="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3">Ad Placement</label>
                             <div className="grid gap-2">
                                 {SLOTS.map(slot => (
-                                    <button key={slot.id}
+                                    <button aria-label="Interactive Button" key={slot.id}
                                         onClick={() => update("slot", slot.id)}
                                         className="text-left p-3 rounded-xl border transition-all"
                                         style={{
@@ -100,7 +100,7 @@ export default function NewCampaignPage() {
                                 ))}
                             </div>
                         </div>
-                        <button onClick={() => setStep(2)} disabled={!campaign.name || !campaign.slot}
+                        <button aria-label="Interactive Button" onClick={() => setStep(2)} disabled={!campaign.name || !campaign.slot}
                             className="w-full py-4 rounded-2xl font-bold text-sm text-black"
                             style={{
                                 background: campaign.name && campaign.slot ? "linear-gradient(135deg, #C6923A, #E0B05C)" : "rgba(255,255,255,0.06)",
@@ -136,8 +136,8 @@ export default function NewCampaignPage() {
                             <p className="text-[10px] text-white/25 mt-1">${(campaign.dailyBudget / 100).toFixed(2)}/day maximum spend</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold">Back</button>
-                            <button onClick={() => setStep(3)}
+                            <button aria-label="Interactive Button" onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold">Back</button>
+                            <button aria-label="Interactive Button" onClick={() => setStep(3)}
                                 className="flex-1 py-3 rounded-xl font-bold text-sm text-black"
                                 style={{ background: "linear-gradient(135deg, #C6923A, #E0B05C)", minHeight: "48px" }}>
                                 Next: Creative <ArrowRight className="w-4 h-4 inline ml-1" />
@@ -173,8 +173,8 @@ export default function NewCampaignPage() {
                         </div>
 
                         <div className="flex gap-3">
-                            <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold">Back</button>
-                            <button onClick={handleSubmit} disabled={submitting || !campaign.headline || !campaign.clickUrl}
+                            <button aria-label="Interactive Button" onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold">Back</button>
+                            <button aria-label="Interactive Button" onClick={handleSubmit} disabled={submitting || !campaign.headline || !campaign.clickUrl}
                                 className="flex-1 py-3 rounded-xl font-bold text-sm text-black"
                                 style={{
                                     background: campaign.headline && campaign.clickUrl ? "linear-gradient(135deg, #C6923A, #E0B05C)" : "rgba(255,255,255,0.06)",

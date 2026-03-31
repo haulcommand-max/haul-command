@@ -178,7 +178,7 @@ export function AppInstallModal() {
                     </a>
                 </div>
 
-                <button onClick={close} className="block w-full text-center text-[10px] text-[#555] mt-4 hover:text-[#888] transition-colors">
+                <button aria-label="Interactive Button" onClick={close} className="block w-full text-center text-[10px] text-[#555] mt-4 hover:text-[#888] transition-colors">
                     Maybe later
                 </button>
             </div>

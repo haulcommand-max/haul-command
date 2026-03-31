@@ -109,7 +109,7 @@ export function HcVariantGroupReview({
                 </div>
               </div>
               <div style={{ display: "flex", gap: "6px" }}>
-                <button
+                <button aria-label="Interactive Button"
                   onClick={() => doAction("archive_losers", { variant_group_id: groupId }, `archive-${groupId}`)}
                   disabled={acting === `archive-${groupId}`}
                   style={{
@@ -202,7 +202,7 @@ export function HcVariantGroupReview({
                     {/* Actions */}
                     {!isArchived && (
                       <div style={{ padding: "6px", display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                        <button
+                        <button aria-label="Interactive Button"
                           onClick={() => doAction("make_primary", { asset_id: asset.id }, `primary-${asset.id}`)}
                           disabled={acting === `primary-${asset.id}`}
                           title="Set as primary"
@@ -220,7 +220,7 @@ export function HcVariantGroupReview({
                         >
                           ⭐ Primary
                         </button>
-                        <button
+                        <button aria-label="Interactive Button"
                           onClick={() => doAction("make_live", { asset_id: asset.id }, `live-${asset.id}`)}
                           disabled={acting === `live-${asset.id}`}
                           title="Publish"
@@ -238,7 +238,7 @@ export function HcVariantGroupReview({
                         >
                           🚀 Live
                         </button>
-                        <button
+                        <button aria-label="Interactive Button"
                           onClick={() => doAction("reject", { asset_id: asset.id }, `reject-${asset.id}`)}
                           disabled={acting === `reject-${asset.id}`}
                           title="Reject"

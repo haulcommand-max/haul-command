@@ -97,7 +97,7 @@ export function JurisdictionDrawer({ jurisdictionCode, jurisdictionName, onClose
                         <h2 className="text-lg font-black text-white">{jurisdictionName}</h2>
                         <p className="text-xs text-slate-500 font-mono">{jurisdictionCode}</p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-800 rounded-xl transition-colors">
+                    <button aria-label="Interactive Button" onClick={onClose} className="p-2 hover:bg-slate-800 rounded-xl transition-colors">
                         <X className="w-5 h-5 text-slate-400" />
                     </button>
                 </div>
@@ -105,7 +105,7 @@ export function JurisdictionDrawer({ jurisdictionCode, jurisdictionName, onClose
                 {/* Tab Bar */}
                 <div className="flex border-b border-slate-800 shrink-0">
                     {tabs.map(t => (
-                        <button
+                        <button aria-label="Interactive Button"
                             key={t.key}
                             onClick={() => setTab(t.key)}
                             className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${tab === t.key
@@ -197,7 +197,7 @@ function RulesTab({ rulepacks, jurisdictionCode, analytics }: { rulepacks: Rulep
     return (
         <div className="space-y-2">
             {rulepacks.map(rp => (
-                <button key={rp.rulepack_id}
+                <button aria-label="Interactive Button" key={rp.rulepack_id}
                     onClick={() => analytics.trackRulepackOpened(jurisdictionCode, rp.rulepack_id)}
                     className="w-full text-left p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-amber-500/30 transition-colors">
                     <div className="flex items-center justify-between">
@@ -289,12 +289,12 @@ function ExportTab({ jurisdictionCode, jurisdictionName, copied, setCopied, anal
                 Export data for <strong className="text-white">{jurisdictionName} ({jurisdictionCode})</strong> to share with your team or for offline reference.
             </div>
 
-            <button onClick={handleExport}
+            <button aria-label="Interactive Button" onClick={handleExport}
                 className="w-full flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-sm rounded-xl transition-colors">
                 <Download className="w-4 h-4" /> Export State Packet
             </button>
 
-            <button onClick={handleCopyLinks}
+            <button aria-label="Interactive Button" onClick={handleCopyLinks}
                 className="w-full flex items-center justify-center gap-2 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm rounded-xl transition-colors">
                 {copied ? <><CheckCircle className="w-4 h-4 text-emerald-400" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Quick Links</>}
             </button>

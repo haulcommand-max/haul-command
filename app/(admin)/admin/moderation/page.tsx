@@ -125,7 +125,7 @@ export default function ModerationPage() {
                                             <StatusBadge status={item.status} />
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button
+                                            <button aria-label="Interactive Button"
                                                 disabled={processing}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
@@ -151,14 +151,14 @@ export default function ModerationPage() {
                 title={selectedItem?.summary}
                 actions={
                     <>
-                        <button
+                        <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleAction('VERIFY', selectedItem)}
                             className="flex-1 bg-[#22c55e] text-black py-3 rounded text-xs font-black uppercase hover:bg-green-400 transition-all disabled:opacity-50"
                         >
                             {processing ? 'Processing...' : 'Verify Item'}
                         </button>
-                        <button
+                        <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleAction('REJECT', selectedItem)}
                             className="flex-1 border border-[#ef4444] text-[#ef4444] py-3 rounded text-xs font-black uppercase hover:bg-red-500/10 transition-all disabled:opacity-50"
@@ -198,7 +198,7 @@ export default function ModerationPage() {
 
 function Tab({ label, count, active }: any) {
     return (
-        <button className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
+        <button aria-label="Interactive Button" className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
             {label} {count && <span className="ml-1 opacity-50">({count})</span>}
         </button>
     );

@@ -41,9 +41,9 @@ export default async function CorridorPage({ params }: any) {
             <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem 1rem' }}>
                 {/* Breadcrumbs */}
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
+                    <Link aria-label="Navigation Link" href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
-                    <Link href={`/routes/${params.highway}`} style={{ color: '#6b7280', textDecoration: 'none' }}>{hwy.name}</Link>
+                    <Link aria-label="Navigation Link" href={`/routes/${params.highway}`} style={{ color: '#6b7280', textDecoration: 'none' }}>{hwy.name}</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
                     <span style={{ color: '#d1d5db' }}>{st}</span>
                 </nav>
@@ -83,7 +83,7 @@ export default async function CorridorPage({ params }: any) {
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: '#d1d5db', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Full {hwy.name} Corridor</h3>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {hwy.states.map((s, i) => (
-                            <Link key={s} href={`/routes/${params.highway}/${s.toLowerCase()}`} style={{
+                            <Link aria-label="Navigation Link" key={s} href={`/routes/${params.highway}/${s.toLowerCase()}`} style={{
                                 padding: '6px 16px', borderRadius: 10, textDecoration: 'none',
                                 background: s === st ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
                                 border: `1px solid ${s === st ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -102,7 +102,7 @@ export default async function CorridorPage({ params }: any) {
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: '#d1d5db', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Major City Nodes in {st}</h3>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
                         {(cities ?? []).map((c: any) => (
-                            <Link key={c.city} href={`/directory/us/${st.toLowerCase()}/${c.city.toLowerCase().replace(/\s+/g, '-')}`} style={{
+                            <Link aria-label="Navigation Link" key={c.city} href={`/directory/us/${st.toLowerCase()}/${c.city.toLowerCase().replace(/\s+/g, '-')}`} style={{
                                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                                 padding: '12px 16px', borderRadius: 12, textDecoration: 'none',
                                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
@@ -147,7 +147,7 @@ export default async function CorridorPage({ params }: any) {
                 <div style={{ background: 'linear-gradient(135deg, rgba(241,169,27,0.08), rgba(241,169,27,0.02))', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 20, padding: '2rem', textAlign: 'center' }}>
                     <h3 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Running the {hwy.name} corridor?</h3>
                     <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load and get matched with verified escorts along this route in minutes.</p>
-                    <Link href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post a Load →</Link>
+                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post a Load →</Link>
                 </div>
             </div>
         </div>

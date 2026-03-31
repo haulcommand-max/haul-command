@@ -243,7 +243,7 @@ export default function CertificateUploader({ onParsed, label = 'Upload Certific
 
           {/* Actions */}
           <div className="flex gap-2 pt-2">
-            <button
+            <button aria-label="Interactive Button"
               onClick={() => fileRef.current?.click()}
               className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 rounded-lg transition-colors"
             >

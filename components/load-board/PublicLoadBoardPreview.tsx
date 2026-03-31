@@ -105,7 +105,7 @@ function LoadPreviewCard({ load, index }: { load: LoadPreview; index: number }) 
       </div>
 
       {/* CTA */}
-      <Link href="/login" className="ag-press" style={{
+      <Link aria-label="Navigation Link" href="/login" className="ag-press" style={{
         display: 'block', textAlign: 'center',
         padding: '8px', borderRadius: 10,
         background: 'rgba(245,185,66,0.1)', border: `1px solid rgba(245,185,66,0.25)`,
@@ -144,7 +144,7 @@ function BlurredCard({ index }: { index: number }) {
         background: 'rgba(6,11,18,0.65)', backdropFilter: 'blur(2px)',
       }}>
         <div style={{ fontSize: 18 }}>🔒</div>
-        <Link href="/login" style={{ fontSize: 11, fontWeight: 800, color: T.gold, textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/login" style={{ fontSize: 11, fontWeight: 800, color: T.gold, textDecoration: 'none' }}>
           Sign in to view
         </Link>
       </div>
@@ -297,10 +297,10 @@ export function PublicLoadBoardPreview() {
               Toggle available, receive push offers, track earnings, and build your trust score.
             </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/login" className="ag-press" style={{ padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>
+              <Link aria-label="Navigation Link" href="/login" className="ag-press" style={{ padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>
                 Sign In Free
               </Link>
-              <Link href="/loads/post" style={{ padding: '12px 28px', borderRadius: 12, background: 'transparent', border: `1px solid ${T.borderStrong}`, color: T.muted, fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
+              <Link aria-label="Navigation Link" href="/loads/post" style={{ padding: '12px 28px', borderRadius: 12, background: 'transparent', border: `1px solid ${T.borderStrong}`, color: T.muted, fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
                 Post a Load
               </Link>
             </div>

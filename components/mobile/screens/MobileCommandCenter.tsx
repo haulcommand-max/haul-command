@@ -232,7 +232,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
         <>
           <MobileSectionHeader title="ðŸ”´ Shortage Signal" action="All Corridors" />
           <div style={{ padding: '0 var(--m-screen-pad)' }}>
-            <Link href={`/corridor/${topCorridor.slug}`} style={{ textDecoration: 'none' }}>
+            <Link aria-label="Navigation Link" href={`/corridor/${topCorridor.slug}`} style={{ textDecoration: 'none' }}>
               <MobileCard variant="gold-border">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -264,7 +264,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
       {/* Next best action */}
       <MobileSectionHeader title="Next Steps" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--m-sm)' }}>
-        <Link href="/loads" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/loads" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-xs) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“‹</div>
@@ -272,7 +272,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/claim" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/claim" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-xs) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>âœ“</div>
@@ -307,7 +307,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         {signals.corridorPressure.length > 1 ? (
           signals.corridorPressure.slice(1, 4).map((c) => (
-            <Link key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
+            <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
               <MobileCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -376,7 +376,7 @@ function BrokerHome({ signals }: { signals: HomeSignals }) {
       {/* Quick Actions */}
       <MobileSectionHeader title="Quick Actions" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--m-sm)' }}>
-        <Link href="/loads/post" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/loads/post" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“‹</div>
@@ -384,7 +384,7 @@ function BrokerHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/directory" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/directory" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ”</div>
@@ -422,7 +422,7 @@ function BrokerHome({ signals }: { signals: HomeSignals }) {
       <MobileSectionHeader title="Coverage Confidence" action="All Corridors" />
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         {signals.corridorPressure.slice(0, 3).map((c) => (
-          <Link key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
+          <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
             <MobileCard>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
@@ -484,7 +484,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
 
       {/* Primary CTA â€” Claim/List Your Services */}
       <div style={{ padding: '0 var(--m-screen-pad)', marginTop: 'var(--m-md)' }}>
-        <Link href="/claim" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/claim" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '18px 20px',
             borderRadius: 'var(--m-radius-lg, 16px)',
@@ -508,7 +508,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
       {/* Revenue Actions â€” 5 paths */}
       <MobileSectionHeader title="Revenue Channels" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--m-sm)' }}>
-        <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/sponsor" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ—</div>
@@ -517,7 +517,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/advertise" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/advertise" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“£</div>
@@ -531,7 +531,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
       {/* Premium upgrade opportunities */}
       <MobileSectionHeader title="Visibility Upgrades" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'flex', flexDirection: 'column', gap: 'var(--m-sm)' }}>
-        <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/sponsor" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '16px 18px', borderRadius: 14,
             background: 'linear-gradient(135deg, rgba(212,168,68,0.08), rgba(212,168,68,0.02))',
@@ -549,7 +549,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
             <ChevronRight />
           </div>
         </Link>
-        <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/sponsor" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '16px 18px', borderRadius: 14,
             background: 'linear-gradient(135deg, rgba(34,197,94,0.06), rgba(34,197,94,0.02))',
@@ -580,7 +580,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         {signals.corridorPressure.length > 0 ? (
           signals.corridorPressure.slice(0, 3).map((c) => (
-            <Link key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
+            <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
               <MobileCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -652,7 +652,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             }
           </div>
           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-            <Link href="/claim" style={{
+            <Link aria-label="Navigation Link" href="/claim" style={{
               padding: '8px 16px', borderRadius: 10,
               background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
               color: '#8B5CF6', fontSize: 'var(--m-font-body-sm)', fontWeight: 800,
@@ -660,7 +660,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             }}>
               Claim Profile
             </Link>
-            <Link href="/login" style={{
+            <Link aria-label="Navigation Link" href="/login" style={{
               padding: '8px 16px', borderRadius: 10,
               background: 'transparent', border: '1px solid var(--m-border-subtle)',
               color: 'var(--m-text-secondary)', fontSize: 'var(--m-font-body-sm)', fontWeight: 700,
@@ -675,7 +675,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
       {/* Intelligence Actions â€” observer-appropriate */}
       <MobileSectionHeader title="Intelligence Tools" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--m-sm)' }}>
-        <Link href="/map" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/map" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ—º</div>
@@ -683,7 +683,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/leaderboards" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/leaderboards" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ†</div>
@@ -691,7 +691,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/map" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/map" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“Š</div>
@@ -699,7 +699,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/escort-requirements" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/escort-requirements" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-sm) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“œ</div>
@@ -714,7 +714,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         {signals.corridorPressure.length > 0 ? (
           signals.corridorPressure.map((c) => (
-            <Link key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
+            <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 'var(--m-sm)' }}>
               <MobileCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -742,7 +742,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
 
       {/* Unlock Live Updates â€” conversion hook (intelligence-first) */}
       <div style={{ padding: '0 var(--m-screen-pad)', marginTop: 'var(--m-sm)' }}>
-        <Link href="/login" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/login" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '14px 18px', borderRadius: 14,
             background: 'rgba(255,255,255,0.02)',
@@ -765,7 +765,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
       {/* Explore links */}
       <MobileSectionHeader title="Explore" />
       <div style={{ padding: '0 var(--m-screen-pad)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--m-sm)' }}>
-        <Link href="/directory" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/directory" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-xs) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“–</div>
@@ -773,7 +773,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
             </div>
           </MobileCard>
         </Link>
-        <Link href="/loads" style={{ textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/loads" style={{ textDecoration: 'none' }}>
           <MobileCard>
             <div style={{ textAlign: 'center', padding: 'var(--m-xs) 0' }}>
               <div style={{ fontSize: 22, marginBottom: 'var(--m-xs)' }}>ðŸ“‹</div>
@@ -795,7 +795,7 @@ function EmptyCorridorState({ message }: { message: string }) {
         <div style={{ fontSize: 'var(--m-font-body-sm)', fontWeight: 700, color: 'var(--m-text-secondary)', lineHeight: 1.4 }}>
           {message}
         </div>
-        <Link href="/map" style={{
+        <Link aria-label="Navigation Link" href="/map" style={{
           display: 'inline-flex', alignItems: 'center', gap: 4,
           marginTop: 'var(--m-sm)', padding: '8px 14px', borderRadius: 10,
           background: 'rgba(212,168,68,0.1)', border: '1px solid rgba(212,168,68,0.2)',
@@ -904,7 +904,7 @@ function SponsoredIntelligenceCell({ variant = 'default', topCorridor }: {
           {intelligence.body}
         </div>
 
-        <Link
+        <Link aria-label="Navigation Link"
           href={intelligence.ctaHref}
           style={{
             display: 'inline-flex',
@@ -1053,7 +1053,7 @@ function LiveActivityProof({ signals }: { signals: HomeSignals }) {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {signals.corridorPressure.slice(0, 2).map(c => (
-          <Link key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none' }}>
+          <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{ textDecoration: 'none' }}>
             <div style={{
               padding: '14px 16px', borderRadius: 14,
               background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
@@ -1111,7 +1111,7 @@ function WhyThisWins({ signals }: { signals: HomeSignals }) {
         marginBottom: 16, height: 40,
       }}>
         {(['brokers', 'operators'] as const).map(s => (
-          <button key={s} onClick={() => setSide(s)} style={{
+          <button aria-label="Interactive Button" key={s} onClick={() => setSide(s)} style={{
             flex: 1, border: 'none', cursor: 'pointer',
             background: side === s ? 'rgba(241,169,27,0.12)' : 'transparent',
             color: side === s ? '#F1A91B' : 'var(--m-text-muted)',
@@ -1141,7 +1141,7 @@ function WhyThisWins({ signals }: { signals: HomeSignals }) {
               {signals.corridorPressure.length} Active corridors
             </span>
           </div>
-          <Link href="/loads/post" style={{
+          <Link aria-label="Navigation Link" href="/loads/post" style={{
             display: 'block', textAlign: 'center', marginTop: 16, padding: '12px 20px', borderRadius: 12,
             background: 'linear-gradient(135deg, #F1A91B, #f1c27b)', color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
           }}>
@@ -1167,7 +1167,7 @@ function WhyThisWins({ signals }: { signals: HomeSignals }) {
               {signals.corridorPressure.length} Markets active
             </span>
           </div>
-          <Link href="/claim" style={{
+          <Link aria-label="Navigation Link" href="/claim" style={{
             display: 'block', textAlign: 'center', marginTop: 16, padding: '12px 20px', borderRadius: 12,
             background: 'linear-gradient(135deg, #F1A91B, #f1c27b)', color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
           }}>
@@ -1207,11 +1207,11 @@ export default function MobileCommandCenter() {
     <div style={{ background: 'var(--m-bg)', minHeight: '100dvh' }}>
       {/* Top nav */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px var(--m-screen-pad) 0' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--m-text-secondary)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
           <span style={{ fontSize: 'var(--m-font-body-sm)', fontWeight: 700, color: 'var(--m-text-secondary)' }}>Home</span>
         </Link>
-        <Link href="/login" style={{
+        <Link aria-label="Navigation Link" href="/login" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           width: 32, height: 32, borderRadius: 999,
           background: 'var(--m-surface-raised)', border: '1px solid var(--m-border-subtle)', textDecoration: 'none',
@@ -1227,7 +1227,7 @@ export default function MobileCommandCenter() {
             <div style={{ fontSize: 'var(--m-font-body-sm)', color: 'var(--m-text-secondary)', fontWeight: 500 }}>{getGreeting()} ðŸ‘‹</div>
             <h1 style={{ fontSize: 'var(--m-font-display)', fontWeight: 800, color: 'var(--m-text-primary)', lineHeight: '32px', marginTop: 'var(--m-xs)' }}>Command Center</h1>
           </div>
-          <button onClick={() => { setRole(null); setStoredRole(null as unknown as UserRole); localStorage.removeItem('hc_user_role'); }} style={{
+          <button aria-label="Interactive Button" onClick={() => { setRole(null); setStoredRole(null as unknown as UserRole); localStorage.removeItem('hc_user_role'); }} style={{
             background: 'var(--m-surface-raised)', border: '1px solid var(--m-border-subtle)', borderRadius: 'var(--m-radius-full)',
             padding: '4px 12px', fontSize: 'var(--m-font-caption)', fontWeight: 700, color: 'var(--m-text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap', marginTop: 'var(--m-xs)',
           }}>
@@ -1242,7 +1242,7 @@ export default function MobileCommandCenter() {
       {/* â”â”â” PRIMARY ACTION STACK â”â”â” */}
       <div style={{ padding: '0 var(--m-screen-pad)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
-          <Link href="/loads/post" style={{ textDecoration: 'none' }}>
+          <Link aria-label="Navigation Link" href="/loads/post" style={{ textDecoration: 'none' }}>
             <div style={{
               padding: '18px 16px', borderRadius: 18, minHeight: 116,
               background: 'linear-gradient(145deg, rgba(241,169,27,0.12), rgba(241,169,27,0.04))',
@@ -1256,7 +1256,7 @@ export default function MobileCommandCenter() {
               </div>
             </div>
           </Link>
-          <Link href="/directory" style={{ textDecoration: 'none' }}>
+          <Link aria-label="Navigation Link" href="/directory" style={{ textDecoration: 'none' }}>
             <div style={{
               padding: '18px 16px', borderRadius: 18, minHeight: 116,
               background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
@@ -1273,7 +1273,7 @@ export default function MobileCommandCenter() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 20 }}>
           {[{ href: '/escort-requirements', emoji: 'ðŸ“œ', label: 'Requirements' }, { href: '/gear', emoji: 'ðŸªª', label: 'Compliance' }, { href: '/claim', emoji: 'âœ“', label: 'Claim Profile' }].map(a => (
-            <Link key={a.href} href={a.href} style={{ padding: '10px 8px', borderRadius: 12, textDecoration: 'none', textAlign: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <Link aria-label="Navigation Link" key={a.href} href={a.href} style={{ padding: '10px 8px', borderRadius: 12, textDecoration: 'none', textAlign: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ fontSize: 16, marginBottom: 2 }}>{a.emoji}</div>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--m-text-secondary)' }}>{a.label}</div>
             </Link>
@@ -1291,7 +1291,7 @@ export default function MobileCommandCenter() {
             { step: 2, title: 'See Requirements', body: 'View rules, state thresholds, and compliance.', cta: 'View Rules', href: '/escort-requirements', color: '#22C55E' },
             { step: 3, title: 'Take Action', body: 'Post the load or connect with operators now.', cta: 'Continue', href: '/loads/post', color: '#3B82F6' },
           ].map(s => (
-            <Link key={s.step} href={s.href} style={{ textDecoration: 'none' }}>
+            <Link aria-label="Navigation Link" key={s.step} href={s.href} style={{ textDecoration: 'none' }}>
               <div style={{ padding: 16, borderRadius: 18, minHeight: 80, background: 'rgba(255,255,255,0.02)', border: `1px solid ${s.color}20`, display: 'flex', alignItems: 'center', gap: 14 }}>
                 <div style={{ flex: '0 0 36px', width: 36, height: 36, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, color: s.color }}>{s.step}</div>
                 <div style={{ flex: 1 }}>

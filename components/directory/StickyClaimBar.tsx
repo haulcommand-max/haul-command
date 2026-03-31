@@ -94,7 +94,7 @@ export function StickyClaimBar({
                 <ShieldCheck className="w-4 h-4" />
                 Claimed by {claimedBy}
                 {suggestHref && (
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={suggestHref}
                         className="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity ml-2 pl-2 text-white/50"
                         style={{ borderLeft: "1px solid rgba(255,255,255,0.1)" }}
@@ -135,7 +135,7 @@ export function StickyClaimBar({
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                     {suggestHref && (
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={suggestHref}
                             className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white/50 transition-colors hover:text-white"
                             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
@@ -144,7 +144,7 @@ export function StickyClaimBar({
                             Suggest edit
                         </Link>
                     )}
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={claimHref}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-black transition-all hover:scale-[1.02]"
                         style={{ background: "#F1A91B" }}
@@ -174,14 +174,14 @@ export function StickyClaimBar({
                         <div className="text-[10px] text-white/40">{copy.tagline}</div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={claimHref}
                             className="px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider text-black"
                             style={{ background: "#F1A91B" }}
                         >
                             {copy.cta}
                         </Link>
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => setDismissed(true)}
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-white transition-colors"
                             style={{ background: "rgba(255,255,255,0.05)" }}
@@ -208,7 +208,7 @@ export function ClaimTopBadge({
     label?: string;
 }) {
     return (
-        <Link
+        <Link aria-label="Navigation Link"
             href={href}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-black uppercase tracking-wide text-black transition-all hover:scale-[1.02]"
             style={{ background: "#F1A91B", boxShadow: "0 2px 12px rgba(241,169,27,0.3)" }}

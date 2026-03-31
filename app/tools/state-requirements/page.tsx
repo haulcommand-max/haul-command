@@ -51,7 +51,7 @@ export default function StateRequirementsCheatsheet() {
                                 { label: 'Cert Required', val: true },
                                 { label: 'No Cert', val: false },
                             ].map(f => (
-                                <button key={f.label} onClick={() => setCertFilter(f.val)} style={{
+                                <button aria-label="Interactive Button" key={f.label} onClick={() => setCertFilter(f.val)} style={{
                                     padding: '4px 14px', borderRadius: 8, fontSize: 10, fontWeight: 700, cursor: 'pointer',
                                     background: certFilter === f.val ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
                                     border: `1px solid ${certFilter === f.val ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -74,7 +74,7 @@ export default function StateRequirementsCheatsheet() {
                                     {filtered.map((s, i) => (
                                         <tr key={s.code} style={{ borderBottom: i < filtered.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>
                                             <td style={{ padding: '10px 12px' }}>
-                                                <Link href={`/requirements/${s.code.toLowerCase()}/escort-vehicle-rules`} style={{ color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>{s.code}</Link>
+                                                <Link aria-label="Navigation Link" href={`/requirements/${s.code.toLowerCase()}/escort-vehicle-rules`} style={{ color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>{s.code}</Link>
                                                 <span style={{ color: '#6b7280', marginLeft: 6 }}>{s.name}</span>
                                             </td>
                                             <td style={{ padding: '10px 12px', color: s.cert ? '#10b981' : '#6b7280' }}>{s.cert ? '✅' : '❌'}</td>
@@ -92,7 +92,7 @@ export default function StateRequirementsCheatsheet() {
 
                         <div style={{ marginTop: 24, textAlign: 'center' }}>
                             <p style={{ fontSize: 11, color: '#4b5563', marginBottom: 12 }}>Data may not reflect latest changes. Always verify with the state DOT.</p>
-                            <Link href="/tools" style={{ color: '#F1A91B', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Back to Free Tools</Link>
+                            <Link aria-label="Navigation Link" href="/tools" style={{ color: '#F1A91B', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Back to Free Tools</Link>
                         </div>
                     </div>
                     <aside><ToolsSidebar currentPath="/tools/state-requirements" /></aside>

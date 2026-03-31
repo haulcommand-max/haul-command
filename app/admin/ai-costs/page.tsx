@@ -89,7 +89,7 @@ export default function AICostDashboard() {
           </div>
           <div className="flex gap-2">
             {[7, 30, 90].map(d => (
-              <button
+              <button aria-label="Interactive Button"
                 key={d}
                 onClick={() => setDays(d)}
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${

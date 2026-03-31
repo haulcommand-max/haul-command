@@ -41,13 +41,13 @@ export default function SponsorSuccessPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href="/directory"
                         className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl transition-all"
                     >
                         View Directory <ArrowRight className="w-4 h-4" />
                     </Link>
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href="/dashboard"
                         className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold px-6 py-3 rounded-xl transition-all"
                     >

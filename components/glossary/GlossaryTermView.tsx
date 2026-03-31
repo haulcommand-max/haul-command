@@ -116,7 +116,7 @@ export function GlossaryTermView({ term, usages, showFrenchToggle }: GlossaryTer
                         <h2 style={sectionHeadingStyle}>Related Terms</h2>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             {term.related_slugs.map(rs => (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={rs}
                                     href={`/glossary/${rs}`}
                                     style={{
@@ -145,7 +145,7 @@ export function GlossaryTermView({ term, usages, showFrenchToggle }: GlossaryTer
                         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                             {usages.slice(0, 10).map((u, i) => (
                                 <li key={i} style={{ marginBottom: '8px' }}>
-                                    <Link
+                                    <Link aria-label="Navigation Link"
                                         href={u.page_path}
                                         style={{ color: '#38bdf8', fontSize: '13px', textDecoration: 'none' }}
                                     >

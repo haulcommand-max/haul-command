@@ -87,7 +87,7 @@ export default function AdminVendorApplicationsPage() {
                                             </span>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <Link href={`/admin/vendors/applications/${app.id}`}
+                                            <Link aria-label="Navigation Link" href={`/admin/vendors/applications/${app.id}`}
                                                 className="text-orange-600 hover:underline font-medium text-xs">
                                                 Review →
                                             </Link>

@@ -109,11 +109,11 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
 
                 {/* Breadcrumbs */}
                 <nav className="flex items-center gap-2 text-xs text-[#555] font-medium">
-                    <Link href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
+                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
                     <span>/</span>
-                    <Link href={`/surfaces/${surface.country_code.toLowerCase()}`} className="hover:text-[#F1A91B] transition-colors">{country}</Link>
+                    <Link aria-label="Navigation Link" href={`/surfaces/${surface.country_code.toLowerCase()}`} className="hover:text-[#F1A91B] transition-colors">{country}</Link>
                     <span>/</span>
-                    <Link href={`/surfaces/${surface.country_code.toLowerCase()}/${surface.category.replace(/_/g, "-")}`} className="hover:text-[#F1A91B] transition-colors">{cat.label}s</Link>
+                    <Link aria-label="Navigation Link" href={`/surfaces/${surface.country_code.toLowerCase()}/${surface.category.replace(/_/g, "-")}`} className="hover:text-[#F1A91B] transition-colors">{cat.label}s</Link>
                     <span>/</span>
                     <span className="text-[#888]">{surface.name}</span>
                 </nav>
@@ -125,7 +125,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                         <p className="text-sm font-bold text-white">This location hasn&apos;t been claimed yet.</p>
                         <p className="text-xs text-[#888] mt-0.5">Is this your business? Claim it to manage your listing, add photos, and get matched with loads.</p>
                     </div>
-                    <Link href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-black font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
+                    <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-black font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
                         Claim This Location →
                     </Link>
                 </div>
@@ -219,7 +219,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                             {operators && operators.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {operators.map((op: any) => (
-                                        <Link key={op.id} href={`/place/${op.id}`} className="group block bg-black border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(241,169,27,0.05)]">
+                                        <Link aria-label="Navigation Link" key={op.id} href={`/place/${op.id}`} className="group block bg-black border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(241,169,27,0.05)]">
                                             <div className="flex items-start gap-3">
                                                 <div className="w-10 h-10 bg-[#111] border border-[#222] rounded-full flex items-center justify-center flex-shrink-0">
                                                     <Truck className="w-4 h-4 text-[#F1A91B]" />
@@ -251,7 +251,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                                 <div className="text-center py-8">
                                     <Truck className="w-10 h-10 text-[#222] mx-auto mb-3" />
                                     <p className="text-xs text-[#555]">No operators found in this area yet.</p>
-                                    <Link href="/start" className="inline-block mt-3 text-xs text-[#F1A91B] font-bold hover:underline">Join as an operator →</Link>
+                                    <Link aria-label="Navigation Link" href="/start" className="inline-block mt-3 text-xs text-[#F1A91B] font-bold hover:underline">Join as an operator →</Link>
                                 </div>
                             )}
                         </div>
@@ -267,7 +267,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                             <p className="text-[10px] text-[#666] mb-4 leading-relaxed">
                                 Claim this listing to manage your profile, respond to leads, and boost visibility.
                             </p>
-                            <Link href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
+                            <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
                                 Claim This Location
                             </Link>
                             <p className="text-[9px] text-[#444] mt-3">Free to claim • Verification required</p>
@@ -281,7 +281,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                                 </h3>
                                 <div className="space-y-2">
                                     {nearby.map((s: any) => (
-                                        <Link key={s.surface_id} href={`/surface/${s.slug}`} className="flex items-center gap-3 py-2 px-3 bg-black/50 rounded-lg border border-[#111] hover:border-[#F1A91B]/20 transition-colors group">
+                                        <Link aria-label="Navigation Link" key={s.surface_id} href={`/surface/${s.slug}`} className="flex items-center gap-3 py-2 px-3 bg-black/50 rounded-lg border border-[#111] hover:border-[#F1A91B]/20 transition-colors group">
                                             <Icon className="w-4 h-4 flex-shrink-0" style={{ color: cat.color }} />
                                             <span className="text-xs text-[#888] font-medium truncate group-hover:text-white transition-colors">{s.name}</span>
                                         </Link>

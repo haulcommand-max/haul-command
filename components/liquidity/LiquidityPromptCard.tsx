@@ -61,7 +61,7 @@ export function LiquidityPromptCard({ className = "" }: { className?: string }) 
         <div
             className={`relative rounded-xl border ${cardColor} backdrop-blur-md p-4 shadow-lg animate-fade-in ${className}`}
         >
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setDismissed(true)}
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none"
                 aria-label="Dismiss"
@@ -78,7 +78,7 @@ export function LiquidityPromptCard({ className = "" }: { className?: string }) 
                     <p className="text-gray-400 text-xs leading-snug mb-3">
                         {prompt.body}
                     </p>
-                    <Link
+                    <Link aria-label="Navigation Link"
                         href={prompt.cta_href}
                         className={`inline-block px-4 py-1.5 rounded-lg text-white text-xs font-bold transition-colors ${btnColor}`}
                     >

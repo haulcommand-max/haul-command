@@ -105,7 +105,7 @@ export default function PricingPage() {
             {/* Tabs */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginBottom: '1.5rem' }}>
                 {(['operators', 'brokers'] as const).map(t => (
-                    <button key={t} onClick={() => setTab(t)} style={{
+                    <button aria-label="Interactive Button" key={t} onClick={() => setTab(t)} style={{
                         padding: '10px 24px', borderRadius: 8, border: 'none', cursor: 'pointer',
                         background: tab === t ? '#F59E0B' : 'rgba(255,255,255,0.06)',
                         color: tab === t ? '#030712' : '#9CA3AF',
@@ -117,7 +117,7 @@ export default function PricingPage() {
             {/* Annual toggle */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10, marginBottom: '2.5rem' }}>
                 <span style={{ fontSize: 13, color: annual ? '#6B7280' : '#F9FAFB' }}>Monthly</span>
-                <button onClick={() => setAnnual(!annual)} style={{
+                <button aria-label="Interactive Button" onClick={() => setAnnual(!annual)} style={{
                     width: 48, height: 26, borderRadius: 13, border: 'none', cursor: 'pointer', position: 'relative',
                     background: annual ? '#F59E0B' : 'rgba(255,255,255,0.15)', transition: 'all 0.2s',
                 }}>
@@ -167,7 +167,7 @@ export default function PricingPage() {
                                 ))}
                             </div>
 
-                            <button onClick={() => handleCTA(plan.id)} style={{
+                            <button aria-label="Interactive Button" onClick={() => handleCTA(plan.id)} style={{
                                 width: '100%', padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
                                 fontWeight: 700, fontSize: 14, transition: 'all 0.15s',
                                 background: ('ctaStyle' in plan && plan.ctaStyle === 'solid') || hl ? 'linear-gradient(135deg, #F59E0B, #D97706)' : 'transparent',

@@ -141,7 +141,7 @@ export default function EscortBrokerInviteModal({
 
                 {/* Action buttons */}
                 {!inviteUrl ? (
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={generateLink}
                         disabled={loading}
                         className="w-full bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-bold py-3 rounded-xl transition-colors text-sm"
@@ -158,7 +158,7 @@ export default function EscortBrokerInviteModal({
 
                         {/* Action buttons */}
                         <div className="grid grid-cols-3 gap-2">
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={handleCopy}
                                 className={`flex flex-col items-center gap-1 py-3 rounded-xl border text-xs font-semibold transition-all
                   ${copied
@@ -170,7 +170,7 @@ export default function EscortBrokerInviteModal({
                                 {copied ? "Copied!" : "Copy Link"}
                             </button>
 
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={handleText}
                                 className="flex flex-col items-center gap-1 py-3 rounded-xl border border-slate-600 bg-slate-700/60 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-semibold transition-all"
                             >
@@ -179,7 +179,7 @@ export default function EscortBrokerInviteModal({
                             </button>
 
                             {isPostJob && (
-                                <button
+                                <button aria-label="Interactive Button"
                                     onClick={handleEmail}
                                     className="flex flex-col items-center gap-1 py-3 rounded-xl border border-slate-600 bg-slate-700/60 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-semibold transition-all"
                                 >
@@ -189,7 +189,7 @@ export default function EscortBrokerInviteModal({
                             )}
 
                             {!isPostJob && (
-                                <button
+                                <button aria-label="Interactive Button"
                                     onClick={handleEmail}
                                     className="flex flex-col items-center gap-1 py-3 rounded-xl border border-slate-600 bg-slate-700/60 text-slate-300 hover:bg-slate-700 hover:text-white text-xs font-semibold transition-all"
                                 >

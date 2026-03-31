@@ -122,7 +122,7 @@ export default async function MapPage() {
             ].map((state) => (
               <Link
                 key={state}
-                href={`/state/${state.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`/escort-requirements?state=${state.toLowerCase().replace(/\s+/g, '-')}`}
                 className="ag-magnetic bg-white/[0.04] hover:bg-accent/10 border border-white/[0.06] hover:border-accent/30 text-gray-300 hover:text-accent rounded-full px-4 py-1.5 text-xs font-medium transition-all"
               >
                 {state}

@@ -154,7 +154,7 @@ export default function LiquidityMap() {
                                     </div>
                                 </div>
                                 <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold mt-2">Status: <span className={driver.status === 'rolling' ? 'text-green-600' : 'text-slate-500'}>{driver.status}</span></p>
-                                <button className="mt-3 w-full bg-slate-900 text-white text-xs font-bold py-1.5 px-2 rounded shadow hover:bg-slate-800 transition-colors">
+                                <button aria-label="Interactive Button" className="mt-3 w-full bg-slate-900 text-white text-xs font-bold py-1.5 px-2 rounded shadow hover:bg-slate-800 transition-colors">
                                     VIEW PROFILE
                                 </button>
                             </div>

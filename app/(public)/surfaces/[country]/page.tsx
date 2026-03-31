@@ -79,7 +79,7 @@ export default async function SurfaceCountryPage({ params }: { params: Promise<{
 
                 {/* Breadcrumbs */}
                 <nav className="flex items-center gap-2 text-xs text-[#555] font-medium">
-                    <Link href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
+                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-[#888]">{countryName}</span>
                 </nav>
@@ -117,7 +117,7 @@ export default async function SurfaceCountryPage({ params }: { params: Promise<{
                         if (counts.total === 0) return null;
                         const Icon = cat.icon;
                         return (
-                            <Link key={key} href={`/surfaces/${country}/${cat.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-2xl p-6 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
+                            <Link aria-label="Navigation Link" key={key} href={`/surfaces/${country}/${cat.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-2xl p-6 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 rounded-xl border flex items-center justify-center" style={{ borderColor: cat.color, backgroundColor: `${cat.color}15` }}>
                                         <Icon className="w-5 h-5" style={{ color: cat.color }} />

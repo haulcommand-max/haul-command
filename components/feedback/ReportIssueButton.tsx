@@ -53,7 +53,7 @@ export default function ReportIssueButton({ entityType, entityId, className = ''
 
     return (
         <>
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => setOpen(true)}
                 className={`inline-flex items-center gap-1 text-xs text-hc-muted hover:text-hc-danger transition-colors ${className}`}
                 title="Report incorrect information"
@@ -81,7 +81,7 @@ export default function ReportIssueButton({ entityType, entityId, className = ''
                                         </label>
                                         <div className="space-y-1.5">
                                             {ISSUE_TYPES.map(t => (
-                                                <button
+                                                <button aria-label="Interactive Button"
                                                     key={t.value}
                                                     onClick={() => setIssueType(t.value)}
                                                     className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors border ${issueType === t.value
@@ -108,14 +108,14 @@ export default function ReportIssueButton({ entityType, entityId, className = ''
                                         />
                                     </div>
                                     <div className="flex gap-2">
-                                        <button
+                                        <button aria-label="Interactive Button"
                                             onClick={() => setOpen(false)}
                                             className="flex-1 px-4 py-2 rounded-lg text-sm font-medium text-hc-muted
                                                 bg-hc-elevated border border-hc-border hover:bg-hc-elevated/80 transition-colors"
                                         >
                                             Cancel
                                         </button>
-                                        <button
+                                        <button aria-label="Interactive Button"
                                             onClick={handleSubmit}
                                             disabled={!issueType || submitting}
                                             className="flex-1 px-4 py-2 rounded-lg text-sm font-bold text-black

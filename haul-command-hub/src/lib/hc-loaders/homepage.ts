@@ -1,10 +1,12 @@
 import { supabaseServer } from '@/lib/supabase-server';
 import { COUNTRIES } from '@/lib/seo-countries';
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 
 /**
  * Homepage loader — must read:
  *   - hc_market_truth_flags (gate metric rendering)
  *   - hc_page_seo_contracts (SEO metadata)
+ *   - get_canonical_stats() (operator counts)
  *
  * Rules:
  *   - hide proof bar if no truth-safe metrics
@@ -41,18 +43,15 @@ export async function getHomepageTruthMetrics() {
     };
   }
 
-  // Fallback to direct count (no fake numbers — real DB counts only)
-  const [places, jurisdictions] = await Promise.all([
-    sb.from('hc_places').select('id', { count: 'exact', head: true }).eq('status', 'published'),
-    sb.from('jurisdictions').select('id', { count: 'exact', head: true }),
-  ]);
+  // Fallback: canonical stats RPC (real counts only, no fakes)
+  const stats = await getCanonicalStats();
 
   return {
     truthGated: false,
     metrics: [] as HomepageTruthMetric[],
-    placeCount: places.count ?? 0,
-    jurisdictionCount: jurisdictions.count ?? 0,
-    countryCount: COUNTRIES.length,
+    placeCount: stats.total_real_operators,
+    jurisdictionCount: stats.jurisdictions,
+    countryCount: stats.active_countries,
   };
 }
 
@@ -95,12 +94,11 @@ export async function getHomepagePreviewResults(limit = 6) {
     }));
   }
 
-  // Fallback to hc_places
+  // Fallback to hc_public_operators (real verified data)
   const { data } = await sb
-    .from('hc_places')
-    .select('id, slug, name, surface_category_key, locality, admin1_code, country_code, phone, claim_status')
-    .eq('status', 'published')
-    .order('updated_at', { ascending: false })
+    .from('hc_public_operators')
+    .select('id, slug, name, entity_type, city, state_code, country_code, claim_status')
+    .order('created_at', { ascending: false })
     .limit(limit);
   return data ?? [];
 }

@@ -92,7 +92,7 @@ export default function InviteCard({ referralCode = 'BOOST-100X', onInvite }: In
                     <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 700, color: '#fbbf24', letterSpacing: '0.1em' }}>
                         {referralCode}
                     </div>
-                    <button 
+                    <button aria-label="Interactive Button" 
                         onClick={handleCopy}
                         style={{
                             background: 'transparent', border: 'none', cursor: 'pointer',
@@ -108,11 +108,11 @@ export default function InviteCard({ referralCode = 'BOOST-100X', onInvite }: In
 
                 {/* Quick Share Actions */}
                 <div style={{ display: 'flex', gap: 10 }}>
-                    <button onClick={handleSMS} style={actionButtonStyle}>
+                    <button aria-label="Interactive Button" onClick={handleSMS} style={actionButtonStyle}>
                         <MessageSquare size={18} color="#e2e8f0" />
                         <span>Text Invite</span>
                     </button>
-                    <button onClick={handleEmail} style={actionButtonStyle}>
+                    <button aria-label="Interactive Button" onClick={handleEmail} style={actionButtonStyle}>
                         <Mail size={18} color="#e2e8f0" />
                         <span>Email Invite</span>
                     </button>

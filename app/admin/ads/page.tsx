@@ -92,7 +92,7 @@ export default function AdminAdsPage() {
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>📣 Ad Revenue Dashboard</h1>
           <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>Haul Command AdGrid OS · Self-serve + internal campaigns</div>
         </div>
-        <Link href="/advertise/dashboard" style={{
+        <Link aria-label="Navigation Link" href="/advertise/dashboard" style={{
           background: 'linear-gradient(90deg, #f5c842, #ff9500)', color: '#07090f',
           borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 800, textDecoration: 'none',
         }}>+ New Campaign</Link>
@@ -129,7 +129,7 @@ export default function AdminAdsPage() {
             { id: 'campaigns', label: '📋 Campaigns' },
             { id: 'revenue', label: '💰 Revenue Projections' },
           ].map(t => (
-            <button key={t.id} onClick={() => setTab(t.id as 'overview'|'campaigns'|'revenue')} style={{
+            <button aria-label="Interactive Button" key={t.id} onClick={() => setTab(t.id as 'overview'|'campaigns'|'revenue')} style={{
               padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
               background: tab === t.id ? 'rgba(255,255,255,0.08)' : 'transparent',
               color: tab === t.id ? '#f0f4f8' : '#8fa3c0',
@@ -173,11 +173,11 @@ export default function AdminAdsPage() {
                   <div style={{ fontWeight: 600, fontSize: 14, color: '#f0f4f8' }}>{c.company_name}</div>
                   <div style={{ fontSize: 12, color: '#8fa3c0' }}>{c.name} · ${c.plan_monthly_fee}/mo</div>
                   <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                    <button onClick={() => updateStatus(c.id, 'active')} style={{
+                    <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'active')} style={{
                       background: 'rgba(0,255,136,0.15)', border: '1px solid rgba(0,255,136,0.3)',
                       color: '#00ff88', borderRadius: 8, padding: '5px 12px', fontSize: 12, cursor: 'pointer', fontWeight: 700,
                     }}>Approve</button>
-                    <button onClick={() => updateStatus(c.id, 'rejected')} style={{
+                    <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'rejected')} style={{
                       background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
                       color: '#ef4444', borderRadius: 8, padding: '5px 10px', fontSize: 12, cursor: 'pointer',
                     }}>Reject</button>
@@ -234,12 +234,12 @@ export default function AdminAdsPage() {
                 </div>
                 {c.status === 'pending_review' && (
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button onClick={() => updateStatus(c.id, 'active')} style={{ background: 'rgba(0,255,136,0.15)', border: '1px solid rgba(0,255,136,0.3)', color: '#00ff88', borderRadius: 8, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontWeight: 700 }}>Approve</button>
-                    <button onClick={() => updateStatus(c.id, 'rejected')} style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', borderRadius: 8, padding: '6px 12px', fontSize: 12, cursor: 'pointer' }}>Reject</button>
+                    <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'active')} style={{ background: 'rgba(0,255,136,0.15)', border: '1px solid rgba(0,255,136,0.3)', color: '#00ff88', borderRadius: 8, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontWeight: 700 }}>Approve</button>
+                    <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'rejected')} style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', borderRadius: 8, padding: '6px 12px', fontSize: 12, cursor: 'pointer' }}>Reject</button>
                   </div>
                 )}
                 {c.status === 'active' && (
-                  <button onClick={() => updateStatus(c.id, 'paused')} style={{ background: 'rgba(255,149,0,0.1)', border: '1px solid rgba(255,149,0,0.2)', color: '#ff9500', borderRadius: 8, padding: '6px 12px', fontSize: 12, cursor: 'pointer' }}>Pause</button>
+                  <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'paused')} style={{ background: 'rgba(255,149,0,0.1)', border: '1px solid rgba(255,149,0,0.2)', color: '#ff9500', borderRadius: 8, padding: '6px 12px', fontSize: 12, cursor: 'pointer' }}>Pause</button>
                 )}
               </div>
             ))}

@@ -56,7 +56,7 @@ export function LiveOperatorLayer({ showLiveOnly = false }: { showLiveOnly?: boo
     <div>
       {/* Filter toggle */}
       <div className="absolute top-4 right-4 z-10">
-        <button
+        <button aria-label="Interactive Button"
           onClick={() => setLiveFilter(!liveFilter)}
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all
             ${liveFilter

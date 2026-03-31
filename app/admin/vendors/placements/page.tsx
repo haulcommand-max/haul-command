@@ -54,7 +54,7 @@ export default function AdminPlacementsPage() {
                     <h1 className="text-2xl font-bold text-gray-900">Premium Placements</h1>
                     <p className="mt-1 text-sm text-gray-500">Manage emergency top, near route, category top, corridor exclusives.</p>
                 </div>
-                <Link href="/admin/vendors/placements/new"
+                <Link aria-label="Navigation Link" href="/admin/vendors/placements/new"
                     className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium transition-colors">
                     Create Placement
                 </Link>
@@ -88,7 +88,7 @@ export default function AdminPlacementsPage() {
                         </select>
                     </div>
                 </div>
-                <button onClick={load} className="mt-3 px-4 py-1.5 border border-gray-300 text-sm rounded-lg hover:bg-gray-50 transition-colors">
+                <button aria-label="Interactive Button" onClick={load} className="mt-3 px-4 py-1.5 border border-gray-300 text-sm rounded-lg hover:bg-gray-50 transition-colors">
                     Apply
                 </button>
             </div>
@@ -123,9 +123,9 @@ export default function AdminPlacementsPage() {
                                         <td className="px-4 py-3 text-gray-500 text-xs">{new Date(p.start_at).toLocaleDateString()}</td>
                                         <td className="px-4 py-3 text-gray-500 text-xs">{new Date(p.end_at).toLocaleDateString()}</td>
                                         <td className="px-4 py-3 flex gap-3">
-                                            <Link href={`/admin/vendors/placements/${p.id}`}
+                                            <Link aria-label="Navigation Link" href={`/admin/vendors/placements/${p.id}`}
                                                 className="text-orange-600 hover:underline text-xs font-medium">Open</Link>
-                                            <button onClick={() => expireNow(p.id)}
+                                            <button aria-label="Interactive Button" onClick={() => expireNow(p.id)}
                                                 className="text-red-500 hover:underline text-xs">Expire</button>
                                         </td>
                                     </tr>

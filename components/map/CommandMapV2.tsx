@@ -590,7 +590,7 @@ function HudStat({ label, value, color }: { label: string; value: string; color:
 
 function LayerToggle({ label, active, onChange }: { label: string; active: boolean; onChange: () => void }) {
     return (
-        <button onClick={onChange} style={{
+        <button aria-label="Interactive Button" onClick={onChange} style={{
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '6px 10px', borderRadius: 8,
             background: active ? 'rgba(249,115,22,0.08)' : 'transparent',

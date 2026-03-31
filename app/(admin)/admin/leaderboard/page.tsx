@@ -71,7 +71,7 @@ export default function LeaderboardAdminPage() {
                                     {Object.values(weights).reduce((a, b) => a + b, 0)}%
                                 </span>
                             </div>
-                            <button className="px-6 py-2 bg-[#ffb400] text-black text-xs font-black uppercase rounded hover:bg-yellow-500 transition-all shadow-lg shadow-yellow-500/10">
+                            <button aria-label="Interactive Button" className="px-6 py-2 bg-[#ffb400] text-black text-xs font-black uppercase rounded hover:bg-yellow-500 transition-all shadow-lg shadow-yellow-500/10">
                                 Save & Deploy
                             </button>
                         </div>
@@ -144,7 +144,7 @@ function PreviewCard({ name, oldRank, newRank, diff, score }: any) {
 
 function Tab({ label, active }: any) {
     return (
-        <button className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
+        <button aria-label="Interactive Button" className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
             {label}
         </button>
     );

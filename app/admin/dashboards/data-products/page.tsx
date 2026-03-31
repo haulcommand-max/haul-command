@@ -55,7 +55,7 @@ export default function DataProductsDashboard() {
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['catalog', 'revenue', 'pricing'] as const).map(tab => (
-                        <button key={tab} onClick={() => setActiveTab(tab)} style={{
+                        <button aria-label="Interactive Button" key={tab} onClick={() => setActiveTab(tab)} style={{
                             padding: '6px 14px', borderRadius: 8, fontSize: 11, fontWeight: 700,
                             textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer',
                             background: activeTab === tab ? 'rgba(198,146,58,0.15)' : 'rgba(255,255,255,0.04)',

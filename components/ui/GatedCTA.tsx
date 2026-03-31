@@ -51,7 +51,7 @@ export function GatedCTA({ mode, providerKey, className = "", headline }: GatedC
                             required
                             style={inputStyle}
                         />
-                        <button type="submit" disabled={loading} style={primaryBtnStyle}>
+                        <button aria-label="Interactive Button" type="submit" disabled={loading} style={primaryBtnStyle}>
                             {loading ? "Saving..." : "Notify Me"}
                         </button>
                     </form>

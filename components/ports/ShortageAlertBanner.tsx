@@ -170,7 +170,7 @@ export function ShortageAlertBanner({
                     </div>
 
                     {/* Dismiss */}
-                    <button
+                    <button aria-label="Interactive Button"
                         onClick={() => setDismissed(true)}
                         className="shrink-0 text-white/20 hover:text-white/50 transition-colors mt-0.5"
                         aria-label="Dismiss"

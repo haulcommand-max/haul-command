@@ -119,9 +119,9 @@ export default async function SurfaceCategoryPage({
 
                 {/* Breadcrumbs */}
                 <nav className="flex items-center gap-2 text-xs text-[#555] font-medium">
-                    <Link href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
+                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#F1A91B] transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link href={`/surfaces/${country}`} className="hover:text-[#F1A91B] transition-colors">{countryName}</Link>
+                    <Link aria-label="Navigation Link" href={`/surfaces/${country}`} className="hover:text-[#F1A91B] transition-colors">{countryName}</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-[#888]">{cat.plural}</span>
                 </nav>
@@ -164,7 +164,7 @@ export default async function SurfaceCategoryPage({
                             if (!meta) return null;
                             const CatIcon = meta.icon;
                             return (
-                                <Link key={catKey} href={`/surfaces/${country}/${slugKey}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg text-[10px] font-bold text-[#888] uppercase tracking-wider hover:border-[#F1A91B]/30 hover:text-white transition-all">
+                                <Link aria-label="Navigation Link" key={catKey} href={`/surfaces/${country}/${slugKey}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg text-[10px] font-bold text-[#888] uppercase tracking-wider hover:border-[#F1A91B]/30 hover:text-white transition-all">
                                     <CatIcon className="w-3 h-3" style={{ color: meta.color }} />
                                     {meta.plural}
                                 </Link>
@@ -177,7 +177,7 @@ export default async function SurfaceCategoryPage({
                 {surfaces && surfaces.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {surfaces.map((s: any) => (
-                            <Link key={s.surface_id} href={`/surface/${s.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-5 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
+                            <Link aria-label="Navigation Link" key={s.surface_id} href={`/surface/${s.slug}`} className="group block bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#F1A91B]/30 rounded-xl p-5 transition-all hover:shadow-[0_0_30px_rgba(241,169,27,0.05)]">
                                 <div className="flex items-start gap-3 mb-3">
                                     <Icon className="w-5 h-5 flex-shrink-0" style={{ color: cat.color }} />
                                     <h3 className="text-sm font-bold text-white group-hover:text-[#F1A91B] transition-colors line-clamp-2 leading-snug">{s.name}</h3>
@@ -219,13 +219,13 @@ export default async function SurfaceCategoryPage({
                 {totalPages > 1 && (
                     <div className="flex items-center justify-center gap-2 pt-6">
                         {page > 1 && (
-                            <Link href={`/surfaces/${country}/${category}?page=${page - 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
+                            <Link aria-label="Navigation Link" href={`/surfaces/${country}/${category}?page=${page - 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
                                 ← Previous
                             </Link>
                         )}
                         <span className="text-xs text-[#555] px-4">Page {page} of {totalPages}</span>
                         {page < totalPages && (
-                            <Link href={`/surfaces/${country}/${category}?page=${page + 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
+                            <Link aria-label="Navigation Link" href={`/surfaces/${country}/${category}?page=${page + 1}`} className="px-4 py-2 text-xs font-bold text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg hover:border-[#F1A91B]/30 transition-colors">
                                 Next →
                             </Link>
                         )}

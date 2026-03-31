@@ -39,7 +39,7 @@ export default function ClaimPage() {
             <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>❌</div>
                 <p>Surface not found</p>
-                <button onClick={() => router.push('/directory')} style={{ marginTop: '1rem', padding: '0.5rem 1.5rem', background: '#C6923A', color: '#0A0A0A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 }}>
+                <button aria-label="Interactive Button" onClick={() => router.push('/directory')} style={{ marginTop: '1rem', padding: '0.5rem 1.5rem', background: '#C6923A', color: '#0A0A0A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 }}>
                     Back to Directory
                 </button>
             </div>

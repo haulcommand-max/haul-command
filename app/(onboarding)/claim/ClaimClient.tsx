@@ -177,7 +177,7 @@ function ClaimPageInner() {
                     </div>
                 )}
 
-                <button
+                <button aria-label="Interactive Button"
                     type="submit"
                     disabled={loading}
                     style={{

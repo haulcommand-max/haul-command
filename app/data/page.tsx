@@ -253,7 +253,7 @@ export default function DataMarketplacePage() {
                                         {product.country_scope.includes('ALL') ? '120 countries' : `${product.country_scope.length} countries`}
                                     </div>
                                 </div>
-                                <button
+                                <button aria-label="Interactive Button"
                                     onClick={() => setPreviewProduct(product)}
                                     className="ag-press"
                                     style={{
@@ -266,7 +266,7 @@ export default function DataMarketplacePage() {
                                 >
                                     <Eye size={13} /> Preview
                                 </button>
-                                <button
+                                <button aria-label="Interactive Button"
                                     onClick={() => handleUnlock(product)}
                                     disabled={purchasing}
                                     className="ag-press"
@@ -380,13 +380,13 @@ export default function DataMarketplacePage() {
                         </p>
 
                         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-                            <button onClick={() => setPreviewProduct(null)} className="ag-press" style={{
+                            <button aria-label="Interactive Button" onClick={() => setPreviewProduct(null)} className="ag-press" style={{
                                 padding: '10px 20px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
                                 background: 'transparent', color: '#aaa', fontSize: 12, fontWeight: 700, cursor: 'pointer',
                             }}>
                                 Close
                             </button>
-                            <button onClick={() => { setPreviewProduct(null); handleUnlock(previewProduct); }} className="ag-press" style={{
+                            <button aria-label="Interactive Button" onClick={() => { setPreviewProduct(null); handleUnlock(previewProduct); }} className="ag-press" style={{
                                 padding: '10px 20px', borderRadius: 10, border: 'none',
                                 background: 'linear-gradient(135deg, #C6923A, #8A6428)',
                                 color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer',

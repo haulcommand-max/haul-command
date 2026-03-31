@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase-server';
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 
 /**
  * Haul Command — Activity Event Generator Cron
@@ -59,22 +60,15 @@ export async function GET() {
       });
     }
 
-    // Count real operators from directory_listings (the canonical operator store)
-    // hc_places = physical locations only (ports, hotels, truck stops)
-    // directory_listings = operators + service providers (correct source)
-    const { count: totalListings } = await sb
-      .from('directory_listings')
-      .select('id', { count: 'exact', head: true })
-      .eq('is_visible', true)
-      .in('entity_type', ['operator', 'pilot_car_operator', 'pilot_driver',
-                          'freight_broker', 'flagger', 'permit_service',
-                          'heavy_towing', 'mobile_mechanic']);
+    // Use canonical stats RPC — directory_listings is quarantined (fake seed data)
+    const stats = await getCanonicalStats();
+    const totalListings = stats.total_real_operators;
 
-    if (totalListings && totalListings > 0) {
+    if (totalListings > 0) {
       events.push({
         event_type: 'rate_update',
         payload: {
-          summary: `${totalListings.toLocaleString()} operators now listed globally`,
+          summary: `${totalListings.toLocaleString()} verified operators listed`,
           description: 'Directory growing across all markets',
         },
         geo_country: 'US',

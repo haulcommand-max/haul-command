@@ -28,6 +28,7 @@
     "@supabase/supabase-js": "^2.100.0",
     "@temporalio/client": "^1.15.0",
     "@temporalio/worker": "^1.15.0",
+    "@types/pg": "^8.20.0",
     "googleapis": "^171.4.0",
     "langchain": "^1.2.37",
     "livekit-client": "^2.18.0",

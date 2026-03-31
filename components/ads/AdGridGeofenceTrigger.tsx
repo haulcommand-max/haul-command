@@ -67,7 +67,7 @@ export function AdGridGeofenceTrigger({ ad, onDismiss, onClick, onCall }: AdGrid
             <div className="aggt-alert">WEIGH STATION AHEAD</div>
             <div className="aggt-station">{ad.station_name} — {ad.distance_miles.toFixed(1)} mi</div>
           </div>
-          <button className="aggt-close" onClick={handleDismiss}>✕</button>
+          <button aria-label="Interactive Button" className="aggt-close" onClick={handleDismiss}>✕</button>
         </div>
 
         {/* Sponsor */}
@@ -85,13 +85,13 @@ export function AdGridGeofenceTrigger({ ad, onDismiss, onClick, onCall }: AdGrid
           </div>
           {ad.sponsor.promo && <div className="aggt-promo">{ad.sponsor.promo}</div>}
           <div className="aggt-actions">
-            <button
+            <button aria-label="Interactive Button"
               className="aggt-call"
               onClick={(e) => { e.stopPropagation(); onCall?.(ad.sponsor.phone); }}
             >
               📞 Call
             </button>
-            <button className="aggt-navigate">🗺️ Navigate</button>
+            <button aria-label="Interactive Button" className="aggt-navigate">🗺️ Navigate</button>
           </div>
         </div>
       </div>

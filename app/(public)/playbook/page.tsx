@@ -77,7 +77,7 @@ export default function MarketPlaybookPage() {
                 {/* State selector */}
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 24 }}>
                     {states.map(s => (
-                        <button key={s} onClick={() => setStateCode(s)} style={{
+                        <button aria-label="Interactive Button" key={s} onClick={() => setStateCode(s)} style={{
                             padding: '6px 14px', borderRadius: 8, cursor: 'pointer',
                             background: stateCode === s ? 'rgba(241,169,27,0.12)' : 'rgba(255,255,255,0.03)',
                             border: `1px solid ${stateCode === s ? 'rgba(241,169,27,0.25)' : 'rgba(255,255,255,0.06)'}`,
@@ -141,7 +141,7 @@ export default function MarketPlaybookPage() {
                                         <div style={{ fontSize: 10, color: '#888' }}>{item.current} / {item.target}</div>
                                     </div>
                                     {!item.met && item.action && (
-                                        <Link href={item.action} style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>Fix →</Link>
+                                        <Link aria-label="Navigation Link" href={item.action} style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>Fix →</Link>
                                     )}
                                 </div>
                             ))}

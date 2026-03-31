@@ -46,7 +46,7 @@ export default function RouteCheckPage() {
               <div style={{ fontSize: 12, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>📐 Load Dimensions</div>
               <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
                 {(['imperial', 'metric'] as const).map(u => (
-                  <button key={u} onClick={() => setUnit(u)} style={{ padding: '6px 14px', borderRadius: 6, background: unit === u ? 'rgba(241,169,27,0.15)' : 'transparent', border: `1px solid ${unit === u ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.1)'}`, color: unit === u ? '#F1A91B' : '#64748b', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>{u === 'imperial' ? 'ft / lbs' : 'm / kg'}</button>
+                  <button aria-label="Interactive Button" key={u} onClick={() => setUnit(u)} style={{ padding: '6px 14px', borderRadius: 6, background: unit === u ? 'rgba(241,169,27,0.15)' : 'transparent', border: `1px solid ${unit === u ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.1)'}`, color: unit === u ? '#F1A91B' : '#64748b', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>{u === 'imperial' ? 'ft / lbs' : 'm / kg'}</button>
                 ))}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -71,7 +71,7 @@ export default function RouteCheckPage() {
               </div>
             </div>
           </div>
-          <button onClick={calc} style={{ marginTop: 24, width: '100%', maxWidth: 400, padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #F1A91B, #d97706)', color: '#0a0f19', fontWeight: 900, fontSize: 15, border: 'none', cursor: 'pointer' }}>Calculate Route Intelligence →</button>
+          <button aria-label="Interactive Button" onClick={calc} style={{ marginTop: 24, width: '100%', maxWidth: 400, padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #F1A91B, #d97706)', color: '#0a0f19', fontWeight: 900, fontSize: 15, border: 'none', cursor: 'pointer' }}>Calculate Route Intelligence →</button>
         </div>
       )}
 
@@ -97,7 +97,7 @@ export default function RouteCheckPage() {
             <p style={{ color: '#94a3b8', fontSize: 13, marginBottom: 16 }}>Sign up for permit route enforcement, convoy coordination, and clearance alerts.</p>
             <a href="/onboarding" style={{ display: 'inline-block', padding: '12px 32px', borderRadius: 10, background: 'linear-gradient(135deg, #F1A91B, #d97706)', color: '#0a0f19', fontWeight: 900, textDecoration: 'none' }}>Start Free →</a>
           </div>
-          <button onClick={() => { setStep('form'); setResult(null); }} style={{ marginTop: 16, background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', padding: '10px 24px', borderRadius: 8, cursor: 'pointer', fontSize: 12, fontWeight: 700 }}>← Check Another Route</button>
+          <button aria-label="Interactive Button" onClick={() => { setStep('form'); setResult(null); }} style={{ marginTop: 16, background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', padding: '10px 24px', borderRadius: 8, cursor: 'pointer', fontSize: 12, fontWeight: 700 }}>← Check Another Route</button>
         </div>
       )}
     </div>

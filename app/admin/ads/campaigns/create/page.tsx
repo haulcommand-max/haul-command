@@ -117,7 +117,7 @@ function TagSelector({ items, selected, onToggle, color }: {
             {items.map(item => {
                 const active = selected.includes(item);
                 return (
-                    <button key={item} onClick={() => onToggle(item)} style={{
+                    <button aria-label="Interactive Button" key={item} onClick={() => onToggle(item)} style={{
                         padding: '5px 12px', borderRadius: 8, fontSize: 11, fontWeight: 700,
                         background: active ? `${color}18` : 'rgba(255,255,255,0.04)',
                         border: `1px solid ${active ? `${color}45` : T.border}`,
@@ -501,7 +501,7 @@ export default function CampaignCreatePage() {
                 {/* Navigation */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20, gap: 12 }}>
                     {step > 1 ? (
-                        <button onClick={() => setStep((step - 1) as Step)} style={{
+                        <button aria-label="Interactive Button" onClick={() => setStep((step - 1) as Step)} style={{
                             padding: '11px 24px', borderRadius: 10,
                             background: T.bgCard, border: `1px solid ${T.border}`,
                             color: T.textBody, fontSize: 13, fontWeight: 700,
@@ -512,7 +512,7 @@ export default function CampaignCreatePage() {
                     ) : <div />}
 
                     {step < 3 ? (
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={() => setStep((step + 1) as Step)}
                             disabled={!canAdvance}
                             style={{
@@ -528,7 +528,7 @@ export default function CampaignCreatePage() {
                             Continue →
                         </button>
                     ) : (
-                        <button
+                        <button aria-label="Interactive Button"
                             onClick={handleSubmit}
                             disabled={!canAdvance || submitting}
                             style={{

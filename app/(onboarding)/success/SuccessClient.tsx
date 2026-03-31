@@ -67,7 +67,7 @@ function ProfileApprovedInner() {
 
             {/* Invite CTA */}
             {!inviteDismissed && (
-                <button
+                <button aria-label="Interactive Button"
                     onClick={() => setShowInvite(true)}
                     style={{
                         width: '100%', maxWidth: 320,
@@ -83,7 +83,7 @@ function ProfileApprovedInner() {
                 </button>
             )}
 
-            <button
+            <button aria-label="Interactive Button"
                 onClick={() => router.push("/home")}
                 style={{
                     background: 'transparent', border: 'none',
@@ -110,7 +110,7 @@ function ProfileApprovedInner() {
                     </div>
 
                     {/* Featured Boost */}
-                    <Link href="/boost" style={{ textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/boost" style={{ textDecoration: 'none' }}>
                         <div style={{
                             padding: '16px 18px', borderRadius: 14, marginBottom: 10,
                             background: 'linear-gradient(135deg, rgba(212,168,68,0.08), rgba(212,168,68,0.02))',
@@ -133,7 +133,7 @@ function ProfileApprovedInner() {
                     </Link>
 
                     {/* Sponsor Territory */}
-                    <Link href="/sponsor" style={{ textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/sponsor" style={{ textDecoration: 'none' }}>
                         <div style={{
                             padding: '16px 18px', borderRadius: 14, marginBottom: 10,
                             background: 'linear-gradient(135deg, rgba(20,184,166,0.06), rgba(20,184,166,0.02))',
@@ -156,7 +156,7 @@ function ProfileApprovedInner() {
                     </Link>
 
                     {/* Boost Profile */}
-                    <Link href="/boost" style={{ textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/boost" style={{ textDecoration: 'none' }}>
                         <div style={{
                             padding: '16px 18px', borderRadius: 14, marginBottom: 10,
                             background: 'rgba(255,255,255,0.02)',

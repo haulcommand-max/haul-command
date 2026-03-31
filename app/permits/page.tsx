@@ -32,11 +32,11 @@ export default function PermitsPage() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 48 }}>
-          <Link href="/permits/request" style={{ display: 'block', padding: '24px', borderRadius: 14, background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', textDecoration: 'none', textAlign: 'center' }}>
+          <Link aria-label="Navigation Link" href="/permits/request" style={{ display: 'block', padding: '24px', borderRadius: 14, background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', textDecoration: 'none', textAlign: 'center' }}>
             <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Request Permits</div>
             <div style={{ fontSize: 13, opacity: 0.8 }}>Post your route and get agent quotes</div>
           </Link>
-          <Link href="/permits/agents" style={{ display: 'block', padding: '24px', borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', textDecoration: 'none', textAlign: 'center' }}>
+          <Link aria-label="Navigation Link" href="/permits/agents" style={{ display: 'block', padding: '24px', borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', textDecoration: 'none', textAlign: 'center' }}>
             <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Browse Agents</div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>Find permit agents by state</div>
           </Link>

@@ -102,7 +102,7 @@ export default function MarketConditionsPanel({
                             Spot escort rate changes over the last 7 days
                         </p>
                     </div>
-                    <Link href={ctaHref} style={{
+                    <Link aria-label="Navigation Link" href={ctaHref} style={{
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 6,
@@ -192,7 +192,7 @@ export default function MarketConditionsPanel({
                             const cfg = STATUS_CFG[insight.status] ?? STATUS_CFG.balanced;
                             const StatusIcon = cfg.Icon;
                             return (
-                                <Link
+                                <Link aria-label="Navigation Link"
                                     key={insight.id}
                                     href={insight.href ?? "/rates"}
                                     style={{

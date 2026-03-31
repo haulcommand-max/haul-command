@@ -83,7 +83,7 @@ export function AdGridKeywordInterceptor({
           </div>
         </div>
 
-        <button className="agki-cta" onClick={(e) => { e.stopPropagation(); onClick?.(sponsored.id); }}>
+        <button aria-label="Interactive Button" className="agki-cta" onClick={(e) => { e.stopPropagation(); onClick?.(sponsored.id); }}>
           View Profile
         </button>
       </div>

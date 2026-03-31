@@ -110,9 +110,9 @@ export default async function RegulatoryDbPage({
                         <option value="US">🇺🇸 United States</option>
                         <option value="CA">🍁 Canada</option>
                     </select>
-                    <button type="submit" style={btnStyle}>Search</button>
+                    <button aria-label="Interactive Button" type="submit" style={btnStyle}>Search</button>
                     {(query || country) && (
-                        <Link href="/regulatory-db" style={{ ...btnStyle, background: 'transparent', border: '1px solid var(--hc-border,#333)' }}>
+                        <Link aria-label="Navigation Link" href="/regulatory-db" style={{ ...btnStyle, background: 'transparent', border: '1px solid var(--hc-border,#333)' }}>
                             Clear
                         </Link>
                     )}
@@ -140,7 +140,7 @@ export default async function RegulatoryDbPage({
                                 return (
                                     <div key={reg.state_code} style={ruleCard}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                                            <Link href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
+                                            <Link aria-label="Navigation Link" href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
                                                 style={{ fontSize: 15, fontWeight: 800, color: '#d97706', textDecoration: 'none' }}>
                                                 {STATE_NAMES_FULL[reg.state_code] ?? reg.state_code}
                                             </Link>
@@ -161,7 +161,7 @@ export default async function RegulatoryDbPage({
                                             <div>Cert: <span style={{ color: reg.certification_required ? '#f59e0b' : '#10b981', fontWeight: 700 }}>{reg.certification_required == null ? '?' : reg.certification_required ? 'Required' : 'No'}</span></div>
                                         </div>
                                         <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center' }}>
-                                            <Link href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
+                                            <Link aria-label="Navigation Link" href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
                                                 style={{ fontSize: 10, color: '#d97706', fontWeight: 700, textDecoration: 'none' }}>
                                                 Full Details →
                                             </Link>
@@ -184,11 +184,11 @@ export default async function RegulatoryDbPage({
             <section style={{ borderTop: '1px solid var(--hc-border, #222)', paddingTop: 28, marginTop: 8 }}>
                 <p style={{ fontSize: 13, color: 'var(--hc-muted, #aaa)', lineHeight: 1.7, maxWidth: 700 }}>
                     Haul Command aggregates escort vehicle requirements from{' '}
-                    <Link href="/united-states" style={{ color: '#d97706' }}>all 50 US states</Link> and{' '}
-                    <Link href="/canada" style={{ color: '#d97706' }}>10 Canadian provinces</Link>.
+                    <Link aria-label="Navigation Link" href="/united-states" style={{ color: '#d97706' }}>all 50 US states</Link> and{' '}
+                    <Link aria-label="Navigation Link" href="/canada" style={{ color: '#d97706' }}>10 Canadian provinces</Link>.
                     Regulations are updated periodically. Always verify with your state DOT before dispatch.
                     For permit-specific questions, use the{' '}
-                    <Link href="/tools/permit-calculator" style={{ color: '#d97706' }}>permit calculator</Link>.
+                    <Link aria-label="Navigation Link" href="/tools/permit-calculator" style={{ color: '#d97706' }}>permit calculator</Link>.
                 </p>
             </section>
         </main>

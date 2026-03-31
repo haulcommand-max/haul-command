@@ -201,9 +201,9 @@ export default async function TerminalPage({
                 {/* ── Breadcrumb ── */}
                 <div className="border-b border-white/5">
                     <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-2 text-xs text-white/40">
-                        <Link href="/directory" className="hover:text-white/70 transition-colors">Directory</Link>
+                        <Link aria-label="Navigation Link" href="/directory" className="hover:text-white/70 transition-colors">Directory</Link>
                         <span>/</span>
-                        <Link href={`/ports/${country}/${state}/${port_slug}`} className="hover:text-white/70 transition-colors">
+                        <Link aria-label="Navigation Link" href={`/ports/${country}/${state}/${port_slug}`} className="hover:text-white/70 transition-colors">
                             {port.port_name}
                         </Link>
                         <span>/</span>
@@ -228,7 +228,7 @@ export default async function TerminalPage({
 
                     {/* ── Header ── */}
                     <div className="space-y-3">
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={`/ports/${country}/${state}/${port_slug}`}
                             className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors"
                         >
@@ -375,7 +375,7 @@ export default async function TerminalPage({
                                     const reliability = Number(profile?.reliability_score ?? 70);
                                     const statusColor = reliability >= 85 ? '#22c55e' : reliability >= 70 ? '#eab308' : '#ef4444';
                                     return (
-                                        <Link
+                                        <Link aria-label="Navigation Link"
                                             key={profile?.user_id}
                                             href={`/directory/profile/${profile?.user_id}`}
                                             className="flex items-center justify-between rounded-xl border border-white/8 bg-white/3 p-4 hover:bg-white/5 hover:border-white/15 transition-all group"
@@ -442,7 +442,7 @@ export default async function TerminalPage({
 
                     {/* ── Back to port CTA ── */}
                     <div className="pt-4 border-t border-white/5">
-                        <Link
+                        <Link aria-label="Navigation Link"
                             href={`/ports/${country}/${state}/${port_slug}`}
                             className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
                         >

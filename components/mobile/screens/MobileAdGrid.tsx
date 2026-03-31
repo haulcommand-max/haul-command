@@ -103,7 +103,7 @@ function SponsorCardComponent({ sponsor }: { sponsor: SponsorCard }) {
         }}>
           {sponsor.impressions.toLocaleString()} views
         </span>
-        <Link href={sponsor.ctaHref}
+        <Link aria-label="Navigation Link" href={sponsor.ctaHref}
           className="m-btn m-btn--primary m-btn--small"
           style={{ textDecoration: 'none', padding: '6px 16px' }}
         >
@@ -149,7 +149,7 @@ export default function MobileAdGrid() {
               Get featured in your service area
             </div>
           </div>
-          <Link href="/sponsor" className="m-chip m-chip--gold" style={{ textDecoration: 'none', fontSize: 'var(--m-font-caption)' }}>
+          <Link aria-label="Navigation Link" href="/sponsor" className="m-chip m-chip--gold" style={{ textDecoration: 'none', fontSize: 'var(--m-font-caption)' }}>
             Sponsor
           </Link>
         </div>

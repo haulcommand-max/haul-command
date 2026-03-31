@@ -77,7 +77,7 @@ export function AdGridWeatherBanner({ alert, onDismiss, onSponsorClick }: AdGrid
           </div>
         </div>
         {onDismiss && (
-          <button className="agwb-dismiss" onClick={(e) => { e.stopPropagation(); onDismiss(); }}>✕</button>
+          <button aria-label="Interactive Button" className="agwb-dismiss" onClick={(e) => { e.stopPropagation(); onDismiss(); }}>✕</button>
         )}
       </div>
 
@@ -90,7 +90,7 @@ export function AdGridWeatherBanner({ alert, onDismiss, onSponsorClick }: AdGrid
               {alert.sponsor.cta}
             </p>
             <div className="agwb-sponsor-actions">
-              <button
+              <button aria-label="Interactive Button"
                 className="agwb-sponsor-btn"
                 onClick={() => onSponsorClick?.(alert.id)}
               >

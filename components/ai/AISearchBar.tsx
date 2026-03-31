@@ -84,7 +84,7 @@ export function AISearchBar({ onFiltersApplied }: AISearchBarProps) {
         }}>
           AI
         </div>
-        <button
+        <button aria-label="Interactive Button"
           onClick={handleAISearch}
           disabled={thinking}
           style={{
@@ -106,7 +106,7 @@ export function AISearchBar({ onFiltersApplied }: AISearchBarProps) {
         }}>
           <Bot size={13} style={{ flexShrink: 0 }} />
           {aiResponse}
-          <button onClick={() => setAiResponse(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#a78bfa', marginLeft: 'auto', padding: 0 }}>
+          <button aria-label="Interactive Button" onClick={() => setAiResponse(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#a78bfa', marginLeft: 'auto', padding: 0 }}>
             <X size={12} />
           </button>
         </div>
@@ -165,7 +165,7 @@ export function AIAssistantDrawer() {
   return (
     <>
       {/* Floating button */}
-      <button
+      <button aria-label="Interactive Button"
         onClick={() => setOpen(!open)}
         className="ag-press"
         style={{
@@ -241,7 +241,7 @@ export function AIAssistantDrawer() {
                   outline: 'none', caretColor: '#a78bfa',
                 }}
               />
-              <button onClick={send} disabled={loading} style={{
+              <button aria-label="Interactive Button" onClick={send} disabled={loading} style={{
                 background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
                 border: 'none', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', color: '#fff',
               }}>

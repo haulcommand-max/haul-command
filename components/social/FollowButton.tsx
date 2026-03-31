@@ -73,7 +73,7 @@ export function FollowButton({ operatorId, compact = false, className = '' }: Fo
   }
 
   return (
-    <button
+    <button aria-label="Interactive Button"
       onClick={toggle}
       disabled={loading}
       className={`ag-press ${beat ? 'ag-follow-beat' : ''} ${className}`}

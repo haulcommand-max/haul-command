@@ -56,9 +56,9 @@ export default function EquipmentStore() {
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-bold">Featured Compliance Gear</h2>
           <div className="flex gap-4">
-            <button className="px-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 hover:bg-gray-800 text-sm">All Gear</button>
-            <button className="px-4 py-2 rounded-full border border-gray-700 hover:bg-gray-800 text-sm">State Kits</button>
-            <button className="px-4 py-2 rounded-full border border-gray-700 hover:bg-gray-800 text-sm">Lighting</button>
+            <button aria-label="Interactive Button" className="px-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 hover:bg-gray-800 text-sm">All Gear</button>
+            <button aria-label="Interactive Button" className="px-4 py-2 rounded-full border border-gray-700 hover:bg-gray-800 text-sm">State Kits</button>
+            <button aria-label="Interactive Button" className="px-4 py-2 rounded-full border border-gray-700 hover:bg-gray-800 text-sm">Lighting</button>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ export default function EquipmentStore() {
                 <p className="text-sm text-gray-500 line-clamp-2 h-10 mb-4">{product.description}</p>
                 <div className="flex justify-between items-center mt-auto">
                   <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
-                  <button className="bg-white text-black hover:bg-gray-200 font-bold py-2 px-4 rounded-lg text-sm transition-colors">
+                  <button aria-label="Interactive Button" className="bg-white text-black hover:bg-gray-200 font-bold py-2 px-4 rounded-lg text-sm transition-colors">
                     Add to Cart
                   </button>
                 </div>

@@ -168,7 +168,7 @@ export default function FactoringDash({ bookingId, totalAmountUsd, brokerId }: F
                 </div>
 
                 <div className="flex gap-4">
-                    <button className="flex-1 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-2xl transition-colors">
+                    <button aria-label="Interactive Button" className="flex-1 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-2xl transition-colors">
                         Wait 30 Days
                     </button>
                     <PulsingButton

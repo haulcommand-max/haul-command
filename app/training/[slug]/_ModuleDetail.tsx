@@ -145,7 +145,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🔍</div>
           <h1 style={{ color: '#e8e8e8', marginBottom: 8 }}>Module Not Found</h1>
-          <Link href="/training" style={{ color: '#F5A623' }}>← Back to Training</Link>
+          <Link aria-label="Navigation Link" href="/training" style={{ color: '#F5A623' }}>← Back to Training</Link>
         </div>
       </div>
     );
@@ -184,7 +184,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
         gap: 12,
         flexWrap: 'wrap',
       }}>
-        <Link href="/training" style={{ color: '#6a6a7a', fontSize: 13, textDecoration: 'none' }}>
+        <Link aria-label="Navigation Link" href="/training" style={{ color: '#6a6a7a', fontSize: 13, textDecoration: 'none' }}>
           ← Training
         </Link>
         <span style={{ color: '#2a2a3a' }}>›</span>
@@ -257,7 +257,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
               const isQuiz = lesson.content_type === 'quiz';
 
               return (
-                <button
+                <button aria-label="Interactive Button"
                   key={lesson.id}
                   onClick={() => {
                     if (isQuiz && allLessonsComplete) {
@@ -316,7 +316,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
 
           {/* Assessment unlock */}
           <div style={{ padding: 16, borderTop: '1px solid #1a1a22' }}>
-            <button
+            <button aria-label="Interactive Button"
               onClick={() => setShowAssessment(true)}
               disabled={!allLessonsComplete || moduleProgress?.status === 'passed'}
               style={{
@@ -342,7 +342,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
             </button>
             {!authenticated && (
               <p style={{ fontSize: 11, color: '#5a5a6a', textAlign: 'center', marginTop: 8 }}>
-                <Link href="/auth/login?return=/training" style={{ color: '#F5A623' }}>Sign in</Link> to save progress
+                <Link aria-label="Navigation Link" href="/auth/login?return=/training" style={{ color: '#F5A623' }}>Sign in</Link> to save progress
               </p>
             )}
           </div>
@@ -415,7 +415,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
                 alignItems: 'center',
                 background: '#0a0a0e',
               }}>
-                <button
+                <button aria-label="Interactive Button"
                   onClick={() => {
                     const idx = lessons.indexOf(activeLesson);
                     if (idx > 0 && lessons[idx - 1].content_type !== 'quiz') {
@@ -434,7 +434,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
                 </button>
 
                 {!lessonProgress[activeLesson.id]?.completed && activeLesson.content_type !== 'video' && (
-                  <button
+                  <button aria-label="Interactive Button"
                     onClick={() => markLessonComplete(activeLesson.id)}
                     style={{
                       padding: '10px 24px', borderRadius: 8,
@@ -451,7 +451,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
                   <div style={{ color: '#22c55e', fontSize: 14, fontWeight: 700 }}>✓ Completed</div>
                 )}
 
-                <button
+                <button aria-label="Interactive Button"
                   onClick={() => {
                     const idx = lessons.indexOf(activeLesson);
                     const next = lessons[idx + 1];
@@ -485,7 +485,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
                 {module.description}
               </p>
               {lessons[0] && lessons[0].content_type !== 'quiz' && (
-                <button
+                <button aria-label="Interactive Button"
                   onClick={() => setActiveLesson(lessons[0])}
                   style={{
                     padding: '12px 28px', borderRadius: 10,

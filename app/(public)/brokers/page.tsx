@@ -159,7 +159,7 @@ export default function BrokersPage() {
 
         {/* CTAs */}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
-          <Link href="/loads/post" style={{
+          <Link aria-label="Navigation Link" href="/loads/post" style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -174,7 +174,7 @@ export default function BrokersPage() {
           }}>
             Post a load
           </Link>
-          <Link href="/login" style={{
+          <Link aria-label="Navigation Link" href="/login" style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -252,7 +252,7 @@ export default function BrokersPage() {
                     <span style={{ fontSize: 11, color: '#8f97a7' }}>{c.loads} loads/mo · ${c.rate.toLocaleString()} avg</span>
                   </div>
                 </div>
-                <Link href="/map" style={{
+                <Link aria-label="Navigation Link" href="/map" style={{
                   padding: '6px 12px',
                   borderRadius: 10,
                   background: 'rgba(198, 146, 58, 0.12)',
@@ -280,7 +280,7 @@ export default function BrokersPage() {
         <p style={{ fontSize: 15, color: '#c7ccd7', margin: '0 0 20px' }}>
           Stop guessing. Start dispatching with real market data.
         </p>
-        <Link href="/loads/post" style={{
+        <Link aria-label="Navigation Link" href="/loads/post" style={{
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',

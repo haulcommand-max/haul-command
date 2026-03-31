@@ -50,7 +50,7 @@ export function NearbySupportModule({ state, corridor, limit = 6, title = 'Route
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <div style={{ fontSize: 12, fontWeight: 900, color: '#fff' }}>{title}</div>
-                <Link href="/infrastructure" style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>View All →</Link>
+                <Link aria-label="Navigation Link" href="/infrastructure" style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>View All →</Link>
             </div>
             <div style={{ display: 'flex', gap: 8, overflowX: 'auto', padding: '4px 0', scrollbarWidth: 'none' }}>
                 {locations.slice(0, limit).map(loc => {
@@ -95,7 +95,7 @@ export function SupportBundleCTA({ bundleType = 'route', corridor, state }: {
                     <span style={{ fontSize: 11, color: '#bbb' }}>{item}</span>
                 </div>
             ))}
-            <Link href={`/infrastructure${state ? `?state=${state}` : ''}`} onClick={() => track('support_bundle_clicked' as any, { metadata: { bundleType, corridor, state } })}
+            <Link aria-label="Navigation Link" href={`/infrastructure${state ? `?state=${state}` : ''}`} onClick={() => track('support_bundle_clicked' as any, { metadata: { bundleType, corridor, state } })}
                 style={{ display: 'inline-flex', marginTop: 10, padding: '8px 16px', borderRadius: 10, background: `${b.color}10`, border: `1px solid ${b.color}20`, color: b.color, fontWeight: 800, fontSize: 11, textDecoration: 'none' }}>
                 Browse Support →
             </Link>

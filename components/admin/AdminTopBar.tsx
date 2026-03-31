@@ -55,10 +55,10 @@ export function AdminTopBar({ title = "Control Tower", phase = 'LAUNCH' }: { tit
 
                 {/* Utils */}
                 <div style={{ display: "flex", alignItems: "center", gap: 12, borderRight: "1px solid var(--hc-border)", paddingRight: 20 }}>
-                    <button style={{ background: "none", border: "none", color: "var(--hc-muted)", cursor: "pointer" }}>
+                    <button aria-label="Interactive Button" style={{ background: "none", border: "none", color: "var(--hc-muted)", cursor: "pointer" }}>
                         <Bell size={18} />
                     </button>
-                    <button style={{
+                    <button aria-label="Interactive Button" style={{
                         background: "var(--hc-gold-600)",
                         border: "none",
                         borderRadius: 8,

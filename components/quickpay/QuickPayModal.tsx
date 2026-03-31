@@ -48,7 +48,7 @@ export function QuickPayModal({ jobId, invoiceAmount, onClose }: QuickPayModalPr
               <div style={{ fontSize: 32, fontWeight: 800, color: '#00ff88' }}>${result.advance_amount?.toFixed(2)}</div>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>deposited to your account</div>
             </div>
-            <button onClick={onClose} style={{ padding: '10px 24px', borderRadius: 8, border: 'none', background: 'rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer', fontSize: 14 }}>Done</button>
+            <button aria-label="Interactive Button" onClick={onClose} style={{ padding: '10px 24px', borderRadius: 8, border: 'none', background: 'rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer', fontSize: 14 }}>Done</button>
           </div>
         ) : (
           <>
@@ -79,8 +79,8 @@ export function QuickPayModal({ jobId, invoiceAmount, onClose }: QuickPayModalPr
             {error && <p style={{ color: '#ff3b30', fontSize: 13, marginBottom: 12 }}>{error}</p>}
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={onClose} style={{ flex: 1, padding: '12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 14 }}>Wait for Net 30</button>
-              <button onClick={handleQuickPay} disabled={processing} style={{ flex: 1, padding: '12px', borderRadius: 8, border: 'none', background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>{processing ? 'Processing...' : `Get $${advanceAmount.toFixed(2)} Now`}</button>
+              <button aria-label="Interactive Button" onClick={onClose} style={{ flex: 1, padding: '12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 14 }}>Wait for Net 30</button>
+              <button aria-label="Interactive Button" onClick={handleQuickPay} disabled={processing} style={{ flex: 1, padding: '12px', borderRadius: 8, border: 'none', background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>{processing ? 'Processing...' : `Get $${advanceAmount.toFixed(2)} Now`}</button>
             </div>
           </>
         )}

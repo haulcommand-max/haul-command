@@ -65,7 +65,7 @@ export default function ClaimPage() {
         <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
           Your company may already be in our directory. Claim it in under 5 minutes, get verified, and start receiving load offers with escrow-protected payments.
         </p>
-        <Link
+        <Link aria-label="Navigation Link"
           href="/auth/register?intent=claim"
           className="inline-block px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
         >
@@ -130,7 +130,7 @@ export default function ClaimPage() {
         <p className="text-gray-400 mb-8">
           Operators who claim their listing in the first 30 days get priority corridor placement for free.
         </p>
-        <Link
+        <Link aria-label="Navigation Link"
           href="/auth/register?intent=claim"
           className="px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
         >

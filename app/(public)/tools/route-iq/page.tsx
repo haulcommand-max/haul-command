@@ -201,7 +201,7 @@ export default function RouteIQPage() {
                                 </div>
                             )}
 
-                            <button
+                            <button aria-label="Interactive Button"
                                 onClick={handleRunAnalysis}
                                 disabled={loading}
                                 className="w-full py-4 mt-6 bg-[#F1A91B] hover:bg-[#d97706] disabled:opacity-50 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_4px_20px_rgba(241,169,27,0.25)] flex items-center justify-center gap-2">
@@ -299,7 +299,7 @@ export default function RouteIQPage() {
                                         <div className="text-[10px] text-slate-500 uppercase mt-1">Based on global rates & mileage</div>
                                     </div>
 
-                                    <button
+                                    <button aria-label="Interactive Button"
                                         onClick={handlePostLoad}
                                         className="w-full py-4 bg-white hover:bg-slate-200 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2">
                                         <Truck className="w-5 h-5" /> Post Load Now

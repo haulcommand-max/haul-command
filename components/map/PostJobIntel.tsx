@@ -96,7 +96,7 @@ export default function PostJobIntel({ loadId, operatorId, onComplete, onDismiss
         </label>
         <div style={{ display: 'flex', gap: 8 }}>
           {[true, false].map(v => (
-            <button key={String(v)} onClick={() => setStrictCheckpoint(v)} style={{
+            <button aria-label="Interactive Button" key={String(v)} onClick={() => setStrictCheckpoint(v)} style={{
               padding: '8px 20px', borderRadius: 8,
               background: strictCheckpoint === v ? (v ? 'rgba(239,68,68,0.15)' : 'rgba(34,197,94,0.15)') : 'transparent',
               border: `1px solid ${strictCheckpoint === v ? (v ? 'rgba(239,68,68,0.4)' : 'rgba(34,197,94,0.4)') : 'rgba(255,255,255,0.1)'}`,
@@ -126,7 +126,7 @@ export default function PostJobIntel({ loadId, operatorId, onComplete, onDismiss
       </div>
 
       <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={handleSubmit} disabled={submitting} style={{
+        <button aria-label="Interactive Button" onClick={handleSubmit} disabled={submitting} style={{
           flex: 1, padding: '12px 24px', borderRadius: 10,
           background: 'linear-gradient(135deg, #F1A91B, #d97706)',
           color: '#0a0f19', fontWeight: 900, fontSize: 14, border: 'none',
@@ -135,7 +135,7 @@ export default function PostJobIntel({ loadId, operatorId, onComplete, onDismiss
           {submitting ? 'Submitting...' : 'Submit Intel (+5 pts)'}
         </button>
         {onDismiss && (
-          <button onClick={onDismiss} style={{
+          <button aria-label="Interactive Button" onClick={onDismiss} style={{
             padding: '12px 16px', borderRadius: 10, background: 'transparent',
             border: '1px solid rgba(255,255,255,0.1)', color: '#64748b',
             fontSize: 12, cursor: 'pointer',

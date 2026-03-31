@@ -134,7 +134,7 @@ function CountryPanel({
     }}>
       <style>{`@keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }`}</style>
 
-      <button onClick={onClose} style={{
+      <button aria-label="Interactive Button" onClick={onClose} style={{
         position: 'absolute', top: 16, right: 16, background: 'none', border: 'none',
         color: T.muted, cursor: 'pointer', padding: 4,
       }}><X size={18} /></button>
@@ -184,7 +184,7 @@ function CountryPanel({
 
       {/* CTA */}
       {country.live ? (
-        <Link href={`/directory/${country.iso.toLowerCase()}`} style={{
+        <Link aria-label="Navigation Link" href={`/directory/${country.iso.toLowerCase()}`} style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           width: '100%', padding: '14px', borderRadius: 14, textDecoration: 'none',
           background: `linear-gradient(135deg, ${T.gold}, #8A6428)`,
@@ -217,7 +217,7 @@ function CountryPanel({
                 outline: 'none',
               }}
             />
-            <button onClick={handleWaitlist} style={{
+            <button aria-label="Interactive Button" onClick={handleWaitlist} style={{
               padding: '10px 18px', borderRadius: 10, border: 'none', cursor: 'pointer',
               background: `linear-gradient(135deg, ${T.gold}, #8A6428)`,
               color: '#000', fontSize: 12, fontWeight: 800, whiteSpace: 'nowrap',

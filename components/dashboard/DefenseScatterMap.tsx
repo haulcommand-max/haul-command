@@ -151,7 +151,7 @@ export function DefenseScatterMap({ supabaseUrl, supabaseAnonKey }: DefenseScatt
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <button style={{ ...S.liveToggle, background: isLive ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.04)', color: isLive ? '#34d399' : '#475569', borderColor: isLive ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.08)' }}
+          <button aria-label="Interactive Button" style={{ ...S.liveToggle, background: isLive ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.04)', color: isLive ? '#34d399' : '#475569', borderColor: isLive ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.08)' }}
             onClick={() => setIsLive(!isLive)}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: isLive ? '#34d399' : '#475569', boxShadow: isLive ? '0 0 8px rgba(52,211,153,0.5)' : 'none' }} />
             {isLive ? 'LIVE' : 'PAUSED'}
@@ -238,7 +238,7 @@ export function DefenseScatterMap({ supabaseUrl, supabaseAnonKey }: DefenseScatt
             <span style={{ fontSize: 11, fontWeight: 800, color: threatColor(selectedEvent.threat_score, selectedEvent.is_blocked), textTransform: 'uppercase' }}>
               {selectedEvent.is_blocked ? '🛑 BLOCKED' : selectedEvent.threat_score > 70 ? '⚠ HIGH RISK' : '✓ CLEAN'}
             </span>
-            <button style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 14 }} onClick={() => setSelectedEvent(null)}>✕</button>
+            <button aria-label="Interactive Button" style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 14 }} onClick={() => setSelectedEvent(null)}>✕</button>
           </div>
           <div style={S.detailGrid}>
             <div><span style={S.detailLabel}>IP</span><span style={S.detailValue}>{selectedEvent.ip}</span></div>

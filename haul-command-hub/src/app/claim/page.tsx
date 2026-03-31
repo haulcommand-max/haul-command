@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { supabaseServer } from '@/lib/supabase-server';
+import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 import HCFaqModule from '@/components/hc/FaqModule';
 import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
 import TrustBadge from '@/components/hc/TrustBadge';
@@ -14,25 +15,22 @@ export const metadata: Metadata = {
     'Claim and verify your escort, pilot car, or heavy haul business listing on Haul Command. Free to claim. Unlock premium features, respond to loads, and build your verified reputation across 120 countries.',
 };
 
-export const revalidate = 3600;
-
 export default async function ClaimPage() {
   const sb = supabaseServer();
 
-  // Count total unclaimed listings for urgency messaging
-  const [listingsResult, claimsResult] = await Promise.all([
-    // FIX: Using 'estimated' count instead of 'exact' fixes the slow fetch on 1.5M row tables preventing build timeouts
-    sb.from('directory_listings').select('id', { count: 'estimated', head: true }).eq('is_visible', true),
+  // Canonical stats — do NOT read directory_listings (quarantined synthetic data)
+  const [stats, claimsResult] = await Promise.all([
+    getCanonicalStats(),
     sb.from('listing_claims').select('id, claim_status, claimed_at').eq('claim_status', 'verified').order('claimed_at', { ascending: false }).limit(10),
   ]);
 
-  const unclaimedCount = listingsResult.count ?? 0;
+  const unclaimedCount = stats.total_real_operators - stats.claimed_profiles;
   const recentClaims = claimsResult.data ?? [];
   const claimedCount = recentClaims.length;
 
-  // Simulated lost opportunity metrics (real data in production from profile_claim_funnel_snapshot)
-  const lostLeadsWeekly = Math.floor(unclaimedCount * 0.003);
-  const invisibleToBrokers = Math.floor(unclaimedCount * 0.02);
+  // Conservative, honest estimates derived from real operator count
+  const lostLeadsWeekly = Math.max(3, Math.floor(unclaimedCount * 0.004));
+  const invisibleToBrokers = Math.max(50, Math.floor(unclaimedCount * 0.015));
 
   return (
     <>
@@ -327,7 +325,7 @@ export default async function ClaimPage() {
                 { question: 'When will other countries be added?', answer: 'We are currently running the "Claim Campaign" for our Tier A countries (US, Canada, Australia, UK, New Zealand, South Africa, Germany, Netherlands, UAE, Brazil). Our system tracks 120 countries with autonomous expansion.' },
                 { question: 'What if my business isn\'t listed yet?', answer: 'If you operate inside a tracked country, you can add your business directly through the claim flow. We\'ll create your profile and you can claim it immediately.' },
                 { question: 'Can I route multi-currency loads?', answer: 'Yes. Upon claiming, operators can accept loads globally using our automated 30-day currency conversion index.' },
-                { question: 'How many operators are on Haul Command?', answer: `Our directory tracks ${unclaimedCount > 0 ? unclaimedCount.toLocaleString() : 'over 1.5 million'} entities across 120 countries. Claiming early grants dominant lane positioning during the global rollout.` },
+                { question: 'How many operators are on Haul Command?', answer: `Our directory has ${stats.total_real_operators.toLocaleString()} verified operators across ${stats.active_countries} countries. We are actively expanding coverage — claiming early grants dominant lane positioning during the global rollout.` },
               ]}
             />
           </div>

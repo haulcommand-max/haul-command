@@ -61,7 +61,7 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
                 </li>
             </ul>
 
-            <Link
+            <Link aria-label="Navigation Link"
                 href={claimUrl}
                 className="w-full flex items-center justify-between px-4 py-3.5 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 relative z-10"
             >

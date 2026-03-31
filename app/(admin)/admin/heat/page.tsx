@@ -45,7 +45,7 @@ export default async function HeatAdminPage() {
                         <div className="relative z-10 text-center">
                             <h3 className="text-3xl font-black uppercase italic tracking-tighter text-[#444] mb-2 opacity-50">Operational Heat Map</h3>
                             <p className="text-xs font-bold text-[#ffb400]/50 tracking-widest uppercase mb-8">Live Supply/Demand Overlay</p>
-                            <button className="px-8 py-3 bg-[#ffb400] text-black text-xs font-black uppercase rounded shadow-2xl hover:bg-yellow-500 transition-all">
+                            <button aria-label="Interactive Button" className="px-8 py-3 bg-[#ffb400] text-black text-xs font-black uppercase rounded shadow-2xl hover:bg-yellow-500 transition-all">
                                 Initialize Map Engine
                             </button>
                         </div>
@@ -116,7 +116,7 @@ function MapLegend({ label, color }: any) {
 
 function Tab({ label, active }: any) {
     return (
-        <button className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
+        <button aria-label="Interactive Button" className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
             {label}
         </button>
     );

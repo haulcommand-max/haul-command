@@ -16,7 +16,7 @@ export default function AnswersIndexPage() {
         <main className="min-h-screen" style={{ background: "#050505" }}>
             <div className="border-b border-white/5 px-6 py-3">
                 <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30">
-                    <Link href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
+                    <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-white/60">Answers</span>
                 </div>
@@ -38,7 +38,7 @@ export default function AnswersIndexPage() {
             <div className="max-w-5xl mx-auto px-6 py-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-12">
                     {AI_ANSWER_SEEDS.map((a) => (
-                        <Link
+                        <Link aria-label="Navigation Link"
                             key={a.slug}
                             href={`/answers/${a.slug}`}
                             className="group rounded-xl border px-4 py-4 flex items-start gap-3 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -62,7 +62,7 @@ export default function AnswersIndexPage() {
                 <h2 className="text-base font-black text-white mb-4 mt-8">Answers by Load Type</h2>
                 <div className="flex flex-wrap gap-2">
                     {LOAD_TYPES.map((lt) => (
-                        <Link key={lt.slug} href={`/industries/${lt.slug}`}
+                        <Link aria-label="Navigation Link" key={lt.slug} href={`/industries/${lt.slug}`}
                             className="text-[11px] text-white/35 border border-white/8 rounded-lg px-2.5 py-1.5 hover:text-amber-300 hover:border-amber-500/25 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]">
                             {lt.name} Escort
                         </Link>

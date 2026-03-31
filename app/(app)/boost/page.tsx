@@ -86,7 +86,7 @@ export default function BoostPage() {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                                     {t.features.map((f, i) => <div key={i} style={{ display: 'flex', gap: 10 }}><span style={{ color: t.color }}>✓</span><span style={{ fontSize: 14, color: '#bbb' }}>{f}</span></div>)}
                                 </div>
-                                <button onClick={(e) => { e.stopPropagation(); buy(t.id); }} disabled={loading} style={{
+                                <button aria-label="Interactive Button" onClick={(e) => { e.stopPropagation(); buy(t.id); }} disabled={loading} style={{
                                     width: '100%', padding: '14px 20px', borderRadius: 12, border: 'none',
                                     background: active ? t.grad : 'rgba(255,255,255,0.08)',
                                     color: active ? '#fff' : '#aaa', fontWeight: 700, fontSize: 15, cursor: loading ? 'default' : 'pointer',

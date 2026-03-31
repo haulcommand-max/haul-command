@@ -54,9 +54,9 @@ export default async function LoadDetailPage({ params }: PageProps) {
 
             {/* Breadcrumb */}
             <nav style={{ fontSize: 12, color: 'var(--hc-muted, #888)', marginBottom: 24, display: 'flex', gap: 6, alignItems: 'center' }}>
-                <Link href="/" style={{ color: '#d97706', textDecoration: 'none' }}>Home</Link>
+                <Link aria-label="Navigation Link" href="/" style={{ color: '#d97706', textDecoration: 'none' }}>Home</Link>
                 <span>/</span>
-                <Link href="/loads" style={{ color: '#d97706', textDecoration: 'none' }}>Loads</Link>
+                <Link aria-label="Navigation Link" href="/loads" style={{ color: '#d97706', textDecoration: 'none' }}>Loads</Link>
                 <span>/</span>
                 <span>{load.origin_city} → {load.dest_city}</span>
             </nav>
@@ -210,11 +210,11 @@ export default async function LoadDetailPage({ params }: PageProps) {
             {/* SEO footer */}
             <p style={{ fontSize: 12, color: 'var(--hc-muted, #777)', lineHeight: 1.6 }}>
                 This {load.service_required} load is sourced from{' '}
-                <Link href={`/directory/${load.origin_country?.toLowerCase() ?? 'us'}/${load.origin_state?.toLowerCase()}`} style={{ color: '#d97706' }}>
+                <Link aria-label="Navigation Link" href={`/directory/${load.origin_country?.toLowerCase() ?? 'us'}/${load.origin_state?.toLowerCase()}`} style={{ color: '#d97706' }}>
                     {load.origin_city}, {load.origin_state}
                 </Link>{' '}
                 and dispatched via the Haul Command platform. View all{' '}
-                <Link href="/loads" style={{ color: '#d97706' }}>open pilot car loads</Link>.
+                <Link aria-label="Navigation Link" href="/loads" style={{ color: '#d97706' }}>open pilot car loads</Link>.
             </p>
         </main>
     );
