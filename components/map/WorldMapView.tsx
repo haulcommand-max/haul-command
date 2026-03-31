@@ -1,104 +1,18 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { X, Globe, Users, TrendingUp, ExternalLink, Mail, MapPin, ChevronRight } from 'lucide-react';
+import { X, Globe, Users, TrendingUp, Mail, MapPin, ChevronRight, Search, Shield } from 'lucide-react';
+import {
+  ALL_COUNTRIES, COUNTRY_POSITIONS, COUNTRY_NOTES,
+  TIER_COLORS, TIER_LABELS, COUNTRY_MAP,
+  type TierCountry,
+} from './worldMapData';
 
 /* ═══════════════════════════════════════════════════════════════════
    WorldMapView — 120-Country Global Map with Tier Coloring
-   MapLibre GL JS map showing country boundaries colored by tier
+   Dot-map visualization with search, tier sidebar, and country panels
    ═══════════════════════════════════════════════════════════════════ */
-
-// ── Tier definitions ──────────────────────────────────────────────
-interface TierCountry {
-  iso: string;
-  name: string;
-  flag: string;
-  tier: 'A' | 'B' | 'C' | 'D';
-  operators: number;
-  corridors: string[];
-  live: boolean;
-}
-
-const ALL_COUNTRIES: TierCountry[] = [
-  // Tier A — Live
-  { iso: 'US', name: 'United States', flag: '🇺🇸', tier: 'A', operators: 4200, corridors: ['I-10', 'I-35', 'I-40', 'I-75', 'I-95'], live: true },
-  { iso: 'CA', name: 'Canada', flag: '🇨🇦', tier: 'A', operators: 820, corridors: ['Trans-Canada', 'Hwy 401', 'Hwy 2'], live: true },
-  { iso: 'AU', name: 'Australia', flag: '🇦🇺', tier: 'A', operators: 450, corridors: ['Pacific Hwy', 'Hume Hwy', 'Stuart Hwy'], live: true },
-  { iso: 'GB', name: 'United Kingdom', flag: '🇬🇧', tier: 'A', operators: 210, corridors: ['M1', 'M6', 'A1'], live: true },
-  { iso: 'NZ', name: 'New Zealand', flag: '🇳🇿', tier: 'A', operators: 85, corridors: ['SH1', 'SH2'], live: true },
-  { iso: 'ZA', name: 'South Africa', flag: '🇿🇦', tier: 'A', operators: 120, corridors: ['N1', 'N3', 'N4'], live: true },
-  { iso: 'DE', name: 'Germany', flag: '🇩🇪', tier: 'A', operators: 180, corridors: ['A1', 'A7', 'A3'], live: true },
-  { iso: 'NL', name: 'Netherlands', flag: '🇳🇱', tier: 'A', operators: 95, corridors: ['A15', 'A2'], live: true },
-  { iso: 'AE', name: 'UAE', flag: '🇦🇪', tier: 'A', operators: 60, corridors: ['E11', 'E311'], live: true },
-  { iso: 'BR', name: 'Brazil', flag: '🇧🇷', tier: 'A', operators: 340, corridors: ['BR-101', 'BR-116'], live: true },
-  // Tier B
-  { iso: 'MX', name: 'Mexico', flag: '🇲🇽', tier: 'B', operators: 0, corridors: ['Autopista MEX-QRO'], live: false },
-  { iso: 'FR', name: 'France', flag: '🇫🇷', tier: 'B', operators: 0, corridors: ['A1 Paris-Lille'], live: false },
-  { iso: 'IT', name: 'Italy', flag: '🇮🇹', tier: 'B', operators: 0, corridors: ['A1 Autostrada del Sole'], live: false },
-  { iso: 'ES', name: 'Spain', flag: '🇪🇸', tier: 'B', operators: 0, corridors: ['AP-7 Mediterranean'], live: false },
-  { iso: 'IN', name: 'India', flag: '🇮🇳', tier: 'B', operators: 0, corridors: ['NH48 Delhi-Mumbai'], live: false },
-  { iso: 'JP', name: 'Japan', flag: '🇯🇵', tier: 'B', operators: 0, corridors: ['Tomei Expressway'], live: false },
-  { iso: 'KR', name: 'South Korea', flag: '🇰🇷', tier: 'B', operators: 0, corridors: ['Gyeongbu Expressway'], live: false },
-  { iso: 'SE', name: 'Sweden', flag: '🇸🇪', tier: 'B', operators: 0, corridors: ['E6 Gothenburg-Malmö'], live: false },
-  { iso: 'NO', name: 'Norway', flag: '🇳🇴', tier: 'B', operators: 0, corridors: ['E6 Oslo-Trondheim'], live: false },
-  { iso: 'FI', name: 'Finland', flag: '🇫🇮', tier: 'B', operators: 0, corridors: ['E75 Helsinki-North'], live: false },
-  { iso: 'PL', name: 'Poland', flag: '🇵🇱', tier: 'B', operators: 0, corridors: ['A2 Warsaw-Berlin'], live: false },
-  { iso: 'AT', name: 'Austria', flag: '🇦🇹', tier: 'B', operators: 0, corridors: ['A1 Westautobahn'], live: false },
-  { iso: 'BE', name: 'Belgium', flag: '🇧🇪', tier: 'B', operators: 0, corridors: ['E19 Brussels-Antwerp'], live: false },
-  { iso: 'CH', name: 'Switzerland', flag: '🇨🇭', tier: 'B', operators: 0, corridors: ['A1 Geneva-Zurich'], live: false },
-  { iso: 'DK', name: 'Denmark', flag: '🇩🇰', tier: 'B', operators: 0, corridors: ['E45 Aalborg-Copenhagen'], live: false },
-  // Tier C
-  { iso: 'SA', name: 'Saudi Arabia', flag: '🇸🇦', tier: 'C', operators: 0, corridors: ['Riyadh-Jeddah'], live: false },
-  { iso: 'QA', name: 'Qatar', flag: '🇶🇦', tier: 'C', operators: 0, corridors: ['Al Shamal Road'], live: false },
-  { iso: 'KW', name: 'Kuwait', flag: '🇰🇼', tier: 'C', operators: 0, corridors: ['Kuwait City-Basra'], live: false },
-  { iso: 'OM', name: 'Oman', flag: '🇴🇲', tier: 'C', operators: 0, corridors: ['Muscat-Salalah'], live: false },
-  { iso: 'CL', name: 'Chile', flag: '🇨🇱', tier: 'C', operators: 0, corridors: ['Ruta 5 Pan-American'], live: false },
-  { iso: 'AR', name: 'Argentina', flag: '🇦🇷', tier: 'C', operators: 0, corridors: ['RN 9 Buenos Aires-Rosario'], live: false },
-  { iso: 'CO', name: 'Colombia', flag: '🇨🇴', tier: 'C', operators: 0, corridors: ['Ruta del Sol'], live: false },
-  { iso: 'PE', name: 'Peru', flag: '🇵🇪', tier: 'C', operators: 0, corridors: ['Pan-American South'], live: false },
-  { iso: 'SG', name: 'Singapore', flag: '🇸🇬', tier: 'C', operators: 0, corridors: ['AYE-PIE'], live: false },
-  { iso: 'MY', name: 'Malaysia', flag: '🇲🇾', tier: 'C', operators: 0, corridors: ['North-South Expressway'], live: false },
-  { iso: 'TH', name: 'Thailand', flag: '🇹🇭', tier: 'C', operators: 0, corridors: ['Motorway 7'], live: false },
-  { iso: 'ID', name: 'Indonesia', flag: '🇮🇩', tier: 'C', operators: 0, corridors: ['Trans-Java Tollway'], live: false },
-  { iso: 'PH', name: 'Philippines', flag: '🇵🇭', tier: 'C', operators: 0, corridors: ['NLEX-SLEX'], live: false },
-  { iso: 'IE', name: 'Ireland', flag: '🇮🇪', tier: 'C', operators: 0, corridors: ['M1 Dublin-Belfast'], live: false },
-  { iso: 'PT', name: 'Portugal', flag: '🇵🇹', tier: 'C', operators: 0, corridors: ['A1 Lisbon-Porto'], live: false },
-  { iso: 'CZ', name: 'Czech Republic', flag: '🇨🇿', tier: 'C', operators: 0, corridors: ['D1 Prague-Brno'], live: false },
-  { iso: 'RO', name: 'Romania', flag: '🇷🇴', tier: 'C', operators: 0, corridors: ['A1 Bucharest-Sibiu'], live: false },
-  { iso: 'HU', name: 'Hungary', flag: '🇭🇺', tier: 'C', operators: 0, corridors: ['M1 Budapest-Vienna'], live: false },
-  // Tier D
-  { iso: 'NG', name: 'Nigeria', flag: '🇳🇬', tier: 'D', operators: 0, corridors: ['Lagos-Ibadan'], live: false },
-  { iso: 'KE', name: 'Kenya', flag: '🇰🇪', tier: 'D', operators: 0, corridors: ['Mombasa Road'], live: false },
-  { iso: 'GH', name: 'Ghana', flag: '🇬🇭', tier: 'D', operators: 0, corridors: ['Accra-Kumasi'], live: false },
-  { iso: 'TZ', name: 'Tanzania', flag: '🇹🇿', tier: 'D', operators: 0, corridors: ['Dar-Dodoma'], live: false },
-  { iso: 'EG', name: 'Egypt', flag: '🇪🇬', tier: 'D', operators: 0, corridors: ['Cairo-Alexandria'], live: false },
-  { iso: 'MA', name: 'Morocco', flag: '🇲🇦', tier: 'D', operators: 0, corridors: ['A2 Casablanca-Rabat'], live: false },
-  { iso: 'PK', name: 'Pakistan', flag: '🇵🇰', tier: 'D', operators: 0, corridors: ['M1 Islamabad-Lahore'], live: false },
-  { iso: 'BD', name: 'Bangladesh', flag: '🇧🇩', tier: 'D', operators: 0, corridors: ['Dhaka-Chittagong'], live: false },
-  { iso: 'VN', name: 'Vietnam', flag: '🇻🇳', tier: 'D', operators: 0, corridors: ['AH1 Hanoi-HCMC'], live: false },
-  { iso: 'TR', name: 'Turkey', flag: '🇹🇷', tier: 'D', operators: 0, corridors: ['O-4 Istanbul-Ankara'], live: false },
-  { iso: 'RU', name: 'Russia', flag: '🇷🇺', tier: 'D', operators: 0, corridors: ['M7 Moscow-Kazan'], live: false },
-  { iso: 'KZ', name: 'Kazakhstan', flag: '🇰🇿', tier: 'D', operators: 0, corridors: ['M39 Almaty-Astana'], live: false },
-  { iso: 'UZ', name: 'Uzbekistan', flag: '🇺🇿', tier: 'D', operators: 0, corridors: ['M39 Tashkent-Samarkand'], live: false },
-  { iso: 'UA', name: 'Ukraine', flag: '🇺🇦', tier: 'D', operators: 0, corridors: ['M06 Kyiv-Chop'], live: false },
-];
-
-const TIER_COLORS: Record<string, string> = {
-  A: '#C6923A', // Gold
-  B: '#3A7AC6', // Blue
-  C: '#8A8A9A', // Silver
-  D: '#4A4A5A', // Slate
-};
-
-const TIER_LABELS: Record<string, string> = {
-  A: 'Tier A — Live',
-  B: 'Tier B — Coming Soon',
-  C: 'Tier C — Planned',
-  D: 'Tier D — Future',
-};
-
-const COUNTRY_MAP = new Map(ALL_COUNTRIES.map(c => [c.iso, c]));
 
 const T = {
   bg: '#060b12', card: '#0f1a26', border: 'rgba(255,255,255,0.07)',
@@ -182,6 +96,17 @@ function CountryPanel({
         ))}
       </div>
 
+      {/* Regulatory Note */}
+      {COUNTRY_NOTES[country.iso] && (
+        <div style={{ marginBottom: 16, padding: '10px 12px', background: T.bg, borderRadius: 10, border: `1px solid ${T.border}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <Shield size={12} style={{ color: T.gold }} />
+            <span style={{ fontSize: 9, fontWeight: 800, color: T.gold, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Regulatory Summary</span>
+          </div>
+          <p style={{ margin: 0, fontSize: 12, color: T.muted, lineHeight: 1.5 }}>{COUNTRY_NOTES[country.iso]}</p>
+        </div>
+      )}
+
       {/* CTA */}
       {country.live ? (
         <Link href={`/directory/${country.iso.toLowerCase()}`} style={{
@@ -261,30 +186,9 @@ function MapLegend() {
 
 export function WorldMapView() {
   const [selected, setSelected] = useState<TierCountry | null>(null);
+  const [search, setSearch] = useState('');
 
-  // Position data for countries (simplified lat/lng to x/y)
-  const positions: Record<string, { x: number; y: number }> = {
-    US: { x: 22, y: 38 }, CA: { x: 20, y: 26 }, MX: { x: 18, y: 48 },
-    BR: { x: 35, y: 62 }, AR: { x: 32, y: 72 }, CL: { x: 28, y: 70 },
-    CO: { x: 26, y: 54 }, PE: { x: 26, y: 60 },
-    GB: { x: 48, y: 28 }, IE: { x: 46, y: 29 }, FR: { x: 50, y: 34 },
-    DE: { x: 52, y: 30 }, NL: { x: 51, y: 28 }, BE: { x: 50, y: 30 },
-    ES: { x: 48, y: 37 }, PT: { x: 46, y: 37 }, IT: { x: 53, y: 36 },
-    CH: { x: 52, y: 33 }, AT: { x: 54, y: 33 }, PL: { x: 55, y: 28 },
-    CZ: { x: 54, y: 30 }, HU: { x: 56, y: 33 }, RO: { x: 58, y: 34 },
-    SE: { x: 54, y: 20 }, NO: { x: 52, y: 18 }, FI: { x: 58, y: 18 },
-    DK: { x: 52, y: 24 }, UA: { x: 60, y: 30 }, RU: { x: 70, y: 22 },
-    TR: { x: 62, y: 37 }, SA: { x: 64, y: 46 }, AE: { x: 67, y: 46 },
-    QA: { x: 66, y: 46 }, KW: { x: 65, y: 43 }, OM: { x: 68, y: 48 },
-    IN: { x: 74, y: 48 }, PK: { x: 72, y: 42 }, BD: { x: 78, y: 46 },
-    TH: { x: 80, y: 50 }, MY: { x: 80, y: 55 }, SG: { x: 80, y: 56 },
-    ID: { x: 82, y: 58 }, PH: { x: 84, y: 50 }, VN: { x: 82, y: 48 },
-    JP: { x: 88, y: 36 }, KR: { x: 86, y: 38 },
-    AU: { x: 86, y: 70 }, NZ: { x: 92, y: 76 },
-    ZA: { x: 58, y: 72 }, NG: { x: 52, y: 54 }, KE: { x: 62, y: 56 },
-    GH: { x: 49, y: 54 }, TZ: { x: 62, y: 60 }, EG: { x: 60, y: 42 },
-    MA: { x: 47, y: 42 }, KZ: { x: 72, y: 30 }, UZ: { x: 70, y: 35 },
-  };
+  const positions = COUNTRY_POSITIONS;
 
   const tiers = ['A', 'B', 'C', 'D'] as const;
   const tierGroups = useMemo(() => {
@@ -292,6 +196,20 @@ export function WorldMapView() {
     ALL_COUNTRIES.forEach(c => groups[c.tier].push(c));
     return groups;
   }, []);
+
+  const filteredCountries = useMemo(() => {
+    if (!search.trim()) return ALL_COUNTRIES;
+    const q = search.toLowerCase();
+    return ALL_COUNTRIES.filter(c =>
+      c.name.toLowerCase().includes(q) || c.iso.toLowerCase().includes(q)
+    );
+  }, [search]);
+
+  const filteredGroups = useMemo(() => {
+    const groups: Record<string, TierCountry[]> = { A: [], B: [], C: [], D: [] };
+    filteredCountries.forEach(c => groups[c.tier].push(c));
+    return groups;
+  }, [filteredCountries]);
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', background: '#060b12', overflow: 'hidden' }}>
@@ -310,7 +228,7 @@ export function WorldMapView() {
             Global Coverage
           </span>
         </div>
-        <div style={{ fontSize: 22, fontWeight: 900, color: T.text }}>120 countries</div>
+        <div style={{ fontSize: 22, fontWeight: 900, color: T.text }}>{ALL_COUNTRIES.length} countries</div>
       </div>
 
       {/* Country count badge */}
@@ -414,40 +332,63 @@ export function WorldMapView() {
 
       <MapLegend />
 
-      {/* Country sidebar on scroll */}
+      {/* Country sidebar with search */}
       <div style={{
-        position: 'absolute', right: 0, top: 80, bottom: 0, width: 220,
+        position: 'absolute', right: 0, top: 80, bottom: 0, width: 240,
         overflowY: 'auto', padding: '0 12px 20px', zIndex: 15,
-        background: 'linear-gradient(to left, rgba(6,11,18,0.9) 60%, transparent)',
+        background: 'linear-gradient(to left, rgba(6,11,18,0.92) 70%, transparent)',
       }}>
-        {tiers.map(tier => (
-          <div key={tier} style={{ marginBottom: 16 }}>
-            <div style={{
-              fontSize: 9, fontWeight: 800, color: TIER_COLORS[tier],
-              textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6,
-              padding: '4px 0', borderBottom: `1px solid ${TIER_COLORS[tier]}20`,
-            }}>
-              Tier {tier} — {tierGroups[tier].length} countries
-            </div>
-            {tierGroups[tier].map(c => (
-              <div
-                key={c.iso}
-                onClick={() => setSelected(c)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
-                  borderRadius: 8, cursor: 'pointer', fontSize: 11, color: T.muted,
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => { (e.target as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; }}
-                onMouseLeave={e => { (e.target as HTMLElement).style.background = 'transparent'; }}
-              >
-                <span style={{ fontSize: 14 }}>{c.flag}</span>
-                <span style={{ fontWeight: 600, color: c.live ? T.text : T.muted }}>{c.name}</span>
-                {c.live && <span style={{ marginLeft: 'auto', width: 5, height: 5, borderRadius: '50%', background: '#27d17f' }} />}
-              </div>
-            ))}
+        {/* Search bar */}
+        <div style={{ position: 'sticky', top: 0, paddingTop: 4, paddingBottom: 8, background: 'rgba(6,11,18,0.95)', zIndex: 2 }}>
+          <div style={{ position: 'relative' }}>
+            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: T.muted, pointerEvents: 'none' }} />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search 120 countries…"
+              aria-label="Search countries"
+              style={{
+                width: '100%', padding: '8px 10px 8px 30px', borderRadius: 10, fontSize: 11,
+                background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
+                color: T.text, outline: 'none',
+              }}
+            />
           </div>
-        ))}
+        </div>
+
+        {tiers.map(tier => {
+          const items = filteredGroups[tier];
+          if (items.length === 0) return null;
+          return (
+            <div key={tier} style={{ marginBottom: 16 }}>
+              <div style={{
+                fontSize: 9, fontWeight: 800, color: TIER_COLORS[tier],
+                textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6,
+                padding: '4px 0', borderBottom: `1px solid ${TIER_COLORS[tier]}20`,
+              }}>
+                Tier {tier} — {items.length} countries
+              </div>
+              {items.map(c => (
+                <div
+                  key={c.iso}
+                  onClick={() => setSelected(c)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
+                    borderRadius: 8, cursor: 'pointer', fontSize: 11, color: T.muted,
+                    transition: 'background 0.15s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                >
+                  <span style={{ fontSize: 14 }}>{c.flag}</span>
+                  <span style={{ fontWeight: 600, color: c.live ? T.text : T.muted }}>{c.name}</span>
+                  {c.live && <span style={{ marginLeft: 'auto', width: 5, height: 5, borderRadius: '50%', background: '#27d17f' }} />}
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
 
       <style>{`@keyframes pulse-slow { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.5); } }`}</style>
@@ -458,4 +399,4 @@ export function WorldMapView() {
   );
 }
 
-export { ALL_COUNTRIES, TIER_COLORS, COUNTRY_MAP };
+export { ALL_COUNTRIES, TIER_COLORS, COUNTRY_MAP } from './worldMapData';

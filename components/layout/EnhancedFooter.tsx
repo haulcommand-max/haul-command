@@ -116,6 +116,27 @@ export default function EnhancedFooter() {
                         </nav>
                     </div>
 
+                    {/* Knowledge Base / Glossary */}
+                    <div>
+                        <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Knowledge Base</h3>
+                        <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            {[
+                                { href: '/resources', label: 'Resource Hub' },
+                                { href: '/resources/guides/how-to-start-pilot-car-company', label: 'Start a Pilot Car Co.' },
+                                { href: '/resources/certification/state-pilot-car-certifications', label: 'State Certifications' },
+                                { href: '/glossary', label: 'Industry Glossary' },
+                                { href: '/glossary/pilot-car', label: 'What is a Pilot Car?' },
+                                { href: '/escort-requirements', label: 'Escort Requirements' },
+                                { href: '/regulations', label: 'State Regulations' },
+                            ].map(l => (
+                                <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                    onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
+                                    onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
+                                >{l.label}</Link>
+                            ))}
+                        </nav>
+                    </div>
+
                     {/* Company */}
                     <div>
                         <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Company</h3>
