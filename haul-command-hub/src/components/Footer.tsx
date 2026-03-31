@@ -42,7 +42,7 @@ const FOOTER_SECTIONS = [
       { href: '/directory/gb', label: '🇬🇧 United Kingdom' },
       { href: '/directory/de', label: '🇩🇪 Germany' },
       { href: '/directory/ae', label: '🇦🇪 UAE' },
-      { href: '/directory/br', label: '🇧🇷 Brazil' },
+      { href: '/directory/za', label: '🇿🇦 South Africa' },
     ],
   },
   {

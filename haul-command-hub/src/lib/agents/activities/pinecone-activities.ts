@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { smartMatchingFlow } from '../../pinecone/match';
 import { getPineconeNamespace } from '../../pinecone/client';
 import { MatchingCriteria } from '../../pinecone/match';

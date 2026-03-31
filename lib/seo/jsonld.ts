@@ -310,10 +310,50 @@ export function buildOperatorProfileJsonLd(params: {
     priceRange?: string;
     areaServed?: string[];
     aggregateRating?: { ratingValue: number; reviewCount: number };
+    entityType?: string;
 }) {
+    // Determine exact schema.org type based on entity context
+    let primaryType = 'ProfessionalService';
+    // Base is always LocalBusiness for physical directories
+    const schemaTypes = ['LocalBusiness'];
+
+    if (params.entityType) {
+        switch (params.entityType.toLowerCase()) {
+            case 'hotel':
+                primaryType = 'Hotel';
+                 break;
+            case 'yard':
+                primaryType = 'ParkingFacility';
+                break;
+            case 'repair':
+                primaryType = 'AutoRepair';
+                break;
+            case 'gas':
+            case 'fuel':
+                primaryType = 'GasStation';
+                break;
+            case 'port':
+                primaryType = 'CivicStructure';
+                break;
+            case 'warehouse':
+                primaryType = 'SelfStorage';
+                break;
+            case 'operator':
+            case 'pilot_car':
+            default:
+                primaryType = 'ProfessionalService';
+                break;
+        }
+    }
+
+    // Add primary type to the schema array
+    if (primaryType !== 'LocalBusiness') {
+        schemaTypes.unshift(primaryType);
+    }
+
     const json: JsonLd = {
         '@context': 'https://schema.org',
-        '@type': ['ProfessionalService', 'LocalBusiness'],
+        '@type': schemaTypes.length === 1 ? schemaTypes[0] : schemaTypes,
         '@id': params.url,
         url: params.url,
         name: params.name,

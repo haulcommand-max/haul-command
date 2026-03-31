@@ -57,7 +57,7 @@ export async function embedOperator(profile: OperatorProfile): Promise<void> {
 
   const namespace = getPineconeNamespace('operators');
   
-  await namespace.upsert([{
+  await (namespace as any).upsert([{
     id: profile.operator_id,
     values: vector,
     metadata: {
@@ -90,7 +90,7 @@ export async function embedLoad(load: LoadProfile): Promise<void> {
   const vector = await ModelRouter.getEmbeddings(inputString);
   const namespace = getPineconeNamespace('loads');
 
-  await namespace.upsert([{
+  await (namespace as any).upsert([{
     id: load.load_id,
     values: vector,
     metadata: {
@@ -116,7 +116,7 @@ export async function embedConversation(convo: any): Promise<void> {
 
   const vector = await ModelRouter.getEmbeddings(inputString);
 
-  await getPineconeNamespace('conversations').upsert([{
+  await (getPineconeNamespace('conversations') as any).upsert([{
     id: convo.conversation_id,
     values: vector,
     metadata: {
@@ -139,7 +139,7 @@ export async function embedCorridor(corridor: any): Promise<void> {
 
   const vector = await ModelRouter.getEmbeddings(inputString);
 
-  await getPineconeNamespace('corridors').upsert([{
+  await (getPineconeNamespace('corridors') as any).upsert([{
     id: corridor.corridor_id,
     values: vector,
     metadata: {

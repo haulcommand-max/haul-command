@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Block private/auth routes from all crawlers
+Disallow: /admin/
+Disallow: /api/
+Disallow: /inbox/
+Disallow: /dispatch/
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /login
+Disallow: /claim/edit/
+
+# Sitemap location
+Sitemap: https://haulcommand.com/sitemap.xml

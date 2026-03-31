@@ -16,6 +16,16 @@ export interface GlossaryTerm {
     jurisdiction: string | null;
     example_usage: string | null;
     common_mistakes: string | null;
+    schema_faq_eligible: boolean;
+    snippet_eligible: boolean;
+    related_rules: string[];
+    related_services: string[];
+    related_problems: string[];
+    related_corridors: string[];
+    related_entities: string[];
+    related_tools: string[];
+    surface_categories: string[];
+    applicable_countries: string[];
     sources: any[];
     updated_at: string;
 }

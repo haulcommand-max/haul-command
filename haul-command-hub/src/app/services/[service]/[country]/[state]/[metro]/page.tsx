@@ -27,7 +27,7 @@ export default async function ServiceMetroPage({ params }: Props) {
   const cc = getCountryConfig(country);
   if (!svc || !cc) return notFound();
   const metroName = metro.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const regionName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8 min-h-screen">
@@ -35,10 +35,10 @@ export default async function ServiceMetroPage({ params }: Props) {
         { label: 'Services', href: '/services' },
         { label: svc.label, href: `/services/${service}` },
         { label: cc.name, href: `/services/${service}/${country}` },
-        { label: stateName, href: `/services/${service}/${country}/${state}` },
+        { label: regionName, href: `/services/${service}/${country}/${state}` },
         { label: metroName, isCurrent: true },
       ]} />
-      <HCLocalIntroCopy h1={`${cc.terms[svc.termKey]} in ${metroName}`} intro={`Find ${cc.terms[svc.termKey].toLowerCase()} near ${metroName}, ${stateName}, ${cc.name}.`} badge={`${cc.flag} ${metroName}`} />
+      <HCLocalIntroCopy h1={`${cc.terms[svc.termKey]} in ${metroName}`} intro={`Find ${cc.terms[svc.termKey].toLowerCase()} near ${metroName}, ${regionName}, ${cc.name}.`} badge={`${cc.flag} ${metroName}`} />
       <HCAlertSignupModule context={`${cc.terms[svc.termKey]} near ${metroName}`} />
     </main>
   );

@@ -126,6 +126,14 @@ export default function StateCertificationPage() {
                             Requirements for all 50 US states — updated March 2026. Includes certification bodies, reciprocity agreements, renewal periods, and key compliance notes.
                         </p>
 
+                        <div style={{ marginBottom: '2.5rem', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+                            <img 
+                                src="/images/infographics/reciprocity_infographic_1774962616582.png" 
+                                alt="US Pilot Car Certification Reciprocity Map" 
+                                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                            />
+                        </div>
+
                         {/* Summary stats */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: '1.5rem' }}>
                             {[

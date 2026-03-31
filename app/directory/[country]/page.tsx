@@ -114,7 +114,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
       <section className="py-10 px-4 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-4 text-xs text-gray-600">
-            <Link aria-label="Navigation Link" href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
+            <Link href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
             <span>/</span>
             <span className="text-gray-400">{countryName}</span>
             {stateFilter && (
@@ -143,7 +143,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
               />
               {stateFilter && <input type="hidden" name="state" value={stateFilter} />}
-              <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+              <button type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
                 Search
               </button>
             </form>
@@ -166,7 +166,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
               <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Filter by State</h2>
               <div className="space-y-1 max-h-[70vh] overflow-y-auto pr-2">
                 {US_STATES.filter(s => stateCounts[s]).sort((a, b) => (stateCounts[b] || 0) - (stateCounts[a] || 0)).map(s => (
-                  <Link aria-label="Navigation Link"
+                  <Link
                     key={s}
                     href={`/directory/us/${s.toLowerCase()}`}
                     className="flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-white/5 text-sm transition-colors"
@@ -185,7 +185,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {isUS && !stateFilter && (
               <div className="flex gap-2 overflow-x-auto pb-3 mb-6 lg:hidden">
                 {US_STATES.filter(s => stateCounts[s]).map(s => (
-                  <Link aria-label="Navigation Link"
+                  <Link
                     key={s}
                     href={`/directory/us/${s.toLowerCase()}`}
                     className="flex-shrink-0 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 hover:border-amber-500/30 transition-colors"
@@ -199,11 +199,13 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {operators && operators.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {operators.map((op: any) => (
-                  <div
+                  <Link
                     key={op.id}
-                    className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
+                    href={`/directory/profile/${op.slug || op.id}`}
+                    className={`block p-5 border rounded-xl transition-all hover:border-amber-500/40 hover:bg-white/[0.06] ${
                       op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
                     }`}
+                    style={{ textDecoration: 'none' }}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1 min-w-0">
@@ -237,26 +239,11 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                         {op.services.slice(0, 3).join(' · ')}
                       </p>
                     )}
-                    {/* Claim pressure */}
                     {!op.claimed && (
-                      <div className="text-xs text-gray-700 mb-3">
-                        <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
-                          Unclaimed — Is this you? →
-                        </Link>
-                      </div>
+                      <p className="text-xs text-amber-600/70 mb-2">Unclaimed — Claim this listing →</p>
                     )}
-                    <div className="relative">
-                      <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info hidden</div>
-                      <div className="absolute inset-0 flex items-center">
-                        <Link aria-label="Navigation Link"
-                          href="/auth/register"
-                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
-                        >
-                          Sign up to contact
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+                    <div className="mt-2 text-xs text-amber-400/80 font-semibold">View Profile →</div>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -265,7 +252,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                   {q ? `No operators found for "${q}"` : `No operators found${stateFilter ? ` in ${stateFilter}` : ''}.`}
                 </p>
                 {q && (
-                  <Link aria-label="Navigation Link" href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
+                  <Link href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
                     Clear search
                   </Link>
                 )}
@@ -276,7 +263,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 mt-10">
                 {page > 1 && (
-                  <Link aria-label="Navigation Link"
+                  <Link
                     href={`/directory/${country}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
                   >
@@ -287,7 +274,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                   Page {page} of {totalPages} · {(total ?? 0).toLocaleString()} operators
                 </span>
                 {page < totalPages && (
-                  <Link aria-label="Navigation Link"
+                  <Link
                     href={`/directory/${country}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
                   >

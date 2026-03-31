@@ -5,9 +5,29 @@ import Navbar from '@/components/Navbar';
 import { HCBreadcrumbs } from '@/components/hc/Breadcrumbs';
 import { HCLocalIntroCopy } from '@/components/hc/LocalIntroCopy';
 import { HCAlertSignupModule } from '@/components/hc/AlertSignupModule';
+import { RegionSponsorWaitlist } from '@/components/hc/RegionSponsorWaitlist';
+import ComplianceCalculatorWrapper from '@/components/hc/ComplianceCalculatorWrapper';
 import { getCountryConfig } from '@/lib/hc-loaders/geography';
 import { supabaseServer } from '@/lib/supabase-server';
-import { categoryLabel, categoryIcon } from '@/lib/directory-helpers';
+import { categoryLabel, categoryIcon, getCategorySynonyms } from '@/lib/directory-helpers';
+
+
+// State slug → admin1_code mapping
+const STATE_SLUG_TO_CODE: Record<string, string> = {
+  alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA',
+  colorado: 'CO', connecticut: 'CT', delaware: 'DE', florida: 'FL', georgia: 'GA',
+  hawaii: 'HI', idaho: 'ID', illinois: 'IL', indiana: 'IN', iowa: 'IA',
+  kansas: 'KS', kentucky: 'KY', louisiana: 'LA', maine: 'ME', maryland: 'MD',
+  massachusetts: 'MA', michigan: 'MI', minnesota: 'MN', mississippi: 'MS', missouri: 'MO',
+  montana: 'MT', nebraska: 'NE', nevada: 'NV', 'new-hampshire': 'NH', 'new-jersey': 'NJ',
+  'new-mexico': 'NM', 'new-york': 'NY', 'north-carolina': 'NC', 'north-dakota': 'ND',
+  ohio: 'OH', oklahoma: 'OK', oregon: 'OR', pennsylvania: 'PA', 'rhode-island': 'RI',
+  'south-carolina': 'SC', 'south-dakota': 'SD', tennessee: 'TN', texas: 'TX', utah: 'UT',
+  vermont: 'VT', virginia: 'VA', washington: 'WA', 'west-virginia': 'WV',
+  wisconsin: 'WI', wyoming: 'WY',
+  alberta: 'AB', 'british-columbia': 'BC', ontario: 'ON', saskatchewan: 'SK', yukon: 'YT',
+  manitoba: 'MB', quebec: 'QC', 'nova-scotia': 'NS', 'new-brunswick': 'NB',
+};
 
 export const revalidate = 900;
 
@@ -36,10 +56,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const regionName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return {
-    title:`${stateName}, ${cc.name} — Heavy Haul Directory`,
-    description: `Browse pilot car operators, escort services, and heavy haul infrastructure in ${stateName}, ${cc.name}.`,
+    title:`${regionName}, ${cc.name} — Heavy Haul Directory`,
+    description: `Browse pilot car operators, escort services, and heavy haul infrastructure in ${regionName}, ${cc.name}.`,
   };
 }
 
@@ -63,8 +83,8 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
 
     let query = sb
       .from("hc_public_operators")
-      .select("id, slug, name, entity_type, city as locality, state_code as admin1_code", { count: "exact" })
-      .eq("entity_type", cat);
+      .select("id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at", { count: "exact" })
+      .in("entity_type", getCategorySynonyms(cat));
 
     if (cc.code !== 'ALL') query = query.eq("country_code", cc.code);
 
@@ -119,14 +139,14 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
   }
 
   // ─── STATE/PROVINCE VIEW ───
-  const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const regionName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   const { data: listings, count } = await sb
     .from('hc_public_operators')
-    .select('id, slug, name, entity_type, city as locality, state_code as admin1_code', { count: 'exact' })
+    .select('id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at', { count: 'exact' })
     .eq('country_code', cc.code)
-    .ilike('state_code', state.replace(/-/g, ' '))
-    .order('name', { ascending: true })
+    .ilike('region_code', state.replace(/-/g, ' '))
+    .order('updated_at', { ascending: false })
     .limit(50);
 
   const total = count ?? 0;
@@ -136,12 +156,12 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
       <HCBreadcrumbs crumbs={[
         { label: 'Directory', href: '/directory' },
         { label: cc.name, href: `/directory/${country}` },
-        { label: stateName, isCurrent: true },
+        { label: regionName, isCurrent: true },
       ]} />
       <HCLocalIntroCopy
-        h1={`${stateName}, ${cc.name}`}
-        intro={total > 0 ? `${total} verified listing${total !== 1 ? 's' : ''} in ${stateName}.` : `Coverage for ${stateName} is being built.`}
-        badge={`${cc.flag} ${stateName}`}
+        h1={`${regionName}, ${cc.name}`}
+        intro={total > 0 ? `${total} verified listing${total !== 1 ? 's' : ''} in ${regionName}.` : `Coverage for ${regionName} is being built.`}
+        badge={`${cc.flag} ${regionName}`}
       />
 
       {total > 0 ? (
@@ -154,8 +174,37 @@ export default async function DirectoryStateOrCategoryPage({ params, searchParam
           ))}
         </div>
       ) : (
-        <HCAlertSignupModule context={`${stateName} directory`} />
+        <HCAlertSignupModule context={`${regionName} directory`} />
       )}
+
+      {/* Compliance Calculator — powered by live regulation data */}
+      {STATE_SLUG_TO_CODE[state.toLowerCase()] && (
+        <div className="mt-8 mb-8">
+          <ComplianceCalculatorWrapper
+            stateCode={STATE_SLUG_TO_CODE[state.toLowerCase()]}
+            stateName={regionName}
+            countryCode={cc.code}
+          />
+        </div>
+      )}
+
+      {/* Certification Link */}
+      {STATE_SLUG_TO_CODE[state.toLowerCase()] && (
+        <Link
+          href={`/directory/${country}/${state}/certification`}
+          className="block mt-4 mb-8 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 hover:border-accent/20 transition-all group text-center"
+        >
+          <span className="text-2xl">📋</span>
+          <h3 className="text-white font-bold mt-2 group-hover:text-accent transition-colors">
+            {regionName} Pilot Car Certification Requirements
+          </h3>
+          <p className="text-gray-500 text-xs mt-1">Training hours, insurance, reciprocity, and application links →</p>
+        </Link>
+      )}
+
+      <div className="mt-4 mb-8">
+        <RegionSponsorWaitlist country={cc.name} regionName={regionName} />
+      </div>
 
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
         <Link href={`/requirements/${country}`} className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 hover:border-accent/30 transition-all text-center">

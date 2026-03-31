@@ -1,0 +1,60 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Haul Command — Typesense Search Engine (Fly.io)
+# Self-hosted instant search for the 120-country operator directory.
+# 1.56M+ operator records. Typo-tolerance. Geo-search. Autocomplete.
+#
+# Deploy:
+#   1. fly auth login
+#   2. fly apps create hc-typesense --org personal
+#   3. fly volumes create typesense_data --size 10 --region iad
+#   4. fly secrets set TYPESENSE_API_KEY=<your-secret-bootstrap-key>
+#   5. fly deploy --config typesense/fly.toml
+#
+# After deploy:
+#   - Generate search-only key via the /keys API
+#   - Add keys to .env.local
+#   - Run initial sync: POST /api/search/sync
+# ─────────────────────────────────────────────────────────────────────────────
+
+app = "hc-typesense"
+primary_region = "ewr"    # Secaucus NJ — iad was full, ewr is ~3ms away
+
+[build]
+  image = "typesense/typesense:27.1"
+
+[env]
+  TYPESENSE_DATA_DIR = "/data"
+
+# Typesense HTTP API on port 8108
+[[services]]
+  internal_port = 8108
+  protocol = "tcp"
+  auto_stop_machines = false    # Always on — search must be instant
+  auto_start_machines = true
+  min_machines_running = 1      # Never scale to zero
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.http_checks]]
+    interval = "15s"
+    timeout = "5s"
+    path = "/health"
+
+# ── Persistent Volume — operator index data survives deploys ──
+[[mounts]]
+  source = "typesense_data"
+  destination = "/data"
+
+# ── Machine Sizing ──
+# 1.56M records needs ~2GB RAM for fast search
+[vm]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 2048

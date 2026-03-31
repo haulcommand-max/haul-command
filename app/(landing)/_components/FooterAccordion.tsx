@@ -45,6 +45,16 @@ const FOOTER_SECTIONS = [
         ],
     },
     {
+        title: "Knowledge Base",
+        links: [
+            { href: '/glossary', label: 'Industry Glossary' },
+            { href: '/glossary/pilot-car', label: 'What is a Pilot Car?' },
+            { href: '/glossary/oversize-load', label: 'Oversize Load Defined' },
+            { href: '/escort-requirements', label: 'Escort Requirements' },
+            { href: '/regulations', label: 'State Regulations' },
+        ],
+    },
+    {
         title: "Company",
         links: [
             { href: "/terms", label: "Terms of Service" },

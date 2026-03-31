@@ -68,6 +68,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         Free Tools
                     </div>
                     {[
+                        { href: '/glossary', label: '📖 HC Glossary' },
+                        { href: '/resources', label: '📚 Resource Hub' },
                         { href: '/rates', label: '💵 Pilot Car Rates' },
                         { href: '/tools/permit-calculator', label: '🧮 Permit Calculator' },
                         { href: '/tools/rate-lookup', label: '💰 Rate Lookup' },
