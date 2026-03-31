@@ -38,7 +38,7 @@ export default function AlertsSubscribePage() {
             <EmailCaptureWidget 
               headline="Get Real-Time Intelligence"
               subheadline="Join 12,000+ operators who stay ahead of DOT sweeps and regulation updates."
-              context="landing-page" 
+              context="tool" 
             />
           </div>
         </div>

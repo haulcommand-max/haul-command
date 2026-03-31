@@ -5,12 +5,20 @@ import Link from 'next/link';
 
 const TOOLS = [
     {
+        title: 'Global Live Command Map',
+        description: 'Visualize operator density across all 120 countries in real-time. Built with open-source topography and live presence engines.',
+        href: '/tools/global-command-map',
+        icon: '🗺️', badges: ['New', '120 Countries', 'Real-Time'],
+        color: '#fcd34d',
+        featured: true,
+    },
+    {
         title: 'Compliance Copilot',
         description: 'Ask any question about oversize load regulations — escort requirements, height poles, night travel bans, permits — for any state. Powered by Claude AI with real regulation data.',
         href: '/tools/compliance-copilot',
         icon: '⚖️', badges: ['Free', 'AI-Powered', 'All 50 States'],
         color: '#f5b942',
-        featured: true,
+        featured: false,
     },
     {
         title: 'Permit Complexity Checker',

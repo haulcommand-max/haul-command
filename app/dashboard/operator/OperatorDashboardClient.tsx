@@ -107,7 +107,7 @@ export function OperatorDashboardClient({ operatorId, availableLoads }: { operat
                         >
                            Submit
                         </Button>
-                        <Button aria-label="Interactive Button" className="text-slate-500 text-sm hover:text-white transition" onClick={() => setBiddingOn(null)}>Cancel</button>
+                        <Button aria-label="Interactive Button" className="text-slate-500 text-sm hover:text-white transition" onClick={() => setBiddingOn(null)}>Cancel</Button>
                      </div>
                   ) : (
                      <Button aria-label="Interactive Button" 

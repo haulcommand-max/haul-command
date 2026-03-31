@@ -118,7 +118,7 @@ function EscrowPaymentForm({
           className="px-3 py-1.5 text-slate-500 text-sm hover:text-white transition"
         >
           Cancel
-        </button>
+        </Button>
       </div>
 
       <p className="text-slate-600 text-[10px] leading-relaxed">
@@ -216,7 +216,7 @@ function CryptoEscrowForm({
             >
               <span className="font-bold text-blue-400">{c.icon}</span>
               {c.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -254,7 +254,7 @@ function CryptoEscrowForm({
           className="px-3 py-1.5 text-slate-500 text-sm hover:text-white transition"
         >
           Cancel
-        </button>
+        </Button>
       </div>
 
       <p className="text-slate-600 text-[10px] leading-relaxed">
