@@ -10,18 +10,38 @@ interface Props {
 }
 
 const COUNTRY_NAMES: Record<string, string> = {
+  // Tier A — Gold (10)
   us: 'United States', ca: 'Canada', au: 'Australia', gb: 'United Kingdom',
   nz: 'New Zealand', za: 'South Africa', de: 'Germany', nl: 'Netherlands',
-  ae: 'UAE', br: 'Brazil', ie: 'Ireland', se: 'Sweden', no: 'Norway',
-  dk: 'Denmark', fi: 'Finland', be: 'Belgium', at: 'Austria', ch: 'Switzerland',
-  es: 'Spain', fr: 'France', it: 'Italy', pt: 'Portugal', sa: 'Saudi Arabia',
-  qa: 'Qatar', mx: 'Mexico', 'in': 'India', id: 'Indonesia', th: 'Thailand',
+  ae: 'UAE', br: 'Brazil',
+  // Tier B — Blue (18)
+  ie: 'Ireland', se: 'Sweden', no: 'Norway', dk: 'Denmark', fi: 'Finland',
+  be: 'Belgium', at: 'Austria', ch: 'Switzerland', es: 'Spain', fr: 'France',
+  it: 'Italy', pt: 'Portugal', sa: 'Saudi Arabia', qa: 'Qatar', mx: 'Mexico',
+  'in': 'India', id: 'Indonesia', th: 'Thailand',
+  // Tier C — Silver (26)
   pl: 'Poland', cz: 'Czech Republic', sk: 'Slovakia', hu: 'Hungary', si: 'Slovenia',
   ee: 'Estonia', lv: 'Latvia', lt: 'Lithuania', hr: 'Croatia', ro: 'Romania',
   bg: 'Bulgaria', gr: 'Greece', tr: 'Turkey', kw: 'Kuwait', om: 'Oman',
   bh: 'Bahrain', sg: 'Singapore', my: 'Malaysia', jp: 'Japan', kr: 'South Korea',
-  cl: 'Chile', ar: 'Argentina', co: 'Colombia', pe: 'Peru', vn: 'Vietnam',
-  ph: 'Philippines', uy: 'Uruguay', pa: 'Panama', cr: 'Costa Rica',
+  cl: 'Chile', ar: 'Argentina', co: 'Colombia', pe: 'Peru', vn: 'Vietnam', ph: 'Philippines',
+  // Tier D — Slate (25)
+  uy: 'Uruguay', pa: 'Panama', cr: 'Costa Rica', il: 'Israel', ng: 'Nigeria',
+  eg: 'Egypt', ke: 'Kenya', ma: 'Morocco', rs: 'Serbia', ua: 'Ukraine',
+  kz: 'Kazakhstan', tw: 'Taiwan', pk: 'Pakistan', bd: 'Bangladesh', mn: 'Mongolia',
+  tt: 'Trinidad and Tobago', jo: 'Jordan', gh: 'Ghana', tz: 'Tanzania', ge: 'Georgia',
+  az: 'Azerbaijan', cy: 'Cyprus', is: 'Iceland', lu: 'Luxembourg', ec: 'Ecuador',
+  // Tier E — Copper (41)
+  bo: 'Bolivia', py: 'Paraguay', gt: 'Guatemala', do: 'Dominican Republic',
+  hn: 'Honduras', sv: 'El Salvador', ni: 'Nicaragua', jm: 'Jamaica',
+  gy: 'Guyana', sr: 'Suriname', ba: 'Bosnia and Herzegovina', me: 'Montenegro',
+  mk: 'North Macedonia', al: 'Albania', md: 'Moldova', iq: 'Iraq',
+  na: 'Namibia', ao: 'Angola', mz: 'Mozambique', et: 'Ethiopia',
+  ci: "Côte d'Ivoire", sn: 'Senegal', bw: 'Botswana', zm: 'Zambia', ug: 'Uganda',
+  cm: 'Cameroon', kh: 'Cambodia', lk: 'Sri Lanka', uz: 'Uzbekistan', la: 'Laos',
+  np: 'Nepal', dz: 'Algeria', tn: 'Tunisia', mt: 'Malta', bn: 'Brunei',
+  rw: 'Rwanda', mg: 'Madagascar', pg: 'Papua New Guinea', tm: 'Turkmenistan',
+  kg: 'Kyrgyzstan', mw: 'Malawi',
 };
 
 const US_STATES = [
@@ -260,14 +280,48 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500">
-                  {q ? `No operators found for "${q}"` : `No operators found${stateFilter ? ` in ${stateFilter}` : ''}.`}
-                </p>
-                {q && (
-                  <Link aria-label="Navigation Link" href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
-                    Clear search
-                  </Link>
+              <div className="text-center py-16">
+                {q ? (
+                  <>
+                    <p className="text-gray-500">
+                      No operators found for &quot;{q}&quot;
+                    </p>
+                    <Link aria-label="Navigation Link" href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
+                      Clear search
+                    </Link>
+                  </>
+                ) : (
+                  <div className="max-w-lg mx-auto">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-xl">
+                      🌍
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      {countryName} — Part of Our 120-Country Network
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+                      Haul Command is actively onboarding escort and pilot car operators in {countryName}.
+                      {' '}Be the first to claim your profile and get listed for free.
+                    </p>
+                    <div className="flex justify-center gap-3">
+                      <Link
+                        href="/claim"
+                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm transition-colors"
+                      >
+                        Claim Your Profile
+                      </Link>
+                      <Link
+                        href="/auth/register"
+                        className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-lg text-sm transition-colors"
+                      >
+                        Sign Up Free
+                      </Link>
+                    </div>
+                    <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
+                      <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
+                      <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>
+                      <Link href="/regulations" className="hover:text-amber-400 transition-colors">📋 Regulations</Link>
+                    </div>
+                  </div>
                 )}
               </div>
             )}

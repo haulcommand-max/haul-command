@@ -19,7 +19,7 @@ export default function AboutPage() {
           <p>As autonomous trucking becomes reality, escort requirements are increasing — not decreasing. Haul Command is positioned as the essential dispatch layer between autonomous fleet operators and the certified escort vehicles required by law.</p>
           <h2 style={{ fontSize: 24, fontWeight: 700, color: '#fff', margin: '40px 0 16px' }}>By the Numbers</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, margin: '24px 0' }}>
-            {[{ num: '57', label: 'Countries' }, { num: '50', label: 'US States' }, { num: '24/7', label: 'Dispatch' }].map((s, i) => (
+            {[{ num: '120', label: 'Countries' }, { num: '50', label: 'US States' }, { num: '24/7', label: 'Dispatch' }].map((s, i) => (
               <div key={i} style={{ textAlign: 'center', padding: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
                 <div style={{ fontSize: 36, fontWeight: 800, background: 'linear-gradient(90deg, #00ff88, #00d4ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.num}</div>
                 <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 4 }}>{s.label}</div>

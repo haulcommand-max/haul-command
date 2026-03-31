@@ -178,7 +178,7 @@ export default function AVCertificationPage() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 40 }}>
             {[
               { val: '10', label: 'AV Companies Active' },
-              { val: '57', label: 'Countries Covered' },
+              { val: '120', label: 'Countries Covered' },
               { val: '7', label: 'Training Modules' },
               { val: '3', label: 'Certification Tiers' },
             ].map(s => (

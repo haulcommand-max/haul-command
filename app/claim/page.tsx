@@ -51,7 +51,7 @@ const BENEFITS = [
   { title: 'Escrow Protection', desc: 'Every payment goes through escrow. Get paid when the job is done, guaranteed.', icon: '\ud83d\udd12' },
   { title: 'Real-Time Alerts', desc: 'Get instant notifications when new loads are posted on your corridors.', icon: '\ud83d\udd14' },
   { title: 'Analytics Dashboard', desc: 'Track your response time, acceptance rate, and earnings over time.', icon: '\ud83d\udcca' },
-  { title: '57 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
+  { title: '120 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
 ];
 
 export default function ClaimPage() {
@@ -114,7 +114,7 @@ export default function ClaimPage() {
             <p className="text-sm text-gray-500">Listings to claim</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-amber-400">57</p>
+            <p className="text-3xl font-bold text-amber-400">120</p>
             <p className="text-sm text-gray-500">Countries</p>
           </div>
           <div>
