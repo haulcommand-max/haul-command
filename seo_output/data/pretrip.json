@@ -1,0 +1,10 @@
+{
+  "US_Superload": [
+    "Verify Route Survey matches exact permit logic",
+    "Test High-Pole strike audio"
+  ],
+  "FR_Cat3": [
+    "Verify Gendarmerie moto escort is present",
+    "Configure 'Convoi Exceptionnel' VMS board"
+  ]
+}
