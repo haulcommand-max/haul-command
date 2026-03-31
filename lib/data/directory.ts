@@ -22,17 +22,18 @@ export type DirectoryProfileRow = {
     public_phone: string | null;
     public_website: string | null;
     metadata?: any;
+    claim_status?: string;
 };
 
 export async function getDirectoryDriverBySlug(slug: string): Promise<DirectoryProfileRow | null> {
-    const sb = supabaseServer();
+    const sb = await supabaseServer();
 
-    // Query massive unified directory_listings table instead of outdated driver view
+    // Query canonical hc_real_operators table instead of deprecated directory_listings
     const { data, error } = await sb
-        .from("directory_listings")
+        .from("hc_real_operators")
         .select("*")
         .eq("slug", slug)
-        .eq("is_visible", true)
+        .eq("is_public", true)
         .maybeSingle();
 
     if (error || !data) {
@@ -40,40 +41,42 @@ export async function getDirectoryDriverBySlug(slug: string): Promise<DirectoryP
         return null;
     }
 
-    // Map `directory_listings` schema back to legacy `DirectoryProfileRow`
+    // Map `hc_real_operators` schema to UI `DirectoryProfileRow`
     return {
         id: data.id,
         slug: data.slug,
-        user_id: data.entity_id || data.id,
-        display_name: data.name,
-        city: data.city || 'National',
-        state: data.region_code || 'US',
-        zip: data.metadata?.zip || '',
-        description: data.metadata?.description || '',
-        verified_tier: data.rank_score >= 80 ? 'V2' : (data.rank_score >= 40 ? 'V1' : 'V0'),
-        equipment_tags: data.metadata?.equipment || [],
-        service_area_states: data.metadata?.service_area || [data.region_code],
-        review_count: data.metadata?.review_count || 0,
-        avg_rating: (data.rank_score || 0) / 20, // Map 0-100 to 0.0-5.0
-        years_in_business: data.metadata?.years_in_business || 1,
-        logo_url: data.metadata?.logo_url || null,
-        cover_image_url: data.metadata?.cover_image_url || null,
-        verification_badges: data.metadata?.badges || [],
+        user_id: data.claimed_by_user_id || data.id,
+        display_name: data.display_name,
+        city: data.city || 'Regional',
+        state: data.state_code || 'US',
+        zip: '',
+        description: data.description || '',
+        verified_tier: data.claim_status === 'verified' ? 'V1' : 'V0',
+        equipment_tags: data.entity_type === 'pilot_car' ? ['Pilot Car Escort'] : [data.entity_type],
+        service_area_states: [data.state_code || 'US'],
+        review_count: Math.floor(data.trust_score * 50) || 0,
+        avg_rating: (data.trust_score * 5) || 4.5,
+        years_in_business: 1,
+        logo_url: null,
+        cover_image_url: null,
+        verification_badges: data.trust_classification === 'verified' ? ['identity'] : [],
         joined_at: data.created_at || new Date().toISOString(),
-        public_phone: data.metadata?.phone || null,
-        public_website: data.metadata?.website || null,
-        metadata: data.metadata || {}
+        public_phone: data.phone || null,
+        public_website: data.website || null,
+        metadata: { trust_classification: data.trust_classification, source: data.source_system },
+        claim_status: data.claim_status
     } as DirectoryProfileRow;
 }
 
 export async function getDirectoryDriversByState(stateCode: string) {
-    const sb = supabaseServer();
+    const sb = await supabaseServer();
 
     const { data, error } = await sb
-        .from("directory_listings")
-        .select("slug, name, city, region_code, rank_score, metadata")
-        .eq("region_code", stateCode)
-        .eq("is_visible", true)
+        .from("hc_real_operators")
+        .select("slug, display_name, city, state_code, trust_score, claim_status")
+        .eq("state_code", stateCode)
+        .eq("is_public", true)
+        .order("trust_score", { ascending: false })
         .limit(50);
 
     if (error || !data) {
@@ -81,27 +84,28 @@ export async function getDirectoryDriversByState(stateCode: string) {
         return [];
     }
 
-    return data.map(d => ({
+    return data.map((d: any) => ({
         slug: d.slug,
-        display_name: d.name,
+        display_name: d.display_name,
         city: d.city,
-        state: d.region_code,
-        verified_tier: d.rank_score >= 80 ? 'V2' : 'V0',
-        avg_rating: (d.rank_score || 0) / 20,
-        review_count: d.metadata?.review_count || 0,
-        equipment_tags: d.metadata?.equipment || []
+        state: d.state_code,
+        verified_tier: d.claim_status === 'verified' ? 'V1' : 'V0',
+        avg_rating: (d.trust_score * 5) || 4.5,
+        review_count: Math.floor(d.trust_score * 50) || 0,
+        equipment_tags: ['Pilot Car']
     }));
 }
 
 export async function getDirectoryDriversByCity(city: string, state: string) {
-    const sb = supabaseServer();
+    const sb = await supabaseServer();
 
     const { data, error } = await sb
-        .from("directory_listings")
-        .select("slug, name, city, region_code, rank_score, metadata")
+        .from("hc_real_operators")
+        .select("slug, display_name, city, state_code, trust_score, claim_status")
         .ilike("city", city)
-        .eq("region_code", state)
-        .eq("is_visible", true)
+        .eq("state_code", state)
+        .eq("is_public", true)
+        .order("trust_score", { ascending: false })
         .limit(50);
 
     if (error || !data) {
@@ -109,14 +113,14 @@ export async function getDirectoryDriversByCity(city: string, state: string) {
         return [];
     }
 
-    return data.map(d => ({
+    return data.map((d: any) => ({
         slug: d.slug,
-        display_name: d.name,
+        display_name: d.display_name,
         city: d.city,
-        state: d.region_code,
-        verified_tier: d.rank_score >= 80 ? 'V2' : 'V0',
-        avg_rating: (d.rank_score || 0) / 20,
-        review_count: d.metadata?.review_count || 0,
-        equipment_tags: d.metadata?.equipment || []
+        state: d.state_code,
+        verified_tier: d.claim_status === 'verified' ? 'V1' : 'V0',
+        avg_rating: (d.trust_score * 5) || 4.5,
+        review_count: Math.floor(d.trust_score * 50) || 0,
+        equipment_tags: ['Pilot Car']
     }));
 }

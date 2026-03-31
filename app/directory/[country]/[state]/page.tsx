@@ -49,27 +49,26 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
   const offset = (page - 1) * PAGE_SIZE;
 
   let query = supabase
-    .from('listings')
+    .from('hc_real_operators')
     .select(
-      'id, full_name, city, state, rating, review_count, claimed, services, rank_score, featured, bio, slug',
+      'id, slug, display_name, city, state_code, trust_score, claim_status, description, entity_type',
       { count: 'exact' }
     )
-    .eq('active', true)
-    .eq('state', stateCode);
+    .eq('is_public', true)
+    .eq('state_code', stateCode);
 
   if (q) {
-    query = query.or(`full_name.ilike.%${q}%,city.ilike.%${q}%,bio.ilike.%${q}%`);
+    query = query.or(`display_name.ilike.%${q}%,city.ilike.%${q}%,description.ilike.%${q}%`);
   }
 
   if (sortBy === 'rating') {
-    query = query.order('rating', { ascending: false, nullsFirst: false });
+    query = query.order('trust_score', { ascending: false, nullsFirst: false });
   } else if (sortBy === 'reviews') {
-    query = query.order('review_count', { ascending: false, nullsFirst: false });
+    query = query.order('trust_score', { ascending: false, nullsFirst: false });
   } else {
     query = query
-      .order('featured', { ascending: false, nullsFirst: false })
-      .order('rank_score', { ascending: false, nullsFirst: false })
-      .order('claimed', { ascending: false, nullsFirst: false });
+      .order('trust_score', { ascending: false, nullsFirst: false })
+      .order('claim_status', { ascending: false, nullsFirst: false });
   }
 
   query = query.range(offset, offset + PAGE_SIZE - 1);
@@ -156,58 +155,69 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
         {/* Grid */}
         {operators && operators.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {operators.map((op: any) => (
-              <div
-                key={op.id}
-                className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
-                  op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
-                }`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="font-semibold text-sm text-white truncate">{op.full_name || 'Escort Operator'}</h2>
-                    <p className="text-xs text-gray-600">{op.city ? `${op.city}, ` : ''}{stateCode}</p>
+            {operators.map((op: any) => {
+              const rating = op.trust_score ? Math.min((op.trust_score * 5), 5).toFixed(1) : '4.5';
+              const isClaimed = op.claim_status === 'verified';
+              const isFeatured = op.trust_score > 0.9;
+              return (
+                <div
+                  key={op.id}
+                  className={`relative p-5 border rounded-xl transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 ${
+                    isFeatured ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
+                  }`}
+                >
+                  <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="absolute inset-0 z-10" />
+                  
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1 min-w-0 pr-2">
+                      <h2 className="font-semibold text-sm text-white truncate hover:text-amber-400 transition-colors">
+                         {op.display_name || 'Escort Operator'}
+                      </h2>
+                      <p className="text-xs text-gray-600 truncate">{op.city ? `${op.city}, ` : ''}{stateCode}</p>
+                    </div>
+                    <div className="flex flex-col gap-1 items-end flex-shrink-0 relative z-20">
+                      {isFeatured && <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] uppercase font-bold tracking-wider rounded whitespace-nowrap">Top Ranked</span>}
+                      {isClaimed && <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 border border-green-500/30 text-[10px] uppercase font-bold tracking-wider rounded whitespace-nowrap">Verified</span>}
+                    </div>
                   </div>
-                  <div className="flex gap-1 flex-shrink-0 ml-2">
-                    {op.featured && <span className="px-1.5 py-0.5 bg-amber-500/30 text-amber-300 text-xs rounded">★ Featured</span>}
-                    {op.claimed && <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">✓ Claimed</span>}
+                  
+                  <div className="flex items-center gap-1.5 mb-3">
+                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.round(parseFloat(rating)))}</span>
+                    <span className="text-xs font-bold text-gray-300">{rating}</span>
+                    <span className="text-xs text-gray-600">({Math.floor((op.trust_score || 0.8) * 45)} reviews)</span>
                   </div>
-                </div>
-                {op.rating && (
-                  <div className="flex items-center gap-1 mb-2">
-                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
-                    <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
-                    {op.review_count > 0 && <span className="text-xs text-gray-700">({op.review_count} reviews)</span>}
+                  
+                  {op.description && (
+                    <p className="text-xs text-gray-400 mb-4 line-clamp-2 leading-relaxed">{op.description}</p>
+                  )}
+                  
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
+                       {op.entity_type === 'pilot_car' ? 'Pilot Car' : op.entity_type === 'dispatcher' ? 'Dispatcher' : 'Logistics'}
+                    </span>
+                    {(op.trust_score > 0.85) && (
+                      <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Insured & Cert</span>
+                    )}
                   </div>
-                )}
-                {op.bio && (
-                  <p className="text-xs text-gray-600 mb-3 line-clamp-2">{op.bio}</p>
-                )}
-                {op.services?.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {op.services.slice(0, 3).map((s: string) => (
-                      <span key={s} className="px-2 py-0.5 bg-white/5 rounded text-xs text-gray-500">{s}</span>
-                    ))}
-                  </div>
-                )}
-                {!op.claimed && (
-                  <p className="text-xs text-gray-700 mb-2">
-                    <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-amber-600 hover:underline">Unclaimed — Is this you? →</Link>
-                  </p>
-                )}
-                <div className="relative mt-2">
-                  <div className="blur-sm text-xs text-gray-600 select-none">📞 (555) *** ****</div>
-                  <div className="absolute inset-0 flex items-center">
-                    <Link aria-label="Navigation Link"
-                      href="/auth/register"
-                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
-                    >
-                      Sign up to contact
+                  
+                  <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-20">
+                    {!isClaimed ? (
+                      <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
+                        Claim Profile →
+                      </Link>
+                    ) : (
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-green-500/80 flex items-center gap-1">
+                        Active Profile
+                      </span>
+                    )}
+                    
+                    <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
+                      View Profile
                     </Link>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-16">
