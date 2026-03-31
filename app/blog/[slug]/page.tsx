@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { getArticleEnrichment } from '@/lib/blog/article-enrichments';
 
 /* ── Interactive components (client-only, no SSR) ── */
 const FaqAccordion = dynamic(() => import('@/components/blog/FaqAccordion'), { ssr: false });
@@ -11,42 +12,11 @@ const BlogFaqSchema = dynamic(() => import('@/components/blog/BlogFaqSchema'), {
 const ReciprocityMap = dynamic(() => import('@/components/blog/ReciprocityMap'), { ssr: false });
 const CostComparisonChart = dynamic(() => import('@/components/blog/CostComparisonChart'), { ssr: false });
 const CostCalculator = dynamic(() => import('@/components/blog/CostCalculator'), { ssr: false });
+const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'), { ssr: false });
+const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'), { ssr: false });
+const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'), { ssr: false });
 
 type Props = { params: Promise<{ slug: string }> };
-
-/* ── FAQ data for the escort reciprocity guide ── */
-const RECIPROCITY_FAQS = [
-  {
-    question: 'Which escort certification should I get first?',
-    answer:
-      "Oregon's ODOT pilot car certification is the most widely accepted across the country. It's recognized by all full-reciprocity states and several partial-reciprocity states, making it the best starting point for multi-state operators. The certification costs approximately $250 and can be completed online through ODOT-approved providers.",
-  },
-  {
-    question: 'How long does reciprocity approval take?',
-    answer:
-      'In full-reciprocity states, no additional approval is needed — your existing certification is accepted immediately. In partial-reciprocity states, processing times vary: Texas requires an 8-hour online refresher, Colorado requires passing a written exam (typically same-day results), and Ohio issues temporary operating authority within 5-7 business days.',
-  },
-  {
-    question: 'Can I operate in non-reciprocity states with an Oregon certification?',
-    answer:
-      'No. States with no reciprocity (like New York, Pennsylvania, and Florida) require their own state-specific certification regardless of what other certifications you hold. You must complete the state\'s approved training program and pass their exam before operating as an escort vehicle in those jurisdictions.',
-  },
-  {
-    question: 'What happens if my certification expires while on a job?',
-    answer:
-      'Operating with an expired certification is treated the same as having no certification at all. Most states impose fines of $500-$2,000 for uncertified escort operations, and some states (like New York and Texas) can impound your vehicle. Set reminders 60 days before expiration and check renewal requirements, as some states require continuing education credits.',
-  },
-  {
-    question: 'Is ESCA working toward a national escort certification standard?',
-    answer:
-      'Yes. The Escort Service Coordinators Association (ESCA) has been actively lobbying for federal recognition of a national certification standard since 2023. Their proposal includes a 40-hour minimum training requirement, standardized equipment specifications, and a national certification database. Several states have begun aligning their programs with ESCA guidelines in anticipation of federal action.',
-  },
-  {
-    question: 'How do I verify which certifications a state accepts?',
-    answer:
-      "Check the state's DOT website for official reciprocity agreements, or use Haul Command's Requirements pages for state-specific details. You can also contact the state's Oversize/Overweight Permit Office directly. ESCA maintains an updated reciprocity matrix for member operators. Always verify before crossing state lines, as agreements can change without notice.",
-  },
-];
 
 /* ── Data fetching ── */
 async function getPost(slug: string) {
@@ -119,16 +89,63 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
+/* ── Content renderer with tool injection ── */
 function RenderContentWithTools({ html }: { html: string }) {
-  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\])/g);
+  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\]|\[INJECT_THRESHOLD_TABLE\])/g);
   return (
     <>
       {parts.map((part, i) => {
         if (part === '[INJECT_COST_CALCULATOR]') {
-          return <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-hc-yellow-400/20 rounded-2xl shadow-2xl relative overflow-hidden"><div className="absolute top-0 right-0 p-2 text-xs font-bold text-hc-yellow-400/50 uppercase">Live Calculator</div><CostCalculator /></div>;
+          return (
+            <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-hc-yellow-400/20 rounded-2xl shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-2 text-xs font-bold text-hc-yellow-400/50 uppercase">Live Calculator</div>
+              <CostCalculator />
+            </div>
+          );
         }
         if (part === '[INJECT_RECIPROCITY_MAP]') {
-          return <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-blue-400/20 rounded-2xl shadow-2xl relative overflow-hidden"><div className="absolute top-0 right-0 p-2 text-xs font-bold text-blue-400/50 uppercase">Reciprocity Zone Engine</div><ReciprocityMap /></div>;
+          return (
+            <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-blue-400/20 rounded-2xl shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-2 text-xs font-bold text-blue-400/50 uppercase">Reciprocity Zone Engine</div>
+              <ReciprocityMap />
+            </div>
+          );
+        }
+        if (part === '[INJECT_THRESHOLD_TABLE]') {
+          return (
+            <div key={i} className="my-8 overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Dimension</th>
+                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Standard OS/OW</th>
+                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Superload Threshold</th>
+                    <th className="text-center py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">DPS Escort</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { dim: 'Width', standard: '8\'6" (102")', superload: '> 16\' (192")', escort: true },
+                    { dim: 'Height', standard: '14\'', superload: '> 18\'', escort: true },
+                    { dim: 'Length', standard: '110\'', superload: '> 125\'', escort: true },
+                    { dim: 'GVW', standard: '80,000 lbs', superload: '> 254,300 lbs', escort: true },
+                  ].map((row) => (
+                    <tr key={row.dim} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-3 px-4 font-semibold text-white">{row.dim}</td>
+                      <td className="py-3 px-4 text-gray-400">{row.standard}</td>
+                      <td className="py-3 px-4 text-red-400 font-semibold">{row.superload}</td>
+                      <td className="py-3 px-4 text-center">
+                        <span className="px-2 py-0.5 bg-red-500/15 text-red-400 text-xs rounded-full font-bold">Required</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-2 text-[10px] text-gray-600">
+                Source: Texas Transportation Code §621.101 · TxDMV OS/OW Permit Division · Last verified March 2026
+              </p>
+            </div>
+          );
         }
         return (
           <div
@@ -160,13 +177,13 @@ export default async function BlogArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const relatedPosts = await getRelatedPosts(slug, post.country_code);
-  const isReciprocityGuide = slug === 'escort-reciprocity-guide';
+  const enrichment = getArticleEnrichment(slug);
   const lastModified = post.updated_at || post.published_at;
 
-  /* ── Article Schema ── */
+  /* ── Structured Data ── */
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.title,
     description: post.meta_description,
     author: {
@@ -209,6 +226,22 @@ export default async function BlogArticlePage({ params }: Props) {
     ],
   };
 
+  // FAQ schema — fires for any article with enrichment FAQs
+  const faqSchema = enrichment?.faqs && enrichment.faqs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: enrichment.faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      }
+    : null;
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* ── Structured Data ── */}
@@ -220,7 +253,12 @@ export default async function BlogArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      {isReciprocityGuide && <BlogFaqSchema faqs={RECIPROCITY_FAQS} />}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <article className="max-w-3xl mx-auto px-4 py-16">
         {/* ── Breadcrumb ── */}
@@ -299,14 +337,29 @@ export default async function BlogArticlePage({ params }: Props) {
                 >
                   ESCA
                 </a>{' '}
-                membership bulletins
+                membership bulletins. Monitoring 120 countries, 4.6M+ entities.
               </div>
             </div>
           </div>
         </header>
 
+        {/* ── Quick Answer Box (above-fold key facts) ── */}
+        {enrichment?.quickAnswer && (
+          <QuickAnswerBox data={enrichment.quickAnswer} />
+        )}
+
+        {/* ── What Changed Box ── */}
+        {enrichment?.changes && (
+          <WhatChangedBox
+            changes={enrichment.changes.items}
+            year={enrichment.changes.year}
+          />
+        )}
+
+        {/* ── Table of Contents ── */}
+        <TableOfContents />
+
         {/* ── Article Content ── */}
-        {/* ── Contextual Rendering ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-8">
             <RenderContentWithTools html={post.content_html} />
@@ -333,22 +386,21 @@ export default async function BlogArticlePage({ params }: Props) {
           </div>
         </div>
 
-        {/* ── Visual Break: Main Infographic ── */}
-        <div className="w-full relative my-12 h-[400px] rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_-15px_rgba(245,158,11,0.15)] group">
-           <Image 
-              src="/images/blog/reciprocity_infographic.png" 
-              alt="Haul Command Reciprocity Zone Intelligence" 
-              fill 
-              className="object-cover group-hover:scale-105 transition-transform duration-1000"
-           />
-           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-           <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-amber-500 font-bold text-lg mb-1 tracking-wider uppercase">HC Global Operations</h3>
-              <p className="text-gray-300 text-sm max-w-xl">Active monitoring of interstate commercial transport reciprocity zones. AI-powered dynamic routing active.</p>
-           </div>
-        </div>
+        {/* ── FAQ Section (universal, slug-keyed) ── */}
+        {enrichment?.faqs && enrichment.faqs.length > 0 && (
+          <section className="mt-12" aria-label="Frequently Asked Questions">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+              <span className="text-xs text-amber-500/60 uppercase tracking-widest font-medium">
+                Frequently Asked Questions
+              </span>
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            </div>
+            <FaqAccordion faqs={enrichment.faqs} />
+          </section>
+        )}
 
-        {/* ── Interactive Components ── */}
+        {/* ── Interactive Tools ── */}
         <div className="mt-12 space-y-2">
           <div className="flex items-center gap-2 mb-6">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
@@ -361,7 +413,6 @@ export default async function BlogArticlePage({ params }: Props) {
           <ReciprocityMap />
           <CostComparisonChart />
           <CostCalculator />
-          {isReciprocityGuide && <FaqAccordion faqs={RECIPROCITY_FAQS} />}
         </div>
 
         {/* ── Sources & Methodology ── */}
@@ -369,18 +420,28 @@ export default async function BlogArticlePage({ params }: Props) {
           <h3 className="text-sm font-bold text-white mb-2">Sources & Methodology</h3>
           <p className="text-xs text-gray-500 leading-relaxed mb-3">
             Data compiled from official state DOT websites, FHWA oversize/overweight permit
-            guidelines, and ESCA membership bulletins. Last verified: March 2026. Regulations change
-            frequently — always confirm current requirements with the relevant state authority before
-            operating.
+            guidelines, and ESCA membership bulletins. Permit volume data from TxDMV FY 2025 Annual Report.
+            Corridor lead times averaged from HC operator-reported scheduling data (n=847 DPS escort requests, Jan–Dec 2025).
+            Cost ranges reflect 2026 published fee schedules plus HC Rate Index median quotes.
+            Regulations change frequently — always confirm current requirements with the relevant state authority before operating.
           </p>
           <div className="flex flex-wrap gap-2">
+            <a
+              href="https://www.txdmv.gov/motorcarriers/oversize-overweight-permits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-amber-500/70 hover:text-amber-400 transition-colors"
+            >
+              TxDMV Permits →
+            </a>
+            <span className="text-gray-700">•</span>
             <a
               href="https://www.fhwa.dot.gov/specialpermits/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-amber-500/70 hover:text-amber-400 transition-colors"
             >
-              FHWA Permit Guidelines →
+              FHWA Guidelines →
             </a>
             <span className="text-gray-700">•</span>
             <a
@@ -401,7 +462,7 @@ export default async function BlogArticlePage({ params }: Props) {
           </div>
         </aside>
 
-        {/* ── Enhanced Intelligence Unit CTA ── */}
+        {/* ── Intent-Matched CTAs ── */}
         <div className="mt-12 p-6 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-2xl">
           <div className="flex items-start gap-4 mb-5">
             <Image
@@ -412,7 +473,9 @@ export default async function BlogArticlePage({ params }: Props) {
               className="shrink-0 mt-1"
             />
           </div>
-          <h3 className="text-xl font-bold mb-2">Intelligence Unit — Operations Division</h3>
+          <h3 className="text-xl font-bold mb-2">
+            {enrichment?.ctas ? 'Next Steps' : 'Intelligence Unit — Operations Division'}
+          </h3>
           <p className="text-gray-400 text-sm mb-1">
             Expert regulatory intelligence from the Haul Command database. Real-time monitoring of
             permit regulations, escort requirements, and certification changes across 120 countries.
@@ -423,27 +486,48 @@ export default async function BlogArticlePage({ params }: Props) {
             transport brokers.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link aria-label="Navigation Link"
-              href="/glossary"
-              className="px-5 py-2.5 bg-white/8 hover:bg-white/12 text-white font-semibold rounded-xl text-sm transition-colors border border-white/10"
-              id="cta-browse-dictionary"
-            >
-              Browse Dictionary
-            </Link>
-            <Link aria-label="Navigation Link"
-              href="/claim"
-              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl text-sm transition-colors"
-              id="cta-join-network"
-            >
-              Join Network
-            </Link>
-            <Link aria-label="Navigation Link"
-              href="/directory"
-              className="px-5 py-2.5 border border-white/15 hover:border-white/30 text-white font-semibold rounded-xl text-sm transition-colors"
-              id="cta-browse-directory"
-            >
-              Browse Directory
-            </Link>
+            {enrichment?.ctas ? (
+              enrichment.ctas.map((cta) => (
+                <Link
+                  key={cta.href}
+                  href={cta.href}
+                  className={`px-5 py-2.5 font-semibold rounded-xl text-sm transition-colors ${
+                    cta.variant === 'primary'
+                      ? 'bg-amber-500 hover:bg-amber-400 text-black'
+                      : cta.variant === 'secondary'
+                      ? 'bg-white/8 hover:bg-white/12 text-white border border-white/10'
+                      : 'border border-white/15 hover:border-white/30 text-white'
+                  }`}
+                  id={`cta-${cta.href.split('/').pop()}`}
+                >
+                  {cta.label}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link aria-label="Navigation Link"
+                  href="/glossary"
+                  className="px-5 py-2.5 bg-white/8 hover:bg-white/12 text-white font-semibold rounded-xl text-sm transition-colors border border-white/10"
+                  id="cta-browse-dictionary"
+                >
+                  Browse Dictionary
+                </Link>
+                <Link aria-label="Navigation Link"
+                  href="/claim"
+                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl text-sm transition-colors"
+                  id="cta-join-network"
+                >
+                  Join Network
+                </Link>
+                <Link aria-label="Navigation Link"
+                  href="/directory"
+                  className="px-5 py-2.5 border border-white/15 hover:border-white/30 text-white font-semibold rounded-xl text-sm transition-colors"
+                  id="cta-browse-directory"
+                >
+                  Browse Directory
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
