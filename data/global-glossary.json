@@ -1,0 +1,174 @@
+{
+  "haul_command_global_dictionary": {
+    "version": "2.0",
+    "updated_at": "2026-03-31T00:00:00Z",
+    "metadata": {
+      "total_terms_projected": 3000,
+      "tier_coverage": ["A", "B", "C"]
+    },
+    "terms": [
+      {
+        "universal_id": "front_escort",
+        "universal_en": "Front Escort Vehicle",
+        "description": "A safety vehicle positioned ahead of an oversize load to warn traffic, check clearances, and manage intersections. Mandatory across 120 countries at varying dimension thresholds.",
+        "regional_translations": {
+          "US": "Lead Pilot Car",
+          "CA": "Lead Pilot Vehicle / Véhicule d'Escorte",
+          "AU": "Level 1/2 Pilot Vehicle",
+          "GB": "Abnormal Load Escort",
+          "DE": "BF3 / BF4 Begleitfahrzeug",
+          "NL": "Begeleidingsvoertuig",
+          "ZA": "Abnormal Load Escort Vehicle",
+          "MX": "Vehículo Piloto Principal",
+          "FR": "Voiture Pilote (Convoi Exceptionnel)",
+          "ES": "Coche Piloto Transportes Especiales",
+          "IT": "Scorta Tecnica"
+        },
+        "regulatory_sensitivity": "HIGH",
+        "seo_slugs": {
+          "US": "lead-pilot-car",
+          "AU": "pilot-vehicle-operator",
+          "DE": "begleitfahrzeug-schwertransport",
+          "FR": "voiture-pilote-convoi",
+          "IT": "scorta-tecnica-eccezionale"
+        }
+      },
+      {
+        "universal_id": "rear_escort",
+        "universal_en": "Rear Escort Vehicle",
+        "description": "A safety vehicle positioned behind an oversize load to warn overtaking traffic and block lanes during maneuvers.",
+        "regional_translations": {
+          "US": "Chase Pilot Car",
+          "CA": "Chase Pilot Vehicle",
+          "AU": "Rear Pilot Vehicle",
+          "GB": "Rear Abnormal Load Escort",
+          "DE": "Nachlaufendes Begleitfahrzeug",
+          "ZA": "Rear Escort",
+          "FR": "Véhicule de Protection Arrière",
+          "ES": "Coche Piloto Trasero"
+        },
+        "regulatory_sensitivity": "MEDIUM",
+        "seo_slugs": {
+          "US": "chase-pilot-car",
+          "AU": "rear-pilot-vehicle",
+          "FR": "vehicule-protection-convoi"
+        }
+      },
+      {
+        "universal_id": "height_pole",
+        "universal_en": "Height Pole Escort",
+        "description": "A specialized front escort equipped with a calibrated retractable fiberglass pole (usually +6 inches over load) to strike and warn of low bridge or wire clearances.",
+        "regional_translations": {
+          "US": "High Pole Route Survey",
+          "CA": "Height Pole Escort",
+          "AU": "Clearance Pilot",
+          "GB": "Route Feasibility Height Escort",
+          "FR": "Repérage d'Itinéraire (Gabarit)"
+        },
+        "regulatory_sensitivity": "HIGH",
+        "seo_slugs": {
+          "US": "high-pole-escort",
+          "GB": "abnormal-load-height-clearance"
+        }
+      },
+      {
+        "universal_id": "port_access",
+        "universal_en": "Port Security Credential",
+        "description": "A government-issued background check and credential allowing an escort operator unescorted access to secured maritime facilities.",
+        "regional_translations": {
+          "US": "TWIC (Transportation Worker Identification Credential)",
+          "AU": "MSIC (Maritime Security Identification Card)",
+          "CA": "MTSC (Marine Transportation Security Clearance)",
+          "GB": "Port Authority Pass",
+          "DE": "Hafenausweis",
+          "FR": "Titre d'Accès Portuaire",
+          "NL": "AIVD Havenautorisatie"
+        },
+        "regulatory_sensitivity": "CRITICAL",
+        "seo_slugs": {
+          "US": "twic-pilot-car",
+          "AU": "msic-pilot-vehicle",
+          "NL": "haven-toegang-dieplader"
+        }
+      },
+      {
+        "universal_id": "permit_document",
+        "universal_en": "Oversize/Overweight Permit",
+        "description": "The legal, state-issued document authorizing an abnormal load to travel on a specific route. Escorts must carry or track this digitally.",
+        "regional_translations": {
+          "US": "O/O Permit",
+          "CA": "Oversize Load Permit",
+          "AU": "Access Permit (NHVR)",
+          "GB": "Special Order / VR1",
+          "DE": "Ausnahmegenehmigung (§ 29/46 StVO)",
+          "ZA": "Abnormal Load Exemption Permit",
+          "FR": "Autorisation de Transport Exceptionnel",
+          "IT": "Autorizzazione Trasporto Eccezionale"
+        },
+        "regulatory_sensitivity": "CRITICAL",
+        "seo_slugs": {
+          "US": "oversize-trucking-permit",
+          "DE": "schwertransport-genehmigung",
+          "FR": "autorisation-convoi-exceptionnel"
+        }
+      },
+      {
+        "universal_id": "route_survey",
+        "universal_en": "Feasibility Route Survey",
+        "description": "A pre-trip commercial service physically driving a proposed route to check turning radii, bridge weights, overhead clearances, and construction zones prior to load dispatch.",
+        "regional_translations": {
+          "US": "Route Survey",
+          "CA": "Route Survey",
+          "AU": "Route Assessment",
+          "GB": "Route Feasibility Study",
+          "DE": "Streckenprüfung",
+          "FR": "Étude d'Itinéraire Prévio",
+          "ES": "Estudio de Ruta"
+        },
+        "regulatory_sensitivity": "MEDIUM",
+        "seo_slugs": {
+          "US": "route-survey-pilot-car",
+          "GB": "abnormal-load-route-survey",
+          "FR": "etude-itineraire-convoi"
+        }
+      },
+      {
+        "universal_id": "superload",
+        "universal_en": "Superload Designation",
+        "description": "A regulatory classification describing an oversize load of such extreme size or weight that standard permits do not apply. Structural engineering reviews and specialized bridge jumping teams are necessary.",
+        "regional_translations": {
+          "US": "Superload",
+          "CA": "Superload",
+          "AU": "Super Heavy Vehicle",
+          "GB": "Special Order Category 3",
+          "DE": "Großraum- und Schwertransport (GST)",
+          "FR": "Convoi Exceptionnel 3e Catégorie"
+        },
+        "regulatory_sensitivity": "CRITICAL",
+        "seo_slugs": {
+          "US": "superload-pilot-car",
+          "DE": "schwertransport-gst",
+          "FR": "convoi-3e-categorie"
+        }
+      },
+      {
+        "universal_id": "amber_lighting",
+        "universal_en": "Abnormal Load Warning Lighting",
+        "description": "The specific lighting requirements (luminosity, color, flash pattern) mandated for the escort vehicle and trailing load. Strict regulations change drastically per country.",
+        "regional_translations": {
+          "US": "Amber Warning Lights / Strobes",
+          "CA": "Flashing Amber Lights",
+          "AU": "Warning Beacons",
+          "GB": "Amber Warning Beacons",
+          "DE": "Rundumkennleuchten (Gelbes Blinklicht)",
+          "FR": "Girophares Oranges"
+        },
+        "regulatory_sensitivity": "HIGH",
+        "seo_slugs": {
+          "US": "amber-light-pilot-car-requirements",
+          "DE": "rundumkennleuchten-vorschriften"
+        }
+      }
+    ]
+  }
+}
