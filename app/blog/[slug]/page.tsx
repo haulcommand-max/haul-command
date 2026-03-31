@@ -119,6 +119,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
+function RenderContentWithTools({ html }: { html: string }) {
+  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\])/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part === '[INJECT_COST_CALCULATOR]') {
+          return <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-hc-yellow-400/20 rounded-2xl shadow-2xl relative overflow-hidden"><div className="absolute top-0 right-0 p-2 text-xs font-bold text-hc-yellow-400/50 uppercase">Live Calculator</div><CostCalculator /></div>;
+        }
+        if (part === '[INJECT_RECIPROCITY_MAP]') {
+          return <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-blue-400/20 rounded-2xl shadow-2xl relative overflow-hidden"><div className="absolute top-0 right-0 p-2 text-xs font-bold text-blue-400/50 uppercase">Reciprocity Zone Engine</div><ReciprocityMap /></div>;
+        }
+        return (
+          <div
+            key={i}
+            className="prose prose-invert prose-amber max-w-none
+              prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
+              prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
+              prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
+              prose-p:text-gray-300 prose-p:leading-relaxed
+              prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
+              prose-li:text-gray-300
+              prose-strong:text-white
+              prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
+              prose-table:border-white/10
+              prose-th:text-amber-400 prose-th:font-semibold
+              prose-td:text-gray-300"
+            dangerouslySetInnerHTML={{ __html: part }}
+          />
+        );
+      })}
+    </>
+  );
+}
+
 /* ── Page Component ── */
 export default async function BlogArticlePage({ params }: Props) {
   const { slug } = await params;
@@ -272,22 +306,11 @@ export default async function BlogArticlePage({ params }: Props) {
         </header>
 
         {/* ── Article Content ── */}
+        {/* ── Contextual Rendering ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div
-            className="md:col-span-8 prose prose-invert prose-amber max-w-none
-              prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
-              prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
-              prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
-              prose-p:text-gray-300 prose-p:leading-relaxed
-              prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
-              prose-li:text-gray-300
-              prose-strong:text-white
-              prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
-              prose-table:border-white/10
-              prose-th:text-amber-400 prose-th:font-semibold
-              prose-td:text-gray-300"
-            dangerouslySetInnerHTML={{ __html: post.content_html }}
-          />
+          <div className="md:col-span-8">
+            <RenderContentWithTools html={post.content_html} />
+          </div>
           
           <div className="md:col-span-4 hidden md:block space-y-6 sticky top-10 self-start">
              <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group">
