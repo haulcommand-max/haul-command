@@ -272,39 +272,74 @@ export default async function BlogArticlePage({ params }: Props) {
         </header>
 
         {/* ── Article Content ── */}
-        <div
-          className="prose prose-invert prose-amber max-w-none
-            prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
-            prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
-            prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
-            prose-p:text-gray-300 prose-p:leading-relaxed
-            prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
-            prose-li:text-gray-300
-            prose-strong:text-white
-            prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
-            prose-table:border-white/10
-            prose-th:text-amber-400 prose-th:font-semibold
-            prose-td:text-gray-300"
-          dangerouslySetInnerHTML={{ __html: post.content_html }}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div
+            className="md:col-span-8 prose prose-invert prose-amber max-w-none
+              prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
+              prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
+              prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
+              prose-p:text-gray-300 prose-p:leading-relaxed
+              prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
+              prose-li:text-gray-300
+              prose-strong:text-white
+              prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
+              prose-table:border-white/10
+              prose-th:text-amber-400 prose-th:font-semibold
+              prose-td:text-gray-300"
+            dangerouslySetInnerHTML={{ __html: post.content_html }}
+          />
+          
+          <div className="md:col-span-4 hidden md:block space-y-6 sticky top-10 self-start">
+             <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group">
+               <div className="absolute top-0 right-0 p-2 text-xs font-bold text-amber-500/50">LIVE</div>
+               <h4 className="text-white font-bold text-sm mb-2">Cost Comparison Index</h4>
+               <p className="text-xs text-gray-500 mb-4">Real-time heavy haul analytics.</p>
+               <div className="relative h-40 w-full rounded-lg overflow-hidden border border-white/5 group-hover:border-amber-500/30 transition-all">
+                  <Image src="/images/blog/cost_comparison_infographic.png" alt="Cost Comparison" fill className="object-cover" />
+               </div>
+             </div>
 
-        {/* ── Interactive Components (escort reciprocity guide only) ── */}
-        {isReciprocityGuide && (
-          <div className="mt-12 space-y-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-              <span className="text-xs text-amber-500/60 uppercase tracking-widest font-medium">
-                Interactive Tools
-              </span>
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-            </div>
-
-            <ReciprocityMap />
-            <CostComparisonChart />
-            <CostCalculator />
-            <FaqAccordion faqs={RECIPROCITY_FAQS} />
+             <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group mt-6">
+               <div className="absolute top-0 right-0 p-2 text-xs font-bold text-amber-500/50">OS/OW</div>
+               <h4 className="text-white font-bold text-sm mb-2">Compliance Dashboard</h4>
+               <p className="text-xs text-gray-500 mb-4">Federal regulatory checklists.</p>
+               <div className="relative h-40 w-full rounded-lg overflow-hidden border border-white/5 group-hover:border-amber-500/30 transition-all">
+                  <Image src="/images/blog/compliance_dashboard_graphic.png" alt="Compliance Dashboard" fill className="object-cover" />
+               </div>
+             </div>
           </div>
-        )}
+        </div>
+
+        {/* ── Visual Break: Main Infographic ── */}
+        <div className="w-full relative my-12 h-[400px] rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_-15px_rgba(245,158,11,0.15)] group">
+           <Image 
+              src="/images/blog/reciprocity_infographic.png" 
+              alt="Haul Command Reciprocity Zone Intelligence" 
+              fill 
+              className="object-cover group-hover:scale-105 transition-transform duration-1000"
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
+           <div className="absolute bottom-6 left-6 right-6">
+              <h3 className="text-amber-500 font-bold text-lg mb-1 tracking-wider uppercase">HC Global Operations</h3>
+              <p className="text-gray-300 text-sm max-w-xl">Active monitoring of interstate commercial transport reciprocity zones. AI-powered dynamic routing active.</p>
+           </div>
+        </div>
+
+        {/* ── Interactive Components ── */}
+        <div className="mt-12 space-y-2">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            <span className="text-xs text-amber-500/60 uppercase tracking-widest font-medium">
+              Interactive Tools
+            </span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+          </div>
+
+          <ReciprocityMap />
+          <CostComparisonChart />
+          <CostCalculator />
+          {isReciprocityGuide && <FaqAccordion faqs={RECIPROCITY_FAQS} />}
+        </div>
 
         {/* ── Sources & Methodology ── */}
         <aside className="mt-12 p-5 bg-white/[0.02] border border-white/8 rounded-xl">
