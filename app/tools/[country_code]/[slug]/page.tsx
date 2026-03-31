@@ -4,8 +4,7 @@ import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 const UniversalPermitChecker = dynamic(
-  () => import('@/components/tools/UniversalPermitChecker'),
-  { ssr: false }
+  () => import('@/components/tools/UniversalPermitChecker')
 );
 
 type Props = { params: Promise<{ country_code: string; slug: string }> };

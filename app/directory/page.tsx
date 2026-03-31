@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { DirectorySearchList } from './_components/DirectorySearchList';
 
 export const metadata: Metadata = {
   title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
@@ -282,8 +285,17 @@ async function getStats() {
 export default async function DirectoryPage() {
   const { total, countryCounts, stateMap, topOperators } = await getStats();
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" }
+    ]
+  };
+
   return (
     <>
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
           "@context": "https://schema.org",
@@ -308,22 +320,9 @@ export default async function DirectoryPage() {
             Real-time availability, corridor rankings, and escrow-protected bookings.
           </p>
 
-          {/* Search */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <form action="/directory/us" method="GET" className="relative">
-              <input
-                type="text"
-                name="q"
-                placeholder="Search by name, state, or specialty..."
-                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 text-base"
-              />
-              <button aria-label="Interactive Button"
-                type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors text-sm"
-              >
-                Search
-              </button>
-            </form>
+          {/* Real-time PII-censored API API Search List */}
+          <div className="max-w-4xl mx-auto mb-16 text-left">
+            <DirectorySearchList />
           </div>
 
           {/* Stats */}
@@ -381,6 +380,7 @@ export default async function DirectoryPage() {
             {topOperators.map((op: any) => (
               <div
                 key={op.id}
+                data-directory-result="true"
                 className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
               >
                 <div className="flex items-start justify-between mb-2">
@@ -415,6 +415,10 @@ export default async function DirectoryPage() {
                       Sign up to contact
                     </Link>
                   </div>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                  <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
                 </div>
               </div>
             ))}

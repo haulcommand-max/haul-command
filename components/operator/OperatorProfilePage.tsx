@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { FollowButton } from '@/components/social/FollowButton';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import SaveButton from '@/components/capture/SaveButton';
 
 /* ═══════════════════════════════════════════════════════════════════
    OperatorProfilePage — Full social profile for operators
@@ -181,7 +182,8 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
               </span>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <SaveButton entityType="operator" entityId={operatorId} entityLabel={profile.full_name} variant="icon" />
             <FollowButton operatorId={operatorId} />
             <Link aria-label="Navigation Link" href={`/loads/new?operator=${operatorId}`} className="ag-press" style={{
               padding: '8px 18px', borderRadius: 10,

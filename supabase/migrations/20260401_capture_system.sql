@@ -159,17 +159,20 @@ ALTER TABLE saved_intents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE community_memberships ENABLE ROW LEVEL SECURITY;
 
 -- Allow service role full access
-CREATE POLICY IF NOT EXISTS "Service role full access to alert_subscribers"
+DROP POLICY IF EXISTS "Service role full access to alert_subscribers" ON alert_subscribers;
+CREATE POLICY "Service role full access to alert_subscribers"
   ON alert_subscribers FOR ALL
   USING (true)
   WITH CHECK (true);
 
-CREATE POLICY IF NOT EXISTS "Service role full access to saved_intents"
+DROP POLICY IF EXISTS "Service role full access to saved_intents" ON saved_intents;
+CREATE POLICY "Service role full access to saved_intents"
   ON saved_intents FOR ALL
   USING (true)
   WITH CHECK (true);
 
-CREATE POLICY IF NOT EXISTS "Service role full access to community_memberships"
+DROP POLICY IF EXISTS "Service role full access to community_memberships" ON community_memberships;
+CREATE POLICY "Service role full access to community_memberships"
   ON community_memberships FOR ALL
   USING (true)
   WITH CHECK (true);

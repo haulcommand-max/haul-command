@@ -3,6 +3,9 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CategoryGrid } from '@/components/directory/CategoryGrid';
+import SaveButton from '@/components/capture/SaveButton';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -128,8 +131,18 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
     }
   }
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" },
+      { "@type": "ListItem", "position": 2, "name": countryName, "item": `https://haulcommand.com/directory/${country}` }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       {/* Header */}
       <section className="py-10 px-4 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
@@ -145,13 +158,16 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             )}
           </div>
           <div className="flex flex-wrap items-start justify-between gap-6">
-            <div>
-              <h1 className="text-3xl font-bold">
-                {stateFilter ? `${stateFilter} Escort Operators` : `${countryName} Escort & Pilot Car Operators`}
-              </h1>
-              <p className="text-gray-500 mt-1">
-                {(total ?? 0).toLocaleString()} operators found{stateFilter ? ` in ${stateFilter}` : ''}
-              </p>
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <h1 className="text-3xl font-bold">
+                  {stateFilter ? `${stateFilter} Escort Operators` : `${countryName} Escort & Pilot Car Operators`}
+                </h1>
+                <p className="text-gray-500 mt-1">
+                  {(total ?? 0).toLocaleString()} operators found{stateFilter ? ` in ${stateFilter}` : ''}
+                </p>
+              </div>
+              <SaveButton entityType="state" entityId={stateFilter || country} entityLabel={stateFilter ? stateFilter : countryName} />
             </div>
             {/* Search */}
             <form method="GET" className="flex gap-2">
@@ -159,6 +175,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 type="text"
                 name="q"
                 defaultValue={q}
+                data-search-input="true"
                 placeholder="Search operators..."
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
               />
@@ -221,6 +238,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 {operators.map((op: any) => (
                   <div
                     key={op.id}
+                    data-directory-result="true"
                     className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
                       op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
                     }`}
@@ -275,6 +293,10 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                           Sign up to contact
                         </Link>
                       </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                      <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                      <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
                     </div>
                   </div>
                 ))}

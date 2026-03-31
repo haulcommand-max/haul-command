@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
+import SaveButton from '@/components/capture/SaveButton';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 
 interface Props {
   params: Promise<{ jurisdiction: string }>;
@@ -26,9 +28,37 @@ export default async function RegulationPage({ params }: Props) {
     .ilike('jurisdiction', jurisdiction)
     .single();
 
+  const domain = "haulcommand.com";
+  const url = `https://${domain}/regulations/${rawJur}`;
+  const faqSchemaData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `What are the oversize load regulations in ${jurisdiction}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": page?.content ? `According to official data: ${page.content.substring(0, 150)}...` : `In ${jurisdiction}, oversize loads must adhere to specific permit requirements, escort rules, and dimension limits. Check full details on Haul Command.`
+        }
+      }
+    ]
+  };
+
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Regulations", "item": `https://${domain}/regulations` },
+      { "@type": "ListItem", "position": 2, "name": jurisdiction, "item": url }
+    ]
+  };
+
   // If no page yet, serve a helpful fallback with Route Check CTA
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <SchemaGenerator type="FAQPage" data={faqSchemaData} />
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <section className="py-12 px-4 border-b border-white/5">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-2 mb-4">
@@ -36,12 +66,19 @@ export default async function RegulationPage({ params }: Props) {
             <span className="text-gray-800">/</span>
             <span className="text-xs text-gray-400 capitalize">{jurisdiction}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            {jurisdiction} — Oversize Load Regulations
-          </h1>
-          <p className="text-gray-400">
-            Permit requirements, escort rules, max dimensions, and authority contacts
-          </p>
+          <div className="flex justify-between items-start gap-4">
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <h1 className="text-3xl md:text-4xl font-bold">
+                  {jurisdiction} — Oversize Load Regulations
+                </h1>
+                <SaveButton entityType="regulation" entityId={rawJur} entityLabel={jurisdiction} variant="pill" />
+              </div>
+              <p className="text-gray-400">
+                Permit requirements, escort rules, max dimensions, and authority contacts
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@ import ToolsSidebar from "@/components/tools/ToolsSidebar";
 
 export default function CostCalculatorPage() {
     return (
-        <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui, sans-serif", padding: '2rem 1rem' }}>
+        <div data-tool-interact="true" style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui, sans-serif", padding: '2rem 1rem' }}>
             <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem' }}>
                 <div style={{ padding: '3rem', background: 'rgba(255,255,255,0.04)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
                     <div style={{ fontSize: 48, marginBottom: 16 }}>💰</div>

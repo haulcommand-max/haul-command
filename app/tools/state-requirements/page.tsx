@@ -45,13 +45,13 @@ export default function StateRequirementsCheatsheet() {
                     <div>
                         {/* Filters */}
                         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-                            <input type="text" placeholder="Search state..." value={search} onChange={e => setSearch(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#f9fafb', fontSize: 12, flex: 1, minWidth: 140, outline: 'none' }} />
+                            <input data-tool-interact type="text" placeholder="Search state..." value={search} onChange={e => setSearch(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#f9fafb', fontSize: 12, flex: 1, minWidth: 140, outline: 'none' }} />
                             {[
                                 { label: 'All', val: null },
                                 { label: 'Cert Required', val: true },
                                 { label: 'No Cert', val: false },
                             ].map(f => (
-                                <button aria-label="Interactive Button" key={f.label} onClick={() => setCertFilter(f.val)} style={{
+                                <button aria-label="Interactive Button" data-tool-interact key={f.label} onClick={() => setCertFilter(f.val)} style={{
                                     padding: '4px 14px', borderRadius: 8, fontSize: 10, fontWeight: 700, cursor: 'pointer',
                                     background: certFilter === f.val ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
                                     border: `1px solid ${certFilter === f.val ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,

@@ -23,15 +23,15 @@ export async function GET(req: NextRequest) {
           {
             id: 'honeytoken-01', slug: 'apex-logistics-fake', name: 'Apex Logistics (Honeytrap)', 
             city: 'Nowhere', state: 'ZZ', country_code: 'US', services: ['pilot_car_operator'],
-            is_claimed: true, rating: 5.0, review_count: 999, rank_score: 100, is_featured: true, profile_completeness: 100
+            is_claimed: true, rating: 5.0, review_count: 999, rank_score: 100, is_featured: true, profile_completeness: 100, phone: '(555) 000-0000'
           },
           {
             id: 'honeytoken-02', slug: 'titan-escort-fake', name: 'Titan Escort Services', 
             city: 'Void', state: 'XX', country_code: 'US', services: ['flagger_traffic_control'],
-            is_claimed: false, rating: 4.8, review_count: 50, rank_score: 80, is_featured: false, profile_completeness: 50
+            is_claimed: false, rating: 4.8, review_count: 50, rank_score: 80, is_featured: false, profile_completeness: 50, phone: '(555) 000-0000'
           }
         ],
-        total: 2, page: 1, limit: 48, total_pages: 1, has_more: false
+        total: 2, page: 1, limit: 48, total_pages: 1, has_more: false, censored: true
       }, {
         headers: {
           'Cache-Control': 'no-store', // Don't cache poisoned data for real users!
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
     let query = supabase
       .from('listings')
       .select(
-        'id, full_name, city, state, country_code, claimed, claim_status, services, rank_score, profile_completeness, slug',
+        'id, full_name, city, state, country_code, phone_raw, claimed, claim_status, services, rank_score, profile_completeness, slug',
         { count: 'exact' }
       )
       .eq('active', true)
@@ -104,13 +104,15 @@ export async function GET(req: NextRequest) {
 
     // 💰 PROFIT-AWARE CENSORSHIP ENGINE 💰
     // High-value data is heavily protected. Low-value stays open.
-    const sanitizedData = (rawData || []).map((operator: any) => {
+    const isCensored = !isAuthenticated;
+    const sanitizedData = (rawData || []).map((operator: any, index: number) => {
       return {
         id: operator.id,
         slug: operator.slug,
         name: operator.full_name,
         city: operator.city,
         state: operator.state,
+        location: `${operator.city}, ${operator.state}`,
         region_code: operator.state, // ← alias for mobile compatibility
         country_code: operator.country_code,
         services: operator.services || [],
@@ -118,13 +120,17 @@ export async function GET(req: NextRequest) {
         rating: 5.0, // Default for now
         review_count: 0,
         rank_score: operator.rank_score,
+        score: operator.rank_score ?? 50,
         is_featured: operator.rank_score > 80,
         profile_completeness: operator.profile_completeness ?? 40,
+        // Censor phone for unauthenticated users (only show first 2 as teaser)
+        phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (operator.phone_raw || '(555) 000-0000')
       };
     });
 
     return NextResponse.json({
       operators: sanitizedData,
+      censored: isCensored,
       total: count || 0,
       page,
       limit,

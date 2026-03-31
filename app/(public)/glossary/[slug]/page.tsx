@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Metadata } from 'next';
+import SaveButton from '@/components/capture/SaveButton';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -113,6 +114,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
                                 {term.term}
                             </h1>
+                            <SaveButton entityType="glossary_topic" entityId={term.slug} entityLabel={term.term} variant="pill" />
                             {term.acronyms && term.acronyms.length > 0 && (
                                 <span className="bg-white/10 text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
                                     {term.acronyms.join(', ')}

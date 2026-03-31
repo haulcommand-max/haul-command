@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
+import SaveButton from '@/components/capture/SaveButton';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -49,7 +50,10 @@ export default async function CompanyPage({ params }: Props) {
           <span style={{ padding: '4px 14px', borderRadius: 20, background: tc.bg, color: tc.text, fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>{typeLabels[company.company_type] || company.company_type}</span>
           <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{countries.join(' · ')}</span>
         </div>
-        <h1 style={{ fontSize: 40, fontWeight: 800, margin: '0 0 16px' }}>{company.company_name}</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <h1 style={{ fontSize: 40, fontWeight: 800, margin: 0 }}>{company.company_name}</h1>
+          <SaveButton entityType="company" entityId={slug} entityLabel={company.company_name} variant="pill" />
+        </div>
         <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 32 }}>{company.description}</p>
         {company.website && <a href={company.website} target="_blank" rel="noopener noreferrer" style={{ color: '#00d4ff', fontSize: 14 }}>{company.website} ↗</a>}
 

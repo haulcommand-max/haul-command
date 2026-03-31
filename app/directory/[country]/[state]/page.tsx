@@ -3,6 +3,9 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CategoryGrid } from '@/components/directory/CategoryGrid';
+import SaveButton from '@/components/capture/SaveButton';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 
 interface Props {
   params: Promise<{ country: string; state: string }>;
@@ -84,8 +87,19 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
     { label: `Post a load in ${stateCode}`, href: '/loads/new' },
   ];
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" },
+      { "@type": "ListItem", "position": 2, "name": country.toUpperCase() === 'US' ? 'United States' : country.toUpperCase(), "item": `https://haulcommand.com/directory/${country}` },
+      { "@type": "ListItem", "position": 3, "name": stateName, "item": `https://haulcommand.com/directory/${country}/${state}` }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       {/* Header */}
       <section className="py-10 px-4 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
@@ -96,12 +110,17 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
             <span>/</span>
             <span className="text-gray-400">{stateName}</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">
-            {stateName} Escort & Pilot Car Operators
-          </h1>
-          <p className="text-gray-500">
-            {(total ?? 0).toLocaleString()} operators in {stateName} — oversize/overweight load escorts
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">
+                {stateName} Escort & Pilot Car Operators
+              </h1>
+              <p className="text-gray-500">
+                {(total ?? 0).toLocaleString()} operators in {stateName} — oversize/overweight load escorts
+              </p>
+            </div>
+            <SaveButton entityType="state" entityId={stateCode} entityLabel={stateName} />
+          </div>
           <div className="flex flex-wrap gap-3 mt-4">
             {corridorLinks.map(l => (
               <Link aria-label="Navigation Link"
@@ -131,12 +150,14 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
               type="text"
               name="q"
               defaultValue={q}
+              data-search-input="true"
               placeholder={`Search ${stateName} operators...`}
               className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
             />
             <select
               name="sort"
               defaultValue={sortBy}
+              data-filter-control="true"
               className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-gray-400 focus:outline-none"
             >
               <option value="rank">Best match</option>
@@ -162,6 +183,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
               return (
                 <div
                   key={op.id}
+                  data-directory-result="true"
                   className={`relative p-5 border rounded-xl transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 ${
                     isFeatured ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
                   }`}
@@ -200,20 +222,26 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
                     )}
                   </div>
                   
-                  <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-20">
-                    {!isClaimed ? (
-                      <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
-                        Claim Profile →
+                  <div className="mt-auto pt-3 border-t border-white/5 flex flex-col gap-3 relative z-20">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                      <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      {!isClaimed ? (
+                        <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
+                          Claim Profile →
+                        </Link>
+                      ) : (
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-green-500/80 flex items-center gap-1">
+                          Active Profile
+                        </span>
+                      )}
+                      
+                      <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
+                        View Profile
                       </Link>
-                    ) : (
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-green-500/80 flex items-center gap-1">
-                        Active Profile
-                      </span>
-                    )}
-                    
-                    <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
-                      View Profile
-                    </Link>
+                    </div>
                   </div>
                 </div>
               );

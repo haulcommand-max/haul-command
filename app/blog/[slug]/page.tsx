@@ -7,14 +7,14 @@ import dynamic from 'next/dynamic';
 import { getArticleEnrichment } from '@/lib/blog/article-enrichments';
 
 /* ── Interactive components (client-only, no SSR) ── */
-const FaqAccordion = dynamic(() => import('@/components/blog/FaqAccordion'), { ssr: false });
-const BlogFaqSchema = dynamic(() => import('@/components/blog/BlogFaqSchema'), { ssr: false });
-const ReciprocityMap = dynamic(() => import('@/components/blog/ReciprocityMap'), { ssr: false });
-const CostComparisonChart = dynamic(() => import('@/components/blog/CostComparisonChart'), { ssr: false });
-const CostCalculator = dynamic(() => import('@/components/blog/CostCalculator'), { ssr: false });
-const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'), { ssr: false });
-const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'), { ssr: false });
-const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'), { ssr: false });
+const FaqAccordion = dynamic(() => import('@/components/blog/FaqAccordion'));
+const BlogFaqSchema = dynamic(() => import('@/components/blog/BlogFaqSchema'));
+const ReciprocityMap = dynamic(() => import('@/components/blog/ReciprocityMap'));
+const CostComparisonChart = dynamic(() => import('@/components/blog/CostComparisonChart'));
+const CostCalculator = dynamic(() => import('@/components/blog/CostCalculator'));
+const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'));
+const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'));
+const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'));
 
 type Props = { params: Promise<{ slug: string }> };
 
