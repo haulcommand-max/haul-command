@@ -73,7 +73,7 @@ export function DirectorySearchList({
                 className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between"
               >
                 <div className={shouldBlur ? "blur-md select-none opacity-50" : ""}>
-                  <h3 className="text-white font-bold">{shouldBlur ? "John Doe Pilot Cars LLC" : op.name}</h3>
+                  <h3 className="text-white font-bold">{op.name}</h3>
                   <div className="flex items-center gap-2 text-sm text-slate-400 mt-1">
                     <MapPin className="w-4 h-4" />
                     <span>{op.location}</span>
