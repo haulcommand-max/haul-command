@@ -104,7 +104,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
         <div style={{ fontSize: 'var(--m-font-body-sm, 13px)', color: 'var(--m-text-muted, #6a7181)', marginTop: 8, textAlign: 'center' }}>
           This corridor may not be active yet.
         </div>
-        <Link aria-label="Navigation Link" href="/corridor" style={{
+        <Link href="/corridor" style={{
           marginTop: 16, padding: '10px 20px', borderRadius: 12,
           background: 'rgba(212,168,68,0.1)', border: '1px solid rgba(212,168,68,0.2)',
           color: 'var(--m-gold, #D4A844)', fontSize: 13, fontWeight: 800, textDecoration: 'none',
@@ -126,7 +126,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '12px var(--m-screen-pad, 16px) 0',
       }}>
-        <Link aria-label="Navigation Link" href="/corridor" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+        <Link href="/corridor" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--m-text-secondary, #c7ccd7)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
@@ -207,7 +207,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
         display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8,
         padding: '0 var(--m-screen-pad, 16px)', marginTop: 'var(--m-md, 16px)',
       }}>
-        <Link aria-label="Navigation Link" href="/loads/post" style={{ textDecoration: 'none' }}>
+        <Link href="/loads/post" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '14px 8px', borderRadius: 14, textAlign: 'center',
             background: 'var(--m-surface, rgba(255,255,255,0.04))',
@@ -217,7 +217,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
             <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--m-gold, #D4A844)' }}>Post Load</div>
           </div>
         </Link>
-        <Link aria-label="Navigation Link" href="/directory" style={{ textDecoration: 'none' }}>
+        <Link href="/directory" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '14px 8px', borderRadius: 14, textAlign: 'center',
             background: 'var(--m-surface, rgba(255,255,255,0.04))',
@@ -227,7 +227,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
             <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--m-text-primary, #f5f7fb)' }}>Directory</div>
           </div>
         </Link>
-        <Link aria-label="Navigation Link" href="/claim" style={{ textDecoration: 'none' }}>
+        <Link href="/claim" style={{ textDecoration: 'none' }}>
           <div style={{
             padding: '14px 8px', borderRadius: 14, textAlign: 'center',
             background: 'var(--m-surface, rgba(255,255,255,0.04))',
@@ -306,7 +306,7 @@ export default function MobileCorridorDetail({ corridorSlug }: Props) {
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           {corridor.primaryStates.map(code => (
-            <Link aria-label="Navigation Link" key={code} href={`/escort-requirements/${code.toLowerCase()}`} style={{
+            <Link key={code} href={`/escort-requirements/${code.toLowerCase()}`} style={{
               padding: '6px 12px', borderRadius: 10,
               background: 'var(--m-surface, rgba(255,255,255,0.04))',
               border: '1px solid var(--m-border-subtle, rgba(255,255,255,0.06))',

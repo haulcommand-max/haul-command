@@ -80,7 +80,7 @@ export function HCButton({
     ...rest
 }: HCButtonProps) {
     return (
-        <button aria-label="Interactive Button"
+        <button
             {...rest}
             disabled={disabled || loading}
             className={cn(

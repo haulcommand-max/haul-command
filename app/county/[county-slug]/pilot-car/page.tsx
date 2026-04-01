@@ -42,9 +42,9 @@ export default async function CountyPage({ params }: any) {
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 {/* Breadcrumb */}
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link aria-label="Navigation Link" href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
+                    <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
-                    {state && <><Link aria-label="Navigation Link" href={`/directory/us/${state.toLowerCase()}`} style={{ color: '#6b7280', textDecoration: 'none' }}>{state}</Link><ChevronRight style={{ width: 12, height: 12 }} /></>}
+                    {state && <><Link href={`/directory/us/${state.toLowerCase()}`} style={{ color: '#6b7280', textDecoration: 'none' }}>{state}</Link><ChevronRight style={{ width: 12, height: 12 }} /></>}
                     <span style={{ color: '#d1d5db' }}>{name}</span>
                 </nav>
 
@@ -87,10 +87,10 @@ export default async function CountyPage({ params }: any) {
 
                 {/* CTA */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
-                    <Link aria-label="Navigation Link" href="/start" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px', borderRadius: 12, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, textDecoration: 'none' }}>
+                    <Link href="/start" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px', borderRadius: 12, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, textDecoration: 'none' }}>
                         <Zap style={{ width: 14, height: 14 }} /> I Want Loads Here
                     </Link>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px', borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+                    <Link href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px', borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
                         <AlertTriangle style={{ width: 14, height: 14 }} /> Post a Load
                     </Link>
                 </div>

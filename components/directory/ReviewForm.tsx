@@ -56,7 +56,7 @@ function StarInput({ label, value, onChange, hint, hero }: StarInputProps) {
             </div>
             <div className="flex gap-1" onMouseLeave={() => setHovered(0)}>
                 {Array.from({ length: 5 }).map((_, i) => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={i}
                         type="button"
                         onMouseEnter={() => setHovered(i + 1)}
@@ -164,7 +164,7 @@ export function ReviewForm({
                     )}
                 </div>
                 {onCancel && (
-                    <button aria-label="Interactive Button"
+                    <button
                         type="button"
                         onClick={onCancel}
                         className="p-2 rounded-lg hover:bg-hc-elevated text-hc-subtle"
@@ -218,7 +218,7 @@ export function ReviewForm({
                     </span>
                     <p className="text-[10px] text-hc-subtle mt-0.5">Factored into repeat-use rate</p>
                 </div>
-                <button aria-label="Interactive Button"
+                <button
                     type="button"
                     onClick={() => setWouldUseAgain(v => !v)}
                     className={cn(
@@ -260,7 +260,7 @@ export function ReviewForm({
             )}
 
             {/* Submit */}
-            <button aria-label="Interactive Button"
+            <button
                 type="submit"
                 disabled={!isValid || submitting}
                 className={cn(

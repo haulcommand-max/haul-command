@@ -179,10 +179,10 @@ export default async function ServiceDetailPage({ params }: Props) {
           )}
 
           <div className="flex gap-4">
-            <Link aria-label="Navigation Link" href="/loads" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+            <Link href="/loads" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
               Post a Load
             </Link>
-            <Link aria-label="Navigation Link" href="/directory" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
+            <Link href="/directory" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
               Find Operators
             </Link>
           </div>

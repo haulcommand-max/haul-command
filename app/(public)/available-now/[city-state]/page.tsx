@@ -169,7 +169,7 @@ export default async function AvailableNowPage({ params }: Props) {
                     <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 20 }}>
                         Post your load and get matched with {availableCount > 0 ? `${availableCount} available` : 'verified'} operators instantly.
                     </p>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{
+                    <Link href="/loads/post" style={{
                         display: 'inline-block', padding: '14px 32px',
                         background: '#fff', color: '#16a34a',
                         borderRadius: 12, fontWeight: 800, fontSize: 14,
@@ -184,7 +184,7 @@ export default async function AvailableNowPage({ params }: Props) {
                     <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 12 }}>Also Available In</h2>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {['Orlando', 'Tampa', 'Miami', 'Jacksonville', 'Dallas', 'Houston', 'Atlanta', 'Charlotte'].map(c => (
-                            <Link aria-label="Navigation Link" key={c} href={`/available-now/${c.toLowerCase()}-${stateCode.toLowerCase()}`} style={{
+                            <Link key={c} href={`/available-now/${c.toLowerCase()}-${stateCode.toLowerCase()}`} style={{
                                 padding: '6px 14px', borderRadius: 8,
                                 background: '#0f172a', border: '1px solid #1e293b',
                                 color: '#94a3b8', fontSize: 12, fontWeight: 600,

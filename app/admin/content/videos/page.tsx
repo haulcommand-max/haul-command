@@ -105,7 +105,7 @@ export default function VideoAdminPage() {
           <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>HeyGen pipeline · 10 languages · YouTube auto-publish</div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button aria-label="Interactive Button" onClick={fetchJobs} style={{
+          <button onClick={fetchJobs} style={{
             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
             color: '#e0e0e6', borderRadius: 10, padding: '8px 16px', fontSize: 13, cursor: 'pointer',
           }}>↻ Refresh</button>
@@ -147,7 +147,7 @@ export default function VideoAdminPage() {
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
           {tabs.map(tab => (
-            <button aria-label="Interactive Button" key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
               padding: '8px 18px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer', border: 'none',
               background: activeTab === tab.id ? `rgba(255,255,255,0.08)` : 'transparent',
               color: activeTab === tab.id ? '#f0f4f8' : '#8fa3c0',
@@ -204,21 +204,21 @@ export default function VideoAdminPage() {
                 {/* Actions */}
                 <div style={{ display: 'flex', gap: 8 }}>
                   {job.video_url && (
-                    <button aria-label="Interactive Button" onClick={() => setPreviewJob(job)} style={{
+                    <button onClick={() => setPreviewJob(job)} style={{
                       background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                       color: '#e0e0e6', borderRadius: 10, padding: '7px 14px', fontSize: 13, cursor: 'pointer',
                     }}>Preview</button>
                   )}
                   {job.status === 'complete' && !job.admin_approved && !job.admin_rejected && (
                     <>
-                      <button aria-label="Interactive Button" disabled={actionLoading[job.id]} onClick={() => approve(job)} style={{
+                      <button disabled={actionLoading[job.id]} onClick={() => approve(job)} style={{
                         background: 'rgba(0,255,136,0.15)', border: '1px solid rgba(0,255,136,0.3)',
                         color: '#00ff88', borderRadius: 10, padding: '7px 16px', fontSize: 13,
                         cursor: 'pointer', fontWeight: 700, opacity: actionLoading[job.id] ? 0.6 : 1,
                       }}>
                         {actionLoading[job.id] ? '...' : '✓ Approve'}
                       </button>
-                      <button aria-label="Interactive Button" disabled={actionLoading[job.id]} onClick={() => reject(job)} style={{
+                      <button disabled={actionLoading[job.id]} onClick={() => reject(job)} style={{
                         background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
                         color: '#ef4444', borderRadius: 10, padding: '7px 14px', fontSize: 13,
                         cursor: 'pointer', opacity: actionLoading[job.id] ? 0.6 : 1,
@@ -252,7 +252,7 @@ export default function VideoAdminPage() {
                   {LANG_FLAGS[previewJob.language]} {previewJob.language.toUpperCase()} · {previewJob.duration_secs ? `${Math.round(previewJob.duration_secs / 60)}m` : '?'}
                 </div>
               </div>
-              <button aria-label="Interactive Button" onClick={() => setPreviewJob(null)} style={{ background: 'none', border: 'none', color: '#8fa3c0', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setPreviewJob(null)} style={{ background: 'none', border: 'none', color: '#8fa3c0', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
 
             {previewJob.video_url && (
@@ -263,11 +263,11 @@ export default function VideoAdminPage() {
 
             {!previewJob.admin_approved && !previewJob.admin_rejected && previewJob.status === 'complete' && (
               <div style={{ display: 'flex', gap: 12, marginTop: 20, justifyContent: 'flex-end' }}>
-                <button aria-label="Interactive Button" onClick={() => reject(previewJob)} style={{
+                <button onClick={() => reject(previewJob)} style={{
                   background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
                   color: '#ef4444', borderRadius: 10, padding: '10px 20px', fontSize: 14, cursor: 'pointer',
                 }}>✗ Reject</button>
-                <button aria-label="Interactive Button" onClick={() => approve(previewJob)} style={{
+                <button onClick={() => approve(previewJob)} style={{
                   background: 'linear-gradient(90deg, #00cc66, #00ff88)',
                   color: '#07090f', border: 'none', borderRadius: 10,
                   padding: '10px 24px', fontSize: 14, fontWeight: 800, cursor: 'pointer',

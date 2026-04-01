@@ -16,7 +16,7 @@ export const GeoMeshLinks = ({ currentCity, serviceSlug }: GeoLinksProps) => {
                 <ul className="grid grid-cols-2 gap-2">
                     {currentCity.nearbyCities.map((citySlug) => (
                         <li key={citySlug}>
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 href={serviceSlug
                                     ? getCityServiceUrl(currentCity.country, currentCity.state, citySlug, serviceSlug)
                                     : getCityHubUrl(currentCity.country, currentCity.state, citySlug)
@@ -35,10 +35,10 @@ export const GeoMeshLinks = ({ currentCity, serviceSlug }: GeoLinksProps) => {
                     Haul Command verifies providers across {currentCity.state.toUpperCase()} and surrounding regions.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                    <Link aria-label="Navigation Link" href={`/${currentCity.country}/${currentCity.state}`} className="px-3 py-1 bg-white border rounded-full text-xs font-medium hover:bg-slate-100">
+                    <Link href={`/${currentCity.country}/${currentCity.state}`} className="px-3 py-1 bg-white border rounded-full text-xs font-medium hover:bg-slate-100">
                         {currentCity.state.toUpperCase()} Statewide
                     </Link>
-                    <Link aria-label="Navigation Link" href={`/near/${currentCity.slug}-50-miles`} className="px-3 py-1 bg-white border rounded-full text-xs font-medium hover:bg-slate-100">
+                    <Link href={`/near/${currentCity.slug}-50-miles`} className="px-3 py-1 bg-white border rounded-full text-xs font-medium hover:bg-slate-100">
                         Near {currentCity.city} (50 mi)
                     </Link>
                 </div>

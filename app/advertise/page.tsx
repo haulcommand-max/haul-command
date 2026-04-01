@@ -17,7 +17,7 @@ export default function FreightAdvertisingPage() {
             </h1>
             <p className="text-gray-400 mt-2">Corridor Sponsorships and Recurring Load Automation</p>
           </div>
-          <button aria-label="Interactive Button" className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors shadow-lg">
+          <button className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors shadow-lg">
             Create Campaign
           </button>
         </div>
@@ -43,7 +43,7 @@ export default function FreightAdvertisingPage() {
                       <span className="text-sm font-mono text-gray-400">Current Bid: {ad.bid}</span>
                     </div>
                   </div>
-                  <button aria-label="Interactive Button" className="text-gray-400 hover:text-white"><Settings2 className="w-5 h-5" /></button>
+                  <button className="text-gray-400 hover:text-white"><Settings2 className="w-5 h-5" /></button>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
@@ -87,7 +87,7 @@ export default function FreightAdvertisingPage() {
                 ))}
               </div>
               
-              <button aria-label="Interactive Button" className="w-full mt-6 py-2 border border-amber-500/30 text-amber-500 font-semibold rounded-lg hover:bg-amber-500/10 transition-colors">
+              <button className="w-full mt-6 py-2 border border-amber-500/30 text-amber-500 font-semibold rounded-lg hover:bg-amber-500/10 transition-colors">
                 + Add Rule
               </button>
             </div>

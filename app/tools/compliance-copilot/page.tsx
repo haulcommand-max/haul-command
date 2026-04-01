@@ -247,7 +247,7 @@ export default function ComplianceCopilotPage() {
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                             {EXAMPLE_QUESTIONS.map(q => (
-                                <button aria-label="Interactive Button" data-tool-interact
+                                <button data-tool-interact
                                     key={q}
                                     onClick={() => useExample(q)}
                                     style={{
@@ -452,7 +452,7 @@ export default function ComplianceCopilotPage() {
                                 onBlur={e => (e.target.style.borderColor = T.borderStrong)}
                                 disabled={loading}
                             />
-                            <button aria-label="Interactive Button" data-tool-interact
+                            <button data-tool-interact
                                 type="submit"
                                 disabled={loading || !question.trim()}
                                 style={{
@@ -497,7 +497,7 @@ export default function ComplianceCopilotPage() {
                     Need compliance tracking, permit generation, and state-by-state audit logs?
                 </p>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Link aria-label="Navigation Link" href="/tools/state-requirements" style={{
+                    <Link href="/tools/state-requirements" style={{
                         padding: '10px 20px', borderRadius: 10,
                         background: 'rgba(245,185,66,0.1)',
                         border: '1px solid rgba(245,185,66,0.25)',
@@ -506,7 +506,7 @@ export default function ComplianceCopilotPage() {
                     }}>
                         State Requirements Table
                     </Link>
-                    <Link aria-label="Navigation Link" href="/onboarding" style={{
+                    <Link href="/onboarding" style={{
                         padding: '10px 20px', borderRadius: 10,
                         background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
                         color: '#0a0f16', fontSize: 13, fontWeight: 900,

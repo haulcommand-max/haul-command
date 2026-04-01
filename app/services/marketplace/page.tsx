@@ -109,7 +109,7 @@ export default function MarketplacePage() {
                                     ))}
                                 </div>
 
-                                <button aria-label="Interactive Button" style={{
+                                <button style={{
                                     width: '100%', padding: '10px', borderRadius: 10, border: `1px solid ${cat.color}30`,
                                     background: `${cat.color}10`, color: cat.color, fontSize: 12, fontWeight: 700,
                                     cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase', letterSpacing: 0.5,

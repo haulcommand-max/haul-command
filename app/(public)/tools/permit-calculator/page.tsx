@@ -256,7 +256,7 @@ export default function PermitCalculatorPage() {
                             {US_STATES.map(({ code, name }) => {
                                 const active = selectedStates.includes(code);
                                 return (
-                                    <button aria-label="Interactive Button" key={code} onClick={() => toggleState(code)} style={{
+                                    <button key={code} onClick={() => toggleState(code)} style={{
                                         padding: '6px 12px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', transition: 'all 0.12s',
                                         background: active ? 'rgba(245,185,66,0.15)' : 'rgba(255,255,255,0.03)',
                                         border: `1px solid ${active ? 'rgba(245,185,66,0.4)' : T.border}`,
@@ -269,7 +269,7 @@ export default function PermitCalculatorPage() {
                         </div>
                         <p style={{ margin: '10px 0 0', fontSize: 11, color: T.muted }}>{selectedStates.length} states selected</p>
 
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => { setShowResults(true); window.scrollTo({ top: 999, behavior: 'smooth' }); }}
                             disabled={selectedStates.length === 0}
                             style={{
@@ -353,10 +353,10 @@ export default function PermitCalculatorPage() {
                                 {results.map(r => r.state).join(', ')} and beyond. Average fill time: <strong style={{ color: T.text }}>8 minutes</strong> for active loads.
                             </p>
                             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                                <Link aria-label="Navigation Link" href="/loads/new" style={{ padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${T.gold}, #d97706)`, color: '#000', fontWeight: 900, fontSize: 13, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                <Link href="/loads/new" style={{ padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${T.gold}, #d97706)`, color: '#000', fontWeight: 900, fontSize: 13, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                     Post Load → Get Quotes
                                 </Link>
-                                <Link aria-label="Navigation Link" href="/directory" style={{ padding: '12px 24px', borderRadius: 12, background: 'transparent', border: `1px solid ${T.border}`, color: T.text, fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+                                <Link href="/directory" style={{ padding: '12px 24px', borderRadius: 12, background: 'transparent', border: `1px solid ${T.border}`, color: T.text, fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
                                     Browse Escort Directory
                                 </Link>
                             </div>

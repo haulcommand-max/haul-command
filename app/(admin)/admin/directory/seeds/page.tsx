@@ -104,7 +104,7 @@ export default function DirectorySeedsPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {Object.entries(stats).map(([s, count]) => (
-                    <button aria-label="Interactive Button" key={s} onClick={() => setStatusFilter(s)}
+                    <button key={s} onClick={() => setStatusFilter(s)}
                         className={`rounded-xl p-4 border text-left transition-all ${statusFilter === s ? 'ring-2 ring-amber-500' : ''} ${STATUS_COLORS[s] ?? 'bg-slate-800 border-slate-700'}`}>
                         <div className="text-2xl font-bold">{count}</div>
                         <div className="text-sm capitalize">{s}</div>
@@ -114,7 +114,7 @@ export default function DirectorySeedsPage() {
 
             {/* Process Button */}
             <div className="flex flex-wrap items-center gap-3">
-                <button aria-label="Interactive Button" onClick={handleProcessAll} disabled={processing || stats.pending === 0}
+                <button onClick={handleProcessAll} disabled={processing || stats.pending === 0}
                     className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-900 font-bold px-5 py-2 rounded-lg transition-colors">
                     {processing ? '⟳ Processing...' : `▶ Process All Pending (${stats.pending})`}
                 </button>
@@ -129,7 +129,7 @@ export default function DirectorySeedsPage() {
                     placeholder="1st Amber Lights Pilot Car - Boring, OR&#10;A-1 Pilot Car Inc - Phoenix, AZ"
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-amber-500" />
                 <div className="flex items-center gap-3">
-                    <button aria-label="Interactive Button" onClick={handleImport} disabled={importing || !pasteInput.trim()}
+                    <button onClick={handleImport} disabled={importing || !pasteInput.trim()}
                         className="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-white font-semibold px-4 py-2 rounded-lg text-sm">
                         {importing ? '⟳ Importing...' : '↑ Queue for Import'}
                     </button>

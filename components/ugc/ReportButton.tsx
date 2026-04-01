@@ -57,7 +57,7 @@ export function ReportButton({ entityType, entityId, className = '' }: ReportBut
 
     return (
         <>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setOpen(!open)}
                 className={`flex items-center gap-1.5 text-xs text-slate-500 hover:text-red-400 transition-colors ${className}`}
             >
@@ -85,7 +85,7 @@ export function ReportButton({ entityType, entityId, className = '' }: ReportBut
                         rows={2}
                         className="w-full bg-black border border-white/10 rounded-lg p-2.5 text-sm text-white resize-none focus:border-red-500 focus:outline-none"
                     />
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={handleSubmit}
                         disabled={!reason || submitting}
                         className="w-full py-2.5 bg-red-600 hover:bg-red-500 disabled:bg-slate-800 text-white text-sm font-bold rounded-lg transition-colors"

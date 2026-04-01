@@ -77,7 +77,7 @@ export default function LoadBoostPage() {
 
             <div className="px-5 py-6 space-y-4 max-w-xl">
                 {BOOST_TIERS.map((tier) => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={tier.id}
                         onClick={() => setSelected(tier)}
                         className={`w-full text-left rounded-2xl border p-4 transition-all ${selected.id === tier.id
@@ -118,7 +118,7 @@ export default function LoadBoostPage() {
                     <div className="flex justify-between"><span>Expected fill speed boost</span><span className="text-green-400 font-bold">{selected.id === "fast_fill" ? "~35%" : selected.id === "corridor_priority" ? "~55%" : "~70%"}</span></div>
                 </div>
 
-                <button aria-label="Interactive Button"
+                <button
                     onClick={boost}
                     disabled={submitting}
                     className="w-full py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 text-white font-black text-lg disabled:opacity-60 transition-all"

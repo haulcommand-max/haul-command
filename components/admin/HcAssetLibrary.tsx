@@ -143,7 +143,7 @@ export function HcAssetLibrary({ initialAssets, adminSecret }: HcAssetLibraryPro
             )}
 
             <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={() => navigator.clipboard.writeText(selected.public_url)}
                 style={{
                   background: "#111820",
@@ -157,7 +157,7 @@ export function HcAssetLibrary({ initialAssets, adminSecret }: HcAssetLibraryPro
               >
                 📋 Copy URL
               </button>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={() => {
                   if (selected.prompt) navigator.clipboard.writeText(selected.prompt);
                 }}
@@ -173,7 +173,7 @@ export function HcAssetLibrary({ initialAssets, adminSecret }: HcAssetLibraryPro
               >
                 📝 Copy Prompt
               </button>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={() => setSelected(null)}
                 style={{
                   marginLeft: "auto",

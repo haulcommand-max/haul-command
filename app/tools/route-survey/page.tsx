@@ -100,7 +100,7 @@ export default function RouteSurveyApp() {
             {/* Top Bar */}
             <div className="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <Link aria-label="Navigation Link" href="/dashboard" className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">
+                    <Link href="/dashboard" className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">
                         <ArrowLeft className="w-5 h-5 text-white" />
                     </Link>
                     <div>
@@ -180,7 +180,7 @@ export default function RouteSurveyApp() {
 
                         {/* Action Grid */}
                         <div className="grid grid-cols-2 gap-4">
-                            <button aria-label="Interactive Button" data-tool-interact
+                            <button data-tool-interact
                                 onClick={() => markObstacle('bridge', 204)} // Assume 17' standard height pole hit for demo
                                 className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
@@ -190,7 +190,7 @@ export default function RouteSurveyApp() {
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Bridge Hit</span>
                             </button>
 
-                            <button aria-label="Interactive Button" data-tool-interact
+                            <button data-tool-interact
                                 onClick={() => markObstacle('lines', 240)}
                                 className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
@@ -200,7 +200,7 @@ export default function RouteSurveyApp() {
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Low Wires</span>
                             </button>
 
-                            <button aria-label="Interactive Button" data-tool-interact
+                            <button data-tool-interact
                                 onClick={() => markObstacle('turn')}
                                 className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
@@ -210,7 +210,7 @@ export default function RouteSurveyApp() {
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Tight Turn</span>
                             </button>
 
-                            <button aria-label="Interactive Button" data-tool-interact
+                            <button data-tool-interact
                                 onClick={() => markObstacle('other')}
                                 className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
@@ -228,10 +228,10 @@ export default function RouteSurveyApp() {
             {isSurveying && (
                 <div className="fixed bottom-0 left-0 right-0 p-4 border-t border-slate-800 bg-slate-950/80 backdrop-blur-xl z-50">
                     <div className="max-w-lg mx-auto flex gap-4">
-                        <button aria-label="Interactive Button" data-tool-interact className="h-14 w-14 bg-slate-800 rounded-2xl flex items-center justify-center shrink-0">
+                        <button data-tool-interact className="h-14 w-14 bg-slate-800 rounded-2xl flex items-center justify-center shrink-0">
                             <Camera className="w-6 h-6 text-white" />
                         </button>
-                        <button aria-label="Interactive Button" data-tool-interact
+                        <button data-tool-interact
                             onClick={stopSurvey}
                             className="flex-1 h-14 bg-red-500 hover:bg-red-400 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors"
                         >

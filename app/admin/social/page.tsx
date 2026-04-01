@@ -86,15 +86,15 @@ export default function AdminSocialPage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link aria-label="Navigation Link" href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue →</Link>
-          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content →</Link>
+          <Link href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue →</Link>
+          <Link href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content →</Link>
         </div>
       </div>
 
       {/* Tabs */}
       <div style={{ background: '#0c0c10', borderBottom: '1px solid #1a1a22', padding: '0 32px', display: 'flex', gap: 0 }}>
         {(['draft', 'scheduled', 'posted'] as const).map(t => (
-          <button aria-label="Interactive Button" key={t} onClick={() => setTab(t)} style={{
+          <button key={t} onClick={() => setTab(t)} style={{
             padding: '14px 20px', background: 'none',
             border: 'none', borderBottom: `2px solid ${tab === t ? '#F5A623' : 'transparent'}`,
             color: tab === t ? '#F5A623' : '#5a5a6a',
@@ -175,7 +175,7 @@ export default function AdminSocialPage() {
                   {/* Actions */}
                   {tab === 'draft' && (
                     <div style={{ display: 'flex', gap: 10 }}>
-                      <button aria-label="Interactive Button"
+                      <button
                         onClick={() => approve(post.id)}
                         disabled={approvingId === post.id}
                         style={{
@@ -187,7 +187,7 @@ export default function AdminSocialPage() {
                       >
                         {approvingId === post.id ? 'Approving...' : '✓ Approve & Schedule'}
                       </button>
-                      <button aria-label="Interactive Button"
+                      <button
                         onClick={() => reject(post.id)}
                         style={{
                           padding: '9px 20px', borderRadius: 8,

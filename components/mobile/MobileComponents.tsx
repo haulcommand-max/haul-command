@@ -128,7 +128,7 @@ export function MobileChip({ label, active, variant = 'filter', onClick }: ChipP
   if (variant === 'warning') cls += ' m-chip--tag m-chip--warning';
 
   return (
-    <button aria-label="Interactive Button" className={cls} onClick={onClick} type="button">
+    <button className={cls} onClick={onClick} type="button">
       {label}
     </button>
   );
@@ -151,7 +151,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export function MobileButton({ variant = 'primary', size = 'default', children, className, ...props }: ButtonProps) {
   const cls = `m-btn m-btn--${variant} ${size === 'small' ? 'm-btn--small' : ''} ${className || ''}`;
   return (
-    <button aria-label="Interactive Button" className={cls} {...props}>
+    <button className={cls} {...props}>
       {children}
     </button>
   );
@@ -189,7 +189,7 @@ export function MobileSectionHeader({ title, action, onAction }: SectionHeaderPr
     <div className="m-section-header">
       <h2 className="m-section-header__title">{title}</h2>
       {action && (
-        <button aria-label="Interactive Button" className="m-section-header__action" onClick={onAction}>
+        <button className="m-section-header__action" onClick={onAction}>
           {action}
         </button>
       )}
@@ -257,7 +257,7 @@ export function MobileSegments({ tabs, active, onChange }: SegmentsProps) {
   return (
     <div className="m-segments">
       {tabs.map((tab) => (
-        <button aria-label="Interactive Button"
+        <button
           key={tab}
           className={`m-segment ${active === tab ? 'm-segment--active' : ''}`}
           onClick={() => onChange(tab)}

@@ -170,7 +170,7 @@ export default function SmartAppBanner({
             </div>
 
             {/* CTA */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={handleOpen}
                 className="shrink-0 px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm rounded-full transition-colors shadow-sm"
             >

@@ -91,7 +91,7 @@ export default function QuoteWizard() {
                                 {services.filter(s => s.category === 'addon').map(s => {
                                     const active = form.addons.includes(s.service_key);
                                     return (
-                                        <button aria-label="Interactive Button" key={s.service_key} type="button" onClick={() => {
+                                        <button key={s.service_key} type="button" onClick={() => {
                                             if (active) setForm({ ...form, addons: form.addons.filter(x => x !== s.service_key) });
                                             else setForm({ ...form, addons: [...form.addons, s.service_key] });
                                         }} style={{
@@ -108,7 +108,7 @@ export default function QuoteWizard() {
                         </div>
                     )}
 
-                    <button aria-label="Interactive Button" onClick={handleCalculate} style={{
+                    <button onClick={handleCalculate} style={{
                         width: '100%', padding: '14px', borderRadius: 12, border: 'none',
                         background: 'linear-gradient(135deg, #F59E0B, #D97706)',
                         color: '#030712', fontWeight: 700, fontSize: 15, cursor: 'pointer',

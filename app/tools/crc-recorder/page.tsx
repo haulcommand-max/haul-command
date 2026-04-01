@@ -21,7 +21,7 @@ export default function CRCRecorderPending() {
                     Voice recording and transcription for critical operational commands (Command-Response-Confirm) with legal chain of custody.
                     This tool is currently being provisioned.
                 </p>
-                <Link aria-label="Navigation Link" href="/tools" style={{
+                <Link href="/tools" style={{
                     display: 'inline-block', padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                     color: '#fff', textDecoration: 'none', borderRadius: 8, fontWeight: 600, transition: 'background 0.2s'
                 }}>

@@ -81,7 +81,7 @@ export default function ReferralPage() {
                     <p style={{ fontSize: 13, color: '#6b7280', maxWidth: 400, margin: '0 auto 24px', lineHeight: 1.6 }}>
                         Generate your unique referral code. Share it in Facebook groups, text it to fellow drivers, or post it on social media.
                     </p>
-                    <button aria-label="Interactive Button" onClick={generateCode} disabled={generating} style={{
+                    <button onClick={generateCode} disabled={generating} style={{
                         padding: '12px 32px', borderRadius: 12, border: 'none',
                         background: generating ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#F1A91B,#d97706)',
                         color: generating ? '#6b7280' : '#000', fontSize: 14, fontWeight: 800, cursor: generating ? 'wait' : 'pointer',

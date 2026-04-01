@@ -303,8 +303,8 @@ export default function PostLoadPage() {
             <MobileScreenHeader
                 title="Post a Load"
                 rightAction={
-                    <Link aria-label="Navigation Link" href="/loads" style={{ textDecoration: 'none' }}>
-                        <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto' }}>Load Board</button>
+                    <Link href="/loads" style={{ textDecoration: 'none' }}>
+                        <button className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto' }}>Load Board</button>
                     </Link>
                 }
             />
@@ -394,7 +394,7 @@ export default function PostLoadPage() {
 
                         <Section title="Notes and advanced route data" description="The main flow stays clean. Open advanced only when the load truly needs precise coordinates.">
                             <Field label="Special notes" value={form.special_notes} placeholder="Escort meet points, bridge notes, or dispatcher instructions." rows={4} onChange={(value) => setField('special_notes', value)} />
-                            <button aria-label="Interactive Button" type="button" onClick={() => setShowAdvancedCoords((current) => !current)} style={togglePanelStyle}>
+                            <button type="button" onClick={() => setShowAdvancedCoords((current) => !current)} style={togglePanelStyle}>
                                 {showAdvancedCoords ? 'Hide advanced coordinates' : 'Show advanced coordinates'}
                             </button>
                             {showAdvancedCoords && (
@@ -553,7 +553,7 @@ function Field({
 
 function ChoiceButton({ active, label, note, onClick }: { active: boolean; label: string; note: string; onClick: () => void }) {
     return (
-        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{ padding: '14px 12px', borderRadius: 16, border: `1px solid ${active ? 'rgba(198, 146, 58, 0.36)' : 'rgba(255, 255, 255, 0.08)'}`, background: active ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)', color: 'inherit', textAlign: 'left', minHeight: 92 }}>
+        <button type="button" onClick={onClick} style={{ padding: '14px 12px', borderRadius: 16, border: `1px solid ${active ? 'rgba(198, 146, 58, 0.36)' : 'rgba(255, 255, 255, 0.08)'}`, background: active ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)', color: 'inherit', textAlign: 'left', minHeight: 92 }}>
             <div style={{ fontSize: 14, lineHeight: 1.3, fontWeight: 800, color: 'var(--m-text-primary, #f5f7fb)' }}>{label}</div>
             <div style={{ marginTop: 6, fontSize: 12, lineHeight: 1.5, color: active ? 'var(--hc-gold-400)' : 'var(--m-text-muted, #8f97a7)' }}>{note}</div>
         </button>
@@ -584,7 +584,7 @@ function InfoItem({ index, title, body }: { index: string; title: string; body: 
 function MatchPreview({ match, active, onClick }: { match: MatchCard; active: boolean; onClick: () => void }) {
     const accent = MATCH_ACCENTS[match.type];
     return (
-        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{ width: '100%', padding: 0, borderRadius: 20, border: `1px solid ${active ? accent.border : 'rgba(255, 255, 255, 0.08)'}`, background: 'transparent', color: 'inherit', textAlign: 'left' }}>
+        <button type="button" onClick={onClick} style={{ width: '100%', padding: 0, borderRadius: 20, border: `1px solid ${active ? accent.border : 'rgba(255, 255, 255, 0.08)'}`, background: 'transparent', color: 'inherit', textAlign: 'left' }}>
             <MobileCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'start' }}>
                     <div>

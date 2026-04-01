@@ -132,7 +132,7 @@ export default function OfflinePage() {
             </div>
 
             {/* Retry button */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => window.location.reload()}
                 style={{
                     position: 'relative',

@@ -230,7 +230,7 @@ function NationwideComparison({ currentState }: { currentState: StateData }) {
                         {compareStates.map((s, i) => (
                             <tr key={s.slug} className="border-b border-white/5 last:border-0" style={{ background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}>
                                 <td className="px-4 py-3">
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         href={`/escort-requirements/${s.slug}`}
                                         className="text-xs text-white/50 hover:text-amber-300 transition-colors font-medium"
                                     >
@@ -249,7 +249,7 @@ function NationwideComparison({ currentState }: { currentState: StateData }) {
             </div>
             <p className="text-[10px] text-white/25 mt-3 leading-relaxed">
                 Requirements shown are for the most common load type. Always verify with the state DOT permit office before departure.{" "}
-                <Link aria-label="Navigation Link" href="/escort-requirements" className="text-amber-400/60 hover:text-amber-400 transition-colors">View all states →</Link>
+                <Link href="/escort-requirements" className="text-amber-400/60 hover:text-amber-400 transition-colors">View all states →</Link>
             </p>
         </section>
     );
@@ -323,9 +323,9 @@ export default async function EscortRequirementsStatePage({
                 {/* Breadcrumb */}
                 <div className="border-b border-white/5 px-6 py-3">
                     <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30">
-                        <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
+                        <Link href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <Link aria-label="Navigation Link" href="/escort-requirements" className="hover:text-white/60 transition-colors">Escort Requirements</Link>
+                        <Link href="/escort-requirements" className="hover:text-white/60 transition-colors">Escort Requirements</Link>
                         <ChevronRight className="w-3 h-3" />
                         <span className="text-white/60">{state.name}</span>
                     </div>
@@ -449,7 +449,7 @@ export default async function EscortRequirementsStatePage({
                                 })),
                                 { label: "All States Requirements", href: "/escort-requirements" },
                             ].map((link) => (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     key={link.href}
                                     href={link.href}
                                     className="text-[11px] text-white/35 border border-white/8 rounded-lg px-3 py-2 hover:text-amber-300 hover:border-amber-500/25 transition-all text-center"

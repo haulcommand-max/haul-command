@@ -39,8 +39,8 @@ export default function CanadaPage() {
                     From the Bakken fields of Alberta to the Port of Prince Rupert, Haul Command connects heavy haul brokers with verified Canadian escort operators — province by province.
                 </p>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Link aria-label="Navigation Link" href="/directory/ca" style={primaryBtn}>Browse Canadian Directory</Link>
-                    <Link aria-label="Navigation Link" href="/regulatory-db" style={secondaryBtn}>Provincial Requirements</Link>
+                    <Link href="/directory/ca" style={primaryBtn}>Browse Canadian Directory</Link>
+                    <Link href="/regulatory-db" style={secondaryBtn}>Provincial Requirements</Link>
                 </div>
             </section>
 
@@ -71,7 +71,7 @@ export default function CanadaPage() {
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>🔁 Cross-Border Loads</h3>
                 <p style={{ fontSize: 13, color: 'var(--hc-muted, #aaa)', margin: 0, lineHeight: 1.6 }}>
                     Running a US–Canada cross-border load? Haul Command tracks CBSA crossing requirements and can match you with operators licensed in both countries.{' '}
-                    <Link aria-label="Navigation Link" href="/border" style={{ color: '#d97706' }}>View border crossing protocols →</Link>
+                    <Link href="/border" style={{ color: '#d97706' }}>View border crossing protocols →</Link>
                 </p>
             </section>
 
@@ -90,7 +90,7 @@ export default function CanadaPage() {
                     maintain their own escort vehicle certification programs. Quebec requires certified accompanateurs
                     for loads exceeding provincial oversize thresholds. Haul Command tracks all provincial requirements
                     and reciprocity agreements.{' '}
-                    <Link aria-label="Navigation Link" href="/regulatory-db?country=ca" style={{ color: '#d97706' }}>Browse the Canadian regulatory database →</Link>
+                    <Link href="/regulatory-db?country=ca" style={{ color: '#d97706' }}>Browse the Canadian regulatory database →</Link>
                 </p>
             </section>
         </main>

@@ -84,7 +84,7 @@ export default function EmailCaptureWidget({
                             className="w-full pl-10 pr-4 py-3 bg-hc-bg border border-hc-industrial-charcoal rounded-lg text-hc-text placeholder:text-hc-subtle focus:outline-none focus:border-hc-primary-gold focus:ring-1 focus:ring-hc-primary-gold transition-all"
                         />
                     </div>
-                    <button aria-label="Interactive Button"
+                    <button
                         type="submit"
                         disabled={status === 'loading'}
                         className="px-6 py-3 bg-hc-primary-gold text-hc-command-black font-bold rounded-lg hover:bg-hc-gold-400 transition-all shadow-[0_0_20px_rgba(198,146,58,0.2)] hover:shadow-[0_0_25px_rgba(198,146,58,0.4)] disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap"

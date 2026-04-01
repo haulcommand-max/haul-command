@@ -55,7 +55,7 @@ export default function EmergencyServicePage({ params }: any) {
     if (!svc) {
         return (
             <div style={{ padding: 40, textAlign: 'center', color: '#6b7280', background: '#0a0a0f', minHeight: '100vh' }}>
-                Service not found. <Link aria-label="Navigation Link" href="/directory" style={{ color: '#F1A91B' }}>Browse directory →</Link>
+                Service not found. <Link href="/directory" style={{ color: '#F1A91B' }}>Browse directory →</Link>
             </div>
         );
     }
@@ -66,7 +66,7 @@ export default function EmergencyServicePage({ params }: any) {
 
                 {/* Breadcrumb */}
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link aria-label="Navigation Link" href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
+                    <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
                     <span style={{ color: '#d1d5db' }}>{svc.label}</span>
                 </nav>
@@ -97,10 +97,10 @@ export default function EmergencyServicePage({ params }: any) {
 
                 {/* Primary CTA */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 32 }}>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '16px', borderRadius: 14, background: `linear-gradient(135deg,${svc.badgeColor},${svc.badgeColor}cc)`, color: '#fff', fontSize: 14, fontWeight: 800, textDecoration: 'none' }}>
+                    <Link href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '16px', borderRadius: 14, background: `linear-gradient(135deg,${svc.badgeColor},${svc.badgeColor}cc)`, color: '#fff', fontSize: 14, fontWeight: 800, textDecoration: 'none' }}>
                         <Zap style={{ width: 16, height: 16 }} /> Post Emergency Load
                     </Link>
-                    <Link aria-label="Navigation Link" href="/directory" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#d1d5db', fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
+                    <Link href="/directory" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#d1d5db', fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
                         Browse Available Drivers →
                     </Link>
                 </div>
@@ -113,7 +113,7 @@ export default function EmergencyServicePage({ params }: any) {
                     <div style={{ fontSize: 10, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', marginBottom: 10, letterSpacing: 1 }}>Other Emergency Services</div>
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         {Object.entries(EMERGENCY_SERVICES).filter(([s]) => s !== slug).map(([s, e]) => (
-                            <Link aria-label="Navigation Link" key={s} href={`/emergency/${s}`} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#6b7280' }}>{e.label}</Link>
+                            <Link key={s} href={`/emergency/${s}`} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#6b7280' }}>{e.label}</Link>
                         ))}
                     </div>
                 </div>

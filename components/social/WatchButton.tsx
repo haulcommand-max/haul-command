@@ -98,7 +98,7 @@ export function WatchButton({
 
     if (variant === "icon") {
         return (
-            <button aria-label="Interactive Button"
+            <button
                 onClick={toggle}
                 disabled={loading}
                 title={watching ? `Stop watching ${targetLabel}` : `Watch ${targetLabel}`}
@@ -119,7 +119,7 @@ export function WatchButton({
     }
 
     return (
-        <button aria-label="Interactive Button"
+        <button
             onClick={toggle}
             disabled={loading}
             className={`inline-flex items-center rounded-lg border font-bold uppercase tracking-wider transition-colors

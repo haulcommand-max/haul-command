@@ -198,7 +198,7 @@ export default function BatchJobsPage() {
             <p className="text-sm font-bold text-green-400">📄 Export Claim Outreach CSV</p>
             <p className="text-xs text-gray-500 mt-0.5">Download all analyzed high-risk listings (score ≥ 7) as CSV for email campaigns.</p>
           </div>
-          <button aria-label="Interactive Button"
+          <button
             onClick={downloadClaimCSV}
             className="px-4 py-2 bg-green-500 hover:bg-green-400 text-black font-bold text-sm rounded-xl transition-colors flex-shrink-0"
           >
@@ -240,7 +240,7 @@ export default function BatchJobsPage() {
                       <span>Time: {job.time}</span>
                     </div>
                   </div>
-                  <button aria-label="Interactive Button"
+                  <button
                     onClick={() => runJob(job)}
                     disabled={isRunning}
                     className={`px-4 py-2 font-bold text-sm rounded-xl transition-colors disabled:opacity-50 flex-shrink-0 ${

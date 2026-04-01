@@ -126,7 +126,7 @@ export function CorridorLeaderboard() {
                 {/* Corridor Selector */}
                 <div className="lb-tabs flex bg-[#111] p-1 rounded-xl border border-white/10 w-fit mx-auto sm:mx-0">
                     {CORRIDORS.map(c => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={c.key}
                             onClick={() => setActiveCorridor(c.key)}
                             className={cn(
@@ -227,7 +227,7 @@ export function CorridorLeaderboard() {
                         Finish more loads, earn stronger reviews, and move up for earlier access.
                     </p>
                 </div>
-                <Link aria-label="Navigation Link" href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-[#C6923A] hover:text-[#E0B05C] flex items-center gap-1 transition-colors whitespace-nowrap">
+                <Link href="/auth/signup" className="text-[10px] font-bold uppercase tracking-widest text-[#C6923A] hover:text-[#E0B05C] flex items-center gap-1 transition-colors whitespace-nowrap">
                     Claim Your Spot on This Corridor <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
             </div>

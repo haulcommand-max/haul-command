@@ -56,7 +56,7 @@ export default function AdminPricing() {
                                 />
                             </td>
                             <td>
-                                <button aria-label="Interactive Button" onClick={() => { if (confirm('Delete?')) supabase.from('pricing_benchmarks').delete().eq('id', row.id).then(fetchData) }}>x</button>
+                                <button onClick={() => { if (confirm('Delete?')) supabase.from('pricing_benchmarks').delete().eq('id', row.id).then(fetchData) }}>x</button>
                             </td>
                         </tr>
                     ))}

@@ -113,7 +113,7 @@ export function HcImageGenerator({
           ))}
         </select>
 
-        <button aria-label="Interactive Button"
+        <button
           onClick={handleGenerate}
           disabled={loading || !prompt.trim()}
           style={{
@@ -157,7 +157,7 @@ export function HcImageGenerator({
             </p>
           )}
           <div style={{ marginTop: "8px", display: "flex", gap: "8px" }}>
-            <button aria-label="Interactive Button"
+            <button
               onClick={() => navigator.clipboard.writeText(result.asset.public_url)}
               style={{
                 background: "#111820",

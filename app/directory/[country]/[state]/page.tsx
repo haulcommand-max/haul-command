@@ -104,9 +104,9 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
       <section className="py-10 px-4 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-4 text-xs text-gray-600">
-            <Link aria-label="Navigation Link" href="/directory" className="hover:text-amber-400">Directory</Link>
+            <Link href="/directory" className="hover:text-amber-400">Directory</Link>
             <span>/</span>
-            <Link aria-label="Navigation Link" href="/directory/us" className="hover:text-amber-400">United States</Link>
+            <Link href="/directory/us" className="hover:text-amber-400">United States</Link>
             <span>/</span>
             <span className="text-gray-400">{stateName}</span>
           </div>
@@ -123,7 +123,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
           </div>
           <div className="flex flex-wrap gap-3 mt-4">
             {corridorLinks.map(l => (
-              <Link aria-label="Navigation Link"
+              <Link
                 key={l.href}
                 href={l.href}
                 className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 hover:border-amber-500/30 hover:text-amber-400 transition-colors"
@@ -164,7 +164,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
               <option value="rating">Highest rated</option>
               <option value="reviews">Most reviewed</option>
             </select>
-            <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+            <button type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
               Filter
             </button>
           </form>
@@ -188,7 +188,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
                     isFeatured ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
                   }`}
                 >
-                  <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="absolute inset-0 z-10" />
+                  <Link href={`/providers/${op.slug || op.id}`} className="absolute inset-0 z-10" />
                   
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 min-w-0 pr-2">
@@ -229,7 +229,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
                     </div>
                     <div className="flex items-center justify-between mt-1">
                       {!isClaimed ? (
-                        <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
+                        <Link href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
                           Claim Profile →
                         </Link>
                       ) : (
@@ -238,7 +238,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
                         </span>
                       )}
                       
-                      <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
+                      <Link href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
                         View Profile
                       </Link>
                     </div>
@@ -252,7 +252,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
             <p className="text-gray-500 mb-4">
               {q ? `No operators found for "${q}" in ${stateName}` : `No operators found in ${stateName} yet.`}
             </p>
-            <Link aria-label="Navigation Link" href="/directory/us" className="text-amber-400 hover:underline text-sm">View all US operators →</Link>
+            <Link href="/directory/us" className="text-amber-400 hover:underline text-sm">View all US operators →</Link>
           </div>
         )}
 
@@ -260,7 +260,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-10">
             {page > 1 && (
-              <Link aria-label="Navigation Link"
+              <Link
                 href={`/directory/us/${state}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
               >
@@ -269,7 +269,7 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
             )}
             <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
             {page < totalPages && (
-              <Link aria-label="Navigation Link"
+              <Link
                 href={`/directory/us/${state}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}&sort=${sortBy}`}
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
               >
@@ -288,10 +288,10 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
             Claim your free Haul Command profile and get found by brokers hauling through {stateName}.
           </p>
           <div className="flex gap-3">
-            <Link aria-label="Navigation Link" href="/claim" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link href="/claim" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
               Claim Free Listing
             </Link>
-            <Link aria-label="Navigation Link" href={`/route-check?state=${stateCode}`} className="px-4 py-2 border border-white/20 text-white text-sm rounded-xl hover:border-white/40 transition-colors">
+            <Link href={`/route-check?state=${stateCode}`} className="px-4 py-2 border border-white/20 text-white text-sm rounded-xl hover:border-white/40 transition-colors">
               {stateCode} Route Check
             </Link>
           </div>

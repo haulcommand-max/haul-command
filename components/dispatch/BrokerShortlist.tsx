@@ -90,7 +90,7 @@ export function BrokerShortlist({ loadId, onDispatch }: BrokerShortlistProps) {
             <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center">
                 <AlertTriangle className="w-6 h-6 text-red-400 mx-auto mb-2" />
                 <p className="text-sm text-red-400">{error}</p>
-                <button aria-label="Interactive Button" onClick={generateShortlist} className="mt-3 px-4 py-1.5 bg-slate-700 text-white text-xs font-bold rounded-lg hover:bg-slate-600">
+                <button onClick={generateShortlist} className="mt-3 px-4 py-1.5 bg-slate-700 text-white text-xs font-bold rounded-lg hover:bg-slate-600">
                     Retry
                 </button>
             </div>
@@ -112,7 +112,7 @@ export function BrokerShortlist({ loadId, onDispatch }: BrokerShortlistProps) {
                         {escorts.length} escorts ranked • {cached ? 'cached' : 'fresh'}
                     </p>
                 </div>
-                <button aria-label="Interactive Button" onClick={generateShortlist} className="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white border border-slate-700 rounded-lg hover:bg-slate-800 transition-colors">
+                <button onClick={generateShortlist} className="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white border border-slate-700 rounded-lg hover:bg-slate-800 transition-colors">
                     Refresh
                 </button>
             </div>
@@ -212,7 +212,7 @@ function EscortCard({ escort, isTopPick, isDispatched, isDispatching, onDispatch
                         <CheckCircle className="w-4 h-4" /> Sent
                     </div>
                 ) : (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={onDispatch}
                         disabled={isDispatching}
                         className={`flex items-center gap-1.5 px-4 py-2.5 font-black text-xs rounded-xl transition-all ${isTopPick

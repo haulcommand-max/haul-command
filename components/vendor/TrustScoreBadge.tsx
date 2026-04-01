@@ -36,7 +36,7 @@ export default function TrustScoreBadge({ trustScore, trustTier, factorsJson, co
 
     return (
         <div className="relative inline-block">
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setShowFactors(!showFactors)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-sm font-medium border transition-colors ${style.bg} ${style.text} hover:brightness-95`}
             >

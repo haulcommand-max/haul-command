@@ -236,7 +236,7 @@ export default function HeroSearchBar({
                     {/* Submit — gold, matched height to inputs */}
                     <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
                         <div className="hidden md:block" style={{ height: 17 }} /> {/* spacer to align with labeled inputs, hidden on mobile for better centering */}
-                        <button aria-label="Interactive Button"
+                        <button
                             type="button"
                             onClick={submit}
                             disabled={!canSubmit}

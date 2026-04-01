@@ -112,7 +112,7 @@ export default function ClaimThisPlace({
                             <span className="flex items-center gap-1"><CheckCircle2 className="text-emerald-500" size={14} /> Lead capture</span>
                             <span className="flex items-center gap-1"><CheckCircle2 className="text-emerald-500" size={14} /> Analytics</span>
                         </div>
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => claimantAccountId ? setStep('method') : window.location.assign('/login?redirect=claim&place=' + placeId)}
                             className="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl inline-flex items-center gap-2 transition-colors"
                         >
@@ -133,7 +133,7 @@ export default function ClaimThisPlace({
                 {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
                 <div className="space-y-3">
                     {placePhone && (
-                        <button aria-label="Interactive Button" disabled={loading} onClick={() => startClaim('phone_otp')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
+                        <button disabled={loading} onClick={() => startClaim('phone_otp')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
                             <Phone className="text-emerald-400 shrink-0" size={22} />
                             <div>
                                 <p className="font-semibold text-white">Phone Verification (Fastest)</p>
@@ -143,14 +143,14 @@ export default function ClaimThisPlace({
                     )}
                     {placeWebsite && (
                         <>
-                            <button aria-label="Interactive Button" disabled={loading} onClick={() => startClaim('website_dns')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
+                            <button disabled={loading} onClick={() => startClaim('website_dns')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
                                 <Globe className="text-blue-400 shrink-0" size={22} />
                                 <div>
                                     <p className="font-semibold text-white">DNS Verification</p>
                                     <p className="text-xs text-zinc-500">Add a TXT record to your domain's DNS</p>
                                 </div>
                             </button>
-                            <button aria-label="Interactive Button" disabled={loading} onClick={() => startClaim('website_html_tag')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
+                            <button disabled={loading} onClick={() => startClaim('website_html_tag')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
                                 <ExternalLink className="text-purple-400 shrink-0" size={22} />
                                 <div>
                                     <p className="font-semibold text-white">HTML Tag Verification</p>
@@ -159,7 +159,7 @@ export default function ClaimThisPlace({
                             </button>
                         </>
                     )}
-                    <button aria-label="Interactive Button" disabled={loading} onClick={() => startClaim('email_domain_match')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
+                    <button disabled={loading} onClick={() => startClaim('email_domain_match')} className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl p-4 text-left flex items-center gap-4 transition-colors disabled:opacity-50">
                         <Mail className="text-orange-400 shrink-0" size={22} />
                         <div>
                             <p className="font-semibold text-white">Email Verification</p>
@@ -187,7 +187,7 @@ export default function ClaimThisPlace({
                     placeholder="000000"
                     className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-4 text-2xl text-center font-mono tracking-[0.5em] text-white mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                 />
-                <button aria-label="Interactive Button"
+                <button
                     disabled={loading || otpInput.length !== 6}
                     onClick={() => verify({ otpCode: otpInput })}
                     className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
@@ -207,7 +207,7 @@ export default function ClaimThisPlace({
                 <p className="text-sm text-zinc-400 mb-4">Add this TXT record to your domain's DNS settings:</p>
                 {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
                 <code className="block bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-sm text-emerald-400 font-mono mb-6 break-all">{dnsRecord}</code>
-                <button aria-label="Interactive Button"
+                <button
                     disabled={loading}
                     onClick={() => verify({ dnsVerified: true })}
                     className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
@@ -227,7 +227,7 @@ export default function ClaimThisPlace({
                 <p className="text-sm text-zinc-400 mb-4">Add this meta tag to the <code className="text-zinc-300">&lt;head&gt;</code> of your homepage:</p>
                 {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
                 <code className="block bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-sm text-purple-400 font-mono mb-6 break-all">{htmlTag}</code>
-                <button aria-label="Interactive Button"
+                <button
                     disabled={loading}
                     onClick={() => verify({ htmlTagVerified: true })}
                     className="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"

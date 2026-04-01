@@ -40,11 +40,11 @@ export default async function RadiusPage({ params }: { params: Promise<{ slug: s
 
             <nav className="text-sm breadcrumbs mb-6 text-slate-500">
                 <ul className="flex gap-2">
-                    <li><Link aria-label="Navigation Link" href={`/${country}`} className="hover:underline">{country.toUpperCase()}</Link></li>
+                    <li><Link href={`/${country}`} className="hover:underline">{country.toUpperCase()}</Link></li>
                     <li>/</li>
-                    <li><Link aria-label="Navigation Link" href={`/${country}/${state}`} className="hover:underline">{state.toUpperCase()}</Link></li>
+                    <li><Link href={`/${country}/${state}`} className="hover:underline">{state.toUpperCase()}</Link></li>
                     <li>/</li>
-                    <li><Link aria-label="Navigation Link" href={`/${country}/${state}/${citySlug}`} className="hover:underline">{cityData.city}</Link></li>
+                    <li><Link href={`/${country}/${state}/${citySlug}`} className="hover:underline">{cityData.city}</Link></li>
                     <li>/</li>
                     <li className="font-bold text-slate-900">Near {cityData.city} ({radius} mi)</li>
                 </ul>
@@ -63,7 +63,7 @@ export default async function RadiusPage({ params }: { params: Promise<{ slug: s
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">Cities in this Radius</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {cityData.nearbyCities.map((nearbySlug) => (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={nearbySlug}
                             href={`/${country}/${state}/${nearbySlug}`}
                             className="block p-4 bg-white rounded-lg border border-slate-200 hover:border-blue-500 transition-colors"
@@ -83,7 +83,7 @@ export default async function RadiusPage({ params }: { params: Promise<{ slug: s
                             ? <>We found <strong>{stats.count} provider{stats.count !== 1 ? 's' : ''}</strong> in this coverage zone.</>
                             : <>Coverage is building in this area. <strong>Check back soon.</strong></>}
                     </p>
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href={`/${country}/${state}/${citySlug}/pilot-car`}
                         className="inline-block px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors"
                     >

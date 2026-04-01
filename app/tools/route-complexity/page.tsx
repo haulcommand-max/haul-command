@@ -65,7 +65,7 @@ export default function RouteComplexityCalculator() {
                             <label style={{ fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>States Crossed (click to select)</label>
                             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 16 }}>
                                 {US_STATES.map(s => (
-                                    <button aria-label="Interactive Button" data-tool-interact key={s} onClick={() => toggleState(s)} style={{
+                                    <button data-tool-interact key={s} onClick={() => toggleState(s)} style={{
                                         padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer',
                                         background: selectedStates.includes(s) ? 'rgba(241,169,27,0.2)' : 'rgba(255,255,255,0.04)',
                                         border: `1px solid ${selectedStates.includes(s) ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -98,7 +98,7 @@ export default function RouteComplexityCalculator() {
                                 ))}
                             </div>
 
-                            <button aria-label="Interactive Button" data-tool-interact onClick={run} disabled={selectedStates.length === 0} style={{
+                            <button data-tool-interact onClick={run} disabled={selectedStates.length === 0} style={{
                                 width: '100%', padding: '12px', borderRadius: 12, border: 'none',
                                 background: selectedStates.length > 0 ? 'linear-gradient(135deg,#F1A91B,#d97706)' : 'rgba(255,255,255,0.06)',
                                 color: selectedStates.length > 0 ? '#000' : '#4b5563',
@@ -134,7 +134,7 @@ export default function RouteComplexityCalculator() {
                                 ))}
 
                                 <div style={{ marginTop: 20, textAlign: 'center' }}>
-                                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post This Load →</Link>
+                                    <Link href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post This Load →</Link>
                                 </div>
                             </div>
                         )}

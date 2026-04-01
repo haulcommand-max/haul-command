@@ -179,7 +179,7 @@ export default function EscrowCheckoutPage() {
                     </div>
                 )}
 
-                <button aria-label="Interactive Button"
+                <button
                     onClick={handleSubmit}
                     disabled={submitting || !form.escort_id || form.subtotal_usd <= 0}
                     style={{ width: '100%', padding: '0.9rem', borderRadius: 10, border: 'none', background: submitting || !form.escort_id ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#f59e0b,#d97706)', color: submitting || !form.escort_id ? '#4b5563' : '#000', fontSize: 15, fontWeight: 700, cursor: submitting || !form.escort_id ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}

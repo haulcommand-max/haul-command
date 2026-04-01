@@ -45,9 +45,9 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
             {/* ── Breadcrumb — desktop only (mobile uses Back chevron + Bottom Nav) ── */}
             <div className="hidden md:flex border-b border-hc-border-bare px-4 sm:px-6 py-3">
                 <div className="max-w-4xl mx-auto flex items-center gap-2 text-xs text-hc-subtle font-semibold uppercase tracking-widest">
-                    <Link aria-label="Navigation Link" href="/" className="hover:text-hc-gold-500 transition-colors">Home</Link>
+                    <Link href="/" className="hover:text-hc-gold-500 transition-colors">Home</Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-hc-gold-500 transition-colors">Directory</Link>
+                    <Link href="/directory" className="hover:text-hc-gold-500 transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-hc-text truncate max-w-[160px]">{provider.name}</span>
                 </div>
@@ -148,7 +148,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                                         </p>
                                     </div>
                                 </div>
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     href="/onboarding/start"
                                     className="relative z-10 shrink-0 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-hc-warning/10 hover:bg-hc-warning/20 border border-hc-warning/50 text-hc-warning focus:outline-none focus:ring-2 focus:ring-hc-warning/50 font-black text-xs uppercase tracking-widest rounded-lg transition-all hover:-translate-y-0.5 active:translate-y-0"
                                 >
@@ -376,7 +376,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                         </ul>
 
                         <div className="mt-6 pt-5 border-t border-hc-border-bare">
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 href={`/us/${provider.location.state?.toLowerCase() ?? ''}`}
                                 className="flex items-center gap-2 text-xs text-hc-gold-500 hover:text-hc-gold-400 font-bold uppercase tracking-widest transition-colors"
                             >

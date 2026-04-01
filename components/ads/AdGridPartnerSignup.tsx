@@ -123,7 +123,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                     <h3>What Type of Partner Are You?</h3>
                     <div className="type-grid">
                         {PARTNER_TYPES.map(t => (
-                            <button aria-label="Interactive Button"
+                            <button
                                 key={t.value}
                                 className={`type-card ${form.partner_type === t.value ? 'selected' : ''}`}
                                 onClick={() => setForm(f => ({ ...f, partner_type: t.value }))}
@@ -135,7 +135,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                         ))}
                     </div>
 
-                    <button aria-label="Interactive Button" className="next-btn" onClick={() => setStep(2)} disabled={!form.company_name || !form.contact_email || !form.partner_type}>
+                    <button className="next-btn" onClick={() => setStep(2)} disabled={!form.company_name || !form.contact_email || !form.partner_type}>
                         Next →
                     </button>
                 </div>
@@ -146,7 +146,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                     <h2>Choose Your Billing Model</h2>
                     <div className="billing-grid">
                         {BILLING_METHODS.map(b => (
-                            <button aria-label="Interactive Button"
+                            <button
                                 key={b.value}
                                 className={`billing-card ${form.billing_method === b.value ? 'selected' : ''}`}
                                 onClick={() => setForm(f => ({ ...f, billing_method: b.value }))}
@@ -157,8 +157,8 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                         ))}
                     </div>
                     <div className="btn-row">
-                        <button aria-label="Interactive Button" className="back-btn" onClick={() => setStep(1)}>← Back</button>
-                        <button aria-label="Interactive Button" className="next-btn" onClick={() => setStep(3)}>Next →</button>
+                        <button className="back-btn" onClick={() => setStep(1)}>← Back</button>
+                        <button className="next-btn" onClick={() => setStep(3)}>Next →</button>
                     </div>
                 </div>
             )}
@@ -201,8 +201,8 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
                     </div>
 
                     <div className="btn-row">
-                        <button aria-label="Interactive Button" className="back-btn" onClick={() => setStep(2)}>← Back</button>
-                        <button aria-label="Interactive Button" className="submit-btn" onClick={handleSubmit} disabled={loading}>
+                        <button className="back-btn" onClick={() => setStep(2)}>← Back</button>
+                        <button className="submit-btn" onClick={handleSubmit} disabled={loading}>
                             {loading ? 'Creating Account...' : '🚀 Launch Campaign'}
                         </button>
                     </div>

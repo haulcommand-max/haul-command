@@ -31,7 +31,7 @@ export default function StartPage() {
 
             <div className="grid gap-4">
                 {EQUIPMENT_TYPES.map((eq) => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={eq.id}
                         onClick={() => handleSelect(eq.id)}
                         className="group relative p-4 rounded-xl border border-brand-steel/50 bg-brand-charcoal/40 hover:bg-brand-charcoal/80 transition-all text-left flex items-center gap-4 hover:border-brand-gold/50"

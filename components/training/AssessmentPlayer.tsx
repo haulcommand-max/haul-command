@@ -127,7 +127,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
           fontFamily: "'Inter','Segoe UI',system-ui,sans-serif",
           padding: 32, maxWidth: 800, margin: '0 auto',
         }}>
-          <button aria-label="Interactive Button" onClick={() => setShowReview(false)} style={{
+          <button onClick={() => setShowReview(false)} style={{
             background: 'none', border: 'none', color: '#F5A623',
             fontSize: 14, cursor: 'pointer', marginBottom: 24,
           }}>
@@ -220,7 +220,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
             )}
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={onClose}
                 style={{
                   padding: '12px 24px', borderRadius: 10,
@@ -231,7 +231,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
               >
                 View My Profile →
               </button>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={onClose}
                 style={{
                   padding: '12px 24px', borderRadius: 10,
@@ -261,7 +261,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={() => setShowReview(true)}
                 style={{
                   padding: '12px 24px', borderRadius: 10,
@@ -271,7 +271,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
               >
                 Review Missed Questions
               </button>
-              <button aria-label="Interactive Button"
+              <button
                 onClick={onClose}
                 style={{
                   padding: '12px 24px', borderRadius: 10,
@@ -302,7 +302,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
         padding: '16px 24px',
         display: 'flex', alignItems: 'center', gap: 16,
       }}>
-        <button aria-label="Interactive Button" onClick={onClose} style={{
+        <button onClick={onClose} style={{
           background: 'none', border: 'none', color: '#6a6a7a',
           fontSize: 14, cursor: 'pointer',
         }}>
@@ -359,7 +359,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
             {current.options.map(opt => {
               const selected = answers[current.id] === opt.id;
               return (
-                <button aria-label="Interactive Button"
+                <button
                   key={opt.id}
                   id={`option-${opt.id}`}
                   onClick={() => selectAnswer(current.id, opt.id)}
@@ -415,7 +415,7 @@ export function AssessmentPlayer({ module, questions, onClose, onComplete }: Pro
               {Object.keys(answers).length} of {totalQ} answered
             </span>
 
-            <button aria-label="Interactive Button"
+            <button
               onClick={goNext}
               disabled={!answers[current.id] || submitting}
               style={{

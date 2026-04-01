@@ -275,7 +275,7 @@ export function CoverageEstimateForm({
                         </div>
 
                         {/* Night move toggle */}
-                        <button aria-label="Interactive Button"
+                        <button
                             type="button"
                             onClick={() => setNight(!nightMove)}
                             className={`flex items-center gap-2.5 w-full rounded-lg border px-3 py-2.5 transition-colors ${nightMove
@@ -296,7 +296,7 @@ export function CoverageEstimateForm({
                             </div>
                         </button>
 
-                        <button aria-label="Interactive Button"
+                        <button
                             type="submit"
                             className="w-full py-2.5 rounded-xl text-xs font-bold text-black transition-all flex items-center justify-center gap-1.5"
                             style={{ background: "#F1A91B" }}
@@ -352,7 +352,7 @@ export function CoverageEstimateForm({
                                     placeholder="your@email.com"
                                     className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-white/25 focus:outline-none focus:border-amber-500/40"
                                 />
-                                <button aria-label="Interactive Button"
+                                <button
                                     type="submit"
                                     disabled={submitting || !email}
                                     className="w-full py-2 rounded-lg text-xs font-bold text-black flex items-center justify-center gap-1.5 disabled:opacity-60 transition-all"

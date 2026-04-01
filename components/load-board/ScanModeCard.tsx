@@ -149,13 +149,13 @@ export function ScanModeCard({ card, onInterested, onSkip, className }: ScanMode
             {/* ── Tap Action Buttons (alternative to swipe for desktop) ── */}
             {!isBooked && (
                 <div className="flex gap-2 mt-2 px-1">
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => onSkip?.(card.id)}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border border-hc-border text-hc-subtle hover:text-hc-danger hover:border-hc-danger/30 text-xs font-bold uppercase tracking-widest transition-colors min-h-[40px]"
                     >
                         <X className="w-3.5 h-3.5" /> Skip
                     </button>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => onInterested?.(card.id)}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-hc-gold-500/10 border border-hc-gold-500/30 text-hc-gold-500 hover:bg-hc-gold-500/20 text-xs font-bold uppercase tracking-widest transition-colors min-h-[40px]"
                     >

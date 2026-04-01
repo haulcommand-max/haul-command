@@ -107,7 +107,7 @@ export function HeroBillboard({ ads, rotationMs = 8000, className = '' }: HeroBi
           display: 'flex', gap: 6, justifyContent: 'center', marginTop: 12,
         }}>
           {ads.map((_, i) => (
-            <button aria-label="Interactive Button" key={i} onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+            <button key={i} onClick={(e) => { e.stopPropagation(); setIdx(i); }}
               style={{
                 width: 8, height: 8, borderRadius: '50%', border: 'none', cursor: 'pointer',
                 background: i === idx ? 'var(--hc-gold-400)' : 'rgba(255,255,255,0.15)',

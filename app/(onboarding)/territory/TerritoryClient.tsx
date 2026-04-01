@@ -49,7 +49,7 @@ function TerritoryPageInner() {
                 {REGIONS.map((region) => {
                     const isSelected = selected.includes(region.id);
                     return (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={region.id}
                             onClick={() => toggleRegion(region.id)}
                             className={cn(
@@ -72,7 +72,7 @@ function TerritoryPageInner() {
                 })}
             </div>
 
-            <button aria-label="Interactive Button"
+            <button
                 onClick={handleNext}
                 disabled={selected.length === 0}
                 className={cn(

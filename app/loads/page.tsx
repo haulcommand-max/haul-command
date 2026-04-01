@@ -94,7 +94,7 @@ export default async function LoadBoardPage() {
             <p className="text-amber-400 font-medium">
               🔒 Sign up free to respond to loads and see full details
             </p>
-            <Link aria-label="Navigation Link"
+            <Link
               href="/auth/register"
               className="inline-block mt-2 px-6 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors"
             >
@@ -154,7 +154,7 @@ export default async function LoadBoardPage() {
                   <div className="blur-sm text-xs text-gray-500 select-none">
                     Broker: ABC Logistics · Contact: broker@example.com
                   </div>
-                  <Link aria-label="Navigation Link"
+                  <Link
                     href="/auth/register"
                     className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black text-sm font-semibold rounded-lg transition-colors"
                   >
@@ -167,7 +167,7 @@ export default async function LoadBoardPage() {
         ) : (
           <div className="text-center py-16">
             <p className="text-gray-500 text-lg mb-4">No loads posted yet. Check back soon!</p>
-            <Link aria-label="Navigation Link"
+            <Link
               href="/auth/register"
               className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
             >
@@ -182,13 +182,13 @@ export default async function LoadBoardPage() {
             Looking to post a load? Reach verified operators across 120 countries.
           </p>
           <div className="flex justify-center gap-4">
-            <Link aria-label="Navigation Link"
+            <Link
               href="/auth/register"
               className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
             >
               Post a Load — Free
             </Link>
-            <Link aria-label="Navigation Link"
+            <Link
               href="/directory"
               className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors"
             >

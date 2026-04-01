@@ -58,14 +58,14 @@ export function ReportBreakdownButton({ jobId, corridor, originalRate = 380 }: B
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button aria-label="Interactive Button" onClick={() => setShowForm(false)} style={{ flex: 1, padding: '8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 12 }}>Cancel</button>
-          <button aria-label="Interactive Button" onClick={handleReport} disabled={reporting} style={{ flex: 1, padding: '8px', borderRadius: 6, border: 'none', background: '#ff3b30', color: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>{reporting ? 'Dispatching...' : 'Dispatch Replacement'}</button>
+          <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 12 }}>Cancel</button>
+          <button onClick={handleReport} disabled={reporting} style={{ flex: 1, padding: '8px', borderRadius: 6, border: 'none', background: '#ff3b30', color: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>{reporting ? 'Dispatching...' : 'Dispatch Replacement'}</button>
         </div>
       </div>
     );
   }
 
   return (
-    <button aria-label="Interactive Button" onClick={() => setShowForm(true)} style={{ padding: '8px 16px', borderRadius: 8, border: '1px solid rgba(255,59,48,0.3)', background: 'rgba(255,59,48,0.08)', color: '#ff3b30', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>🚨 Report Breakdown</button>
+    <button onClick={() => setShowForm(true)} style={{ padding: '8px 16px', borderRadius: 8, border: '1px solid rgba(255,59,48,0.3)', background: 'rgba(255,59,48,0.08)', color: '#ff3b30', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>🚨 Report Breakdown</button>
   );
 }

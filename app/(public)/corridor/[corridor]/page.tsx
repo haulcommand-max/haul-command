@@ -142,7 +142,7 @@ export default async function CorridorPage({ params }: Props) {
                                         {i > 0 && <span className="text-hc-subtle">/</span>}
                                         {i === breadcrumbs.length - 1
                                             ? <span className="text-hc-text">{b.name}</span>
-                                            : <Link aria-label="Navigation Link" href={b.href} className="hover:text-hc-gold-400 transition-colors">{b.name}</Link>}
+                                            : <Link href={b.href} className="hover:text-hc-gold-400 transition-colors">{b.name}</Link>}
                                     </li>
                                 ))}
                             </ol>
@@ -295,7 +295,7 @@ export default async function CorridorPage({ params }: Props) {
                                     const stateDisplay = (p.region ?? '')
                                         .split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
                                     return (
-                                        <Link aria-label="Navigation Link" key={p.slug} href={`/${p.slug}`}
+                                        <Link key={p.slug} href={`/${p.slug}`}
                                             className="bg-hc-surface border border-hc-border hover:border-hc-gold-500/40 hover:bg-hc-elevated rounded-xl p-4 transition-all group">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <span className="text-2xl">{p.country === 'CA' ? '🍁' : '🇺🇸'}</span>
@@ -336,7 +336,7 @@ export default async function CorridorPage({ params }: Props) {
                             <p className="text-hc-muted text-sm mb-4">
                                 Get matched with certified escort operators who know this corridor.
                             </p>
-                            <Link aria-label="Navigation Link" href="/start?role=broker"
+                            <Link href="/start?role=broker"
                                 className="inline-flex items-center gap-2 bg-hc-gold-500 hover:bg-hc-gold-400 text-hc-bg font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Post a Move →
                             </Link>
@@ -347,7 +347,7 @@ export default async function CorridorPage({ params }: Props) {
                             <p className="text-hc-muted text-sm mb-4">
                                 Get discovered by brokers moving loads along this corridor every week.
                             </p>
-                            <Link aria-label="Navigation Link" href="/start?role=escort"
+                            <Link href="/start?role=escort"
                                 className="inline-flex items-center gap-2 bg-hc-elevated hover:bg-hc-high text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors border border-hc-border">
                                 Create Free Profile →
                             </Link>

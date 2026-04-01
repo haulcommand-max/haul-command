@@ -112,7 +112,7 @@ export function ProfileGallery({
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
                             {/* Remove button (edit mode) */}
                             {editable && onRemove && (
-                                <button aria-label="Interactive Button"
+                                <button
                                     onClick={async (ev) => {
                                         ev.stopPropagation();
                                         await onRemove(i);
@@ -168,7 +168,7 @@ export function ProfileGallery({
                         onClick={() => setLightboxIndex(null)}
                     >
                         {/* Close */}
-                        <button aria-label="Interactive Button"
+                        <button
                             className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                             onClick={() => setLightboxIndex(null)}
                         >
@@ -177,7 +177,7 @@ export function ProfileGallery({
 
                         {/* Prev */}
                         {photos.length > 1 && (
-                            <button aria-label="Interactive Button"
+                            <button
                                 className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                                 onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
                             >
@@ -211,7 +211,7 @@ export function ProfileGallery({
 
                         {/* Next */}
                         {photos.length > 1 && (
-                            <button aria-label="Interactive Button"
+                            <button
                                 className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                                 onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
                             >
@@ -222,7 +222,7 @@ export function ProfileGallery({
                         {/* Dots */}
                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                             {photos.map((_, i) => (
-                                <button aria-label="Interactive Button"
+                                <button
                                     key={i}
                                     className={cn(
                                         "w-1.5 h-1.5 rounded-full transition-all",

@@ -91,7 +91,7 @@ export default function MobileProfilePage() {
                                 </p>
                             </div>
                         </div>
-                        <button aria-label="Interactive Button" className="w-10 h-10 rounded-full bg-hc-surface border border-hc-border flex items-center justify-center text-hc-muted hover:text-hc-text hover:border-hc-gold-500 transition-colors">
+                        <button className="w-10 h-10 rounded-full bg-hc-surface border border-hc-border flex items-center justify-center text-hc-muted hover:text-hc-text hover:border-hc-gold-500 transition-colors">
                             <Edit3 className="w-4 h-4" />
                         </button>
                     </div>
@@ -115,7 +115,7 @@ export default function MobileProfilePage() {
 
                 {/* Settings Links */}
                 <div className="space-y-1">
-                    <button aria-label="Interactive Button" className="w-full flex items-center gap-3 p-4 bg-hc-surface hover:bg-hc-elevated rounded-xl transition-colors text-left border border-hc-border-bare">
+                    <button className="w-full flex items-center gap-3 p-4 bg-hc-surface hover:bg-hc-elevated rounded-xl transition-colors text-left border border-hc-border-bare">
                         <Settings className="w-5 h-5 text-hc-subtle" />
                         <span className="text-sm font-bold text-hc-muted uppercase tracking-wider">Account Settings</span>
                     </button>

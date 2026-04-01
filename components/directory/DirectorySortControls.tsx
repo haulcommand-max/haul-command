@@ -109,7 +109,7 @@ export default function DirectorySortControls({
                 const isActive = opt.value === value;
                 const Icon = opt.icon;
                 return (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={opt.value}
                         type="button"
                         onClick={() => onChange(opt.value)}

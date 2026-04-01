@@ -53,7 +53,7 @@ export function EmergencyBroadcast({ onEmergency, disabled = false }: EmergencyB
             : '🚨 EMERGENCY';
 
     return (
-        <button aria-label="Interactive Button"
+        <button
             onClick={handleClick}
             disabled={disabled || sent}
             style={{

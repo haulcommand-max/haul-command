@@ -99,7 +99,7 @@ export default function AICommandCenter() {
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
                     {AGENTS.map(agent => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={agent.id}
                             onClick={() => switchAgent(agent)}
                             style={{
@@ -128,7 +128,7 @@ export default function AICommandCenter() {
                     padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)',
                     display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(11,17,32,0.8)', backdropFilter: 'blur(8px)',
                 }}>
-                    <button aria-label="Interactive Button" onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: 18 }}>☰</button>
+                    <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: 18 }}>☰</button>
                     <span style={{ fontSize: 24 }}>{activeAgent.icon}</span>
                     <div>
                         <div style={{ fontSize: 15, fontWeight: 700, color: '#F9FAFB' }}>{activeAgent.name}</div>
@@ -211,7 +211,7 @@ export default function AICommandCenter() {
                                 fontFamily: 'inherit',
                             }}
                         />
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={sendMessage}
                             disabled={!input.trim() || loading}
                             style={{

@@ -159,7 +159,7 @@ export default function HomeClient({
                 backdropFilter: 'blur(24px) saturate(1.5)',
             }}>
                 <div className="hc-container h-14 sm:h-16 flex items-center justify-between">
-                    <Link aria-label="Navigation Link" href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, padding: '8px 10px 8px 0', textDecoration: 'none' }}>
+                    <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, padding: '8px 10px 8px 0', textDecoration: 'none' }}>
                         <Image
                             src={LOGO_SRC} alt={ALT_TEXT} width={220} height={48} priority
                             className="nav-brand-logo"
@@ -167,12 +167,12 @@ export default function HomeClient({
                         />
                     </Link>
                     <div className="landing-desktop-only items-center" style={{ gap: '2rem', fontSize: '11px', color: '#888', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.15em' }}>
-                        <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Pilot Car Directory</Link>
-                        <Link aria-label="Navigation Link" href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Oversize Load Board</Link>
-                        <Link aria-label="Navigation Link" href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Permit & Route Tools</Link>
-                        <Link aria-label="Navigation Link" href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">State Escort Requirements</Link>
-                        <Link aria-label="Navigation Link" href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
-                        <Link aria-label="Navigation Link" href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
+                        <Link href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Pilot Car Directory</Link>
+                        <Link href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Oversize Load Board</Link>
+                        <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors py-2">Permit & Route Tools</Link>
+                        <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">State Escort Requirements</Link>
+                        <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
+                        <Link href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
                             Training
                             <span style={{
                                 background: 'linear-gradient(135deg, #F5A623, #e08820)',
@@ -182,7 +182,7 @@ export default function HomeClient({
                         </Link>
                     </div>
                     <div className="flex items-center" style={{ flexShrink: 0 }}>
-                        <Link aria-label="Navigation Link" href="/login" className="hover:text-white transition-colors hc-btn hc-btn--black" style={{ fontSize: '12px', padding: '10px 18px', borderRadius: '12px' }}>
+                        <Link href="/login" className="hover:text-white transition-colors hc-btn hc-btn--black" style={{ fontSize: '12px', padding: '10px 18px', borderRadius: '12px' }}>
                             Sign In
                         </Link>
                     </div>
@@ -305,7 +305,7 @@ export default function HomeClient({
                                 Top-Ranked Operators
                             </h2>
                         </div>
-                        <Link aria-label="Navigation Link" href="/leaderboards" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors hidden sm:inline-flex items-center gap-1">
+                        <Link href="/leaderboards" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors hidden sm:inline-flex items-center gap-1">
                             Full Leaderboard <ArrowRight className="w-3 h-3" />
                         </Link>
                     </motion.div>
@@ -321,7 +321,7 @@ export default function HomeClient({
                                 <div className="text-[11px] text-[#8fa3b8]">Get verified, earn your position, get priority loads.</div>
                             </div>
                         </div>
-                        <Link aria-label="Navigation Link" href="/onboarding/claim" className="inline-flex items-center gap-2 text-xs font-bold text-black px-5 py-2.5 rounded-xl transition-all" style={{ background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)" }}>
+                        <Link href="/onboarding/claim" className="inline-flex items-center gap-2 text-xs font-bold text-black px-5 py-2.5 rounded-xl transition-all" style={{ background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)" }}>
                             Claim Now <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                     </div>
@@ -339,7 +339,7 @@ export default function HomeClient({
                     </motion.div>
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                         {FREE_TOOLS.map(({ href, IconCmp, title, desc, color, cta }, i) => (
-                            <Link aria-label="Navigation Link" key={href} href={href}>
+                            <Link key={href} href={href}>
                                 <motion.div custom={i} variants={fadeUp}
                                     className="intelligence-card group cursor-pointer h-full" style={{ "--accent-color": color } as React.CSSProperties}>
                                     <div className="mb-3 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl mx-auto" style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
@@ -478,7 +478,7 @@ export default function HomeClient({
                             <p className="text-[#8fa3b8] text-xs sm:text-sm mb-6 max-w-xs mx-auto leading-relaxed">
                                 Free for escorts. Brokers get 10 boost credits on activation. No card required.
                             </p>
-                            <Link aria-label="Navigation Link" href="/onboarding/start"
+                            <Link href="/onboarding/start"
                                 className="inline-flex items-center gap-2 text-black font-bold text-sm rounded-2xl transition-all press-scale"
                                 style={{
                                     minHeight: 48,

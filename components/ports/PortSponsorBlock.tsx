@@ -182,7 +182,7 @@ export function PortSponsorBlock({
                 <p className="text-xs text-white/40 mb-3">
                     Your bid of ${bidAmount}/mo is active. You now own the {selectedTier} slot for {portName}.
                 </p>
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => window.location.reload()}
                     className="px-4 py-2 rounded-lg text-xs font-bold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
                 >
@@ -265,7 +265,7 @@ export function PortSponsorBlock({
                         <p className="text-[10px] text-white/30 mb-3">
                             {pricing ? `Suggested: $${pricing.suggestedPrice}/mo` : 'From $199/month'}
                         </p>
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={handleCtaClick}
                             className="w-full py-2.5 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-1.5 transition-all"
                             style={{ background: "#F1A91B" }}
@@ -284,7 +284,7 @@ export function PortSponsorBlock({
                             const isSelected = selectedTier === tier.id;
                             const isTaken = tier.id === "domination" && dominationTaken;
                             return (
-                                <button aria-label="Interactive Button"
+                                <button
                                     key={tier.id}
                                     disabled={isTaken}
                                     onClick={() => setSelectedTier(tier.id)}
@@ -365,7 +365,7 @@ export function PortSponsorBlock({
                             />
                         </div>
 
-                        <button aria-label="Interactive Button"
+                        <button
                             type="submit"
                             disabled={submitting || !email || bidAmount < (TIERS.find((t) => t.id === selectedTier)?.price || 0)}
                             className="w-full py-2.5 mt-1 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-2 disabled:opacity-60 transition-all shadow-[0_0_20px_rgba(241,169,27,0.2)] hover:shadow-[0_0_30px_rgba(241,169,27,0.4)]"

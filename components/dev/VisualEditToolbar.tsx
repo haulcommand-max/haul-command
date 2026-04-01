@@ -111,7 +111,7 @@ export function VisualEditToolbar() {
 
     if (minimized) {
         return (
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setMinimized(false)}
                 style={{
                     position: 'fixed', bottom: 16, right: 16, zIndex: 9999,
@@ -149,7 +149,7 @@ export function VisualEditToolbar() {
             >
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                     <span style={{ fontWeight: 700, color: '#3b82f6' }}>🔧 Edit Mode</span>
-                    <button aria-label="Interactive Button" onClick={() => setMinimized(true)}
+                    <button onClick={() => setMinimized(true)}
                         style={{ background: 'none', border: 'none', color: '#71717a', cursor: 'pointer' }}>
                         ─
                     </button>
@@ -162,7 +162,7 @@ export function VisualEditToolbar() {
                 <div style={{ color: '#71717a', marginBottom: 4 }}>Viewport</div>
                 <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                     {(Object.keys(VIEWPORT_SIZES) as ViewportPreset[]).map((p) => (
-                        <button aria-label="Interactive Button" key={p} onClick={() => handleViewport(p)}
+                        <button key={p} onClick={() => handleViewport(p)}
                             style={{
                                 padding: '2px 8px', borderRadius: 6, fontSize: 11, cursor: 'pointer',
                                 border: viewport === p ? '1px solid #3b82f6' : '1px solid #3f3f46',
@@ -179,7 +179,7 @@ export function VisualEditToolbar() {
 
 function ToolbarButton({ label, onClick }: { label: string; onClick: () => void }) {
     return (
-        <button aria-label="Interactive Button" onClick={onClick}
+        <button onClick={onClick}
             style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '4px 8px', marginBottom: 2, borderRadius: 6,

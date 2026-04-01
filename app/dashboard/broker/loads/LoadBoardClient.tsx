@@ -105,7 +105,7 @@ function EscrowPaymentForm({
       )}
 
       <div className="flex gap-2 pt-1">
-        <Button aria-label="Interactive Button"
+        <Button
           size="sm"
           disabled={!stripe || !elements || status === "processing"}
           onClick={handleFundEscrow}
@@ -113,7 +113,7 @@ function EscrowPaymentForm({
         >
           {status === "processing" ? "Authorizing..." : `🔒 Fund Escrow — $${amount}`}
         </Button>
-        <Button aria-label="Interactive Button"
+        <Button
           onClick={onCancel}
           className="px-3 py-1.5 text-slate-500 text-sm hover:text-white transition"
         >
@@ -204,7 +204,7 @@ function CryptoEscrowForm({
         <label className="text-xs font-semibold text-slate-400">Select Stablecoin Network</label>
         <div className="grid grid-cols-2 gap-2">
           {CRYPTO_OPTIONS.map((c) => (
-            <Button aria-label="Interactive Button"
+            <Button
               key={c.id}
               onClick={() => setCurrency(c.id)}
               className={`p-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
@@ -240,7 +240,7 @@ function CryptoEscrowForm({
       )}
 
       <div className="flex gap-2 pt-3">
-        <Button aria-label="Interactive Button"
+        <Button
           size="sm"
           disabled={status === "processing" || !acknowledgesSlippage}
           onClick={handleFundEscrow}
@@ -248,7 +248,7 @@ function CryptoEscrowForm({
         >
           {status === "processing" ? "Authorizing..." : `🔒 Fund Crypto Escrow — $${amount}`}
         </Button>
-        <Button aria-label="Interactive Button"
+        <Button
           onClick={onCancel}
           className="px-3 py-1.5 text-slate-500 text-sm hover:text-white transition"
         >
@@ -345,7 +345,7 @@ export function LoadBoardClient({
             Manage open pilot car requests and secure escrow payments.
           </p>
         </div>
-        <Button aria-label="Interactive Button" variant="default">+ Post New Load</Button>
+        <Button variant="default">+ Post New Load</Button>
       </div>
 
       {/* Stripe OR Crypto Escrow Panel — rendered above the table when active */}
@@ -475,7 +475,7 @@ export function LoadBoardClient({
                 <TableCell className="text-right">
                   {l.status === "OPEN" ? (
                     <div className="flex items-center justify-end gap-2">
-                      <Button aria-label="Interactive Button"
+                      <Button
                         size="sm"
                         disabled={isFetching || !!activeEscrow}
                         onClick={() => handleAcceptBid(l.id, "mock-bid-id", "stripe", l.posted_rate > 0 ? l.posted_rate : 450)}
@@ -484,7 +484,7 @@ export function LoadBoardClient({
                           ? "Loading..."
                           : "Fund (Card)"}
                       </Button>
-                      <Button aria-label="Interactive Button"
+                      <Button
                         size="sm"
                         variant="outline"
                         disabled={isFetching || !!activeEscrow}

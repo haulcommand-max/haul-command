@@ -220,7 +220,7 @@ export default function OnboardingPage() {
                             </div>
                         </div>
                         {error && <div className="text-hc-danger text-sm">{error}</div>}
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={next} disabled={saving}
                             className="w-full py-3.5 bg-hc-gold-500 hover:bg-hc-gold-600 disabled:opacity-50 text-hc-bg font-black text-sm rounded-xl flex items-center justify-center gap-2 transition-all min-h-[52px] uppercase tracking-widest"
                         >
@@ -251,7 +251,7 @@ export default function OnboardingPage() {
                             ))}
                         </div>
                         {error && <div className="text-hc-danger text-sm">{error}</div>}
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={next} disabled={saving}
                             className="w-full py-3.5 bg-hc-gold-500 hover:bg-hc-gold-600 disabled:opacity-50 text-hc-bg font-black text-sm rounded-xl flex items-center justify-center gap-2 transition-all min-h-[52px] uppercase tracking-widest"
                         >
@@ -285,12 +285,12 @@ export default function OnboardingPage() {
                         <div className="p-4 bg-hc-elevated border border-hc-border rounded-xl">
                             <div className="text-sm font-bold text-hc-text mb-1">Enable push alerts</div>
                             <div className="text-hc-muted text-xs mb-3">Loads near your radius hit your phone first.</div>
-                            <button aria-label="Interactive Button" type="button" onClick={() => { if ("Notification" in window) Notification.requestPermission(); }} className="w-full py-2.5 border border-hc-gold-500/30 text-hc-gold-500 text-sm font-bold rounded-lg hover:bg-hc-gold-500/5 transition-all min-h-[44px]">
+                            <button type="button" onClick={() => { if ("Notification" in window) Notification.requestPermission(); }} className="w-full py-2.5 border border-hc-gold-500/30 text-hc-gold-500 text-sm font-bold rounded-lg hover:bg-hc-gold-500/5 transition-all min-h-[44px]">
                                 Enable Alerts
                             </button>
                         </div>
                         {error && <div className="text-hc-danger text-sm">{error}</div>}
-                        <button aria-label="Interactive Button" onClick={next} disabled={saving} className="w-full py-3.5 bg-hc-gold-500 hover:bg-hc-gold-600 disabled:opacity-50 text-hc-bg font-black text-sm rounded-xl flex items-center justify-center gap-2 transition-all min-h-[52px] uppercase tracking-widest">
+                        <button onClick={next} disabled={saving} className="w-full py-3.5 bg-hc-gold-500 hover:bg-hc-gold-600 disabled:opacity-50 text-hc-bg font-black text-sm rounded-xl flex items-center justify-center gap-2 transition-all min-h-[52px] uppercase tracking-widest">
                             Finish Setup <Zap className="w-4 h-4" />
                         </button>
                         <p className="text-center text-[10px] text-hc-subtle">Redirects to the live directory.</p>

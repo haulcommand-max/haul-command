@@ -245,7 +245,7 @@ export default function RateIndexPageClient() {
                         {filtered.map((row) => (
                             <div key={row.corridor + row.country} className="group">
                                 {/* Main Row */}
-                                <button aria-label="Interactive Button"
+                                <button
                                     onClick={() => setExpandedRow(expandedRow === row.corridor ? null : row.corridor)}
                                     className="w-full grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 p-4 lg:px-6 lg:py-4
                                         bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/10
@@ -351,7 +351,7 @@ export default function RateIndexPageClient() {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <button aria-label="Interactive Button"
+                                                <button
                                                     onClick={(e) => { e.stopPropagation(); setShowProModal(true); }}
                                                     className="absolute inset-0 flex items-center justify-center bg-slate-900/60 rounded-xl
                                                         backdrop-blur-sm"
@@ -374,7 +374,7 @@ export default function RateIndexPageClient() {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <button aria-label="Interactive Button"
+                                                <button
                                                     onClick={(e) => { e.stopPropagation(); setShowProModal(true); }}
                                                     className="absolute inset-0 flex items-center justify-center bg-slate-900/60 rounded-xl
                                                         backdrop-blur-sm"
@@ -466,7 +466,7 @@ export default function RateIndexPageClient() {
                             ))}
                         </div>
                         <div className="flex gap-3">
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={() => setShowProModal(false)}
                                 className="flex-1 py-3 bg-white/5 hover:bg-white/10 text-white font-bold
                                     rounded-xl transition-colors text-sm"

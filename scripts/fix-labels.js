@@ -24,8 +24,17 @@ dirs.forEach(dir => {
     const files = walk(dir);
     files.forEach(f => {
         let content = fs.readFileSync(f, 'utf8');
+        let needsWrite = false;
+        
         if (content.includes('aria-label="Interactive Button"')) {
             content = content.replace(/ aria-label="Interactive Button"/g, '');
+            needsWrite = true;
+        }
+        if (content.includes('aria-label="Navigation Link"')) {
+            content = content.replace(/ aria-label="Navigation Link"/g, '');
+            needsWrite = true;
+        }
+        if (needsWrite) {
             fs.writeFileSync(f, content);
             changed++;
         }

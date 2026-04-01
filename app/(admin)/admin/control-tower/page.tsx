@@ -61,7 +61,7 @@ function StatCard({ label, value, sub, color, icon: Icon }: { label: string; val
 // ── Tab button ────────────────────────────────────────────────────────
 function Tab({ label, active, onClick, icon: Icon }: { label: string; active: boolean; onClick: () => void; icon: React.ElementType }) {
     return (
-        <button aria-label="Interactive Button" onClick={onClick}
+        <button onClick={onClick}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
             style={{
                 background: active ? `${T.gold}18` : "transparent",
@@ -133,7 +133,7 @@ export default function ControlTowerPage() {
                             Last refresh: {lastRefresh.toLocaleTimeString()}
                         </p>
                     </div>
-                    <button aria-label="Interactive Button" onClick={loadAll} disabled={loading}
+                    <button onClick={loadAll} disabled={loading}
                         className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all"
                         style={{ background: T.surfaceHigh, border: `1px solid ${T.borderStrong}`, color: T.textBody }}>
                         <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />

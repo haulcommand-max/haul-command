@@ -92,7 +92,7 @@ function VerifyPageInner() {
                     </div>
                 )}
 
-                <button aria-label="Interactive Button"
+                <button
                     type="submit"
                     disabled={loading || token.length < 6}
                     className="w-full py-4 mt-4 bg-brand-gold text-brand-dark font-bold text-lg rounded-xl shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"

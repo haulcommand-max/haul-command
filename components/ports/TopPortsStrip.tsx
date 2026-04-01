@@ -76,7 +76,7 @@ export function TopPortsStrip({ ports, sessionId }: TopPortsStripProps) {
                 <h2 className="text-xs font-black uppercase tracking-[0.18em] text-white/40">
                     Top Ports
                 </h2>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/directory#all-ports"
                     className="ml-auto text-[10px] font-semibold text-white/25 hover:text-white/60 transition-colors"
                 >
@@ -87,7 +87,7 @@ export function TopPortsStrip({ ports, sessionId }: TopPortsStripProps) {
             {/* Horizontal scroll strip */}
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-hide">
                 {sorted.slice(0, 10).map((port) => (
-                    <Link aria-label="Navigation Link"
+                    <Link
                         key={port.id}
                         href={`/ports/${port.slug}`}
                         onClick={() => handleClick(port)}

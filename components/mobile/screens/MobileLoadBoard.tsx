@@ -98,8 +98,8 @@ export default function MobileLoadBoard() {
       <MobileScreenHeader
         title="Load Board"
         rightAction={
-          <Link aria-label="Navigation Link" href="/map" style={{ textDecoration: 'none' }}>
-            <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto', gap: 6 }}>
+          <Link href="/map" style={{ textDecoration: 'none' }}>
+            <button className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto', gap: 6 }}>
               <MapIcon />
               <span>Map</span>
             </button>
@@ -124,7 +124,7 @@ export default function MobileLoadBoard() {
       {/* Load Cards */}
       <MobileList>
         {MOCK_LOADS.map((load, i) => (
-          <Link aria-label="Navigation Link"
+          <Link
             key={load.id}
             href={`/loads/${load.id}`}
             style={{ textDecoration: 'none', display: 'block' }}

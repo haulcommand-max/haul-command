@@ -41,7 +41,7 @@ export function DriverEmbedSnippet({ driverId, driverName, state }: DriverEmbedS
                     value={snippet}
                     className="w-full bg-slate-950 text-emerald-400 font-mono text-xs p-4 rounded-xl border border-white/10 h-32 focus:outline-none resize-none"
                 />
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => navigator.clipboard.writeText(snippet)}
                     className="absolute top-3 right-3 p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors flex items-center gap-2 text-xs font-bold"
                 >

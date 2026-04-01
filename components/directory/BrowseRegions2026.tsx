@@ -109,7 +109,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                     aria-label="Select country"
                 >
                     {(["US", "CA"] as Country[]).map(c => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={c}
                             role="radio"
                             aria-checked={country === c}
@@ -142,7 +142,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                         }}
                     />
                     {q && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => setQ("")}
                             className="absolute right-3 top-1/2 -translate-y-1/2"
                             style={{ color: "rgba(255,255,255,0.3)", fontSize: 11 }}
@@ -154,7 +154,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                 </div>
 
                 {/* Live map shortcut */}
-                <Link aria-label="Navigation Link" href="/map"
+                <Link href="/map"
                     className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:opacity-80 ml-auto"
                     style={{ background: "rgba(241,169,27,0.08)", border: "1px solid rgba(241,169,27,0.18)", color: "#F1A91B" }}>
                     Map View →
@@ -170,7 +170,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                     const hot = HOT_STATES.has(r.code);
                     const href = `/directory/${r.country.toLowerCase()}/${r.code.toLowerCase()}`;
                     return (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={`${r.country}:${r.code}`}
                             href={href}
                             className="group grid place-items-center text-center rounded-xl px-4 py-4 transition-all duration-150 focus-visible:outline-none"
@@ -226,7 +226,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                     <p className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.3)" }}>
                         No results for &ldquo;{q}&rdquo;
                     </p>
-                    <button aria-label="Interactive Button" onClick={() => setQ("")}
+                    <button onClick={() => setQ("")}
                         className="text-xs font-black uppercase tracking-widest mt-1 transition-opacity hover:opacity-70"
                         style={{ color: "#F1A91B" }}>
                         Clear filter
@@ -242,7 +242,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                         {filtered.length} {country === "US" ? "states" : "provinces/territories"}
                         {HOT_STATES.size > 0 && " · amber = high demand"}
                     </span>
-                    <Link aria-label="Navigation Link" href="/claim"
+                    <Link href="/claim"
                         className="text-[10px] font-black uppercase tracking-widest transition-opacity hover:opacity-70"
                         style={{ color: "rgba(241,169,27,0.5)" }}>
                         Claim your profile →

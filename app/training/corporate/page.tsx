@@ -311,7 +311,7 @@ export default function CorporateTrainingPage() {
               </div>
             )}
 
-            <button aria-label="Interactive Button"
+            <button
               type="submit"
               disabled={submitting}
               style={{

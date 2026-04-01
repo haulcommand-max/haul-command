@@ -146,7 +146,7 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
                     <h3 className="text-lg font-black text-white leading-tight">{corridor.label}</h3>
                     <div className="text-xs text-white/40 mt-0.5">{corridor.origin} → {corridor.dest} Corridor</div>
                 </div>
-                <button aria-label="Interactive Button" onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors text-white/40 hover:text-white">
+                <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors text-white/40 hover:text-white">
                     <X className="w-4 h-4" />
                 </button>
             </div>
@@ -189,11 +189,11 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
 
             {/* Actions */}
             <div className="p-5 mt-auto space-y-2">
-                <button aria-label="Interactive Button" className="w-full h-11 rounded-xl text-xs font-black uppercase tracking-widest text-black transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                <button className="w-full h-11 rounded-xl text-xs font-black uppercase tracking-widest text-black transition-all hover:-translate-y-0.5 active:scale-[0.98]"
                     style={{ background: band.color, boxShadow: band.glow }}>
                     Find Escorts in this Corridor
                 </button>
-                <button aria-label="Interactive Button" className="w-full h-9 rounded-xl text-xs font-bold uppercase tracking-widest text-white/60 border border-white/10 hover:bg-white/5 transition-all">
+                <button className="w-full h-9 rounded-xl text-xs font-bold uppercase tracking-widest text-white/60 border border-white/10 hover:bg-white/5 transition-all">
                     Post a Load Here
                 </button>
             </div>

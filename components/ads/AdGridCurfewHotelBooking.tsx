@@ -77,7 +77,7 @@ export function AdGridCurfewHotelBooking({
           <div className="agch-rule">Oversize loads cannot move after dark</div>
         </div>
         {onDismiss && (
-          <button aria-label="Interactive Button" className="agch-dismiss" onClick={onDismiss}>✕</button>
+          <button className="agch-dismiss" onClick={onDismiss}>✕</button>
         )}
       </div>
 
@@ -116,20 +116,20 @@ export function AdGridCurfewHotelBooking({
       {/* Payment toggle + Book */}
       <div className="agch-footer">
         <div className="agch-pay-toggle">
-          <button aria-label="Interactive Button"
+          <button
             className={`agch-pay-btn ${payMethod === 'stripe' ? 'agch-pay-btn--active' : ''}`}
             onClick={() => setPayMethod('stripe')}
           >
             💳 Card
           </button>
-          <button aria-label="Interactive Button"
+          <button
             className={`agch-pay-btn ${payMethod === 'crypto' ? 'agch-pay-btn--active agch-pay-btn--crypto' : ''}`}
             onClick={() => setPayMethod('crypto')}
           >
             ₳ ADA/BTC
           </button>
         </div>
-        <button aria-label="Interactive Button"
+        <button
           className="agch-book"
           onClick={() => onBook?.(selectedOffer, payMethod)}
           disabled={!selectedOffer}

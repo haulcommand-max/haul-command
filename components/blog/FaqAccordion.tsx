@@ -31,7 +31,7 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
                   : 'border-white/10 bg-white/[0.02] hover:border-white/20'
               }`}
             >
-              <button aria-label="Interactive Button"
+              <button
                 onClick={() => setOpenIndex(isOpen ? null : index)}
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                 aria-expanded={isOpen}

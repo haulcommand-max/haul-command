@@ -94,7 +94,7 @@ export default function MobileRouteCalculator() {
         }}>Load Type</label>
         <div style={{ display: 'flex', gap: 'var(--m-xs)', marginBottom: 'var(--m-lg)' }}>
           {['oversize', 'super_load', 'standard'].map(t => (
-            <button aria-label="Interactive Button" key={t}
+            <button key={t}
               onClick={() => setLoadType(t)}
               className={`m-chip ${loadType === t ? 'm-chip--gold' : 'm-chip--tag'}`}
               style={{ cursor: 'pointer', border: 'none', textTransform: 'capitalize' }}
@@ -131,7 +131,7 @@ export default function MobileRouteCalculator() {
         />
 
         {/* Calculate button */}
-        <button aria-label="Interactive Button"
+        <button
           className="m-btn m-btn--primary"
           onClick={handleCalculate}
           style={{ width: '100%', height: 52, fontSize: 'var(--m-font-body)', fontWeight: 900 }}

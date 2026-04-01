@@ -126,7 +126,7 @@ export default function MobileDirectory() {
       ) : !loading && (
         <MobileList>
           {filtered.map((listing, i) => (
-            <Link aria-label="Navigation Link"
+            <Link
               key={listing.id}
               href={`/place/${listing.slug}`}
               style={{ textDecoration: 'none', display: 'block' }}
@@ -189,7 +189,7 @@ export default function MobileDirectory() {
                       ✓ Claimed
                     </span>
                   ) : (
-                    <Link aria-label="Navigation Link" href={`/claim?eq=${listing.slug}`} onClick={e => e.stopPropagation()} style={{
+                    <Link href={`/claim?eq=${listing.slug}`} onClick={e => e.stopPropagation()} style={{
                       fontSize: 10, fontWeight: 800, letterSpacing: '0.02em',
                       color: 'var(--m-gold-text, #D4A844)',
                       background: 'rgba(212,168,68,0.08)',

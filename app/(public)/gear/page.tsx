@@ -81,7 +81,7 @@ export default async function GearStorePage() {
                                             View Amazon <ExternalLink className="w-4 h-4" />
                                         </a>
                                     ) : (
-                                        <button aria-label="Interactive Button" className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl transition-colors flex items-center gap-2">
+                                        <button className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl transition-colors flex items-center gap-2">
                                             Add to Cart <ArrowRight className="w-4 h-4" />
                                         </button>
                                     )}
@@ -118,7 +118,7 @@ export default async function GearStorePage() {
                         Want your profile to rank first in the Haul Command Directory? Upgrade to Verified Elite to secure a gold badge, custom outbound link, and top-page placement in your primary territory.
                     </p>
 
-                    <button aria-label="Interactive Button" className="relative z-10 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black uppercase text-sm tracking-widest rounded-2xl transition-transform hover:scale-105 shadow-xl shadow-amber-500/20">
+                    <button className="relative z-10 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black uppercase text-sm tracking-widest rounded-2xl transition-transform hover:scale-105 shadow-xl shadow-amber-500/20">
                         Upgrade for $99/mo
                     </button>
                 </div>

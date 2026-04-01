@@ -14,7 +14,7 @@ export function BackButton() {
 
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => router.back()}
                 className="flex items-center gap-2 text-brand-muted hover:text-brand-text transition-colors text-sm group"
             >
@@ -23,21 +23,21 @@ export function BackButton() {
             </button>
             {/* Explicit escape links for direct-landing users */}
             <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <Link aria-label="Navigation Link" href="/" style={{
+                <Link href="/" style={{
                     fontSize: 12, fontWeight: 700,
                     color: 'var(--m-text-muted, #6a7181)',
                     textDecoration: 'none',
                 }}>
                     Home
                 </Link>
-                <Link aria-label="Navigation Link" href="/directory" style={{
+                <Link href="/directory" style={{
                     fontSize: 12, fontWeight: 700,
                     color: 'var(--m-text-muted, #6a7181)',
                     textDecoration: 'none',
                 }}>
                     Directory
                 </Link>
-                <Link aria-label="Navigation Link" href="/loads" style={{
+                <Link href="/loads" style={{
                     fontSize: 12, fontWeight: 700,
                     color: 'var(--m-text-muted, #6a7181)',
                     textDecoration: 'none',

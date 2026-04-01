@@ -22,7 +22,7 @@ export default async function AiReviewPage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/admin/ai-image"
             style={{
               background: "linear-gradient(135deg, #C6923A, #A87A2F)",
@@ -36,7 +36,7 @@ export default async function AiReviewPage() {
           >
             ⚡ Image Engine
           </Link>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/admin/ai-assets"
             style={{
               background: "#111820",

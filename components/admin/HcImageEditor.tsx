@@ -142,7 +142,7 @@ export function HcImageEditor({
       />
 
       <div style={{ marginTop: "12px" }}>
-        <button aria-label="Interactive Button"
+        <button
           onClick={handleEdit}
           disabled={loading || !prompt.trim() || !file}
           style={{
@@ -184,7 +184,7 @@ export function HcImageEditor({
             </p>
           )}
           <div style={{ marginTop: "8px", display: "flex", gap: "8px" }}>
-            <button aria-label="Interactive Button"
+            <button
               onClick={() => navigator.clipboard.writeText(result.asset.public_url)}
               style={{
                 background: "#111820",

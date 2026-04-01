@@ -257,7 +257,7 @@ export default function MobileLiveCall({
             {/* Audio mode toggle */}
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 4, gap: 4 }}>
               {(['open', 'ptt'] as const).map(m => (
-                <button aria-label="Interactive Button" key={m} onClick={() => setAudioMode(m)} style={{
+                <button key={m} onClick={() => setAudioMode(m)} style={{
                   padding: '8px 18px', borderRadius: 10, fontSize: 12, fontWeight: 700, cursor: 'pointer',
                   background: audioMode === m ? 'rgba(52,211,153,0.12)' : 'transparent',
                   color: audioMode === m ? '#34d399' : '#64748b',
@@ -268,7 +268,7 @@ export default function MobileLiveCall({
               ))}
             </div>
 
-            <button aria-label="Interactive Button"
+            <button
               onClick={connect}
               style={{
                 background: 'linear-gradient(135deg, #34d399, #059669)',
@@ -314,7 +314,7 @@ export default function MobileLiveCall({
 
             {/* PTT mode button */}
             {audioMode === 'ptt' && (
-              <button aria-label="Interactive Button"
+              <button
                 onPointerDown={pttStart}
                 onPointerUp={pttEnd}
                 onPointerLeave={pttEnd}
@@ -341,7 +341,7 @@ export default function MobileLiveCall({
             <div style={{ fontSize: 48, marginBottom: 12 }}>📡</div>
             <h3 style={{ color: '#f87171', fontSize: 18, fontWeight: 800, margin: '0 0 8px' }}>Connection Failed</h3>
             <p style={{ color: '#64748b', fontSize: 13, marginBottom: 20 }}>{errorMsg}</p>
-            <button aria-label="Interactive Button" onClick={connect} style={{
+            <button onClick={connect} style={{
               background: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.3)',
               borderRadius: 12, padding: '10px 24px', color: '#f87171', fontWeight: 700, cursor: 'pointer',
             }}>Try Again</button>
@@ -353,7 +353,7 @@ export default function MobileLiveCall({
             <div style={{ fontSize: 48, marginBottom: 12 }}>👋</div>
             <h3 style={{ color: '#fff', fontSize: 18, fontWeight: 800, margin: '0 0 8px' }}>Call Ended</h3>
             <p style={{ color: '#64748b', fontSize: 13, marginBottom: 20 }}>Duration: {formatDuration(duration)}</p>
-            <button aria-label="Interactive Button" onClick={() => { setCallState('idle'); setDuration(0); }} style={{
+            <button onClick={() => { setCallState('idle'); setDuration(0); }} style={{
               background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.3)',
               borderRadius: 12, padding: '10px 24px', color: '#34d399', fontWeight: 700, cursor: 'pointer',
             }}>New Call</button>
@@ -365,12 +365,12 @@ export default function MobileLiveCall({
       {callState === 'connected' && (
         <div style={{ padding: '0 32px 48px', display: 'flex', justifyContent: 'center', gap: 20, alignItems: 'center' }}>
           {/* Mute */}
-          <button aria-label="Interactive Button" onClick={toggleMute} style={controlBtn(muted, '#f87171')}>
+          <button onClick={toggleMute} style={controlBtn(muted, '#f87171')}>
             {muted ? <MicOff size={20} color="#f87171" /> : <Mic size={20} color="#fff" />}
           </button>
 
           {/* Hang up */}
-          <button aria-label="Interactive Button" onClick={disconnect} style={{
+          <button onClick={disconnect} style={{
             width: 70, height: 70, borderRadius: '50%',
             background: 'linear-gradient(135deg, #ef4444, #dc2626)',
             border: 'none', cursor: 'pointer',
@@ -381,7 +381,7 @@ export default function MobileLiveCall({
           </button>
 
           {/* Speaker */}
-          <button aria-label="Interactive Button" onClick={() => setSpeakerOff(s => !s)} style={controlBtn(speakerOff, '#f87171')}>
+          <button onClick={() => setSpeakerOff(s => !s)} style={controlBtn(speakerOff, '#f87171')}>
             {speakerOff ? <VolumeX size={20} color="#f87171" /> : <Volume2 size={20} color="#fff" />}
           </button>
         </div>

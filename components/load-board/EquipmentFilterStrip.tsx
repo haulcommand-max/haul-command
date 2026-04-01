@@ -108,7 +108,7 @@ export function EquipmentFilterStrip({ value, onChange, className }: EquipmentFi
                     Equipment Filters
                 </span>
                 {hasActive && (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={clearAll}
                         className="flex items-center gap-1 text-[10px] text-hc-subtle hover:text-hc-text transition-colors"
                     >
@@ -124,7 +124,7 @@ export function EquipmentFilterStrip({ value, onChange, className }: EquipmentFi
                     const Icon = f.icon;
                     const active = value.includes(f.tag);
                     return (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={f.tag}
                             onClick={() => toggle(f.tag)}
                             title={f.tooltip}

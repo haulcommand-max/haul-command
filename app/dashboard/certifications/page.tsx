@@ -151,7 +151,7 @@ export default function CertificationsDashboard() {
             {activeCerts.length} active credential{activeCerts.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <Link aria-label="Navigation Link" href="/training" style={{
+        <Link href="/training" style={{
           padding: '10px 20px', borderRadius: 8,
           background: 'rgba(245,166,35,0.12)', border: '1px solid rgba(245,166,35,0.25)',
           color: '#F5A623', fontSize: 13, fontWeight: 700, textDecoration: 'none',
@@ -187,7 +187,7 @@ export default function CertificationsDashboard() {
                         display: 'flex', alignItems: 'center', gap: 8,
                       }}>
                         ⚠️ Your {TIER_NAMES[cert.certification_tier]} expires in {days} days. Renew now to keep your badge active.
-                        <Link aria-label="Navigation Link" href="/training" style={{ color: '#F5A623', marginLeft: 'auto', flexShrink: 0, textDecoration: 'none' }}>
+                        <Link href="/training" style={{ color: '#F5A623', marginLeft: 'auto', flexShrink: 0, textDecoration: 'none' }}>
                           Renew →
                         </Link>
                       </div>
@@ -229,7 +229,7 @@ export default function CertificationsDashboard() {
 
                       {/* Actions */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }}>
-                        <Link aria-label="Navigation Link" href={`/training/verify/${cert.id}`} target="_blank"
+                        <Link href={`/training/verify/${cert.id}`} target="_blank"
                           style={{
                             padding: '8px 16px', borderRadius: 8,
                             background: 'rgba(255,255,255,0.05)', border: '1px solid #2a2a3a',
@@ -238,7 +238,7 @@ export default function CertificationsDashboard() {
                           }}>
                           🔗 Verify
                         </Link>
-                        <button aria-label="Interactive Button"
+                        <button
                           onClick={() => share(cert)}
                           style={{
                             padding: '8px 16px', borderRadius: 8,
@@ -266,7 +266,7 @@ export default function CertificationsDashboard() {
               Certified operators get 3x more load offers and priority placement in AV corridor searches.<br />
               Module 1 is completely free.
             </p>
-            <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{
+            <Link href="/training/platform-fundamentals" style={{
               display: 'inline-block', padding: '12px 24px', borderRadius: 10,
               background: 'linear-gradient(135deg, #F5A623, #e08820)',
               color: '#000', fontWeight: 800, textDecoration: 'none', fontSize: 14,
@@ -318,7 +318,7 @@ export default function CertificationsDashboard() {
                     {m.progress?.score !== null && m.progress?.score !== undefined && ` — ${m.progress.score}%`}
                   </div>
 
-                  <Link aria-label="Navigation Link" href={`/training/${m.slug}`} style={{
+                  <Link href={`/training/${m.slug}`} style={{
                     padding: '8px 16px', borderRadius: 8,
                     background: status === 'passed'
                       ? 'rgba(34,197,94,0.1)'

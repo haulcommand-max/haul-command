@@ -139,7 +139,7 @@ export default function CostCalculator() {
         {ALL_STATES.map((state) => {
           const isSelected = selectedStates.has(state.code);
           return (
-            <button aria-label="Interactive Button"
+            <button
               key={state.code}
               onClick={() => toggleState(state.code)}
               className={`px-1 py-2 rounded-lg text-xs font-medium transition-all duration-150 border ${

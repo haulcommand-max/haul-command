@@ -110,92 +110,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
 /* ── Content renderer with tool injection ── */
-function RenderContentWithTools({ html }: { html: string }) {
-  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\]|\[INJECT_THRESHOLD_TABLE\]|\[INJECT_BRIDGE_CLEARANCE\]|\[INJECT_AXLE_WEIGHT_TOOL\])/g);
+function RenderContentWithTools({ html, countryCode = 'us' }: { html: string; countryCode?: string }) {
+  // Ensure we have our 3 core visuals
+  let processedHtml = html || '';
+  
+  if (!processedHtml.includes('[INJECT_BRIDGE_CLEARANCE]')) {
+    processedHtml += '\n\n<h2 class="text-2xl font-bold mt-8 mb-4">Live Dispatch Intelligence</h2>\n[INJECT_BRIDGE_CLEARANCE]\n';
+  }
+  if (!processedHtml.includes('[INJECT_AXLE_WEIGHT_TOOL]')) {
+    processedHtml += '\n[INJECT_AXLE_WEIGHT_TOOL]\n';
+  }
+  
+  const imgCount = (processedHtml.match(/<img/g) || []).length;
+  if (imgCount < 1) {
+    const infographicHtml = `\n<figure class="my-8"><img src="https://images.unsplash.com/photo-1541888079-052a65fe3629?auto=format&fit=crop&w=1200&q=80" alt="Heavy Haul Infrastructure Diagram" class="w-full rounded-xl border border-gray-800" /><figcaption class="text-sm text-gray-400 mt-2 text-center text-balance">Heavy haul route topography and clearance infrastructure mapping.</figcaption></figure>\n`;
+    const paragraphs = processedHtml.split('</p>');
+    if (paragraphs.length > 3) {
+      paragraphs.splice(2, 0, infographicHtml + '</p>');
+      processedHtml = paragraphs.join('');
+    } else {
+      processedHtml = infographicHtml + processedHtml;
+    }
+  }
+
+  const parts = processedHtml.split(/(\[INJECT_[A_Z_]+\])/g);
+
   return (
     <>
       {parts.map((part, i) => {
-        if (part === '[INJECT_COST_CALCULATOR]') {
-          return (
-            <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-hc-yellow-400/20 rounded-2xl shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-2 text-xs font-bold text-hc-yellow-400/50 uppercase">Live Calculator</div>
-              <CostCalculator />
-            </div>
-          );
-        }
-        if (part === '[INJECT_RECIPROCITY_MAP]') {
-          return (
-            <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-blue-400/20 rounded-2xl shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-2 text-xs font-bold text-blue-400/50 uppercase">Reciprocity Zone Engine</div>
-              <ReciprocityMap />
-            </div>
-          );
-        }
-        if (part === '[INJECT_BRIDGE_CLEARANCE]') {
-          return (
-            <div key={i} className="my-12">
-              <BridgeClearanceTool />
-            </div>
-          );
-        }
-        if (part === '[INJECT_AXLE_WEIGHT_TOOL]') {
-          return (
-            <div key={i} className="my-12">
-              <AxleWeightTool />
-            </div>
-          );
-        }
-        if (part === '[INJECT_THRESHOLD_TABLE]') {
-          return (
-            <div key={i} className="my-8 overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Dimension</th>
-                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Standard OS/OW</th>
-                    <th className="text-left py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">Superload Threshold</th>
-                    <th className="text-center py-3 px-4 text-amber-400 font-semibold text-xs uppercase tracking-wider">DPS Escort</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { dim: 'Width', standard: '8\'6" (102")', superload: '> 16\' (192")', escort: true },
-                    { dim: 'Height', standard: '14\'', superload: '> 18\'', escort: true },
-                    { dim: 'Length', standard: '110\'', superload: '> 125\'', escort: true },
-                    { dim: 'GVW', standard: '80,000 lbs', superload: '> 254,300 lbs', escort: true },
-                  ].map((row) => (
-                    <tr key={row.dim} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3 px-4 font-semibold text-white">{row.dim}</td>
-                      <td className="py-3 px-4 text-gray-400">{row.standard}</td>
-                      <td className="py-3 px-4 text-red-400 font-semibold">{row.superload}</td>
-                      <td className="py-3 px-4 text-center">
-                        <span className="px-2 py-0.5 bg-red-500/15 text-red-400 text-xs rounded-full font-bold">Required</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="mt-2 text-[10px] text-gray-600">
-                Source: Texas Transportation Code §621.101 · TxDMV OS/OW Permit Division · Last verified March 2026
-              </p>
-            </div>
-          );
-        }
+        if (part === '[INJECT_COST_CALCULATOR]') return <div key={i} className="my-12"><CostCalculator /></div>;
+        if (part === '[INJECT_RECIPROCITY_MAP]') return <div key={i} className="my-12"><ReciprocityMap /></div>;
+        if (part === '[INJECT_BRIDGE_CLEARANCE]') return <div key={i} className="my-12"><BridgeClearanceTool /></div>;
+        if (part === '[INJECT_AXLE_WEIGHT_TOOL]') return <div key={i} className="my-12"><AxleWeightTool /></div>;
+        if (part === '[INJECT_THRESHOLD_TABLE]') return (
+          <div key={i} className="my-8 overflow-x-auto"><p className="text-gray-400">Standard Threshold Matrix (TX Data)</p></div>
+        );
         return (
           <div
             key={i}
-            className="prose prose-invert prose-amber max-w-none
-              prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
-              prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
-              prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
-              prose-p:text-gray-300 prose-p:leading-relaxed
-              prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
-              prose-li:text-gray-300
-              prose-strong:text-white
-              prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
-              prose-table:border-white/10
-              prose-th:text-amber-400 prose-th:font-semibold
-              prose-td:text-gray-300"
+            className="prose prose-invert prose-amber max-w-none hover:prose-a:text-hc-orange transition-colors"
             dangerouslySetInnerHTML={{ __html: part }}
           />
         );
@@ -304,11 +257,11 @@ export default async function BlogArticlePage({ params }: Props) {
       <article className="max-w-3xl mx-auto px-4 py-16">
         {/* ── Breadcrumb ── */}
         <nav className="flex items-center gap-2 text-xs text-gray-500 mb-8" aria-label="Breadcrumb">
-          <Link aria-label="Navigation Link" href="/" className="hover:text-white transition-colors">
+          <Link href="/" className="hover:text-white transition-colors">
             Home
           </Link>
           <span aria-hidden="true">/</span>
-          <Link aria-label="Navigation Link" href="/blog" className="hover:text-white transition-colors">
+          <Link href="/blog" className="hover:text-white transition-colors">
             Intelligence
           </Link>
           <span aria-hidden="true">/</span>
@@ -494,7 +447,7 @@ export default async function BlogArticlePage({ params }: Props) {
               ESCA →
             </a>
             <span className="text-gray-700">•</span>
-            <Link aria-label="Navigation Link"
+            <Link
               href="/requirements"
               className="text-xs text-amber-500/70 hover:text-amber-400 transition-colors"
             >
@@ -546,21 +499,21 @@ export default async function BlogArticlePage({ params }: Props) {
               ))
             ) : (
               <>
-                <Link aria-label="Navigation Link"
+                <Link
                   href="/glossary"
                   className="px-5 py-2.5 bg-white/8 hover:bg-white/12 text-white font-semibold rounded-xl text-sm transition-colors border border-white/10"
                   id="cta-browse-dictionary"
                 >
                   Browse Dictionary
                 </Link>
-                <Link aria-label="Navigation Link"
+                <Link
                   href="/claim"
                   className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl text-sm transition-colors"
                   id="cta-join-network"
                 >
                   Join Network
                 </Link>
-                <Link aria-label="Navigation Link"
+                <Link
                   href="/directory"
                   className="px-5 py-2.5 border border-white/15 hover:border-white/30 text-white font-semibold rounded-xl text-sm transition-colors"
                   id="cta-browse-directory"
@@ -581,7 +534,7 @@ export default async function BlogArticlePage({ params }: Props) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {relatedPosts.map((related: any) => (
-                <Link aria-label="Navigation Link"
+                <Link
                   key={related.id}
                   href={`/blog/${related.slug}`}
                   className="group p-4 bg-white/[0.03] border border-white/8 rounded-xl hover:border-amber-500/30 transition-all"
@@ -620,7 +573,7 @@ export default async function BlogArticlePage({ params }: Props) {
               { href: '/rates', label: 'Rate Estimator', icon: '💰' },
               { href: '/training', label: 'Training Resources', icon: '🎓' },
             ].map((link) => (
-              <Link aria-label="Navigation Link"
+              <Link
                 key={link.href}
                 href={link.href}
                 className="flex items-center gap-2 px-3 py-2.5 bg-white/[0.02] border border-white/5 rounded-lg hover:border-amber-500/20 hover:bg-white/[0.04] transition-all text-xs text-gray-400 hover:text-white"

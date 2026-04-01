@@ -48,7 +48,7 @@ interface LoadBoardViewToggleProps {
 export function LoadBoardViewToggle({ mode, onChange, className }: LoadBoardViewToggleProps) {
     return (
         <div className={cn("inline-flex items-center gap-1 p-1 bg-hc-elevated border border-hc-border rounded-xl", className)}>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => onChange("detailed")}
                 className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all min-h-[40px]",
@@ -60,7 +60,7 @@ export function LoadBoardViewToggle({ mode, onChange, className }: LoadBoardView
                 <LayoutList className="w-3.5 h-3.5" />
                 Detailed
             </button>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => onChange("scan")}
                 className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all min-h-[40px]",

@@ -18,7 +18,7 @@ export default function IndustriesIndexPage() {
         <main className="min-h-screen" style={{ background: "#050505" }}>
             <div className="border-b border-white/5 px-6 py-3">
                 <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30">
-                    <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
+                    <Link href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-white/60">Industries</span>
                 </div>
@@ -40,7 +40,7 @@ export default function IndustriesIndexPage() {
             <div className="max-w-5xl mx-auto px-6 py-10 space-y-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {LOAD_TYPES.map((lt) => (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={lt.slug}
                             href={`/industries/${lt.slug}`}
                             className="group rounded-2xl border p-5 flex flex-col gap-3 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -79,7 +79,7 @@ export default function IndustriesIndexPage() {
                     <h2 className="text-base font-black text-white mb-4">Pilot Car by State</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {highDemandStates.map((s) => (
-                            <Link aria-label="Navigation Link" key={s.slug} href={`/pilot-car/${s.slug}`}
+                            <Link key={s.slug} href={`/pilot-car/${s.slug}`}
                                 className="group flex items-center gap-2 rounded-lg px-3 py-2.5 border text-[11px] transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]">
                                 <MapPin className="w-3 h-3 text-amber-400/40" />
                                 <span className="font-bold text-white/60 group-hover:text-amber-300 transition-colors">{s.name}</span>

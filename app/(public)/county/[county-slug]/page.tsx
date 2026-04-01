@@ -184,7 +184,7 @@ export default async function CountyPage({ params }: Props) {
                     <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 20 }}>
                         Post your load and get matched with verified operators in minutes.
                     </p>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{
+                    <Link href="/loads/post" style={{
                         display: 'inline-block', padding: '14px 32px',
                         background: '#fff', color: '#ea580c',
                         borderRadius: 12, fontWeight: 800, fontSize: 14,

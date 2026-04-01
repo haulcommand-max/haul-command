@@ -153,7 +153,7 @@ export function BrokerRescuePanel({
                     </span>
                 )}
                 {primaryActions[0] && (
-                    <Link aria-label="Navigation Link" href={primaryActions[0].href || '#'} onClick={() => {
+                    <Link href={primaryActions[0].href || '#'} onClick={() => {
                         track('rescue_action_clicked' as any, { metadata: { action_id: primaryActions[0].action_id, health: data.health_status } });
                     }} style={{
                         padding: '4px 12px', borderRadius: 8,
@@ -189,7 +189,7 @@ export function BrokerRescuePanel({
                 {primaryActions.length > 0 && (
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         {primaryActions.map(a => (
-                            <Link aria-label="Navigation Link" key={a.action_id} href={a.href || '#'} onClick={() => {
+                            <Link key={a.action_id} href={a.href || '#'} onClick={() => {
                                 track('rescue_action_clicked' as any, { metadata: { action_id: a.action_id, health: data.health_status } });
                             }} style={{
                                 padding: '8px 16px', borderRadius: 10,
@@ -283,7 +283,7 @@ export function BrokerRescuePanel({
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                         {primaryActions.map(action => (
-                            <button aria-label="Interactive Button"
+                            <button
                                 key={action.action_id}
                                 onClick={() => {
                                     track('rescue_action_clicked' as any, {
@@ -316,7 +316,7 @@ export function BrokerRescuePanel({
             {/* Secondary actions (collapsed by default) */}
             {secondaryActions.length > 0 && (
                 <div style={{ padding: '0 20px 14px' }}>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => setExpanded(!expanded)}
                         style={{
                             width: '100%', padding: '8px 0',
@@ -330,7 +330,7 @@ export function BrokerRescuePanel({
                     {expanded && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
                             {secondaryActions.map(action => (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     key={action.action_id}
                                     href={action.href || '#'}
                                     onClick={() => {

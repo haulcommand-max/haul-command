@@ -168,7 +168,7 @@ export function DualConfirmationPanel({
             {!isLocked && state !== "timed_out" && (
                 <div className="px-5 pb-4 flex gap-2">
                     {canConfirm && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={onConfirm}
                             className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-400 hover:to-green-400 transition-all shadow-lg shadow-emerald-500/20"
                         >
@@ -176,7 +176,7 @@ export function DualConfirmationPanel({
                             Confirm Completion
                         </button>
                     )}
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={onUploadEvidence}
                         className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold bg-white/5 text-white/60 hover:bg-white/10 hover:text-white/80 border border-white/10 transition-all"
                     >
@@ -184,7 +184,7 @@ export function DualConfirmationPanel({
                         Evidence
                     </button>
                     {state === "job_completed_pending" && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={onDispute}
                             className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold bg-red-500/5 text-red-400/70 hover:bg-red-500/10 border border-red-500/10 transition-all"
                         >

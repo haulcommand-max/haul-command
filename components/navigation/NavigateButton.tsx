@@ -33,7 +33,7 @@ export default function NavigateButton({ lat, lng, label, className = '' }: Navi
 
     return (
         <div ref={ref} className={`relative inline-flex ${className}`}>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setShowChoices(!showChoices)}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs
                     bg-hc-gold-500 text-black hover:bg-hc-gold-400 transition-all shadow-sm
@@ -47,7 +47,7 @@ export default function NavigateButton({ lat, lng, label, className = '' }: Navi
             {showChoices && (
                 <div className="absolute top-full mt-1 right-0 z-50 bg-hc-card border border-hc-border
                     rounded-lg shadow-xl min-w-[200px] overflow-hidden animate-in fade-in slide-in-from-top-1">
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => {
                             openNavigation({ destination: label || destination, provider: 'google' });
                             setShowChoices(false);
@@ -58,7 +58,7 @@ export default function NavigateButton({ lat, lng, label, className = '' }: Navi
                         <span>🗺️</span>
                         <span>{choices.google.label}</span>
                     </button>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => {
                             openNavigation({ destination: label || destination, provider: 'apple' });
                             setShowChoices(false);

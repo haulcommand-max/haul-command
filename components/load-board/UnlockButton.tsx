@@ -77,7 +77,7 @@ export function UnlockButton({ loadId, onUnlocked }: Props) {
 
     return (
         <div className="flex flex-col gap-2">
-            <button aria-label="Interactive Button"
+            <button
                 onClick={handleUnlock}
                 disabled={disabled}
                 className={`px-4 py-2 rounded-md font-medium transition-colors ${state.status === 'unlocked'

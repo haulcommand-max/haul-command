@@ -103,7 +103,7 @@ export default function PermitFilingPage() {
                 {US_STATES.map(s => {
                   const selected = selectedStates.includes(s.code);
                   return (
-                    <button aria-label="Interactive Button" data-tool-interact key={s.code} onClick={() => toggleState(s.code)} style={{
+                    <button data-tool-interact key={s.code} onClick={() => toggleState(s.code)} style={{
                       padding: '10px 12px', borderRadius: 8, fontSize: 13, fontWeight: 600,
                       cursor: 'pointer', transition: 'all 0.15s',
                       background: selected ? 'rgba(245,166,35,0.15)' : '#0c0c10',
@@ -132,7 +132,7 @@ export default function PermitFilingPage() {
                   { val: 'oilfield', label: 'Oilfield Equipment', sub: '$34.99/state', color: '#F5A623' },
                   { val: 'annual', label: 'Annual Blanket', sub: '$75/state/yr', color: '#a855f7' },
                 ].map(opt => (
-                  <button aria-label="Interactive Button" data-tool-interact key={opt.val} onClick={() => setPermitType(opt.val)} style={{
+                  <button data-tool-interact key={opt.val} onClick={() => setPermitType(opt.val)} style={{
                     padding: '12px 18px', borderRadius: 10, cursor: 'pointer',
                     background: permitType === opt.val ? `rgba(${opt.color === '#3b82f6' ? '59,130,246' : opt.color === '#F5A623' ? '245,166,35' : '168,85,247'},0.15)` : '#0c0c10',
                     border: `1px solid ${permitType === opt.val ? opt.color : '#2a2a3a'}`,
@@ -180,7 +180,7 @@ export default function PermitFilingPage() {
               </div>
             </div>
 
-            <button aria-label="Interactive Button" data-tool-interact onClick={getQuote} disabled={!selectedStates.length || loading} style={{
+            <button data-tool-interact onClick={getQuote} disabled={!selectedStates.length || loading} style={{
               width: '100%', padding: 16, background: selectedStates.length
                 ? 'linear-gradient(135deg, #F5A623, #e08820)'
                 : '#1a1a22',
@@ -226,13 +226,13 @@ export default function PermitFilingPage() {
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-              <button aria-label="Interactive Button" data-tool-interact onClick={() => setStep('configure')} style={{
+              <button data-tool-interact onClick={() => setStep('configure')} style={{
                 padding: '12px 20px', borderRadius: 10, background: '#0c0c10',
                 border: '1px solid #2a2a3a', color: '#8a8aa0', fontSize: 14, cursor: 'pointer',
               }}>
                 ← Edit
               </button>
-              <button aria-label="Interactive Button" data-tool-interact onClick={checkout} disabled={loading} style={{
+              <button data-tool-interact onClick={checkout} disabled={loading} style={{
                 flex: 1, padding: 14, background: 'linear-gradient(135deg, #F5A623, #e08820)',
                 color: '#000', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 800, cursor: 'pointer',
               }}>

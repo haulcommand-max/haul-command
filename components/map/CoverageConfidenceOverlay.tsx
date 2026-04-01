@@ -175,7 +175,7 @@ interface CoverageToggleProps {
 
 export function CoverageConfidenceToggle({ active, onToggle }: CoverageToggleProps) {
     return (
-        <button aria-label="Interactive Button"
+        <button
             onClick={onToggle}
             className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border",

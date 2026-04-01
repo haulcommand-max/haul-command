@@ -71,7 +71,7 @@ function RegionTile({ code, name, href, hot }: { code: string; name: string; hre
     const sig = SIGNAL_CONFIG[density.signal];
 
     return (
-        <Link aria-label="Navigation Link"
+        <Link
             href={href}
             className="group relative flex flex-col gap-2 rounded-2xl p-3 transition-all duration-150"
             style={{
@@ -162,7 +162,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
 
                 {/* Spacer + Claim CTA */}
                 <div className="ml-auto hidden sm:block">
-                    <Link aria-label="Navigation Link" href="/claim"
+                    <Link href="/claim"
                         className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-black transition-transform hover:scale-[1.03]"
                         style={{ background: "#F1A91B" }}>
                         Claim Profile →
@@ -181,7 +181,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                 {/* Tab toggle */}
                 <div className="flex gap-1.5 ml-auto">
                     {(["us", "ca"] as const).map(t => (
-                        <button aria-label="Interactive Button" key={t} onClick={() => { setTab(t); setQuery(""); }}
+                        <button key={t} onClick={() => { setTab(t); setQuery(""); }}
                             className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest transition-all"
                             style={{
                                 background: tab === t ? "#F1A91B" : "rgba(255,255,255,0.05)",
@@ -211,7 +211,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                     }}
                 />
                 {query && (
-                    <button aria-label="Interactive Button" onClick={() => setQuery("")}
+                    <button onClick={() => setQuery("")}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60 text-xs">
                         ✕
                     </button>
@@ -250,7 +250,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
 
             {/* ── Mobile claim CTA ── */}
             <div className="mt-4 sm:hidden">
-                <Link aria-label="Navigation Link" href="/claim"
+                <Link href="/claim"
                     className="flex items-center justify-center w-full py-3 rounded-xl text-sm font-black uppercase tracking-widest text-black"
                     style={{ background: "#F1A91B" }}>
                     Claim Your Profile →

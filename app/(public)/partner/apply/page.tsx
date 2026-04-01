@@ -42,7 +42,7 @@ export default function PartnerApplyPage() {
         <div style={{ minHeight: '100vh', background: '#060b12', color: '#f5f7fb' }}>
             <div style={{ padding: '48px 16px 80px', maxWidth: 700, margin: '0 auto' }}>
                 {/* Header */}
-                <Link aria-label="Navigation Link" href="/infrastructure" style={{
+                <Link href="/infrastructure" style={{
                     fontSize: 12, color: 'rgba(255,255,255,0.4)', textDecoration: 'none',
                     display: 'inline-flex', alignItems: 'center', gap: 4, marginBottom: 24,
                 }}>
@@ -69,7 +69,7 @@ export default function PartnerApplyPage() {
                             We'll review your application and get back to you within 48 hours.
                             Vetted partners get priority placement on corridor and market pages.
                         </div>
-                        <Link aria-label="Navigation Link" href="/" style={{
+                        <Link href="/" style={{
                             display: 'inline-flex', marginTop: 20, padding: '12px 24px', borderRadius: 12,
                             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                             color: '#fff', fontWeight: 700, fontSize: 13, textDecoration: 'none',
@@ -86,7 +86,7 @@ export default function PartnerApplyPage() {
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
                                 {PARTNER_TYPES.map(pt => (
-                                    <button aria-label="Interactive Button"
+                                    <button
                                         key={pt.key}
                                         type="button"
                                         onClick={() => setSelectedType(pt.key)}
@@ -150,7 +150,7 @@ export default function PartnerApplyPage() {
                                         }}
                                     />
                                 </div>
-                                <button aria-label="Interactive Button"
+                                <button
                                     type="submit"
                                     style={{
                                         width: '100%', padding: '14px 24px', borderRadius: 14,

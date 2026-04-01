@@ -58,7 +58,7 @@ export function CitySponsorshipCTA({ cityName, regionName, pricePerMonth }: City
                         <span className="text-sm font-bold text-slate-500">/mo</span>
                     </div>
 
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href={`/sponsor/checkout?geo=${encodeURIComponent(cityName.toLowerCase() + '-' + regionName.toLowerCase())}`}
                         className="w-full py-4 bg-[#F1A91B] hover:bg-[#d97706] text-black font-black uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 group-hover:shadow-[0_4px_20px_rgba(241,169,27,0.3)]">
                         Claim {cityName} <ChevronRight className="w-5 h-5" />

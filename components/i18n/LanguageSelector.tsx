@@ -25,7 +25,7 @@ export function LanguageSelector() {
             </button>
             <div className="absolute right-0 top-full mt-1 w-48 bg-[#111] border border-white/10 rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all z-50">
                 {LOCALES.map(l => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={l.code}
                         onClick={() => setLocale(l.code as any)}
                         className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 hover:bg-white/5 transition-colors first:rounded-t-xl last:rounded-b-xl ${locale === l.code ? 'text-amber-500 font-bold' : 'text-slate-300'

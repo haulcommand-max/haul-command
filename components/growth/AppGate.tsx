@@ -117,7 +117,7 @@ export default function AppGate({
                     <p className="text-sm text-slate-400">{gate.description}</p>
                 </div>
 
-                <button aria-label="Interactive Button"
+                <button
                     onClick={handleOpenInApp}
                     className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors text-sm group mx-auto"
                 >
@@ -128,7 +128,7 @@ export default function AppGate({
 
                 {/* Expand for web fallback (de-emphasized) */}
                 {!expanded ? (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => {
                             setExpanded(true);
                             track('open_in_app_shown' as any, {

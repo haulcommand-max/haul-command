@@ -101,7 +101,7 @@ export default function MobileNotifications() {
             )}
           </div>
           {unreadCount > 0 && (
-            <button aria-label="Interactive Button"
+            <button
               onClick={markAllRead}
               disabled={marking}
               style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontWeight: 700 }}
@@ -114,7 +114,7 @@ export default function MobileNotifications() {
         {/* Filter tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 12 }}>
           {(['all', 'unread'] as const).map(f => (
-            <button aria-label="Interactive Button" key={f} onClick={() => setFilter(f)} style={{
+            <button key={f} onClick={() => setFilter(f)} style={{
               padding: '6px 16px', borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: 'pointer',
               background: filter === f ? 'rgba(212,168,68,0.12)' : 'rgba(255,255,255,0.04)',
               color: filter === f ? '#D4A844' : '#64748b',

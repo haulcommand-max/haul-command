@@ -84,14 +84,14 @@ export default async function BrokerLandingPage() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Link aria-label="Navigation Link"
+                        <Link
                             href="/map"
                             id="broker-cta-live-coverage"
                             className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
                         >
                             Check Live Coverage →
                         </Link>
-                        <Link aria-label="Navigation Link"
+                        <Link
                             href="/loads/new"
                             id="broker-cta-post-need"
                             className="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors"
@@ -197,7 +197,7 @@ export default async function BrokerLandingPage() {
                     <p className="text-slate-400 mb-8">
                         Free to start. Find your first verified escort today.
                     </p>
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href="/map"
                         id="broker-cta-bottom"
                         className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors"

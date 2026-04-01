@@ -70,7 +70,7 @@ export function AvailabilityToggle({ operatorId, initialStatus = 'unavailable' }
 
   return (
     <div className="space-y-2">
-      <button aria-label="Interactive Button"
+      <button
         onClick={toggleAvailability}
         className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl font-semibold text-sm transition-all
           ${isAvailable

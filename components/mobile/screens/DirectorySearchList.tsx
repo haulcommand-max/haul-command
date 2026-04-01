@@ -77,7 +77,7 @@ function CensoredContact({ label, icon, isAuthenticated, onLoginPrompt }: {
     );
   }
   return (
-    <button aria-label="Interactive Button" onClick={onLoginPrompt} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+    <button onClick={onLoginPrompt} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
       <span style={{ color: '#64748b', fontSize: 11 }}>{icon}</span>
       <span style={{
         filter: 'blur(4px)',
@@ -137,7 +137,7 @@ function LoginModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/auth/login"
             style={{
               display: 'block', textAlign: 'center',
@@ -148,7 +148,7 @@ function LoginModal({ onClose }: { onClose: () => void }) {
           >
             Log In →
           </Link>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/auth/register"
             style={{
               display: 'block', textAlign: 'center',
@@ -247,7 +247,7 @@ export function DirectorySearchList({ isAuthenticated = false, initialState }: D
             onChange={e => setSearch(e.target.value)}
           />
           {search && (
-            <button aria-label="Interactive Button" onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 16, lineHeight: 1 }}>✕</button>
+            <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 16, lineHeight: 1 }}>✕</button>
           )}
         </div>
 
@@ -256,12 +256,12 @@ export function DirectorySearchList({ isAuthenticated = false, initialState }: D
           display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 10, paddingTop: 10,
           scrollbarWidth: 'none',
         }}>
-          <button aria-label="Interactive Button"
+          <button
             style={pillStyle(stateFilter === '')}
             onClick={() => setStateFilter('')}
           >All States</button>
           {US_STATES.slice(0, 20).map(s => (
-            <button aria-label="Interactive Button"
+            <button
               key={s}
               style={pillStyle(stateFilter === s)}
               onClick={() => setStateFilter(stateFilter === s ? '' : s)}
@@ -302,7 +302,7 @@ export function DirectorySearchList({ isAuthenticated = false, initialState }: D
               <Initials name={op.full_name} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                  <Link aria-label="Navigation Link"
+                  <Link
                     href={`/directory/${op.slug ?? op.id}`}
                     style={{ color: '#fff', fontWeight: 700, fontSize: 15, textDecoration: 'none' }}
                   >
@@ -353,7 +353,7 @@ export function DirectorySearchList({ isAuthenticated = false, initialState }: D
                 />
               )}
               {!op.is_claimed && (
-                <Link aria-label="Navigation Link"
+                <Link
                   href={`/claim/${op.id}`}
                   style={{ marginLeft: 'auto', fontSize: 11, color: '#D4A844', textDecoration: 'none', fontWeight: 700 }}
                 >

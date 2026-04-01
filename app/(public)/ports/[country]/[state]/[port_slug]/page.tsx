@@ -193,13 +193,13 @@ export default async function PortGatePage(
             {/* Breadcrumb */}
             <div className="max-w-6xl mx-auto px-4 pt-6 pb-2">
                 <div className="flex items-center gap-2 text-[11px] text-white/30 font-mono uppercase tracking-widest">
-                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-white/60 transition-colors">Directory</Link>
+                    <Link href="/directory" className="hover:text-white/60 transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link aria-label="Navigation Link" href={`/directory/${country}/${state}`} className="hover:text-white/60 transition-colors">
+                    <Link href={`/directory/${country}/${state}`} className="hover:text-white/60 transition-colors">
                         {port.state_region}
                     </Link>
                     <ChevronRight className="w-3 h-3" />
-                    <Link aria-label="Navigation Link" href="/ports" className="hover:text-white/60 transition-colors">Ports</Link>
+                    <Link href="/ports" className="hover:text-white/60 transition-colors">Ports</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-white/50">{port.port_name}</span>
                 </div>
@@ -270,7 +270,7 @@ export default async function PortGatePage(
                             <AlertTriangle className="w-8 h-8 text-orange-400 mx-auto mb-3" />
                             <p className="text-white/50 text-sm">No TWIC-verified escorts currently listed in this region.</p>
                             <p className="text-white/30 text-xs mt-1">Check back soon or browse all {port.state_region} operators.</p>
-                            <Link aria-label="Navigation Link" href={`/directory/${country}/${state}`}
+                            <Link href={`/directory/${country}/${state}`}
                                 className="inline-block mt-4 px-4 py-2 rounded-xl text-xs font-bold text-[#F1A91B]"
                                 style={{ background: "rgba(241,169,27,0.10)", border: "1px solid rgba(241,169,27,0.20)" }}>
                                 Browse all {port.state_region} operators →
@@ -281,7 +281,7 @@ export default async function PortGatePage(
                             const statusColor = op.availability_status === "available" ? "#34d399"
                                 : op.availability_status === "busy" ? "#f97316" : "#6b7280";
                             return (
-                                <Link aria-label="Navigation Link" key={op.user_id}
+                                <Link key={op.user_id}
                                     href={`/directory/${country}/${state}/${(op.home_base_city ?? "unknown").toLowerCase()}`}
                                     className="group rounded-2xl p-4 flex items-center gap-4 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
                                     style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}
@@ -326,7 +326,7 @@ export default async function PortGatePage(
                             <h3 className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">Terminals</h3>
                             {terminals.map(t => (
                                 <div key={t.id} className="pb-3 border-b border-white/[0.04] last:border-0 last:pb-0">
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         href={`/ports/${country}/${state}/${port_slug}/${t.terminal_slug}`}
                                         className="font-bold text-white/70 text-sm hover:text-[#F1A91B] transition-colors"
                                     >
@@ -370,7 +370,7 @@ export default async function PortGatePage(
                     </div>
 
                     {/* Back link */}
-                    <Link aria-label="Navigation Link" href={`/directory/${country}/${state}`}
+                    <Link href={`/directory/${country}/${state}`}
                         className="block text-center rounded-xl px-4 py-3 text-xs font-bold text-white/40 hover:text-white/70 transition-colors"
                         style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
                         View all {port.state_region} operators →

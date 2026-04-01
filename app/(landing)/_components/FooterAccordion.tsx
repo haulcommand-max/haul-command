@@ -153,7 +153,7 @@ export function FooterAccordion() {
                         return (
                             <div key={section.title} className="ft-section">
                                 {/* Mobile: clickable accordion trigger */}
-                                <button aria-label="Interactive Button"
+                                <button
                                     className="ft-trigger"
                                     aria-expanded={isOpen}
                                     onClick={() => toggle(section.title)}
@@ -173,7 +173,7 @@ export function FooterAccordion() {
                                 <div className={`ft-body ${isOpen ? 'ft-body--open' : ''}`}>
                                     <div className="ft-body-inner space-y-2">
                                         {section.links.map(l => (
-                                            <Link aria-label="Navigation Link"
+                                            <Link
                                                 key={l.href}
                                                 href={l.href}
                                                 className="block text-sm text-[#8fa3b8] hover:text-white transition-colors py-1"
@@ -199,11 +199,11 @@ export function FooterAccordion() {
                         </span>
                     </div>
                     <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                        <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+                        <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
                         <span className="opacity-50 text-[10px]">•</span>
-                        <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+                        <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
                         <span className="opacity-50 text-[10px]">•</span>
-                        <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+                        <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                     </div>
                 </div>
             </div>

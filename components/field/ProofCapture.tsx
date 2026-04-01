@@ -129,7 +129,7 @@ export default function ProofCapture({ loadId, onSubmit }: Props) {
             {/* Quick Actions */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
                 {ACTIONS.map(a => (
-                    <button aria-label="Interactive Button" key={a.type} onClick={() => capturePhoto(a.type)} style={{
+                    <button key={a.type} onClick={() => capturePhoto(a.type)} style={{
                         padding: '12px 8px', background: 'rgba(255,255,255,0.04)',
                         border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10,
                         cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
@@ -171,7 +171,7 @@ export default function ProofCapture({ loadId, onSubmit }: Props) {
                                     {p.gps && ` • 📍 ${p.gps.lat.toFixed(4)}, ${p.gps.lng.toFixed(4)}`}
                                 </div>
                             </div>
-                            <button aria-label="Interactive Button" onClick={() => removeProof(p.id)} style={{ background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', fontSize: 14, flexShrink: 0 }}>✕</button>
+                            <button onClick={() => removeProof(p.id)} style={{ background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', fontSize: 14, flexShrink: 0 }}>✕</button>
                         </div>
                     ))}
                 </div>
@@ -179,7 +179,7 @@ export default function ProofCapture({ loadId, onSubmit }: Props) {
 
             {/* Submit */}
             {proofs.length > 0 && (
-                <button aria-label="Interactive Button" onClick={handleSubmit} disabled={submitting} style={{
+                <button onClick={handleSubmit} disabled={submitting} style={{
                     width: '100%', padding: '14px', borderRadius: 10, border: 'none', cursor: 'pointer',
                     background: 'linear-gradient(135deg, #10B981, #059669)',
                     color: '#fff', fontWeight: 700, fontSize: 15, opacity: submitting ? 0.6 : 1,

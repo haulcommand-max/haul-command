@@ -150,10 +150,10 @@ export default function VendorCertifications({ vendorId, isAdmin = false, showAd
                                         </td>
                                         <td className="px-3 py-2">
                                             {isAdmin && !c.is_verified && c.status === "active" && (
-                                                <button aria-label="Interactive Button" onClick={() => verify(c.id)} className="text-green-600 hover:underline text-xs mr-2">Verify</button>
+                                                <button onClick={() => verify(c.id)} className="text-green-600 hover:underline text-xs mr-2">Verify</button>
                                             )}
                                             {isAdmin && c.status === "active" && (
-                                                <button aria-label="Interactive Button" onClick={() => revoke(c.id)} className="text-red-500 hover:underline text-xs">Revoke</button>
+                                                <button onClick={() => revoke(c.id)} className="text-red-500 hover:underline text-xs">Revoke</button>
                                             )}
                                         </td>
                                     </tr>
@@ -193,11 +193,11 @@ export default function VendorCertifications({ vendorId, isAdmin = false, showAd
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <button aria-label="Interactive Button" type="submit" disabled={working}
+                        <button type="submit" disabled={working}
                             className="px-4 py-1.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                             {working ? "Adding…" : "Add"}
                         </button>
-                        <button aria-label="Interactive Button" type="button" onClick={() => setAdding(false)}
+                        <button type="button" onClick={() => setAdding(false)}
                             className="px-4 py-1.5 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                             Cancel
                         </button>
@@ -206,7 +206,7 @@ export default function VendorCertifications({ vendorId, isAdmin = false, showAd
             )}
 
             {!adding && !showAddForm && (
-                <button aria-label="Interactive Button" onClick={() => setAdding(true)}
+                <button onClick={() => setAdding(true)}
                     className="text-sm text-orange-600 hover:underline font-medium">
                     + Add certification
                 </button>

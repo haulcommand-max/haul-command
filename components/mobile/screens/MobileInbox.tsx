@@ -100,7 +100,7 @@ function ThreadDetail({
                 {notif.time}
               </div>
             </div>
-            <button aria-label="Interactive Button"
+            <button
               onClick={onClose}
               style={{
                 width: 32, height: 32, borderRadius: 'var(--m-radius-sm)',
@@ -133,14 +133,14 @@ function ThreadDetail({
           <div style={{ display: 'flex', gap: 8 }}>
             {notif.type === 'offer' && (
               <>
-                <button aria-label="Interactive Button"
+                <button
                   className="m-btn m-btn--primary"
                   style={{ flex: 1 }}
                   onClick={() => onAction(notif.id, 'accept')}
                 >
                   Accept Offer
                 </button>
-                <button aria-label="Interactive Button"
+                <button
                   className="m-btn m-btn--secondary"
                   style={{ flex: 1 }}
                   onClick={() => onAction(notif.id, 'decline')}
@@ -150,7 +150,7 @@ function ThreadDetail({
               </>
             )}
             {notif.type === 'message' && (
-              <button aria-label="Interactive Button"
+              <button
                 className="m-btn m-btn--primary"
                 style={{ flex: 1 }}
                 onClick={() => onAction(notif.id, 'reply')}
@@ -159,7 +159,7 @@ function ThreadDetail({
               </button>
             )}
             {notif.type === 'alert' && (
-              <button aria-label="Interactive Button"
+              <button
                 className="m-btn m-btn--primary"
                 style={{ flex: 1 }}
                 onClick={() => onAction(notif.id, 'view')}
@@ -168,7 +168,7 @@ function ThreadDetail({
               </button>
             )}
             {notif.type === 'completed' && (
-              <button aria-label="Interactive Button"
+              <button
                 className="m-btn m-btn--outlined-gold"
                 style={{ flex: 1 }}
                 onClick={() => onAction(notif.id, 'view')}
@@ -288,7 +288,7 @@ export default function MobileInbox() {
         title="Inbox"
         rightAction={
           unreadCount > 0 ? (
-            <button aria-label="Interactive Button"
+            <button
               className="m-section-header__action"
               style={{ fontSize: 'var(--m-font-body-sm)' }}
               onClick={markAllRead}
@@ -418,14 +418,14 @@ export default function MobileInbox() {
         {/* Route back for empty states */}
         {!loading && notifications.length === 0 && (
           <div style={{ padding: 'var(--m-lg) var(--m-screen-pad, 16px)', display: 'flex', gap: 8 }}>
-            <Link aria-label="Navigation Link" href="/directory" style={{
+            <Link href="/directory" style={{
               flex: 1, textAlign: 'center', padding: '12px 16px', borderRadius: 12,
               background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.15)',
               color: 'var(--m-gold)', fontSize: 13, fontWeight: 700, textDecoration: 'none',
             }}>
               Browse Directory
             </Link>
-            <Link aria-label="Navigation Link" href="/loads" style={{
+            <Link href="/loads" style={{
               flex: 1, textAlign: 'center', padding: '12px 16px', borderRadius: 12,
               background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
               color: '#fff', fontSize: 13, fontWeight: 700, textDecoration: 'none',

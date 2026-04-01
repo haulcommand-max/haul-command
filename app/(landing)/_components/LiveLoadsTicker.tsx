@@ -75,7 +75,7 @@ export function LiveLoadsTicker() {
                             Live Load Activity
                         </h3>
                     </div>
-                    <Link aria-label="Navigation Link" href="/loads" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors inline-flex items-center gap-1">
+                    <Link href="/loads" className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.15em] hover:text-[#E0B05C] transition-colors inline-flex items-center gap-1">
                         View All <ChevronRight className="w-3 h-3" />
                     </Link>
                 </div>
@@ -83,7 +83,7 @@ export function LiveLoadsTicker() {
                 {/* Ticker Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                     {visible.map((load, i) => (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={`${load.id}-${visibleIdx}`}
                             href="/loads"
                             className="group block"

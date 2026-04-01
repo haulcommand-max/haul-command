@@ -155,7 +155,7 @@ function RankRow({ entry }: { entry: LeaderEntry }) {
     : `/place/${entry.name.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
-    <Link aria-label="Navigation Link" href={profileSlug}
+    <Link href={profileSlug}
       style={{
         display: 'flex', alignItems: 'center', gap: 'var(--m-md)',
         padding: 'var(--m-md) var(--m-screen-pad)',
@@ -267,7 +267,7 @@ function EmptyLeaderboard({ corridor }: { corridor: string }) {
         }
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--m-sm)', maxWidth: 260, margin: '0 auto' }}>
-        <Link aria-label="Navigation Link" href="/claim" style={{
+        <Link href="/claim" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           height: 44, borderRadius: 'var(--m-radius-md)',
           background: 'var(--m-gold)', color: '#000',
@@ -276,7 +276,7 @@ function EmptyLeaderboard({ corridor }: { corridor: string }) {
         }}>
           Claim Your Profile
         </Link>
-        <Link aria-label="Navigation Link" href="/corridor" style={{
+        <Link href="/corridor" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           height: 44, borderRadius: 'var(--m-radius-md)',
           background: 'transparent', color: 'var(--m-text-primary)',
@@ -370,7 +370,7 @@ export default function MobileLeaderboard() {
         padding: 'var(--m-sm) var(--m-screen-pad)',
       }}>
         {PERIODS.map(p => (
-          <button aria-label="Interactive Button" key={p}
+          <button key={p}
             onClick={() => setPeriod(p)}
             className={`m-chip ${period === p ? 'm-chip--gold' : 'm-chip--tag'}`}
             style={{

@@ -156,7 +156,7 @@ export function TrustScoreCard({
 
             {/* Bottom: Verified Job Ledger link */}
             <div className="mt-4 pt-3 border-t border-white/[0.06]">
-                <button aria-label="Interactive Button" className="flex items-center justify-between w-full group">
+                <button className="flex items-center justify-between w-full group">
                     <div className="flex items-center gap-2">
                         <Star className="w-3.5 h-3.5 text-white/30" />
                         <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">

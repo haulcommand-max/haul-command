@@ -24,7 +24,7 @@ export default function AiImagePage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/admin/ai-assets"
             style={{
               background: "#111820",
@@ -39,7 +39,7 @@ export default function AiImagePage() {
           >
             📂 Asset Library →
           </Link>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/admin/ai-review"
             style={{
               background: "#111820",

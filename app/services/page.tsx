@@ -73,7 +73,7 @@ export default function ServicesPage() {
       <section className="max-w-6xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service) => (
-            <Link aria-label="Navigation Link"
+            <Link
               key={service.slug}
               href={`/services/${service.slug}`}
               className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all"
@@ -104,13 +104,13 @@ export default function ServicesPage() {
           Post your load on the Haul Command load board and receive responses from verified operators in minutes.
         </p>
         <div className="flex justify-center gap-4">
-          <Link aria-label="Navigation Link"
+          <Link
             href="/loads"
             className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
           >
             Post a Load
           </Link>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/directory"
             className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors"
           >

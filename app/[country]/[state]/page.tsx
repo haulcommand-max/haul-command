@@ -67,7 +67,7 @@ export default async function StatePage({ params }: { params: Promise<{ country:
 
                 {/* ── Breadcrumb ── */}
                 <nav className="flex items-center gap-2 text-xs font-bold text-hc-muted uppercase tracking-[0.15em] mb-[-2rem]">
-                    <Link aria-label="Navigation Link" href={`/${country}`} className="flex items-center gap-1 hover:text-hc-gold-500 transition-colors">
+                    <Link href={`/${country}`} className="flex items-center gap-1 hover:text-hc-gold-500 transition-colors">
                         <ArrowLeft className="w-3 h-3" />
                         {countryData.name}
                     </Link>
@@ -103,7 +103,7 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                                 placeholder={`Search compliant operators in ${regionName}...`}
                                 className="flex-1 bg-transparent text-white text-sm placeholder:text-hc-subtle outline-none"
                             />
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 href={`/directory?country=${countryData.iso2}&region=${state.toUpperCase()}`}
                                 className="px-6 py-3 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
                             >
@@ -227,7 +227,7 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                             {cities.map((cityName) => {
                                 const slug = cityName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
                                 return (
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         key={slug}
                                         href={getCityHubUrl(country, state, slug)}
                                         className="group flex items-center gap-3 p-3 bg-hc-surface border border-hc-border hover:border-hc-gold-500/40 rounded-xl transition-all"

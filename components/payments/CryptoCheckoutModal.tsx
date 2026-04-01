@@ -175,7 +175,7 @@ export default function CryptoCheckoutModal({
 
             {/* Payment Toggle */}
             <div className="ccm-toggle">
-              <button aria-label="Interactive Button"
+              <button
                 className={`ccm-toggle__btn ${payMethod === 'stripe' ? 'ccm-toggle__btn--active' : ''}`}
                 onClick={() => setPayMethod('stripe')}
               >
@@ -183,7 +183,7 @@ export default function CryptoCheckoutModal({
                 <span className="ccm-toggle__label">Card</span>
                 <span className="ccm-toggle__price">${plan.stripePriceUsd}/{plan.interval === 'month' ? 'mo' : 'yr'}</span>
               </button>
-              <button aria-label="Interactive Button"
+              <button
                 className={`ccm-toggle__btn ${payMethod === 'crypto' ? 'ccm-toggle__btn--active ccm-toggle__btn--crypto' : ''}`}
                 onClick={() => setPayMethod('crypto')}
               >
@@ -262,7 +262,7 @@ export default function CryptoCheckoutModal({
                 <div className="ccm-crypto-picker">
                   <div className="ccm-crypto-grid">
                     {CRYPTO_COINS.map(coin => (
-                      <button aria-label="Interactive Button"
+                      <button
                         key={coin.code}
                         className={`ccm-coin ${selectedCoin === coin.code ? 'ccm-coin--active' : ''}`}
                         onClick={() => setSelectedCoin(coin.code)}
@@ -313,7 +313,7 @@ export default function CryptoCheckoutModal({
             </div>
 
             {/* Submit */}
-            <button aria-label="Interactive Button"
+            <button
               className="ccm-submit"
               onClick={payMethod === 'stripe' ? handleStripeSubmit : handleCryptoSubmit}
               disabled={loading}
@@ -345,7 +345,7 @@ export default function CryptoCheckoutModal({
             <h3>Payment Confirmed</h3>
             <p>Welcome to {plan.name}</p>
             <div className="ccm-success__tx">TX: {txId}</div>
-            <button aria-label="Interactive Button" className="ccm-submit" onClick={onClose}>
+            <button className="ccm-submit" onClick={onClose}>
               🚀 Enter Command Center
             </button>
           </div>

@@ -154,7 +154,7 @@ function AdGridSlot() {
       <div style={{ fontSize: 11, color: T.muted, lineHeight: 1.6 }}>
         Get instant quotes for pilot car liability, cargo coverage, and fleet policies. Trusted by 2,400+ operators nationwide.
       </div>
-      <Link aria-label="Navigation Link" href="/sponsor" style={{
+      <Link href="/sponsor" style={{
         display: 'inline-flex', alignItems: 'center', gap: 6,
         padding: '10px 18px', borderRadius: 10,
         background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
@@ -301,19 +301,19 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
       {/* Action Row */}
       <div style={{ display: 'flex', gap: 8 }}>
         {op.isSeed ? (
-          <Link aria-label="Navigation Link" href="/claim" style={{
+          <Link href="/claim" style={{
             flex: 1, padding: '10px 14px', borderRadius: 10, textAlign: 'center',
             background: T.goldDim, border: `1px solid ${T.goldBorder}`,
             color: T.gold, fontSize: 12, fontWeight: 800, textDecoration: 'none',
           }} className="ag-press">Claim This Listing</Link>
         ) : (
           <>
-            <Link aria-label="Navigation Link" href={`/directory/profile/${op.slug || op.id}`} style={{
+            <Link href={`/directory/profile/${op.slug || op.id}`} style={{
               flex: 1, padding: '10px 14px', borderRadius: 10, textAlign: 'center',
               background: T.bgElevated, border: `1px solid ${T.borderMid}`,
               color: T.text, fontSize: 12, fontWeight: 700, textDecoration: 'none',
             }} className="ag-press">View Profile</Link>
-            <button aria-label="Interactive Button" style={{
+            <button style={{
               padding: '10px 16px', borderRadius: 10,
               background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
               border: 'none', color: '#000', fontSize: 12, fontWeight: 800, cursor: 'pointer',
@@ -332,7 +332,7 @@ function ToggleSwitch({ label, active, onChange, icon }: {
   label: string; active: boolean; onChange: () => void; icon: React.ReactNode;
 }) {
   return (
-    <button aria-label="Interactive Button" onClick={onChange} data-filter-control style={{
+    <button onClick={onChange} data-filter-control style={{
       display: 'flex', alignItems: 'center', gap: 10, width: '100%',
       padding: '10px 12px', borderRadius: 10, cursor: 'pointer', border: 'none',
       background: active ? T.goldDim : 'transparent',
@@ -361,7 +361,7 @@ function ToggleSwitch({ label, active, onChange, icon }: {
 // ═══════════════════════════════════════════════════════════════
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button aria-label="Interactive Button" onClick={onClick} data-filter-control className="ag-chip-snap" style={{
+    <button onClick={onClick} data-filter-control className="ag-chip-snap" style={{
       padding: '6px 14px', borderRadius: 999, cursor: 'pointer',
       fontSize: 11, fontWeight: 700, border: 'none',
       background: active ? T.gold : 'rgba(255,255,255,0.04)',
@@ -529,7 +529,7 @@ export function PublicDirectory() {
                   style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: T.text, caretColor: T.gold }}
                 />
                 {filters.search && (
-                  <button aria-label="Interactive Button" onClick={() => setFilters(f => ({ ...f, search: '' }))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.muted, padding: 0 }}><X size={14} /></button>
+                  <button onClick={() => setFilters(f => ({ ...f, search: '' }))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.muted, padding: 0 }}><X size={14} /></button>
                 )}
               </div>
 
@@ -587,7 +587,7 @@ export function PublicDirectory() {
                 {(['HOT', 'WARM', 'COOL'] as CorridorHeat[]).map(h => {
                   const cfg = CORRIDOR_STATUS[h];
                   return (
-                    <button aria-label="Interactive Button" key={h} onClick={() => setFilters(f => ({ ...f, corridorHeat: f.corridorHeat === h ? '' : h }))}
+                    <button key={h} onClick={() => setFilters(f => ({ ...f, corridorHeat: f.corridorHeat === h ? '' : h }))}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8, width: '100%',
                         padding: '8px 12px', borderRadius: 8, cursor: 'pointer', border: 'none',
@@ -603,7 +603,7 @@ export function PublicDirectory() {
                 <div style={{ height: 1, background: T.border, margin: '8px 0' }} />
                 <div style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: 'uppercase', padding: '4px 12px' }}>Services</div>
                 {Object.entries(SERVICE_LABELS).map(([key, label]) => (
-                  <button aria-label="Interactive Button" key={key} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === key ? '' : key }))}
+                  <button key={key} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === key ? '' : key }))}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 8, width: '100%',
                       padding: '8px 12px', borderRadius: 8, cursor: 'pointer', border: 'none',
@@ -656,12 +656,12 @@ export function PublicDirectory() {
                   Sign in to see trust scores, dispatch history, and request operators directly. Free for escorts.
                 </div>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Link aria-label="Navigation Link" href="/login" className="ag-press" style={{
+                  <Link href="/login" className="ag-press" style={{
                     padding: '12px 28px', borderRadius: 12,
                     background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,
                     color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none',
                   }}>Sign In Free</Link>
-                  <Link aria-label="Navigation Link" href="/claim" style={{
+                  <Link href="/claim" style={{
                     padding: '12px 28px', borderRadius: 12,
                     background: 'transparent', border: `1px solid ${T.borderStrong}`,
                     color: T.textSecondary, fontWeight: 700, fontSize: 14, textDecoration: 'none',

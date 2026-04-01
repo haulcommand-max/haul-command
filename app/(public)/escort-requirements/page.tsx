@@ -70,13 +70,13 @@ export default async function EscortRequirementsIndex() {
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">GLOBAL COVERAGE</span><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">{totalJ} JURISDICTIONS</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">REQUIREMENTS</span></h1>
                 <p className="text-gray-400 text-base sm:text-lg max-w-3xl mt-4">Dimension-based escort rules for oversize loads across {countryOrder.length} countries and {totalJ} jurisdictions. {totalR} rules covering width, height, length, and weight thresholds.</p>
-                <Link aria-label="Navigation Link" href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-[var(--color-accent)] text-black px-6 py-3 rounded-xl font-black text-sm mt-6 hover:bg-white transition-all">🧮 Try the Route Calculator →</Link>
+                <Link href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-[var(--color-accent)] text-black px-6 py-3 rounded-xl font-black text-sm mt-6 hover:bg-white transition-all">🧮 Try the Route Calculator →</Link>
             </header>
             <div className="space-y-12">{countryOrder.map(cc => (
                 <section key={cc}>
                     <div className="flex items-center gap-3 mb-6"><span className="text-3xl">{FLAG[cc] || '🌍'}</span><h2 className="text-2xl font-black text-white tracking-tight">{NAME[cc] || cc}</h2><span className="text-gray-500 text-xs font-bold">{byCountry[cc].length} jurisdiction{byCountry[cc].length > 1 ? 's' : ''}</span></div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">{byCountry[cc].map(j => (
-                        <Link aria-label="Navigation Link" key={j.jurisdiction_code} href={`/escort-requirements/${j.jurisdiction_code.toLowerCase()}`} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[var(--color-accent)]/50 hover:bg-white/10 transition-all group">
+                        <Link key={j.jurisdiction_code} href={`/escort-requirements/${j.jurisdiction_code.toLowerCase()}`} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[var(--color-accent)]/50 hover:bg-white/10 transition-all group">
                             <p className="text-white font-bold text-sm group-hover:text-[var(--color-accent)] transition-colors">{j.jurisdiction_name}</p>
                             <div className="flex items-center gap-2 mt-2"><span className="text-[10px] text-gray-500 font-black uppercase">{j.jurisdiction_type}</span><span className="text-[10px] text-[var(--color-accent)] font-bold">{j.rule_count} rules</span></div>
                         </Link>
@@ -86,7 +86,7 @@ export default async function EscortRequirementsIndex() {
             <div className="mt-20 bg-gradient-to-r from-[var(--color-accent)]/10 to-transparent border border-[var(--color-accent)]/20 rounded-3xl p-8 sm:p-10 text-center">
                 <h2 className="text-white font-black text-3xl italic mb-4">Know Before You Roll</h2>
                 <p className="text-gray-400 max-w-2xl mx-auto mb-6">Stop reading 50 different pages. Enter your load once, see every escort requirement on your entire route.</p>
-                <Link aria-label="Navigation Link" href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-black text-lg hover:bg-[var(--color-accent)] transition-all">🧮 ROUTE CALCULATOR — FREE</Link>
+                <Link href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-black text-lg hover:bg-[var(--color-accent)] transition-all">🧮 ROUTE CALCULATOR — FREE</Link>
             </div>
         </main>
         </RouteCalcMobileGate>

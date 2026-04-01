@@ -151,7 +151,7 @@ export function SponsorPerformanceDashboard({
                 </div>
 
                 <div style={{ padding: '0 20px 16px' }}>
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href="/sponsor"
                         onClick={() => {
                             track('sponsor_interest_started' as any, { metadata: { surface, state, corridor } });
@@ -211,7 +211,7 @@ export function SponsorPerformanceDashboard({
                 <span style={{ fontSize: 11, color: '#888' }}>
                     CTR: <strong style={{ color: '#22C55E' }}>{metrics.ctr}%</strong>
                 </span>
-                <Link aria-label="Navigation Link" href="/sponsor" style={{
+                <Link href="/sponsor" style={{
                     fontSize: 12, fontWeight: 700, color: '#F1A91B',
                     textDecoration: 'none',
                 }}>

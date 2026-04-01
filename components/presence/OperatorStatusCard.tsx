@@ -205,7 +205,7 @@ export default function OperatorStatusCard({
             {/* Quick actions */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {currentStatus !== 'available_now' && (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => handleStatusChange('available_now')}
                         style={{
                             background: 'rgba(16,185,129,0.12)',
@@ -238,7 +238,7 @@ export default function OperatorStatusCard({
 
                 <div style={{ display: 'flex', gap: 8 }}>
                     {currentStatus !== 'available_soon' && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => handleStatusChange('available_soon')}
                             style={{
                                 flex: 1,
@@ -266,7 +266,7 @@ export default function OperatorStatusCard({
                     )}
 
                     {currentStatus !== 'on_job' && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => handleStatusChange('on_job')}
                             style={{
                                 flex: 1,

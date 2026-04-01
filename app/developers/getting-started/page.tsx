@@ -9,13 +9,13 @@ export default function GettingStartedPage() {
     return (
         <main className="min-h-screen bg-gray-950 text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
-                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
+                <Link href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Getting Started</h1>
                 <p className="text-lg text-gray-400 mb-12">Integrate with the Haul Command Data API in 5 minutes.</p>
 
                 <section className="space-y-12">
                     <Step number={1} title="Create an Account">
-                        <p>Sign up at <Link aria-label="Navigation Link" href="/signup" className="text-blue-400 hover:underline">haulcommand.com/signup</Link> and subscribe to a data plan.</p>
+                        <p>Sign up at <Link href="/signup" className="text-blue-400 hover:underline">haulcommand.com/signup</Link> and subscribe to a data plan.</p>
                     </Step>
 
                     <Step number={2} title="Generate an API Key">
@@ -58,10 +58,10 @@ export default function GettingStartedPage() {
                 <div className="mt-16 rounded-xl bg-gray-900 border border-gray-800 p-6">
                     <h3 className="font-semibold text-white mb-2">Next Steps</h3>
                     <ul className="space-y-2 text-sm text-gray-400">
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/authentication" className="text-blue-400 hover:underline">Authentication deep dive</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/rate-limits" className="text-blue-400 hover:underline">Rate limits & quotas</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/examples" className="text-blue-400 hover:underline">Code examples (TS, Python, cURL)</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/api/enterprise/openapi.json" className="text-blue-400 hover:underline">Full OpenAPI specification</Link></li>
+                        <li>→ <Link href="/developers/authentication" className="text-blue-400 hover:underline">Authentication deep dive</Link></li>
+                        <li>→ <Link href="/developers/rate-limits" className="text-blue-400 hover:underline">Rate limits & quotas</Link></li>
+                        <li>→ <Link href="/developers/examples" className="text-blue-400 hover:underline">Code examples (TS, Python, cURL)</Link></li>
+                        <li>→ <Link href="/api/enterprise/openapi.json" className="text-blue-400 hover:underline">Full OpenAPI specification</Link></li>
                     </ul>
                 </div>
             </div>

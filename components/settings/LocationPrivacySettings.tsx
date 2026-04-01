@@ -42,7 +42,7 @@ export function LocationPrivacySettings({ operatorId, initialEnabled = true }: {
           <p className="text-white text-sm font-medium">Share precise location</p>
           <p className="text-gray-500 text-xs">Brokers see your exact position on the map</p>
         </div>
-        <button aria-label="Interactive Button"
+        <button
           onClick={toggle}
           disabled={saving}
           className={`relative w-12 h-6 rounded-full transition-colors ${enabled ? 'bg-emerald-500' : 'bg-gray-700'}`}

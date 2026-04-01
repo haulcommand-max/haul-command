@@ -111,7 +111,7 @@ export function RouteCheckTool() {
             <option value="autonomous">AV / Autonomous</option>
             <option value="rig_move">Rig Move</option>
           </select>
-          <button aria-label="Interactive Button"
+          <button
             onClick={() => handleSearch()}
             disabled={loading || !query.trim()}
             className="ml-auto px-6 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-sm transition-colors disabled:opacity-50"
@@ -125,7 +125,7 @@ export function RouteCheckTool() {
       {!answer && !loading && (
         <div className="flex flex-wrap gap-2">
           {EXAMPLE_QUESTIONS.map((q) => (
-            <button aria-label="Interactive Button"
+            <button
               key={q}
               onClick={() => { setQuery(q); handleSearch(q); }}
               className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-xs text-gray-400 transition-colors"
@@ -156,7 +156,7 @@ export function RouteCheckTool() {
             )}
             <div className="ml-auto flex items-center gap-2">
               {model && <span className="text-xs text-gray-700">{model}</span>}
-              <button aria-label="Interactive Button"
+              <button
                 onClick={copyShareLink}
                 className="text-xs text-gray-500 hover:text-amber-400 transition-colors px-2 py-1 rounded border border-white/10 hover:border-amber-500/30"
               >
@@ -183,7 +183,7 @@ export function RouteCheckTool() {
             >
               Post a Load
             </a>
-            <button aria-label="Interactive Button"
+            <button
               onClick={() => { setAnswer(''); setQuery(''); setQueryId(undefined); }}
               className="px-4 py-2 text-gray-500 hover:text-gray-300 text-sm transition-colors"
             >

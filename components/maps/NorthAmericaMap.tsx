@@ -342,7 +342,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                 </p>
                 <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(52px, 1fr))" }}>
                     {CA_PROVINCES.map(({ code, name }) => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={code}
                             onClick={() => handleClick("ca", code, name)}
                             title={name}
@@ -370,7 +370,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                     {Object.entries(US_NAMES).map(([code, name]) => {
                         const heat = getHeat(code);
                         return (
-                            <button aria-label="Interactive Button" key={code}
+                            <button key={code}
                                 onClick={() => handleClick("us", code, name)}
                                 title={name}
                                 aria-label={name}

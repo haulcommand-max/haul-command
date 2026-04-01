@@ -136,7 +136,7 @@ function SponsorCheckoutInner() {
                 ) : (
                     <div className="grid md:grid-cols-3 gap-4 mb-10">
                         {products.map(p => (
-                            <button aria-label="Interactive Button"
+                            <button
                                 key={p.product_key}
                                 onClick={() => setSelectedKey(p.product_key)}
                                 className={`p-6 rounded-2xl border text-left transition-all ${selectedKey === p.product_key
@@ -188,7 +188,7 @@ function SponsorCheckoutInner() {
 
                 {/* CTA */}
                 <div className="text-center">
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={handleCheckout}
                         disabled={submitting || !selectedProduct}
                         className="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-lg px-8 py-4 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"

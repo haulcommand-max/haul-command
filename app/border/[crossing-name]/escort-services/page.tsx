@@ -28,9 +28,9 @@ export default function BorderCrossingPage({ params }: any) {
         <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '2rem 1rem' }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link aria-label="Navigation Link" href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
+                    <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
-                    <Link aria-label="Navigation Link" href="/border" style={{ color: '#6b7280', textDecoration: 'none' }}>Border Crossings</Link>
+                    <Link href="/border" style={{ color: '#6b7280', textDecoration: 'none' }}>Border Crossings</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
                     <span style={{ color: '#d1d5db' }}>{crossing.name}</span>
                 </nav>
@@ -75,7 +75,7 @@ export default function BorderCrossingPage({ params }: any) {
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: '#d1d5db', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>All Border Crossings</h3>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
                         {Object.entries(CROSSINGS).map(([s, c]) => (
-                            <Link aria-label="Navigation Link" key={s} href={`/border/${s}/escort-services`} style={{
+                            <Link key={s} href={`/border/${s}/escort-services`} style={{
                                 padding: '10px 14px', borderRadius: 10, textDecoration: 'none',
                                 background: s === slug ? 'rgba(241,169,27,0.1)' : 'rgba(255,255,255,0.03)',
                                 border: `1px solid ${s === slug ? 'rgba(241,169,27,0.3)' : 'rgba(255,255,255,0.06)'}`,
@@ -88,7 +88,7 @@ export default function BorderCrossingPage({ params }: any) {
                 <div style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.08), rgba(59,130,246,0.02))', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 20, padding: '2rem', textAlign: 'center' }}>
                     <h3 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Need a cross-border escort?</h3>
                     <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Find verified escorts on both sides of the border.</p>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#3b82f6,#1d4ed8)', color: '#fff', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post Cross-Border Load →</Link>
+                    <Link href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#3b82f6,#1d4ed8)', color: '#fff', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post Cross-Border Load →</Link>
                 </div>
             </div>
         </div>

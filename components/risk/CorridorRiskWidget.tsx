@@ -159,7 +159,7 @@ export function CorridorRiskWidget({
                 <span className="text-[9px] text-white/20">
                     Risk data from {signalCount} signals across {topLayers.length} layers
                 </span>
-                <button aria-label="Interactive Button" className="flex items-center gap-0.5 text-[9px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
+                <button className="flex items-center gap-0.5 text-[9px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
                     Full report <ChevronRight className="w-3 h-3" />
                 </button>
             </div>

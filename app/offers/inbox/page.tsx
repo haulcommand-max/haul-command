@@ -122,14 +122,14 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
             {/* Actions */}
             {!isExpired && offer.status !== 'accepted' && offer.status !== 'declined' && (
                 <div style={{ display: 'flex', gap: 10 }}>
-                    <button aria-label="Interactive Button" onClick={() => onDecline(offer.id)}
+                    <button onClick={() => onDecline(offer.id)}
                         style={{
                             flex: 1, padding: '11px 0', borderRadius: 8, border: '1px solid #334155',
                             background: 'transparent', color: '#94a3b8', fontWeight: 600, fontSize: 14, cursor: 'pointer'
                         }}>
                         Decline
                     </button>
-                    <button aria-label="Interactive Button" onClick={() => onAccept(offer.id)} disabled={accepting === offer.id}
+                    <button onClick={() => onAccept(offer.id)} disabled={accepting === offer.id}
                         style={{
                             flex: 2, padding: '11px 0', borderRadius: 8, border: 'none', cursor: accepting === offer.id ? 'wait' : 'pointer',
                             background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff', fontWeight: 700, fontSize: 14,
@@ -236,7 +236,7 @@ export default function DriverOfferInboxPage() {
                 {/* Availability toggle */}
                 <div style={{ display: 'flex', gap: 8, background: '#0f172a', borderRadius: 10, padding: 4 }}>
                     {(['available', 'near_ready', 'unavailable'] as const).map(s => (
-                        <button aria-label="Interactive Button" key={s} onClick={() => toggleAvailability(s)} disabled={updatingAvail}
+                        <button key={s} onClick={() => toggleAvailability(s)} disabled={updatingAvail}
                             style={{
                                 padding: '8px 14px', borderRadius: 7, border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: 12,
                                 background: availability === s

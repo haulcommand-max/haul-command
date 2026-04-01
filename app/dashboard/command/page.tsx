@@ -38,7 +38,7 @@ function CommandBar({ onCommand }: { onCommand: (cmd: string) => void }) {
           }
         }}
       />
-      <button aria-label="Interactive Button"
+      <button
         onClick={() => { if (value.trim()) { onCommand(value.trim()); setValue(''); } }}
         className="bg-[#6d72f6] hover:bg-[#5a5fd6] text-white text-sm px-4 py-2 rounded-lg transition-colors"
       >
@@ -62,13 +62,13 @@ function HotelBookingCard({ corridor }: { corridor: string }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         {['Houston Marriott', 'Dallas Drury Inn', 'OKC Hampton', 'Amarillo Days Inn'].map(h => (
-          <button aria-label="Interactive Button" key={h} className="text-left text-xs bg-[#1a1f2e] hover:bg-[#252a3a] border border-[#2a2d3a] rounded-lg p-2.5 transition-colors">
+          <button key={h} className="text-left text-xs bg-[#1a1f2e] hover:bg-[#252a3a] border border-[#2a2d3a] rounded-lg p-2.5 transition-colors">
             <p className="text-white font-medium">{h}</p>
             <p className="text-green-400 text-xs mt-0.5">Available tonight →</p>
           </button>
         ))}
       </div>
-      <button aria-label="Interactive Button" className="w-full bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold py-2 rounded-lg transition-colors">
+      <button className="w-full bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold py-2 rounded-lg transition-colors">
         BOOK CURFEW LAYOVER · GET 12% COMMISSION
       </button>
     </div>
@@ -101,7 +101,7 @@ function ClassifiedsFeedCard() {
           </div>
         ))}
       </div>
-      <button aria-label="Interactive Button" className="text-[#6d72f6] text-xs hover:underline text-left">Post a listing → $49/month</button>
+      <button className="text-[#6d72f6] text-xs hover:underline text-left">Post a listing → $49/month</button>
     </div>
   );
 }
@@ -121,7 +121,7 @@ function InstantLeadFormCard() {
           <input placeholder="Load origin city" className="bg-[#1a1f2e] border border-[#2a2d3a] rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#6d72f6]" />
           <input placeholder="Load destination city" className="bg-[#1a1f2e] border border-[#2a2d3a] rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#6d72f6]" />
           <input placeholder="Phone number" className="bg-[#1a1f2e] border border-[#2a2d3a] rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#6d72f6]" />
-          <button aria-label="Interactive Button" onClick={() => setSubmitted(true)} className="bg-[#6d72f6] hover:bg-[#5a5fd6] text-white text-sm font-bold py-2.5 rounded-lg transition-colors">
+          <button onClick={() => setSubmitted(true)} className="bg-[#6d72f6] hover:bg-[#5a5fd6] text-white text-sm font-bold py-2.5 rounded-lg transition-colors">
             GET 3 ESCORT QUOTES NOW
           </button>
         </>
@@ -152,7 +152,7 @@ function RecruiterCard() {
           </div>
         ))}
       </div>
-      <button aria-label="Interactive Button" className="w-full border border-[#6d72f6] text-[#6d72f6] text-xs py-2 rounded-lg hover:bg-[#6d72f6]/10 transition-colors">
+      <button className="w-full border border-[#6d72f6] text-[#6d72f6] text-xs py-2 rounded-lg hover:bg-[#6d72f6]/10 transition-colors">
         SPONSOR YOUR PROFILE · $299/month
       </button>
     </div>
@@ -178,7 +178,7 @@ function BountyFlasherCard() {
             </div>
             <div className="text-right">
               <p className="text-green-400 font-bold">{b.reward}</p>
-              <button aria-label="Interactive Button" className="mt-1 text-xs bg-red-600 hover:bg-red-500 text-white px-2 py-0.5 rounded transition-colors">CLAIM</button>
+              <button className="mt-1 text-xs bg-red-600 hover:bg-red-500 text-white px-2 py-0.5 rounded transition-colors">CLAIM</button>
             </div>
           </div>
         ))}
@@ -210,7 +210,7 @@ function PushCampaignCard() {
         {sent ? (
           <span className="text-green-400 text-xs font-bold">✓ Campaign Sent</span>
         ) : (
-          <button aria-label="Interactive Button" onClick={() => setSent(true)} className="bg-[#6d72f6] hover:bg-[#5a5fd6] text-white text-xs font-bold px-4 py-1.5 rounded-lg transition-colors">
+          <button onClick={() => setSent(true)} className="bg-[#6d72f6] hover:bg-[#5a5fd6] text-white text-xs font-bold px-4 py-1.5 rounded-lg transition-colors">
             SEND CAMPAIGN
           </button>
         )}

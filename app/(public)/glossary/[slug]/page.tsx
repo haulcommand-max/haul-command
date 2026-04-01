@@ -95,9 +95,9 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                     
                     {/* BREADCRUMBS */}
                     <nav className="text-sm font-medium text-gray-500 mb-8 flex items-center gap-2">
-                        <Link aria-label="Navigation Link" href="/glossary" className="hover:text-white transition-colors">Glossary</Link>
+                        <Link href="/glossary" className="hover:text-white transition-colors">Glossary</Link>
                         <span>/</span>
-                        <Link aria-label="Navigation Link" href={`/glossary#${term.category || ''}`} className="hover:text-white transition-colors capitalize">
+                        <Link href={`/glossary#${term.category || ''}`} className="hover:text-white transition-colors capitalize">
                             {term.category || 'Terms'}
                         </Link>
                         <span>/</span>
@@ -170,7 +170,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                         Haul Command connects you with {term.term} experts in your area.
                                     </p>
                                     <div className="relative z-10">
-                                        <Link aria-label="Navigation Link" href={`/directory?q=${term.surface_categories[0]}`} className="inline-flex items-center justify-center bg-white text-black font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">
+                                        <Link href={`/directory?q=${term.surface_categories[0]}`} className="inline-flex items-center justify-center bg-white text-black font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">
                                             Search Directory →
                                         </Link>
                                     </div>
@@ -189,7 +189,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                     <ul className="space-y-3">
                                         {term.related_tools.map((tool: string) => (
                                             <li key={tool}>
-                                                <Link aria-label="Navigation Link" href={`/tools/${tool}`} className="flex items-center justify-between text-blue-400 hover:text-blue-300 text-sm font-medium">
+                                                <Link href={`/tools/${tool}`} className="flex items-center justify-between text-blue-400 hover:text-blue-300 text-sm font-medium">
                                                     Open {tool.replace('-', ' ')}
                                                     <span>→</span>
                                                 </Link>
@@ -221,7 +221,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                             <ul className="space-y-2">
                                                 {term.related_rules.map((r: string) => (
                                                     <li key={r}>
-                                                        <Link aria-label="Navigation Link" href={`/regulations/${r}`} className="text-sm text-gray-400 hover:text-white underline decoration-white/20 underline-offset-4 line-clamp-2">
+                                                        <Link href={`/regulations/${r}`} className="text-sm text-gray-400 hover:text-white underline decoration-white/20 underline-offset-4 line-clamp-2">
                                                             {r}
                                                         </Link>
                                                     </li>
@@ -239,7 +239,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                     <ul className="space-y-2">
                                         {term.related_slugs.map((slug: string) => (
                                             <li key={slug}>
-                                                <Link aria-label="Navigation Link" href={`/glossary/${slug}`} className="text-gray-400 hover:text-white transition-colors text-sm font-medium capitalize flex items-center gap-2">
+                                                <Link href={`/glossary/${slug}`} className="text-gray-400 hover:text-white transition-colors text-sm font-medium capitalize flex items-center gap-2">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50"></span>
                                                     {slug.replace(/-/g, ' ')}
                                                 </Link>

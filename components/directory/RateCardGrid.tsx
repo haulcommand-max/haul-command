@@ -144,7 +144,7 @@ function RateCard({ row, ctaHref }: { row: RegionPricing; ctaHref: string }) {
                 </span>
             </div>
 
-            <Link aria-label="Navigation Link"
+            <Link
                 href={ctaHref}
                 className="w-full text-center py-2 rounded-xl text-xs font-black uppercase tracking-widest text-black transition-all hover:scale-[1.02] hover:-translate-y-px"
                 style={{ background: "#F1A91B", boxShadow: "0 0 16px rgba(241,169,27,0.2)" }}
@@ -175,7 +175,7 @@ export function RateCardGrid({ pricing, regionName, country, region }: Props) {
                 <p className="text-white/30 text-sm">
                     Rate benchmarks for {regionName} are not available yet — check back soon.
                 </p>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/quote"
                     className="inline-block mt-4 px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-black"
                     style={{ background: "#F1A91B" }}

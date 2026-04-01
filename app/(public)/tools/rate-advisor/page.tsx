@@ -101,7 +101,7 @@ export default function RateAdvisorPage() {
           <input value={date} onChange={e => setDate(e.target.value)} placeholder="Date of run" type="date" style={inputStyle} />
         </div>
 
-        <button aria-label="Interactive Button" onClick={getAdvice} disabled={loading || !corridor.trim()} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #22c55e, #059669)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', transition: 'all .2s' }}>
+        <button onClick={getAdvice} disabled={loading || !corridor.trim()} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #22c55e, #059669)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', transition: 'all .2s' }}>
           {loading ? '⏳ Analyzing Rates…' : '💰 Get Rate Intelligence'}
         </button>
 

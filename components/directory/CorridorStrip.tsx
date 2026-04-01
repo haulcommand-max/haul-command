@@ -162,7 +162,7 @@ export function CorridorStrip({
                 {corridors.map((c) => {
                     const color = supplyColor(c.supplyPct ?? 50);
                     return (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={c.label}
                             href={c.href}
                             className={[

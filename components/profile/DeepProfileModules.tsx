@@ -155,7 +155,7 @@ export function ServiceAreaModule({
                     <div style={{ fontSize: 10, fontWeight: 700, color: '#888', marginBottom: 6 }}>Relevant Corridors</div>
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         {corridorRelevance.map(c => (
-                            <Link aria-label="Navigation Link" key={c.slug} href={`/corridor/${c.slug}`} style={{
+                            <Link key={c.slug} href={`/corridor/${c.slug}`} style={{
                                 fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
                                 background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.12)',
                                 color: '#22C55E', textDecoration: 'none',
@@ -417,7 +417,7 @@ export function TrustStrengthSummary({
 
             {/* Claim CTA if unclaimed */}
             {!isClaimed && (
-                <Link aria-label="Navigation Link" href="/claim" style={{
+                <Link href="/claim" style={{
                     display: 'block', textAlign: 'center', marginTop: 14,
                     padding: '10px 20px', borderRadius: 12,
                     background: 'linear-gradient(135deg, #F1A91B, #f1c27b)',

@@ -94,7 +94,7 @@ export default function LoadAnalyzerPage() {
         {/* Mode toggle */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4 }}>
           {[{ k: 'paste', l: '📋 Paste Load Description' }, { k: 'fields', l: '📝 Fill in Fields' }].map(m => (
-            <button aria-label="Interactive Button" key={m.k} onClick={() => setMode(m.k as 'paste' | 'fields')} style={{ flex: 1, padding: '10px 16px', borderRadius: 10, border: 'none', background: mode === m.k ? 'rgba(245,166,35,0.12)' : 'transparent', color: mode === m.k ? '#f5a623' : '#64748b', fontWeight: 600, fontSize: 13, cursor: 'pointer', transition: 'all .2s' }}>{m.l}</button>
+            <button key={m.k} onClick={() => setMode(m.k as 'paste' | 'fields')} style={{ flex: 1, padding: '10px 16px', borderRadius: 10, border: 'none', background: mode === m.k ? 'rgba(245,166,35,0.12)' : 'transparent', color: mode === m.k ? '#f5a623' : '#64748b', fontWeight: 600, fontSize: 13, cursor: 'pointer', transition: 'all .2s' }}>{m.l}</button>
           ))}
         </div>
 
@@ -118,7 +118,7 @@ export default function LoadAnalyzerPage() {
           </div>
         )}
 
-        <button aria-label="Interactive Button" onClick={analyze} disabled={loading || (!description.trim() && !origin.trim())} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #f5a623, #ef4444)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', marginTop: 12, transition: 'all .2s' }}>
+        <button onClick={analyze} disabled={loading || (!description.trim() && !origin.trim())} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #f5a623, #ef4444)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', marginTop: 12, transition: 'all .2s' }}>
           {loading ? '⏳ Analyzing…' : '⚡ Analyze This Load'}
         </button>
 

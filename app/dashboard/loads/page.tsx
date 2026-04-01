@@ -370,7 +370,7 @@ export default function LeadParserPage() {
 
         {/* Top bar */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button aria-label="Interactive Button"
+          <button
             onClick={runPipeline}
             disabled={loading || !rawInput.trim()}
             style={{
@@ -382,7 +382,7 @@ export default function LeadParserPage() {
           >
             ⚡ Extract + Save to Supabase
           </button>
-          <button aria-label="Interactive Button"
+          <button
             onClick={() => setRawInput(SAMPLE)}
             style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}
           >
@@ -419,7 +419,7 @@ export default function LeadParserPage() {
             <div style={{ display: 'flex', gap: 6, padding: '8px 16px', borderBottom: '1px solid #252c3f', flexWrap: 'wrap', alignItems: 'center' }}>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Position:</span>
               {['all', 'Chase', 'Lead', 'High Pole', 'Steer', 'Route Survey'].map(p => (
-                <button aria-label="Interactive Button" key={p} onClick={() => setPosFilter(p)}
+                <button key={p} onClick={() => setPosFilter(p)}
                   style={{
                     fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, padding: '4px 9px', background: 'transparent',
                     border: `1px solid ${posFilter === p ? '#f5a623' : '#252c3f'}`,
@@ -430,7 +430,7 @@ export default function LeadParserPage() {
               ))}
               <span style={{ marginLeft: 8, fontFamily: "'Barlow Condensed', sans-serif", fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Role:</span>
               {[{ v: 'all', l: 'All Roles' }, { v: 'broker', l: '🏢 Brokers' }, { v: 'operator', l: '🚗 Operators' }].map(r => (
-                <button aria-label="Interactive Button" key={r.v} onClick={() => setRoleFilter(r.v)}
+                <button key={r.v} onClick={() => setRoleFilter(r.v)}
                   style={{
                     fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, padding: '4px 9px', background: 'transparent',
                     border: `1px solid ${roleFilter === r.v ? (r.v === 'broker' ? '#3b82f6' : r.v === 'operator' ? '#a855f7' : '#f5a623') : '#252c3f'}`,
@@ -539,9 +539,9 @@ export default function LeadParserPage() {
             {/* Export row */}
             <div style={{ padding: '10px 16px', borderTop: '1px solid #252c3f', display: 'flex', gap: 8, alignItems: 'center', background: '#1c2030', flexWrap: 'wrap' }}>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Export:</span>
-              <button aria-label="Interactive Button" onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📋 Copy CSV</button>
-              <button aria-label="Interactive Button" onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📞 Broker Phones</button>
-              <button aria-label="Interactive Button" onClick={() => copyPhones('operator')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>🚗 Operator Phones</button>
+              <button onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📋 Copy CSV</button>
+              <button onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📞 Broker Phones</button>
+              <button onClick={() => copyPhones('operator')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>🚗 Operator Phones</button>
             </div>
           </div>
         )}

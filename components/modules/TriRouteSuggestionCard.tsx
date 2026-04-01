@@ -136,7 +136,7 @@ export default function TriRouteSuggestionCard({ loadId, compact = false }: TriR
         <div className="bg-slate-900/80 border border-white/5 hover:border-amber-500/10 rounded-2xl overflow-hidden
             transition-all duration-300">
             {/* Header */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setExpanded(!expanded)}
                 className="w-full flex items-center justify-between p-4 hover:bg-white/[0.02] transition-colors"
             >

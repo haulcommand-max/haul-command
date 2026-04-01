@@ -138,7 +138,7 @@ export default async function StateRequirementsPage({ params }: { params: Promis
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 {/* Breadcrumb */}
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 24, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-                    <Link aria-label="Navigation Link" href="/regulatory-db" style={{ color: '#6b7280', textDecoration: 'none' }}>Regulatory DB</Link>
+                    <Link href="/regulatory-db" style={{ color: '#6b7280', textDecoration: 'none' }}>Regulatory DB</Link>
                     <ChevronRight style={{ width: 12, height: 12 }} />
                     <span style={{ color: '#d1d5db' }}>{name}</span>
                 </nav>
@@ -179,7 +179,7 @@ export default async function StateRequirementsPage({ params }: { params: Promis
                         <AlertTriangle style={{ width: 32, height: 32, color: '#f59e0b', margin: '0 auto 12px' }} />
                         <p style={{ fontSize: 15, color: '#9ca3af' }}>Regulation data for <strong>{name}</strong> is not yet loaded.</p>
                         <p style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>Check back soon or contact the {name} DOT directly.</p>
-                        <Link aria-label="Navigation Link" href="/regulatory-db" style={{ display: 'inline-block', marginTop: 16, padding: '8px 20px', background: 'rgba(217,119,6,0.12)', color: '#d97706', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+                        <Link href="/regulatory-db" style={{ display: 'inline-block', marginTop: 16, padding: '8px 20px', background: 'rgba(217,119,6,0.12)', color: '#d97706', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
                             Browse all states →
                         </Link>
                     </div>
@@ -234,7 +234,7 @@ export default async function StateRequirementsPage({ params }: { params: Promis
                                 <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 12 }}>{name} recognizes pilot car certifications from:</p>
                                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                     {reg.reciprocity_states.filter((s): s is string => typeof s === 'string' && s.length > 0).map(s => (
-                                        <Link aria-label="Navigation Link" key={s} href={`/requirements/${s.toLowerCase()}/escort-vehicle-rules`} style={{
+                                        <Link key={s} href={`/requirements/${s.toLowerCase()}/escort-vehicle-rules`} style={{
                                             padding: '4px 12px', borderRadius: 8, textDecoration: 'none',
                                             background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)',
                                             color: '#10b981', fontSize: 11, fontWeight: 700,
@@ -258,10 +258,10 @@ export default async function StateRequirementsPage({ params }: { params: Promis
                 <div style={{ background: 'linear-gradient(135deg, rgba(241,169,27,0.08), rgba(241,169,27,0.02))', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 20, padding: '2rem', textAlign: 'center', marginTop: 12 }}>
                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Find Escort Operators in {name}</h3>
                     <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 12 }}>
-                        <Link aria-label="Navigation Link" href={`/regulatory-db`} style={{ padding: '10px 20px', background: 'rgba(255,255,255,0.05)', color: '#d1d5db', fontSize: 13, fontWeight: 700, borderRadius: 10, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <Link href={`/regulatory-db`} style={{ padding: '10px 20px', background: 'rgba(255,255,255,0.05)', color: '#d1d5db', fontSize: 13, fontWeight: 700, borderRadius: 10, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}>
                             All States →
                         </Link>
-                        <Link aria-label="Navigation Link" href="/tools/permit-checker" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
+                        <Link href="/tools/permit-checker" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
                             Check Permit Complexity →
                         </Link>
                     </div>

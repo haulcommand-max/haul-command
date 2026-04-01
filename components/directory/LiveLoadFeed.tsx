@@ -54,10 +54,10 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                     Check nearby cities or post your load to trigger instant matching with local escorts.
                 </div>
                 <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <Link aria-label="Navigation Link" href={`/loads/post?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
+                    <Link href={`/loads/post?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
                         Post a Load →
                     </Link>
-                    <Link aria-label="Navigation Link" href={`/directory/us/${state.toLowerCase()}/${encodeURIComponent(city.toLowerCase())}`} style={{ fontWeight: 800, background: 'rgba(255,255,255,0.1)', color: 'white', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
+                    <Link href={`/directory/us/${state.toLowerCase()}/${encodeURIComponent(city.toLowerCase())}`} style={{ fontWeight: 800, background: 'rgba(255,255,255,0.1)', color: 'white', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
                         Explore Nearby →
                     </Link>
                 </div>
@@ -72,13 +72,13 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
                     Live loads near {city}, {state}
                 </div>
-                <Link aria-label="Navigation Link" href={`/loads?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, color: '#F1A91B', fontSize: 14, textDecoration: 'none' }}>
+                <Link href={`/loads?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, color: '#F1A91B', fontSize: 14, textDecoration: 'none' }}>
                     View board →
                 </Link>
             </div>
 
             {loads.map((l) => (
-                <Link aria-label="Navigation Link" key={l.id} href={`/loads/${l.id}`} style={{
+                <Link key={l.id} href={`/loads/${l.id}`} style={{
                     display: 'block', padding: '1.25rem', borderRadius: 16,
                     background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'white', textDecoration: 'none',
                     transition: 'all 0.2s',

@@ -303,7 +303,7 @@ function TrustScoreBadge({ score }: { score: number }) {
 // ── Win #3: Claim This Listing CTA (Yellow Pages pattern) ────────────────────
 function ClaimListingBanner({ id }: { id: string }) {
     return (
-        <Link aria-label="Navigation Link"
+        <Link
             href={`/claim/${id}`}
             className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all group"
             style={{
@@ -600,7 +600,7 @@ export default function OperatorTrustCard({
             {/* ── Zone 6: Dual CTA row ── */}
             <div className="flex gap-2 mt-auto pt-1">
                 {isClaimed && onRequestEscort && (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={onRequestEscort}
                         className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition-all press-scale"
                         style={{
@@ -616,7 +616,7 @@ export default function OperatorTrustCard({
                         Request Escort
                     </button>
                 )}
-                <Link aria-label="Navigation Link"
+                <Link
                     href={href}
                     className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition-all"
                     style={{

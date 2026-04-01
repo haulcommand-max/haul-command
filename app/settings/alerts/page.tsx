@@ -69,7 +69,7 @@ export default function AlertsSettingsPage() {
                         <p className="font-semibold">Push Notifications</p>
                         <p className="text-gray-400 text-sm">Receive alerts for loads, offers, and corridor activity.</p>
                     </div>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => setS({ ...s, enabled: !s.enabled })}
                         className={`relative w-12 h-6 rounded-full transition-colors ${s.enabled ? "bg-orange-500" : "bg-gray-700"}`}
                         aria-checked={s.enabled}
@@ -104,7 +104,7 @@ export default function AlertsSettingsPage() {
                                 {Object.entries(ALERT_TYPE_LABELS).map(([type, label]) => (
                                     <label key={type} className="flex items-center justify-between cursor-pointer">
                                         <span className="text-gray-300">{label}</span>
-                                        <button aria-label="Interactive Button"
+                                        <button
                                             onClick={() => {
                                                 const next = s.alert_types.includes(type)
                                                     ? s.alert_types.filter((x) => x !== type)
@@ -128,7 +128,7 @@ export default function AlertsSettingsPage() {
                                     <p className="font-semibold">Quiet Hours</p>
                                     <p className="text-gray-400 text-sm">No alerts during set hours.</p>
                                 </div>
-                                <button aria-label="Interactive Button"
+                                <button
                                     onClick={() => setS({ ...s, quiet_hours_enabled: !s.quiet_hours_enabled })}
                                     className={`relative w-10 h-5 rounded-full transition-colors ${s.quiet_hours_enabled ? "bg-orange-500" : "bg-gray-700"}`}
                                     role="switch" aria-checked={s.quiet_hours_enabled}
@@ -180,7 +180,7 @@ export default function AlertsSettingsPage() {
                 )}
 
                 {/* Save */}
-                <button aria-label="Interactive Button"
+                <button
                     onClick={save}
                     disabled={saving}
                     className={`w-full py-3.5 rounded-xl font-bold text-white transition-all ${saved ? "bg-green-600" : "bg-orange-500 hover:bg-orange-400"} disabled:opacity-60`}

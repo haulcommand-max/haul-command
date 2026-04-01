@@ -78,7 +78,7 @@ export default function SettingsPage() {
     const Toggle = ({ label, value, onChange }: { label: string; value: boolean; onChange: (v: boolean) => void }) => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
             <span style={{ fontSize: 14, color: '#D1D5DB' }}>{label}</span>
-            <button aria-label="Interactive Button" onClick={() => onChange(!value)} style={{
+            <button onClick={() => onChange(!value)} style={{
                 width: 44, height: 24, borderRadius: 12, border: 'none', cursor: 'pointer', position: 'relative',
                 background: value ? '#F59E0B' : 'rgba(255,255,255,0.12)', transition: 'all 0.2s',
             }}>
@@ -139,7 +139,7 @@ export default function SettingsPage() {
                     <Toggle label="Weekly digest" value={profile.weekly_digest} onChange={v => setProfile(p => ({ ...p, weekly_digest: v }))} />
                 </Section>
 
-                <button aria-label="Interactive Button" onClick={handleSave} disabled={saving} style={{
+                <button onClick={handleSave} disabled={saving} style={{
                     width: '100%', padding: '14px', background: saved ? '#10B981' : 'linear-gradient(135deg, #F59E0B, #D97706)',
                     border: 'none', borderRadius: 12, color: saved ? '#fff' : '#030712', fontWeight: 700, fontSize: 15,
                     cursor: 'pointer', transition: 'all 0.2s', opacity: saving ? 0.6 : 1,
@@ -148,7 +148,7 @@ export default function SettingsPage() {
                 </button>
 
                 <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <button aria-label="Interactive Button" onClick={async () => { await supabase.auth.signOut(); window.location.href = '/login'; }} style={{
+                    <button onClick={async () => { await supabase.auth.signOut(); window.location.href = '/login'; }} style={{
                         background: 'none', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8,
                         padding: '10px 20px', color: '#EF4444', fontSize: 13, cursor: 'pointer',
                     }}>Sign Out</button>

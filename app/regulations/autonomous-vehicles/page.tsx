@@ -156,7 +156,7 @@ export default function AVRegulationsPage() {
         <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Country-by-Country AV Regulations</h2>
         <p style={{ color: '#8fa3c0', marginBottom: 40, fontSize: 15 }}>
           Click any country for escort-specific AV guidance. All 120 countries →{' '}
-          <Link aria-label="Navigation Link" href="/regulations" style={{ color: '#00ccff' }}>full regulation database</Link>
+          <Link href="/regulations" style={{ color: '#00ccff' }}>full regulation database</Link>
         </p>
 
         <div style={{ display: 'grid', gap: 24 }}>
@@ -227,7 +227,7 @@ export default function AVRegulationsPage() {
                       </div>
                     ))}
                     <div style={{ marginTop: 16 }}>
-                      <Link aria-label="Navigation Link"
+                      <Link
                         href={`/regulations/autonomous-vehicles/${c.code}`}
                         style={{
                           display: 'inline-block', padding: '8px 16px', borderRadius: 10,
@@ -277,8 +277,8 @@ export default function AVRegulationsPage() {
           <p style={{ color: '#8fa3c0', marginBottom: 24, fontSize: 15 }}>
             Understanding the regulations is step one. Certification is what gets you chosen first.
           </p>
-          <Link aria-label="Navigation Link" href="/training/av-certification">
-            <button aria-label="Interactive Button" style={{
+          <Link href="/training/av-certification">
+            <button style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,
               padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',

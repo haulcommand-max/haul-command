@@ -30,7 +30,7 @@ export function LocaleToggle({ currentLocale, className }: LocaleToggleProps) {
 
     return (
         <div className={`locale-toggle ${className || ''}`} role="group" aria-label="Language">
-            <button aria-label="Interactive Button"
+            <button
                 className={`locale-btn ${isEn ? 'locale-btn--active' : ''}`}
                 onClick={() => switchLocale('en-CA')}
                 aria-pressed={isEn}
@@ -39,7 +39,7 @@ export function LocaleToggle({ currentLocale, className }: LocaleToggleProps) {
                 EN
             </button>
             <span className="locale-divider">/</span>
-            <button aria-label="Interactive Button"
+            <button
                 className={`locale-btn ${isFr ? 'locale-btn--active' : ''}`}
                 onClick={() => switchLocale('fr-CA')}
                 aria-pressed={isFr}

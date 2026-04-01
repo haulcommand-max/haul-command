@@ -53,7 +53,7 @@ export default async function BlogIndexPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post: any) => (
-              <Link aria-label="Navigation Link"
+              <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
                 className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all"

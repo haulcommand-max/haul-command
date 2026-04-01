@@ -267,7 +267,7 @@ export function ProfileStrengthMeter({
                                 {60 - pct}% to go
                             </div>
                         </div>
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => onAction?.('coverage_states')}
                             style={{
                                 padding: '5px 12px', borderRadius: 6, border: 'none',
@@ -282,7 +282,7 @@ export function ProfileStrengthMeter({
 
                 {/* Smart Next-Step (single action CTA) */}
                 {data.next_best_step && (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => onAction?.(data.next_best_step!.field)}
                         style={{
                             width: '100%', padding: '14px 16px',
@@ -341,7 +341,7 @@ export function ProfileStrengthMeter({
                 )}
 
                 {/* Section toggle */}
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => setShowSections(!showSections)}
                     style={{
                         background: 'none', border: 'none', cursor: 'pointer',
@@ -404,7 +404,7 @@ export function ProfileStrengthMeter({
                                             {f.label}
                                         </span>
                                         {!f.present && (
-                                            <button aria-label="Interactive Button"
+                                            <button
                                                 onClick={() => onAction?.(f.key)}
                                                 style={{
                                                     fontSize: 9, fontWeight: 800, color: '#f97316',

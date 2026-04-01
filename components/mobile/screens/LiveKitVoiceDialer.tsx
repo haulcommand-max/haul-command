@@ -200,7 +200,7 @@ export function LiveKitVoiceDialer({ operator, loadId, userId, onCallComplete }:
       {/* Action Buttons */}
       <div style={S.actions}>
         {callState === 'idle' && (
-          <button aria-label="Interactive Button" style={S.dialBtn} onClick={handleDial}>
+          <button style={S.dialBtn} onClick={handleDial}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
@@ -210,17 +210,17 @@ export function LiveKitVoiceDialer({ operator, loadId, userId, onCallComplete }:
 
         {callState === 'active' && (
           <div style={{ display: 'flex', gap: 12, width: '100%' }}>
-            <button aria-label="Interactive Button" style={{ ...S.controlBtn, background: isMuted ? 'rgba(248,113,113,0.15)' : 'rgba(255,255,255,0.06)' }}
+            <button style={{ ...S.controlBtn, background: isMuted ? 'rgba(248,113,113,0.15)' : 'rgba(255,255,255,0.06)' }}
               onClick={() => setIsMuted(!isMuted)}>
               {isMuted ? '🔇' : '🎙'}
               <span style={{ fontSize: 10, marginTop: 2 }}>{isMuted ? 'Unmute' : 'Mute'}</span>
             </button>
-            <button aria-label="Interactive Button" style={{ ...S.controlBtn, background: isSpeakerOn ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.06)' }}
+            <button style={{ ...S.controlBtn, background: isSpeakerOn ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.06)' }}
               onClick={() => setIsSpeakerOn(!isSpeakerOn)}>
               {isSpeakerOn ? '🔊' : '🔈'}
               <span style={{ fontSize: 10, marginTop: 2 }}>Speaker</span>
             </button>
-            <button aria-label="Interactive Button" style={S.hangupBtn} onClick={handleHangup}>
+            <button style={S.hangupBtn} onClick={handleHangup}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
                 <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/>
                 <path d="M2 2l20 20"/>
@@ -232,14 +232,14 @@ export function LiveKitVoiceDialer({ operator, loadId, userId, onCallComplete }:
 
         {(callState === 'ended' || callState === 'error') && (
           <div style={{ display: 'flex', gap: 10, width: '100%' }}>
-            <button aria-label="Interactive Button" style={{ ...S.dialBtn, flex: 1 }} onClick={handleDial}>
+            <button style={{ ...S.dialBtn, flex: 1 }} onClick={handleDial}>
               Redial
             </button>
           </div>
         )}
 
         {(callState === 'connecting' || callState === 'ringing') && (
-          <button aria-label="Interactive Button" style={S.cancelBtn} onClick={() => setCallState('idle')}>
+          <button style={S.cancelBtn} onClick={() => setCallState('idle')}>
             Cancel
           </button>
         )}

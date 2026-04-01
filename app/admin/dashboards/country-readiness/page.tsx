@@ -127,7 +127,7 @@ export default function CountryReadinessDashboard() {
             {/* Filters */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
                 {(['all', 'live', 'seed', 'dormant'] as const).map(f => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={f}
                         onClick={() => setFilter(f)}
                         style={{

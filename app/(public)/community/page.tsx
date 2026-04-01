@@ -40,7 +40,7 @@ export default function CommunityLandingPage() {
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">
               We already aggregated the DOT and FMCSA data. Claim your business identity, verify your insurance, and get inbound load requests from high-paying brokers.
             </p>
-            <Link aria-label="Navigation Link" href="/directory/claim" className="inline-flex px-6 py-3 bg-hc-elevated hover:bg-hc-surface border border-hc-border hover:border-hc-success text-white font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
+            <Link href="/directory/claim" className="inline-flex px-6 py-3 bg-hc-elevated hover:bg-hc-surface border border-hc-border hover:border-hc-success text-white font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
               Claim Your Business
             </Link>
           </div>
@@ -53,7 +53,7 @@ export default function CommunityLandingPage() {
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">
               Are you part of the official Heavy Haul Facebook community? Sync your account to inherit your group trust score and immediately bypass the manual verification queue.
             </p>
-            <Link aria-label="Navigation Link" href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-black font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
+            <Link href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-black font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
               Connect Facebook
             </Link>
           </div>

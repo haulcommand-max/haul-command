@@ -49,7 +49,7 @@ export default async function StateDirectoryPage({ params }: { params: Promise<{
             {/* ── Breadcrumb — desktop only ── */}
             <div className="hidden md:flex border-b border-hc-border-bare px-4 sm:px-6 py-3">
                 <div className="max-w-5xl mx-auto flex items-center gap-2 text-xs text-hc-subtle font-semibold uppercase tracking-widest">
-                    <Link aria-label="Navigation Link" href="/directory" className="hover:text-hc-gold-500 transition-colors">Directory</Link>
+                    <Link href="/directory" className="hover:text-hc-gold-500 transition-colors">Directory</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-hc-text">{region}</span>
                 </div>
@@ -71,7 +71,7 @@ export default async function StateDirectoryPage({ params }: { params: Promise<{
                     </p>
                     {/* Link to directory results */}
                     <div className="mt-5">
-                        <Link aria-label="Navigation Link"
+                        <Link
                             href={`/directory/us/${region.toLowerCase()}`}
                             className="inline-flex items-center gap-2 px-4 py-2 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg font-black text-xs uppercase tracking-widest rounded-xl transition-colors"
                         >
@@ -138,7 +138,7 @@ export default async function StateDirectoryPage({ params }: { params: Promise<{
                     {chambers.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {chambers.map(c => (
-                                <Link aria-label="Navigation Link" href={`/directory/${region.toLowerCase()}/${c.slug}`} key={c.id}>
+                                <Link href={`/directory/${region.toLowerCase()}/${c.slug}`} key={c.id}>
                                     <div className="group hc-card p-5 hover:border-hc-border-high transition-all duration-200 h-full">
                                         <h3 className="font-bold text-hc-text group-hover:text-hc-gold-500 transition-colors line-clamp-2 mb-2">
                                             {c.canonical_name}
@@ -166,13 +166,13 @@ export default async function StateDirectoryPage({ params }: { params: Promise<{
                                     Early operators dominate the corridor leaderboard.
                                 </p>
                             </div>
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 href="/onboarding"
                                 className="inline-flex items-center gap-2 px-6 py-3 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg font-black text-sm uppercase tracking-widest rounded-xl transition-colors shadow-dispatch"
                             >
                                 Claim {region} Territory
                             </Link>
-                            <Link aria-label="Navigation Link" href="/directory" className="text-xs text-hc-subtle hover:text-hc-muted transition-colors">
+                            <Link href="/directory" className="text-xs text-hc-subtle hover:text-hc-muted transition-colors">
                                 ← Back to all states
                             </Link>
                         </div>

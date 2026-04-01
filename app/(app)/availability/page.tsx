@@ -245,7 +245,7 @@ export default function AvailabilityPage() {
                                             </div>
                                         </div>
 
-                                        <button aria-label="Interactive Button"
+                                        <button
                                             onClick={() => step < 3 && form.name && (form.phone || form.email) && setStep(2)}
                                             disabled={!form.name || (!form.phone && !form.email)}
                                             className="mt-6 w-full bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 disabled:opacity-30 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all"
@@ -329,13 +329,13 @@ export default function AvailabilityPage() {
                                         </div>
 
                                         <div className="flex gap-3 mt-6">
-                                            <button aria-label="Interactive Button"
+                                            <button
                                                 onClick={() => setStep(1)}
                                                 className="px-6 py-3 border border-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
                                             >
                                                 Back
                                             </button>
-                                            <button aria-label="Interactive Button"
+                                            <button
                                                 onClick={() => setStep(3)}
                                                 className="flex-1 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all"
                                             >
@@ -360,7 +360,7 @@ export default function AvailabilityPage() {
                                                 <label className="block text-sm text-gray-400 mb-2">Escort Type</label>
                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                     {ESCORT_TYPES.map((type) => (
-                                                        <button aria-label="Interactive Button"
+                                                        <button
                                                             key={type.value}
                                                             onClick={() => updateForm("escort_type", type.value)}
                                                             className={`p-3 rounded-lg border text-left text-sm transition-all ${form.escort_type === type.value
@@ -379,7 +379,7 @@ export default function AvailabilityPage() {
                                                 <label className="block text-sm text-gray-400 mb-2">Equipment</label>
                                                 <div className="flex flex-wrap gap-2">
                                                     {EQUIPMENT_OPTIONS.map((tag) => (
-                                                        <button aria-label="Interactive Button"
+                                                        <button
                                                             key={tag}
                                                             onClick={() => toggleEquipment(tag)}
                                                             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${form.equipment_tags.includes(tag)
@@ -395,13 +395,13 @@ export default function AvailabilityPage() {
                                         </div>
 
                                         <div className="flex gap-3 mt-6">
-                                            <button aria-label="Interactive Button"
+                                            <button
                                                 onClick={() => setStep(2)}
                                                 className="px-6 py-3 border border-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
                                             >
                                                 Back
                                             </button>
-                                            <button aria-label="Interactive Button"
+                                            <button
                                                 onClick={handleSubmit}
                                                 disabled={isSubmitting}
                                                 className="flex-1 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 disabled:opacity-50 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all"

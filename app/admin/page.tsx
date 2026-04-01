@@ -68,7 +68,7 @@ export default function AdminPage() {
             { label: 'Batch Jobs', value: '🚀', href: '/admin/batch-jobs', sub: '$1.76 total to fill all' },
             { label: 'Route Check Tool', value: '✔', href: '/route-check', sub: 'SEO inbound trap' },
           ].map(card => (
-            <Link aria-label="Navigation Link"
+            <Link
               key={card.label}
               href={card.href ?? '#'}
               className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-colors group"
@@ -87,7 +87,7 @@ export default function AdminPage() {
               <h2 className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3">{section.label}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {section.links.map(link => (
-                  <Link aria-label="Navigation Link"
+                  <Link
                     key={link.href}
                     href={link.href}
                     className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 hover:bg-white/8 transition-all group"

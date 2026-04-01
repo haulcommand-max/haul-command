@@ -102,7 +102,7 @@ export default function HotZonesNearYou({ limit = 4, variant = "card", homeCorri
                 {zones.map(zone => {
                     const cfg = BUCKET_CONFIG[zone.pressure_bucket] ?? BUCKET_CONFIG.stable;
                     return (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={zone.corridor}
                             href={`/corridors/${zone.corridor}`}
                             className="flex-shrink-0 flex items-center gap-2 rounded-xl px-3.5 py-2.5 transition-all"
@@ -153,7 +153,7 @@ export default function HotZonesNearYou({ limit = 4, variant = "card", homeCorri
                 {zones.map((zone, i) => {
                     const cfg = BUCKET_CONFIG[zone.pressure_bucket] ?? BUCKET_CONFIG.stable;
                     return (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={zone.corridor}
                             href={`/corridors/${zone.corridor}`}
                             className="group flex items-center gap-4 px-5 py-4 transition-all"
@@ -212,7 +212,7 @@ export default function HotZonesNearYou({ limit = 4, variant = "card", homeCorri
                 <p className="text-[11px] font-medium" style={{ color: "#3A4553" }}>
                     Position now to capture upcoming loads.
                 </p>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/profile/availability"
                     className="text-[11px] font-bold uppercase tracking-wider transition-colors"
                     style={{ color: "rgba(241,169,27,0.7)" }}

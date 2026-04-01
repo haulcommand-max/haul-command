@@ -76,7 +76,7 @@ export default function NotificationBell() {
 
     return (
         <div ref={ref} style={{ position: 'relative' }}>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setOpen(!open)}
                 style={{
                     background: 'none', border: 'none', cursor: 'pointer', position: 'relative',
@@ -110,7 +110,7 @@ export default function NotificationBell() {
                     }}>
                         <span style={{ fontSize: 15, fontWeight: 700, color: '#F9FAFB' }}>Notifications</span>
                         {unread > 0 && (
-                            <button aria-label="Interactive Button" onClick={markAllRead} style={{
+                            <button onClick={markAllRead} style={{
                                 background: 'none', border: 'none', color: '#F59E0B',
                                 fontSize: 12, fontWeight: 600, cursor: 'pointer',
                             }}>Mark all read</button>

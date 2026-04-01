@@ -48,7 +48,7 @@ function SectionHeader({
     onToggle: () => void;
 }) {
     return (
-        <button aria-label="Interactive Button"
+        <button
             type="button"
             onClick={onToggle}
             data-filter-control
@@ -84,7 +84,7 @@ function FilterChip({
     onClick: () => void;
 }) {
     return (
-        <button aria-label="Interactive Button"
+        <button
             type="button"
             onClick={onClick}
             data-filter-control
@@ -428,7 +428,7 @@ function FilterPanel({ filters, onChange }: {
                                 ))}
                             </div>
                             {US_STATES.length > 20 && (
-                                <button aria-label="Interactive Button"
+                                <button
                                     type="button"
                                     onClick={() => toggle("states")}
                                     className="mt-2 text-[10px] text-hc-gold-500 font-bold uppercase tracking-widest"
@@ -513,7 +513,7 @@ export function DirectoryFilterDrawer({
                 </div>
                 <div className="flex items-center gap-2">
                     {activeCount > 0 && (
-                        <button aria-label="Interactive Button"
+                        <button
                             type="button"
                             onClick={handleReset}
                             className="text-[10px] text-hc-subtle hover:text-hc-danger font-bold uppercase tracking-widest transition-colors"
@@ -522,7 +522,7 @@ export function DirectoryFilterDrawer({
                         </button>
                     )}
                     {!inline && onClose && (
-                        <button aria-label="Interactive Button"
+                        <button
                             type="button"
                             onClick={onClose}
                             className="p-1.5 rounded-lg hover:bg-hc-elevated text-hc-subtle"
@@ -585,7 +585,7 @@ export function FilterTriggerButton({
     className?: string;
 }) {
     return (
-        <button aria-label="Interactive Button"
+        <button
             type="button"
             onClick={onClick}
             className={cn(

@@ -186,7 +186,7 @@ export function OperatorCommandCenter({ userId }: { userId: string }) {
                         </div>
                     </div>
 
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={toggleAvailability}
                         disabled={toggling}
                         style={{

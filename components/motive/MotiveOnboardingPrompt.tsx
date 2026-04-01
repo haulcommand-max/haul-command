@@ -72,7 +72,7 @@ export default function MotiveOnboardingPrompt({ profileId, onSkip }: Props) {
       </a>
 
       <div style={{ marginTop: 16 }}>
-        <button aria-label="Interactive Button"
+        <button
           onClick={onSkip}
           style={{
             background: 'none', border: 'none', color: '#8b949e',

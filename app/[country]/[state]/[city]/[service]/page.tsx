@@ -26,11 +26,11 @@ export default async function CityServicePage({ params }: { params: Promise<{ co
 
             <nav className="text-sm breadcrumbs mb-6 text-slate-500">
                 <ul className="flex gap-2">
-                    <li><Link aria-label="Navigation Link" href={`/${country}`} className="hover:underline">{country.toUpperCase()}</Link></li>
+                    <li><Link href={`/${country}`} className="hover:underline">{country.toUpperCase()}</Link></li>
                     <li>/</li>
-                    <li><Link aria-label="Navigation Link" href={`/${country}/${state}`} className="hover:underline">{state.toUpperCase()}</Link></li>
+                    <li><Link href={`/${country}/${state}`} className="hover:underline">{state.toUpperCase()}</Link></li>
                     <li>/</li>
-                    <li><Link aria-label="Navigation Link" href={`/${country}/${state}/${citySlug}`} className="hover:underline">{cityData.city}</Link></li>
+                    <li><Link href={`/${country}/${state}/${citySlug}`} className="hover:underline">{cityData.city}</Link></li>
                     <li>/</li>
                     <li className="font-bold text-slate-900">{serviceData.name}</li>
                 </ul>
@@ -62,7 +62,7 @@ export default async function CityServicePage({ params }: { params: Promise<{ co
             <section className="mb-16">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold text-slate-900">Top Rated {serviceData.name} Providers</h2>
-                    <Link aria-label="Navigation Link" href={`/auth/register`} className="text-blue-600 font-medium hover:underline">
+                    <Link href={`/auth/register`} className="text-blue-600 font-medium hover:underline">
                         Register your business →
                     </Link>
                 </div>
@@ -83,7 +83,7 @@ export default async function CityServicePage({ params }: { params: Promise<{ co
                                     <span className="text-green-600 font-medium">Verified Insurance</span>
                                 </div>
                             </div>
-                            <button aria-label="Interactive Button" className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
                                 View Profile
                             </button>
                         </div>

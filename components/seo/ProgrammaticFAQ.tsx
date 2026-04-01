@@ -129,7 +129,7 @@ export function ProgrammaticFAQ({ faqs, title = 'Frequently Asked Questions' }: 
                         border: `1px solid ${openIdx === i ? 'rgba(241,169,27,0.2)' : 'rgba(255,255,255,0.06)'}`,
                         borderRadius: 12, overflow: 'hidden',
                     }}>
-                        <button aria-label="Interactive Button" onClick={() => setOpenIdx(openIdx === i ? null : i)} style={{
+                        <button onClick={() => setOpenIdx(openIdx === i ? null : i)} style={{
                             width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                             padding: '14px 16px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', gap: 12,
                         }}>

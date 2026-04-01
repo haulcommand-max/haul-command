@@ -118,7 +118,7 @@ export function DirectoryActivityFeed() {
       </div>
 
       {/* Sign-in CTA */}
-      <Link aria-label="Navigation Link" href="/login" style={{
+      <Link href="/login" style={{
         display: 'block', textAlign: 'center', marginTop: 16, padding: '8px',
         borderRadius: 10, background: 'rgba(245,185,66,0.06)', border: `1px solid rgba(245,185,66,0.15)`,
         color: T.gold, fontSize: 11, fontWeight: 800, textDecoration: 'none',

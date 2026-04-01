@@ -147,7 +147,7 @@ export function SmallStatesSidebar({
         <div className={`absolute right-0 top-0 bottom-0 z-20 flex items-stretch pointer-events-none ${className}`}>
 
             {/* ── Collapse toggle ────────────────────────────────────── */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setCollapsed((c) => !c)}
                 className="pointer-events-auto self-center -mr-px w-6 h-16 flex items-center justify-center rounded-l-lg transition-all hover:w-8"
                 style={{
@@ -213,7 +213,7 @@ export function SmallStatesSidebar({
                                 return (
                                     <div key={tier} className="border-b border-white/5">
                                         {/* Tier header */}
-                                        <button aria-label="Interactive Button"
+                                        <button
                                             onClick={() => toggleTier(tier)}
                                             className="w-full flex items-center justify-between px-2 py-2 transition-colors hover:bg-white/[0.03]"
                                         >

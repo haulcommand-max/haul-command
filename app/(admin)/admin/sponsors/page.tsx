@@ -87,7 +87,7 @@ export default function BillingPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button aria-label="Interactive Button" className="text-[10px] font-black uppercase text-[#444] hover:text-[#ffb400] transition-colors">
+                                        <button className="text-[10px] font-black uppercase text-[#444] hover:text-[#ffb400] transition-colors">
                                             Edit Profile
                                         </button>
                                     </td>
@@ -112,7 +112,7 @@ function StatCard({ label, value, color }: any) {
 
 function Tab({ label, active }: any) {
     return (
-        <button aria-label="Interactive Button" className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
+        <button className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${active ? 'border-[#ffb400] text-[#ffb400]' : 'border-transparent text-[#444] hover:text-[#888]'}`}>
             {label}
         </button>
     );

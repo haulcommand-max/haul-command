@@ -17,7 +17,7 @@ export default function DetailDrawer({ isOpen, onClose, title, children, actions
                         <h3 className="text-2xl font-black tracking-tight uppercase italic text-[#ffb400]">Detail View</h3>
                         <p className="text-[#666] text-sm font-bold uppercase tracking-wider">{title}</p>
                     </div>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={onClose}
                         className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#1a1a1a] transition-all"
                     >

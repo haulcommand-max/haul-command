@@ -95,7 +95,7 @@ export function BrokerViewNudge({
             position: 'relative',
         }}>
             {/* Dismiss */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setDismissed(true)}
                 style={{
                     position: 'absolute', top: 8, right: 12,
@@ -129,7 +129,7 @@ export function BrokerViewNudge({
                     </div>
                 </div>
 
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => onFinishProfile?.()}
                     style={{
                         padding: '8px 16px', borderRadius: 8, border: 'none',
@@ -195,7 +195,7 @@ export function AppDownloadPrompt({
                 </div>
 
                 <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => { setDismissed(true); onDismiss?.(); }}
                         style={{
                             padding: '8px 12px', borderRadius: 8, border: '1px solid #1e293b',
@@ -205,7 +205,7 @@ export function AppDownloadPrompt({
                     >
                         later
                     </button>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => onEnable?.()}
                         style={{
                             padding: '8px 16px', borderRadius: 8, border: 'none',
@@ -255,7 +255,7 @@ export function LeaderboardGateBanner({
                     you're at {currentScore}% — {60 - currentScore}% to go.
                 </div>
             </div>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => onAction?.()}
                 style={{
                     padding: '6px 14px', borderRadius: 8, border: 'none',

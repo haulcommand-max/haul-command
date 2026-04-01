@@ -106,7 +106,7 @@ export function NotificationInbox() {
     return (
         <div style={{ position: "relative" }}>
             {/* Bell button */}
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => { setOpen(o => !o); if (!open) fetchNotifications(); }}
                 aria-label={`Notifications${unreadCount > 0 ? ` — ${unreadCount} unread` : ""}`}
                 style={{
@@ -162,7 +162,7 @@ export function NotificationInbox() {
                             Notifications
                         </span>
                         {unreadCount > 0 && (
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={markAllRead}
                                 style={{
                                     fontSize: 11, color: "#d97706", fontWeight: 700,
@@ -257,7 +257,7 @@ export function NotificationInbox() {
 
                     {/* Footer */}
                     <div style={{ padding: "10px 16px", borderTop: "1px solid var(--hc-border, #222)", textAlign: "center" }}>
-                        <Link aria-label="Navigation Link" href="/notifications" style={{ fontSize: 12, color: "#d97706", fontWeight: 700, textDecoration: "none" }}>
+                        <Link href="/notifications" style={{ fontSize: 12, color: "#d97706", fontWeight: 700, textDecoration: "none" }}>
                             View all notifications →
                         </Link>
                     </div>

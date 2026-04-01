@@ -82,7 +82,7 @@ function StepRoleSelect({ onSelect }: { onSelect: (role: Role) => void }) {
                 </h2>
                 <p className="text-sm text-hc-muted">Takes 30 seconds. No credit card.</p>
             </div>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => onSelect("escort")}
                 className="w-full flex items-center gap-4 p-6 bg-hc-surface border border-hc-border hover:border-hc-gold-500 rounded-2xl text-left transition-all duration-200 group min-h-[88px]"
             >
@@ -95,7 +95,7 @@ function StepRoleSelect({ onSelect }: { onSelect: (role: Role) => void }) {
                 </div>
                 <ChevronRight className="w-5 h-5 text-hc-subtle group-hover:text-hc-gold-500 transition-colors shrink-0" />
             </button>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => onSelect("broker")}
                 className="w-full flex items-center gap-4 p-6 bg-hc-surface border border-hc-border hover:border-hc-gold-500 rounded-2xl text-left transition-all duration-200 group min-h-[88px]"
             >
@@ -185,7 +185,7 @@ function StepPhoneVerify({ value: s, onChange }: {
                         placeholder="+1 (555) 000-0000"
                         className="flex-1 px-4 py-3 bg-hc-elevated border border-hc-border rounded-xl text-hc-text placeholder:text-hc-subtle focus:outline-none focus:ring-2 focus:ring-hc-gold-500/30 focus:border-hc-gold-500/50 min-h-[48px]"
                     />
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => setCodeSent(true)}
                         className="px-4 py-3 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg font-black text-xs uppercase tracking-widest rounded-xl transition-colors min-h-[48px] min-w-[80px]"
                     >
@@ -211,7 +211,7 @@ function StepPhoneVerify({ value: s, onChange }: {
                                 placeholder="000000"
                                 className="flex-1 px-4 py-3 bg-hc-elevated border border-hc-border rounded-xl text-hc-text placeholder:text-hc-subtle focus:outline-none focus:ring-2 focus:ring-hc-gold-500/30 focus:border-hc-gold-500/50 min-h-[48px] text-center tracking-[0.5em] text-lg font-black"
                             />
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={() => onChange({ phone_verified: true })}
                                 className="px-4 py-3 bg-hc-success hover:bg-hc-success/80 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-colors min-h-[48px] min-w-[80px]"
                             >
@@ -244,7 +244,7 @@ function StepVehicleAdd({ value: s, onChange }: {
                 <label className="block text-[10px] font-black text-hc-muted uppercase tracking-[0.2em] mb-2">Vehicle Type</label>
                 <div className="grid grid-cols-2 gap-2">
                     {VEHICLE_TYPES.map(v => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={v}
                             onClick={() => onChange({ vehicle_type: v })}
                             className={cn(
@@ -276,7 +276,7 @@ function StepCoverageSetup({ value: s, onChange }: {
             </div>
             <div className="grid grid-cols-3 gap-2">
                 {radii.map(r => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={r}
                         onClick={() => onChange({ coverage_radius: r })}
                         className={cn(
@@ -406,7 +406,7 @@ export function OnboardingWizard({ className }: { className?: string }) {
                 {/* Step counter */}
                 {!isDone && state.step > 0 && (
                     <div className="flex items-center justify-between">
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={back}
                             className="flex items-center gap-1 text-xs text-hc-muted hover:text-hc-text transition-colors min-h-[44px] px-1"
                         >
@@ -455,7 +455,7 @@ export function OnboardingWizard({ className }: { className?: string }) {
                 {/* Next / Skip */}
                 {!isDone && state.step > 0 && (
                     <div className="flex flex-col gap-2 pb-safe">
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={advance}
                             disabled={!canAdvance}
                             className={cn(
@@ -472,7 +472,7 @@ export function OnboardingWizard({ className }: { className?: string }) {
                             )}
                         </button>
                         {!currentStep.required && (
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={advance}
                                 className="text-xs text-hc-subtle hover:text-hc-muted transition-colors py-2 min-h-[44px]"
                             >

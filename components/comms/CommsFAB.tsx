@@ -150,7 +150,7 @@ export function CommsFAB({
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <StatusBanner status={status} compact />
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => setExpanded(false)}
                         style={{
                             padding: '4px 8px',
@@ -209,7 +209,7 @@ export function CommsFAB({
                 }}
             >
                 <EmergencyBroadcast onEmergency={onEmergency} disabled={disabled} />
-                <button aria-label="Interactive Button"
+                <button
                     onClick={onLeave}
                     style={{
                         width: '100%',

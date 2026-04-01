@@ -49,7 +49,7 @@ export default function VapiControlTower() {
                         AI inbound/outbound mesh controls across 25 global markets.
                     </p>
                 </div>
-                <button aria-label="Interactive Button"
+                <button
                     onClick={toggleKillSwitch}
                     className={`px-4 py-2 font-bold rounded-lg flex items-center gap-2 transition-colors ${globalKillSwitch ? 'bg-red-500/20 text-red-500 border border-red-500/50' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'}`}
                 >

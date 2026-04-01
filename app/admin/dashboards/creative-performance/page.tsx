@@ -78,7 +78,7 @@ export default function CreativePerformanceDashboard() {
             {/* Filter + Table */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
                 {(['all', 'active', 'promoted', 'retired'] as const).map(f => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={f}
                         onClick={() => setFilter(f)}
                         style={{

@@ -80,7 +80,7 @@ export function A2HSPrompt() {
                     >
                         ×
                     </button>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={handleInstall}
                         className="px-3 py-1.5 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg text-xs font-black uppercase tracking-wider rounded-lg transition-colors"
                     >

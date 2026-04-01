@@ -127,7 +127,7 @@ export function EvidenceUploader({
             <div className="px-5 pb-3 flex gap-2">
                 {(Object.entries(TYPE_CONFIG) as [EvidenceType, typeof TYPE_CONFIG[EvidenceType]][]).map(
                     ([type, config]) => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={type}
                             onClick={() => {
                                 if (type === "location_ping") {
@@ -219,7 +219,7 @@ export function EvidenceUploader({
                                 )}
 
                                 {/* Remove button */}
-                                <button aria-label="Interactive Button"
+                                <button
                                     onClick={() => removeItem(item.id)}
                                     className="absolute top-1 left-1 w-5 h-5 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                                 >

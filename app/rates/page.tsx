@@ -69,7 +69,7 @@ export default async function RatesPage() {
       <section className="max-w-6xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {COUNTRIES.map((country) => (
-            <Link aria-label="Navigation Link"
+            <Link
               key={country.code}
               href={`/rates/${country.code}`}
               className="p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all group"
@@ -96,7 +96,7 @@ export default async function RatesPage() {
 
         <div className="mt-12 text-center">
           <p className="text-gray-400 mb-4">Rates vary by corridor, load type, and season.</p>
-          <Link aria-label="Navigation Link"
+          <Link
             href="/loads"
             className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
           >

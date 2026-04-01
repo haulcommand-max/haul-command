@@ -76,7 +76,7 @@ export function ChannelHeader({ channel, memberCount, status, onLeave }: Channel
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <StatusBanner status={status} compact />
                     {onLeave && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={onLeave}
                             style={{
                                 padding: '4px 10px',

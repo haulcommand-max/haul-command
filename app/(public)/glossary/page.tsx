@@ -69,7 +69,7 @@ export default async function GlossaryHubPage() {
                     <h2 className="text-[11px] font-black tracking-[0.2em] text-white/40 uppercase mb-4 px-1">Browse by Category</h2>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                         
-                        <Link aria-label="Navigation Link" href="#pilot-car" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
+                        <Link href="#pilot-car" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
                             <div className="h-24 md:h-32 w-full bg-gradient-to-tr from-blue-900/20 to-black relative">
                                 <span className="absolute inset-0 flex items-center justify-center text-4xl md:text-5xl opacity-80 group-hover:scale-110 transition-transform duration-300">🚔</span>
                             </div>
@@ -79,7 +79,7 @@ export default async function GlossaryHubPage() {
                             </div>
                         </Link>
                         
-                        <Link aria-label="Navigation Link" href="#equipment" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
+                        <Link href="#equipment" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
                             <div className="h-24 md:h-32 w-full bg-gradient-to-tr from-orange-900/20 to-black relative">
                                 <span className="absolute inset-0 flex items-center justify-center text-4xl md:text-5xl opacity-80 group-hover:scale-110 transition-transform duration-300">🏗️</span>
                             </div>
@@ -89,7 +89,7 @@ export default async function GlossaryHubPage() {
                             </div>
                         </Link>
 
-                        <Link aria-label="Navigation Link" href="#regulations" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
+                        <Link href="#regulations" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
                             <div className="h-24 md:h-32 w-full bg-gradient-to-tr from-emerald-900/20 to-black relative">
                                 <span className="absolute inset-0 flex items-center justify-center text-4xl md:text-5xl opacity-80 group-hover:scale-110 transition-transform duration-300">⚖️</span>
                             </div>
@@ -99,7 +99,7 @@ export default async function GlossaryHubPage() {
                             </div>
                         </Link>
 
-                        <Link aria-label="Navigation Link" href="#lingo" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
+                        <Link href="#lingo" className="group bg-[#121214] border border-white/5 rounded-2xl overflow-hidden hover:border-[#D4A844]/30 transition-all flex flex-col items-center shadow-lg hover:shadow-[0_0_20px_rgba(212,168,68,0.1)]">
                             <div className="h-24 md:h-32 w-full bg-gradient-to-tr from-purple-900/20 to-black relative">
                                 <span className="absolute inset-0 flex items-center justify-center text-4xl md:text-5xl opacity-80 group-hover:scale-110 transition-transform duration-300">🎙️</span>
                             </div>
@@ -118,7 +118,7 @@ export default async function GlossaryHubPage() {
                     {terms && terms.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                             {terms.map((t) => (
-                                <Link aria-label="Navigation Link" key={t.slug} href={`/glossary/${t.slug}`} className="block group">
+                                <Link key={t.slug} href={`/glossary/${t.slug}`} className="block group">
                                     <div className="bg-[#121214] border border-white/5 rounded-2xl p-5 h-full transition-all group-hover:bg-[#1A1A1E] group-hover:border-[#D4A844]/30 shadow-lg relative overflow-hidden">
                                         <div className="absolute top-0 left-0 w-1 h-full bg-white/5 group-hover:bg-[#D4A844] transition-colors" />
                                         <h3 className="text-base font-bold text-white group-hover:text-[#D4A844] transition-colors flex items-center justify-between">
@@ -149,7 +149,7 @@ export default async function GlossaryHubPage() {
                             <h2 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">Need a Pilot Car That Goes The Distance?</h2>
                             <p className="text-white/70 font-medium text-sm md:text-base">Find verified, professional escort vehicles exactly where your load needs them.</p>
                         </div>
-                        <Link aria-label="Navigation Link" href="/directory" className="whitespace-nowrap bg-[#D4A844] text-black font-black uppercase tracking-widest text-xs md:text-sm px-8 py-4 rounded-xl hover:bg-[#E5B54A] transition-all hover:scale-105 shadow-[0_0_30px_rgba(212,168,68,0.3)]">
+                        <Link href="/directory" className="whitespace-nowrap bg-[#D4A844] text-black font-black uppercase tracking-widest text-xs md:text-sm px-8 py-4 rounded-xl hover:bg-[#E5B54A] transition-all hover:scale-105 shadow-[0_0_30px_rgba(212,168,68,0.3)]">
                             Search Network
                         </Link>
                     </div>

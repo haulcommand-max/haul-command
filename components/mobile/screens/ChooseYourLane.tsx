@@ -191,7 +191,7 @@ export default function ChooseYourLane({ onSelect }: ChooseYourLaneProps) {
         {LANES.map((lane, i) => {
           const isSelected = selected === lane.id;
           return (
-            <button aria-label="Interactive Button"
+            <button
               key={lane.id}
               onClick={() => handleSelect(lane.id)}
               disabled={animating && !isSelected}

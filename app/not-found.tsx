@@ -64,7 +64,7 @@ export default function NotFound() {
                 {/* Quick links grid — 1-col mobile, 2-col then 4-col up */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-12">
                     {QUICK_LINKS.map(({ href, label, icon: Icon, desc }) => (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={href}
                             href={href}
                             className="intelligence-card group text-center p-5"
@@ -84,7 +84,7 @@ export default function NotFound() {
                     </div>
                     <div className="flex flex-wrap justify-center gap-2">
                         {CORRIDORS.map(({ href, label }) => (
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 key={href}
                                 href={href}
                                 className="px-4 py-2 rounded-lg text-xs font-semibold transition-all hover:border-[#F1A91B]/30 hover:text-[#F1A91B]"
@@ -101,7 +101,7 @@ export default function NotFound() {
                 </div>
 
                 {/* Return CTA */}
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/home"
                     className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-black font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_30px_rgba(241,169,27,0.2)]"
                 >

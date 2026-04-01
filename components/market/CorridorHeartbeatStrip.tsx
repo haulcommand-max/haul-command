@@ -181,7 +181,7 @@ export function CorridorHeartbeatStrip({
                 padding: '12px 20px 16px',
                 borderTop: '1px solid rgba(255,255,255,0.04)',
             }}>
-                <Link aria-label="Navigation Link" href="/loads" style={{
+                <Link href="/loads" style={{
                     flex: 1, textAlign: 'center',
                     padding: '10px 14px', borderRadius: 10,
                     background: 'rgba(241,169,27,0.12)', border: '1px solid rgba(241,169,27,0.25)',
@@ -190,7 +190,7 @@ export function CorridorHeartbeatStrip({
                 }}>
                     Browse Loads
                 </Link>
-                <Link aria-label="Navigation Link" href="/loads/post" style={{
+                <Link href="/loads/post" style={{
                     flex: 1, textAlign: 'center',
                     padding: '10px 14px', borderRadius: 10,
                     background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
@@ -199,7 +199,7 @@ export function CorridorHeartbeatStrip({
                 }}>
                     Post Load
                 </Link>
-                <Link aria-label="Navigation Link" href={`/directory`} style={{
+                <Link href={`/directory`} style={{
                     flex: 1, textAlign: 'center',
                     padding: '10px 14px', borderRadius: 10,
                     background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',

@@ -251,13 +251,13 @@ export default function AppHomePage() {
                 <p className="text-hc-muted mb-8 text-sm leading-relaxed">
                     The operating system for heavy haul. Sign in to access your Today Panel.
                 </p>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/login"
                     className="w-full max-w-xs flex items-center justify-center px-6 py-4 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg font-black text-sm uppercase tracking-widest rounded-xl transition-colors shadow-dispatch"
                 >
                     Sign In
                 </Link>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/directory"
                     className="mt-4 text-xs text-hc-muted hover:text-hc-text transition-colors uppercase tracking-widest font-semibold"
                 >

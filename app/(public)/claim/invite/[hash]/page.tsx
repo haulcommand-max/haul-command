@@ -59,7 +59,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 </div>
                 <h1 className="text-2xl font-black text-white mb-2">Already Connected</h1>
                 <p className="text-slate-400 mb-8 max-w-sm">This invite has already been used. You&apos;re all set.</p>
-                <Link aria-label="Navigation Link" href="/directory" className="px-6 py-3 bg-amber-500 text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+                <Link href="/directory" className="px-6 py-3 bg-amber-500 text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
                     Browse Escorts →
                 </Link>
             </div>
@@ -74,7 +74,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 <div className="text-5xl mb-6">🔗</div>
                 <h1 className="text-2xl font-black text-white mb-2">Link Expired</h1>
                 <p className="text-slate-400 mb-8 max-w-sm">This invite link is no longer valid. Ask your escort contact to send a new one, or browse the directory directly.</p>
-                <Link aria-label="Navigation Link" href="/directory" className="px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors">
+                <Link href="/directory" className="px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors">
                     Browse Directory →
                 </Link>
             </div>
@@ -159,7 +159,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 </div>
 
                 {/* CTA */}
-                <Link aria-label="Navigation Link"
+                <Link
                     href={`/start?${signupParams.toString()}`}
                     className="w-full flex items-center justify-center gap-3 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-black text-sm uppercase tracking-widest rounded-2xl transition-all group shadow-lg shadow-amber-500/20"
                 >
@@ -174,7 +174,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 {/* Already have account */}
                 <div className="mt-8 text-center">
                     <span className="text-slate-500 text-sm">Already have an account? </span>
-                    <Link aria-label="Navigation Link" href={`/login?invite_token=${hash}`} className="text-amber-400 font-semibold text-sm hover:underline">
+                    <Link href={`/login?invite_token=${hash}`} className="text-amber-400 font-semibold text-sm hover:underline">
                         Sign in →
                     </Link>
                 </div>

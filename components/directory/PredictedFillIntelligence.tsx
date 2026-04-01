@@ -130,7 +130,7 @@ export function PredictedFillIntelligence({
                     </div>
                 </div>
                 {!isProTier && (
-                    <button aria-label="Interactive Button" className="text-[10px] font-bold text-[#F1A91B] uppercase tracking-widest px-4 py-2 bg-[#F1A91B]/10 hover:bg-[#F1A91B]/20 rounded-lg transition-colors whitespace-nowrap">
+                    <button className="text-[10px] font-bold text-[#F1A91B] uppercase tracking-widest px-4 py-2 bg-[#F1A91B]/10 hover:bg-[#F1A91B]/20 rounded-lg transition-colors whitespace-nowrap">
                         Unlock Network View
                     </button>
                 )}

@@ -96,7 +96,7 @@ function ClaimPageInner() {
 
                         <div className="space-y-3">
                             {VERIFICATION_METHODS.map(method => (
-                                <button aria-label="Interactive Button"
+                                <button
                                     key={method.id}
                                     onClick={() => setSelectedMethod(method.id)}
                                     className="w-full text-left p-4 rounded-2xl border transition-all"
@@ -121,7 +121,7 @@ function ClaimPageInner() {
                             ))}
                         </div>
 
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={handleVerify}
                             disabled={!selectedMethod || verifying}
                             className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider transition-all"
@@ -152,7 +152,7 @@ function ClaimPageInner() {
 
                         <div className="grid gap-4">
                             {/* Free */}
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={() => setSelectedPlan("free")}
                                 className="text-left p-6 rounded-2xl border transition-all"
                                 style={{
@@ -169,7 +169,7 @@ function ClaimPageInner() {
                             </button>
 
                             {/* Premium */}
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={() => setSelectedPlan("premium")}
                                 className="text-left p-6 rounded-2xl border transition-all relative overflow-hidden"
                                 style={{
@@ -203,7 +203,7 @@ function ClaimPageInner() {
                             </button>
                         </div>
 
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={handlePlanSelect}
                             className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-black"
                             style={{

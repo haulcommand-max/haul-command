@@ -94,7 +94,7 @@ export default function LiveOperatorMap() {
             />
             🛰️ Live GPS Only
           </label>
-          <button aria-label="Interactive Button"
+          <button
             onClick={fetchPositions}
             style={{
               background: '#21262d', border: '1px solid #30363d',

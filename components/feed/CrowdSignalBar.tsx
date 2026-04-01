@@ -135,7 +135,7 @@ export function CrowdSignalBar({ corridorId, className }: CrowdSignalBarProps) {
                     const isLoading = state === "loading";
 
                     return (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={signal.type}
                             type="button"
                             onClick={() => handleTap(signal)}

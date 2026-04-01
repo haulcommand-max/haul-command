@@ -53,7 +53,7 @@ export default function RouteIntelDashboard() {
                 </div>
               ))}
               
-              <button aria-label="Interactive Button" className="w-full mt-4 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all">
+              <button className="w-full mt-4 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all">
                 ANALYZE ROUTE
               </button>
             </div>
@@ -99,8 +99,8 @@ export default function RouteIntelDashboard() {
 
             {/* Floating Map Controls */}
             <div className="absolute top-4 right-4 flex flex-col gap-2">
-              <button aria-label="Interactive Button" className="bg-black/60 p-2 rounded-lg border border-white/10 hover:bg-black text-white"><Map className="w-5 h-5" /></button>
-              <button aria-label="Interactive Button" className="bg-black/60 p-2 rounded-lg border border-white/10 hover:bg-black text-white"><Navigation className="w-5 h-5" /></button>
+              <button className="bg-black/60 p-2 rounded-lg border border-white/10 hover:bg-black text-white"><Map className="w-5 h-5" /></button>
+              <button className="bg-black/60 p-2 rounded-lg border border-white/10 hover:bg-black text-white"><Navigation className="w-5 h-5" /></button>
             </div>
 
             {/* Bottom Data Overlay */}

@@ -138,7 +138,7 @@ export function MediaGallery({ media, operatorName, isOwner, isPaidUser, onUploa
                                     <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col items-center justify-center z-10">
                                         <EyeOff className="w-6 h-6 text-[#333] mb-2" />
                                         <span className="text-[9px] text-[#555] font-bold uppercase tracking-wider">Subscriber Only</span>
-                                        <button aria-label="Interactive Button" className="mt-2 text-[9px] text-[#C6923A] font-bold uppercase tracking-wider hover:underline">Upgrade →</button>
+                                        <button className="mt-2 text-[9px] text-[#C6923A] font-bold uppercase tracking-wider hover:underline">Upgrade →</button>
                                     </div>
                                 ) : (
                                     <img src={item.optimized_url || item.original_url} alt={item.alt_text || `${operatorName} — ${meta.label}`}
@@ -198,14 +198,14 @@ export function MediaGallery({ media, operatorName, isOwner, isPaidUser, onUploa
             {/* Full-screen Viewer */}
             {viewerOpen && (
                 <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center" onClick={() => setViewerOpen(false)}>
-                    <button aria-label="Interactive Button" className="absolute top-4 right-4 text-white/50 hover:text-white" onClick={() => setViewerOpen(false)}>
+                    <button className="absolute top-4 right-4 text-white/50 hover:text-white" onClick={() => setViewerOpen(false)}>
                         <X className="w-8 h-8" />
                     </button>
-                    <button aria-label="Interactive Button" className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+                    <button className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                         onClick={e => { e.stopPropagation(); setViewerIndex(Math.max(0, viewerIndex - 1)); }}>
                         <ChevronLeft className="w-8 h-8" />
                     </button>
-                    <button aria-label="Interactive Button" className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                         onClick={e => { e.stopPropagation(); setViewerIndex(Math.min(sortedMedia.length - 1, viewerIndex + 1)); }}>
                         <ChevronRight className="w-8 h-8" />
                     </button>

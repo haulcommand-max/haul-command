@@ -54,7 +54,7 @@ export function MilestoneCelebration({ type, title, description, emoji, onDismis
                     <div style={{ fontSize: 16, fontWeight: 800, color: '#f9fafb', marginBottom: 4 }}>{title}</div>
                     <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{description}</div>
                 </div>
-                <button aria-label="Interactive Button" onClick={() => { setVisible(false); setTimeout(onDismiss, 400); }} style={{
+                <button onClick={() => { setVisible(false); setTimeout(onDismiss, 400); }} style={{
                     background: 'none', border: 'none', color: '#4b5563', cursor: 'pointer', fontSize: 16, padding: 4,
                 }}>✕</button>
             </div>
@@ -234,7 +234,7 @@ export function ReferralShareCard({ code, earned, referrals }: { code: string; e
                     }}>
                         {link}
                     </div>
-                    <button aria-label="Interactive Button" onClick={copy} style={{
+                    <button onClick={copy} style={{
                         padding: '8px 20px', borderRadius: 8, border: 'none',
                         background: copied ? '#10b981' : '#F1A91B', color: '#000',
                         fontSize: 12, fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s',

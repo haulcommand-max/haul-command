@@ -137,7 +137,7 @@ export default function EmailPreferencesPanel() {
                                 <p className="text-[#6b7280] text-xs">{item.desc}</p>
                             </div>
                         </div>
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => togglePref(item.key)}
                             disabled={saving}
                             className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${prefs[item.key] ? "bg-[#C6923A]" : "bg-[#374151]"
@@ -160,7 +160,7 @@ export default function EmailPreferencesPanel() {
                 </div>
                 <div className="flex gap-2">
                     {["weekly", "monthly", "never"].map(freq => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={freq}
                             onClick={() => savePrefs({ digest_frequency: freq })}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${prefs.digest_frequency === freq
@@ -200,7 +200,7 @@ export default function EmailPreferencesPanel() {
 
             {/* Unsubscribe All */}
             <div className="text-center pt-2">
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => {
                         savePrefs({
                             newsletter_opt_in: false,

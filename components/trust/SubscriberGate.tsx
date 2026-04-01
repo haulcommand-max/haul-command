@@ -169,7 +169,7 @@ export function SubscriberGate({
                     className="absolute inset-0 flex items-center justify-center z-10"
                     style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
                 >
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href={resolvedUrl}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
                         style={{
@@ -239,7 +239,7 @@ export function SubscriberGate({
                 )}
 
                 {/* CTA Button */}
-                <Link aria-label="Navigation Link"
+                <Link
                     href={resolvedUrl}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 hover:-translate-y-0.5"
                     style={{
@@ -254,7 +254,7 @@ export function SubscriberGate({
 
                 {/* Secondary link */}
                 {isAnonymous && (
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href="/auth/register"
                         className="mt-3 text-xs underline underline-offset-2 transition-colors hover:text-white"
                         style={{ color: config.accentColor }}
@@ -304,7 +304,7 @@ export function InlineUpgradeBanner({
                 <config.icon className="w-4 h-4 flex-shrink-0" style={{ color: config.accentColor }} />
                 <span className="text-xs text-[#888] truncate">{config.message}</span>
             </div>
-            <Link aria-label="Navigation Link"
+            <Link
                 href={url}
                 className="flex-shrink-0 px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all hover:scale-105"
                 style={{

@@ -185,7 +185,7 @@ export default function OperatorEarningsCard({ userId, className = "" }: Props) 
                 {/* Week/Month toggle */}
                 <div className="flex rounded-lg overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
                     {(["week", "month"] as const).map(v => (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={v}
                             onClick={() => setView(v)}
                             className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all"

@@ -182,7 +182,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                             {surfaceType} &middot; Verify ownership to unlock edits, trust badge &amp; visibility
                         </p>
                     </div>
-                    <button aria-label="Interactive Button" onClick={onClose} style={{
+                    <button onClick={onClose} style={{
                         width: 32, height: 32, borderRadius: 8, border: `1px solid ${T.border}`,
                         background: 'transparent', color: T.textSecondary, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
@@ -201,7 +201,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                                     const info = ROUTE_INFO[route];
                                     if (!info) return null;
                                     return (
-                                        <button aria-label="Interactive Button"
+                                        <button
                                             key={route}
                                             onClick={() => handleRouteSelect(route)}
                                             disabled={loading}
@@ -259,7 +259,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                                 ))}
                             </div>
 
-                            <button aria-label="Interactive Button"
+                            <button
                                 onClick={handleVerifyOtp}
                                 disabled={otp.join('').length !== 6 || loading}
                                 style={{
@@ -295,7 +295,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                             }}>
                                 {nextStepMessage}
                             </div>
-                            <button aria-label="Interactive Button" onClick={handleVerifyToken} disabled={loading} style={{
+                            <button onClick={handleVerifyToken} disabled={loading} style={{
                                 width: '100%', padding: '14px 0', borderRadius: 12,
                                 background: `linear-gradient(135deg, ${T.blue}, #2563eb)`,
                                 color: '#fff', border: 'none', fontSize: 14, fontWeight: 900,
@@ -324,7 +324,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                             }}>
                                 {nextStepMessage}
                             </div>
-                            <button aria-label="Interactive Button" onClick={handleVerifyToken} disabled={loading} style={{
+                            <button onClick={handleVerifyToken} disabled={loading} style={{
                                 width: '100%', padding: '14px 0', borderRadius: 12,
                                 background: `linear-gradient(135deg, ${T.blue}, #2563eb)`,
                                 color: '#fff', border: 'none', fontSize: 14, fontWeight: 900,
@@ -358,7 +358,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                                     PDF, JPG, PNG &middot; Max 10MB
                                 </div>
                             </div>
-                            <button aria-label="Interactive Button" onClick={() => setStep('pending_review')} style={{
+                            <button onClick={() => setStep('pending_review')} style={{
                                 width: '100%', padding: '14px 0', borderRadius: 12,
                                 background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
                                 color: '#0a0f16', border: 'none', fontSize: 14, fontWeight: 900,
@@ -379,7 +379,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                             <p style={{ margin: '0 0 20px', fontSize: 13, color: T.textSecondary, lineHeight: 1.6 }}>
                                 {nextStepMessage || "Your claim is being reviewed. We will notify you when it is approved."}
                             </p>
-                            <button aria-label="Interactive Button" onClick={onClose} style={{
+                            <button onClick={onClose} style={{
                                 padding: '12px 32px', borderRadius: 10,
                                 background: T.bg, border: `1px solid ${T.border}`,
                                 color: T.textBody, fontSize: 13, fontWeight: 700, cursor: 'pointer',
@@ -416,7 +416,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                                     }}>{perk}</span>
                                 ))}
                             </div>
-                            <button aria-label="Interactive Button" onClick={onClose} style={{
+                            <button onClick={onClose} style={{
                                 padding: '12px 32px', borderRadius: 10,
                                 background: `linear-gradient(135deg, ${T.green}, #059669)`,
                                 color: '#fff', fontSize: 13, fontWeight: 900, border: 'none',
@@ -435,7 +435,7 @@ export function ClaimWizard({ surfaceId, surfaceName, surfaceType, availableRout
                                 Something Went Wrong
                             </h3>
                             <p style={{ margin: '0 0 20px', fontSize: 13, color: T.textSecondary }}>{error}</p>
-                            <button aria-label="Interactive Button" onClick={() => { setStep('select_route'); setError(null); }} style={{
+                            <button onClick={() => { setStep('select_route'); setError(null); }} style={{
                                 padding: '12px 32px', borderRadius: 10,
                                 background: T.bg, border: `1px solid ${T.border}`,
                                 color: T.textBody, fontSize: 13, fontWeight: 700, cursor: 'pointer',
@@ -484,7 +484,7 @@ export function ClaimCard({ surfaceId, surfaceName, surfaceType, availableRoutes
                 <p style={{ margin: '0 0 12px', fontSize: 12, color: T.textSecondary, lineHeight: 1.5 }}>
                     Verify in 60 seconds and unlock edits, trust badge, and visibility.
                 </p>
-                <button aria-label="Interactive Button" onClick={() => setOpen(true)} style={{
+                <button onClick={() => setOpen(true)} style={{
                     padding: '10px 20px', borderRadius: 10,
                     background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
                     color: '#0a0f16', fontSize: 12, fontWeight: 900, border: 'none',

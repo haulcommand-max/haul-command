@@ -184,7 +184,7 @@ export default function MobileProviderProfile({
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '12px var(--m-screen-pad, 16px) 0',
       }}>
-        <Link aria-label="Navigation Link" href="/directory" style={{
+        <Link href="/directory" style={{
           display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none',
           color: 'var(--m-text-secondary, #c7ccd7)',
         }}>
@@ -251,7 +251,7 @@ export default function MobileProviderProfile({
         padding: '0 var(--m-screen-pad, 16px)',
         marginBottom: 16,
       }}>
-        <button aria-label="Interactive Button" style={{
+        <button style={{
           flex: 1, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
           borderRadius: 12, border: '1px solid var(--m-border-subtle, rgba(255,255,255,0.06))',
           background: 'var(--m-surface, rgba(255,255,255,0.04))',
@@ -259,7 +259,7 @@ export default function MobileProviderProfile({
         }}>
           <PhoneIcon /> Call
         </button>
-        <button aria-label="Interactive Button" style={{
+        <button style={{
           flex: 1, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
           borderRadius: 12, border: '1px solid var(--m-border-subtle, rgba(255,255,255,0.06))',
           background: 'var(--m-surface, rgba(255,255,255,0.04))',
@@ -267,7 +267,7 @@ export default function MobileProviderProfile({
         }}>
           <MessageIcon /> Message
         </button>
-        <button aria-label="Interactive Button" style={{
+        <button style={{
           flex: 1.2, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
           borderRadius: 12, border: 'none',
           background: 'linear-gradient(135deg, var(--m-gold, #D4A844), #f1c27b)',

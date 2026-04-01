@@ -42,7 +42,7 @@ function CorridorCard({ corridor }: { corridor: Corridor }) {
   const supplyRatio = corridor.escortsAvailable / Math.max(corridor.activeLoads, 1);
 
   return (
-    <Link aria-label="Navigation Link" href={`/corridor/${corridor.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link href={`/corridor/${corridor.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div className="m-card m-animate-slide-up" style={{
         borderLeft: corridor.demand === 'surge' ? '3px solid var(--m-gold)' : undefined,
       }}>
@@ -139,7 +139,7 @@ export default function MobileCorridors() {
         overflowX: 'auto',
       }}>
         {filters.map(f => (
-          <button aria-label="Interactive Button" key={f}
+          <button key={f}
             onClick={() => setFilter(f)}
             className={`m-chip ${filter === f ? 'm-chip--gold' : 'm-chip--tag'}`}
             style={{

@@ -22,7 +22,7 @@ export default async function CompaniesIndexPage() {
         <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 48 }}>Companies that use escort vehicles and pilot car services worldwide.</p>
         <div style={{ display: 'grid', gap: 12 }}>
           {(companies || []).map((c) => (
-            <Link aria-label="Navigation Link" key={c.slug} href={`/companies/${c.slug}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', background: 'rgba(255,255,255,0.04)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none', color: '#fff', transition: 'border-color 0.2s' }}>
+            <Link key={c.slug} href={`/companies/${c.slug}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', background: 'rgba(255,255,255,0.04)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none', color: '#fff', transition: 'border-color 0.2s' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ fontSize: 16, fontWeight: 700 }}>{c.company_name}</span>
                 <span style={{ padding: '2px 8px', borderRadius: 6, background: `${typeColors[c.company_type] || '#666'}20`, color: typeColors[c.company_type] || '#666', fontSize: 11, fontWeight: 600, textTransform: 'uppercase' }}>{c.company_type.replace('_', ' ')}</span>

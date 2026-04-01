@@ -154,7 +154,7 @@ export function HcVariantTemplateStudio({
         <h3 style={{ margin: 0, fontWeight: 700, fontSize: "15px", letterSpacing: "0.05em", textTransform: "uppercase", color: "#C6923A" }}>
           🎨 Prompt Templates
         </h3>
-        <button aria-label="Interactive Button"
+        <button
           onClick={() => setShowForm(!showForm)}
           style={{
             background: showForm ? "#1E2A36" : "linear-gradient(135deg, #C6923A, #A87A2F)",
@@ -204,7 +204,7 @@ export function HcVariantTemplateStudio({
             onChange={(e) => setFormDesc(e.target.value)}
             style={{ width: "100%", background: "#060A0F", border: "1px solid #1E2A36", borderRadius: "6px", padding: "8px 12px", color: "#CBD5E1", fontSize: "13px", marginBottom: "12px" }}
           />
-          <button aria-label="Interactive Button"
+          <button
             onClick={handleCreate}
             disabled={creating || !formName.trim() || !formPrompt.trim()}
             style={{
@@ -259,7 +259,7 @@ export function HcVariantTemplateStudio({
                 <div style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "11px", color: "#5a6f82" }}>
                   <span title="Wins">🏆 {t.win_count}</span>
                   <span title="Uses">📊 {t.use_count}</span>
-                  <button aria-label="Interactive Button"
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleActive(t.id, t.is_active);
@@ -310,7 +310,7 @@ export function HcVariantTemplateStudio({
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
-            <button aria-label="Interactive Button"
+            <button
               onClick={handleGenerate}
               disabled={generating}
               style={{

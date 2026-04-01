@@ -208,7 +208,7 @@ export default function VendorUpgradePage() {
                             </label>
                         ))}
                     </div>
-                    <button aria-label="Interactive Button" onClick={applyPlanChange} disabled={planWorking || nextTier === plan?.plan_tier}
+                    <button onClick={applyPlanChange} disabled={planWorking || nextTier === plan?.plan_tier}
                         className="w-full px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                         {planWorking ? "Applying…" : "Apply Plan Change"}
                     </button>
@@ -227,7 +227,7 @@ export default function VendorUpgradePage() {
                 {/* Tabs */}
                 <div className="border-b border-gray-100 flex">
                     {PLACEMENT_TABS.map(t => (
-                        <button aria-label="Interactive Button" key={t} onClick={() => setActiveTab(t)}
+                        <button key={t} onClick={() => setActiveTab(t)}
                             className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === t ? "border-orange-500 text-orange-600" : "border-transparent text-gray-500 hover:text-gray-700"
                                 }`}>
                             {t}
@@ -293,7 +293,7 @@ export default function VendorUpgradePage() {
                         )}
                     </div>
 
-                    <button aria-label="Interactive Button" onClick={() => buyPlacement(activeTab)} disabled={piWorking}
+                    <button onClick={() => buyPlacement(activeTab)} disabled={piWorking}
                         className="px-5 py-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
                         {piWorking ? "Requesting…" : `Request ${activeTab} Placement`}
                     </button>
@@ -328,7 +328,7 @@ export default function VendorUpgradePage() {
                                             <td className="px-4 py-2 text-gray-500 text-xs">{new Date(p.start_at).toLocaleDateString()}</td>
                                             <td className="px-4 py-2 text-gray-500 text-xs">{new Date(p.end_at).toLocaleDateString()}</td>
                                             <td className="px-4 py-2">
-                                                <button aria-label="Interactive Button" onClick={() => cancelPlacement(p.id)}
+                                                <button onClick={() => cancelPlacement(p.id)}
                                                     className="text-red-500 hover:underline text-xs">Cancel</button>
                                             </td>
                                         </tr>

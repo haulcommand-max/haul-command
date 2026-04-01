@@ -42,7 +42,7 @@ export default function QuickPayPage() {
             <div className="border-t border-white/[0.06] pt-3 flex justify-between"><span className="text-xs font-bold text-emerald-400">Advanced to You</span><span className="text-lg font-black text-emerald-400">${result.advance_amount.toFixed(2)}</span></div>
           </div>
           <p className="text-xs text-[#8fa3b8] mt-4">Funds will appear in your account within 1 business day.</p>
-          <Link aria-label="Navigation Link" href="/dashboard" className="text-sm font-bold text-[#C6923A] hover:underline mt-6 inline-block">Back to Dashboard →</Link>
+          <Link href="/dashboard" className="text-sm font-bold text-[#C6923A] hover:underline mt-6 inline-block">Back to Dashboard →</Link>
         </div>
       </div>
     );
@@ -57,7 +57,7 @@ export default function QuickPayPage() {
 
       <nav className="border-b border-white/[0.06]" style={{ background: 'rgba(11,11,12,0.85)', backdropFilter: 'blur(24px)' }}>
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center">
-          <Link aria-label="Navigation Link" href="/" className="text-sm font-black text-[#C6923A]">HAUL COMMAND</Link>
+          <Link href="/" className="text-sm font-black text-[#C6923A]">HAUL COMMAND</Link>
           <span className="text-[#5A6577] mx-2">/</span>
           <span className="text-sm font-semibold text-white">QuickPay</span>
         </div>
@@ -108,7 +108,7 @@ export default function QuickPayPage() {
           )}
 
           {!showConfirm ? (
-            <button aria-label="Interactive Button" onClick={() => setShowConfirm(true)} disabled={!jobId || amount <= 0}
+            <button onClick={() => setShowConfirm(true)} disabled={!jobId || amount <= 0}
               className="w-full mt-6 py-4 rounded-xl font-black text-sm transition-all"
               style={{ background: amount > 0 ? 'linear-gradient(135deg,#10b981,#34d399)' : 'rgba(255,255,255,0.04)', color: amount > 0 ? '#0a0a0f' : '#5A6577' }}>
               Get Paid Now →
@@ -117,8 +117,8 @@ export default function QuickPayPage() {
             <div className="mt-6 space-y-3">
               <div className="text-xs text-center text-[#8fa3b8]">Confirm: Receive <strong className="text-emerald-400">${advance.toFixed(2)}</strong> now with a <strong className="text-red-400">${fee.toFixed(2)}</strong> fee?</div>
               <div className="flex gap-3">
-                <button aria-label="Interactive Button" onClick={() => setShowConfirm(false)} className="flex-1 py-3 rounded-xl text-xs font-bold bg-white/[0.04] text-[#8fa3b8] border border-white/[0.06]">Cancel</button>
-                <button aria-label="Interactive Button" onClick={handleRequest} disabled={loading} className="flex-1 py-3 rounded-xl text-xs font-black" style={{ background: 'linear-gradient(135deg,#10b981,#34d399)', color: '#0a0a0f' }}>
+                <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 rounded-xl text-xs font-bold bg-white/[0.04] text-[#8fa3b8] border border-white/[0.06]">Cancel</button>
+                <button onClick={handleRequest} disabled={loading} className="flex-1 py-3 rounded-xl text-xs font-black" style={{ background: 'linear-gradient(135deg,#10b981,#34d399)', color: '#0a0a0f' }}>
                   {loading ? 'Processing...' : 'Confirm QuickPay'}
                 </button>
               </div>

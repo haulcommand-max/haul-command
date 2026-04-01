@@ -163,9 +163,9 @@ export default async function IndustryPage({
                 {/* Breadcrumb */}
                 <div className="border-b border-white/5 px-6 py-3">
                     <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30 flex-wrap">
-                        <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
+                        <Link href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <Link aria-label="Navigation Link" href="/industries" className="hover:text-white/60 transition-colors">Industries</Link>
+                        <Link href="/industries" className="hover:text-white/60 transition-colors">Industries</Link>
                         <ChevronRight className="w-3 h-3" />
                         <span className="text-white/60">{lt.name} Escort</span>
                     </div>
@@ -273,7 +273,7 @@ export default async function IndustryPage({
                                 </h2>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                                     {relevantStates.map((s) => (
-                                        <Link aria-label="Navigation Link"
+                                        <Link
                                             key={s.slug}
                                             href={`/pilot-car/${s.slug}`}
                                             className="group flex items-center justify-between gap-3 rounded-xl px-4 py-3 border transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -311,7 +311,7 @@ export default async function IndustryPage({
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {otherVerticals.map((l) => (
-                                        <Link aria-label="Navigation Link"
+                                        <Link
                                             key={l.slug}
                                             href={`/industries/${l.slug}`}
                                             className="text-[11px] text-white/30 border border-white/8 rounded-lg px-2.5 py-1.5 hover:text-amber-300 hover:border-amber-500/25 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -324,7 +324,7 @@ export default async function IndustryPage({
                                         { label: "Find Pilot Car", href: "/pilot-car" },
                                         { label: "Common Questions", href: "/answers/how-many-pilot-cars-required" },
                                     ].map((link) => (
-                                        <Link aria-label="Navigation Link"
+                                        <Link
                                             key={link.href}
                                             href={link.href}
                                             className="text-[11px] text-white/30 border border-white/8 rounded-lg px-2.5 py-1.5 hover:text-amber-300 hover:border-amber-500/25 transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -353,7 +353,7 @@ export default async function IndustryPage({
                                     { label: "Equipment requirements", href: "/answers/pilot-car-equipment-requirements" },
                                     { label: "Pilot car cost per mile", href: "/answers/pilot-car-cost-per-mile" },
                                 ].map((link) => (
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         key={link.href}
                                         href={link.href}
                                         className="group flex items-center gap-2 text-[11px] text-white/40 hover:text-amber-300 transition-colors"

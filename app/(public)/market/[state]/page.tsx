@@ -238,7 +238,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
 
                         {/* Action CTAs */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                            <Link aria-label="Navigation Link" href="/loads" style={{
+                            <Link href="/loads" style={{
                                 padding: '18px 16px', borderRadius: 14,
                                 background: 'rgba(241,169,27,0.1)', border: '1px solid rgba(241,169,27,0.25)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -246,7 +246,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                                 <div style={{ fontSize: 22, marginBottom: 6 }}>📋</div>
                                 <div style={{ fontSize: 13, fontWeight: 800, color: '#F1A91B' }}>Browse Loads</div>
                             </Link>
-                            <Link aria-label="Navigation Link" href="/directory" style={{
+                            <Link href="/directory" style={{
                                 padding: '18px 16px', borderRadius: 14,
                                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -273,7 +273,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                                 {data.claimed_operators} operators have already claimed their profile in {stateName}.
                                 Verified operators get priority placement when the market goes live.
                             </p>
-                            <Link aria-label="Navigation Link" href="/claim" style={{
+                            <Link href="/claim" style={{
                                 display: 'inline-flex', padding: '12px 24px', borderRadius: 12,
                                 background: '#F59E0B', color: '#000', fontWeight: 800, fontSize: 13,
                                 textDecoration: 'none',
@@ -283,7 +283,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                         </section>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                            <Link aria-label="Navigation Link" href="/claim" style={{
+                            <Link href="/claim" style={{
                                 padding: '18px 16px', borderRadius: 14,
                                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -291,7 +291,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                                 <div style={{ fontSize: 22, marginBottom: 6 }}>✓</div>
                                 <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>Claim Profile</div>
                             </Link>
-                            <Link aria-label="Navigation Link" href="/sponsor" style={{
+                            <Link href="/sponsor" style={{
                                 padding: '18px 16px', borderRadius: 14,
                                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
                                 textDecoration: 'none', textAlign: 'center',
@@ -318,14 +318,14 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                             Claim your profile now to capture this demand.
                         </p>
                         <div style={{ display: 'flex', gap: 10 }}>
-                            <Link aria-label="Navigation Link" href="/claim" style={{
+                            <Link href="/claim" style={{
                                 padding: '12px 24px', borderRadius: 12,
                                 background: '#8B5CF6', color: '#fff', fontWeight: 800, fontSize: 13,
                                 textDecoration: 'none',
                             }}>
                                 Claim Profile
                             </Link>
-                            <Link aria-label="Navigation Link" href="/loads" style={{
+                            <Link href="/loads" style={{
                                 padding: '12px 24px', borderRadius: 12,
                                 background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                                 color: '#fff', fontWeight: 700, fontSize: 13,
@@ -351,7 +351,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5, margin: '0 0 20px' }}>
                             Be the first operator verified in {stateName}. Early claimers get founding badges and priority placement.
                         </p>
-                        <Link aria-label="Navigation Link" href="/claim" style={{
+                        <Link href="/claim" style={{
                             display: 'inline-flex', padding: '14px 28px', borderRadius: 14,
                             background: 'linear-gradient(135deg, #F1A91B, #f1c27b)',
                             color: '#000', fontWeight: 900, fontSize: 14,
@@ -373,7 +373,7 @@ export default function StateMarketPage({ params }: { params: Promise<{ state: s
                             { href: '/corridor', emoji: '🛣', label: 'Corridors' },
                             { href: `/escort-requirements/${state}`, emoji: '📜', label: 'State Rules' },
                         ].map(link => (
-                            <Link aria-label="Navigation Link" key={link.href} href={link.href} style={{
+                            <Link key={link.href} href={link.href} style={{
                                 padding: '14px 12px', borderRadius: 12,
                                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
                                 textDecoration: 'none', textAlign: 'center',

@@ -78,7 +78,7 @@ export default function TrustDashboardPage() {
                     7-Phase Trust Infrastructure • Score • Detect • Confirm • Vault • Resolve
                 </p>
                 <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href="/admin/ai-image"
                         style={{
                             background: "#111820", border: "1px solid #1E293B", borderRadius: "6px",
@@ -87,7 +87,7 @@ export default function TrustDashboardPage() {
                     >
                         ← AI Image Engine
                     </Link>
-                    <Link aria-label="Navigation Link"
+                    <Link
                         href="/admin/ops"
                         style={{
                             background: "#111820", border: "1px solid #1E293B", borderRadius: "6px",

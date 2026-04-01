@@ -125,7 +125,7 @@ export function ContactsDashboard({
           <span className="cd-total">{totalCount.toLocaleString()} entities</span>
         </div>
         <div className="cd-header-actions">
-          <button aria-label="Interactive Button" className="cd-export" onClick={onExport}>📤 Export CSV</button>
+          <button className="cd-export" onClick={onExport}>📤 Export CSV</button>
         </div>
       </div>
 
@@ -195,11 +195,11 @@ export function ContactsDashboard({
       {selectedIds.size > 0 && (
         <div className="cd-bulk">
           <span>{selectedIds.size} selected</span>
-          <button aria-label="Interactive Button" onClick={() => onBulkAction?.('verify', [...selectedIds])}>✓ Verify</button>
-          <button aria-label="Interactive Button" onClick={() => onBulkAction?.('tag', [...selectedIds])}>🏷️ Tag</button>
-          <button aria-label="Interactive Button" onClick={() => onBulkAction?.('email', [...selectedIds])}>📧 Email</button>
-          <button aria-label="Interactive Button" onClick={() => onBulkAction?.('export', [...selectedIds])}>📤 Export</button>
-          <button aria-label="Interactive Button" className="cd-bulk-danger" onClick={() => onBulkAction?.('suspend', [...selectedIds])}>⛔ Suspend</button>
+          <button onClick={() => onBulkAction?.('verify', [...selectedIds])}>✓ Verify</button>
+          <button onClick={() => onBulkAction?.('tag', [...selectedIds])}>🏷️ Tag</button>
+          <button onClick={() => onBulkAction?.('email', [...selectedIds])}>📧 Email</button>
+          <button onClick={() => onBulkAction?.('export', [...selectedIds])}>📤 Export</button>
+          <button className="cd-bulk-danger" onClick={() => onBulkAction?.('suspend', [...selectedIds])}>⛔ Suspend</button>
         </div>
       )}
 
@@ -286,11 +286,11 @@ export function ContactsDashboard({
           Showing {((page - 1) * pageSize) + 1}–{Math.min(page * pageSize, totalCount)} of {totalCount.toLocaleString()}
         </span>
         <div className="cd-page-controls">
-          <button aria-label="Interactive Button" onClick={() => onPageChange?.(1)} disabled={page === 1}>⟨⟨</button>
-          <button aria-label="Interactive Button" onClick={() => onPageChange?.(page - 1)} disabled={page === 1}>⟨</button>
+          <button onClick={() => onPageChange?.(1)} disabled={page === 1}>⟨⟨</button>
+          <button onClick={() => onPageChange?.(page - 1)} disabled={page === 1}>⟨</button>
           <span className="cd-page-num">Page {page} of {totalPages.toLocaleString()}</span>
-          <button aria-label="Interactive Button" onClick={() => onPageChange?.(page + 1)} disabled={page >= totalPages}>⟩</button>
-          <button aria-label="Interactive Button" onClick={() => onPageChange?.(totalPages)} disabled={page >= totalPages}>⟩⟩</button>
+          <button onClick={() => onPageChange?.(page + 1)} disabled={page >= totalPages}>⟩</button>
+          <button onClick={() => onPageChange?.(totalPages)} disabled={page >= totalPages}>⟩⟩</button>
         </div>
       </div>
 

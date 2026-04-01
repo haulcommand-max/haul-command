@@ -169,9 +169,9 @@ export default async function AnswerPage({
                 {/* Breadcrumb */}
                 <div className="border-b border-white/5 px-6 py-3">
                     <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30 flex-wrap">
-                        <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
+                        <Link href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <Link aria-label="Navigation Link" href="/answers" className="hover:text-white/60 transition-colors">Answers</Link>
+                        <Link href="/answers" className="hover:text-white/60 transition-colors">Answers</Link>
                         <ChevronRight className="w-3 h-3" />
                         <span className="text-white/50 truncate max-w-xs">{seed.question}</span>
                     </div>
@@ -273,7 +273,7 @@ export default async function AnswerPage({
                                     </p>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                         {PILOT_CAR_STATES.map((s) => (
-                                            <Link aria-label="Navigation Link"
+                                            <Link
                                                 key={s.slug}
                                                 href={`/escort-requirements/${s.slug}`}
                                                 className="group flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 border text-[11px] transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
@@ -312,7 +312,7 @@ export default async function AnswerPage({
                                 <p className="text-[12px] text-white/50 leading-relaxed">
                                     Get an instant coverage estimate and match with verified pilot car operators for your specific load and route.
                                 </p>
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     href="/"
                                     className="block w-full text-center text-xs font-black py-3 rounded-lg transition-all bg-white/[0.02] border-white/[0.07] hover:bg-amber-500/[0.04] hover:border-amber-500/[0.18]"
                                     style={{ background: "#F1A91B", color: "#000" }}
@@ -330,7 +330,7 @@ export default async function AnswerPage({
                                     By Load Type
                                 </div>
                                 {relatedLoadTypes.map((lt) => (
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         key={lt.slug}
                                         href={`/industries/${lt.slug}`}
                                         className="group flex items-center gap-2 text-[11px] text-white/40 hover:text-amber-300 transition-colors"
@@ -350,7 +350,7 @@ export default async function AnswerPage({
                                     More Answers
                                 </div>
                                 {allAnswers.map((a) => (
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         key={a.slug}
                                         href={`/answers/${a.slug}`}
                                         className="group flex items-start gap-2 text-[11px] text-white/40 hover:text-amber-300 transition-colors leading-snug"

@@ -226,7 +226,7 @@ export function LiveMarketHero({
                     transition={{ duration: 0.4, delay: 0.25 }}
                     className="hero-hot-corridor justify-center mb-5"
                 >
-                    <Link aria-label="Navigation Link" href="/corridors" className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-red-500/20 bg-red-500/[0.06] hover:bg-red-500/[0.12] transition-all">
+                    <Link href="/corridors" className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-red-500/20 bg-red-500/[0.06] hover:bg-red-500/[0.12] transition-all">
                         <Flame className="w-4 h-4 text-red-400 flex-shrink-0" />
                         <div className="text-left">
                             <div className="text-[10px] font-bold text-red-400 uppercase tracking-[0.15em]">Hottest Corridor</div>
@@ -255,7 +255,7 @@ export function LiveMarketHero({
                                     const rc = ROLE_CONFIGS[r];
                                     const RIcon = ROLE_ICON_MAP[r];
                                     return (
-                                        <button aria-label="Interactive Button"
+                                        <button
                                             key={r}
                                             onClick={() => setRole(r)}
                                             className="hero-role-card group"
@@ -281,7 +281,7 @@ export function LiveMarketHero({
                                 <span className="text-[10px] text-[#C6923A] font-bold uppercase tracking-[0.15em]">
                                     {roleLabel}
                                 </span>
-                                <button aria-label="Interactive Button"
+                                <button
                                     onClick={clearRole}
                                     className="text-[9px] text-[#5A6577] hover:text-white transition-colors ml-1 underline cursor-pointer"
                                 >
@@ -290,7 +290,7 @@ export function LiveMarketHero({
                             </div>
                             <div className="hero-roles" style={{ gridTemplateColumns: 'repeat(2, 1fr)', maxWidth: 400 }}>
                                 {activeRoutes!.map(({ href, icon: Icon, label, desc, color }: RouteConfig) => (
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         key={href + label}
                                         href={href}
                                         className="hero-role-card group"

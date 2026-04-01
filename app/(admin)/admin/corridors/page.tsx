@@ -65,7 +65,7 @@ export default function AdminCorridorsPage() {
                         </h1>
                         <p className="text-slate-400 text-sm mt-1">Corridor stress scores — updated every 6 hours</p>
                     </div>
-                    <button aria-label="Interactive Button" onClick={load} disabled={loading}
+                    <button onClick={load} disabled={loading}
                         className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-medium px-4 py-2 rounded-xl transition-colors disabled:opacity-50">
                         <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Refresh
                     </button>
@@ -164,7 +164,7 @@ export default function AdminCorridorsPage() {
 
                                         {(row.band === "critical" || row.band === "at_risk") && (
                                             <div className="flex flex-col items-end gap-1">
-                                                <button aria-label="Interactive Button"
+                                                <button
                                                     onClick={() => handleNudge(row.corridor_slug)}
                                                     disabled={nudging === row.corridor_slug}
                                                     className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"

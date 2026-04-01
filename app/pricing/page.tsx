@@ -148,7 +148,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link aria-label="Navigation Link"
+              <Link
                 href={plan.href}
                 className={`block w-full py-3 text-center font-semibold rounded-xl transition-colors ${
                   plan.highlight
@@ -209,7 +209,7 @@ export default function PricingPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
         <p className="text-gray-400 mb-8">Join 1.5M+ operators across 120 countries.</p>
-        <Link aria-label="Navigation Link"
+        <Link
           href="/auth/register"
           className="px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
         >

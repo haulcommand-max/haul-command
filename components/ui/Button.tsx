@@ -26,7 +26,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const sizeStyles = sizes[size];
 
     return (
-      <button aria-label="Interactive Button"
+      <button
         ref={ref}
         className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}
         {...props}

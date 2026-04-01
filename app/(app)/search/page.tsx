@@ -207,7 +207,7 @@ export default function SearchPage() {
             }}>
                 <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                        <Link aria-label="Navigation Link" href="/" style={{ color: '#F1A91B', fontWeight: 800, fontSize: 20, textDecoration: 'none', letterSpacing: '-0.5px' }}>
+                        <Link href="/" style={{ color: '#F1A91B', fontWeight: 800, fontSize: 20, textDecoration: 'none', letterSpacing: '-0.5px' }}>
                             HAUL COMMAND
                         </Link>
                         <span style={{ color: '#666', fontSize: 14 }}>Search Everything</span>
@@ -261,7 +261,7 @@ export default function SearchPage() {
                     {/* Filters */}
                     <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap', alignItems: 'center' }}>
                         {POSITION_TYPES.map(role => (
-                            <button aria-label="Interactive Button"
+                            <button
                                 key={role}
                                 onClick={() => setTypeFilter(role)}
                                 style={{
@@ -282,7 +282,7 @@ export default function SearchPage() {
                         <div style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
 
                         {!geoEnabled ? (
-                            <button aria-label="Interactive Button" onClick={enableGeo} style={{
+                            <button onClick={enableGeo} style={{
                                 padding: '6px 14px',
                                 borderRadius: 20,
                                 border: '1px solid rgba(255,255,255,0.1)',
@@ -312,7 +312,7 @@ export default function SearchPage() {
                         )}
 
                         {stateFilter && (
-                            <button aria-label="Interactive Button" onClick={() => setStateFilter('')} style={{
+                            <button onClick={() => setStateFilter('')} style={{
                                 padding: '6px 14px',
                                 borderRadius: 20,
                                 border: '1px solid #F1A91B',
@@ -358,7 +358,7 @@ export default function SearchPage() {
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                                 {sortedStateFacets.map(([val, cnt]) => (
-                                    <button aria-label="Interactive Button"
+                                    <button
                                         key={val}
                                         onClick={() => setStateFilter(val === stateFilter ? '' : val)}
                                         style={{
@@ -401,7 +401,7 @@ export default function SearchPage() {
                             const isOperator = OPERATOR_FAMILY.has(r.entity_type);
 
                             return (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     key={`${r.entity_type}-${r.entity_id}`}
                                     href={getResultLink(r)}
                                     style={{ textDecoration: 'none', color: 'inherit' }}

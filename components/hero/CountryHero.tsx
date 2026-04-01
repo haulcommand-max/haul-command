@@ -253,7 +253,7 @@ export default function CountryHero({
                             {showRoleButtons ? (
                                 <>
                                     {/* PRIMARY: Broker — brings the loads */}
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         href="/onboarding/start?role=broker"
                                         className="hc-btn hc-btn--gold group w-full"
                                         style={{ maxWidth: 400 }}
@@ -264,7 +264,7 @@ export default function CountryHero({
                                     </Link>
 
                                     {/* SECONDARY: Escort */}
-                                    <Link aria-label="Navigation Link"
+                                    <Link
                                         href="/onboarding/start?role=escort"
                                         className="hc-btn hc-btn--black group w-full"
                                         style={{ maxWidth: 400 }}
@@ -280,7 +280,7 @@ export default function CountryHero({
                                     </span>
                                 </>
                             ) : (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     href={pack.ctaHref}
                                     className="inline-flex items-center justify-center gap-2 rounded-xl px-8 text-sm font-bold text-black transition-all"
                                     style={{

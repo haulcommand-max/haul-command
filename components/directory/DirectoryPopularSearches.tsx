@@ -50,7 +50,7 @@ export default function DirectoryPopularSearches() {
                         ? `/directory/us/${t.state.toLowerCase()}/${t.city.toLowerCase().replace(/\s+/g, '-')}`
                         : `/directory`;
                     return (
-                        <Link aria-label="Navigation Link"
+                        <Link
                             key={`${t.city}-${t.state}-${i}`}
                             href={href}
                             style={{

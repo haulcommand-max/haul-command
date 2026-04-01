@@ -64,11 +64,11 @@ export function AvailabilityCalendar({ operatorId, editable = false }: { operato
   return (
     <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 14, padding: 20, border: '1px solid rgba(255,255,255,0.08)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <button aria-label="Interactive Button" onClick={prevWeek} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 13 }}>←</button>
+        <button onClick={prevWeek} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 13 }}>←</button>
         <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>
           {days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — {days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </span>
-        <button aria-label="Interactive Button" onClick={nextWeek} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 13 }}>→</button>
+        <button onClick={nextWeek} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 13 }}>→</button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6 }}>
@@ -80,7 +80,7 @@ export function AvailabilityCalendar({ operatorId, editable = false }: { operato
           const sc = entry ? STATUS_COLORS[entry.status] : { bg: 'rgba(255,255,255,0.04)', border: 'rgba(255,255,255,0.1)', text: 'rgba(255,255,255,0.3)' };
           const isToday = day.toDateString() === new Date().toDateString();
           return (
-            <button aria-label="Interactive Button" key={i} onClick={() => toggleDay(day)} style={{ padding: '12px 4px', borderRadius: 8, background: sc.bg, border: `1px solid ${isToday ? '#fff' : sc.border}`, color: sc.text, cursor: editable && entry?.status !== 'booked' ? 'pointer' : 'default', textAlign: 'center', fontSize: 13, fontWeight: 700 }}>
+            <button key={i} onClick={() => toggleDay(day)} style={{ padding: '12px 4px', borderRadius: 8, background: sc.bg, border: `1px solid ${isToday ? '#fff' : sc.border}`, color: sc.text, cursor: editable && entry?.status !== 'booked' ? 'pointer' : 'default', textAlign: 'center', fontSize: 13, fontWeight: 700 }}>
               {day.getDate()}
               {entry && <div style={{ fontSize: 9, marginTop: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>{entry.status}</div>}
             </button>

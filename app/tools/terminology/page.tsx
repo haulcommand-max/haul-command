@@ -21,7 +21,7 @@ export default function TerminologyPending() {
                     Region-aware localization converting industry terms instantly based on active jurisdiction (e.g., Pilot Car vs Abnormal Load Escort).
                     This feature ensures seamless cross-border regulatory compliance across the 120 countries.
                 </p>
-                <Link aria-label="Navigation Link" href="/tools" style={{
+                <Link href="/tools" style={{
                     display: 'inline-block', padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                     color: '#fff', textDecoration: 'none', borderRadius: 8, fontWeight: 600, transition: 'background 0.2s'
                 }}>

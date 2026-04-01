@@ -49,7 +49,7 @@ export default async function ConvoyRunPage(
         borderBottom: '1px solid rgba(241,169,27,0.2)',
         padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 16,
       }}>
-        <Link aria-label="Navigation Link" href="/map/live" style={{ color: '#F1A91B', fontWeight: 700, fontSize: 12, textDecoration: 'none' }}>← All Loads</Link>
+        <Link href="/map/live" style={{ color: '#F1A91B', fontWeight: 700, fontSize: 12, textDecoration: 'none' }}>← All Loads</Link>
         <div style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.1)' }} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 800, color: '#f5f5f5', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

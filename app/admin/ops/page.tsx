@@ -87,7 +87,7 @@ export default function OpsAdminPage() {
                         )}
                     </p>
                 </div>
-                <button aria-label="Interactive Button"
+                <button
                     onClick={fetchEvents}
                     style={{
                         padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)',
@@ -101,7 +101,7 @@ export default function OpsAdminPage() {
             {/* Filters */}
             <div style={{ display: 'flex', gap: '8px', marginBottom: '1rem', flexWrap: 'wrap' }}>
                 {['all', 'P0', 'P1', 'P2', 'P3'].map(s => (
-                    <button aria-label="Interactive Button"
+                    <button
                         key={s}
                         onClick={() => setFilter(s)}
                         style={{
@@ -210,7 +210,7 @@ export default function OpsAdminPage() {
                                     {new Date(ev.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                                 {!ev.acknowledged && (
-                                    <button aria-label="Interactive Button"
+                                    <button
                                         onClick={() => acknowledge(ev.id)}
                                         style={{
                                             padding: '3px 8px', borderRadius: '4px', border: 'none',

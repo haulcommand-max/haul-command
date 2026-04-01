@@ -43,7 +43,7 @@ function UpgradeOverlay({ benefit }: { benefit: string }) {
                         {benefit}
                     </p>
                 </div>
-                <Link aria-label="Navigation Link"
+                <Link
                     href="/upgrade"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-hc-gold-500 hover:bg-hc-gold-600 text-hc-bg font-black text-xs uppercase tracking-widest rounded-xl transition-colors shadow-dispatch"
                 >
@@ -64,7 +64,7 @@ function InlineNudge({ benefit }: { benefit: string }) {
         <div className="flex items-center gap-3 px-4 py-3 bg-hc-gold-500/5 border border-hc-gold-500/15 rounded-xl">
             <Zap className="w-4 h-4 text-hc-gold-500 shrink-0" />
             <p className="text-xs text-hc-muted flex-1">{benefit}</p>
-            <Link aria-label="Navigation Link"
+            <Link
                 href="/upgrade"
                 className="text-[10px] font-black text-hc-gold-500 hover:text-hc-gold-600 uppercase tracking-widest whitespace-nowrap transition-colors"
             >
@@ -76,7 +76,7 @@ function InlineNudge({ benefit }: { benefit: string }) {
 
 function ChipNudge({ benefit }: { benefit: string }) {
     return (
-        <Link aria-label="Navigation Link"
+        <Link
             href="/upgrade"
             title={benefit}
             className="inline-flex items-center gap-1 px-2 py-0.5 bg-hc-gold-500/10 border border-hc-gold-500/20 rounded-lg text-[10px] font-black text-hc-gold-500 uppercase tracking-widest hover:bg-hc-gold-500/20 transition-colors"

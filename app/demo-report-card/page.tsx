@@ -100,7 +100,7 @@ export default function TruthReportCardDemo() {
               </span>
             </div>
             {!unlocked && (
-              <button aria-label="Interactive Button" 
+              <button 
                 onClick={() => setUnlocked(true)}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-[#45a29e] to-[#66fcf1] text-black font-extrabold uppercase tracking-wide hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:scale-[1.02] active:scale-95"
               >

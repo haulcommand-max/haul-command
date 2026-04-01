@@ -170,7 +170,7 @@ export function CommandBar({ onExecute, recentCommands = [] }: Props) {
           autoComplete="off"
           spellCheck={false}
         />
-        <button aria-label="Interactive Button" className="hc-cmd-run" onClick={executeCommand} disabled={isProcessing || !command.trim()}>
+        <button className="hc-cmd-run" onClick={executeCommand} disabled={isProcessing || !command.trim()}>
           {isProcessing ? <span className="hc-cmd-spinner" /> : '▶'}
         </button>
         <kbd className="hc-cmd-kbd">⌘K</kbd>

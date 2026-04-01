@@ -108,7 +108,7 @@ function EmptySlot({
                 <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto mb-2" />
                 <p className="text-[11px] font-bold text-white mb-0.5">Checkout Complete</p>
                 <p className="text-[10px] text-white/40 mb-2">You now own the featured slot for {corridorSlug}.</p>
-                <button aria-label="Interactive Button"
+                <button
                     onClick={() => window.location.reload()}
                     className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
                 >
@@ -128,7 +128,7 @@ function EmptySlot({
                     </p>
                 </div>
                 {!expanded && (
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => {
                             setExpanded(true);
                             logEvent("corridor_featured_inquiry_started", "adgrid_port_outbound_corridor_featured", portId, {
@@ -182,7 +182,7 @@ function EmptySlot({
                         </div>
                     </div>
 
-                    <button aria-label="Interactive Button"
+                    <button
                         type="submit"
                         disabled={checkoutState === "processing" || !email || bidAmount < 149}
                         className="w-full py-2 rounded-lg text-xs font-bold text-black flex items-center justify-center gap-1.5 disabled:opacity-60 transition-all hover:opacity-90"
@@ -240,7 +240,7 @@ export function FeaturedOutboundCorridorsBlock({
                     return (
                         <div key={corridor.corridorSlug} className="space-y-2">
                             {/* Corridor link */}
-                            <Link aria-label="Navigation Link"
+                            <Link
                                 href={`/corridors/${corridor.corridorSlug}`}
                                 className="group flex items-center justify-between gap-4 rounded-xl px-4 py-3.5 transition-all"
                                 style={{
@@ -267,7 +267,7 @@ export function FeaturedOutboundCorridorsBlock({
 
                             {/* Featured operator slot */}
                             {op ? (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     href={`/directory/profile/${op.id}`}
                                     onClick={() =>
                                         logEvent("click", "adgrid_port_outbound_corridor_featured", portId, {
