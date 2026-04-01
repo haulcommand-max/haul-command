@@ -35,12 +35,17 @@ The UI actively utilizes the Settlement OS to rank load quality.
 *   Operators prioritize Verified loads, increasing marketplace conversion. 
 *   Brokers are forced to adopt the Settlement OS to remain competitive in securing top-tier pilot car talent.
 
-## 6. Current Stablecoin Production Rails
-We prioritize the frictionless transfer of value over emotional attachment to specific blockchains.
-*   **Fiat:** Core routing for lowest-friction domestic USD movement (Stripe).
-*   **USDC/USDT:** Highly robust, liquid, easy-to-offramp stablecoins remain the default crypto B2B rails.
-*   **ADA & BTC:** Retained for users who explicitly mandate native on-chain settlement.
-*   *(Note: DJED and USDA are relegated to R&D status until full NOWPayments gateway liquidity and 1-click off-ramp capabilities are explicitly verified in production.)*
+## 6. Financial Rails & Volatility Protection
+We prioritize the frictionless transfer of value over emotional attachment to specific blockchains. To ensure Haul Command assumes exactly zero volatility risk, all inbound and outbound pipelines operate on the following rules:
+
+### A. Inbound Escrow (Max 5 Coins)
+*   **Auto-Stable Conversion:** If a broker chooses to fund an escrow in crypto, the UI presents a maximum of 5 localized coins (always prioritizing ADA and BTC first). The NOWPayments API instantly triggers auto-conversion, locking the exact equivalent value into a USD stablecoin on the backend. This guarantees Haul Command takes ZERO hit if the market crashes.
+*   **Stripe Fiat:** Remains the lowest-friction, default USD domestic path for standard broker escrows.
+
+### B. Outbound Payouts (Fiat Only)
+*   **No Crypto Payouts:** Haul Command DOES NOT pay out operators in crypto. Once a delivery milestone is met, the backend stablecoin value is converted securely through Stripe/Bank API rails direct to the operator's USD bank account. This maintains a clean regulatory workflow and prevents MSB accounting complications.
+
+*(Note: Native DJED and USDA are relegated to R&D status until full NOWPayments gateway liquidity and 1-click fiat off-ramp capabilities are explicitly verified in production.)*
 
 ## 7. R&D Vault: World Mobile AirNodes
 Deploying World Mobile Token (WMT) AirNodes on pilot car roofs to create a roaming telecom DePIN (Decentralized Physical Infrastructure Network) is a visionary concept for offsetting Route IQ hardware costs. However, current World Mobile architecture heavily favors stationary, reliable-uplink nodes. 
