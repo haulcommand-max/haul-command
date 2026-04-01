@@ -64,6 +64,9 @@ export async function GET() {
         `<url><loc>${DOMAIN}/services/marketplace</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`,
         `<url><loc>${DOMAIN}/jobs</loc><changefreq>daily</changefreq><priority>0.85</priority></url>`,
         `<url><loc>${DOMAIN}/loads</loc><changefreq>always</changefreq><priority>0.95</priority></url>`,
+        `<url><loc>${DOMAIN}/available-now</loc><changefreq>always</changefreq><priority>0.95</priority></url>`,
+        `<url><loc>${DOMAIN}/reposition</loc><changefreq>daily</changefreq><priority>0.85</priority></url>`,
+        `<url><loc>${DOMAIN}/resources/forms</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
         `<url><loc>${DOMAIN}/leaderboards</loc><changefreq>daily</changefreq><priority>0.7</priority></url>`,
         // Country pages
         `<url><loc>${DOMAIN}/united-states</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
