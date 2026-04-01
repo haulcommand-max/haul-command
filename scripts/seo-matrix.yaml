@@ -1,0 +1,544 @@
+haul_command_global_keyword_os:
+  version: "2026-04-01"
+  objective: "Build a 120-country heavy-haul, escort, directory, regulations, tools, glossary, and branded-search SEO operating system for Haul Command."
+  answer_to_should_we_do_more_than_25: "Yes. Use 25 commercial keyword families plus 20 authority/support families. Then expand them by country, region, city, corridor, and branded variants."
+  honesty_guardrail:
+    exact_volume_note: "This is intent-first and market-language-first. It is not exact Ads/Ahrefs/Semrush volume data."
+    validation_rule: "Tier A and Tier B can be built aggressively now. Tier C-E should be SERP-validated by Gemini before mass page generation if local-language confidence is medium or low."
+
+  build_order:
+    - "Tier A commercial pages"
+    - "Tier A directory pages"
+    - "Tier A regulations pages"
+    - "Tier A tools pages"
+    - "Tier A glossary pages"
+    - "Tier A region/state/province pages"
+    - "Tier A top-city pages"
+    - "Tier B using same system"
+    - "Tier C-E after SERP validation and template localization"
+
+  page_families:
+    commercial_core_25:
+      - "escort service"
+      - "escort service near me"
+      - "escort company"
+      - "escort companies"
+      - "pilot car service"
+      - "pilot car near me"
+      - "pilot car directory"
+      - "pilot car directory near me"
+      - "pilot car directory service near me"
+      - "best pilot car directory near me"
+      - "oversize load escort"
+      - "wide load escort"
+      - "escort vehicle service"
+      - "lead escort vehicle"
+      - "rear escort vehicle"
+      - "chase car service"
+      - "high pole escort"
+      - "route survey service"
+      - "route planning for oversize loads"
+      - "permit and escort service"
+      - "certified escort service"
+      - "insured escort service"
+      - "24/7 escort service"
+      - "urgent / emergency escort service"
+      - "superload escort service"
+
+    authority_support_20:
+      - "regulations"
+      - "permit rules"
+      - "escort vehicle laws"
+      - "state / province escort requirements"
+      - "city escort restrictions"
+      - "route survey tool"
+      - "permit checker tool"
+      - "height / clearance checker"
+      - "route risk checker"
+      - "load banner / light rules"
+      - "glossary"
+      - "definitions"
+      - "cost / pricing"
+      - "equipment checklist"
+      - "training"
+      - "jobs"
+      - "compare pages"
+      - "corridor pages"
+      - "industry statistics / state of market pages"
+      - "directory by city / state / country"
+
+    future_bets_low_priority:
+      - "pilot cars for autonomous vehicles"
+      - "autonomous escort vehicle"
+      - "AI escort vehicle systems"
+      - "digital route escort"
+      - "autonomous convoy safety vehicle"
+
+  branded_query_system:
+    required_brand: "Haul Command"
+    branded_patterns:
+      - "Haul Command [root] directory"
+      - "Haul Command [root] directory near me"
+      - "Haul Command [root] service near me"
+      - "Haul Command [country] [root] directory"
+      - "Haul Command [city] [root]"
+      - "Haul Command [root] regulations"
+      - "Haul Command [root] tools"
+      - "Haul Command [root] glossary"
+      - "Haul Command heavy haul directory"
+      - "Haul Command oversize escort directory"
+
+  keyword_pattern_engine:
+    commercial_patterns:
+      - "[root]"
+      - "[root] near me"
+      - "[root] in [country]"
+      - "[root] in [region]"
+      - "[root] in [city]"
+      - "[root] company"
+      - "[root] companies"
+      - "best [root] near me"
+      - "[specialty_term]"
+      - "[specialty_term] near me"
+      - "[city] [specialty_term]"
+      - "[country] [specialty_term]"
+    directory_patterns:
+      - "[root] directory"
+      - "[root] directory near me"
+      - "best [root] directory near me"
+      - "[country] [root] directory"
+      - "[region] [root] directory"
+      - "[city] [root] directory"
+      - "Haul Command [root] directory"
+      - "Haul Command [country] [root] directory"
+    regulations_patterns:
+      - "[country] [legal_root] regulations"
+      - "[country] [legal_root] permit rules"
+      - "[country] escort vehicle laws"
+      - "[region] escort requirements"
+      - "[country] oversize permit rules"
+      - "[country] wide load rules"
+      - "[country] route survey requirements"
+    tools_patterns:
+      - "[country] route survey tool"
+      - "[country] permit checker"
+      - "[country] height clearance checker"
+      - "[country] bridge / route restriction tool"
+      - "[country] escort requirement checker"
+      - "[country] heavy haul route planner"
+    glossary_patterns:
+      - "what is [root]"
+      - "what is [specialty_term]"
+      - "[country] heavy haul glossary"
+      - "[country] escort terms"
+      - "[country] pilot car terms"
+      - "[country] oversize load definitions"
+    semantic_patterns:
+      - "[root] for wind turbine transport"
+      - "[root] for transformer transport"
+      - "[root] for crane transport"
+      - "[root] for modular home transport"
+      - "[root] for construction equipment transport"
+      - "[root] for bridge beam transport"
+      - "[root] insurance"
+      - "[root] cost"
+      - "[root] checklist"
+      - "[root] map"
+
+  interlinking_os:
+    rule: "No dead ends. Every page must link up, down, and sideways."
+    mandatory_paths:
+      - "country hub -> regulations hub"
+      - "country hub -> directory hub"
+      - "country hub -> tool hub"
+      - "country hub -> glossary hub"
+      - "country hub -> top region pages"
+      - "region page -> city pages"
+      - "city page -> service pages"
+      - "service page -> directory page"
+      - "service page -> regulations page"
+      - "service page -> tools page"
+      - "service page -> glossary definitions"
+      - "glossary term page -> service pages using that term"
+      - "tool page -> regulations page that explains the rule"
+      - "directory page -> city page -> country page"
+      - "corridor page -> city pages -> regulations -> directory"
+    anchor_text_rules:
+      - "Use exact service anchors where natural."
+      - "Use local root term anchors, not generic 'click here'."
+      - "Cross-link synonyms: pilot car / escort vehicle / oversize escort / abnormal load escort / OSOM escort."
+      - "Cross-link branded anchors: Haul Command pilot car directory, Haul Command escort directory."
+    crawl_depth_target:
+      money_pages_within_clicks_from_home: 3
+      country_hubs_within_clicks_from_home: 2
+      top_city_pages_within_clicks_from_home: 3
+
+  metadata_os:
+    title_pattern: "[Primary Root Term] in [Geo] | Directory, Rules, Tools | Haul Command"
+    meta_pattern: "Find [primary root term] in [geo]. Compare providers, check rules, use tools, and view glossary terms on Haul Command."
+    h1_pattern: "[Primary Root Term] in [Geo]"
+    breadcrumb_pattern:
+      - "Home"
+      - "[Country]"
+      - "[Region]"
+      - "[City]"
+      - "[Page Type]"
+    url_pattern_rules:
+      - "Use audience language in slug when market supports local-language URLs."
+      - "Use hyphens."
+      - "Keep slugs short and descriptive."
+      - "One canonical slug per page."
+    do_not_waste_time_on:
+      - "sitelinks search box markup"
+      - "FAQ rich-result chasing for normal commercial pages"
+
+  image_os:
+    principle: "Images should reinforce local service intent, trust, and usefulness."
+    required_asset_types:
+      - "escort vehicles in-market"
+      - "state / country regulation maps"
+      - "permit flow diagrams"
+      - "route survey examples"
+      - "high pole escort setups"
+      - "equipment checklists"
+      - "corridor graphics"
+      - "directory trust badges"
+      - "claim your listing graphics"
+      - "comparison charts"
+    filename_pattern: "[country-code]-[city-slug]-[root-slug]-[subject].webp"
+    alt_text_pattern: "[Accurate plain-English or local-language description of the image using the page’s root term only if true]"
+    caption_pattern: "[Geo] [root] example, rules, equipment, or route context"
+    surrounding_copy_rule: "Place image near matching text block and section heading."
+    structured_data_rule: "Reference image consistently and include page-appropriate schema."
+    anti_spam_rule: "Do not stuff keywords into alt text or captions. Accuracy first."
+
+  schema_os:
+    sitewide:
+      - "Organization"
+      - "WebSite"
+      - "BreadcrumbList"
+    page_type_specific:
+      directory_page:
+        - "CollectionPage"
+        - "ItemList"
+        - "LocalBusiness when page is about Haul Command’s local operation, not random third parties"
+      service_page:
+        - "Service"
+        - "BreadcrumbList"
+      article_page:
+        - "Article"
+        - "ImageObject"
+        - "BreadcrumbList"
+      product_or_tool_page:
+        - "Product where actually applicable"
+        - "SoftwareApplication if true"
+        - "BreadcrumbList"
+    caution:
+      - "Do not build an FAQ-rich-result strategy for normal commercial pages."
+
+  gemini_execution_rules:
+    - "Generate country hubs first, then region/state pages, then city pages, then service pages, then regulations/tools/glossary support pages."
+    - "Never translate blindly. Check live SERPs for root-term fit before mass publishing lower-confidence markets."
+    - "Prefer local legal term + local commercial term + English fallback where English-heavy logistics SERPs dominate."
+    - "Every page must receive at least 5 internal links at launch."
+    - "Every country hub must link to directory, regulations, tools, glossary, top cities, and top specialties."
+    - "Every local page must include nearby geos, adjacent services, glossary terms, and regulation links."
+    - "Use people-first, useful content. No thin doorway garbage."
+    - "Publish with stable canonical URLs, indexable HTML, and crawlable anchor links."
+
+  country_matrix:
+    tier_a_gold:
+      - code: "US"
+        name: "United States"
+        languages: ["en"]
+        profile: "us_pilot_car"
+        local_roots: ["pilot car", "escort vehicle", "oversize load escort", "wide load escort", "flag car"]
+        legal_root: "escort vehicle requirements"
+        geo_order: ["country", "state", "city", "near me", "corridor"]
+        validation_priority: "high"
+
+      - code: "CA"
+        name: "Canada"
+        languages: ["en", "fr"]
+        profile: "us_pilot_car"
+        local_roots: ["escort vehicle", "pilot car", "oversize load escort", "oversize/overweight escort"]
+        legal_root: "oversize/overweight load escort"
+        geo_order: ["country", "province", "city"]
+        validation_priority: "high"
+
+      - code: "AU"
+        name: "Australia"
+        languages: ["en"]
+        profile: "osom_pilot"
+        local_roots: ["oversize overmass", "OSOM escort", "pilot escort", "oversize load escort"]
+        legal_root: "oversize overmass"
+        geo_order: ["country", "state", "city", "corridor"]
+        validation_priority: "high"
+
+      - code: "GB"
+        name: "United Kingdom"
+        languages: ["en"]
+        profile: "uk_abnormal_load"
+        local_roots: ["abnormal load escort", "abnormal indivisible load escort", "private escort", "self escort"]
+        legal_root: "abnormal indivisible load"
+        geo_order: ["country", "region", "city", "route"]
+        validation_priority: "high"
+
+      - code: "NZ"
+        name: "New Zealand"
+        languages: ["en"]
+        profile: "osom_pilot"
+        local_roots: ["overdimension escort", "pilot vehicle", "oversize load escort"]
+        legal_root: "overdimension load"
+        geo_order: ["country", "region", "city"]
+        validation_priority: "medium"
+
+      - code: "ZA"
+        name: "South Africa"
+        languages: ["en"]
+        profile: "abnormal_load_en"
+        local_roots: ["abnormal load escort", "abnormal transport escort", "escort vehicle"]
+        legal_root: "abnormal load"
+        geo_order: ["country", "province", "city", "route"]
+        validation_priority: "high"
+
+      - code: "DE"
+        name: "Germany"
+        languages: ["de"]
+        profile: "german_bf"
+        local_roots: ["Schwertransport", "Schwertransportbegleitung", "Begleitfahrzeug", "BF3", "BF4"]
+        legal_root: "Schwertransport"
+        geo_order: ["country", "bundesland", "city", "route"]
+        validation_priority: "high"
+
+      - code: "NL"
+        name: "Netherlands"
+        languages: ["nl", "en"]
+        profile: "dutch_exceptioneel"
+        local_roots: ["exceptioneel transport", "transportbegeleiding", "begeleid transport"]
+        legal_root: "exceptioneel transport"
+        geo_order: ["country", "province", "city"]
+        validation_priority: "high"
+
+      - code: "AE"
+        name: "United Arab Emirates"
+        languages: ["ar", "en"]
+        profile: "arabic_bilingual_special_transport"
+        local_roots: ["oversized transport", "heavy transport escort", "النقل الثقيل", "مرافقة النقل"]
+        legal_root: "oversized / heavy transport permit"
+        geo_order: ["country", "emirate", "city"]
+        validation_priority: "medium"
+
+      - code: "BR"
+        name: "Brazil"
+        languages: ["pt-BR"]
+        profile: "brazil_escolta"
+        local_roots: ["escolta de cargas", "cargas indivisíveis", "cargas superdimensionadas", "AET"]
+        legal_root: "Autorização Especial de Trânsito"
+        geo_order: ["country", "state", "city", "route"]
+        validation_priority: "high"
+
+    tier_b_blue:
+      - code: "IE"
+        name: "Ireland"
+        languages: ["en"]
+        profile: "uk_abnormal_load"
+        local_roots: ["abnormal load escort", "escort vehicle", "abnormal load"]
+        legal_root: "abnormal load"
+        geo_order: ["country", "county", "city"]
+        validation_priority: "medium"
+
+      - code: "SE"
+        name: "Sweden"
+        languages: ["sv", "en"]
+        profile: "nordic_specialtransport"
+        local_roots: ["specialtransport", "bred transport", "transport escort"]
+        legal_root: "specialtransport"
+        geo_order: ["country", "län", "city"]
+        validation_priority: "medium"
+
+      - code: "NO"
+        name: "Norway"
+        languages: ["no", "en"]
+        profile: "nordic_specialtransport"
+        local_roots: ["spesialtransport", "følgebil", "tungtransport"]
+        legal_root: "spesialtransport"
+        geo_order: ["country", "county", "city"]
+        validation_priority: "medium"
+
+      - code: "DK"
+        name: "Denmark"
+        languages: ["da", "en"]
+        profile: "nordic_specialtransport"
+        local_roots: ["særtransport", "specialtransport", "følgebil"]
+        legal_root: "særtransport"
+        geo_order: ["country", "region", "city"]
+        validation_priority: "medium"
+
+      - code: "FI"
+        name: "Finland"
+        languages: ["fi", "en"]
+        profile: "nordic_specialtransport"
+        local_roots: ["erikoiskuljetus", "erikoiskuljetusten saattopalvelu", "special transport escort"]
+        legal_root: "erikoiskuljetus"
+        geo_order: ["country", "region", "city"]
+        validation_priority: "medium"
+
+      - code: "BE"
+        name: "Belgium"
+        languages: ["nl", "fr", "en"]
+        profile: "multilingual_europe_specialtransport"
+        local_roots: ["uitzonderlijk vervoer", "transport exceptionnel", "transportbegeleiding"]
+        legal_root: "exceptional transport"
+        geo_order: ["country", "region", "city"]
+        validation_priority: "medium"
+
+      - code: "AT"
+        name: "Austria"
+        languages: ["de"]
+        profile: "german_bf"
+        local_roots: ["Schwertransport", "Begleitfahrzeug", "Schwertransportbegleitung"]
+        legal_root: "Schwertransport"
+        geo_order: ["country", "state", "city"]
+        validation_priority: "high"
+
+      - code: "CH"
+        name: "Switzerland"
+        languages: ["de", "fr", "it", "en"]
+        profile: "multilingual_europe_specialtransport"
+        local_roots: ["Schwertransport", "convoi exceptionnel", "trasporto eccezionale"]
+        legal_root: "special transport"
+        geo_order: ["country", "canton", "city"]
+        validation_priority: "medium"
+
+      - code: "ES"
+        name: "Spain"
+        languages: ["es"]
+        profile: "spanish_transporte_especial"
+        local_roots: ["transporte especial", "coche piloto", "escolta de transporte especial"]
+        legal_root: "transporte especial"
+        geo_order: ["country", "comunidad", "city", "route"]
+        validation_priority: "high"
+
+      - code: "FR"
+        name: "France"
+        languages: ["fr"]
+        profile: "french_convoi"
+        local_roots: ["convoi exceptionnel", "véhicule pilote", "voiture pilote"]
+        legal_root: "convoi exceptionnel"
+        geo_order: ["country", "region", "city", "itinerary"]
+        validation_priority: "high"
+
+      - code: "IT"
+        name: "Italy"
+        languages: ["it"]
+        profile: "italian_scorta"
+        local_roots: ["trasporto eccezionale", "scorta tecnica", "mezzo di scorta"]
+        legal_root: "trasporto eccezionale"
+        geo_order: ["country", "region", "city", "route"]
+        validation_priority: "high"
+
+      - code: "PT"
+        name: "Portugal"
+        languages: ["pt-PT"]
+        profile: "portuguese_special_transport"
+        local_roots: ["transporte especial", "escolta", "acompanhamento de cargas especiais"]
+        legal_root: "transporte especial"
+        geo_order: ["country", "district", "city"]
+        validation_priority: "medium"
+
+      - code: "SA"
+        name: "Saudi Arabia"
+        languages: ["ar", "en"]
+        profile: "arabic_bilingual_special_transport"
+        local_roots: ["heavy transport escort", "oversized transport", "النقل الثقيل", "مرافقة الحمولة"]
+        legal_root: "heavy / oversized transport permit"
+        geo_order: ["country", "province", "city"]
+        validation_priority: "medium"
+
+      - code: "QA"
+        name: "Qatar"
+        languages: ["ar", "en"]
+        profile: "arabic_bilingual_special_transport"
+        local_roots: ["heavy transport escort", "oversized transport", "النقل الثقيل", "مرافقة الشحنات"]
+        legal_root: "heavy / oversized transport permit"
+        geo_order: ["country", "municipality", "city"]
+        validation_priority: "medium"
+
+      - code: "MX"
+        name: "Mexico"
+        languages: ["es"]
+        profile: "spanish_transporte_especial"
+        local_roots: ["transporte especial", "coche piloto", "escolta de carga sobredimensionada"]
+        legal_root: "transporte especial"
+        geo_order: ["country", "state", "city", "corridor"]
+        validation_priority: "medium"
+
+      - code: "IN"
+        name: "India"
+        languages: ["en", "hi"]
+        profile: "india_odc"
+        local_roots: ["ODC transport", "over dimensional cargo", "heavy haul escort", "escort vehicle"]
+        legal_root: "ODC"
+        geo_order: ["country", "state", "city", "industrial corridor"]
+        validation_priority: "high"
+
+      - code: "ID"
+        name: "Indonesia"
+        languages: ["id", "en"]
+        profile: "se_asia_local_plus_english"
+        local_roots: ["oversize transport", "heavy haul escort", "pengawalan muatan oversize"]
+        legal_root: "oversize / special transport"
+        geo_order: ["country", "province", "city"]
+        validation_priority: "high"
+
+      - code: "TH"
+        name: "Thailand"
+        languages: ["th", "en"]
+        profile: "se_asia_local_plus_english"
+        local_roots: ["oversize transport", "special transport escort", "heavy haul escort"]
+        legal_root: "special transport"
+        geo_order: ["country", "province", "city"]
+        validation_priority: "high"
+
+  rollout_math:
+    per_country_minimum_pages:
+      country_hub: 1
+      directory_hub: 1
+      regulations_hub: 1
+      tools_hub: 1
+      glossary_hub: 1
+      specialty_service_pages: 8
+      top_regions_pages: 5
+      top_city_pages: 10
+      comparison_pages: 4
+    tier_a_target_pages_per_country: 50
+    tier_b_target_pages_per_country: 30
+    tier_c_target_pages_per_country: 18
+    tier_d_target_pages_per_country: 12
+    tier_e_target_pages_per_country: 8
+
+  launch_priority_rules:
+    - "Tier A: build all commercial + directory + regulations + tools + glossary + region + top-city pages."
+    - "Tier B: build commercial + directory + regulations + glossary + top-city pages."
+
+  money_left_on_table_layers:
+    - "directory by city"
+    - "directory by equipment specialty"
+    - "country regulations hub"
+    - "permit tools"
+    - "glossary term pages"
+    - "industry statistics pages"
+
+  anti_thin_content_rules:
+    - "Every money page must include: what the service is, when required, common load types, local rule summary, nearby geos, directory links, tool links, glossary links, trust signals, and CTA."
+    - "Every regulation page must link to the service page and directory."
+    - "Every glossary page must link to live service and regulation pages."
+    - "Every directory page must link to claim, compare, regulation, and tool pages."
+
+  final_instruction_to_gemini:
+    - "Use this as an operating system, not a one-time keyword list."
+    - "Generate pages by root term + geo + support intent."
+    - "Preserve local terminology."
+    - "Push branded + non-branded coverage together."
+    - "Never ship orphan pages."
