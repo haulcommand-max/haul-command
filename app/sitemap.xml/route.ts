@@ -6,13 +6,16 @@ import { NextResponse } from 'next/server';
 import { PRIORITY_CITIES } from '@/lib/seo/city-data';
 import { getIndexableCities } from '@/lib/seo/indexability';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache for 1 hour
+
 // ── Killer Move URL sets ────────────────────────────────────────────
 const EMERGENCY_SLUGS = ['emergency-pilot-car', 'last-minute-escort', 'same-day-pilot-car', '24-hour-pilot-car'];
 const VERTICAL_SLUGS = ['mobile-home-transport', 'wind-turbine-transport', 'heavy-equipment-transport', 'farm-equipment-transport', 'boat-transport', 'modular-building-transport', 'crane-transport', 'transformer-transport'];
 const COMPETITOR_SLUGS = ['truckstop', 'dat-freight', 'uship'];
 const COUNTY_SLUGS = ['reeves-county-tx', 'pecos-county-tx', 'lea-county-nm', 'williams-county-nd', 'stark-county-nd', 'sweetwater-county-wy', 'uintah-county-ut', 'kern-county-ca', 'imperial-county-ca', 'mohave-county-az', 'yuma-county-az', 'finney-county-ks', 'seward-county-ks', 'colfax-county-nm', 'eddy-county-nm', 'ward-county-nd', 'dunn-county-nd', 'converse-county-wy', 'campbell-county-wy', 'lincoln-county-nv', 'alachua-county-fl', 'marion-county-fl', 'dixie-county-fl', 'levy-county-fl', 'columbia-county-fl', 'bell-county-tx', 'coryell-county-tx', 'mclennan-county-tx', 'midland-county-tx', 'ector-county-tx', 'chatham-county-ga', 'bibb-county-ga', 'lowndes-county-ga', 'wood-buffalo-ab', 'grande-prairie-county-ab', 'northern-rockies-bc', 'peace-river-bc', 'division-11-sk', 'division-16-sk', 'division-15-mb', 'kenora-district-on', 'thunder-bay-district-on', 'sudbury-district-on'];
 
-const DOMAIN = 'https://haulcommand.com';
+const DOMAIN = 'https://www.haulcommand.com';
 
 // All services
 const SERVICES = ['pilot-car', 'escort-vehicle', 'oversize-escort', 'wide-load-escort', 'super-load-escort', 'high-pole', 'mobile-home-escort', 'heavy-haul-escort'];

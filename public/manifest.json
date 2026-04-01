@@ -1,7 +1,7 @@
 {
     "name": "HAUL COMMAND — Escort & Pilot Car Marketplace",
     "short_name": "HAUL COMMAND",
-    "description": "The world's oversize/overweight logistics platform. Find verified escort operators, post loads, track compliance across 57 countries.",
+    "description": "The world's oversize/overweight logistics platform. Find verified escort operators, post loads, track compliance across 120 countries.",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",

@@ -2,6 +2,8 @@ User-agent: *
 Allow: /
 Allow: /directory/
 Allow: /loads/
+Allow: /available-now/
+Allow: /reposition/
 Allow: /leaderboards/
 Allow: /tools/
 Allow: /broker/
@@ -23,6 +25,8 @@ Allow: /emergency/
 Allow: /glossary/
 Allow: /pricing
 Allow: /regulations/
+Allow: /resources/
+Allow: /resources/forms/
 Allow: /united-states/
 Allow: /canada/
 Disallow: /api/
@@ -56,7 +60,7 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://haulcommand.com/sitemap.xml
+Sitemap: https://www.haulcommand.com/sitemap.xml
 
 # Haul Command — The Operating System for Heavy Haul
 # https://www.haulcommand.com

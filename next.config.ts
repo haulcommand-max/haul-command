@@ -75,21 +75,6 @@ const nextConfig: NextConfig = {
         ];
     },
 
-    // ── Rewrites (Routing overrides) ───────────────────────────────────────────
-    // CRITICAL: app/[country]/page.tsx catch-all intercepts single-segment paths
-    // before route handlers in app/sitemap.xml/ and app/llms.txt/ can fire.
-    // These rewrites run BEFORE the catch-all, directing these paths to their
-    // correct route handlers.
-    async rewrites() {
-        return [
-            // sitemap.xml: rewrite root path to the route handler
-            // This bypasses [country] catch-all interception.
-            {
-                source: '/sitemap.xml',
-                destination: '/api/sitemap-xml',
-            },
-        ];
-    },
 
     // ── Redirects (SEO) ──────────────────────────────────────────────────────────
     async redirects() {
