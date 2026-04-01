@@ -14,41 +14,79 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const sb = supabaseServer();
   const { data } = await sb
     .from('hc_blog_articles')
-    .select('title, country_code')
+    .select('title, country_code, content')
     .eq('slug', slug)
     .eq('status', 'published')
     .maybeSingle();
 
-  // Fallback metadata for pre-existing static slugs
-  if (!data) {
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
-    return { title: `${title} | Haul Command Intelligence` };
-  }
+  const title = data?.title ?? slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
+  const description = data?.content
+    ? data.content.replace(/[#*\-\[\]()]/g, '').substring(0, 155).trim() + '…'
+    : `${title} — Expert analysis from Haul Command's global intelligence database.`;
+
   return {
-    title:`${data.title}`,
-    description: `${data.title} — Expert analysis from Haul Command's global intelligence database.`,
+    title: `${title} | Haul Command Intelligence`,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `https://haulcommand.com/blog/${slug}`,
+      siteName: 'Haul Command',
+    },
+    alternates: { canonical: `https://haulcommand.com/blog/${slug}` },
   };
 }
 
-// Simple markdown → HTML converter
+/* ═══════════════════════════════════════════════════════
+   MARKDOWN → HTML CONVERTER
+   With auto-ID generation for TOC anchors
+   ═══════════════════════════════════════════════════════ */
+
+interface TOCEntry { id: string; text: string; level: number; }
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function extractTOC(md: string): TOCEntry[] {
+  const entries: TOCEntry[] = [];
+  md.split('\n').forEach(line => {
+    if (line.startsWith('## ')) {
+      const text = line.slice(3).trim();
+      entries.push({ id: slugify(text), text, level: 2 });
+    } else if (line.startsWith('### ')) {
+      const text = line.slice(4).trim();
+      entries.push({ id: slugify(text), text, level: 3 });
+    }
+  });
+  return entries;
+}
+
 function mdToHtml(md: string): string {
   return md
     .split('\n')
     .map((line: string) => {
       let parsed = line;
 
-      // Handle images: ![alt](url)
+      // Images: ![alt](url)
       if (parsed.match(/!\[(.+?)\]\((.+?)\)/)) {
         parsed = parsed.replace(
           /!\[(.+?)\]\((.+?)\)/g,
-          '<img src="$2" alt="$1" class="rounded-2xl border border-white/10 w-full object-cover my-8 shadow-2xl" loading="lazy" />'
+          '<figure class="my-8"><img src="$2" alt="$1" class="rounded-2xl border border-white/10 w-full object-cover shadow-2xl" loading="lazy" /><figcaption class="text-center text-gray-500 text-xs mt-2">$1</figcaption></figure>'
         );
       }
       
       if (parsed.startsWith('# '))
         return `<h1 class="text-3xl sm:text-4xl font-black text-white tracking-tighter mb-6 mt-10">${parsed.slice(2)}</h1>`;
-      if (parsed.startsWith('## '))
-        return `<h2 class="text-2xl font-black text-accent mt-12 mb-4 italic uppercase tracking-tighter">${parsed.slice(3)}</h2>`;
+      if (parsed.startsWith('## ')) {
+        const text = parsed.slice(3).trim();
+        return `<h2 id="${slugify(text)}" class="text-2xl font-black text-accent mt-12 mb-4 scroll-mt-24">${text}</h2>`;
+      }
+      if (parsed.startsWith('### ')) {
+        const text = parsed.slice(4).trim();
+        return `<h3 id="${slugify(text)}" class="text-xl font-bold text-white mt-8 mb-3 scroll-mt-24">${text}</h3>`;
+      }
       if (parsed.startsWith('- **')) {
         const m = parsed.match(/- \*\*(.+?)\*\*(.+)/);
         if (m)
@@ -63,9 +101,10 @@ function mdToHtml(md: string): string {
       if (parsed.startsWith('*') && parsed.endsWith('*'))
         return `<p class="text-gray-500 text-sm italic">${parsed.replace(/\*/g, '')}</p>`;
       
+      // Links
       const withLinks = parsed.replace(
-        /(?<!\!)\[(.+?)\]\((.+?)\)/g,
-        '<a href="$2" class="text-accent hover:underline font-bold" target="_blank">$1</a>'
+        /(?<!!)\[(.+?)\]\((.+?)\)/g,
+        '<a href="$2" class="text-accent hover:underline font-bold">$1</a>'
       );
       const withBold = withLinks.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>');
       return `<p class="text-gray-300 leading-loose text-lg mb-4">${withBold}</p>`;
@@ -73,11 +112,14 @@ function mdToHtml(md: string): string {
     .join('\n');
 }
 
+/* ═══════════════════════════════════════════════════════
+   BLOG POST PAGE
+   ═══════════════════════════════════════════════════════ */
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const sb = supabaseServer();
 
-  // Try loading from Supabase first
   const { data: article } = await sb
     .from('hc_blog_articles')
     .select('*')
@@ -85,51 +127,101 @@ export default async function BlogPostPage({ params }: PageProps) {
     .eq('status', 'published')
     .maybeSingle();
 
-  // Fallback to static placeholder for legacy slugs
   const isStatic = !article;
   const title = article
     ? article.title
     : slug === 'texas-superload-strategy'
       ? 'The 2026 Superload Strategy: Navigating the Texas Triangle'
       : 'Escort Certification Reciprocity: A 50-State Guide';
-  const date = article
-    ? new Date(article.generated_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-    : 'February 10, 2026';
+  
+  const publishedDate = article
+    ? new Date(article.generated_at).toISOString()
+    : '2026-02-10T00:00:00Z';
+  const updatedDate = article?.updated_at
+    ? new Date(article.updated_at).toISOString()
+    : publishedDate;
+  const displayDate = new Date(publishedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const displayUpdated = new Date(updatedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const content = article?.content || null;
   const countryCode = article?.country_code || null;
+
+  // Extract TOC from content
+  const toc = content ? extractTOC(content) : [];
+
+  // Derive definition snippet (first 40-60 words of content)
+  const definitionSnippet = content
+    ? content.replace(/[#*\-\[\]()!]/g, '').split(/\s+/).slice(0, 55).join(' ') + '…'
+    : null;
 
   return (
     <>
       <Navbar />
-      <main className="flex-grow py-16 px-4">
+      <main className="flex-grow py-10 sm:py-16 px-4 pb-24 md:pb-16">
         <div className="max-w-4xl mx-auto">
-          <header className="mb-12 text-center">
-            <Link href="/blog" className="text-accent text-sm font-bold uppercase tracking-widest mb-6 inline-block hover:opacity-70 transition-opacity">
-              &larr; Back to Intelligence
-            </Link>
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <span className="h-[1px] w-8 bg-accent/50"></span>
-              <span className="text-gray-500 text-sm font-mono">{date}</span>
-              <span className="h-[1px] w-8 bg-accent/50"></span>
+          {/* ═══ BREADCRUMBS ═══ */}
+          <nav className="text-xs text-gray-500 mb-6 flex items-center gap-1.5 flex-wrap" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-accent">Home</Link>
+            <span>›</span>
+            <Link href="/blog" className="hover:text-accent">Intelligence</Link>
+            <span>›</span>
+            <span className="text-white truncate max-w-[200px] sm:max-w-none">{title}</span>
+          </nav>
+
+          <header className="mb-10">
+            {/* Category + Country */}
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              {countryCode && (
+                <span className="bg-accent/10 border border-accent/20 text-accent text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
+                  {countryCode}
+                </span>
+              )}
             </div>
-            {countryCode && (
-              <span className="inline-block bg-accent/10 border border-accent/20 text-accent text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-4">
-                {countryCode}
-              </span>
-            )}
-            <h1 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tighter mb-8 italic">
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tighter mb-4">
               {title}
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Expert operational intelligence from the Haul Command database.
-            </p>
+
+            {/* Author + Date + Last Updated */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs font-black">HC</div>
+                <span className="font-medium text-gray-400">Haul Command Intelligence</span>
+              </div>
+              <span className="hidden sm:inline">·</span>
+              <time dateTime={publishedDate}>{displayDate}</time>
+              {displayUpdated !== displayDate && (
+                <>
+                  <span>·</span>
+                  <span className="text-green-400 text-xs font-bold">Updated {displayUpdated}</span>
+                </>
+              )}
+            </div>
           </header>
 
-          <article className="prose prose-invert prose-accent max-w-none bg-white/5 border border-white/10 rounded-[40px] p-8 md:p-16 backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-10">
-              <div className="text-9xl font-black italic tracking-tighter">HC</div>
-            </div>
+          {/* ═══ TABLE OF CONTENTS ═══ */}
+          {toc.length > 2 && (
+            <nav className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5 sm:p-6 mb-8" aria-label="Table of Contents">
+              <h2 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">In This Article</h2>
+              <ol className="space-y-1.5">
+                {toc.map((entry, i) => (
+                  <li key={entry.id}>
+                    <a
+                      href={`#${entry.id}`}
+                      className={`text-sm hover:text-accent transition-colors ${
+                        entry.level === 2 ? 'text-gray-300 font-semibold' : 'text-gray-500 pl-4'
+                      }`}
+                    >
+                      {entry.level === 2 && <span className="text-accent/50 mr-2 tabular-nums">{String(i + 1).padStart(2, '0')}</span>}
+                      {entry.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
 
+          {/* ═══ ARTICLE BODY ═══ */}
+          <article className="prose prose-invert prose-accent max-w-none bg-white/[0.03] border border-white/[0.08] rounded-3xl p-6 sm:p-10 md:p-14 relative overflow-hidden">
             {content ? (
               <div
                 className="text-gray-300 leading-loose space-y-2 text-lg relative z-10"
@@ -137,48 +229,141 @@ export default async function BlogPostPage({ params }: PageProps) {
               />
             ) : (
               <div className="text-gray-300 leading-loose space-y-8 text-lg relative z-10">
-                <p className="first-letter:text-7xl first-letter:font-black first-letter:text-accent first-letter:mr-3 first-letter:float-left first-letter:leading-none">
+                <p className="first-letter:text-6xl first-letter:font-black first-letter:text-accent first-letter:mr-3 first-letter:float-left first-letter:leading-none">
                   Texas is the heartbeat of North American heavy haul. With the expansion of energy infrastructure in West Texas and the massive modular builds in the Gulf Coast, the &apos;Texas Triangle&apos; (Houston-Dallas-San Antonio) has become the most active superload corridor in the world...
                 </p>
-                <h2 className="text-3xl font-black text-accent mt-12 mb-4 italic uppercase tracking-tighter">The Triggers You Need to Watch</h2>
+                <h2 id="the-triggers-you-need-to-watch" className="text-2xl font-black text-accent mt-12 mb-4 scroll-mt-24">The Triggers You Need to Watch</h2>
                 <p>In Texas, a superload isn&apos;t just about weight anymore. The sheer dimensions of modern solar turbines and modular reactor components have pushed TxDMV to implement more granular police escort scheduling windows.</p>
-                <div className="bg-black/40 border-l-8 border-accent p-8 rounded-r-3xl my-12">
-                  <h3 className="text-accent text-xs uppercase font-black mb-4 tracking-widest">Command Note: Police Scheduling</h3>
-                  <p className="text-lg italic text-gray-300">
+                <div className="bg-black/40 border-l-4 border-accent p-6 rounded-r-2xl my-8">
+                  <h3 className="text-accent text-xs uppercase font-black mb-3 tracking-widest">Command Note: Police Scheduling</h3>
+                  <p className="text-base italic text-gray-300">
                     &quot;Always schedule Texas DPS at least 10 days out for moves exceeding 20&apos; width. The current backlog at the Austin permit office is averaging 4.2 days for engineering review.&quot;
                   </p>
                 </div>
               </div>
             )}
 
-            <footer className="mt-20 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex items-center">
-                <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center font-black text-black mr-4 text-xl italic shadow-[0_0_20px_rgba(245,159,10,0.4)]">HC</div>
-                <div>
-                  <p className="text-white font-black text-lg tracking-tighter">Haul Command Intelligence Unit</p>
-                  <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Operations Division</p>
-                </div>
+            {/* ═══ SOCIAL SHARING ═══ */}
+            <div className="mt-12 pt-8 border-t border-white/10 relative z-10">
+              <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-3">Share this article</p>
+              <div className="flex gap-2">
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(`https://haulcommand.com/blog/${slug}`)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="bg-white/5 border border-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors"
+                >
+                  𝕏 Post
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://haulcommand.com/blog/${slug}`)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="bg-white/5 border border-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors"
+                >
+                  LinkedIn
+                </a>
+                <button
+                  onClick={undefined}
+                  className="bg-white/5 border border-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors"
+                  data-copy-url={`https://haulcommand.com/blog/${slug}`}
+                >
+                  📋 Copy Link
+                </button>
               </div>
-              <div className="flex gap-4">
-                <Link href="/dictionary" className="bg-white/10 text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-white/20 transition-all">Browse Dictionary</Link>
-                <Link href="/claim" className="bg-accent text-black px-6 py-3 rounded-full text-sm font-black hover:bg-yellow-500 transition-all">Join Network</Link>
+            </div>
+
+            {/* ═══ AUTHOR BIO (E-E-A-T) ═══ */}
+            <footer className="mt-10 pt-8 border-t border-white/10 relative z-10">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center font-black text-black text-xl flex-shrink-0 shadow-[0_0_20px_rgba(245,159,10,0.3)]">HC</div>
+                <div>
+                  <p className="text-white font-bold text-sm">Haul Command Intelligence Unit</p>
+                  <p className="text-gray-500 text-xs mt-0.5 leading-relaxed max-w-lg">
+                    The Haul Command Intelligence Unit publishes data-driven analysis on heavy haul operations, escort certification, superload corridors, and regulatory trends across 120 countries. Backed by verified operator data and real-time dispatch intelligence.
+                  </p>
+                </div>
               </div>
             </footer>
           </article>
 
-          {/* Related Navigation */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="/escort-requirements?state=texas" className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent/50 transition-all flex flex-col items-center group text-center ag-spring-hover">
-              <span className="text-gray-500 mb-2 uppercase tracking-widest font-black text-[10px]">Real-time Database</span>
-              <span className="text-xl font-black group-hover:text-accent transition-colors italic tracking-tighter">Texas Rules Registry &rarr;</span>
+          {/* ═══ INTERNAL LINKING: Related Resources ═══ */}
+          <section className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link href="/glossary" className="bg-white/[0.03] border border-white/[0.06] p-5 rounded-xl hover:border-accent/30 transition-all group">
+              <span className="text-lg mb-1 block">📖</span>
+              <span className="text-xs font-bold text-white group-hover:text-accent transition-colors">Glossary</span>
+              <p className="text-[10px] text-gray-500 mt-0.5">500+ heavy haul terms</p>
             </Link>
-            <Link href="/dictionary" className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent/50 transition-all flex flex-col items-center group text-center ag-spring-hover">
-              <span className="text-gray-500 mb-2 uppercase tracking-widest font-black text-[10px]">Intelligence Hub</span>
-              <span className="text-xl font-black group-hover:text-accent transition-colors italic tracking-tighter">500+ Term Dictionary &rarr;</span>
+            <Link href="/tools" className="bg-white/[0.03] border border-white/[0.06] p-5 rounded-xl hover:border-accent/30 transition-all group">
+              <span className="text-lg mb-1 block">🛠️</span>
+              <span className="text-xs font-bold text-white group-hover:text-accent transition-colors">Tools</span>
+              <p className="text-[10px] text-gray-500 mt-0.5">Calculators & checkers</p>
+            </Link>
+            <Link href="/directory" className="bg-white/[0.03] border border-white/[0.06] p-5 rounded-xl hover:border-accent/30 transition-all group">
+              <span className="text-lg mb-1 block">🔍</span>
+              <span className="text-xs font-bold text-white group-hover:text-accent transition-colors">Directory</span>
+              <p className="text-[10px] text-gray-500 mt-0.5">Find verified operators</p>
+            </Link>
+          </section>
+
+          {/* ═══ CTA ═══ */}
+          <div className="mt-8 bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 className="text-white font-bold text-sm sm:text-base">Get market intelligence in your inbox</h3>
+              <p className="text-gray-500 text-xs mt-1">Weekly analysis on corridors, rates, and regulatory changes.</p>
+            </div>
+            <Link href="/waitlist" className="bg-accent text-black px-6 py-3 rounded-xl font-black text-sm hover:bg-yellow-500 transition-colors flex-shrink-0">
+              Subscribe Free
             </Link>
           </div>
         </div>
       </main>
+
+      {/* ═══ STRUCTURED DATA: Article + BreadcrumbList ═══ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: title,
+            description: definitionSnippet || `${title} — Expert analysis from Haul Command.`,
+            url: `https://haulcommand.com/blog/${slug}`,
+            datePublished: publishedDate,
+            dateModified: updatedDate,
+            author: {
+              '@type': 'Organization',
+              name: 'Haul Command Intelligence Unit',
+              url: 'https://haulcommand.com',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Haul Command',
+              url: 'https://haulcommand.com',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://haulcommand.com/favicon.ico',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `https://haulcommand.com/blog/${slug}`,
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Intelligence', item: 'https://haulcommand.com/blog' },
+              { '@type': 'ListItem', position: 3, name: title, item: `https://haulcommand.com/blog/${slug}` },
+            ],
+          }),
+        }}
+      />
     </>
   );
 }

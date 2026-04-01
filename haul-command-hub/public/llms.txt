@@ -1,0 +1,45 @@
+# Haul Command — llms.txt
+# https://haulcommand.com
+
+> Haul Command is the world's largest heavy haul logistics intelligence platform, covering pilot car operators, escort vehicles, superload corridors, and oversize load regulations across 120 countries.
+
+## Core Resources
+
+- [Glossary](https://haulcommand.com/glossary/): 500+ heavy haul industry terms and definitions
+- [Directory](https://haulcommand.com/directory/): Global operator directory with 7,500+ verified listings
+- [Blog / Intelligence](https://haulcommand.com/blog): Data-driven analysis on corridors, regulations, and market trends
+- [Resource Guides](https://haulcommand.com/resources): Comprehensive guides on certifications, regulations, and operations
+- [Tools](https://haulcommand.com/tools): Rate estimator, permit checker, route planner, and compliance tools
+
+## Tools
+
+- [Rate Estimator](https://haulcommand.com/tools/rate-estimator): Calculate pilot car and escort vehicle rates by country
+- [Permit Checker](https://haulcommand.com/tools/permit-checker): Check oversize/overweight permit requirements by jurisdiction
+- [Route Planner](https://haulcommand.com/tools/route-planner): Plan heavy haul routes with corridor intelligence
+- [Escort Rules](https://haulcommand.com/tools/escort-rules): State-by-state escort vehicle requirements
+- [Superload Meter](https://haulcommand.com/tools/superload-meter): Determine if your load qualifies as a superload
+
+## Topics Covered
+
+- Pilot car operations and certification
+- Escort vehicle equipment requirements
+- Oversize and overweight load regulations
+- Superload permitting and police escort scheduling
+- Height pole operations and utility coordination
+- Cross-border heavy haul (US-Canada, US-Mexico)
+- Wind turbine and renewable energy transport
+- Bridge formula and axle weight calculations
+- State-by-state reciprocity for P/EVO certifications
+- International escort standards (120 countries)
+
+## Data
+
+- 7,500+ verified operator listings across 120 countries
+- 500+ glossary terms with country-specific definitions
+- 10 states with active operator directories
+- Real-time dispatch intelligence and corridor data
+
+## Contact
+
+- Website: https://haulcommand.com
+- Platform: https://haulcommand.com/claim (Operator claim/onboarding)
