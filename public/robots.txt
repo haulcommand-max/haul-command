@@ -57,12 +57,6 @@ User-agent: Bytespider
 Allow: /
 
 Sitemap: https://www.haulcommand.com/sitemap.xml
-Sitemap: https://www.haulcommand.com/sitemap-seo.xml
-Sitemap: https://www.haulcommand.com/sitemap-US.xml
-Sitemap: https://www.haulcommand.com/sitemap-CA.xml
-Sitemap: https://www.haulcommand.com/sitemap-corridors.xml
-Sitemap: https://www.haulcommand.com/sitemap-glossary.xml
-Sitemap: https://www.haulcommand.com/sitemap-pilot-car-city.xml
 
 # Haul Command — The Operating System for Heavy Haul
 # https://www.haulcommand.com

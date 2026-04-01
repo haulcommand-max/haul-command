@@ -26,7 +26,7 @@ const PLANS = [
   },
   {
     name: 'Pro',
-    price: '$49',
+    price: '$29',
     period: '/month',
     description: 'Priority ranking & unlimited opportunities',
     highlight: true,
@@ -46,7 +46,7 @@ const PLANS = [
   },
   {
     name: 'Elite',
-    price: '$149',
+    price: '$79',
     period: '/month',
     description: 'Top placement + dedicated support',
     highlight: false,
@@ -65,7 +65,7 @@ const PLANS = [
   },
   {
     name: 'Broker',
-    price: '$99',
+    price: '$149',
     period: '/seat/month',
     description: 'Unlimited loads + corridor intelligence',
     highlight: false,
