@@ -2,7 +2,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 import { getCanonicalStats } from '@/lib/hc-loaders/stats';
 
 export async function getClaimableCount() {
-  // Real unclaimed operators from hc_real_operators (not synthetic directory_listings)
+  // Unclaimed operators from hc_global_operators (canonical source)
   const stats = await getCanonicalStats();
   // total_real_operators - claimed_profiles = unclaimed
   return Math.max(0, stats.total_real_operators - stats.claimed_profiles);
