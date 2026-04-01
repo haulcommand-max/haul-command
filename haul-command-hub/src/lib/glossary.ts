@@ -9,6 +9,18 @@
  * abnormal load, heavy haul, convoi exceptionnel, schwertransport, etc.
  */
 
+/** Next Best Action — drives conversion from glossary dead-ends */
+export interface NextBestAction {
+  /** Type of CTA: tool link, resource page, directory search, or claim funnel */
+  type: 'tool' | 'resource' | 'directory' | 'claim' | 'academy' | 'calculator';
+  /** Internal path to the target page */
+  link: string;
+  /** Button/CTA label */
+  label: string;
+  /** Optional: only show if this country has active market data */
+  requiresActiveMarket?: boolean;
+}
+
 export interface GlossaryEntry {
   id: string;
   term: string;
@@ -29,9 +41,14 @@ export interface GlossaryEntry {
   relatedTerms?: string[];
   /** Citation / regulatory reference */
   regulatoryRef?: string;
+  /** Conversion: what should the user do next? */
+  nextBestAction?: NextBestAction;
+  /** Directory guardrail: only show "Find Operator" widget if true */
+  is_active_market?: boolean;
 }
 
 export type GlossaryCategory =
+  // ── Original taxonomy ──
   | 'positions'
   | 'vehicles'
   | 'loads'
@@ -50,7 +67,16 @@ export type GlossaryCategory =
   | 'hardware_rigging'
   | 'tactical_logistics'
   | 'informal_lingo'
-  | 'infrastructure';
+  | 'infrastructure'
+  // ── 8 new competitive taxonomy classes (glossary_action_plan.md) ──
+  | 'official_pevo_terms'
+  | 'field_radio_lingo'
+  | 'permit_and_regulation_terms'
+  | 'heavy_haul_equipment_trailer'
+  | 'broker_shipper_carrier_logistics'
+  | 'route_clearance_infrastructure'
+  | 'country_state_jurisdiction_variants'
+  | 'certification_compliance';
 
 // ─── THE HC DICTIONARY™ ──────────────────────────────────────
 

@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
-interface TSASOperator {
+interface GlobalOperator {
   id: number;
   source_id: number;
   name: string;
@@ -18,7 +18,7 @@ interface TSASOperator {
   website_url: string | null;
   hc_entity_type: string | null;
   claim_priority: string;
-  promoted_to_public: boolean;
+  is_claimed: boolean;
 }
 
 type ClaimStep = 'search' | 'verify' | 'submit' | 'success';
@@ -40,9 +40,9 @@ export default function ClaimPage() {
   const [step, setStep] = useState<ClaimStep>('search');
   const [searchQuery, setSearchQuery] = useState('');
   const [stateFilter, setStateFilter] = useState('');
-  const [results, setResults] = useState<TSASOperator[]>([]);
+  const [results, setResults] = useState<GlobalOperator[]>([]);
   const [searching, setSearching] = useState(false);
-  const [selectedOp, setSelectedOp] = useState<TSASOperator | null>(null);
+  const [selectedOp, setSelectedOp] = useState<GlobalOperator | null>(null);
   const [totalUnclaimed, setTotalUnclaimed] = useState<number | null>(null);
 
   // Claim form state
@@ -56,9 +56,9 @@ export default function ClaimPage() {
   useEffect(() => {
     async function loadCount() {
       const { count } = await supabase
-        .from('hc_source_tsas')
+        .from('hc_global_operators')
         .select('id', { count: 'exact', head: true })
-        .eq('promoted_to_public', false);
+        .eq('is_claimed', false);
       setTotalUnclaimed(count ?? 0);
     }
     loadCount();
@@ -70,8 +70,8 @@ export default function ClaimPage() {
     setResults([]);
 
     let query = supabase
-      .from('hc_source_tsas')
-      .select('id, source_id, name, name_normalized, city, admin1_code, country_code, phone_primary, email, website_url, hc_entity_type, claim_priority, promoted_to_public')
+      .from('hc_global_operators')
+      .select('id, source_id, name, name_normalized, city, admin1_code, country_code, phone_primary, email, website_url, hc_entity_type, claim_priority, is_claimed')
       .order('claim_priority', { ascending: true })
       .limit(20);
 
@@ -87,7 +87,7 @@ export default function ClaimPage() {
     setSearching(false);
   }, [searchQuery, stateFilter]);
 
-  const handleSelectOperator = (op: TSASOperator) => {
+  const handleSelectOperator = (op: GlobalOperator) => {
     setSelectedOp(op);
     setStep('verify');
   };
@@ -100,7 +100,7 @@ export default function ClaimPage() {
     const { error } = await supabase
       .from('hc_claim_requests')
       .insert({
-        source_table: 'hc_source_tsas',
+        source_table: 'hc_global_operators',
         source_id: selectedOp.source_id,
         operator_name: selectedOp.name,
         claimant_name: claimName,
@@ -251,7 +251,7 @@ export default function ClaimPage() {
                         CLAIM THIS
                       </button>
                     </div>
-                    {op.promoted_to_public && (
+                    {op.is_claimed && (
                       <span className="inline-block mt-2 bg-green-500/10 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded">
                         Already in public directory
                       </span>

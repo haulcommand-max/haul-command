@@ -19,9 +19,9 @@ export const dynamic = "force-dynamic";
  *  ID 3:  City landing + City × Service pages (~3,420 URLs)
  *  ID 4:  Glossary term pages (~500 URLs)
  *  ID 5:  Equipment × Country pages (~570 URLs)
- *  ID 6:  Dictionary × Country — Batch A (countries 0-18, ~9,500 URLs)
- *  ID 7:  Dictionary × Country — Batch B (countries 19-37, ~9,500 URLs)
- *  ID 8:  Dictionary × Country — Batch C (countries 38-56, ~9,500 URLs)
+ *  ID 6:  Glossary × Country — Batch A (countries 0-39, ~20,000 URLs)
+ *  ID 7:  Glossary × Country — Batch B (countries 40-79, ~20,000 URLs)
+ *  ID 8:  Glossary × Country — Batch C (countries 80-119, ~20,000 URLs)
  *  ID 9:  City-level SEO Factory — Batch A (countries 0-18, ~1,500 URLs)
  *  ID 10: City-level SEO Factory — Batch B (countries 19-37, ~1,500 URLs)
  *  ID 11: City-level SEO Factory — Batch C (countries 38-56, ~1,500 URLs)
@@ -75,6 +75,10 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
       { url: `${siteUrl}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
       { url: `${siteUrl}/login`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
       { url: `${siteUrl}/glossary`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+      { url: `${siteUrl}/resources`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+      ...['height-pole-requirements','pilot-car-certifications','state-oversize-load-regulations','road-conditions-by-state','tire-chain-laws','trailer-types','bill-of-lading','broker-vs-carrier','cross-border-heavy-haul','how-to-start-pilot-car-company'].map(slug => ({
+        url: `${siteUrl}/resources/${slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7,
+      })),
       { url: `${siteUrl}/legal/dpa`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
       // VS Comparison pages (20 competitors)
       ...['pilot-car-loads', 'truckstop-heavy-haul', 'oversize-io', 'heavy-haul-load-board',
@@ -101,7 +105,7 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
       { url: `${siteUrl}/directory/gb/wales`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
     ];
 
-    // 57-country route families
+    // 120-country route families
     const countryRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap(c => [
       { url: `${siteUrl}/directory/${c.slug}`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 },
       { url: `${siteUrl}/requirements/${c.slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
@@ -153,11 +157,11 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
     return cityServiceRoutes;
   }
 
-  // ─── ID 4: Glossary Term Pages ───
+  // ─── ID 4: Glossary Term Pages (canonical /glossary/ URLs) ───
   if (id === 4) {
     try {
       return allTerms.map(t => ({
-        url: `${siteUrl}/dictionary/term/${t.id}`,
+        url: `${siteUrl}/glossary/${t.id}`,
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: 0.6,
@@ -178,14 +182,14 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
     );
   }
 
-  // ─── IDs 6-8: Dictionary × Country (split into 3 batches to stay under 50K) ───
+  // ─── IDs 6-8: Glossary × Country (split into 3 batches for 120 countries, stay under 50K) ───
   if (id >= 6 && id <= 8) {
     const batchIndex = id - 6;
     const batchSize = Math.ceil(COUNTRIES.length / 3);
     const batchCountries = COUNTRIES.slice(batchIndex * batchSize, (batchIndex + 1) * batchSize);
     return batchCountries.flatMap(c =>
       allTerms.map(t => ({
-        url: `${siteUrl}/dictionary/${c.slug}/${t.id}`,
+        url: `${siteUrl}/glossary/${t.id}/${c.slug}`,
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: 0.4,
