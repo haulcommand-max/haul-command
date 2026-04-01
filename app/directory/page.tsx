@@ -227,26 +227,20 @@ async function getStats() {
   try {
     const supabase = createClient();
 
-    // Query the unified listings table — use MV for state counts (audit 2026-03-28)
     const [countRes, stateRes, topRes] = await Promise.all([
       // Total count of all active listings
       supabase
-        .from('listings')
-        .select('*', { count: 'exact', head: true })
-        .eq('active', true),
+        .from('hc_global_operators')
+        .select('*', { count: 'exact', head: true }),
 
-      // Per-state breakdown via materialized view RPC (no full scan)
-      // Wrap in Promise.resolve() because PostgrestBuilder is PromiseLike, not Promise,
-      // and Next.js SSR internally calls .catch() which doesn't exist on PromiseLike.
+      // Per-state breakdown via modernized MV RPC
       Promise.resolve(supabase.rpc('rpc_state_counts')),
 
       // Top rated operators
       supabase
-        .from('listings')
-        .select('id, full_name, city, state, country_code, rating, review_count, claimed, services, rank_score')
-        .eq('active', true)
-        .not('rating', 'is', null)
-        .order('rank_score', { ascending: false, nullsFirst: false })
+        .from('hc_global_operators')
+        .select('id, name, city, admin1_code as state, country_code, is_claimed, role_primary, confidence_score')
+        .order('confidence_score', { ascending: false, nullsFirst: false })
         .limit(12),
     ]);
 
@@ -257,14 +251,12 @@ async function getStats() {
         if (row.state) stateMap[row.state] = row.total;
       }
     } else {
-      // Fallback: direct lightweight query (still better than SELECT state FROM all)
+      // Fallback direct query
       const { data: fallback } = await supabase
-        .from('listings')
-        .select('state')
-        .eq('active', true)
-        .not('state', 'is', null);
+        .from('hc_global_operators')
+        .select('admin1_code');
       for (const row of fallback ?? []) {
-        const s = (row.state ?? '').trim().toUpperCase();
+        const s = (row.admin1_code ?? '').trim().toUpperCase();
         if (s) stateMap[s] = (stateMap[s] || 0) + 1;
       }
     }
@@ -278,7 +270,8 @@ async function getStats() {
       topOperators: topRes.data ?? [],
     };
   } catch (e) {
-    return { total: 4653372, countryCounts: { us: 4653372 }, stateMap: {}, topOperators: [] };
+    console.error("Failed fetching stats", e);
+    return { total: 0, countryCounts: { us: 0 }, stateMap: {}, topOperators: [] };
   }
 }
 
@@ -385,26 +378,24 @@ export default async function DirectoryPage() {
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-sm truncate">{op.full_name || 'Escort Operator'}</h3>
+                    <h3 className="font-semibold text-white text-sm truncate">{op.name || 'Escort Operator'}</h3>
                     <p className="text-xs text-gray-500">
                       {op.city && `${op.city}, `}{op.state && `${op.state}`}
                     </p>
                   </div>
-                  {op.claimed && (
+                  {op.is_claimed && (
                     <span className="ml-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full flex-shrink-0">
                       ✓
                     </span>
                   )}
                 </div>
-                {op.rating && (
+                {op.confidence_score && (
                   <div className="flex items-center gap-1 mb-2">
-                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
-                    <span className="text-xs text-gray-500">{op.rating.toFixed(1)} ({op.review_count ?? 0})</span>
+                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round((op.confidence_score / 20) || 5), 5))}</span>
+                    <span className="text-xs text-gray-500">{((op.confidence_score / 20) || 5).toFixed(1)} AI Rank</span>
                   </div>
                 )}
-                {op.services?.length > 0 && (
-                  <p className="text-xs text-gray-500 mb-3 line-clamp-1">{op.services.slice(0, 3).join(' · ')}</p>
-                )}
+                <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{op.role_primary || 'Pilot Car'} Services</p>
                 <div className="relative">
                   <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
                   <div className="absolute inset-0 flex items-center justify-center">

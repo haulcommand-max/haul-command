@@ -76,7 +76,7 @@ export default function NotificationBell() {
 
     return (
         <div ref={ref} style={{ position: 'relative' }}>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setOpen(!open)}
                 style={{
                     background: 'none', border: 'none', cursor: 'pointer', position: 'relative',

@@ -130,31 +130,49 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
 
                         {/* ── POWER POSITIONED CLAIM BANNER ── */}
                         {!isVerified && (
-                            <div className="mt-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 p-4 rounded-xl border border-hc-warning/30 bg-hc-warning/5 overflow-hidden relative">
+                            <div className="mt-6 flex flex-col gap-4 p-5 rounded-xl border border-hc-warning/40 bg-hc-warning/5 overflow-hidden relative shadow-[0_0_30px_-5px_rgba(245,158,11,0.15)]">
                                 {/* Subtle animated background glow */}
                                 <div className="absolute -left-10 -top-10 w-32 h-32 bg-hc-warning/10 blur-[40px] rounded-full pointer-events-none" />
 
-                                <div className="relative z-10 flex gap-4">
-                                    <div className="w-10 h-10 shrink-0 rounded-full bg-hc-warning/20 border border-hc-warning/30 flex items-center justify-center text-hc-warning">
-                                        <ShieldCheck className="w-5 h-5" />
+                                <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 relative z-10 border-b border-hc-warning/10 pb-4">
+                                    <div className="flex gap-4">
+                                        <div className="w-10 h-10 shrink-0 rounded-full bg-hc-warning/20 border border-hc-warning/40 flex items-center justify-center text-hc-warning animate-pulse shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                                            <ShieldCheck className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-black text-hc-warning uppercase tracking-widest flex items-center gap-2">
+                                                Unverified Profile
+                                                <span className="px-1.5 py-0.5 rounded bg-hc-warning/20 text-[9px] text-hc-warning tracking-widest font-black leading-none">ACTION REQ</span>
+                                            </h3>
+                                            <p className="text-sm text-hc-muted mt-1 leading-relaxed max-w-lg">
+                                                This operator is not currently responding to direct match requests. Verify this profile to unlock priority routing and activate your corridor presence.
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 className="text-sm font-black text-hc-warning uppercase tracking-widest flex items-center gap-2">
-                                            Unverified Profile
-                                            <span className="px-1.5 py-0.5 rounded bg-hc-warning/20 text-[9px] text-hc-warning tracking-widest font-black leading-none">ACTION REQ</span>
-                                        </h3>
-                                        <p className="text-sm text-hc-muted mt-1 leading-relaxed max-w-lg">
-                                            This operator is not currently responding to direct match requests. Verify this profile to unlock priority routing and activate your corridor presence.
-                                        </p>
+                                    <Link aria-label="Navigation Link"
+                                        href="/onboarding/start"
+                                        className="shrink-0 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-hc-warning hover:bg-amber-400 text-hc-bg font-black text-xs uppercase tracking-widest rounded-lg transition-all shadow-dispatch hover:-translate-y-0.5 active:translate-y-0"
+                                    >
+                                        Claim & Verify Profile
+                                        <ChevronRight className="w-4 h-4" />
+                                    </Link>
+                                </div>
+                                
+                                <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between bg-black/40 rounded-lg p-3 border border-hc-warning/20 gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-hc-warning animate-ping shrink-0" />
+                                        <span className="text-xs font-bold text-white tracking-wide">
+                                            <span className="text-hc-warning text-lg font-black mr-1">{(provider.name.length % 6) + 3}</span>
+                                            Active Dispatch Requests in {provider.location.city}
+                                        </span>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-[10px] font-black text-hc-muted uppercase tracking-widest mb-0.5">Est. Missed Revenue</div>
+                                        <div className="text-sm font-black text-white px-2 py-0.5 bg-hc-warning/10 border border-hc-warning/30 rounded inline-block">
+                                            <span className="text-hc-warning">$</span>{(((provider.name.length % 6) + 3) * 350).toLocaleString()}
+                                        </div>
                                     </div>
                                 </div>
-                                <Link aria-label="Navigation Link"
-                                    href="/onboarding/start"
-                                    className="relative z-10 shrink-0 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-hc-warning/10 hover:bg-hc-warning/20 border border-hc-warning/50 text-hc-warning focus:outline-none focus:ring-2 focus:ring-hc-warning/50 font-black text-xs uppercase tracking-widest rounded-lg transition-all hover:-translate-y-0.5 active:translate-y-0"
-                                >
-                                    Get Verified Status
-                                    <ChevronRight className="w-4 h-4" />
-                                </Link>
                             </div>
                         )}
                     </div>

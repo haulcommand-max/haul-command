@@ -314,7 +314,7 @@ export default function EscortSupplyRadar({ variant = "panel", onShortageZoneTap
                     const flag = FLAG_MAP[zone.countryCode] || '🌍';
 
                     return (
-                        <button aria-label="Interactive Button"
+                        <button
                             key={zone.id}
                             onClick={() => handleZoneTap(zone)}
                             className="w-full text-left px-4 py-3.5 flex items-center gap-3 transition-all group"

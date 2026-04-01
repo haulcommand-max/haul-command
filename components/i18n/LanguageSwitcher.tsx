@@ -77,7 +77,7 @@ export default function LanguageSwitcher({
 
   return (
     <div ref={dropdownRef} className={`language-switcher ${className}`} style={{ position: 'relative' }}>
-      <button aria-label="Interactive Button"
+      <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Select language"
         aria-expanded={isOpen}
@@ -129,7 +129,7 @@ export default function LanguageSwitcher({
           }}
         >
           {availableLocales.map(locale => (
-            <button aria-label="Interactive Button"
+            <button
               key={locale.code}
               role="option"
               aria-selected={locale.code === currentLocale}

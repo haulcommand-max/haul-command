@@ -40,36 +40,35 @@ export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
     const isAuthenticated = !!authHeader;
 
-    // Build query on `listings` — single source of truth (unified per audit 2026-03-28)
+    // Build query on `hc_global_operators` — single source of truth (unified per audit 2026-03-28)
     let query = supabase
-      .from('listings')
+      .from('hc_global_operators')
       .select(
-        'id, full_name, city, state, country_code, phone_raw, claimed, claim_status, services, rank_score, profile_completeness, slug',
+        'id, name, city, admin1_code, country_code, phone_normalized, is_claimed, role_primary, confidence_score, slug',
         { count: 'exact' }
       )
-      .eq('active', true)
-      .not('state', 'is', null)
+      .not('admin1_code', 'is', null)
       .not('city', 'is', null);
 
     // Text search
     if (q) {
       query = query.or(
-        `full_name.ilike.%${q}%,city.ilike.%${q}%,state.ilike.%${q}%`
+        `name.ilike.%${q}%,city.ilike.%${q}%,admin1_code.ilike.%${q}%`
       );
     }
 
     // Apply filters
     if (country) query = query.eq('country_code', country.toUpperCase());
-    if (state) query = query.eq('state', state.toUpperCase());
-    if (service) query = query.contains('services', [service]);
-    if (claimedOnly) query = query.eq('claimed', true);
+    if (state) query = query.eq('admin1_code', state.toUpperCase());
+    // if (service) query = query.contains('services', [service]); // Temporarily disabled until taxonomy expanded
+    if (claimedOnly) query = query.eq('is_claimed', true);
 
     // Sort
     if (sortBy === 'name') {
-      query = query.order('full_name', { ascending: true });
+      query = query.order('name', { ascending: true });
     } else {
-      // Default rank: rank_score
-      query = query.order('rank_score', { ascending: false, nullsFirst: false });
+      // Default rank: confidence_score
+      query = query.order('confidence_score', { ascending: false, nullsFirst: false });
     }
 
     query = query.range(startRange, endRange);
@@ -88,22 +87,22 @@ export async function GET(req: NextRequest) {
       return {
         id: operator.id,
         slug: operator.slug,
-        name: operator.full_name,
+        name: operator.name || 'Escort Operator',
         city: operator.city,
-        state: operator.state,
-        location: `${operator.city}, ${operator.state}`,
-        region_code: operator.state, // ← alias for mobile compatibility
+        state: operator.admin1_code,
+        location: `${operator.city}, ${operator.admin1_code}`,
+        region_code: operator.admin1_code, // ← alias for mobile compatibility
         country_code: operator.country_code,
-        services: operator.services || [],
-        is_claimed: operator.claimed === true || operator.claim_status === 'claimed',
-        rating: 5.0, // Default for now
+        services: operator.role_primary ? [operator.role_primary] : [],
+        is_claimed: operator.is_claimed === true,
+        rating: operator.confidence_score ? (operator.confidence_score / 20) : null, // Default
         review_count: 0,
-        rank_score: operator.rank_score,
-        score: operator.rank_score ?? 50,
-        is_featured: operator.rank_score > 80,
-        profile_completeness: operator.profile_completeness ?? 40,
+        rank_score: operator.confidence_score,
+        score: operator.confidence_score ?? 50,
+        is_featured: operator.confidence_score > 80,
+        profile_completeness: 40,
         // Censor phone for unauthenticated users (only show first 2 as teaser)
-        phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (operator.phone_raw || '(555) 000-0000')
+        phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (operator.phone_normalized || '(555) 000-0000')
       };
     });
 

@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
+import ClaimStatusBanner from './ClaimStatusBanner';
 
 export const metadata: Metadata = {
   title: 'Claim Your Listing — Free Verified Profile | Haul Command',
@@ -54,22 +56,68 @@ const BENEFITS = [
   { title: '120 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
 ];
 
-export default function ClaimPage() {
+export default async function ClaimPage() {
+  // Server-side: check auth status for personalized claim banner
+  const supabase = createClient();
+  let claimData: { claimState: string | null; profileCompletion: number; operatorName: string | null } | null = null;
+  
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('claim_state, profile_completion_pct, operator_id')
+        .eq('id', user.id)
+        .single();
+      
+      let operatorName: string | null = null;
+      if (profile?.operator_id) {
+        const { data: operator } = await supabase
+          .from('hc_global_operators')
+          .select('company_name')
+          .eq('id', profile.operator_id)
+          .single();
+        operatorName = operator?.company_name ?? null;
+      }
+
+      claimData = {
+        claimState: profile?.claim_state ?? null,
+        profileCompletion: profile?.profile_completion_pct ?? 0,
+        operatorName,
+      };
+    }
+  } catch {
+    // Not authenticated — show default page
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Auth-aware claim status banner */}
+      {claimData && (
+        <ClaimStatusBanner
+          claimState={claimData.claimState}
+          profileCompletion={claimData.profileCompletion}
+          operatorName={claimData.operatorName}
+        />
+      )}
+
       {/* Hero */}
       <section className="py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-          Claim Your Free Listing
+          {claimData?.claimState && claimData.claimState !== 'unclaimed'
+            ? 'Complete Your Claim'
+            : 'Claim Your Free Listing'}
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-          Your company may already be in our directory. Claim it in under 5 minutes, get verified, and start receiving load offers with escrow-protected payments.
+          {claimData?.claimState && claimData.claimState !== 'unclaimed'
+            ? `You're ${claimData.profileCompletion}% complete. Keep going to unlock full visibility and start receiving load offers.`
+            : 'Your company may already be in our directory. Claim it in under 5 minutes, get verified, and start receiving load offers with escrow-protected payments.'}
         </p>
         <Link aria-label="Navigation Link"
-          href="/auth/register?intent=claim"
+          href={claimData?.claimState && claimData.claimState !== 'unclaimed' ? '/settings/profile' : '/auth/register?intent=claim'}
           className="inline-block px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
         >
-          Find My Listing
+          {claimData?.claimState && claimData.claimState !== 'unclaimed' ? 'Continue Setup' : 'Find My Listing'}
         </Link>
       </section>
 
@@ -77,18 +125,30 @@ export default function ClaimPage() {
       <section className="max-w-5xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-bold mb-10 text-center">6 Steps to Get Verified</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {STEPS.map((s) => (
-            <div key={s.step} className="p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/20 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 flex items-center justify-center bg-amber-500/20 text-amber-400 rounded-full text-sm font-bold">
-                  {s.step}
-                </span>
-                <span className="text-2xl">{s.icon}</span>
+          {STEPS.map((s) => {
+            // Highlight completed steps for authenticated users
+            const isCompleted = claimData && s.step <= Math.ceil((claimData.profileCompletion / 100) * 6);
+            return (
+              <div key={s.step} className={`p-6 rounded-2xl transition-all ${
+                isCompleted
+                  ? 'bg-green-500/10 border border-green-500/20'
+                  : 'bg-white/5 border border-white/10 hover:border-amber-500/20'
+              }`}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold ${
+                    isCompleted
+                      ? 'bg-green-500/30 text-green-400'
+                      : 'bg-amber-500/20 text-amber-400'
+                  }`}>
+                    {isCompleted ? '\u2713' : s.step}
+                  </span>
+                  <span className="text-2xl">{s.icon}</span>
+                </div>
+                <h3 className="font-bold text-lg mb-1">{s.title}</h3>
+                <p className="text-sm text-gray-400">{s.desc}</p>
               </div>
-              <h3 className="font-bold text-lg mb-1">{s.title}</h3>
-              <p className="text-sm text-gray-400">{s.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

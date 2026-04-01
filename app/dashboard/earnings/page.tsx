@@ -1,6 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import EarningsSparkline from '@/components/earnings/EarningsSparkline';
+import EarningsExport from '@/components/earnings/EarningsExport';
+import { EarningsService, formatCents, type EarningsSummary } from '@/lib/earnings/earnings-service';
+import { createClient } from '@/lib/supabase/client';
 
 type ConnectStatus = {
   connected: boolean;
@@ -31,15 +35,33 @@ export default function EarningsDashboardPage() {
   const [withdrawMethod, setWithdrawMethod] = useState<'standard' | 'instant'>('standard');
   const [withdrawStatus, setWithdrawStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [earningsSummary, setEarningsSummary] = useState<EarningsSummary | null>(null);
 
   useEffect(() => {
     async function load() {
+      // Fetch Stripe Connect status + payouts
       const [statusRes, payoutsRes] = await Promise.all([
         fetch('/api/connect/status'),
         fetch('/api/connect/payouts'),
       ]);
       if (statusRes.ok) setConnect(await statusRes.json());
       if (payoutsRes.ok) setPayouts(await payoutsRes.json());
+
+      // Fetch Supabase-backed earnings summary
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          setUserId(user.id);
+          const service = new EarningsService();
+          const summary = await service.getSummary(user.id);
+          setEarningsSummary(summary);
+        }
+      } catch (err) {
+        console.error('[earnings] Supabase fetch error:', err);
+      }
+
       setLoading(false);
     }
     load();
@@ -87,9 +109,33 @@ export default function EarningsDashboardPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">
-          <span className="text-amber-400">Haul Command Pay</span> \u2014 Earnings
-        </h1>
+        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <h1 className="text-3xl font-bold">
+            <span className="text-amber-400">Haul Command Pay</span> \u2014 Earnings
+          </h1>
+          {userId && <EarningsExport userId={userId} />}
+        </div>
+
+        {/* Supabase Lifetime Earnings Hero */}
+        {earningsSummary && earningsSummary.lifetime_cents > 0 && (
+          <div className="p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/5 border border-green-500/20 rounded-2xl mb-8">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <p className="text-sm text-green-400/70 font-medium mb-1">Lifetime Earned</p>
+                <p className="text-4xl font-black text-green-400 tabular-nums">
+                  {formatCents(earningsSummary.lifetime_cents, earningsSummary.currency)}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {earningsSummary.lifetime_jobs} job{earningsSummary.lifetime_jobs !== 1 ? 's' : ''} completed
+                  {earningsSummary.avg_per_job_cents > 0 && ` \u2022 ${formatCents(earningsSummary.avg_per_job_cents)} avg per job`}
+                </p>
+              </div>
+              {userId && (
+                <EarningsSparkline userId={userId} days={7} width={160} height={48} showTrend showTotal={false} />
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Not connected */}
         {!connect?.connected && (

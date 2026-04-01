@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import { Metadata } from 'next';
 import SaveButton from '@/components/capture/SaveButton';
+import AudioPronunciation from '@/components/glossary/AudioPronunciation';
+import CommonlyConfusedWith from '@/components/glossary/CommonlyConfusedWith';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -110,10 +112,11 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                             <span className="font-serif text-9xl">“</span>
                         </div>
                         
-                        <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-4 mb-4 flex-wrap">
                             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
                                 {term.term}
                             </h1>
+                            <AudioPronunciation term={term.term} phonetic={term.phonetic_guide} variant="pill" />
                             <SaveButton entityType="glossary_topic" entityId={term.slug} entityLabel={term.term} variant="pill" />
                             {term.acronyms && term.acronyms.length > 0 && (
                                 <span className="bg-white/10 text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
@@ -160,6 +163,17 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                     <p className="text-gray-300 leading-relaxed">{term.why_it_matters}</p>
                                 </section>
                             )}
+
+                            {/* Commonly Confused With — P1 SEO + authority */}
+                            <CommonlyConfusedWith
+                                currentTerm={term.term}
+                                confusedTerms={(term.commonly_confused ?? []).map((c: any) => ({
+                                    slug: c.slug,
+                                    term: c.term,
+                                    difference: c.difference,
+                                }))}
+                                relatedSlugs={term.related_slugs ?? []}
+                            />
                             
                             {/* Haul Command Directory Linker */}
                             {term.surface_categories && term.surface_categories.length > 0 && (

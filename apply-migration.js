@@ -10,7 +10,8 @@ async function migrate() {
     
     await client.connect();
     console.log("Connected directly to Supabase.");
-    const sql = fs.readFileSync('supabase/migrations/20260329_glossary_120_countries.sql', 'utf8');
+    const migrationFile = process.argv[2] || 'supabase/migrations/20260329_glossary_120_countries.sql';
+    const sql = fs.readFileSync(migrationFile, 'utf8');
     
     try {
         await client.query(sql);
