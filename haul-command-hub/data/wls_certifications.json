@@ -1,0 +1,245 @@
+[
+  {
+    "state_code": "AZ",
+    "state_name": "Arizona",
+    "requires_certification": true,
+    "min_age": 18,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": 4,
+    "reciprocity_states": [
+      "AZ"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Arizona All escort and pilot car operators who wish to travel through or work in Arizona must be trained and certified in safety practices when escorting oversized loads. Below are the requirements for escorting vehicle certification in Arizona.&nbsp; Must be at least 18 years old. Must have a valid driver’s license. You must hold a valid escort vehicle operator certificate from Arizona or one of the following states: Colorado, North Carolina, Oklahoma, Kansas, Minnesota, Utah, Florida, Washington, New York, and Virginia. Must repeat training and certification requirements every 4 years. "
+  },
+  {
+    "state_code": "CO",
+    "state_name": "Colorado",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": 1000000,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "AZ",
+      "MN",
+      "UT",
+      "OK",
+      "WA"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Colorado Colorado requires that pilot car or escort company operators have a Colorado State Certification card when working within the Colorado state jurisdiction and the following documents: Valid pilot car certification from Arizona, Minnesota, Utah, Oklahoma, Washington, or the Specialized Carriers &amp; Rigging Association (SC&amp;RA). Proof of a minimum of $1,000,000 in commercial liability coverage or a combined single-limit insurance coverage. That proof must show that the insurance covers escort and pilot car operations.&nbsp; CDOT Rules &amp; Regulations&nbsp; You must have a driving record free of alcohol or drug-related offense convictions, and there is no moving violation penalty of 6 points or more. Vertical Clearances Map Hazardous and Nuclear Material Route Restrictions Map Bridge Weight Limit Map Pilot Escort &amp; Oversize Map "
+  },
+  {
+    "state_code": "FL",
+    "state_name": "Florida",
+    "requires_certification": true,
+    "min_age": 18,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Florida Florida requires pilot car or escort company operators to have Florida State certification or FDOT authorization and meet the following qualifications; Florida recognizes programs completed by these states: Arizona, Colorado, Georgia, Minnesota, North Carolina, Oklahoma, Pennsylvania, Virginia, Washington, and Wisconsin.&nbsp; Must be at least 18 years You must complete an 8-hour defensive driving class provided by the National Safety Council or have a Class A, B, or C commercial driver’s license. "
+  },
+  {
+    "state_code": "GA",
+    "state_name": "Georgia",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Georgia The state of Georgia Department of Transportation (GDOT) requires pilot car or escort company operators to complete the Certified Escort Vehicle Program. In addition to this, you: Must have an &#8220;amber light permit&#8221; when operating a pilot or escort vehicle within Georgia state lines.&nbsp; If you obtain an &#8220;amber light permit&#8221; AND have completed a pilot car or escort vehicle certification program through any of the following states: Colorado, Washington, Virginia, Utah, or Arizona, you will more than likely be approved with proof of completion. The Georgia DOT reciprocates directly with North Carolina, Florida, Washington, and Oklahoma pilot car certification programs. &nbsp; Note: All pilot escort certification cards in Georgia are now issued electronically and must be displayed on the holder&#8217;s phone or tablet. The Oversize permit unit will no longer issue physical cards to pilot escort drivers in Georgia. However, they will still accept them until expiration, at which point you will have to get an electronic card. Electronic cards displayed on the tablet or phone will be matched to the pilot driver’s name and the 4 last digits of their license number on the physical driver’s license for easy verification by officers. "
+  },
+  {
+    "state_code": "MN",
+    "state_name": "Minnesota",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "CO",
+      "FL"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Minnesota All escort vehicle and pilot car operators who wish to travel or work in Minnesota must be certified. Minnesota has two different types of escorts: civilian escorts and peace officers. Learn the difference between the two. Below are Minnesota pilot escort certifications.&nbsp; Must hold a Minnesota current certification from one of the two recognized states. Minnesota recognizes escort vehicle and pilot car operator certifications from Colorado, Florida, North Carolina, Oklahoma, Utah, Virginia, and Washington . However, you must have Minnesota insurance for the vehicle, the driver, the signage, lighting, and all safety equipment requirements must be met. "
+  },
+  {
+    "state_code": "OK",
+    "state_name": "Oklahoma",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "CO",
+      "FL",
+      "GA",
+      "MN"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Oklahoma Oklahoma is one of the states that require you to meet certain requirements to operate on its soil. Below are the Oklahoma pilot escort certification requirements.&nbsp; You must be certified by DPS.&nbsp; Must have over $1,000,000 combined single limit in insurance coverage for bodily injury caused when operating a pilot car or property damage. (that law doesn’t apply to drivers who operate only in interstate commerce through or into states that don’t require residents or pilot escort certification from a different state with a reciprocal agreement that recognizes pilot car certification issued by that state) Hold a certification from the Oklahoma reciprocal compact and agreement states, including Colorado, Florida, Georgia, Minnesota, North Carolina, Utah, Virginia, and Washington. "
+  },
+  {
+    "state_code": "NY",
+    "state_name": "New York",
+    "requires_certification": true,
+    "min_age": 21,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [],
+    "training_urls": [],
+    "application_urls": [
+      "https://wideloadshipping.com/wp-content/uploads/2024/09/Vehicle-Escort-Driver-Application.pdf"
+    ],
+    "notes": "New York To get certified as a pilot escort driver in New York, you must go to the DMV, which offers an escort driver certification test, complete the Vehicle Escort Driver Application (MV-65), and take a written test. Despite New York being on the list of states that require certification, it doesn’t accept certifications from other states. Below are the qualifications for being a pilot escort operator in New York. Must pass the pilot escort driver’s certification exam Must be 21 years + You must hold a valid New York state driver&#8217;s license or a valid license in the state or jurisdiction where you reside. NOTE: Not all DMVs offer the test, so it’s important to call in advance to be sure you can take it. To take the test, carry your driver’s license, social security number, and a $40 test fee. If you’re from a different state, you must bring additional identification and a driver’s license. "
+  },
+  {
+    "state_code": "NC",
+    "state_name": "North Carolina",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": 8,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "AZ",
+      "FL",
+      "GA",
+      "MN",
+      "OK",
+      "PA",
+      "UT",
+      "VA"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "North Carolina Per the 19A NCAC 02D, North Carolina requires all pilot escort drivers to be certified. Below are the qualifications to be met by anyone who wants to be an escort vehicle operator in North Carolina; First Time Applicants Must complete an 8-hour course offered by NC Community College. &nbsp;(Here’s a calendar for upcoming courses) You must submit the Escort Vehicle Operator Application to the North Carolina Oversize/Overweight Permit Unit’s office within 6 months of completing the class. You must submit a current Certified Driving Record (not older than 6 months) to the North Carolina Oversize/Overweight Permit Unit’s office within 6 months of completing the class. You must submit proof of completing a defensive driving course approved by the National Safety Council. (New Requirement) Hold a certification from the North Carolina reciprocal compact and agreement states, including Arizona, Florida, Georgia, Minnesota, Oklahoma, Pennsylvania, Utah, Virginia, and Washington. &nbsp; Renewals You must complete a 4-hour course administered by an NC Community College. (Here’s a calendar for upcoming courses) You must submit a Pilot Escort Vehicle Operator Application to the North Carolina Oversize/Overweight Permit Unit’s office within 6 months of completing the class. "
+  },
+  {
+    "state_code": "KS",
+    "state_name": "Kansas",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Kansas The Kansas Legislature passed a law that went into effect on January 1st, requiring pilot escort vehicle companies and service providers working with overweight and overweight vehicles to be registered with the Kansas Secretary of Transportation by the Kansas Department of Transportation. Below are some certifications that pilot and escort vehicle operators must meet.&nbsp; Must have a valid driver’s license. Must pass an escort vehicle training course. Must be registered (Registration and renewal are free, and it’s valid for one year) &nbsp; NOTE: If a law enforcement officer stops an overwidth or overweight vehicle, they may verify whether the driver escorting the oversized or overweight load is registered to operate in Kansas. If a driver isn’t registered, the officer may stop the load until they are registered. "
+  },
+  {
+    "state_code": "PA",
+    "state_name": "Pennsylvania",
+    "requires_certification": true,
+    "min_age": 21,
+    "training_hours": 8,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "NC",
+      "GA",
+      "CO",
+      "UT"
+    ],
+    "training_urls": [],
+    "application_urls": [
+      "https://www.penndot.pa.gov/Doing-Business/Permits/HaulingInformation/Documents/CertifiedEscortProgramInformation.pdf"
+    ],
+    "notes": "Pennsylvania Pennsylvania Senate Bill #748, amended Title 75, requires every pilot escort vehicle operator to be licensed and certified. Below are the requirements you need to meet. Hold a certification from North Carolina, Georgia, or Virginia . They also accept certifications from Colorado and Utah as part of the RSA Network. Must be at least 21 years old. You must have a valid driver’s license or a valid license from your state or jurisdiction of residence. Must have 3 years of documented experience in escorting oversized/overweight loads. Certified escort vehicle drivers operating in lieu of Pennsylvania State Police must complete an 8-hour course and pass a written exam. Standard escort vehicle drivers aren’t required to take the course. (Review these documents at the Special Hauling Permits site before the class.) "
+  },
+  {
+    "state_code": "TX",
+    "state_name": "Texas",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "CO"
+    ],
+    "training_urls": [
+      "https://www.nsc.org/safety-training/workplace/work-zone-safety/flagger-novice",
+      "https://rsanetwork.com/",
+      "https://teex.org/class/HWS110/"
+    ],
+    "application_urls": [],
+    "notes": "Texas While other states require pilot escort vehicle operators to be certified, Texas is different because only escort flaggers need certification here. Escort flaggers control or direct traffic as required by the permits issued by the Texas Department of Motor Vehicles. Learn more below: House Bill 2620, passed on September 1, 2019, says that if you want to become an escort flagger, you must complete a traffic direction training program approved by the Texas Commission on Law Enforcement (TCOLE). Escort vehicle operators and flaggers who aren’t directing traffic don’t need to attend training classes.&nbsp; You must maintain proof of program certification to show law enforcement when requested (This can be done electronically). Texas accepts escort flagger and pilot car certifications acquired from Colorado and Washington. Here’s a List of Escort Flagger training Programs You Can Attend National Safety Council (NSC) RSA Network – Pilot/Escort Certification Course Texas A&amp;M Engineering Extension Service (TEEX)&nbsp; University of Texas at Arlington/Texas Local Technical Assistance Program (UTA/LTAP) "
+  },
+  {
+    "state_code": "UT",
+    "state_name": "Utah",
+    "requires_certification": true,
+    "min_age": null,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "AZ",
+      "CO",
+      "FL",
+      "MN"
+    ],
+    "training_urls": [
+      "https://uspilotcar.com/index.php/86-2/"
+    ],
+    "application_urls": [],
+    "notes": "Utah All pilot car operators and escort drivers who intend to operate within Utah must be certified and inspected at the Utah Port of Entry. Pilot car and escort vehicle operators who wish to obtain an authorized certification card may participate in an authorized qualified certification program. Here are the pilot car certification requirements in Utah. Must be licensed and certified after completing a certification program and passing a 40-question test (you should attain at least 80%). The program covers escort operations, rules on over-dimensional load movement, routing techniques, planning, vehicle positioning, flagging maneuvers, rail grade crossing safety, insurance coverage requirements, and communication. ( Book the Utah pilot/escort flagger certification online course here .) Hold a pilot car certification from Arizona, Colorado, Florida, Minnesota, North Carolina, Oklahoma, Virginia, Washington, or Utah. Any pilot car or escort driver certification expires four years from the certificate’s date. It’s the driver’s responsibility to maintain current certification and minimum insurance coverage of $750,000 for liability insurance. Upon entering the jurisdiction within Utah, you are strongly advised to have a certificate of completion that’s valid and current with any of the states mentioned above. &nbsp; "
+  },
+  {
+    "state_code": "VA",
+    "state_name": "Virginia",
+    "requires_certification": true,
+    "min_age": 18,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "VA",
+      "FL",
+      "GA",
+      "MN"
+    ],
+    "training_urls": [],
+    "application_urls": [
+      "https://www.dmv.virginia.gov/sites/default/files/forms/hp404.pdf",
+      "https://www.dmv.virginia.gov/sites/default/files/forms/hp405.pdf",
+      "https://www.dmv.virginia.gov/locations"
+    ],
+    "notes": "Virginia Any pilot/escort vehicle operator operated in Virginia must be certified to perform oversize/overweight load escort duties. Below are the Virginia pilot/escort vehicle certification requirements. You must be 18 years and older. You must have a valid driver’s license from Virginia or in the state or jurisdiction where you reside.&nbsp; You must pass the escort vehicle driver’s certification test and pay a $25 certification fee. ( Here are links to complete your application and a Virginia Escort vehicle driver’s manual to guide you.) The multiple choice test is administered through the DMV Knowledge Automated Testing System at DMV Customer Service Centers . The results are displayed when you complete the test, and the certificate is received in the mail once your driver’s license and driving record are validated. ( It’s advisable to give it at least 30 business days) . Must follow the state traffic laws, permit policy, and regulations. You must hold a pilot escort vehicle certification from one of the following reciprocity states: Florida, Georgia, Minnesota, North Carolina, Oklahoma, Utah, or Washington. &nbsp; Exceptions The following group of escort vehicle drivers doesn’t need to be certified. Military convoys and other state government or federal vehicles. Officers from Virginia State Police or law enforcement officials from any jurisdiction in Virginia that provide escort services. "
+  },
+  {
+    "state_code": "WA",
+    "state_name": "Washington",
+    "requires_certification": true,
+    "min_age": 18,
+    "training_hours": null,
+    "insurance_min_usd": null,
+    "renewal_period_years": null,
+    "reciprocity_states": [
+      "AZ",
+      "CO",
+      "GA",
+      "MN"
+    ],
+    "training_urls": [],
+    "application_urls": [],
+    "notes": "Washington The state of Washington expects you to be certified to operate in their jurisdiction. Below are some escort vehicle certification requirements in Washington.&nbsp; Must have a valid driver’s license. Must be 18 years and older. Hold a certificate from Arizona, Colorado, Georgia, Minnesota, North Carolina, Oklahoma, Utah, or Virginia . You must complete an 8-hour instructor-led online course and pass an exam to earn a Washington State Pilot/Escort Vehicle Operator certification card valid for 3 years. ( You attain at least 80% in the test, your certification will be processed within 5 business days, and the certificate will be received in the mail .) Pilot/escort vehicle operators must have insurance to operate escort vehicle services in Washington. Below is a list of the figures: &nbsp; $100,000 for the death of a person or bodily injury in an accident. $50,000 for the damage or destruction of property in any one accident. $300,000 for the death of two or more persons or bodily injury in an accident. (877) 792-5056 It’s important to know that state requirements for pilot and escort vehicles change occasionally. This page aims to provide you with updated information that includes the rules and regulations of the states requiring pilot and escort vehicle drivers to have special certifications. It should be noted this page was written as an essential guide for pilot car companies and escort vehicle operators to use when researching which states require certification. We strongly suggest that if you are considering operating in any state under the capacity of a pilot car or escort, each state you intend to work in will be contacted directly by you before entering that state. In addition, always refer to the instructions on the actual permit issued from the state for that particular over-dimensional or heavy haul load. The permit should list all responsibilities and detail and clarify any additional questions you may have during transit. In closing, remember t"
+  }
+]

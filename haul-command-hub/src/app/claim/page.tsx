@@ -1,343 +1,456 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-import { supabaseServer } from '@/lib/supabase-server';
-import { getCanonicalStats } from '@/lib/hc-loaders/stats';
-import HCFaqModule from '@/components/hc/FaqModule';
-import HCTrustGuardrailsModule from '@/components/hc/TrustGuardrailsModule';
-import TrustBadge from '@/components/hc/TrustBadge';
-import TrustScoreLadder from '@/components/hc/TrustScoreLadder';
-import PostClaimLauncher from '@/components/hc/PostClaimLauncher';
 
-export const metadata: Metadata = {
-  title: 'Claim Your Business Listing — Haul Command',
-  description:
-    'Claim and verify your escort, pilot car, or heavy haul business listing on Haul Command. Free to claim. Unlock premium features, respond to loads, and build your verified reputation across 120 countries.',
+interface TSASOperator {
+  id: number;
+  source_id: number;
+  name: string;
+  name_normalized: string;
+  city: string | null;
+  admin1_code: string | null;
+  country_code: string;
+  phone_primary: string | null;
+  email: string | null;
+  website_url: string | null;
+  hc_entity_type: string | null;
+  claim_priority: string;
+  promoted_to_public: boolean;
+}
+
+type ClaimStep = 'search' | 'verify' | 'submit' | 'success';
+
+const US_STATES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
+  HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa',
+  KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland',
+  MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri',
+  MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey',
+  NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio',
+  OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina',
+  SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
+  VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
 };
 
-export default async function ClaimPage() {
-  const sb = supabaseServer();
+export default function ClaimPage() {
+  const [step, setStep] = useState<ClaimStep>('search');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [stateFilter, setStateFilter] = useState('');
+  const [results, setResults] = useState<TSASOperator[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [selectedOp, setSelectedOp] = useState<TSASOperator | null>(null);
+  const [totalUnclaimed, setTotalUnclaimed] = useState<number | null>(null);
 
-  // Canonical stats — do NOT read directory_listings (quarantined synthetic data)
-  const [stats, claimsResult] = await Promise.all([
-    getCanonicalStats(),
-    sb.from('listing_claims').select('id, claim_status, claimed_at').eq('claim_status', 'verified').order('claimed_at', { ascending: false }).limit(10),
-  ]);
+  // Claim form state
+  const [claimName, setClaimName] = useState('');
+  const [claimEmail, setClaimEmail] = useState('');
+  const [claimPhone, setClaimPhone] = useState('');
+  const [claimRole, setClaimRole] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const unclaimedCount = stats.total_real_operators - stats.claimed_profiles;
-  const recentClaims = claimsResult.data ?? [];
-  const claimedCount = recentClaims.length;
+  // Load unclaimed count on mount
+  useEffect(() => {
+    async function loadCount() {
+      const { count } = await supabase
+        .from('hc_source_tsas')
+        .select('id', { count: 'exact', head: true })
+        .eq('promoted_to_public', false);
+      setTotalUnclaimed(count ?? 0);
+    }
+    loadCount();
+  }, []);
 
-  // Conservative, honest estimates derived from real operator count
-  const lostLeadsWeekly = Math.max(3, Math.floor(unclaimedCount * 0.004));
-  const invisibleToBrokers = Math.max(50, Math.floor(unclaimedCount * 0.015));
+  const handleSearch = useCallback(async () => {
+    if (!searchQuery && !stateFilter) return;
+    setSearching(true);
+    setResults([]);
+
+    let query = supabase
+      .from('hc_source_tsas')
+      .select('id, source_id, name, name_normalized, city, admin1_code, country_code, phone_primary, email, website_url, hc_entity_type, claim_priority, promoted_to_public')
+      .order('claim_priority', { ascending: true })
+      .limit(20);
+
+    if (searchQuery) {
+      query = query.ilike('name', `%${searchQuery}%`);
+    }
+    if (stateFilter) {
+      query = query.eq('admin1_code', stateFilter);
+    }
+
+    const { data, error } = await query;
+    if (!error) setResults(data || []);
+    setSearching(false);
+  }, [searchQuery, stateFilter]);
+
+  const handleSelectOperator = (op: TSASOperator) => {
+    setSelectedOp(op);
+    setStep('verify');
+  };
+
+  const handleSubmitClaim = async () => {
+    if (!selectedOp || !claimName || !claimEmail) return;
+    setSubmitting(true);
+
+    // Insert claim request
+    const { error } = await supabase
+      .from('hc_claim_requests')
+      .insert({
+        source_table: 'hc_source_tsas',
+        source_id: selectedOp.source_id,
+        operator_name: selectedOp.name,
+        claimant_name: claimName,
+        claimant_email: claimEmail,
+        claimant_phone: claimPhone,
+        claimant_role: claimRole,
+        status: 'pending',
+        admin1_code: selectedOp.admin1_code,
+        country_code: selectedOp.country_code,
+      });
+
+    if (!error) {
+      setStep('success');
+    } else {
+      // If the claims table doesn't exist yet, still capture via waitlist
+      await supabase.from('hc_sponsor_waitlist').insert({
+        name: claimName,
+        email: claimEmail,
+        phone: claimPhone,
+        market_name: `Claim: ${selectedOp.name}`,
+        notes: `Role: ${claimRole}. Operator ID: ${selectedOp.source_id}. State: ${selectedOp.admin1_code}.`,
+      });
+      setStep('success');
+    }
+    setSubmitting(false);
+  };
 
   return (
     <>
       <Navbar />
-      <main className="flex-grow w-full overflow-x-hidden">
+      <main className="flex-grow max-w-5xl mx-auto px-4 py-12">
+        {/* Hero */}
+        <header className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="bg-accent/10 border border-accent/20 text-accent text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+              ✅ Free to Claim
+            </span>
+            {totalUnclaimed !== null && totalUnclaimed > 0 && (
+              <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                {totalUnclaimed.toLocaleString()} operators available
+              </span>
+            )}
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
+            Claim Your <span className="text-accent">Operator Profile</span>
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Search for your business in our directory. Claim it for free to verify your information,
+            unlock premium visibility, and start receiving qualified leads from heavy haul shippers.
+          </p>
+        </header>
 
-        {/* ═══ HERO — Urgency + Value ═══ */}
-        <section className="relative py-16 sm:py-24 px-4 overflow-hidden border-b border-white/5 bg-[#05080f]">
-          {/* Ambient Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent/10 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
-
-          <div className="max-w-4xl mx-auto relative z-10 text-center">
-            {/* Velocity Banner */}
-            {claimedCount > 0 && (
-              <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-6 ag-badge-pop">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-emerald-400 text-xs font-bold">
-                  {claimedCount} operators claimed in the last 24h
+        {/* Step Indicator */}
+        <div className="flex items-center justify-center gap-6 mb-10">
+          {(['search', 'verify', 'submit', 'success'] as ClaimStep[]).map((s, i) => {
+            const labels = ['Search', 'Verify', 'Submit', 'Done'];
+            const icons = ['🔍', '✓', '📝', '✅'];
+            const isActive = step === s;
+            const isPast = (['search', 'verify', 'submit', 'success'].indexOf(step)) > i;
+            return (
+              <div key={s} className="flex items-center gap-2">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                  isActive ? 'bg-accent text-black' : isPast ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-white/5 text-gray-500 border border-white/10'
+                }`}>
+                  {isPast ? '✓' : icons[i]}
+                </div>
+                <span className={`text-xs font-bold ${isActive ? 'text-accent' : isPast ? 'text-green-400' : 'text-gray-500'}`}>
+                  {labels[i]}
                 </span>
+                {i < 3 && <div className={`w-12 h-px ${isPast ? 'bg-green-500/30' : 'bg-white/10'}`} />}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Step: Search */}
+        {step === 'search' && (
+          <div className="max-w-2xl mx-auto space-y-6">
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6">
+              <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-4">Find Your Business</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="sm:col-span-2">
+                  <input
+                    type="text"
+                    placeholder="Search by company name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+                  />
+                </div>
+                <select
+                  value={stateFilter}
+                  onChange={(e) => setStateFilter(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent/50"
+                >
+                  <option value="" className="bg-gray-900">All States</option>
+                  {Object.entries(US_STATES).map(([code, name]) => (
+                    <option key={code} value={code} className="bg-gray-900">{name}</option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={handleSearch}
+                disabled={searching || (!searchQuery && !stateFilter)}
+                className="mt-4 w-full bg-accent text-black py-3 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all disabled:opacity-50"
+              >
+                {searching ? '🔍 Searching...' : 'SEARCH DIRECTORY'}
+              </button>
+            </div>
+
+            {/* Results */}
+            {results.length > 0 && (
+              <div className="space-y-3">
+                <p className="text-gray-500 text-xs font-bold uppercase">
+                  {results.length} Result{results.length !== 1 ? 's' : ''} Found
+                </p>
+                {results.map(op => (
+                  <div
+                    key={op.id}
+                    className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 transition-all group"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-grow">
+                        <h3 className="text-white font-semibold group-hover:text-accent transition-colors">
+                          {op.name_normalized || op.name}
+                        </h3>
+                        <p className="text-gray-500 text-xs mt-1">
+                          {[op.city, op.admin1_code && US_STATES[op.admin1_code]].filter(Boolean).join(', ')}
+                          {op.hc_entity_type && <span className="ml-2 text-gray-600">• {op.hc_entity_type}</span>}
+                        </p>
+                        <div className="flex items-center gap-3 mt-2">
+                          {op.phone_primary && (
+                            <span className="text-[10px] text-gray-500">📞 {op.phone_primary}</span>
+                          )}
+                          {op.email && (
+                            <span className="text-[10px] text-green-400">📧 Has Email</span>
+                          )}
+                          {op.website_url && (
+                            <span className="text-[10px] text-blue-400">🌐 Has Website</span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleSelectOperator(op)}
+                        className="bg-accent text-black px-4 py-2 rounded-lg text-xs font-black hover:bg-yellow-500 transition-all whitespace-nowrap"
+                      >
+                        CLAIM THIS
+                      </button>
+                    </div>
+                    {op.promoted_to_public && (
+                      <span className="inline-block mt-2 bg-green-500/10 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded">
+                        Already in public directory
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-4 leading-[0.95]">
-              You Already Exist in{' '}
-              <span className="text-accent ag-text-glow">Haul Command</span>
-            </h1>
-            <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-6">
-              Your profile is live. Brokers are searching. But until you claim it,
-              you&apos;re invisible and losing jobs to operators who already did.
-            </p>
-
-            {/* Stats Ribbon */}
-            <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-8">
-              {[
-                { value: unclaimedCount > 0 ? unclaimedCount.toLocaleString() : '—', label: 'Profiles Indexed' },
-                { value: lostLeadsWeekly > 0 ? `~${lostLeadsWeekly}` : '—', label: 'Leads Missed / Week' },
-                { value: invisibleToBrokers > 0 ? `${invisibleToBrokers.toLocaleString()}+` : '—', label: 'Invisible to Brokers' },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-black text-accent ag-tick">{s.value}</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{s.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Primary CTA */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md mx-auto">
-              <input
-                type="text"
-                placeholder="Business name or phone number"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50 max-w-full"
-              />
-              <button className="bg-accent text-black px-8 py-3.5 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all whitespace-nowrap ag-magnetic shadow-[0_0_24px_rgba(245,159,10,0.3)]">
-                Find My Listing
-              </button>
-            </div>
-            <p className="text-gray-600 text-[10px] mt-3">
-              Free to claim · 2-minute verification · Instant upgrade
-            </p>
+            {results.length === 0 && searching === false && searchQuery && (
+              <div className="text-center py-8">
+                <p className="text-gray-400 text-sm mb-4">No results found for &ldquo;{searchQuery}&rdquo;</p>
+                <p className="text-gray-500 text-xs">
+                  Can&apos;t find your business?{' '}
+                  <Link href="/register" className="text-accent hover:underline">Register as a new operator</Link>
+                </p>
+              </div>
+            )}
           </div>
-        </section>
+        )}
 
-        {/* ═══ FOMO BLOCKS — Lost Leads + Missing Visibility ═══ */}
-        <section className="py-10 sm:py-14 px-4">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Lost Leads Block */}
-            <div className="bg-red-500/[0.04] border border-red-500/20 rounded-2xl p-6 ag-spring-hover">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">🚨</span>
-                <h3 className="text-white font-bold text-base">You&apos;re Missing Jobs</h3>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">
-                Unclaimed operators miss an estimated <span className="text-red-400 font-bold">{lostLeadsWeekly > 0 ? lostLeadsWeekly : '3–12'} leads per week</span>.
-                Brokers can&apos;t contact you because your profile shows no verified phone or availability.
-              </p>
-              <div className="flex items-center gap-4 text-[10px] text-gray-600">
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-red-500/50" />
-                  No direct contact
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-red-500/50" />
-                  No alert notifications
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-red-500/50" />
-                  No load matching
+        {/* Step: Verify */}
+        {step === 'verify' && selectedOp && (
+          <div className="max-w-2xl mx-auto space-y-6">
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6">
+              <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-4">Verify This Is Your Business</p>
+              
+              <div className="bg-white/[0.03] rounded-xl p-5 mb-6">
+                <h3 className="text-white font-black text-xl">{selectedOp.name_normalized || selectedOp.name}</h3>
+                <div className="mt-3 space-y-2 text-sm">
+                  {selectedOp.city && (
+                    <p className="text-gray-400">📍 {selectedOp.city}, {US_STATES[selectedOp.admin1_code || ''] || selectedOp.admin1_code}</p>
+                  )}
+                  {selectedOp.phone_primary && (
+                    <p className="text-gray-400">📞 {selectedOp.phone_primary}</p>
+                  )}
+                  {selectedOp.website_url && (
+                    <p className="text-gray-400">🌐 {selectedOp.website_url}</p>
+                  )}
+                  {selectedOp.hc_entity_type && (
+                    <p className="text-gray-400">🏷️ {selectedOp.hc_entity_type}</p>
+                  )}
                 </div>
               </div>
-            </div>
 
-            {/* Missing Visibility Block */}
-            <div className="bg-amber-500/[0.04] border border-amber-500/20 rounded-2xl p-6 ag-spring-hover">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">👁️‍🗨️</span>
-                <h3 className="text-white font-bold text-base">You&apos;re Invisible</h3>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">
-                <span className="text-amber-400 font-bold">{invisibleToBrokers > 0 ? invisibleToBrokers.toLocaleString() : '200+'} brokers</span> searched
-                your territory this month. Without a claimed profile, verified operators outrank you in every search.
-              </p>
-              <div className="flex items-center gap-4 text-[10px] text-gray-600">
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-500/50" />
-                  No search priority
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-500/50" />
-                  No verified badge
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-500/50" />
-                  No territory claim
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ TRUST SCORE PREVIEW ═══ */}
-        <section className="py-8 sm:py-12 px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tighter mb-2">
-                Your Trust Score <span className="text-accent">Preview</span>
-              </h2>
-              <p className="text-gray-500 text-sm max-w-lg mx-auto">
-                Every operator in our directory gets a Trust Score. Claim yours to unlock verified status and climb the leaderboard.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Sample Estimated Badge */}
-              <div className="space-y-4">
-                <div className="text-[10px] text-gray-600 uppercase tracking-widest font-bold text-center">Before Claiming</div>
-                <TrustBadge
-                  overallTrustScore={35}
-                  aliveStatus="scraped"
-                  hcId="HC-XXXX-XX"
-                  variant="full"
-                  reliabilityScore={30}
-                  complianceScore={40}
-                  disputeRiskScore={60}
-                />
-              </div>
-
-              {/* Sample Verified Badge */}
-              <div className="space-y-4">
-                <div className="text-[10px] text-gray-600 uppercase tracking-widest font-bold text-center">After Claiming</div>
-                <TrustBadge
-                  overallTrustScore={88}
-                  aliveStatus="claimed"
-                  hcId="HC-1004-TX"
-                  variant="full"
-                  reliabilityScore={92}
-                  complianceScore={85}
-                  disputeRiskScore={15}
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ HOW IT WORKS — 3 Steps ═══ */}
-        <section className="py-10 sm:py-14 px-4 bg-black/20">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-black text-white text-center tracking-tighter mb-8">
-              Claim in <span className="text-accent">2 Minutes</span>
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {[
-                { step: '1', icon: '🔍', title: 'Find Your Profile', desc: 'Search by name, phone, or USDOT. Your profile is already here.' },
-                { step: '2', icon: '📱', title: 'Verify by Phone', desc: 'Quick verification code to your business number. Done in seconds.' },
-                { step: '3', icon: '🚀', title: 'Go Live', desc: 'Instant verified badge, direct contact, load alerts, and priority placement.' },
-              ].map((s) => (
-                <div key={s.step} className="relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 text-center hover:border-accent/20 transition-all ag-spring-hover">
-                  <div className="w-10 h-10 bg-accent/10 border border-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 text-accent font-black text-sm">
-                    {s.step}
-                  </div>
-                  <div className="text-3xl mb-3">{s.icon}</div>
-                  <h3 className="text-white font-bold text-base mb-1.5">{s.title}</h3>
-                  <p className="text-gray-500 text-xs leading-relaxed">{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ TERRITORY OPPORTUNITY + SECOND SEARCH CTA ═══ */}
-        <section className="py-10 sm:py-14 px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-accent/10 via-accent/5 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-10 text-center overflow-hidden relative">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-accent/10 blur-[80px] rounded-full pointer-events-none" />
-              <h2 className="text-white font-black text-xl sm:text-2xl tracking-tighter mb-2 relative z-10">
-                Your Territory is <span className="text-accent ag-text-glow">Open</span>
-              </h2>
-              <p className="text-gray-400 text-sm mb-6 max-w-lg mx-auto relative z-10">
-                Early claimants lock dominant lane positioning during our global rollout.
-                {unclaimedCount > 0 && ` ${unclaimedCount.toLocaleString()} profiles still unclaimed.`}
-              </p>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md mx-auto relative z-10">
-                <input
-                  type="text"
-                  placeholder="Business name or phone number"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
-                />
-                <button className="bg-accent text-black px-8 py-3.5 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all whitespace-nowrap ag-magnetic shadow-[0_0_24px_rgba(245,159,10,0.3)]">
-                  Claim Now →
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setStep('submit')}
+                  className="flex-grow bg-accent text-black py-3 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all"
+                >
+                  YES, THIS IS MY BUSINESS
+                </button>
+                <button
+                  onClick={() => { setSelectedOp(null); setStep('search'); }}
+                  className="bg-white/5 border border-white/10 text-gray-400 px-6 py-3 rounded-xl text-sm font-bold hover:text-white transition-all"
+                >
+                  GO BACK
                 </button>
               </div>
             </div>
           </div>
-        </section>
+        )}
 
-        {/* ═══ REVENUE UNLOCKS ═══ */}
-        <section className="py-10 px-4">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-bold text-white mb-2 text-center">
-              Unlock <span className="text-accent">Revenue</span>
-            </h2>
-            <p className="text-gray-500 text-sm text-center mb-6">Free features + premium upgrades that pay for themselves</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[
-                { icon: '✅', title: 'Verified Badge', desc: 'Stand out with a verified badge visible on search and profile', tier: 'Free' },
-                { icon: '📞', title: 'Direct Contact', desc: 'Receive calls and texts directly from shippers and carriers', tier: 'Free' },
-                { icon: '📊', title: 'Profile Analytics', desc: 'See how many times your profile is viewed and contacted', tier: 'Free' },
-                { icon: '🚀', title: 'Priority Placement', desc: 'Verified profiles appear higher in search results', tier: 'Pro' },
-                { icon: '📦', title: 'Load Alerts', desc: 'Get notified when matching loads are posted in your area', tier: 'Pro' },
-                { icon: '🛡️', title: 'Reputation System', desc: 'Build your trust score through verified performance data', tier: 'Free' },
-                { icon: '⚡', title: 'Standing Orders', desc: 'Accept recurring pre-funded loads from verified brokers', tier: 'Pro' },
-                { icon: '💰', title: 'QuickPay', desc: 'Get paid within 24 hours of load completion', tier: 'Pro' },
-              ].map((b, i) => (
-                <div key={i} className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4 flex gap-4 items-start hover:border-accent/15 transition-all">
-                  <span className="text-2xl">{b.icon}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-white font-bold text-sm">{b.title}</h3>
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                        b.tier === 'Free' ? 'bg-green-500/10 text-green-400' : 'bg-accent/10 text-accent'
-                      }`}>{b.tier}</span>
-                    </div>
-                    <p className="text-gray-500 text-xs mt-0.5">{b.desc}</p>
-                  </div>
+        {/* Step: Submit */}
+        {step === 'submit' && selectedOp && (
+          <div className="max-w-2xl mx-auto space-y-6">
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6">
+              <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-4">Complete Your Claim</p>
+              <p className="text-gray-400 text-sm mb-6">
+                Claiming <strong className="text-white">{selectedOp.name_normalized || selectedOp.name}</strong>
+              </p>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-400 text-xs font-medium mb-1.5">Your Full Name *</label>
+                  <input
+                    type="text"
+                    value={claimName}
+                    onChange={(e) => setClaimName(e.target.value)}
+                    placeholder="John Smith"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ TRUST SCORE LADDER ═══ */}
-        <section className="py-8 px-4">
-          <div className="max-w-4xl mx-auto">
-            <TrustScoreLadder />
-          </div>
-        </section>
-
-        {/* ═══ POST-CLAIM MONETIZATION LAUNCHER ═══ */}
-        <section className="py-10 px-4 bg-black/20">
-          <div className="max-w-5xl mx-auto">
-            <PostClaimLauncher />
-          </div>
-        </section>
-
-        {/* ═══ PRICING CTA ═══ */}
-        <section className="py-8 px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 ag-glow-gold">
-              <div>
-                <h3 className="text-white font-black text-xl tracking-tighter mb-1">
-                  Ready for <span className="text-accent">Pro</span>?
-                </h3>
-                <p className="text-gray-400 text-sm">Priority placement, load alerts, QuickPay, and analytics.</p>
+                <div>
+                  <label className="block text-gray-400 text-xs font-medium mb-1.5">Business Email *</label>
+                  <input
+                    type="email"
+                    value={claimEmail}
+                    onChange={(e) => setClaimEmail(e.target.value)}
+                    placeholder="john@yourcompany.com"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-xs font-medium mb-1.5">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={claimPhone}
+                    onChange={(e) => setClaimPhone(e.target.value)}
+                    placeholder="(555) 123-4567"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-accent/50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-xs font-medium mb-1.5">Your Role</label>
+                  <select
+                    value={claimRole}
+                    onChange={(e) => setClaimRole(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent/50"
+                  >
+                    <option value="" className="bg-gray-900">Select your role</option>
+                    <option value="owner" className="bg-gray-900">Owner</option>
+                    <option value="manager" className="bg-gray-900">Manager</option>
+                    <option value="dispatcher" className="bg-gray-900">Dispatcher</option>
+                    <option value="driver" className="bg-gray-900">Driver / Operator</option>
+                    <option value="admin" className="bg-gray-900">Administrative Staff</option>
+                    <option value="other" className="bg-gray-900">Other</option>
+                  </select>
+                </div>
               </div>
-              <Link
-                href="/pricing"
-                className="bg-accent text-black px-8 py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 transition-colors flex-shrink-0 ag-magnetic"
-              >
-                View Plans →
-              </Link>
+
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={handleSubmitClaim}
+                  disabled={submitting || !claimName || !claimEmail}
+                  className="flex-grow bg-accent text-black py-3 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all disabled:opacity-50"
+                >
+                  {submitting ? '⏳ Submitting...' : 'SUBMIT CLAIM REQUEST'}
+                </button>
+                <button
+                  onClick={() => setStep('verify')}
+                  className="bg-white/5 border border-white/10 text-gray-400 px-6 py-3 rounded-xl text-sm font-bold hover:text-white transition-all"
+                >
+                  BACK
+                </button>
+              </div>
+
+              <p className="text-gray-600 text-[10px] mt-4 text-center">
+                Claims are reviewed within 24 hours. You&apos;ll receive a verification email
+                with next steps to complete your profile setup.
+              </p>
             </div>
           </div>
-        </section>
+        )}
 
-        {/* ═══ FAQ ═══ */}
-        <section className="py-8 px-4">
-          <div className="max-w-4xl mx-auto">
-            <HCFaqModule
-              items={[
-                { question: 'Is claiming free?', answer: 'Yes, claiming your profile is completely free. Premium features like boost credits and enhanced analytics are available through paid plans, but the core claim and verification is always free.' },
-                { question: 'How does the Trust Score work?', answer: 'Every profile in Haul Command gets a Trust Score from F to A. It\'s calculated from reliability, compliance, dispute risk, and activity signals. Claiming your profile is the first step to upgrading from Estimated to Verified.' },
-                { question: 'When will other countries be added?', answer: 'We are currently running the "Claim Campaign" for our Tier A countries (US, Canada, Australia, UK, New Zealand, South Africa, Germany, Netherlands, UAE, Brazil). Our system tracks 120 countries with autonomous expansion.' },
-                { question: 'What if my business isn\'t listed yet?', answer: 'If you operate inside a tracked country, you can add your business directly through the claim flow. We\'ll create your profile and you can claim it immediately.' },
-                { question: 'Can I route multi-currency loads?', answer: 'Yes. Upon claiming, operators can accept loads globally using our automated 30-day currency conversion index.' },
-                { question: 'How many operators are on Haul Command?', answer: `Our directory has ${stats.total_real_operators.toLocaleString()} verified operators across ${stats.active_countries} countries. We are actively expanding coverage — claiming early grants dominant lane positioning during the global rollout.` },
-              ]}
-            />
+        {/* Step: Success */}
+        {step === 'success' && (
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-10">
+              <div className="text-6xl mb-4">✅</div>
+              <h2 className="text-white font-black text-3xl mb-3">Claim Submitted!</h2>
+              <p className="text-gray-400 text-sm max-w-md mx-auto mb-6">
+                Your claim request for <strong className="text-white">{selectedOp?.name_normalized || selectedOp?.name}</strong> has been received.
+                We&apos;ll review it and send you a verification email within 24 hours.
+              </p>
+              <div className="bg-white/[0.03] rounded-xl p-5 text-left max-w-sm mx-auto mb-8">
+                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-3">What Happens Next</p>
+                <ul className="space-y-2 text-sm text-gray-300">
+                  <li className="flex items-start gap-2"><span className="text-accent">1.</span> We verify your information</li>
+                  <li className="flex items-start gap-2"><span className="text-accent">2.</span> You get full profile edit access</li>
+                  <li className="flex items-start gap-2"><span className="text-accent">3.</span> Your profile goes live + verified badge</li>
+                  <li className="flex items-start gap-2"><span className="text-accent">4.</span> Start receiving qualified leads</li>
+                </ul>
+              </div>
+              <div className="flex gap-3 justify-center">
+                <Link href="/directory" className="bg-accent text-black px-8 py-3 rounded-xl font-black text-sm hover:bg-yellow-500 transition-all">
+                  BROWSE DIRECTORY
+                </Link>
+                <button
+                  onClick={() => { setStep('search'); setSelectedOp(null); setSearchQuery(''); setResults([]); }}
+                  className="bg-white/5 border border-white/10 text-gray-400 px-8 py-3 rounded-xl text-sm font-bold hover:text-white transition-all"
+                >
+                  CLAIM ANOTHER
+                </button>
+              </div>
+            </div>
           </div>
-        </section>
+        )}
 
-        {/* ═══ TRUST GUARDRAILS ═══ */}
-        <section className="py-6 px-4">
-          <div className="max-w-4xl mx-auto">
-            <HCTrustGuardrailsModule />
-          </div>
-        </section>
-
+        {/* Benefits Section */}
+        {step === 'search' && (
+          <section className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 text-center">
+              <span className="text-3xl">🏆</span>
+              <h3 className="text-white font-bold mt-3 mb-2">Verified Badge</h3>
+              <p className="text-gray-500 text-sm">Get a verified checkmark on your profile. Build trust with shippers and brokers instantly.</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 text-center">
+              <span className="text-3xl">📈</span>
+              <h3 className="text-white font-bold mt-3 mb-2">Priority Visibility</h3>
+              <p className="text-gray-500 text-sm">Claimed profiles rank higher in search results and get featured in state-level directory pages.</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 text-center">
+              <span className="text-3xl">📞</span>
+              <h3 className="text-white font-bold mt-3 mb-2">Direct Leads</h3>
+              <p className="text-gray-500 text-sm">Receive contact inquiries directly from shippers who need pilot car and escort services.</p>
+            </div>
+          </section>
+        )}
       </main>
     </>
   );

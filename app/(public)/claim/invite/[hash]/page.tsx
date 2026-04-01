@@ -149,6 +149,15 @@ export default async function BrokerInvitePage({ params }: Props) {
                     ))}
                 </div>
 
+                {/* Trust Seal */}
+                <div className="flex justify-center mb-8">
+                    <img 
+                        src="/images/infographics/compliance_seal_1774963245257.png" 
+                        alt="100% Verified Compliance" 
+                        className="h-16 max-w-full opacity-80 mix-blend-screen"
+                    />
+                </div>
+
                 {/* CTA */}
                 <Link aria-label="Navigation Link"
                     href={`/start?${signupParams.toString()}`}

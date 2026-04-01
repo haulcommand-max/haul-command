@@ -60,7 +60,7 @@ export interface NormalizedProfile {
 export interface ResolutionResult {
     resolved: boolean;
     resolved_table: EntitySource;
-    entity_type: "operator" | "identity" | "listing" | "entity" | "unknown";
+    entity_type: string;
     resolution_path: EntitySource[];
     profile: NormalizedProfile | null;
     failure_reason: string | null;
@@ -325,7 +325,7 @@ export async function resolveProfile(
         path.push("directory_listings");
         const { data: dl } = await supabase
             .from("directory_listings")
-            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, claim_status, latitude, longitude, slug, updated_at")
+            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, claim_status, latitude, longitude, slug, updated_at, entity_type")
             .eq("id", id)
             .single();
 
@@ -333,7 +333,7 @@ export async function resolveProfile(
             return {
                 resolved: true,
                 resolved_table: "directory_listings",
-                entity_type: "listing",
+                entity_type: dl.entity_type || "listing",
                 resolution_path: path,
                 profile: normalizeDirectoryListing(dl),
                 failure_reason: null,
@@ -352,7 +352,7 @@ export async function resolveProfile(
             return {
                 resolved: true,
                 resolved_table: "hc_entity",
-                entity_type: "entity",
+                entity_type: ent.metadata?.entity_type || "entity",
                 resolution_path: path,
                 profile: normalizeEntity(ent),
                 failure_reason: null,
@@ -390,7 +390,7 @@ export async function resolveProfile(
         path.push("directory_listings"); // keep path compat
         const { data: listingsSlugRows } = await supabase
             .from("listings")
-            .select("id, full_name, city, state, country_code, claimed, claim_status, rating, review_count, rank_score, slug, services, profile_completeness, updated_at")
+            .select("id, full_name, city, state, country_code, claimed, claim_status, rating, review_count, rank_score, slug, services, profile_completeness, updated_at, entity_type")
             .eq("slug", id)
             .eq("active", true)
             .limit(1);
@@ -400,7 +400,7 @@ export async function resolveProfile(
             return {
                 resolved: true,
                 resolved_table: "directory_listings",
-                entity_type: "listing",
+                entity_type: listingsSlug.entity_type || "operator",
                 resolution_path: path,
                 profile: normalizeListingsRow(listingsSlug),
                 failure_reason: null,
@@ -410,7 +410,7 @@ export async function resolveProfile(
         // 2. directory_listings by slug (fallback for entities not in listings)
         const { data: dlSlugRows } = await supabase
             .from("directory_listings")
-            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at")
+            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at, entity_type")
             .eq("slug", id)
             .limit(1);
 
@@ -419,7 +419,7 @@ export async function resolveProfile(
             return {
                 resolved: true,
                 resolved_table: "directory_listings",
-                entity_type: "listing",
+                entity_type: dlSlug.entity_type || "listing",
                 resolution_path: path,
                 profile: normalizeDirectoryListing(dlSlug),
                 failure_reason: null,
@@ -554,10 +554,11 @@ export async function resolveProfileMetadata(
     country_code: string | null;
     rating_score: number | null;
     review_count: number | null;
+    entity_type: string;
     resolved: boolean;
     redirect_to?: string;
 }> {
-    const notFound = { name: "Unknown", location: "", country_code: null, rating_score: null, review_count: null, resolved: false };
+    const notFound = { name: "Unknown", location: "", country_code: null, rating_score: null, review_count: null, entity_type: "unknown", resolved: false };
 
     if (isUUID(id)) {
         // UUID path
@@ -570,7 +571,7 @@ export async function resolveProfileMetadata(
         if (dp) {
             const name = dp.display_name || dp.company_name || "Escort Operator";
             const location = [dp.home_base_city, dp.home_base_state].filter(Boolean).join(", ");
-            return { name, location, country_code: null, rating_score: null, review_count: null, resolved: true };
+            return { name, location, country_code: null, rating_score: null, review_count: null, entity_type: "operator", resolved: true };
         }
 
         const { data: ident } = await supabase
@@ -582,19 +583,19 @@ export async function resolveProfileMetadata(
         if (ident) {
             const name = ident.display_name || ident.company_name || "Escort Operator";
             const location = [ident.city, ident.region_code].filter(Boolean).join(", ");
-            return { name, location, country_code: ident.country_code, rating_score: null, review_count: null, resolved: true };
+            return { name, location, country_code: ident.country_code, rating_score: null, review_count: null, entity_type: "operator", resolved: true };
         }
 
         const { data: dl } = await supabase
             .from("directory_listings")
-            .select("id, name, city, region_code, country_code")
+            .select("id, name, city, region_code, country_code, entity_type")
             .eq("id", id)
             .single();
 
         if (dl) {
             const name = dl.name || "Escort Operator";
             const location = [dl.city, dl.region_code].filter(Boolean).join(", ");
-            return { name, location, country_code: dl.country_code, rating_score: null, review_count: null, resolved: true };
+            return { name, location, country_code: dl.country_code, rating_score: null, review_count: null, entity_type: dl.entity_type || "operator", resolved: true };
         }
     } else {
         // Slug path — check redirects FIRST, then directory_listings
@@ -609,7 +610,7 @@ export async function resolveProfileMetadata(
 
         const redirect = redirectRows?.[0];
         if (redirect) {
-            return { name: "Redirect", location: "", country_code: null, rating_score: null, review_count: null, resolved: true, redirect_to: redirect.new_slug };
+            return { name: "Redirect", location: "", country_code: null, rating_score: null, review_count: null, entity_type: "unknown", resolved: true, redirect_to: redirect.new_slug };
         }
 
         // 2. directory_listings by slug — use .limit(1) to handle duplicate slugs gracefully
@@ -617,7 +618,7 @@ export async function resolveProfileMetadata(
         //       The listing name is in the `name` column.
         const { data: dlSlugRows } = await supabase
             .from("directory_listings")
-            .select("id, name, slug, city, region_code, country_code")
+            .select("id, name, slug, city, region_code, country_code, entity_type")
             .eq("slug", id)
             .limit(1);
 
@@ -625,7 +626,7 @@ export async function resolveProfileMetadata(
         if (dlSlug) {
             const name = dlSlug.name || "Escort Operator";
             const location = [dlSlug.city, dlSlug.region_code].filter(Boolean).join(", ");
-            return { name, location, country_code: dlSlug.country_code, rating_score: null, review_count: null, resolved: true };
+            return { name, location, country_code: dlSlug.country_code, rating_score: null, review_count: null, entity_type: dlSlug.entity_type || "operator", resolved: true };
         }
 
         const { data: identSlugRows } = await supabase
@@ -638,7 +639,7 @@ export async function resolveProfileMetadata(
         if (identSlug) {
             const name = identSlug.display_name || identSlug.company_name || "Escort Operator";
             const location = [identSlug.city, identSlug.region_code].filter(Boolean).join(", ");
-            return { name, location, country_code: identSlug.country_code, rating_score: null, review_count: null, resolved: true };
+            return { name, location, country_code: identSlug.country_code, rating_score: null, review_count: null, entity_type: "operator", resolved: true };
         }
     }
 

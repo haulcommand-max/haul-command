@@ -101,11 +101,20 @@ export default async function ProfileLayout({
 
     if (meta.resolved) {
         const url = `${SITE}/place/${id}`;
+        
+        // Use meta.entity_type to determine description mapping
+        const typeLabel = meta.entity_type === 'hotel' ? 'hotel and lodging' 
+            : meta.entity_type === 'yard' ? 'secure parking and drop yard'
+            : meta.entity_type === 'repair' ? 'heavy haul repair facility'
+            : meta.entity_type === 'operator' ? 'verified pilot car and escort vehicle operator'
+            : 'registered logistics business';
+
         const jsonLd = buildOperatorProfileJsonLd({
             url,
             name: meta.name,
-            description: `${meta.name} — verified pilot car and escort vehicle operator${meta.location ? ` based in ${meta.location}` : ""} on HAUL COMMAND.`,
+            description: `${meta.name} — ${typeLabel}${meta.location ? ` based in ${meta.location}` : ""} on HAUL COMMAND.`,
             areaServed: meta.location ? [meta.location] : undefined,
+            entityType: meta.entity_type,
             aggregateRating:
                 meta.rating_score && meta.review_count
                     ? { ratingValue: meta.rating_score, reviewCount: meta.review_count }

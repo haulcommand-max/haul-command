@@ -17,7 +17,9 @@ import {
     ALL_COUNTRY_CODES,
     COUNTRY_NAMES,
     CATEGORY_LABELS,
+    normalizeCategory,
 } from "@/lib/directory-helpers";
+import { getCountriesByTier } from "@/lib/seo-countries";
 import DirectorySearchForm from "@/components/hc/DirectorySearchForm";
 
 
@@ -29,31 +31,45 @@ export const metadata: Metadata = {
 
 type Agg = { key: string; count: number };
 
-// Tier A priority order for countries
-const TIER_A = ['us', 'ca', 'au', 'gb', 'nz', 'za', 'de', 'nl', 'ae', 'br'];
-const TIER_B = ['ie', 'se', 'no', 'dk', 'fi', 'be', 'at', 'ch', 'es', 'fr', 'it', 'pt', 'sa', 'qa', 'mx', 'in', 'id', 'th'];
+// Tiers from central config
+const TIER_A = getCountriesByTier('A').map(c => c.code.toLowerCase());
+const TIER_B = getCountriesByTier('B').map(c => c.code.toLowerCase());
+const TIER_C = getCountriesByTier('C').map(c => c.code.toLowerCase());
+const TIER_D = getCountriesByTier('D').map(c => c.code.toLowerCase());
+const TIER_E = getCountriesByTier('E').map(c => c.code.toLowerCase());
 
 export default async function DirectoryPage() {
     const sb = supabaseServer();
 
-    // Real operators from hc_public_operators (verified data only)
+    // Pull from BOTH tables — use whichever has data
     let listingRows: any[] = [];
+    let providerRows: any[] = [];
+    
     try {
         const lr = await sb.from("hc_public_operators").select("country_code, entity_type").limit(50000);
         listingRows = lr.data ?? [];
-    } catch { /* table may not exist during build */ }
+    } catch { /* table may not exist yet */ }
+    
+    try {
+        const pr = await sb.from("provider_directory").select("country_code, service_type").limit(50000);
+        providerRows = pr.data ?? [];
+    } catch { /* table may not exist yet */ }
 
+    // Aggregate from whichever source has more data
     const countryCounts = new Map<string, number>();
     const categoryCounts = new Map<string, number>();
+    
+    const primaryRows = listingRows.length > providerRows.length ? listingRows : providerRows;
+    const entityTypeField = listingRows.length > providerRows.length ? 'entity_type' : 'service_type';
 
-    for (const r of listingRows) {
+    for (const r of primaryRows) {
         const cc = (r.country_code ?? "").toLowerCase();
-        const cat = r.entity_type ?? "";
+        const cat = r[entityTypeField] ? normalizeCategory(r[entityTypeField]) : "";
         if (cc) countryCounts.set(cc, (countryCounts.get(cc) ?? 0) + 1);
         if (cat) categoryCounts.set(cat, (categoryCounts.get(cat) ?? 0) + 1);
     }
 
-    const totalListings = listingRows.length;
+    const totalListings = primaryRows.length;
     const totalCountries = countryCounts.size || Object.keys(COUNTRY_NAMES).length;
     const totalCategories = categoryCounts.size || Object.keys(CATEGORY_LABELS).length;
 
@@ -77,10 +93,9 @@ export default async function DirectoryPage() {
             if (aIdx >= 0 && bIdx >= 0) return aIdx - bIdx;
             if (aIdx >= 0) return -1;
             if (bIdx >= 0) return 1;
-            const aTier = TIER_B.indexOf(a);
-            const bTier = TIER_B.indexOf(b);
-            if (aTier >= 0 && bTier < 0) return -1;
-            if (bTier >= 0 && aTier < 0) return 1;
+            const aTier = TIER_A.indexOf(a) >= 0 ? 0 : (TIER_B.indexOf(a) >= 0 ? 1 : (TIER_C.indexOf(a) >= 0 ? 2 : (TIER_D.indexOf(a) >= 0 ? 3 : 4)));
+            const bTier = TIER_A.indexOf(b) >= 0 ? 0 : (TIER_B.indexOf(b) >= 0 ? 1 : (TIER_C.indexOf(b) >= 0 ? 2 : (TIER_D.indexOf(b) >= 0 ? 3 : 4)));
+            if (aTier !== bTier) return aTier - bTier;
             return (COUNTRY_NAMES[a] ?? a).localeCompare(COUNTRY_NAMES[b] ?? b);
         })
         .map((key) => ({ key, count: 0 }));
@@ -109,6 +124,8 @@ export default async function DirectoryPage() {
         if (count > 0) return `${count.toLocaleString()} operators`;
         if (TIER_A.includes(countryCode)) return 'Priority market';
         if (TIER_B.includes(countryCode)) return 'Expanding';
+        if (TIER_C.includes(countryCode) || TIER_D.includes(countryCode)) return 'Mapped';
+        if (TIER_E.includes(countryCode)) return 'Pending Expansion';
         return 'Mapped';
     };
 
@@ -167,7 +184,7 @@ export default async function DirectoryPage() {
                             {categories.map((c) => (
                                 <Link
                                     key={c.key}
-                                    href={`/services/${c.key.replace(/_/g, '-')}`}
+                                    href={`/roles/${c.key.replace(/_/g, '-')}`}
                                     className="group bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-accent/30 hover:bg-accent/[0.03] transition-all"
                                 >
                                     <div className="flex items-center gap-3 mb-2">
@@ -194,6 +211,7 @@ export default async function DirectoryPage() {
                             {allCountries.map((c) => {
                                 const isTierA = TIER_A.includes(c.key);
                                 const isTierB = TIER_B.includes(c.key);
+                                const isTierC = TIER_C.includes(c.key);
                                 return (
                                 <Link
                                     key={c.key}

@@ -68,6 +68,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
     const [resolvedSource, setResolvedSource] = useState<EntitySource>("none");
+    const [entityType, setEntityType] = useState<string>("operator");
     const [reviews, setReviews] = useState<OperatorReview[]>([]);
 
     /* ── Trust Visibility Resolution ── */
@@ -98,6 +99,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                 if (result.resolved && result.profile) {
                     setProfile(result.profile);
                     setResolvedSource(result.resolved_table);
+                    setEntityType(result.entity_type || "operator");
                     console.info(`[ProfileResolver] ID=${id} resolved from: ${result.resolved_table} | path: ${result.resolution_path.join(" → ")}`);
                 } else {
                     setNotFound(true);
@@ -206,11 +208,25 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                                             Unclaimed
                                         </span>
                                         <span style={{ fontSize: 11, color: 'var(--m-text-muted, #6a7181)' }}>
-                                            Heavy Haul Operator
+                                            {entityType === 'hotel' ? 'Hotel & Lodging' : entityType === 'yard' ? 'Secure Parking & Drop Yard' : entityType === 'repair' ? 'Heavy Haul Repair' : entityType === 'operator' ? 'Heavy Haul Operator' : 'Registered Logistics Business'}
                                         </span>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Infrastructure Disclaimer */}
+                            {entityType !== 'operator' && (
+                                <div style={{
+                                    padding: '12px 16px', borderRadius: 14,
+                                    background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)',
+                                    marginBottom: 12, margin: '0 16px'
+                                }}>
+                                    <p style={{ margin: '0 0 4px', fontSize: 10, color: '#888', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 800 }}>HAUL COMMAND DIRECTORY</p>
+                                    <p style={{ margin: 0, fontSize: 12, color: '#aaa', lineHeight: 1.4 }}>
+                                        Haul Command lists this business in the directory. We do not own, operate, or guarantee the availability of this location. If you own this facility, <Link href="/claim" style={{ color: '#F1A91B', textDecoration: 'none' }}>claim it to manage details.</Link>
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Profile strength meter */}
                             <div style={{
@@ -321,10 +337,20 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                                             style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#F59E0B' }}>
                                             UNCLAIMED
                                         </span>
-                                        <span className="text-sm text-[#888]">Heavy Haul Operator</span>
+                                        <span className="text-sm text-[#888]">{entityType === 'hotel' ? 'Hotel & Lodging' : entityType === 'yard' ? 'Secure Parking & Drop Yard' : entityType === 'repair' ? 'Heavy Haul Repair' : entityType === 'operator' ? 'Heavy Haul Operator' : 'Registered Logistics Business'}</span>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Infrastructure Disclaimer */}
+                            {entityType !== 'operator' && (
+                                <div className="p-4 rounded-2xl mb-6 bg-[#111] border border-[#222]">
+                                    <p className="text-[10px] text-[#888] font-bold uppercase tracking-widest mb-1">HAUL COMMAND DIRECTORY</p>
+                                    <p className="text-xs text-[#aaa] leading-relaxed">
+                                        Haul Command lists this business in the directory. We do not own, operate, or guarantee the availability of this location. If you own this facility, <Link href="/claim" className="text-[#F1A91B] hover:underline">claim it to manage details</Link>.
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Profile strength */}
                             <div className="p-5 rounded-2xl mb-6" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>

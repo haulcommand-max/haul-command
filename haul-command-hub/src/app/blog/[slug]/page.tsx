@@ -35,26 +35,37 @@ function mdToHtml(md: string): string {
   return md
     .split('\n')
     .map((line: string) => {
-      if (line.startsWith('# '))
-        return `<h1 class="text-3xl sm:text-4xl font-black text-white tracking-tighter mb-6 mt-10">${line.slice(2)}</h1>`;
-      if (line.startsWith('## '))
-        return `<h2 class="text-2xl font-black text-accent mt-12 mb-4 italic uppercase tracking-tighter">${line.slice(3)}</h2>`;
-      if (line.startsWith('- **')) {
-        const m = line.match(/- \*\*(.+?)\*\*(.+)/);
+      let parsed = line;
+
+      // Handle images: ![alt](url)
+      if (parsed.match(/!\[(.+?)\]\((.+?)\)/)) {
+        parsed = parsed.replace(
+          /!\[(.+?)\]\((.+?)\)/g,
+          '<img src="$2" alt="$1" class="rounded-2xl border border-white/10 w-full object-cover my-8 shadow-2xl" loading="lazy" />'
+        );
+      }
+      
+      if (parsed.startsWith('# '))
+        return `<h1 class="text-3xl sm:text-4xl font-black text-white tracking-tighter mb-6 mt-10">${parsed.slice(2)}</h1>`;
+      if (parsed.startsWith('## '))
+        return `<h2 class="text-2xl font-black text-accent mt-12 mb-4 italic uppercase tracking-tighter">${parsed.slice(3)}</h2>`;
+      if (parsed.startsWith('- **')) {
+        const m = parsed.match(/- \*\*(.+?)\*\*(.+)/);
         if (m)
           return `<li class="flex gap-2 mb-2"><span class="text-accent">•</span><span><strong class="text-white">${m[1]}</strong><span class="text-gray-300">${m[2]}</span></span></li>`;
       }
-      if (/^[0-9]+\. /.test(line)) {
-        const num = line.match(/^(\d+)\. (.+)/);
+      if (/^[0-9]+\. /.test(parsed)) {
+        const num = parsed.match(/^(\d+)\. (.+)/);
         if (num) return `<li class="flex gap-3 mb-2"><span class="text-accent font-bold">${num[1]}.</span><span class="text-gray-300">${num[2].replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>')}</span></li>`;
       }
-      if (line.trim() === '') return '<div class="h-4"></div>';
-      if (line.startsWith('---')) return '<hr class="border-white/10 my-8" />';
-      if (line.startsWith('*') && line.endsWith('*'))
-        return `<p class="text-gray-500 text-sm italic">${line.replace(/\*/g, '')}</p>`;
-      const withLinks = line.replace(
-        /\[(.+?)\]\((.+?)\)/g,
-        '<a href="$2" class="text-accent hover:underline font-bold">$1</a>'
+      if (parsed.trim() === '') return '<div class="h-4"></div>';
+      if (parsed.startsWith('---')) return '<hr class="border-white/10 my-8" />';
+      if (parsed.startsWith('*') && parsed.endsWith('*'))
+        return `<p class="text-gray-500 text-sm italic">${parsed.replace(/\*/g, '')}</p>`;
+      
+      const withLinks = parsed.replace(
+        /(?<!\!)\[(.+?)\]\((.+?)\)/g,
+        '<a href="$2" class="text-accent hover:underline font-bold" target="_blank">$1</a>'
       );
       const withBold = withLinks.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>');
       return `<p class="text-gray-300 leading-loose text-lg mb-4">${withBold}</p>`;

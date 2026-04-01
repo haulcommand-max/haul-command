@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { type, country, state } = await params;
   const infra = getInfraTypeBySlug(type);
   const cc = getCountryConfig(country);
-  const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const regionName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   if (!infra || !cc) return { title: 'Not Found' };
   return {
-    title: `${infra.label} in ${stateName}, ${cc.name} — HAUL COMMAND`,
-    description: `Find ${infra.label.toLowerCase()} in ${stateName}, ${cc.name}.`,
+    title: `${infra.label} in ${regionName}, ${cc.name} — HAUL COMMAND`,
+    description: `Find ${infra.label.toLowerCase()} in ${regionName}, ${cc.name}.`,
   };
 }
 
@@ -26,7 +26,7 @@ export default async function InfraStatePage({ params }: Props) {
   const infra = getInfraTypeBySlug(type);
   const cc = getCountryConfig(country);
   if (!infra || !cc) return notFound();
-  const stateName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const regionName = state.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8 min-h-screen">
@@ -34,10 +34,10 @@ export default async function InfraStatePage({ params }: Props) {
         { label: 'Infrastructure' },
         { label: infra.label },
         { label: cc.name, href: `/infrastructure/${type}/${country}` },
-        { label: stateName, isCurrent: true },
+        { label: regionName, isCurrent: true },
       ]} />
-      <HCLocalIntroCopy h1={`${infra.icon} ${infra.label} in ${stateName}`} intro={`Find ${infra.label.toLowerCase()} for heavy haul operations in ${stateName}, ${cc.name}.`} badge={`${cc.flag} ${stateName}`} />
-      <HCAlertSignupModule context={`${infra.label} in ${stateName}`} />
+      <HCLocalIntroCopy h1={`${infra.icon} ${infra.label} in ${regionName}`} intro={`Find ${infra.label.toLowerCase()} for heavy haul operations in ${regionName}, ${cc.name}.`} badge={`${cc.flag} ${regionName}`} />
+      <HCAlertSignupModule context={`${infra.label} in ${regionName}`} />
     </main>
   );
 }
