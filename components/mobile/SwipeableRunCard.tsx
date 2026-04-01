@@ -27,6 +27,10 @@ interface SwipeableRunCardProps {
   skipLabel?: string;
   /** Style overrides */
   className?: string;
+  /** Optional URL to share via navigator.share() */
+  shareUrl?: string;
+  /** Optional title for the share payload */
+  shareTitle?: string;
 }
 
 const SPRING_TENSION = 0.15;
@@ -42,6 +46,8 @@ export default function SwipeableRunCard({
   acceptLabel = 'Accept',
   skipLabel = 'Skip',
   className = '',
+  shareUrl,
+  shareTitle = 'Check out this heavy haul route on Haul Command',
 }: SwipeableRunCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -129,6 +135,19 @@ export default function SwipeableRunCard({
   const progress = Math.min(1, Math.abs(offset) / threshold);
   const acceptOpacity = offset > 0 ? progress : 0;
   const skipOpacity = offset < 0 ? progress : 0;
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent swipe conflicts or parent card clicks
+    if (shareUrl && navigator.share) {
+      navigator.share({
+        title: shareTitle,
+        url: shareUrl,
+      }).catch(err => console.log('Error sharing:', err));
+    } else if (shareUrl) {
+      navigator.clipboard.writeText(shareUrl);
+      alert('Link copied to clipboard');
+    }
+  };
 
   const exitTranslate = isExiting
     ? exitDirection === 'right' ? 'translateX(120%)' : 'translateX(-120%)'
@@ -256,6 +275,24 @@ export default function SwipeableRunCard({
           transition: isDragging ? 'none' : 'border-color 0.2s ease',
           zIndex: 2,
         }} />
+        
+        {/* Absolute Native Share Button at the top right */}
+        {shareUrl && (
+          <button
+            onClick={handleShare}
+            className="absolute top-3 right-3 z-[10] p-2 bg-black/40 backdrop-blur-md rounded-full text-white/70 hover:text-white transition-colors"
+            title="Share with Network"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+        )}
+        
         {children}
       </div>
     </div>

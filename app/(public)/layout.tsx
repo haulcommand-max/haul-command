@@ -3,6 +3,7 @@ import Link from 'next/link';
 import EnhancedFooter from '@/components/layout/EnhancedFooter';
 import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
+import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetargeter';
 
 /**
  * (public) Layout — Unified app shell for public-facing pages.
@@ -155,6 +156,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 {/* Unified mobile bottom nav — SAME component as (app)/layout.tsx */}
                 <MobileAppNav />
             </main>
+            
+            {/* Global Growth Tooling */}
+            <CartAbandonmentRetargeter />
         </>
     );
 }
