@@ -1,55 +1,17 @@
-"use client";
+export default function TrustBadge({ level }: { level: 'verified' | 'top_rated' | 'new' }) {
+  const configs = {
+    verified: { label: 'Verified Heavy Hauler', color: 'text-green-400', bg: 'bg-green-400/10', border: 'border-green-400/20' },
+    top_rated: { label: 'Top Rated Escort', color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/20' },
+    new: { label: 'New Arrival', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' }
+  };
 
-const TIER_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-    elite: { bg: "bg-amber-500/20", text: "text-amber-400", border: "border-amber-400/30" },
-    strong: { bg: "bg-green-500/20", text: "text-green-400", border: "border-green-400/30" },
-    solid: { bg: "bg-blue-500/20", text: "text-blue-400", border: "border-blue-400/30" },
-    watch: { bg: "bg-orange-500/20", text: "text-orange-400", border: "border-orange-400/30" },
-    risk: { bg: "bg-red-500/20", text: "text-red-400", border: "border-red-400/30" },
-};
+  const config = configs[level];
+  if (!config) return null;
 
-const SIZE_CLASSES = {
-    sm: "text-[10px] px-1.5 py-0.5 gap-1",
-    md: "text-xs px-2 py-1 gap-1.5",
-    lg: "text-sm px-3 py-1.5 gap-2",
-};
-
-const SCORE_SIZES = {
-    sm: "text-xs font-bold",
-    md: "text-sm font-bold",
-    lg: "text-base font-bold",
-};
-
-interface TrustBadgeProps {
-    score: number;
-    tier: "elite" | "strong" | "solid" | "watch" | "risk";
-    size?: "sm" | "md" | "lg";
-    showTier?: boolean;
-    className?: string;
-}
-
-export function TrustBadge({
-    score,
-    tier,
-    size = "md",
-    showTier = true,
-    className = "",
-}: TrustBadgeProps) {
-    const colors = TIER_COLORS[tier] ?? TIER_COLORS.risk;
-    const sizeClass = SIZE_CLASSES[size];
-    const scoreSz = SCORE_SIZES[size];
-
-    return (
-        <span
-            className={`inline-flex items-center rounded-full border font-semibold ${colors.bg} ${colors.text} ${colors.border} ${sizeClass} ${className}`}
-            title={`Trust Score: ${Math.round(score)} — ${tier}`}
-        >
-            <span className={scoreSz}>{Math.round(score)}</span>
-            {showTier && (
-                <span className="opacity-70 uppercase tracking-wide font-bold">
-                    {tier}
-                </span>
-            )}
-        </span>
-    );
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold border ${config.bg} ${config.color} ${config.border}`}>
+      <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+      {config.label}
+    </span>
+  );
 }
