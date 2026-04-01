@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og';
-// Use Next.js 14 App Router Edge Runtime for fastest generation
-export const runtime = 'edge';
+// Removed edge runtime due to Vercel production 404 issues
 
 export async function GET(request: Request) {
   try {

@@ -231,7 +231,7 @@ async function getStats() {
       // Total count of all active listings
       supabase
         .from('hc_global_operators')
-        .select('*', { count: 'exact', head: true }),
+        .select('*', { count: 'estimated', head: true }),
 
       // Per-state breakdown via modernized MV RPC
       Promise.resolve(supabase.rpc('rpc_state_counts')),
@@ -251,14 +251,7 @@ async function getStats() {
         if (row.state) stateMap[row.state] = row.total;
       }
     } else {
-      // Fallback direct query
-      const { data: fallback } = await supabase
-        .from('hc_global_operators')
-        .select('admin1_code');
-      for (const row of fallback ?? []) {
-        const s = (row.admin1_code ?? '').trim().toUpperCase();
-        if (s) stateMap[s] = (stateMap[s] || 0) + 1;
-      }
+      console.warn("RPC rpc_state_counts failed. Returning empty stateMap to avoid OOM loop.", stateRes.error);
     }
 
     const countryCounts: Record<string, number> = { us: countRes.count ?? 0 };

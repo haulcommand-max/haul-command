@@ -319,7 +319,6 @@ export async function getIndexableCities(
         .from('seo_market_pulse')
         .select('city, region_code, country, escort_count, listing_count, corridor_score, updated_at')
         .or('escort_count.gte.1,listing_count.gte.1,corridor_score.gte.0.35')
-        .order('escort_count', { ascending: false })
         .limit(limit);
 
     if (error || !data) return [];
