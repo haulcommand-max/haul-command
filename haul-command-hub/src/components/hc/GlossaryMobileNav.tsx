@@ -129,10 +129,10 @@ export default function GlossaryMobileNav({ letters, letterCounts, totalTerms }:
         )}
       </div>
 
-      {/* A–Z Horizontal Scroll Strip */}
+      {/* A–Z Horizontal Scroll Strip — HIGH CONTRAST */}
       <div
         ref={scrollRef}
-        className="flex gap-1 overflow-x-auto scrollbar-none -mx-1 px-1"
+        className="flex gap-1.5 overflow-x-auto -mx-1 px-1 py-1"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {allLetters.map(letter => {
@@ -146,14 +146,21 @@ export default function GlossaryMobileNav({ letters, letterCounts, totalTerms }:
               data-letter={letter}
               onClick={() => hasTerms && handleLetterClick(letter)}
               disabled={!hasTerms}
+              style={
+                isActive
+                  ? { background: '#f59e0b', color: '#000', boxShadow: '0 0 16px rgba(245,158,11,0.4)' }
+                  : hasTerms
+                    ? { background: 'rgba(245,158,11,0.08)', borderColor: 'rgba(245,158,11,0.25)', color: '#fbbf24' }
+                    : { background: 'transparent', borderColor: 'rgba(255,255,255,0.06)', color: '#374151' }
+              }
               className={`
                 flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center 
-                text-xs font-black transition-all duration-150
+                text-xs font-black transition-all duration-150 border
                 ${isActive
-                  ? 'bg-accent text-black shadow-lg shadow-accent/30 scale-110'
+                  ? 'scale-110'
                   : hasTerms
-                    ? 'bg-white/[0.06] border border-white/[0.12] text-accent hover:bg-accent/15 hover:border-accent/30 active:scale-95'
-                    : 'bg-transparent border border-white/[0.04] text-gray-700 cursor-default'
+                    ? 'hover:scale-105 active:scale-95'
+                    : 'cursor-default'
                 }
               `}
               title={hasTerms ? `${letter} — ${count} term${count !== 1 ? 's' : ''}` : `No terms for ${letter}`}
