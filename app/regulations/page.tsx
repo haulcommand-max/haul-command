@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Oversize and overweight load regulations for 120 countries. Permit requirements, escort rules, max dimensions, and DOT authority contacts for heavy haul transport worldwide.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function RegulationsPage() {
   const supabase = createClient();
 

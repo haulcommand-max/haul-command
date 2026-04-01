@@ -5,6 +5,8 @@ import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
   description:

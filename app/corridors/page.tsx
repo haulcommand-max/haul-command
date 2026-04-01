@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Browse heavy haul escort corridors across the US. Permit requirements, escort regulations, operator density, and real load data for 200+ key transport corridors.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function CorridorsPage() {
   const supabase = createClient();
 
