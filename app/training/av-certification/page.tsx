@@ -192,7 +192,7 @@ export default function AVCertificationPage() {
             ))}
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link aria-label="Navigation Link" href="/training/av-certification/enroll?tier=2">
+            <Link href="/training/av-certification/enroll?tier=2">
               <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #f5c842, #ff9500)',
                 color: '#07090f', border: 'none', borderRadius: 12,
@@ -201,7 +201,7 @@ export default function AVCertificationPage() {
                 Get AV-Ready Certified — $149/yr
               </button>
             </Link>
-            <Link aria-label="Navigation Link" href="#why">
+            <Link href="#why">
               <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(245,200,66,0.3)',
                 color: '#f5c842', borderRadius: 12,
@@ -349,7 +349,7 @@ export default function AVCertificationPage() {
                 </div>
               )}
 
-              <Link aria-label="Navigation Link" href={tier.ctaHref}>
+              <Link href={tier.ctaHref}>
                 <button aria-label="Interactive Button" style={{
                   width: '100%', padding: '12px', borderRadius: 12,
                   background: tier.highlight ? `linear-gradient(90deg, #f5c842, #ff9500)` : `rgba(${tier.color === '#c0c0c0' ? '192,192,192' : tier.color === '#f5c842' ? '245,200,66' : '167,139,250'},0.12)`,
@@ -446,7 +446,7 @@ export default function AVCertificationPage() {
               </span>
             ))}
           </div>
-          <Link aria-label="Navigation Link" href="/training/corporate">
+          <Link href="/training/corporate">
             <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #a78bfa, #7c6ef5)',
               color: '#fff', border: 'none', borderRadius: 12,
@@ -481,7 +481,7 @@ export default function AVCertificationPage() {
               </div>
             ))}
           </div>
-          <Link aria-label="Navigation Link" href="/training/av-certification/enroll?tier=2">
+          <Link href="/training/av-certification/enroll?tier=2">
             <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,

@@ -52,7 +52,7 @@ export default function EarningsDashboardPage() {
           fetch('/api/connect/payouts'),
         ]);
         
-        let statusData = { connected: false, onboarded: false, payouts_enabled: false };
+        let statusData: ConnectStatus = { connected: false, onboarded: false, payouts_enabled: false };
         if (statusRes.ok) statusData = await statusRes.json();
         
         // Mock the new fields if API doesn't have them yet

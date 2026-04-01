@@ -303,7 +303,7 @@ export default function PostLoadPage() {
             <MobileScreenHeader
                 title="Post a Load"
                 rightAction={
-                    <Link aria-label="Navigation Link" href="/loads" style={{ textDecoration: 'none' }}>
+                    <Link href="/loads" style={{ textDecoration: 'none' }}>
                         <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto' }}>Load Board</button>
                     </Link>
                 }

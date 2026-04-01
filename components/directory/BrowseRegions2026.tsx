@@ -142,7 +142,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                         }}
                     />
                     {q && (
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => setQ("")}
                             className="absolute right-3 top-1/2 -translate-y-1/2"
                             style={{ color: "rgba(255,255,255,0.3)", fontSize: 11 }}

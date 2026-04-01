@@ -181,7 +181,7 @@ export function StickyClaimBar({
                         >
                             {copy.cta}
                         </Link>
-                        <button aria-label="Interactive Button"
+                        <button
                             onClick={() => setDismissed(true)}
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-white transition-colors"
                             style={{ background: "rgba(255,255,255,0.05)" }}

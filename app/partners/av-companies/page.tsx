@@ -99,7 +99,7 @@ export default function AVPartnersPage() {
             Haul Command is the platform that makes that requirement effortless.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-            <Link aria-label="Navigation Link" href="/training/corporate">
+            <Link href="/training/corporate">
               <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #00ff88, #00ccff)',
                 color: '#07090f', border: 'none', borderRadius: 12,
@@ -230,7 +230,7 @@ export default function AVPartnersPage() {
             We work with AV companies and logistics partners directly. Response within 24 hours.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link aria-label="Navigation Link" href="/training/corporate">
+            <Link href="/training/corporate">
               <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #00ff88, #00ccff)',
                 color: '#07090f', border: 'none', borderRadius: 12,

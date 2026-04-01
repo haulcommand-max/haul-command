@@ -56,7 +56,7 @@ export default function ClaimBanner({
                     >
                         Claim Now
                     </Link>
-                    <button aria-label="Interactive Button"
+                    <button
                         onClick={() => setDismissed(true)}
                         className="text-amber-100/60 hover:text-white text-xs shrink-0 transition-colors"
                         aria-label="Dismiss"

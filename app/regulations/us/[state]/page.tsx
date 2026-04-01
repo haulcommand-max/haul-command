@@ -350,7 +350,7 @@ export default async function StateRegulationPage({ params }: Props) {
             47-minute median fill time. Escrow-protected. Verified operators.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link aria-label="Navigation Link" href={`/directory?state=${data.abbr.toLowerCase()}`}>
+            <Link href={`/directory?state=${data.abbr.toLowerCase()}`}>
               <button aria-label="Interactive Button" style={{
                 background: 'linear-gradient(90deg, #f5c842, #ff9500)',
                 color: '#07090f', border: 'none', borderRadius: 12,
@@ -359,7 +359,7 @@ export default async function StateRegulationPage({ params }: Props) {
                 Find {data.name} Escorts
               </button>
             </Link>
-            <Link aria-label="Navigation Link" href="/app/loads/post">
+            <Link href="/app/loads/post">
               <button aria-label="Interactive Button" style={{
                 background: 'transparent', border: '1px solid rgba(245,200,66,0.3)',
                 color: '#f5c842', borderRadius: 12,

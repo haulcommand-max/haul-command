@@ -113,7 +113,7 @@ function WinToast({
                     {cfg.subline(toast.context)}
                 </p>
             </div>
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => { setVisible(false); setTimeout(() => onDismiss(toast.id), 300); }}
                 className="text-hc-subtle hover:text-hc-muted transition-colors shrink-0 ml-1 text-lg leading-none"
                 aria-label="Dismiss"

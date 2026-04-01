@@ -144,8 +144,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className="dark">
             <head>
-                <Link aria-label="Navigation Link" rel="preconnect" href="https://fonts.googleapis.com" />
-                <Link aria-label="Navigation Link" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
@@ -212,7 +212,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     })
                 }} />
                 {/* OpenSearch — Browser Search Integration */}
-                <Link aria-label="Navigation Link" rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
+                <link rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
                 {/* Inbound Authority Machine — Tracking Pixels */}
                 <AnalyticsProvider />
             </head>

@@ -115,7 +115,7 @@ export default async function ChambersLandingPage() {
 
                 {/* Internal Link Footer */}
                 <div className="border-t border-slate-800 pt-8 text-sm text-slate-500">
-                    <p>Looking for specific regulations? Check our <Link aria-label="Navigation Link" href="/tools/state-requirements" className="text-amber-500 hover:underline">State Requirements Tool</Link> or browse <Link aria-label="Navigation Link" href="/map" className="text-amber-500 hover:underline">the jurisdiction map</Link>.</p>
+                    <p>Looking for specific regulations? Check our <Link href="/tools/state-requirements" className="text-amber-500 hover:underline">State Requirements Tool</Link> or browse <Link aria-label="Navigation Link" href="/map" className="text-amber-500 hover:underline">the jurisdiction map</Link>.</p>
                 </div>
             </div>
         </main>

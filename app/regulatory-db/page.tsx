@@ -110,7 +110,7 @@ export default async function RegulatoryDbPage({
                         <option value="US">🇺🇸 United States</option>
                         <option value="CA">🍁 Canada</option>
                     </select>
-                    <button aria-label="Interactive Button" type="submit" style={btnStyle}>Search</button>
+                    <button type="submit" style={btnStyle}>Search</button>
                     {(query || country) && (
                         <Link aria-label="Navigation Link" href="/regulatory-db" style={{ ...btnStyle, background: 'transparent', border: '1px solid var(--hc-border,#333)' }}>
                             Clear

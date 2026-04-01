@@ -57,7 +57,7 @@ export function CommsFAB({
     // Collapsed FAB
     if (!expanded) {
         return (
-            <button aria-label="Interactive Button"
+            <button
                 onClick={() => setExpanded(true)}
                 style={{
                     position: 'fixed',

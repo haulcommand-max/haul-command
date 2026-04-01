@@ -98,7 +98,7 @@ export default function MobileLoadBoard() {
       <MobileScreenHeader
         title="Load Board"
         rightAction={
-          <Link aria-label="Navigation Link" href="/map" style={{ textDecoration: 'none' }}>
+          <Link href="/map" style={{ textDecoration: 'none' }}>
             <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto', gap: 6 }}>
               <MapIcon />
               <span>Map</span>

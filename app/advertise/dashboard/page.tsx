@@ -134,7 +134,7 @@ export default function AdvertiseDashboard() {
             Your {selectedPlan?.name} campaign is under review. We'll approve and launch within 24 hours.
             You'll receive a confirmation email at <strong style={{ color: '#f0f4f8' }}>{contactEmail}</strong>.
           </p>
-          <Link aria-label="Navigation Link" href="/advertise">
+          <Link href="/advertise">
             <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,

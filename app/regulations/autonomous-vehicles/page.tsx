@@ -277,7 +277,7 @@ export default function AVRegulationsPage() {
           <p style={{ color: '#8fa3c0', marginBottom: 24, fontSize: 15 }}>
             Understanding the regulations is step one. Certification is what gets you chosen first.
           </p>
-          <Link aria-label="Navigation Link" href="/training/av-certification">
+          <Link href="/training/av-certification">
             <button aria-label="Interactive Button" style={{
               background: 'linear-gradient(90deg, #f5c842, #ff9500)',
               color: '#07090f', border: 'none', borderRadius: 12,

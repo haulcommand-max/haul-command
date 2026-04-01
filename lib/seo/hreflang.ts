@@ -19,3 +19,28 @@ export function getGlobalHreflangTags(pagePath: string) {
 
   return alternateLanguages;
 }
+
+/**
+ * Get hreflang links for a specific concept ID.
+ * Returns link objects suitable for metadata generation.
+ */
+export async function getHreflangLinks(conceptId: string): Promise<Array<{ hreflang: string; href: string }>> {
+  // When a proper i18n routing system is in place, this would query
+  // seo_page_variants for all locale paths sharing the concept_id.
+  // For now, return an empty array so builds pass without DB calls.
+  return [];
+}
+
+/**
+ * Get hreflang link sets for sitemap generation, grouped by concept.
+ * Returns sets for all concepts matching the locale + template partition.
+ */
+export async function getHreflangSetsForSitemap(
+  countryCode: string,
+  languageCode: string,
+  templateKey: string,
+): Promise<Array<{ conceptId: string; links: Array<{ hreflang: string; href: string }> }>> {
+  // Stub: When the i18n page-variant system is live, this would query
+  // seo_page_variants grouped by concept_id for the given locale+template.
+  return [];
+}
