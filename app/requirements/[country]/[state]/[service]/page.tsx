@@ -90,8 +90,8 @@ export default async function RequirementServicePage({ params }: Props) {
               <h2 className="text-2xl font-bold mb-4">Live Threshold Calculator</h2>
               {/* This replaces generic text with a utility */}
               <div className="bg-hc-gray-900 rounded p-6 shadow-inner italic text-hc-gray-400">
-                // Interactive React Component injected here
-                // <RequirementCalculator jurisdiction="{state}" />
+                {/* Interactive React Component injected here */}
+                {/* <RequirementCalculator jurisdiction={state} /> */}
               </div>
             </section>
 

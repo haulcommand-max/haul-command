@@ -52,12 +52,14 @@ export default function EarningsDashboardPage() {
           fetch('/api/connect/payouts'),
         ]);
         
-        let statusData = { connected: false, onboarded: false, payouts_enabled: false };
+        let statusData: Partial<ConnectStatus> = { connected: false, onboarded: false, payouts_enabled: false };
         if (statusRes.ok) statusData = await statusRes.json();
         
         // Mock the new fields if API doesn't have them yet
         setConnect({
-          ...statusData,
+          connected: statusData.connected ?? false,
+          onboarded: statusData.onboarded ?? false,
+          payouts_enabled: statusData.payouts_enabled ?? false,
           listing_claimed: demoClaimed,
           lifetime_earned_cents: 2845000, // $28,450
           month_earned_cents: 324000,     // $3,240

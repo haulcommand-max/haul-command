@@ -186,7 +186,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                                         <Briefcase className="w-3 h-3" /> Jobs
                                     </div>
                                     <div className="text-2xl font-black text-white">
-                                        {provider.stats.reviewCount ? provider.stats.reviewCount * 12 : Math.floor((provider.stats.rating || 4) * 87)}
+                                        {provider.stats.reviews ? provider.stats.reviews * 12 : Math.floor((provider.stats.rating || 4) * 87)}
                                     </div>
                                     <div className="text-hc-success text-[10px] font-bold mt-1">+14% YoY</div>
                                 </div>
@@ -210,7 +210,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                                     <div className="text-2xl font-black text-amber-400">
                                         {provider.stats.rating.toFixed(1)}
                                     </div>
-                                    <div className="text-hc-muted text-[10px] font-bold mt-1">/{provider.stats.reviewCount || 1} verified</div>
+                                    <div className="text-hc-muted text-[10px] font-bold mt-1">/{provider.stats.reviews || 1} verified</div>
                                 </div>
 
                                 {/* Years Active */}
