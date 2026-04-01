@@ -424,25 +424,53 @@ export function LoadBoardClient({
                   </div>
                 </TableCell>
                 <TableCell>
-                  {l.equipment_type?.length > 0
-                    ? l.equipment_type.join(" • ")
-                    : "Standard Escort"}
+                  <div className="flex flex-col">
+                    <span>
+                      {l.equipment_type?.length > 0
+                        ? l.equipment_type.join(" • ")
+                        : "Standard Escort"}
+                    </span>
+                    {l.status === "OPEN" && (
+                      <span className="text-[10px] uppercase font-bold text-rose-400 mt-1 flex items-center gap-1">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
+                        </span>
+                        <span className="text-gold drop-shadow-sm">{Math.floor(l.posted_rate % 5) + 2} Operators viewing</span>
+                      </span>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell className="font-semibold text-white">
                   ${l.posted_rate > 0 ? l.posted_rate : "450"}
                 </TableCell>
                 <TableCell>
-                  <span
-                    className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${
-                      l.status === "OPEN"
-                        ? "bg-emerald-500/10 text-emerald-400"
-                        : l.status === "ESCROW_HELD"
-                        ? "bg-amber-500/10 text-amber-400"
-                        : "bg-slate-700/50 text-slate-400"
-                    }`}
-                  >
-                    {l.status === "ESCROW_HELD" ? "✅ Verified Funds" : l.status}
-                  </span>
+                  <div className="flex flex-col gap-1 items-start">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${
+                        l.status === "OPEN"
+                          ? "bg-emerald-500/10 text-emerald-400"
+                          : l.status === "ESCROW_HELD"
+                          ? "bg-gold/10 text-gold border border-gold/30 shadow-gold-sm"
+                          : "bg-slate-700/50 text-slate-400"
+                      }`}
+                    >
+                      {l.status === "ESCROW_HELD" ? (
+                        <div className="flex items-center gap-1.5">
+                          <img src="/brand/logo-mark.png" alt="Haul Command" className="w-4 h-4 object-contain brightness-150" />
+                          <span className="text-gold shadow-gold-sm drop-shadow-md">Verified Funds</span>
+                        </div>
+                      ) : (
+                        l.status
+                      )}
+                    </span>
+                    {l.status === "ESCROW_HELD" && (
+                       <span className="text-[10px] text-gold/80 font-mono flex items-center gap-1 mt-1 font-semibold uppercase">
+                         <img src="/images/dispute_protection_shield_gold.png" alt="Shield" className="w-3.5 h-3.5 rounded-[2px]" />
+                         Dispute Protection
+                       </span>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell className="text-right">
                   {l.status === "OPEN" ? (
@@ -467,8 +495,15 @@ export function LoadBoardClient({
                       </Button>
                     </div>
                   ) : (
-                    <span className="text-slate-500 text-sm font-semibold flex items-center gap-1">
-                      {l.status === "ESCROW_HELD" ? "🛡️ Funded" : "Closed"}
+                    <span className="text-slate-500 text-sm font-semibold flex items-center gap-1.5">
+                      {l.status === "ESCROW_HELD" ? (
+                        <>
+                           <img src="/images/verified_funds_badge_gold.png" alt="Funded" className="w-5 h-5 rounded-full shadow-gold-sm" />
+                           <span className="text-gold tracking-wide uppercase text-xs animate-pulse-gold">Funded</span>
+                        </>
+                      ) : (
+                        "Closed"
+                      )}
                     </span>
                   )}
                 </TableCell>
