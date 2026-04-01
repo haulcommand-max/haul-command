@@ -96,7 +96,7 @@ export default async function GlossaryCountryPage({
   let trustedProviders: any[] = [];
   try {
     const { data } = await supabaseServer()
-      .from('hc_public_operators')
+      .from('hc_global_operators')
       .select('id, name, slug, claim_status')
       .eq('country_code', country.code)
       .in('trust_classification', ['verified', 'gold', 'silver', 'bronze'])

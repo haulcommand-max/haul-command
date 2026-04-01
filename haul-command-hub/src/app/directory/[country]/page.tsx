@@ -78,7 +78,7 @@ export default async function DirectoryCountryPage({
     const regions = countryConfig?.regions ?? [];
 
     // Category facets
-    let facetQuery = sb.from("hc_public_operators").select("entity_type");
+    let facetQuery = sb.from("hc_global_operators").select("entity_type");
     if (cc !== 'all') facetQuery = facetQuery.eq("country_code", country.toUpperCase());
     const { data: facetRows } = await facetQuery;
 
@@ -91,8 +91,8 @@ export default async function DirectoryCountryPage({
 
     // Paginated listings
     let listQuery = sb
-        .from("hc_public_operators")
-        .select("id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at, surface_category_key:entity_type", {
+        .from("hc_global_operators")
+        .select("id, slug, name, entity_type, locality:city, admin1_code:admin1_code, updated_at, surface_category_key:entity_type", {
             count: "exact",
         });
     if (cc !== 'all') listQuery = listQuery.eq("country_code", country.toUpperCase());

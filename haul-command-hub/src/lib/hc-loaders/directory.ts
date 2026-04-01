@@ -26,8 +26,8 @@ export async function getDirectorySearchResults(filters: {
 }) {
   const sb = supabaseServer();
   let q = sb
-    .from('hc_public_operators')
-    .select('id, slug, display_name, entity_type, phone, email, city, state_code, country_code, trust_classification, claim_status');
+    .from('hc_global_operators')
+    .select('id, slug, display_name, entity_type, phone, email, city, admin1_code, country_code, trust_classification, claim_status');
 
   if (filters.countrySlug) q = q.eq('country_code', filters.countrySlug.toUpperCase());
   if (filters.metroSlug) q = q.ilike('city', `%${filters.metroSlug}%`);

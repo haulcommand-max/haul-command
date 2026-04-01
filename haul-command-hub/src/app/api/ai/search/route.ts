@@ -152,10 +152,10 @@ async function keywordSearchProviders(
   country?: string,
 ): Promise<SearchResult[]> {
   try {
-    // Real operators from hc_public_operators (verified data)
+    // Real operators from hc_global_operators (verified data)
     let q = supabase
-      .from('hc_public_operators')
-      .select('id, slug, name, city, state_code, country_code, entity_type')
+      .from('hc_global_operators')
+      .select('id, slug, name, city, admin1_code, country_code, entity_type')
       .or(`name.ilike.%${query}%,city.ilike.%${query}%,entity_type.ilike.%${query}%`)
       .limit(limit);
 
@@ -170,12 +170,12 @@ async function keywordSearchProviders(
       id: row.id,
       type: 'provider' as const,
       title: row.name,
-      snippet: `${row.entity_type?.replace(/_/g, ' ')} in ${row.city}, ${row.state_code} (${row.country_code})`,
+      snippet: `${row.entity_type?.replace(/_/g, ' ')} in ${row.city}, ${row.admin1_code} (${row.country_code})`,
       score: 0.7,
       url: `/place/${row.slug}`,
       metadata: {
         country: row.country_code,
-        state: row.state_code,
+        state: row.admin1_code,
       },
     }));
   } catch {

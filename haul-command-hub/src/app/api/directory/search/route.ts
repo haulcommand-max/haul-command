@@ -56,14 +56,14 @@ export async function GET(req: Request) {
       }
     }
 
-    // Supabase search fallback — real operators only via hc_public_operators view
+    // Supabase search fallback — real operators only via hc_global_operators view
     // directory_listings is quarantined (654K synthetic rows), do NOT query it for search
     let queryBuilder = supabase
-      .from('hc_public_operators')
-      .select('id, slug, name, state_code, city, entity_type, phone, email, claim_status, trust_classification', { count: 'exact' });
+      .from('hc_global_operators')
+      .select('id, slug, name, admin1_code, city, entity_type, phone, email, claim_status, trust_classification', { count: 'exact' });
 
     if (q) {
-      queryBuilder = queryBuilder.or(`name.ilike.%${q}%,city.ilike.%${q}%,state_code.ilike.%${q}%`);
+      queryBuilder = queryBuilder.or(`name.ilike.%${q}%,city.ilike.%${q}%,admin1_code.ilike.%${q}%`);
     }
 
     const { data: operators, count, error } = await queryBuilder

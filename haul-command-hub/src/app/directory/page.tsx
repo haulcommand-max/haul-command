@@ -46,7 +46,7 @@ export default async function DirectoryPage() {
     let providerRows: any[] = [];
     
     try {
-        const lr = await sb.from("hc_public_operators").select("country_code, entity_type").limit(50000);
+        const lr = await sb.from("hc_global_operators").select("country_code, entity_type").limit(50000);
         listingRows = lr.data ?? [];
     } catch { /* table may not exist yet */ }
     

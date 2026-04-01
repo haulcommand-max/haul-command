@@ -6,8 +6,9 @@ export const metadata = {
   description: 'This feature is currently under active development. Join the waitlist for early access.',
 };
 
-export default function WaitlistPage({ searchParams }: { searchParams: { feature?: string } }) {
-  const feature = searchParams?.feature ? searchParams.feature.replace(/-/g, ' ').toUpperCase() : 'NEW FEATURE';
+export default async function WaitlistPage({ searchParams }: { searchParams: Promise<{ feature?: string }> }) {
+  const sp = await searchParams;
+  const feature = sp?.feature ? sp.feature.replace(/-/g, ' ').toUpperCase() : 'NEW FEATURE';
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '4rem 1rem' }}>
@@ -26,7 +27,7 @@ export default function WaitlistPage({ searchParams }: { searchParams: { feature
         </p>
 
         <form action="/api/waitlist" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400, margin: '0 auto' }}>
-          <input type="hidden" name="feature" value={searchParams?.feature || 'general'} />
+          <input type="hidden" name="feature" value={sp?.feature || 'general'} />
           <input 
             type="email" 
             name="email"

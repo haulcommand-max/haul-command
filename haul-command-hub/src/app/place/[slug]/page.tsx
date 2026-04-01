@@ -121,11 +121,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const sb = supabaseServer();
   
-  // Real operators from hc_public_operators
+  // Real operators from hc_global_operators
   let data: { name: string; surface_category_key: string; locality: string | null; admin1_code: string | null; country_code: string | null } | null = null;
-  const { data: dl } = await sb.from("hc_public_operators").select("name, entity_type, city, state_code, country_code").eq("slug", slug).maybeSingle();
+  const { data: dl } = await sb.from("hc_global_operators").select("name, entity_type, city, admin1_code, country_code").eq("slug", slug).maybeSingle();
   if (dl) {
-    data = { name: dl.name, surface_category_key: dl.entity_type, locality: dl.city, admin1_code: dl.state_code, country_code: dl.country_code };
+    data = { name: dl.name, surface_category_key: dl.entity_type, locality: dl.city, admin1_code: dl.admin1_code, country_code: dl.country_code };
   }
   
   // Fallback: hc_places (infrastructure/legacy profiles)
@@ -149,15 +149,15 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
   const { slug } = await params;
   const sb = supabaseServer();
 
-  // Real operators from hc_public_operators (verified data)
+  // Real operators from hc_global_operators (verified data)
   const { data: opPlace } = await sb
-    .from("hc_public_operators")
-    .select("id, slug, name, entity_type, city, state_code, country_code, phone, email, claim_status")
+    .from("hc_global_operators")
+    .select("id, slug, name, entity_type, city, admin1_code, country_code, phone, email, claim_status")
     .eq("slug", slug).maybeSingle();
 
   let p: Place;
   if (opPlace) {
-    // Normalize hc_public_operators shape to Place shape
+    // Normalize hc_global_operators shape to Place shape
     p = {
       id: opPlace.id,
       slug: opPlace.slug,
@@ -165,7 +165,7 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
       description: `${opPlace.name} — Professional heavy haul and oversize load services.`,
       surface_category_key: opPlace.entity_type ?? 'pilot_car_operator',
       country_code: opPlace.country_code ?? 'US',
-      admin1_code: opPlace.state_code ?? null,
+      admin1_code: opPlace.admin1_code ?? null,
       admin2_name: null,
       locality: opPlace.city ?? null,
       postal_code: null,
@@ -232,11 +232,11 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
     secondaryActions: [],
   };
 
-  /* ── Build nearby entities (real operators from hc_public_operators) ── */
+  /* ── Build nearby entities (real operators from hc_global_operators) ── */
   let nearbyEntities: HCLink[] = [];
   if (p.country_code) {
     const { data: nearby } = await sb
-      .from("hc_public_operators")
+      .from("hc_global_operators")
       .select("slug, name")
       .eq("country_code", p.country_code)
       .eq("entity_type", p.surface_category_key)

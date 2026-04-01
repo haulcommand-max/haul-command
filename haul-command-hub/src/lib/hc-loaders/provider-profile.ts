@@ -5,7 +5,7 @@ import { countryName } from '@/lib/directory-helpers';
 /**
  * Provider profile loader — must read:
  *   - hc_provider_best_public_record (primary)
- *   - hc_public_operators (real verified fallback)
+ *   - hc_global_operators (real verified fallback)
  *   - hc_page_seo_contracts (SEO metadata)
  */
 
@@ -52,9 +52,9 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
     };
   }
 
-  // Fallback to hc_public_operators (real verified data)
-  const { data: opData } = await sb.from('hc_public_operators')
-    .select('id, slug, name, entity_type, city, state_code, country_code, phone, email, claim_status')
+  // Fallback to hc_global_operators (real verified data)
+  const { data: opData } = await sb.from('hc_global_operators')
+    .select('id, slug, name, entity_type, city, admin1_code, country_code, phone, email, claim_status')
     .eq('slug', slug)
     .maybeSingle();
 
@@ -78,7 +78,7 @@ export async function getProviderProfile(slug: string): Promise<HCProfile | null
         websiteUrl: undefined,
         email: opData.email ?? undefined,
       },
-      serviceAreaLabels: [opData.city, opData.state_code, countryName(opData.country_code)].filter(Boolean) as string[],
+      serviceAreaLabels: [opData.city, opData.admin1_code, countryName(opData.country_code)].filter(Boolean) as string[],
       capabilities: opData.entity_type ? [opData.entity_type] : [],
       badges: [],
       freshness,
@@ -143,9 +143,9 @@ export async function getProviderSeoContract(slug: string) {
 
 export async function getNearbyProviders(countryCode: string, category: string, excludeId: string, limit = 6) {
   const sb = supabaseServer();
-  // Real operators from hc_public_operators
-  const { data } = await sb.from('hc_public_operators')
-    .select('id, slug, name, city, state_code')
+  // Real operators from hc_global_operators
+  const { data } = await sb.from('hc_global_operators')
+    .select('id, slug, name, city, admin1_code')
     .eq('country_code', countryCode)
     .eq('entity_type', category)
     .neq('id', excludeId)

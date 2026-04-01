@@ -10,10 +10,10 @@ export async function getClaimableCount() {
 
 export async function searchClaimable(query: string, limit = 10) {
   const sb = supabaseServer();
-  // Search real operators only from hc_public_operators view
+  // Search real operators only from hc_global_operators view
   const { data } = await sb
-    .from('hc_public_operators')
-    .select('id, slug, display_name, city, state_code, country_code')
+    .from('hc_global_operators')
+    .select('id, slug, display_name, city, admin1_code, country_code')
     .eq('claim_status', 'unclaimed')
     .ilike('display_name', `%${query}%`)
     .limit(limit);
@@ -22,7 +22,7 @@ export async function searchClaimable(query: string, limit = 10) {
     slug: r.slug,
     name: r.display_name,
     city: r.city,
-    region_code: r.state_code,
+    region_code: r.admin1_code,
     country_code: r.country_code,
   }));
 }

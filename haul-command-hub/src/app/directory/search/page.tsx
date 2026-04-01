@@ -31,11 +31,11 @@ export default async function DirectorySearchPage({
 
   const sb = supabaseServer();
 
-  // Real operators from hc_public_operators
+  // Real operators from hc_global_operators
   const { data: results } = await sb
-    .from('hc_public_operators')
-    .select('id, name, city, state_code, country_code, entity_type, slug')
-    .or(`name.ilike.%${query}%,city.ilike.%${query}%,state_code.ilike.%${query}%,entity_type.ilike.%${query}%`)
+    .from('hc_global_operators')
+    .select('id, name, city, admin1_code, country_code, entity_type, slug')
+    .or(`name.ilike.%${query}%,city.ilike.%${query}%,admin1_code.ilike.%${query}%,entity_type.ilike.%${query}%`)
     .limit(50);
 
   return (
@@ -75,7 +75,7 @@ export default async function DirectorySearchPage({
                       </p>
                       <p className="text-sm text-white/50 mt-0.5">
                         {r.city && `${r.city}, `}
-                        {r.state_code ?? ''}
+                        {r.admin1_code ?? ''}
                         {r.country_code ? ` · ${r.country_code.toUpperCase()}` : ''}
                         {r.entity_type ? ` · ${categoryLabel(r.entity_type)}` : ''}
                       </p>

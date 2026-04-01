@@ -94,10 +94,10 @@ export async function getHomepagePreviewResults(limit = 6) {
     }));
   }
 
-  // Fallback to hc_public_operators (real verified data)
+  // Fallback to hc_global_operators (real verified data)
   const { data } = await sb
-    .from('hc_public_operators')
-    .select('id, slug, name, entity_type, city, state_code, country_code, claim_status')
+    .from('hc_global_operators')
+    .select('id, slug, name, entity_type, city, admin1_code, country_code, claim_status')
     .order('created_at', { ascending: false })
     .limit(limit);
   return data ?? [];

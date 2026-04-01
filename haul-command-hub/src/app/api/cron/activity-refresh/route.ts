@@ -63,7 +63,7 @@ export async function GET() {
     // hc_places = physical locations only (ports, hotels, truck stops)
     // directory_listings = operators + service providers (correct source)
     const { count: totalListings } = await sb
-      .from('hc_public_operators')
+      .from('hc_global_operators')
       .select('id', { count: 'exact', head: true })
       .in('entity_type', ['operator', 'pilot_car_operator', 'pilot_driver',
                           'freight_broker', 'flagger', 'permit_service',
