@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { getGlossaryTerms, getGlossaryCategories } from '@/lib/glossary-unified';
 import { COUNTRIES } from '@/lib/seo-countries';
 import { COUNTRY_SLUG_MAP } from '@/lib/glossary-slugs';
+import GlossaryMobileNav from '@/components/hc/GlossaryMobileNav';
 
 export const revalidate = 86400; // 1 day ISR
 
@@ -51,38 +52,47 @@ export default async function GlossaryPage() {
   // Tier A countries for country nav
   const tierACountries = COUNTRIES.filter(c => c.tier === 'A');
 
+  // Pass letter→count mapping for the mobile nav to disable empty letters
+  const letterCounts: Record<string, number> = {};
+  letters.forEach(l => { letterCounts[l] = grouped[l]?.length ?? 0; });
+
   return (
     <>
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-12 min-h-screen">
-        <nav className="text-xs text-gray-500 mb-6">
+      <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12 min-h-screen pb-24 md:pb-12">
+        {/* Breadcrumb */}
+        <nav className="text-xs text-gray-500 mb-4">
           <Link href="/" className="hover:text-accent">Home</Link>
           <span className="mx-2">›</span>
           <span className="text-white">Heavy Haul Glossary</span>
         </nav>
 
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+        {/* Header */}
+        <header className="mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">
             Heavy Haul <span className="text-accent">Glossary</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-3xl">
+          <p className="text-gray-400 text-sm sm:text-base max-w-3xl">
             {terms.length.toLocaleString()}+ industry terms defined across 120 countries.
             The most comprehensive heavy haul, oversize load, and escort terminology reference.
           </p>
         </header>
 
-        {/* Topic Hub Cards */}
-        <section className="mb-16">
-          <h2 className="text-xl font-bold text-white mb-6">Browse by Topic</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* ═══ SEARCH-FIRST: Prominent search bar ═══ */}
+        <GlossaryMobileNav letters={letters} letterCounts={letterCounts} totalTerms={terms.length} />
+
+        {/* ═══ TOPIC HUB CARDS ═══ */}
+        <section className="mb-10">
+          <h2 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-gray-400">Browse by Topic</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {flagshipHubs.map(hub => (
               <Link
                 key={hub.slug}
                 href={`/glossary/${hub.slug}/`}
-                className="bg-[#111823] border border-white/10 rounded-xl p-5 hover:border-accent/30 transition-all hover:scale-[1.02] group"
+                className="bg-[#111823] border border-white/10 rounded-xl p-4 hover:border-accent/30 transition-all active:scale-[0.98] group"
               >
-                <span className="text-2xl mb-2 block">{hub.icon}</span>
-                <span className="font-semibold text-white group-hover:text-accent transition-colors text-sm">
+                <span className="text-xl mb-1.5 block">{hub.icon}</span>
+                <span className="font-semibold text-white group-hover:text-accent transition-colors text-xs sm:text-sm leading-tight">
                   {hub.label}
                 </span>
               </Link>
@@ -90,15 +100,15 @@ export default async function GlossaryPage() {
           </div>
         </section>
 
-        {/* Country Quick Nav */}
-        <section className="mb-16">
-          <h2 className="text-xl font-bold text-white mb-6">Browse by Country</h2>
-          <div className="flex flex-wrap gap-3">
+        {/* ═══ COUNTRY QUICK NAV ═══ */}
+        <section className="mb-10">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Browse by Country</h2>
+          <div className="flex flex-wrap gap-2">
             {tierACountries.map(c => (
               <Link
                 key={c.code}
                 href={`/glossary/pilot-car/${COUNTRY_SLUG_MAP[c.slug]}/`}
-                className="px-4 py-2 bg-[#111823] border border-white/10 rounded-lg hover:border-accent/30 text-sm text-slate-300 hover:text-white transition-colors"
+                className="px-3 py-1.5 bg-[#111823] border border-white/10 rounded-lg hover:border-accent/30 text-xs text-slate-300 hover:text-white transition-colors active:scale-[0.97]"
               >
                 {c.flag} {c.name}
               </Link>
@@ -106,29 +116,35 @@ export default async function GlossaryPage() {
           </div>
         </section>
 
-        {/* Letter Quick Nav */}
-        <div className="flex flex-wrap gap-2 mb-10 sticky top-16 bg-[#0B0F14]/95 backdrop-blur-md py-3 z-10">
+        {/* ═══ TERMS BY LETTER ═══ */}
+        <div className="space-y-10">
           {letters.map((letter) => (
-            <a key={letter} href={`#letter-${letter}`} className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-accent hover:bg-accent/10 transition-colors">
-              {letter}
-            </a>
-          ))}
-        </div>
-
-        {/* Terms by Letter */}
-        <div className="space-y-12">
-          {letters.map((letter) => (
-            <section key={letter} id={`letter-${letter}`}>
-              <h2 className="text-3xl font-black text-accent mb-6 border-b border-white/5 pb-2">{letter}</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <section key={letter} id={`letter-${letter}`} className="scroll-mt-40 sm:scroll-mt-24">
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="text-2xl sm:text-3xl font-black text-accent">{letter}</h2>
+                <div className="h-px flex-grow bg-white/5" />
+                <span className="text-[10px] text-gray-600 font-bold tabular-nums">{grouped[letter].length} terms</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                 {grouped[letter].map((item) => (
                   <Link
                     key={item.slug}
                     href={`/glossary/${item.slug}/`}
-                    className="bg-[#111823]/50 border border-white/5 rounded-xl p-4 hover:border-accent/20 transition-colors group"
+                    data-glossary-card
+                    className="bg-[#111823]/50 border border-white/5 rounded-xl p-4 hover:border-accent/20 active:scale-[0.98] transition-all group"
                   >
                     <h3 className="text-sm font-bold text-white group-hover:text-accent transition-colors mb-1">{item.term}</h3>
-                    <p className="text-xs text-gray-500 line-clamp-2">{item.shortDefinition}</p>
+                    <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{item.shortDefinition}</p>
+                    {/* Future 10X layer hooks */}
+                    {item.synonyms?.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {item.synonyms.slice(0, 3).map(s => (
+                          <span key={s} className="text-[9px] text-gray-600 bg-white/[0.03] px-1.5 py-0.5 rounded">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -136,14 +152,14 @@ export default async function GlossaryPage() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 text-center bg-[#111823] border border-white/10 rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-4">Need Heavy Haul Services?</h2>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/directory" className="inline-block bg-accent text-black font-black px-6 py-3 rounded-xl hover:bg-yellow-500 transition-colors">
+        {/* ═══ CTA ═══ */}
+        <div className="mt-12 text-center bg-[#111823] border border-white/10 rounded-2xl p-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">Need Heavy Haul Services?</h2>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/directory" className="inline-block bg-accent text-black font-black px-6 py-3 rounded-xl hover:bg-yellow-500 transition-colors text-sm">
               Find Verified Operators
             </Link>
-            <Link href="/tools" className="inline-block bg-white/10 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/20 transition-colors">
+            <Link href="/tools" className="inline-block bg-white/10 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/20 transition-colors text-sm">
               Free Industry Tools
             </Link>
           </div>

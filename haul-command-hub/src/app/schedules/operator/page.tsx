@@ -157,31 +157,37 @@ export default function OperatorStandingOrders() {
             const isDispatched = asgn.status === 'dispatched';
 
             return (
-              <div key={asgn.id} className={`border rounded-xl p-4 ${colors} transition-all`}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="text-center min-w-[60px]">
-                      <div className="text-accent font-black text-lg">{asgn.scheduled_date.split('-')[2]}</div>
-                      <div className="text-gray-500 text-[10px]">{new Date(asgn.scheduled_date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</div>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-sm">{info.title}</h3>
-                      <div className="text-gray-500 text-xs">{info.origin_jurisdiction} → {info.destination_jurisdiction} · {asgn.scheduled_time}</div>
-                    </div>
+              <div key={asgn.id} className={`border rounded-xl overflow-hidden ${colors} transition-all`}>
+                {/* Card content row */}
+                <div className="p-4 flex items-center gap-3">
+                  {/* Date block */}
+                  <div className="text-center min-w-[48px] flex-shrink-0">
+                    <div className="text-accent font-black text-lg leading-none">{asgn.scheduled_date.split('-')[2]}</div>
+                    <div className="text-gray-500 text-[9px] mt-0.5">{new Date(asgn.scheduled_date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short' })}</div>
                   </div>
-                  <div className="text-right flex items-center gap-4">
-                    <div>
-                      <div className="text-accent font-black text-lg">${asgn.operator_payout}</div>
-                      <div className="text-gray-600 text-[10px]">payout</div>
-                    </div>
-                    {isDispatched && (
-                      <div className="flex gap-2">
-                        <button className="bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-green-600">Accept</button>
-                        <button className="bg-white/5 text-gray-400 px-3 py-1.5 rounded-lg text-xs hover:text-white border border-white/10">Decline</button>
-                      </div>
-                    )}
+                  {/* Info */}
+                  <div className="flex-grow min-w-0">
+                    <h3 className="text-white font-bold text-sm truncate">{info.title}</h3>
+                    <div className="text-gray-500 text-[10px] mt-0.5 truncate">{info.origin_jurisdiction} → {info.destination_jurisdiction} · {asgn.scheduled_time}</div>
+                  </div>
+                  {/* Payout */}
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-accent font-black text-lg tabular-nums">${asgn.operator_payout}</div>
+                    <div className="text-gray-600 text-[9px]">payout</div>
                   </div>
                 </div>
+                {/* Full-width action row — never wraps */}
+                {isDispatched && (
+                  <div className="flex border-t border-white/[0.06]">
+                    <button className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-bold text-green-400 bg-green-500/5 hover:bg-green-500/10 active:bg-green-500/15 transition-colors">
+                      <span>✓</span> Accept
+                    </button>
+                    <div className="w-px bg-white/[0.06]" />
+                    <button className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 active:bg-white/10 transition-colors">
+                      <span>✕</span> Decline
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
