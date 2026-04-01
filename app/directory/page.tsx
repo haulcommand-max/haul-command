@@ -286,21 +286,10 @@ export default async function DirectoryPage() {
     ]
   };
 
-  const dynamicDirectoryJsonLd = {
-    ...DIRECTORY_JSONLD,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": String(total > 0 ? total : 4600000),
-      "bestRating": "5",
-      "worstRating": "1"
-    }
-  };
-
   return (
     <>
       <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dynamicDirectoryJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_JSONLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_FAQ_JSONLD) }} />
       <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Hero */}

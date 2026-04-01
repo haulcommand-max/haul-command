@@ -60,9 +60,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: rawCountry } = await params;
   const country = rawCountry.toLowerCase();
   const countryName = COUNTRY_NAMES[country] ?? country.toUpperCase();
+  
+  // High-context localization mapping for hreflang tags
+  const defaultLocale = country === 'us' ? 'en-US' : `en-${country.toUpperCase()}`;
+  
   return {
     title: `${countryName} Escort Operators | Haul Command`,
     description: `Find verified pilot car and heavy haul escort operators in ${countryName}. Browse all operators, filter by state/region, and contact directly.`,
+    alternates: {
+      canonical: `https://haulcommand.com/directory/${country}`,
+      languages: {
+        'en-US': 'https://haulcommand.com/directory/us',
+        'en-CA': 'https://haulcommand.com/directory/ca',
+        'en-GB': 'https://haulcommand.com/directory/gb',
+        'en-AU': 'https://haulcommand.com/directory/au',
+        [defaultLocale]: `https://haulcommand.com/directory/${country}`,
+      },
+    },
   };
 }
 
