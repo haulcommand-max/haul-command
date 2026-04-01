@@ -146,8 +146,8 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
-    { id: "djed", label: "Djed Stablecoin (DJED)", icon: "D" },
-    { id: "usda", label: "USDA Stablecoin (Cardano)", icon: "$" },
+    { id: "usdt_trc20", label: "USDT (Tron)", icon: "₮" },
+    { id: "usdc_erc20", label: "USDC (Ethereum)", icon: "$" },
     { id: "ada", label: "Cardano (ADA)", icon: "₳" },
     { id: "btc", label: "Bitcoin (BTC)", icon: "₿" },
   ];
@@ -191,9 +191,9 @@ function CryptoEscrowForm({
     <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-white font-bold text-sm">Authorize Crypto Escrow</p>
+          <p className="text-white font-bold text-sm">Fund Milestone Escrow</p>
           <p className="text-slate-400 text-xs mt-0.5">
-            ${amount} will be locked in smart contract until delivery.
+            ${amount} secured via Haul Command Settlement OS. Funds split by approved route milestones.
           </p>
         </div>
         <span className="text-xs font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded">
@@ -258,7 +258,7 @@ function CryptoEscrowForm({
       </div>
 
       <p className="text-slate-600 text-[10px] leading-relaxed">
-        Powered by NOWPayments / Haul Command Smart Contracts. Funds are locked and cannot be withdrawn until delivery validation. T+3 settlement. Full compliance with AML/KYC.
+        Powered by Haul Command Settlement OS. Funds are secured and rules-based. Instant payouts and milestone-based releases available upon verified delivery. Full compliance with AML/KYC.
       </p>
     </div>
   );
@@ -442,7 +442,7 @@ export function LoadBoardClient({
                         : "bg-slate-700/50 text-slate-400"
                     }`}
                   >
-                    {l.status === "ESCROW_HELD" ? "🔒 Escrow Held" : l.status}
+                    {l.status === "ESCROW_HELD" ? "✅ Verified Funds" : l.status}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
@@ -468,8 +468,8 @@ export function LoadBoardClient({
                       </Button>
                     </div>
                   ) : (
-                    <span className="text-slate-500 text-sm">
-                      {l.status === "ESCROW_HELD" ? "🔒 Secured" : "Closed"}
+                    <span className="text-slate-500 text-sm font-semibold flex items-center gap-1">
+                      {l.status === "ESCROW_HELD" ? "🛡️ Funded" : "Closed"}
                     </span>
                   )}
                 </TableCell>

@@ -42,10 +42,10 @@ const DEFAULT_PLAN: Plan = {
 const CRYPTO_COINS = [
   { code: 'ada', name: 'Cardano', symbol: '₳', color: '#0033AD', gradient: 'linear-gradient(135deg, #0033AD, #0052FF)' },
   { code: 'btc', name: 'Bitcoin', symbol: '₿', color: '#F7931A', gradient: 'linear-gradient(135deg, #F7931A, #E8850F)' },
-  { code: 'djed', name: 'Djed (Cardano Stablecoin)', symbol: 'D', color: '#111827', gradient: 'linear-gradient(135deg, #111827, #374151)' },
-  { code: 'usda', name: 'USDA (Cardano Stablecoin)', symbol: '$', color: '#16A34A', gradient: 'linear-gradient(135deg, #22C55E, #16A34A)' },
-  // Ethereum and Solana explicitly blocked per internal policy.
-  // ADA and BTC are accepted; DJED and USDA are preferred for stable escrows.
+  { code: 'usdc', name: 'USDC (Ethereum/Polygon)', symbol: '$', color: '#2775CA', gradient: 'linear-gradient(135deg, #2775CA, #1A5FA8)' },
+  { code: 'usdt', name: 'USDT (Tron/BSC)', symbol: '₮', color: '#26A17B', gradient: 'linear-gradient(135deg, #26A17B, #1B785B)' },
+  // ADA and BTC are accepted native plays.
+  // DJED and USDA are pending gateway liquidity verification before production enablement.
 ];
 
 export default function CryptoCheckoutModal({
