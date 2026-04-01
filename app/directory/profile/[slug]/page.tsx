@@ -19,11 +19,28 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const supabase = createClient();
-    const { data } = await supabase
+    let { data } = await supabase
         .from('directory_listings')
         .select('name, city, region_code, entity_type')
         .eq('slug', slug)
         .maybeSingle();
+
+    // Fallback to hc_global_operators if not in directory_listings
+    if (!data) {
+        const { data: globalData } = await supabase
+            .from('hc_global_operators')
+            .select('name, city, admin1_code, country_code, role_primary')
+            .or(`slug.eq.${slug},id.eq.${slug}`)
+            .maybeSingle();
+        if (globalData) {
+            data = {
+                name: globalData.name,
+                city: globalData.city,
+                region_code: globalData.admin1_code,
+                entity_type: globalData.role_primary || 'operator',
+            };
+        }
+    }
 
     const name = data?.name || slug.replace(/-/g, ' ');
     const location = [data?.city, data?.region_code].filter(Boolean).join(', ');
@@ -46,16 +63,37 @@ export default async function OperatorProfilePage({ params }: Props) {
         .maybeSingle();
 
     if (!operator) {
-        // Try finding by entity_id 
+        // Fallback 1: Try finding by entity_id in directory_listings
         const { data: byId } = await supabase
             .from('directory_listings')
             .select('*')
             .eq('entity_id', slug)
             .maybeSingle();
 
-        if (!byId) notFound();
-        // Re-render with found record
-        return renderProfile(byId);
+        if (byId) return renderProfile(byId);
+
+        // Fallback 2: Try hc_global_operators (directory main page uses this table)
+        // This prevents 404s when an operator is in hc_global_operators but not directory_listings
+        const { data: globalOp } = await supabase
+            .from('hc_global_operators')
+            .select('*')
+            .or(`slug.eq.${slug},id.eq.${slug}`)
+            .maybeSingle();
+
+        if (globalOp) {
+            // Normalize hc_global_operators columns to match directory_listings shape
+            const normalized = {
+                ...globalOp,
+                region_code: globalOp.admin1_code || globalOp.region_code,
+                rank_score: globalOp.confidence_score || globalOp.rank_score || 0,
+                entity_type: globalOp.role_primary || globalOp.entity_type || 'operator',
+                claim_status: globalOp.is_claimed ? 'claimed' : 'unclaimed',
+                entity_confidence_score: globalOp.confidence_score || 0,
+            };
+            return renderProfile(normalized);
+        }
+
+        notFound();
     }
 
     return renderProfile(operator);
