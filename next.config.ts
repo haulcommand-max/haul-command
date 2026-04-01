@@ -1,10 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    // ── Output ──────────────────────────────────────────────────────────────────
+    // ── Output ───────────────────────────────────────────────────────────────
     // Vercel uses its own builder. No output mode needed.
 
-    // ── Bundle Optimization ─────────────────────────────────────────────────────
+    // ── Bundle Optimization ───────────────────────────────────────────────
     // Fix: "Body exceeded 80000kb limit" — externalize heavy packages from
     // serverless function bundles so they're loaded from the layer instead.
     serverExternalPackages: [
@@ -25,10 +25,10 @@ const nextConfig: NextConfig = {
         ],
     },
 
-    // ── Performance ─────────────────────────────────────────────────────────────
+    // ── Performance ───────────────────────────────────────────────────────────
     reactStrictMode: true,
 
-    // ── Image optimization ───────────────────────────────────────────────────────
+    // ── Image optimization ──────────────────────────────────────────────────
     images: {
         // Keep optimization ON — Vercel handles this on free plan.
         unoptimized: false,
@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
         ],
     },
 
-    // ── Headers ─────────────────────────────────────────────────────────────────
+    // ── Headers ─────────────────────────────────────────────────────────────
     // Security headers applied at Next.js layer (also in vercel.json for CDN).
     async headers() {
         return [
@@ -75,7 +75,23 @@ const nextConfig: NextConfig = {
         ];
     },
 
-    // ── Redirects (SEO) ─────────────────────────────────────────────────────────
+    // ── Rewrites (Routing overrides) ───────────────────────────────────────────
+    // CRITICAL: app/[country]/page.tsx catch-all intercepts single-segment paths
+    // before route handlers in app/sitemap.xml/ and app/llms.txt/ can fire.
+    // These rewrites run BEFORE the catch-all, directing these paths to their
+    // correct route handlers.
+    async rewrites() {
+        return [
+            // sitemap.xml: rewrite root path to the route handler
+            // This bypasses [country] catch-all interception.
+            {
+                source: '/sitemap.xml',
+                destination: '/api/sitemap-xml',
+            },
+        ];
+    },
+
+    // ── Redirects (SEO) ──────────────────────────────────────────────────────────
     async redirects() {
         // US state full-name → abbreviation redirects for /directory/us/[state]
         const US_STATE_REDIRECTS = [
