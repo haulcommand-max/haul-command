@@ -1,15 +1,68 @@
 User-agent: *
 Allow: /
-
-# Block private/auth routes from all crawlers
-Disallow: /admin/
+Allow: /directory/
+Allow: /loads/
+Allow: /leaderboards/
+Allow: /tools/
+Allow: /broker/
+Allow: /corridors/
+Allow: /rates/
+Allow: /requirements/
+Allow: /escort-requirements/
+Allow: /near/
+Allow: /routes/
+Allow: /port/
+Allow: /border/
+Allow: /county/
+Allow: /industry/
+Allow: /corridor/
+Allow: /blog/
+Allow: /services/
+Allow: /compare/
+Allow: /emergency/
+Allow: /glossary/
+Allow: /pricing
+Allow: /regulations/
+Allow: /united-states/
+Allow: /canada/
 Disallow: /api/
-Disallow: /inbox/
-Disallow: /dispatch/
-Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /dev/
+Disallow: /escrow/
 Disallow: /settings/
-Disallow: /login
+Disallow: /onboarding/
+Disallow: /inbox/
+Disallow: /auth/
+Disallow: /_next/
+Disallow: /dashboard/
+Disallow: /dispatch/
 Disallow: /claim/edit/
 
-# Sitemap location
-Sitemap: https://haulcommand.com/sitemap.xml
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://www.haulcommand.com/sitemap.xml
+Sitemap: https://www.haulcommand.com/sitemap-seo.xml
+Sitemap: https://www.haulcommand.com/sitemap-US.xml
+Sitemap: https://www.haulcommand.com/sitemap-CA.xml
+Sitemap: https://www.haulcommand.com/sitemap-corridors.xml
+Sitemap: https://www.haulcommand.com/sitemap-glossary.xml
+Sitemap: https://www.haulcommand.com/sitemap-pilot-car-city.xml
+
+# Haul Command — The Operating System for Heavy Haul
+# https://www.haulcommand.com
