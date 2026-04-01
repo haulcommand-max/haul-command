@@ -144,6 +144,7 @@ export async function checkCryptoLegality(countryCode: string) {
             allowed: true,
             restricted: true,
             stablecoin_only: data.stablecoin_ok && !data.btc_ok,
+            ada_ok: data.ada_ok,
             requires_kyc: data.requires_kyc,
             notes: data.notes,
             regulatory_body: data.regulatory_body,
@@ -156,6 +157,7 @@ export async function checkCryptoLegality(countryCode: string) {
         stablecoin_ok: data.stablecoin_ok,
         btc_ok: data.btc_ok,
         eth_ok: data.eth_ok,
+        ada_ok: data.ada_ok,
         requires_kyc: data.requires_kyc,
         notes: data.notes,
     };
