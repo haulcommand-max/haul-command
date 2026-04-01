@@ -263,19 +263,19 @@ export default function InboxContainer() {
                         {timeAgo(msg.created_at)}
                       </p>
                       {isOffer && !isMe && (
-                        <div className="flex gap-2 mt-2">
+                        <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10">
                           <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'accept')}
-                            className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-lg"
-                          >\u2713 Accept</button>
+                            className="flex-1 min-w-[85px] flex items-center justify-center gap-1.5 px-2 py-2.5 bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 transition-colors text-green-400 font-bold text-[11px] uppercase tracking-widest rounded-xl"
+                          >✓ Accept</button>
                           <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'counter')}
-                            className="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg"
-                          >Counter</button>
+                            className="flex-1 min-w-[85px] flex items-center justify-center gap-1.5 px-2 py-2.5 bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 transition-colors text-blue-400 font-bold text-[11px] uppercase tracking-widest rounded-xl"
+                          >↺ Counter</button>
                           <button aria-label="Interactive Button"
                             onClick={() => respondToOffer(msg.id, 'decline')}
-                            className="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg"
-                          >Decline</button>
+                            className="flex-1 min-w-[85px] flex items-center justify-center gap-1.5 px-2 py-2.5 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition-colors text-red-400 font-bold text-[11px] uppercase tracking-widest rounded-xl"
+                          >✕ Decline</button>
                         </div>
                       )}
                     </div>
