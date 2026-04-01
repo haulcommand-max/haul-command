@@ -146,10 +146,10 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
-    { id: "ada", label: "Cardano (ADA) - Preferred", icon: "₳" },
-    { id: "btc", label: "Bitcoin (BTC) - Preferred", icon: "₿" },
-    { id: "usdt_trx", label: "USDT (Tron/TRC20)", icon: "₮" },
-    { id: "usdt_bsc", label: "USDT (BSC/BEP20)", icon: "₮" },
+    { id: "djed", label: "Djed Stablecoin (DJED)", icon: "D" },
+    { id: "usda", label: "USDA Stablecoin (Cardano)", icon: "$" },
+    { id: "ada", label: "Cardano (ADA)", icon: "₳" },
+    { id: "btc", label: "Bitcoin (BTC)", icon: "₿" },
   ];
 
   const [acknowledgesSlippage, setAcknowledgesSlippage] = useState(false);

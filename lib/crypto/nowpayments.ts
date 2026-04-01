@@ -156,7 +156,6 @@ export async function checkCryptoLegality(countryCode: string) {
         restricted: false,
         stablecoin_ok: data.stablecoin_ok,
         btc_ok: data.btc_ok,
-        eth_ok: data.eth_ok,
         ada_ok: data.ada_ok,
         requires_kyc: data.requires_kyc,
         notes: data.notes,

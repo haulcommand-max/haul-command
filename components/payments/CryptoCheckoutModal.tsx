@@ -42,8 +42,10 @@ const DEFAULT_PLAN: Plan = {
 const CRYPTO_COINS = [
   { code: 'ada', name: 'Cardano', symbol: '₳', color: '#0033AD', gradient: 'linear-gradient(135deg, #0033AD, #0052FF)' },
   { code: 'btc', name: 'Bitcoin', symbol: '₿', color: '#F7931A', gradient: 'linear-gradient(135deg, #F7931A, #E8850F)' },
-  { code: 'usdc', name: 'USD Coin', symbol: '$', color: '#2775CA', gradient: 'linear-gradient(135deg, #2775CA, #1A5FA8)' },
-  // Solana and Ethereum explicitly blocked per internal policy
+  { code: 'djed', name: 'Djed (Cardano Stablecoin)', symbol: 'D', color: '#111827', gradient: 'linear-gradient(135deg, #111827, #374151)' },
+  { code: 'usda', name: 'USDA (Cardano Stablecoin)', symbol: '$', color: '#16A34A', gradient: 'linear-gradient(135deg, #22C55E, #16A34A)' },
+  // Ethereum and Solana explicitly blocked per internal policy.
+  // ADA and BTC are accepted; DJED and USDA are preferred for stable escrows.
 ];
 
 export default function CryptoCheckoutModal({
