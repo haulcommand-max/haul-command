@@ -103,9 +103,9 @@ export function DirectorySearchList({
               <p className="text-slate-400 text-sm mt-2 mb-4 leading-relaxed">
                 To prevent data scraping and protect our operator network, you must login to view all 1.5M+ unmasked profiles, phone numbers, and live availability schedules.
               </p>
-              <Button asChild className="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold">
-                <Link href="/auth/login">Login to Unlock Directory</Link>
-              </Button>
+              <Link href="/auth/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold mt-4">
+                Login to Unlock Directory
+              </Link>
             </div>
           </div>
         )}

@@ -146,10 +146,10 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
+    { id: "ada", label: "Cardano (ADA) - Preferred", icon: "₳" },
+    { id: "btc", label: "Bitcoin (BTC) - Preferred", icon: "₿" },
     { id: "usdt_trx", label: "USDT (Tron/TRC20)", icon: "₮" },
     { id: "usdt_bsc", label: "USDT (BSC/BEP20)", icon: "₮" },
-    // Bitcoin & volatile assets removed. Escrow requires stablecoins to protect brokers/operators from slippage and market crashes.
-    // Solana explicitly blocked per internal policy.
   ];
 
   const [acknowledgesSlippage, setAcknowledgesSlippage] = useState(false);
