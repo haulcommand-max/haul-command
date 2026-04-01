@@ -4,6 +4,7 @@ import { SEO_SERVICES } from "@/lib/seo-countries";
 import { INFRASTRUCTURE_TYPES } from "@/lib/hc-loaders/infrastructure";
 import type { MetadataRoute } from "next";
 import { getAllTerms } from "@/lib/glossary";
+import blogPosts from "@/data/blog_posts.json";
 
 export const dynamic = "force-dynamic";
 
@@ -112,7 +113,39 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
       { url: `${siteUrl}/rates/${c.slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     ]);
 
-    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes];
+    // Blog article routes from static JSON
+    const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post: { slug: string; date: string }) => ({
+      url: `${siteUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
+
+    // Blog articles from Supabase
+    let supabaseBlogRoutes: MetadataRoute.Sitemap = [];
+    try {
+      const supabase = supabaseServer();
+      const { data: articles } = await supabase
+        .from('hc_blog_articles')
+        .select('slug, updated_at')
+        .eq('status', 'published')
+        .order('updated_at', { ascending: false })
+        .limit(500);
+      if (articles) {
+        supabaseBlogRoutes = articles.map(a => ({
+          url: `${siteUrl}/blog/${a.slug}`,
+          lastModified: a.updated_at ? new Date(a.updated_at) : now,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        }));
+      }
+    } catch { /* Supabase unavailable */ }
+
+    // Deduplicate blog slugs (Supabase takes precedence)
+    const seenBlogSlugs = new Set(supabaseBlogRoutes.map(r => r.url));
+    const dedupedStaticBlog = blogRoutes.filter(r => !seenBlogSlugs.has(r.url));
+
+    return [...staticRoutes, ...liveRegionRoutes, ...countryRoutes, ...supabaseBlogRoutes, ...dedupedStaticBlog];
   }
 
   // ─── ID 1: Service × Country Matrix ───

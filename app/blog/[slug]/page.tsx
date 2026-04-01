@@ -15,6 +15,8 @@ const CostCalculator = dynamic(() => import('@/components/blog/CostCalculator'))
 const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'));
 const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'));
 const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'));
+const BridgeClearanceTool = dynamic(() => import('@/components/blog/BridgeClearanceTool'));
+const AxleWeightTool = dynamic(() => import('@/components/blog/AxleWeightTool'));
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -75,14 +77,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: lastModified,
       authors: ['Haul Command Intelligence Unit'],
       url: `https://haulcommand.com/blog/${post.slug}`,
+      images: [
+        {
+          url: post.cover_image || 'https://haulcommand.com/brand/default-og.png',
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      locale: 'en_US',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.meta_description,
+      images: [post.cover_image || 'https://haulcommand.com/brand/default-og.png'],
     },
     alternates: {
       canonical: `https://haulcommand.com/blog/${post.slug}`,
+      languages: {
+        'en-US': `https://haulcommand.com/blog/${post.slug}`,
+        'en-GB': `https://haulcommand.com/en-gb/blog/${post.slug}`,
+        'en-AU': `https://haulcommand.com/en-au/blog/${post.slug}`,
+        'es-MX': `https://haulcommand.com/es-mx/blog/${post.slug}`,
+        'pt-BR': `https://haulcommand.com/pt-br/blog/${post.slug}`,
+        'de-DE': `https://haulcommand.com/de-de/blog/${post.slug}`,
+      },
     },
   };
 }
@@ -91,7 +111,7 @@ export const revalidate = 86400; // ISR: revalidate every 24 hours
 
 /* ── Content renderer with tool injection ── */
 function RenderContentWithTools({ html }: { html: string }) {
-  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\]|\[INJECT_THRESHOLD_TABLE\])/g);
+  const parts = html.split(/(\[INJECT_COST_CALCULATOR\]|\[INJECT_RECIPROCITY_MAP\]|\[INJECT_THRESHOLD_TABLE\]|\[INJECT_BRIDGE_CLEARANCE\]|\[INJECT_AXLE_WEIGHT_TOOL\])/g);
   return (
     <>
       {parts.map((part, i) => {
@@ -108,6 +128,20 @@ function RenderContentWithTools({ html }: { html: string }) {
             <div key={i} className="my-12 px-6 py-8 bg-black/40 border border-blue-400/20 rounded-2xl shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 p-2 text-xs font-bold text-blue-400/50 uppercase">Reciprocity Zone Engine</div>
               <ReciprocityMap />
+            </div>
+          );
+        }
+        if (part === '[INJECT_BRIDGE_CLEARANCE]') {
+          return (
+            <div key={i} className="my-12">
+              <BridgeClearanceTool />
+            </div>
+          );
+        }
+        if (part === '[INJECT_AXLE_WEIGHT_TOOL]') {
+          return (
+            <div key={i} className="my-12">
+              <AxleWeightTool />
             </div>
           );
         }
@@ -195,6 +229,15 @@ export default async function BlogArticlePage({ params }: Props) {
         url: 'https://haulcommand.com/brand/logo-wordmark.png',
       },
     },
+    datePublished: post.published_at,
+    dateModified: lastModified,
+    image: {
+      '@type': 'ImageObject',
+      url: post.cover_image || 'https://haulcommand.com/brand/default-og.png',
+      caption: post.title,
+      width: 1200,
+      height: 630,
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Haul Command',
@@ -204,8 +247,6 @@ export default async function BlogArticlePage({ params }: Props) {
         url: 'https://haulcommand.com/brand/logo-wordmark.png',
       },
     },
-    datePublished: post.published_at,
-    dateModified: lastModified,
     url: `https://haulcommand.com/blog/${post.slug}`,
     mainEntityOfPage: `https://haulcommand.com/blog/${post.slug}`,
     isAccessibleForFree: true,
