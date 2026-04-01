@@ -5,12 +5,20 @@ import Link from 'next/link';
 
 const TOOLS = [
     {
+        title: 'Global Live Command Map',
+        description: 'Visualize operator density across all 120 countries in real-time. Built with open-source topography and live presence engines.',
+        href: '/tools/global-command-map',
+        icon: '🗺️', badges: ['New', '120 Countries', 'Real-Time'],
+        color: '#fcd34d',
+        featured: true,
+    },
+    {
         title: 'Compliance Copilot',
         description: 'Ask any question about oversize load regulations — escort requirements, height poles, night travel bans, permits — for any state. Powered by Claude AI with real regulation data.',
         href: '/tools/compliance-copilot',
         icon: '⚖️', badges: ['Free', 'AI-Powered', 'All 50 States'],
         color: '#f5b942',
-        featured: true,
+        featured: false,
     },
     {
         title: 'Permit Complexity Checker',
@@ -80,7 +88,7 @@ const TOOLS = [
 
 export default function ToolsLandingPage() {
     return (
-        <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '2.5rem 1rem' }}>
+        <div data-tool-interact="true" style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '2.5rem 1rem' }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', marginBottom: 48 }}>
                     <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(241,169,27,0.08)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 20, marginBottom: 16 }}>

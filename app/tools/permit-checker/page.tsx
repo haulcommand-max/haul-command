@@ -103,7 +103,7 @@ export default function PermitCheckerPage() {
                                 ].map(f => (
                                     <div key={f.key}>
                                         <label style={{ display: 'block', fontSize: 11, color: '#9ca3af', marginBottom: 6, fontWeight: 600 }}>{f.label}</label>
-                                        <input
+                                        <input data-tool-interact
                                             type="number"
                                             value={f.val}
                                             onChange={e => setForm(p => ({ ...p, [f.key]: parseFloat(e.target.value) || 0 }))}
@@ -123,7 +123,7 @@ export default function PermitCheckerPage() {
                                 {US_STATES.map(st => {
                                     const active = form.states_crossed.includes(st);
                                     return (
-                                        <button aria-label="Interactive Button"
+                                        <button aria-label="Interactive Button" data-tool-interact
                                             key={st}
                                             onClick={() => toggleState(st)}
                                             style={{
@@ -140,7 +140,7 @@ export default function PermitCheckerPage() {
                         </div>
 
                         {/* Calculate Button */}
-                        <button aria-label="Interactive Button"
+                        <button aria-label="Interactive Button" data-tool-interact
                             onClick={calculate}
                             disabled={calculating || form.states_crossed.length === 0}
                             style={{

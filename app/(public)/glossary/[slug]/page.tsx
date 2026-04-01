@@ -1,285 +1,197 @@
-import { Metadata } from 'next';
+import { createClient } from '@/utils/supabase/server';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
-import { getGlossaryAnnotationMap, getGlossaryTerm, getTermUsages } from '@/lib/glossary/api';
-import { ChevronRight, ExternalLink, Settings, Shield, BookOpen, AlertTriangle } from 'lucide-react';
-import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { Fragment } from 'react';
+import { Metadata } from 'next';
+import SaveButton from '@/components/capture/SaveButton';
 
-interface Props {
-    params: Promise<{ slug: string }>;
-}
+export const revalidate = 86400; // Cache for 24h
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params;
+// Dynamic metadata generation for entity SEO
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const slug = (await params).slug;
+    const supabase = await createClient();
     
-    // Resolve canonical slug for metadata
-    const annotationMap = await getGlossaryAnnotationMap();
-    const mapSlug = annotationMap[slug.toLowerCase()];
-    const canonicalSlug = mapSlug ?? slug;
-
-    const term = await getGlossaryTerm(canonicalSlug);
-    if (!term) return { title: 'Term Not Found | Haul Command Glossary' };
+    // Attempt canonical fetch
+    const { data } = await supabase
+        .from('glossary_public')
+        .select('term, short_definition, slug')
+        .eq('slug', slug)
+        .single();
+        
+    if (!data) {
+        return { title: 'Term Not Found | Haul Command' };
+    }
 
     return {
-        title: `${term.term} (${term.synonyms?.[0] || 'Definition'}) | Haul Command Glossary`,
-        description: term.short_definition || `Read the official definition of ${term.term} and related heavy haul terminology in the Haul Command Glossary.`,
-        alternates: { canonical: `/glossary/${canonicalSlug}` },
-        robots: 'index,follow',
-        openGraph: {
-            title: `${term.term} | Haul Command Glossary`,
-            description: term.short_definition,
-        },
+        title: `${data.term} Definition (Heavy Haul & Pilot Car) | Haul Command Glossary`,
+        description: data.short_definition,
+        alternates: {
+            canonical: `https://haulcommand.com/glossary/${data.slug}`,
+        }
     };
 }
 
-export default async function GlossaryTermPage({ params }: Props) {
-    const { slug } = await params;
+export default async function GlossaryTermPage({ params }: { params: { slug: string } }) {
+    const slug = (await params).slug;
+    const supabase = await createClient();
 
-    // Check canonical redirect
-    const annotationMap = await getGlossaryAnnotationMap();
-    const mapSlug = annotationMap[slug.toLowerCase()];
-    if (mapSlug && mapSlug !== slug.toLowerCase()) {
-        redirect(`/glossary/${mapSlug}`);
+    // 1. Fetch exactly by slug OR if it exists as a synonym
+    const { data: terms, error } = await supabase
+        .from('glossary_public')
+        .select('*')
+        .or(`slug.eq."${slug}",synonyms.cs.'{"${slug}"}'`)
+        .limit(1);
+
+    if (error || !terms || terms.length === 0) {
+        notFound();
     }
 
-    const term = await getGlossaryTerm(slug);
-    if (!term) notFound();
+    const term = terms[0];
 
-    // Usage mentions
-    const usages = await getTermUsages(term.slug, 5);
-
-    // Dynamic blocks logic
-    const isEscortOperations = term.category === 'escort_operations' || term.slug.includes('pilot-car') || term.slug.includes('escort');
-
-    // Schema
-    const articleSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: `${term.term} Definition & Guide`,
-        description: term.short_definition,
-        publisher: { '@type': 'Organization', name: 'Haul Command' },
-        url: `https://haulcommand.com/glossary/${term.slug}`,
-    };
-
-    const faqItems = [];
-    faqItems.push({
-        '@type': 'Question',
-        name: `What is a ${term.term}?`,
-        acceptedAnswer: { '@type': 'Answer', text: term.short_definition }
-    });
-    
-    if (isEscortOperations) {
-        faqItems.push({
-            '@type': 'Question',
-            name: `What is the difference between federal and state rules for ${term.term}s?`,
-            acceptedAnswer: { '@type': 'Answer', text: `Federal law leaves specific size and weight triggers for escort vehicles to individual states. As a result, width and height triggers, equipment requirements, and certification rules vary widely.` }
-        });
+    // 2. Canonical Routing Logic: If user reached via synonym alias, 301 Redirect to canonical
+    if (term.slug !== slug) {
+        redirect(`/glossary/${term.slug}`);
     }
-
-    const faqSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqItems
-    };
 
     return (
-        <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+        <Fragment>
+            {/* INJECT JSON-LD SCHEMA */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "DefinedTerm",
+                    "termCode": term.slug,
+                    "name": term.term,
+                    "description": term.short_definition,
+                    "inDefinedTermSet": {
+                        "@type": "DefinedTermSet",
+                        "name": "Haul Command Heavy Haul Glossary",
+                        "url": "https://haulcommand.com/glossary"
+                    }
+                })
+            }} />
 
-            <main style={{ minHeight: '100vh', background: '#0A0A0A', color: '#fff', fontFamily: "'Inter', system-ui" }}>
-                <div style={{ maxWidth: '960px', margin: '0 auto', padding: '2rem 1rem' }}>
+            {/* If FAQ schema eligible, inject FAQ */}
+            {term.schema_faq_eligible && (
+                <script type="application/ld+json" dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        "mainEntity": [{
+                            "@type": "Question",
+                            "name": `What does ${term.term} mean in heavy haul?`,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": term.short_definition
+                            }
+                        }]
+                    })
+                }} />
+            )}
+
+            <div className="min-h-screen bg-[#0B0B0C] text-white selection:bg-blue-500/30">
+                <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     
-                    {/* Breadcrumbs */}
-                    <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#6b7280', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Home</Link>
-                        <ChevronRight style={{ width: 12, height: 12 }} />
-                        <Link href="/glossary" style={{ color: '#8fa3b8', textDecoration: 'none' }}>Glossary</Link>
-                        {term.category && (
-                            <>
-                                <ChevronRight style={{ width: 12, height: 12 }} />
-                                <Link href="/glossary" style={{ color: '#8fa3b8', textDecoration: 'none', textTransform: 'capitalize' }}>
-                                    {term.category.replace(/_/g, ' ')}
-                                </Link>
-                            </>
-                        )}
-                        <ChevronRight style={{ width: 12, height: 12 }} />
-                        <span style={{ color: '#C6923A', fontWeight: 600 }}>{term.term}</span>
+                    {/* BREADCRUMBS */}
+                    <nav className="text-sm font-medium text-gray-500 mb-8 flex items-center gap-2">
+                        <Link aria-label="Navigation Link" href="/glossary" className="hover:text-white transition-colors">Glossary</Link>
+                        <span>/</span>
+                        <Link aria-label="Navigation Link" href={`/glossary#${term.category || ''}`} className="hover:text-white transition-colors capitalize">
+                            {term.category || 'Terms'}
+                        </Link>
+                        <span>/</span>
+                        <span className="text-blue-400">{term.term}</span>
                     </nav>
 
-                    {/* Header */}
-                    <header style={{ marginBottom: '2.5rem' }}>
-                        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 1rem 0', color: '#f9fafb', letterSpacing: '-0.02em' }}>
-                            {term.term}
-                        </h1>
-                        <p style={{ fontSize: '1.2rem', color: '#d1d5db', lineHeight: 1.6, maxWidth: '800px', margin: 0 }}>
+                    {/* HERO DEFINITION */}
+                    <div className="bg-[#121214] border border-white/10 rounded-2xl p-8 mb-8 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-8 opacity-5">
+                            <span className="font-serif text-9xl">“</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 mb-4">
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                                {term.term}
+                            </h1>
+                            <SaveButton entityType="glossary_topic" entityId={term.slug} entityLabel={term.term} variant="pill" />
+                            {term.acronyms && term.acronyms.length > 0 && (
+                                <span className="bg-white/10 text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
+                                    {term.acronyms.join(', ')}
+                                </span>
+                            )}
+                        </div>
+
+                        <p className="text-xl text-gray-300 leading-relaxed font-medium">
                             {term.short_definition}
                         </p>
-                    </header>
-
-                    {/* Term Meta Grid */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
                         
-                        {/* Synonyms & Acronyms */}
-                        {(term.synonyms?.length > 0 || term.acronyms?.length > 0) && (
-                            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '1.5rem' }}>
-                                <h3 style={{ fontSize: '0.9rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
-                                    Also Known As
-                                </h3>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {[...(term.synonyms || []), ...(term.acronyms || [])].map((alias, i) => (
-                                        <span key={i} style={{ padding: '4px 12px', background: 'rgba(56,189,248,0.1)', color: '#38bdf8', borderRadius: '4px', fontSize: '13px', fontWeight: 500 }}>
-                                            {alias}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Regions */}
-                        {term.applicable_countries?.length > 0 && (
-                            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '1.5rem' }}>
-                                <h3 style={{ fontSize: '0.9rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
-                                    Applicable Regions
-                                </h3>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {term.applicable_countries.slice(0, 8).map(cc => (
-                                        <Link key={cc} href={`/glossary/country/${cc.toLowerCase()}`} style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.05)', color: '#d1d5db', borderRadius: '4px', fontSize: '13px', textDecoration: 'none' }}>
-                                            {cc}
-                                        </Link>
-                                    ))}
-                                    {term.applicable_countries.length > 8 && (
-                                        <span style={{ fontSize: '13px', color: '#6b7280', alignSelf: 'center' }}>+{term.applicable_countries.length - 8} more</span>
-                                    )}
-                                </div>
+                        {/* Synonyms / Aliases */}
+                        {term.synonyms && term.synonyms.length > 0 && (
+                            <div className="mt-6 pt-6 border-t border-white/5 flex gap-2 items-center flex-wrap">
+                                <span className="text-sm text-gray-500">Also known as:</span>
+                                {term.synonyms.map((syn: string) => (
+                                    <span key={syn} className="text-sm text-gray-400 bg-black/40 px-3 py-1 rounded-full border border-white/5">
+                                        {syn}
+                                    </span>
+                                ))}
                             </div>
                         )}
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '2rem', alignItems: 'start' }}>
-                        
-                        {/* Main Content Area */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* MAIN CONTENT AREA */}
+                        <div className="md:col-span-2 space-y-8">
                             
-                            {/* Deep Definition */}
+                            {/* Further Details / Long Definition */}
                             {term.long_definition && (
-                                <section>
-                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f9fafb', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <BookOpen style={{ color: '#38bdf8' }} size={24} /> Delving Deeper into {term.term}
-                                    </h2>
-                                    <div style={{ fontSize: '1rem', color: '#a1a1aa', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: term.long_definition }} />
+                                <section className="prose prose-invert max-w-none">
+                                    <h2 className="text-2xl font-bold border-b border-white/10 pb-2 mb-4">Expanded Meaning</h2>
+                                    <div className="text-gray-300 leading-7 whitespace-pre-wrap">{term.long_definition}</div>
                                 </section>
                             )}
 
-                            {/* Dynamic: State vs Federal Differences for Escort Operations */}
-                            {isEscortOperations && (
-                                <section style={{ background: 'rgba(198,146,58,0.05)', border: '1px solid rgba(198,146,58,0.2)', borderRadius: '12px', padding: '1.5rem', borderLeft: '4px solid #C6923A' }}>
-                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#f9fafb', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Shield style={{ color: '#C6923A' }} size={20} /> Federal vs. State Jurisdictions
-                                    </h2>
-                                    <p style={{ color: '#d1d5db', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1rem' }}>
-                                        In the United States, federal law does not mandate specific size triggers for required escort vehicles. Instead, individual states regulate width, height, and length thresholds independently.
-                                    </p>
-                                    <ul style={{ color: '#a1a1aa', fontSize: '0.9rem', paddingLeft: '1.5rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                                        <li><strong>Width triggers</strong> typically start between 8'6" and 12'0" depending on the state and route class.</li>
-                                        <li><strong>Height pole requirements</strong> are strictly enforced and vary per state structure clearances.</li>
-                                        <li><strong>Certification rules</strong>: Some states issue cross-honored certifications, while others (like NY and FL) dictate specialized local testing.</li>
-                                    </ul>
-                                    <Link href="/tools/state-requirements" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', color: '#C6923A', fontWeight: 600, textDecoration: 'none' }}>
-                                        Use our Escort Requirement Finder to check exact state rules <ChevronRight size={16} />
-                                    </Link>
+                            {/* Why It Matters */}
+                            {term.why_it_matters && (
+                                <section className="bg-blue-900/10 border border-blue-500/20 rounded-xl p-6">
+                                    <h3 className="text-xl font-bold text-blue-400 mb-3 flex items-center gap-2">
+                                        Why It Matters
+                                    </h3>
+                                    <p className="text-gray-300 leading-relaxed">{term.why_it_matters}</p>
                                 </section>
                             )}
-
-                            {/* Dynamic: In the field / Operations context */}
-                            {isEscortOperations && (
-                                <section>
-                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f9fafb', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Settings style={{ color: '#10b981' }} size={24} /> In the Field: How this works
-                                    </h2>
-                                    <p style={{ color: '#a1a1aa', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                        During a transport operation, escort vehicles take active roles communicating hazard proximity and controlling traffic flow. For example:
+                            
+                            {/* Haul Command Directory Linker */}
+                            {term.surface_categories && term.surface_categories.length > 0 && (
+                                <section className="bg-gradient-to-r from-[#18181B] to-[#121214] border border-white/10 rounded-xl p-6 relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay"></div>
+                                    <h3 className="text-xl font-bold text-white mb-2 relative z-10">Find Verified Professionals</h3>
+                                    <p className="text-sm text-gray-400 mb-4 relative z-10">
+                                        Haul Command connects you with {term.term} experts in your area.
                                     </p>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.25rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                            <h4 style={{ margin: '0 0 8px', color: '#10b981', fontSize: '0.95rem' }}>Lead Escorts</h4>
-                                            <p style={{ margin: 0, fontSize: '0.85rem', color: '#9ca3af', lineHeight: 1.5 }}>Observe oncoming traffic, clear intersections, and communicate hazard proximity (like low bridges using a height pole) heavily utilizing CB radio.</p>
-                                        </div>
-                                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.25rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                            <h4 style={{ margin: '0 0 8px', color: '#38bdf8', fontSize: '0.95rem' }}>Chase Escorts</h4>
-                                            <p style={{ margin: 0, fontSize: '0.85rem', color: '#9ca3af', lineHeight: 1.5 }}>Prevent unsafe overtaking by civilian traffic, monitor rear load shift, and safely control lane-change maneuvers via radio coordination.</p>
-                                        </div>
+                                    <div className="relative z-10">
+                                        <Link aria-label="Navigation Link" href={`/directory?q=${term.surface_categories[0]}`} className="inline-flex items-center justify-center bg-white text-black font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">
+                                            Search Directory →
+                                        </Link>
                                     </div>
                                 </section>
                             )}
-                            
-                            {/* Ad Space */}
-                            <NativeAdCard surface="glossary_bottom" placementId="glossary-term-inline" variant="inline" />
 
-                            {/* Errors / Common Mistakes */}
-                            {term.common_mistakes && (
-                                <section style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', padding: '1.5rem' }}>
-                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#f87171', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <AlertTriangle size={20} /> Common Misconceptions
-                                    </h2>
-                                    <p style={{ color: '#d1d5db', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
-                                        {term.common_mistakes}
-                                    </p>
-                                </section>
-                            )}
                         </div>
 
-                        {/* Sidebar */}
-                        <aside style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        {/* SIDEBAR */}
+                        <aside className="space-y-6">
                             
-                            {/* Tools & Services Block */}
-                            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', overflow: 'hidden' }}>
-                                <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#fff' }}>Haul Command Tools</h3>
-                                </div>
-                                <div style={{ padding: '0.5rem' }}>
-                                    {[
-                                        { title: 'Permit Checker', href: '/tools/permit-checker', desc: 'Verify required state permits.' },
-                                        { title: 'Escort Rules Tool', href: '/tools/state-requirements', desc: 'Look up state thresholds.' },
-                                        { title: 'Rate Estimator', href: '/tools/rate-lookup', desc: 'Predict transport costs.' },
-                                        { title: 'Broker Verify', href: '/brokers', desc: 'Check freight broker reps.' },
-                                    ].map(tool => (
-                                        <Link key={tool.title} href={tool.href} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderRadius: '6px', color: '#d1d5db', textDecoration: 'none', transition: 'background 0.2s' }} className="hover:bg-white/5 group">
-                                            <div>
-                                                <div style={{ fontWeight: 500, color: '#38bdf8', fontSize: '0.9rem' }}>{tool.title}</div>
-                                                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{tool.desc}</div>
-                                            </div>
-                                            <ExternalLink size={14} className="opacity-50 group-hover:opacity-100 group-hover:text-blue-400" />
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Internal Linking / Conversion CTA */}
-                            {isEscortOperations && (
-                                <div style={{ background: 'linear-gradient(135deg, rgba(8,145,178,0.2) 0%, rgba(3,105,161,0.2) 100%)', border: '1px solid rgba(14,165,233,0.3)', borderRadius: '12px', padding: '1.5rem' }}>
-                                    <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 700, color: '#f0f9ff' }}>Find Certified Operators</h3>
-                                    <p style={{ margin: '0 0 1.5rem', fontSize: '0.85rem', color: '#bae6fd', lineHeight: 1.5 }}>
-                                        Source insured and experienced pilot car operators instantly through the Haul Command Directory.
-                                    </p>
-                                    <Link href="/directory" style={{ display: 'block', textAlign: 'center', width: '100%', padding: '0.75rem 1rem', background: '#0284c7', color: '#fff', fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px', textDecoration: 'none' }}>
-                                        Search the Directory →
-                                    </Link>
-                                    <Link href="/quote" style={{ display: 'block', textAlign: 'center', width: '100%', padding: '0.75rem 1rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px', textDecoration: 'none', marginTop: '8px' }}>
-                                        Get a Free Quote
-                                    </Link>
-                                </div>
-                            )}
-
-                            {/* Contextual Usage from Codebase */}
-                            {usages.length > 0 && (
-                                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', padding: '1.5rem' }}>
-                                    <h3 style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Where this is used</h3>
-                                    <ul style={{ margin: 0, paddingLeft: '1.2rem', color: '#a1a1aa', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        {usages.map((u, i) => (
-                                            <li key={i}>
-                                                <Link href={u.page_path} style={{ color: '#38bdf8', textDecoration: 'none' }}>
-                                                    {u.page_type || u.page_path.split('/').pop() || 'Page'}
+                            {/* TOOLS WIDGET */}
+                            {term.related_tools && term.related_tools.length > 0 && (
+                                <div className="bg-[#121214] border border-white/10 rounded-xl p-5">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">Recommended Tools</h3>
+                                    <ul className="space-y-3">
+                                        {term.related_tools.map((tool: string) => (
+                                            <li key={tool}>
+                                                <Link aria-label="Navigation Link" href={`/tools/${tool}`} className="flex items-center justify-between text-blue-400 hover:text-blue-300 text-sm font-medium">
+                                                    Open {tool.replace('-', ' ')}
+                                                    <span>→</span>
                                                 </Link>
                                             </li>
                                         ))}
@@ -287,30 +199,61 @@ export default async function GlossaryTermPage({ params }: Props) {
                                 </div>
                             )}
 
-                            {/* Market Resources — Directory + Rates links */}
-                            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '1.5rem' }}>
-                                <h3 style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Market Resources</h3>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    {[
-                                        { href: '/directory/us/tx', label: 'Texas Pilot Cars' },
-                                        { href: '/directory/us/fl', label: 'Florida Pilot Cars' },
-                                        { href: '/directory/us/ca', label: 'California Pilot Cars' },
-                                        { href: '/directory/us/la', label: 'Louisiana Pilot Cars' },
-                                        { href: '/rates/tx/pilot-car-cost', label: 'Texas Rate Guide' },
-                                        { href: '/rates/fl/pilot-car-cost', label: 'Florida Rate Guide' },
-                                    ].map(l => (
-                                        <Link key={l.href} href={l.href} style={{ fontSize: '0.85rem', color: '#C6923A', textDecoration: 'none', fontWeight: 500 }}
-                                            className="hover:underline">
-                                            {l.label} →
-                                        </Link>
-                                    ))}
+                            {/* RELATED REGULATIONS & COUNTRIES */}
+                            {((term.applicable_countries && term.applicable_countries.length > 0) || (term.related_rules && term.related_rules.length > 0)) && (
+                                <div className="bg-[#121214] border border-white/10 rounded-xl p-5">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">Jurisdiction & Rules</h3>
+                                    
+                                    {term.applicable_countries && term.applicable_countries.length > 0 && (
+                                        <div className="mb-4">
+                                            <span className="text-xs text-gray-500 uppercase font-bold tracking-wider block mb-2">Applies In</span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {term.applicable_countries.map((c: string) => (
+                                                    <span key={c} className="text-xs px-2 py-1 bg-white/5 border border-white/10 rounded text-gray-300">{c}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {term.related_rules && term.related_rules.length > 0 && (
+                                        <div>
+                                            <span className="text-xs text-gray-500 uppercase font-bold tracking-wider block mb-2">Relevant Regulations</span>
+                                            <ul className="space-y-2">
+                                                {term.related_rules.map((r: string) => (
+                                                    <li key={r}>
+                                                        <Link aria-label="Navigation Link" href={`/regulations/${r}`} className="text-sm text-gray-400 hover:text-white underline decoration-white/20 underline-offset-4 line-clamp-2">
+                                                            {r}
+                                                        </Link>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
+                            )}
+
+                            {/* RELATED TERMS */}
+                            {term.related_slugs && term.related_slugs.length > 0 && (
+                                <div className="bg-[#121214] border border-white/10 rounded-xl p-5">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">See Also</h3>
+                                    <ul className="space-y-2">
+                                        {term.related_slugs.map((slug: string) => (
+                                            <li key={slug}>
+                                                <Link aria-label="Navigation Link" href={`/glossary/${slug}`} className="text-gray-400 hover:text-white transition-colors text-sm font-medium capitalize flex items-center gap-2">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50"></span>
+                                                    {slug.replace(/-/g, ' ')}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
 
                         </aside>
                     </div>
-                </div>
-            </main>
-        </>
+
+                </main>
+            </div>
+        </Fragment>
     );
 }

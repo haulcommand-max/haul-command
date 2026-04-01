@@ -12,46 +12,33 @@
 
 import fs from 'fs';
 import path from 'path';
-import https from 'https';
+import pkg from 'pg';
+const { Client } = pkg;
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.local' });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'hvjyfyzotqobfkakjozp';
-const TOKEN = process.env.SUPABASE_ACCESS_TOKEN || 'sbp_d972902f39e92a8e1f979ee1ce6703ae43f2ec9c';
+const connectionString = process.env.SUPABASE_DB_POOLER_URL;
+if (!connectionString) {
+    console.error('Missing SUPABASE_DB_POOLER_URL in .env.local');
+    process.exit(1);
+}
+
+const client = new Client({
+    connectionString,
+    ssl: { rejectUnauthorized: false }
+});
+
 const MIGRATIONS_DIR = path.join(__dirname, '..', 'supabase', 'migrations');
 
 // ── API helper ────────────────────────────────────────────────────────────────
 
-function query(sql) {
-    return new Promise((resolve, reject) => {
-        const postData = JSON.stringify({ query: sql });
-        const options = {
-            hostname: 'api.supabase.com',
-            path: `/v1/projects/${PROJECT_REF}/database/query`,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${TOKEN}`,
-                'Content-Length': Buffer.byteLength(postData),
-            },
-        };
-        const req = https.request(options, (res) => {
-            let data = '';
-            res.on('data', (chunk) => data += chunk);
-            res.on('end', () => {
-                if (res.statusCode >= 200 && res.statusCode < 300) {
-                    try { resolve(JSON.parse(data)); }
-                    catch { resolve(data); }
-                } else {
-                    reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 400)}`));
-                }
-            });
-        });
-        req.on('error', reject);
-        req.write(postData);
-        req.end();
-    });
+async function query(sql) {
+    const res = await client.query(sql);
+    return res.rows || [];
 }
 
 // ── SQL helpers ───────────────────────────────────────────────────────────────
@@ -217,9 +204,10 @@ async function recordMigration(filename, status, errorMsg = null) {
 
 async function main() {
     console.log('═══════════════════════════════════════════════════════');
-    console.log('  Haul Command — Migration Runner');
-    console.log(`  Project: ${PROJECT_REF}`);
+    console.log('  Haul Command — Migration Runner (Direct Postgres)');
     console.log('═══════════════════════════════════════════════════════\n');
+
+    await client.connect();
 
     // 1. Bootstrap tracking table
     console.log('Bootstrapping _migration_log...');
@@ -294,11 +282,14 @@ async function main() {
     if (countFailed > 0) {
         console.log('Some migrations failed. Check errors above or query:');
         console.log("  SELECT * FROM _migration_log WHERE status = 'failed';\n");
-        process.exit(1);
     }
+    
+    await client.end();
+    if (countFailed > 0) process.exit(1);
 }
 
-main().catch((e) => {
+main().catch(async (e) => {
     console.error('Unexpected error:', e);
+    await client.end();
     process.exit(1);
 });

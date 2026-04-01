@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { DirectorySearchList } from './_components/DirectorySearchList';
 
 export const metadata: Metadata = {
   title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
@@ -86,6 +89,7 @@ const DIRECTORY_FAQ_JSONLD = {
 };
 
 const COUNTRIES = [
+  // Tier A — Gold (10)
   { code: 'us', name: 'United States', flag: '🇺🇸', tier: 'A' },
   { code: 'ca', name: 'Canada', flag: '🇨🇦', tier: 'A' },
   { code: 'au', name: 'Australia', flag: '🇦🇺', tier: 'A' },
@@ -96,6 +100,7 @@ const COUNTRIES = [
   { code: 'nl', name: 'Netherlands', flag: '🇳🇱', tier: 'A' },
   { code: 'ae', name: 'UAE', flag: '🇦🇪', tier: 'A' },
   { code: 'br', name: 'Brazil', flag: '🇧🇷', tier: 'A' },
+  // Tier B — Blue (18)
   { code: 'ie', name: 'Ireland', flag: '🇮🇪', tier: 'B' },
   { code: 'se', name: 'Sweden', flag: '🇸🇪', tier: 'B' },
   { code: 'no', name: 'Norway', flag: '🇳🇴', tier: 'B' },
@@ -114,6 +119,7 @@ const COUNTRIES = [
   { code: 'in', name: 'India', flag: '🇮🇳', tier: 'B' },
   { code: 'id', name: 'Indonesia', flag: '🇮🇩', tier: 'B' },
   { code: 'th', name: 'Thailand', flag: '🇹🇭', tier: 'B' },
+  // Tier C — Silver (26)
   { code: 'pl', name: 'Poland', flag: '🇵🇱', tier: 'C' },
   { code: 'cz', name: 'Czech Republic', flag: '🇨🇿', tier: 'C' },
   { code: 'sk', name: 'Slovakia', flag: '🇸🇰', tier: 'C' },
@@ -140,9 +146,74 @@ const COUNTRIES = [
   { code: 'pe', name: 'Peru', flag: '🇵🇪', tier: 'C' },
   { code: 'vn', name: 'Vietnam', flag: '🇻🇳', tier: 'C' },
   { code: 'ph', name: 'Philippines', flag: '🇵🇭', tier: 'C' },
+  // Tier D — Slate (25)
   { code: 'uy', name: 'Uruguay', flag: '🇺🇾', tier: 'D' },
   { code: 'pa', name: 'Panama', flag: '🇵🇦', tier: 'D' },
   { code: 'cr', name: 'Costa Rica', flag: '🇨🇷', tier: 'D' },
+  { code: 'il', name: 'Israel', flag: '🇮🇱', tier: 'D' },
+  { code: 'ng', name: 'Nigeria', flag: '🇳🇬', tier: 'D' },
+  { code: 'eg', name: 'Egypt', flag: '🇪🇬', tier: 'D' },
+  { code: 'ke', name: 'Kenya', flag: '🇰🇪', tier: 'D' },
+  { code: 'ma', name: 'Morocco', flag: '🇲🇦', tier: 'D' },
+  { code: 'rs', name: 'Serbia', flag: '🇷🇸', tier: 'D' },
+  { code: 'ua', name: 'Ukraine', flag: '🇺🇦', tier: 'D' },
+  { code: 'kz', name: 'Kazakhstan', flag: '🇰🇿', tier: 'D' },
+  { code: 'tw', name: 'Taiwan', flag: '🇹🇼', tier: 'D' },
+  { code: 'pk', name: 'Pakistan', flag: '🇵🇰', tier: 'D' },
+  { code: 'bd', name: 'Bangladesh', flag: '🇧🇩', tier: 'D' },
+  { code: 'mn', name: 'Mongolia', flag: '🇲🇳', tier: 'D' },
+  { code: 'tt', name: 'Trinidad and Tobago', flag: '🇹🇹', tier: 'D' },
+  { code: 'jo', name: 'Jordan', flag: '🇯🇴', tier: 'D' },
+  { code: 'gh', name: 'Ghana', flag: '🇬🇭', tier: 'D' },
+  { code: 'tz', name: 'Tanzania', flag: '🇹🇿', tier: 'D' },
+  { code: 'ge', name: 'Georgia', flag: '🇬🇪', tier: 'D' },
+  { code: 'az', name: 'Azerbaijan', flag: '🇦🇿', tier: 'D' },
+  { code: 'cy', name: 'Cyprus', flag: '🇨🇾', tier: 'D' },
+  { code: 'is', name: 'Iceland', flag: '🇮🇸', tier: 'D' },
+  { code: 'lu', name: 'Luxembourg', flag: '🇱🇺', tier: 'D' },
+  { code: 'ec', name: 'Ecuador', flag: '🇪🇨', tier: 'D' },
+  // Tier E — Copper (41)
+  { code: 'bo', name: 'Bolivia', flag: '🇧🇴', tier: 'E' },
+  { code: 'py', name: 'Paraguay', flag: '🇵🇾', tier: 'E' },
+  { code: 'gt', name: 'Guatemala', flag: '🇬🇹', tier: 'E' },
+  { code: 'do', name: 'Dominican Republic', flag: '🇩🇴', tier: 'E' },
+  { code: 'hn', name: 'Honduras', flag: '🇭🇳', tier: 'E' },
+  { code: 'sv', name: 'El Salvador', flag: '🇸🇻', tier: 'E' },
+  { code: 'ni', name: 'Nicaragua', flag: '🇳🇮', tier: 'E' },
+  { code: 'jm', name: 'Jamaica', flag: '🇯🇲', tier: 'E' },
+  { code: 'gy', name: 'Guyana', flag: '🇬🇾', tier: 'E' },
+  { code: 'sr', name: 'Suriname', flag: '🇸🇷', tier: 'E' },
+  { code: 'ba', name: 'Bosnia and Herzegovina', flag: '🇧🇦', tier: 'E' },
+  { code: 'me', name: 'Montenegro', flag: '🇲🇪', tier: 'E' },
+  { code: 'mk', name: 'North Macedonia', flag: '🇲🇰', tier: 'E' },
+  { code: 'al', name: 'Albania', flag: '🇦🇱', tier: 'E' },
+  { code: 'md', name: 'Moldova', flag: '🇲🇩', tier: 'E' },
+  { code: 'iq', name: 'Iraq', flag: '🇮🇶', tier: 'E' },
+  { code: 'na', name: 'Namibia', flag: '🇳🇦', tier: 'E' },
+  { code: 'ao', name: 'Angola', flag: '🇦🇴', tier: 'E' },
+  { code: 'mz', name: 'Mozambique', flag: '🇲🇿', tier: 'E' },
+  { code: 'et', name: 'Ethiopia', flag: '🇪🇹', tier: 'E' },
+  { code: 'ci', name: "Côte d'Ivoire", flag: '🇨🇮', tier: 'E' },
+  { code: 'sn', name: 'Senegal', flag: '🇸🇳', tier: 'E' },
+  { code: 'bw', name: 'Botswana', flag: '🇧🇼', tier: 'E' },
+  { code: 'zm', name: 'Zambia', flag: '🇿🇲', tier: 'E' },
+  { code: 'ug', name: 'Uganda', flag: '🇺🇬', tier: 'E' },
+  { code: 'cm', name: 'Cameroon', flag: '🇨🇲', tier: 'E' },
+  { code: 'kh', name: 'Cambodia', flag: '🇰🇭', tier: 'E' },
+  { code: 'lk', name: 'Sri Lanka', flag: '🇱🇰', tier: 'E' },
+  { code: 'uz', name: 'Uzbekistan', flag: '🇺🇿', tier: 'E' },
+  { code: 'la', name: 'Laos', flag: '🇱🇦', tier: 'E' },
+  { code: 'np', name: 'Nepal', flag: '🇳🇵', tier: 'E' },
+  { code: 'dz', name: 'Algeria', flag: '🇩🇿', tier: 'E' },
+  { code: 'tn', name: 'Tunisia', flag: '🇹🇳', tier: 'E' },
+  { code: 'mt', name: 'Malta', flag: '🇲🇹', tier: 'E' },
+  { code: 'bn', name: 'Brunei', flag: '🇧🇳', tier: 'E' },
+  { code: 'rw', name: 'Rwanda', flag: '🇷🇼', tier: 'E' },
+  { code: 'mg', name: 'Madagascar', flag: '🇲🇬', tier: 'E' },
+  { code: 'pg', name: 'Papua New Guinea', flag: '🇵🇬', tier: 'E' },
+  { code: 'tm', name: 'Turkmenistan', flag: '🇹🇲', tier: 'E' },
+  { code: 'kg', name: 'Kyrgyzstan', flag: '🇰🇬', tier: 'E' },
+  { code: 'mw', name: 'Malawi', flag: '🇲🇼', tier: 'E' },
 ];
 
 const US_STATES = [
@@ -214,8 +285,17 @@ async function getStats() {
 export default async function DirectoryPage() {
   const { total, countryCounts, stateMap, topOperators } = await getStats();
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" }
+    ]
+  };
+
   return (
     <>
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
           "@context": "https://schema.org",
@@ -240,22 +320,9 @@ export default async function DirectoryPage() {
             Real-time availability, corridor rankings, and escrow-protected bookings.
           </p>
 
-          {/* Search */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <form action="/directory/us" method="GET" className="relative">
-              <input
-                type="text"
-                name="q"
-                placeholder="Search by name, state, or specialty..."
-                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 text-base"
-              />
-              <button aria-label="Interactive Button"
-                type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors text-sm"
-              >
-                Search
-              </button>
-            </form>
+          {/* Real-time PII-censored API API Search List */}
+          <div className="max-w-4xl mx-auto mb-16 text-left">
+            <DirectorySearchList />
           </div>
 
           {/* Stats */}
@@ -313,6 +380,7 @@ export default async function DirectoryPage() {
             {topOperators.map((op: any) => (
               <div
                 key={op.id}
+                data-directory-result="true"
                 className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
               >
                 <div className="flex items-start justify-between mb-2">
@@ -347,6 +415,10 @@ export default async function DirectoryPage() {
                       Sign up to contact
                     </Link>
                   </div>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                  <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
                 </div>
               </div>
             ))}

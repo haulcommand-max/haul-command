@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
+import SaveButton from '@/components/capture/SaveButton';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -60,9 +61,12 @@ export default async function CorridorIntelPage({ params }: Props) {
             <span className="text-gray-800">/</span>
             <span className="text-xs text-gray-400">{corridor.origin_state} → {corridor.destination_state}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            {corridor.origin_state} → {corridor.destination_state} Escort Corridor
-          </h1>
+          <div className="flex items-center gap-4 mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              {corridor.origin_state} → {corridor.destination_state} Escort Corridor
+            </h1>
+            <SaveButton entityType="corridor" entityId={slug} entityLabel={`${corridor.origin_state} to ${corridor.destination_state}`} variant="pill" />
+          </div>
           <p className="text-gray-400">
             Heavy haul escort intelligence, permit requirements, and operator availability
           </p>

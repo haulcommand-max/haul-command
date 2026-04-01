@@ -2,7 +2,7 @@
 import React from 'react';
 
 type SchemaProps = {
-    type: 'CityService' | 'CityHub' | 'ServiceVertical' | 'Organization';
+    type: 'CityService' | 'CityHub' | 'ServiceVertical' | 'Organization' | 'FAQPage' | 'DefinedTerm' | 'BreadcrumbList';
     data: any;
 };
 
@@ -86,6 +86,14 @@ export const SchemaGenerator = ({ type, data }: SchemaProps) => {
                 }
             ]
         }
+    } else if (type === 'Organization') {
+        schema = {
+            "@context": "https://schema.org",
+            "@graph": [orgSchema]
+        };
+    } else {
+        // Pass-through exact manually built schemas (FAQPage, DefinedTerm, BreadcrumbList)
+        schema = data;
     }
 
     return (

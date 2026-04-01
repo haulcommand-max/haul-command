@@ -100,17 +100,17 @@ export function OperatorDashboardClient({ operatorId, availableLoads }: { operat
                            onChange={(e) => setBidAmount(e.target.value)}
                            min="50"
                         />
-                        <button aria-label="Interactive Button" 
+                        <Button aria-label="Interactive Button" 
                           size="sm" 
                           disabled={isProcessing}
                           onClick={() => handleSubmitBid(l.id)}
                         >
                            Submit
                         </Button>
-                        <button aria-label="Interactive Button" className="text-slate-500 text-sm hover:text-white transition" onClick={() => setBiddingOn(null)}>Cancel</button>
+                        <Button aria-label="Interactive Button" className="text-slate-500 text-sm hover:text-white transition" onClick={() => setBiddingOn(null)}>Cancel</Button>
                      </div>
                   ) : (
-                     <button aria-label="Interactive Button" 
+                     <Button aria-label="Interactive Button" 
                        size="sm" 
                        variant="default"
                        onClick={() => setBiddingOn(l.id)}

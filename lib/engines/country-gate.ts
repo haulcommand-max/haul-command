@@ -91,8 +91,17 @@ const COUNTRY_OVERRIDES: Record<string, Partial<Record<GatedFeature, FeatureStat
 };
 
 // Crypto-specific legality (synced with hc_crypto_legality table)
-const CRYPTO_ALLOWED = new Set(['US', 'CA', 'AU', 'GB', 'DE', 'NZ', 'JP', 'SG', 'CH', 'KR']);
-const CRYPTO_RESTRICTED = new Set(['CN', 'IN', 'RU', 'BD', 'NP', 'QA', 'EG', 'MA', 'DZ', 'BO']);
+const CRYPTO_ALLOWED = new Set([
+    'US', 'CA', 'AU', 'GB', 'DE', 'NZ', 'JP', 'SG', 'CH', 'KR',
+    'FR', 'IT', 'ES', 'NL', 'BE', 'SE', 'PT', 'PL', 'IE', 'DK',
+    'FI', 'AT', 'GR', 'CZ', 'NO', 'UA', 'BR', 'AR', 'CO', 'CL',
+    'PE', 'MY', 'PH', 'TW', 'HK', 'AE', 'IL', 'ZA', 'KE', 'IS',
+    'CR', 'PA', 'UY', 'EE', 'LT', 'LV', 'MT', 'CY', 'LU', 'GE', 'UZ'
+]);
+const CRYPTO_RESTRICTED = new Set([
+    'CN', 'IN', 'RU', 'BD', 'NP', 'QA', 'EG', 'MA', 'DZ', 'BO',
+    'TR', 'MX', 'ID', 'TH', 'VN', 'SA', 'NG', 'PK', 'KW', 'KZ'
+]);
 
 export function getFeatureState(country_code: string, feature: GatedFeature): GateEntry {
     const base = { ...GLOBAL_DEFAULTS[feature] };

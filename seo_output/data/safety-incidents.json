@@ -1,0 +1,12 @@
+[
+  {
+    "hazard_type": "Bridge Strike",
+    "protocol": "Deploy high-pole set 6 inches above absolute load height. Stop load 1/2 mile preceding strike zone.",
+    "rating": "Critical"
+  },
+  {
+    "hazard_type": "Rail Crossing Hang-up",
+    "protocol": "Call 1-800 number on blue crossing sign 24hrs prior. Ensure > 14 inch belly clearance.",
+    "rating": "Critical"
+  }
+]

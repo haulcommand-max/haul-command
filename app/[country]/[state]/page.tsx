@@ -6,6 +6,7 @@ import { getCityHubUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { InteractiveComplianceCalculator } from '@/components/tools/InteractiveComplianceCalculator';
+import SaveButton from '@/components/capture/SaveButton';
 
 export default async function StatePage({ params }: { params: Promise<{ country: string; state: string }> }) {
     const { country, state } = await params;
@@ -42,6 +43,15 @@ export default async function StatePage({ params }: { params: Promise<{ country:
         ]
     };
 
+    const breadcrumbSchemaData = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": countryData.name, "item": `https://haulcommand.com/${country}` },
+            { "@type": "ListItem", "position": 2, "name": regionName, "item": `https://haulcommand.com/${country}/${state}` }
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-hc-bg text-hc-text font-display">
             {/* Grid Background */}
@@ -50,6 +60,7 @@ export default async function StatePage({ params }: { params: Promise<{ country:
             </div>
 
             <SchemaGenerator type="FAQPage" data={faqSchemaData} />
+            <SchemaGenerator type="BreadcrumbList" data={breadcrumbSchemaData} />
             <SchemaGenerator type="Organization" data={{}} />
 
             <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
@@ -71,9 +82,12 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                             <MapPin className="w-3 h-3" />
                             {regionName}, {countryData.name} Pilot Cars
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-[-0.03em] leading-none">
-                            Certified Escort & Pilot Cars in {regionName}
-                        </h1>
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-[-0.03em] leading-none">
+                                Certified Escort & Pilot Cars in {regionName}
+                            </h1>
+                            <SaveButton entityType="state" entityId={state.toUpperCase()} entityLabel={regionName} variant="pill" />
+                        </div>
                         <p className="text-lg text-hc-muted leading-relaxed">
                             Stop guessing compliance rules. Calculate exact oversize requirements, verify active DOT pilot cars, 
                             and book top-rated lead, chase, and high pole operations directly in {regionName}. 

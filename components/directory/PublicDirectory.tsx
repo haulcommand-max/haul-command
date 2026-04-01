@@ -172,7 +172,7 @@ function AdGridSlot() {
 // ═══════════════════════════════════════════════════════════════
 function OperatorCard({ op, position }: { op: Operator; position: number }) {
   return (
-    <div className="ag-card-hover ag-slide-up" style={{
+    <div className="ag-card-hover ag-slide-up" data-directory-result style={{
       background: op.sponsored
         ? `linear-gradient(135deg, rgba(198,146,58,0.05), rgba(198,146,58,0.02))`
         : T.bgCard,
@@ -332,7 +332,7 @@ function ToggleSwitch({ label, active, onChange, icon }: {
   label: string; active: boolean; onChange: () => void; icon: React.ReactNode;
 }) {
   return (
-    <button aria-label="Interactive Button" onClick={onChange} style={{
+    <button aria-label="Interactive Button" onClick={onChange} data-filter-control style={{
       display: 'flex', alignItems: 'center', gap: 10, width: '100%',
       padding: '10px 12px', borderRadius: 10, cursor: 'pointer', border: 'none',
       background: active ? T.goldDim : 'transparent',
@@ -361,7 +361,7 @@ function ToggleSwitch({ label, active, onChange, icon }: {
 // ═══════════════════════════════════════════════════════════════
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button aria-label="Interactive Button" onClick={onClick} className="ag-chip-snap" style={{
+    <button aria-label="Interactive Button" onClick={onClick} data-filter-control className="ag-chip-snap" style={{
       padding: '6px 14px', borderRadius: 999, cursor: 'pointer',
       fontSize: 11, fontWeight: 700, border: 'none',
       background: active ? T.gold : 'rgba(255,255,255,0.04)',
@@ -525,6 +525,7 @@ export function PublicDirectory() {
                 <input type="text" placeholder="Search by city, state, corridor, or interstate..."
                   value={filters.search} onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
                   id="directory-search-input"
+                  data-search-input
                   style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: T.text, caretColor: T.gold }}
                 />
                 {filters.search && (
@@ -535,6 +536,7 @@ export function PublicDirectory() {
               {/* Sort dropdown */}
               <select value={filters.sortBy} onChange={e => setFilters(f => ({ ...f, sortBy: e.target.value as any }))}
                 id="directory-sort-dropdown"
+                data-filter-control
                 style={{
                   background: T.bgSurface, border: `1px solid ${T.borderMid}`,
                   borderRadius: 12, padding: '0 14px', height: 48, color: T.text,

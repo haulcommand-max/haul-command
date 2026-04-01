@@ -91,11 +91,13 @@ export async function POST(req: NextRequest) {
     { auth: { persistSession: false } }
   );
 
+  let result: any = null;
   let error: any = null;
   try {
-    const res = await supabase.rpc('exec_sql', { sql });
-    error = res.error;
-  } catch (err: any) {
+    const _res = await supabase.rpc('exec_sql', { sql });
+    result = _res.data;
+    error = _res.error;
+  } catch (err) {
     error = { message: 'exec_sql RPC not available — run migration manually in Supabase SQL Editor' };
   }
 

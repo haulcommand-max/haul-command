@@ -51,6 +51,7 @@ function SectionHeader({
         <button aria-label="Interactive Button"
             type="button"
             onClick={onToggle}
+            data-filter-control
             className="w-full flex items-center justify-between py-2 text-left"
         >
             <div className="flex items-center gap-2">
@@ -86,6 +87,7 @@ function FilterChip({
         <button aria-label="Interactive Button"
             type="button"
             onClick={onClick}
+            data-filter-control
             className={cn(
                 "px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest",
                 "border transition-all duration-150 press-feedback",
@@ -253,6 +255,7 @@ function FilterPanel({ filters, onChange }: {
                                         checked={filters.superloadQualified}
                                         onChange={e => onChange({ ...filters, superloadQualified: e.target.checked })}
                                         className="w-4 h-4 accent-[#C6923A]"
+                                        data-filter-control
                                     />
                                 </label>
                                 {/* High Pole only */}
@@ -272,6 +275,7 @@ function FilterPanel({ filters, onChange }: {
                                         checked={filters.highPoleOnly}
                                         onChange={e => onChange({ ...filters, highPoleOnly: e.target.checked })}
                                         className="w-4 h-4 accent-[#C6923A]"
+                                        data-filter-control
                                     />
                                 </label>
                                 {/* Night Certified */}
@@ -291,6 +295,7 @@ function FilterPanel({ filters, onChange }: {
                                         checked={filters.nightCertified}
                                         onChange={e => onChange({ ...filters, nightCertified: e.target.checked })}
                                         className="w-4 h-4 accent-[#C6923A]"
+                                        data-filter-control
                                     />
                                 </label>
                                 {/* Multi-State */}
@@ -310,6 +315,7 @@ function FilterPanel({ filters, onChange }: {
                                         checked={filters.multiStateCertified}
                                         onChange={e => onChange({ ...filters, multiStateCertified: e.target.checked })}
                                         className="w-4 h-4 accent-[#C6923A]"
+                                        data-filter-control
                                     />
                                 </label>
                             </div>
@@ -359,6 +365,7 @@ function FilterPanel({ filters, onChange }: {
                                         checked={filters.verifiedOnly}
                                         onChange={e => onChange({ ...filters, verifiedOnly: e.target.checked })}
                                         className="w-4 h-4 accent-[#10b981]"
+                                        data-filter-control
                                     />
                                 </label>
                                 {/* WITPAC / CEVO / Background / Insurance */}
@@ -383,6 +390,7 @@ function FilterPanel({ filters, onChange }: {
                                             onChange={e => onChange({ ...filters, [opt.key]: e.target.checked })}
                                             className="w-4 h-4"
                                             style={{ accentColor: opt.color }}
+                                            data-filter-control
                                         />
                                     </label>
                                 ))}

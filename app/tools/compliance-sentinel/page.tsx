@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ComplianceSentinelPending() {
     return (
-        <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '4rem 1rem' }}>
+        <div data-tool-interact="true" style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '4rem 1rem' }}>
             <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
                 <div style={{ fontSize: 64, marginBottom: 24 }}>🛰️</div>
                 <h1 style={{ fontSize: 36, fontWeight: 900, color: '#f9fafb', marginBottom: 16 }}>

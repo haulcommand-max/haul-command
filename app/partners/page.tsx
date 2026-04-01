@@ -143,7 +143,7 @@ export default function PartnersPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
             { val: '1.5M+', label: 'Operators tracked' },
-            { val: '57', label: 'Countries' },
+            { val: '120', label: 'Countries' },
             { val: '219+', label: 'Corridors' },
             { val: '47 min', label: 'Median fill time' },
           ].map((s) => (

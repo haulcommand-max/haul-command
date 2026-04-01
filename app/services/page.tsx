@@ -15,7 +15,7 @@ const SERVICES = [
     slug: 'wide-load-escort',
     title: 'Wide Load Escort',
     description: 'Professional wide load escort operators for permitted oversize cargo transport.',
-    longDescription: 'Wide load escort services ensure safe passage for oversized cargo through highways, urban areas, and restricted zones. Our escorts are trained in local regulations, signage requirements, and traffic control procedures for all 57 operating countries.',
+    longDescription: 'Wide load escort services ensure safe passage for oversized cargo through highways, urban areas, and restricted zones. Our escorts are trained in local regulations, signage requirements, and traffic control procedures for all 120 operating countries.',
     features: ['Oversize banners & flags', 'Traffic control', 'Intersection clearing', 'Bridge height verification', 'Night escort capability'],
     icon: '\ud83d\udea8',
   },

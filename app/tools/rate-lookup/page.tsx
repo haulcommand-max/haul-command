@@ -59,7 +59,7 @@ export default function RateLookupPage() {
                                     <label style={{ display: 'block', fontSize: 11, color: '#9ca3af', marginBottom: 8, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Corridor Type</label>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
                                         {Object.entries(CORRIDOR_RATES).map(([k, v]) => (
-                                            <button aria-label="Interactive Button" key={k} onClick={() => setCorridor(k)} style={{
+                                            <button aria-label="Interactive Button" data-tool-interact key={k} onClick={() => setCorridor(k)} style={{
                                                 padding: '10px 12px', borderRadius: 10, fontSize: 12, fontWeight: 600,
                                                 background: corridor === k ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
                                                 border: `1px solid ${corridor === k ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -74,7 +74,7 @@ export default function RateLookupPage() {
                                     <label style={{ display: 'block', fontSize: 11, color: '#9ca3af', marginBottom: 8, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Service Type</label>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                                         {Object.entries(SERVICE_TYPES).map(([k, v]) => (
-                                            <button aria-label="Interactive Button" key={k} onClick={() => setService(k)} style={{
+                                            <button aria-label="Interactive Button" data-tool-interact key={k} onClick={() => setService(k)} style={{
                                                 padding: '10px 12px', borderRadius: 10, fontSize: 12, fontWeight: 600,
                                                 background: service === k ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.04)',
                                                 border: `1px solid ${service === k ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.08)'}`,
@@ -89,7 +89,7 @@ export default function RateLookupPage() {
                                     <label style={{ display: 'block', fontSize: 11, color: '#9ca3af', marginBottom: 8, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Number of Escorts</label>
                                     <div style={{ display: 'flex', gap: 8 }}>
                                         {[1, 2, 3].map(n => (
-                                            <button aria-label="Interactive Button" key={n} onClick={() => setEscorts(n)} style={{
+                                            <button aria-label="Interactive Button" data-tool-interact key={n} onClick={() => setEscorts(n)} style={{
                                                 padding: '10px 24px', borderRadius: 10, fontSize: 16, fontWeight: 800,
                                                 background: escorts === n ? 'rgba(241,169,27,0.15)' : 'rgba(255,255,255,0.04)',
                                                 border: `1px solid ${escorts === n ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -102,7 +102,7 @@ export default function RateLookupPage() {
                             </div>
                         </div>
 
-                        <button aria-label="Interactive Button" onClick={compute} style={{
+                        <button aria-label="Interactive Button" data-tool-interact onClick={compute} style={{
                             width: '100%', padding: '0.9rem', borderRadius: 12, border: 'none',
                             background: 'linear-gradient(135deg,#10b981,#059669)', color: '#000',
                             fontSize: 15, fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s', marginBottom: '1.5rem',

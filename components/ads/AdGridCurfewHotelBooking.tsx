@@ -126,7 +126,7 @@ export function AdGridCurfewHotelBooking({
             className={`agch-pay-btn ${payMethod === 'crypto' ? 'agch-pay-btn--active agch-pay-btn--crypto' : ''}`}
             onClick={() => setPayMethod('crypto')}
           >
-            ₳ Crypto
+            ₳ ADA/BTC
           </button>
         </div>
         <button aria-label="Interactive Button"
@@ -134,7 +134,7 @@ export function AdGridCurfewHotelBooking({
           onClick={() => onBook?.(selectedOffer, payMethod)}
           disabled={!selectedOffer}
         >
-          Book Now{payMethod === 'crypto' ? ' with ADA' : ''} →
+          Book Now{payMethod === 'crypto' ? ' with ADA/BTC' : ''} →
         </button>
       </div>
 

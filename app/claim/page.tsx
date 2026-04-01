@@ -46,12 +46,12 @@ const STEPS = [
 ];
 
 const BENEFITS = [
-  { title: 'Verified OS Badge', desc: 'Verified operators stand out. Stop looking like unverified third-party data.', icon: '\u2713' },
-  { title: 'Premium Corridor Ranking', desc: 'Unlock sponsored inventory spots and dominate the top of your state directory.', icon: '\ud83c\udfc6' },
-  { title: 'Live Escrowed Leads', desc: 'No more generic contact forms. Tap directly into the Haul Command load board broker funnel.', icon: '\ud83d\udd12' },
-  { title: 'Action-Gated FAQs', desc: 'Capture high-intent searches. Our regulatory tools route directly to your active profile.', icon: '\ud83d\udd14' },
-  { title: 'Live Availability Sync', desc: 'Toggle yourself active to receive instant dispatcher calls before unverified providers do.', icon: '\u26a1' },
-  { title: 'Enterprise Analytics', desc: 'Track your response times and trust score against competitor yards and escorts.', icon: '\ud83d\udcca' },
+  { title: 'Free Verified Badge', desc: 'Verified operators get 3x more load offers than unverified listings.', icon: '\u2713' },
+  { title: 'Corridor Rankings', desc: 'Appear in leaderboards and get priority in load matching on your corridors.', icon: '\ud83c\udfc6' },
+  { title: 'Escrow Protection', desc: 'Every payment goes through escrow. Get paid when the job is done, guaranteed.', icon: '\ud83d\udd12' },
+  { title: 'Real-Time Alerts', desc: 'Get instant notifications when new loads are posted on your corridors.', icon: '\ud83d\udd14' },
+  { title: 'Analytics Dashboard', desc: 'Track your response time, acceptance rate, and earnings over time.', icon: '\ud83d\udcca' },
+  { title: '120 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
 ];
 
 export default function ClaimPage() {
@@ -63,7 +63,7 @@ export default function ClaimPage() {
           Claim Your Free Listing
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-          Your company data may have been ingested into our global intelligence map. Claim your profile to update stale data, unlock verified status, and rank higher in native searches and dispatch matching.
+          Your company may already be in our directory. Claim it in under 5 minutes, get verified, and start receiving load offers with escrow-protected payments.
         </p>
         <Link aria-label="Navigation Link"
           href="/auth/register?intent=claim"
@@ -114,7 +114,7 @@ export default function ClaimPage() {
             <p className="text-sm text-gray-500">Listings to claim</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-amber-400">57</p>
+            <p className="text-3xl font-bold text-amber-400">120</p>
             <p className="text-sm text-gray-500">Countries</p>
           </div>
           <div>
@@ -126,9 +126,9 @@ export default function ClaimPage() {
 
       {/* Bottom CTA */}
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">Command Your Territory</h2>
+        <h2 className="text-3xl font-bold mb-4">Don\u2019t Miss Out</h2>
         <p className="text-gray-400 mb-8">
-          Claiming your base profile is free. Operators who upgrade to our Pro tier within 30 days unlock native Stripe-powered Escrow loads and a premium Directory AdGrid slot.
+          Operators who claim their listing in the first 30 days get priority corridor placement for free.
         </p>
         <Link aria-label="Navigation Link"
           href="/auth/register?intent=claim"

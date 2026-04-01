@@ -3,6 +3,9 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CategoryGrid } from '@/components/directory/CategoryGrid';
+import SaveButton from '@/components/capture/SaveButton';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -10,18 +13,38 @@ interface Props {
 }
 
 const COUNTRY_NAMES: Record<string, string> = {
+  // Tier A — Gold (10)
   us: 'United States', ca: 'Canada', au: 'Australia', gb: 'United Kingdom',
   nz: 'New Zealand', za: 'South Africa', de: 'Germany', nl: 'Netherlands',
-  ae: 'UAE', br: 'Brazil', ie: 'Ireland', se: 'Sweden', no: 'Norway',
-  dk: 'Denmark', fi: 'Finland', be: 'Belgium', at: 'Austria', ch: 'Switzerland',
-  es: 'Spain', fr: 'France', it: 'Italy', pt: 'Portugal', sa: 'Saudi Arabia',
-  qa: 'Qatar', mx: 'Mexico', 'in': 'India', id: 'Indonesia', th: 'Thailand',
+  ae: 'UAE', br: 'Brazil',
+  // Tier B — Blue (18)
+  ie: 'Ireland', se: 'Sweden', no: 'Norway', dk: 'Denmark', fi: 'Finland',
+  be: 'Belgium', at: 'Austria', ch: 'Switzerland', es: 'Spain', fr: 'France',
+  it: 'Italy', pt: 'Portugal', sa: 'Saudi Arabia', qa: 'Qatar', mx: 'Mexico',
+  'in': 'India', id: 'Indonesia', th: 'Thailand',
+  // Tier C — Silver (26)
   pl: 'Poland', cz: 'Czech Republic', sk: 'Slovakia', hu: 'Hungary', si: 'Slovenia',
   ee: 'Estonia', lv: 'Latvia', lt: 'Lithuania', hr: 'Croatia', ro: 'Romania',
   bg: 'Bulgaria', gr: 'Greece', tr: 'Turkey', kw: 'Kuwait', om: 'Oman',
   bh: 'Bahrain', sg: 'Singapore', my: 'Malaysia', jp: 'Japan', kr: 'South Korea',
-  cl: 'Chile', ar: 'Argentina', co: 'Colombia', pe: 'Peru', vn: 'Vietnam',
-  ph: 'Philippines', uy: 'Uruguay', pa: 'Panama', cr: 'Costa Rica',
+  cl: 'Chile', ar: 'Argentina', co: 'Colombia', pe: 'Peru', vn: 'Vietnam', ph: 'Philippines',
+  // Tier D — Slate (25)
+  uy: 'Uruguay', pa: 'Panama', cr: 'Costa Rica', il: 'Israel', ng: 'Nigeria',
+  eg: 'Egypt', ke: 'Kenya', ma: 'Morocco', rs: 'Serbia', ua: 'Ukraine',
+  kz: 'Kazakhstan', tw: 'Taiwan', pk: 'Pakistan', bd: 'Bangladesh', mn: 'Mongolia',
+  tt: 'Trinidad and Tobago', jo: 'Jordan', gh: 'Ghana', tz: 'Tanzania', ge: 'Georgia',
+  az: 'Azerbaijan', cy: 'Cyprus', is: 'Iceland', lu: 'Luxembourg', ec: 'Ecuador',
+  // Tier E — Copper (41)
+  bo: 'Bolivia', py: 'Paraguay', gt: 'Guatemala', do: 'Dominican Republic',
+  hn: 'Honduras', sv: 'El Salvador', ni: 'Nicaragua', jm: 'Jamaica',
+  gy: 'Guyana', sr: 'Suriname', ba: 'Bosnia and Herzegovina', me: 'Montenegro',
+  mk: 'North Macedonia', al: 'Albania', md: 'Moldova', iq: 'Iraq',
+  na: 'Namibia', ao: 'Angola', mz: 'Mozambique', et: 'Ethiopia',
+  ci: "Côte d'Ivoire", sn: 'Senegal', bw: 'Botswana', zm: 'Zambia', ug: 'Uganda',
+  cm: 'Cameroon', kh: 'Cambodia', lk: 'Sri Lanka', uz: 'Uzbekistan', la: 'Laos',
+  np: 'Nepal', dz: 'Algeria', tn: 'Tunisia', mt: 'Malta', bn: 'Brunei',
+  rw: 'Rwanda', mg: 'Madagascar', pg: 'Papua New Guinea', tm: 'Turkmenistan',
+  kg: 'Kyrgyzstan', mw: 'Malawi',
 };
 
 const US_STATES = [
@@ -108,13 +131,23 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
     }
   }
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://haulcommand.com/directory" },
+      { "@type": "ListItem", "position": 2, "name": countryName, "item": `https://haulcommand.com/directory/${country}` }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       {/* Header */}
       <section className="py-10 px-4 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-4 text-xs text-gray-600">
-            <Link href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
+            <Link aria-label="Navigation Link" href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
             <span>/</span>
             <span className="text-gray-400">{countryName}</span>
             {stateFilter && (
@@ -125,13 +158,16 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             )}
           </div>
           <div className="flex flex-wrap items-start justify-between gap-6">
-            <div>
-              <h1 className="text-3xl font-bold">
-                {stateFilter ? `${stateFilter} Escort Operators` : `${countryName} Escort & Pilot Car Operators`}
-              </h1>
-              <p className="text-gray-500 mt-1">
-                {(total ?? 0).toLocaleString()} operators found{stateFilter ? ` in ${stateFilter}` : ''}
-              </p>
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <h1 className="text-3xl font-bold">
+                  {stateFilter ? `${stateFilter} Escort Operators` : `${countryName} Escort & Pilot Car Operators`}
+                </h1>
+                <p className="text-gray-500 mt-1">
+                  {(total ?? 0).toLocaleString()} operators found{stateFilter ? ` in ${stateFilter}` : ''}
+                </p>
+              </div>
+              <SaveButton entityType="state" entityId={stateFilter || country} entityLabel={stateFilter ? stateFilter : countryName} />
             </div>
             {/* Search */}
             <form method="GET" className="flex gap-2">
@@ -139,11 +175,12 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 type="text"
                 name="q"
                 defaultValue={q}
+                data-search-input="true"
                 placeholder="Search operators..."
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
               />
               {stateFilter && <input type="hidden" name="state" value={stateFilter} />}
-              <button type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+              <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
                 Search
               </button>
             </form>
@@ -166,7 +203,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
               <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Filter by State</h2>
               <div className="space-y-1 max-h-[70vh] overflow-y-auto pr-2">
                 {US_STATES.filter(s => stateCounts[s]).sort((a, b) => (stateCounts[b] || 0) - (stateCounts[a] || 0)).map(s => (
-                  <Link
+                  <Link aria-label="Navigation Link"
                     key={s}
                     href={`/directory/us/${s.toLowerCase()}`}
                     className="flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-white/5 text-sm transition-colors"
@@ -185,7 +222,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {isUS && !stateFilter && (
               <div className="flex gap-2 overflow-x-auto pb-3 mb-6 lg:hidden">
                 {US_STATES.filter(s => stateCounts[s]).map(s => (
-                  <Link
+                  <Link aria-label="Navigation Link"
                     key={s}
                     href={`/directory/us/${s.toLowerCase()}`}
                     className="flex-shrink-0 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 hover:border-amber-500/30 transition-colors"
@@ -199,13 +236,12 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {operators && operators.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {operators.map((op: any) => (
-                  <Link
+                  <div
                     key={op.id}
-                    href={`/directory/profile/${op.slug || op.id}`}
-                    className={`block p-5 border rounded-xl transition-all hover:border-amber-500/40 hover:bg-white/[0.06] ${
+                    data-directory-result="true"
+                    className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
                       op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
                     }`}
-                    style={{ textDecoration: 'none' }}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1 min-w-0">
@@ -239,22 +275,75 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                         {op.services.slice(0, 3).join(' · ')}
                       </p>
                     )}
+                    {/* Claim pressure */}
                     {!op.claimed && (
-                      <p className="text-xs text-amber-600/70 mb-2">Unclaimed — Claim this listing →</p>
+                      <div className="text-xs text-gray-700 mb-3">
+                        <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
+                          Unclaimed — Is this you? →
+                        </Link>
+                      </div>
                     )}
-                    <div className="mt-2 text-xs text-amber-400/80 font-semibold">View Profile →</div>
-                  </Link>
+                    <div className="relative">
+                      <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info hidden</div>
+                      <div className="absolute inset-0 flex items-center">
+                        <Link aria-label="Navigation Link"
+                          href="/auth/register"
+                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                        >
+                          Sign up to contact
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                      <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                      <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500">
-                  {q ? `No operators found for "${q}"` : `No operators found${stateFilter ? ` in ${stateFilter}` : ''}.`}
-                </p>
-                {q && (
-                  <Link href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
-                    Clear search
-                  </Link>
+              <div className="text-center py-16">
+                {q ? (
+                  <>
+                    <p className="text-gray-500">
+                      No operators found for &quot;{q}&quot;
+                    </p>
+                    <Link aria-label="Navigation Link" href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
+                      Clear search
+                    </Link>
+                  </>
+                ) : (
+                  <div className="max-w-lg mx-auto">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-xl">
+                      🌍
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      {countryName} — Part of Our 120-Country Network
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+                      Haul Command is actively onboarding escort and pilot car operators in {countryName}.
+                      {' '}Be the first to claim your profile and get listed for free.
+                    </p>
+                    <div className="flex justify-center gap-3">
+                      <Link
+                        href="/claim"
+                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm transition-colors"
+                      >
+                        Claim Your Profile
+                      </Link>
+                      <Link
+                        href="/auth/register"
+                        className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-lg text-sm transition-colors"
+                      >
+                        Sign Up Free
+                      </Link>
+                    </div>
+                    <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
+                      <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
+                      <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>
+                      <Link href="/regulations" className="hover:text-amber-400 transition-colors">📋 Regulations</Link>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
@@ -263,7 +352,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 mt-10">
                 {page > 1 && (
-                  <Link
+                  <Link aria-label="Navigation Link"
                     href={`/directory/${country}?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
                   >
@@ -274,7 +363,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                   Page {page} of {totalPages} · {(total ?? 0).toLocaleString()} operators
                 </span>
                 {page < totalPages && (
-                  <Link
+                  <Link aria-label="Navigation Link"
                     href={`/directory/${country}?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ''}${stateFilter ? `&state=${stateFilter}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20 transition-colors"
                   >

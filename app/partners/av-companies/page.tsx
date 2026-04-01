@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const STATS = [
   { val: '1.5M+', label: 'Verified operators tracked globally' },
-  { val: '57', label: 'Countries covered' },
+  { val: '120', label: 'Countries covered' },
   { val: '219', label: 'Active corridors' },
   { val: '47 min', label: 'Median fill time' },
 ];

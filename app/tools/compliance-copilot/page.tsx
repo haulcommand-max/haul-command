@@ -247,7 +247,7 @@ export default function ComplianceCopilotPage() {
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                             {EXAMPLE_QUESTIONS.map(q => (
-                                <button aria-label="Interactive Button"
+                                <button aria-label="Interactive Button" data-tool-interact
                                     key={q}
                                     onClick={() => useExample(q)}
                                     style={{
@@ -394,7 +394,7 @@ export default function ComplianceCopilotPage() {
                 }}>
                     {/* Jurisdiction picker */}
                     <div style={{ marginBottom: 10 }}>
-                        <select
+                        <select data-tool-interact
                             value={jurisdiction}
                             onChange={e => setJurisdiction(e.target.value)}
                             style={{
@@ -452,7 +452,7 @@ export default function ComplianceCopilotPage() {
                                 onBlur={e => (e.target.style.borderColor = T.borderStrong)}
                                 disabled={loading}
                             />
-                            <button aria-label="Interactive Button"
+                            <button aria-label="Interactive Button" data-tool-interact
                                 type="submit"
                                 disabled={loading || !question.trim()}
                                 style={{

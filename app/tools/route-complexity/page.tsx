@@ -65,7 +65,7 @@ export default function RouteComplexityCalculator() {
                             <label style={{ fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>States Crossed (click to select)</label>
                             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 16 }}>
                                 {US_STATES.map(s => (
-                                    <button aria-label="Interactive Button" key={s} onClick={() => toggleState(s)} style={{
+                                    <button aria-label="Interactive Button" data-tool-interact key={s} onClick={() => toggleState(s)} style={{
                                         padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer',
                                         background: selectedStates.includes(s) ? 'rgba(241,169,27,0.2)' : 'rgba(255,255,255,0.04)',
                                         border: `1px solid ${selectedStates.includes(s) ? 'rgba(241,169,27,0.4)' : 'rgba(255,255,255,0.08)'}`,
@@ -82,7 +82,7 @@ export default function RouteComplexityCalculator() {
                                 ].map(f => (
                                     <div key={f.label}>
                                         <label style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{f.label}</label>
-                                        <input type="number" value={f.val} onChange={e => f.set(Number(e.target.value))} min={f.min} max={f.max} step={f.step} style={{ width: '100%', padding: '8px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#f9fafb', fontSize: 14, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', boxSizing: 'border-box' }} />
+                                        <input data-tool-interact type="number" value={f.val} onChange={e => f.set(Number(e.target.value))} min={f.min} max={f.max} step={f.step} style={{ width: '100%', padding: '8px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#f9fafb', fontSize: 14, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', boxSizing: 'border-box' }} />
                                     </div>
                                 ))}
                             </div>
@@ -93,12 +93,12 @@ export default function RouteComplexityCalculator() {
                                     { label: 'Night moves needed', val: hasNight, set: setHasNight },
                                 ].map(c => (
                                     <label key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#9ca3af', cursor: 'pointer' }}>
-                                        <input type="checkbox" checked={c.val} onChange={e => c.set(e.target.checked)} style={{ accentColor: '#F1A91B' }} /> {c.label}
+                                        <input data-tool-interact type="checkbox" checked={c.val} onChange={e => c.set(e.target.checked)} style={{ accentColor: '#F1A91B' }} /> {c.label}
                                     </label>
                                 ))}
                             </div>
 
-                            <button aria-label="Interactive Button" onClick={run} disabled={selectedStates.length === 0} style={{
+                            <button aria-label="Interactive Button" data-tool-interact onClick={run} disabled={selectedStates.length === 0} style={{
                                 width: '100%', padding: '12px', borderRadius: 12, border: 'none',
                                 background: selectedStates.length > 0 ? 'linear-gradient(135deg,#F1A91B,#d97706)' : 'rgba(255,255,255,0.06)',
                                 color: selectedStates.length > 0 ? '#000' : '#4b5563',
