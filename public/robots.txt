@@ -56,7 +56,7 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://www.haulcommand.com/sitemap.xml
+Sitemap: https://haulcommand.com/sitemap.xml
 
 # Haul Command — The Operating System for Heavy Haul
 # https://www.haulcommand.com

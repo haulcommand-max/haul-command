@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${serviceName} Requirements & Regulations in ${locationName} | Haul Command`,
     description: `Current legal thresholds, dimension requirements, and verified ${serviceName} operators in ${locationName}, ${country.toUpperCase()}.`,
     alternates: {
-      canonical: `https://www.haulcommand.com/requirements/${country}/${state}/${service}`,
+      canonical: `https://haulcommand.com/requirements/${country}/${state}/${service}`,
     }
   };
 }
