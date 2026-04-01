@@ -40,12 +40,10 @@ const DEFAULT_PLAN: Plan = {
 };
 
 const CRYPTO_COINS = [
-  { code: 'ada', name: 'Cardano', symbol: '₳', color: '#0033AD', gradient: 'linear-gradient(135deg, #0033AD, #0052FF)' },
-  { code: 'btc', name: 'Bitcoin', symbol: '₿', color: '#F7931A', gradient: 'linear-gradient(135deg, #F7931A, #E8850F)' },
-  { code: 'usdc', name: 'USDC (Ethereum/Polygon)', symbol: '$', color: '#2775CA', gradient: 'linear-gradient(135deg, #2775CA, #1A5FA8)' },
-  { code: 'usdt', name: 'USDT (Tron/BSC)', symbol: '₮', color: '#26A17B', gradient: 'linear-gradient(135deg, #26A17B, #1B785B)' },
-  // ADA and BTC are accepted native plays.
-  // DJED and USDA are pending gateway liquidity verification before production enablement.
+  { code: 'ada_stable', name: 'Cardano (ADA) → Auto-Stable USD', symbol: '₳', color: '#0033AD', gradient: 'linear-gradient(135deg, #0033AD, #0052FF)' },
+  { code: 'btc_stable', name: 'Bitcoin (BTC) → Auto-Stable USD', symbol: '₿', color: '#F7931A', gradient: 'linear-gradient(135deg, #F7931A, #E8850F)' },
+  // DJED and USDA pending native gateway support.
+  // We use NOWPayments Auto-Conversion. The user pays in ADA/BTC, we instantly auto-convert it to held USDT via API so they don't see the bridge layer.
 ];
 
 export default function CryptoCheckoutModal({

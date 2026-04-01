@@ -146,10 +146,9 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
-    { id: "usdt_trc20", label: "USDT (Tron)", icon: "₮" },
-    { id: "usdc_erc20", label: "USDC (Ethereum)", icon: "$" },
-    { id: "ada", label: "Cardano (ADA)", icon: "₳" },
-    { id: "btc", label: "Bitcoin (BTC)", icon: "₿" },
+    { id: "ada_stable", label: "Cardano (ADA) → Auto-Stable", icon: "₳" },
+    { id: "btc_stable", label: "Bitcoin (BTC) → Auto-Stable", icon: "₿" },
+    { id: "usdc", label: "USDC (Global Stable USD)", icon: "$" },
   ];
 
   const [acknowledgesSlippage, setAcknowledgesSlippage] = useState(false);
@@ -230,7 +229,7 @@ function CryptoEscrowForm({
           className="mt-1 bg-slate-800 border-slate-600 rounded text-blue-500 focus:ring-blue-500"
         />
         <label htmlFor="slippage-check" className="text-xs text-slate-400 leading-tight">
-          By proceeding, I confirm that Haul Command exclusively enforces USD-pegged stablecoins for escrow specifically to mitigate volatility. I understand that any network slippage or gas fees incurred during smart contract execution are my responsibility, and Haul Command is not liable for fluctuations in third-party decentralized networks.
+          By proceeding, I confirm that Haul Command utilizes NOWPayments Auto-Conversion. If I pay in ADA or BTC, the API instantly locks the value into USD Stablecoins to prevent 14-day volatility risk during escrow. Haul Command abstracts the underlying bridge networks to guarantee exact-fiat payouts to operators.
         </label>
       </div>
 
