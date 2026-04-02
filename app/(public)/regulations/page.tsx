@@ -5,7 +5,7 @@ import { REGULATIONS, type CountryRegulation } from '@/lib/regulations/global-re
 export const metadata: Metadata = {
     title: 'Pilot Car & Escort Vehicle Regulations by Country',
     description:
-        'Complete guide to oversize load escort requirements, pilot car regulations, and permit systems across 52+ countries. Know the rules before you move.',
+        'Complete guide to oversize load escort requirements, pilot car regulations, and permit systems across 120 countries. Know the rules before you move.',
     keywords: [
         'pilot car regulations',
         'escort vehicle requirements',
@@ -23,6 +23,7 @@ const TIER_META: Record<string, { label: string; color: string; description: str
     B: { label: 'Blue', color: '#60A5FA', description: 'Good coverage · Some gaps' },
     C: { label: 'Silver', color: '#94A3B8', description: 'Partial data · Expanding' },
     D: { label: 'Slate', color: '#64748B', description: 'Limited data · Contact local authority' },
+    E: { label: 'Copper', color: '#B87333', description: 'Emerging market · Frontier data' },
 };
 
 function RegulationCard({ reg }: { reg: CountryRegulation }) {
@@ -71,11 +72,12 @@ function RegulationCard({ reg }: { reg: CountryRegulation }) {
 }
 
 export default function RegulationsIndexPage() {
-    const byTier = {
+    const byTier: Record<string, typeof REGULATIONS> = {
         A: REGULATIONS.filter(r => r.tier === 'A'),
         B: REGULATIONS.filter(r => r.tier === 'B'),
         C: REGULATIONS.filter(r => r.tier === 'C'),
         D: REGULATIONS.filter(r => r.tier === 'D'),
+        E: REGULATIONS.filter(r => r.tier === 'E'),
     };
 
     return (
@@ -113,7 +115,7 @@ export default function RegulationsIndexPage() {
             </div>
 
             {/* Tier Sections */}
-            {(['A', 'B', 'C', 'D'] as const).map(tierKey => {
+            {(['A', 'B', 'C', 'D', 'E'] as const).map(tierKey => {
                 const regs = byTier[tierKey];
                 const tier = TIER_META[tierKey];
                 if (regs.length === 0) return null;
@@ -142,14 +144,14 @@ export default function RegulationsIndexPage() {
                 );
             })}
 
-            {/* Structured Data — FAQPage for snippets */}
+            {/* Structured Data — FAQPage for snippets (expanded for maximum coverage) */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'FAQPage',
-                        mainEntity: REGULATIONS.slice(0, 10).map(reg => ({
+                        mainEntity: REGULATIONS.slice(0, 25).map(reg => ({
                             '@type': 'Question',
                             name: `Do I need a pilot car in ${reg.countryName}?`,
                             acceptedAnswer: {
@@ -157,6 +159,20 @@ export default function RegulationsIndexPage() {
                                 text: reg.voiceAnswer,
                             },
                         })),
+                    }),
+                }}
+            />
+            {/* BreadcrumbList */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'BreadcrumbList',
+                        itemListElement: [
+                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com' },
+                            { '@type': 'ListItem', position: 2, name: 'Regulations', item: 'https://haulcommand.com/regulations' },
+                        ],
                     }),
                 }}
             />

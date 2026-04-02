@@ -74,23 +74,61 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                 })
             }} />
 
-            {/* If FAQ schema eligible, inject FAQ */}
-            {term.schema_faq_eligible && (
-                <script type="application/ld+json" dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "FAQPage",
-                        "mainEntity": [{
+            {/* BreadcrumbList — critical for rich snippet breadcrumbs */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+                        { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://haulcommand.com/glossary" },
+                        ...(term.category ? [{ "@type": "ListItem", "position": 3, "name": term.category, "item": `https://haulcommand.com/glossary#${term.category}` }] : []),
+                        { "@type": "ListItem", "position": term.category ? 4 : 3, "name": term.term, "item": `https://haulcommand.com/glossary/${term.slug}` }
+                    ]
+                })
+            }} />
+
+            {/* FAQPage — snippet capture for EVERY glossary term */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
                             "@type": "Question",
-                            "name": `What does ${term.term} mean in heavy haul?`,
+                            "name": `What is ${term.term.toLowerCase().startsWith('a ') || term.term.toLowerCase().startsWith('an ') || term.term.toLowerCase().startsWith('the ') ? term.term : `a ${term.term}`} in heavy haul?`,
                             "acceptedAnswer": {
                                 "@type": "Answer",
                                 "text": term.short_definition
                             }
-                        }]
-                    })
-                }} />
-            )}
+                        },
+                        ...(term.why_it_matters ? [{
+                            "@type": "Question",
+                            "name": `Why does ${term.term} matter for oversize load transport?`,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": term.why_it_matters
+                            }
+                        }] : []),
+                        ...(term.applicable_countries && term.applicable_countries.length > 0 ? [{
+                            "@type": "Question",
+                            "name": `Which countries require ${term.term}?`,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": `${term.term} applies in ${term.applicable_countries.join(', ')}. Requirements vary by jurisdiction — consult local transport authorities for specific regulations.`
+                            }
+                        }] : []),
+                        ...(term.synonyms && term.synonyms.length > 0 ? [{
+                            "@type": "Question",
+                            "name": `What are other names for ${term.term}?`,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": `${term.term} is also known as: ${term.synonyms.join(', ')}. These terms are used interchangeably in different regions and jurisdictions.`
+                            }
+                        }] : []),
+                    ]
+                })
+            }} />
 
             <div className="min-h-screen bg-[#0B0B0C] text-white selection:bg-blue-500/30">
                 <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -125,7 +163,10 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                             )}
                         </div>
 
-                        <p className="text-xl text-gray-300 leading-relaxed font-medium">
+                        <p
+                            className="text-xl text-gray-300 leading-relaxed font-medium speakable-summary"
+                            data-speakable="true"
+                        >
                             {term.short_definition}
                         </p>
                         

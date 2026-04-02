@@ -3,12 +3,7 @@ require('dotenv').config({ path: '.env.local' });
 (async () => {
   const c = new Client({ connectionString: process.env.SUPABASE_DB_POOLER_URL });
   await c.connect();
-  // Check what entity_type values are allowed
-  const r = await c.query(`
-    SELECT pg_get_constraintdef(oid) as def
-    FROM pg_constraint
-    WHERE conrelid = 'public.market_entities'::regclass AND contype = 'c'
-  `);
-  r.rows.forEach(x => console.log(x.def));
+  const r = await c.query(`SELECT conname, pg_get_constraintdef(oid) as def FROM pg_constraint WHERE conname = 'monetization_flags_lifecycle_stage_check'`);
+  console.log('Check constraint:', r.rows[0]?.def || 'NOT FOUND');
   await c.end();
 })();

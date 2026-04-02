@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════════════════════
 // GLOBAL PILOT CAR REGULATIONS DATABASE
-// Purpose: Structured regulatory intelligence across 52 countries
+// Purpose: Structured regulatory intelligence across 120 countries
 //          Powers: compliance pages, voice answers, snippets,
 //          carrier intelligence, and the compliance firewall
 // Source: Government regulations + industry guidelines
@@ -9,7 +9,7 @@
 export interface CountryRegulation {
     countryCode: string;
     countryName: string;
-    tier: "A" | "B" | "C" | "D";
+    tier: "A" | "B" | "C" | "D" | "E";
     terminology: { primary: string; secondary?: string[]; language: string };
 
     /** Standard vehicle limits before oversize classification */

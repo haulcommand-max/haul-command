@@ -67,6 +67,18 @@ export default async function EscortRequirementsIndex() {
         <RouteCalcMobileGate>
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ESCORT_REQUIREMENTS_JSONLD }} />
+            {/* FAQPage — capture 'do I need a pilot car in [state]' snippets */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    { "@type": "Question", "name": "What are escort vehicle requirements for oversize loads?", "acceptedAnswer": { "@type": "Answer", "text": `Escort vehicle (pilot car) requirements vary by jurisdiction. Loads exceeding specific width, height, length, or weight thresholds require one or more escort vehicles. Haul Command covers ${totalJ} jurisdictions across ${countryOrder.length} countries with ${totalR} specific rules.` }},
+                    { "@type": "Question", "name": "How many pilot cars do I need for an oversize load?", "acceptedAnswer": { "@type": "Answer", "text": "The number of escort vehicles required depends on load dimensions, route characteristics, and local regulations. Most US states require at least one pilot car for loads exceeding 12-14 feet wide, with two required above 16 feet. Superloads often need police escorts as well." }},
+                    { "@type": "Question", "name": "What equipment does a pilot car need?", "acceptedAnswer": { "@type": "Answer", "text": "Standard pilot car equipment includes an 'OVERSIZE LOAD' sign (minimum 5'x10\" with 8\" black letters on yellow), amber rotating/strobe lights, height pole (for lead vehicles), two-way radio or CB radio, flags, and safety equipment. Some states require additional items like flashing arrow boards." }},
+                    { "@type": "Question", "name": "Do pilot car drivers need certification?", "acceptedAnswer": { "@type": "Answer", "text": "Many US states require pilot car operators to hold a valid certification. Requirements vary — some states accept other states' certifications (reciprocity), while others require their own specific certification program. Check the Haul Command escort requirements tool for state-by-state details." }},
+                    { "@type": "Question", "name": "What triggers the need for an escort vehicle?", "acceptedAnswer": { "@type": "Answer", "text": "Escort vehicles are triggered by load dimensions exceeding legal limits. Common triggers include: width over 10-12 feet, height over 14-15 feet, length over 75-100 feet, or weight requiring a superload permit. Night travel, two-lane roads, and interstate crossings may require additional escorts." }},
+                ]
+            }) }} />
             <header className="mb-12 sm:mb-16">
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">GLOBAL COVERAGE</span><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">{totalJ} JURISDICTIONS</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">REQUIREMENTS</span></h1>

@@ -152,18 +152,23 @@ const nextConfig: NextConfig = {
         ];
     },
     // ── Rewrites ─────────────────────────────────────────────────────────
-    // Route special files to their API handlers, bypassing the [country] catch-all
+    // Route special files to their API handlers, bypassing the [country] catch-all.
+    // MUST use beforeFiles so they run BEFORE Next.js filesystem routing.
     async rewrites() {
-        return [
-            {
-                source: '/sitemap.xml',
-                destination: '/api/sitemap',
-            },
-            {
-                source: '/llms.txt',
-                destination: '/api/llms-txt',
-            },
-        ];
+        return {
+            beforeFiles: [
+                {
+                    source: '/sitemap.xml',
+                    destination: '/api/sitemap',
+                },
+                {
+                    source: '/llms.txt',
+                    destination: '/api/llms-txt',
+                },
+            ],
+            afterFiles: [],
+            fallback: [],
+        };
     },
 };
 export default nextConfig;

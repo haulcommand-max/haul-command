@@ -89,6 +89,54 @@ const TOOLS = [
 export default function ToolsLandingPage() {
     return (
         <div data-tool-interact="true" style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '2.5rem 1rem' }}>
+            {/* Structured Data — SoftwareApplication for tool discovery */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "Heavy Haul Intelligence Tools",
+                "url": "https://haulcommand.com/tools",
+                "description": "Free and premium tools for oversize load logistics. Compliance checking, route calculation, rate lookup, and escort intelligence across 120 countries.",
+                "breadcrumb": {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+                        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://haulcommand.com/tools" },
+                    ]
+                },
+                "mainEntity": {
+                    "@type": "ItemList",
+                    "name": "Haul Command Tools",
+                    "numberOfItems": TOOLS.length,
+                    "itemListElement": TOOLS.map((tool, i) => ({
+                        "@type": "ListItem",
+                        "position": i + 1,
+                        "item": {
+                            "@type": "SoftwareApplication",
+                            "name": tool.title,
+                            "description": tool.description,
+                            "url": `https://haulcommand.com${tool.href}`,
+                            "applicationCategory": "BusinessApplication",
+                            "operatingSystem": "Web",
+                            "offers": {
+                                "@type": "Offer",
+                                "price": tool.badges.includes('Premium') ? "29.00" : "0",
+                                "priceCurrency": "USD",
+                            }
+                        }
+                    }))
+                }
+            }) }} />
+            {/* FAQPage — capture 'what tools do I need for oversize loads' snippets */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    { "@type": "Question", "name": "What tools do pilot car operators need?", "acceptedAnswer": { "@type": "Answer", "text": "Professional pilot car operators need compliance checking tools, route calculators, rate lookup systems, and communication equipment. Haul Command provides free digital tools including a Compliance Copilot (AI-powered regulation lookup), Permit Complexity Checker, Lane Rate Lookup, and Route Complexity Calculator covering all 50 US states and 120 countries." }},
+                    { "@type": "Question", "name": "How do I calculate escort requirements for an oversize load?", "acceptedAnswer": { "@type": "Answer", "text": "Use the Haul Command Route Complexity Calculator or Permit Complexity Checker. Enter your load dimensions (width, height, length, weight) and destination states. The tool cross-references state-specific regulations to determine how many escort vehicles are needed, estimated permit costs, and risk bands for your route." }},
+                    { "@type": "Question", "name": "Is there a free pilot car rate calculator?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Haul Command's Lane Rate Lookup tool provides free market-rate intelligence for any corridor, service type, and escort count. It draws from real-time market data to give you competitive rate ranges for pilot car services across the United States." }},
+                    { "@type": "Question", "name": "What is a compliance copilot for oversize loads?", "acceptedAnswer": { "@type": "Answer", "text": "The Haul Command Compliance Copilot is an AI-powered tool that answers any question about oversize load regulations. It covers escort requirements, height pole rules, night travel bans, and permit systems for all 50 US states. Powered by real regulation data, it provides instant, accurate compliance guidance." }},
+                ]
+            }) }} />
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', marginBottom: 48 }}>
                     <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(241,169,27,0.08)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 20, marginBottom: 16 }}>
