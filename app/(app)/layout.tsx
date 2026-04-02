@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import EnhancedFooter from '@/components/layout/EnhancedFooter';
 import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+import { PaywallGuard } from '@/components/monetization/PaywallGuard';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 
 /**
@@ -56,6 +57,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         { href: '/directory', label: '🔍 Directory' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
                         { href: '/corridor', label: '📊 Corridors' },
+                        { href: '/data', label: '📈 Market Data' },
                         { href: '/map/jurisdiction', label: '🌎 Jurisdiction Map' },
                     ].map(link => (
                         <Link key={link.href} href={link.href}
@@ -142,7 +144,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
                 {/* Content area — padded for mobile bottom nav */}
                 <div className="m-shell-content" style={{ position: 'relative', zIndex: 0, flex: 1 }}>
-                    {children}
+                    <PaywallGuard>
+                        {children}
+                    </PaywallGuard>
                 </div>
 
                 {/* Desktop footer only */}

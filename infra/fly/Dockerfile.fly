@@ -1,0 +1,9 @@
+FROM traccar/traccar:latest
+
+# Provide a custom configuration file that injects fly secrets
+COPY traccar-fly.xml /opt/traccar/conf/traccar.xml
+
+# Expose Web UI / API
+EXPOSE 8082
+# Expose Common device protocols
+EXPOSE 5055 5027

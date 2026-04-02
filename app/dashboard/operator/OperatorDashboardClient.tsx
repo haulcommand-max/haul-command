@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import HazardReportForm from "@/components/hc-route/HazardReportForm";
+import { AlertTriangle, X } from "lucide-react";
 
 export function OperatorDashboardClient({ operatorId, availableLoads }: { operatorId: string, availableLoads: any[] }) {
   const [loads, setLoads] = useState(availableLoads);
   const [biddingOn, setBiddingOn] = useState<string | null>(null);
   const [bidAmount, setBidAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showWaze, setShowWaze] = useState(false);
 
   const handleSubmitBid = async (loadId: string) => {
     if (!bidAmount || isNaN(Number(bidAmount))) return alert("Enter a valid metric amount.");
@@ -44,10 +47,27 @@ export function OperatorDashboardClient({ operatorId, availableLoads }: { operat
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* HC Waze Overlay */}
+      {showWaze && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+            <div className="bg-[#0f172a] rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-amber-500/20 relative shadow-[0_0_50px_rgba(245,158,11,0.1)]">
+               <button onClick={() => setShowWaze(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white">
+                  <X className="w-6 h-6" />
+               </button>
+               <HazardReportForm reporterId={operatorId} currentLat={0} currentLng={0} onSubmitSuccess={() => setShowWaze(false)} />
+            </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Pilot Car Command</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+            Pilot Car Command
+            <Button size="sm" onClick={() => setShowWaze(true)} className="ml-4 bg-amber-500 hover:bg-amber-600 text-black font-bold flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" /> HC Waze
+            </Button>
+          </h1>
           <p className="text-slate-400 mt-2">Active Oversize Routes & Open Network Dispatch Bids.</p>
         </div>
         <div className="text-right">

@@ -6,6 +6,7 @@ import { CategoryGrid } from '@/components/directory/CategoryGrid';
 import SaveButton from '@/components/capture/SaveButton';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { MarketGate } from '@/components/monetization/MarketGate';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -233,120 +234,122 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
               </div>
             )}
 
-            {operators && operators.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {operators.map((op: any) => (
-                  <div
-                    key={op.id}
-                    data-directory-result="true"
-                    className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
-                      op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm text-white truncate">
-                          {op.full_name || 'Escort Operator'}
-                        </h3>
-                        <p className="text-xs text-gray-500">
-                          {op.city && `${op.city}, `}{op.state}
-                        </p>
+            <MarketGate countryCode={country} surface="directory_search" fallbackLabel={countryName}>
+              {operators && operators.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {operators.map((op: any) => (
+                    <div
+                      key={op.id}
+                      data-directory-result="true"
+                      className={`p-5 border rounded-xl transition-all hover:border-amber-500/30 ${
+                        op.featured ? 'bg-amber-500/5 border-amber-500/20' : 'bg-white/5 border-white/10'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-sm text-white truncate">
+                            {op.full_name || 'Escort Operator'}
+                          </h3>
+                          <p className="text-xs text-gray-500">
+                            {op.city && `${op.city}, `}{op.state}
+                          </p>
+                        </div>
+                        <div className="flex gap-1 flex-shrink-0 ml-2">
+                          {op.featured && (
+                            <span className="px-1.5 py-0.5 bg-amber-500/30 text-amber-300 text-xs rounded">★</span>
+                          )}
+                          {op.claimed && (
+                            <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">✓</span>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex gap-1 flex-shrink-0 ml-2">
-                        {op.featured && (
-                          <span className="px-1.5 py-0.5 bg-amber-500/30 text-amber-300 text-xs rounded">★</span>
-                        )}
-                        {op.claimed && (
-                          <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">✓</span>
-                        )}
+                      {op.rating && (
+                        <div className="flex items-center gap-1 mb-2">
+                          <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
+                          <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
+                          {op.review_count > 0 && (
+                            <span className="text-xs text-gray-700">({op.review_count})</span>
+                          )}
+                        </div>
+                      )}
+                      {op.services?.length > 0 && (
+                        <p className="text-xs text-gray-600 mb-3 line-clamp-1">
+                          {op.services.slice(0, 3).join(' · ')}
+                        </p>
+                      )}
+                      {/* Claim pressure */}
+                      {!op.claimed && (
+                        <div className="text-xs text-gray-700 mb-3">
+                          <Link href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
+                            Unclaimed — Is this you? →
+                          </Link>
+                        </div>
+                      )}
+                      <div className="relative">
+                        <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info hidden</div>
+                        <div className="absolute inset-0 flex items-center">
+                          <Link
+                            href="/auth/register"
+                            className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                          >
+                            Sign up to contact
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                        <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                        <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
                       </div>
                     </div>
-                    {op.rating && (
-                      <div className="flex items-center gap-1 mb-2">
-                        <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
-                        <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
-                        {op.review_count > 0 && (
-                          <span className="text-xs text-gray-700">({op.review_count})</span>
-                        )}
-                      </div>
-                    )}
-                    {op.services?.length > 0 && (
-                      <p className="text-xs text-gray-600 mb-3 line-clamp-1">
-                        {op.services.slice(0, 3).join(' · ')}
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  {q ? (
+                    <>
+                      <p className="text-gray-500">
+                        No operators found for &quot;{q}&quot;
                       </p>
-                    )}
-                    {/* Claim pressure */}
-                    {!op.claimed && (
-                      <div className="text-xs text-gray-700 mb-3">
-                        <Link href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
-                          Unclaimed — Is this you? →
-                        </Link>
+                      <Link href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
+                        Clear search
+                      </Link>
+                    </>
+                  ) : (
+                    <div className="max-w-lg mx-auto">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-xl">
+                        🌍
                       </div>
-                    )}
-                    <div className="relative">
-                      <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info hidden</div>
-                      <div className="absolute inset-0 flex items-center">
+                      <h3 className="text-lg font-bold text-white mb-2">
+                        {countryName} — Part of Our 120-Country Network
+                      </h3>
+                      <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+                        Haul Command is actively onboarding escort and pilot car operators in {countryName}.
+                        {' '}Be the first to claim your profile and get listed for free.
+                      </p>
+                      <div className="flex justify-center gap-3">
+                        <Link
+                          href="/claim"
+                          className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm transition-colors"
+                        >
+                          Claim Your Profile
+                        </Link>
                         <Link
                           href="/auth/register"
-                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                          className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-lg text-sm transition-colors"
                         >
-                          Sign up to contact
+                          Sign Up Free
                         </Link>
                       </div>
+                      <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
+                        <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
+                        <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>
+                        <Link href="/regulations" className="hover:text-amber-400 transition-colors">📋 Regulations</Link>
+                      </div>
                     </div>
-                    <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
-                      <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
-                      <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16">
-                {q ? (
-                  <>
-                    <p className="text-gray-500">
-                      No operators found for &quot;{q}&quot;
-                    </p>
-                    <Link href={`/directory/${country}`} className="text-amber-400 text-sm hover:underline mt-2 inline-block">
-                      Clear search
-                    </Link>
-                  </>
-                ) : (
-                  <div className="max-w-lg mx-auto">
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-xl">
-                      🌍
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">
-                      {countryName} — Part of Our 120-Country Network
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-                      Haul Command is actively onboarding escort and pilot car operators in {countryName}.
-                      {' '}Be the first to claim your profile and get listed for free.
-                    </p>
-                    <div className="flex justify-center gap-3">
-                      <Link
-                        href="/claim"
-                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm transition-colors"
-                      >
-                        Claim Your Profile
-                      </Link>
-                      <Link
-                        href="/auth/register"
-                        className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-lg text-sm transition-colors"
-                      >
-                        Sign Up Free
-                      </Link>
-                    </div>
-                    <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
-                      <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
-                      <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>
-                      <Link href="/regulations" className="hover:text-amber-400 transition-colors">📋 Regulations</Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
+            </MarketGate>
 
             {/* Pagination */}
             {totalPages > 1 && (

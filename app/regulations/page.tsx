@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
+import { REGULATIONS } from '@/lib/regulations/global-regulations-db';
 
 export const metadata: Metadata = {
   title: 'Oversize Load Regulations by Country | Haul Command',
@@ -9,11 +10,31 @@ export const metadata: Metadata = {
 export default async function RegulationsPage() {
   const supabase = createClient();
 
-  const { data: pages } = await supabase
+  // Fetch extended analysis pages
+  const { data: dbPages } = await supabase
     .from('regulation_pages')
     .select('jurisdiction, country_code, generated_at')
     .not('content', 'is', null)
     .order('jurisdiction');
+
+  // Create a map for fast lookup of generated dates
+  const generatedMap = new Map(
+    dbPages?.map(p => [p.jurisdiction.toLowerCase(), p.generated_at]) || []
+  );
+
+  // Combine static DB with any additional DB pages (some states/provinces might be in DB but not static)
+  const allJurisdictions = new Set([
+    ...REGULATIONS.map(r => r.countryName),
+    ...(dbPages?.map(p => p.jurisdiction) || [])
+  ]);
+
+  const sortedPages = Array.from(allJurisdictions).sort().map(name => {
+    return {
+      name,
+      slug: encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-')),
+      generated_at: generatedMap.get(name.toLowerCase())
+    };
+  });
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -31,20 +52,24 @@ export default async function RegulationsPage() {
       </section>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
-        {pages?.length ? (
+        {sortedPages.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {pages.map(page => (
+            {sortedPages.map(page => (
               <a
-                key={page.jurisdiction}
-                href={`/regulations/${encodeURIComponent(page.jurisdiction.toLowerCase().replace(/\s+/g, '-'))}`}
-                className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all group"
+                key={page.slug}
+                href={`/regulations/${page.slug}`}
+                className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all group relative overflow-hidden"
               >
                 <p className="font-bold text-sm text-white group-hover:text-amber-400 transition-colors">
-                  {page.jurisdiction}
+                  {page.name}
                 </p>
-                {page.generated_at && (
-                  <p className="text-xs text-gray-700 mt-1">
-                    Updated {new Date(page.generated_at).toLocaleDateString()}
+                {page.generated_at ? (
+                  <p className="text-xs text-green-400/80 mt-1">
+                    ✓ Detailed Analysis
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Fast Facts Available
                   </p>
                 )}
               </a>

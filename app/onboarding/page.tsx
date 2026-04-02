@@ -8,7 +8,7 @@ import { track } from "@/lib/analytics/track";
 
 const supabase = createClient();
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4;
 
 const CAPABILITIES = [
     { key: "chase_only", label: "Chase only" },
@@ -17,6 +17,11 @@ const CAPABILITIES = [
     { key: "night_moves", label: "Night moves" },
     { key: "weekend", label: "Weekend runs" },
     { key: "multi_state", label: "Multi-state" },
+    { key: "utah_certified", label: "Utah Certified (UT)" },
+    { key: "washington_certified", label: "Washington Certified (WA)" },
+    { key: "new_york_certified", label: "New York Certified (NY)" },
+    { key: "flagger_certified", label: "Flagger Certified" },
+    { key: "commercial_insurance", label: "1M+ Commercial Auto Liability" }
 ] as const;
 
 const US_STATES = [
@@ -60,10 +65,10 @@ export default function OnboardingPage() {
     const [homeState, setHomeState] = useState("FL");
     const [radius, setRadius] = useState(150);
 
-    // Step 2
+    // Step 2 & 3
     const [caps, setCaps] = useState<Record<string, boolean>>({ chase_only: true });
 
-    // Step 3
+    // Step 4
     const [availability, setAvailability] = useState<"available" | "busy" | "offline">("available");
 
     const capsJson = useMemo(() => {
@@ -115,11 +120,14 @@ export default function OnboardingPage() {
             } else if (step === 2) {
                 await save({ capabilities: capsJson, onboarding_step: 2 });
                 setStep(3);
+            } else if (step === 3) {
+                await save({ capabilities: capsJson, onboarding_step: 3 });
+                setStep(4);
             } else {
                 const t0 = performance.now();
                 await save({
                     availability,
-                    onboarding_step: 3,
+                    onboarding_step: 4,
                     onboarding_completed_at: new Date().toISOString(),
                 });
                 const latency_ms = Math.round(performance.now() - t0);
@@ -127,7 +135,7 @@ export default function OnboardingPage() {
                 // Fire after successful save — never before
                 track.onboardingCompleted({
                     role: 'escort',
-                    steps_completed: 3,
+                    steps_completed: 4,
                     steps_skipped: 0,
                     final_strength: strength,
                 });
@@ -143,8 +151,9 @@ export default function OnboardingPage() {
 
     const stepMeta = [
         { icon: MapPin, label: "Home Base" },
-        { icon: Zap, label: "Capabilities" },
-        { icon: ToggleLeft, label: "Availability" },
+        { icon: Zap, label: "Caps" },
+        { icon: CheckCircle, label: "Certs" },
+        { icon: ToggleLeft, label: "Status" },
     ];
 
     return (
@@ -260,8 +269,48 @@ export default function OnboardingPage() {
                     </div>
                 )}
 
-                {/* Step 3 — Availability */}
+                {/* Step 3 — Certifications & Training Caps */}
                 {step === 3 && (
+                    <div className="hc-card p-6 space-y-5">
+                        <div>
+                            <h2 className="text-lg font-black text-white uppercase tracking-tight">Active Certifications?</h2>
+                            <p className="text-hc-muted text-sm mt-0.5">We use this to connect you to required active loads, and recommend training gaps to unlock more revenue.</p>
+                        </div>
+                        <div className="space-y-2">
+                            {[
+                                { key: "utah_certified", label: "Utah Certified (UT)" },
+                                { key: "washington_certified", label: "Washington Certified (WA)" },
+                                { key: "new_york_certified", label: "New York Certified (NY)" },
+                                { key: "flagger_certified", label: "Flagger Certified" },
+                                { key: "commercial_insurance", label: "1M+ Commercial Auto Liability" }
+                            ].map(({ key, label }) => (
+                                <label
+                                    key={key}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all min-h-[48px] ${caps[key] ? "border-hc-gold-500/40 bg-hc-gold-500/5" : "border-hc-border bg-hc-elevated"}`}
+                                >
+                                    <div className={`w-5 h-5 rounded flex items-center justify-center border flex-shrink-0 transition-all ${caps[key] ? "bg-hc-gold-500 border-hc-gold-500" : "border-hc-border"}`}>
+                                        {caps[key] && <CheckCircle className="w-3.5 h-3.5 text-hc-bg" />}
+                                    </div>
+                                    <input type="checkbox" checked={!!caps[key]} onChange={e => setCaps(p => ({ ...p, [key]: e.target.checked }))} className="sr-only" />
+                                    <span className="text-sm font-medium text-hc-text">{label}</span>
+                                </label>
+                            ))}
+                        </div>
+                        <div className="p-3 bg-hc-warning/10 border border-hc-warning/30 rounded-xl mt-4">
+                            <p className="text-xs text-amber-500 font-medium">Missing certs? We partner with certified academies. You'll get access to discounted training modules to unlock restricted state access.</p>
+                        </div>
+                        {error && <div className="text-hc-danger text-sm">{error}</div>}
+                        <button
+                            onClick={next} disabled={saving}
+                            className="w-full py-3.5 bg-hc-gold-500 hover:bg-hc-gold-600 disabled:opacity-50 text-hc-bg font-black text-sm rounded-xl flex items-center justify-center gap-2 transition-all min-h-[52px] uppercase tracking-widest"
+                        >
+                            Continue <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
+                )}
+
+                {/* Step 4 — Availability */}
+                {step === 4 && (
                     <div className="hc-card p-6 space-y-5">
                         <div>
                             <h2 className="text-lg font-black text-white uppercase tracking-tight">Turn on availability</h2>

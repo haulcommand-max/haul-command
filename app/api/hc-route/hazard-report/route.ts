@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
       reporter_id, lat, lng, hazard_type, description, severity: severity || 'medium',
       measured_height_ft, measured_width_ft, road_name, direction,
       photo_urls: photo_urls || [], is_active: true, expires_at: expiresAt,
-      confirmations: 0, denials: 0, confidence_score: 0.5,
     }).select().single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });

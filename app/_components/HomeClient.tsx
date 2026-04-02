@@ -110,6 +110,116 @@ interface HomeClientProps {
     topListings: DirectoryListing[];
 }
 
+// ===== INTENT WIZARD (THE RABBIT HOLE) =====
+function IntentWizard() {
+    const [role, setRole] = useState<string | null>(null);
+
+    const roles = [
+        { id: "pilot_car", label: "Pilot Car Operator", icon: Navigation, color: "#22c55e" },
+        { id: "freight_broker", label: "Freight Broker / 3PL", icon: Truck, color: "#F1A91B" },
+        { id: "carrier", label: "Carrier / Dispatcher", icon: Activity, color: "#3b82f6" },
+        { id: "heavy_hauler", label: "Heavy Hauler", icon: Map, color: "#a855f7" }
+    ];
+
+    return (
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} className="bg-[#0B0B0C] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl relative overflow-hidden">
+            {/* Header */}
+            <div className="text-center mb-8 relative z-10">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C6923A] mb-2 block">Pathfinder</span>
+                <h3 className="text-2xl font-black text-white">What's Your Role?</h3>
+                <p className="text-sm text-[#8FA3B8] mt-1">Choose the path that matches your operations.</p>
+            </div>
+
+            {/* Level 1: Role Selection */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 relative z-10">
+                {roles.map(r => {
+                    const active = role === r.id;
+                    const Icon = r.icon;
+                    return (
+                        <button key={r.id} onClick={() => setRole(r.id)}
+                            className={`p-4 rounded-2xl flex flex-col items-center gap-3 transition-all border ${active ? "border-[var(--card-color)] bg-[var(--card-color)]/10" : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"}`}
+                            style={{ "--card-color": r.color } as React.CSSProperties}>
+                            <div className={`p-3 rounded-full ${active ? "bg-[var(--card-color)] text-black" : "bg-white/5 text-white"}`}>
+                                <Icon className="w-5 h-5" />
+                            </div>
+                            <span className={`text-xs font-bold text-center ${active ? "text-white" : "text-[#8FA3B8]"}`}>{r.label}</span>
+                        </button>
+                    )
+                })}
+            </div>
+
+            {/* Level 2: The Rabbit Hole Actions based on Role */}
+            {role === "pilot_car" && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-8 mt-8 border-t border-white/10">
+                   <p className="text-sm font-bold text-white mb-4 text-center">What do you want to accomplish today?</p>
+                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                       <Link href="/onboarding/start?role=escort&intent=loads" className="bg-[#22c55e]/10 border border-[#22c55e]/20 p-4 rounded-xl hover:bg-[#22c55e]/20 transition-all text-center group">
+                           <Zap className="w-5 h-5 text-[#22c55e] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Find High-Paying Loads</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Connect instantly with brokers</span>
+                       </Link>
+                       <Link href="/onboarding/start?role=escort&intent=compliance" className="bg-[#3b82f6]/10 border border-[#3b82f6]/20 p-4 rounded-xl hover:bg-[#3b82f6]/20 transition-all text-center group">
+                           <Shield className="w-5 h-5 text-[#3b82f6] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Digital Compliance Wallet</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Share certs across 120 countries</span>
+                       </Link>
+                       <Link href="/onboarding/start?role=escort&intent=invoicing" className="bg-[#F1A91B]/10 border border-[#F1A91B]/20 p-4 rounded-xl hover:bg-[#F1A91B]/20 transition-all text-center group">
+                           <BarChart3 className="w-5 h-5 text-[#F1A91B] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Free Automated Invoicing</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Get paid in 24 hours</span>
+                       </Link>
+                   </div>
+                </motion.div>
+            )}
+
+            {role === "freight_broker" && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-8 mt-8 border-t border-white/10">
+                   <p className="text-sm font-bold text-white mb-4 text-center">How can we accelerate your operations?</p>
+                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                       <Link href="/onboarding/start?role=broker&intent=quote" className="bg-[#F1A91B]/10 border border-[#F1A91B]/20 p-4 rounded-xl hover:bg-[#F1A91B]/20 transition-all text-center group">
+                           <Clock className="w-5 h-5 text-[#F1A91B] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Instant Route Quotes</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Price pilot cars across 120 regions</span>
+                       </Link>
+                       <Link href="/onboarding/start?role=broker&intent=dispatch" className="bg-[#a855f7]/10 border border-[#a855f7]/20 p-4 rounded-xl hover:bg-[#a855f7]/20 transition-all text-center group">
+                           <Radio className="w-5 h-5 text-[#a855f7] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Automate Dispatching</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Skip the 50 phone calls</span>
+                       </Link>
+                       <Link href="/directory" className="bg-[#22c55e]/10 border border-[#22c55e]/20 p-4 rounded-xl hover:bg-[#22c55e]/20 transition-all text-center group">
+                           <Shield className="w-5 h-5 text-[#22c55e] mx-auto mb-2" />
+                           <span className="block text-xs font-bold text-white">Liability Vetting Tool</span>
+                           <span className="block text-[10px] text-[#8FA3B8] mt-1 group-hover:text-white/70">Filter safe, certified operators instantly</span>
+                       </Link>
+                   </div>
+                </motion.div>
+            )}
+
+            {(role === "carrier" || role === "heavy_hauler") && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-8 mt-8 border-t border-white/10">
+                   <p className="text-sm font-bold text-white mb-4 text-center">Optimize your fleet footprint.</p>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                       <Link href="/corridors" className="bg-[#3b82f6]/10 border border-[#3b82f6]/20 p-4 rounded-xl hover:bg-[#3b82f6]/20 transition-all text-center flex items-center justify-center gap-4 group">
+                           <Map className="w-6 h-6 text-[#3b82f6]" />
+                           <div className="text-left">
+                               <span className="block text-sm font-bold text-white">View 120-Country Compliance OS</span>
+                               <span className="block text-xs text-[#8FA3B8] mt-1 group-hover:text-white/70">Check route restrictions & DOT rules</span>
+                           </div>
+                       </Link>
+                       <Link href="/loads" className="bg-[#a855f7]/10 border border-[#a855f7]/20 p-4 rounded-xl hover:bg-[#a855f7]/20 transition-all text-center flex items-center justify-center gap-4 group">
+                           <Activity className="w-6 h-6 text-[#a855f7]" />
+                           <div className="text-left">
+                               <span className="block text-sm font-bold text-white">Check Corridor Liquidity</span>
+                               <span className="block text-xs text-[#8FA3B8] mt-1 group-hover:text-white/70">See active escort counts near your lane</span>
+                           </div>
+                       </Link>
+                   </div>
+                </motion.div>
+            )}
+        </motion.div>
+    );
+}
+
 // ===== MAIN COMPONENT =====
 export default function HomeClient({
     marketPulse, directoryCount, corridorCount, topCorridors, topListings,
@@ -162,6 +272,7 @@ export default function HomeClient({
 
                     {/* CENTER: Nav links (desktop only) */}
                     <div className="hidden md:flex items-center gap-8 text-[11px] text-[#888] font-semibold uppercase tracking-[0.15em]">
+                        <Link href="/data" className="hover:text-[#C6923A] transition-colors py-2">Market Data</Link>
                         <Link href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
                         <Link href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
                         <Link href="/corridors" className="hover:text-[#C6923A] transition-colors py-2">Corridors</Link>
@@ -243,37 +354,10 @@ export default function HomeClient({
                         Built for the corridor — not the general freight crowd.
                     </motion.p>
 
-                    {/* Dual CTA — FIX: Clear visual hierarchy */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
-                    >
-                        {/* PRIMARY: Escort — dominant */}
-                        <Link
-                            href="/onboarding/start?role=escort"
-                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
-                            style={{
-                                background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
-                                boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
-                            }}
-                        >
-                            <Navigation className="w-4 h-4" />
-                            I&apos;m an Escort
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
-                        {/* SECONDARY: Broker — outline */}
-                        <Link
-                            href="/onboarding/start?role=broker"
-                            className="group flex items-center justify-center gap-2.5 px-10 py-4 bg-transparent border-2 border-white/10 hover:border-[#C6923A]/40 text-white font-bold text-sm rounded-2xl transition-all hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(198,146,58,0.1)]"
-                        >
-                            <Truck className="w-4 h-4" />
-                            I&apos;m a Broker
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
+                    {/* INTENT WIZARD - THE RABBIT HOLE */}
+                    <div className="max-w-3xl mx-auto mb-12">
+                        <IntentWizard />
+                    </div>
 
                     {/* Trust signal — pulled above fold */}
                     <motion.div
@@ -589,6 +673,7 @@ export default function HomeClient({
                             <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Market</h4>
                             <div className="space-y-2.5">
                                 {[
+                                    { href: "/data", label: "Market Data" },
                                     { href: "/loads", label: "Load Board" },
                                     { href: "/directory", label: "Escort Directory" },
                                     { href: "/leaderboards", label: "Leaderboard" },

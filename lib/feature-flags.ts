@@ -65,7 +65,7 @@ const FLAG_REGISTRY: Record<FeatureFlagKey, FlagConfig> = {
     envKey: 'FEATURE_TRACCAR',
     fallback: true,
     description: 'Traccar — GPS telematics, tracking, geofences',
-    requiredEnvVars: ['TRACCAR_API_URL', 'TRACCAR_API_TOKEN'],
+    requiredEnvVars: [],
   },
   LANGFUSE: {
     envKey: 'FEATURE_LANGFUSE',

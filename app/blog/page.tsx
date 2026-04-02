@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'Heavy Haul Intelligence — News & Guides | Haul Command',
@@ -21,7 +22,7 @@ async function getBlogPosts(limit = 24) {
     const supabase = createClient();
     const { data } = await supabase
       .from('blog_posts')
-      .select('id, slug, title, meta_description, target_keyword, country_code, published_at')
+      .select('id, slug, title, meta_description, cover_image, target_keyword, country_code, published_at')
       .eq('published', true)
       .order('published_at', { ascending: false })
       .limit(limit);
@@ -56,14 +57,18 @@ export default async function BlogIndexPage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all"
+                className="group flex flex-col bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all overflow-hidden"
               >
-                {post.country_code && (
-                  <span className="text-xs text-amber-500 font-medium uppercase tracking-wider">
-                    {post.country_code}
-                  </span>
-                )}
-                <h2 className="text-lg font-bold mt-2 mb-2 group-hover:text-amber-400 transition-colors line-clamp-2">
+                <div className="relative h-48 w-full bg-gray-900 border-b border-white/5">
+                  <Image src={post.cover_image || 'https://haulcommand.com/brand/default-og.png'} alt={post.title || ''} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  {post.country_code && (
+                    <span className="text-xs text-amber-500 font-medium uppercase tracking-wider mb-2 block">
+                      {post.country_code}
+                    </span>
+                  )}
+                  <h2 className="text-lg font-bold mb-2 group-hover:text-amber-400 transition-colors line-clamp-2">
                   {post.title}
                 </h2>
                 <p className="text-sm text-gray-400 line-clamp-3">
@@ -78,6 +83,7 @@ export default async function BlogIndexPage() {
                   <span className="text-amber-400 text-sm group-hover:translate-x-1 transition-transform">
                     Read →
                   </span>
+                </div>
                 </div>
               </Link>
             ))}

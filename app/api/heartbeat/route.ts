@@ -47,9 +47,20 @@ export async function POST(req: Request) {
     // Service role client for write
     const admin = getSupabaseAdmin();
 
+    // Try to parse geolocation from body
+    let lat: number | undefined;
+    let lon: number | undefined;
+    try {
+        const payload = await req.json();
+        if (typeof payload.lat === 'number' && typeof payload.lon === 'number') {
+            lat = payload.lat;
+            lon = payload.lon;
+        }
+    } catch { /* likely no body */ }
+
     const now = new Date().toISOString();
 
-    await Promise.all([
+    const tasks: Promise<any>[] = [
         // Update escort_profiles last_seen_at
         admin
             .from("escort_profiles")
@@ -60,7 +71,27 @@ export async function POST(req: Request) {
         admin
             .from("operator_heartbeats")
             .upsert({ user_id: user.id, seen_at: now }, { onConflict: "user_id" }),
-    ]);
+    ];
+
+    if (lat !== undefined && lon !== undefined) {
+        // Feed the live coordinates into the Autonomous Dispatch Engine!
+        tasks.push(
+            admin
+                .from("operator_availability")
+                .upsert(
+                    {
+                        operator_id: user.id,
+                        last_known_lat: lat,
+                        last_known_lon: lon,
+                        last_updated_at: now,
+                        is_available: true // Ping implicitly maintains active/live presence
+                    },
+                    { onConflict: "operator_id" }
+                )
+        );
+    }
+
+    await Promise.all(tasks);
 
     return NextResponse.json({ ok: true });
 }

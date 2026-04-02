@@ -1,0 +1,41 @@
+# hc-traccar-gps — Open Source GPS Telematics on Fly.io
+app = "hc-traccar-gps"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile.fly"
+
+[env]
+  # We will use Fly Secrets for DATABASE_USER, DATABASE_PASSWORD, DATABASE_URL
+
+[http_service]
+  internal_port = 8082
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 1
+
+# OsmAnd Protocol (Port 5055) - standard webhook/http-based proxy
+[[services]]
+  protocol = "tcp"
+  internal_port = 5055
+  [[services.ports]]
+    port = 5055
+    handlers = []
+
+# Teltonika Protocol (Port 5027)
+[[services]]
+  protocol = "tcp"
+  internal_port = 5027
+  [[services.ports]]
+    port = 5027
+    handlers = []
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+
+# First boot command:
+# fly secrets set DATABASE_URL=jdbc:postgresql://your-supabase-db.pooler.supabase.com:5432/postgres ...
+# fly deploy --config infra/fly/traccar.fly.toml

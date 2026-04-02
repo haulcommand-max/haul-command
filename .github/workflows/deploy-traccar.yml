@@ -1,0 +1,26 @@
+name: Deploy Traccar to Fly.io
+
+on:
+  push:
+    paths:
+      - 'infra/fly/**'
+      - '.github/workflows/deploy-traccar.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Traccar
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --config infra/fly/traccar.fly.toml --dockerfile infra/fly/Dockerfile.fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

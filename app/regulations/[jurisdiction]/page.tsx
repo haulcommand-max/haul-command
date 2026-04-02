@@ -3,9 +3,16 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import SaveButton from '@/components/capture/SaveButton';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { REGULATIONS } from '@/lib/regulations/global-regulations-db';
 
 interface Props {
   params: Promise<{ jurisdiction: string }>;
+}
+
+export async function generateStaticParams() {
+  return REGULATIONS.map((reg) => ({
+    jurisdiction: reg.countryName.toLowerCase().replace(/\s+/g, '-'),
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -27,6 +34,11 @@ export default async function RegulationPage({ params }: Props) {
     .select('*')
     .ilike('jurisdiction', jurisdiction)
     .single();
+
+  const reg = REGULATIONS.find(r => 
+    r.countryName.toLowerCase() === jurisdiction.toLowerCase() || 
+    r.countryCode.toLowerCase() === jurisdiction.toLowerCase()
+  );
 
   const domain = "haulcommand.com";
   const url = `https://${domain}/regulations/${rawJur}`;
@@ -83,8 +95,57 @@ export default async function RegulationPage({ params }: Props) {
       </section>
 
       <div className="max-w-3xl mx-auto px-4 py-10">
+        {reg && (
+          <div className="mb-8 p-6 bg-white/5 border border-white/10 rounded-2xl">
+            <h2 className="text-xl font-bold mb-4 text-hc-gold-500">Fast Facts: {reg.countryName}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-sm font-bold text-gray-400 mb-2">Standard Limits</h3>
+                <ul className="text-sm text-white space-y-1">
+                  <li>Width: {reg.standardLimits.widthM}m</li>
+                  {reg.standardLimits.heightM && <li>Height: {reg.standardLimits.heightM}m</li>}
+                  {reg.standardLimits.lengthM && <li>Length: {reg.standardLimits.lengthM}m</li>}
+                  {reg.standardLimits.weightT && <li>Weight: {reg.standardLimits.weightT}t</li>}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-gray-400 mb-2">Permit Authority</h3>
+                <p className="text-sm text-white">{reg.permitSystem.authority}</p>
+                {reg.permitSystem.digitalSystem && (
+                  <p className="text-xs text-hc-muted mt-1">Platform: {reg.permitSystem.digitalSystem}</p>
+                )}
+              </div>
+            </div>
+            
+            <div className="mt-6">
+              <h3 className="text-sm font-bold text-gray-400 mb-2">Escort Thresholds</h3>
+              <div className="space-y-2">
+                {reg.escortThresholds.map((t, idx) => (
+                  <div key={idx} className="p-3 bg-black/40 rounded border border-white/5 text-sm">
+                    <span className="font-bold text-amber-500">{t.escortsRequired} {t.escortType} escort(s)</span>
+                    <span className="text-gray-300 ml-2">when {t.condition.toLowerCase()}</span>
+                    {t.notes && <p className="text-xs text-hc-muted mt-1">{t.notes}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {reg.equipment && (
+              <div className="mt-6">
+                <h3 className="text-sm font-bold text-gray-400 mb-2">Required Equipment</h3>
+                <div className="flex flex-wrap gap-2">
+                  {reg.equipment.map((eq, i) => (
+                    <span key={i} className="px-2 py-1 bg-white/10 rounded text-xs text-gray-300">{eq}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {page?.content ? (
           <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Detailed Analysis</h2>
             <div className="prose prose-invert prose-sm max-w-none
               prose-headings:text-white prose-headings:font-bold
               prose-p:text-gray-400 prose-li:text-gray-400
@@ -104,9 +165,11 @@ export default async function RegulationPage({ params }: Props) {
             )}
           </div>
         ) : (
-          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
-            <p className="text-gray-400 mb-3">Regulation summary is being generated for {jurisdiction}. Check back shortly.</p>
-          </div>
+          !reg && (
+            <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <p className="text-gray-400 mb-3">Regulation summary is being generated for {jurisdiction}. Check back shortly.</p>
+            </div>
+          )
         )}
 
         {/* Route Check CTA */}

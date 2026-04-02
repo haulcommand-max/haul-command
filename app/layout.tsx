@@ -139,6 +139,7 @@ export const viewport: Viewport = {
 };
 
 import { RoleProvider } from "@/lib/role-context";
+import { CaptureMount } from "@/components/engagement/CaptureMount";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -226,6 +227,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <ServiceWorkerRegister />
                     <A2HSPrompt />
                     <HeartbeatMount />
+                    <CaptureMount />
                     <FastWinContainer />
                     <NativeBootstrap />
                     <Analytics />

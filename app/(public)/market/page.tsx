@@ -1,15 +1,6 @@
-'use client';
-
-/**
- * /market — Market Intelligence Hub
- * 
- * Grid of all 50 US states + DC with live market mode indicators.
- * Each card shows state name, mode badge, and key stats.
- */
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MobileGate } from '@/components/mobile/MobileGate';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 const US_STATES = [
     'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
@@ -32,15 +23,60 @@ const STATE_NAMES: Record<string, string> = {
     DC: 'Washington DC',
 };
 
-// Priority states that likely have data
-const HOT_STATES = ['TX', 'FL', 'GA', 'LA', 'CA', 'NC', 'OH', 'PA', 'IL', 'TN', 'AL', 'SC'];
+const MODE_CONFIG = {
+    live: { color: '#22C55E', emoji: '🟢', label: 'LIVE' },
+    seeding: { color: '#F59E0B', emoji: '🌱', label: 'SEEDING' },
+    demand_capture: { color: '#8B5CF6', emoji: '📡', label: 'DEMAND' },
+    waitlist: { color: '#6B7280', emoji: '⏳', label: 'WAITLIST' },
+};
 
-export default function MarketIndexPage() {
-    // Sort: hot states first, then alphabetical
-    const sortedStates = [
-        ...HOT_STATES,
-        ...US_STATES.filter(s => !HOT_STATES.includes(s)).sort(),
-    ];
+function determineMode(activeLoads: number, totalOps: number, verifiedOps: number) {
+    if (totalOps >= 3 && activeLoads > 0) return 'live';
+    if (totalOps >= 1) return 'seeding';
+    if (activeLoads > 0 && totalOps === 0) return 'demand_capture';
+    return 'waitlist';
+}
+
+export default async function MarketIndexPage() {
+    const supabase = getSupabaseAdmin();
+
+    const [ { data: loads }, { data: ops } ] = await Promise.all([
+        supabase.from('hc_load_alerts').select('origin_state, destination_state, ingested_at').eq('status', 'active'),
+        supabase.from('directory_listings').select('home_base_state, verification_status')
+    ]);
+
+    const stateModes: Record<string, 'live' | 'seeding' | 'demand_capture' | 'waitlist'> = {};
+
+    for (const code of US_STATES) {
+        let activeLoads = 0;
+        if (loads) {
+            loads.forEach(l => {
+                if (l.origin_state?.toUpperCase() === code || l.destination_state?.toUpperCase() === code) activeLoads++;
+            });
+        }
+        
+        let totalOps = 0;
+        let verifiedOps = 0;
+        if (ops) {
+            ops.forEach(op => {
+                if (op.home_base_state?.toUpperCase() === code) {
+                    totalOps++;
+                    if (op.verification_status === 'verified') verifiedOps++;
+                }
+            });
+        }
+
+        stateModes[code] = determineMode(activeLoads, totalOps, verifiedOps);
+    }
+
+    const sortedStates = [...US_STATES].sort((a, b) => {
+        // Priority: live > demand > seeding > waitlist
+        const priority = { live: 1, demand_capture: 2, seeding: 3, waitlist: 4 };
+        const pA = priority[stateModes[a]];
+        const pB = priority[stateModes[b]];
+        if (pA !== pB) return pA - pB;
+        return a.localeCompare(b);
+    });
 
     const content = (
         <div style={{ minHeight: '100vh', background: '#060b12', color: '#f5f7fb' }}>
@@ -82,26 +118,24 @@ export default function MarketIndexPage() {
                 }}>
                     {sortedStates.map(code => {
                         const name = STATE_NAMES[code] || code;
-                        const isHot = HOT_STATES.includes(code);
+                        const modeStr = stateModes[code] || 'waitlist';
+                        const mode = MODE_CONFIG[modeStr];
+                        const isHot = modeStr === 'live' || modeStr === 'seeding' || modeStr === 'demand_capture';
+                        
                         return (
                             <Link key={code} href={`/market/${code.toLowerCase()}`} style={{
                                 display: 'block',
                                 padding: '16px 14px', borderRadius: 14,
-                                border: `1px solid ${isHot ? 'rgba(241,169,27,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                                border: `1px solid ${isHot ? mode.color + '40' : 'rgba(255,255,255,0.06)'}`,
                                 background: isHot
-                                    ? 'linear-gradient(160deg, rgba(17,20,28,0.98), rgba(27,22,14,0.94))'
+                                    ? `linear-gradient(160deg, rgba(17,20,28,0.98), ${mode.color}0A)`
                                     : 'rgba(255,255,255,0.02)',
                                 textDecoration: 'none',
                                 transition: 'border-color 0.2s',
                             }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                                    <span style={{ fontSize: 20, fontWeight: 900, color: isHot ? '#F1A91B' : '#fff' }}>{code}</span>
-                                    {isHot && (
-                                        <span style={{
-                                            width: 6, height: 6, borderRadius: '50%',
-                                            background: '#22C55E',
-                                        }} />
-                                    )}
+                                    <span style={{ fontSize: 20, fontWeight: 900, color: isHot ? mode.color : '#fff' }}>{code}</span>
+                                    <span style={{ fontSize: 14 }} title={mode.label}>{mode.emoji}</span>
                                 </div>
                                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>
                                     {name}

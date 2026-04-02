@@ -337,6 +337,17 @@ export default async function BlogArticlePage({ params }: Props) {
           </div>
         </header>
 
+        {/* ── Article Hero Image ── */}
+        <div className="relative w-full aspect-[16/9] mb-8 rounded-2xl overflow-hidden border border-white/10">
+          <Image
+            src={post.cover_image || 'https://haulcommand.com/brand/default-og.png'}
+            alt={post.title}
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+
         {/* ── Quick Answer Box (above-fold key facts) ── */}
         {enrichment?.quickAnswer && (
           <QuickAnswerBox data={enrichment.quickAnswer} />
