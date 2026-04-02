@@ -151,7 +151,7 @@ export default function RegulationsIndexPage() {
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'FAQPage',
-                        mainEntity: REGULATIONS.slice(0, 25).map(reg => ({
+                        mainEntity: REGULATIONS.map(reg => ({
                             '@type': 'Question',
                             name: `Do I need a pilot car in ${reg.countryName}?`,
                             acceptedAnswer: {

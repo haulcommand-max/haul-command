@@ -30,6 +30,14 @@ import { CorridorLeaderboard } from "@/components/gamification/CorridorLeaderboa
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { FooterAccordion } from "./FooterAccordion";
 
+// ── ODS-Killer Sections ──
+import { WhyCarriersChoose } from "./WhyCarriersChoose";
+import { WhyOperatorsJoin } from "./WhyOperatorsJoin";
+import { ServiceTriad } from "./ServiceTriad";
+import { TrustArchitecture } from "./TrustArchitecture";
+import { ConsolidatedInvoicingFastPay } from "./ConsolidatedInvoicingFastPay";
+import { FleetBackupRescue } from "./FleetBackupRescue";
+
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -271,6 +279,9 @@ export default function HomeClient({
                 avgRate={avgRatePerDay > 0 ? avgRatePerDay : 380}
             />
 
+            {/* 3b. SERVICE TRIAD — Plan / Find / Share */}
+            <ServiceTriad />
+
             {/* 4. GLOBAL ESCORT SUPPLY RADAR */}
             <GlobalEscortSupplyRadar />
 
@@ -282,6 +293,12 @@ export default function HomeClient({
                 corridors={topCorridors}
                 corridorCount={corridorCount}
             />
+
+            {/* 5b. WHY CARRIERS CHOOSE HAUL COMMAND */}
+            <WhyCarriersChoose />
+
+            {/* 5c. CONSOLIDATED INVOICING & FAST PAY */}
+            <ConsolidatedInvoicingFastPay />
 
             {/* 6. MARKET CONDITIONS PANEL */}
             <section className="relative z-10 py-8 sm:py-12">
@@ -327,6 +344,9 @@ export default function HomeClient({
                     </div>
                 </div>
             </section>
+
+            {/* 7b. WHY OPERATORS JOIN */}
+            <WhyOperatorsJoin />
 
             {/* 8. FREE TOOLS */}
             <section className="relative z-10 py-8 sm:py-12">
@@ -438,6 +458,12 @@ export default function HomeClient({
                     </motion.div>
                 </div>
             </section>
+
+            {/* 10b. TRUST ARCHITECTURE */}
+            <TrustArchitecture />
+
+            {/* 10c. FLEET BACKUP & RESCUE */}
+            <FleetBackupRescue />
 
             {/* 11. TRUST SIGNALS */}
             <section className="relative z-10 py-4">
