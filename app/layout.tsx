@@ -14,6 +14,7 @@ import SmartAppBanner from "@/components/growth/SmartAppBanner";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import { SessionDNATracker } from "@/components/security/SessionDNATracker";
 import CaptureOverlay from "@/components/capture/CaptureOverlay";
+import { CookieConsent } from "@/components/legal/CookieConsent";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -247,6 +248,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <AuthStatusBanner />
                     <SessionDNATracker />
                     <CaptureOverlay />
+                    <CookieConsent />
                 </RoleProvider>
             </body>
         </html>

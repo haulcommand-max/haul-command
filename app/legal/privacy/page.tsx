@@ -51,19 +51,29 @@ export default function PrivacyPage() {
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>6. GDPR Compliance (EU/EEA Users)</h2>
                     <p>If you are located in the EU/EEA, you have the right to: access your data, rectify inaccuracies, request deletion, restrict processing, data portability, and object to processing. Contact <a href="mailto:privacy@haulcommand.com" style={{ color: '#F59E0B' }}>privacy@haulcommand.com</a> to exercise these rights.</p>
 
-                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>7. Data Retention</h2>
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>7. Data Monetization & Anonymized Products</h2>
+                    <p>HAUL COMMAND generates anonymized, aggregated market intelligence products including corridor demand snapshots, rate benchmarks, operator density maps, and market reports. These products:</p>
+                    <ul style={{ paddingLeft: 20 }}>
+                        <li><strong style={{ color: '#F9FAFB' }}>Never contain personally identifiable information</strong> — all data is aggregated across multiple operators within a region or corridor</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Use statistical aggregation</strong> — minimum 5 data points per cell, no individual operator can be identified</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Are derived from platform activity</strong> — search patterns, load postings, fill rates, and pricing trends</li>
+                    </ul>
+                    <p><strong style={{ color: '#F9FAFB' }}>Your Rights:</strong> You may opt out of having your anonymized activity included in data products by contacting <a href="mailto:privacy@haulcommand.com" style={{ color: '#F59E0B' }}>privacy@haulcommand.com</a> or toggling the &quot;Data Products Opt-Out&quot; setting in your account dashboard. Note: opting out does not affect your use of the Platform.</p>
+                    <p><strong style={{ color: '#F9FAFB' }}>Legal Basis (GDPR):</strong> We process this data under Article 6(1)(f) — legitimate interest in operating and improving a logistics marketplace. For EU/EEA users, this processing is covered by our balancing test documentation available upon request.</p>
+
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>8. Data Retention</h2>
                     <p>We retain your account data for as long as your account is active. After account deletion, we retain anonymized data for analytics purposes for up to 3 years. Payment records are retained for 7 years as required by financial regulations.</p>
 
-                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>8. Security</h2>
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>9. Security</h2>
                     <p>We implement industry-standard security measures including: TLS encryption, Row Level Security (Supabase RLS), bcrypt password hashing, and API key rotation. We use Sentry for error monitoring and PostHog for privacy-compliant analytics.</p>
 
-                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>9. Cookies</h2>
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>10. Cookies</h2>
                     <p>We use essential cookies for authentication and session management. Analytics cookies (PostHog, Google Analytics) are used only with your consent in jurisdictions where required.</p>
 
-                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>10. Children&apos;s Privacy</h2>
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>11. Children&apos;s Privacy</h2>
                     <p>The Platform is not intended for users under 18. We do not knowingly collect data from minors.</p>
 
-                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>11. Contact</h2>
+                    <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>12. Contact</h2>
                     <p>Data Protection Officer: <a href="mailto:privacy@haulcommand.com" style={{ color: '#F59E0B' }}>privacy@haulcommand.com</a></p>
                     <p>HAUL COMMAND LLC, United States</p>
                 </div>

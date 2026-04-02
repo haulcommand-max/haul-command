@@ -164,8 +164,12 @@ export default function EnhancedFooter() {
                         <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Company</h3>
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                             {[
-                                { href: '/terms', label: 'Terms of Service' },
-                                { href: '/privacy', label: 'Privacy Policy' },
+                                { href: '/legal/terms', label: 'Terms of Service' },
+                                { href: '/legal/privacy', label: 'Privacy Policy' },
+                                { href: '/legal/refund', label: 'Refund Policy' },
+                                { href: '/legal/acceptable-use', label: 'Acceptable Use' },
+                                { href: '/sla', label: 'SLA' },
+                                { href: '/security', label: 'Security' },
                                 { href: '/contact', label: 'Contact Us' },
                                 { href: '/remove-listing', label: 'Remove / Opt-Out' },
                                 { href: '/claim', label: 'Claim Your Listing' },

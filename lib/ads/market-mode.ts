@@ -124,6 +124,7 @@ const TIER_DEFAULT_MODE: Record<string, MarketMode> = {
     blue: 'seed',
     silver: 'dormant',
     slate: 'dormant',
+    copper: 'dormant',
 };
 
 // ── Country-Specific Overrides ─────────────────────────────

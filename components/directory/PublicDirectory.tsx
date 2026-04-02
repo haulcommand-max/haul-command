@@ -9,6 +9,7 @@ import {
   TrendingUp, Bot, Phone, Navigation, AlertTriangle,
 } from 'lucide-react';
 import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
+import { SponsoredBadge } from '@/components/directory/SponsoredBadge';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command v2
@@ -200,6 +201,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 14, fontWeight: 800, color: T.text }}>{op.name}</span>
             {op.verified && <ShieldCheck size={13} style={{ color: T.green, flexShrink: 0 }} />}
+            {op.sponsored && <SponsoredBadge type="boost" />}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3 }}>
             <MapPin size={11} style={{ color: T.muted }} />
