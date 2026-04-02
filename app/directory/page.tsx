@@ -4,8 +4,6 @@ import Link from 'next/link';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
-import { fetchDirectoryStats, fetchTopDirectoryCards, type DirectoryCard } from '@/lib/directory/directory-cards';
-import { getCountryDirectoryStats, getDirectoryStatsSummary } from '@/lib/data/directory-cards';
 
 export const dynamic = 'force-dynamic';
 
@@ -119,19 +117,15 @@ async function getStats() {
   try {
     const supabase = createClient();
 
-    // Primary: use production view via directory-cards service
-    // Fallback: legacy paths (getDirectoryStatsSummary, hc_global_operators)
-    const [viewStats, legacyStats, stateRes, topCards, legacyTop, countries] = await Promise.all([
-      fetchDirectoryStats().catch(() => null),
-      getDirectoryStatsSummary().catch(() => ({ totalOperators: 0, totalCountries: 120 })),
-      Promise.resolve(supabase.rpc('rpc_state_counts')),
-      fetchTopDirectoryCards(12).catch(() => []),
+    // LEAN: 3 fast queries max (was 12+ causing 504 timeouts)
+    const [countRes, stateRes, topRes] = await Promise.all([
+      supabase.from('hc_global_operators').select('*', { count: 'estimated', head: true }),
+      supabase.rpc('rpc_state_counts'),
       supabase
         .from('hc_global_operators')
         .select('id, name, city, admin1_code as state, country_code, is_claimed, role_primary, confidence_score')
         .order('confidence_score', { ascending: false, nullsFirst: false })
         .limit(12),
-      getCountryDirectoryStats(),
     ]);
 
     const stateMap: Record<string, number> = {};
@@ -141,16 +135,20 @@ async function getStats() {
       }
     }
 
-    // Use production view if it has data, otherwise fall back to legacy
-    const useProductionView = viewStats && viewStats.total > 0;
-    const total = useProductionView ? viewStats.total : legacyStats.totalOperators;
-    const topOperators = topCards.length > 0 ? topCards : (legacyTop.data ?? []);
+    // Build countries from the already-existing TIER_FLAGS constant (120 countries, zero extra queries)
+    const countries = Object.entries(TIER_FLAGS).map(([code]) => ({
+      code,
+      name: code,
+      tier: 'A',
+      entity_count: 0,
+      verified_count: 0,
+    }));
 
     return {
-      total,
-      totalCountries: useProductionView ? Object.keys(viewStats.country_counts).length || 120 : legacyStats.totalCountries,
+      total: countRes.count ?? 0,
+      totalCountries: 120,
       stateMap,
-      topOperators,
+      topOperators: topRes.data ?? [],
       countries,
     };
   } catch (e) {
