@@ -4,6 +4,8 @@ import Link from 'next/link';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
+import { fetchDirectoryStats, fetchTopDirectoryCards, type DirectoryCard } from '@/lib/directory/directory-cards';
+import { getCountryDirectoryStats, getDirectoryStatsSummary } from '@/lib/data/directory-cards';
 
 export const dynamic = 'force-dynamic';
 
@@ -90,133 +92,21 @@ const DIRECTORY_FAQ_JSONLD = {
   ]
 };
 
-const COUNTRIES = [
-  // Tier A — Gold (10)
-  { code: 'us', name: 'United States', flag: '🇺🇸', tier: 'A' },
-  { code: 'ca', name: 'Canada', flag: '🇨🇦', tier: 'A' },
-  { code: 'au', name: 'Australia', flag: '🇦🇺', tier: 'A' },
-  { code: 'gb', name: 'United Kingdom', flag: '🇬🇧', tier: 'A' },
-  { code: 'nz', name: 'New Zealand', flag: '🇳🇿', tier: 'A' },
-  { code: 'za', name: 'South Africa', flag: '🇿🇦', tier: 'A' },
-  { code: 'de', name: 'Germany', flag: '🇩🇪', tier: 'A' },
-  { code: 'nl', name: 'Netherlands', flag: '🇳🇱', tier: 'A' },
-  { code: 'ae', name: 'UAE', flag: '🇦🇪', tier: 'A' },
-  { code: 'br', name: 'Brazil', flag: '🇧🇷', tier: 'A' },
-  // Tier B — Blue (18)
-  { code: 'ie', name: 'Ireland', flag: '🇮🇪', tier: 'B' },
-  { code: 'se', name: 'Sweden', flag: '🇸🇪', tier: 'B' },
-  { code: 'no', name: 'Norway', flag: '🇳🇴', tier: 'B' },
-  { code: 'dk', name: 'Denmark', flag: '🇩🇰', tier: 'B' },
-  { code: 'fi', name: 'Finland', flag: '🇫🇮', tier: 'B' },
-  { code: 'be', name: 'Belgium', flag: '🇧🇪', tier: 'B' },
-  { code: 'at', name: 'Austria', flag: '🇦🇹', tier: 'B' },
-  { code: 'ch', name: 'Switzerland', flag: '🇨🇭', tier: 'B' },
-  { code: 'es', name: 'Spain', flag: '🇪🇸', tier: 'B' },
-  { code: 'fr', name: 'France', flag: '🇫🇷', tier: 'B' },
-  { code: 'it', name: 'Italy', flag: '🇮🇹', tier: 'B' },
-  { code: 'pt', name: 'Portugal', flag: '🇵🇹', tier: 'B' },
-  { code: 'sa', name: 'Saudi Arabia', flag: '🇸🇦', tier: 'B' },
-  { code: 'qa', name: 'Qatar', flag: '🇶🇦', tier: 'B' },
-  { code: 'mx', name: 'Mexico', flag: '🇲🇽', tier: 'B' },
-  { code: 'in', name: 'India', flag: '🇮🇳', tier: 'B' },
-  { code: 'id', name: 'Indonesia', flag: '🇮🇩', tier: 'B' },
-  { code: 'th', name: 'Thailand', flag: '🇹🇭', tier: 'B' },
-  // Tier C — Silver (26)
-  { code: 'pl', name: 'Poland', flag: '🇵🇱', tier: 'C' },
-  { code: 'cz', name: 'Czech Republic', flag: '🇨🇿', tier: 'C' },
-  { code: 'sk', name: 'Slovakia', flag: '🇸🇰', tier: 'C' },
-  { code: 'hu', name: 'Hungary', flag: '🇭🇺', tier: 'C' },
-  { code: 'si', name: 'Slovenia', flag: '🇸🇮', tier: 'C' },
-  { code: 'ee', name: 'Estonia', flag: '🇪🇪', tier: 'C' },
-  { code: 'lv', name: 'Latvia', flag: '🇱🇻', tier: 'C' },
-  { code: 'lt', name: 'Lithuania', flag: '🇱🇹', tier: 'C' },
-  { code: 'hr', name: 'Croatia', flag: '🇭🇷', tier: 'C' },
-  { code: 'ro', name: 'Romania', flag: '🇷🇴', tier: 'C' },
-  { code: 'bg', name: 'Bulgaria', flag: '🇧🇬', tier: 'C' },
-  { code: 'gr', name: 'Greece', flag: '🇬🇷', tier: 'C' },
-  { code: 'tr', name: 'Turkey', flag: '🇹🇷', tier: 'C' },
-  { code: 'kw', name: 'Kuwait', flag: '🇰🇼', tier: 'C' },
-  { code: 'om', name: 'Oman', flag: '🇴🇲', tier: 'C' },
-  { code: 'bh', name: 'Bahrain', flag: '🇧🇭', tier: 'C' },
-  { code: 'sg', name: 'Singapore', flag: '🇸🇬', tier: 'C' },
-  { code: 'my', name: 'Malaysia', flag: '🇲🇾', tier: 'C' },
-  { code: 'jp', name: 'Japan', flag: '🇯🇵', tier: 'C' },
-  { code: 'kr', name: 'South Korea', flag: '🇰🇷', tier: 'C' },
-  { code: 'cl', name: 'Chile', flag: '🇨🇱', tier: 'C' },
-  { code: 'ar', name: 'Argentina', flag: '🇦🇷', tier: 'C' },
-  { code: 'co', name: 'Colombia', flag: '🇨🇴', tier: 'C' },
-  { code: 'pe', name: 'Peru', flag: '🇵🇪', tier: 'C' },
-  { code: 'vn', name: 'Vietnam', flag: '🇻🇳', tier: 'C' },
-  { code: 'ph', name: 'Philippines', flag: '🇵🇭', tier: 'C' },
-  // Tier D — Slate (25)
-  { code: 'uy', name: 'Uruguay', flag: '🇺🇾', tier: 'D' },
-  { code: 'pa', name: 'Panama', flag: '🇵🇦', tier: 'D' },
-  { code: 'cr', name: 'Costa Rica', flag: '🇨🇷', tier: 'D' },
-  { code: 'il', name: 'Israel', flag: '🇮🇱', tier: 'D' },
-  { code: 'ng', name: 'Nigeria', flag: '🇳🇬', tier: 'D' },
-  { code: 'eg', name: 'Egypt', flag: '🇪🇬', tier: 'D' },
-  { code: 'ke', name: 'Kenya', flag: '🇰🇪', tier: 'D' },
-  { code: 'ma', name: 'Morocco', flag: '🇲🇦', tier: 'D' },
-  { code: 'rs', name: 'Serbia', flag: '🇷🇸', tier: 'D' },
-  { code: 'ua', name: 'Ukraine', flag: '🇺🇦', tier: 'D' },
-  { code: 'kz', name: 'Kazakhstan', flag: '🇰🇿', tier: 'D' },
-  { code: 'tw', name: 'Taiwan', flag: '🇹🇼', tier: 'D' },
-  { code: 'pk', name: 'Pakistan', flag: '🇵🇰', tier: 'D' },
-  { code: 'bd', name: 'Bangladesh', flag: '🇧🇩', tier: 'D' },
-  { code: 'mn', name: 'Mongolia', flag: '🇲🇳', tier: 'D' },
-  { code: 'tt', name: 'Trinidad and Tobago', flag: '🇹🇹', tier: 'D' },
-  { code: 'jo', name: 'Jordan', flag: '🇯🇴', tier: 'D' },
-  { code: 'gh', name: 'Ghana', flag: '🇬🇭', tier: 'D' },
-  { code: 'tz', name: 'Tanzania', flag: '🇹🇿', tier: 'D' },
-  { code: 'ge', name: 'Georgia', flag: '🇬🇪', tier: 'D' },
-  { code: 'az', name: 'Azerbaijan', flag: '🇦🇿', tier: 'D' },
-  { code: 'cy', name: 'Cyprus', flag: '🇨🇾', tier: 'D' },
-  { code: 'is', name: 'Iceland', flag: '🇮🇸', tier: 'D' },
-  { code: 'lu', name: 'Luxembourg', flag: '🇱🇺', tier: 'D' },
-  { code: 'ec', name: 'Ecuador', flag: '🇪🇨', tier: 'D' },
-  // Tier E — Copper (41)
-  { code: 'bo', name: 'Bolivia', flag: '🇧🇴', tier: 'E' },
-  { code: 'py', name: 'Paraguay', flag: '🇵🇾', tier: 'E' },
-  { code: 'gt', name: 'Guatemala', flag: '🇬🇹', tier: 'E' },
-  { code: 'do', name: 'Dominican Republic', flag: '🇩🇴', tier: 'E' },
-  { code: 'hn', name: 'Honduras', flag: '🇭🇳', tier: 'E' },
-  { code: 'sv', name: 'El Salvador', flag: '🇸🇻', tier: 'E' },
-  { code: 'ni', name: 'Nicaragua', flag: '🇳🇮', tier: 'E' },
-  { code: 'jm', name: 'Jamaica', flag: '🇯🇲', tier: 'E' },
-  { code: 'gy', name: 'Guyana', flag: '🇬🇾', tier: 'E' },
-  { code: 'sr', name: 'Suriname', flag: '🇸🇷', tier: 'E' },
-  { code: 'ba', name: 'Bosnia and Herzegovina', flag: '🇧🇦', tier: 'E' },
-  { code: 'me', name: 'Montenegro', flag: '🇲🇪', tier: 'E' },
-  { code: 'mk', name: 'North Macedonia', flag: '🇲🇰', tier: 'E' },
-  { code: 'al', name: 'Albania', flag: '🇦🇱', tier: 'E' },
-  { code: 'md', name: 'Moldova', flag: '🇲🇩', tier: 'E' },
-  { code: 'iq', name: 'Iraq', flag: '🇮🇶', tier: 'E' },
-  { code: 'na', name: 'Namibia', flag: '🇳🇦', tier: 'E' },
-  { code: 'ao', name: 'Angola', flag: '🇦🇴', tier: 'E' },
-  { code: 'mz', name: 'Mozambique', flag: '🇲🇿', tier: 'E' },
-  { code: 'et', name: 'Ethiopia', flag: '🇪🇹', tier: 'E' },
-  { code: 'ci', name: "Côte d'Ivoire", flag: '🇨🇮', tier: 'E' },
-  { code: 'sn', name: 'Senegal', flag: '🇸🇳', tier: 'E' },
-  { code: 'bw', name: 'Botswana', flag: '🇧🇼', tier: 'E' },
-  { code: 'zm', name: 'Zambia', flag: '🇿🇲', tier: 'E' },
-  { code: 'ug', name: 'Uganda', flag: '🇺🇬', tier: 'E' },
-  { code: 'cm', name: 'Cameroon', flag: '🇨🇲', tier: 'E' },
-  { code: 'kh', name: 'Cambodia', flag: '🇰🇭', tier: 'E' },
-  { code: 'lk', name: 'Sri Lanka', flag: '🇱🇰', tier: 'E' },
-  { code: 'uz', name: 'Uzbekistan', flag: '🇺🇿', tier: 'E' },
-  { code: 'la', name: 'Laos', flag: '🇱🇦', tier: 'E' },
-  { code: 'np', name: 'Nepal', flag: '🇳🇵', tier: 'E' },
-  { code: 'dz', name: 'Algeria', flag: '🇩🇿', tier: 'E' },
-  { code: 'tn', name: 'Tunisia', flag: '🇹🇳', tier: 'E' },
-  { code: 'mt', name: 'Malta', flag: '🇲🇹', tier: 'E' },
-  { code: 'bn', name: 'Brunei', flag: '🇧🇳', tier: 'E' },
-  { code: 'rw', name: 'Rwanda', flag: '🇷🇼', tier: 'E' },
-  { code: 'mg', name: 'Madagascar', flag: '🇲🇬', tier: 'E' },
-  { code: 'pg', name: 'Papua New Guinea', flag: '🇵🇬', tier: 'E' },
-  { code: 'tm', name: 'Turkmenistan', flag: '🇹🇲', tier: 'E' },
-  { code: 'kg', name: 'Kyrgyzstan', flag: '🇰🇬', tier: 'E' },
-  { code: 'mw', name: 'Malawi', flag: '🇲🇼', tier: 'E' },
-];
+const TIER_FLAGS: Record<string, string> = {
+  US:'🇺🇸',CA:'🇨🇦',AU:'🇦🇺',GB:'🇬🇧',NZ:'🇳🇿',ZA:'🇿🇦',DE:'🇩🇪',NL:'🇳🇱',AE:'🇦🇪',BR:'🇧🇷',
+  IE:'🇮🇪',SE:'🇸🇪',NO:'🇳🇴',DK:'🇩🇰',FI:'🇫🇮',BE:'🇧🇪',AT:'🇦🇹',CH:'🇨🇭',ES:'🇪🇸',FR:'🇫🇷',
+  IT:'🇮🇹',PT:'🇵🇹',SA:'🇸🇦',QA:'🇶🇦',MX:'🇲🇽',IN:'🇮🇳',ID:'🇮🇩',TH:'🇹🇭',
+  PL:'🇵🇱',CZ:'🇨🇿',SK:'🇸🇰',HU:'🇭🇺',SI:'🇸🇮',EE:'🇪🇪',LV:'🇱🇻',LT:'🇱🇹',HR:'🇭🇷',RO:'🇷🇴',
+  BG:'🇧🇬',GR:'🇬🇷',TR:'🇹🇷',KW:'🇰🇼',OM:'🇴🇲',BH:'🇧🇭',SG:'🇸🇬',MY:'🇲🇾',JP:'🇯🇵',KR:'🇰🇷',
+  CL:'🇨🇱',AR:'🇦🇷',CO:'🇨🇴',PE:'🇵🇪',VN:'🇻🇳',PH:'🇵🇭',
+  UY:'🇺🇾',PA:'🇵🇦',CR:'🇨🇷',IL:'🇮🇱',NG:'🇳🇬',EG:'🇪🇬',KE:'🇰🇪',MA:'🇲🇦',RS:'🇷🇸',UA:'🇺🇦',
+  KZ:'🇰🇿',TW:'🇹🇼',PK:'🇵🇰',BD:'🇧🇩',MN:'🇲🇳',TT:'🇹🇹',JO:'🇯🇴',GH:'🇬🇭',TZ:'🇹🇿',GE:'🇬🇪',
+  AZ:'🇦🇿',CY:'🇨🇾',IS:'🇮🇸',LU:'🇱🇺',EC:'🇪🇨',
+  BO:'🇧🇴',PY:'🇵🇾',GT:'🇬🇹',DO:'🇩🇴',HN:'🇭🇳',SV:'🇸🇻',NI:'🇳🇮',JM:'🇯🇲',GY:'🇬🇾',SR:'🇸🇷',
+  BA:'🇧🇦',ME:'🇲🇪',MK:'🇲🇰',AL:'🇦🇱',MD:'🇲🇩',IQ:'🇮🇶',NA:'🇳🇦',AO:'🇦🇴',MZ:'🇲🇿',ET:'🇪🇹',
+  CI:'🇨🇮',SN:'🇸🇳',BW:'🇧🇼',ZM:'🇿🇲',UG:'🇺🇬',CM:'🇨🇲',KH:'🇰🇭',LK:'🇱🇰',UZ:'🇺🇿',LA:'🇱🇦',
+  NP:'🇳🇵',DZ:'🇩🇿',TN:'🇹🇳',MT:'🇲🇹',BN:'🇧🇳',RW:'🇷🇼',MG:'🇲🇬',PG:'🇵🇬',TM:'🇹🇲',KG:'🇰🇬',MW:'🇲🇼',
+};
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
@@ -229,49 +119,48 @@ async function getStats() {
   try {
     const supabase = createClient();
 
-    const [countRes, stateRes, topRes] = await Promise.all([
-      // Total count of all active listings
-      supabase
-        .from('hc_global_operators')
-        .select('*', { count: 'estimated', head: true }),
-
-      // Per-state breakdown via modernized MV RPC
+    // Primary: use production view via directory-cards service
+    // Fallback: legacy paths (getDirectoryStatsSummary, hc_global_operators)
+    const [viewStats, legacyStats, stateRes, topCards, legacyTop, countries] = await Promise.all([
+      fetchDirectoryStats().catch(() => null),
+      getDirectoryStatsSummary().catch(() => ({ totalOperators: 0, totalCountries: 120 })),
       Promise.resolve(supabase.rpc('rpc_state_counts')),
-
-      // Top rated operators
+      fetchTopDirectoryCards(12).catch(() => []),
       supabase
         .from('hc_global_operators')
         .select('id, name, city, admin1_code as state, country_code, is_claimed, role_primary, confidence_score')
         .order('confidence_score', { ascending: false, nullsFirst: false })
         .limit(12),
+      getCountryDirectoryStats(),
     ]);
 
-    // Build state map from materialized view data
     const stateMap: Record<string, number> = {};
     if (!stateRes.error && stateRes.data) {
       for (const row of stateRes.data as any[]) {
         if (row.state) stateMap[row.state] = row.total;
       }
-    } else {
-      console.warn("RPC rpc_state_counts failed. Returning empty stateMap to avoid OOM loop.", stateRes.error);
     }
 
-    const countryCounts: Record<string, number> = { us: countRes.count ?? 0 };
+    // Use production view if it has data, otherwise fall back to legacy
+    const useProductionView = viewStats && viewStats.total > 0;
+    const total = useProductionView ? viewStats.total : legacyStats.totalOperators;
+    const topOperators = topCards.length > 0 ? topCards : (legacyTop.data ?? []);
 
     return {
-      total: countRes.count ?? 0,
-      countryCounts,
+      total,
+      totalCountries: useProductionView ? Object.keys(viewStats.country_counts).length || 120 : legacyStats.totalCountries,
       stateMap,
-      topOperators: topRes.data ?? [],
+      topOperators,
+      countries,
     };
   } catch (e) {
-    console.error("Failed fetching stats", e);
-    return { total: 0, countryCounts: { us: 0 }, stateMap: {}, topOperators: [] };
+    console.error('Failed fetching stats', e);
+    return { total: 0, totalCountries: 120, stateMap: {}, topOperators: [], countries: [] };
   }
 }
 
 export default async function DirectoryPage() {
-  const { total, countryCounts, stateMap, topOperators } = await getStats();
+  const { total, totalCountries, stateMap, topOperators, countries } = await getStats();
 
   const breadcrumbData = {
     "@context": "https://schema.org",
@@ -313,7 +202,7 @@ export default async function DirectoryPage() {
               <div className="text-gray-500 text-xs mt-1">Operators</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">120</div>
+              <div className="text-2xl font-bold text-amber-400">{totalCountries || 120}</div>
               <div className="text-gray-500 text-xs mt-1">Countries</div>
             </div>
             <div className="text-center">
@@ -358,49 +247,67 @@ export default async function DirectoryPage() {
             <Link aria-label="Navigation Link" href="/directory/us" className="text-sm text-amber-400 hover:underline">View all US →</Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {topOperators.map((op: any) => (
-              <div
-                key={op.id}
-                data-directory-result="true"
-                className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white text-sm truncate">{op.name || 'Escort Operator'}</h3>
-                    <p className="text-xs text-gray-500">
-                      {op.city && `${op.city}, `}{op.state && `${op.state}`}
-                    </p>
+            {topOperators.map((op: any) => {
+              // Support both legacy (hc_global_operators) and production (DirectoryCard) shapes
+              const name = op.display_name || op.name || 'Escort Operator';
+              const isClaimed = op.claim_status === 'claimed' || op.claim_status === 'verified' || op.is_claimed;
+              const trustScore = op.trust_score ?? (op.confidence_score ? op.confidence_score / 20 : null);
+              const entityType = op.entity_type || op.role_primary || 'pilot_car';
+              const countryCode = op.country_code || 'US';
+              const jobCount = op.completed_jobs_count;
+              const responseRate = op.response_rate;
+
+              return (
+                <div
+                  key={op.id}
+                  data-directory-result="true"
+                  className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-white text-sm truncate">{name}</h3>
+                      <p className="text-xs text-gray-500">
+                        {countryCode}{op.country_name ? ` · ${op.country_name}` : ''}
+                        {op.country_tier ? ` (Tier ${op.country_tier})` : ''}
+                      </p>
+                    </div>
+                    {isClaimed && (
+                      <span className="ml-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full flex-shrink-0">
+                        ✓ {op.claim_status === 'verified' ? 'Verified' : 'Claimed'}
+                      </span>
+                    )}
                   </div>
-                  {op.is_claimed && (
-                    <span className="ml-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full flex-shrink-0">
-                      ✓
-                    </span>
+                  {trustScore != null && (
+                    <div className="flex items-center gap-1 mb-2">
+                      <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(trustScore), 5))}</span>
+                      <span className="text-xs text-gray-500">{trustScore.toFixed(1)} Trust</span>
+                      {jobCount != null && jobCount > 0 && (
+                        <span className="text-xs text-gray-600 ml-1">· {jobCount} jobs</span>
+                      )}
+                      {responseRate != null && (
+                        <span className="text-xs text-gray-600 ml-1">· {Math.round(responseRate * 100)}% response</span>
+                      )}
+                    </div>
                   )}
-                </div>
-                {op.confidence_score && (
-                  <div className="flex items-center gap-1 mb-2">
-                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round((op.confidence_score / 20) || 5), 5))}</span>
-                    <span className="text-xs text-gray-500">{((op.confidence_score / 20) || 5).toFixed(1)} AI Rank</span>
+                  <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{entityType.replace(/_/g, ' ')} Services</p>
+                  <div className="relative">
+                    <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Link aria-label="Navigation Link"
+                        href="/auth/register"
+                        className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
+                      >
+                        Sign up to contact
+                      </Link>
+                    </div>
                   </div>
-                )}
-                <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{op.role_primary || 'Pilot Car'} Services</p>
-                <div className="relative">
-                  <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Link aria-label="Navigation Link"
-                      href="/auth/register"
-                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
-                    >
-                      Sign up to contact
-                    </Link>
+                  <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
+                    <AvailabilityQuickSet operatorId={op.id} currentStatus={'unknown'} compact />
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
-                  <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       )}
@@ -409,18 +316,18 @@ export default async function DirectoryPage() {
       <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
         <h2 className="text-lg font-bold mb-6">Browse by Country</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-          {COUNTRIES.map((country) => {
-            const count = countryCounts[country.code] || 0;
+          {countries.map((country) => {
+            const flag = TIER_FLAGS[country.code?.toUpperCase()] || '🌐';
             return (
               <Link aria-label="Navigation Link"
                 key={country.code}
-                href={`/directory/${country.code}`}
+                href={`/directory/${country.code?.toLowerCase()}`}
                 className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all text-center"
               >
-                <span className="text-2xl block mb-2">{country.flag}</span>
+                <span className="text-2xl block mb-2">{flag}</span>
                 <span className="font-medium text-xs block text-white group-hover:text-amber-400 transition-colors">{country.name}</span>
                 <span className="text-xs text-gray-600 mt-0.5 block">
-                  {count > 0 ? `${count.toLocaleString()} operators` : 'Coming soon'}
+                  {country.entity_count > 0 ? `${country.entity_count.toLocaleString()} operators` : 'Coming soon'}
                 </span>
               </Link>
             );

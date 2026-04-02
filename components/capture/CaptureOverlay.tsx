@@ -278,7 +278,27 @@ export default function CaptureOverlay() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <Link
               href={offer.ctaUrl}
-              onClick={handleDismiss}
+              onClick={() => {
+                handleDismiss();
+                // Wire to Money OS intake pipeline
+                fetch('/api/intake', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    channel: 'web_form',
+                    payload: {
+                      type: 'capture_cta_click',
+                      offer_type: offer.type,
+                      headline: offer.headline,
+                      cta_url: offer.ctaUrl,
+                      page: typeof window !== 'undefined' ? window.location.pathname : '',
+                      trigger_signals: signalsRef.current,
+                    },
+                    priority: 'normal',
+                    metadata: { source: 'capture_overlay', variant: offer.variant },
+                  }),
+                }).catch(() => {}); // Non-blocking, don't break UX
+              }}
               style={{
                 display: 'block',
                 padding: '0.75rem 1.5rem',
