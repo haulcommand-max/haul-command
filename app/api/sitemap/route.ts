@@ -21,6 +21,18 @@ const CONSTANT_YIELDS = [
     `${BASE}/available-now`,
     `${BASE}/regulations`,
     `${BASE}/resources`,
+    // Hyper-local SEO pages (top 50 US cities)
+    ...['houston-tx','dallas-tx','san-antonio-tx','austin-tx','los-angeles-ca',
+       'san-francisco-ca','san-diego-ca','phoenix-az','chicago-il','miami-fl',
+       'orlando-fl','tampa-fl','jacksonville-fl','atlanta-ga','denver-co',
+       'seattle-wa','portland-or','las-vegas-nv','nashville-tn','memphis-tn',
+       'charlotte-nc','raleigh-nc','new-york-ny','philadelphia-pa','pittsburgh-pa',
+       'detroit-mi','indianapolis-in','columbus-oh','cleveland-oh','kansas-city-mo',
+       'st-louis-mo','oklahoma-city-ok','tulsa-ok','new-orleans-la','baton-rouge-la',
+       'minneapolis-mn','milwaukee-wi','salt-lake-city-ut','albuquerque-nm',
+       'birmingham-al','richmond-va','norfolk-va','louisville-ky','sacramento-ca',
+       'el-paso-tx','midland-tx','boise-id','omaha-ne','des-moines-ia','little-rock-ar'
+    ].map(c => `${BASE}/near/${c}`),
 ];
 
 export async function GET(req: Request) {
