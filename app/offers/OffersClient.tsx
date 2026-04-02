@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 interface Offer {
@@ -229,7 +229,7 @@ function OfferCard({
   onDeclineCancel: () => void;
   onDeclineReasonChange: (v: string) => void;
   getTimeRemaining: (d: string) => string;
-  statusBadge: (s: string) => JSX.Element;
+  statusBadge: (s: string) => React.JSX.Element;
 }) {
   const lr = offer.load_request;
   const deadlineStr = getTimeRemaining(offer.accept_deadline_at);

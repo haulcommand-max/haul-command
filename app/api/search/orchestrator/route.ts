@@ -3,14 +3,20 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import Typesense from 'typesense';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialization
-const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-const tsClient = new Typesense.Client({
-  nodes: [{ host: process.env.TYPESENSE_HOST!, port: Number(process.env.TYPESENSE_PORT) || 8108, protocol: process.env.TYPESENSE_PROTOCOL || 'http' }],
-  apiKey: process.env.TYPESENSE_API_KEY!,
-  connectionTimeoutSeconds: 5
-});
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+// Lazy initialization to prevent build-time crashes when env vars are missing
+function getPinecone() {
+  const apiKey = process.env.PINECONE_API_KEY;
+  if (!apiKey) throw new Error('PINECONE_API_KEY not set');
+  return new Pinecone({ apiKey });
+}
+
+function getTypesenseClient() {
+  return new Typesense.Client({
+    nodes: [{ host: process.env.TYPESENSE_HOST!, port: Number(process.env.TYPESENSE_PORT) || 8108, protocol: process.env.TYPESENSE_PROTOCOL || 'http' }],
+    apiKey: process.env.TYPESENSE_API_KEY!,
+    connectionTimeoutSeconds: 5
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -41,6 +47,9 @@ export async function POST(req: NextRequest) {
       tsFilterStr = tsFilterStr ? `${tsFilterStr} && country_code:=${country_code}` : `country_code:=${country_code}`;
     }
 
+    const tsClient = getTypesenseClient();
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+
     const tsResponse = await tsClient.collections(collection).documents().search({
       q: query,
       query_by: family === 'profiles' ? 'display_name,services,certifications' :
@@ -50,14 +59,14 @@ export async function POST(req: NextRequest) {
       per_page: 20
     });
 
-    const isStrongLexicalHit = tsResponse.found > 3 && tsResponse.hits?.[0]?.text_match_info?.score > 50;
+    const isStrongLexicalHit = tsResponse.found > 3 && (Number(tsResponse.hits?.[0]?.text_match_info?.score) || 0) > 50;
 
     if (isStrongLexicalHit) {
       // Strong lexical intent, return immediately for speed (Typesense First Rule)
       return NextResponse.json({
         source: 'typesense',
         query,
-        results: tsResponse.hits.map(h => h.document),
+        results: (tsResponse.hits ?? []).map(h => h.document),
         semanticExpanded: false
       });
     }
@@ -67,7 +76,7 @@ export async function POST(req: NextRequest) {
     // Stubbing the embedding array here since real API call depends on selected provider
     const queryEmbedding = new Array(1536).fill(0.1); 
 
-    const pineconeIndex = pinecone.Index('antigravity');
+    const pineconeIndex = getPinecone().Index('antigravity');
     const pcNamespace = family === 'profiles' ? 'hc_entities_semantic' : 'hc_content_rag';
 
     const pcResponse = await pineconeIndex.namespace(pcNamespace).query({
@@ -103,7 +112,7 @@ export async function POST(req: NextRequest) {
 
     // Merging logic: Combine TS and PC results, prioritizing high-trust PC results
     const combinedSet = new Map();
-    tsResponse.hits?.forEach(h => combinedSet.set(h.document.id, h.document));
+    (tsResponse.hits ?? []).forEach(h => combinedSet.set((h.document as any).id, h.document));
     finalHydratedResults.forEach(r => {
       // Basic manual schema mapping from Supabase back to response formatting
       // In production, we project this exactly like TS documents

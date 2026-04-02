@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import SwipeableRunCard from "@/components/mobile/SwipeableRunCard";
+import AvailabilityWidget from "@/components/dispatch/AvailabilityWidget";
+
+const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
 
 export function OperatorDashboardClient({ operatorId, availableLoads }: { operatorId: string, availableLoads: any[] }) {
   const [loads, setLoads] = useState(availableLoads);
@@ -61,6 +65,34 @@ export function OperatorDashboardClient({ operatorId, availableLoads }: { operat
           <span className="text-slate-500 font-mono text-xs">Waiting for Dispatch Ping (Novu)</span>
         </div>
       </div>
+
+      {/* Availability Status Widget */}
+      <AvailabilityWidget className="mb-2" />
+
+      {/* Live Dispatch Map */}
+      <Card>
+        <div className="p-3">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">Nearby Loads</h2>
+              <p className="text-xs text-slate-600 mt-0.5">{loads.length} active in your geo-fence</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Live</span>
+            </div>
+          </div>
+          <div style={{ height: 280, borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <HeavyHaulMap
+              mode="operator"
+              showPermitRoute={false}
+              showHud={false}
+              initialCenter={[-95.7, 37.0]}
+              initialZoom={4}
+            />
+          </div>
+        </div>
+      </Card>
 
       <div className="hidden md:block">
         <Card>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { getArticleEnrichment } from '@/lib/blog/article-enrichments';
+import { annotateHtml, fetchGlossaryMap } from '@/lib/blog/annotate-html';
 
 /* ── Interactive components (client-only, no SSR) ── */
 const FaqAccordion = dynamic(() => import('@/components/blog/FaqAccordion'));
@@ -178,9 +179,15 @@ export default async function BlogArticlePage({ params }: Props) {
   const post = await getPost(slug);
   if (!post) notFound();
 
-  const relatedPosts = await getRelatedPosts(slug, post.country_code);
+  const [relatedPosts, glossaryMap] = await Promise.all([
+    getRelatedPosts(slug, post.country_code),
+    fetchGlossaryMap(),
+  ]);
   const enrichment = getArticleEnrichment(slug);
   const lastModified = post.updated_at || post.published_at;
+
+  // Annotate blog content with glossary links (blog→glossary PageRank flow)
+  const annotatedContent = annotateHtml(post.content_html, glossaryMap);
 
   /* ── Structured Data ── */
   const articleSchema = {
@@ -379,7 +386,7 @@ export default async function BlogArticlePage({ params }: Props) {
         {/* ── Article Content ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-8">
-            <RenderContentWithTools html={post.content_html} />
+            <RenderContentWithTools html={annotatedContent} />
           </div>
           
           <div className="md:col-span-4 hidden md:block space-y-6 sticky top-10 self-start">

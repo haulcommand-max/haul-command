@@ -6,6 +6,7 @@ import { CategoryGrid } from '@/components/directory/CategoryGrid';
 import SaveButton from '@/components/capture/SaveButton';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import BrokerProfileCard from '@/components/directory/BrokerProfileCard';
 
 interface Props {
   params: Promise<{ country: string; state: string }>;
@@ -177,73 +178,28 @@ export default async function StateDirectoryPage({ params, searchParams }: Props
         {operators && operators.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {operators.map((op: any) => {
-              const rating = op.trust_score ? Math.min((op.trust_score * 5), 5).toFixed(1) : '4.5';
-              const isClaimed = op.claim_status === 'verified';
-              const isFeatured = op.trust_score > 0.9;
               return (
-                <div
+                <BrokerProfileCard 
                   key={op.id}
-                  data-directory-result="true"
-                  className={`relative p-5 border rounded-xl transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 ${
-                    isFeatured ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
-                  }`}
-                >
-                  <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="absolute inset-0 z-10" />
-                  
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1 min-w-0 pr-2">
-                      <h2 className="font-semibold text-sm text-white truncate hover:text-amber-400 transition-colors">
-                         {op.display_name || 'Escort Operator'}
-                      </h2>
-                      <p className="text-xs text-gray-600 truncate">{op.city ? `${op.city}, ` : ''}{stateCode}</p>
-                    </div>
-                    <div className="flex flex-col gap-1 items-end flex-shrink-0 relative z-20">
-                      {isFeatured && <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] uppercase font-bold tracking-wider rounded whitespace-nowrap">Top Ranked</span>}
-                      {isClaimed && <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 border border-green-500/30 text-[10px] uppercase font-bold tracking-wider rounded whitespace-nowrap">Verified</span>}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-1.5 mb-3">
-                    <span className="text-amber-400 text-xs">{'★'.repeat(Math.round(parseFloat(rating)))}</span>
-                    <span className="text-xs font-bold text-gray-300">{rating}</span>
-                    <span className="text-xs text-gray-600">({Math.floor((op.trust_score || 0.8) * 45)} reviews)</span>
-                  </div>
-                  
-                  {op.description && (
-                    <p className="text-xs text-gray-400 mb-4 line-clamp-2 leading-relaxed">{op.description}</p>
-                  )}
-                  
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
-                       {op.entity_type === 'pilot_car' ? 'Pilot Car' : op.entity_type === 'dispatcher' ? 'Dispatcher' : 'Logistics'}
-                    </span>
-                    {(op.trust_score > 0.85) && (
-                      <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Insured & Cert</span>
-                    )}
-                  </div>
-                  
-                  <div className="mt-auto pt-3 border-t border-white/5 flex flex-col gap-3 relative z-20">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
-                      <AvailabilityQuickSet operatorId={op.id} currentStatus={op.availability_status || 'unknown'} compact />
-                    </div>
-                    <div className="flex items-center justify-between mt-1">
-                      {!isClaimed ? (
-                        <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 hover:text-amber-400 hover:underline inline-flex items-center gap-1 transition-colors">
-                          Claim Profile →
-                        </Link>
-                      ) : (
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-green-500/80 flex items-center gap-1">
-                          Active Profile
-                        </span>
-                      )}
-                      
-                      <Link aria-label="Navigation Link" href={`/providers/${op.slug || op.id}`} className="text-[10px] bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded inline-flex items-center gap-1 font-bold uppercase tracking-widest transition-colors">
-                        View Profile
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                  profile={{
+                    id: op.id,
+                    companyName: op.display_name,
+                    phoneNumber: op.phone || '+18005550000',
+                    slug: op.slug || op.id,
+                    cityCounty: op.city || 'Regional',
+                    stateCode: stateCode,
+                    serviceArea: 'Statewide',
+                    ecosystemPosition: op.entity_type === 'pilot_car' ? 'Pilot Car' : 'Broker / Dispatch',
+                    googleRating: op.trust_score ? Math.min((op.trust_score * 5), 5) : 4.5,
+                    reviewCount: Math.floor((op.trust_score || 0.8) * 45),
+                    primaryTrustSource: 'System',
+                    topCommentSnippet: null,
+                    fmcsaVerified: op.trust_score > 0.85,
+                    claimStatus: op.claim_status || 'unclaimed',
+                    description: op.description,
+                    status: op.availability_status || 'unknown'
+                  }} 
+                />
               );
             })}
           </div>

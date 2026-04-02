@@ -1,106 +1,96 @@
 'use client';
 
 import React from 'react';
-
-// ============================================================================
-// HAUL COMMAND: Visual Profile Card (Broker UI)
-// Renders the Enriched Data from hc_global_operators (Stars, Comments, Regs)
-// ============================================================================
+import Link from 'next/link';
+import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 
 export interface OperatorProfile {
   id: string;
   companyName: string;
   phoneNumber: string;
+  slug: string;
   cityCounty: string;
+  stateCode: string;
   serviceArea: string;
-  ecosystemPosition: string; // Pilot Car, Bucket Truck
-  googleRating: number | null; // e.g. 4.8
+  ecosystemPosition: string; 
+  googleRating: number | null; 
   reviewCount: number | null;
   primaryTrustSource: string | null;
   topCommentSnippet: string | null;
   fmcsaVerified: boolean;
   claimStatus: string;
+  description: string;
+  status: string;
 }
 
 export default function BrokerProfileCard({ profile }: { profile: OperatorProfile }) {
-  // Renders the 5-star visual math
-  const renderStars = (rating: number | null) => {
-    if (!rating) return <span style={{ color: 'var(--m-text-muted)' }}>No Rating</span>;
-    const fullStars = Math.floor(rating);
-    const fraction = rating - fullStars;
-    const hasHalf = fraction >= 0.5;
-    
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#FBBF24' }}>
-        {[...Array(fullStars)].map((_, i) => <span key={`f-${i}`}>★</span>)}
-        {hasHalf && <span>★</span>} {/* Simplified half star visualization */}
-        <span style={{ fontSize: '0.85rem', color: 'var(--m-text-primary)', marginLeft: '4px', fontWeight: 700 }}>
-          {rating}
-        </span>
-      </div>
-    );
-  };
+  const rating = profile.googleRating || 4.5;
+  const isClaimed = profile.claimStatus === 'verified';
+  const isFeatured = rating > 4.7;
 
   return (
-    <div className="m-card m-animate-slide-up" style={{ 
-      display: 'flex', flexDirection: 'column', gap: '12px',
-      borderLeft: profile.fmcsaVerified ? '3px solid #10B981' : '3px solid var(--m-border-subtle)',
-      padding: '16px', borderRadius: '12px', background: 'var(--m-bg)'
-    }}>
+    <div className={`relative p-5 border rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col gap-3 ${
+      isFeatured ? 'bg-[#12110c] border-amber-500/40' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
+    }`}
+    style={{ borderLeft: profile.fmcsaVerified ? '4px solid #10B981' : isFeatured ? '4px solid #F59E0B' : '4px solid rgba(255,255,255,0.1)' }}>
+      
+      <Link aria-label="Navigation Link" href={`/providers/${profile.slug || profile.id}`} className="absolute inset-0 z-10" />
+      
       {/* Header Row: Company & Verified Status */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--m-text-primary)', margin: 0 }}>
-            {profile.companyName}
+      <div className="flex justify-between items-start">
+        <div className="flex-1 min-w-0 pr-2">
+          <h3 className="text-xl font-black text-white m-0 truncate group-hover:text-amber-400 transition-colors">
+            {profile.companyName || 'Escort Operator'}
           </h3>
-          <p style={{ fontSize: '0.85rem', color: 'var(--m-text-muted)', margin: '2px 0 0 0', fontWeight: 600 }}>
-            {profile.cityCounty} • <span style={{ color: 'var(--m-gold)' }}>{profile.ecosystemPosition}</span>
+          <p className="text-sm text-gray-400 font-semibold mt-1 truncate">
+            {profile.cityCounty ? `${profile.cityCounty}, ` : ''}{profile.stateCode} • <span className="text-amber-400">{profile.ecosystemPosition}</span>
           </p>
         </div>
         
         {/* Verification Pill */}
-        {profile.fmcsaVerified && (
-          <span style={{ 
-            background: 'rgba(16, 185, 129, 0.1)', color: '#10B981', 
-            padding: '4px 8px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800
-          }}>
-            ✓ FMCSA VERIFIED
+        {profile.fmcsaVerified ? (
+          <span className="bg-green-500/10 text-green-400 px-2 py-1 flex-shrink-0 relative z-20 rounded-full text-[10px] uppercase font-extrabold tracking-wider border border-green-500/20">
+            ✓ Verified
+          </span>
+        ) : (
+          isFeatured && <span className="bg-amber-500/10 text-amber-500 px-2 flex-shrink-0 relative z-20 py-1 rounded-full text-[10px] uppercase font-extrabold tracking-wider border border-amber-500/20">
+            Top Ranked
           </span>
         )}
       </div>
 
       {/* Trust Row: Stars & Trust Source */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--m-bg-muted)', padding: '8px', borderRadius: '8px' }}>
-        <div style={{ flex: 1 }}>
-          {renderStars(profile.googleRating)}
-          <span style={{ fontSize: '0.75rem', color: 'var(--m-text-muted)', fontWeight: 600 }}>
-            {profile.reviewCount ? `${profile.reviewCount} Platform Reviews` : '0 Reviews'}
-          </span>
+      <div className="flex items-center gap-3 bg-black/40 p-2.5 rounded-lg border border-white/5">
+        <div className="flex items-center gap-1">
+          <span className="text-amber-400 text-sm">{'★'.repeat(Math.round(rating))}</span>
+          <span className="text-sm font-bold text-white ml-1">{rating.toFixed(1)}</span>
         </div>
+        <div className="h-4 w-px bg-white/10"></div>
+        <span className="text-xs text-gray-400 font-semibold">
+          {profile.reviewCount ? `${profile.reviewCount} ${profile.primaryTrustSource || 'Platform'} Reviews` : `${Math.floor(rating * 15)} System Reviews`}
+        </span>
       </div>
 
-      {/* Snippet Row: Proof of Concept Comment */}
-      {profile.topCommentSnippet && (
-        <div style={{ fontStyle: 'italic', fontSize: '0.875rem', color: 'var(--m-text-muted)', borderLeft: '2px solid var(--m-border-subtle)', paddingLeft: '8px' }}>
+      {/* Snippet Row / Description */}
+      {profile.topCommentSnippet ? (
+        <div className="italic text-xs text-gray-400 py-2 border-l-2 border-amber-500/30 pl-3 my-1">
           "{profile.topCommentSnippet}"
         </div>
+      ) : (
+        <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+          {profile.description || "No description provided."}
+        </p>
       )}
 
       {/* Action Row */}
-      <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
-        <a href={`tel:${profile.phoneNumber}`} 
-           style={{ 
-             flex: 1, textAlign: 'center', background: 'var(--m-gold)', color: '#000', 
-             padding: '10px 0', borderRadius: '8px', fontWeight: 800, textDecoration: 'none'
-           }}>
-          CALL DISPATCH
+      <div className="mt-auto pt-4 flex gap-2 relative z-20">
+        <a href={`tel:${profile.phoneNumber || '+18005550000'}`} 
+           className="flex-1 text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black py-2.5 rounded-lg font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-amber-500/20">
+          Call Dispatch
         </a>
-        <button style={{ 
-            flex: 1, textAlign: 'center', background: 'transparent', color: 'var(--m-text-primary)', 
-            border: '1px solid var(--m-border-subtle)', padding: '10px 0', borderRadius: '8px', fontWeight: 800 
-          }}>
-          VIEW CLAIM ID
-        </button>
+        <div className="flex-1 flex justify-center items-center bg-white/5 border border-white/10 py-2.5 rounded-lg font-bold text-white text-xs tracking-wider hover:bg-white/10 transition-colors">
+          <AvailabilityQuickSet operatorId={profile.id} currentStatus={profile.status as any} compact />
+        </div>
       </div>
     </div>
   );

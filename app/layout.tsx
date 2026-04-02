@@ -13,6 +13,7 @@ import { AuthStatusBanner } from "@/components/dev/AuthStatusBanner";
 import SmartAppBanner from "@/components/growth/SmartAppBanner";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import { SessionDNATracker } from "@/components/security/SessionDNATracker";
+import CaptureOverlay from "@/components/capture/CaptureOverlay";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -228,6 +229,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <SpeedInsights />
                     <AuthStatusBanner />
                     <SessionDNATracker />
+                    <CaptureOverlay />
                 </RoleProvider>
             </body>
         </html>

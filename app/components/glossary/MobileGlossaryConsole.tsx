@@ -1,10 +1,28 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { createClient } from '@/lib/supabase/client';
+import Link from 'next/link';
 
 // The Haul Command Mobile Glossary Console
-// Fulfills the explicit UX rules mapping a 120-country glossary without thin hubs.
+// 120-country glossary — real Supabase data, no mocks.
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+interface GlossaryEntry {
+  slug: string;
+  term: string;
+  short_definition: string;
+  category: string | null;
+  jurisdiction: string | null;
+  applicable_countries: string[] | null;
+}
+
+interface CountryOption {
+  country_code: string;
+  country_name: string;
+  flag_emoji: string;
+}
 
 export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
   const [activeCountry, setActiveCountry] = useState(initialCountry);
@@ -12,19 +30,81 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
   const [activeLetter, setActiveLetter] = useState('A');
   const [shimmer, setShimmer] = useState(true);
   const [topicCollapsed, setTopicCollapsed] = useState(true);
+  const [definitions, setDefinitions] = useState<GlossaryEntry[]>([]);
+  const [countries, setCountries] = useState<CountryOption[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
 
-  // Turn off shimmer after initial render/pulse to indicate scrollability without annoyance
+  const supabase = createClient();
+
+  // Turn off shimmer after initial render
   useEffect(() => {
     const timer = setTimeout(() => setShimmer(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Mock Definitions that would be fetched instantly client-side via filtering
-  const definitions = [
-    { term: 'Pilot Vehicle', type: 'Local', desc: 'Australian terminology for an escort vehicle equipped with amber flashing lights and UHF radio.' },
-    { term: 'Pilot Car', type: 'Global', desc: 'Standard North American term for an escort vehicle required for wide and heavy transport.' },
-    { term: 'Permit Weight', type: 'Global', desc: 'The absolute maximum weight allowed on an axle configuration under a state-issued oversized permit.' }
-  ];
+  // Load available countries from country_tiers
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from('country_tiers')
+          .select('country_code, country_name, flag_emoji')
+          .order('expansion_priority', { ascending: false });
+        if (data) setCountries(data);
+      } catch {
+        // Silently fall back to hardcoded options if table doesn't exist
+      }
+    })();
+  }, [supabase]);
+
+  // Fetch glossary terms from glossary_public view
+  const fetchTerms = useCallback(async () => {
+    setLoading(true);
+    try {
+      let query = supabase
+        .from('glossary_public')
+        .select('slug, term, short_definition, category, jurisdiction, applicable_countries')
+        .ilike('term', `${activeLetter}%`)
+        .order('term', { ascending: true })
+        .limit(20);
+
+      // Filter by country if not Global
+      if (activeCountry !== 'Global') {
+        query = query.contains('applicable_countries', [activeCountry]);
+      }
+
+      const { data, error } = await query;
+      if (!error && data) {
+        setDefinitions(data);
+      }
+
+      // Also get total count
+      const { count } = await supabase
+        .from('glossary_public')
+        .select('*', { count: 'exact', head: true });
+      if (count !== null) setTotalCount(count);
+    } catch {
+      // Silently handle errors
+    }
+    setLoading(false);
+  }, [supabase, activeLetter, activeCountry]);
+
+  useEffect(() => {
+    fetchTerms();
+  }, [fetchTerms]);
+
+  // Filter definitions by tab (Local = country-specific, Global = universal)
+  const filteredDefinitions = definitions.filter(d => {
+    if (activeTab === 'All') return true;
+    if (activeTab === 'Local') {
+      return d.applicable_countries && d.applicable_countries.length > 0 && !d.applicable_countries.includes('GLOBAL');
+    }
+    if (activeTab === 'Global') {
+      return !d.applicable_countries || d.applicable_countries.length === 0 || d.applicable_countries.includes('GLOBAL');
+    }
+    return true;
+  });
 
   return (
     <div className="bg-hc-gray-900 min-h-screen pb-20 font-sans text-white">
@@ -33,7 +113,9 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
         <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-hc-yellow-400 to-yellow-600 mb-2">
           Global Terminology
         </h1>
-        <p className="text-hc-gray-400 text-sm">3,162+ Heavy Haul & Logistics Definitions</p>
+        <p className="text-hc-gray-400 text-sm">
+          {totalCount > 0 ? `${totalCount.toLocaleString()}+` : '3,162+'} Heavy Haul & Logistics Definitions
+        </p>
       </div>
 
       {/* 2. Country Selector - Primary Sticky Control */}
@@ -46,9 +128,20 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
             className="w-full bg-black border border-hc-gray-700 rounded-lg p-3 text-white font-bold appearance-none focus:outline-none focus:border-hc-yellow-400 focus:ring-1 focus:ring-hc-yellow-400"
           >
             <option value="Global">🌍 Global Dictionary</option>
-            <option value="AU">🇦🇺 Australia</option>
-            <option value="US">🇺🇸 United States</option>
-            <option value="DE">🇩🇪 Germany</option>
+            {countries.length > 0
+              ? countries.map(c => (
+                  <option key={c.country_code} value={c.country_code}>
+                    {c.flag_emoji} {c.country_name}
+                  </option>
+                ))
+              : <>
+                  <option value="AU">🇦🇺 Australia</option>
+                  <option value="US">🇺🇸 United States</option>
+                  <option value="DE">🇩🇪 Germany</option>
+                  <option value="GB">🇬🇧 United Kingdom</option>
+                  <option value="CA">🇨🇦 Canada</option>
+                </>
+            }
           </select>
         </div>
 
@@ -70,45 +163,80 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
         {/* 4. Alphabet Chip Rail (Sticky horizontal scroller) */}
         <div className={`mt-4 px-4 flex overflow-x-auto gap-2 pb-2 scrollbar-none snap-x ${shimmer ? 'animate-pulse' : ''}`}>
           {ALPHABET.map((letter) => (
-            <button
+            <motion.button
               key={letter}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
               onClick={() => setActiveLetter(letter)}
-              className={`min-w-[44px] h-[48px] rounded-xl flex items-center justify-center font-black text-lg transition-colors snap-center border-2 ${
+              className={`min-w-[44px] h-[48px] rounded-xl flex items-center justify-center font-black text-lg snap-center border-2 ${
                 activeLetter === letter 
                   ? 'bg-hc-yellow-400 border-hc-yellow-400 text-black shadow-[0_0_15px_rgba(250,204,21,0.3)]' 
-                  : 'bg-hc-gray-800 border-hc-gray-700 text-white active:bg-hc-gray-700'
+                  : 'bg-hc-gray-800 border-hc-gray-700 text-white'
               }`}
             >
               {letter}
-            </button>
+            </motion.button>
           ))}
         </div>
       </div>
 
-      {/* 5. First Definitions Immediately Visible */}
+      {/* 5. Definitions — Real data from Supabase */}
       <div className="p-4 space-y-4">
         {activeCountry !== 'Global' && (
           <h2 className="text-xs font-black uppercase text-hc-yellow-400 tracking-widest border-b border-hc-gray-800 pb-2 mb-4">
             {activeCountry} Specialized Terms
           </h2>
         )}
-        
-        {definitions.filter(d => activeTab === 'All' || d.type === activeTab).map((def, idx) => (
-          <div key={idx} className="bg-black border border-hc-gray-800 p-5 rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold text-white mb-2">{def.term}</h3>
-            <span className="inline-block bg-hc-gray-800 text-[10px] text-hc-gray-300 uppercase px-2 py-1 rounded font-bold tracking-wider mb-3">
-              {def.type} Usage
-            </span>
-            <p className="text-sm text-hc-gray-400 leading-relaxed mb-4">
-              {def.desc}
-            </p>
-            {/* Inline Semantic Hub Links */}
-            <div className="border-t border-hc-gray-800 pt-3 flex flex-wrap gap-2">
-              <span className="text-xs text-blue-400 font-bold hover:underline cursor-pointer">Find {activeCountry === 'AU' ? 'Pilots' : 'Escorts'} &rarr;</span>
-              <span className="text-xs text-hc-yellow-400 font-bold hover:underline cursor-pointer">View Regulations &rarr;</span>
-            </div>
+
+        {loading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="bg-black border border-hc-gray-800 p-5 rounded-xl animate-pulse">
+                <div className="h-5 bg-hc-gray-800 rounded w-1/3 mb-3" />
+                <div className="h-3 bg-hc-gray-800 rounded w-1/4 mb-4" />
+                <div className="h-4 bg-hc-gray-800 rounded w-full mb-2" />
+                <div className="h-4 bg-hc-gray-800 rounded w-3/4" />
+              </div>
+            ))}
           </div>
-        ))}
+        ) : filteredDefinitions.length === 0 ? (
+          <div className="text-center py-12 text-hc-gray-500">
+            <div className="text-3xl mb-3">📖</div>
+            <p className="text-sm font-bold">No terms found for &quot;{activeLetter}&quot;{activeCountry !== 'Global' ? ` in ${activeCountry}` : ''}</p>
+            <p className="text-xs mt-1">Try another letter or switch to All Terms</p>
+          </div>
+        ) : (
+          filteredDefinitions.map((def) => (
+            <Link href={`/glossary/${def.slug}`} key={def.slug} className="block">
+              <div className="bg-black border border-hc-gray-800 p-5 rounded-xl shadow-lg hover:border-hc-yellow-400/30 transition-colors">
+                <h3 className="text-xl font-bold text-white mb-2">{def.term}</h3>
+                <div className="flex gap-2 mb-3">
+                  {def.category && (
+                    <span className="inline-block bg-hc-gray-800 text-[10px] text-hc-gray-300 uppercase px-2 py-1 rounded font-bold tracking-wider">
+                      {def.category}
+                    </span>
+                  )}
+                  {def.jurisdiction && (
+                    <span className="inline-block bg-amber-500/10 text-[10px] text-amber-400 uppercase px-2 py-1 rounded font-bold tracking-wider">
+                      {def.jurisdiction}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-hc-gray-400 leading-relaxed mb-4">
+                  {def.short_definition}
+                </p>
+                {/* Inline Semantic Hub Links */}
+                <div className="border-t border-hc-gray-800 pt-3 flex flex-wrap gap-2">
+                  <span className="text-xs text-blue-400 font-bold">View Full Definition &rarr;</span>
+                  <span className="text-xs text-hc-yellow-400 font-bold">View Regulations &rarr;</span>
+                </div>
+              </div>
+            </Link>
+          ))
+        )}
       </div>
 
       {/* 6. Browse by Topic - Collapsed Secondary Nav */}
@@ -123,15 +251,16 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
           </button>
           {!topicCollapsed && (
             <div className="p-4 grid grid-cols-2 gap-2 text-sm text-hc-gray-400">
-              <a href="#" className="p-2 border border-hc-gray-700 rounded hover:text-white">Permits & Logic</a>
-              <a href="#" className="p-2 border border-hc-gray-700 rounded hover:text-white">Bridge Clearances</a>
-              <a href="#" className="p-2 border border-hc-gray-700 rounded hover:text-white">Route Surveying</a>
-              <a href="#" className="p-2 border border-hc-gray-700 rounded hover:text-white">Fleet Insurance</a>
+              <Link href="/glossary?category=permits" className="p-2 border border-hc-gray-700 rounded hover:text-white">Permits & Logic</Link>
+              <Link href="/glossary?category=bridge" className="p-2 border border-hc-gray-700 rounded hover:text-white">Bridge Clearances</Link>
+              <Link href="/glossary?category=routing" className="p-2 border border-hc-gray-700 rounded hover:text-white">Route Surveying</Link>
+              <Link href="/glossary?category=insurance" className="p-2 border border-hc-gray-700 rounded hover:text-white">Fleet Insurance</Link>
+              <Link href="/glossary?category=escort" className="p-2 border border-hc-gray-700 rounded hover:text-white">Escort Types</Link>
+              <Link href="/glossary?category=compliance" className="p-2 border border-hc-gray-700 rounded hover:text-white">Compliance</Link>
             </div>
           )}
         </div>
       </div>
-
     </div>
   );
 }

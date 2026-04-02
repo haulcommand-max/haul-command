@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getCorridorData, getAllCorridorSlugs, estimateEscortCost } from '@/lib/data/corridors';
+import { CROSS_BORDER_CORRIDORS, type BorderCrossing } from '@/lib/routes/cross-border-intelligence';
 import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { WatchButton } from '@/components/social/WatchButton';
 import { CorridorDetailMobileGate } from '@/components/mobile/gates/CorridorDetailMobileGate';
@@ -241,6 +242,83 @@ export default async function CorridorPage({ params }: Props) {
                             </div>
                         </section>
                     )}
+
+                    {/* ━━━ CROSS-BORDER INTELLIGENCE ━━━ */}
+                    {(() => {
+                        // Auto-detect cross-border crossings relevant to this corridor
+                        const corridorKey = corridor.toLowerCase();
+                        const crossings = CROSS_BORDER_CORRIDORS.filter(c =>
+                            c.seoMeta.url.toLowerCase().includes(corridorKey) ||
+                            c.name.toLowerCase().includes(corridorKey.replace(/-/g, ' ')) ||
+                            (staticData?.endpoints && (
+                                c.fromRegion.toLowerCase().includes(corridorKey) ||
+                                c.toRegion.toLowerCase().includes(corridorKey)
+                            ))
+                        );
+                        if (crossings.length === 0) return null;
+                        return (
+                            <section>
+                                <h2 className="text-2xl font-bold text-white mb-2">Cross-Border Intelligence</h2>
+                                <p className="text-hc-muted mb-6">
+                                    Escort rules change at every border. Here&apos;s what changes on this corridor when you cross country lines.
+                                </p>
+                                <div className="space-y-6">
+                                    {crossings.map((cx: BorderCrossing) => (
+                                        <div key={cx.crossingId} className="bg-hc-surface border border-amber-500/20 rounded-xl overflow-hidden">
+                                            <div className="px-5 py-4 bg-amber-500/5 border-b border-amber-500/10 flex items-center justify-between flex-wrap gap-3">
+                                                <div>
+                                                    <div className="text-white font-bold text-lg">{cx.name}</div>
+                                                    <div className="text-hc-muted text-sm">{cx.fromRegion} → {cx.toRegion} · {cx.crossingType}</div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="px-2 py-1 bg-red-500/10 text-red-400 text-xs font-bold rounded">
+                                                        ~{cx.oversizeDelayHours}h delay
+                                                    </span>
+                                                    {cx.escortThroughCrossing && (
+                                                        <span className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs font-bold rounded">
+                                                            Escort Through Crossing
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="p-5 space-y-4">
+                                                {/* Regulation changes */}
+                                                {cx.regulationChanges.filter(r => r.impact === 'critical' || r.impact === 'significant').map((rc, ri) => (
+                                                    <div key={ri} className="flex items-start gap-3">
+                                                        <span className={`mt-0.5 shrink-0 text-xs font-bold px-1.5 py-0.5 rounded ${rc.impact === 'critical' ? 'bg-red-500/15 text-red-400' : 'bg-amber-500/15 text-amber-400'}`}>
+                                                            {rc.impact.toUpperCase()}
+                                                        </span>
+                                                        <div>
+                                                            <div className="text-white text-sm font-semibold">{rc.category.replace(/_/g, ' ')}</div>
+                                                            <div className="text-hc-muted text-xs mt-0.5">
+                                                                <span className="text-red-400/70">{rc.fromRule}</span>
+                                                                <span className="mx-2 text-hc-subtle">→</span>
+                                                                <span className="text-green-400/70">{rc.toRule}</span>
+                                                            </div>
+                                                            <div className="text-amber-400/80 text-xs mt-1 font-medium">{rc.actionRequired}</div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                {/* Customs notes */}
+                                                {cx.customsNotes.length > 0 && (
+                                                    <div className="mt-3 pt-3 border-t border-white/5">
+                                                        <div className="text-xs font-bold text-hc-muted uppercase tracking-widest mb-2">Customs & Permits</div>
+                                                        <ul className="space-y-1">
+                                                            {cx.customsNotes.map((note, ni) => (
+                                                                <li key={ni} className="text-hc-muted text-sm flex items-start gap-2">
+                                                                    <span className="text-amber-400 mt-0.5">•</span> {note}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        );
+                    })()}
 
                     {/* State-by-state requirements table */}
                     {staticData?.stateRequirements && staticData.stateRequirements.length > 0 && (

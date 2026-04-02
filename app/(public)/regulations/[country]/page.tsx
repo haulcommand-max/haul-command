@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import MarketModeCTA from '@/components/market/MarketModeCTA';
 import {
     REGULATIONS,
     getRegulation,
@@ -418,45 +419,12 @@ export default async function CountryRegulationPage({
                 )}
             </div>
 
-            {/* CTA */}
-            <div
-                style={{
-                    padding: '1.5rem 2rem',
-                    borderRadius: '0.75rem',
-                    background: 'linear-gradient(135deg, rgba(212,168,67,0.08), rgba(212,168,67,0.02))',
-                    border: '1px solid rgba(212,168,67,0.15)',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '1rem',
-                }}
-            >
-                <div>
-                    <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#F3F4F6', margin: '0 0 0.25rem' }}>
-                        Need a {term} in {reg.countryName}?
-                    </h3>
-                    <p style={{ fontSize: '0.875rem', color: '#9CA3AF', margin: 0 }}>
-                        Find verified operators in our directory — instant availability, reviews, and dispatch.
-                    </p>
-                </div>
-                <Link
-                    href={`/directory?country=${reg.countryCode}`}
-                    style={{
-                        padding: '0.625rem 1.25rem',
-                        borderRadius: '0.5rem',
-                        background: '#D4A843',
-                        color: '#0B0B0C',
-                        fontWeight: 700,
-                        fontSize: '0.875rem',
-                        textDecoration: 'none',
-                        whiteSpace: 'nowrap',
-                        transition: 'all 0.2s',
-                    }}
-                >
-                    Find {capitalizeFirst(term)} Operators →
-                </Link>
-            </div>
+            {/* CTA — Market-mode aware */}
+            <MarketModeCTA
+                countryCode={reg.countryCode}
+                countryName={reg.countryName}
+                localTerm={term}
+            />
 
             {/* Structured Data — FAQPage + SpeakableSpecification */}
             <script
