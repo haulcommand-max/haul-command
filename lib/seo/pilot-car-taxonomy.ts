@@ -942,6 +942,46 @@ export const LOAD_TYPES: LoadTypeData[] = [
         keywords: ["transformer transport escort", "power transformer pilot car", "utility transformer oversize escort", "electrical transformer transport"],
         industries: ["utilities", "energy", "electrical"],
     },
+    {
+        slug: "boats-marine",
+        name: "Boats & Marine Vessels",
+        escortRequiredWidth: 12,
+        description: "Oversize boat and yacht transport on highways requires careful height and width management. Sailboat masts, catamaran beams, and commercial vessels regularly exceed legal limits.",
+        keywords: ["boat transport escort", "yacht shipping pilot car", "oversize boat escort", "marine vessel transport escort", "sailboat transport pilot car"],
+        industries: ["marine", "recreation", "commercial fishing", "defense"],
+    },
+    {
+        slug: "military-equipment",
+        name: "Military & Defense Equipment",
+        escortRequiredWidth: 14,
+        description: "Military vehicle transport — tanks, APCs, radar systems, and aircraft components — often requires security-cleared escort operators, nighttime movement, and multi-agency coordination.",
+        keywords: ["military equipment escort", "tank transport pilot car", "defense equipment oversize escort", "military vehicle transport escort"],
+        industries: ["defense", "government", "aerospace"],
+    },
+    {
+        slug: "agricultural-equipment",
+        name: "Agricultural Equipment",
+        escortRequiredWidth: 12,
+        description: "Combines, grain headers, sprayers, and large tractors frequently exceed legal width when transported. Seasonal harvest moves create peak demand for escort operators in rural corridors.",
+        keywords: ["farm equipment escort", "combine transport pilot car", "agricultural equipment oversize escort", "tractor transport escort"],
+        industries: ["agriculture", "farming", "food processing"],
+    },
+    {
+        slug: "steel-structural",
+        name: "Steel & Structural Components",
+        escortRequiredWidth: 12,
+        description: "Steel beams, bridge girders, tower sections, and structural steel often require height pole service due to extreme length and height. Multi-state coordination is typical.",
+        keywords: ["steel beam transport escort", "structural steel pilot car", "bridge girder escort", "steel component oversize transport"],
+        industries: ["construction", "infrastructure", "steel fabrication"],
+    },
+    {
+        slug: "industrial-machinery",
+        name: "Industrial Machinery",
+        escortRequiredWidth: 12,
+        description: "CNC machines, injection molders, turbines, and factory equipment require precision route planning. Escorts must account for vibration-sensitive cargo and loading dock access.",
+        keywords: ["industrial machinery escort", "factory equipment transport pilot car", "CNC machine oversize escort", "turbine transport escort"],
+        industries: ["manufacturing", "industrial", "food processing", "pharmaceutical"],
+    },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

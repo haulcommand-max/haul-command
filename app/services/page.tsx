@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {
   ArrowRight, Truck, MapPin, Wind, Route, Bot,
   Receipt, Siren, Shield, Award, ClipboardList, Wrench,
+  FileCheck, ShieldCheck, ShoppingCart,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
@@ -113,6 +114,33 @@ const SERVICES = [
     icon: Bot,
     accent: '#6366f1',
   },
+  {
+    slug: 'permit-filing',
+    title: 'Permit Filing & Acquisition',
+    description: 'Multi-state oversize load permit acquisition — single and annual permits across all 50 states.',
+    longDescription: 'Stop calling each state DOT individually. Haul Command automates multi-state permit filing, tracks processing times, and notifies you when permits are approved.',
+    features: ['Single-trip permits', 'Annual/blanket permits', 'Multi-state coordination', 'Processing time tracking', 'Permit document vault'],
+    icon: FileCheck,
+    accent: '#22d3ee',
+  },
+  {
+    slug: 'insurance-verification',
+    title: 'Insurance & COI Vault',
+    description: 'Automated insurance verification, COI storage, and expiry alerting for operators and carriers.',
+    longDescription: 'Upload COIs once, share with every carrier via secure link. Auto-alerts 30/7/1 days before expiry. Carrier-facing verification portal for instant compliance checks.',
+    features: ['COI document vault', 'Auto-expiry alerts', 'Carrier verification links', 'Coverage amount tracking', 'Workers comp verification'],
+    icon: ShieldCheck,
+    accent: '#f43f5e',
+  },
+  {
+    slug: 'marketplace',
+    title: 'Equipment Marketplace',
+    description: 'Buy, sell, and rent escort equipment — signs, lights, flags, height poles, and vehicles.',
+    longDescription: 'The first marketplace purpose-built for the escort industry. New and used equipment from verified sellers with buyer protection and escrow payments.',
+    features: ['Pilot car equipment', 'Signs & banners', 'Lights & safety gear', 'Height poles', 'Used escort vehicles'],
+    icon: ShoppingCart,
+    accent: '#84cc16',
+  },
 ];
 
 export default function ServicesPage() {
@@ -176,16 +204,39 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Trust Stats Bar */}
+      <section className="max-w-6xl mx-auto px-4 pb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { value: '15,000+', label: 'Verified Operators' },
+            { value: '120', label: 'Countries' },
+            { value: '14', label: 'Service Categories' },
+            { value: '<15 min', label: 'Rescue Response' },
+          ].map(s => (
+            <div key={s.label} className="text-center py-4 px-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+              <div className="text-xl font-black bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{s.value}</div>
+              <div className="text-xs text-gray-500 mt-1">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Need an Escort Operator?</h2>
         <p className="text-gray-400 mb-6">
-          Post your load on the Haul Command load board and receive responses from verified operators in minutes.
+          Post your load on the Haul Command load board and receive responses from verified operators in minutes — or get a quote for managed, end-to-end logistics.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
           <Link
-            href="/loads"
+            href="/quote"
             className="px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
             style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
+          >
+            Get a Quote
+          </Link>
+          <Link
+            href="/loads"
+            className="px-8 py-3 border border-amber-500/30 hover:border-amber-500/60 text-amber-400 font-semibold rounded-xl transition-colors"
           >
             Post a Load
           </Link>

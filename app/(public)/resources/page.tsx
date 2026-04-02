@@ -93,8 +93,11 @@ const RESOURCE_CLUSTERS = [
             { title: 'How to Become a Certified Escort Driver', desc: 'State-by-state requirements, testing prep, and reciprocity rules explained.', href: '/resources/guides/become-certified-escort-driver', tag: 'Guide', downloadable: false },
             { title: 'Heavy Equipment Transport — Complete Guide', desc: 'Oversized cargo planning, route surveys, escort specs, and permit workflow.', href: '/resources/guides/heavy-equipment-transport', tag: 'Guide', downloadable: false },
             { title: 'Aircraft Shipping & Transport Guide', desc: 'Special considerations for aviation component transport — clearances, routes, and escorts.', href: '/resources/guides/aircraft-shipping', tag: 'Specialty', downloadable: false },
+            { title: 'Boat & Marine Equipment Shipping Guide', desc: 'Permits, escort requirements, and width considerations for oversize boat and marine vessel transport.', href: '/resources/guides/boat-shipping', tag: 'Specialty', downloadable: false },
+            { title: 'Trailer Types — Complete Reference', desc: 'Flatbed, lowboy, RGN, double-drop, stretch, and specialty trailers — specs, capacity, and best use cases.', href: '/resources/guides/trailer-types', tag: 'Reference', downloadable: false },
             { title: 'Cross-Border Oversize Hauling (US/Canada)', desc: 'Regulatory differences, cabotage rules, and escort requirements for cross-border moves.', href: '/resources/guides/cross-border-oversize', tag: 'Guide', downloadable: false },
             { title: 'Wind Turbine Blade Transport Guide', desc: 'Specialized routing, turning geometry tools, and escort configurations for blade hauls.', href: '/resources/guides/wind-turbine-transport', tag: 'Specialty', downloadable: false },
+            { title: 'Autonomous Vehicle Escort Operations', desc: 'Emerging regulations and operational protocols for escorting autonomous trucks and AV test vehicles.', href: '/resources/guides/autonomous-vehicle-escort', tag: 'Specialty', downloadable: false },
         ],
     },
     {
@@ -106,10 +109,17 @@ const RESOURCE_CLUSTERS = [
         resources: [
             { title: 'Maximum Legal Load Sizes by State', desc: 'Width, height, length, and weight limits for all 50 states — no permit needed thresholds.', href: '/regulations', tag: 'Reference', downloadable: false },
             { title: 'Superload Permit Process — Step by Step', desc: 'Engineering studies, route approvals, and multi-state coordination for loads over 200,000 lbs.', href: '/resources/legal/superload-permit-process', tag: 'Permits', downloadable: false },
-            { title: 'Frost Law Guide — Spring Restrictions by State', desc: 'Which states have frost laws, when they activate, and load-reduction requirements.', href: '/resources/legal/frost-law-guide', tag: 'Law', downloadable: false },
-            { title: 'Tire Chain Laws & Requirements', desc: 'State-by-state chain requirements, when they apply, and equipment specs.', href: '/resources/legal/tire-chain-laws', tag: 'Law', downloadable: false },
-            { title: 'Federal Bridge Formula Calculator', desc: 'Understand axle weight distribution requirements and FHWA bridge formula compliance.', href: '/tools/permit-calculator', tag: 'Tool', downloadable: false },
+            { title: 'Frost Law Guide — Spring Restrictions by State', desc: '20 states covered — when frost laws activate, weight reduction %, severity ratings, and exemptions.', href: '/resources/legal/frost-law-guide', tag: 'Law', downloadable: false },
+            { title: 'Tire Chain Laws & Requirements', desc: '17 states — chain control levels (R1/R2/R3), escort vehicle requirements, and equipment specs.', href: '/resources/legal/tire-chain-laws', tag: 'Law', downloadable: false },
+            { title: 'Federal Bridge Formula Calculator', desc: 'Understand axle weight distribution requirements and FHWA bridge formula compliance.', href: '/tools/bridge-weight', tag: 'Tool', downloadable: false },
             { title: 'Divisible Load Guide', desc: 'When loads must be broken down by law — definitions, exceptions, and exemptions by state.', href: '/resources/legal/divisible-load-guide', tag: 'Law', downloadable: false },
+            { title: 'Holiday Restrictions by State', desc: 'Oversize load travel restrictions during federal holidays, weekends, and state-observed holidays.', href: '/resources/legal/holiday-restrictions', tag: 'Law', downloadable: false },
+            { title: 'Maximum Overhang & Rear Projection Laws', desc: 'How far loads can stick out the front, back, and sides of a vehicle — state-by-state limits.', href: '/resources/legal/overhang-laws', tag: 'Law', downloadable: false },
+            { title: 'Axle Weight Regulations by State', desc: 'Legal axle weight limits — steer, drive, single, tandem, tridem — and overweight permit thresholds for all 50 states.', href: '/resources/legal/axle-regulations', tag: 'Law', downloadable: false },
+            { title: 'Trip / IRP Permits Guide', desc: 'International Registration Plan permits — apportioned registration, reciprocity rules, and filing process by state.', href: '/resources/legal/irp-permits', tag: 'Permits', downloadable: false },
+            { title: 'Fuel / IFTA Permits Guide', desc: 'IFTA fuel tax reporting, temporary permits, and compliance requirements for interstate carriers.', href: '/resources/legal/ifta-permits', tag: 'Permits', downloadable: false },
+            { title: 'Oversize / Overweight Fines & Penalties', desc: 'State-by-state fine schedules, penalty structures, and enforcement consequences for oversize and overweight violations.', href: '/resources/legal/oversize-fines', tag: 'Law', downloadable: false },
+            { title: 'Annual Permits — Oversize/Overweight', desc: 'Annual blanket permits vs. single-trip permits — when each type makes sense, costs, and application process by state.', href: '/resources/legal/annual-permits', tag: 'Permits', downloadable: false },
         ],
     },
     {
@@ -162,10 +172,12 @@ const RESOURCE_CLUSTERS = [
         label: 'Live Data & Conditions',
         description: 'Real-time conditions, road closures, and market intelligence',
         resources: [
-            { title: 'Road Conditions by State', desc: 'Live highway conditions, seasonal closures, and construction delay feeds by state.', href: '/resources/data/road-conditions', tag: 'Live', downloadable: false },
-            { title: 'Live Highway Closures & Alerts', desc: 'Real-time DOT closure notices affecting oversize load routes across the US.', href: '/resources/data/highway-closures', tag: 'Live', downloadable: false },
+            { title: 'Road Conditions by State', desc: 'Live highway conditions, seasonal closures, and construction delay feeds for all 50 states.', href: '/resources/data/road-conditions', tag: 'Live', downloadable: false },
+            { title: 'Live Highway Closures & Alerts', desc: 'Real-time DOT closure notices affecting oversize load routes across the US and Canada.', href: '/resources/data/highway-closures', tag: 'Live', downloadable: false },
             { title: 'Permit Processing Times by State', desc: 'Average permit processing delays by state DOT — plan your haul accordingly.', href: '/resources/data/permit-processing-times', tag: 'Data', downloadable: false },
             { title: 'Pilot Car Market Rate Index', desc: 'Weekly market rate index for escort services — regional and national benchmarks.', href: '/rates', tag: 'Data', downloadable: false },
+            { title: 'Oversize Load Running Hours by State', desc: 'Sunrise/sunset, curfew hours, and state-by-state operating windows for oversize movements.', href: '/resources/data/running-hours', tag: 'Data', downloadable: false },
+            { title: 'Peak Season Rate Trends', desc: 'Historical and current rate data showing seasonal demand patterns for escort services.', href: '/resources/data/peak-season-rates', tag: 'Data', downloadable: false },
         ],
     },
 ];
@@ -187,7 +199,7 @@ const TAG_COLORS: Record<string, { bg: string; text: string }> = {
 
 const TRUST_STATS = [
     { value: '3,000+', label: 'Glossary Terms' },
-    { value: '40+', label: 'Resource Guides' },
+    { value: '56+', label: 'Resource Guides' },
     { value: '50', label: 'States Covered' },
     { value: '120', label: 'Countries' },
 ];

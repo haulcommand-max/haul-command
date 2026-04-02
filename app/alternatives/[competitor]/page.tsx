@@ -137,6 +137,53 @@ const ALTERNATIVES: Record<string, {
     metaDescription: 'Looking for a uShip alternative for pilot car services? See how Haul Command compares for certified oversize escort dispatch.',
     metaTitle: 'uShip Alternatives for Pilot Car Services — Haul Command',
   },
+  'truckstops-and-services': {
+    companyLabel: 'Truck Stops & Services Directory',
+    category: 'Static Pilot Car Directory',
+    factsOnly: [
+      'Static directory listing pilot car companies by state — no search or filtering',
+      'Company names with links to detail pages — no trust scores, reviews, or verifications',
+      'No dispatch, load board, or marketplace features',
+      'No COI verification, credential checking, or compliance tracking',
+      'No mobile-optimized experience or real-time availability',
+      'Listings appear to be self-submitted with no verification process',
+    ],
+    hcAdvantages: [
+      'Full-text search + geo + load type + certification filters across 120 countries',
+      '7-layer trust scoring: identity, insurance, certification, reviews, equipment, response, and history',
+      'Real-time operator availability and GPS-based proximity matching',
+      'Integrated load board with auto-dispatch — median fill time under 47 minutes',
+      'COI Document Vault: auto-verify insurance, auto-alert 30/7/1 days before expiry',
+      'Escrow-protected payments to eliminate fraud risk on every job',
+      'Equipment marketplace for pilot car gear, signs, and vehicles',
+    ],
+    metaDescription: 'Looking for a Truck Stops & Services Directory alternative? Haul Command offers verified operator matching, trust scoring, and real-time dispatch across 120 countries.',
+    metaTitle: 'Truck Stops & Services Alternatives — Haul Command vs Static Directories',
+  },
+  'wide-load-shipping': {
+    companyLabel: 'Wide Load Shipping',
+    category: 'Oversize Freight Brokerage',
+    factsOnly: [
+      'Oversize freight brokerage — primarily a phone-based "call for a quote" service',
+      'No self-serve tools for permits, route planning, or escort dispatch',
+      'Limited to US, Canada, and Mexico — no global coverage',
+      'No operator marketplace, trust scoring, or automated matching',
+      'Resource content hub covers ~20 topics — mostly static text pages',
+      'No integrated payment or financial settlement system',
+    ],
+    hcAdvantages: [
+      '14-category self-serve service stack — from permits to AV escort',
+      '120-country coverage vs US/CA/MX only',
+      '50+ interactive resources vs ~20 static text pages',
+      '3,000+ term logistics glossary vs ~35 terms',
+      '15+ interactive tools: permit calculator, compliance copilot, cost estimator',
+      'Digital dispatch: instant operator matching, not phone tag',
+      'Escrow payments + consolidated invoicing eliminate AR complexity',
+      'Equipment marketplace + certification tracking WLS cannot match',
+    ],
+    metaDescription: 'Looking for a Wide Load Shipping alternative? Haul Command offers self-serve escort dispatch, 120-country coverage, and 15+ interactive logistics tools.',
+    metaTitle: 'Wide Load Shipping Alternatives — Haul Command vs WLS',
+  },
 };
 
 export const dynamic = 'force-dynamic';
