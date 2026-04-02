@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { runMatchPipeline, type LoadRequest } from '@/lib/marketplace/match-engine';
 
 /**
  * POST /api/loads/create
@@ -74,6 +75,36 @@ export async function POST(req: NextRequest) {
         if (error) {
             console.error("[loads/create] Supabase error:", error);
             return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        // FIRE AUTONOMOUS MATCH ENGINE IN THE BACKGROUND
+        try {
+            const matchPayload: LoadRequest = {
+                request_id: data.id,
+                country_code: "US", // Explicit US default
+                admin1_code: originState || null,
+                origin_lat: body.origin_lat || 0, // Should be passed by frontend map or geocoded
+                origin_lon: body.origin_lon || 0,
+                destination_lat: body.destination_lat || 0,
+                destination_lon: body.destination_lon || 0,
+                pickup_time_window: {
+                    start: pickup_at ? new Date(pickup_at).toISOString() : new Date().toISOString(),
+                    end: pickup_at
+                        ? new Date(new Date(pickup_at).getTime() + 86400000).toISOString()
+                        : new Date(Date.now() + 86400000).toISOString(),
+                },
+                load_type_tags: escort_needs ? ["escort"] : [],
+                required_escort_count: escort_needs?.length || 1,
+                special_requirements: [],
+                broker_id: broker_id || undefined,
+                cross_border_flag: false,
+            };
+
+            runMatchPipeline(matchPayload).catch((e) => {
+                console.error("[MatchEngine] Background pipeline failed to run:", e);
+            });
+        } catch (e) {
+            console.warn("[MatchEngine] Failed to payload construction:", e);
         }
 
         return NextResponse.json({ ok: true, load_id: data.id });

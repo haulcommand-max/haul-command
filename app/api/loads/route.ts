@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { runMatchPipeline, type LoadRequest } from '@/lib/marketplace/match-engine';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -95,6 +96,36 @@ export async function POST(req: NextRequest) {
     if (error) {
       console.error("Loads API POST Error:", error);
       return NextResponse.json({ error: 'Failed to post load' }, { status: 500 });
+    }
+
+    // FIRE AUTONOMOUS MATCH ENGINE IN THE BACKGROUND
+    // Transform the newly created load row into the required execution shape
+    try {
+      const matchPayload: LoadRequest = {
+          request_id: data.id,
+          country_code: 'US', // Fallback to US if expanding generic load schema
+          admin1_code: data.origin_state || null,
+          origin_lat: payload.origin_lat || 0, // Should be geocoded by UI or background worker if missing
+          origin_lon: payload.origin_lon || 0,
+          destination_lat: payload.destination_lat || 0,
+          destination_lon: payload.destination_lon || 0,
+          pickup_time_window: {
+              start: new Date(payload.pick_up_date || Date.now()).toISOString(),
+              end: new Date((payload.pick_up_date ? new Date(payload.pick_up_date).getTime() : Date.now()) + 86400000).toISOString()
+          },
+          load_type_tags: payload.equipment_type || [],
+          required_escort_count: payload.escorts_needed || 1,
+          special_requirements: [],
+          broker_id: data.broker_id,
+          cross_border_flag: false
+      };
+
+      runMatchPipeline(matchPayload).catch((e) => {
+        console.error('[MatchEngine] Background pipeline failed to run:', e);
+      });
+    } catch (e: any) {
+      // Non-blocking catch for match engine trigger parsing
+      console.warn('[MatchEngine] Failed to trigger Match Pipeline payload construct:', e);
     }
 
     return NextResponse.json({ data }, { status: 201 });
