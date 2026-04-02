@@ -52,7 +52,7 @@ const URGENCY_STYLES: Record<string, { bg: string; border: string; accent: strin
 
 const REASON_COPY: Record<string, { headline: string; subtext: string }> = {
   lead_limit_reached: {
-    headline: 'You've hit your lead limit',
+    headline: "You've hit your lead limit",
     subtext: 'Upgrade to Pro to receive unlimited leads and appear higher in search',
   },
   search_limit_reached: {
@@ -61,11 +61,11 @@ const REASON_COPY: Record<string, { headline: string; subtext: string }> = {
   },
   approaching_lead_cap: {
     headline: 'Approaching lead cap',
-    subtext: 'You're at 80%+ of your monthly leads. Upgrade to Elite for unlimited capacity',
+    subtext: "You're at 80%+ of your monthly leads. Upgrade to Elite for unlimited capacity",
   },
   engaged_free_user: {
-    headline: 'You're a power user',
-    subtext: 'You've been very active — unlock premium features to get even more out of Haul Command',
+    headline: "You're a power user",
+    subtext: "You've been very active — unlock premium features to get even more out of Haul Command",
   },
 };
 
