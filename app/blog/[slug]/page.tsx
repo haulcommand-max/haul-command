@@ -75,11 +75,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: lastModified,
       authors: ['Haul Command Intelligence Unit'],
       url: `https://haulcommand.com/blog/${post.slug}`,
+      ...(post.hero_image_url ? { images: [{ url: post.hero_image_url, width: 1200, height: 630, alt: post.title }] } : {}),
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.meta_description,
+      ...(post.hero_image_url ? { images: [post.hero_image_url] } : {}),
     },
     alternates: {
       canonical: `https://haulcommand.com/blog/${post.slug}`,
@@ -273,6 +275,21 @@ export default async function BlogArticlePage({ params }: Props) {
           <span aria-hidden="true">/</span>
           <span className="text-gray-400 truncate max-w-[200px]">{post.title}</span>
         </nav>
+
+        {/* ── Hero Image ── */}
+        {post.hero_image_url && (
+          <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-2xl overflow-hidden mb-8 border border-white/5">
+            <Image
+              src={post.hero_image_url}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+          </div>
+        )}
 
         {/* ── Article Meta Header ── */}
         <header className="mb-8">

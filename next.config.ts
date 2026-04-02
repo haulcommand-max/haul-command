@@ -133,6 +133,17 @@ const nextConfig: NextConfig = {
                 destination: "/directory/:path*",
                 permanent: true,
             },
+            // Dictionary → Glossary unification (glossary_action_plan.md §5)
+            {
+                source: '/dictionary',
+                destination: '/glossary',
+                permanent: true,
+            },
+            {
+                source: '/dictionary/:path*',
+                destination: '/glossary/:path*',
+                permanent: true,
+            },
             ...US_STATE_REDIRECTS,
             ...COUNTRY_REDIRECTS,
             ...CORRIDOR_REDIRECTS,
