@@ -18,21 +18,20 @@ export default function OfferDeck({ initialOffers, userId }: { initialOffers: an
         setActing(action);
         
         if (action === 'accept') {
-            const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
             const { data: { session } } = await supabase.auth.getSession();
-            const res = await fetch(`${SUPABASE_URL}/functions/v1/offer-accept`, {
+            const res = await fetch(`/api/offers/accept`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-                body: JSON.stringify({ offer_id: activeOffer.id }),
+                body: JSON.stringify({ offer_id: activeOffer.offer_id, operatorId: session?.user?.id }),
             });
             if (res.ok) {
-                router.push(`/offers/${activeOffer.id}`); // They will see the ✅ Accepted success card on that page!
+                router.push(`/offers/${activeOffer.offer_id}`); // They will see the ✅ Accepted success card on that page!
                 return;
             } else {
                 alert('Offer could not be accepted. It may be expired or already taken by another operator.');
             }
         } else {
-            await supabase.from('offers').update({ status: 'declined' }).eq('id', activeOffer.id);
+            await supabase.from('offers').update({ status: 'declined' }).eq('offer_id', activeOffer.offer_id);
         }
         
         // Remove from deck
@@ -53,8 +52,8 @@ export default function OfferDeck({ initialOffers, userId }: { initialOffers: an
         );
     }
 
-    const { loads: load } = activeOffer;
-    const effectiveRate = activeOffer.offered_rate * (1 + (activeOffer.surge_percent || 0) / 100);
+    const { hc_loads: load, rate_offered } = activeOffer;
+    const effectiveRate = rate_offered || activeOffer.offered_rate || 0;
 
     return (
         <div className="min-h-screen bg-[#070707] text-white p-4 flex flex-col pt-12 max-w-md mx-auto">

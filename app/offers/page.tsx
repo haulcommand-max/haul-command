@@ -23,9 +23,9 @@ export default async function OfferDispatcherPage({
     // Fetch the specific offers tied to this Request ID for this operator
     const { data: offers } = await supabase
         .from('offers')
-        .select('*, loads(title, origin_city, dest_city, urgency, load_width, load_height, pickup_start, dest_lat, dest_lng, origin_lat, origin_lng)')
+        .select(`*, hc_loads(id, origin_city, destination_city, urgency, length_ft, width_ft, height_ft, pickup_window_start, destination_state, origin_state)`)
         .eq('request_id', request)
-        .eq('driver_id', user.id)
+        .eq('operator_id', user.id)
         .in('status', ['sent', 'viewed'])
         .order('created_at', { ascending: false });
 
@@ -45,9 +45,9 @@ export default async function OfferDispatcherPage({
     }
 
     // Mark as viewed since they opened the push notification
-    const unviewedIds = offers.filter((o: any) => o.status === 'sent').map((o: any) => o.id);
+    const unviewedIds = offers.filter((o: any) => o.status === 'sent').map((o: any) => o.offer_id);
     if (unviewedIds.length > 0) {
-        await supabase.from('offers').update({ status: 'viewed' }).in('id', unviewedIds);
+        await supabase.from('offers').update({ status: 'viewed' }).in('offer_id', unviewedIds);
     }
 
     return <OfferDeck initialOffers={offers} userId={user.id} />;
