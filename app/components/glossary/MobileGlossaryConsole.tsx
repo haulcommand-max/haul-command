@@ -174,7 +174,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
               className={`min-w-[44px] h-[48px] rounded-xl flex items-center justify-center font-black text-lg snap-center border-2 ${
                 activeLetter === letter 
                   ? 'bg-hc-yellow-400 border-hc-yellow-400 text-black shadow-[0_0_15px_rgba(250,204,21,0.3)]' 
-                  : 'bg-hc-gray-800 border-hc-gray-700 text-white'
+                  : 'bg-hc-gray-800 border-amber-500/40 text-amber-400'
               }`}
             >
               {letter}

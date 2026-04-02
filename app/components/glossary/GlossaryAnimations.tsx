@@ -119,7 +119,7 @@ export function StickyAlphabetNav() {
                 transition-all duration-200 active:scale-90
                 ${isActive
                   ? 'bg-gradient-to-br from-[#D4A844] to-[#b8892c] text-[#0B0B0C] shadow-[0_0_20px_rgba(212,168,68,0.4)] scale-105 border border-[#D4A844]'
-                  : 'bg-white/[0.04] border border-white/[0.08] text-white/50 hover:bg-[#D4A844]/10 hover:border-[#D4A844]/30 hover:text-[#D4A844] hover:shadow-[0_0_12px_rgba(212,168,68,0.12)]'
+                  : 'bg-white/[0.04] border border-amber-500/40 text-amber-400 hover:bg-[#D4A844]/10 hover:border-[#D4A844]/60 hover:text-[#D4A844] hover:shadow-[0_0_12px_rgba(212,168,68,0.12)]'
                 }
               `}
             >
