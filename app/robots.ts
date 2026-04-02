@@ -24,6 +24,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/directory/'],
             }
         ],
-        sitemap: 'https://haulcommand.com/sitemap.xml',
+        sitemap: 'https://www.haulcommand.com/sitemap.xml',
     };
 }

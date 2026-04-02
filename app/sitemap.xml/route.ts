@@ -2,12 +2,22 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 const MAX_URLS_PER_SITEMAP = 50000;
+const BASE = 'https://www.haulcommand.com';
 const CONSTANT_YIELDS = [
-    'https://haulcommand.com/',
-    'https://haulcommand.com/broker',
-    'https://haulcommand.com/directory',
-    'https://haulcommand.com/blog',
-    'https://haulcommand.com/pricing'
+    `${BASE}/`,
+    `${BASE}/directory`,
+    `${BASE}/glossary`,
+    `${BASE}/requirements`,
+    `${BASE}/blog`,
+    `${BASE}/pricing`,
+    `${BASE}/tools`,
+    `${BASE}/rates`,
+    `${BASE}/training`,
+    `${BASE}/loads`,
+    `${BASE}/reposition`,
+    `${BASE}/claim`,
+    `${BASE}/corridors`,
+    `${BASE}/contact`,
 ];
 
 export async function GET(req: Request) {
@@ -25,8 +35,7 @@ export async function GET(req: Request) {
         // If master sitemap limit requested, emit the SITEMAP_INDEX referencing the chunks
         const { count } = await supabase
            .from('hc_global_operators')
-           .select('*', { count: 'exact', head: true })
-           .eq('is_public', true);
+           .select('*', { count: 'estimated', head: true });
         
         const totalRecords = count || 0;
         const totalChunks = Math.ceil(totalRecords / MAX_URLS_PER_SITEMAP);
@@ -36,7 +45,7 @@ export async function GET(req: Request) {
             `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
               ...Array.from({ length: totalChunks }).map((_, i) => `
                 <sitemap>
-                    <loc>https://haulcommand.com/sitemap.xml?chunk=${i}</loc>
+                    <loc>${BASE}/sitemap.xml?chunk=${i}</loc>
                     <lastmod>${new Date().toISOString()}</lastmod>
                 </sitemap>
               `),
@@ -55,11 +64,10 @@ export async function GET(req: Request) {
     const { data: routeBlock } = await supabase
         .from('hc_global_operators')
         .select('slug, country_code, updated_at')
-        .eq('is_public', true)
         .range(startIndex, startIndex + MAX_URLS_PER_SITEMAP - 1);
         
     if (routeBlock) {
-        dynamicUrls = routeBlock.map(op => `https://haulcommand.com/directory/profile/${op.slug}`);
+        dynamicUrls = routeBlock.map(op => `${BASE}/directory/profile/${op.slug}`);
     }
 
     // Build standard URL payload
