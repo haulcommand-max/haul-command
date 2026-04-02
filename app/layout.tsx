@@ -26,7 +26,7 @@ import { SessionDNATracker } from "@/components/security/SessionDNATracker";
 
 export const metadata: Metadata = {
     title: {
-        default: 'Haul Command | The Operating System for Heavy Haul',
+        default: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
         template: '%s | Haul Command',
     },
     description: 'The #1 pilot car directory & load board for oversize loads. Find verified escort vehicles, post loads, and match with professional pilots across the US & Canada. Real-time intelligence, escrow payments, and industry leaderboard.',

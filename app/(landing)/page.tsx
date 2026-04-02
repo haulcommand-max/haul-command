@@ -12,7 +12,7 @@ import HomeClient from "./_components/HomeClient";
 // ═══════════════════════════════════════════════════════
 
 export const metadata = {
-  title: 'Haul Command | The Operating System for Heavy Haul',
+  title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
   description:
     'The #1 pilot car directory and load board for oversize loads. Find verified escort vehicles, post loads, check state requirements, and match with professional pilots across the US and 120 countries.',
   keywords: [
@@ -34,7 +34,7 @@ export const metadata = {
     'escort vehicle cost per mile',
   ],
   openGraph: {
-    title: 'Haul Command | The Operating System for Heavy Haul',
+    title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
     description:
       'Find verified pilot car operators, post oversize loads, and manage heavy haul operations. The world\'s largest escort vehicle directory across 120 countries.',
     url: 'https://haulcommand.com',
@@ -44,7 +44,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Haul Command — The Operating System for Heavy Haul',
+        alt: 'Haul Command — Global Pilot Car Directory & Heavy Haul Escorts',
       },
     ],
     locale: 'en_US',
@@ -52,7 +52,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Haul Command | The Operating System for Heavy Haul',
+    title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
     description: 'Find verified pilot car operators and post oversize loads. The world\'s largest heavy haul directory.',
     images: ['/og-image.png'],
     site: '@haulcommand',
@@ -76,7 +76,10 @@ export default async function LandingPage() {
     ]);
 
     return (
-        <>
+        <main>
+            <h1 className="sr-only">
+                Haul Command — The #1 Global Pilot Car Directory, Oversize Load Board, and Heavy Haul Operating System
+            </h1>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                   "@context": "https://schema.org",
@@ -120,6 +123,6 @@ export default async function LandingPage() {
                 totalCorridors={globalStats.totalCorridors}
                 avgRatePerDay={globalStats.avgRatePerDay}
             />
-        </>
+        </main>
     );
 }

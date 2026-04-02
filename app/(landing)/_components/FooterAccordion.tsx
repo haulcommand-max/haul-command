@@ -190,6 +190,24 @@ export function FooterAccordion() {
                 </div>
             </div>
 
+            {/* Crown Jewel SEO Density Block */}
+            <div className="border-t border-white/[0.04] py-8 sm:py-12 mt-8">
+                <div className="hc-container max-w-5xl">
+                    <h3 className="text-[#C6923A] text-xs sm:text-sm font-bold uppercase tracking-[0.1em] mb-3">
+                        The Global OS for Pilot Cars & Heavy Haul
+                    </h3>
+                    <p className="text-[#5A6577] text-[10px] sm:text-xs leading-relaxed max-w-4xl">
+                        Haul Command is the world&apos;s premier logistics infrastructure network for oversize load transportation and superload freight. 
+                        We instantly match commercial freight brokers, specialized heavy haul trucking companies, and logistics dispatchers with 
+                        certified pilot car operators and escort vehicles across 120 countries. Whether you require standard DOT permit compliance, 
+                        complex route surveys, lead car height pole validation, or police escort routing, our real-time oversize load board 
+                        and proprietary intelligence engines ensure your high-value cargo moves securely and legally. Join the largest verified PEVO 
+                        (Pilot Escort Vehicle Operator) directory and leverage escrow-backed payments, live corridor tracking, and market analytics 
+                        built specifically for the specialized transportation industry.
+                    </p>
+                </div>
+            </div>
+
             {/* Bottom bar */}
             <div className="border-t border-white/[0.04] py-6">
                 <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
