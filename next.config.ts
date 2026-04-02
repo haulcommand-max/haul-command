@@ -151,6 +151,19 @@ const nextConfig: NextConfig = {
             // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
         ];
     },
+    // ── Rewrites ─────────────────────────────────────────────────────────
+    // Route special files to their API handlers, bypassing the [country] catch-all
+    async rewrites() {
+        return [
+            {
+                source: '/sitemap.xml',
+                destination: '/api/sitemap',
+            },
+            {
+                source: '/llms.txt',
+                destination: '/api/llms-txt',
+            },
+        ];
+    },
 };
-
 export default nextConfig;

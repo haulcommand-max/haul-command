@@ -35,6 +35,7 @@ const TIER_COLORS: Record<string, string> = {
     blue: '#3B82F6',
     silver: '#94A3B8',
     slate: '#64748B',
+    copper: '#B87333',
 };
 
 const MODE_COLORS: Record<string, string> = {
@@ -80,7 +81,7 @@ export default function CountryReadinessDashboard() {
     const filtered = countries.filter(c => filter === 'all' || c.mode === filter);
     const sorted = [...filtered].sort((a, b) => {
         if (sortBy === 'tier') {
-            const order: Record<string, number> = { gold: 0, blue: 1, silver: 2, slate: 3 };
+            const order: Record<string, number> = { gold: 0, blue: 1, silver: 2, slate: 3, copper: 4 };
             return (order[a.tier] ?? 4) - (order[b.tier] ?? 4);
         }
         if (sortBy === 'operators') return b.operators - a.operators;
@@ -112,7 +113,7 @@ export default function CountryReadinessDashboard() {
                     { label: 'Live', value: stats.live, color: MODE_COLORS.live },
                     { label: 'Seed', value: stats.seed, color: MODE_COLORS.seed },
                     { label: 'Dormant', value: stats.dormant, color: MODE_COLORS.dormant },
-                    { label: 'Priced', value: `${stats.priced}/57`, color: '#F1A91B' },
+                    { label: 'Priced', value: `${stats.priced}/120`, color: '#F1A91B' },
                 ].map(s => (
                     <div key={s.label} style={{
                         padding: '16px', borderRadius: 14, textAlign: 'center',

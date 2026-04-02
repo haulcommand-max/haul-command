@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         default: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
         template: '%s | Haul Command',
     },
-    description: 'The #1 pilot car directory & load board for oversize loads. Find verified escort vehicles, post loads, and match with professional pilots across the US & Canada. Real-time intelligence, escrow payments, and industry leaderboard.',
+    description: 'The #1 pilot car and escort vehicle directory for oversize loads. Find verified operators across 120 countries. Real-time intelligence, escrow payments, and industry leaderboard.',
     keywords: [
         'pilot car services', 'escort vehicle services', 'oversize load escorts',
         'wide load escorts', 'pilot car directory', 'pilot car near me',
@@ -98,10 +98,27 @@ export const metadata: Metadata = {
             'es-AR': 'https://www.haulcommand.com/ar',
             'es-CO': 'https://www.haulcommand.com/co',
             'es-PE': 'https://www.haulcommand.com/pe',
-            // Tier D — Slate (3)
+            // Tier D — Slate (25)
             'es-UY': 'https://www.haulcommand.com/uy',
             'es-PA': 'https://www.haulcommand.com/pa',
             'es-CR': 'https://www.haulcommand.com/cr',
+            'he-IL': 'https://www.haulcommand.com/il',
+            'en-NG': 'https://www.haulcommand.com/ng',
+            'ar-EG': 'https://www.haulcommand.com/eg',
+            'sw-KE': 'https://www.haulcommand.com/ke',
+            'fr-MA': 'https://www.haulcommand.com/ma',
+            'sr-RS': 'https://www.haulcommand.com/rs',
+            'uk-UA': 'https://www.haulcommand.com/ua',
+            'kk-KZ': 'https://www.haulcommand.com/kz',
+            'zh-TW': 'https://www.haulcommand.com/tw',
+            'ur-PK': 'https://www.haulcommand.com/pk',
+            'bn-BD': 'https://www.haulcommand.com/bd',
+            // Tier E — Copper (representative)
+            'es-BO': 'https://www.haulcommand.com/bo',
+            'es-GT': 'https://www.haulcommand.com/gt',
+            'sq-AL': 'https://www.haulcommand.com/al',
+            'ar-IQ': 'https://www.haulcommand.com/iq',
+            'am-ET': 'https://www.haulcommand.com/et',
             // x-default fallback
             'x-default': 'https://www.haulcommand.com',
         },

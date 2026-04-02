@@ -29,7 +29,7 @@ interface CorridorSupply {
 }
 
 // ── 120-Country Global Supply Data ──────────────────────
-// Organized by tier: Gold (10) → Blue (18) → Silver (26) → Slate (3)
+// Organized by tier: Gold (10) → Blue (18) → Silver (26) → Slate (25) → Copper (41)
 const GLOBAL_SUPPLY: CorridorSupply[] = [
     // ─── TIER A — GOLD (10 Countries) ───
     // 🇺🇸 United States
@@ -130,10 +130,29 @@ const GLOBAL_SUPPLY: CorridorSupply[] = [
     { slug: 'ql1-hanoi', label: 'QL1 Hanoi–HCMC', countryCode: 'VN', scarcityIndex: 72, availableNow: 3, avgResponseMin: 65 },
     { slug: 'nlex-manila', label: 'NLEX Manila', countryCode: 'PH', scarcityIndex: 66, availableNow: 4, avgResponseMin: 55 },
 
-    // ─── TIER D — SLATE (3 Countries) ───
+    // ─── TIER D — SLATE (25 Countries — representative corridors) ───
     { slug: 'ruta-1-montevideo', label: 'Ruta 1 Montevideo', countryCode: 'UY', scarcityIndex: 50, availableNow: 3, avgResponseMin: 45 },
     { slug: 'pan-am-panama', label: 'Pan-American Panama', countryCode: 'PA', scarcityIndex: 55, availableNow: 2, avgResponseMin: 50 },
     { slug: 'ruta-1-san-jose', label: 'Ruta 1 San José', countryCode: 'CR', scarcityIndex: 52, availableNow: 3, avgResponseMin: 48 },
+    { slug: 'ayalon-tel-aviv', label: 'Ayalon Highway', countryCode: 'IL', scarcityIndex: 42, availableNow: 8, avgResponseMin: 30 },
+    { slug: 'lagos-ibadan', label: 'Lagos–Ibadan Expressway', countryCode: 'NG', scarcityIndex: 85, availableNow: 2, avgResponseMin: 80 },
+    { slug: 'cairo-alex', label: 'Cairo–Alexandria Desert Road', countryCode: 'EG', scarcityIndex: 75, availableNow: 4, avgResponseMin: 60 },
+    { slug: 'mombasa-nairobi', label: 'Mombasa–Nairobi Highway', countryCode: 'KE', scarcityIndex: 80, availableNow: 3, avgResponseMin: 70 },
+    { slug: 'a7-casablanca', label: 'A7 Casablanca–Marrakesh', countryCode: 'MA', scarcityIndex: 62, availableNow: 4, avgResponseMin: 50 },
+    { slug: 'e75-belgrade', label: 'E75 Belgrade Corridor', countryCode: 'RS', scarcityIndex: 55, availableNow: 5, avgResponseMin: 42 },
+    { slug: 'alma-ata-road', label: 'Almaty–Astana Highway', countryCode: 'KZ', scarcityIndex: 70, availableNow: 3, avgResponseMin: 65 },
+    { slug: 'national-1-taipei', label: 'National Freeway 1', countryCode: 'TW', scarcityIndex: 35, availableNow: 10, avgResponseMin: 22 },
+    { slug: 'gt-road-lahore', label: 'GT Road Lahore', countryCode: 'PK', scarcityIndex: 82, availableNow: 2, avgResponseMin: 75 },
+    { slug: 'dhaka-chittagong', label: 'Dhaka–Chittagong Highway', countryCode: 'BD', scarcityIndex: 84, availableNow: 2, avgResponseMin: 78 },
+
+    // ─── TIER E — COPPER (41 Countries — emerging/frontier markets) ───
+    { slug: 'ruta-1-la-paz', label: 'Ruta 1 La Paz', countryCode: 'BO', scarcityIndex: 78, availableNow: 1, avgResponseMin: 90 },
+    { slug: 'trans-chaco-asuncion', label: 'Trans-Chaco Asunción', countryCode: 'PY', scarcityIndex: 76, availableNow: 1, avgResponseMin: 85 },
+    { slug: 'panamericana-guatemala', label: 'Panamericana Guatemala City', countryCode: 'GT', scarcityIndex: 74, availableNow: 2, avgResponseMin: 70 },
+    { slug: 'a7-tirana', label: 'A7 Tirana–Coast', countryCode: 'AL', scarcityIndex: 65, availableNow: 2, avgResponseMin: 55 },
+    { slug: 'baghdad-basra', label: 'Baghdad–Basra Highway', countryCode: 'IQ', scarcityIndex: 88, availableNow: 1, avgResponseMin: 95 },
+    { slug: 'windhoek-walvis', label: 'B2 Windhoek–Walvis Bay', countryCode: 'NA', scarcityIndex: 72, availableNow: 2, avgResponseMin: 60 },
+    { slug: 'addis-djibouti', label: 'Addis Ababa–Djibouti', countryCode: 'ET', scarcityIndex: 86, availableNow: 1, avgResponseMin: 90 },
 ];
 
 const FLAG_MAP: Record<string, string> = {
@@ -143,7 +162,9 @@ const FLAG_MAP: Record<string, string> = {
     PL: '🇵🇱', CZ: '🇨🇿', SK: '🇸🇰', HU: '🇭🇺', SI: '🇸🇮', EE: '🇪🇪', LV: '🇱🇻', LT: '🇱🇹', HR: '🇭🇷', RO: '🇷🇴',
     BG: '🇧🇬', GR: '🇬🇷', TR: '🇹🇷', KW: '🇰🇼', OM: '🇴🇲', BH: '🇧🇭', SG: '🇸🇬', MY: '🇲🇾', JP: '🇯🇵', KR: '🇰🇷',
     CL: '🇨🇱', AR: '🇦🇷', CO: '🇨🇴', PE: '🇵🇪', VN: '🇻🇳', PH: '🇵🇭',
-    UY: '🇺🇾', PA: '🇵🇦', CR: '🇨🇷',
+    UY: '🇺🇾', PA: '🇵🇦', CR: '🇨🇷', IL: '🇮🇱', NG: '🇳🇬', EG: '🇪🇬', KE: '🇰🇪', MA: '🇲🇦',
+    RS: '🇷🇸', KZ: '🇰🇿', TW: '🇹🇼', PK: '🇵🇰', BD: '🇧🇩',
+    BO: '🇧🇴', PY: '🇵🇾', GT: '🇬🇹', AL: '🇦🇱', IQ: '🇮🇶', NA: '🇳🇦', ET: '🇪🇹',
 };
 
 function scarcityColor(idx: number): string {

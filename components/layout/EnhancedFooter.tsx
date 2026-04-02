@@ -49,7 +49,7 @@ export default function EnhancedFooter() {
                         { icon: Shield, text: 'Verified Escorts', color: '#10b981' },
                         { icon: Lock, text: 'Escrow Protected', color: '#3b82f6' },
                         { icon: Clock, text: 'Median Fill: 47min', color: '#F1A91B' },
-                        { icon: Globe, text: 'US + Canada', color: '#a855f7' },
+                        { icon: Globe, text: '120 Countries', color: '#a855f7' },
                         { icon: Award, text: 'Industry Leaderboard', color: '#f59e0b' },
                     ].map(item => (
                         <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -83,17 +83,39 @@ export default function EnhancedFooter() {
 
                     {/* Popular Heavy Haul Regions — SEO link mesh */}
                     <div>
-                        <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Popular Regions</h3>
+                        <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>US Regions</h3>
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                             {[
-                                { href: '/directory/us/tx', label: 'Texas Pilot Cars' },
-                                { href: '/directory/us/fl', label: 'Florida Pilot Cars' },
-                                { href: '/directory/us/ga', label: 'Georgia Pilot Cars' },
-                                { href: '/directory/us/ca', label: 'California Pilot Cars' },
-                                { href: '/directory/us/la', label: 'Louisiana Pilot Cars' },
-                                { href: '/directory/us/nc', label: 'North Carolina Pilot Cars' },
-                                { href: '/directory/us/ok', label: 'Oklahoma Pilot Cars' },
-                                { href: '/directory/us/az', label: 'Arizona Pilot Cars' },
+                                { href: '/directory/us/tx', label: 'Texas Escort Operators' },
+                                { href: '/directory/us/fl', label: 'Florida Escort Operators' },
+                                { href: '/directory/us/ca', label: 'California Escort Operators' },
+                                { href: '/directory/us/ga', label: 'Georgia Escort Operators' },
+                                { href: '/directory/us/oh', label: 'Ohio Escort Operators' },
+                                { href: '/directory/us/la', label: 'Louisiana Escort Operators' },
+                                { href: '/directory/us/nc', label: 'North Carolina Escort Operators' },
+                                { href: '/directory/us/ok', label: 'Oklahoma Escort Operators' },
+                            ].map(l => (
+                                <Link aria-label="Navigation Link" key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
+                                    onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
+                                    onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
+                                >{l.label}</Link>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* Global Markets — SEO link mesh */}
+                    <div>
+                        <h3 style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>Global Markets</h3>
+                        <nav style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            {[
+                                { href: '/directory/ca', label: '🇨🇦 Canada' },
+                                { href: '/directory/au', label: '🇦🇺 Australia' },
+                                { href: '/directory/gb', label: '🇬🇧 United Kingdom' },
+                                { href: '/directory/de', label: '🇩🇪 Germany' },
+                                { href: '/directory/za', label: '🇿🇦 South Africa' },
+                                { href: '/directory/ae', label: '🇦🇪 UAE' },
+                                { href: '/directory/br', label: '🇧🇷 Brazil' },
+                                { href: '/directory', label: 'All 120 Countries →' },
                             ].map(l => (
                                 <Link aria-label="Navigation Link" key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
@@ -127,7 +149,7 @@ export default function EnhancedFooter() {
                                 { href: '/glossary', label: 'Industry Glossary' },
                                 { href: '/glossary/pilot-car', label: 'What is a Pilot Car?' },
                                 { href: '/escort-requirements', label: 'Escort Requirements' },
-                                { href: '/regulations', label: 'State Regulations' },
+                                { href: '/regulations', label: 'Global Regulations' },
                             ].map(l => (
                                 <Link key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}
