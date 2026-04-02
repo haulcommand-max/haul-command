@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, MapPin, Phone, Star, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
+import { generateOperatorProfileJsonLd, generateProfileFacts } from '@/lib/platform/ai-entity-graph';
 
 // ══════════════════════════════════════════════════════════════
 // DIRECTORY PROFILE — /directory/profile/:slug
@@ -109,6 +110,34 @@ function renderProfile(op: any) {
     const location = [op.city, op.region_code].filter(Boolean).join(', ');
     const countryFlag = op.country_code === 'CA' ? '🇨🇦' : op.country_code === 'US' ? '🇺🇸' : '🌍';
 
+    // RAG → Profile wiring: generate structured data for AI crawlers
+    const profileJsonLd = generateOperatorProfileJsonLd({
+        displayName: op.name || 'Unknown Operator',
+        slug: op.slug || op.id,
+        type: (op.entity_type === 'escort' || op.entity_type === 'driver' || op.entity_type === 'broker' || op.entity_type === 'vendor')
+            ? op.entity_type : 'escort',
+        city: op.city,
+        state: op.region_code,
+        countryCode: op.country_code || 'US',
+        lat: op.lat || op.latitude,
+        lng: op.lng || op.longitude,
+        phone: op.phone,
+        verified: isClaimed,
+        complianceScore: trustPct,
+        availability: isClaimed ? 'available' : 'unknown',
+        claimStatus: isClaimed ? 'claimed' : 'unclaimed',
+    });
+
+    const profileFacts = generateProfileFacts({
+        displayName: op.name || 'Unknown Operator',
+        type: op.entity_type || 'operator',
+        city: op.city,
+        state: op.region_code,
+        countryCode: op.country_code || 'US',
+        verified: isClaimed,
+        complianceScore: trustPct,
+    });
+
     const trustColor = trustPct >= 80 ? '#10b981' : trustPct >= 50 ? '#f59e0b' : '#ef4444';
     const trustLabel = trustPct >= 80 ? 'High Trust' : trustPct >= 50 ? 'Moderate' : 'Unverified';
 
@@ -126,6 +155,39 @@ function renderProfile(op: any) {
     }
     
     // Default fallback to Operator style
-    return <OperatorTemplate {...props} />;
+    return (
+        <>
+            {/* JSON-LD Structured Data for AI/SEO */}
+            {profileJsonLd.map((ld, i) => (
+                <script
+                    key={`profile-ld-${i}`}
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
+                />
+            ))}
+            {/* Fact snippets as hidden semantic content for LLM extraction */}
+            {profileFacts.length > 0 && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'ClaimReview',
+                            itemReviewed: {
+                                '@type': 'Claim',
+                                appearance: profileFacts.map(f => ({
+                                    '@type': 'CreativeWork',
+                                    text: f.claim,
+                                    datePublished: f.lastVerified,
+                                })),
+                            },
+                            author: { '@type': 'Organization', name: 'Haul Command' },
+                        }),
+                    }}
+                />
+            )}
+            <OperatorTemplate {...props} />
+        </>
+    );
 }
 
