@@ -1,9 +1,11 @@
 -- Haul Command Core Schema (hc_core v1)
 -- Additive only — skips tables that already exist via IF NOT EXISTS
 
--- Enable earthdistance for geo queries (requires cube extension first)
-CREATE EXTENSION IF NOT EXISTS cube;
-CREATE EXTENSION IF NOT EXISTS earthdistance;
+-- NOTE: earthdistance + cube were removed 2026-04-01.
+-- App uses PostGIS exclusively for all geo queries since 20260227.
+-- See migration 20260402_drop_earthdistance_post_upgrade.sql
+-- CREATE EXTENSION IF NOT EXISTS cube;          -- REMOVED
+-- CREATE EXTENSION IF NOT EXISTS earthdistance;  -- REMOVED
 
 -- ==============================================================
 -- 1) PROFILES (drivers / escorts / brokers / vendors)

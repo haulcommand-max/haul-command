@@ -562,6 +562,127 @@ export function generateMarketFacts(params: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// OPERATOR PROFILE JSON-LD — Connect RAG to Profiles
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Operator Profile Page — LocalBusiness + ProfessionalService */
+export function generateOperatorProfileJsonLd(params: {
+    displayName: string;
+    slug: string;
+    type: 'driver' | 'escort' | 'broker' | 'vendor';
+    city?: string;
+    state?: string;
+    countryCode: string;
+    lat?: number;
+    lng?: number;
+    phone?: string;
+    verified: boolean;
+    complianceScore: number;
+    availability: string;
+    capabilities?: Record<string, unknown>;
+    claimStatus: 'claimed' | 'unclaimed';
+}): object[] {
+    const url = `https://www.haulcommand.com/directory/${params.slug}`;
+    const schemaType = params.type === 'broker' ? 'Organization' : 'LocalBusiness';
+
+    const jsonld: object[] = [];
+
+    jsonld.push({
+        '@context': 'https://schema.org',
+        '@type': [schemaType, 'ProfessionalService'],
+        '@id': url,
+        name: params.displayName,
+        url,
+        ...(params.city && params.state && {
+            address: {
+                '@type': 'PostalAddress',
+                addressLocality: params.city,
+                addressRegion: params.state,
+                addressCountry: params.countryCode,
+            },
+        }),
+        ...(params.lat && params.lng && {
+            geo: {
+                '@type': 'GeoCoordinates',
+                latitude: params.lat,
+                longitude: params.lng,
+            },
+        }),
+        ...(params.phone && { telephone: params.phone }),
+        ...(params.verified && {
+            hasCredential: {
+                '@type': 'EducationalOccupationalCredential',
+                credentialCategory: 'Verified Operator',
+                recognizedBy: {
+                    '@type': 'Organization',
+                    name: 'Haul Command',
+                },
+            },
+        }),
+        additionalProperty: [
+            {
+                '@type': 'PropertyValue',
+                name: 'Compliance Score',
+                value: params.complianceScore,
+            },
+            {
+                '@type': 'PropertyValue',
+                name: 'Availability',
+                value: params.availability,
+            },
+        ],
+    });
+
+    // Breadcrumb navigation
+    jsonld.push({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+            { '@type': 'ListItem', position: 2, name: 'Directory', item: 'https://www.haulcommand.com/directory' },
+            ...(params.state ? [{ '@type': 'ListItem', position: 3, name: params.state, item: `https://www.haulcommand.com/directory/${params.state.toLowerCase()}` }] : []),
+            { '@type': 'ListItem', position: params.state ? 4 : 3, name: params.displayName, item: url },
+        ],
+    });
+
+    return jsonld;
+}
+
+/** Generate LLM-friendly fact snippets for operator profiles */
+export function generateProfileFacts(params: {
+    displayName: string;
+    type: string;
+    city?: string;
+    state?: string;
+    countryCode: string;
+    verified: boolean;
+    complianceScore: number;
+}): FactSnippet[] {
+    const facts: FactSnippet[] = [];
+    const location = [params.city, params.state].filter(Boolean).join(', ');
+
+    facts.push({
+        claim: `${params.displayName} is a ${params.verified ? 'verified' : 'listed'} ${params.type} operator${location ? ` based in ${location}` : ''} on Haul Command.`,
+        source: 'Haul Command operator directory',
+        lastVerified: new Date().toISOString().split('T')[0],
+        confidence: params.verified ? 0.95 : 0.75,
+        category: 'service',
+    });
+
+    if (params.complianceScore >= 80) {
+        facts.push({
+            claim: `${params.displayName} has a compliance score of ${params.complianceScore}/100 on the Haul Command platform.`,
+            source: 'Haul Command compliance engine',
+            lastVerified: new Date().toISOString().split('T')[0],
+            confidence: 0.90,
+            category: 'safety',
+        });
+    }
+
+    return facts;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ENTITY GRAPH BUILDER — Connect everything
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -573,6 +694,10 @@ export function buildEntityGraph(params: {
     corridors: { slug: string; name: string; countryCode: string; cities: string[] }[];
     ports: { slug: string; name: string; countryCode: string; city: string }[];
     regulations: { stateSlug: string; stateName: string; countryCode: string }[];
+    operators?: {
+        id: string; displayName: string; slug: string;
+        type: string; city?: string; state?: string; countryCode: string;
+    }[];
 }): {
     totalNodes: number;
     totalEdges: number;
@@ -653,6 +778,26 @@ export function buildEntityGraph(params: {
     for (const reg of params.regulations) {
         addNode('Regulation', reg.countryCode);
         addEdge('regulatedBy', reg.countryCode);
+    }
+
+    // Operators → Cities, Corridors (RAG → Profile wiring)
+    if (params.operators) {
+        for (const op of params.operators) {
+            addNode('Operator', op.countryCode);
+            if (op.city) {
+                addEdge('operatesIn', op.countryCode); // Operator → City
+            }
+            // Link operators to corridors they serve
+            const matchingCorridors = params.corridors.filter(c =>
+                c.countryCode === op.countryCode &&
+                c.cities.some(city =>
+                    city.toLowerCase() === op.city?.toLowerCase()
+                )
+            );
+            for (const _corridor of matchingCorridors) {
+                addEdge('servesArea', op.countryCode); // Operator → Corridor
+            }
+        }
     }
 
     return { totalNodes, totalEdges, nodesByType, edgesByType, countryCoverage };

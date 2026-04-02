@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Find verified permit agents who handle oversize and heavy haul permits across all 50 states.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function PermitAgentsPage() {
   const supabase = await createClient();
   const { data: agents } = await supabase.from('permit_agents').select('*').order('rating', { ascending: false });

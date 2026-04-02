@@ -170,11 +170,19 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                     <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '1.5rem', marginBottom: 24 }}>
                         <h2 style={{ margin: '0 0 8px', fontSize: 15, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1 }}>Engage Verified {entityName}</h2>
                         <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 16 }}>
-                            This entity is verified and actively monitored.
+                            This operator is verified and actively monitored on Haul Command.
                         </p>
-                        <Link href="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'linear-gradient(135deg, #F1A91B, #d97706)', color: '#000', fontSize: 12, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
-                            Sign In to View Verified Contact Data
-                        </Link>
+                        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                            <Link href={`/loads/post?operator=${op.slug || op.id}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
+                                ✉ Request This Escort
+                            </Link>
+                            <Link href="/available-now" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#3b82f6', fontSize: 13, fontWeight: 700, borderRadius: 12, textDecoration: 'none' }}>
+                                📡 View Live Availability
+                            </Link>
+                            <Link href="/auth/register" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 13, fontWeight: 700, borderRadius: 12, textDecoration: 'none' }}>
+                                Sign In for Contact Data
+                            </Link>
+                        </div>
                     </div>
                 )}
             </div>

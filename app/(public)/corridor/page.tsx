@@ -8,6 +8,8 @@ export const metadata = {
     description: 'Browse heavy haul corridors, demand pressure, and escort coverage before you post or bid.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function CorridorIndexPage() {
     const corridors = getAllCorridorSlugs()
         .map((slug) => getCorridorData(slug))

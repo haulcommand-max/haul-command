@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { LoadBoardClient } from "./LoadBoardClient";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BrokerLoadsPage() {
   const supabase = createClient();
 

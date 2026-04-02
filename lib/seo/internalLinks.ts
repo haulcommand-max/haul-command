@@ -21,7 +21,7 @@ const supabase = createClient(
 // ══════════════════════════════════════════════════════════════════════════════
 
 export type LinkTargetType =
-    | "country" | "region" | "city" | "corridor" | "port" | "glossary" | "operator";
+    | "country" | "region" | "city" | "corridor" | "port" | "glossary" | "operator" | "profile";
 
 export interface GetWeightedLinksParams {
     fromPageType: string;

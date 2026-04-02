@@ -33,6 +33,8 @@ async function getBrokerStats() {
     }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function BrokerLandingPage() {
     const stats = await getBrokerStats();
 
