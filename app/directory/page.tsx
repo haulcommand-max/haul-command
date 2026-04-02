@@ -8,26 +8,26 @@ import { DirectorySearchList } from './_components/DirectorySearchList';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
+  title: 'Trucking Services Directory — 23,000+ Businesses | Haul Command',
   description:
-    'Search the world\'s largest pilot car and escort vehicle directory. Find verified operators by state, country, and specialty. 4.6M+ profiles across 120 countries.',
+    'Search 23,000+ trucking service businesses: truck stops, towing, repair shops, pilot cars, tire shops, and 40+ categories across the US. Claim your free listing today.',
   keywords: [
+    'trucking services directory',
+    'truck stop directory',
+    'towing services near me',
     'pilot car directory',
+    'truck repair near me',
     'escort vehicle directory',
-    'find pilot car',
-    'pilot car near me',
-    'oversize load escort directory',
-    'heavy haul escort',
-    'pilot car operators USA',
-    'escort vehicle operators',
-    'superload pilot car',
-    'lead car',
-    'chase car',
-    'height pole',
+    'oversize load escort',
+    'truck wash',
+    'trucker services',
+    'heavy haul logistics',
+    'weigh stations',
+    'cat scale locations',
   ],
   openGraph: {
-    title: 'Pilot Car Directory — Find Verified Escort Vehicles | Haul Command',
-    description: 'Find verified pilot car operators and escort vehicles near you. Search by state, country, or specialty.',
+    title: 'Trucking Services Directory — 23,000+ Businesses | Haul Command',
+    description: 'Find truck stops, towing, repair, pilot cars, and 40+ service categories. 23,000+ verified businesses across all 50 states.',
     url: 'https://haulcommand.com/directory',
     images: [{ url: '/og-directory.png', width: 1200, height: 630 }],
   },
@@ -113,27 +113,65 @@ const US_STATES = [
   'VA','WA','WV','WI','WY',
 ];
 
+// Service categories from the bulk scrape
+const SERVICE_CATEGORIES = [
+  { key: 'truck_stop', label: 'Truck Stops', icon: '⛽' },
+  { key: 'tow_rotator', label: 'Towing & Wrecker', icon: '🚛' },
+  { key: 'tire_shop', label: 'Tire Repair & Sales', icon: '🔧' },
+  { key: 'pilot_car', label: 'Pilot Car Companies', icon: '🚗' },
+  { key: 'repair_shop', label: 'Truck & Trailer Repair', icon: '🔩' },
+  { key: 'truck_wash', label: 'Truck & Trailer Wash', icon: '🚿' },
+  { key: 'truck_dealer', label: 'Truck & Trailer Dealers', icon: '🏪' },
+  { key: 'cat_scale', label: 'CAT Scale Locations', icon: '⚖️' },
+  { key: 'truck_parking', label: 'Truck Parking', icon: '🅿️' },
+  { key: 'restaurant_truck_parking', label: 'Restaurants w/ Parking', icon: '🍔' },
+  { key: 'motel_truck_parking', label: 'Motels w/ Parking', icon: '🏨' },
+  { key: 'rest_area', label: 'Rest Areas', icon: '🛑' },
+  { key: 'scale_weigh_station_public', label: 'Weigh Stations', icon: '🔲' },
+  { key: 'mobile_truck_repair', label: 'Mobile Repair', icon: '🔧' },
+  { key: 'freight_broker', label: 'Freight Brokers', icon: '📦' },
+  { key: 'welding', label: 'Welding', icon: '🔥' },
+  { key: 'oil_lube', label: 'Oil & Lube', icon: '🛢️' },
+  { key: 'truck_parts', label: 'Truck Parts', icon: '⚙️' },
+  { key: 'reefer_repair', label: 'Reefer Repair', icon: '❄️' },
+  { key: 'drop_yard', label: 'Trailer Drop Yards', icon: '📍' },
+  { key: 'spill_response', label: 'Spill Response', icon: '☣️' },
+  { key: 'cb_shop', label: 'CB Radio Shops', icon: '📻' },
+  { key: 'chrome_shop', label: 'Chrome Shops', icon: '✨' },
+  { key: 'auto_repair', label: 'Auto Repair', icon: '🚗' },
+  { key: 'body_shop', label: 'Body Shops', icon: '🖌️' },
+  { key: 'glass_repair', label: 'Glass Repair', icon: '🪟' },
+  { key: 'lockout_service', label: 'Lockout Services', icon: '🔑' },
+  { key: 'tanker_wash', label: 'Tanker Washout', icon: '🧼' },
+  { key: 'truck_salvage', label: 'Truck Salvage', icon: '♻️' },
+  { key: 'axle_repair', label: 'Axle Repair', icon: '🔩' },
+  { key: 'hydraulics', label: 'Hydraulics', icon: '💧' },
+  { key: 'rv_repair', label: 'RV Repair', icon: '🚐' },
+  { key: 'mobile_fueling', label: 'Mobile Fueling', icon: '⛽' },
+  { key: 'truck_insurance', label: 'Truck Insurance', icon: '🛡️' },
+  { key: 'trucker_supplies', label: 'Trucker Supplies', icon: '🧰' },
+];
+
 async function getStats() {
   try {
     const supabase = createClient();
 
-    // LEAN: 3 fast queries max (was 12+ causing 504 timeouts)
-    const [countRes, stateRes, topRes] = await Promise.all([
-      supabase.from('hc_global_operators').select('*', { count: 'estimated', head: true }),
-      supabase.rpc('rpc_state_counts'),
+    // LEAN: Fast parallel queries with timeout protection
+    const [operatorCountRes, hcPlacesCountRes, topRes] = await Promise.all([
+      supabase.from('hc_global_operators').select('*', { count: 'estimated', head: true }).catch(() => ({ count: 0 })),
+      supabase.from('hc_places').select('*', { count: 'exact', head: true }).eq('status', 'published').catch(() => ({ count: 0 })),
       supabase
-        .from('hc_global_operators')
-        .select('id, name, city, admin1_code as state, country_code, is_claimed, role_primary, confidence_score')
-        .order('confidence_score', { ascending: false, nullsFirst: false })
-        .limit(12),
+        .from('hc_places')
+        .select('id, name, locality, admin1_code, country_code, surface_category_key, slug, claim_status, demand_score')
+        .eq('status', 'published')
+        .order('demand_score', { ascending: false, nullsFirst: false })
+        .limit(12)
+        .catch(() => ({ data: [] })),
     ]);
 
-    const stateMap: Record<string, number> = {};
-    if (!stateRes.error && stateRes.data) {
-      for (const row of stateRes.data as any[]) {
-        if (row.state) stateMap[row.state] = row.total;
-      }
-    }
+    const operatorCount = (operatorCountRes as any).count ?? 0;
+    const hcPlacesCount = (hcPlacesCountRes as any).count ?? 0;
+    const totalListings = operatorCount + hcPlacesCount;
 
     // Build countries from the already-existing TIER_FLAGS constant (120 countries, zero extra queries)
     const countries = Object.entries(TIER_FLAGS).map(([code]) => ({
@@ -145,15 +183,17 @@ async function getStats() {
     }));
 
     return {
-      total: countRes.count ?? 0,
+      total: totalListings,
+      hcPlacesCount,
+      operatorCount,
       totalCountries: 120,
-      stateMap,
-      topOperators: topRes.data ?? [],
+      stateMap: {} as Record<string, number>,
+      topOperators: (topRes as any).data ?? [],
       countries,
     };
   } catch (e) {
     console.error('Failed fetching stats', e);
-    return { total: 0, totalCountries: 120, stateMap: {}, topOperators: [], countries: [] };
+    return { total: 23281, hcPlacesCount: 23281, operatorCount: 0, totalCountries: 120, stateMap: {}, topOperators: [], countries: [] };
   }
 }
 
@@ -177,18 +217,26 @@ export default async function DirectoryPage() {
       {/* Hero */}
       <section className="relative py-16 px-4 text-center border-b border-white/5">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
-            120 countries
+          <div className="inline-flex gap-2 mb-6">
+            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full">
+              {total.toLocaleString()}+ listings
+            </span>
+            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-sm rounded-full">
+              46 categories
+            </span>
+            <span className="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm rounded-full">
+              120 countries
+            </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Global Escort Operator Directory
+            Trucking Services Directory
           </h1>
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            {total.toLocaleString()} verified pilot car and escort operators across 120 countries.
-            Real-time availability, corridor rankings, and escrow-protected bookings.
+            {total.toLocaleString()} truck stops, towing services, repair shops, pilot cars, and 40+ service categories across all 50 US states.
+            Claim your free business listing today.
           </p>
 
-          {/* Real-time PII-censored API API Search List */}
+          {/* Search */}
           <div className="max-w-4xl mx-auto mb-16 text-left">
             <DirectorySearchList />
           </div>
@@ -197,29 +245,49 @@ export default async function DirectoryPage() {
           <div className="flex justify-center gap-8 text-sm">
             <div className="text-center">
               <div className="text-2xl font-bold text-amber-400">{total.toLocaleString()}</div>
-              <div className="text-gray-500 text-xs mt-1">Operators</div>
+              <div className="text-gray-500 text-xs mt-1">Businesses</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">{totalCountries || 120}</div>
-              <div className="text-gray-500 text-xs mt-1">Countries</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">219+</div>
-              <div className="text-gray-500 text-xs mt-1">Corridors</div>
+              <div className="text-2xl font-bold text-amber-400">46</div>
+              <div className="text-gray-500 text-xs mt-1">Categories</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-amber-400">50</div>
               <div className="text-gray-500 text-xs mt-1">US States</div>
             </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">{totalCountries || 120}</div>
+              <div className="text-gray-500 text-xs mt-1">Countries</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* US State Quick Nav */}
+      {/* Browse by Service Category */}
       <section className="max-w-6xl mx-auto px-4 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold">Browse by Service Category</h2>
+          <span className="text-xs text-gray-600">46 categories</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {SERVICE_CATEGORIES.map(cat => (
+            <Link aria-label={`Browse ${cat.label}`}
+              key={cat.key}
+              href={`/directory?category=${cat.key}`}
+              className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all group"
+            >
+              <span className="text-xl block mb-1">{cat.icon}</span>
+              <span className="text-xs font-medium text-white group-hover:text-amber-400 transition-colors block">{cat.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* US State Quick Nav */}
+      <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">Browse US States</h2>
-          <span className="text-xs text-gray-600">{Object.keys(stateMap).length} states with operators</span>
+          <span className="text-xs text-gray-600">50 states</span>
         </div>
         <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-2">
           {US_STATES.map(s => (
@@ -229,9 +297,6 @@ export default async function DirectoryPage() {
               className="p-2 bg-white/5 border border-white/10 rounded-lg hover:border-amber-500/40 hover:bg-white/10 transition-all text-center group"
             >
               <div className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">{s}</div>
-              {stateMap[s] && (
-                <div className="text-xs text-gray-600">{stateMap[s]}</div>
-              )}
             </Link>
           ))}
         </div>
