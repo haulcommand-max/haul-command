@@ -21,6 +21,7 @@ export type EntitySource =
     | "hc_identities"
     | "directory_listings"
     | "hc_entity"
+    | "hc_places"
     | "hc_load_alerts_shell"
     | "none";
 
@@ -247,6 +248,59 @@ function normalizeListingsRow(row: any): NormalizedProfile {
     };
 }
 
+/** Normalize from hc_places (Claimable Places Engine) */
+function normalizePlace(row: any): NormalizedProfile {
+    const isClaimed = row.claim_status === 'claimed' || row.claim_status === 'verified';
+    return {
+        id: row.id,
+        display_name: row.name || "Unknown Business",
+        company_name: row.name ?? null,
+        home_base_city: row.locality ?? null,
+        home_base_state: row.admin1_code ?? null,
+        country_code: row.country_code ?? null,
+        vehicle_type: null,
+        us_dot_number: null,
+        trust_score: row.demand_score ?? 0,
+        verification_status: row.claim_status === 'verified' ? 'verified' : null,
+        is_claimed: isClaimed,
+        is_seeded: !isClaimed,
+        claim_hash: null,
+        certifications_json: {},
+        insurance_status: null,
+        compliance_status: null,
+        latitude: row.lat ? Number(row.lat) : null,
+        longitude: row.lng ? Number(row.lng) : null,
+        coverage_radius_miles: null,
+        reliability_score: 0,
+        responsiveness_score: 0,
+        integrity_score: 0,
+        customer_signal_score: 0,
+        compliance_score: 0,
+        market_fit_score: 0,
+        completed_escorts: 0,
+        rating_score: 0,
+        review_count: 0,
+        fill_probability: null,
+        updated_at: row.updated_at ?? null,
+    };
+}
+
+/** Map surface_category_key to entity_type for the profile page */
+function placeTypeToEntityType(categoryKey: string): string {
+    const map: Record<string, string> = {
+        truck_stop: 'truck_stop', motel: 'hotel', motel_truck_parking: 'hotel',
+        repair_shop: 'repair', tire_shop: 'repair', body_shop: 'repair',
+        mobile_truck_repair: 'repair', garages_shops: 'repair',
+        tow_rotator: 'towing', truck_parking: 'yard', drop_yard: 'yard',
+        secure_storage: 'yard', pilot_car: 'operator', pilot_car_company: 'operator',
+        scale_weigh_station_public: 'infrastructure', cat_scale: 'infrastructure',
+        rest_area: 'infrastructure', spill_response: 'towing',
+        oil_gas_facility: 'infrastructure', port: 'infrastructure',
+        crane_service: 'operator',
+    };
+    return map[categoryKey] || 'listing';
+}
+
 /* ── Helpers ── */
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -340,7 +394,26 @@ export async function resolveProfile(
             };
         }
 
-        // 4. hc_entity (by entity_id — column-specific)
+        // 4. hc_places (Claimable Places Engine — trucker services directory)
+        path.push("hc_places");
+        const { data: place } = await supabase
+            .from("hc_places")
+            .select("id, surface_category_key, name, description, country_code, admin1_code, admin2_name, locality, address_line1, lat, lng, phone, website, claim_status, demand_score, slug, updated_at")
+            .eq("id", id)
+            .single();
+
+        if (place) {
+            return {
+                resolved: true,
+                resolved_table: "hc_places",
+                entity_type: placeTypeToEntityType(place.surface_category_key),
+                resolution_path: path,
+                profile: normalizePlace(place),
+                failure_reason: null,
+            };
+        }
+
+        // 5. hc_entity (by entity_id — column-specific)
         path.push("hc_entity");
         const { data: ent } = await supabase
             .from("hc_entity")
@@ -426,7 +499,27 @@ export async function resolveProfile(
             };
         }
 
-        // 3. hc_identities by slug
+        // 3. hc_places by slug (Claimable Places Engine — trucker services directory)
+        path.push("hc_places");
+        const { data: placeSlugRows } = await supabase
+            .from("hc_places")
+            .select("id, surface_category_key, name, description, country_code, admin1_code, admin2_name, locality, address_line1, lat, lng, phone, website, claim_status, demand_score, slug, updated_at")
+            .eq("slug", id)
+            .limit(1);
+
+        const placeSlug = placeSlugRows?.[0];
+        if (placeSlug) {
+            return {
+                resolved: true,
+                resolved_table: "hc_places",
+                entity_type: placeTypeToEntityType(placeSlug.surface_category_key),
+                resolution_path: path,
+                profile: normalizePlace(placeSlug),
+                failure_reason: null,
+            };
+        }
+
+        // 4. hc_identities by slug
         path.push("hc_identities");
         const { data: identSlugRows } = await supabase
             .from("hc_identities")
@@ -446,7 +539,7 @@ export async function resolveProfile(
             };
         }
 
-        // 4. driver_profiles by slug (rarely needed)
+        // 5. driver_profiles by slug (rarely needed)
         path.push("driver_profiles");
         const { data: dpSlugRows } = await supabase
             .from("driver_profiles")
@@ -597,6 +690,19 @@ export async function resolveProfileMetadata(
             const location = [dl.city, dl.region_code].filter(Boolean).join(", ");
             return { name, location, country_code: dl.country_code, rating_score: null, review_count: null, entity_type: dl.entity_type || "operator", resolved: true };
         }
+
+        // hc_places by UUID
+        const { data: placeUuid } = await supabase
+            .from("hc_places")
+            .select("id, name, locality, admin1_code, country_code, surface_category_key")
+            .eq("id", id)
+            .single();
+
+        if (placeUuid) {
+            const name = placeUuid.name || "Service Location";
+            const location = [placeUuid.locality, placeUuid.admin1_code].filter(Boolean).join(", ");
+            return { name, location, country_code: placeUuid.country_code, rating_score: null, review_count: null, entity_type: placeTypeToEntityType(placeUuid.surface_category_key), resolved: true };
+        }
     } else {
         // Slug path — check redirects FIRST, then directory_listings
 
@@ -627,6 +733,20 @@ export async function resolveProfileMetadata(
             const name = dlSlug.name || "Escort Operator";
             const location = [dlSlug.city, dlSlug.region_code].filter(Boolean).join(", ");
             return { name, location, country_code: dlSlug.country_code, rating_score: null, review_count: null, entity_type: dlSlug.entity_type || "operator", resolved: true };
+        }
+
+        // 2.5 hc_places by slug
+        const { data: placeMetaSlugRows } = await supabase
+            .from("hc_places")
+            .select("id, name, locality, admin1_code, country_code, surface_category_key")
+            .eq("slug", id)
+            .limit(1);
+
+        const placeMetaSlug = placeMetaSlugRows?.[0];
+        if (placeMetaSlug) {
+            const name = placeMetaSlug.name || "Service Location";
+            const location = [placeMetaSlug.locality, placeMetaSlug.admin1_code].filter(Boolean).join(", ");
+            return { name, location, country_code: placeMetaSlug.country_code, rating_score: null, review_count: null, entity_type: placeTypeToEntityType(placeMetaSlug.surface_category_key), resolved: true };
         }
 
         const { data: identSlugRows } = await supabase
