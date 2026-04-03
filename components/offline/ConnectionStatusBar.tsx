@@ -1,3 +1,4 @@
+'use client';
 // components/offline/ConnectionStatusBar.tsx
 // ═══════════════════════════════════════════════════════════════
 // Connection status indicator for mobile app nav

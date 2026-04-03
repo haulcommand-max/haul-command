@@ -6,6 +6,7 @@ import { Shield, MapPin, Gauge, Star, Trophy, Clock, Medal } from 'lucide-react'
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 const MOCK_LEADERS = [
   { id: 'usr_1', company: 'Apex Heavy Haul', rank: 'Vanguard', runs: 2450, rating: 4.98, response: '2 min', loc: 'Dallas, TX', score: 99.8 },
@@ -21,9 +22,23 @@ const TIER_COLORS: Record<string, string> = {
   'Sentinel': 'from-orange-700 via-amber-700 to-red-800 border-orange-700/50 text-orange-600',
 };
 
+const gold = '#D4A844';
+
 export default function LeaderboardsPage() {
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-amber-500/30 overflow-hidden font-sans relative">
+      {/* Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          { '@type': 'WebPage', name: 'Heavy Haul Operator Leaderboards | Haul Command', url: 'https://www.haulcommand.com/leaderboards', description: 'Rankings of the top-performing heavy haul and pilot car operators on the Haul Command network. Ranked by verified escort runs, broker trust score, and response time.' },
+          { '@type': 'BreadcrumbList', itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+            { '@type': 'ListItem', position: 2, name: 'Leaderboards', item: 'https://www.haulcommand.com/leaderboards' },
+          ]},
+        ],
+      })}} />
+
       <div className="absolute top-0 inset-x-0 h-96 bg-amber-500/10 blur-[150px] -z-10 rounded-full" />
       
       {/* Header */}
@@ -172,9 +187,31 @@ export default function LeaderboardsPage() {
       </section>
 
       {/* Social Proof */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
+      <section className="max-w-7xl mx-auto px-6 pb-12">
         <SocialProofBanner />
       </section>
+
+      {/* No Dead End — claim pressure */}
+      <NoDeadEndBlock
+        heading="Join the Haul Command Elite Network"
+        moves={[
+          { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'Get listed and ranked', primary: true, color: gold },
+          { href: '/directory', icon: '🔍', title: 'Browse Directory', desc: 'Find top-ranked operators', primary: true, color: '#22C55E' },
+          { href: '/loads', icon: '📋', title: 'Open Load Board', desc: 'Active loads needing escorts' },
+          { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
+          { href: '/pricing', icon: '💎', title: 'Pro Verification', desc: 'Boost your rank visibility' },
+          { href: '/roles/pilot-car-operator', icon: '🚗', title: 'Pilot Car Hub', desc: 'All pilot car resources' },
+        ]}
+      />
+
+      {/* Internal link mesh */}
+      <section className="max-w-7xl mx-auto px-6 pb-20 flex flex-wrap gap-3">
+        <a href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 hover:border-amber-500/25 transition-all no-underline" style={{textDecoration:'none'}}>📖 What Is a Pilot Car?</a>
+        <a href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 transition-all no-underline" style={{textDecoration:'none'}}>⚖️ State Escort Rules</a>
+        <a href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400/70 hover:text-amber-400 transition-all no-underline" style={{textDecoration:'none'}}>🧮 Escort Calculator</a>
+        <a href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400/70 hover:text-green-400 transition-all no-underline" style={{textDecoration:'none'}}>🔍 Browse Directory</a>
+      </section>
+
     </div>
   );
 }

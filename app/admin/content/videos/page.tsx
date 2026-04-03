@@ -1,3 +1,4 @@
+'use client';
 /**
  * Admin Video Dashboard — /admin/content/videos
  * Shows: Pending Approval | In Production | Published

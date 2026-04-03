@@ -1,3 +1,4 @@
+'use client';
 /**
  * EarningsSparkline — 7-day micro-chart for earnings trends.
  *

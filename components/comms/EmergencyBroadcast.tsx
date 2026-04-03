@@ -1,3 +1,4 @@
+'use client';
 /**
  * EmergencyBroadcast — Emergency Button with 2-Step Confirmation
  *

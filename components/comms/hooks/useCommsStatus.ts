@@ -1,3 +1,4 @@
+'use client';
 /**
  * useCommsStatus — Computed Connection Status
  *

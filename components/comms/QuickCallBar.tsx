@@ -1,3 +1,4 @@
+'use client';
 /**
  * QuickCallBar — 7 Canned Quick-Call Buttons
  *

@@ -1,3 +1,4 @@
+'use client';
 // components/swarm/SwarmScoreboard.tsx
 // Required visibility layer — daily swarm performance metrics
 "use client";

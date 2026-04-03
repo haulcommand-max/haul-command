@@ -6,6 +6,8 @@ import VoiceFaqSchema, { QuickAnswerBlock } from '@/components/seo/VoiceFaqSchem
 import { QuickAnswerBlock as RichQuickAnswerBlock } from '@/components/seo/QuickAnswerBlock';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
 import DataTeaserCard from '@/components/data/DataTeaserCard';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import {
     REGULATIONS,
     getRegulation,
@@ -39,7 +41,7 @@ export async function generateMetadata({
             `pilot car rules ${reg.countryName}`,
             `${reg.terminology.primary} near me`,
         ],
-        alternates: { canonical: `/regulations/${country.toLowerCase()}` },
+        alternates: { canonical: `https://www.haulcommand.com/regulations/${country.toLowerCase()}` },
     };
 }
 
@@ -147,7 +149,9 @@ export default async function CountryRegulationPage({
     const dqColor = dq === 'high' ? '#4ADE80' : dq === 'medium' ? '#FBBF24' : '#F87171';
 
     return (
-        <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
+        <>
+            <ProofStrip variant="bar" />
+            <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
             {/* Breadcrumb */}
             <nav style={{ marginBottom: '1.5rem', fontSize: '0.8125rem', color: '#6B7280' }}>
                 <Link href="/regulations" style={{ color: '#9CA3AF', textDecoration: 'none' }}>
@@ -644,5 +648,18 @@ export default async function CountryRegulationPage({
                 }}
             />
         </div>
+
+        <NoDeadEndBlock
+            heading={`Find ${capitalizeFirst(term)}s in ${reg.countryName}`}
+            moves={[
+                { href: `/directory?country=${reg.countryCode.toLowerCase()}`, icon: '🔍', title: `Find ${capitalizeFirst(term)}s`, desc: `Verified in ${reg.countryName}`, primary: true, color: '#D4A844' },
+                { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'Free listing in 2 minutes', primary: true, color: '#22C55E' },
+                { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many escorts needed?' },
+                { href: '/regulations', icon: '⚖️', title: 'All Country Rules', desc: '120 country regulations' },
+                { href: '/glossary/pilot-car', icon: '📖', title: 'Industry Glossary', desc: 'Terms and definitions' },
+                { href: '/pricing', icon: '💎', title: 'Go Pro', desc: 'Priority placement' },
+            ]}
+        />
+    </>
     );
 }

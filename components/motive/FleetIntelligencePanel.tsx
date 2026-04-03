@@ -1,3 +1,4 @@
+'use client';
 // components/motive/FleetIntelligencePanel.tsx
 // ═══════════════════════════════════════════════════════════════
 // Motive Data Panel — shows on operator profile/dashboard

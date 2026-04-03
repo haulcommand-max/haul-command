@@ -1,3 +1,4 @@
+'use client';
 // components/motive/AdminMotiveStats.tsx
 // Admin dashboard panel showing Motive connection statistics
 

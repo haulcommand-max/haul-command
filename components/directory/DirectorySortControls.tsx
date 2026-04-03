@@ -1,3 +1,4 @@
+'use client';
 /**
  * DirectorySortControls — Sort mode selector for operator listings.
  *

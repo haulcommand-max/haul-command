@@ -1,3 +1,4 @@
+'use client';
 /**
  * useAudioDevice — Speaker/Earpiece/Wired Headset Routing
  *

@@ -1,3 +1,4 @@
+'use client';
 /**
  * BrowseByRegion — Elite 2026 intelligence tiles
  *

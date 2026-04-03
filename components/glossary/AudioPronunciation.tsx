@@ -1,3 +1,4 @@
+'use client';
 /**
  * AudioPronunciation — Play audio pronunciation for glossary terms.
  *

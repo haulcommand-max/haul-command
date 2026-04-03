@@ -1,3 +1,4 @@
+'use client';
 /**
  * CorridorStrip — High-Demand Corridors horizontal scroll strip.
  *

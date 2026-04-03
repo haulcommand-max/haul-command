@@ -1,3 +1,4 @@
+'use client';
 /**
  * SwipeableRunCard — Touch gesture to accept/reject load cards.
  *

@@ -1,3 +1,4 @@
+'use client';
 // components/map/LiveOperatorMap.tsx
 // ═══════════════════════════════════════════════════════════════
 // HAUL COMMAND — Live Operator Map

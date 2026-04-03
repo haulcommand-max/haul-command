@@ -1,3 +1,4 @@
+'use client';
 /**
  * ChannelHeader — Channel Name, Member Count, Guardrail Copy
  *

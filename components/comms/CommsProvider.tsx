@@ -1,3 +1,4 @@
+'use client';
 /**
  * CommsProvider — Root Context for Haul Command Comms
  *

@@ -1,3 +1,4 @@
+'use client';
 /**
  * CommsFAB — Floating Action Button for Active Job Comms
  *

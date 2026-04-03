@@ -1,3 +1,4 @@
+'use client';
 /**
  * DirectoryPopularSearches — Trending searches from the last 30 days.
  * Shows what operators/cities users are searching for most.

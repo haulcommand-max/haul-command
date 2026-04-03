@@ -1,4 +1,5 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -13,6 +14,7 @@ import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 export const metadata: Metadata = {
     title: 'Heavy Haul Glossary | 3,000+ Terms, Definitions & Rules | Haul Command',
     description: 'The definitive heavy haul and oversize load glossary. 3,000+ industry terms defined across 120 countries. Pilot car, escort vehicle, superload, and DOT compliance terminology.',
+    alternates: { canonical: 'https://www.haulcommand.com/glossary' },
     openGraph: {
         title: 'Heavy Haul Glossary | 3,000+ Terms Defined | Haul Command',
         description: 'The most comprehensive heavy haul, oversize load, and escort terminology reference in the world. 3,000+ terms across 120 countries.',
@@ -338,7 +340,7 @@ export default async function GlossaryHubPage() {
                                 {tier.countries.map((c) => (
                                     <Link
                                         key={c.code}
-                                        href={`/glossary/pilot-car/${c.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                        href={`/regulations/${c.code}`}
                                         className="inline-flex items-center gap-1.5 bg-white/[0.03] border border-white/[0.07] rounded-xl px-3 py-2 text-sm hover:bg-white/[0.06] hover:border-white/15 transition-all duration-200 group"
                                     >
                                         <span className="text-lg group-hover:scale-110 transition-transform">{c.flag}</span>
@@ -516,6 +518,21 @@ export default async function GlossaryHubPage() {
                   geo="United States"
                   country="US"
                 />
+
+                {/* No Dead End — route to high-intent surfaces */}
+                <div className="mt-12">
+                    <div style={{ background: 'rgba(212,168,68,0.04)', border: '1px solid rgba(212,168,68,0.12)', borderRadius: 16, padding: '20px 24px', marginBottom: 16 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: '#D4A844', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Not finding what you need? Try these resources →</div>
+                        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                            <a href="/directory" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>🔍 Find Pilot Car Operators</a>
+                            <a href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>🧮 Escort Calculator</a>
+                            <a href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</a>
+                            <a href="/regulations/us" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>🌍 US Regulations</a>
+                            <a href="/available-now" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>🟢 Available Now</a>
+                            <a href="/pricing" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>💲 All Plans</a>
+                        </div>
+                    </div>
+                </div>
 
             </main>
         </div>

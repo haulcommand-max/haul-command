@@ -1,3 +1,4 @@
+'use client';
 // components/motive/MotiveOnboardingPrompt.tsx
 // Post-claim onboarding step prompting ELD connection
 

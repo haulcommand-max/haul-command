@@ -1,3 +1,4 @@
+'use client';
 /**
  * OperatorEarningsCard — Earnings visibility for escort operators.
  *

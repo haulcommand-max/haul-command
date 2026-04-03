@@ -1,3 +1,4 @@
+'use client';
 /**
  * EscortSupplyRadar — GLOBAL Map overlay for real-time escort availability.
  *

@@ -1,3 +1,4 @@
+'use client';
 /**
  * useChannel — Channel join/leave/state management
  *

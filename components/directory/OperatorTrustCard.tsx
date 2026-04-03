@@ -1,3 +1,4 @@
+'use client';
 /**
  * OperatorTrustCard v2
  *

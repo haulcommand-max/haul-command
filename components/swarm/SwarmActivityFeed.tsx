@@ -1,3 +1,4 @@
+'use client';
 // components/swarm/SwarmActivityFeed.tsx
 // Required visibility layer — live feed of what agents are doing
 "use client";

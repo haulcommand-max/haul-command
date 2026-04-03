@@ -1,3 +1,4 @@
+'use client';
 /**
  * TalkButton — The BIG Glove-Friendly PTT Button
  *

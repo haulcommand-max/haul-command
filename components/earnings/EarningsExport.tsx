@@ -1,3 +1,4 @@
+'use client';
 /**
  * EarningsExport — Export earnings data to CSV or PDF.
  *

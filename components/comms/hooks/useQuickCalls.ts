@@ -1,3 +1,4 @@
+'use client';
 /**
  * useQuickCalls — Quick-Call Send/Receive
  *

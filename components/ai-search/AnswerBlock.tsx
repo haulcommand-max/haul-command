@@ -1,3 +1,4 @@
+'use client';
 // components/ai-search/AnswerBlock.tsx
 // Citation-ready answer blocks for AI search engines + snippets.
 // Rule: every high-value page gets one. Crawlable HTML, not JS-only.

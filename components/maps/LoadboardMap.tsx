@@ -1,3 +1,4 @@
+'use client';
 /**
  * Haul Command — Loadboard Map Component (Mapbox GL)
  *

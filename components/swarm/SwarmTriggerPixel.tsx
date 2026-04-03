@@ -1,3 +1,4 @@
+'use client';
 // components/swarm/SwarmTriggerPixel.tsx
 // Invisible client component that fires a swarm trigger on mount.
 // Use on any server-rendered page to wire page views into the swarm.

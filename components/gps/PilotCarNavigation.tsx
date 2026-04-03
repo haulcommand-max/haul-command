@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 
 // Specialized GPS connector for Escort mapping. Links out directly to Waze.

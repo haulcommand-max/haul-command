@@ -1,3 +1,4 @@
+'use client';
 /**
  * HotZonesNearYou — Operator-facing supply steering surface.
  *

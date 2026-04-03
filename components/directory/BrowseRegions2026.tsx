@@ -1,3 +1,4 @@
+'use client';
 /**
  * BrowseRegions2026 — compact, scannable state/province grid.
  *

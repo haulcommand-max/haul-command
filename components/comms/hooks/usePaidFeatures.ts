@@ -1,3 +1,4 @@
+'use client';
 /**
  * HAUL COMMAND COMMS — Paid Feature Stubs
  *

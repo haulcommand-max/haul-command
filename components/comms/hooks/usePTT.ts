@@ -1,3 +1,4 @@
+'use client';
 /**
  * usePTT — Push-to-Talk State Machine
  *
