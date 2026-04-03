@@ -1,14 +1,16 @@
-# Vercel Ignore — exclude sub-apps and data files from deployment bundle
-# These directories contain their own package.json/package-lock.json files
-# which confuse Vercel's workspace root detection, causing API routes to be
-# silently dropped from the function manifest.
+# Vercel Ignore — exclude non-app subdirectories from deployment bundle.
+# These directories contain their own package.json/lockfiles that confuse
+# Vercel's workspace root detection, causing API routes to be dropped.
+#
+# IMPORTANT: Use leading slash (/) to anchor patterns to the REPO ROOT only.
+# Without /, patterns like "data/" match EVERY /data/ directory in the tree,
+# including /app/data/ — which would break application builds.
 
-command-dashboard/
-haul-command-hub/
-scripts/
-data/
-seed/
-source_data/
-workers/
-docs/
-lighthouse/
+/command-dashboard/
+/haul-command-hub/
+/scripts/
+/source_data/
+/workers/
+/docs/
+/lighthouse/
+/tmp/
