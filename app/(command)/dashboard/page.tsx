@@ -10,7 +10,12 @@ import { AdGridPushCampaignSender } from "@/components/ads/AdGridPushCampaignSen
 import { FreemiumPressureWidget } from "@/components/monetization/FreemiumPressureWidget";
 import "@/components/swarm/swarm.css";
 
-export default function CommandDashboardPage() {
+interface DashboardClientProps {
+    userId?: string;
+    userRole?: 'escort' | 'broker';
+}
+
+export default function CommandDashboardPage({ userId, userRole = 'escort' }: DashboardClientProps) {
     const [activeTab, setActiveTab] = useState<"ops" | "swarm">("ops");
 
     return (
@@ -84,10 +89,12 @@ export default function CommandDashboardPage() {
                             <div className="lg:col-span-1 lg:order-2 space-y-4">
                                 <TodayCommandCenter data={null} />
                                 {/* FreemiumPressureWidget — upgrade prompts for free-tier operators */}
+                                {/* userId from server session enables personalized pressure decisions */}
                                 <FreemiumPressureWidget
                                     placement="sidebar"
                                     minPressure="medium"
-                                    role="escort"
+                                    role={userRole}
+                                    userId={userId}
                                 />
                             </div>
                             <div className="lg:col-span-2 lg:order-1">
