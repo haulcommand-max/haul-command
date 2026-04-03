@@ -5,7 +5,7 @@
 // comms × answer quotas × pricing
 // ══════════════════════════════════════════════════════════════
 
-export type Tier = "gold" | "blue" | "silver" | "slate";
+export type Tier = "gold" | "blue" | "silver" | "slate" | "copper";
 
 export interface TierConfig {
     tier: Tier;
@@ -43,6 +43,12 @@ export const TIER_CONFIGS: Record<Tier, TierConfig> = {
         corridorDepth: "none", localPaymentsRequired: false,
         socialLocalization: "email_only", freshnessHalfLifeDays: 365,
         refreshScheduleDays: 365, paymentSuccessFloor: 0.75,
+    },
+    copper: {
+        tier: "copper", pricingMultiplier: 0.45, answerQuota: 3,
+        corridorDepth: "none", localPaymentsRequired: false,
+        socialLocalization: "email_only", freshnessHalfLifeDays: 365,
+        refreshScheduleDays: 365, paymentSuccessFloor: 0.70,
     },
 };
 
@@ -158,19 +164,95 @@ export const COUNTRY_REGISTRY: CountryConfig[] = [
         multiLanguageRisk: false,
     })),
 
-    // ═══ SLATE (3 countries) ═══
+    // ═══ SLATE (25 countries) ═══
     ...([
-        { c: "UY", n: "Uruguay", m: ["Montevideo"] },
-        { c: "PA", n: "Panama", m: ["Panama City", "Colón"] },
-        { c: "CR", n: "Costa Rica", m: ["San José"] },
+        { c: "UY", n: "Uruguay",        l: "es", cr: "UYU", m: ["Montevideo"] },
+        { c: "PA", n: "Panama",         l: "es", cr: "PAB", m: ["Panama City", "Colón"] },
+        { c: "CR", n: "Costa Rica",     l: "es", cr: "CRC", m: ["San José"] },
+        { c: "IL", n: "Israel",         l: "he", cr: "ILS", m: ["Tel Aviv", "Haifa", "Ashdod"] },
+        { c: "NG", n: "Nigeria",        l: "en", cr: "NGN", m: ["Lagos", "Port Harcourt", "Abuja"] },
+        { c: "EG", n: "Egypt",          l: "ar", cr: "EGP", m: ["Cairo", "Alexandria", "Suez"] },
+        { c: "KE", n: "Kenya",          l: "en", cr: "KES", m: ["Nairobi", "Mombasa"] },
+        { c: "MA", n: "Morocco",        l: "ar", cr: "MAD", m: ["Casablanca", "Tangier", "Agadir"] },
+        { c: "RS", n: "Serbia",         l: "sr", cr: "RSD", m: ["Belgrade", "Novi Sad"] },
+        { c: "UA", n: "Ukraine",        l: "uk", cr: "UAH", m: ["Kyiv", "Odessa", "Dnipro"] },
+        { c: "KZ", n: "Kazakhstan",     l: "kk", cr: "KZT", m: ["Almaty", "Astana", "Aktau"] },
+        { c: "TW", n: "Taiwan",         l: "zh", cr: "TWD", m: ["Taipei", "Kaohsiung", "Taichung"] },
+        { c: "PK", n: "Pakistan",       l: "ur", cr: "PKR", m: ["Karachi", "Lahore", "Islamabad"] },
+        { c: "BD", n: "Bangladesh",     l: "bn", cr: "BDT", m: ["Dhaka", "Chittagong"] },
+        { c: "MN", n: "Mongolia",       l: "mn", cr: "MNT", m: ["Ulaanbaatar"] },
+        { c: "TT", n: "Trinidad & Tobago", l: "en", cr: "TTD", m: ["Port of Spain"] },
+        { c: "JO", n: "Jordan",         l: "ar", cr: "JOD", m: ["Amman", "Aqaba"] },
+        { c: "GH", n: "Ghana",          l: "en", cr: "GHS", m: ["Accra", "Tema", "Kumasi"] },
+        { c: "TZ", n: "Tanzania",       l: "sw", cr: "TZS", m: ["Dar es Salaam", "Dodoma"] },
+        { c: "GE", n: "Georgia",        l: "ka", cr: "GEL", m: ["Tbilisi", "Batumi"] },
+        { c: "AZ", n: "Azerbaijan",     l: "az", cr: "AZN", m: ["Baku"] },
+        { c: "CY", n: "Cyprus",         l: "el", cr: "EUR", m: ["Limassol", "Nicosia"] },
+        { c: "IS", n: "Iceland",        l: "is", cr: "ISK", m: ["Reykjavik"] },
+        { c: "LU", n: "Luxembourg",     l: "lb", cr: "EUR", m: ["Luxembourg City"] },
+        { c: "EC", n: "Ecuador",        l: "es", cr: "USD", m: ["Guayaquil", "Quito"] },
     ] as const).map(s => ({
         code: s.c, name: s.n, tier: "slate" as Tier,
-        languagePrimary: "es", currency: "USD",
+        languagePrimary: s.l, currency: s.cr,
         socialPrimary: "email" as SocialChannel, socialSecondary: "email" as SocialChannel,
         paymentPriority: ["cards" as PaymentRail],
         tone: "professional_b2b" as Tone,
         topMetros: [...s.m], topCorridors: [],
-        hreflangCode: `es-${s.c.toLowerCase()}`,
+        hreflangCode: `${s.l}-${s.c.toLowerCase()}`,
+        multiLanguageRisk: false,
+    })),
+
+    // ═══ COPPER (41 countries) ═══
+    ...([
+        { c: "BO", n: "Bolivia",               l: "es", cr: "BOB", m: ["La Paz", "Santa Cruz"] },
+        { c: "PY", n: "Paraguay",              l: "es", cr: "PYG", m: ["Asunción"] },
+        { c: "GT", n: "Guatemala",             l: "es", cr: "GTQ", m: ["Guatemala City"] },
+        { c: "DO", n: "Dominican Republic",    l: "es", cr: "DOP", m: ["Santo Domingo", "Santiago"] },
+        { c: "HN", n: "Honduras",              l: "es", cr: "HNL", m: ["Tegucigalpa", "San Pedro Sula"] },
+        { c: "SV", n: "El Salvador",           l: "es", cr: "USD", m: ["San Salvador"] },
+        { c: "NI", n: "Nicaragua",             l: "es", cr: "NIO", m: ["Managua"] },
+        { c: "JM", n: "Jamaica",               l: "en", cr: "JMD", m: ["Kingston", "Montego Bay"] },
+        { c: "GY", n: "Guyana",                l: "en", cr: "GYD", m: ["Georgetown"] },
+        { c: "SR", n: "Suriname",              l: "nl", cr: "SRD", m: ["Paramaribo"] },
+        { c: "BA", n: "Bosnia & Herzegovina",  l: "bs", cr: "BAM", m: ["Sarajevo", "Banja Luka"] },
+        { c: "ME", n: "Montenegro",            l: "cnr", cr: "EUR", m: ["Podgorica", "Bar"] },
+        { c: "MK", n: "North Macedonia",       l: "mk", cr: "MKD", m: ["Skopje"] },
+        { c: "AL", n: "Albania",               l: "sq", cr: "ALL", m: ["Tirana", "Durrës"] },
+        { c: "MD", n: "Moldova",               l: "ro", cr: "MDL", m: ["Chișinău"] },
+        { c: "IQ", n: "Iraq",                  l: "ar", cr: "IQD", m: ["Baghdad", "Basra", "Erbil"] },
+        { c: "NA", n: "Namibia",               l: "en", cr: "NAD", m: ["Windhoek", "Walvis Bay"] },
+        { c: "AO", n: "Angola",                l: "pt", cr: "AOA", m: ["Luanda", "Lobito"] },
+        { c: "MZ", n: "Mozambique",            l: "pt", cr: "MZN", m: ["Maputo", "Beira"] },
+        { c: "ET", n: "Ethiopia",              l: "am", cr: "ETB", m: ["Addis Ababa", "Djibouti corridor"] },
+        { c: "CI", n: "Côte d'Ivoire",         l: "fr", cr: "XOF", m: ["Abidjan"] },
+        { c: "SN", n: "Senegal",               l: "fr", cr: "XOF", m: ["Dakar"] },
+        { c: "BW", n: "Botswana",              l: "en", cr: "BWP", m: ["Gaborone", "Francistown"] },
+        { c: "ZM", n: "Zambia",                l: "en", cr: "ZMW", m: ["Lusaka", "Kitwe"] },
+        { c: "UG", n: "Uganda",                l: "en", cr: "UGX", m: ["Kampala", "Entebbe"] },
+        { c: "CM", n: "Cameroon",              l: "fr", cr: "XAF", m: ["Douala", "Yaoundé"] },
+        { c: "KH", n: "Cambodia",              l: "km", cr: "KHR", m: ["Phnom Penh", "Sihanoukville"] },
+        { c: "LK", n: "Sri Lanka",             l: "si", cr: "LKR", m: ["Colombo", "Galle"] },
+        { c: "UZ", n: "Uzbekistan",            l: "uz", cr: "UZS", m: ["Tashkent", "Navoi"] },
+        { c: "LA", n: "Laos",                  l: "lo", cr: "LAK", m: ["Vientiane"] },
+        { c: "NP", n: "Nepal",                 l: "ne", cr: "NPR", m: ["Kathmandu"] },
+        { c: "DZ", n: "Algeria",               l: "ar", cr: "DZD", m: ["Algiers", "Oran", "Annaba"] },
+        { c: "TN", n: "Tunisia",               l: "ar", cr: "TND", m: ["Tunis", "Sfax", "Bizerte"] },
+        { c: "MT", n: "Malta",                 l: "mt", cr: "EUR", m: ["Valletta", "Marsaxlokk"] },
+        { c: "BN", n: "Brunei",                l: "ms", cr: "BND", m: ["Bandar Seri Begawan"] },
+        { c: "RW", n: "Rwanda",                l: "rw", cr: "RWF", m: ["Kigali"] },
+        { c: "MG", n: "Madagascar",            l: "mg", cr: "MGA", m: ["Antananarivo", "Toamasina"] },
+        { c: "PG", n: "Papua New Guinea",      l: "en", cr: "PGK", m: ["Port Moresby", "Lae"] },
+        { c: "TM", n: "Turkmenistan",          l: "tk", cr: "TMT", m: ["Ashgabat", "Turkmenbashi"] },
+        { c: "KG", n: "Kyrgyzstan",            l: "ky", cr: "KGS", m: ["Bishkek"] },
+        { c: "MW", n: "Malawi",                l: "ny", cr: "MWK", m: ["Lilongwe", "Blantyre"] },
+    ] as const).map(s => ({
+        code: s.c, name: s.n, tier: "copper" as Tier,
+        languagePrimary: s.l, currency: s.cr,
+        socialPrimary: "email" as SocialChannel, socialSecondary: "email" as SocialChannel,
+        paymentPriority: ["cards" as PaymentRail],
+        tone: "professional_b2b" as Tone,
+        topMetros: [...s.m], topCorridors: [],
+        hreflangCode: `${s.l}-${s.c.toLowerCase()}`,
         multiLanguageRisk: false,
     })),
 ];
