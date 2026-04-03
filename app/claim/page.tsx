@@ -5,6 +5,7 @@ import ClaimStatusBanner from './ClaimStatusBanner';
 import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { BadgeProgressRail } from '@/components/social/BadgeProgressRail';
 
 export const metadata: Metadata = {
   title: 'Claim Your Listing — Free Verified Profile | Haul Command',
@@ -211,10 +212,16 @@ export default async function ClaimPage() {
         <AdGridSlot zone="claim_listing_sponsor" />
       </section>
 
+      {/* Badge Progress Rail — show what badges they'll earn */}
+      <section className="max-w-4xl mx-auto px-4 py-4">
+        <BadgeProgressRail showPreview variant="full" />
+      </section>
+
       {/* Data Teaser Strip — show market activity */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
         <DataTeaserStrip />
       </section>
+
     </div>
   );
 }
