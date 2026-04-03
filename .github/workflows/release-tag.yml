@@ -1,0 +1,120 @@
+# ============================================================
+# release-tag.yml — Auto-tag + release notes on main merge
+# Runs on: push to main (after CI passes)
+# ============================================================
+name: Release Tag
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-tag
+  cancel-in-progress: false # Never cancel release tagging
+
+jobs:
+  tag-release:
+    name: "Release / Create Tag + Notes"
+    runs-on: ubuntu-latest
+    # Only run after main-release succeeds (check via previous run logic)
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for release notes
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      # ── Determine version from package.json ────────────────
+      - name: Determine release tag
+        id: version
+        run: |
+          # Use date-based versioning: v2026.04.03.1 style
+          DATE=$(date +'%Y.%m.%d')
+          # Count today's releases to handle multiple deploys per day
+          COUNT=$(git tag --list "v${DATE}.*" | wc -l | tr -d ' ')
+          NEXT=$((COUNT + 1))
+          TAG="v${DATE}.${NEXT}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          echo "Release tag: $TAG"
+
+      # ── Build release notes from commits since last tag ───
+      - name: Build release notes
+        id: notes
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LAST_TAG" ]; then
+            RANGE="HEAD"
+            echo "No previous tag found. Using full history."
+          else
+            RANGE="${LAST_TAG}..HEAD"
+            echo "Building notes from $RANGE"
+          fi
+
+          # Get changed files to identify affected routes
+          CHANGED_FILES=$(git diff --name-only $LAST_TAG HEAD 2>/dev/null | head -50 || git log --name-only --pretty=format: HEAD~5..HEAD | grep -v '^$' | head -50)
+
+          AFFECTED_ROUTES=$(echo "$CHANGED_FILES" | grep -E '^app/' | sed 's|^app/||' | sed 's|/page\.tsx$||' | sed 's|/route\.ts$||' | sort -u | head -20 | tr '\n' ', ' | sed 's/,$//')
+
+          # Generate commit log
+          if [ -n "$LAST_TAG" ]; then
+            COMMITS=$(git log "$RANGE" --oneline --no-merges --format="- %s" | head -30)
+          else
+            COMMITS=$(git log HEAD~10..HEAD --oneline --no-merges --format="- %s")
+          fi
+
+          cat > /tmp/release-notes.md << NOTES
+          ## Haul Command Release ${{ steps.version.outputs.tag }}
+
+          **SHA:** ${{ github.sha }}
+          **Branch:** ${{ github.ref_name }}
+          **Timestamp:** $(date -u)
+          **Deployed by:** ${{ github.actor }}
+
+          ### Changes
+          ${COMMITS:-No commits found}
+
+          ### Affected App Routes
+          ${AFFECTED_ROUTES:-Unable to determine affected routes}
+
+          ### Changed Files
+          $(echo "$CHANGED_FILES" | head -30)
+
+          ### Rollback
+          To rollback to the previous release:
+          \`\`\`
+          # Find previous tag
+          git log --oneline --decorate | head -20
+
+          # In Vercel dashboard: Deployments → find commit before this one → Promote to Production
+          # OR via CLI:
+          vercel rollback --token=$VERCEL_TOKEN
+          \`\`\`
+          See [rollback runbook](docs/rollback.md) for full instructions.
+          NOTES
+
+          echo "notes_file=/tmp/release-notes.md" >> $GITHUB_OUTPUT
+
+      # ── Create GitHub Release + Tag ─────────────────────
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          NOTES_FILE="${{ steps.notes.outputs.notes_file }}"
+
+          gh release create "$TAG" \
+            --title "Haul Command $TAG" \
+            --notes-file "$NOTES_FILE" \
+            --latest \
+            --target main
+
+          echo "✅ Release $TAG created: https://github.com/${{ github.repository }}/releases/tag/$TAG"

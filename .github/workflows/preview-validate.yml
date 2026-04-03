@@ -1,0 +1,148 @@
+# ============================================================
+# preview-validate.yml — Playwright against Vercel Preview URL
+# Runs on: pull_request → main
+# Depends on: pr-preview.yml deploying preview URL
+# ============================================================
+name: Preview Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: preview-validate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview-smoke:
+    name: "Preview / Critical Route Validation"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Only run if VERCEL_TOKEN is available (skip on forks)
+    if: ${{ secrets.VERCEL_TOKEN != '' }}
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+
+      # ── Resolve Vercel preview URL ────────────────────────
+      - name: Resolve preview URL from Vercel
+        id: preview_url
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm i -g vercel
+          # Pull deployment list and find the preview URL for this commit
+          SHA="${{ github.event.pull_request.head.sha }}"
+          SHORT_SHA="${SHA:0:7}"
+
+          # Attempt to resolve via vercel ls (most recent preview)
+          PREVIEW_URL=$(vercel ls --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID 2>/dev/null \
+            | grep -E 'haul-command.*Preview' \
+            | head -1 \
+            | awk '{print $2}' \
+            | sed 's|^|https://|' || true)
+
+          # Fallback: construct from branch name
+          if [ -z "$PREVIEW_URL" ]; then
+            BRANCH="${{ github.head_ref }}"
+            SLUG=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-40)
+            PREVIEW_URL="https://haul-command-git-${SLUG}-haulcommand-max.vercel.app"
+            echo "Using fallback URL: $PREVIEW_URL"
+          fi
+
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "Preview URL resolved: $PREVIEW_URL"
+
+      # ── Wait for preview to be live ─────────────────────────
+      - name: Wait for preview deployment to be healthy
+        run: |
+          URL="${{ steps.preview_url.outputs.preview_url }}"
+          echo "Waiting for $URL to be live..."
+          for i in $(seq 1 18); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || echo "000")
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "301" ] || [ "$STATUS" = "302" ]; then
+              echo "✅ Preview is live (HTTP $STATUS) after ${i}0s"
+              break
+            fi
+            echo "Attempt $i/18: HTTP $STATUS — waiting 10s..."
+            sleep 10
+          done
+
+      # ── Install Playwright ────────────────────────────────
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      # ── Run Playwright against preview ─────────────────────
+      - name: Run preview route validation
+        id: playwright
+        run: |
+          npx playwright test \
+            tests/e2e/smoke-critical-routes.spec.ts \
+            --reporter=html \
+            --reporter=github
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ steps.preview_url.outputs.preview_url }}
+
+      # ── Upload report on failure ──────────────────────────
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-playwright-report-${{ github.event.pull_request.number }}
+          path: playwright-report/
+          retention-days: 14
+
+      # ── Comment results on PR ───────────────────────────
+      - name: Comment validation results on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.preview_url.outputs.preview_url }}';
+            const outcome = '${{ steps.playwright.outcome }}';
+            const icon = outcome === 'success' ? '✅' : '❌';
+            const status = outcome === 'success' ? 'All critical routes passed' : 'Some routes failed — see artifacts';
+
+            const routes = [
+              '/', '/directory', '/loads', '/tools/escort-calculator',
+              '/escort-requirements', '/leaderboards',
+              '/roles/pilot-car-operator', '/robots.txt',
+              '/sitemap.xml', '/llms.txt'
+            ];
+
+            const routeLinks = routes
+              .map(r => `[\`${r}\`](${url}${r})`)
+              .join(' | ');
+
+            const body = [
+              `## ${icon} Preview Route Validation`,
+              `**Preview URL:** ${url}`,
+              `**Status:** ${status}`,
+              ``,
+              `**Critical Routes Checked:**`,
+              routeLinks,
+              ``,
+              outcome !== 'success'
+                ? `⚠️ Download the **preview-playwright-report** artifact from this run for screenshots and trace.`
+                : `🚀 Preview is production-ready.`
+            ].join('\n');
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

@@ -1,0 +1,171 @@
+# ============================================================
+# nightly-audit.yml — Nightly route health + SEO checks
+# Runs: nightly at 06:00 UTC or manually via workflow_dispatch
+# Does NOT auto-deploy. Produces artifacts only.
+# ============================================================
+name: Nightly Audit
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # 06:00 UTC = 2:00 AM ET
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'URL to audit (default: production)'
+        required: false
+        default: 'https://haulcommand.com'
+
+concurrency:
+  group: nightly-audit
+  cancel-in-progress: true
+
+jobs:
+  route-audit:
+    name: "Audit / Critical Routes + SEO"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      # ── Determine target URL ───────────────────────────
+      - name: Set audit target
+        id: target
+        run: |
+          URL="${{ github.event.inputs.target_url || 'https://haulcommand.com' }}"
+          echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "Auditing: $URL"
+
+      # ── Route health checks via curl ────────────────────
+      - name: HTTP health check all critical routes
+        run: |
+          BASE="${{ steps.target.outputs.url }}"
+          REPORT="/tmp/route-health-report.txt"
+          FAILED=0
+
+          ROUTES=(
+            "/"
+            "/directory"
+            "/loads"
+            "/tools/escort-calculator"
+            "/escort-requirements"
+            "/leaderboards"
+            "/roles/pilot-car-operator"
+            "/robots.txt"
+            "/sitemap.xml"
+            "/llms.txt"
+            "/api/health"
+          )
+
+          echo "# Haul Command Nightly Route Audit" > $REPORT
+          echo "Date: $(date -u)" >> $REPORT
+          echo "Target: $BASE" >> $REPORT
+          echo "" >> $REPORT
+          echo "| Route | Status | Time |" >> $REPORT
+          echo "|-------|--------|------|" >> $REPORT
+
+          for ROUTE in "${ROUTES[@]}"; do
+            START=$(date +%s%3N)
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${BASE}${ROUTE}" || echo "000")
+            END=$(date +%s%3N)
+            ELAPSED=$((END - START))
+
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "301" ] || [ "$STATUS" = "302" ]; then
+              ICON="✅"
+            else
+              ICON="❌"
+              FAILED=$((FAILED + 1))
+            fi
+
+            echo "| \`$ROUTE\` | $ICON HTTP $STATUS | ${ELAPSED}ms |" >> $REPORT
+            echo "$ICON $ROUTE — HTTP $STATUS (${ELAPSED}ms)"
+          done
+
+          echo "" >> $REPORT
+          echo "**Failed routes: $FAILED**" >> $REPORT
+          cat $REPORT
+
+          if [ $FAILED -gt 0 ]; then
+            echo "::error::$FAILED critical route(s) returned non-200 status"
+            exit 1
+          fi
+
+      # ── SEO/system file content checks ─────────────────
+      - name: Validate SEO system files
+        run: |
+          BASE="${{ steps.target.outputs.url }}"
+          FAILED=0
+
+          # robots.txt — must contain User-agent and Sitemap
+          ROBOTS=$(curl -s -L "$BASE/robots.txt" || echo "")
+          if echo "$ROBOTS" | grep -qi "user-agent"; then
+            echo "✅ robots.txt contains User-agent"
+          else
+            echo "❌ robots.txt missing User-agent directive"
+            FAILED=$((FAILED + 1))
+          fi
+
+          if echo "$ROBOTS" | grep -qi "sitemap"; then
+            echo "✅ robots.txt references Sitemap"
+          else
+            echo "❌ robots.txt missing Sitemap reference"
+            FAILED=$((FAILED + 1))
+          fi
+
+          # sitemap.xml — must be valid XML with URLs
+          SITEMAP=$(curl -s -L "$BASE/sitemap.xml" || echo "")
+          if echo "$SITEMAP" | grep -qi "<urlset"; then
+            echo "✅ sitemap.xml contains urlset"
+            URL_COUNT=$(echo "$SITEMAP" | grep -c "<url>" || echo "0")
+            echo "   Found $URL_COUNT URLs in sitemap"
+          else
+            echo "❌ sitemap.xml missing urlset element"
+            FAILED=$((FAILED + 1))
+          fi
+
+          # llms.txt — must not be an error page
+          LLMS=$(curl -s -L "$BASE/llms.txt" || echo "")
+          LLMS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L "$BASE/llms.txt" || echo "000")
+          if [ "$LLMS_STATUS" = "200" ] && [ -n "$LLMS" ]; then
+            echo "✅ llms.txt is accessible and non-empty"
+          else
+            echo "❌ llms.txt returned HTTP $LLMS_STATUS or is empty"
+            FAILED=$((FAILED + 1))
+          fi
+
+          if [ $FAILED -gt 0 ]; then
+            echo "::error::$FAILED SEO file check(s) failed"
+            exit 1
+          fi
+
+      # ── Playwright deep route audit ──────────────────────
+      - name: Run Playwright nightly audit
+        run: |
+          npx playwright test \
+            tests/e2e/smoke-critical-routes.spec.ts \
+            --reporter=html
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ steps.target.outputs.url }}
+        continue-on-error: true # Don't fail the whole job; upload artifacts
+
+      # ── Upload reports ─────────────────────────────────
+      - name: Upload nightly audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-audit-${{ github.run_id }}
+          path: |
+            playwright-report/
+            /tmp/route-health-report.txt
+          retention-days: 30
