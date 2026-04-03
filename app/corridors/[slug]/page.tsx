@@ -14,6 +14,7 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SponsorCard, DataProductTeaser } from '@/components/monetization/SponsorCard';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -323,6 +324,13 @@ export default async function CorridorIntelPage({ params }: Props) {
 
             {/* Data Teaser Strip — corridor intelligence teasers */}
             <DataTeaserStrip geo={`${corridor.origin_state} to ${corridor.destination_state}`} />
+
+            {/* UrgentMarketSponsor — corridor-level market mode CTA */}
+            {/* marketKey is per-corridor so shortage/rescue modes fire at corridor granularity */}
+            <UrgentMarketSponsor
+              marketKey={`us-${corridor.origin_state?.toLowerCase()}-${corridor.destination_state?.toLowerCase()}`}
+              geo={`${corridor.origin_state} → ${corridor.destination_state}`}
+            />
 
             {/* Snippet Injector — featured snippet capture */}
             <SnippetInjector

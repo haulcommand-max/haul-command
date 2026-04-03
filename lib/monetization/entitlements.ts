@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
 import Stripe from 'stripe';
 
 export type StripeEventContext = {
@@ -15,14 +15,8 @@ export type StripeEventContext = {
 // Protects against double charges or dropped entitlements.
 
 export class EntitlementEngine {
-    private supabase;
+    private supabase = getSupabaseAdmin();
 
-    constructor() {
-        this.supabase = createClient(
-            process.env.SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
-    }
 
     // ── 1. Idempotent Ingestion ──────────────────────────────────────────────
     async lockAndProcessEvent(event: StripeEventContext, processor: () => Promise<void>) {
@@ -75,13 +69,21 @@ export class EntitlementEngine {
                     await this.revokeCanonicalSubscription(event.data.object as Stripe.Subscription);
                     break;
 
-                // Checkout Completes (AdGrid, Data Purchases, Claims)
-                case 'checkout.session.completed':
+                // Checkout Completes (AdGrid, Data Purchases, Claims, Campaigns)
+                case 'checkout.session.completed': {
                     const session = event.data.object as Stripe.Checkout.Session;
+                    // Legacy type-keyed routes
                     if (session.metadata?.type === 'ad_boost') await this.activateAdGrid(session);
                     if (session.metadata?.type === 'data_purchase') await this.activateDataProduct(session);
                     if (session.metadata?.type === 'tier2_claim') await this.activateProfileClaim(session);
+                    // New creative factory campaigns (/api/ads/campaigns)
+                    if (session.metadata?.campaign_id) await this.activateCampaign(session);
+                    // New data buy route (/api/data/buy) without legacy type key
+                    if (session.metadata?.product_id && !session.metadata?.type) await this.activateDataProduct(session);
+                    // Subscription activation from /api/checkout/session
+                    if (session.metadata?.product_key && session.mode === 'subscription') await this.activateSubscriptionByProductKey(session);
                     break;
+                }
 
                 // Load Board Escrow & Financing
                 case 'payment_intent.succeeded':
@@ -165,7 +167,60 @@ export class EntitlementEngine {
         }).eq('id', purchase.id);
     }
 
-    // ── 5. Standard AdGrid Placement ───────────────────────────────────────────
+    // ── 5. Ad Campaign Activation (from /api/ads/campaigns creative factory) ──
+    private async activateCampaign(session: Stripe.Checkout.Session) {
+        const campaignId = session.metadata?.campaign_id;
+        if (!campaignId) return;
+
+        await this.supabase.from('ad_campaigns').update({
+            status: 'active',
+            payment_confirmed_at: new Date().toISOString(),
+            stripe_session_id: session.id,
+        }).eq('id', campaignId);
+
+        // Swarm attribution
+        ;(async () => { try { await this.supabase.from('swarm_activity_log').insert({
+            agent_name: 'adgrid_creative_agent',
+            trigger_reason: 'campaign_payment_confirmed',
+            action_taken: `Campaign ${campaignId} activated after Stripe payment`,
+            surfaces_touched: ['ad_campaigns'],
+            revenue_impact: (session.amount_total ?? 0) / 100,
+            status: 'completed',
+        }); } catch {} })();
+    }
+
+    // ── 6. Subscription Activation by product_key (from /api/checkout/session) ─
+    private async activateSubscriptionByProductKey(session: Stripe.Checkout.Session) {
+        const userId = session.metadata?.user_id;
+        const productKey = session.metadata?.product_key;
+        if (!userId || !productKey) return;
+
+        // Map product_key → tier name
+        const TIER_MAP: Record<string, string> = {
+            'hc_basic_monthly': 'basic',  'hc_basic_annual': 'basic',
+            'hc_pro_monthly': 'pro',      'hc_pro_annual': 'pro',
+            'hc_elite_monthly': 'elite',  'hc_elite_annual': 'elite',
+            'broker_seat_monthly': 'broker', 'broker_seat_annual': 'broker',
+        };
+        const tier = TIER_MAP[productKey] ?? 'pro';
+
+        await this.supabase.from('profiles').update({
+            subscription_tier: tier,
+            subscription_status: 'active',
+        }).eq('id', userId);
+
+        await this.supabase.from('user_subscriptions').upsert({
+            user_id: userId,
+            stripe_session_id: session.id,
+            plan_id: productKey,
+            price_key: productKey,
+            status: 'active',
+            current_period_start: new Date().toISOString(),
+        }, { onConflict: 'user_id' });
+    }
+
+    // ── 7. Standard AdGrid Placement ───────────────────────────────────────────
+
     private async activateAdGrid(session: Stripe.Checkout.Session) {
         if (!session.metadata?.boost_id) throw new Error('Boost ID missing');
         await this.supabase.from('ad_boosts').update({ status: 'active', starts_at: new Date().toISOString() }).eq('id', session.metadata.boost_id);
