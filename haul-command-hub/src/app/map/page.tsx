@@ -69,8 +69,8 @@ export default async function MapPage() {
         <section className="mb-12">
           <CinematicMap
             markers={mapMarkers}
-            center={[-98.5, 39.8]}
-            zoom={3.5}
+            center={[15, 25]}
+            zoom={1.5}
             showGlobe={false}
             className="min-h-[400px] sm:min-h-[500px]"
           />

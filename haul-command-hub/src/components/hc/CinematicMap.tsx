@@ -255,12 +255,18 @@ export function CinematicMap({
               Global Route Intelligence
             </h3>
             <p className="text-gray-400 text-sm max-w-md mx-auto mb-4">
-              Real-time corridor tracking, operator positions, and route analytics across 120 countries.
+              10 markets live now. 18 launching soon. 92 in development — expanding to 120 countries.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              {markers.slice(0, 6).map((m, i) => (
-                <span key={i} className="bg-white/5 border border-white/10 rounded-full px-3 py-1 text-xs text-gray-300">
-                  📍 {m.label}
+              {[
+                { label: '10 Live Markets', color: '#C6923A' },
+                { label: '18 Launching Soon', color: '#3A7AC6' },
+                { label: '24 In Development', color: '#6B7A8D' },
+                { label: '68 Future Markets', color: '#3D5068' },
+              ].map((t, i) => (
+                <span key={i} className="border rounded-full px-3 py-1 text-xs font-semibold"
+                  style={{ borderColor: `${t.color}40`, color: t.color, background: `${t.color}10` }}>
+                  {t.label}
                 </span>
               ))}
             </div>

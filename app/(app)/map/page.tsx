@@ -173,7 +173,7 @@ function useGridLoads() {
 
 export default function MapPage() {
     const router = useRouter();
-    const [view, setView] = useState<MapView>("jurisdictions");
+    const [view, setView] = useState<MapView>("global");
     const [selectedCode, setSelectedCode] = useState<string | null>(null);
     const [selectedName, setSelectedName] = useState<string>("");
     const [tickerHeight, setTickerHeight] = useState(0);

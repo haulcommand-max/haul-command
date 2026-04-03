@@ -157,17 +157,20 @@ async function getStats() {
     const supabase = createClient();
 
     // LEAN: Fast parallel queries with timeout protection
-    const [operatorCountRes, hcPlacesCountRes, topRes] = await Promise.all([
-      supabase.from('hc_global_operators').select('*', { count: 'estimated', head: true }).catch(() => ({ count: 0 })),
-      supabase.from('hc_places').select('*', { count: 'exact', head: true }).eq('status', 'published').catch(() => ({ count: 0 })),
+    // NOTE: PostgrestFilterBuilder no longer supports .catch() — use Promise.allSettled
+    const [operatorCountSettled, hcPlacesCountSettled, topSettled] = await Promise.allSettled([
+      supabase.from('hc_global_operators').select('*', { count: 'estimated', head: true }),
+      supabase.from('hc_places').select('*', { count: 'exact', head: true }).eq('status', 'published'),
       supabase
         .from('hc_places')
         .select('id, name, locality, admin1_code, country_code, surface_category_key, slug, claim_status, demand_score')
         .eq('status', 'published')
         .order('demand_score', { ascending: false, nullsFirst: false })
-        .limit(12)
-        .catch(() => ({ data: [] })),
+        .limit(12),
     ]);
+    const operatorCountRes = operatorCountSettled.status === 'fulfilled' ? operatorCountSettled.value : { count: 0 };
+    const hcPlacesCountRes = hcPlacesCountSettled.status === 'fulfilled' ? hcPlacesCountSettled.value : { count: 0 };
+    const topRes = topSettled.status === 'fulfilled' ? topSettled.value : { data: [] };
 
     const operatorCount = (operatorCountRes as any).count ?? 0;
     const hcPlacesCount = (hcPlacesCountRes as any).count ?? 0;

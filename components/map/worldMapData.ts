@@ -152,7 +152,7 @@ export const COUNTRY_POSITIONS: Record<string, { x: number; y: number }> = {
   UY: { x: 34, y: 70 }, GT: { x: 16, y: 50 }, PA: { x: 22, y: 52 },
   CR: { x: 20, y: 52 }, DO: { x: 28, y: 46 }, JM: { x: 24, y: 46 },
   TT: { x: 30, y: 50 }, CU: { x: 22, y: 44 }, HN: { x: 18, y: 50 },
-  SV: { x: 16, y: 50 }, NI: { x: 18, y: 52 }, GY: { x: 32, y: 54 },
+  SV: { x: 15, y: 51 }, NI: { x: 17, y: 53 }, GY: { x: 32, y: 54 },
   SR: { x: 34, y: 54 },
   GB: { x: 48, y: 28 }, IE: { x: 46, y: 29 }, FR: { x: 50, y: 34 },
   DE: { x: 52, y: 30 }, NL: { x: 51, y: 28 }, BE: { x: 50, y: 30 },
@@ -215,17 +215,17 @@ export const COUNTRY_NOTES: Record<string, string> = {
 };
 
 export const TIER_COLORS: Record<string, string> = {
-  A: '#C6923A',
-  B: '#3A7AC6',
-  C: '#8A8A9A',
-  D: '#4A4A5A',
+  A: '#C6923A', // Gold — Live now
+  B: '#3A7AC6', // Blue — Coming soon
+  C: '#6B7A8D', // Slate — Planned
+  D: '#3D5068', // Dark blue — Future markets
 };
 
 export const TIER_LABELS: Record<string, string> = {
-  A: 'Tier A — Live',
-  B: 'Tier B — Coming Soon',
-  C: 'Tier C — Planned',
-  D: 'Tier D — Future',
+  A: 'Live Now',
+  B: 'Launching Soon',
+  C: 'In Development',
+  D: 'Future Markets',
 };
 
 export const COUNTRY_MAP = new Map(ALL_COUNTRIES.map(c => [c.iso, c]));
