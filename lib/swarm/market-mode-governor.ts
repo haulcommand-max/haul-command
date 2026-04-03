@@ -10,6 +10,7 @@
 // Rule: no_market_without_mode
 
 import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import { AGENT_REVENUE_MODELS } from "@/lib/swarm/revenue-attribution";
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -208,13 +209,21 @@ export async function batchEvaluateMarketModes(): Promise<{
         })
         .eq("market_key", market.market_key);
 
-      // Log the transition for the swarm activity feed
+      // Log the transition for the swarm activity feed — with revenue attribution
+      // Revenue is estimated based on mode's monetization strategy value
+      const revenueModel = AGENT_REVENUE_MODELS['market_mode_governor'] ?? {};
+      const estimatedRevenue = newMode === 'shortage' || newMode === 'rescue'
+        ? revenueModel.sponsor_placed ?? null   // Urgent modes unlock premium sponsor slots
+        : newMode === 'live'
+        ? revenueModel.claim_converted ?? null  // Live mode unlocks standard claims
+        : null;
+
       await supabase.from("swarm_activity_log").insert({
         agent_name: "market_mode_governor",
         trigger_reason: `mode_transition:${market.mode}→${newMode}`,
-        action_taken: `Market ${market.market_key} mode changed`,
-        surfaces_touched: ["market_states"],
-        revenue_impact: null,
+        action_taken: `Market ${market.market_key} mode changed → ${newMode} (${MODE_POLICIES[newMode].monetization_strategy})`,
+        surfaces_touched: ["market_states", "monetization_surfaces"],
+        revenue_impact: estimatedRevenue,
         trust_impact: null,
         country: market.country_code,
         market_key: market.market_key,

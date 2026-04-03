@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import {
     getTerritoryPrice,
@@ -99,10 +99,44 @@ function TierBadge({ tier }: { tier: string }) {
     );
 }
 
-function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaHref }: {
+function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaHref, zone, geo }: {
     title: string; subtitle?: string; monthly: number; annual?: number;
     tier: string; features: string[]; cta?: string; ctaHref?: string;
+    zone?: string; geo?: string;
 }) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleCheckout = useCallback(async () => {
+        if (!zone || !geo) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await fetch('/api/monetization/sponsor-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    zone,
+                    geo,
+                    priceMonthly: monthly,
+                    label: title,
+                    returnUrl: window.location.href,
+                }),
+            });
+            const data = await res.json();
+            if (data.sessionUrl) {
+                window.location.href = data.sessionUrl;
+            } else {
+                setError(data.error || 'Checkout failed. Please try again.');
+                setLoading(false);
+            }
+        } catch {
+            setError('Network error. Please try again.');
+            setLoading(false);
+        }
+    }, [zone, geo, monthly, title]);
+
+    const hasStripe = !!(zone && geo);
     return (
         <div style={{
             background: T.card, border: `1px solid ${T.border}`, borderRadius: 16,
@@ -137,17 +171,41 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
                 ))}
             </ul>
 
-            <Link
-                href={ctaHref || '/contact?ref=sponsor'}
-                style={{
-                    marginTop: 'auto', padding: '12px 0', borderRadius: 10, textAlign: 'center',
-                    background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
-                    color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
-                    letterSpacing: '0.02em',
-                }}
-            >
-                {cta || 'Claim This Territory'}
-            </Link>
+            {error && (
+                <div style={{ fontSize: 10, color: '#ef4444', textAlign: 'center' }}>
+                    {error}
+                </div>
+            )}
+
+            {hasStripe ? (
+                <button
+                    onClick={handleCheckout}
+                    disabled={loading}
+                    style={{
+                        marginTop: 'auto', padding: '12px 0', borderRadius: 10, textAlign: 'center',
+                        background: loading
+                            ? 'rgba(212,168,67,0.4)'
+                            : `linear-gradient(135deg, ${T.gold}, #d97706)`,
+                        color: '#000', fontWeight: 800, fontSize: 13,
+                        letterSpacing: '0.02em', border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                        width: '100%',
+                    }}
+                >
+                    {loading ? 'Redirecting to checkout...' : (cta || 'Claim This Territory')}
+                </button>
+            ) : (
+                <Link
+                    href={ctaHref || '/contact?ref=sponsor'}
+                    style={{
+                        marginTop: 'auto', padding: '12px 0', borderRadius: 10, textAlign: 'center',
+                        background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
+                        color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
+                        letterSpacing: '0.02em',
+                    }}
+                >
+                    {cta || 'Claim This Territory'}
+                </Link>
+            )}
         </div>
     );
 }

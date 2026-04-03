@@ -32,6 +32,7 @@ import SocialProofBanner from "@/components/social/SocialProofBanner";
 import { DirectoryActivityFeed } from "@/components/social/DirectoryActivityFeed";
 import { HeroBillboard } from "@/components/ads/HeroBillboard";
 import { getTopHouseAds } from "@/lib/ads/house-ads";
+import { DataTeaserStrip } from "@/components/data/DataTeaserStrip";
 import { FooterAccordion } from "./FooterAccordion";
 
 // ── ODS-Killer Sections ──
@@ -538,6 +539,11 @@ export default function HomeClient({
                         </div>
                     </div>
                 </motion.div>
+            </section>
+
+            {/* 13.5 DATA INTELLIGENCE TEASER */}
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <DataTeaserStrip />
             </section>
 
             {/* 14. FOOTER */}

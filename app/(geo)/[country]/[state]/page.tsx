@@ -11,6 +11,7 @@ import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed
 import { AdGridGeofenceTrigger } from '@/components/ads/AdGridGeofenceTrigger';
 import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 import { getCityHubUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
@@ -298,6 +299,12 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                     level="state"
                     territory={regionName}
                     pricePerMonth={499}
+                />
+
+                {/* ── Urgent Market Sponsor — mode-aware CTA ── */}
+                <UrgentMarketSponsor
+                    marketKey={`${countryData.iso2.toLowerCase()}-${state.toLowerCase()}`}
+                    geo={regionName}
                 />
 
                 {/* ── Data Teaser Strip ── */}

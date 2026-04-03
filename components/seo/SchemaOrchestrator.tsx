@@ -1,13 +1,25 @@
 import React from 'react';
 
 /**
- * P2 Schema Orchestrator (Rich Result Engine)
- * Automatically injects LocalBusiness, Service, Person, Review, and Breadcrumb schema.
+ * Schema Orchestrator (Rich Result Engine)
+ * Injects LocalBusiness, Service, Person, Review, Breadcrumb, Dataset,
+ * SoftwareApplication, GovernmentService, FAQPage, and DefinedTermSet schema.
+ *
+ * Types:
+ *   CityDirectory  — directory listing page for a city
+ *   DriverProfile  — individual operator profile
+ *   Corridor       — route/corridor intelligence page
+ *   Tool           — calculator or compliance tool
+ *   CompliancePage — regulation/escort-requirements page
+ *   GlossaryPage   — glossary term or index
+ *   LoadBoard      — load board surface
+ *   Home           — homepage
  */
 
 interface SchemaOrchestratorProps {
-    type: 'CityDirectory' | 'DriverProfile' | 'LoadBoard' | 'Home';
-    data: any; // Type strictly later based on usage
+    type: 'CityDirectory' | 'DriverProfile' | 'LoadBoard' | 'Home'
+        | 'Corridor' | 'Tool' | 'CompliancePage' | 'GlossaryPage';
+    data: any;
 }
 
 export function SchemaOrchestrator({ type, data }: SchemaOrchestratorProps) {
@@ -98,6 +110,122 @@ export function SchemaOrchestrator({ type, data }: SchemaOrchestratorProps) {
                 });
             }
         }
+    }
+
+    // ── Corridor ─────────────────────────────────────────────────
+    if (type === 'Corridor') {
+        const { origin, destination, url, operatorCount, breadcrumbs } = data;
+        const routeName = `${origin} to ${destination} Pilot Car Corridor`;
+
+        addSchema({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            serviceType: 'Oversize Load Escort',
+            name: routeName,
+            areaServed: [origin, destination],
+            provider: { '@type': 'Organization', name: 'Haul Command' },
+            url,
+        });
+
+        addSchema({
+            '@context': 'https://schema.org',
+            '@type': 'Dataset',
+            name: `${routeName} Intelligence`,
+            description: `Pilot car operator availability, rates, and compliance data for the ${origin} to ${destination} heavy haul corridor.`,
+            url,
+            creator: { '@type': 'Organization', name: 'Haul Command' },
+            variableMeasured: ['operator count', 'corridor rate', 'compliance requirements'],
+        });
+
+        if (breadcrumbs) {
+            addSchema({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: breadcrumbs.map((b: any, i: number) => ({
+                    '@type': 'ListItem', position: i + 1, name: b.name, item: b.url,
+                })),
+            });
+        }
+    }
+
+    // ── Tool ─────────────────────────────────────────────────────
+    if (type === 'Tool') {
+        const { name, description, url, category } = data;
+
+        addSchema({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name,
+            description,
+            url,
+            applicationCategory: category ?? 'BusinessApplication',
+            operatingSystem: 'Web',
+            offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
+            },
+            creator: { '@type': 'Organization', name: 'Haul Command' },
+        });
+    }
+
+    // ── CompliancePage ───────────────────────────────────────────
+    if (type === 'CompliancePage') {
+        const { jurisdiction, description, url, faqs, breadcrumbs } = data;
+
+        addSchema({
+            '@context': 'https://schema.org',
+            '@type': 'GovernmentService',
+            name: `${jurisdiction} Oversize Load Escort Requirements`,
+            description,
+            areaServed: jurisdiction,
+            provider: { '@type': 'Organization', name: 'Haul Command' },
+            url,
+        });
+
+        if (faqs && faqs.length > 0) {
+            addSchema({
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: faqs.map((f: any) => ({
+                    '@type': 'Question',
+                    name: f.q,
+                    acceptedAnswer: { '@type': 'Answer', text: f.a },
+                })),
+            });
+        }
+
+        if (breadcrumbs) {
+            addSchema({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: breadcrumbs.map((b: any, i: number) => ({
+                    '@type': 'ListItem', position: i + 1, name: b.name, item: b.url,
+                })),
+            });
+        }
+    }
+
+    // ── GlossaryPage ─────────────────────────────────────────────
+    if (type === 'GlossaryPage') {
+        const { term, definition, url, relatedTerms } = data;
+
+        addSchema({
+            '@context': 'https://schema.org',
+            '@type': 'DefinedTermSet',
+            name: term ? `${term} — Heavy Haul Glossary` : 'Heavy Haul Glossary',
+            description: definition ?? 'Definitions for heavy haul and oversize load industry terminology.',
+            url,
+            creator: { '@type': 'Organization', name: 'Haul Command' },
+            ...(term && definition ? {
+                hasDefinedTerm: [{
+                    '@type': 'DefinedTerm',
+                    name: term,
+                    description: definition,
+                    url,
+                }]
+            } : {}),
+        });
     }
 
     return (

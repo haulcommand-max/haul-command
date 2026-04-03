@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
 import BuyButton from '@/components/data/BuyButton';
-import { SponsorCard } from '@/components/monetization/SponsorCard';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
@@ -163,9 +163,9 @@ export default function DataMarketplacePage() {
                     </div>
                 </section>
 
-                {/* ── Data Marketplace Sponsor Slot ── */}
+                {/* ── Data Product Sponsor Slot ── */}
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                    <SponsorCard zone="glossary" compact />
+                    <AdGridSlot zone="data_product_sponsor" />
                 </section>
 
                 {/* ── Enterprise Products ── */}

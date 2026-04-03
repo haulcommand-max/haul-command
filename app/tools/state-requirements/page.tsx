@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 // Free Tool #4 — State Requirements Cheatsheet
 const STATES = [
@@ -95,7 +97,16 @@ export default function StateRequirementsCheatsheet() {
                             <Link aria-label="Navigation Link" href="/tools" style={{ color: '#F1A91B', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Back to Free Tools</Link>
                         </div>
                     </div>
-                    <aside><ToolsSidebar currentPath="/tools/state-requirements" /></aside>
+                    <aside className="space-y-4">
+                        <ToolsSidebar currentPath="/tools/state-requirements" />
+                        {/* Regulations Sponsor — highest-intent compliance surface */}
+                        <AdGridSlot zone="regulations_sponsor" />
+                    </aside>
+                </div>
+
+                {/* Data Teaser Strip — compliance + market data upsell */}
+                <div style={{ marginTop: 32 }}>
+                    <DataTeaserStrip />
                 </div>
             </div>
         </div>

@@ -19,6 +19,8 @@ import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { AdGridCurfewHotelBooking } from '@/components/ads/AdGridCurfewHotelBooking';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 // ── Top 50 US cities for programmatic generation ──
 const TOP_US_CITIES: Record<string, { name: string; state: string; stateCode: string; lat: number; lng: number }> = {
@@ -513,6 +515,20 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
             },
           ]}
         />
+      </div>
+
+      {/* ── City Launch Sponsor ── */}
+      <div className="max-w-6xl mx-auto px-4 mt-8">
+        <TakeoverSponsorBanner
+          level="city"
+          territory={city.name}
+          pricePerMonth={199}
+        />
+      </div>
+
+      {/* ── Data Teaser Strip ── */}
+      <div className="max-w-6xl mx-auto px-4 mt-6 mb-8">
+        <DataTeaserStrip geo={city.name} />
       </div>
     </div>
   );

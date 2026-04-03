@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import ClaimStatusBanner from './ClaimStatusBanner';
 import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 export const metadata: Metadata = {
   title: 'Claim Your Listing — Free Verified Profile | Haul Command',
@@ -202,6 +204,16 @@ export default async function ClaimPage() {
         >
           Claim Now \u2014 It\u2019s Free
         </Link>
+      </section>
+
+      {/* Claim Listing Sponsor Slot */}
+      <section className="max-w-4xl mx-auto px-4 py-4">
+        <AdGridSlot zone="claim_listing_sponsor" />
+      </section>
+
+      {/* Data Teaser Strip — show market activity */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <DataTeaserStrip />
       </section>
     </div>
   );

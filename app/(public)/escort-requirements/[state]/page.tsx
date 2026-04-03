@@ -8,6 +8,7 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
 import {
     getStateBySlug,
     getAllStateSlugs,
@@ -270,57 +271,27 @@ export default async function EscortRequirementsStatePage({
     const state = getStateBySlug(stateSlug);
     if (!state) notFound();
 
-    // Structured data
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Article",
-                headline: `${state.name} Oversize Load Escort Requirements`,
-                description: getRequirementsIntro(state),
-                author: { "@type": "Organization", name: "Haul Command" },
-                publisher: { "@type": "Organization", name: "Haul Command" },
-                about: { "@type": "GovernmentService", name: `${state.name} DOT Oversize Load Escort Regulations` },
-            },
-            {
-                "@type": "BreadcrumbList",
-                itemListElement: [
-                    { "@type": "ListItem", position: 1, name: "Haul Command", item: "/" },
-                    { "@type": "ListItem", position: 2, name: "Escort Requirements", item: "/escort-requirements" },
-                    { "@type": "ListItem", position: 3, name: state.name, item: `/escort-requirements/${state.slug}` },
-                ],
-            },
-            {
-                "@type": "FAQPage",
-                mainEntity: [
-                    {
-                        "@type": "Question",
-                        name: `What are the pilot car requirements in ${state.name}?`,
-                        acceptedAnswer: {
-                            "@type": "Answer",
-                            text: getRequirementsIntro(state),
-                        },
-                    },
-                    {
-                        "@type": "Question",
-                        name: `When is a police escort required in ${state.name}?`,
-                        acceptedAnswer: {
-                            "@type": "Answer",
-                            text: state.policeWidthFt
-                                ? `In ${state.name}, law enforcement escort is required for loads exceeding ${state.policeWidthFt} feet in width.`
-                                : `Police escort requirements in ${state.name} are determined on a case-by-case basis by the ${state.abbr} DOT.`,
-                        },
-                    },
-                ],
-            },
-        ],
-    };
-
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            {/* Schema Orchestrator — CompliancePage: GovernmentService + FAQPage + Breadcrumb */}
+            <SchemaOrchestrator
+                type="CompliancePage"
+                data={{
+                    jurisdiction: state.name,
+                    description: getRequirementsIntro(state),
+                    url: `https://haulcommand.com/escort-requirements/${state.slug}`,
+                    faqs: [
+                        { q: `What are the pilot car requirements in ${state.name}?`, a: getRequirementsIntro(state) },
+                        { q: `When is a police escort required in ${state.name}?`, a: state.policeWidthFt ? `Law enforcement escort required above ${state.policeWidthFt}ft width.` : `Police escort requirements in ${state.name} are case-by-case.` },
+                        { q: `What equipment does a pilot car need in ${state.name}?`, a: `Standard ${state.abbr} pilot car equipment includes OVERSIZE LOAD banner, amber rotating lights, two-way radio, safety flags, and a laminated permit copy.` },
+                        { q: `Does ${state.name} require pilot car certification?`, a: `${state.name} requires all pilot car operators to complete ${state.abbr} DOT approved training. Check with the ${state.abbr} Department of Public Safety for current certification requirements.` },
+                    ],
+                    breadcrumbs: [
+                        { name: 'Haul Command', url: 'https://haulcommand.com' },
+                        { name: 'Escort Requirements', url: 'https://haulcommand.com/escort-requirements' },
+                        { name: state.name, url: `https://haulcommand.com/escort-requirements/${state.slug}` },
+                    ],
+                }}
             />
 
             <main className="min-h-screen" style={{ background: "#050505" }}>

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { AdGridClassifiedsFeed } from '@/components/ads/AdGridClassifiedsFeed';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
 
 // LIVE MARKET DATA BASED ON 2026 RATE GUIDE
 const RATES = {
@@ -66,6 +68,21 @@ export default function EscortCalculator() {
 
   return (
     <div className="min-h-screen bg-[#07090f] text-white font-sans pt-8 pb-32">
+      {/* SoftwareApplication schema — unlocks Google rich results for free tools */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'Haul Command Escort Cost Calculator',
+          description: 'Calculate accurate heavy haul escort vehicle costs by region, service type, and distance using 2026 Haul Command Rate Guide live market data.',
+          url: 'https://haulcommand.com/tools/escort-calculator',
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          creator: { '@type': 'Organization', name: 'Haul Command' },
+        }) }}
+      />
       <div className="max-w-5xl mx-auto px-4">
         {/* Header */}
         <div className="mb-10 border-b border-white/10 pb-8">
@@ -242,6 +259,16 @@ export default function EscortCalculator() {
             ]}
           />
         </div>
+
+        {/* AI Search Answer Block */}
+        <StaticAnswerBlock
+          question="How much does a pilot car cost per mile in 2026?"
+          answer="In 2026, pilot car (escort vehicle) costs range from $1.65 to $2.25 per mile for standard lead/chase escorts, depending on region. Southeast rates: $1.65–$1.85/mi. Midwest: $1.75–$1.95/mi. West Coast: $2.00–$2.25/mi. Night moves add $0.25–$0.50/mi. Short hauls under 150 miles typically have a minimum of $350–$500."
+          confidence="verified_current"
+          source="2026 Haul Command Rate Guide"
+          ctaLabel="Get an Instant Quote"
+          ctaUrl="/tools/escort-calculator"
+        />
 
         {/* Social Proof */}
         <div className="mt-8">

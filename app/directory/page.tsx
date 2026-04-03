@@ -16,6 +16,7 @@ import { AdGridInstantLeadForm } from '@/components/ads/AdGridInstantLeadForm';
 import { AdGridKeywordInterceptor } from '@/components/ads/AdGridKeywordInterceptor';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 export const dynamic = 'force-dynamic';
 
@@ -544,6 +545,11 @@ export default async function DirectoryPage() {
           <PostLoadCTA variant="card" />
           <OperatorsNeededCTA surfaceName="underserved areas" operatorsNeeded={100} />
         </div>
+      </section>
+
+      {/* Data Teaser Strip */}
+      <section className="max-w-6xl mx-auto px-4 py-4">
+        <DataTeaserStrip />
       </section>
 
       {/* StickyClaimBar — scroll-triggered */}

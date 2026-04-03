@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import MarketModeCTA from '@/components/market/MarketModeCTA';
 import VoiceFaqSchema, { QuickAnswerBlock } from '@/components/seo/VoiceFaqSchema';
+import { QuickAnswerBlock as RichQuickAnswerBlock } from '@/components/seo/QuickAnswerBlock';
+import { SponsorCard } from '@/components/monetization/SponsorCard';
 import DataTeaserCard from '@/components/data/DataTeaserCard';
 import {
     REGULATIONS,
@@ -202,6 +204,21 @@ export default async function CountryRegulationPage({
                     geoEntity={reg.countryName}
                     pageType="regulation"
                     maxQuestions={4}
+                />
+
+                {/* Rich QuickAnswerBlock — AI search dominance with freshness signals */}
+                <RichQuickAnswerBlock
+                    question={`Do I need a ${term} in ${reg.countryName}?`}
+                    answerHtml={`<p>${reg.voiceAnswer}</p>`}
+                    source={reg.permitSystem.authority}
+                    confidenceLabel={
+                        reg.confidenceState === 'verified_current' ? 'verified_current'
+                        : reg.confidenceState === 'verified_but_review_due' ? 'verified_but_review_due'
+                        : reg.confidenceState === 'partially_verified' ? 'partially_verified'
+                        : reg.confidenceState === 'seeded_needs_human_review' ? 'seeded_needs_human_review'
+                        : 'historical_reference_only'
+                    }
+                    lastReviewedAt={reg.lastVerified}
                 />
             </div>
 
@@ -523,7 +540,11 @@ export default async function CountryRegulationPage({
 
             {/* Data Intelligence Upsell */}
             <section style={{ marginBottom: '2rem' }}>
-                <DataTeaserCard productType="rate_benchmark" context={{ country: reg.countryName }} />
+                {/* AdGrid — regulation sponsor slot */}
+                <SponsorCard zone="regulation" geo={reg.countryCode} compact />
+                <div style={{ marginTop: 12 }}>
+                    <DataTeaserCard productType="rate_benchmark" context={{ country: reg.countryName }} />
+                </div>
             </section>
 
             {/* CTA — Market-mode aware */}

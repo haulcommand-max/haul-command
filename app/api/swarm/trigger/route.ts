@@ -19,6 +19,7 @@ import {
   onJobCompleted,
   onTrustScoreUpdated,
 } from "@/lib/swarm/trigger-wiring";
+import { attributeClaimRevenue, trackAgentRevenue } from "@/lib/swarm/revenue-attribution";
 
 export async function POST(req: NextRequest) {
   try {
@@ -69,12 +70,35 @@ export async function POST(req: NextRequest) {
         break;
       case "claim_completed":
         result = await onClaimCompleted(payload.entity_id, payload.country_code);
+        // → Revenue attribution: claim_pressure_agent drove this claim
+        attributeClaimRevenue(
+          'claim_pressure_agent',
+          payload.market_key ?? `${payload.country_code?.toLowerCase() ?? 'us'}`,
+          payload.country_code ?? 'US',
+          payload.entity_id
+        ).catch(() => {}); // fire-and-forget, non-blocking
         break;
       case "lead_attempt":
         result = await onLeadAttempt(payload.entity_id, payload.country_code, payload.claimed ?? true);
+        // → Revenue attribution: lead_capture_agent
+        trackAgentRevenue({
+          agent_name: 'lead_capture_agent',
+          event_type: 'lead_captured',
+          amount_usd: 12,
+          country: payload.country_code ?? 'US',
+          entity_id: payload.entity_id,
+        }).catch(() => {});
         break;
       case "job_completed":
         result = await onJobCompleted(payload.entity_id, payload.operator_id, payload.country_code);
+        // → Revenue attribution: demand_signal_agent drove the match
+        trackAgentRevenue({
+          agent_name: 'demand_signal_agent',
+          event_type: 'load_matched',
+          amount_usd: 8,
+          country: payload.country_code ?? 'US',
+          entity_id: payload.entity_id,
+        }).catch(() => {});
         break;
       case "trust_updated":
         result = await onTrustScoreUpdated(payload.entity_id, payload.country_code, payload.delta ?? 0);

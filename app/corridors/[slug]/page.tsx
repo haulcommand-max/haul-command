@@ -12,6 +12,8 @@ import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { AdGridWeatherBanner } from '@/components/ads/AdGridWeatherBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SponsorCard, DataProductTeaser } from '@/components/monetization/SponsorCard';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -75,21 +77,21 @@ export default async function CorridorIntelPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": `${corridor.origin_state} to ${corridor.destination_state} Escort Corridor Intel`,
-        "url": `https://haulcommand.com/corridors/${slug}`,
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
-            { "@type": "ListItem", "position": 2, "name": "Corridors", "item": "https://haulcommand.com/corridors" },
-            { "@type": "ListItem", "position": 3, "name": `${corridor.origin_state} to ${corridor.destination_state}` },
-          ]
-        }
-      }) }} />
+      {/* Schema Orchestrator — Corridor: Service + Dataset + Breadcrumb rich results */}
+      <SchemaOrchestrator
+        type="Corridor"
+        data={{
+          origin: corridor.origin_state,
+          destination: corridor.destination_state,
+          url: `https://haulcommand.com/corridors/${slug}`,
+          operatorCount: corridor.operator_count,
+          breadcrumbs: [
+            { name: 'Home', url: 'https://haulcommand.com' },
+            { name: 'Corridors', url: 'https://haulcommand.com/corridors' },
+            { name: `${corridor.origin_state} to ${corridor.destination_state}`, url: `https://haulcommand.com/corridors/${slug}` },
+          ],
+        }}
+      />
       {/* Weather Alert Banner — contextual corridor intelligence */}
       <AdGridWeatherBanner alert={null} />
 
@@ -313,6 +315,14 @@ export default async function CorridorIntelPage({ params }: Props) {
 
             {/* Social Proof Banner */}
             <SocialProofBanner />
+
+            {/* Corridor Sponsor Slot — dedicated corridor_sponsor zone */}
+            <div className="max-w-4xl mx-auto">
+              <AdGridSlot zone="corridor_sponsor" />
+            </div>
+
+            {/* Data Teaser Strip — corridor intelligence teasers */}
+            <DataTeaserStrip geo={`${corridor.origin_state} to ${corridor.destination_state}`} />
 
             {/* Snippet Injector — featured snippet capture */}
             <SnippetInjector
