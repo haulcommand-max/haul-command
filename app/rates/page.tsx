@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
+
 
 const COUNTRIES = [
   { code: 'us', name: 'United States', flag: '\ud83c\uddfa\ud83c\uddf8', currency: 'USD', symbol: '$', avgRate: '450-650' },
@@ -66,8 +68,17 @@ export default async function RatesPage() {
         </p>
       </section>
 
+      <section className="max-w-6xl mx-auto px-4 pb-4 pt-0">
+        <PaywallGateBanner
+          surfaceName="Rates Intelligence"
+          tier="Pro"
+          description="Unlock full corridor rate intelligence and per-mile benchmarks across 120 countries."
+        />
+      </section>
+
       <section className="max-w-6xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           {COUNTRIES.map((country) => (
             <Link aria-label="Navigation Link"
               key={country.code}

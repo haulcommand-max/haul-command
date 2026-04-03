@@ -13,6 +13,7 @@
 import { useState } from 'react';
 import { DATA_PRODUCT_CATALOG, DataProduct } from '@/lib/monetization/data-product-engine';
 import { Lock, Unlock, Download, Key, BarChart2, Map, TrendingUp, Shield, FileText, Zap, Globe, Eye } from 'lucide-react';
+import { PaywallBanner } from '@/components/monetization/PaywallBanner';
 
 const PRODUCT_ICONS: Record<string, React.ReactNode> = {
     'corridor-snapshot': <TrendingUp size={20} />,
@@ -148,6 +149,18 @@ export default function DataMarketplacePage() {
                     Corridor demand, rate benchmarks, operator density, and market reports.
                     Preview free. Unlock the full data with one click.
                 </p>
+            </div>
+
+            <div style={{
+                padding: '0 24px 24px',
+                maxWidth: 800, margin: '0 auto',
+            }}>
+                <PaywallBanner
+                    forceShow
+                    suggestedTier="Business"
+                    surfaceName="Data Marketplace"
+                    urgencyLevel="medium"
+                />
             </div>
 
             {/* Product Grid */}

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
+import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 
 export const metadata: Metadata = {
   title: 'Corridor Intelligence Hub — Heavy Haul Escort Routes | Haul Command',
@@ -51,6 +52,11 @@ export default async function CorridorsPage() {
       </section>
 
       <div className="max-w-6xl mx-auto px-4 py-12">
+        <PaywallGateBanner
+          surfaceName="Corridor Intelligence"
+          tier="Business"
+          description="Unlock full corridor demand scores, fill rates, and operator density across 200+ US corridors."
+        />
         {topStates.map(state => (
           <div key={state} className="mb-10">
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
