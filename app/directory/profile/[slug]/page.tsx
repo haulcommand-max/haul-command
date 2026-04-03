@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { Shield, MapPin, Phone, Star, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
 import { generateOperatorProfileJsonLd, generateProfileFacts } from '@/lib/platform/ai-entity-graph';
 import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
+import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
 
 // ══════════════════════════════════════════════════════════════
 // DIRECTORY PROFILE — /directory/profile/:slug
@@ -197,6 +199,30 @@ function renderProfile(op: any) {
                 />
             )}
             <OperatorTemplate {...props} />
+            {/* StickyClaimBar — persistent claim CTA for unclaimed profiles */}
+            {!isClaimed && (
+                <StickyClaimBar
+                    context="listing"
+                    regionName={op.region_code || op.admin1_code}
+                    claimHref={`/claim/${op.slug || op.id}`}
+                    suggestHref={`/directory/profile/${op.slug || op.id}/suggest-edit`}
+                    profileId={op.id || op.slug}
+                />
+            )}
+            {isClaimed && (
+                <StickyClaimBar
+                    context="listing"
+                    claimedBy={op.name}
+                    suggestHref={`/directory/profile/${op.slug || op.id}/suggest-edit`}
+                />
+            )}
+            {/* SnippetInjector — featured snippet capture on profile pages */}
+            <SnippetInjector
+                blocks={['definition', 'cost_range']}
+                term={op.entity_type === 'broker' ? 'heavy haul broker' : 'pilot car'}
+                geo={location || 'United States'}
+                country={op.country_code || 'US'}
+            />
         </>
     );
 }

@@ -11,6 +11,9 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { PostLoadCTA, OperatorsNeededCTA, ClaimListingCTA } from '@/components/seo/ConversionCTAs';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { GeoAuthorityFloor } from '@/components/seo/GeoAuthorityFloor';
+import { GeoMarketplaceHero } from '@/components/seo/GeoMarketplaceHero';
+import { StaticRadarMap } from '@/components/seo/StaticRadarMap';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 // ── Top 50 US cities for programmatic generation ──
@@ -210,6 +213,15 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           <span className="text-hc-gold-500 font-bold">{city.name}</span>
         </nav>
 
+        {/* ── GeoMarketplaceHero — above-fold conversion hero ── */}
+        <GeoMarketplaceHero
+          cityName={city.name}
+          regionName={city.state}
+          activeDrivers={operatorCount || 3}
+          activeLoads={Math.max(5, Math.floor(Math.random() * 15) + 3)}
+          supplyGapScore={0.6}
+        />
+
         {/* ── Hero ── */}
         <div className="text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-hc-gold-500/10 border border-hc-gold-500/20 rounded-full text-xs font-bold text-hc-gold-500 uppercase tracking-[0.2em]">
@@ -261,6 +273,14 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           </Link>
         </div>
 
+        {/* ── Radar Map — visual authority signal ── */}
+        <StaticRadarMap
+          cityName={city.name}
+          state={city.stateCode}
+          radiusMiles={50}
+          activeDrivers={operatorCount || 3}
+        />
+
         {/* ── Services Available ── */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
@@ -308,6 +328,13 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </section>
+
+        {/* ── Live Market Data — GeoAuthorityFloor ── */}
+        <GeoAuthorityFloor
+          citySlug={slug}
+          cityName={city.name}
+          stateName={city.state}
+        />
 
         {/* ── Nearby Cities ── */}
         {nearbyCities.length > 0 && (

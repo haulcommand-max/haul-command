@@ -3,6 +3,9 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
+import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
@@ -461,6 +464,31 @@ export default async function DirectoryPage() {
           </Link>
         </div>
       </section>
+      {/* Snippet Injector — featured snippet capture */}
+      <section className="max-w-4xl mx-auto px-4 py-8">
+        <SnippetInjector
+          blocks={['definition', 'faq', 'cost_range', 'steps']}
+          term="pilot car"
+          geo="United States"
+          country="US"
+        />
+      </section>
+
+      {/* Conversion CTAs */}
+      <section className="max-w-4xl mx-auto px-4 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ClaimListingCTA entityId="new" variant="card" />
+          <PostLoadCTA variant="card" />
+          <OperatorsNeededCTA surfaceName="underserved areas" operatorsNeeded={100} />
+        </div>
+      </section>
+
+      {/* StickyClaimBar — scroll-triggered */}
+      <StickyClaimBar
+        context="root"
+        claimHref="/claim"
+        suggestHref="/claim"
+      />
     </div>
     </>
   );

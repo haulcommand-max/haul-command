@@ -5,6 +5,7 @@ import { LiquidityDashboard } from "@/components/dashboard/LiquidityDashboard";
 import { TodayCommandCenter } from "@/components/intelligence/TodayCommandCenter";
 import { SwarmActivityFeed } from "@/components/swarm/SwarmActivityFeed";
 import { SwarmScoreboard } from "@/components/swarm/SwarmScoreboard";
+import { MarketPulse } from "@/components/seo/MarketPulse";
 import "@/components/swarm/swarm.css";
 
 export default function CommandDashboardPage() {
@@ -67,12 +68,23 @@ export default function CommandDashboardPage() {
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {activeTab === "ops" ? (
                     /* ── Operations Tab ── */
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div className="lg:col-span-1 lg:order-2">
-                            <TodayCommandCenter data={null} />
-                        </div>
-                        <div className="lg:col-span-2 lg:order-1">
-                            <LiquidityDashboard />
+                    <div className="space-y-6">
+                        {/* MarketPulse — KPI widget */}
+                        <MarketPulse
+                            totalProviders={1247}
+                            activeLoads={38}
+                            avgTrust={87}
+                            benchmarkLow={250}
+                            benchmarkHigh={450}
+                            regionCode="US"
+                        />
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="lg:col-span-1 lg:order-2">
+                                <TodayCommandCenter data={null} />
+                            </div>
+                            <div className="lg:col-span-2 lg:order-1">
+                                <LiquidityDashboard />
+                            </div>
                         </div>
                     </div>
                 ) : (

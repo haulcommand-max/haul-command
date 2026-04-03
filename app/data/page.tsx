@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
-
-const BuyButton = dynamic(() => import('@/components/data/BuyButton'), { ssr: false });
+import BuyButton from '@/components/data/BuyButton';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',

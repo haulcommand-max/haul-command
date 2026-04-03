@@ -93,6 +93,10 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#D4A843', transition: 'all 0.15s' }}>
                         📊 Data Marketplace
                     </Link>
+                    <Link aria-label="Navigation Link" href="/advertise"
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', fontSize: '0.875rem', fontWeight: 500, borderRadius: '0.5rem', color: '#D4A843', transition: 'all 0.15s' }}>
+                        📣 Advertise
+                    </Link>
 
                     <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '1.5rem', marginBottom: '0.75rem', padding: '0 0.5rem' }}>
                         Payments

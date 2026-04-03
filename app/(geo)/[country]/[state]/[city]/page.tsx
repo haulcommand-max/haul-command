@@ -5,6 +5,8 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { GeoMeshLinks } from '@/components/seo/GeoMeshLinks';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
+import { StaticRadarMap } from '@/components/seo/StaticRadarMap';
+import { GeoMarketplaceHero } from '@/components/seo/GeoMarketplaceHero';
 import { ClaimListingCTA, OperatorsNeededCTA, PostLoadCTA } from '@/components/seo/ConversionCTAs';
 import { getCityData, getAllServices } from '@/lib/seo/programmatic-data';
 import { getCityServiceUrl } from '@/lib/seo/geo-mesh';
@@ -69,6 +71,23 @@ export default async function CityHubPage({ params }: { params: Promise<{ countr
 
             {/* Geo Mesh Internal Linking */}
             <GeoMeshLinks currentCity={cityData} />
+
+            {/* GeoMarketplaceHero — above-fold conversion hero */}
+            <GeoMarketplaceHero
+                cityName={cityData.city}
+                regionName={state.toUpperCase()}
+                activeDrivers={3}
+                activeLoads={7}
+                supplyGapScore={0.5}
+            />
+
+            {/* StaticRadarMap — visual pilot car coverage */}
+            <StaticRadarMap
+                cityName={cityData.city}
+                state={state.toUpperCase()}
+                radiusMiles={50}
+                activeDrivers={3}
+            />
 
             {/* SchemaOrchestrator — rich results */}
             <SchemaOrchestrator

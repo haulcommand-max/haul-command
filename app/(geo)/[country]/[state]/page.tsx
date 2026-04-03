@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { RegulatoryMoat } from '@/components/seo/RegulatoryMoat';
+import { PostLoadCTA, OperatorsNeededCTA, ClaimListingCTA } from '@/components/seo/ConversionCTAs';
 import { getCityHubUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
@@ -244,6 +247,30 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                         </div>
                     </section>
                 ) : null}
+                {/* ── Snippet Injector — featured snippet capture ── */}
+                <SnippetInjector
+                    blocks={['definition', 'faq', 'cost_range', 'regulation_summary', 'steps']}
+                    term="pilot car"
+                    geo={regionName}
+                    country={countryData.iso2}
+                />
+                {/* ── Regulatory Moat — state-specific compliance intelligence ── */}
+                <RegulatoryMoat
+                    stateName={regionName}
+                    escortWidth={`12' wide (two-lane) / 14' wide (multi-lane)`}
+                    escortHeight={`14'6" requires height pole`}
+                    poleTrigger={`14'6" overall height`}
+                    nightRules="Most states restrict OS/OW movements 30 min after sunset to 30 min before sunrise"
+                    holidayRules={`No travel on major holidays (New Year's, Memorial Day, July 4th, Labor Day, Thanksgiving, Christmas)`}
+                    confidence={82}
+                />
+
+                {/* ── Conversion CTAs ── */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 border-t border-hc-border">
+                    <PostLoadCTA corridorName={regionName} variant="card" />
+                    <OperatorsNeededCTA surfaceName={regionName} />
+                    <ClaimListingCTA entityId="new" variant="card" />
+                </div>
             </div>
         </div>
     );
