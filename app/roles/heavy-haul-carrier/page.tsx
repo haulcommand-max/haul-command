@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +23,7 @@ const gold = '#C6923A';
 export default function HeavyHaulCarrierPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#080810', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
+      {/* Breadcrumb */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 24px 0', display: 'flex', gap: 6, fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
         <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
         <span>›</span>
@@ -52,6 +54,13 @@ export default function HeavyHaulCarrierPage() {
             </Link>
           ))}
         </div>
+
+        {/* SEO Internal Links — carrier page passes equity to loads, directory, tools, corridors */}
+        <RelatedLinks
+          pageType="role"
+          heading="Related resources for heavy haul carriers"
+          className="mt-12"
+        />
       </section>
     </main>
   );
