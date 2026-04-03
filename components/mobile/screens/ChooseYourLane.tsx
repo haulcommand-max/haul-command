@@ -144,50 +144,26 @@ export default function ChooseYourLane({ onSelect }: ChooseYourLaneProps) {
   };
 
   return (
-    <div style={{
-      background: 'var(--m-bg, #050508)',
-      minHeight: '100dvh',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: 'var(--m-2xl) var(--m-screen-pad)',
-    }}>
+    <div style={{background: 'var(--m-bg, #050508)',minHeight: '100dvh',display: 'flex',flexDirection: 'column',padding: 'var(--m-2xl) var(--m-screen-pad)'}}>
       {/* Header */}
-      <div style={{ marginBottom: 'var(--m-3xl)', textAlign: 'center' }}>
-        <div style={{
-          fontSize: 'var(--m-font-overline)',
-          fontWeight: 800,
-          color: 'var(--m-gold)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.2em',
-          marginBottom: 'var(--m-sm)',
-        }}>
+      <div style={{marginBottom: 'var(--m-3xl)',textAlign: 'center' }}>
+        <div style={{fontSize: 'var(--m-font-overline)',fontWeight: 800,color: 'var(--m-gold)',textTransform: 'uppercase',letterSpacing: '0.2em',marginBottom: 'var(--m-sm)'}}>
           Haul Command
         </div>
-        <h1 style={{
-          fontSize: 'var(--m-font-display)',
-          fontWeight: 900,
-          color: 'var(--m-text-primary)',
-          lineHeight: '34px',
-          margin: 0,
-        }}>
+        <h1 style={{fontSize: 'var(--m-font-display)',fontWeight: 900,color: 'var(--m-text-primary)',lineHeight: '34px',margin: 0}}>
           Choose Your Lane
         </h1>
-        <p style={{
-          fontSize: 'var(--m-font-body-sm)',
-          color: 'var(--m-text-secondary)',
-          marginTop: 'var(--m-sm)',
-          lineHeight: 1.5,
-        }}>
+        <p style={{fontSize: 'var(--m-font-body-sm)',color: 'var(--m-text-secondary)',marginTop: 'var(--m-sm)',lineHeight: 1.5}}>
           We&apos;ll shape your command center around how you operate.
           <br />
-          <span style={{ color: 'var(--m-text-muted)', fontSize: 'var(--m-font-caption)' }}>
+          <span style={{color: 'var(--m-text-muted)',fontSize: 'var(--m-font-caption)' }}>
             You can switch roles anytime in Settings.
           </span>
         </p>
       </div>
 
       {/* Role Cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--m-md)', flex: 1 }}>
+      <div style={{display: 'flex',flexDirection: 'column',gap: 'var(--m-md)',flex: 1 }}>
         {LANES.map((lane, i) => {
           const isSelected = selected === lane.id;
           return (
@@ -196,84 +172,31 @@ export default function ChooseYourLane({ onSelect }: ChooseYourLaneProps) {
               onClick={() => handleSelect(lane.id)}
               disabled={animating && !isSelected}
               className="m-animate-slide-up"
-              style={{
-                animationDelay: `${i * 60}ms`,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--m-md)',
-                padding: 'var(--m-lg)',
-                borderRadius: 'var(--m-radius-lg)',
-                border: `1.5px solid ${isSelected ? lane.color : 'var(--m-border-subtle)'}`,
-                background: isSelected
+              style={{animationDelay: `${i * 60}ms`,display: 'flex',alignItems: 'center',gap: 'var(--m-md)',padding: 'var(--m-lg)',borderRadius: 'var(--m-radius-lg)',border: `1.5px solid ${isSelected ? lane.color : 'var(--m-border-subtle)'}`,background: isSelected
                   ? `${lane.color}10`
-                  : 'var(--m-surface)',
-                cursor: animating && !isSelected ? 'default' : 'pointer',
-                opacity: animating && !isSelected ? 0.4 : 1,
-                transition: 'all 0.25s ease',
-                textAlign: 'left',
-                width: '100%',
-                transform: isSelected ? 'scale(1.02)' : 'scale(1)',
-              }}
+                  : 'var(--m-surface)',cursor: animating && !isSelected ? 'default' : 'pointer',opacity: animating && !isSelected ? 0.4 : 1,transition: 'all 0.25s ease',textAlign: 'left',width: '100%',transform: isSelected ? 'scale(1.02)' : 'scale(1)'}}
             >
               {/* Icon */}
-              <div style={{
-                width: 48, height: 48,
-                borderRadius: 'var(--m-radius-md)',
-                background: `${lane.color}15`,
-                border: `1px solid ${lane.color}30`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 22,
-                flexShrink: 0,
-                transition: 'transform 0.2s',
-                transform: isSelected ? 'scale(1.1)' : 'scale(1)',
-              }}>
+              <div style={{width: 48,height: 48,borderRadius: 'var(--m-radius-md)',background: `${lane.color}15`,border: `1px solid ${lane.color}30`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 22,flexShrink: 0,transition: 'transform 0.2s',transform: isSelected ? 'scale(1.1)' : 'scale(1)'}}>
                 {lane.icon}
               </div>
 
               {/* Text */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
-                  fontSize: 'var(--m-font-body)',
-                  fontWeight: 800,
-                  color: isSelected ? lane.color : 'var(--m-text-primary)',
-                  lineHeight: 1.2,
-                  transition: 'color 0.2s',
-                }}>
+              <div style={{flex: 1,minWidth: 0 }}>
+                <div style={{fontSize: 'var(--m-font-body)',fontWeight: 800,color: isSelected ? lane.color : 'var(--m-text-primary)',lineHeight: 1.2,transition: 'color 0.2s'}}>
                   {lane.title}
                 </div>
-                <div style={{
-                  fontSize: 'var(--m-font-caption)',
-                  color: 'var(--m-text-muted)',
-                  marginTop: 2,
-                }}>
+                <div style={{fontSize: 'var(--m-font-caption)',color: 'var(--m-text-muted)',marginTop: 2}}>
                   {lane.subtitle}
                 </div>
-                <div style={{
-                  fontSize: 'var(--m-font-caption)',
-                  color: 'var(--m-text-secondary)',
-                  marginTop: 'var(--m-xs)',
-                  lineHeight: 1.4,
-                }}>
+                <div style={{fontSize: 'var(--m-font-caption)',color: 'var(--m-text-secondary)',marginTop: 'var(--m-xs)',lineHeight: 1.4}}>
                   {lane.description}
                 </div>
               </div>
 
               {/* Selected indicator */}
               {isSelected && (
-                <div style={{
-                  width: 24, height: 24,
-                  borderRadius: 'var(--m-radius-full)',
-                  background: lane.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 12,
-                  fontWeight: 900,
-                  color: '#000',
-                  flexShrink: 0,
-                }}>
+                <div style={{width: 24,height: 24,borderRadius: 'var(--m-radius-full)',background: lane.color,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 12,fontWeight: 900,color: '#000',flexShrink: 0}}>
                   ✓
                 </div>
               )}

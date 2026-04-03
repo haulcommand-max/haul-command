@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { REGULATIONS, type CountryRegulation } from '@/lib/regulations/global-regulations-db';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
     title: 'Pilot Car & Escort Vehicle Regulations by Country',
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
         'wide load escort rules',
         'oversize load permits',
     ],
-    alternates: { canonical: '/regulations' },
+    alternates: { canonical: 'https://www.haulcommand.com/regulations' },
 };
 
 const TIER_META: Record<string, { label: string; color: string; description: string }> = {
@@ -110,7 +112,9 @@ export default function RegulationsIndexPage() {
     };
 
     return (
-        <div style={{ maxWidth: '72rem', margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
+        <>
+            <ProofStrip variant="bar" />
+            <div style={{ maxWidth: '72rem', margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
             {/* Hero */}
             <div style={{ marginBottom: '3rem' }}>
                 <h1
@@ -205,12 +209,25 @@ export default function RegulationsIndexPage() {
                         '@context': 'https://schema.org',
                         '@type': 'BreadcrumbList',
                         itemListElement: [
-                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haulcommand.com' },
-                            { '@type': 'ListItem', position: 2, name: 'Regulations', item: 'https://haulcommand.com/regulations' },
+                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+                            { '@type': 'ListItem', position: 2, name: 'Regulations', item: 'https://www.haulcommand.com/regulations' },
                         ],
                     }),
                 }}
             />
-        </div>
+            </div>
+
+            <NoDeadEndBlock
+                heading="Explore Heavy Haul Resources"
+                moves={[
+                    { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
+                    { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
+                    { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
+                    { href: '/escort-requirements', icon: '⚖️', title: 'US State Rules', desc: 'All 50 state requirements' },
+                    { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                    { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Live operator availability' },
+                ]}
+            />
+        </>
     );
 }

@@ -98,7 +98,7 @@ function MapTooltip({ code, name, data, x, y }: {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
             className="absolute z-50 pointer-events-none bg-[#1A1F28] border border-[#374151] rounded-xl shadow-xl px-4 py-3 min-w-[156px]"
-            style={{ left: Math.min(x + 14, 620), top: Math.max(y - 90, 8) }}
+            style={{left: Math.min(x + 14, 620),top: Math.max(y - 90, 8) }}
         >
             <div className="flex items-center justify-between gap-2 mb-1">
                 <span className="text-sm font-black text-white truncate">{name}</span>
@@ -172,7 +172,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                         { c: "#1E2530", l: "Light" },
                     ].map(({ c, l }) => (
                         <div key={l} className="flex items-center gap-1.5">
-                            <span className="w-3 h-3 rounded-sm border border-white/10" style={{ background: c }} />
+                            <span className="w-3 h-3 rounded-sm border border-white/10" style={{background: c }} />
                             <span className="text-[10px] text-gray-400 font-semibold">{l}</span>
                         </div>
                     ))}
@@ -198,7 +198,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                     projectionConfig={projectionConfig}
                     width={800}
                     height={480}
-                    style={{ width: "100%", height: "auto", display: "block" }}
+                    style={{width: "100%",height: "auto",display: "block" }}
                 >
                     {/* Ocean background */}
                     <rect x={0} y={0} width={800} height={480} fill="#0D1117" />
@@ -217,11 +217,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                                             fill={hov ? "#C6923A" : "#2A2010"}
                                             stroke="#374151"
                                             strokeWidth={0.5}
-                                            style={{
-                                                default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },
-                                                hover: { outline: "none", cursor: "pointer", fill: "#C6923A" },
-                                                pressed: { outline: "none" },
-                                            }}
+                                            style={{default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },hover: { outline: "none", cursor: "pointer", fill: "#C6923A" },pressed: { outline: "none" }}}
                                             onMouseEnter={e => {
                                                 const svgEl = (e.currentTarget as Element).closest("svg");
                                                 if (svgEl) {
@@ -250,11 +246,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                                             fill="#161B22"
                                             stroke="#374151"
                                             strokeWidth={0.5}
-                                            style={{
-                                                default: { outline: "none" },
-                                                hover: { outline: "none" },
-                                                pressed: { outline: "none" },
-                                            }}
+                                            style={{default: { outline: "none" },hover: { outline: "none" },pressed: { outline: "none" }}}
                                         />
                                     );
                                 }
@@ -266,11 +258,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                                         fill="#10151C"
                                         stroke="#1E2530"
                                         strokeWidth={0.3}
-                                        style={{
-                                            default: { outline: "none" },
-                                            hover: { outline: "none" },
-                                            pressed: { outline: "none" },
-                                        }}
+                                        style={{default: { outline: "none" },hover: { outline: "none" },pressed: { outline: "none" }}}
                                     />
                                 );
                             })
@@ -296,11 +284,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                                         fill={fill}
                                         stroke="#374151"
                                         strokeWidth={hov ? 1.5 : 0.6}
-                                        style={{
-                                            default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },
-                                            hover: { outline: "none", cursor: "pointer", fill: "#C6923A" },
-                                            pressed: { outline: "none" },
-                                        }}
+                                        style={{default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },hover: { outline: "none", cursor: "pointer", fill: "#C6923A" },pressed: { outline: "none" }}}
                                         onMouseEnter={e => handleMove(e, code)}
                                         onMouseMove={e => handleMove(e, code)}
                                         onMouseLeave={() => setHoveredCode(null)}
@@ -318,12 +302,12 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                         {/* I-10  Santa Monica CA → Jacksonville FL */}
                         <Line from={[-118.2, 34.1]} to={[-81.7, 30.3]}
                             stroke="rgba(198,146,58,0.7)" strokeWidth={2} strokeLinecap="round"
-                            style={{ filter: "drop-shadow(0 0 5px rgba(198,146,58,0.5))" }}
+                            style={{filter: "drop-shadow(0 0 5px rgba(198,146,58,0.5))" }}
                         />
                         {/* I-35  Laredo TX → Duluth MN */}
                         <Line from={[-99.5, 27.5]} to={[-92.1, 46.8]}
                             stroke="rgba(198,146,58,0.7)" strokeWidth={2} strokeLinecap="round"
-                            style={{ filter: "drop-shadow(0 0 5px rgba(198,146,58,0.5))" }}
+                            style={{filter: "drop-shadow(0 0 5px rgba(198,146,58,0.5))" }}
                         />
                         {/* I-40  Barstow CA → Wilmington NC */}
                         <Line from={[-117.0, 34.9]} to={[-77.9, 34.2]}
@@ -347,15 +331,15 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                         {/* Labels */}
                         <Annotation subject={[-101.5, 31]} dx={0} dy={0} connectorProps={{}}>
                             <text fontSize={7} fontWeight={800} fill="rgba(198,146,58,0.7)"
-                                fontFamily="system-ui,sans-serif" style={{ userSelect: "none" }}>I-35</text>
+                                fontFamily="system-ui,sans-serif" style={{userSelect: "none" }}>I-35</text>
                         </Annotation>
                         <Annotation subject={[-90.5, 36.5]} dx={0} dy={0} connectorProps={{}}>
                             <text fontSize={7} fontWeight={800} fill="rgba(198,146,58,0.7)"
-                                fontFamily="system-ui,sans-serif" style={{ userSelect: "none" }}>I-40</text>
+                                fontFamily="system-ui,sans-serif" style={{userSelect: "none" }}>I-40</text>
                         </Annotation>
                         <Annotation subject={[-100, 33]} dx={0} dy={14} connectorProps={{}}>
                             <text fontSize={7} fontWeight={800} fill="rgba(198,146,58,0.7)"
-                                fontFamily="system-ui,sans-serif" style={{ userSelect: "none" }}>I-10</text>
+                                fontFamily="system-ui,sans-serif" style={{userSelect: "none" }}>I-10</text>
                         </Annotation>
                     </>)}
                 </ComposableMap>
@@ -385,7 +369,7 @@ export function CorridorMap({ regionData = [], className, onStateClick }: Corrid
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.1 }}
                             className="absolute z-50 pointer-events-none bg-[#1A1F28] border border-[#374151] rounded-xl shadow-xl px-4 py-3"
-                            style={{ left: Math.min(tooltipPos.x + 14, 580), top: Math.max(tooltipPos.y - 70, 8) }}
+                            style={{left: Math.min(tooltipPos.x + 14, 580),top: Math.max(tooltipPos.y - 70, 8) }}
                         >
                             <div className="text-sm font-black text-white mb-1">🍁 Canada</div>
                             <div className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">

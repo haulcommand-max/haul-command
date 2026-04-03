@@ -150,12 +150,7 @@ export function SmallStatesSidebar({
             <button aria-label="Interactive Button"
                 onClick={() => setCollapsed((c) => !c)}
                 className="pointer-events-auto self-center -mr-px w-6 h-16 flex items-center justify-center rounded-l-lg transition-all hover:w-8"
-                style={{
-                    background: "rgba(4,6,12,0.92)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    borderRight: "none",
-                    backdropFilter: "blur(12px)",
-                }}
+                style={{background: "rgba(4,6,12,0.92)",border: "1px solid rgba(255,255,255,0.08)",borderRight: "none",backdropFilter: "blur(12px)"}}
                 title={collapsed ? "Show countries" : "Hide countries"}
             >
                 {collapsed
@@ -177,13 +172,7 @@ export function SmallStatesSidebar({
                     >
                         <div
                             className="w-[84px] h-full flex flex-col overflow-y-auto"
-                            style={{
-                                background: "rgba(4,6,12,0.92)",
-                                backdropFilter: "blur(20px)",
-                                WebkitBackdropFilter: "blur(20px)",
-                                borderLeft: "1px solid rgba(255,255,255,0.06)",
-                                scrollbarWidth: "none",
-                            }}
+                            style={{background: "rgba(4,6,12,0.92)",backdropFilter: "blur(20px)",WebkitBackdropFilter: "blur(20px)",borderLeft: "1px solid rgba(255,255,255,0.06)",scrollbarWidth: "none"}}
                         >
                             {/* Header */}
                             <div className="flex flex-col items-center pt-3 pb-2 border-b border-white/5 px-1">
@@ -194,7 +183,7 @@ export function SmallStatesSidebar({
                                 {totalActive > 0 && (
                                     <span
                                         className="mt-1 px-2 py-0.5 rounded-full text-[8px] font-black"
-                                        style={{ background: "rgba(241,169,27,0.15)", color: "#F1A91B" }}
+                                        style={{background: "rgba(241,169,27,0.15)",color: "#F1A91B" }}
                                     >
                                         {totalActive.toLocaleString()}
                                     </span>
@@ -220,11 +209,11 @@ export function SmallStatesSidebar({
                                             <div className="flex items-center gap-1">
                                                 <TierIcon
                                                     className="w-2.5 h-2.5 flex-shrink-0"
-                                                    style={{ color: config.color }}
+                                                    style={{color: config.color }}
                                                 />
                                                 <span
                                                     className="text-[8px] font-black uppercase tracking-wider"
-                                                    style={{ color: config.color }}
+                                                    style={{color: config.color }}
                                                 >
                                                     {config.label}
                                                 </span>
@@ -233,7 +222,7 @@ export function SmallStatesSidebar({
                                                 {tierTotal > 0 && (
                                                     <span
                                                         className="text-[8px] font-bold"
-                                                        style={{ color: config.color }}
+                                                        style={{color: config.color }}
                                                     >
                                                         {tierTotal}
                                                     </span>
@@ -268,14 +257,11 @@ export function SmallStatesSidebar({
                                                                 onMouseEnter={() => setHoveredCountry(country.iso2)}
                                                                 onMouseLeave={() => setHoveredCountry(null)}
                                                                 className="group relative w-[74px] flex items-center justify-between px-1.5 py-1 rounded-lg transition-all"
-                                                                style={{
-                                                                    background: hoveredCountry === country.iso2
+                                                                style={{background: hoveredCountry === country.iso2
                                                                         ? config.bg
-                                                                        : "rgba(255,255,255,0.02)",
-                                                                    border: hoveredCountry === country.iso2
+                                                                        : "rgba(255,255,255,0.02)",border: hoveredCountry === country.iso2
                                                                         ? `1px solid ${config.border}`
-                                                                        : "1px solid transparent",
-                                                                }}
+                                                                        : "1px solid transparent"}}
                                                             >
                                                                 {/* Flag + ISO code */}
                                                                 <div className="flex items-center gap-1 min-w-0">
@@ -284,11 +270,9 @@ export function SmallStatesSidebar({
                                                                     </span>
                                                                     <span
                                                                         className="text-[9px] font-black uppercase tracking-wider truncate transition-colors"
-                                                                        style={{
-                                                                            color: hoveredCountry === country.iso2
+                                                                        style={{color: hoveredCountry === country.iso2
                                                                                 ? config.color
-                                                                                : "rgba(255,255,255,0.45)",
-                                                                        }}
+                                                                                : "rgba(255,255,255,0.45)"}}
                                                                     >
                                                                         {country.iso2}
                                                                     </span>
@@ -297,18 +281,15 @@ export function SmallStatesSidebar({
                                                                 {/* Count badge */}
                                                                 <span
                                                                     className="min-w-[18px] h-[16px] flex items-center justify-center rounded-full text-[8px] font-black flex-shrink-0"
-                                                                    style={{
-                                                                        background: country.count > 0
+                                                                    style={{background: country.count > 0
                                                                             ? hoveredCountry === country.iso2
                                                                                 ? config.color
                                                                                 : `${config.color}25`
-                                                                            : "rgba(255,255,255,0.04)",
-                                                                        color: country.count > 0
+                                                                            : "rgba(255,255,255,0.04)",color: country.count > 0
                                                                             ? hoveredCountry === country.iso2
                                                                                 ? "#000"
                                                                                 : config.color
-                                                                            : "rgba(255,255,255,0.2)",
-                                                                    }}
+                                                                            : "rgba(255,255,255,0.2)"}}
                                                                 >
                                                                     {country.count}
                                                                 </span>
@@ -319,12 +300,7 @@ export function SmallStatesSidebar({
                                                                         initial={{ opacity: 0, x: 8 }}
                                                                         animate={{ opacity: 1, x: 0 }}
                                                                         className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg whitespace-nowrap z-50"
-                                                                        style={{
-                                                                            background: "rgba(4,6,12,0.96)",
-                                                                            border: `1px solid ${config.border}`,
-                                                                            backdropFilter: "blur(16px)",
-                                                                            boxShadow: config.glow,
-                                                                        }}
+                                                                        style={{background: "rgba(4,6,12,0.96)",border: `1px solid ${config.border}`,backdropFilter: "blur(16px)",boxShadow: config.glow}}
                                                                     >
                                                                         <div className="flex items-center gap-2 mb-1">
                                                                             <span className="text-sm">{countryFlag(country.iso2)}</span>
@@ -335,7 +311,7 @@ export function SmallStatesSidebar({
                                                                         <div className="flex items-center gap-2">
                                                                             <span
                                                                                 className="px-1.5 py-0.5 rounded text-[8px] font-black uppercase"
-                                                                                style={{ background: config.bg, color: config.color }}
+                                                                                style={{background: config.bg,color: config.color }}
                                                                             >
                                                                                 {config.label}
                                                                             </span>

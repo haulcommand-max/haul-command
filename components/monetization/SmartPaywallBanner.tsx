@@ -146,59 +146,27 @@ export default function SmartPaywallBanner({
   return (
     <div
       className={className}
-      style={{
-        padding: '1.25rem 1.5rem',
-        borderRadius: '0.75rem',
-        background: style.bg,
-        border: `1px solid ${style.border}`,
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-      }}
+      style={{padding: '1.25rem 1.5rem',borderRadius: '0.75rem',background: style.bg,border: `1px solid ${style.border}`,display: 'flex',flexWrap: 'wrap',alignItems: 'center',justifyContent: 'space-between',gap: '1rem'}}
     >
-      <div style={{ flex: 1, minWidth: '200px' }}>
-        <h3 style={{
-          fontSize: '0.9375rem',
-          fontWeight: 700,
-          color: '#F3F4F6',
-          margin: '0 0 0.25rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}>
-          <span style={{ color: style.accent }}>⚡</span>
+      <div style={{flex: 1,minWidth: '200px' }}>
+        <h3 style={{fontSize: '0.9375rem',fontWeight: 700,color: '#F3F4F6',margin: '0 0 0.25rem',display: 'flex',alignItems: 'center',gap: '0.5rem'}}>
+          <span style={{color: style.accent }}>⚡</span>
           {copy.headline}
         </h3>
-        <p style={{
-          fontSize: '0.8125rem',
-          color: '#9CA3AF',
-          margin: 0,
-          lineHeight: 1.5,
-        }}>
+        <p style={{fontSize: '0.8125rem',color: '#9CA3AF',margin: 0,lineHeight: 1.5}}>
           {copy.subtext}
           {suggestedTier && (
-            <span style={{ color: style.accent, fontWeight: 600 }}>
+            <span style={{color: style.accent,fontWeight: 600 }}>
               {' '}— ${suggestedTier.price}/mo
             </span>
           )}
         </p>
       </div>
 
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <div style={{display: 'flex',gap: '0.5rem',alignItems: 'center' }}>
         <Link
           href="/pricing"
-          style={{
-            padding: '0.5rem 1.25rem',
-            borderRadius: '0.5rem',
-            background: style.accent,
-            color: '#0B0B0C',
-            fontWeight: 700,
-            fontSize: '0.8125rem',
-            textDecoration: 'none',
-            whiteSpace: 'nowrap',
-          }}
+          style={{padding: '0.5rem 1.25rem',borderRadius: '0.5rem',background: style.accent,color: '#0B0B0C',fontWeight: 700,fontSize: '0.8125rem',textDecoration: 'none',whiteSpace: 'nowrap'}}
         >
           {pressureDecision?.pricingPressure.discountOffered
             ? `Upgrade — ${Math.round(pressureDecision.pricingPressure.discountOffered * 100)}% off`
@@ -206,14 +174,7 @@ export default function SmartPaywallBanner({
         </Link>
         <button
           onClick={() => setDismissed(true)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#6B7280',
-            cursor: 'pointer',
-            fontSize: '0.75rem',
-            padding: '0.5rem',
-          }}
+          style={{background: 'none',border: 'none',color: '#6B7280',cursor: 'pointer',fontSize: '0.75rem',padding: '0.5rem'}}
         >
           Dismiss
         </button>
@@ -221,10 +182,7 @@ export default function SmartPaywallBanner({
 
       {/* Social proof from pressure engine */}
       {pressureDecision?.pricingPressure.socialProof && (
-        <div style={{
-          width: '100%', marginTop: '0.5rem',
-          fontSize: '0.6875rem', color: '#6B7280', fontStyle: 'italic',
-        }}>
+        <div style={{width: '100%',marginTop: '0.5rem',fontSize: '0.6875rem',color: '#6B7280',fontStyle: 'italic'}}>
           📊 {pressureDecision.pricingPressure.socialProof}
         </div>
       )}
@@ -286,8 +244,7 @@ export function SmartPaywallBannerAuto({
     const sticky = variant === 'sticky_bottom';
 
     return (
-        <div style={{
-            ...(sticky ? {
+        <div style={{...(sticky ? {
                 position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
                 borderTop: '1px solid rgba(241,169,27,0.2)',
                 backdropFilter: 'blur(16px)',
@@ -295,38 +252,31 @@ export function SmartPaywallBannerAuto({
                 display: 'flex', alignItems: 'center', gap: 12,
             } : {
                 borderRadius: 14, padding: '16px 20px',
-            }),
-            background: isHard
+            }),background: isHard
                 ? 'linear-gradient(135deg, rgba(239,68,68,0.06), rgba(8,8,12,0.97))'
-                : 'linear-gradient(135deg, rgba(241,169,27,0.05), rgba(8,8,12,0.97))',
-            border: `1px solid ${isHard ? 'rgba(239,68,68,0.2)' : 'rgba(241,169,27,0.15)'}`,
-        }}>
-            <div style={{ flex: 1 }}>
-                <div style={{ fontSize: sticky ? 13 : 14, fontWeight: 800, color: '#F0F0F0', marginBottom: 4 }}>
+                : 'linear-gradient(135deg, rgba(241,169,27,0.05), rgba(8,8,12,0.97))',border: `1px solid ${isHard ? 'rgba(239,68,68,0.2)' : 'rgba(241,169,27,0.15)'}`}}>
+            <div style={{flex: 1 }}>
+                <div style={{fontSize: sticky ? 13 : 14,fontWeight: 800,color: '#F0F0F0',marginBottom: 4 }}>
                     {isHard ? '🔒' : '🔓'} {headline}
                 </div>
                 {signals.length > 0 && (
-                    <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: sticky ? 0 : 8 }}>
+                    <div style={{fontSize: 11,color: '#9CA3AF',marginBottom: sticky ? 0 : 8 }}>
                         {signals[0]}
                     </div>
                 )}
                 {socialProof && !sticky && (
-                    <div style={{ fontSize: 10, color: '#6B7280', fontStyle: 'italic', marginBottom: 8 }}>
+                    <div style={{fontSize: 10,color: '#6B7280',fontStyle: 'italic',marginBottom: 8 }}>
                         ✦ {socialProof}
                     </div>
                 )}
             </div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
+            <div style={{display: 'flex',gap: 8,alignItems: 'center',flexShrink: 0 }}>
                 {discount > 0 && (
-                    <span style={{ fontSize: 10, fontWeight: 800, color: '#22C55E' }}>
+                    <span style={{fontSize: 10,fontWeight: 800,color: '#22C55E' }}>
                         {Math.round(discount * 100)}% OFF
                     </span>
                 )}
-                <a href={upgradeUrl} style={{
-                    padding: '8px 18px',
-                    background: isHard ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'linear-gradient(135deg, #F59E0B, #D97706)',
-                    borderRadius: 9, color: '#000', fontSize: 12, fontWeight: 800, textDecoration: 'none', whiteSpace: 'nowrap',
-                }}>
+                <a href={upgradeUrl} style={{padding: '8px 18px',background: isHard ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'linear-gradient(135deg, #F59E0B, #D97706)',borderRadius: 9,color: '#000',fontSize: 12,fontWeight: 800,textDecoration: 'none',whiteSpace: 'nowrap'}}>
                     {isHard ? 'Upgrade to Unlock →' : 'See Pro Plans →'}
                 </a>
             </div>

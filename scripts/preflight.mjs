@@ -200,6 +200,8 @@ check('client boundary violations', () => {
 // ── 6. Duplicate JSX Style Key Scanner (always runs) ─────────
 // Catches: style={{ fontSize: 16, ..., fontSize: 12 }}
 // Exact failure mode: market/[state] h2 TS2300 build crash
+// NOTE: Skips react-simple-maps nested Geography style objects
+//       ({ default: {...}, hover: {...} }) — those are not CSS props.
 check('duplicate JSX style keys', () => {
     const violations = [];
     // Match style={{ ... }} blocks spanning up to 5 lines
@@ -220,6 +222,10 @@ check('duplicate JSX style keys', () => {
                 STYLE_BLOCK.lastIndex = 0;
                 while ((match = STYLE_BLOCK.exec(content)) !== null) {
                     const block = match[1];
+                    // Skip react-simple-maps Geography style objects with nested
+                    // sub-objects like { default: {...}, hover: {...} }
+                    // Signature: key followed by ': {' inside the block
+                    if (/[a-zA-Z]+\s*:\s*\{/.test(block)) continue;
                     // Extract property names: "fontSize", 'color', etc.
                     const keys = [];
                     const keyRe = /([a-zA-Z][a-zA-Z0-9]*)\s*:/g;

@@ -299,28 +299,28 @@ export default function PostLoadPage() {
     const routeSummary = `${form.origin_city || 'Origin'}, ${form.origin_state || '--'} -> ${form.dest_city || 'Destination'}, ${form.dest_state || '--'}`;
 
     return (
-        <div className="m-shell-content" style={{ minHeight: '100dvh', background: 'var(--m-bg, #060b12)' }}>
+        <div className="m-shell-content" style={{minHeight: '100dvh',background: 'var(--m-bg, #060b12)' }}>
             <MobileScreenHeader
                 title="Post a Load"
                 rightAction={
-                    <Link href="/loads" style={{ textDecoration: 'none' }}>
-                        <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{ width: 'auto' }}>Load Board</button>
+                    <Link href="/loads" style={{textDecoration: 'none' }}>
+                        <button aria-label="Interactive Button" className="m-btn m-btn--secondary m-btn--small" style={{width: 'auto' }}>Load Board</button>
                     </Link>
                 }
             />
 
-            <div style={{ maxWidth: 760, margin: '0 auto', padding: '16px var(--m-screen-pad, 16px) calc(var(--m-nav-height, 56px) + var(--m-safe-bottom, 0px) + 132px)' }}>
-                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2 }}>
+            <div style={{maxWidth: 760,margin: '0 auto',padding: '16px var(--m-screen-pad, 16px) calc(var(--m-nav-height, 56px) + var(--m-safe-bottom, 0px) + 132px)' }}>
+                <div style={{display: 'flex',gap: 8,overflowX: 'auto',paddingBottom: 2 }}>
                     {STEP_LABELS.map((item) => (
-                        <div key={item.step} style={{ minWidth: 112, padding: '12px 14px', borderRadius: 16, border: `1px solid ${item.step <= step ? 'rgba(198, 146, 58, 0.26)' : 'rgba(255, 255, 255, 0.06)'}`, background: item.step <= step ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)' }}>
-                            <div style={{ ...labelStyle, color: item.step <= step ? 'var(--hc-gold-400)' : 'var(--m-text-muted, #8f97a7)' }}>Step {item.step}</div>
-                            <div style={{ marginTop: 6, fontSize: 14, fontWeight: 800, color: 'var(--m-text-primary, #f5f7fb)' }}>{item.label}</div>
+                        <div key={item.step} style={{minWidth: 112,padding: '12px 14px',borderRadius: 16,border: `1px solid ${item.step <= step ? 'rgba(198, 146, 58, 0.26)' : 'rgba(255, 255, 255, 0.06)'}`,background: item.step <= step ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)' }}>
+                            <div style={{ ...labelStyle,color: item.step <= step ? 'var(--hc-gold-400)' : 'var(--m-text-muted, #8f97a7)' }}>Step {item.step}</div>
+                            <div style={{marginTop: 6,fontSize: 14,fontWeight: 800,color: 'var(--m-text-primary, #f5f7fb)' }}>{item.label}</div>
                         </div>
                     ))}
                 </div>
 
                 <Section title="Broker dispatch flow" description="Route, load details, review, match preview, then dispatch. Coordinates stay hidden until you ask for them.">
-                    <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--m-text-secondary, #c7ccd7)' }}>This mobile rebuild keeps the current Supabase insert and match-generation flow, but removes the desktop grids and exposes lat/lng only inside the advanced section.</div>
+                    <div style={{fontSize: 14,lineHeight: 1.6,color: 'var(--m-text-secondary, #c7ccd7)' }}>This mobile rebuild keeps the current Supabase insert and match-generation flow, but removes the desktop grids and exposes lat/lng only inside the advanced section.</div>
                 </Section>
 
                 {error && <ErrorBanner message={error} />}
@@ -328,7 +328,7 @@ export default function PostLoadPage() {
                 {step === 1 && (
                     <>
                         <Section title="Route" description="Cities and state or province pickers come first. Coordinates stay out of the main flow.">
-                            <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{display: 'grid',gap: 12 }}>
                                 <Field label="Origin city" value={form.origin_city} placeholder="Houston" onChange={(value) => setField('origin_city', value)} />
                                 <Field label="Origin state or province" value={form.origin_state} placeholder="Select" options={REGIONS} onChange={(value) => setField('origin_state', value)} />
                                 <Field label="Destination city" value={form.dest_city} placeholder="Phoenix" onChange={(value) => setField('dest_city', value)} />
@@ -337,7 +337,7 @@ export default function PostLoadPage() {
                         </Section>
 
                         <Section title="Pickup window" description="Optional, but it helps the preview rank operators by timing instead of only geography.">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 12 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',gap: 12 }}>
                                 <Field label="Earliest pickup" type="datetime-local" value={form.pickup_start} onChange={(value) => setField('pickup_start', value)} />
                                 <Field label="Latest pickup" type="datetime-local" value={form.pickup_end} onChange={(value) => setField('pickup_end', value)} />
                             </div>
@@ -354,7 +354,7 @@ export default function PostLoadPage() {
                 {step === 2 && (
                     <>
                         <Section title="Load details" description="Build the load in one column: type, dimensions, escort plan, urgency, then optional notes.">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',gap: 10 }}>
                                 {LOAD_TYPES.map((item) => (
                                     <ChoiceButton key={item.id} active={form.load_type === item.id} label={item.label} note={item.note} onClick={() => setField('load_type', item.id)} />
                                 ))}
@@ -362,7 +362,7 @@ export default function PostLoadPage() {
                         </Section>
 
                         <Section title="Dimensions" description="Use the actual dimensions escorts need when they decide whether the move is routine, tight, or rescue-grade.">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: 12 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',gap: 12 }}>
                                 <Field label="Height (ft)" value={form.load_height} placeholder="16.5" inputMode="decimal" onChange={(value) => setField('load_height', value)} />
                                 <Field label="Width (ft)" value={form.load_width} placeholder="14" inputMode="decimal" onChange={(value) => setField('load_width', value)} />
                                 <Field label="Length (ft)" value={form.load_length} placeholder="120" inputMode="decimal" onChange={(value) => setField('load_length', value)} />
@@ -371,20 +371,20 @@ export default function PostLoadPage() {
                         </Section>
 
                         <Section title="Escort configuration" description="Set escort count, urgency, and rate before the preview request goes out.">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: 12 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',gap: 12 }}>
                                 <Field label="Lead escorts" value={form.escort_lead} placeholder="1" inputMode="numeric" onChange={(value) => setField('escort_lead', value)} />
                                 <Field label="Chase escorts" value={form.escort_chase} placeholder="0" inputMode="numeric" onChange={(value) => setField('escort_chase', value)} />
                                 <Field label="Base rate ($)" value={form.base_rate} placeholder="600" inputMode="decimal" onChange={(value) => setField('base_rate', value)} />
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 12 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',gap: 10,marginTop: 12 }}>
                                 <ChoiceButton active={form.requires_police} label="Police escort" note="Toggle if required" onClick={() => setField('requires_police', !form.requires_police)} />
                                 <ChoiceButton active={form.requires_high_pole} label="High pole" note="Toggle if required" onClick={() => setField('requires_high_pole', !form.requires_high_pole)} />
                             </div>
 
-                            <div style={{ marginTop: 14 }}>
+                            <div style={{marginTop: 14 }}>
                                 <div style={labelStyle}>Urgency</div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
+                                <div style={{display: 'grid',gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',gap: 10,marginTop: 8 }}>
                                     {URGENCY_OPTIONS.map((item) => (
                                         <ChoiceButton key={item.id} active={form.urgency === item.id} label={item.label} note={item.note} onClick={() => setField('urgency', item.id)} />
                                     ))}
@@ -398,7 +398,7 @@ export default function PostLoadPage() {
                                 {showAdvancedCoords ? 'Hide advanced coordinates' : 'Show advanced coordinates'}
                             </button>
                             {showAdvancedCoords && (
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: 12, marginTop: 12 }}>
+                                <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',gap: 12,marginTop: 12 }}>
                                     <Field label="Origin latitude" value={form.origin_lat} placeholder="29.7604" inputMode="decimal" onChange={(value) => setField('origin_lat', value)} />
                                     <Field label="Origin longitude" value={form.origin_lng} placeholder="-95.3698" inputMode="decimal" onChange={(value) => setField('origin_lng', value)} />
                                     <Field label="Destination latitude" value={form.dest_lat} placeholder="33.4484" inputMode="decimal" onChange={(value) => setField('dest_lat', value)} />
@@ -454,7 +454,7 @@ export default function PostLoadPage() {
                         </Section>
 
                         {matchResult?.matches.length ? (
-                            <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{display: 'grid',gap: 12 }}>
                                 {matchResult.matches.map((match) => (
                                     <MatchPreview key={match.operator_id} match={match} active={selectedMatchId === match.operator_id} onClick={() => setSelectedMatchId((current) => current === match.operator_id ? null : match.operator_id)} />
                                 ))}
@@ -477,7 +477,7 @@ export default function PostLoadPage() {
                 {step === 5 && (
                     <>
                         <Section title="Offers dispatched" description="Wave one is out. The broker stays in the app shell and moves straight into the next action.">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: 12 }}>
+                            <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',gap: 12 }}>
                                 <StatBox label="Offers sent" value={String(waveResult?.offers_created ?? 0)} />
                                 <StatBox label="Wave" value={String(waveResult?.wave ?? 1)} />
                                 <StatBox label="Pool size" value={String(waveResult?.candidates_considered ?? 0)} />
@@ -486,7 +486,7 @@ export default function PostLoadPage() {
                         </Section>
 
                         <Section title="Next actions" description="Keep the broker moving instead of sending them into a dead end.">
-                            <div style={{ display: 'grid', gap: 10 }}>
+                            <div style={{display: 'grid',gap: 10 }}>
                                 <MobileButton variant="primary" onClick={() => { if (loadId) router.push(`/loads/${loadId}`); }}>View load details</MobileButton>
                                 <MobileButton variant="secondary" onClick={() => router.push('/loads')}>Open load board</MobileButton>
                                 <MobileButton variant="secondary" onClick={resetFlow}>Post another load</MobileButton>
@@ -501,18 +501,18 @@ export default function PostLoadPage() {
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
     return (
-        <div style={{ marginTop: 12 }}>
+        <div style={{marginTop: 12 }}>
             <MobileCard>
-                <div style={{ ...labelStyle, color: 'var(--hc-gold-400)' }}>{title}</div>
-                {description && <div style={{ marginTop: 8, fontSize: 14, lineHeight: 1.6, color: 'var(--m-text-secondary, #c7ccd7)' }}>{description}</div>}
-                <div style={{ marginTop: 14 }}>{children}</div>
+                <div style={{ ...labelStyle,color: 'var(--hc-gold-400)' }}>{title}</div>
+                {description && <div style={{marginTop: 8,fontSize: 14,lineHeight: 1.6,color: 'var(--m-text-secondary, #c7ccd7)' }}>{description}</div>}
+                <div style={{marginTop: 14 }}>{children}</div>
             </MobileCard>
         </div>
     );
 }
 
 function ErrorBanner({ message }: { message: string }) {
-    return <div style={{ marginTop: 12, padding: '14px 16px', borderRadius: 16, border: '1px solid rgba(239, 68, 68, 0.18)', background: 'rgba(239, 68, 68, 0.08)', color: '#FCA5A5', fontSize: 14, lineHeight: 1.55 }}>{message}</div>;
+    return <div style={{marginTop: 12,padding: '14px 16px',borderRadius: 16,border: '1px solid rgba(239, 68, 68, 0.18)',background: 'rgba(239, 68, 68, 0.08)',color: '#FCA5A5',fontSize: 14,lineHeight: 1.55 }}>{message}</div>;
 }
 
 function Field({
@@ -538,14 +538,14 @@ function Field({
         <div>
             <div style={labelStyle}>{label}</div>
             {options ? (
-                <select className="m-input" value={value} onChange={(event) => onChange(event.target.value)} style={{ width: '100%', marginTop: 8 }}>
+                <select className="m-input" value={value} onChange={(event) => onChange(event.target.value)} style={{width: '100%',marginTop: 8 }}>
                     <option value="">{placeholder}</option>
                     {options.map((option) => <option key={option} value={option}>{option}</option>)}
                 </select>
             ) : rows ? (
-                <textarea value={value} placeholder={placeholder} rows={rows} onChange={(event) => onChange(event.target.value)} style={{ width: '100%', marginTop: 8, resize: 'vertical', borderRadius: 16, border: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(255, 255, 255, 0.03)', color: 'var(--m-text-primary, #f5f7fb)', padding: '14px 16px', fontSize: 16, lineHeight: 1.55, boxSizing: 'border-box' }} />
+                <textarea value={value} placeholder={placeholder} rows={rows} onChange={(event) => onChange(event.target.value)} style={{width: '100%',marginTop: 8,resize: 'vertical',borderRadius: 16,border: '1px solid rgba(255, 255, 255, 0.08)',background: 'rgba(255, 255, 255, 0.03)',color: 'var(--m-text-primary, #f5f7fb)',padding: '14px 16px',fontSize: 16,lineHeight: 1.55,boxSizing: 'border-box' }} />
             ) : (
-                <input className="m-input" type={type} value={value} inputMode={inputMode} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} style={{ width: '100%', marginTop: 8 }} />
+                <input className="m-input" type={type} value={value} inputMode={inputMode} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} style={{width: '100%',marginTop: 8 }} />
             )}
         </div>
     );
@@ -553,29 +553,29 @@ function Field({
 
 function ChoiceButton({ active, label, note, onClick }: { active: boolean; label: string; note: string; onClick: () => void }) {
     return (
-        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{ padding: '14px 12px', borderRadius: 16, border: `1px solid ${active ? 'rgba(198, 146, 58, 0.36)' : 'rgba(255, 255, 255, 0.08)'}`, background: active ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)', color: 'inherit', textAlign: 'left', minHeight: 92 }}>
-            <div style={{ fontSize: 14, lineHeight: 1.3, fontWeight: 800, color: 'var(--m-text-primary, #f5f7fb)' }}>{label}</div>
-            <div style={{ marginTop: 6, fontSize: 12, lineHeight: 1.5, color: active ? 'var(--hc-gold-400)' : 'var(--m-text-muted, #8f97a7)' }}>{note}</div>
+        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{padding: '14px 12px',borderRadius: 16,border: `1px solid ${active ? 'rgba(198, 146, 58, 0.36)' : 'rgba(255, 255, 255, 0.08)'}`,background: active ? 'rgba(198, 146, 58, 0.08)' : 'rgba(255, 255, 255, 0.02)',color: 'inherit',textAlign: 'left',minHeight: 92 }}>
+            <div style={{fontSize: 14,lineHeight: 1.3,fontWeight: 800,color: 'var(--m-text-primary, #f5f7fb)' }}>{label}</div>
+            <div style={{marginTop: 6,fontSize: 12,lineHeight: 1.5,color: active ? 'var(--hc-gold-400)' : 'var(--m-text-muted, #8f97a7)' }}>{note}</div>
         </button>
     );
 }
 
 function SummaryItem({ label, value }: { label: string; value: string }) {
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '12px 14px', borderRadius: 16, border: '1px solid rgba(255, 255, 255, 0.06)', background: 'rgba(255, 255, 255, 0.03)', marginTop: 10 }}>
+        <div style={{display: 'flex',justifyContent: 'space-between',gap: 16,padding: '12px 14px',borderRadius: 16,border: '1px solid rgba(255, 255, 255, 0.06)',background: 'rgba(255, 255, 255, 0.03)',marginTop: 10 }}>
             <div style={labelStyle}>{label}</div>
-            <div style={{ fontSize: 14, lineHeight: 1.5, textAlign: 'right', color: 'var(--m-text-primary, #f5f7fb)' }}>{value}</div>
+            <div style={{fontSize: 14,lineHeight: 1.5,textAlign: 'right',color: 'var(--m-text-primary, #f5f7fb)' }}>{value}</div>
         </div>
     );
 }
 
 function InfoItem({ index, title, body }: { index: string; title: string; body: string }) {
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 12, padding: '12px 14px', borderRadius: 16, border: '1px solid rgba(255, 255, 255, 0.06)', background: 'rgba(255, 255, 255, 0.03)', marginTop: 10 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, display: 'grid', placeItems: 'center', background: 'rgba(198, 146, 58, 0.12)', color: 'var(--hc-gold-400)', fontWeight: 900 }}>{index}</div>
+        <div style={{display: 'grid',gridTemplateColumns: '40px 1fr',gap: 12,padding: '12px 14px',borderRadius: 16,border: '1px solid rgba(255, 255, 255, 0.06)',background: 'rgba(255, 255, 255, 0.03)',marginTop: 10 }}>
+            <div style={{width: 40,height: 40,borderRadius: 12,display: 'grid',placeItems: 'center',background: 'rgba(198, 146, 58, 0.12)',color: 'var(--hc-gold-400)',fontWeight: 900 }}>{index}</div>
             <div>
-                <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--m-text-primary, #f5f7fb)' }}>{title}</div>
-                <div style={{ marginTop: 4, fontSize: 13, lineHeight: 1.6, color: 'var(--m-text-secondary, #c7ccd7)' }}>{body}</div>
+                <div style={{fontSize: 15,fontWeight: 800,color: 'var(--m-text-primary, #f5f7fb)' }}>{title}</div>
+                <div style={{marginTop: 4,fontSize: 13,lineHeight: 1.6,color: 'var(--m-text-secondary, #c7ccd7)' }}>{body}</div>
             </div>
         </div>
     );
@@ -584,29 +584,29 @@ function InfoItem({ index, title, body }: { index: string; title: string; body: 
 function MatchPreview({ match, active, onClick }: { match: MatchCard; active: boolean; onClick: () => void }) {
     const accent = MATCH_ACCENTS[match.type];
     return (
-        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{ width: '100%', padding: 0, borderRadius: 20, border: `1px solid ${active ? accent.border : 'rgba(255, 255, 255, 0.08)'}`, background: 'transparent', color: 'inherit', textAlign: 'left' }}>
+        <button aria-label="Interactive Button" type="button" onClick={onClick} style={{width: '100%',padding: 0,borderRadius: 20,border: `1px solid ${active ? accent.border : 'rgba(255, 255, 255, 0.08)'}`,background: 'transparent',color: 'inherit',textAlign: 'left' }}>
             <MobileCard>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'start' }}>
+                <div style={{display: 'flex',justifyContent: 'space-between',gap: 12,alignItems: 'start' }}>
                     <div>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 10px', borderRadius: 999, background: accent.bg, color: accent.text, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{match.label}</div>
-                        <div style={{ marginTop: 12, fontSize: 20, lineHeight: 1.1, fontWeight: 900 }}>{match.operator_name}</div>
-                        <div style={{ marginTop: 4, fontSize: 13, color: 'var(--m-text-secondary, #c7ccd7)' }}>{match.tagline}</div>
+                        <div style={{display: 'inline-flex',alignItems: 'center',gap: 8,padding: '5px 10px',borderRadius: 999,background: accent.bg,color: accent.text,fontSize: 11,fontWeight: 800,textTransform: 'uppercase',letterSpacing: '0.08em' }}>{match.label}</div>
+                        <div style={{marginTop: 12,fontSize: 20,lineHeight: 1.1,fontWeight: 900 }}>{match.operator_name}</div>
+                        <div style={{marginTop: 4,fontSize: 13,color: 'var(--m-text-secondary, #c7ccd7)' }}>{match.tagline}</div>
                     </div>
-                    <div style={{ minWidth: 62, padding: '10px 12px', borderRadius: 16, background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.06)', textAlign: 'center' }}>
-                        <div style={{ ...labelStyle, fontSize: 10 }}>Score</div>
-                        <div style={{ marginTop: 4, fontSize: 22, fontWeight: 900, color: accent.border }}>{Math.round(match.composite_score * 100)}</div>
+                    <div style={{minWidth: 62,padding: '10px 12px',borderRadius: 16,background: 'rgba(255, 255, 255, 0.04)',border: '1px solid rgba(255, 255, 255, 0.06)',textAlign: 'center' }}>
+                        <div style={{ ...labelStyle,fontSize: 10 }}>Score</div>
+                        <div style={{marginTop: 4,fontSize: 22,fontWeight: 900,color: accent.border }}>{Math.round(match.composite_score * 100)}</div>
                     </div>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: 10, marginTop: 16 }}>
+                <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',gap: 10,marginTop: 16 }}>
                     <StatBox label="Trust" value={`${match.trust_score}/100`} compact />
                     <StatBox label="Response" value={match.response_min ? `${match.response_min} min` : '--'} compact />
                     <StatBox label="Rate" value={match.rate_per_mile ? `$${match.rate_per_mile.toFixed(2)}/mi` : '--'} compact />
                     <StatBox label="Corridor xp" value={String(match.corridor_match_count)} compact />
                 </div>
-                <div style={{ marginTop: 12, display: 'grid', gap: 8 }}>
+                <div style={{marginTop: 12,display: 'grid',gap: 8 }}>
                     {match.reasoning.map((item) => (
-                        <div key={item} style={{ display: 'flex', gap: 8, alignItems: 'start', fontSize: 13, lineHeight: 1.55, color: 'var(--m-text-secondary, #c7ccd7)' }}>
-                            <span style={{ color: accent.border, fontWeight: 900 }}>+</span>
+                        <div key={item} style={{display: 'flex',gap: 8,alignItems: 'start',fontSize: 13,lineHeight: 1.55,color: 'var(--m-text-secondary, #c7ccd7)' }}>
+                            <span style={{color: accent.border,fontWeight: 900 }}>+</span>
                             <span>{item}</span>
                         </div>
                     ))}
@@ -618,17 +618,17 @@ function MatchPreview({ match, active, onClick }: { match: MatchCard; active: bo
 
 function StatBox({ label, value, compact }: { label: string; value: string; compact?: boolean }) {
     return (
-        <div style={{ padding: compact ? 12 : 14, borderRadius: 16, border: '1px solid rgba(255, 255, 255, 0.06)', background: 'rgba(255, 255, 255, 0.03)' }}>
-            <div style={{ ...labelStyle, fontSize: 10 }}>{label}</div>
-            <div style={{ marginTop: 6, fontSize: compact ? 18 : 24, fontWeight: 900, color: 'var(--m-text-primary, #f5f7fb)' }}>{value}</div>
+        <div style={{padding: compact ? 12 : 14,borderRadius: 16,border: '1px solid rgba(255, 255, 255, 0.06)',background: 'rgba(255, 255, 255, 0.03)' }}>
+            <div style={{ ...labelStyle,fontSize: 10 }}>{label}</div>
+            <div style={{marginTop: 6,fontSize: compact ? 18 : 24,fontWeight: 900,color: 'var(--m-text-primary, #f5f7fb)' }}>{value}</div>
         </div>
     );
 }
 
 function StickyBar({ children }: { children: React.ReactNode }) {
     return (
-        <div style={{ position: 'sticky', bottom: 'calc(var(--m-nav-height, 56px) + var(--m-safe-bottom, 0px) + 12px)', zIndex: 5, marginTop: 20 }}>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', padding: 12, borderRadius: 22, border: '1px solid rgba(198, 146, 58, 0.16)', background: 'rgba(9, 11, 15, 0.9)', backdropFilter: 'blur(18px)', boxShadow: 'var(--shadow-gold)' }}>
+        <div style={{position: 'sticky',bottom: 'calc(var(--m-nav-height, 56px) + var(--m-safe-bottom, 0px) + 12px)',zIndex: 5,marginTop: 20 }}>
+            <div style={{display: 'flex',gap: 10,flexWrap: 'wrap',padding: 12,borderRadius: 22,border: '1px solid rgba(198, 146, 58, 0.16)',background: 'rgba(9, 11, 15, 0.9)',backdropFilter: 'blur(18px)',boxShadow: 'var(--shadow-gold)' }}>
                 {children}
             </div>
         </div>

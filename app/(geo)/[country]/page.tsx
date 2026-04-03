@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -10,6 +9,7 @@ import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { getLocalTerm, getLocalOversizeLoadTerm } from '@/lib/seo/escort-terminology';
 
 export default async function CountryPage({ params }: { params: Promise<{ country: string }> }) {
     const { country } = await params;
@@ -20,6 +20,11 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
 
     // ── Get regions from DB ──
     const regions = await getRegionsByCountry(countryData.iso2);
+
+    // ── Local terminology (kills EN monoculture) ──
+    const localTerm = getLocalTerm(countryData.iso2);
+    const localLoad = getLocalOversizeLoadTerm(countryData.iso2);
+    const capLoad = localLoad.charAt(0).toUpperCase() + localLoad.slice(1);
 
     return (
         <div className="min-h-screen bg-hc-bg text-hc-text font-display">
@@ -39,10 +44,10 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                         {countryData.name}
                     </div>
                     <h1 className="text-5xl md:text-6xl font-black text-white uppercase tracking-[-0.03em] leading-none">
-                        Oversize Load Escorts
+                        {capLoad} Escorts
                     </h1>
                     <p className="text-lg text-hc-muted max-w-2xl mx-auto">
-                        Browse verified pilot car providers, route surveyors, and high pole operators across {countryData.name}.
+                        Browse verified {localTerm} providers, route surveyors, and high pole operators across {countryData.name}.
                         HAUL COMMAND connects you with the most reliable network worldwide.
                     </p>
                 </div>
@@ -115,17 +120,25 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                 ) : (
                     <section className="p-8 bg-hc-surface border border-hc-gold-500/20 rounded-2xl text-center space-y-4">
                         <Globe className="w-12 h-12 text-hc-gold-500/30 mx-auto" />
-                        <h2 className="text-xl font-bold text-white">Coverage Building</h2>
+                        <h2 className="text-xl font-bold text-white">Coverage Building in {countryData.name}</h2>
                         <p className="text-sm text-hc-muted max-w-md mx-auto">
-                            We&apos;re expanding our verified provider network in {countryData.name}.
-                            Region-level browsing will be available soon.
+                            We&apos;re expanding our verified {localTerm} network in {countryData.name}.
+                            Join the waitlist to get notified when we launch — early operators rank highest.
                         </p>
-                        <Link aria-label="Navigation Link"
-                            href="/directory"
-                            className="inline-block px-6 py-3 bg-hc-gold-500 text-black font-bold text-sm rounded-xl hover:bg-hc-gold-400 transition-colors"
-                        >
-                            Browse Full Directory →
-                        </Link>
+                        <div className="flex flex-wrap gap-3 justify-center">
+                            <Link aria-label="Join waitlist"
+                                href={`/${country}/coming-soon`}
+                                className="inline-block px-6 py-3 bg-hc-gold-500 text-black font-bold text-sm rounded-xl hover:bg-hc-gold-400 transition-colors"
+                            >
+                                🔔 Join the Waitlist →
+                            </Link>
+                            <Link aria-label="Browse global directory"
+                                href="/directory"
+                                className="inline-block px-6 py-3 bg-hc-surface border border-hc-border text-hc-muted font-bold text-sm rounded-xl hover:border-hc-gold-500/40 transition-colors"
+                            >
+                                Browse Global Directory
+                            </Link>
+                        </div>
                     </section>
                 )}
 

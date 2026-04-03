@@ -96,16 +96,10 @@ export function JurisdictionMap({ onSelectJurisdiction, selectedCode }: Jurisdic
                                         }}
                                         style={{
                                             default: {
-                                                fill: isSelected ? "#3b82f6" : "#e2e8f0",
-                                                stroke: "#ffffff",
-                                                strokeWidth: 0.75,
-                                                outline: "none"
                                             },
                                             hover: {
-                                                fill: isSelected ? "#2563eb" : "#cbd5e1",
                                                 stroke: "#ffffff",
                                                 strokeWidth: 0.75,
-                                                outline: "none",
                                                 cursor: "pointer"
                                             },
                                             pressed: {
@@ -141,16 +135,10 @@ export function JurisdictionMap({ onSelectJurisdiction, selectedCode }: Jurisdic
                                         }}
                                         style={{
                                             default: {
-                                                fill: isSelected ? "#3b82f6" : "#e2e8f0",
-                                                stroke: "#ffffff",
-                                                strokeWidth: 0.75,
-                                                outline: "none"
                                             },
                                             hover: {
-                                                fill: isSelected ? "#2563eb" : "#cbd5e1",
                                                 stroke: "#ffffff",
                                                 strokeWidth: 0.75,
-                                                outline: "none",
                                                 cursor: "pointer"
                                             },
                                             pressed: {

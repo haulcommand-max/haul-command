@@ -203,8 +203,6 @@ export default function CaptureOverlay() {
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           ...(isBottomSheet
             ? {
-                bottom: 0, left: 0, right: 0,
-                transform: visible ? 'translateY(0)' : 'translateY(100%)',
               }
             : {
                 bottom: '1.5rem',

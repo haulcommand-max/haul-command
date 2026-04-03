@@ -8,6 +8,8 @@ import '@/components/ai-search/answer-block.css';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import RelatedLinks from '@/components/seo/RelatedLinks';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
   title: 'State Escort Requirements for Oversize Loads | Haul Command',
@@ -25,31 +27,35 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'State Escort Requirements for Oversize Loads | Haul Command',
     description: 'Pilot car and escort vehicle requirements for all 50 US states. Check width, height, and weight thresholds.',
-    url: 'https://haulcommand.com/escort-requirements',
+    url: 'https://www.haulcommand.com/escort-requirements',
   },
   alternates: {
-    canonical: 'https://haulcommand.com/escort-requirements',
+    canonical: 'https://www.haulcommand.com/escort-requirements',
   },
 };
 
 export const ESCORT_REQUIREMENTS_JSONLD = `{
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "State Escort Requirements for Oversize Loads",
-  "url": "https://haulcommand.com/escort-requirements",
-  "description": "Pilot car and escort vehicle requirements for all 50 US states.",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
-      { "@type": "ListItem", "position": 2, "name": "State Escort Requirements", "item": "https://haulcommand.com/escort-requirements" }
-    ]
-  },
-  "about": {
-    "@type": "Thing",
-    "name": "Oversize Load Escort Requirements",
-    "description": "Legal requirements for pilot cars and escort vehicles when transporting oversize loads on public roads in the United States."
-  }
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "State Escort Requirements for Oversize Loads",
+      "url": "https://www.haulcommand.com/escort-requirements",
+      "description": "Pilot car and escort vehicle requirements for all 50 US states."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.haulcommand.com" },
+        { "@type": "ListItem", "position": 2, "name": "State Escort Requirements", "item": "https://www.haulcommand.com/escort-requirements" }
+      ]
+    },
+    {
+      "@type": "Thing",
+      "name": "Oversize Load Escort Requirements",
+      "description": "Legal requirements for pilot cars and escort vehicles when transporting oversize loads on public roads in the United States."
+    }
+  ]
 }`;
 
 const FLAG: Record<string, string> = { US: 'US', CA: 'CA', AU: 'AU', GB: 'GB', NZ: 'NZ', ZA: 'ZA', DE: 'DE', NL: 'NL', AE: 'AE', BR: 'BR', IE: 'IE', SE: 'SE', NO: 'NO', DK: 'DK', FI: 'FI', BE: 'BE', AT: 'AT', CH: 'CH', ES: 'ES', FR: 'FR', IT: 'IT', PT: 'PT', SA: 'SA', QA: 'QA', MX: 'MX', IN: 'IN', ID: 'ID', TH: 'TH', JP: 'JP', KR: 'KR', PL: 'PL', CZ: 'CZ', SK: 'SK', HU: 'HU', SI: 'SI', EE: 'EE', LV: 'LV', LT: 'LT', HR: 'HR', RO: 'RO', BG: 'BG', GR: 'GR', TR: 'TR', KW: 'KW', OM: 'OM', BH: 'BH', SG: 'SG', MY: 'MY', CL: 'CL', AR: 'AR', CO: 'CO', PE: 'PE', VN: 'VN', PH: 'PH', UY: 'UY', PA: 'PA', CR: 'CR' };
@@ -70,6 +76,7 @@ export default async function EscortRequirementsIndex() {
 
     return (
         <RouteCalcMobileGate>
+        <ProofStrip variant="bar" />
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ESCORT_REQUIREMENTS_JSONLD }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -132,6 +139,18 @@ export default async function EscortRequirementsIndex() {
               pageType="regulation"
               heading="Related escort resources and tools"
               className="mt-12"
+            />
+
+            <NoDeadEndBlock
+              heading="What Would You Like to Do Next?"
+              moves={[
+                { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators ready for dispatch', primary: true, color: '#D4A844' },
+                { href: '/claim', icon: '✓', title: 'Claim Your Listing', desc: 'List your escort services', primary: true, color: '#22C55E' },
+                { href: '/tools/escort-calculator', icon: '🧮', title: 'Route Calculator', desc: 'Enter route, get requirements' },
+                { href: '/regulations', icon: '🌍', title: 'Global Regulations', desc: '120 country escort rules' },
+                { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
+              ]}
             />
         </main>
         </RouteCalcMobileGate>

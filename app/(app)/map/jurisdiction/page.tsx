@@ -138,12 +138,12 @@ function trackEvent(event: string, data?: Record<string, string>) {
 // ── Skeleton Loader
 function DrawerSkeleton() {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '16px 0' }}>
+        <div style={{display: 'flex',flexDirection: 'column',gap: 12,padding: '16px 0' }}>
             {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 12, padding: 16 }}>
-                    <div className="skeleton" style={{ width: 180, height: 14, borderRadius: 6, marginBottom: 8 }} />
-                    <div className="skeleton" style={{ width: 120, height: 12, borderRadius: 6, marginBottom: 6 }} />
-                    <div className="skeleton" style={{ width: 200, height: 10, borderRadius: 6 }} />
+                <div key={i} style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 12,padding: 16 }}>
+                    <div className="skeleton" style={{width: 180,height: 14,borderRadius: 6,marginBottom: 8 }} />
+                    <div className="skeleton" style={{width: 120,height: 12,borderRadius: 6,marginBottom: 6 }} />
+                    <div className="skeleton" style={{width: 200,height: 10,borderRadius: 6 }} />
                 </div>
             ))}
         </div>
@@ -153,80 +153,56 @@ function DrawerSkeleton() {
 // ── Operator Card
 function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
     return (
-        <div style={{
-            background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14,
-            padding: 16, transition: 'all 0.18s',
-        }}
+        <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 14,padding: 16,transition: 'all 0.18s'}}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${T.gold}40`; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = T.border; }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+            <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'flex-start',marginBottom: 10 }}>
                 <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                        <span style={{ fontSize: 15, fontWeight: 800, color: T.textPrimary }}>{op.business_name}</span>
+                    <div style={{display: 'flex',alignItems: 'center',gap: 6,marginBottom: 4 }}>
+                        <span style={{fontSize: 15,fontWeight: 800,color: T.textPrimary }}>{op.business_name}</span>
                         {op.verified && (
-                            <span style={{
-                                padding: '2px 7px', borderRadius: 6, fontSize: 9, fontWeight: 800,
-                                background: 'rgba(39,209,127,0.15)', color: T.green,
-                                border: '1px solid rgba(39,209,127,0.3)', textTransform: 'uppercase',
-                            }}>✓ Verified</span>
+                            <span style={{padding: '2px 7px',borderRadius: 6,fontSize: 9,fontWeight: 800,background: 'rgba(39,209,127,0.15)',color: T.green,border: '1px solid rgba(39,209,127,0.3)',textTransform: 'uppercase'}}>✓ Verified</span>
                         )}
                     </div>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                    <div style={{display: 'flex',gap: 4,flexWrap: 'wrap' }}>
                         {(op.categories || []).map(c => (
-                            <span key={c} style={{
-                                padding: '2px 7px', borderRadius: 5, fontSize: 9, fontWeight: 700,
-                                background: 'rgba(59,164,255,0.1)', color: T.blue,
-                                border: '1px solid rgba(59,164,255,0.2)',
-                            }}>{c.replace(/_/g, ' ')}</span>
+                            <span key={c} style={{padding: '2px 7px',borderRadius: 5,fontSize: 9,fontWeight: 700,background: 'rgba(59,164,255,0.1)',color: T.blue,border: '1px solid rgba(59,164,255,0.2)'}}>{c.replace(/_/g, ' ')}</span>
                         ))}
                     </div>
                 </div>
-                <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ fontSize: 20, fontWeight: 900, color: T.gold, lineHeight: 1 }}>
+                <div style={{textAlign: 'right',flexShrink: 0 }}>
+                    <div style={{fontSize: 20,fontWeight: 900,color: T.gold,lineHeight: 1 }}>
                         {op.rating > 0 ? op.rating.toFixed(1) : '—'}
                     </div>
-                    <div style={{ fontSize: 9, color: T.textLabel, marginTop: 2 }}>RATING</div>
+                    <div style={{fontSize: 9,color: T.textLabel,marginTop: 2 }}>RATING</div>
                 </div>
             </div>
             {op.coverage_notes && (
-                <p style={{ margin: '0 0 10px', fontSize: 12, color: T.textSecondary, lineHeight: 1.5 }}>{op.coverage_notes}</p>
+                <p style={{margin: '0 0 10px',fontSize: 12,color: T.textSecondary,lineHeight: 1.5 }}>{op.coverage_notes}</p>
             )}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{display: 'flex',gap: 8,flexWrap: 'wrap' }}>
                 <a
                     href={`tel:${op.phone}`}
                     onClick={() => trackEvent('operator_called', { operator_id: op.operator_id })}
-                    style={{
-                        padding: '8px 16px', borderRadius: 10,
-                        background: `linear-gradient(135deg, ${T.green}, #059669)`,
-                        color: '#fff', fontSize: 12, fontWeight: 800, textDecoration: 'none',
-                        textTransform: 'uppercase', letterSpacing: '0.05em',
-                    }}>
+                    style={{padding: '8px 16px',borderRadius: 10,background: `linear-gradient(135deg, ${T.green}, #059669)`,color: '#fff',fontSize: 12,fontWeight: 800,textDecoration: 'none',textTransform: 'uppercase',letterSpacing: '0.05em'}}>
                     📞 Call
                 </a>
                 <a
                     href={`sms:${op.phone}`}
                     onClick={() => trackEvent('operator_texted', { operator_id: op.operator_id })}
-                    style={{
-                        padding: '8px 16px', borderRadius: 10,
-                        background: T.bgElevated, border: `1px solid ${T.border}`,
-                        color: T.textBody, fontSize: 12, fontWeight: 700, textDecoration: 'none',
-                    }}>
+                    style={{padding: '8px 16px',borderRadius: 10,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,fontSize: 12,fontWeight: 700,textDecoration: 'none'}}>
                     💬 Text
                 </a>
                 {op.website_url && (
                     <a
                         href={op.website_url} target="_blank" rel="noopener noreferrer"
-                        style={{
-                            padding: '8px 16px', borderRadius: 10,
-                            background: T.bgElevated, border: `1px solid ${T.border}`,
-                            color: T.textBody, fontSize: 12, fontWeight: 700, textDecoration: 'none',
-                        }}>
+                        style={{padding: '8px 16px',borderRadius: 10,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,fontSize: 12,fontWeight: 700,textDecoration: 'none'}}>
                         🌐 Website
                     </a>
                 )}
             </div>
-            <div style={{ marginTop: 8, fontSize: 11, color: T.textLabel }}>
+            <div style={{marginTop: 8,fontSize: 11,color: T.textLabel }}>
                 ⚡ Avg Response: {op.response_time_sec_avg > 0 ? `${Math.round(op.response_time_sec_avg / 60)}min` : '—'}
             </div>
         </div>
@@ -238,35 +214,28 @@ function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
     const [expanded, setExpanded] = useState(false);
     return (
         <div
-            style={{
-                background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14, padding: 16,
-                cursor: 'pointer', transition: 'all 0.18s',
-            }}
+            style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 14,padding: 16,cursor: 'pointer',transition: 'all 0.18s'}}
             onClick={() => {
                 setExpanded(!expanded);
                 trackEvent('rulepack_opened', { rulepack_id: rp.rulepack_id, topic: rp.topic });
             }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: T.textPrimary }}>{rp.topic}</span>
-                <span style={{ fontSize: 16, color: T.textSecondary, transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'rotate(0)' }}>▾</span>
+            <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
+                <span style={{fontSize: 14,fontWeight: 700,color: T.textPrimary }}>{rp.topic}</span>
+                <span style={{fontSize: 16,color: T.textSecondary,transition: 'transform 0.2s',transform: expanded ? 'rotate(180deg)' : 'rotate(0)' }}>▾</span>
             </div>
             {expanded && (
-                <div style={{ marginTop: 10 }}>
-                    <p style={{ fontSize: 13, color: T.textBody, lineHeight: 1.6, margin: 0 }}>{rp.summary}</p>
+                <div style={{marginTop: 10 }}>
+                    <p style={{fontSize: 13,color: T.textBody,lineHeight: 1.6,margin: 0 }}>{rp.summary}</p>
                     {rp.effective_date && (
-                        <p style={{ fontSize: 11, color: T.textLabel, marginTop: 6 }}>Effective: {rp.effective_date}</p>
+                        <p style={{fontSize: 11,color: T.textLabel,marginTop: 6 }}>Effective: {rp.effective_date}</p>
                     )}
                     {rp.source_links && rp.source_links.length > 0 && (
-                        <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                        <div style={{display: 'flex',gap: 6,marginTop: 8,flexWrap: 'wrap' }}>
                             {rp.source_links.map((link, i) => (
                                 <a key={i} href={link} target="_blank" rel="noopener noreferrer"
                                     onClick={e => e.stopPropagation()}
-                                    style={{
-                                        padding: '4px 10px', borderRadius: 8, fontSize: 10, fontWeight: 700,
-                                        background: 'rgba(59,164,255,0.1)', color: T.blue,
-                                        border: '1px solid rgba(59,164,255,0.2)', textDecoration: 'none',
-                                    }}>
+                                    style={{padding: '4px 10px',borderRadius: 8,fontSize: 10,fontWeight: 700,background: 'rgba(59,164,255,0.1)',color: T.blue,border: '1px solid rgba(59,164,255,0.2)',textDecoration: 'none'}}>
                                     Source {i + 1} ↗
                                 </a>
                             ))}
@@ -281,33 +250,21 @@ function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
 // ── Support Contact Card
 function SupportContactCard({ contact }: { contact: DrawerData['support_contacts'][0] }) {
     return (
-        <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14, padding: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <span style={{
-                    padding: '3px 9px', borderRadius: 6, fontSize: 9, fontWeight: 800,
-                    background: 'rgba(167,139,250,0.12)', color: T.purple,
-                    border: '1px solid rgba(167,139,250,0.25)', textTransform: 'uppercase',
-                }}>{contact.contact_type}</span>
-                <span style={{ fontSize: 14, fontWeight: 700, color: T.textPrimary }}>{contact.label}</span>
+        <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 14,padding: 16 }}>
+            <div style={{display: 'flex',alignItems: 'center',gap: 8,marginBottom: 8 }}>
+                <span style={{padding: '3px 9px',borderRadius: 6,fontSize: 9,fontWeight: 800,background: 'rgba(167,139,250,0.12)',color: T.purple,border: '1px solid rgba(167,139,250,0.25)',textTransform: 'uppercase'}}>{contact.contact_type}</span>
+                <span style={{fontSize: 14,fontWeight: 700,color: T.textPrimary }}>{contact.label}</span>
             </div>
-            {contact.notes && <p style={{ fontSize: 12, color: T.textSecondary, margin: '0 0 8px', lineHeight: 1.5 }}>{contact.notes}</p>}
-            <div style={{ display: 'flex', gap: 8 }}>
+            {contact.notes && <p style={{fontSize: 12,color: T.textSecondary,margin: '0 0 8px',lineHeight: 1.5 }}>{contact.notes}</p>}
+            <div style={{display: 'flex',gap: 8 }}>
                 {contact.phone && (
                     <a href={`tel:${contact.phone}`}
                         onClick={() => trackEvent('support_contact_opened', { contact_id: contact.contact_id })}
-                        style={{
-                            padding: '6px 14px', borderRadius: 8, fontSize: 11, fontWeight: 700,
-                            background: T.bgElevated, border: `1px solid ${T.border}`,
-                            color: T.textBody, textDecoration: 'none',
-                        }}>📞 {contact.phone}</a>
+                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>📞 {contact.phone}</a>
                 )}
                 {contact.website_url && (
                     <a href={contact.website_url} target="_blank" rel="noopener noreferrer"
-                        style={{
-                            padding: '6px 14px', borderRadius: 8, fontSize: 11, fontWeight: 700,
-                            background: T.bgElevated, border: `1px solid ${T.border}`,
-                            color: T.textBody, textDecoration: 'none',
-                        }}>🌐 Visit ↗</a>
+                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>🌐 Visit ↗</a>
                 )}
             </div>
         </div>
@@ -372,33 +329,22 @@ export default function JurisdictionMapPage() {
     }), [drawerData]);
 
     return (
-        <div style={{ background: T.bg, minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+        <div style={{background: T.bg,minHeight: '100vh',position: 'relative',overflow: 'hidden' }}>
             {/* ── Header */}
-            <div className="hc-container" style={{ paddingTop: 20, paddingBottom: 10 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+            <div className="hc-container" style={{paddingTop: 20,paddingBottom: 10 }}>
+                <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'flex-end',flexWrap: 'wrap',gap: 12 }}>
                     <div>
-                        <h1 style={{
-                            margin: 0, fontSize: 28, fontWeight: 800, color: T.textPrimary,
-                            letterSpacing: '-0.01em', lineHeight: 1,
-                            fontFamily: "var(--font-display, 'Space Grotesk', system-ui)",
-                        }}>
+                        <h1 style={{margin: 0,fontSize: 28,fontWeight: 800,color: T.textPrimary,letterSpacing: '-0.01em',lineHeight: 1,fontFamily: "var(--font-display, 'Space Grotesk', system-ui)"}}>
                             Jurisdiction Map
                         </h1>
-                        <p style={{ margin: '6px 0 0', fontSize: 13, color: T.textSecondary, lineHeight: 1.5 }}>
+                        <p style={{margin: '6px 0 0',fontSize: 13,color: T.textSecondary,lineHeight: 1.5 }}>
                             Tap a state to view operators, regulations, and support contacts
                         </p>
                     </div>
                     {/* Country toggle */}
-                    <div style={{ display: 'flex', gap: 3, background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 10, padding: 3 }}>
+                    <div style={{display: 'flex',gap: 3,background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 10,padding: 3 }}>
                         {(['US', 'CA'] as const).map(c => (
-                            <button aria-label="Interactive Button" key={c} onClick={() => setCountryFilter(c)} style={{
-                                padding: '7px 20px', borderRadius: 8, fontSize: 11, fontWeight: 700,
-                                background: countryFilter === c ? T.bgElevated : 'transparent',
-                                border: `1px solid ${countryFilter === c ? T.borderStrong : 'transparent'}`,
-                                color: countryFilter === c ? T.textPrimary : T.textSecondary,
-                                cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em',
-                                transition: 'all 0.15s',
-                            }}>
+                            <button aria-label="Interactive Button" key={c} onClick={() => setCountryFilter(c)} style={{padding: '7px 20px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: countryFilter === c ? T.bgElevated : 'transparent',border: `1px solid ${countryFilter === c ? T.borderStrong : 'transparent'}`,color: countryFilter === c ? T.textPrimary : T.textSecondary,cursor: 'pointer',textTransform: 'uppercase',letterSpacing: '0.06em',transition: 'all 0.15s'}}>
                                 {c === 'US' ? '🇺🇸 United States' : '🇨🇦 Canada'}
                             </button>
                         ))}
@@ -407,22 +353,13 @@ export default function JurisdictionMapPage() {
             </div>
 
             {/* ── Map Canvas */}
-            <div className="hc-container" style={{ paddingBottom: 20 }}>
-                <div style={{
-                    position: 'relative', borderRadius: 16, overflow: 'hidden',
-                    border: `1px solid ${T.border}`,
-                    background: '#0b0f14',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.45)',
-                }}>
+            <div className="hc-container" style={{paddingBottom: 20 }}>
+                <div style={{position: 'relative',borderRadius: 16,overflow: 'hidden',border: `1px solid ${T.border}`,background: '#0b0f14',boxShadow: '0 20px 60px rgba(0,0,0,0.45)'}}>
                     {/* Grid overlay */}
-                    <div style={{
-                        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-                        backgroundImage: `linear-gradient(rgba(59,164,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59,164,255,0.03) 1px, transparent 1px)`,
-                        backgroundSize: '48px 48px',
-                    }} />
+                    <div style={{position: 'absolute',inset: 0,pointerEvents: 'none',zIndex: 0,backgroundImage: `linear-gradient(rgba(59,164,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59,164,255,0.03) 1px, transparent 1px)`,backgroundSize: '48px 48px'}} />
 
                     {countryFilter === 'US' ? (
-                        <svg viewBox="0 0 960 600" style={{ width: '100%', height: 'auto', display: 'block', cursor: 'pointer' }}>
+                        <svg viewBox="0 0 960 600" style={{width: '100%',height: 'auto',display: 'block',cursor: 'pointer' }}>
                             {/* Subtle background */}
                             <rect width="960" height="600" fill="#0b0f14" />
 
@@ -435,14 +372,14 @@ export default function JurisdictionMapPage() {
                                         onClick={() => selectJurisdiction(state.code)}
                                         onMouseEnter={() => setHoveredState(state.code)}
                                         onMouseLeave={() => setHoveredState(null)}
-                                        style={{ cursor: 'pointer' }}
+                                        style={{cursor: 'pointer' }}
                                     >
                                         <path
                                             d={state.path}
                                             fill={isSelected ? `${T.gold}30` : isHovered ? `${T.blue}20` : '#151e28'}
                                             stroke={isSelected ? T.gold : isHovered ? T.blue : '#243040'}
                                             strokeWidth={isSelected ? 2 : 1}
-                                            style={{ transition: 'all 0.2s ease' }}
+                                            style={{transition: 'all 0.2s ease' }}
                                         />
                                         <text
                                             x={state.cx} y={state.cy}
@@ -451,7 +388,7 @@ export default function JurisdictionMapPage() {
                                             fontSize={state.code.length > 4 ? 9 : 10}
                                             fontWeight={isSelected ? 900 : 700}
                                             fontFamily="'Inter', sans-serif"
-                                            style={{ pointerEvents: 'none', transition: 'fill 0.2s' }}
+                                            style={{pointerEvents: 'none',transition: 'fill 0.2s' }}
                                         >
                                             {state.code.replace('US-', '')}
                                         </text>
@@ -467,24 +404,17 @@ export default function JurisdictionMapPage() {
                         </svg>
                     ) : (
                         /* ── Canada grid */
-                        <div style={{ padding: 30, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+                        <div style={{padding: 30,display: 'grid',gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',gap: 10 }}>
                             {Object.values(CA_PROVINCES).map(prov => {
                                 const isSelected = selectedCode === prov.code;
                                 return (
                                     <button aria-label="Interactive Button"
                                         key={prov.code}
                                         onClick={() => selectJurisdiction(prov.code)}
-                                        style={{
-                                            padding: '16px 12px', borderRadius: 12,
-                                            background: isSelected ? `${T.gold}15` : T.bgCard,
-                                            border: `1px solid ${isSelected ? T.gold : T.border}`,
-                                            color: isSelected ? T.gold : T.textPrimary,
-                                            fontSize: 13, fontWeight: 700, cursor: 'pointer',
-                                            textAlign: 'center', transition: 'all 0.18s',
-                                        }}
+                                        style={{padding: '16px 12px',borderRadius: 12,background: isSelected ? `${T.gold}15` : T.bgCard,border: `1px solid ${isSelected ? T.gold : T.border}`,color: isSelected ? T.gold : T.textPrimary,fontSize: 13,fontWeight: 700,cursor: 'pointer',textAlign: 'center',transition: 'all 0.18s'}}
                                     >
-                                        <div style={{ fontSize: 18, marginBottom: 4 }}>{prov.code.replace('CA-', '')}</div>
-                                        <div style={{ fontSize: 11, color: T.textSecondary }}>{prov.name}</div>
+                                        <div style={{fontSize: 18,marginBottom: 4 }}>{prov.code.replace('CA-', '')}</div>
+                                        <div style={{fontSize: 11,color: T.textSecondary }}>{prov.name}</div>
                                     </button>
                                 );
                             })}
@@ -492,15 +422,9 @@ export default function JurisdictionMapPage() {
                     )}
 
                     {/* Live badge */}
-                    <div style={{
-                        position: 'absolute', top: 14, left: 14, zIndex: 20,
-                        display: 'flex', alignItems: 'center', gap: 7,
-                        padding: '6px 13px',
-                        background: 'rgba(6,11,18,0.85)', backdropFilter: 'blur(12px)',
-                        border: `1px solid rgba(39,209,127,0.3)`, borderRadius: 8,
-                    }}>
-                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, boxShadow: `0 0 8px ${T.green}` }} />
-                        <span style={{ fontSize: 10, fontWeight: 800, color: T.green, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                    <div style={{position: 'absolute',top: 14,left: 14,zIndex: 20,display: 'flex',alignItems: 'center',gap: 7,padding: '6px 13px',background: 'rgba(6,11,18,0.85)',backdropFilter: 'blur(12px)',border: `1px solid rgba(39,209,127,0.3)`,borderRadius: 8}}>
+                        <div style={{width: 7,height: 7,borderRadius: '50%',background: T.green,boxShadow: `0 0 8px ${T.green}` }} />
+                        <span style={{fontSize: 10,fontWeight: 800,color: T.green,textTransform: 'uppercase',letterSpacing: '0.12em' }}>
                             {countryFilter === 'US' ? '50 States + DC' : '13 Provinces/Territories'}
                         </span>
                     </div>
@@ -510,64 +434,41 @@ export default function JurisdictionMapPage() {
             {/* ── Bottom Sheet Drawer */}
             <div
                 ref={drawerRef}
-                style={{
-                    position: 'fixed', bottom: 0, left: 0, right: 0,
-                    zIndex: 50,
-                    background: T.bgPanel,
-                    backdropFilter: 'blur(24px) saturate(1.4)',
-                    borderTop: `1px solid ${T.borderStrong}`,
-                    borderRadius: '20px 20px 0 0',
-                    transform: drawerOpen ? 'translateY(0)' : 'translateY(100%)',
-                    transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
-                    maxHeight: '70vh',
-                    overflowY: 'auto',
-                    boxShadow: drawerOpen ? '0 -20px 60px rgba(0,0,0,0.6)' : 'none',
-                }}
+                style={{position: 'fixed',bottom: 0,left: 0,right: 0,zIndex: 50,background: T.bgPanel,backdropFilter: 'blur(24px) saturate(1.4)',borderTop: `1px solid ${T.borderStrong}`,borderRadius: '20px 20px 0 0',transform: drawerOpen ? 'translateY(0)' : 'translateY(100%)',transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)',maxHeight: '70vh',overflowY: 'auto',boxShadow: drawerOpen ? '0 -20px 60px rgba(0,0,0,0.6)' : 'none'}}
             >
                 {/* Drag handle */}
-                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 6 }}>
-                    <div style={{ width: 40, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
+                <div style={{display: 'flex',justifyContent: 'center',paddingTop: 10,paddingBottom: 6 }}>
+                    <div style={{width: 40,height: 4,borderRadius: 2,background: 'rgba(255,255,255,0.15)' }} />
                 </div>
 
-                <div style={{ padding: '0 20px 24px', maxWidth: 800, margin: '0 auto' }}>
+                <div style={{padding: '0 20px 24px',maxWidth: 800,margin: '0 auto' }}>
                     {/* Header */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                    <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',marginBottom: 16 }}>
                         <div>
-                            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: T.textPrimary, letterSpacing: '-0.01em' }}>
+                            <h2 style={{margin: 0,fontSize: 22,fontWeight: 800,color: T.textPrimary,letterSpacing: '-0.01em' }}>
                                 {selectedName || 'Select a Jurisdiction'}
                             </h2>
                             {selectedCode && (
-                                <span style={{ fontSize: 11, color: T.textLabel, fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em' }}>
+                                <span style={{fontSize: 11,color: T.textLabel,fontFamily: "'JetBrains Mono', monospace",letterSpacing: '0.05em' }}>
                                     {selectedCode}
                                 </span>
                             )}
                         </div>
                         <button aria-label="Interactive Button"
                             onClick={closeDrawer}
-                            style={{
-                                width: 32, height: 32, borderRadius: 8,
-                                background: T.bgCard, border: `1px solid ${T.border}`,
-                                color: T.textSecondary, fontSize: 16, cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            }}
+                            style={{width: 32,height: 32,borderRadius: 8,background: T.bgCard,border: `1px solid ${T.border}`,color: T.textSecondary,fontSize: 16,cursor: 'pointer',display: 'flex',alignItems: 'center',justifyContent: 'center'}}
                         >✕</button>
                     </div>
 
                     {/* Tab bar */}
-                    <div style={{ display: 'flex', gap: 4, marginBottom: 16, background: T.bgCard, borderRadius: 10, padding: 3 }}>
+                    <div style={{display: 'flex',gap: 4,marginBottom: 16,background: T.bgCard,borderRadius: 10,padding: 3 }}>
                         {([
                             { key: 'operators' as DrawerTab, label: '👷 Operators', count: tabCounts.operators },
                             { key: 'rules' as DrawerTab, label: '📋 Rules', count: tabCounts.rules },
                             { key: 'support' as DrawerTab, label: '📞 Support', count: tabCounts.support },
                         ]).map(tab => (
-                            <button aria-label="Interactive Button" key={tab.key} onClick={() => setDrawerTab(tab.key)} style={{
-                                flex: 1, padding: '8px 12px', borderRadius: 8, fontSize: 12, fontWeight: 700,
-                                background: drawerTab === tab.key ? T.bgElevated : 'transparent',
-                                border: `1px solid ${drawerTab === tab.key ? T.borderStrong : 'transparent'}`,
-                                color: drawerTab === tab.key ? T.textPrimary : T.textSecondary,
-                                cursor: 'pointer', transition: 'all 0.15s',
-                            }}>
-                                {tab.label} {!drawerLoading && <span style={{ opacity: 0.5 }}>({tab.count})</span>}
+                            <button aria-label="Interactive Button" key={tab.key} onClick={() => setDrawerTab(tab.key)} style={{flex: 1,padding: '8px 12px',borderRadius: 8,fontSize: 12,fontWeight: 700,background: drawerTab === tab.key ? T.bgElevated : 'transparent',border: `1px solid ${drawerTab === tab.key ? T.borderStrong : 'transparent'}`,color: drawerTab === tab.key ? T.textPrimary : T.textSecondary,cursor: 'pointer',transition: 'all 0.15s'}}>
+                                {tab.label} {!drawerLoading && <span style={{opacity: 0.5 }}>({tab.count})</span>}
                             </button>
                         ))}
                     </div>
@@ -576,7 +477,7 @@ export default function JurisdictionMapPage() {
                     {drawerLoading ? (
                         <DrawerSkeleton />
                     ) : drawerData ? (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        <div style={{display: 'flex',flexDirection: 'column',gap: 10 }}>
                             {drawerTab === 'operators' && (
                                 drawerData.operators.length > 0
                                     ? drawerData.operators.map(op => <OperatorCard key={op.operator_id} op={op} />)
@@ -599,15 +500,7 @@ export default function JurisdictionMapPage() {
                     {drawerData && selectedCode && (
                         <button aria-label="Interactive Button"
                             onClick={() => trackEvent('state_packet_exported', { jurisdiction_code: selectedCode })}
-                            style={{
-                                display: 'block', width: '100%', marginTop: 16,
-                                padding: '12px 20px', borderRadius: 12,
-                                background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
-                                color: '#0a0f16', fontWeight: 900, fontSize: 12,
-                                border: 'none', cursor: 'pointer',
-                                textTransform: 'uppercase', letterSpacing: '0.07em',
-                                boxShadow: `0 3px 16px rgba(245,185,66,0.28)`,
-                            }}
+                            style={{display: 'block',width: '100%',marginTop: 16,padding: '12px 20px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#0a0f16',fontWeight: 900,fontSize: 12,border: 'none',cursor: 'pointer',textTransform: 'uppercase',letterSpacing: '0.07em',boxShadow: `0 3px 16px rgba(245,185,66,0.28)`}}
                         >
                             📥 Export State Packet for {selectedName}
                         </button>
@@ -619,11 +512,7 @@ export default function JurisdictionMapPage() {
             {drawerOpen && (
                 <div
                     onClick={closeDrawer}
-                    style={{
-                        position: 'fixed', inset: 0, zIndex: 40,
-                        background: 'rgba(0,0,0,0.4)',
-                        backdropFilter: 'blur(4px)',
-                    }}
+                    style={{position: 'fixed',inset: 0,zIndex: 40,background: 'rgba(0,0,0,0.4)',backdropFilter: 'blur(4px)'}}
                 />
             )}
 
@@ -645,13 +534,10 @@ export default function JurisdictionMapPage() {
 
 function EmptyTabState({ icon, label, sublabel }: { icon: string; label: string; sublabel: string }) {
     return (
-        <div style={{
-            textAlign: 'center', padding: '32px 20px',
-            background: T.bgCard, border: `1px dashed ${T.border}`, borderRadius: 14,
-        }}>
-            <div style={{ fontSize: 36, marginBottom: 10, opacity: 0.4 }}>{icon}</div>
-            <p style={{ margin: '0 0 6px', fontSize: 14, fontWeight: 700, color: T.textPrimary }}>{label}</p>
-            <p style={{ margin: 0, fontSize: 12, color: T.textSecondary }}>{sublabel}</p>
+        <div style={{textAlign: 'center',padding: '32px 20px',background: T.bgCard,border: `1px dashed ${T.border}`,borderRadius: 14}}>
+            <div style={{fontSize: 36,marginBottom: 10,opacity: 0.4 }}>{icon}</div>
+            <p style={{margin: '0 0 6px',fontSize: 14,fontWeight: 700,color: T.textPrimary }}>{label}</p>
+            <p style={{margin: 0,fontSize: 12,color: T.textSecondary }}>{sublabel}</p>
         </div>
     );
 }

@@ -70,22 +70,9 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
     const strokeHover = "#d97706";
 
     return (
-        <div className={`hub-map ${className}`} style={{ position: "relative", userSelect: "none" }}>
+        <div className={`hub-map ${className}`} style={{position: "relative",userSelect: "none" }}>
             {tooltip && (
-                <div style={{
-                    position: "absolute",
-                    left: tooltip.x + 12,
-                    top: tooltip.y - 28,
-                    background: "#111",
-                    color: "#f5f5f5",
-                    border: "1px solid #d97706",
-                    borderRadius: 6,
-                    padding: "4px 10px",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    pointerEvents: "none",
-                    zIndex: 10,
-                }}>
+                <div style={{position: "absolute",left: tooltip.x + 12,top: tooltip.y - 28,background: "#111",color: "#f5f5f5",border: "1px solid #d97706",borderRadius: 6,padding: "4px 10px",fontSize: 12,fontWeight: 700,pointerEvents: "none",zIndex: 10}}>
                     {tooltip.label}
                 </div>
             )}
@@ -93,7 +80,7 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
             {(country === "us" || country === "both") && (
                 <ComposableMap
                     projection="geoAlbersUsa"
-                    style={{ width: "100%", height: "auto", maxHeight: 400 }}
+                    style={{width: "100%",height: "auto",maxHeight: 400 }}
                 >
                     <ZoomableGroup>
                         <Geographies geography={US_GEO_URL}>
@@ -111,11 +98,7 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
                                                 setTooltip({ label: getUSLabel(geo), x: e.clientX, y: e.clientY });
                                             }}
                                             onMouseLeave={() => { setHovered(null); setTooltip(null); }}
-                                            style={{
-                                                default: { fill: fillDefault, stroke, strokeWidth: 0.5, outline: "none", cursor: "pointer" },
-                                                hover: { fill: fillHover, stroke: strokeHover, strokeWidth: 1, outline: "none", cursor: "pointer" },
-                                                pressed: { fill: "#d97706", stroke: strokeHover, strokeWidth: 1, outline: "none" },
-                                            }}
+                                            style={{default: { fill: fillDefault, stroke, strokeWidth: 0.5, outline: "none", cursor: "pointer" },hover: { fill: fillHover, stroke: strokeHover, strokeWidth: 1, outline: "none", cursor: "pointer" },pressed: { fill: "#d97706", stroke: strokeHover, strokeWidth: 1, outline: "none" }}}
                                         />
                                     );
                                 })
@@ -129,7 +112,7 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
                 <ComposableMap
                     projection="geoMercator"
                     projectionConfig={{ scale: 300, center: [-96, 62] }}
-                    style={{ width: "100%", height: "auto", maxHeight: country === "ca" ? 400 : 200 }}
+                    style={{width: "100%",height: "auto",maxHeight: country === "ca" ? 400 : 200 }}
                 >
                     <Geographies geography={CA_GEO_URL}>
                         {({ geographies }) =>
@@ -146,11 +129,7 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
                                             setTooltip({ label: getCALabel(geo), x: e.clientX, y: e.clientY });
                                         }}
                                         onMouseLeave={() => { setHovered(null); setTooltip(null); }}
-                                        style={{
-                                            default: { fill: fillDefault, stroke, strokeWidth: 0.5, outline: "none", cursor: "pointer" },
-                                            hover: { fill: fillHover, stroke: strokeHover, strokeWidth: 1, outline: "none", cursor: "pointer" },
-                                            pressed: { fill: "#d97706", stroke: strokeHover, strokeWidth: 1, outline: "none" },
-                                        }}
+                                        style={{default: { fill: fillDefault, stroke, strokeWidth: 0.5, outline: "none", cursor: "pointer" },hover: { fill: fillHover, stroke: strokeHover, strokeWidth: 1, outline: "none", cursor: "pointer" },pressed: { fill: "#d97706", stroke: strokeHover, strokeWidth: 1, outline: "none" }}}
                                     />
                                 );
                             })
@@ -159,7 +138,7 @@ export function HubMap({ country = "us", className = "" }: HubMapProps) {
                 </ComposableMap>
             )}
 
-            <p style={{ textAlign: "center", fontSize: 11, color: "var(--hc-muted, #888)", marginTop: 4 }}>
+            <p style={{textAlign: "center",fontSize: 11,color: "var(--hc-muted, #888)",marginTop: 4 }}>
                 Click any state or province to view available pilot car operators
             </p>
         </div>

@@ -86,7 +86,7 @@ function StressBar({ index }: { index: number }) {
     return (
         <div className="w-full">
             <div className="flex justify-between mb-1 items-center">
-                <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: band.color }}>{band.label}</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest" style={{color: band.color }}>{band.label}</span>
                 <span className="text-sm font-black text-white">{index}</span>
             </div>
             <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
@@ -95,7 +95,7 @@ function StressBar({ index }: { index: number }) {
                     initial={{ width: 0 }}
                     animate={{ width: `${index}%` }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    style={{ background: band.color, boxShadow: band.glow }}
+                    style={{background: band.color,boxShadow: band.glow }}
                 />
             </div>
         </div>
@@ -134,14 +134,14 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
             exit={{ opacity: 0, x: 30 }}
             transition={{ duration: 0.25 }}
             className="absolute right-4 top-4 bottom-4 w-80 z-30 flex flex-col overflow-hidden rounded-2xl"
-            style={{ background: "rgba(5,5,5,0.96)", border: `1px solid ${band.border}`, boxShadow: `0 0 40px rgba(0,0,0,0.6), ${band.glow}` }}
+            style={{background: "rgba(5,5,5,0.96)",border: `1px solid ${band.border}`,boxShadow: `0 0 40px rgba(0,0,0,0.6), ${band.glow}` }}
         >
             {/* Header */}
             <div className="flex items-start justify-between p-5 border-b border-white/5">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <BandIcon className="w-4 h-4" style={{ color: band.color }} />
-                        <span className="text-xs font-black uppercase tracking-widest" style={{ color: band.color }}>{band.label}</span>
+                        <BandIcon className="w-4 h-4" style={{color: band.color }} />
+                        <span className="text-xs font-black uppercase tracking-widest" style={{color: band.color }}>{band.label}</span>
                     </div>
                     <h3 className="text-lg font-black text-white leading-tight">{corridor.label}</h3>
                     <div className="text-xs text-white/40 mt-0.5">{corridor.origin} → {corridor.dest} Corridor</div>
@@ -156,11 +156,11 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
                 <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Corridor Stress Index</div>
                 <StressBar index={corridor.stress_index} />
                 <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 rounded-xl" style={{ background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.1)" }}>
+                    <div className="p-3 rounded-xl" style={{background: "rgba(239,68,68,0.05)",border: "1px solid rgba(239,68,68,0.1)" }}>
                         <div className="text-xl font-black text-white">{corridor.open_loads}</div>
                         <div className="text-[10px] text-white/40 uppercase tracking-wide">Open Loads</div>
                     </div>
-                    <div className="p-3 rounded-xl" style={{ background: "rgba(34,197,94,0.05)", border: "1px solid rgba(34,197,94,0.1)" }}>
+                    <div className="p-3 rounded-xl" style={{background: "rgba(34,197,94,0.05)",border: "1px solid rgba(34,197,94,0.1)" }}>
                         <div className="text-xl font-black text-white">{corridor.available_escorts}</div>
                         <div className="text-[10px] text-white/40 uppercase tracking-wide">Avail. Escorts</div>
                     </div>
@@ -181,16 +181,16 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
             {/* Broker tier */}
             <div className="p-5 border-b border-white/5">
                 <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">Recommended Dispatch Tier</div>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: `${tier.color}12`, border: `1px solid ${tier.color}30` }}>
-                    <span className="w-2 h-2 rounded-full" style={{ background: tier.color }} />
-                    <span className="text-sm font-bold" style={{ color: tier.color }}>{tier.label}</span>
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{background: `${tier.color}12`,border: `1px solid ${tier.color}30` }}>
+                    <span className="w-2 h-2 rounded-full" style={{background: tier.color }} />
+                    <span className="text-sm font-bold" style={{color: tier.color }}>{tier.label}</span>
                 </div>
             </div>
 
             {/* Actions */}
             <div className="p-5 mt-auto space-y-2">
                 <button aria-label="Interactive Button" className="w-full h-11 rounded-xl text-xs font-black uppercase tracking-widest text-black transition-all hover:-translate-y-0.5 active:scale-[0.98]"
-                    style={{ background: band.color, boxShadow: band.glow }}>
+                    style={{background: band.color,boxShadow: band.glow }}>
                     Find Escorts in this Corridor
                 </button>
                 <button aria-label="Interactive Button" className="w-full h-9 rounded-xl text-xs font-bold uppercase tracking-widest text-white/60 border border-white/10 hover:bg-white/5 transition-all">
@@ -238,7 +238,7 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
         <div className={`relative flex flex-col h-full ${className}`}>
 
             {/* ── LAYER 1: Command Header ────────────────────────────────────── */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 flex-shrink-0" style={{ background: "rgba(5,5,5,0.95)", backdropFilter: "blur(16px)" }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 flex-shrink-0" style={{background: "rgba(5,5,5,0.95)",backdropFilter: "blur(16px)" }}>
                 <div className="flex items-center gap-3">
                     <div className="relative flex h-2.5 w-2.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-60" />
@@ -276,7 +276,7 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
                             { label: "Critical", color: "#ef4444", range: "80-100" },
                         ] as const).map((b) => (
                             <div key={b.label} className="flex items-center gap-1.5">
-                                <div className="w-2 h-2 rounded-full" style={{ background: b.color }} />
+                                <div className="w-2 h-2 rounded-full" style={{background: b.color }} />
                                 <span className="text-[9px] text-white/40 uppercase tracking-wide">{b.label}</span>
                             </div>
                         ))}
@@ -293,22 +293,18 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
                                 key={corridor.corridor_id}
                                 onClick={() => setSelected(isSelected ? null : corridor)}
                                 className="w-full text-left p-4 rounded-xl transition-all relative overflow-hidden"
-                                style={{
-                                    background: isSelected ? band.bg : "rgba(255,255,255,0.02)",
-                                    border: `1px solid ${isSelected ? band.border : "rgba(255,255,255,0.05)"}`,
-                                    boxShadow: isSelected ? band.glow : "none",
-                                }}
+                                style={{background: isSelected ? band.bg : "rgba(255,255,255,0.02)",border: `1px solid ${isSelected ? band.border : "rgba(255,255,255,0.05)"}`,boxShadow: isSelected ? band.glow : "none"}}
                                 whileHover={{ scale: 1.005 }}
                                 whileTap={{ scale: 0.998 }}
                             >
                                 {/* Layer 3: Predictive pressure glow */}
                                 {(corridor.shortage_p30m ?? 0) >= 0.7 && (
                                     <div className="absolute inset-0 pointer-events-none"
-                                        style={{ background: `radial-gradient(ellipse at 80% 50%, ${band.color}08 0%, transparent 70%)` }} />
+                                        style={{background: `radial-gradient(ellipse at 80% 50%, ${band.color}08 0%, transparent 70%)` }} />
                                 )}
 
                                 <div className="flex items-center gap-3 relative z-10">
-                                    <BandIcon className="w-4 h-4 flex-shrink-0" style={{ color: band.color }} />
+                                    <BandIcon className="w-4 h-4 flex-shrink-0" style={{color: band.color }} />
 
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center justify-between mb-2">
@@ -323,7 +319,7 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
                                                 initial={{ width: 0 }}
                                                 animate={{ width: `${corridor.stress_index}%` }}
                                                 transition={{ duration: 0.9, ease: "easeOut" }}
-                                                style={{ background: band.color, boxShadow: band.glow }}
+                                                style={{background: band.color,boxShadow: band.glow }}
                                             />
                                         </div>
 
@@ -332,7 +328,7 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
                                                 <span className="text-white/40">{corridor.open_loads} loads</span>
                                                 <span className="text-white/40">{corridor.available_escorts} escorts</span>
                                             </div>
-                                            <span className="font-black" style={{ color: band.color }}>CSI {corridor.stress_index}</span>
+                                            <span className="font-black" style={{color: band.color }}>CSI {corridor.stress_index}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -359,10 +355,10 @@ export function CorridorLiquidityHeatmap({ className = "" }: CorridorLiquidityHe
                                     exit={{ opacity: 0, height: 0 }}
                                     transition={{ duration: 0.3 }}
                                     className="p-2.5 rounded-lg"
-                                    style={{ background: `${FLOW_COLORS[event.type]}0d`, border: `1px solid ${FLOW_COLORS[event.type]}20` }}
+                                    style={{background: `${FLOW_COLORS[event.type]}0d`,border: `1px solid ${FLOW_COLORS[event.type]}20` }}
                                 >
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: FLOW_COLORS[event.type] }} />
+                                        <div className="w-1.5 h-1.5 rounded-full" style={{background: FLOW_COLORS[event.type] }} />
                                         <span className="text-[10px] text-white/50">{new Date(event.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>
                                     </div>
                                     <div className="text-[11px] font-bold text-white leading-tight">{event.label}</div>

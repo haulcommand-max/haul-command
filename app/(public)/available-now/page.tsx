@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight } from 'lucide-react';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { ProofStrip } from '@/components/ui/ProofStrip';
 
 // ══════════════════════════════════════════════════════════════
 // /available-now — LIVE ESCORT AVAILABILITY FEED
@@ -38,12 +39,31 @@ export const metadata: Metadata = {
 
 const AVAILABLE_NOW_JSONLD = {
   '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Pilot Car Available Now — Live Availability Feed',
-  description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch.',
-  url: 'https://www.haulcommand.com/available-now',
-  provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
-  areaServed: { '@type': 'Country', name: 'United States' },
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.haulcommand.com/available-now',
+      name: 'Pilot Cars Available Now — Live Escort Availability | Haul Command',
+      description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch across all 50 US states and 120 countries.',
+      url: 'https://www.haulcommand.com/available-now',
+      publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+        { '@type': 'ListItem', position: 2, name: 'Available Now', item: 'https://www.haulcommand.com/available-now' },
+      ],
+    },
+    {
+      '@type': 'Service',
+      name: 'Pilot Car Available Now — Live Availability Feed',
+      description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch.',
+      url: 'https://www.haulcommand.com/available-now',
+      provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+      areaServed: { '@type': 'Country', name: 'United States' },
+    },
+  ],
 };
 
 const US_STATES = [
@@ -152,6 +172,7 @@ export default async function AvailableNowPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(AVAILABLE_NOW_JSONLD) }} />
+      <ProofStrip variant="bar" />
 
       <div style={{ minHeight: '100vh', background: '#060b12', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 

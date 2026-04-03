@@ -95,18 +95,18 @@ export function RepositionRadarCard() {
 
     if (loading) return (
         <div style={cardBase}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '28px 20px' }}>
-                <RefreshCw style={{ width: 14, height: 14, color: '#6b7280', animation: 'spin 1s linear infinite' }} />
-                <span style={{ fontSize: 12, color: '#6b7280' }}>Calculating plays…</span>
+            <div style={{display: 'flex',alignItems: 'center',gap: 8,padding: '28px 20px' }}>
+                <RefreshCw style={{width: 14,height: 14,color: '#6b7280',animation: 'spin 1s linear infinite' }} />
+                <span style={{fontSize: 12,color: '#6b7280' }}>Calculating plays…</span>
             </div>
         </div>
     );
 
     if (error || !data) return (
         <div style={cardBase}>
-            <div style={{ padding: '24px 20px', display: 'flex', gap: 8, alignItems: 'center' }}>
-                <AlertCircle style={{ width: 14, height: 14, color: '#f87171' }} />
-                <span style={{ fontSize: 12, color: '#9ca3af' }}>
+            <div style={{padding: '24px 20px',display: 'flex',gap: 8,alignItems: 'center' }}>
+                <AlertCircle style={{width: 14,height: 14,color: '#f87171' }} />
+                <span style={{fontSize: 12,color: '#9ca3af' }}>
                     {error ?? 'No plays available. Check back in a few hours.'}
                 </span>
             </div>
@@ -119,34 +119,29 @@ export function RepositionRadarCard() {
     return (
         <div style={cardBase}>
             {/* Header */}
-            <div style={{ padding: '16px 20px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{padding: '16px 20px 10px',borderBottom: '1px solid rgba(255,255,255,0.06)',display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
                 <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <Zap style={{ width: 14, height: 14, color: '#F1A91B' }} />
-                        <span style={{ fontSize: 11, fontWeight: 900, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                    <div style={{display: 'flex',alignItems: 'center',gap: 6 }}>
+                        <Zap style={{width: 14,height: 14,color: '#F1A91B' }} />
+                        <span style={{fontSize: 11,fontWeight: 900,color: '#F1A91B',textTransform: 'uppercase',letterSpacing: '0.12em' }}>
                             Reposition Radar
                         </span>
                     </div>
                     {data.liquidity_score != null && (
-                        <div style={{ fontSize: 10, color: '#6b7280', marginTop: 3 }}>
-                            Your liquidity score: <span style={{ color: data.liquidity_score >= 70 ? '#34d399' : data.liquidity_score >= 40 ? '#f59e0b' : '#f87171', fontWeight: 700 }}>{Math.round(data.liquidity_score)}</span>/100
+                        <div style={{fontSize: 10,color: '#6b7280',marginTop: 3 }}>
+                            Your liquidity score: <span style={{color: data.liquidity_score >= 70 ? '#34d399' : data.liquidity_score >= 40 ? '#f59e0b' : '#f87171',fontWeight: 700 }}>{Math.round(data.liquidity_score)}</span>/100
                         </div>
                     )}
                 </div>
                 {/* Home region pressure */}
                 {snap && (
-                    <div style={{
-                        padding: '4px 10px', borderRadius: 8, fontSize: 10, fontWeight: 800,
-                        background: snap.cal_label === 'CRITICAL' ? 'rgba(239,68,68,0.12)'
+                    <div style={{padding: '4px 10px',borderRadius: 8,fontSize: 10,fontWeight: 800,background: snap.cal_label === 'CRITICAL' ? 'rgba(239,68,68,0.12)'
                             : snap.cal_label === 'TIGHT' ? 'rgba(245,158,11,0.12)'
-                                : 'rgba(52,211,153,0.08)',
-                        color: snap.cal_label === 'CRITICAL' ? '#f87171'
+                                : 'rgba(52,211,153,0.08)',color: snap.cal_label === 'CRITICAL' ? '#f87171'
                             : snap.cal_label === 'TIGHT' ? '#fbbf24'
-                                : '#34d399',
-                        border: `1px solid ${snap.cal_label === 'CRITICAL' ? 'rgba(239,68,68,0.25)'
+                                : '#34d399',border: `1px solid ${snap.cal_label === 'CRITICAL' ? 'rgba(239,68,68,0.25)'
                             : snap.cal_label === 'TIGHT' ? 'rgba(245,158,11,0.25)'
-                                : 'rgba(52,211,153,0.15)'}`,
-                    }}>
+                                : 'rgba(52,211,153,0.15)'}`}}>
                         Home: {snap.cal_label}
                     </div>
                 )}
@@ -154,15 +149,15 @@ export function RepositionRadarCard() {
 
             {/* Plays */}
             {!hasPlays ? (
-                <div style={{ padding: '24px 20px', textAlign: 'center' }}>
-                    <TrendingUp style={{ width: 28, height: 28, color: '#374151', margin: '0 auto 10px' }} />
-                    <p style={{ fontSize: 13, color: '#6b7280', margin: 0 }}>No reposition plays right now.</p>
-                    <p style={{ fontSize: 11, color: '#4b5563', marginTop: 4 }}>
+                <div style={{padding: '24px 20px',textAlign: 'center' }}>
+                    <TrendingUp style={{width: 28,height: 28,color: '#374151',margin: '0 auto 10px' }} />
+                    <p style={{fontSize: 13,color: '#6b7280',margin: 0 }}>No reposition plays right now.</p>
+                    <p style={{fontSize: 11,color: '#4b5563',marginTop: 4 }}>
                         Plays appear when your nearby zones have open gaps.
                     </p>
                 </div>
             ) : (
-                <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{padding: '10px 12px',display: 'flex',flexDirection: 'column',gap: 8 }}>
                     {(['sure_thing', 'best_value', 'speedster'] as const).map(type => {
                         const play = data.plays_by_type[type];
                         const cfg = PLAY_CONFIG[type];
@@ -172,38 +167,33 @@ export function RepositionRadarCard() {
                         return (
                             <div key={play.id}
                                 onClick={() => setExpanded(isOpen ? null : play.id)}
-                                style={{
-                                    padding: '12px 14px', borderRadius: 10, cursor: 'pointer',
-                                    background: `linear-gradient(135deg, rgba(255,255,255,0.025), rgba(255,255,255,0.012))`,
-                                    border: `1px solid ${isOpen ? cfg.border : 'rgba(255,255,255,0.07)'}`,
-                                    transition: 'border-color 0.15s',
-                                }}
+                                style={{padding: '12px 14px',borderRadius: 10,cursor: 'pointer',background: `linear-gradient(135deg, rgba(255,255,255,0.025), rgba(255,255,255,0.012))`,border: `1px solid ${isOpen ? cfg.border : 'rgba(255,255,255,0.07)'}`,transition: 'border-color 0.15s'}}
                             >
                                 {/* Play header */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <span style={{ fontSize: 16 }}>{cfg.icon}</span>
+                                <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
+                                    <div style={{display: 'flex',alignItems: 'center',gap: 8 }}>
+                                        <span style={{fontSize: 16 }}>{cfg.icon}</span>
                                         <div>
-                                            <div style={{ fontSize: 11, fontWeight: 800, color: cfg.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                                            <div style={{fontSize: 11,fontWeight: 800,color: cfg.color,textTransform: 'uppercase',letterSpacing: '0.08em' }}>
                                                 {cfg.label}
                                             </div>
-                                            <div style={{ fontSize: 13, fontWeight: 700, color: '#e5e7eb', marginTop: 1 }}>
+                                            <div style={{fontSize: 13,fontWeight: 700,color: '#e5e7eb',marginTop: 1 }}>
                                                 {play.target_region}
                                                 {play.distance_miles != null && (
-                                                    <span style={{ fontSize: 11, color: '#6b7280', fontWeight: 400, marginLeft: 6 }}>
+                                                    <span style={{fontSize: 11,color: '#6b7280',fontWeight: 400,marginLeft: 6 }}>
                                                         {Math.round(play.distance_miles)} mi
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
                                     </div>
-                                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                                    <div style={{textAlign: 'right',flexShrink: 0 }}>
                                         {play.expected_premium_pct != null && (
-                                            <div style={{ fontSize: 14, fontWeight: 900, color: cfg.color }}>
+                                            <div style={{fontSize: 14,fontWeight: 900,color: cfg.color }}>
                                                 +{Math.round(play.expected_premium_pct)}%
                                             </div>
                                         )}
-                                        <div style={{ fontSize: 10, color: '#4b5563', marginTop: 1 }}>
+                                        <div style={{fontSize: 10,color: '#4b5563',marginTop: 1 }}>
                                             {Math.round(play.confidence_score * 100)}% confidence
                                         </div>
                                     </div>
@@ -211,20 +201,20 @@ export function RepositionRadarCard() {
 
                                 {/* Expanded detail */}
                                 {isOpen && (
-                                    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <div style={{marginTop: 10,paddingTop: 10,borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                                         {play.shortage_severity && (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                                                <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SEVERITY_COLOR[play.shortage_severity] ?? '#9ca3af' }}>
+                                            <div style={{display: 'flex',alignItems: 'center',gap: 6,marginBottom: 6 }}>
+                                                <span style={{fontSize: 10,fontWeight: 700,textTransform: 'uppercase',letterSpacing: '0.08em',color: SEVERITY_COLOR[play.shortage_severity] ?? '#9ca3af' }}>
                                                     {play.shortage_severity} shortage
                                                 </span>
                                             </div>
                                         )}
                                         {play.explanation && (
-                                            <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5, margin: '0 0 8px' }}>
+                                            <p style={{fontSize: 12,color: '#9ca3af',lineHeight: 1.5,margin: '0 0 8px' }}>
                                                 {play.explanation}
                                             </p>
                                         )}
-                                        <div style={{ fontSize: 10, color: '#4b5563' }}>
+                                        <div style={{fontSize: 10,color: '#4b5563' }}>
                                             Valid until {new Date(play.valid_until).toLocaleString()}
                                         </div>
                                     </div>
@@ -237,32 +227,32 @@ export function RepositionRadarCard() {
 
             {/* Market context strip */}
             {snap && hasPlays && (
-                <div style={{ padding: '10px 20px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: 16 }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: 15, fontWeight: 900, color: '#e5e7eb' }}>{snap.loads_posted_7d ?? 0}</div>
-                        <div style={{ fontSize: 9, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Loads 7d</div>
+                <div style={{padding: '10px 20px',borderTop: '1px solid rgba(255,255,255,0.05)',display: 'flex',gap: 16 }}>
+                    <div style={{textAlign: 'center' }}>
+                        <div style={{fontSize: 15,fontWeight: 900,color: '#e5e7eb' }}>{snap.loads_posted_7d ?? 0}</div>
+                        <div style={{fontSize: 9,color: '#4b5563',textTransform: 'uppercase',letterSpacing: '0.08em' }}>Loads 7d</div>
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: 15, fontWeight: 900, color: '#e5e7eb' }}>{snap.available_now ?? 0}</div>
-                        <div style={{ fontSize: 9, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Supply Now</div>
+                    <div style={{textAlign: 'center' }}>
+                        <div style={{fontSize: 15,fontWeight: 900,color: '#e5e7eb' }}>{snap.available_now ?? 0}</div>
+                        <div style={{fontSize: 9,color: '#4b5563',textTransform: 'uppercase',letterSpacing: '0.08em' }}>Supply Now</div>
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: 15, fontWeight: 900, color: '#f59e0b' }}>
+                    <div style={{textAlign: 'center' }}>
+                        <div style={{fontSize: 15,fontWeight: 900,color: '#f59e0b' }}>
                             +{Math.round(((snap.premium_low_pct ?? 0) + (snap.premium_high_pct ?? 0)) / 2)}%
                         </div>
-                        <div style={{ fontSize: 9, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Avg Premium</div>
+                        <div style={{fontSize: 9,color: '#4b5563',textTransform: 'uppercase',letterSpacing: '0.08em' }}>Avg Premium</div>
                     </div>
                 </div>
             )}
 
             {/* Footer */}
-            <div style={{ padding: '10px 20px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                <MapPin style={{ width: 11, height: 11, color: '#4b5563' }} />
-                <span style={{ fontSize: 11, color: '#4b5563' }}>
+            <div style={{padding: '10px 20px',borderTop: '1px solid rgba(255,255,255,0.05)',display: 'flex',gap: 10,alignItems: 'center',flexWrap: 'wrap' }}>
+                <MapPin style={{width: 11,height: 11,color: '#4b5563' }} />
+                <span style={{fontSize: 11,color: '#4b5563' }}>
                     {hasPlays ? `${data.plays.length} plays available` : 'Watching market signals…'}
                 </span>
                 {hasPlays && (
-                    <Link aria-label="Navigation Link" href="/dashboard/map" style={{ marginLeft: 'auto', fontSize: 11, color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href="/dashboard/map" style={{marginLeft: 'auto',fontSize: 11,color: '#F1A91B',fontWeight: 700,textDecoration: 'none' }}>
                         View map →
                     </Link>
                 )}

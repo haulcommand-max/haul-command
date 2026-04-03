@@ -98,16 +98,10 @@ export default function GlobalCommandMap() {
                       onMouseLeave={() => setTooltipContent('')}
                       style={{
                         default: {
-                          fill: isTarget ? "#1e293b" : "#0f172a", // Dark slate for active, darker for inactive
-                          stroke: isTarget ? "#334155" : "#1e293b",
-                          strokeWidth: 0.5,
-                          outline: "none"
                         },
                         hover: {
-                          fill: isTarget ? "#f59e0b" : "#334155", // Amber highlight if supported
                           stroke: "#fcd34d",
                           strokeWidth: 1,
-                          outline: "none",
                           cursor: isTarget ? 'pointer' : 'default'
                         },
                         pressed: {

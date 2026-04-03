@@ -100,28 +100,20 @@ function Tooltip({ tt }: { tt: TT }) {
             exit={{ opacity: 0, scale: 0.94 }}
             transition={{ duration: 0.08 }}
             className="absolute z-50 pointer-events-none"
-            style={{ left: Math.min(tt.x + 12, 720), top: Math.max(tt.y - 80, 4) }}
+            style={{left: Math.min(tt.x + 12, 720),top: Math.max(tt.y - 80, 4) }}
         >
-            <div style={{
-                background: "rgba(10,12,22,0.97)",
-                border: "1px solid rgba(241,169,27,0.22)",
-                backdropFilter: "blur(14px)",
-                borderRadius: 14,
-                padding: "10px 14px",
-                minWidth: 148,
-                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
-            }}>
+            <div style={{background: "rgba(10,12,22,0.97)",border: "1px solid rgba(241,169,27,0.22)",backdropFilter: "blur(14px)",borderRadius: 14,padding: "10px 14px",minWidth: 148,boxShadow: "0 8px 32px rgba(0,0,0,0.6)"}}>
                 <div className="flex items-center justify-between gap-2 mb-1">
                     <span className="text-[13px] font-black text-white leading-tight">{tt.name}</span>
                     <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded"
-                        style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }}>
+                        style={{background: "rgba(255,255,255,0.06)",color: "rgba(255,255,255,0.35)" }}>
                         {tt.code}
                     </span>
                 </div>
                 {tt.heat && (
-                    <div className="text-[10px] font-semibold mb-2" style={{ color: heatColor }}>{heatLabel}</div>
+                    <div className="text-[10px] font-semibold mb-2" style={{color: heatColor }}>{heatLabel}</div>
                 )}
-                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: "#F1A91B" }}>
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{color: "#F1A91B" }}>
                     Browse Directory →
                 </div>
             </div>
@@ -189,7 +181,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
         >
             {/* ── Legend ──────────────────────────────────────────────────── */}
             <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mb-3 px-1">
-                <span className="text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                <span className="text-[9px] font-black uppercase tracking-[0.18em]" style={{color: "rgba(255,255,255,0.25)" }}>
                     Corridor Demand
                 </span>
                 {([
@@ -198,12 +190,12 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                     { color: C.low, label: "Light" },
                 ] as const).map(({ color, label }) => (
                     <div key={label} className="flex items-center gap-1">
-                        <span className="w-2.5 h-2.5 rounded-sm" style={{ background: color, border: "1px solid rgba(255,255,255,0.08)" }} />
-                        <span className="text-[9px]" style={{ color: "rgba(255,255,255,0.35)" }}>{label}</span>
+                        <span className="w-2.5 h-2.5 rounded-sm" style={{background: color,border: "1px solid rgba(255,255,255,0.08)" }} />
+                        <span className="text-[9px]" style={{color: "rgba(255,255,255,0.35)" }}>{label}</span>
                     </div>
                 ))}
                 <a href="/map" className="ml-auto text-[9px] font-black uppercase tracking-widest hidden sm:block"
-                    style={{ color: "rgba(241,169,27,0.5)" }}>
+                    style={{color: "rgba(241,169,27,0.5)" }}>
                     Full Map →
                 </a>
             </div>
@@ -216,14 +208,14 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
             */}
             <div
                 className="relative w-full overflow-hidden rounded-2xl"
-                style={{ border: "1px solid rgba(255,255,255,0.06)", background: C.ocean }}
+                style={{border: "1px solid rgba(255,255,255,0.06)",background: C.ocean }}
             >
                 <ComposableMap
                     projection="geoMercator"
                     projectionConfig={projConfig}
                     width={900}
                     height={540}
-                    style={{ width: "100%", height: "auto", display: "block" }}
+                    style={{width: "100%",height: "auto",display: "block" }}
                 >
                     {/* Ocean background */}
                     <rect x={0} y={0} width={900} height={540} fill={C.ocean} />
@@ -241,11 +233,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                                     fill={isCA ? C.canada : id === "484" ? "#12160E" : C.world}
                                     stroke={isCA ? C.caBorder : "rgba(255,255,255,0.03)"}
                                     strokeWidth={0.4}
-                                    style={{
-                                        default: { outline: "none" },
-                                        hover: { outline: "none" },
-                                        pressed: { outline: "none" },
-                                    }}
+                                    style={{default: { outline: "none" },hover: { outline: "none" },pressed: { outline: "none" }}}
                                 />
                             );
                         })}
@@ -272,11 +260,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                                     fill={fill}
                                     stroke={C.border}
                                     strokeWidth={isHov || isSel ? 1 : 0.4}
-                                    style={{
-                                        default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },
-                                        hover: { outline: "none", cursor: "pointer" },
-                                        pressed: { outline: "none" },
-                                    }}
+                                    style={{default: { outline: "none", cursor: "pointer", transition: "fill 0.12s" },hover: { outline: "none", cursor: "pointer" },pressed: { outline: "none" }}}
                                     onMouseEnter={e => setHovered({ code, name: US_NAMES[code] ?? code, country: "us", heat, ...getPos(e as any) })}
                                     onMouseMove={e => setHovered(h => h ? { ...h, ...getPos(e as any) } : null)}
                                     onMouseLeave={() => setHovered(null)}
@@ -291,22 +275,22 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                     {/* I-10: Jacksonville → LA → El Paso → Los Angeles */}
                     <Line from={[-81.7, 30.3]} to={[-118.2, 34.0]}
                         stroke="rgba(241,169,27,0.45)" strokeWidth={1.4} strokeLinecap="round"
-                        style={{ filter: "drop-shadow(0 0 3px rgba(241,169,27,0.3))", pointerEvents: "none" }}
+                        style={{filter: "drop-shadow(0 0 3px rgba(241,169,27,0.3))",pointerEvents: "none" }}
                     />
                     {/* I-35: Laredo → Kansas City */}
                     <Line from={[-99.5, 27.5]} to={[-94.6, 39.1]}
                         stroke="rgba(241,169,27,0.4)" strokeWidth={1.2} strokeLinecap="round"
-                        style={{ filter: "drop-shadow(0 0 3px rgba(241,169,27,0.25))", pointerEvents: "none" }}
+                        style={{filter: "drop-shadow(0 0 3px rgba(241,169,27,0.25))",pointerEvents: "none" }}
                     />
                     {/* I-95: Miami → Boston */}
                     <Line from={[-80.2, 25.8]} to={[-71.1, 42.4]}
                         stroke="rgba(241,169,27,0.28)" strokeWidth={1} strokeLinecap="round"
-                        strokeDasharray="3,3" style={{ pointerEvents: "none" }}
+                        strokeDasharray="3,3" style={{pointerEvents: "none" }}
                     />
                     {/* Trans-Canada Highway */}
                     <Line from={[-123.1, 49.3]} to={[-52.7, 47.6]}
                         stroke="rgba(241,169,27,0.18)" strokeWidth={0.9} strokeLinecap="round"
-                        strokeDasharray="5,4" style={{ pointerEvents: "none" }}
+                        strokeDasharray="5,4" style={{pointerEvents: "none" }}
                     />
                 </ComposableMap>
 
@@ -317,18 +301,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
 
                 {/* Bottom-left hint */}
                 <div className="absolute bottom-2.5 left-2.5 pointer-events-none">
-                    <span style={{
-                        background: "rgba(8,10,18,0.82)",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        color: "rgba(255,255,255,0.25)",
-                        borderRadius: 8,
-                        padding: "3px 8px",
-                        fontSize: 9,
-                        fontWeight: 800,
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                        backdropFilter: "blur(8px)",
-                    }}>
+                    <span style={{background: "rgba(8,10,18,0.82)",border: "1px solid rgba(255,255,255,0.06)",color: "rgba(255,255,255,0.25)",borderRadius: 8,padding: "3px 8px",fontSize: 9,fontWeight: 800,letterSpacing: "0.12em",textTransform: "uppercase",backdropFilter: "blur(8px)"}}>
                         Click any state → directory
                     </span>
                 </div>
@@ -337,10 +310,10 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
             {/* ── Canadian Provinces grid ─────────────────────────────────── */}
             <div className="mt-4">
                 <p className="text-[9px] font-black uppercase tracking-[0.18em] mb-2"
-                    style={{ color: "rgba(255,255,255,0.18)" }}>
+                    style={{color: "rgba(255,255,255,0.18)" }}>
                     🇨🇦 Canadian Provinces
                 </p>
-                <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(52px, 1fr))" }}>
+                <div className="grid gap-1.5" style={{gridTemplateColumns: "repeat(auto-fill, minmax(52px, 1fr))" }}>
                     {CA_PROVINCES.map(({ code, name }) => (
                         <button
                             key={code}
@@ -348,11 +321,7 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                             title={name}
                             aria-label={`${name} — browse Canadian directory`}
                             className="flex items-center justify-center h-9 rounded-xl text-[10px] font-black uppercase transition-all duration-150 hover:scale-105 focus-visible:outline-none"
-                            style={{
-                                background: selected === code ? "#F1A91B" : "rgba(255,255,255,0.04)",
-                                border: selected === code ? "1px solid #F1A91B" : "1px solid rgba(255,255,255,0.08)",
-                                color: selected === code ? "#000" : "rgba(255,255,255,0.45)",
-                            }}
+                            style={{background: selected === code ? "#F1A91B" : "rgba(255,255,255,0.04)",border: selected === code ? "1px solid #F1A91B" : "1px solid rgba(255,255,255,0.08)",color: selected === code ? "#000" : "rgba(255,255,255,0.45)"}}
                         >
                             {code}
                         </button>
@@ -363,10 +332,10 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
             {/* ── Mobile US state grid (sm and below — SVG still usable but grids help) */}
             <details className="mt-3 sm:hidden">
                 <summary className="text-[9px] font-black uppercase tracking-[0.18em] cursor-pointer"
-                    style={{ color: "rgba(255,255,255,0.18)" }}>
+                    style={{color: "rgba(255,255,255,0.18)" }}>
                     🇺🇸 US States quick-access
                 </summary>
-                <div className="grid gap-1 mt-2" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(44px, 1fr))" }}>
+                <div className="grid gap-1 mt-2" style={{gridTemplateColumns: "repeat(auto-fill, minmax(44px, 1fr))" }}>
                     {Object.entries(US_NAMES).map(([code, name]) => {
                         const heat = getHeat(code);
                         return (
@@ -375,14 +344,10 @@ export function NorthAmericaMap({ className = "", onRegionClick }: NorthAmericaM
                                 title={name}
                                 aria-label={name}
                                 className="flex items-center justify-center h-8 rounded-lg text-[9px] font-black uppercase transition-all"
-                                style={{
-                                    background: selected === code ? "#F1A91B"
-                                        : heat === "hot" ? "rgba(241,169,27,0.1)" : "rgba(255,255,255,0.03)",
-                                    border: selected === code ? "1px solid #F1A91B"
-                                        : heat === "hot" ? "1px solid rgba(241,169,27,0.25)" : "1px solid rgba(255,255,255,0.06)",
-                                    color: selected === code ? "#000"
-                                        : heat === "hot" ? "#F1A91B" : "rgba(255,255,255,0.38)",
-                                }}
+                                style={{background: selected === code ? "#F1A91B"
+                                        : heat === "hot" ? "rgba(241,169,27,0.1)" : "rgba(255,255,255,0.03)",border: selected === code ? "1px solid #F1A91B"
+                                        : heat === "hot" ? "1px solid rgba(241,169,27,0.25)" : "1px solid rgba(255,255,255,0.06)",color: selected === code ? "#000"
+                                        : heat === "hot" ? "#F1A91B" : "rgba(255,255,255,0.38)"}}
                             >
                                 {code}
                             </button>

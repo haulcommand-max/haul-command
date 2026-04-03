@@ -4,6 +4,8 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Tools & Calculators | Haul Command',
@@ -143,6 +145,7 @@ export default function ToolsIndexPage() {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+            <ProofStrip variant="bar" />
 
             <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#F0F0F2' }}>
                 {/* ── Hero ── */}
@@ -338,6 +341,18 @@ export default function ToolsIndexPage() {
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <AdGridSlot zone="tools_bottom" />
             </div>
+
+            <NoDeadEndBlock
+              heading="Explore More Haul Command Resources"
+              moves={[
+                { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
+                { href: '/claim', icon: '✓', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
+                { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by state' },
+                { href: '/regulations', icon: '🌍', title: 'Global Regulations', desc: '120 country rules' },
+                { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
+              ]}
+            />
 
             {/* Hover animation style */}
             <style dangerouslySetInnerHTML={{ __html: `
