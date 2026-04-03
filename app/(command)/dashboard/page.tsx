@@ -6,6 +6,7 @@ import { TodayCommandCenter } from "@/components/intelligence/TodayCommandCenter
 import { SwarmActivityFeed } from "@/components/swarm/SwarmActivityFeed";
 import { SwarmScoreboard } from "@/components/swarm/SwarmScoreboard";
 import { MarketPulse } from "@/components/seo/MarketPulse";
+import { AdGridPushCampaignSender } from "@/components/ads/AdGridPushCampaignSender";
 import "@/components/swarm/swarm.css";
 
 export default function CommandDashboardPage() {
@@ -92,6 +93,8 @@ export default function CommandDashboardPage() {
                     <div className="space-y-6">
                         <SwarmScoreboard />
                         <SwarmActivityFeed limit={50} />
+                        {/* Push Campaign Sender — admin ad tool */}
+                        <AdGridPushCampaignSender />
                     </div>
                 )}
             </main>

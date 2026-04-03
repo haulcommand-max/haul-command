@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
+import { AdGridBountyFlasher } from '@/components/ads/AdGridBountyFlasher';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 export const metadata = {
   title: 'Oversize Load Board — Post & Find Heavy Haul Loads | Haul Command',
@@ -114,6 +116,24 @@ export default async function LoadBoardPage() {
         />
       </section>
 
+      {/* Bounty Flasher — Urgent boosted load */}
+      <section className="max-w-5xl mx-auto px-4 pb-4">
+        <AdGridBountyFlasher
+          load={{
+            id: 'bounty-demo-1',
+            origin: 'Houston, TX',
+            destination: 'Oklahoma City, OK',
+            payout_cents: 85000,
+            deadline_hours: 6,
+            weight_lbs: 145000,
+            escort_count: 2,
+            broker_name: 'Atlas Heavy Logistics',
+            broker_verified: true,
+            boost_tier: 'flash',
+          }}
+        />
+      </section>
+
       {/* Load Cards */}
       <section className="max-w-5xl mx-auto px-4 pb-16">
         <div className="flex items-center justify-between mb-6">
@@ -206,6 +226,9 @@ export default async function LoadBoardPage() {
             </Link>
           </div>
         </div>
+
+        {/* Social Proof Banner */}
+        <SocialProofBanner />
       </section>
     </div>
   );

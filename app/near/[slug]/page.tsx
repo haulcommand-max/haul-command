@@ -14,6 +14,10 @@ import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { GeoAuthorityFloor } from '@/components/seo/GeoAuthorityFloor';
 import { GeoMarketplaceHero } from '@/components/seo/GeoMarketplaceHero';
 import { StaticRadarMap } from '@/components/seo/StaticRadarMap';
+import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA';
+import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { AdGridCurfewHotelBooking } from '@/components/ads/AdGridCurfewHotelBooking';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 // ── Top 50 US cities for programmatic generation ──
@@ -462,6 +466,52 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           term="pilot car"
           geo={city.state}
           country="US"
+        />
+
+        {/* ── Social Proof Banner — perceived value ── */}
+        <SocialProofBanner />
+
+        {/* ── Live Activity Feed — social gravity ── */}
+        <div className="flex justify-center">
+          <DirectoryActivityFeed />
+        </div>
+
+        {/* ── City Sponsorship CTA — monetization ── */}
+        <CitySponsorshipCTA
+          cityName={city.name}
+          regionName={city.state}
+          pricePerMonth={149}
+        />
+
+        {/* ── Curfew Hotel Booking — "Sleep Here" widget ── */}
+        <AdGridCurfewHotelBooking
+          sunset_time="18:45"
+          minutes_to_sunset={38}
+          location={`${city.name}, ${city.stateCode}`}
+          offers={[
+            {
+              id: 'hotel-1',
+              name: `${city.name} Truck Inn`,
+              type: 'hotel',
+              distance_miles: 2.3,
+              price_night: 89,
+              rating: 4.2,
+              amenities: ['Truck Parking', 'Wi-Fi', 'Laundry'],
+              accepts_crypto: false,
+              book_url: `/near/${slug}/lodging`,
+            },
+            {
+              id: 'yard-1',
+              name: `${city.stateCode} Secure Staging Yard`,
+              type: 'staging_yard',
+              distance_miles: 4.8,
+              price_night: 45,
+              rating: 4.5,
+              amenities: ['24/7 Security', 'Power Hookup'],
+              accepts_crypto: true,
+              book_url: `/near/${slug}/yards`,
+            },
+          ]}
         />
       </div>
     </div>

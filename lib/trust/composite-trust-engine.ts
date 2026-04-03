@@ -9,6 +9,11 @@
 // Cold-start protection, confidence bands, anti-gaming.
 
 import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
+import {
+    checkReviewIntegrity,
+    detectScoreTampering,
+    type ReviewIntegrityCheck,
+} from "./anti-gaming-engine";
 
 // ============================================================
 // TYPES
@@ -318,12 +323,34 @@ export async function computeCompositeTrustScore(userId: string): Promise<TrustS
     const isEmerging = totalVerified < EMERGING_THRESHOLD;
     const probationActive = totalVerified < PROBATION_THRESHOLD && totalRatings < 2;
 
-    // Anti-gaming checks
+    // Anti-gaming checks (inline heuristics)
     if (totalRatings > 10 && crowd.inputs.verified_ratio < 0.2) {
         flags.push("low_verified_rating_ratio");
     }
     if (totalRatings > 0 && (crowd.inputs.avg_overall as number) === 5.0 && totalRatings < 5) {
         flags.push("suspiciously_perfect_early_ratings");
+    }
+
+    // Anti-gaming checks (dedicated engine — score tampering detection)
+    try {
+        const { data: scoreHistory } = await supabase
+            .from("composite_trust_scores")
+            .select("composite_score, computed_at")
+            .eq("user_id", userId)
+            .order("computed_at", { ascending: false })
+            .limit(20);
+
+        if (scoreHistory && scoreHistory.length >= 2) {
+            const tamperResult = detectScoreTampering(
+                scoreHistory.map((s: any) => ({ score: s.composite_score, timestamp: s.computed_at }))
+            );
+            if (tamperResult) {
+                flags.push(`score_tampering_${tamperResult.severity}`);
+                flags.push(...tamperResult.evidence);
+            }
+        }
+    } catch {
+        // Non-blocking: tampering detection should never halt trust computation
     }
 
     const result: TrustScoreResult = {
@@ -429,9 +456,53 @@ export async function submitRating(
         safety_compliance?: number;
         review_text?: string;
     },
-    jobId?: string
-): Promise<void> {
+    jobId?: string,
+    contextSignals?: {
+        reviewerAge: number;
+        reviewerReviewCount: number;
+        reviewerDevice: string;
+        reviewsInLastHour: number;
+        sameIpReviews: number;
+        sameDeviceReviews: number;
+        targetRecentReviewCount: number;
+    },
+): Promise<{ accepted: boolean; integrity?: ReviewIntegrityCheck; reason?: string }> {
     const supabase = getSupabaseAdmin();
+
+    // ── Anti-Gaming: Review Integrity Check ──
+    if (contextSignals) {
+        const avgRating = scores.overall; // simplified — ideally compare to target's average
+        const integrityResult = checkReviewIntegrity(
+            {
+                userId: raterUserId,
+                reviewerAge: contextSignals.reviewerAge,
+                reviewerReviewCount: contextSignals.reviewerReviewCount,
+                reviewerDevice: contextSignals.reviewerDevice,
+                textLength: (scores.review_text || '').length,
+                hasPhotos: false, // TODO: wire photos when available
+                submittedAt: new Date().toISOString(),
+                targetId: ratedUserId,
+            },
+            {
+                reviewsInLastHour: contextSignals.reviewsInLastHour,
+                sameIpReviews: contextSignals.sameIpReviews,
+                sameDeviceReviews: contextSignals.sameDeviceReviews,
+                targetRecentReviewCount: contextSignals.targetRecentReviewCount,
+                avgRatingDeviation: Math.abs(avgRating - 3.5), // deviation from neutral
+            },
+        );
+
+        // Block fraudulent reviews outright
+        if (integrityResult.verdict === 'fraud') {
+            console.warn(`[CompositeEngine] BLOCKED fraudulent review from ${raterUserId} → ${ratedUserId}`, integrityResult);
+            return { accepted: false, integrity: integrityResult, reason: 'Review blocked by integrity check' };
+        }
+
+        // Flag suspect reviews (still save, but with reduced weight)
+        if (integrityResult.verdict === 'suspect') {
+            console.warn(`[CompositeEngine] FLAGGED suspect review from ${raterUserId} → ${ratedUserId}`, integrityResult);
+        }
+    }
 
     // Verify job exists if provided
     let verifiedJob = false;
@@ -443,6 +514,14 @@ export async function submitRating(
             .maybeSingle();
         verifiedJob = (job as any)?.status === "completed";
     }
+
+    // Apply weight reduction for suspect reviews
+    const baseWeight = verifiedJob ? 1.5 : 1.0;
+    const isSuspect = contextSignals ? checkReviewIntegrity(
+        { userId: raterUserId, reviewerAge: contextSignals.reviewerAge, reviewerReviewCount: contextSignals.reviewerReviewCount, reviewerDevice: contextSignals.reviewerDevice, textLength: (scores.review_text || '').length, hasPhotos: false, submittedAt: new Date().toISOString(), targetId: ratedUserId },
+        { reviewsInLastHour: contextSignals.reviewsInLastHour, sameIpReviews: contextSignals.sameIpReviews, sameDeviceReviews: contextSignals.sameDeviceReviews, targetRecentReviewCount: contextSignals.targetRecentReviewCount, avgRatingDeviation: Math.abs(scores.overall - 3.5) }
+    ).verdict === 'suspect' : false;
+    const finalWeight = isSuspect ? baseWeight * 0.3 : baseWeight;
 
     await supabase.from("trust_ratings").upsert(
         {
@@ -459,8 +538,11 @@ export async function submitRating(
             safety_compliance_score: scores.safety_compliance ?? null,
             review_text: scores.review_text ?? null,
             verified_job: verifiedJob,
-            weight: verifiedJob ? 1.5 : 1.0,
+            weight: finalWeight,
+            flagged: isSuspect,
         },
         { onConflict: "rated_user_id,rater_user_id,job_id" }
     );
+
+    return { accepted: true };
 }

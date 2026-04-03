@@ -37,8 +37,8 @@ const sectionStyle: React.CSSProperties = {
 const definitionBoxStyle: React.CSSProperties = {
     padding: '20px 24px',
     borderRadius: 14,
-    background: '#eff6ff',
-    border: '1px solid #dbeafe',
+    background: 'rgba(59, 130, 246, 0.06)',
+    border: '1px solid rgba(59, 130, 246, 0.15)',
     marginBottom: 24,
 };
 
@@ -49,7 +49,7 @@ const faqWrapperStyle: React.CSSProperties = {
 const tableWrapperStyle: React.CSSProperties = {
     borderRadius: 12,
     overflow: 'hidden',
-    border: '1px solid #e5e7eb',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     marginBottom: 24,
 };
 
@@ -58,7 +58,7 @@ const stepsStyle: React.CSSProperties = {
     marginBottom: 24,
     fontSize: 15,
     lineHeight: 1.8,
-    color: '#374151',
+    color: '#9CA3AF',
 };
 
 /**

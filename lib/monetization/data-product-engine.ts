@@ -284,6 +284,8 @@ export class DataProductEngine {
     }
 
     // ── PURCHASE ────────────────────────────────────────────
+    // Idempotent: checks for existing active/pending purchase before INSERT.
+    // DB-level partial unique index provides a second line of defense.
 
     async purchaseProduct(
         userId: string,
@@ -291,9 +293,32 @@ export class DataProductEngine {
         countryCode: string,
         corridorCode?: string,
         stripeSessionId?: string,
-    ): Promise<{ ok: boolean; purchase_id?: string; error?: string }> {
+    ): Promise<{ ok: boolean; purchase_id?: string; error?: string; already_owned?: boolean }> {
         const product = this.getProduct(productId);
         if (!product) return { ok: false, error: 'Product not found' };
+
+        // ── Idempotency: Check for existing active/pending purchase ──
+        let existingQuery = this.db
+            .from('data_purchases')
+            .select('id, status')
+            .eq('user_id', userId)
+            .eq('product_id', productId)
+            .eq('country_code', countryCode)
+            .in('status', ['pending', 'active']);
+
+        if (corridorCode) {
+            existingQuery = existingQuery.eq('corridor_code', corridorCode);
+        }
+
+        const { data: existing } = await existingQuery.limit(1);
+
+        if (existing && existing.length > 0) {
+            return {
+                ok: true,
+                purchase_id: existing[0].id,
+                already_owned: true,
+            };
+        }
 
         const expiresAt = product.purchase_type === 'subscription'
             ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -318,7 +343,28 @@ export class DataProductEngine {
             .select('id')
             .single();
 
-        if (error) return { ok: false, error: error.message };
+        // Handle race condition: unique constraint violation means another request won
+        if (error) {
+            if (error.code === '23505') {
+                // Unique violation — another concurrent request created the purchase
+                const { data: raceWinner } = await this.db
+                    .from('data_purchases')
+                    .select('id')
+                    .eq('user_id', userId)
+                    .eq('product_id', productId)
+                    .eq('country_code', countryCode)
+                    .in('status', ['pending', 'active'])
+                    .limit(1)
+                    .single();
+
+                return {
+                    ok: true,
+                    purchase_id: raceWinner?.id,
+                    already_owned: true,
+                };
+            }
+            return { ok: false, error: error.message };
+        }
 
         // Track event
         await this.db.from('hc_events').insert({

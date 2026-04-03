@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Tools & Calculators | Haul Command',
@@ -312,6 +315,22 @@ export default function ToolsIndexPage() {
                         </div>
                     </div>
                 </section>
+            </div>
+
+            {/* ── AI Search Answer Block ── */}
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
+              <StaticAnswerBlock
+                question="What free tools does Haul Command offer for heavy haul logistics?"
+                answer="Haul Command provides 9 free tools for heavy haul logistics: Route IQ for compliance checking, Rate Advisor for escort cost benchmarks, Permit Calculator for multi-state permit estimation, Load Analyzer for dimension classification, Compliance Card for state-by-state requirements, Heavy Haul Market Index, Discovery Map for operator finding, Regulation Alerts, and Instant Quote for escort cost estimation. All tools cover 120 countries."
+                confidence="verified_current"
+                ctaLabel="Try Route IQ — Free"
+                ctaUrl="/tools/route-iq"
+              />
+            </section>
+
+            {/* ── AdGrid — Tools Page Bottom ── */}
+            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
+              <AdGridSlot zone="tools_bottom" />
             </div>
 
             {/* Hover animation style */}

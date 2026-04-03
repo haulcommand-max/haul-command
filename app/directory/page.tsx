@@ -9,6 +9,10 @@ import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
+import { AdGridRecruiterCard } from '@/components/ads/AdGridRecruiterCard';
+import { AdGridInstantLeadForm } from '@/components/ads/AdGridInstantLeadForm';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 
@@ -273,6 +277,9 @@ export default async function DirectoryPage() {
         </div>
       </section>
 
+      {/* Social Proof Banner — perceived value, FOMO */}
+      <SocialProofBanner />
+
       {/* Browse by Service Category */}
       <section className="max-w-6xl mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-6">
@@ -305,6 +312,43 @@ export default async function DirectoryPage() {
       {/* AdGrid — Directory Mid */}
       <section className="max-w-6xl mx-auto px-4 py-4">
         <AdGridSlot zone="directory_mid" />
+      </section>
+
+      {/* Live Activity Feed — social gravity + recruiter sidebar */}
+      <section className="max-w-6xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-1 space-y-4">
+            <DirectoryActivityFeed />
+            {/* Recruiter Card — mega-carrier job board */}
+            <AdGridRecruiterCard
+              offer={{
+                id: 'recruit-1',
+                carrier_name: 'Barnhart Crane & Rigging',
+                pitch: 'We need verified pilot car operators for upcoming wind farm projects across TX, OK, KS.',
+                pay_range: '$1,800 - $2,400/week',
+                region: 'Southwest US',
+                requirements: ['2+ yrs experience', 'DOT compliant vehicle', 'Insurance verified'],
+                perks: ['Weekly pay', 'Fuel card', 'Year-round work'],
+                trust_score_min: 60,
+                apply_url: '/loads',
+                urgent: true,
+              }}
+              operatorTrustScore={75}
+            />
+          </div>
+          <div className="md:col-span-2 space-y-4">
+            <div className="flex items-center justify-center text-gray-600 text-sm">
+              Join {total.toLocaleString()} businesses on the fastest-growing trucking directory. Claim your free listing today.
+            </div>
+            {/* Instant Lead Form */}
+            <AdGridInstantLeadForm
+              adId="insurance-lead-1"
+              advertiserName="National Truck Insurance"
+              serviceName="Pilot Car Insurance — $89/mo"
+              variant="inline"
+            />
+          </div>
+        </div>
       </section>
 
       {/* US State Quick Nav */}

@@ -47,6 +47,18 @@ export interface CountryRegulation {
     /** Data confidence */
     dataQuality: "high" | "medium" | "low";
 
+    /**
+     * Confidence state per legal_freshness_os.
+     * Controls how the regulation is displayed and what disclaimers are shown.
+     */
+    confidenceState?: "verified_current" | "verified_but_review_due" | "partially_verified" | "seeded_needs_human_review" | "historical_reference_only";
+
+    /** ISO date when this entry was last verified against official source */
+    lastVerified?: string;
+
+    /** Who last verified: 'system', 'human_reviewer', or reviewer name */
+    lastUpdatedBy?: string;
+
     /** Voice-ready answer for "do I need a pilot car in {country}?" */
     voiceAnswer: string;
 }

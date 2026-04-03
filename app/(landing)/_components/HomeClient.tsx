@@ -28,6 +28,10 @@ import MarketConditionsPanel from "@/components/intelligence/MarketConditionsPan
 import { MarketTerminalRibbon } from "@/components/market/MarketTerminalRibbon";
 import { CorridorLeaderboard } from "@/components/gamification/CorridorLeaderboard";
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
+import SocialProofBanner from "@/components/social/SocialProofBanner";
+import { DirectoryActivityFeed } from "@/components/social/DirectoryActivityFeed";
+import { HeroBillboard } from "@/components/ads/HeroBillboard";
+import { getTopHouseAds } from "@/lib/ads/house-ads";
 import { FooterAccordion } from "./FooterAccordion";
 
 // ── ODS-Killer Sections ──
@@ -348,6 +352,13 @@ export default function HomeClient({
             {/* 7b. WHY OPERATORS JOIN */}
             <WhyOperatorsJoin />
 
+            {/* HERO BILLBOARD — Rotating sponsor surface */}
+            <section className="relative z-10 py-6">
+                <div className="hc-container max-w-5xl">
+                    <HeroBillboard ads={getTopHouseAds(3)} />
+                </div>
+            </section>
+
             {/* 8. FREE TOOLS */}
             <section className="relative z-10 py-8 sm:py-12">
                 <div className="hc-container max-w-5xl">
@@ -384,6 +395,16 @@ export default function HomeClient({
             <section className="relative z-10 py-4 sm:py-6">
                 <div className="hc-container max-w-5xl">
                     <NativeAdCard surface="homepage_mid" placementId="homepage-mid-1" variant="inline" />
+                </div>
+            </section>
+
+            {/* SOCIAL PROOF BANNER — perceived value */}
+            <SocialProofBanner />
+
+            {/* LIVE ACTIVITY FEED — social gravity */}
+            <section className="relative z-10 py-6">
+                <div className="hc-container max-w-5xl flex justify-center">
+                    <DirectoryActivityFeed />
                 </div>
             </section>
 

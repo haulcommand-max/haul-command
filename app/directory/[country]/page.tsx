@@ -6,6 +6,7 @@ import { CategoryGrid } from '@/components/directory/CategoryGrid';
 import SaveButton from '@/components/capture/SaveButton';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { EmptyMarketState } from '@/components/directory/EmptyMarketState';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -327,31 +328,8 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                     </Link>
                   </>
                 ) : (
-                  <div className="max-w-lg mx-auto">
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-xl">
-                      🌍
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">
-                      {countryName} — Part of Our 120-Country Network
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-                      Haul Command is actively onboarding escort and pilot car operators in {countryName}.
-                      {' '}Be the first to claim your profile and get listed for free.
-                    </p>
-                    <div className="flex justify-center gap-3">
-                      <Link
-                        href="/claim"
-                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm transition-colors"
-                      >
-                        Claim Your Profile
-                      </Link>
-                      <Link
-                        href="/auth/register"
-                        className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-lg text-sm transition-colors"
-                      >
-                        Sign Up Free
-                      </Link>
-                    </div>
+                  <div className="max-w-3xl mx-auto">
+                    <EmptyMarketState country={countryName} region={stateFilter} />
                     <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
                       <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
                       <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>

@@ -15,6 +15,8 @@ import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import { SessionDNATracker } from "@/components/security/SessionDNATracker";
 import CaptureOverlay from "@/components/capture/CaptureOverlay";
 import { CookieConsent } from "@/components/legal/CookieConsent";
+import { StickyMobileChipRail } from "@/components/ads/StickyMobileChipRail";
+import { getHouseAds } from "@/lib/ads/house-ads";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -254,6 +256,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <SessionDNATracker />
                     <CaptureOverlay />
                     <CookieConsent />
+                    <StickyMobileChipRail ads={getHouseAds({ limit: 4 })} />
                 </RoleProvider>
             </body>
         </html>

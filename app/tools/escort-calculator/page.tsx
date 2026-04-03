@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { AdGridClassifiedsFeed } from '@/components/ads/AdGridClassifiedsFeed';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 // LIVE MARKET DATA BASED ON 2026 RATE GUIDE
 const RATES = {
@@ -202,6 +204,48 @@ export default function EscortCalculator() {
               <div className="flex justify-between"><span className="text-gray-400">Weekend/Seasonal</span><span className="font-bold text-amber-500">+10-25%</span></div>
             </div>
           </div>
+        </div>
+
+        {/* Equipment Marketplace */}
+        <div className="mt-12">
+          <h2 className="text-xl font-bold mb-4">Equipment Marketplace</h2>
+          <AdGridClassifiedsFeed
+            items={[
+              {
+                id: 'cl-1', title: '2024 Ford F-150 Pilot Car Setup — Full Kit',
+                price: 42500, location: 'Houston, TX', images: [],
+                seller_name: 'Mike T.', seller_verified: true,
+                posted_ago: '3 hours ago', category: 'pilot_truck',
+                condition: 'like_new', featured: true,
+              },
+              {
+                id: 'cl-2', title: 'Telescoping Height Pole — 18ft Max',
+                price: 1200, location: 'Oklahoma City, OK', images: [],
+                seller_name: 'OKC Escort Supply', seller_verified: true,
+                posted_ago: '1 day ago', category: 'height_pole',
+                condition: 'new', featured: false,
+              },
+              {
+                id: 'cl-3', title: 'LED Amber Beacon Kit — DOT Approved',
+                price: 349, location: 'Jacksonville, FL', images: [],
+                seller_name: 'SafeFleet Parts', seller_verified: true,
+                posted_ago: '2 days ago', category: 'beacon',
+                condition: 'new', featured: false,
+              },
+              {
+                id: 'cl-4', title: 'OVERSIZE LOAD Sign Kit + Flags (Complete)',
+                price: 189, location: 'Dallas, TX', images: [],
+                seller_name: 'Pilot Pro Gear', seller_verified: false,
+                posted_ago: '5 days ago', category: 'sign_kit',
+                condition: 'good', featured: false,
+              },
+            ]}
+          />
+        </div>
+
+        {/* Social Proof */}
+        <div className="mt-8">
+          <SocialProofBanner />
         </div>
 
       </div>

@@ -26,47 +26,75 @@ const TIER_META: Record<string, { label: string; color: string; description: str
     E: { label: 'Copper', color: '#B87333', description: 'Emerging market · Frontier data' },
 };
 
+function getCountryFlag(code: string): string {
+    const magicNumber = 127397;
+    return code
+        .toUpperCase()
+        .split('')
+        .map(char => String.fromCodePoint(char.charCodeAt(0) + magicNumber))
+        .join('');
+}
+
 function RegulationCard({ reg }: { reg: CountryRegulation }) {
     const tier = TIER_META[reg.tier] ?? TIER_META.D;
     return (
         <Link
             href={`/regulations/${reg.countryCode.toLowerCase()}`}
             style={{
-                display: 'block',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
                 padding: '1.25rem',
                 borderRadius: '0.75rem',
                 border: '1px solid rgba(255,255,255,0.06)',
                 background: 'rgba(255,255,255,0.02)',
                 transition: 'all 0.2s ease',
                 textDecoration: 'none',
+                position: 'relative',
+                overflow: 'hidden'
             }}
-            className="hover:border-[var(--hc-gold-500)]/30 hover:bg-[rgba(255,255,255,0.04)]"
+            className="hover:border-[var(--hc-gold-500)]/30 hover:bg-[rgba(255,255,255,0.04)] group"
         >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#E5E7EB', margin: 0 }}>
-                    {reg.countryName}
-                </h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.25rem' }}>{getCountryFlag(reg.countryCode)}</span>
+                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#F9FAFB', margin: 0 }}>
+                        {reg.countryName}
+                    </h3>
+                </div>
                 <span
                     style={{
                         fontSize: '0.625rem',
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
-                        padding: '0.125rem 0.5rem',
+                        padding: '0.25rem 0.625rem',
                         borderRadius: '9999px',
                         border: `1px solid ${tier.color}33`,
                         color: tier.color,
+                        background: `${tier.color}15`
                     }}
                 >
                     {tier.label}
                 </span>
             </div>
-            <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', lineHeight: 1.5, margin: 0 }}>
-                <strong style={{ color: '#D1D5DB' }}>{reg.terminology.primary}</strong>
-                {reg.escortThresholds.length > 0 &&
-                    ` · ${reg.escortThresholds.length} escort threshold${reg.escortThresholds.length > 1 ? 's' : ''}`}
-                {` · Permit: ${reg.permitSystem.authority}`}
+            
+            <p style={{ fontSize: '0.875rem', color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 1rem 0', flex: 1 }}>
+                Complete legal requirements for <strong>{reg.terminology.primary}</strong>. 
+                Includes {reg.escortThresholds.length} escort threshold configurations and permit details provided by {reg.permitSystem.authority}.
             </p>
+            
+            <div style={{ 
+                marginTop: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                color: tier.color,
+            }}>
+                View Regulations <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </div>
         </Link>
     );
 }

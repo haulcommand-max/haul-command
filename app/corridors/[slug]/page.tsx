@@ -6,6 +6,9 @@ import { analyzeRoute, type RouteIntelligenceResult } from '@/lib/routes/route-i
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
+import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { AdGridWeatherBanner } from '@/components/ads/AdGridWeatherBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 interface Props {
@@ -85,6 +88,9 @@ export default async function CorridorIntelPage({ params }: Props) {
           ]
         }
       }) }} />
+      {/* Weather Alert Banner — contextual corridor intelligence */}
+      <AdGridWeatherBanner alert={null} />
+
       {/* Header */}
       <section className="py-12 px-4 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
@@ -285,6 +291,16 @@ export default async function CorridorIntelPage({ params }: Props) {
 
             {/* AdGrid — Corridor Sidebar */}
             <AdGridSlot zone="corridor_sidebar" />
+
+            {/* Corridor Sponsorship CTA — monetization */}
+            <CitySponsorshipCTA
+              cityName={`${corridor.origin_state}→${corridor.destination_state} Corridor`}
+              regionName="United States"
+              pricePerMonth={399}
+            />
+
+            {/* Social Proof Banner */}
+            <SocialProofBanner />
           </div>
         </div>
       </div>

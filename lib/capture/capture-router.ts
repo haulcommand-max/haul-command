@@ -481,18 +481,68 @@ function buildAlertOffer(identity: VisitorIdentity, ctx: PageContext): CaptureOf
 
 // ══════════════════════════════════════════════════════════════
 // DISMISS / COOLDOWN MANAGER (client-side localStorage)
+//
+// GDPR/ePrivacy Art. 5(3): localStorage writes require cookie
+// consent in EU jurisdictions. These functions gate on consent.
 // ══════════════════════════════════════════════════════════════
 
+/**
+ * Check if the user has given consent for functional cookies.
+ * Looks for a consent cookie/localStorage flag set by consent banner.
+ */
+function hasTrackingConsent(): boolean {
+    if (typeof window === 'undefined') return false;
+    // Check for common consent management patterns
+    const consent = localStorage.getItem('hc_cookie_consent');
+    if (consent === 'all' || consent === 'functional') return true;
+    // Also check for cookie-based consent (e.g., from CMP)
+    if (typeof document !== 'undefined') {
+        return document.cookie.includes('hc_consent=accepted');
+    }
+    return false;
+}
+
 export function isDismissed(dismissKey: string, cooldownMinutes: number): boolean {
-  if (typeof window === 'undefined') return false;
-  const raw = localStorage.getItem(`hc_dismiss_${dismissKey}`);
-  if (!raw) return false;
-  const dismissedAt = parseInt(raw, 10);
-  const elapsed = (Date.now() - dismissedAt) / 60000;
-  return elapsed < cooldownMinutes;
+    if (typeof window === 'undefined') return false;
+    // If no consent, treat as not dismissed (allow re-showing)
+    if (!hasTrackingConsent()) return false;
+    const raw = localStorage.getItem(`hc_dismiss_${dismissKey}`);
+    if (!raw) return false;
+    const dismissedAt = parseInt(raw, 10);
+    const elapsed = (Date.now() - dismissedAt) / 60000;
+    return elapsed < cooldownMinutes;
 }
 
 export function markDismissed(dismissKey: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(`hc_dismiss_${dismissKey}`, Date.now().toString());
+    if (typeof window === 'undefined') return;
+    // Only write to localStorage if consent has been given
+    if (!hasTrackingConsent()) return;
+    localStorage.setItem(`hc_dismiss_${dismissKey}`, Date.now().toString());
 }
+
+/**
+ * Set cookie consent level. Called by consent banner component.
+ * Must be called BEFORE any capture router localStorage operations.
+ */
+export function setCookieConsent(level: 'all' | 'functional' | 'essential_only'): void {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('hc_cookie_consent', level);
+    // Also set as a cookie for SSR access
+    if (typeof document !== 'undefined') {
+        document.cookie = `hc_consent=accepted; path=/; max-age=${365 * 24 * 60 * 60}; SameSite=Lax`;
+    }
+}
+
+/**
+ * Check if user has opted out of data sale (CCPA §1798.120).
+ * Respects the Global Privacy Control (GPC) signal.
+ */
+export function hasDoNotSellSignal(): boolean {
+    if (typeof window === 'undefined') return false;
+    // Check GPC signal (navigator.globalPrivacyControl)
+    if ((navigator as any).globalPrivacyControl === true) return true;
+    // Check our own opt-out flag
+    const optOut = localStorage.getItem('hc_do_not_sell');
+    return optOut === 'true';
+}
+

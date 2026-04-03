@@ -3,6 +3,10 @@ import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { RouteCalcMobileGate } from '@/components/mobile/gates/RouteCalcMobileGate';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 export const metadata: Metadata = {
   title: 'State Escort Requirements for Oversize Loads | Haul Command',
@@ -96,6 +100,28 @@ export default async function EscortRequirementsIndex() {
                     ))}</div>
                 </section>
             ))}</div>
+
+            {/* ── AI Search Answer Block — citation-ready ── */}
+            <div className="mt-12">
+              <StaticAnswerBlock
+                question="What are escort vehicle requirements for oversize loads?"
+                answer={`Escort vehicle (pilot car) requirements vary by jurisdiction. Loads exceeding specific width, height, length, or weight thresholds require one or more escort vehicles. Haul Command covers ${totalJ} jurisdictions across ${countryOrder.length} countries with ${totalR} specific rules. Most US states require at least one pilot car for loads exceeding 12–14 feet wide.`}
+                confidence="verified_but_review_due"
+                ctaLabel="Check Your Route Requirements"
+                ctaUrl="/tools/escort-calculator"
+              />
+            </div>
+
+            {/* ── Snippet Injector — featured snippet blocks ── */}
+            <SnippetInjector
+              blocks={['definition', 'faq', 'quick_table', 'steps']}
+              term="escort vehicle"
+              geo="United States"
+              country="US"
+            />
+
+            {/* ── AdGrid — Requirements Page Mid ── */}
+            <AdGridSlot zone="requirements_mid" />
             <div className="mt-20 bg-gradient-to-r from-[var(--color-accent)]/10 to-transparent border border-[var(--color-accent)]/20 rounded-3xl p-8 sm:p-10 text-center">
                 <h2 className="text-white font-black text-3xl italic mb-4">Know Before You Roll</h2>
                 <p className="text-gray-400 max-w-2xl mx-auto mb-6">Stop reading 50 different pages. Enter your load once, see every escort requirement on your entire route.</p>

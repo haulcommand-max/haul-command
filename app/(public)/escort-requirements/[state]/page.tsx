@@ -4,6 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, Shield, AlertTriangle, CheckCircle2, FileText, MapPin, Truck } from "lucide-react";
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 import {
     getStateBySlug,
     getAllStateSlugs,
@@ -459,6 +463,27 @@ export default async function EscortRequirementsStatePage({
                             ))}
                         </div>
                     </section>
+
+                    {/* ── AI Search Answer Block ── */}
+                    <StaticAnswerBlock
+                      question={`What are the pilot car requirements in ${state.name}?`}
+                      answer={`${getRequirementsIntro(state)} Loads exceeding ${state.maxWidthFt}ft wide require at least one escort vehicle. ${state.policeWidthFt ? `Law enforcement escort is mandatory above ${state.policeWidthFt}ft width.` : 'Police escort requirements are handled case-by-case.'} Height clearance limit is ${state.maxHeightFt}ft.`}
+                      confidence="verified_but_review_due"
+                      source={`${state.abbr} DOT`}
+                      ctaLabel={`Find ${state.abbr} Escort Operators`}
+                      ctaUrl={`/directory?state=${state.abbr}`}
+                    />
+
+                    {/* ── Snippet Injector — featured snippet blocks ── */}
+                    <SnippetInjector
+                      blocks={['definition', 'faq', 'quick_table', 'steps']}
+                      term="pilot car"
+                      geo={state.name}
+                      country="US"
+                    />
+
+                    {/* ── AdGrid — State Requirements Bottom ── */}
+                    <AdGridSlot zone="requirements_state_bottom" />
                 </div>
             </main>
         </>

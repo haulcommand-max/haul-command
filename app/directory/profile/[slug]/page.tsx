@@ -7,6 +7,8 @@ import { generateOperatorProfileJsonLd, generateProfileFacts } from '@/lib/platf
 import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
 import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { FollowButton } from '@/components/social/FollowButton';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 // ══════════════════════════════════════════════════════════════
 // DIRECTORY PROFILE — /directory/profile/:slug
@@ -199,6 +201,12 @@ function renderProfile(op: any) {
                 />
             )}
             <OperatorTemplate {...props} />
+            {/* FollowButton — social gravity */}
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0' }}>
+                <FollowButton operatorId={op.id || op.slug} />
+            </div>
+            {/* SocialProofBanner — perceived value */}
+            <SocialProofBanner />
             {/* StickyClaimBar — persistent claim CTA for unclaimed profiles */}
             {!isClaimed && (
                 <StickyClaimBar

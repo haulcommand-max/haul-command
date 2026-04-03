@@ -6,6 +6,7 @@ import { ScrollReveal, AnimatedCounter, StickyAlphabetNav, GlossarySearch } from
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SmartPaywallBannerAnon } from '@/components/monetization/SmartPaywallBannerAnon';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Glossary | 3,000+ Terms, Definitions & Rules | Haul Command',
@@ -313,6 +314,11 @@ export default async function GlossaryHubPage() {
                         ))}
                     </div>
                 </ScrollReveal>
+
+                {/* ═════════ SMART PAYWALL NUDGE ════════ */}
+                <div className="mb-14">
+                    <SmartPaywallBannerAnon surface="glossary" />
+                </div>
 
                 {/* ══════════ BROWSE BY COUNTRY ══════════ */}
                 <ScrollReveal delay={100} className="mb-14">

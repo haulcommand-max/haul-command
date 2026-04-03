@@ -5,6 +5,9 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { RegulatoryMoat } from '@/components/seo/RegulatoryMoat';
 import { PostLoadCTA, OperatorsNeededCTA, ClaimListingCTA } from '@/components/seo/ConversionCTAs';
+import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
+import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
 import { getCityHubUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
@@ -271,6 +274,21 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                     <OperatorsNeededCTA surfaceName={regionName} />
                     <ClaimListingCTA entityId="new" variant="card" />
                 </div>
+
+                {/* ── Social Proof Banner ── */}
+                <SocialProofBanner />
+
+                {/* ── Live Activity Feed — social gravity ── */}
+                <div className="flex justify-center pt-6">
+                    <DirectoryActivityFeed />
+                </div>
+
+                {/* ── Region Sponsorship CTA — monetization ── */}
+                <CitySponsorshipCTA
+                    cityName={regionName}
+                    regionName={countryData.name}
+                    pricePerMonth={299}
+                />
             </div>
         </div>
     );

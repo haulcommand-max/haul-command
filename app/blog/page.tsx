@@ -21,7 +21,7 @@ async function getBlogPosts(limit = 24) {
     const supabase = createClient();
     const { data } = await supabase
       .from('blog_posts')
-      .select('id, slug, title, meta_description, target_keyword, country_code, published_at')
+      .select('id, slug, title, meta_description, target_keyword, country_code, published_at, reading_time_minutes, views')
       .eq('published', true)
       .order('published_at', { ascending: false })
       .limit(limit);
@@ -58,26 +58,43 @@ export default async function BlogIndexPage() {
               <Link aria-label="Navigation Link"
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all"
+                className="group p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all flex flex-col h-full"
               >
-                {post.country_code && (
-                  <span className="text-xs text-amber-500 font-medium uppercase tracking-wider">
-                    {post.country_code}
-                  </span>
-                )}
-                <h2 className="text-lg font-bold mt-2 mb-2 group-hover:text-amber-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-                <p className="text-sm text-gray-400 line-clamp-3">
-                  {post.meta_description}
-                </p>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-xs text-gray-600">
-                    {new Date(post.published_at).toLocaleDateString('en-US', {
-                      month: 'short', day: 'numeric', year: 'numeric'
-                    })}
-                  </span>
-                  <span className="text-amber-400 text-sm group-hover:translate-x-1 transition-transform">
+                <div>
+                  {post.country_code && (
+                    <span className="text-xs text-amber-500 font-medium uppercase tracking-wider">
+                      {post.country_code}
+                    </span>
+                  )}
+                  <h2 className="text-lg font-bold mt-2 mb-2 group-hover:text-amber-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h2>
+                  <p className="text-sm text-gray-400 line-clamp-3">
+                    {post.meta_description}
+                  </p>
+                </div>
+                
+                <div className="mt-auto pt-6 flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <span>
+                      {new Date(post.published_at).toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                      })}
+                    </span>
+                    {post.reading_time_minutes > 0 && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                        <span>{post.reading_time_minutes} min read</span>
+                      </>
+                    )}
+                    {post.views > 0 && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                        <span>{post.views.toLocaleString()} views</span>
+                      </>
+                    )}
+                  </div>
+                  <span className="text-amber-400 text-sm group-hover:translate-x-1 transition-transform ml-2">
                     Read →
                   </span>
                 </div>

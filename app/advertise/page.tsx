@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-
+import SelfServeAdBuyer from '@/components/ads/SelfServeAdBuyer';
+import AdGridPartnerSignup from '@/components/ads/AdGridPartnerSignup';
 export const metadata: Metadata = {
     title: 'Advertise on Haul Command | Reach Heavy Haul Operators & Carriers',
     description: 'Reach 50,000+ verified pilot car operators, heavy haul carriers, and brokers. Territory sponsorships, corridor placements, self-serve campaigns, and enterprise packages. Start free.',
@@ -338,6 +339,24 @@ export default function AdvertisePage() {
                                 <p className="text-sm text-gray-400 leading-relaxed">{a}</p>
                             </div>
                         ))}
+                    </div>
+                </section>
+
+                {/* ── Quick Self-Serve Buyer ── */}
+                <section className="border-t border-white/5">
+                    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <h2 className="text-2xl font-bold text-white text-center mb-4">Quick Buy — Launch in 5 Minutes</h2>
+                        <p className="text-gray-400 text-center mb-8 text-sm">Upload your banner, pick your geo, and go live. $50/week starting.</p>
+                        <SelfServeAdBuyer />
+                    </div>
+                </section>
+
+                {/* ── Partner Signup Wizard ── */}
+                <section className="border-t border-white/5">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <h2 className="text-2xl font-bold text-white text-center mb-4">Enterprise Partner Application</h2>
+                        <p className="text-gray-400 text-center mb-8 text-sm">Apply for territory, corridor, or custom sponsorship packages.</p>
+                        <AdGridPartnerSignup />
                     </div>
                 </section>
 
