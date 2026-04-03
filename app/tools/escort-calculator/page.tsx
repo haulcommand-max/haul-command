@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AdGridClassifiedsFeed } from '@/components/ads/AdGridClassifiedsFeed';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 import '@/components/ai-search/answer-block.css';
 
 // LIVE MARKET DATA BASED ON 2026 RATE GUIDE
@@ -19,8 +20,8 @@ const RATES = {
   heightPole: {
     Southeast: { min: 1.90, max: 2.20 },
     Midwest: { min: 2.00, max: 2.50 },
-    Northeast: { min: 2.00, max: 2.50 }, // Same as Midwest per guide
-    Southwest: { min: 2.10, max: 2.60 }, // Infer from Midwest/WestCoast gap
+    Northeast: { min: 2.00, max: 2.50 },
+    Southwest: { min: 2.10, max: 2.60 },
     WestCoast: { min: 2.25, max: 2.75 }
   },
   bucket: {
@@ -32,7 +33,7 @@ const RATES = {
   },
   survey: {
     val100: { Southeast: [550, 850], Midwest: [600, 950], WestCoast: [700, 1200] },
-    val300: { Southeast: [550, 850], Midwest: [600, 950], WestCoast: [700, 1200] } // Extrapolated from the distance-based breakdown
+    val300: { Southeast: [550, 850], Midwest: [600, 950], WestCoast: [700, 1200] }
   }
 };
 
@@ -43,32 +44,17 @@ export default function EscortCalculator() {
   const [nightMove, setNightMove] = useState(false);
   const [waitHours, setWaitHours] = useState(0);
 
-  // Math Layer
   const baseRate = RATES[serviceType === 'bucket' ? 'bucket' : serviceType === 'heightPole' ? 'heightPole' : 'pevo'][region];
   
   let rateMin = baseRate.min * miles;
   let rateMax = baseRate.max * miles;
 
-  // Modifiers
-  if (nightMove) {
-    rateMin += (0.25 * miles);
-    rateMax += (0.50 * miles);
-  }
-
-  if (waitHours > 0) {
-    rateMin += (waitHours * 50);
-    rateMax += (waitHours * 75);
-  }
-
-  // Short distance minimums
-  if (serviceType === 'pevo' && miles < 150) {
-    rateMin = Math.max(rateMin, 350);
-    rateMax = Math.max(rateMax, 500);
-  }
+  if (nightMove) { rateMin += (0.25 * miles); rateMax += (0.50 * miles); }
+  if (waitHours > 0) { rateMin += (waitHours * 50); rateMax += (waitHours * 75); }
+  if (serviceType === 'pevo' && miles < 150) { rateMin = Math.max(rateMin, 350); rateMax = Math.max(rateMax, 500); }
 
   return (
     <div className="min-h-screen bg-[#07090f] text-white font-sans pt-8 pb-32">
-      {/* SoftwareApplication schema — unlocks Google rich results for free tools */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -190,7 +176,7 @@ export default function EscortCalculator() {
                 </Link>
                 <div className="text-[10px] text-gray-500 mt-4 leading-relaxed">
                   DISCLAIMER: Rates are estimates based on the 2026 Operator Resource Guide. Final pricing requires detailed assessment. 
-                  If your pricing only covers gas, you're not profitable — you're just busy.
+                  If your pricing only covers gas, you&apos;re not profitable — you&apos;re just busy.
                 </div>
               </div>
             </div>
@@ -228,34 +214,10 @@ export default function EscortCalculator() {
           <h2 className="text-xl font-bold mb-4">Equipment Marketplace</h2>
           <AdGridClassifiedsFeed
             items={[
-              {
-                id: 'cl-1', title: '2024 Ford F-150 Pilot Car Setup — Full Kit',
-                price: 42500, location: 'Houston, TX', images: [],
-                seller_name: 'Mike T.', seller_verified: true,
-                posted_ago: '3 hours ago', category: 'pilot_truck',
-                condition: 'like_new', featured: true,
-              },
-              {
-                id: 'cl-2', title: 'Telescoping Height Pole — 18ft Max',
-                price: 1200, location: 'Oklahoma City, OK', images: [],
-                seller_name: 'OKC Escort Supply', seller_verified: true,
-                posted_ago: '1 day ago', category: 'height_pole',
-                condition: 'new', featured: false,
-              },
-              {
-                id: 'cl-3', title: 'LED Amber Beacon Kit — DOT Approved',
-                price: 349, location: 'Jacksonville, FL', images: [],
-                seller_name: 'SafeFleet Parts', seller_verified: true,
-                posted_ago: '2 days ago', category: 'beacon',
-                condition: 'new', featured: false,
-              },
-              {
-                id: 'cl-4', title: 'OVERSIZE LOAD Sign Kit + Flags (Complete)',
-                price: 189, location: 'Dallas, TX', images: [],
-                seller_name: 'Pilot Pro Gear', seller_verified: false,
-                posted_ago: '5 days ago', category: 'sign_kit',
-                condition: 'good', featured: false,
-              },
+              { id: 'cl-1', title: '2024 Ford F-150 Pilot Car Setup — Full Kit', price: 42500, location: 'Houston, TX', images: [], seller_name: 'Mike T.', seller_verified: true, posted_ago: '3 hours ago', category: 'pilot_truck', condition: 'like_new', featured: true },
+              { id: 'cl-2', title: 'Telescoping Height Pole — 18ft Max', price: 1200, location: 'Oklahoma City, OK', images: [], seller_name: 'OKC Escort Supply', seller_verified: true, posted_ago: '1 day ago', category: 'height_pole', condition: 'new', featured: false },
+              { id: 'cl-3', title: 'LED Amber Beacon Kit — DOT Approved', price: 349, location: 'Jacksonville, FL', images: [], seller_name: 'SafeFleet Parts', seller_verified: true, posted_ago: '2 days ago', category: 'beacon', condition: 'new', featured: false },
+              { id: 'cl-4', title: 'OVERSIZE LOAD Sign Kit + Flags (Complete)', price: 189, location: 'Dallas, TX', images: [], seller_name: 'Pilot Pro Gear', seller_verified: false, posted_ago: '5 days ago', category: 'sign_kit', condition: 'good', featured: false },
             ]}
           />
         </div>
@@ -274,6 +236,14 @@ export default function EscortCalculator() {
         <div className="mt-8">
           <SocialProofBanner />
         </div>
+
+        {/* SEO Internal Links — pushes equity to directory, permit tools, corridors */}
+        <RelatedLinks
+          pageType="tool"
+          context={{ toolSlug: 'escort-calculator' }}
+          heading="Related tools and resources"
+          className="max-w-5xl"
+        />
 
       </div>
     </div>
