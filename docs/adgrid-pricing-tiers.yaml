@@ -1,0 +1,262 @@
+# AdGrid Hardening — Pricing Tier Architecture
+# Skill #6 — AdGrid pricing, inventory & creative factory design
+#
+# This file documents the LIVE pricing tier structure for implementation.
+# Source: ADGRID_FORMULA_SPECS.yaml (existing engine) + market research
+# Status: HARDENED — replaces placeholder assumptions with real tiers
+#
+# Implementation targets:
+#   app/api/adgrid/route.ts (auction engine)
+#   app/api/ads/route.ts (ad serving)
+#   app/api/billing/route.ts (billing integration)
+# ═══════════════════════════════════════════════════════════════════
+
+version: "2.0.0"
+status: "production_hardened"
+
+# ─────────────────────────────────────────────────────────────────
+# TIER STRUCTURE — Self-Serve Advertiser Pricing
+# ─────────────────────────────────────────────────────────────────
+
+advertiser_tiers:
+
+  starter:
+    name: "Starter"
+    slug: "starter"
+    monthly_usd: 49
+    annual_usd: 490          # ~2 months free
+    stripe_price_id_monthly: "TODO:price_xxx_starter_monthly"
+    stripe_price_id_annual: "TODO:price_xxx_starter_annual"
+    features:
+      - "1 active listing"
+      - "Directory placement (standard rank)"
+      - "Basic profile: name, phone, service area"
+      - "Contact button visible"
+      - "Haul Command badge: Listed"
+    ad_slots:
+      max_impressions_monthly: 500
+      corridor_targeting: false
+      geo_targeting: "state_level"
+      priority_in_auction: 1.0   # baseline
+    cta: "Get listed in 5 minutes"
+    ideal_for: "Solo operators, new pilot car drivers"
+
+  professional:
+    name: "Professional"
+    slug: "professional"
+    monthly_usd: 149
+    annual_usd: 1490         # ~2 months free
+    stripe_price_id_monthly: "TODO:price_xxx_pro_monthly"
+    stripe_price_id_annual: "TODO:price_xxx_pro_annual"
+    features:
+      - "3 active listings"
+      - "Directory placement (boosted rank)"
+      - "Full profile: credentials, equipment, service corridors"
+      - "Verified badge visible on listing"
+      - "Corridor targeting for ads"
+      - "Analytics dashboard: impressions, clicks, contacts"
+      - "Haul Command badge: Professional"
+    ad_slots:
+      max_impressions_monthly: 3000
+      corridor_targeting: true
+      geo_targeting: "corridor_level"
+      priority_in_auction: 1.25
+    cta: "Outrank competitors in your corridor"
+    ideal_for: "Small fleets, established pilot car companies"
+    popular: true
+
+  elite:
+    name: "Elite"
+    slug: "elite"
+    monthly_usd: 399
+    annual_usd: 3990         # ~1 month free
+    stripe_price_id_monthly: "TODO:price_xxx_elite_monthly"
+    stripe_price_id_annual: "TODO:price_xxx_elite_annual"
+    features:
+      - "Unlimited active listings"
+      - "Top-of-directory placement (pinned)"
+      - "Corridor sponsor badge on matching routes"
+      - "Map premium pin (highlighted)"
+      - "Auto-generated ad creative from listing data"
+      - "Priority in auction (1.4x bid weight)"
+      - "Weekly performance report"
+      - "FMCSA / DOT verification display"
+      - "Haul Command badge: Elite Verified"
+    ad_slots:
+      max_impressions_monthly: 15000
+      corridor_targeting: true
+      geo_targeting: "national"
+      priority_in_auction: 1.40
+      corridor_sponsor_badge: true
+      map_premium_pin: true
+    cta: "Dominate your corridors"
+    ideal_for: "Large escort companies, carriers, multi-state operators"
+
+  enterprise:
+    name: "Enterprise"
+    slug: "enterprise"
+    monthly_usd: null        # Custom pricing
+    annual_usd: null
+    contact_required: true
+    features:
+      - "Everything in Elite"
+      - "White-label data export"
+      - "API access (directory + corridor data)"
+      - "Dedicated account manager"
+      - "Custom corridor intelligence reports"
+      - "Co-branded landing pages"
+      - "SLA: 99.9% uptime guarantee"
+    cta: "Talk to sales"
+    ideal_for: "TMS platforms, insurance companies, national carriers"
+
+# ─────────────────────────────────────────────────────────────────
+# CPM / CPC FLOOR PRICING (per slot type)
+# ─────────────────────────────────────────────────────────────────
+# These are MINIMUM floors. Actual price is determined by auction
+# (second_price_plus_epsilon model from ADGRID_FORMULA_SPECS.yaml)
+
+slot_floor_pricing_usd:
+
+  directory_card_inline:
+    cpm_floor: 3.50          # Per 1,000 impressions
+    cpc_floor: 0.85          # Per click (if CPC model used)
+    description: "Ad unit embedded in directory listing results"
+    eligibility: ["professional", "elite", "enterprise"]
+
+  corridor_sponsor_banner:
+    cpm_floor: 6.00
+    cpc_floor: 1.40
+    description: "Sponsor badge on a specific corridor's search results page"
+    eligibility: ["elite", "enterprise"]
+    scarcity_boost: 1.6      # From adgrid formula specs
+
+  top_of_search_pin:
+    cpm_floor: 8.50
+    cpc_floor: 2.20
+    description: "Pinned result at top of directory search"
+    eligibility: ["elite", "enterprise"]
+    scarcity_boost: 1.4
+
+  map_premium_pin:
+    cpm_floor: 5.00
+    cpc_floor: 1.20
+    description: "Highlighted pin on the map view"
+    eligibility: ["elite", "enterprise"]
+    scarcity_boost: 1.25
+
+  homepage_featured:
+    cpm_floor: 12.00
+    cpc_floor: 3.00
+    description: "Featured placement on homepage (above fold)"
+    eligibility: ["elite", "enterprise"]
+    inventory_cap_per_day: 3  # Scarcity guardrail
+
+# ─────────────────────────────────────────────────────────────────
+# COUNTRY-TIER FLOOR ADJUSTMENTS
+# From ADGRID_FORMULA_SPECS.yaml section 2 (dynamic_floor_pricing)
+# ─────────────────────────────────────────────────────────────────
+
+country_tier_base_floors:
+  tier_a_gold:   1.00   # US, CA, AU, GB, NZ, ZA, DE, NL, AE, BR
+  tier_b_blue:   0.55   # IE, SE, NO, DK, FI, BE, AT, CH, ES, FR...
+  tier_c_silver: 0.30   # PL, CZ, SK, HU, SI, EE, SG, MY, JP, KR...
+  tier_d_slate:  0.15   # UY, PA, CR, IL, NG, EG, KE, MA...
+  tier_e_copper: 0.08   # BO, PY, GT, DO, HN... (emerging)
+
+# ─────────────────────────────────────────────────────────────────
+# CREATIVE FACTORY — Auto-Generated Ad Templates
+# ─────────────────────────────────────────────────────────────────
+# When advertisers are passive (no uploaded creative),
+# generate ad units from listing data automatically.
+
+creative_factory:
+  enabled: true
+  triggers:
+    - advertiser_has_no_creative: true
+    - creative_fatigue_score_above: 0.55  # From adgrid formula
+    - new_listing_within_days: 7
+
+  template_sources:
+    - listing.company_name
+    - listing.service_types
+    - listing.corridors_served
+    - listing.rating
+    - listing.verification_status
+    - listing.contact_phone
+
+  generated_formats:
+    directory_card:
+      headline: "{company_name} — {primary_service_type}"
+      subline: "Serving {top_corridor} • ⭐ {rating}/5 • {verification_badge}"
+      cta: "View Profile"
+      max_headline_chars: 55
+      max_subline_chars: 90
+
+    corridor_sponsor:
+      headline: "{company_name} on this corridor"
+      subline: "{years_active}+ years • {equipment_types} • Instant contact"
+      cta: "Get a Quote"
+      badge: "Corridor Sponsor"
+
+    map_pin:
+      label: "{company_name}"
+      badge: "{verification_badge}"
+      tooltip: "{primary_service_type} • ⭐ {rating}"
+
+  quality_gates:
+    min_listing_completeness_pct: 60
+    require_phone_or_email: true
+    require_service_type: true
+    block_if_trust_score_below: 0.40
+
+# ─────────────────────────────────────────────────────────────────
+# FILL RATE MODEL — Self-Healing Liquidity
+# ─────────────────────────────────────────────────────────────────
+# When paid fill rate drops below target, activate organic backfill
+
+fill_rate_model:
+  target_fill_rate: 0.75
+  minimum_acceptable: 0.35
+
+  backfill_hierarchy:
+    1: "paid_ads_auction"          # First: run paid auction
+    2: "boosted_organic_listings"  # Second: surface high-trust organic listings
+    3: "house_ads"                 # Third: haul command's own promo units
+    4: "empty_slot_hidden"         # Last resort: hide slot rather than show nothing
+
+  thin_market_guards:
+    suppress_paid_ads_below_liquidity: 0.45
+    trigger_liquidity_campaign_below: 0.40
+    emergency_fill_api_path: "/api/emergency-fill"
+
+  learning_window_days: 7
+
+# ─────────────────────────────────────────────────────────────────
+# IMPLEMENTATION CHECKLIST
+# ─────────────────────────────────────────────────────────────────
+
+implementation_checklist:
+
+  stripe:
+    - "[ ] Create Products in Stripe dashboard for Starter/Pro/Elite"
+    - "[ ] Create monthly + annual Prices for each tier"
+    - "[ ] Replace TODO:price_xxx placeholders above with real Stripe Price IDs"
+    - "[ ] Set STRIPE_SECRET_KEY + NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in Vercel"
+    - "[ ] Wire /api/checkout to Stripe checkout session creation"
+    - "[ ] Wire /api/billing/webhook to Stripe webhook events"
+
+  creative_factory:
+    - "[ ] Wire creative_factory config to /api/adgrid creative generation endpoint"
+    - "[ ] Build listing_completeness_score function (check required fields)"
+    - "[ ] Test auto-generated ad renders in directory card slot"
+    - "[ ] Set ADGRID_CREATIVE_FACTORY_ENABLED=true in Vercel env"
+
+  fill_rate:
+    - "[ ] Implement fill_rate tracking in /api/adgrid auction response"
+    - "[ ] Wire /api/emergency-fill to organic backfill query"
+    - "[ ] Add fill_rate metric to nightly-audit workflow"
+
+  analytics:
+    - "[ ] Add impression/click tracking to ad slot components"
+    - "[ ] Wire analytics to /api/activity endpoint"
+    - "[ ] Build advertiser dashboard at /dashboard/ads showing CPM, CTR, contacts"
