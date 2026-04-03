@@ -89,7 +89,7 @@ export function DataTeaserStrip({ geo, cards, className = '' }: Props) {
     fetch(`/api/market/snapshot?${params}`)
       .then(r => r.ok ? r.json() : null)
       .then(snapshot => {
-        if (snapshot && !snapshot.source) { // 'fallback' source means DB failed
+        if (snapshot) {
           setData(buildLiveCards(snapshot, geo));
         }
         setLoaded(true);
@@ -124,12 +124,27 @@ export function DataTeaserStrip({ geo, cards, className = '' }: Props) {
             <div className="dts-card-sub">{card.subtext}</div>
             {card.blurred && (
               <div className="dts-card-lock">
-                <Link href="/data" className="dts-unlock">🔒 Unlock</Link>
+                <Link href="/pricing?intent=data_unlock" className="dts-unlock">
+                  <span className="dts-lock-icon">🔒</span>
+                  <span className="dts-lock-label">Pro · $29/mo</span>
+                </Link>
               </div>
             )}
           </div>
         ))}
       </div>
+
+      {/* Upsell footer — only shown when blurred cards exist */}
+      {data.some(c => c.blurred) && (
+        <div className="dts-upsell">
+          <span className="dts-upsell-text">
+            🔒 <strong>2 signals hidden</strong> — Rate trends + demand spikes visible on Pro
+          </span>
+          <Link href="/pricing" className="dts-upsell-cta">
+            Unlock from $29/mo →
+          </Link>
+        </div>
+      )}
 
       <style jsx>{`
         .dts {
@@ -241,8 +256,44 @@ export function DataTeaserStrip({ geo, cards, className = '' }: Props) {
           background: rgba(198,146,58,0.1);
           border: 1px solid rgba(198,146,58,0.3);
           border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          transition: background 0.15s;
         }
+        .dts-unlock:hover { background: rgba(198,146,58,0.2); }
+        .dts-lock-icon { font-size: 14px; }
+        .dts-lock-label { font-size: 9px; font-weight: 800; letter-spacing: 0.03em; }
+        .dts-upsell {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 16px;
+          background: rgba(198,146,58,0.06);
+          border-top: 1px solid rgba(198,146,58,0.12);
+          gap: 12px;
+        }
+        .dts-upsell-text {
+          font-size: 10px;
+          color: #888;
+          line-height: 1.4;
+        }
+        .dts-upsell-text strong { color: #C6923A; }
+        .dts-upsell-cta {
+          flex-shrink: 0;
+          font-size: 10px;
+          font-weight: 700;
+          color: #fff;
+          background: linear-gradient(135deg, #C6923A, #e0aa55);
+          padding: 5px 12px;
+          border-radius: 6px;
+          text-decoration: none;
+          transition: opacity 0.15s;
+        }
+        .dts-upsell-cta:hover { opacity: 0.88; }
       `}</style>
     </div>
   );
 }
+
