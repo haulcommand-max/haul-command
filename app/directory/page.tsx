@@ -5,6 +5,7 @@ import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 export const dynamic = 'force-dynamic';
 
@@ -296,6 +297,11 @@ export default async function DirectoryPage() {
         />
       </section>
 
+      {/* AdGrid — Directory Mid */}
+      <section className="max-w-6xl mx-auto px-4 py-4">
+        <AdGridSlot zone="directory_mid" />
+      </section>
+
       {/* US State Quick Nav */}
       <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
         <div className="flex items-center justify-between mb-4">
@@ -411,7 +417,10 @@ export default async function DirectoryPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* AdGrid — Directory Bottom */}
+      <section className="max-w-6xl mx-auto px-4 py-4">
+        <AdGridSlot zone="directory_bottom" />
+      </section>
       <section className="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/5">
         <h2 className="text-2xl font-bold mb-4">Are you an escort operator?</h2>
         <p className="text-gray-400 mb-6">

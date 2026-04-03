@@ -11,6 +11,7 @@ export type FeatureFlagKey =
   | 'HERE_MAPS'
   | 'OVERPASS_OSM'
   | 'TRACCAR'
+  | 'VALHALLA'
   | 'LANGFUSE'
   | 'TRIGGER_DEV'
   | 'INFISICAL'
@@ -66,6 +67,12 @@ const FLAG_REGISTRY: Record<FeatureFlagKey, FlagConfig> = {
     fallback: true,
     description: 'Traccar — GPS telematics, tracking, geofences',
     requiredEnvVars: ['TRACCAR_API_URL', 'TRACCAR_API_TOKEN'],
+  },
+  VALHALLA: {
+    envKey: 'FEATURE_VALHALLA',
+    fallback: true,
+    description: 'Valhalla — open-source heavy-haul routing engine',
+    requiredEnvVars: ['VALHALLA_API_URL'],
   },
   LANGFUSE: {
     envKey: 'FEATURE_LANGFUSE',

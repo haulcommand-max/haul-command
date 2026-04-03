@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
 import { SponsoredBadge } from '@/components/directory/SponsoredBadge';
+import TrustBadge from '@/components/trust/TrustBadge';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command v2
@@ -61,16 +62,16 @@ type CorridorHeat = 'HOT' | 'WARM' | 'COOL';
 
 // ── Seed operators ──────────────────────────────────────────────
 const SEED_OPERATORS: Operator[] = [
-  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true },
-  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true },
-  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true },
-  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true },
-  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true },
-  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true },
-  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true },
-  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true },
-  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true },
-  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true },
+  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true, trustScore: 94 },
+  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true, trustScore: 82 },
+  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true, trustScore: 38 },
+  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true, trustScore: 91 },
+  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true, trustScore: 77 },
+  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true, trustScore: 28 },
+  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true, trustScore: 85 },
+  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true, trustScore: 63 },
+  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true, trustScore: 15 },
+  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true, trustScore: 79 },
 ];
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -222,8 +223,9 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
         )}
       </div>
 
-      {/* Badge Row: Verified, Escrow, AV Ready, Corridor Heat */}
+      {/* Badge Row: Trust Score, Verified, Escrow, AV Ready, Corridor Heat */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+        <TrustBadge score={op.trustScore} />
         {op.verified && (
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 3,
@@ -406,6 +408,7 @@ export function PublicDirectory() {
           escrow: l.metadata?.escrow_enabled || false,
           avReady: l.metadata?.av_certified || false,
           corridorRank: l.rank_score ? Math.ceil(l.rank_score * 10) : undefined,
+          trustScore: l.trust_score ?? l.metadata?.trust_score ?? undefined,
           avgResponse: l.metadata?.avg_response_minutes || undefined,
           rate: l.metadata?.hourly_rate || undefined,
           jobCount: l.metadata?.total_jobs || undefined,

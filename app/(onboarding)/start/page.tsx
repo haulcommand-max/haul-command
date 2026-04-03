@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, ShieldAlert, Flag, Scale } from "lucide-react";
-import { cn } from "../../../lib/utils/cn";
+import { RolePicker, type HcRole } from "@/components/home/RolePicker";
 
 const EQUIPMENT_TYPES = [
     { id: "high_pole", label: "High Pole", icon: Truck, desc: "Height detection & Pole cars" },
@@ -13,44 +14,74 @@ const EQUIPMENT_TYPES = [
 
 export default function StartPage() {
     const router = useRouter();
+    const [role, setRole] = useState<HcRole | null>(null);
 
     const handleSelect = (id: string) => {
-        router.push(`/territory?eq=${id}`);
+        router.push(`/territory?eq=${id}${role ? `&role=${role}` : ''}`);
     };
 
     return (
         <div className="flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center mb-8">
+            {/* Step 1: Role Selection */}
+            <div className="text-center mb-6">
                 <h1 className="text-3xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-2">
-                    What do you run?
+                    How do you use Haul Command?
                 </h1>
                 <p className="text-brand-muted text-sm">
-                    Select your primary equipment to see available loads.
+                    This personalizes your experience — loads, tools, and alerts.
                 </p>
             </div>
 
-            <div className="grid gap-4">
-                {EQUIPMENT_TYPES.map((eq) => (
-                    <button aria-label="Interactive Button"
-                        key={eq.id}
-                        onClick={() => handleSelect(eq.id)}
-                        className="group relative p-4 rounded-xl border border-brand-steel/50 bg-brand-charcoal/40 hover:bg-brand-charcoal/80 transition-all text-left flex items-center gap-4 hover:border-brand-gold/50"
-                    >
-                        <div className="w-12 h-12 rounded-full bg-brand-steel/20 flex items-center justify-center text-brand-gold group-hover:scale-110 transition-transform">
-                            <eq.icon size={24} />
-                        </div>
-                        <div>
-                            <div className="font-bold text-brand-text group-hover:text-brand-gold transition-colors">
-                                {eq.label}
-                            </div>
-                            <div className="text-xs text-brand-muted">{eq.desc}</div>
-                        </div>
-                        <div className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-gold">
-                            →
-                        </div>
-                    </button>
-                ))}
+            <div className="mb-10">
+                <RolePicker onRoleSelect={(r) => setRole(r)} initialRole={null} />
             </div>
+
+            {/* Step 2: Equipment (only shown after role) */}
+            {role && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="text-center mb-6">
+                        <h2 className="text-2xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-2">
+                            What do you run?
+                        </h2>
+                        <p className="text-brand-muted text-sm">
+                            Select your primary equipment to see available loads.
+                        </p>
+                    </div>
+
+                    <div className="grid gap-4">
+                        {EQUIPMENT_TYPES.map((eq) => (
+                            <button aria-label="Interactive Button"
+                                key={eq.id}
+                                onClick={() => handleSelect(eq.id)}
+                                className="group relative p-4 rounded-xl border border-brand-steel/50 bg-brand-charcoal/40 hover:bg-brand-charcoal/80 transition-all text-left flex items-center gap-4 hover:border-brand-gold/50"
+                            >
+                                <div className="w-12 h-12 rounded-full bg-brand-steel/20 flex items-center justify-center text-brand-gold group-hover:scale-110 transition-transform">
+                                    <eq.icon size={24} />
+                                </div>
+                                <div>
+                                    <div className="font-bold text-brand-text group-hover:text-brand-gold transition-colors">
+                                        {eq.label}
+                                    </div>
+                                    <div className="text-xs text-brand-muted">{eq.desc}</div>
+                                </div>
+                                <div className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-gold">
+                                    →
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Broker/Observer skip path */}
+            {role && (role === 'broker' || role === 'observer') && (
+                <button
+                    onClick={() => router.push(`/directory?role=${role}`)}
+                    className="mt-6 text-center text-sm text-brand-muted hover:text-brand-gold transition-colors"
+                >
+                    Skip equipment — take me to the directory →
+                </button>
+            )}
         </div>
     );
 }

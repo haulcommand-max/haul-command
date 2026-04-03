@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { MapPin, CheckCircle, AlertTriangle, Flag, Box, Wrench, ShieldAlert } from 'lucide-react';
+import { ClaimProfileCTA } from '@/components/profile/ClaimProfileCTA';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { OperatorTrustCard } from '@/components/profile/OperatorTrustCard';
+import { OperatorReportCard } from '@/components/profile/OperatorReportCard';
+import { OperatorBadges } from '@/components/profile/OperatorBadges';
+import { OperatorReviews } from '@/components/profile/OperatorReviews';
 
 interface EntityProps {
     op: any;
@@ -141,28 +147,22 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                     </div>
                 </div>
 
-                {/* AdGrid Monetization Inventory (Only contextually relevant) */}
-                <div style={{ padding: '1rem', background: 'rgba(241, 169, 27, 0.05)', border: '1px dashed rgba(241, 169, 27, 0.2)', borderRadius: 12, textAlign: 'center', marginBottom: 24 }}>
-                    <p style={{ margin: 0, fontSize: 11, color: '#F1A91B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Sponsor Slot Available</p>
-                    <p style={{ margin: '4px 0 0', fontSize: 12, color: '#9ca3af' }}>Own the top infrastructure spot on this corridor. <Link href="/advertise" style={{ color: '#F1A91B' }}>View Rates</Link></p>
+                {/* AdGrid Monetization — Live Supabase-backed ad slot */}
+                <div style={{ marginBottom: 24 }}>
+                    <AdGridSlot zone="profile_spotlight" />
                 </div>
 
                 {/* Engagement / Claim Gate */}
                 {!isClaimed ? (
-                    <div style={{ background: 'linear-gradient(135deg, rgba(241,169,27,0.08), rgba(241,169,27,0.02))', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 20, padding: '2rem', textAlign: 'center', marginBottom: 24 }}>
-                        <AlertTriangle style={{ width: 24, height: 24, color: '#F1A91B', margin: '0 auto 12px' }} />
-                        <h3 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 900, color: '#f9fafb' }}>
-                            Is this your {entityName.toLowerCase()}?
-                        </h3>
-                        <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 16, maxWidth: 400, margin: '0 auto 16px' }}>
-                            Claim your profile to update stale data, prove legitimacy, rank higher natively, and unlock the Haul Command verified badge.
-                        </p>
-                        <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <Link href="/claim" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: 'linear-gradient(135deg, #F1A91B, #d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
-                                Claim This {entityName}
-                            </Link>
-                            <Link href={`/directory/report?slug=${op.slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 13, fontWeight: 700, borderRadius: 12, textDecoration: 'none' }}>
-                                <Flag style={{ width: 14, height: 14 }} /> Report Incorrect Info
+                    <div style={{ marginBottom: 24 }}>
+                        <ClaimProfileCTA
+                            operatorId={op.slug || op.id || ''}
+                            operatorName={op.name || entityName}
+                            hcId={op.hc_id || null}
+                        />
+                        <div style={{ marginTop: 12, textAlign: 'center' }}>
+                            <Link href={`/directory/report?slug=${op.slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', fontSize: 12, fontWeight: 600, borderRadius: 10, textDecoration: 'none' }}>
+                                <Flag style={{ width: 12, height: 12 }} /> Report Incorrect Info
                             </Link>
                         </div>
                     </div>
@@ -185,6 +185,35 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                         </div>
                     </div>
                 )}
+
+                {/* Intelligence Modules — Trust, Report Card, Badges, Reviews */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16, marginBottom: 24 }}>
+                    <OperatorTrustCard
+                        trust={op.trust_breakdown ?? null}
+                        operator={op}
+                        tierColor={trustColor}
+                    />
+                    <OperatorReportCard
+                        reportCard={op.report_card ?? null}
+                        operator={op}
+                    />
+                </div>
+
+                {/* Badges — only show if any exist */}
+                {op.badges && Array.isArray(op.badges) && op.badges.length > 0 && (
+                    <div style={{ marginBottom: 24 }}>
+                        <OperatorBadges badges={op.badges} />
+                    </div>
+                )}
+
+                {/* Reviews */}
+                <div style={{ marginBottom: 24 }}>
+                    <OperatorReviews
+                        reviews={op.reviews ?? []}
+                        operatorName={op.name || 'This operator'}
+                        operatorId={op.slug || op.id || ''}
+                    />
+                </div>
             </div>
         </div>
     );

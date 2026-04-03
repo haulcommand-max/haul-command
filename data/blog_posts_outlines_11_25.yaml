@@ -1,0 +1,162 @@
+# Haul Command — 15 Additional Blog Post Outlines (Posts 11–25)
+# Status: Outlined drafts — ready for full content expansion
+# Format: Paste-ready YAML
+
+posts:
+  - id: 11
+    title: "Pilot Car Equipment Checklist: What Every Escort Vehicle Needs in 2026"
+    slug: pilot-car-equipment-checklist-2026
+    meta_title: "Pilot Car Equipment Checklist 2026 | FHWA-Compliant Escort Gear"
+    meta_description: "Complete checklist of required pilot car equipment for 2026. Covers flags, signs, amber lights, banners, radios, and state-specific requirements."
+    h1: "The Complete Pilot Car Equipment Checklist for 2026 (State-by-State Requirements)"
+    internal_link_targets: ["/gear", "/requirements", "/training", "/directory"]
+    ad_slots: ["top-inline", "sidebar", "bottom-email-capture"]
+    tool_injections: []
+    email_capture_cta: "Get the printable equipment checklist for your state."
+    quick_answer_block: "Required pilot car equipment includes: oversize load banner (7\"x18\"), red or orange flags on all four corners, amber warning lights (SAE Class I), CB radio, and required state-specific certification card. Check your exact state requirements."
+
+  - id: 12
+    title: "How to Start a Pilot Car Business: Step-by-Step Guide for New Operators"
+    slug: how-to-start-pilot-car-business
+    meta_title: "How to Start a Pilot Car Business in 2026 | Licensing, Insurance & Setup"
+    meta_description: "Complete guide to starting a pilot car business from scratch. Covers vehicle requirements, state licensing, insurance minimums, and how to get your first load."
+    h1: "How to Start a Pilot Car Business: The Complete 2026 Guide"
+    internal_link_targets: ["/claim", "/training", "/requirements", "/insurance", "/directory"]
+    ad_slots: ["hero-inline", "mid-article", "bottom-email-capture"]
+    tool_injections: []
+    email_capture_cta: "Get the new operator startup checklist sent to your inbox."
+
+  - id: 13
+    title: "Wide Load vs Oversize Load: What Is the Difference?"
+    slug: wide-load-vs-oversize-load-difference
+    meta_title: "Wide Load vs Oversize Load | What Is the Difference? | Haul Command"
+    meta_description: "Understand the legal difference between wide loads, oversize loads, and overweight loads. Learn what triggers each classification and what pilot car requirements follow."
+    h1: "Wide Load vs Oversize Load: Understanding the Legal Difference"
+    internal_link_targets: ["/glossary/oversize-load", "/requirements", "/tools/permit-calculator", "/directory"]
+    ad_slots: ["sidebar", "bottom-inline"]
+    tool_injections: ["[INJECT_THRESHOLD_TABLE]"]
+    email_capture_cta: "Subscribe for weekly regulatory updates on load classification changes."
+
+  - id: 14
+    title: "Oversize Load Amber Light Requirements: State-by-State Rules"
+    slug: oversize-load-amber-light-requirements
+    meta_title: "Oversize Load Amber Light Requirements by State 2026 | Haul Command"
+    meta_description: "Complete guide to amber light requirements for escort vehicles and oversize loads. Covers SAE standards, flash rate requirements, and state-by-state rules."
+    h1: "Oversize Load Amber Light Requirements: What Every Escort Vehicle Needs"
+    internal_link_targets: ["/gear", "/glossary/amber-lighting", "/requirements", "/training"]
+    ad_slots: ["hero-banner", "sidebar"]
+    email_capture_cta: "Get amber light compliance alerts for your state."
+
+  - id: 15
+    title: "Pilot Car Rates by State 2026: How Much Should You Charge?"
+    slug: pilot-car-rates-by-state-2026
+    meta_title: "Pilot Car Rates by State 2026 | How Much to Charge for Escort Work"
+    meta_description: "Real-world pilot car rate ranges by state for 2026. Covers per-mile rates, day rates, emergency premiums, and how to negotiate higher rates with brokers."
+    h1: "Pilot Car Rates by State in 2026: How Much Should You Charge?"
+    internal_link_targets: ["/rates", "/tools/rate-index", "/directory", "/claim"]
+    ad_slots: ["top-inline", "mid-article", "bottom-wide"]
+    tool_injections: ["[INJECT_COST_CALCULATOR]"]
+    email_capture_cta: "Get the monthly rate index for your corridor delivered free."
+
+  - id: 16
+    title: "TWIC Card for Pilot Car Operators: Do You Need One?"
+    slug: twic-card-pilot-car-operators
+    meta_title: "TWIC Card for Pilot Car Operators | Port Access Requirements | Haul Command"
+    meta_description: "Do pilot car operators need a TWIC card? Learn when port access credentials are required, how to apply for a TWIC, and which ports require them."
+    h1: "TWIC Cards for Pilot Car Operators: When You Need One and How to Get It"
+    internal_link_targets: ["/glossary/twic-pilot-car", "/port", "/requirements", "/training", "/directory"]
+    ad_slots: ["hero-inline", "sidebar"]
+    email_capture_cta: "Get alerts when new port escort requirements are published."
+
+  - id: 17
+    title: "I-10 Heavy Haul Corridor Guide: Florida to California Escort Intelligence"
+    slug: i-10-heavy-haul-corridor-guide
+    meta_title: "I-10 Heavy Haul Corridor Guide | Pilot Car & Escort Intelligence"
+    meta_description: "Escort intelligence guide for the I-10 corridor from Florida to California. State permit requirements, low bridge choke points, and pilot car operator locations."
+    h1: "I-10 Corridor Heavy Haul Guide: Florida to California Escort Intelligence"
+    internal_link_targets: ["/corridors", "/near/houston-tx", "/near/los-angeles-ca", "/near/el-paso-tx", "/tools/permit-calculator"]
+    ad_slots: ["corridor-banner", "mid-article", "bottom-email-capture"]
+    email_capture_cta: "Get corridor alerts for the I-10 route."
+
+  - id: 18
+    title: "Superload Permits: What Qualifies and How to Apply"
+    slug: superload-permit-requirements-guide
+    meta_title: "Superload Permit Guide 2026 | Extreme Oversize Load Requirements"
+    meta_description: "Learn what qualifies as a superload, how to apply for a superload permit, and what escort and engineering requirements apply to extreme oversize loads."
+    h1: "Superload Permits: What Qualifies, How to Apply, and What Escorts You Need"
+    internal_link_targets: ["/glossary/superload", "/tools/permit-calculator", "/requirements", "/directory"]
+    ad_slots: ["hero-inline", "mid-article", "bottom-wide"]
+    tool_injections: ["[INJECT_THRESHOLD_TABLE]"]
+    email_capture_cta: "Get superload permit alerts for your operating states."
+
+  - id: 19
+    title: "Port Escort Services: What Carriers Need to Know About Moving Loads Through Ports"
+    slug: port-escort-services-guide
+    meta_title: "Port Escort Services Guide | Heavy Haul Through Maritime Ports"
+    meta_description: "Complete guide to heavy haul escort services at US maritime ports. Covers TWIC requirements, port access rules, and how to find certified port escort operators."
+    h1: "Port Escort Services for Heavy Haul: The Complete Carrier Guide"
+    internal_link_targets: ["/port", "/glossary/twic-pilot-car", "/directory?service=port-escort", "/requirements"]
+    ad_slots: ["port-sponsor-banner", "sidebar"]
+    email_capture_cta: "Get port access rule updates for your operating region."
+    opus_flag: "This page is a key revenue surface for port sponsorship packaging — do not finalize CTAs without Opus pricing review."
+
+  - id: 20
+    title: "Pilot Car Insurance Requirements: What Coverage Do You Actually Need?"
+    slug: pilot-car-insurance-requirements
+    meta_title: "Pilot Car Insurance Requirements 2026 | What Coverage You Need"
+    meta_description: "Complete guide to pilot car insurance requirements. Covers commercial auto coverage minimums, liability requirements, and how to get the right policy."
+    h1: "Pilot Car Insurance Requirements: What Coverage Every Escort Operator Needs"
+    internal_link_targets: ["/insurance", "/claim", "/training", "/requirements", "/directory"]
+    ad_slots: ["hero-inline", "insurance-referral-block", "bottom-email-capture"]
+    email_capture_cta: "Get insurance rate quotes from our verified pilot car insurance partners."
+    opus_flag: "Insurance referral CTA pricing and commission structure — do not finalize without Opus review."
+
+  - id: 21
+    title: "How to Read an Oversize Load Permit: A Driver's Guide"
+    slug: how-to-read-oversize-load-permit
+    meta_title: "How to Read an Oversize Load Permit | Haul Command Driver Guide"
+    meta_description: "Step-by-step guide to reading and understanding an oversize load permit. Covers route restrictions, time windows, escort requirements, and what to do when requirements change."
+    h1: "How to Read an Oversize Load Permit: A Simple Driver's Guide"
+    internal_link_targets: ["/glossary/oversize-permit", "/tools/permit-calculator", "/requirements", "/blog/how-to-get-heavy-haul-permit"]
+    ad_slots: ["sidebar", "mid-article"]
+
+  - id: 22
+    title: "Pilot Car Training and Certification: What Every State Requires"
+    slug: pilot-car-training-certification-by-state
+    meta_title: "Pilot Car Training & Certification by State 2026 | Haul Command"
+    meta_description: "Complete guide to pilot car operator training and certification requirements by state. Covers which states require certification, approved training programs, and how to renew."
+    h1: "Pilot Car Training and Certification Requirements: All 50 States (2026)"
+    internal_link_targets: ["/training", "/requirements", "/claim", "/directory"]
+    ad_slots: ["training-sponsor-banner", "sidebar"]
+    email_capture_cta: "Get notified when new state certification courses open near you."
+    opus_flag: "Training page sponsor CTA and training partner revenue — flag for Opus monetization review."
+
+  - id: 23
+    title: "International Heavy Haul Escort Rules: Canada, Australia, UK and EU Guide"
+    slug: international-heavy-haul-escort-rules-guide
+    meta_title: "International Heavy Haul Escort Rules | Canada, Australia, UK & EU"
+    meta_description: "Global guide to heavy haul escort vehicle requirements in Canada, Australia, UK, Germany, France, and other major markets. Covers cross-border permit rules."
+    h1: "International Heavy Haul Escort Rules: Canada, Australia, UK & EU Guide (2026)"
+    internal_link_targets: ["/canada", "/glossary/front-escort", "/requirements", "/directory"]
+    ad_slots: ["hero-inline", "mid-article"]
+    email_capture_cta: "Subscribe for international regulatory updates across 120 countries."
+
+  - id: 24
+    title: "What is a Chase Pilot Car? Rear Escort Vehicle Requirements Explained"
+    slug: chase-pilot-car-rear-escort-requirements
+    meta_title: "Chase Pilot Car Guide | Rear Escort Vehicle Requirements 2026"
+    meta_description: "Learn what a chase pilot car does, when a rear escort is required, positioning rules, and state regulations for rear escort vehicles in heavy haul transport."
+    h1: "What Is a Chase Pilot Car? Rear Escort Vehicle Requirements Explained"
+    internal_link_targets: ["/glossary/rear-escort", "/requirements", "/directory", "/blog/oversize-load-escort-requirements-by-state"]
+    ad_slots: ["hero-inline", "sidebar"]
+    tool_injections: ["[INJECT_THRESHOLD_TABLE]"]
+
+  - id: 25
+    title: "How to Claim Your Pilot Car Business Listing on Haul Command"
+    slug: claim-pilot-car-business-listing-haul-command
+    meta_title: "Claim Your Pilot Car Business on Haul Command | Free Profile Guide"
+    meta_description: "Step-by-step guide to claiming your pilot car business listing on Haul Command. Get verified, appear in broker searches, and start receiving direct dispatch leads."
+    h1: "How to Claim Your Pilot Car Business on Haul Command: Step-by-Step Guide"
+    internal_link_targets: ["/claim", "/onboarding", "/blog/how-to-get-verified-pilot-car-operator", "/directory"]
+    ad_slots: ["hero-inline", "claim-banner"]
+    email_capture_cta: "Get your profile claim guide and setup checklist sent free."

@@ -140,6 +140,9 @@ export const metadata: Metadata = {
         images: ['/og-image.png'],
     },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+    verification: {
+        google: '6zs87JY2SjNbpsR',
+    },
     // Icons: Next.js auto-detects app/icon.png and app/apple-icon.png convention files.
     // Do NOT specify manual paths here — they conflict with the convention files.
     manifest: '/manifest.json',

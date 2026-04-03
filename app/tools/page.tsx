@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 const TOOLS = [
     {
@@ -186,7 +187,10 @@ export default function ToolsLandingPage() {
                 </div>
 
                 {/* CTA */}
-                <div style={{ textAlign: 'center', marginTop: 48 }}>
+                <div style={{ marginTop: 32 }}>
+                    <AdGridSlot zone="tools_mid" />
+                </div>
+                <div style={{ textAlign: 'center', marginTop: 32 }}>
                     <p style={{ marginBottom: 16, fontSize: 13, color: '#6b7280' }}>Ready to go beyond the free tools?</p>
                     <Link aria-label="Navigation Link" href="/start" style={{ padding: '12px 32px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 14, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>Create Free Account →</Link>
                 </div>
