@@ -9,6 +9,7 @@ import CommonlyConfusedWith from '@/components/glossary/CommonlyConfusedWith';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { ShareButton } from '@/components/social/ShareButton';
 import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         title: `${data.term} Definition (Heavy Haul & Pilot Car) | Haul Command Glossary`,
         description: data.short_definition,
         alternates: {
-            canonical: `https://haulcommand.com/glossary/${data.slug}`,
+            canonical: `https://www.haulcommand.com/glossary/${data.slug}`,
         }
     };
 }
@@ -61,13 +62,13 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
 
     return (
         <Fragment>
-            {/* GlossaryPage SchemaOrchestrator: DefinedTermSet parent wrapper for Knowledge Panel */}
+            {/* GlossaryPage SchemaOrchestrator */}
             <SchemaOrchestrator
                 type="GlossaryPage"
                 data={{
                     term: term.term,
                     definition: term.short_definition,
-                    url: `https://haulcommand.com/glossary/${term.slug}`,
+                    url: `https://www.haulcommand.com/glossary/${term.slug}`,
                     relatedTerms: term.related_slugs ?? [],
                 }}
             />
@@ -83,21 +84,21 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                     "inDefinedTermSet": {
                         "@type": "DefinedTermSet",
                         "name": "Haul Command Heavy Haul Glossary",
-                        "url": "https://haulcommand.com/glossary"
+                        "url": "https://www.haulcommand.com/glossary"
                     }
                 })
             }} />
 
-            {/* BreadcrumbList — critical for rich snippet breadcrumbs */}
+            {/* BreadcrumbList */}
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "BreadcrumbList",
                     "itemListElement": [
-                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
-                        { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://haulcommand.com/glossary" },
-                        ...(term.category ? [{ "@type": "ListItem", "position": 3, "name": term.category, "item": `https://haulcommand.com/glossary#${term.category}` }] : []),
-                        { "@type": "ListItem", "position": term.category ? 4 : 3, "name": term.term, "item": `https://haulcommand.com/glossary/${term.slug}` }
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.haulcommand.com" },
+                        { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://www.haulcommand.com/glossary" },
+                        ...(term.category ? [{ "@type": "ListItem", "position": 3, "name": term.category, "item": `https://www.haulcommand.com/glossary#${term.category}` }] : []),
+                        { "@type": "ListItem", "position": term.category ? 4 : 3, "name": term.term, "item": `https://www.haulcommand.com/glossary/${term.slug}` }
                     ]
                 })
             }} />
@@ -333,8 +334,59 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                         </aside>
                     </div>
 
-                </main>
-            </div>
-        </Fragment>
+                        {/* GUARANTEED INTERNAL LINK MESH — every glossary page gets tool + regulation + directory */}
+                        {/* This fires even when DB fields (related_tools, related_rules) are empty */}
+                        <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Related Resources</div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                {/* Tool link — guaranteed */}
+                                <Link href={(term.related_tools?.[0] ? `/tools/${term.related_tools[0]}` : '/tools/escort-calculator')}
+                                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'rgba(212,168,68,0.06)', border: '1px solid rgba(212,168,68,0.15)', borderRadius: 10, textDecoration: 'none' }}>
+                                    <span style={{ fontSize: 14 }}>🧮</span>
+                                    <div>
+                                        <div style={{ fontSize: 12, fontWeight: 700, color: '#D4A844' }}>Related Tool</div>
+                                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>{term.related_tools?.[0] ? term.related_tools[0].replace(/-/g, ' ') : 'Escort Calculator'}</div>
+                                    </div>
+                                    <span style={{ marginLeft: 'auto', color: '#D4A844', fontSize: 12 }}>→</span>
+                                </Link>
+                                {/* Regulation link — guaranteed */}
+                                <Link href={(term.applicable_countries?.includes('US') ? '/escort-requirements' : '/regulations')}
+                                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, textDecoration: 'none' }}>
+                                    <span style={{ fontSize: 14 }}>⚖️</span>
+                                    <div>
+                                        <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>Escort Requirements by State</div>
+                                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Rules for every US state</div>
+                                    </div>
+                                    <span style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>→</span>
+                                </Link>
+                                {/* Directory/commercial link — guaranteed */}
+                                <Link href="/directory"
+                                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 10, textDecoration: 'none' }}>
+                                    <span style={{ fontSize: 14 }}>🔍</span>
+                                    <div>
+                                        <div style={{ fontSize: 12, fontWeight: 700, color: '#22C55E' }}>Find Verified Escort Operators</div>
+                                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Pilot cars across 120 countries</div>
+                                    </div>
+                                    <span style={{ marginLeft: 'auto', color: '#22C55E', fontSize: 12 }}>→</span>
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* NO DEAD END — every glossary page gets this */}
+                        <NoDeadEndBlock
+                            heading={`What Would You Like to Do with ${term.term}?`}
+                            moves={[
+                                { href: '/directory', icon: '🔍', title: 'Find Operators', desc: `Search for ${term.term} specialists`, primary: true, color: '#D4A844' },
+                                { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'For operators & service providers', primary: true, color: '#22C55E' },
+                                { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many escorts do you need?' },
+                                { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by state' },
+                                { href: '/glossary', icon: '📖', title: 'Full Glossary', desc: 'All heavy haul terms' },
+                                { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Post or find loads' },
+                            ]}
+                        />
+
+                    </main>
+                </div>
+            </Fragment>
     );
 }

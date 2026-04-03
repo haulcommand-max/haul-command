@@ -206,13 +206,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "@context": "https://schema.org",
                         "@type": "WebSite",
                         "name": "Haul Command",
-                        "url": "https://haulcommand.com",
+                        "url": "https://www.haulcommand.com",
                         "description": "The operating system for heavy haul — find pilot cars, escort vehicles, and oversize load professionals worldwide.",
                         "potentialAction": {
                             "@type": "SearchAction",
                             "target": {
                                 "@type": "EntryPoint",
-                                "urlTemplate": "https://haulcommand.com/directory?q={search_term_string}"
+                                "urlTemplate": "https://www.haulcommand.com/directory?q={search_term_string}"
                             },
                             "query-input": "required name=search_term_string"
                         }
@@ -224,7 +224,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "@context": "https://schema.org",
                         "@type": "WebPage",
                         "name": "Haul Command — The Operating System for Heavy Haul",
-                        "url": "https://haulcommand.com",
+                        "url": "https://www.haulcommand.com",
                         "speakable": {
                             "@type": "SpeakableSpecification",
                             "cssSelector": [".speakable-headline", ".speakable-summary", "h1", "[data-speakable]"],

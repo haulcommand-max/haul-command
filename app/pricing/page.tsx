@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ESCORT_SUBSCRIPTION_TIERS, BROKER_SUBSCRIPTION_TIERS } from '@/lib/monetization/monetization-engine';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
     title: 'Haul Command Pricing | Pilot Car Operator & Carrier Plans',
@@ -10,33 +12,34 @@ export const metadata: Metadata = {
     },
 };
 
-const faqSchema = {
+const pricingSchema = {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
+    '@graph': [
         {
-            '@type': 'Question',
-            name: 'How much does Haul Command cost?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.',
-            },
+            '@type': 'FAQPage',
+            mainEntity: [
+                { '@type': 'Question', name: 'How much does Haul Command cost?', acceptedAnswer: { '@type': 'Answer', text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.' } },
+                { '@type': 'Question', name: 'Is there a free pilot car operator plan?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent — no credit card required to claim your profile.' } },
+                { '@type': 'Question', name: 'What is included in the Haul Command Elite plan?', acceptedAnswer: { '@type': 'Answer', text: 'Elite ($79/month) includes a verified and certified badge, top listing placement, unlimited operating regions, priority lead matching, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.' } },
+                { '@type': 'Question', name: 'Can I cancel anytime?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Cancel anytime from your dashboard. Your subscription remains active until the end of your billing period. No cancellation fees, no questions asked.' } },
+                { '@type': 'Question', name: 'Do you offer annual pricing?', acceptedAnswer: { '@type': 'Answer', text: 'Annual plans include 2 months free (equivalent to 17% off). Contact billing@haulcommand.com or manage in your dashboard after subscribing.' } },
+            ],
         },
         {
-            '@type': 'Question',
-            name: 'Is there a free pilot car operator plan?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent — no credit card required to claim your profile.',
-            },
+            '@type': 'Product',
+            name: 'Haul Command Operator Pro',
+            description: 'Professional pilot car and escort vehicle operator listing with verified badge, priority placement, and lead matching.',
+            url: 'https://www.haulcommand.com/pricing',
+            brand: { '@type': 'Brand', name: 'Haul Command' },
+            offers: { '@type': 'Offer', price: '29.00', priceCurrency: 'USD', priceSpecification: { '@type': 'RecurringCharge', billingFrequency: 'Monthly' }, availability: 'https://schema.org/InStock', url: 'https://www.haulcommand.com/onboarding' },
         },
         {
-            '@type': 'Question',
-            name: 'What is included in the Haul Command Elite plan?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Elite ($79/month) includes a verified and certified badge, top listing placement, unlimited operating regions, priority lead matching, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.',
-            },
+            '@type': 'Product',
+            name: 'Haul Command Operator Elite',
+            description: 'Top-tier pilot car operator listing with verified + certified badge, unlimited regions, route intelligence, and API access.',
+            url: 'https://www.haulcommand.com/pricing',
+            brand: { '@type': 'Brand', name: 'Haul Command' },
+            offers: { '@type': 'Offer', price: '79.00', priceCurrency: 'USD', priceSpecification: { '@type': 'RecurringCharge', billingFrequency: 'Monthly' }, availability: 'https://schema.org/InStock', url: 'https://www.haulcommand.com/onboarding' },
         },
     ],
 };
@@ -52,7 +55,10 @@ const SPONSOR_HIGHLIGHTS = [
 export default function PricingPage() {
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
+
+            {/* ProofStrip — trust signals above the fold */}
+            <ProofStrip variant="bar" />
 
             <div className="min-h-screen bg-[#0B0B0C] text-white">
 
@@ -255,6 +261,32 @@ export default function PricingPage() {
                         </Link>
                     </div>
                 </section>
+
+                {/* ── Internal link mesh — tool + glossary + directory ── */}
+                <section className="border-t border-white/5 py-10 text-center">
+                    <div className="text-xs font-black uppercase tracking-widest text-white/25 mb-5">Helpful Resources</div>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">🔍 Browse Operator Directory</Link>
+                        <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">🧮 Escort Calculator</Link>
+                        <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">📖 What Is a Pilot Car?</Link>
+                        <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">⚖️ State Escort Rules</Link>
+                        <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">🟢 Live Availability</Link>
+                        <Link href="/advertise" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">📢 Advertise on Haul Command</Link>
+                    </div>
+                </section>
+
+                {/* ── No-Dead-End block ── */}
+                <NoDeadEndBlock
+                    heading="Ready to Start Growing on Haul Command?"
+                    moves={[
+                        { href: '/claim', icon: '✓', title: 'Claim Your Free Profile', desc: 'Free forever, no card needed', primary: true, color: '#D4A844' },
+                        { href: '/onboarding', icon: '⬆️', title: 'Upgrade to Pro', desc: 'Start $29/mo trial today', primary: true, color: '#22C55E' },
+                        { href: '/directory', icon: '🔍', title: 'Browse Operators', desc: 'See what Pro listings look like' },
+                        { href: '/advertise', icon: '📢', title: 'Advertise Instead', desc: 'Territory & corridor sponsors' },
+                        { href: '/roles/pilot-car-operator', icon: '🚗', title: 'Operator Role Guide', desc: 'Get the full operator overview' },
+                        { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Find loads in your area' },
+                    ]}
+                />
 
             </div>
         </>

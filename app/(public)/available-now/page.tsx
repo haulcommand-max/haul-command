@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight } from 'lucide-react';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 // ══════════════════════════════════════════════════════════════
 // /available-now — LIVE ESCORT AVAILABILITY FEED
@@ -26,11 +27,11 @@ export const metadata: Metadata = {
     'find pilot car',
     'available pilot car today',
   ],
-  alternates: { canonical: 'https://haulcommand.com/available-now' },
+  alternates: { canonical: 'https://www.haulcommand.com/available-now' },
   openGraph: {
     title: 'Available Now — Live Escort Availability | Haul Command',
     description: 'Real-time pilot car and escort vehicle availability. Find verified operators ready for dispatch.',
-    url: 'https://haulcommand.com/available-now',
+    url: 'https://www.haulcommand.com/available-now',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
 };
@@ -40,8 +41,8 @@ const AVAILABLE_NOW_JSONLD = {
   '@type': 'Service',
   name: 'Pilot Car Available Now — Live Availability Feed',
   description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch.',
-  url: 'https://haulcommand.com/available-now',
-  provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://haulcommand.com' },
+  url: 'https://www.haulcommand.com/available-now',
+  provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
   areaServed: { '@type': 'Country', name: 'United States' },
 };
 
@@ -407,6 +408,28 @@ export default async function AvailableNowPage() {
               </Link>
             </div>
           </section>
+
+          {/* ── Internal link mesh — tool + glossary + regulation (linking rules compliance) ── */}
+          <section style={{ marginBottom: 32, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is a Pilot Car?</Link>
+            <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is an Oversize Load?</Link>
+            <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.07)', border: '1px solid rgba(212,168,68,0.18)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>🧮 Escort Calculator</Link>
+            <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</Link>
+            <Link href="/pricing" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>💲 Operator Pricing</Link>
+          </section>
+
+          {/* ── No-Dead-End block ── */}
+          <NoDeadEndBlock
+            heading="Need an Escort Operator Right Now?"
+            moves={[
+              { href: '/directory', icon: '🔍', title: 'Browse Full Directory', desc: 'All verified operators', primary: true, color: '#D4A844' },
+              { href: '/claim', icon: '✓', title: 'Set Your Availability', desc: 'Operators — get found now', primary: true, color: '#22C55E' },
+              { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Post an urgent load' },
+              { href: '/corridors/tx/vs/la', icon: '🗺️', title: 'TX→LA Corridor', desc: 'Busiest heavy haul route' },
+              { href: '/escort-requirements', icon: '⚖️', title: 'Escort Requirements', desc: 'State rules & permits' },
+              { href: '/pricing', icon: '💲', title: 'Claim Free Listing', desc: 'Free forever for operators' },
+            ]}
+          />
 
         </div>
       </div>
