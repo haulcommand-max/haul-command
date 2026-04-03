@@ -21,6 +21,13 @@ const CONSTANT_YIELDS = [
     `${BASE}/available-now`,
     `${BASE}/regulations`,
     `${BASE}/resources`,
+    `${BASE}/trucker-services`,
+    `${BASE}/map`,
+    // Role landing pages — commercial intent, high value
+    `${BASE}/roles/pilot-car-operator`,
+    `${BASE}/roles/broker`,
+    `${BASE}/roles/heavy-haul-carrier`,
+    `${BASE}/roles/dispatcher`,
     // Hyper-local SEO pages (top 50 US cities)
     ...['houston-tx','dallas-tx','san-antonio-tx','austin-tx','los-angeles-ca',
        'san-francisco-ca','san-diego-ca','phoenix-az','chicago-il','miami-fl',
