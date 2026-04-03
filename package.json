@@ -121,7 +121,7 @@
         "sharp": "^0.34.5",
         "stripe": "^20.4.1",
         "supercluster": "^8.0.1",
-        "swr": "^2.4.0",
+        "swr": "^2.4.1",
         "tailwind-merge": "^3.5.0",
         "topojson-client": "^3.1.0",
         "typesense": "^3.0.5",
