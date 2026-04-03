@@ -98,7 +98,7 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
                     )}
                     <div style={definitionBoxStyle}>
                         <div dangerouslySetInnerHTML={{ __html: block.html }} style={{
-                            fontSize: 16, lineHeight: 1.7, color: '#374151',
+                            fontSize: 16, lineHeight: 1.7, color: '#9CA3AF',
                         }} />
                     </div>
                 </>
@@ -116,15 +116,15 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
                         />
                     )}
                     <div style={faqWrapperStyle}>
-                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f1729', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#F9FAFB', marginBottom: 16 }}>
                             Frequently Asked Questions
                         </h2>
                         <div dangerouslySetInnerHTML={{ __html: block.html }} />
                     </div>
                     <style>{`
-                        [itemtype*="Question"] { margin-bottom: 16px; padding: 18px; background: white; border: 1px solid #e5e7eb; border-radius: 12px; }
-                        [itemtype*="Question"] h3 { font-size: 16px; font-weight: 700; color: #0f1729; margin: 0 0 8px; }
-                        [itemtype*="Question"] p { margin: 0; color: #374151; font-size: 14px; line-height: 1.6; }
+                        [itemtype*="Question"] { margin-bottom: 16px; padding: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
+                        [itemtype*="Question"] h3 { font-size: 16px; font-weight: 700; color: #F9FAFB; margin: 0 0 8px; }
+                        [itemtype*="Question"] p { margin: 0; color: #9CA3AF; font-size: 14px; line-height: 1.6; }
                     `}</style>
                 </>
             );
@@ -134,7 +134,7 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
             const block = generateQuickTable(term, geo, country);
             return (
                 <div>
-                    <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f1729', marginBottom: 16 }}>
+                    <h2 style={{ fontSize: 22, fontWeight: 800, color: '#F9FAFB', marginBottom: 16 }}>
                         Escort Requirements — {geo}
                     </h2>
                     <div style={tableWrapperStyle}>
@@ -142,9 +142,9 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
                     </div>
                     <style>{`
                         table { width: 100%; border-collapse: collapse; }
-                        th { background: #f9fafb; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e5e7eb; }
-                        td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 14px; }
-                        tr:hover td { background: #eff6ff; }
+                        th { background: rgba(255,255,255,0.04); padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255,255,255,0.1); }
+                        td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #D1D5DB; font-size: 14px; }
+                        tr:hover td { background: rgba(59,130,246,0.05); }
                     `}</style>
                 </div>
             );
@@ -161,7 +161,7 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
                         />
                     )}
                     <div>
-                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f1729', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#F9FAFB', marginBottom: 16 }}>
                             How to Book a {term.replace(/\b\w/g, c => c.toUpperCase())} in {geo}
                         </h2>
                         <div dangerouslySetInnerHTML={{ __html: block.html }} style={stepsStyle} />
@@ -174,27 +174,27 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
             return (
                 <div style={{
                     padding: 20, borderRadius: 12,
-                    background: '#fefce8', border: '1px solid #fde68a',
+                    background: 'rgba(217, 119, 6, 0.06)', border: '1px solid rgba(217, 119, 6, 0.15)',
                     marginBottom: 24,
                 }}>
-                    <h3 style={{ fontSize: 16, fontWeight: 800, color: '#92400e', margin: '0 0 8px' }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: '#F59E0B', margin: '0 0 8px' }}>
                         💰 Typical {term.replace(/\b\w/g, c => c.toUpperCase())} Rates in {geo}
                     </h3>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 12 }}>
-                        <div style={{ textAlign: 'center', padding: 12, background: 'white', borderRadius: 10, border: '1px solid #fde68a' }}>
-                            <div style={{ fontSize: 22, fontWeight: 900, color: '#d97706' }}>$250–$400</div>
-                            <div style={{ fontSize: 11, color: '#92400e', marginTop: 2 }}>Standard Day Rate</div>
+                        <div style={{ textAlign: 'center', padding: 12, background: 'rgba(255,255,255,0.03)', borderRadius: 10, border: '1px solid rgba(217,119,6,0.15)' }}>
+                            <div style={{ fontSize: 22, fontWeight: 900, color: '#F59E0B' }}>$250–$400</div>
+                            <div style={{ fontSize: 11, color: '#D97706', marginTop: 2 }}>Standard Day Rate</div>
                         </div>
-                        <div style={{ textAlign: 'center', padding: 12, background: 'white', borderRadius: 10, border: '1px solid #fde68a' }}>
-                            <div style={{ fontSize: 22, fontWeight: 900, color: '#d97706' }}>$1.50–$2.50</div>
-                            <div style={{ fontSize: 11, color: '#92400e', marginTop: 2 }}>Per Mile Rate</div>
+                        <div style={{ textAlign: 'center', padding: 12, background: 'rgba(255,255,255,0.03)', borderRadius: 10, border: '1px solid rgba(217,119,6,0.15)' }}>
+                            <div style={{ fontSize: 22, fontWeight: 900, color: '#F59E0B' }}>$1.50–$2.50</div>
+                            <div style={{ fontSize: 11, color: '#D97706', marginTop: 2 }}>Per Mile Rate</div>
                         </div>
-                        <div style={{ textAlign: 'center', padding: 12, background: 'white', borderRadius: 10, border: '1px solid #fde68a' }}>
-                            <div style={{ fontSize: 22, fontWeight: 900, color: '#d97706' }}>$500–$800</div>
-                            <div style={{ fontSize: 11, color: '#92400e', marginTop: 2 }}>Specialized Load</div>
+                        <div style={{ textAlign: 'center', padding: 12, background: 'rgba(255,255,255,0.03)', borderRadius: 10, border: '1px solid rgba(217,119,6,0.15)' }}>
+                            <div style={{ fontSize: 22, fontWeight: 900, color: '#F59E0B' }}>$500–$800</div>
+                            <div style={{ fontSize: 11, color: '#D97706', marginTop: 2 }}>Specialized Load</div>
                         </div>
                     </div>
-                    <p style={{ fontSize: 12, color: '#92400e', marginTop: 10, fontStyle: 'italic' }}>
+                    <p style={{ fontSize: 12, color: '#9CA3AF', marginTop: 10, fontStyle: 'italic' }}>
                         Rates vary by load type, distance, and jurisdiction. Get accurate quotes from verified operators.
                     </p>
                 </div>
@@ -205,20 +205,20 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
             return (
                 <div style={{
                     padding: 20, borderRadius: 12,
-                    background: '#f0fdf4', border: '1px solid #bbf7d0',
+                    background: 'rgba(22, 163, 74, 0.06)', border: '1px solid rgba(22, 163, 74, 0.15)',
                     marginBottom: 24,
                 }}>
-                    <h3 style={{ fontSize: 16, fontWeight: 800, color: '#166534', margin: '0 0 8px' }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: '#22C55E', margin: '0 0 8px' }}>
                         📋 {geo} Escort Vehicle Regulations — Summary
                     </h3>
-                    <ul style={{ margin: '10px 0 0', paddingLeft: 20, fontSize: 14, color: '#15803d', lineHeight: 1.8 }}>
+                    <ul style={{ margin: '10px 0 0', paddingLeft: 20, fontSize: 14, color: '#86EFAC', lineHeight: 1.8 }}>
                         <li>Loads exceeding <strong>8&apos;6&quot; width</strong> generally require at least 1 escort</li>
                         <li>Two escorts typically required above <strong>12&apos; width</strong></li>
                         <li>Height over <strong>14&apos;6&quot;</strong> requires height pole vehicle</li>
                         <li>Police escort may be required for <strong>superloads</strong> and urban routes</li>
                         <li>Permits required from state DOT for all oversize/overweight moves</li>
                     </ul>
-                    <p style={{ fontSize: 12, color: '#166534', marginTop: 10, fontStyle: 'italic' }}>
+                    <p style={{ fontSize: 12, color: '#9CA3AF', marginTop: 10, fontStyle: 'italic' }}>
                         Always verify current regulations with the local DOT. Rules differ by jurisdiction.
                     </p>
                 </div>

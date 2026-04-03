@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { REGULATIONS, type CountryRegulation } from '@/lib/regulations/global-regulations-db';
+import { SponsorCard } from '@/components/monetization/SponsorCard';
 
 export const metadata: Metadata = {
     title: 'Pilot Car & Escort Vehicle Regulations by Country',
@@ -168,6 +169,12 @@ export default function RegulationsIndexPage() {
                                 <RegulationCard key={reg.countryCode} reg={reg} />
                             ))}
                         </div>
+                        {/* AdGrid: Inject sponsor after Tier B */}
+                        {tierKey === 'B' && (
+                            <div style={{ marginTop: 16, marginBottom: 8 }}>
+                                <SponsorCard zone="regulation" compact />
+                            </div>
+                        )}
                     </section>
                 );
             })}

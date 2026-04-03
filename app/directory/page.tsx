@@ -13,6 +13,7 @@ import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
 import { AdGridRecruiterCard } from '@/components/ads/AdGridRecruiterCard';
 import { AdGridInstantLeadForm } from '@/components/ads/AdGridInstantLeadForm';
+import { AdGridKeywordInterceptor } from '@/components/ads/AdGridKeywordInterceptor';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 
@@ -312,6 +313,24 @@ export default async function DirectoryPage() {
       {/* AdGrid — Directory Mid */}
       <section className="max-w-6xl mx-auto px-4 py-4">
         <AdGridSlot zone="directory_mid" />
+      </section>
+
+      {/* AdGrid — Keyword Interceptor — Sponsored Search Result */}
+      <section className="max-w-6xl mx-auto px-4 py-2">
+        <AdGridKeywordInterceptor
+          query="pilot car"
+          sponsored={{
+            id: 'sp-1',
+            company_name: 'Eagle Eye Escorts LLC',
+            tagline: 'Texas’ most trusted oversize load escort — 24/7 dispatch, DOT compliant, GPS tracked.',
+            rating: 4.9,
+            reviews: 142,
+            verified: true,
+            cta_url: '/directory/profile/eagle-eye-escorts',
+            badge: '🏆 Top Rated',
+            states: ['TX', 'OK', 'LA', 'NM'],
+          }}
+        />
       </section>
 
       {/* Live Activity Feed — social gravity + recruiter sidebar */}

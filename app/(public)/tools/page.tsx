@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SponsorCard } from '@/components/monetization/SponsorCard';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Tools & Calculators | Haul Command',
@@ -276,6 +277,11 @@ export default function ToolsIndexPage() {
                         ))}
                     </div>
                 </section>
+
+                {/* ── Tool Sponsor Slot ── */}
+                <div style={{ marginTop: 32 }}>
+                    <SponsorCard zone="tool" compact />
+                </div>
 
                 {/* ── Bottom CTA ── */}
                 <section style={{

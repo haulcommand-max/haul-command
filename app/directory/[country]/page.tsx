@@ -7,6 +7,7 @@ import SaveButton from '@/components/capture/SaveButton';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { EmptyMarketState } from '@/components/directory/EmptyMarketState';
+import { SponsorCard } from '@/components/monetization/SponsorCard';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -330,6 +331,10 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 ) : (
                   <div className="max-w-3xl mx-auto">
                     <EmptyMarketState country={countryName} region={stateFilter} />
+                    {/* AdGrid: Empty market launch sponsor */}
+                    <div style={{ marginTop: 24 }}>
+                      <SponsorCard zone="empty_market" geo={country.toUpperCase()} role="sponsor" intent="acquire_territory" />
+                    </div>
                     <div className="mt-8 flex justify-center gap-6 text-xs text-gray-600">
                       <Link href="/tools" className="hover:text-amber-400 transition-colors">🛠 Free Tools</Link>
                       <Link href="/glossary" className="hover:text-amber-400 transition-colors">📖 Glossary</Link>
