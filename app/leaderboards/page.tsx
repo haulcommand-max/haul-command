@@ -3,6 +3,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, MapPin, Gauge, Star, Trophy, Clock, Medal } from 'lucide-react';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 const MOCK_LEADERS = [
   { id: 'usr_1', company: 'Apex Heavy Haul', rank: 'Vanguard', runs: 2450, rating: 4.98, response: '2 min', loc: 'Dallas, TX', score: 99.8 },
@@ -156,6 +159,21 @@ export default function LeaderboardsPage() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Leaderboard Sponsor */}
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+        <AdGridSlot zone="leaderboard_sponsor" />
+      </section>
+
+      {/* Data Teaser Strip */}
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+        <DataTeaserStrip />
+      </section>
+
+      {/* Social Proof */}
+      <section className="max-w-7xl mx-auto px-6 pb-20">
+        <SocialProofBanner />
       </section>
     </div>
   );

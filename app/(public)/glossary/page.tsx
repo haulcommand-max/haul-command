@@ -6,7 +6,9 @@ import { ScrollReveal, AnimatedCounter, StickyAlphabetNav, GlossarySearch } from
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { SmartPaywallBannerAnon } from '@/components/monetization/SmartPaywallBannerAnon';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Glossary | 3,000+ Terms, Definitions & Rules | Haul Command',
@@ -496,6 +498,24 @@ export default async function GlossaryHubPage() {
                         </div>
                     </div>
                 </ScrollReveal>
+
+                {/* ── Glossary Sponsor Slot ── */}
+                <div className="mb-10">
+                    <AdGridSlot zone="glossary_sponsor" />
+                </div>
+
+                {/* ── Data Teaser Strip ── */}
+                <div className="mb-10">
+                    <DataTeaserStrip />
+                </div>
+
+                {/* ── Snippet Injector — featured snippet capture ── */}
+                <SnippetInjector
+                  blocks={['definition', 'faq']}
+                  term="pilot car"
+                  geo="United States"
+                  country="US"
+                />
 
             </main>
         </div>

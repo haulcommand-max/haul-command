@@ -8,6 +8,7 @@ import {
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
 
 // ═══════════════════════════════════════════════════════════════
 // TRUCKER SERVICES DIRECTORY — Powered by public.places + place_type_metadata
@@ -314,6 +315,14 @@ export default async function TruckerServicesPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Snippet Injector — featured snippet capture ── */}
+      <SnippetInjector
+        blocks={['definition', 'faq']}
+        term="trucker services"
+        geo="United States"
+        country="US"
+      />
     </div>
   );
 }

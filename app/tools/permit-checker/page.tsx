@@ -3,6 +3,8 @@
 import React, { useState, useCallback } from 'react';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
 import EmailCaptureWidget from "@/components/monetization/EmailCaptureWidget";
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 const GRADIENT_BG = 'radial-gradient(ellipse at 15% 20%, rgba(241,169,27,0.06) 0%, transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(16,185,129,0.04) 0%, transparent 50%), #0a0a0f';
 
@@ -224,10 +226,14 @@ export default function PermitCheckerPage() {
                     </div>
 
                     {/* Sidebar */}
-                    <aside>
+                    <aside className="space-y-4">
                         <ToolsSidebar currentPath="/tools/permit-checker" />
+                        <AdGridSlot zone="tool_sponsor" />
                     </aside>
                 </div>
+
+                {/* Data teaser strip */}
+                <DataTeaserStrip geo="US" />
             </div>
         </div>
     );

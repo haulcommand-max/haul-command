@@ -6,10 +6,12 @@ import { analyzeRoute, type RouteIntelligenceResult } from '@/lib/routes/route-i
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { AdGridWeatherBanner } from '@/components/ads/AdGridWeatherBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { SponsorCard, DataProductTeaser } from '@/components/monetization/SponsorCard';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -292,15 +294,33 @@ export default async function CorridorIntelPage({ params }: Props) {
             {/* AdGrid — Corridor Sidebar */}
             <AdGridSlot zone="corridor_sidebar" />
 
-            {/* Corridor Sponsorship CTA — monetization */}
-            <CitySponsorshipCTA
-              cityName={`${corridor.origin_state}→${corridor.destination_state} Corridor`}
-              regionName="United States"
-              pricePerMonth={399}
+            {/* Data Product Teaser — Corridor Intelligence */}
+            <DataProductTeaser
+              title="Corridor Intelligence Feed"
+              description={`${corridor.origin_state}→${corridor.destination_state} demand, supply, and rate data`}
+              previewData={[
+                `Operators active: ${corridor.operator_count || '—'}`,
+                `Loads posted (24h): ${corridor.load_count || '—'}`,
+                `Avg rate per mile: ••••`,
+              ]}
+              price="$29/mo"
+              productSlug="corridor-snapshot"
+              locked={true}
             />
+
+            {/* Corridor Sponsorship — geo-targeted */}
+            <SponsorCard zone="corridor" geo={slug} role="sponsor" intent="acquire_corridor" />
 
             {/* Social Proof Banner */}
             <SocialProofBanner />
+
+            {/* Snippet Injector — featured snippet capture */}
+            <SnippetInjector
+              blocks={['definition', 'faq', 'cost_range']}
+              term="pilot car"
+              geo={`${corridor.origin_state} to ${corridor.destination_state}`}
+              country="US"
+            />
           </div>
         </div>
       </div>

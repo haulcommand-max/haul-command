@@ -2,6 +2,8 @@
 
 import React, { useState, useCallback } from 'react';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 const GRADIENT_BG = 'radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(241,169,27,0.05) 0%, transparent 50%), #0a0a0f';
 
@@ -161,8 +163,9 @@ export default function RateLookupPage() {
                             </div>
                         )}
                     </div>
-                    <aside><ToolsSidebar currentPath="/tools/rate-lookup" /></aside>
+                    <aside className="space-y-4"><ToolsSidebar currentPath="/tools/rate-lookup" /><AdGridSlot zone="tool_sponsor" /></aside>
                 </div>
+                <DataTeaserStrip geo="US" />
             </div>
         </div>
     );

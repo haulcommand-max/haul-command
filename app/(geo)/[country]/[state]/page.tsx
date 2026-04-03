@@ -9,6 +9,8 @@ import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
 import { AdGridGeofenceTrigger } from '@/components/ads/AdGridGeofenceTrigger';
+import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { getCityHubUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
@@ -290,6 +292,16 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                     regionName={countryData.name}
                     pricePerMonth={299}
                 />
+
+                {/* ── State Takeover Sponsor ── */}
+                <TakeoverSponsorBanner
+                    level="state"
+                    territory={regionName}
+                    pricePerMonth={499}
+                />
+
+                {/* ── Data Teaser Strip ── */}
+                <DataTeaserStrip geo={regionName} />
 
                 {/* ── Geofence Trigger — Weigh station proximity ad overlay ── */}
                 <AdGridGeofenceTrigger ad={null} />

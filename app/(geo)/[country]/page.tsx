@@ -6,6 +6,9 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { getStateUrl } from '@/lib/seo/geo-mesh';
 import { getCountryBySlug, getRegionsByCountry } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Globe, Truck, ShieldCheck, Search } from 'lucide-react';
+import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 export default async function CountryPage({ params }: { params: Promise<{ country: string }> }) {
     const { country } = await params;
@@ -124,6 +127,19 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                         </Link>
                     </section>
                 )}
+
+                {/* ── Country Takeover Sponsor ── */}
+                <TakeoverSponsorBanner
+                    level="country"
+                    territory={countryData.name}
+                    pricePerMonth={999}
+                />
+
+                {/* ── Data Teaser Strip ── */}
+                <DataTeaserStrip geo={countryData.name} />
+
+                {/* ── Social Proof ── */}
+                <SocialProofBanner />
             </div>
         </div>
     );

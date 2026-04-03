@@ -8,6 +8,7 @@ import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { EmptyMarketState } from '@/components/directory/EmptyMarketState';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
+import { ClaimListingCTA } from '@/components/monetization/ClaimListingCTA';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -250,6 +251,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
             )}
 
             {operators && operators.length > 0 ? (
+              <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {operators.map((op: any) => (
                   <div
@@ -317,6 +319,14 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                   </div>
                 ))}
               </div>
+              {/* Claim Your Listing — supply-side conversion */}
+              <div style={{ marginTop: 24 }}>
+                <ClaimListingCTA
+                  variant="banner"
+                  state={stateFilter || country.toUpperCase()}
+                />
+              </div>
+              </>
             ) : (
               <div className="text-center py-16">
                 {q ? (
