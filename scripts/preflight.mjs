@@ -3,14 +3,17 @@
 // Catches build-breaking errors before they hit Vercel.
 //
 // Checks (in dependency order):
-//   1. Route collision detector (fastest — catches most common failure)
-//   2. TypeScript typecheck
-//   3. Stripe API version validation
-//   4. Env var presence check
+//   1. Route collision detector     — catches Turbopack route collision
+//   2. TypeScript typecheck         — catches TS type errors
+//   3. Stripe API version           — ensures correct apiVersion string
+//   4. Env var presence             — ensures .env.example is complete
+//   5. Client boundary scanner      — catches onClick/useState/useEffect
+//                                     in files missing 'use client'
+//   6. Duplicate JSX style key      — catches style={{ key: a, key: b }}
 //
 // Usage:
 //   node scripts/preflight.mjs           — full check
-//   node scripts/preflight.mjs --fast    — route check + TS only
+//   node scripts/preflight.mjs --fast    — checks 1+2+5+6 only
 //
 // Install as pre-push hook:
 //   echo "node scripts/preflight.mjs" > .git/hooks/pre-push && chmod +x .git/hooks/pre-push
@@ -145,6 +148,101 @@ if (!FAST) {
         return true;
     });
 }
+
+// ── 5. Client Boundary Scanner (always runs) ─────────────────
+// Catches: onClick/useState/useEffect in files missing 'use client'
+// Exact failure mode: regulations prerender crash, QuickAnswerBlock onClick
+check('client boundary violations', () => {
+    const CLIENT_HOOKS = ['onClick', 'useState', 'useEffect', 'useRef', 'useCallback', 'useMemo', 'useRouter', 'usePathname', 'useSearchParams'];
+    const violations = [];
+
+    function scanDir(dir) {
+        if (!existsSync(dir)) return;
+        for (const entry of readdirSync(dir)) {
+            const full = join(dir, entry);
+            const stat = statSync(full);
+            if (stat.isDirectory()) {
+                // Skip node_modules, .next, out
+                if (['node_modules', '.next', 'out', '.git'].includes(entry)) continue;
+                scanDir(full);
+            } else if (entry.endsWith('.tsx') || entry.endsWith('.ts')) {
+                const content = readFileSync(full, 'utf8');
+                // Skip files that already have 'use client'
+                if (content.startsWith("'use client'") || content.startsWith('"use client"')) continue;
+                // Skip files in /api/ routes (server-only, no client hooks)
+                const rel = full.replace(ROOT, '').replace(/\\/g, '/');
+                if (rel.includes('/api/')) continue;
+                // Check for client-only hooks
+                const found = CLIENT_HOOKS.filter(hook => content.includes(hook));
+                if (found.length > 0) {
+                    // Allow hooks that appear in type definitions or comments only
+                    const hasActualUsage = found.some(hook => {
+                        const re = new RegExp(`(^|\\s|=|\\(|,)${hook}(\\s*[=(\\[{]|,)`, 'm');
+                        return re.test(content);
+                    });
+                    if (hasActualUsage) {
+                        violations.push(`${rel}: uses [${found.join(', ')}] but missing 'use client'`);
+                    }
+                }
+            }
+        }
+    }
+
+    scanDir(join(ROOT, 'components'));
+    scanDir(join(ROOT, 'app'));
+
+    if (violations.length > 0) {
+        throw new Error(`Client boundary violations (${violations.length}):\n${violations.slice(0, 10).map(v => '    ' + v).join('\n')}`);
+    }
+    return true;
+});
+
+// ── 6. Duplicate JSX Style Key Scanner (always runs) ─────────
+// Catches: style={{ fontSize: 16, ..., fontSize: 12 }}
+// Exact failure mode: market/[state] h2 TS2300 build crash
+check('duplicate JSX style keys', () => {
+    const violations = [];
+    // Match style={{ ... }} blocks spanning up to 5 lines
+    const STYLE_BLOCK = /style=\{\{([^}]*(?:\{[^}]*\}[^}]*)*)\}\}/gs;
+
+    function scanForDupeKeys(dir) {
+        if (!existsSync(dir)) return;
+        for (const entry of readdirSync(dir)) {
+            const full = join(dir, entry);
+            const stat = statSync(full);
+            if (stat.isDirectory()) {
+                if (['node_modules', '.next', 'out', '.git'].includes(entry)) continue;
+                scanForDupeKeys(full);
+            } else if (entry.endsWith('.tsx') || entry.endsWith('.ts')) {
+                const content = readFileSync(full, 'utf8');
+                const rel = full.replace(ROOT, '').replace(/\\/g, '/');
+                let match;
+                STYLE_BLOCK.lastIndex = 0;
+                while ((match = STYLE_BLOCK.exec(content)) !== null) {
+                    const block = match[1];
+                    // Extract property names: "fontSize", 'color', etc.
+                    const keys = [];
+                    const keyRe = /([a-zA-Z][a-zA-Z0-9]*)\s*:/g;
+                    let km;
+                    while ((km = keyRe.exec(block)) !== null) keys.push(km[1]);
+                    const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
+                    if (dupes.length > 0) {
+                        const lineNum = content.slice(0, match.index).split('\n').length;
+                        violations.push(`${rel}:${lineNum} — duplicate style keys: [${[...new Set(dupes)].join(', ')}]`);
+                    }
+                }
+            }
+        }
+    }
+
+    scanForDupeKeys(join(ROOT, 'app'));
+    scanForDupeKeys(join(ROOT, 'components'));
+
+    if (violations.length > 0) {
+        throw new Error(`Duplicate JSX style keys (${violations.length}):\n${violations.slice(0, 10).map(v => '    ' + v).join('\n')}`);
+    }
+    return true;
+});
 
 // ── Summary ───────────────────────────────────────────────────
 console.log('\n' + '─'.repeat(55));

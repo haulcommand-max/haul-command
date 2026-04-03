@@ -535,6 +535,9 @@ export const REGULATIONS: CountryRegulation[] = [
         permitSystem: { authority: c.auth },
         equipment: ["Warning signs", "Amber lights", "Communication devices"],
         dataQuality: c.dq,
+        confidenceState: (c.dq === "high" ? "partially_verified" : "seeded_needs_human_review") as CountryRegulation["confidenceState"],
+        lastVerified: "2026-04-03",
+        lastUpdatedBy: "system",
         voiceAnswer: c.va,
     })),
 
@@ -579,6 +582,9 @@ export const REGULATIONS: CountryRegulation[] = [
         permitSystem: { authority: c.auth },
         equipment: ["Warning signs", "Amber lights"],
         dataQuality: "low" as const,
+        confidenceState: "seeded_needs_human_review" as const,
+        lastVerified: "2026-04-03",
+        lastUpdatedBy: "system",
         voiceAnswer: c.va,
     })),
 
@@ -639,6 +645,9 @@ export const REGULATIONS: CountryRegulation[] = [
         permitSystem: { authority: c.auth },
         equipment: ["Warning signs", "Amber lights"],
         dataQuality: "low" as const,
+        confidenceState: "seeded_needs_human_review" as const,
+        lastVerified: "2026-04-03",
+        lastUpdatedBy: "system",
         voiceAnswer: c.va,
     })),
 ];

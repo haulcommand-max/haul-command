@@ -339,3 +339,34 @@ export function generateGlossaryPageData(iso2: string): {
         relatedTerms: [...t.equipmentClasses, ...t.regulationCode],
     };
 }
+
+/**
+ * Get the primary local term for the escort vehicle in this country.
+ * This is the #1 term used in CTA headlines, page headings, and meta.
+ * Falls back to "pilot car" for countries not yet in terminology DB.
+ *
+ * Usage: const localTerm = getLocalTerm('DE') // → "Begleitfahrzeug (BF3)"
+ */
+export function getLocalTerm(iso2: string): string {
+    const t = getEscortTerminology(iso2);
+    return t?.escortVehicle?.[0] ?? 'pilot car';
+}
+
+/**
+ * Get the primary operator role name for a country.
+ * Used in job pages, directory headings, and role-specific CTAs.
+ */
+export function getLocalOperatorRole(iso2: string): string {
+    const t = getEscortTerminology(iso2);
+    return t?.operatorRole?.[0] ?? 'pilot car operator';
+}
+
+/**
+ * Get the primary oversize load term for a country.
+ * Used in permit pages, regulations headings, and SEO copy.
+ */
+export function getLocalOversizeLoadTerm(iso2: string): string {
+    const t = getEscortTerminology(iso2);
+    return t?.oversizeLoad?.[0] ?? 'oversize load';
+}
+
