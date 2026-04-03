@@ -9,6 +9,18 @@ export const metadata = {
 
 const VALID_COUNTRIES = ['us', 'ca'];
 
+// Top-level static paths that share the /:segment pattern with (geo)/[country].
+// If [country] resolves to one of these, Next.js should have served the static
+// route already. But as a safety net — don't call notFound() on them.
+const STATIC_TOP_LEVEL_PATHS = new Set([
+    'roles', 'blog', 'glossary', 'pricing', 'tools', 'rates', 'training',
+    'loads', 'reposition', 'claim', 'corridors', 'contact', 'available-now',
+    'regulations', 'resources', 'trucker-services', 'map', 'requirements',
+    'register', 'login', 'onboarding', 'dashboard', 'profile', 'settings',
+    'directory', 'near', 'border', 'port', 'county', 'industry', 'emergency',
+    'services', 'about', 'privacy', 'terms', 'sitemap', 'api',
+]);
+
 export default async function CountryLayout({
     children,
     params,
@@ -17,10 +29,16 @@ export default async function CountryLayout({
     params: Promise<{ country: string }>;
 }) {
     const { country } = await params;
-    if (!VALID_COUNTRIES.includes(country.toLowerCase())) {
-        notFound();
+    const slug = country.toLowerCase();
+
+    // Pass through known static top-level paths — don't 404 them
+    if (STATIC_TOP_LEVEL_PATHS.has(slug)) {
+        return <>{children}</>;
     }
 
+    if (!VALID_COUNTRIES.includes(slug)) {
+        notFound();
+    }
 
     return (
         <div className="min-h-screen bg-slate-50">
