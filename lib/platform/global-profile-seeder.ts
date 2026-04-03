@@ -131,6 +131,12 @@ const TIER_SEED_TARGETS: Record<Tier, {
         priorityTypes: ['truck_stop', 'fuel_station_diesel_heavy', 'rest_area',
             'port_adjacent_services'],
     },
+    copper: {
+        minPlaces: 10,
+        targetPlaces: 25,
+        maxPlaces: 100,
+        priorityTypes: ['truck_stop', 'fuel_station_diesel_heavy'],
+    },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -530,6 +536,7 @@ export function computeGlobalSeedDashboard(
         blue: { countries: 0, places: 0, target: 0, pct: 0 },
         silver: { countries: 0, places: 0, target: 0, pct: 0 },
         slate: { countries: 0, places: 0, target: 0, pct: 0 },
+        copper: { countries: 0, places: 0, target: 0, pct: 0 },
     };
 
     for (const country of COUNTRY_REGISTRY) {

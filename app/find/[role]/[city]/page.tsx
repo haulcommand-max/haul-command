@@ -6,6 +6,8 @@ import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 interface Props {
     params: Promise<{ role: string; city: string }>;
@@ -171,11 +173,27 @@ export default async function RoleByCityPage({ params }: Props) {
             {/* JSON-LD */}
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 '@context': 'https://schema.org',
-                '@type': 'ItemList',
-                name: `${r.plural} in ${c.name}, ${c.stateCode}`,
-                description: `Verified ${r.plural.toLowerCase()} available in ${c.name}, ${c.state}`,
-                url: `https://www.haulcommand.com/find/${role}/${city}`,
+                '@graph': [
+                    {
+                        '@type': 'ItemList',
+                        name: `${r.plural} in ${c.name}, ${c.stateCode}`,
+                        description: `Verified ${r.plural.toLowerCase()} available in ${c.name}, ${c.state}`,
+                        url: `https://www.haulcommand.com/find/${role}/${city}`,
+                    },
+                    {
+                        '@type': 'BreadcrumbList',
+                        itemListElement: [
+                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+                            { '@type': 'ListItem', position: 2, name: 'Directory', item: 'https://www.haulcommand.com/directory' },
+                            { '@type': 'ListItem', position: 3, name: r.plural, item: `https://www.haulcommand.com/find/${role}` },
+                            { '@type': 'ListItem', position: 4, name: `${c.name}, ${c.stateCode}`, item: `https://www.haulcommand.com/find/${role}/${city}` },
+                        ],
+                    },
+                ],
             })}} />
+
+            {/* ProofStrip — trust signals above fold */}
+            <ProofStrip variant="bar" />
 
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '3rem 1rem 5rem' }}>
 
@@ -327,6 +345,28 @@ export default async function RoleByCityPage({ params }: Props) {
 
                 {/* Data Teaser */}
                 <DataTeaserStrip geo={`${c.name}, ${c.stateCode}`} />
+
+                {/* Internal link mesh — tool + glossary + regulation + directory */}
+                <div style={{ marginTop: 24, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <Link href="/glossary/pilot-car" style={{ padding: '7px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, fontSize: 11, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is a Pilot Car?</Link>
+                    <Link href="/tools/escort-calculator" style={{ padding: '7px 12px', background: 'rgba(241,169,27,0.07)', border: '1px solid rgba(241,169,27,0.18)', borderRadius: 8, fontSize: 11, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>🧮 Escort Calculator</Link>
+                    <Link href="/escort-requirements" style={{ padding: '7px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, fontSize: 11, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</Link>
+                    <Link href="/directory" style={{ padding: '7px 12px', background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 8, fontSize: 11, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>🔍 Full Directory</Link>
+                </div>
+
+                {/* No Dead End */}
+                <NoDeadEndBlock
+                    heading={`Looking for ${r.plural} in ${c.name}?`}
+                    moves={[
+                        { href: `/directory?role=${role}&city=${city}`, icon: r.icon, title: `Browse ${c.name} ${r.plural}`, desc: 'Verified operators near you', primary: true, color: '#D4A844' },
+                        { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: `List as a ${r.label} in ${c.name}`, primary: true, color: '#22C55E' },
+                        { href: '/available-now', icon: '🟢', title: 'Available Right Now', desc: 'Operators broadcasting live' },
+                        { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
+                        { href: '/escort-requirements', icon: '⚖️', title: `${c.stateCode} Escort Rules`, desc: 'State permit requirements' },
+                        { href: '/pricing', icon: '💎', title: 'Go Pro', desc: 'Top placement in searches' },
+                    ]}
+                />
+
             </div>
         </div>
     );

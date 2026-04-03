@@ -75,19 +75,31 @@ function getStaticFallback(): MetadataRoute.Sitemap {
       priority: 0.9,
     })),
 
-    // ── Corridors — High SEO ROI ────────────────────────────────────────────
-    ...[
-      ['tx','la'],['tx','nm'],['tx','ok'],['tx','ar'],['ca','az'],['ca','or'],['ca','nv'],
-      ['fl','ga'],['fl','al'],['il','wi'],['il','in'],['oh','pa'],['oh','ky'],['ny','pa'],
-      ['wa','or'],['co','ut'],['co','nm'],['mn','wi'],['mn','nd'],['ga','sc'],['ga','al'],
-      ['nc','va'],['nc','sc'],['la','ms'],['la','al'],['ok','ks'],['ok','ar'],['az','nm'],
-      ['az','ut'],['nv','ut'],['id','mt'],['id','or'],['wy','mt'],['wy','co'],['sd','nd'],
-    ].map(([origin, dest]) => ({
+    // ── Corridors — 35 corridors, $199/mo sponsorship each ─────────────────
+    ...([
+      // Gulf Coast
+      ['tx','la'],['tx','ok'],['la','ms'],['ms','al'],['al','ga'],['tx','nm'],
+      // Southeast
+      ['fl','ga'],['ga','sc'],['sc','nc'],['nc','va'],
+      // Mid-Atlantic
+      ['va','md'],['md','pa'],['oh','pa'],['pa','nj'],['nj','ny'],
+      // Midwest
+      ['oh','in'],['in','il'],['il','mo'],['mo','ks'],['mi','oh'],
+      // Plains
+      ['tx','ks'],['ks','ne'],['nd','sd'],
+      // Mountain
+      ['mt','wy'],['wy','co'],['co','ut'],['ut','nv'],['id','mt'],
+      // West Coast
+      ['ca','az'],['or','wa'],['wa','or'],['ca','nv'],
+      // Canada
+      ['ab','sk'],['on','qc'],
+    ] as [string,string][]).map(([origin, dest]) => ({
       url: `${base}/corridors/${origin}/vs/${dest}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),
+
 
     // ── Best-For Pages ──────────────────────────────────────────────────────
     ...['oversize-load','wide-load','heavy-haul','wind-turbine','bridge-beam','oil-field-equipment',

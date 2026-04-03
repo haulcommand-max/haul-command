@@ -489,7 +489,7 @@ export function calculateGlobalMeshStatistics(): {
 } {
     // Place count estimates per tier
     const TIER_PLACES: Record<Tier, number> = {
-        gold: 5000, blue: 2000, silver: 1000, slate: 200,
+        gold: 5000, blue: 2000, silver: 1000, slate: 200, copper: 25,
     };
 
     let totalPlaces = 0;

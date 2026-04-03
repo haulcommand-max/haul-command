@@ -500,13 +500,13 @@ export function calculate1000XSurface(): {
     compoundingEffects: string[];
 } {
     const TIER_PLACES: Record<Tier, number> = {
-        gold: 5000, blue: 2000, silver: 1000, slate: 200,
+        gold: 5000, blue: 2000, silver: 1000, slate: 200, copper: 25,
     };
     const TIER_CORRIDORS: Record<Tier, number> = {
-        gold: 25, blue: 10, silver: 5, slate: 2,
+        gold: 25, blue: 10, silver: 5, slate: 2, copper: 0,
     };
     const TIER_PORTS: Record<Tier, number> = {
-        gold: 15, blue: 8, silver: 4, slate: 2,
+        gold: 15, blue: 8, silver: 4, slate: 2, copper: 0,
     };
     const SEO_PAGES_PER_PLACE = 8; // avg pages generated per place
     const AD_SLOTS_PER_PAGE = 3;
@@ -520,7 +520,7 @@ export function calculate1000XSurface(): {
         tier: string; countries: number; places: number; seoPages: number; adSlots: number;
     }[] = [];
 
-    for (const tier of ['gold', 'blue', 'silver', 'slate'] as Tier[]) {
+    for (const tier of ['gold', 'blue', 'silver', 'slate', 'copper'] as Tier[]) {
         const countries = COUNTRY_REGISTRY.filter(c => c.tier === tier).length;
         const places = countries * TIER_PLACES[tier];
         const corridorPages = countries * TIER_CORRIDORS[tier];

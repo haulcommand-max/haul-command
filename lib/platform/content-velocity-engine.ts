@@ -125,6 +125,12 @@ const SIGNAL_FREQUENCY: Record<Tier, {
         socialPostsEnabled: false,
         pushEnabled: false,
     },
+    copper: {
+        signalsPerWeek: 1,
+        enabledTypes: ['new_listings'],
+        socialPostsEnabled: false,
+        pushEnabled: false,
+    },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -468,7 +474,7 @@ export function calculateContentVelocityProjection(): {
     const weeklySignals = batch.totalSignals;
     const weeklyTouches = batch.freshnessTouches;
 
-    const byTier = (['gold', 'blue', 'silver', 'slate'] as Tier[]).map(tier => {
+    const byTier = (['gold', 'blue', 'silver', 'slate', 'copper'] as Tier[]).map(tier => {
         const countries = COUNTRY_REGISTRY.filter(c => c.tier === tier);
         const config = SIGNAL_FREQUENCY[tier];
         const weekly = countries.length * config.signalsPerWeek;
