@@ -3,12 +3,10 @@
 # Vercel's workspace root detection, causing API routes to be dropped.
 #
 # IMPORTANT: Use leading slash (/) to anchor patterns to the REPO ROOT only.
-# Without /, patterns like "data/" match EVERY /data/ directory in the tree,
-# including /app/data/ — which would break application builds.
+# NOTE: Do NOT exclude /scripts/ — it contains postinstall-patch.mjs needed by build.
 
 /command-dashboard/
 /haul-command-hub/
-/scripts/
 /source_data/
 /workers/
 /docs/
