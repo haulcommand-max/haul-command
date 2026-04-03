@@ -60,7 +60,7 @@ SELECT
     so.stripe_customer_id,
     so.user_id,
     p.display_name  AS sponsor_name,
-    p.avatar_url    AS sponsor_logo,
+    p.photo_url    AS sponsor_logo,
     so.product_key,
     sp.name         AS product_name,
     sp.amount       AS price_monthly

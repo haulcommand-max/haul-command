@@ -1,17 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 /**
- * DataTeaserStrip — Public data teaser previews
- * 
- * Shows blurred/partial data snapshots to drive /data purchases.
- * Per the data_monetization_aggression_overlay:
- * - market snapshots, corridor snapshots, claim density previews,
- *   rate previews, readiness heat previews
- * 
- * Renders as a horizontal scrolling strip of teaser cards.
+ * DataTeaserStrip — Live market intelligence teaser
+ *
+ * Fetches real data from /api/market/snapshot on mount.
+ * Falls back to static defaults if fetch fails (never breaks UI).
+ * Drives paywall pressure via credible real data previews.
  */
 
 interface TeaserCard {
@@ -28,20 +25,77 @@ interface Props {
   className?: string;
 }
 
-const DEFAULT_CARDS: TeaserCard[] = [
-  { label: 'Avg Escort Rate', value: '$1.85/mi', subtext: 'US Median • Updated daily', trend: 'up' },
-  { label: 'Operator Density', value: '7,743', subtext: 'Verified operators', trend: 'up' },
-  { label: 'Corridor Fill Time', value: '3.8 hrs', subtext: 'Median time-to-fill', trend: 'down' },
-  { label: 'Claim Pressure', value: '78%', subtext: 'Listings unclaimed', blurred: true },
-  { label: 'Market Readiness', value: 'A+', subtext: 'US coverage score', trend: 'flat' },
+const STATIC_FALLBACK: TeaserCard[] = [
+  { label: 'Avg Escort Rate', value: '$3.80–$5.50/mi', subtext: 'US Median • Updated daily', trend: 'up' },
+  { label: 'Operator Density', value: '14K+', subtext: 'Verified operators', trend: 'up' },
+  { label: 'Corridor Fill Time', value: '< 4 hours', subtext: 'Median time-to-fill', trend: 'down' },
+  { label: 'Claim Pressure', value: '68%', subtext: 'Listings unclaimed', blurred: true },
+  { label: 'Market Readiness', value: 'Live', subtext: '120 countries active', trend: 'flat' },
   { label: 'Rate Trend (30d)', value: '+4.2%', subtext: 'Month-over-month', blurred: true },
 ];
 
 const TREND_ICONS = { up: '↑', down: '↓', flat: '→' };
 const TREND_COLORS = { up: '#22C55E', down: '#EF4444', flat: '#888' };
 
+function buildLiveCards(snapshot: Record<string, unknown>, geo?: string): TeaserCard[] {
+  return [
+    {
+      label: 'Avg Escort Rate',
+      value: String(snapshot.avg_rate_per_mile_range ?? '$3.50–$5.50/mi'),
+      subtext: `${geo ?? 'US'} • Updated live`,
+      trend: 'up',
+    },
+    {
+      label: 'Verified Operators',
+      value: snapshot.operator_count ? `${(snapshot.operator_count as number).toLocaleString()}` : '14K+',
+      subtext: 'In directory',
+      trend: 'up',
+    },
+    {
+      label: 'Claimed Listings',
+      value: snapshot.claim_rate ? `${snapshot.claim_rate}% claimed` : 'Growing',
+      subtext: snapshot.claimed_count ? `${snapshot.claimed_count} verified` : 'Join them',
+      trend: 'flat',
+    },
+    {
+      label: 'Fill Time',
+      value: String(snapshot.avg_response_time_h ?? '< 4 hours'),
+      subtext: 'Median to accept',
+      trend: 'down',
+    },
+    {
+      label: 'Demand Signals',
+      value: String(snapshot.demand_signals_range ?? '10–25'),
+      subtext: 'Last 30 days',
+      blurred: true,
+    },
+    {
+      label: 'Market Mode',
+      value: String(snapshot.mode ?? 'live').charAt(0).toUpperCase() + String(snapshot.mode ?? 'live').slice(1),
+      subtext: 'Current status',
+      trend: 'flat',
+    },
+  ];
+}
+
 export function DataTeaserStrip({ geo, cards, className = '' }: Props) {
-  const data = cards ?? DEFAULT_CARDS;
+  const [data, setData] = useState<TeaserCard[]>(cards ?? STATIC_FALLBACK);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (cards) return; // caller provided explicit cards — skip fetch
+    const params = new URLSearchParams({ tier: 'free' });
+    if (geo) params.set('geo', geo);
+    fetch(`/api/market/snapshot?${params}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(snapshot => {
+        if (snapshot && !snapshot.source) { // 'fallback' source means DB failed
+          setData(buildLiveCards(snapshot, geo));
+        }
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, [geo, cards]);
 
   return (
     <div className={`dts ${className}`}>

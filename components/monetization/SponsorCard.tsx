@@ -24,7 +24,7 @@ interface SponsorCardProps {
 interface ActiveSponsor {
     id: string;
     sponsor_name: string | null;
-    sponsor_logo: string | null;
+    sponsor_logo: string | null;  // profiles.photo_url
     zone: string;
     geo: string | null;
     product_name: string | null;

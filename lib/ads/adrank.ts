@@ -158,3 +158,119 @@ export function interleaveNativeAds<T>(
     return out;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SERVE ADS — main function called by /api/ads/serve and server components
+// Falls back to house ads when no paid campaigns available.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface AuctionContext {
+    zone: string;           // AdGrid zone: 'hero_billboard', 'directory_sidebar', etc.
+    geo?: string;           // ISO country or US state code
+    role?: string;          // user role if known
+    page_type?: string;
+    session_tier?: string;
+    limit?: number;
+}
+
+export async function serveAds(ctx: AuctionContext): Promise<ServedAd[]> {
+    const limit = ctx.limit ?? 3;
+
+    // Dynamic import to avoid circular dep at build time
+    const { getTopHouseAds, getHouseAds } = await import('./house-ads');
+
+    try {
+        // Lazy-import admin to avoid bundling on client
+        const { getSupabaseAdmin } = await import('@/lib/enterprise/supabase/admin');
+        const admin = getSupabaseAdmin();
+
+        const { data: campaigns } = await admin
+            .from('ad_campaigns')
+            .select('*')
+            .eq('status', 'active')
+            .lte('start_date', new Date().toISOString());
+
+        if (!campaigns || campaigns.length === 0) {
+            return getTopHouseAds(limit);
+        }
+
+        // Score each campaign with AdRank formula
+        const scored = campaigns
+            .filter((c: Record<string, unknown>) => !c.paused)
+            .filter((c: Record<string, unknown>) => {
+                // Zone filter
+                if (!c.target_zone || (c.target_zone as string[]).length === 0) return true;
+                return (c.target_zone as string[]).includes(ctx.zone);
+            })
+            .map((c: Record<string, unknown>) => {
+                const bid = Number(c.bid_cpm ?? c.bid_cpc ?? ((c.bid_flat as number) ? (c.bid_flat as number) / 300 : 0));
+                const quality = Number(c.quality_score ?? 0.5);
+                // Geo relevance
+                const geoMatch = !ctx.geo || !(c.target_geo as string[])?.length
+                    ? 0.5 : (c.target_geo as string[]).includes(ctx.geo) ? 1.0 : 0.3;
+                // Role relevance
+                const roleMatch = !ctx.role || !(c.target_role as string[])?.length
+                    ? 0.5 : (c.target_role as string[]).includes(ctx.role) ? 1.0 : 0.2;
+
+                const rank = computeAdRank({
+                    bid_norm: Math.min(bid / 50, 1),
+                    ctr_pred: quality,
+                    relevance: (geoMatch + roleMatch) / 2,
+                    adv_trust: Number(c.advertiser_trust ?? 0.7),
+                    ad_quality: quality,
+                    fraud_risk: Number(c.fraud_risk ?? 0),
+                });
+
+                return { c, rank, geoMatch, roleMatch };
+            })
+            .sort((a: { rank: number }, b: { rank: number }) => b.rank - a.rank)
+            .slice(0, limit);
+
+        if (scored.length === 0) return getTopHouseAds(limit);
+
+        return scored.map(({ c, rank }: { c: Record<string, unknown>, rank: number }) => ({
+            ad_id: `${c.id}-${Date.now()}`,
+            campaign_id: String(c.id),
+            creative_id: String(c.creative_id ?? c.id),
+            headline: String(c.headline ?? ''),
+            body: c.body ? String(c.body) : null,
+            cta_text: String(c.cta_text ?? 'Learn More'),
+            cta_url: String(c.cta_url ?? '/'),
+            image_url: c.image_url ? String(c.image_url) : null,
+            creative_type: String(c.creative_type ?? 'text'),
+            impression_token: `tok_${c.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            price_model: String(c.price_model ?? 'cpm'),
+            ad_rank: rank,
+        }));
+
+    } catch (err) {
+        console.error('[serveAds] error, falling back to house ads:', err);
+        return getHouseAds({ limit, surface: ctx.zone });
+    }
+}
+
+/** Fire-and-forget impression recording */
+export async function recordImpression(
+    ad: ServedAd,
+    ctx: { zone: string; geo?: string; role?: string; user_id?: string },
+): Promise<void> {
+    try {
+        const { getSupabaseAdmin } = await import('@/lib/enterprise/supabase/admin');
+        const admin = getSupabaseAdmin();
+        await admin.from('ad_impressions').insert({
+            campaign_id: ad.campaign_id,
+            creative_id: ad.creative_id,
+            impression_token: ad.impression_token,
+            zone: ctx.zone,
+            geo: ctx.geo,
+            role: ctx.role,
+            user_id: ctx.user_id ?? null,
+            price_model: ad.price_model,
+            ad_rank: ad.ad_rank,
+            served_at: new Date().toISOString(),
+        });
+    } catch {
+        // Best-effort — never block render
+    }
+}
+
+

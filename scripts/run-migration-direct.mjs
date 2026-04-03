@@ -1,123 +1,126 @@
-// Run P0 migration using Supabase Management API
-// Uses the service role key to call the Management API directly
+/**
+ * Haul Command — Direct Postgres Migration Runner
+ * Connects to Supabase via Postgres pooler and runs the sponsors migration.
+ * Uses pg (node-postgres) — no Supabase REST API dependency.
+ *
+ * Usage: node scripts/run-migration-direct.mjs
+ */
 
-const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'hvjyfyzotqobfkakjozp';
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import pg from 'pg';
 
-// The Supabase Management API endpoint for running SQL
-// This is what the Supabase MCP server and Dashboard use internally
-const MGMT_API = `https://api.supabase.com`;
+const { Client } = pg;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, '..');
 
-const MIGRATION_SQL = `
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS stripe_payment_intent_id text;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS stripe_charge_id text;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS payment_status text NOT NULL DEFAULT 'pending';
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS payout_status text NOT NULL DEFAULT 'pending';
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS traccar_session_ids jsonb DEFAULT '[]'::jsonb;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS completed_at timestamptz;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS review_requested_at timestamptz;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS platform_fee_cents integer DEFAULT 0;
-ALTER TABLE jobs ADD COLUMN IF NOT EXISTS net_payout_cents integer DEFAULT 0;
-
-CREATE TABLE IF NOT EXISTS job_payouts (
-  payout_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  job_id text NOT NULL,
-  operator_id uuid NOT NULL,
-  amount_cents integer NOT NULL,
-  currency text NOT NULL DEFAULT 'USD',
-  platform_fee_cents integer NOT NULL DEFAULT 0,
-  stripe_transfer_id text,
-  status text NOT NULL DEFAULT 'pending',
-  created_at timestamptz NOT NULL DEFAULT now(),
-  paid_at timestamptz,
-  metadata jsonb DEFAULT '{}'::jsonb
-);
-
-CREATE TABLE IF NOT EXISTS job_reviews (
-  review_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  job_id text NOT NULL,
-  reviewer_id uuid NOT NULL,
-  reviewer_role text NOT NULL,
-  reviewee_id uuid NOT NULL,
-  rating integer,
-  comment text,
-  request_sent_at timestamptz,
-  submitted_at timestamptz,
-  status text NOT NULL DEFAULT 'pending',
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-
-CREATE INDEX IF NOT EXISTS idx_job_payouts_job ON job_payouts(job_id);
-CREATE INDEX IF NOT EXISTS idx_job_payouts_operator ON job_payouts(operator_id);
-CREATE INDEX IF NOT EXISTS idx_job_payouts_status ON job_payouts(status);
-CREATE INDEX IF NOT EXISTS idx_jobs_payment_intent ON jobs(stripe_payment_intent_id) WHERE stripe_payment_intent_id IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_jobs_payment_status ON jobs(payment_status);
-CREATE INDEX IF NOT EXISTS idx_job_reviews_job ON job_reviews(job_id);
-CREATE INDEX IF NOT EXISTS idx_job_reviews_reviewee ON job_reviews(reviewee_id);
-
-ALTER TABLE job_payouts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE job_reviews ENABLE ROW LEVEL SECURITY;
-`;
-
-async function tryEndpoint(name, url, method, headers, body) {
-  try {
-    const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
-    const text = await res.text();
-    console.log(`${name}: ${res.status} ${text.substring(0, 200)}`);
-    return { status: res.status, text };
-  } catch (e) {
-    console.log(`${name}: ERROR ${e.message}`);
-    return null;
-  }
+function loadEnv() {
+    const env = {};
+    const raw = readFileSync(join(ROOT, '.env.local'), 'utf8');
+    for (const line of raw.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eq = trimmed.indexOf('=');
+        if (eq === -1) continue;
+        const key = trimmed.slice(0, eq).trim();
+        const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, '');
+        env[key] = val;
+    }
+    return env;
 }
 
-async function main() {
-  console.log('=== Trying all known Supabase SQL execution endpoints ===\n');
+const ENV = loadEnv();
+const DB_URL = ENV.SUPABASE_DB_POOLER_URL;
 
-  // Method 1: Management API /v1/projects/{ref}/database/query
-  await tryEndpoint('Mgmt API /database/query',
-    `${MGMT_API}/v1/projects/${PROJECT_REF}/database/query`,
-    'POST',
-    { 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-    { query: MIGRATION_SQL }
-  );
-
-  // Method 2: Direct SQL via PostgREST supautils
-  await tryEndpoint('PostgREST /rpc/exec_sql',
-    `https://${PROJECT_REF}.supabase.co/rest/v1/rpc/exec_sql`,
-    'POST',
-    { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-    { sql_string: MIGRATION_SQL }
-  );
-
-  // Method 3: Supabase SQL API (newer)
-  await tryEndpoint('SQL API /sql', 
-    `https://${PROJECT_REF}.supabase.co/sql`,
-    'POST',
-    { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-    { query: MIGRATION_SQL }
-  );
-
-  // Method 4: pg-meta
-  await tryEndpoint('pg-meta /query',
-    `https://${PROJECT_REF}.supabase.co/pg-meta/default/query`,
-    'POST',
-    { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-    { query: MIGRATION_SQL }
-  );
-
-  // Verify
-  console.log('\n=== Verification ===');
-  for (const table of ['job_payouts', 'job_reviews']) {
-    const res = await fetch(`https://${PROJECT_REF}.supabase.co/rest/v1/${table}?select=*&limit=0`, {
-      headers: { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}` },
-    });
-    console.log(`${table}: ${res.status === 200 ? '✅ EXISTS' : '❌ MISSING ('+res.status+')'}`);
-  }
-  const colCheck = await fetch(`https://${PROJECT_REF}.supabase.co/rest/v1/jobs?select=payment_status&limit=0`, {
-    headers: { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}` },
-  });
-  console.log(`jobs.payment_status: ${colCheck.status === 200 ? '✅ EXISTS' : '❌ MISSING'}`);
+if (!DB_URL) {
+    console.error('SUPABASE_DB_POOLER_URL not set in .env.local');
+    process.exit(1);
 }
 
-main();
+const STATEMENTS = [
+    {
+        name: 'Add subscription columns (idempotent)',
+        sql: `DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='sponsorship_orders' AND column_name='stripe_subscription_id') THEN ALTER TABLE public.sponsorship_orders ADD COLUMN stripe_subscription_id text, ADD COLUMN stripe_customer_id text, ADD COLUMN zone text, ADD COLUMN geo text, ADD COLUMN active_from timestamptz, ADD COLUMN active_until timestamptz, ADD COLUMN cancelled_at timestamptz; END IF; END $$;`,
+    },
+    {
+        name: 'Drop old status check constraint',
+        sql: `ALTER TABLE public.sponsorship_orders DROP CONSTRAINT IF EXISTS sponsorship_orders_status_check;`,
+    },
+    {
+        name: 'Add hardened status constraint',
+        sql: `ALTER TABLE public.sponsorship_orders ADD CONSTRAINT sponsorship_orders_status_check CHECK (status IN ('pending','paid','active','cancelled','past_due','failed','refunded'));`,
+    },
+    {
+        name: 'Index: zone+geo+status',
+        sql: `CREATE INDEX IF NOT EXISTS idx_sponsorship_orders_zone_geo_status ON public.sponsorship_orders(zone, geo, status) WHERE status = 'active';`,
+    },
+    {
+        name: 'Index: stripe_subscription_id',
+        sql: `CREATE INDEX IF NOT EXISTS idx_sponsorship_orders_stripe_sub ON public.sponsorship_orders(stripe_subscription_id) WHERE stripe_subscription_id IS NOT NULL;`,
+    },
+    {
+        name: 'Index: active_until',
+        sql: `CREATE INDEX IF NOT EXISTS idx_sponsorship_orders_active_until ON public.sponsorship_orders(active_until) WHERE status = 'active';`,
+    },
+    {
+        name: 'View: v_active_sponsors',
+        sql: `CREATE OR REPLACE VIEW public.v_active_sponsors AS SELECT so.id, so.zone, so.geo, so.status, so.active_from, so.active_until, so.stripe_subscription_id, so.stripe_customer_id, so.user_id, p.display_name AS sponsor_name, p.avatar_url AS sponsor_logo, so.product_key, sp.name AS product_name, sp.amount AS price_monthly FROM public.sponsorship_orders so LEFT JOIN public.profiles p ON p.id = so.user_id LEFT JOIN public.sponsorship_products sp ON sp.product_key = so.product_key WHERE so.status = 'active' AND (so.active_until IS NULL OR so.active_until > now());`,
+    },
+    {
+        name: 'Table: sponsor_webhook_events',
+        sql: `CREATE TABLE IF NOT EXISTS public.sponsor_webhook_events (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), stripe_event_id text NOT NULL UNIQUE, event_type text NOT NULL, processed_at timestamptz NOT NULL DEFAULT now(), order_id uuid REFERENCES public.sponsorship_orders(id) ON DELETE SET NULL, raw_payload jsonb);`,
+    },
+    {
+        name: 'Index: stripe_event_id',
+        sql: `CREATE INDEX IF NOT EXISTS idx_sponsor_webhook_events_stripe_id ON public.sponsor_webhook_events(stripe_event_id);`,
+    },
+    {
+        name: 'RLS: sponsor_webhook_events',
+        sql: `ALTER TABLE public.sponsor_webhook_events ENABLE ROW LEVEL SECURITY;`,
+    },
+    {
+        name: 'Seed 14 product tiers',
+        sql: `INSERT INTO public.sponsorship_products (product_key, name, amount, currency, duration_days) VALUES ('territory_mega','Territory Sponsor — Mega Market',499,'USD',30),('territory_major','Territory Sponsor — Major Market',349,'USD',30),('territory_mid','Territory Sponsor — Mid Market',249,'USD',30),('territory_growth','Territory Sponsor — Growth Market',179,'USD',30),('territory_emerging','Territory Sponsor — Emerging',149,'USD',30),('corridor_flagship','Corridor Sponsor — Flagship',349,'USD',30),('corridor_primary','Corridor Sponsor — Primary',279,'USD',30),('corridor_secondary','Corridor Sponsor — Secondary',179,'USD',30),('port_tier1','Port Sponsor — Tier 1',599,'USD',30),('port_tier2','Port Sponsor — Tier 2',399,'USD',30),('port_tier3','Port Sponsor — Tier 3',299,'USD',30),('country_gold','Country Sponsor — Gold Market',399,'USD',30),('country_blue','Country Sponsor — Blue Market',279,'USD',30),('country_silver','Country Sponsor — Silver Market',219,'USD',30) ON CONFLICT (product_key) DO NOTHING;`,
+    },
+    { name: '[CHECK] total sponsorship_products', sql: `SELECT count(*) AS total FROM public.sponsorship_products;`, verify: true },
+    { name: '[CHECK] v_active_sponsors exists', sql: `SELECT count(*) AS exists FROM information_schema.views WHERE table_schema='public' AND table_name='v_active_sponsors';`, verify: true },
+    { name: '[CHECK] sponsor_webhook_events exists', sql: `SELECT count(*) AS exists FROM information_schema.tables WHERE table_schema='public' AND table_name='sponsor_webhook_events';`, verify: true },
+    { name: '[CHECK] new columns on sponsorship_orders', sql: `SELECT column_name FROM information_schema.columns WHERE table_schema='public' AND table_name='sponsorship_orders' AND column_name IN ('zone','geo','stripe_subscription_id','active_from','active_until') ORDER BY column_name;`, verify: true },
+];
+
+(async () => {
+    console.log('Haul Command — Direct Postgres Migration\n');
+    const client = new Client({ connectionString: DB_URL, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 15000, statement_timeout: 30000 });
+    try { await client.connect(); console.log('Connected\n'); }
+    catch (err) { console.error('Connection failed:', err.message); process.exit(1); }
+
+    let passed = 0, failed = 0;
+    const failures = [];
+
+    for (const stmt of STATEMENTS) {
+        process.stdout.write(`  ${stmt.verify ? 'CHECK' : 'RUN  '} ${stmt.name} ... `);
+        try {
+            const r = await client.query(stmt.sql);
+            if (stmt.verify) console.log('OK -> ' + JSON.stringify(r.rows));
+            else console.log('OK');
+            passed++;
+        } catch (err) {
+            const msg = String(err.message);
+            if (msg.includes('already exists') || msg.includes('does not exist')) {
+                console.log('SKIP (idempotent)');
+                passed++;
+            } else {
+                console.log('FAIL: ' + msg.slice(0, 100));
+                failed++;
+                failures.push(stmt.name + ': ' + msg.slice(0, 100));
+            }
+        }
+    }
+
+    await client.end();
+    console.log('\n--- RESULT ---');
+    console.log('Passed:', passed, '  Failed:', failed);
+    if (failures.length) failures.forEach(f => console.log('  FAIL:', f));
+    else console.log('Migration complete.');
+})();

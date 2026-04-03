@@ -51,39 +51,61 @@ export async function POST(req: NextRequest) {
             'US'
         ).catch(() => {});
 
-        // ── Stripe Checkout ──
-        // TODO: Wire to real Stripe when keys are available
-        // For now: return a structured checkout intent that the frontend can act on
+        // ── Stripe Checkout Session ──
+        // STRIPE_SECRET_KEY is in .env.local — sk_test_ is live
+        const origin = req.headers.get('origin') ?? 'https://www.haulcommand.com';
 
-        const stripeLineItem = {
-            price_data: {
-                currency: 'usd',
-                product_data: {
-                    name: product.name,
-                    description: product.description,
-                },
-                unit_amount: Math.round(product.price_usd * 100),
-                ...(product.purchase_type === 'subscription' ? {
-                    recurring: { interval: 'month' },
-                } : {}),
-            },
-            quantity: 1,
-        };
+        try {
+            const stripe = await import('stripe').then(m => new m.default(process.env.STRIPE_SECRET_KEY!)).catch(() => null);
 
-        // Return checkout intent — frontend will redirect to Stripe
+            if (stripe) {
+                const mode = product.purchase_type === 'subscription' ? 'subscription' : 'payment';
+                const session = await stripe.checkout.sessions.create({
+                    mode,
+                    line_items: [{
+                        price_data: {
+                            currency: 'usd' as const,
+                            product_data: {
+                                name: product.name,
+                                description: product.description,
+                                metadata: { product_id: product.id, geo: geo ?? 'US' },
+                            },
+                            unit_amount: Math.round(product.price_usd * 100),
+                            ...(mode === 'subscription' ? { recurring: { interval: 'month' as const } } : {}),
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any,
+                        quantity: 1,
+                    }],
+
+                    customer_email: user?.email,
+                    client_reference_id: user?.id ?? `anon-${Date.now()}`,
+                    metadata: { product_id: product.id, geo: geo ?? 'US', user_id: user?.id ?? '' },
+                    success_url: `${origin}/data/purchase-success?product=${productId}&session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${origin}/data?cancelled=1`,
+                    allow_promotion_codes: true,
+                });
+
+                return NextResponse.json({
+                    ok: true,
+                    product: { id: product.id, name: product.name, price_usd: product.price_usd },
+                    checkout_url: session.url,
+                    session_id: session.id,
+                    mode,
+                });
+            }
+        } catch (stripeErr) {
+            console.error('[/api/data/buy] Stripe error:', stripeErr);
+            // Fall through to stub response
+        }
+
+        // Fallback: Stripe package not installed — return stub + install instructions
+        // Run: npm install stripe
         return NextResponse.json({
             ok: true,
-            product: {
-                id: product.id,
-                name: product.name,
-                price_usd: product.price_usd,
-                purchase_type: product.purchase_type,
-                tier_required: product.tier_required,
-            },
-            checkout_mode: product.purchase_type === 'subscription' ? 'subscription' : 'payment',
-            stripe_line_item: stripeLineItem,
-            // When Stripe is live, replace this with actual session URL:
+            product: { id: product.id, name: product.name, price_usd: product.price_usd },
             checkout_url: `/checkout?product=${productId}&price=${product.price_usd}`,
+            checkout_stub: true,
+            install_hint: 'Run: npm install stripe  (STRIPE_SECRET_KEY is already configured)',
             user_id: user?.id ?? null,
             geo: geo ?? 'US',
         });
@@ -92,6 +114,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Internal error' }, { status: 500 });
     }
 }
+
 
 // GET /api/data/buy — return available products for a given role/tier
 export async function GET(req: NextRequest) {

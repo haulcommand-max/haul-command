@@ -1,49 +1,31 @@
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { serveAds, recordImpression } from '@/lib/ads/adrank';
+import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
+
 export const dynamic = 'force-dynamic';
 
+// GET /api/ads/serve?zone=hero_billboard&geo=US&role=pilot_car_operator&limit=3
+// Returns ServedAd[] — always returns at least house ads, never empty.
+// Called by HeroBillboard, StickyMobileChipRail, and any client ad surface.
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
-    const placement = searchParams.get('placement') || 'default';
-    const geo = searchParams.get('geo') || '';
-    const page = searchParams.get('page') || '';
-    const format = searchParams.get('format') || 'banner';
+    const zone = searchParams.get('zone') ?? searchParams.get('placement') ?? 'hero_billboard';
+    const geo = searchParams.get('geo') || undefined;
+    const role = searchParams.get('role') || undefined;
+    const limit = Math.min(parseInt(searchParams.get('limit') ?? '3'), 10);
 
-    const supabase = getSupabaseAdmin();
+    const ads = await serveAds({ zone, geo, role, limit });
 
-    // Try RTB edge function first, fall back to featured placements
-    try {
-        const rtbUrl = `${process.env.SUPABASE_URL}/functions/v1/rtb-ad-serve`;
-        const rtbRes = await fetch(rtbUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ placement, geo, page, format }),
-        });
+    // Fire impression records (best-effort, don't await)
+    ads.forEach(ad => {
+        recordImpression(ad, { zone, geo, role }).catch(() => {});
+    });
 
-        if (rtbRes.ok) {
-            const rtbData = await rtbRes.json();
-            if (rtbData?.creative_url) {
-                return Response.json(rtbData);
-            }
-        }
-    } catch {
-        // RTB failed, fall back
-    }
-
-    // Fallback: fetch active featured placement
-    const { data } = await supabase
-        .from('featured_placements')
-        .select('id, creative_url, click_url, sponsor_name, format')
-        .eq('active', true)
-        .eq('placement_key', placement)
-        .limit(1)
-        .maybeSingle();
-
-    if (data) return Response.json(data);
-    return Response.json(null);
+    return Response.json(ads, {
+        headers: { 'Cache-Control': 'private, max-age=30, stale-while-revalidate=60' },
+    });
 }
+
+
 
 // Click tracking
 export async function POST(req: Request) {
