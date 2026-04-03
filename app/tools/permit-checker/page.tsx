@@ -5,6 +5,7 @@ import ToolsSidebar from "@/components/tools/ToolsSidebar";
 import EmailCaptureWidget from "@/components/monetization/EmailCaptureWidget";
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 const GRADIENT_BG = 'radial-gradient(ellipse at 15% 20%, rgba(241,169,27,0.06) 0%, transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(16,185,129,0.04) 0%, transparent 50%), #0a0a0f';
 
@@ -159,21 +160,11 @@ export default function PermitCheckerPage() {
                         {/* Results */}
                         {result && (
                             <div style={{ animation: 'slide-up-fade 0.4s ease-out' }}>
-                                {/* Risk Band */}
-                                <div style={{
-                                    background: riskColors[result.risk_band].bg,
-                                    border: `1px solid ${riskColors[result.risk_band].border}`,
-                                    borderRadius: 16, padding: '1.5rem', marginBottom: '1rem', textAlign: 'center',
-                                }}>
-                                    <div style={{ fontSize: 56, fontWeight: 900, color: riskColors[result.risk_band].text, lineHeight: 1 }}>
-                                        {result.permit_complexity_score}
-                                    </div>
-                                    <div style={{ fontSize: 12, fontWeight: 700, color: riskColors[result.risk_band].text, textTransform: 'uppercase', letterSpacing: 2, marginTop: 4 }}>
-                                        {riskColors[result.risk_band].label}
-                                    </div>
+                                <div style={{ background: riskColors[result.risk_band].bg, border: `1px solid ${riskColors[result.risk_band].border}`, borderRadius: 16, padding: '1.5rem', marginBottom: '1rem', textAlign: 'center' }}>
+                                    <div style={{ fontSize: 56, fontWeight: 900, color: riskColors[result.risk_band].text, lineHeight: 1 }}>{result.permit_complexity_score}</div>
+                                    <div style={{ fontSize: 12, fontWeight: 700, color: riskColors[result.risk_band].text, textTransform: 'uppercase', letterSpacing: 2, marginTop: 4 }}>{riskColors[result.risk_band].label}</div>
                                 </div>
 
-                                {/* Details Grid */}
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1rem' }}>
                                     {[
                                         { label: 'Escorts Needed', val: result.escort_count_estimate, color: '#f9fafb' },
@@ -187,7 +178,6 @@ export default function PermitCheckerPage() {
                                     ))}
                                 </div>
 
-                                {/* Warnings */}
                                 {result.warnings.length > 0 && (
                                     <div style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)', borderRadius: 12, padding: '1rem 1.25rem', marginBottom: '1.5rem' }}>
                                         <div style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>⚠ Route Warnings</div>
@@ -199,20 +189,14 @@ export default function PermitCheckerPage() {
                                     </div>
                                 )}
 
-                                {/* CTA */}
                                 <div style={{ background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 16, padding: '1.5rem', textAlign: 'center' }}>
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Need Escorts for This Route?</h3>
                                     <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load on Haul Command and get matched with verified escorts in minutes.</p>
-                                    <a href="/onboarding/start?role=broker" style={{
-                                        display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px',
-                                        background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000',
-                                        fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none',
-                                    }}>
+                                    <a href="/onboarding/start?role=broker" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
                                         Post a Load — Free →
                                     </a>
                                 </div>
 
-                                {/* Email Capture after results */}
                                 <div style={{ marginTop: '1.5rem' }}>
                                     <EmailCaptureWidget
                                         headline="Save this permit analysis"
@@ -234,6 +218,13 @@ export default function PermitCheckerPage() {
 
                 {/* Data teaser strip */}
                 <DataTeaserStrip geo="US" />
+
+                {/* SEO Internal Links — pushes equity to escort-calculator, cost-calc, directory */}
+                <RelatedLinks
+                    pageType="tool"
+                    context={{ toolSlug: 'permit-checker' }}
+                    heading="Related permit and compliance tools"
+                />
             </div>
         </div>
     );
