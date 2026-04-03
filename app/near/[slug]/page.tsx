@@ -4,6 +4,9 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { MapPin, Phone, Shield, Star, Truck, Clock, Search, ChevronRight, Globe, Zap } from 'lucide-react';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { EmailSubscribe } from '@/components/blog/EmailSubscribe';
+import { ShareButton } from '@/components/social/ShareButton';
 
 // ── Top 50 US cities for programmatic generation ──
 const TOP_US_CITIES: Record<string, { name: string; state: string; stateCode: string; lat: number; lng: number }> = {
@@ -364,6 +367,32 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
             Claim Your Profile — Free
           </Link>
         </section>
+
+        {/* ── AdGrid Placement: near-me-bottom (inline) ── */}
+        <NativeAdCard
+          placementId="near-me-bottom"
+          surface="near_me"
+          variant="inline"
+          jurisdiction={city.stateCode}
+        />
+
+        {/* ── Email Capture (event: lead_capture / near_me_page) ── */}
+        <EmailSubscribe
+          title={`Get ${city.name} Corridor Alerts`}
+          description={`Be first to know when high-paying loads move through ${city.name}, ${city.stateCode}. Free signup.`}
+          ctaText="Get Alerts"
+          source={`near_me_${city.stateCode.toLowerCase()}`}
+        />
+
+        {/* ── Share (event: share_intent / near_me) ── */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-hc-subtle">Know an operator in this area? Share this page.</span>
+          <ShareButton
+            title={`Pilot Car Services Near ${city.name}, ${city.stateCode}`}
+            text={`Find verified pilot car and escort services near ${city.name} on Haul Command.`}
+            context="directory"
+          />
+        </div>
 
         {/* ── Cross-links (SEO interlinking) ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">

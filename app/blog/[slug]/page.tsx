@@ -6,6 +6,8 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { getArticleEnrichment } from '@/lib/blog/article-enrichments';
 import { annotateHtml, fetchGlossaryMap } from '@/lib/blog/annotate-html';
+import { EmailSubscribe } from '@/components/blog/EmailSubscribe';
+import { ShareButton } from '@/components/social/ShareButton';
 
 /* ── Interactive components (client-only, no SSR) ── */
 const FaqAccordion = dynamic(() => import('@/components/blog/FaqAccordion'));
@@ -16,6 +18,7 @@ const CostCalculator = dynamic(() => import('@/components/blog/CostCalculator'))
 const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'));
 const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'));
 const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'));
+const NativeAdCard = dynamic(() => import('@/components/ads/NativeAdCard').then(m => ({ default: m.NativeAdCard })));
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -389,24 +392,19 @@ export default async function BlogArticlePage({ params }: Props) {
             <RenderContentWithTools html={annotatedContent} />
           </div>
           
-          <div className="md:col-span-4 hidden md:block space-y-6 sticky top-10 self-start">
-             <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group">
-               <div className="absolute top-0 right-0 p-2 text-xs font-bold text-amber-500/50">LIVE</div>
-               <h4 className="text-white font-bold text-sm mb-2">Cost Comparison Index</h4>
-               <p className="text-xs text-gray-500 mb-4">Real-time heavy haul analytics.</p>
-               <div className="relative h-40 w-full rounded-lg overflow-hidden border border-white/5 group-hover:border-amber-500/30 transition-all">
-                  <Image src="/images/blog/cost_comparison_infographic.png" alt="Cost Comparison" fill className="object-cover" />
-               </div>
-             </div>
-
-             <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group mt-6">
-               <div className="absolute top-0 right-0 p-2 text-xs font-bold text-amber-500/50">OS/OW</div>
-               <h4 className="text-white font-bold text-sm mb-2">Compliance Dashboard</h4>
-               <p className="text-xs text-gray-500 mb-4">Federal regulatory checklists.</p>
-               <div className="relative h-40 w-full rounded-lg overflow-hidden border border-white/5 group-hover:border-amber-500/30 transition-all">
-                  <Image src="/images/blog/compliance_dashboard_graphic.png" alt="Compliance Dashboard" fill className="object-cover" />
-               </div>
-             </div>
+          <div className="md:col-span-4 hidden md:block space-y-4 sticky top-10 self-start">
+             {/* ── AdGrid Placement: blog-sidebar-1 ── */}
+             <NativeAdCard
+               placementId="blog-sidebar-1"
+               surface="blog"
+               variant="sidebar"
+             />
+             {/* ── AdGrid Placement: blog-sidebar-2 ── */}
+             <NativeAdCard
+               placementId="blog-sidebar-2"
+               surface="blog"
+               variant="sidebar"
+             />
           </div>
         </div>
 
@@ -553,6 +551,26 @@ export default async function BlogArticlePage({ params }: Props) {
               </>
             )}
           </div>
+        </div>
+
+        {/* ── Email Capture (lead capture event: blog_article_email) ── */}
+        <div className="mt-12">
+          <EmailSubscribe
+            title="Get the Heavy Haul Intel Brief"
+            description="Regulatory changes. Corridor alerts. High-paying loads. Join 15,000+ operators who stay ahead."
+            ctaText="Subscribe Free"
+            source="blog_article"
+          />
+        </div>
+
+        {/* ── Share Button (event: share_intent / blog_article) ── */}
+        <div className="mt-6 flex items-center justify-between">
+          <span className="text-xs text-gray-500">Found this useful? Share it.</span>
+          <ShareButton
+            title={post.title}
+            text={post.meta_description}
+            context="blog"
+          />
         </div>
 
         {/* ── Related Intelligence ── */}

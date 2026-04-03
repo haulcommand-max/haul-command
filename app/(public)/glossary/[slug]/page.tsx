@@ -6,6 +6,8 @@ import { Metadata } from 'next';
 import SaveButton from '@/components/capture/SaveButton';
 import AudioPronunciation from '@/components/glossary/AudioPronunciation';
 import CommonlyConfusedWith from '@/components/glossary/CommonlyConfusedWith';
+import { NativeAdCard } from '@/components/ads/NativeAdCard';
+import { ShareButton } from '@/components/social/ShareButton';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -156,6 +158,11 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                             </h1>
                             <AudioPronunciation term={term.term} phonetic={term.phonetic_guide} variant="pill" />
                             <SaveButton entityType="glossary_topic" entityId={term.slug} entityLabel={term.term} variant="pill" />
+                            <ShareButton
+                                title={`${term.term} — Heavy Haul Definition`}
+                                text={term.short_definition}
+                                context="directory"
+                            />
                             {term.acronyms && term.acronyms.length > 0 && (
                                 <span className="bg-white/10 text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
                                     {term.acronyms.join(', ')}
@@ -287,7 +294,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                 </div>
                             )}
 
-                            {/* RELATED TERMS */}
+                        {/* RELATED TERMS */}
                             {term.related_slugs && term.related_slugs.length > 0 && (
                                 <div className="bg-[#121214] border border-white/10 rounded-xl p-5">
                                     <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">See Also</h3>
@@ -303,6 +310,13 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                     </ul>
                                 </div>
                             )}
+
+                            {/* AdGrid Placement: glossary-sidebar (event: ad_impression / glossary) */}
+                            <NativeAdCard
+                                placementId="glossary-sidebar"
+                                surface="glossary"
+                                variant="sidebar"
+                            />
 
                         </aside>
                     </div>
