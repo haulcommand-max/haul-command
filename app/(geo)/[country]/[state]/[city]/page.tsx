@@ -11,6 +11,7 @@ import { ClaimListingCTA, OperatorsNeededCTA, PostLoadCTA } from '@/components/s
 import { getCityData, getAllServices } from '@/lib/seo/programmatic-data';
 import { getCityServiceUrl } from '@/lib/seo/geo-mesh';
 import { notFound } from 'next/navigation';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 
 export default async function CityHubPage({ params }: { params: Promise<{ country: string; state: string; city: string }> }) {
     const { country, state, city: citySlug } = await params;
@@ -105,6 +106,13 @@ export default async function CityHubPage({ params }: { params: Promise<{ countr
                         { name: cityData.city, url: `https://haulcommand.com/${country}/${state}/${citySlug}` },
                     ],
                 }}
+            />
+
+            {/* UrgentMarketSponsor — city-level market mode CTA */}
+            {/* Highest-intent surface: "find pilot car near [city]" traffic */}
+            <UrgentMarketSponsor
+                marketKey={`${country.toLowerCase()}-${state.toLowerCase()}-${citySlug}`}
+                geo={`${cityData.city}, ${state.toUpperCase()}`}
             />
 
             {/* Snippet Injector — featured snippet capture */}

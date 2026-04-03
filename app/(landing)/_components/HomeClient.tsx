@@ -34,6 +34,7 @@ import { HeroBillboard } from "@/components/ads/HeroBillboard";
 import { getTopHouseAds } from "@/lib/ads/house-ads";
 import { DataTeaserStrip } from "@/components/data/DataTeaserStrip";
 import { FooterAccordion } from "./FooterAccordion";
+import { MobileNavSheet } from "@/components/layout/MobileNavSheet";
 
 // ── ODS-Killer Sections ──
 import { WhyCarriersChoose } from "./WhyCarriersChoose";
@@ -151,8 +152,10 @@ export default function HomeClient({
         <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)] pb-20 md:pb-0">
             <style>{`
                 .landing-desktop-only { display: none !important; }
+                .landing-mobile-only { display: flex !important; }
                 @media (min-width: 768px) {
                     .landing-desktop-only { display: flex !important; }
+                    .landing-mobile-only { display: none !important; }
                 }
                 .nav-brand-logo { height: 42px !important; }
                 @media (min-width: 768px) { .nav-brand-logo { height: 48px !important; } }
@@ -194,10 +197,14 @@ export default function HomeClient({
                             }}>NEW</span>
                         </Link>
                     </div>
-                    <div className="flex items-center" style={{ flexShrink: 0 }}>
+                    <div className="flex items-center" style={{ flexShrink: 0, gap: 8 }}>
                         <Link aria-label="Navigation Link" href="/login" className="hover:text-white transition-colors hc-btn hc-btn--black" style={{ fontSize: '12px', padding: '10px 18px', borderRadius: '12px' }}>
                             Sign In
                         </Link>
+                        {/* Mobile hamburger — hidden on desktop via CSS */}
+                        <div className="landing-mobile-only" style={{ display: 'flex' }}>
+                            <MobileNavSheet />
+                        </div>
                     </div>
                 </div>
             </nav>

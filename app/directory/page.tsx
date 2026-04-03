@@ -18,6 +18,8 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock, DIRECTORY_NEXT_MOVES } from '@/components/ui/NoDeadEndBlock';
 
 export const dynamic = 'force-dynamic';
 
@@ -246,12 +248,35 @@ export default async function DirectoryPage() {
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Trucking Services Directory
+            Find Pilot Car &amp; Escort Operators Near You
           </h1>
-          <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            {total.toLocaleString()} truck stops, towing services, repair shops, pilot cars, and 40+ service categories across all 50 US states.
-            Claim your free business listing today.
+          <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto">
+            {total.toLocaleString()}+ verified pilot car operators, escort vehicles, truck stops, and support services across all 50 US states and 120 countries.
+            Claim your free listing today.
           </p>
+
+          {/* Role Selector Chips — self-sort by intent */}
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+            {[
+              { label: '🔍 I Need Escorts', href: '/directory?role=broker', color: '#D4A844', desc: 'For brokers & carriers' },
+              { label: '🚗 I Drive Pilot Car', href: '/directory?role=operator', color: '#22C55E', desc: 'For operators' },
+              { label: '🚛 I Haul Freight', href: '/directory?role=carrier', color: '#3B82F6', desc: 'For carriers & fleets' },
+              { label: '🏗 I Provide Support', href: '/directory?role=support', color: '#8B5CF6', desc: 'Yards, motels, vendors' },
+            ].map(chip => (
+              <a key={chip.href} href={chip.href} style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                padding: '10px 18px', borderRadius: 12,
+                background: `${chip.color}0d`,
+                border: `1px solid ${chip.color}30`,
+                textDecoration: 'none', fontSize: 13, fontWeight: 700,
+                color: chip.color, gap: 2, minWidth: 140,
+                transition: 'all 0.15s',
+              }}>
+                {chip.label}
+                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{chip.desc}</span>
+              </a>
+            ))}
+          </div>
 
           {/* Search */}
           <div className="max-w-4xl mx-auto mb-16 text-left">
@@ -560,6 +585,14 @@ export default async function DirectoryPage() {
           geo="the US heavy haul market"
         />
       </section>
+
+      {/* No-Dead-End Block — every directory visitor gets a clear next move */}
+      <section style={{ background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+        <NoDeadEndBlock moves={DIRECTORY_NEXT_MOVES} />
+      </section>
+
+      {/* ProofStrip — trust before exit */}
+      <ProofStrip variant="bar" style={{ marginBottom: 16 }} />
 
       {/* StickyClaimBar — scroll-triggered */}
       <StickyClaimBar

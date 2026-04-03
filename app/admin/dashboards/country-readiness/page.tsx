@@ -14,6 +14,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { getAllCountryModes, checkModeTransition, type MarketMode } from '@/lib/ads/market-mode';
 
 interface CountryRow {
@@ -28,6 +29,11 @@ interface CountryRow {
     revenue_usd: number;
     transition_ready: boolean;
     transition_reason?: string;
+    // From v_next_country_candidates (Supabase)
+    db_market_state?: string;
+    db_total_score?: number;
+    db_recommendation?: string;
+    db_all_gates_passed?: boolean;
 }
 
 const TIER_COLORS: Record<string, string> = {
@@ -57,25 +63,49 @@ export default function CountryReadinessDashboard() {
     const [sortBy, setSortBy] = useState<'tier' | 'mode' | 'operators' | 'revenue'>('tier');
 
     useEffect(() => {
-        // Build country data from market mode system
-        const modes = getAllCountryModes();
-        const rows: CountryRow[] = modes.map(m => {
-            const transition = checkModeTransition(m.code, 0, 'stealth', true);
-            return {
-                code: m.code,
-                name: m.name,
-                tier: m.tier,
-                mode: m.mode,
-                operators: 0,  // Would be populated from DB
-                cds_band: 'stealth',
-                has_pricing: true,  // All 57 now have pricing
-                has_locale: true,   // Most have locale
-                revenue_usd: 0,
-                transition_ready: transition.should_transition,
-                transition_reason: transition.reason,
-            };
-        });
-        setCountries(rows);
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+
+        async function load() {
+            // Fetch v_next_country_candidates from Supabase
+            const { data: dbRows } = await supabase
+                .from('v_next_country_candidates')
+                .select('country_code,market_state,total_score,recommendation,all_gates_passed')
+                .order('total_score', { ascending: false });
+
+            const dbMap = new Map((dbRows ?? []).map((r: {
+                country_code: string; market_state: string;
+                total_score: number; recommendation: string; all_gates_passed: boolean;
+            }) => [r.country_code, r]));
+
+            // Merge with local market mode config
+            const modes = getAllCountryModes();
+            const rows: CountryRow[] = modes.map(m => {
+                const transition = checkModeTransition(m.code, 0, 'stealth', true);
+                const db = dbMap.get(m.code);
+                return {
+                    code: m.code,
+                    name: m.name,
+                    tier: m.tier,
+                    mode: m.mode,
+                    operators: 0,
+                    cds_band: 'stealth',
+                    has_pricing: true,
+                    has_locale: true,
+                    revenue_usd: 0,
+                    transition_ready: transition.should_transition,
+                    transition_reason: transition.reason,
+                    db_market_state: db?.market_state,
+                    db_total_score: db?.total_score,
+                    db_recommendation: db?.recommendation,
+                    db_all_gates_passed: db?.all_gates_passed,
+                };
+            });
+            setCountries(rows);
+        }
+        load();
     }, []);
 
     const filtered = countries.filter(c => filter === 'all' || c.mode === filter);
@@ -153,7 +183,7 @@ export default function CountryReadinessDashboard() {
                     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 800 }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                                {['Country', 'Tier', 'Mode', 'Operators', 'CDS Band', 'Pricing', 'Locale', 'Revenue', 'Transition'].map(h => (
+                                {['Country', 'Tier', 'Mode', 'DB State', 'DB Score', 'Operators', 'CDS Band', 'Pricing', 'Locale', 'Promote?'].map(h => (
                                     <th key={h} style={{
                                         padding: '10px 14px', textAlign: h === 'Country' ? 'left' : 'center',
                                         fontSize: 9, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.06em',
@@ -184,6 +214,23 @@ export default function CountryReadinessDashboard() {
                                             textTransform: 'uppercase', letterSpacing: '0.08em',
                                         }}>{c.mode}</span>
                                     </td>
+                                    <td style={{ padding: '10px 14px', textAlign: 'center' }}>
+                                        {c.db_market_state ? (
+                                            <span style={{
+                                                fontSize: 9, fontWeight: 900, padding: '3px 8px', borderRadius: 6,
+                                                background: `${MODE_COLORS[c.db_market_state] || '#888'}15`,
+                                                color: MODE_COLORS[c.db_market_state] || '#888',
+                                                textTransform: 'uppercase', letterSpacing: '0.08em',
+                                            }}>{c.db_market_state}</span>
+                                        ) : <span style={{ color: '#444' }}>—</span>}
+                                    </td>
+                                    <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12, fontVariantNumeric: 'tabular-nums' }}>
+                                        {c.db_total_score != null ? (
+                                            <span style={{ color: c.db_total_score > 0.5 ? '#22C55E' : c.db_total_score > 0.2 ? '#F59E0B' : '#888', fontWeight: 700 }}>
+                                                {(c.db_total_score * 100).toFixed(0)}%
+                                            </span>
+                                        ) : <span style={{ color: '#444' }}>—</span>}
+                                    </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 13, fontWeight: 700, color: c.operators > 0 ? '#22C55E' : '#888' }}>
                                         {c.operators}
                                     </td>
@@ -199,11 +246,12 @@ export default function CountryReadinessDashboard() {
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 14 }}>
                                         {c.has_locale ? '✅' : '❌'}
                                     </td>
-                                    <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12, fontWeight: 600, color: c.revenue_usd > 0 ? '#22C55E' : '#888', fontVariantNumeric: 'tabular-nums' }}>
-                                        ${c.revenue_usd.toFixed(2)}
-                                    </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12 }}>
-                                        {c.transition_ready ? (
+                                        {c.db_recommendation && c.db_recommendation !== 'hold' ? (
+                                            <span style={{ color: '#F1A91B', fontWeight: 700, fontSize: 10 }}>
+                                                ⬆ {c.db_recommendation.replace('promote_to_', '').toUpperCase()}
+                                            </span>
+                                        ) : c.transition_ready ? (
                                             <span style={{ color: '#F59E0B', fontWeight: 700 }}>⬆ Ready</span>
                                         ) : (
                                             <span style={{ color: '#888' }}>—</span>

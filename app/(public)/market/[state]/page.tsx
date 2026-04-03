@@ -228,7 +228,7 @@ export default async function StateMarketPage({ params }: { params: Promise<{ st
             {/* ── City links ────────────────────────────────────── */}
             {cities.length > 0 && (
                 <div style={{ padding: '0 16px 28px', maxWidth: 900, margin: '0 auto' }}>
-                    <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 12px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: 12 }}>
+                    <h2 style={{ fontWeight: 700, margin: '0 0 12px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: 12 }}>
                         Find Operators by City in {stateName}
                     </h2>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
