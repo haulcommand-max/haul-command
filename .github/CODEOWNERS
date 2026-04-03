@@ -1,0 +1,66 @@
+# ==============================================================
+# CODEOWNERS — Haul Command
+# Assigns review responsibility for key file areas.
+# GitHub requires the reviewer to approve PRs affecting these paths
+# when branch protection is configured (see docs/release-flow.md).
+#
+# Format: <pattern> <owner(s)>
+# Owners must be GitHub usernames or teams (@org/team).
+# ==============================================================
+
+# Default: catch-all for any file not matched below
+* @haulcommand-max
+
+# ── App Routes (Next.js App Router) ───────────────────────
+app/ @haulcommand-max
+app/page.tsx @haulcommand-max
+app/directory/ @haulcommand-max
+app/loads/ @haulcommand-max
+app/leaderboards/ @haulcommand-max
+app/roles/ @haulcommand-max
+app/tools/ @haulcommand-max
+app/escort-requirements/ @haulcommand-max
+
+# ── SEO / System Endpoints ────────────────────────────
+app/robots.txt/ @haulcommand-max
+app/sitemap.xml/ @haulcommand-max
+public/robots.txt @haulcommand-max
+public/sitemap*.xml @haulcommand-max
+public/llms.txt @haulcommand-max
+app/llms.txt/ @haulcommand-max
+
+# ── Infra / CI Workflows ─────────────────────────────
+.github/ @haulcommand-max
+.github/workflows/ @haulcommand-max
+Dockerfile @haulcommand-max
+vercel.json @haulcommand-max
+.vercelignore @haulcommand-max
+next.config.ts @haulcommand-max
+next.config.js @haulcommand-max
+
+# ── Sentry / Monitoring ─────────────────────────────
+sentry.*.config.ts @haulcommand-max
+sentry.*.config.js @haulcommand-max
+
+# ── Database / Migrations ───────────────────────────
+supabase/ @haulcommand-max
+supabase/migrations/ @haulcommand-max
+scripts/migrate.mjs @haulcommand-max
+
+# ── Tests ─────────────────────────────────────────
+tests/ @haulcommand-max
+playwright.config.ts @haulcommand-max
+
+# ── Package / Dependencies ───────────────────────────
+package.json @haulcommand-max
+package-lock.json @haulcommand-max
+.npmrc @haulcommand-max
+
+# ── API Routes ───────────────────────────────────
+app/api/ @haulcommand-max
+
+# ── Monetization / AdGrid ───────────────────────────
+ADGRID_*.yaml @haulcommand-max
+ADGRID_*.yml @haulcommand-max
+app/api/ads/ @haulcommand-max
+lib/adgrid/ @haulcommand-max
