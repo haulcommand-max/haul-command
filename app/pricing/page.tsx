@@ -16,6 +16,21 @@ const pricingSchema = {
     '@context': 'https://schema.org',
     '@graph': [
         {
+            '@type': 'WebPage',
+            '@id': 'https://www.haulcommand.com/pricing',
+            name: 'Haul Command Pricing | Pilot Car Operator & Carrier Plans',
+            description: 'Transparent pricing for all Haul Command plans. Free forever for basic listings. Pro starts at $29/month for operators and $99/month for brokers.',
+            url: 'https://www.haulcommand.com/pricing',
+            publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+        },
+        {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+                { '@type': 'ListItem', position: 2, name: 'Pricing', item: 'https://www.haulcommand.com/pricing' },
+            ],
+        },
+        {
             '@type': 'FAQPage',
             mainEntity: [
                 { '@type': 'Question', name: 'How much does Haul Command cost?', acceptedAnswer: { '@type': 'Answer', text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.' } },

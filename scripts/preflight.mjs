@@ -226,9 +226,11 @@ check('duplicate JSX style keys', () => {
                     // sub-objects like { default: {...}, hover: {...} }
                     // Signature: key followed by ': {' inside the block
                     if (/[a-zA-Z]+\s*:\s*\{/.test(block)) continue;
-                    // Extract property names: "fontSize", 'color', etc.
+                    // Extract CSS property names at token-start positions only.
+                    // Negative lookbehind for '.' prevents matching property-access
+                    // expressions like `accent.border` or `T.gold` as CSS keys.
                     const keys = [];
-                    const keyRe = /([a-zA-Z][a-zA-Z0-9]*)\s*:/g;
+                    const keyRe = /(?<![.\w])([a-zA-Z][a-zA-Z0-9]*)\s*:/g;
                     let km;
                     while ((km = keyRe.exec(block)) !== null) keys.push(km[1]);
                     const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
