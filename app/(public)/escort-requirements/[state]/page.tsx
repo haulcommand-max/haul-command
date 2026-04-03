@@ -16,10 +16,10 @@ import {
     PILOT_CAR_STATES,
     type StateData,
 } from "@/lib/seo/pilot-car-taxonomy";
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
-// ── Static generation ─────────────────────────────────────────────────────────
-
-export const dynamic = 'force-dynamic';
+export const revalidate = 86400; // ISR — regulations change slowly, daily refresh
 
 export async function generateMetadata({
     params,
@@ -36,12 +36,12 @@ export async function generateMetadata({
     return {
         title,
         description,
-        alternates: { canonical: `/escort-requirements/${state.slug}` },
+        alternates: { canonical: `https://www.haulcommand.com/escort-requirements/${state.slug}` },
         openGraph: {
             title,
             description,
             type: "article",
-            url: `/escort-requirements/${state.slug}`,
+            url: `https://www.haulcommand.com/escort-requirements/${state.slug}`,
         },
     };
 }
@@ -279,7 +279,7 @@ export default async function EscortRequirementsStatePage({
                 data={{
                     jurisdiction: state.name,
                     description: getRequirementsIntro(state),
-                    url: `https://haulcommand.com/escort-requirements/${state.slug}`,
+                    url: `https://www.haulcommand.com/escort-requirements/${state.slug}`,
                     faqs: [
                         { q: `What are the pilot car requirements in ${state.name}?`, a: getRequirementsIntro(state) },
                         { q: `When is a police escort required in ${state.name}?`, a: state.policeWidthFt ? `Law enforcement escort required above ${state.policeWidthFt}ft width.` : `Police escort requirements in ${state.name} are case-by-case.` },
@@ -287,9 +287,9 @@ export default async function EscortRequirementsStatePage({
                         { q: `Does ${state.name} require pilot car certification?`, a: `${state.name} requires all pilot car operators to complete ${state.abbr} DOT approved training. Check with the ${state.abbr} Department of Public Safety for current certification requirements.` },
                     ],
                     breadcrumbs: [
-                        { name: 'Haul Command', url: 'https://haulcommand.com' },
-                        { name: 'Escort Requirements', url: 'https://haulcommand.com/escort-requirements' },
-                        { name: state.name, url: `https://haulcommand.com/escort-requirements/${state.slug}` },
+                        { name: 'Haul Command', url: 'https://www.haulcommand.com' },
+                        { name: 'Escort Requirements', url: 'https://www.haulcommand.com/escort-requirements' },
+                        { name: state.name, url: `https://www.haulcommand.com/escort-requirements/${state.slug}` },
                     ],
                 }}
             />
@@ -351,6 +351,19 @@ export default async function EscortRequirementsStatePage({
                             Escort Requirements — {state.name} ({state.abbr})
                         </h2>
                         <RequirementsTable state={state} />
+
+                        {/* Claim CTA — after requirements table, at peak attention */}
+                        <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
+                            <Link href={`/find/pilot-car-operator/${state.slug}`} style={{ padding: '10px 20px', borderRadius: 10, background: 'rgba(212,168,68,0.1)', border: '1px solid rgba(212,168,68,0.25)', color: '#D4A844', fontSize: 13, fontWeight: 800, textDecoration: 'none' }}>
+                                Find {state.abbr} Pilot Car Operators →
+                            </Link>
+                            <Link href="/claim" style={{ padding: '10px 16px', borderRadius: 10, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22C55E', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+                                ✓ Claim Free Listing
+                            </Link>
+                            <Link href="/tools/escort-calculator" style={{ padding: '10px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#D1D5DB', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>
+                                🧮 Escort Calculator
+                            </Link>
+                        </div>
                     </section>
 
                     {/* Equipment checklist */}
@@ -413,16 +426,18 @@ export default async function EscortRequirementsStatePage({
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                             {[
-                                { label: `Pilot Car ${state.name}`, href: `/pilot-car/${state.slug}` },
+                                { label: `Find Pilot Cars in ${state.name}`, href: `/find/pilot-car-operator/${state.slug}` },
                                 ...state.topCities.slice(0, 3).map(c => ({
                                     label: `Pilot Car ${c.name}`,
-                                    href: `/pilot-car/${state.slug}/${c.slug}`,
+                                    href: `/find/pilot-car-operator/${state.slug}/${c.slug}`,
                                 })),
                                 ...state.corridors.slice(0, 2).map(c => ({
                                     label: c.replace(/-/g, " ").toUpperCase(),
                                     href: `/corridors/${c}`,
                                 })),
                                 { label: "All States Requirements", href: "/escort-requirements" },
+                                { label: "Pilot Car Glossary", href: "/glossary/pilot-car" },
+                                { label: "Escort Calculator", href: "/tools/escort-calculator" },
                             ].map((link) => (
                                 <Link aria-label="Navigation Link"
                                     key={link.href}
@@ -452,6 +467,22 @@ export default async function EscortRequirementsStatePage({
                       geo={state.name}
                       country="US"
                     />
+
+                    {/* No-Dead-End Block */}
+                    <NoDeadEndBlock
+                        heading={`What Would You Like to Do in ${state.name}?`}
+                        moves={[
+                            { href: `/find/pilot-car-operator/${state.slug}`, icon: '🔍', title: `Find ${state.abbr} Operators`, desc: 'Verified, available now', primary: true, color: '#D4A844' },
+                            { href: '/claim', icon: '✓', title: 'Claim Free Listing', desc: `For ${state.abbr} operators`, primary: true, color: '#22C55E' },
+                            { href: `/market/${state.abbr.toLowerCase()}`, icon: '📊', title: `${state.abbr} Market Intelligence`, desc: 'Active loads & supply data' },
+                            { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'Do I need an escort?' },
+                            { href: '/escort-requirements', icon: '⚖️', title: 'All State Rules', desc: 'Compare across states' },
+                            { href: '/glossary/oversize-load', icon: '📖', title: 'What Is an Oversize Load?', desc: 'Definitions & thresholds' },
+                        ]}
+                    />
+
+                    {/* ProofStrip before ad */}
+                    <ProofStrip variant="compact" />
 
                     {/* ── AdGrid — State Requirements Bottom ── */}
                     <AdGridSlot zone="requirements_state_bottom" />

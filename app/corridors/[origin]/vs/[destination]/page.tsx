@@ -5,6 +5,11 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
+import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+
+export const revalidate = 3600; // ISR — corridor data is stable
 
 interface Props {
     params: Promise<{ origin: string; destination: string }>;
@@ -62,24 +67,56 @@ export default async function CorridorComparePage({ params }: Props) {
 
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 '@context': 'https://schema.org',
-                '@type': 'Article',
-                name: `${c.name} Corridor — Permit & Escort Requirements`,
-                description: `Complete requirements guide for the ${c.name} heavy haul corridor`,
-                url: `https://www.haulcommand.com/corridors/${origin}/vs/${destination}`,
-                dateModified: new Date().toISOString(),
-                publisher: { '@type': 'Organization', name: 'Haul Command' },
+                '@graph': [
+                    {
+                        '@type': 'Article',
+                        name: `${c.name} Corridor — Permit & Escort Requirements`,
+                        description: `Complete requirements guide for the ${c.name} heavy haul corridor`,
+                        url: `https://www.haulcommand.com/corridors/${origin}/vs/${destination}`,
+                        dateModified: new Date().toISOString(),
+                        publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+                    },
+                    {
+                        '@type': 'FAQPage',
+                        mainEntity: [
+                            { '@type': 'Question', name: `What permits do I need for the ${c.name} corridor?`, acceptedAnswer: { '@type': 'Answer', text: `The ${c.name} corridor requires ${c.permits}. Escort rules: ${c.escorts}. Total distance: ${c.miles} miles.` } },
+                            { '@type': 'Question', name: `What is the average pilot car rate for the ${c.name} corridor?`, acceptedAnswer: { '@type': 'Answer', text: `Average pilot car rates on the ${c.name} corridor run ${c.avgRate} depending on load type, season, and convoy size. Risk grade: ${c.riskGrade} (${RISK_CONFIG[c.riskGrade].label}).` } },
+                            { '@type': 'Question', name: `What are the main hazards on the ${c.name} route?`, acceptedAnswer: { '@type': 'Answer', text: `Known hazards on the ${c.name} corridor include: ${c.topHazards.join(', ')}. ${c.notes}` } },
+                        ],
+                    },
+                    {
+                        '@type': 'BreadcrumbList',
+                        itemListElement: [
+                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+                            { '@type': 'ListItem', position: 2, name: 'Corridors', item: 'https://www.haulcommand.com/corridors' },
+                            { '@type': 'ListItem', position: 3, name: c.name, item: `https://www.haulcommand.com/corridors/${origin}/vs/${destination}` },
+                        ],
+                    },
+                ],
             })}} />
 
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '3rem 1rem 5rem' }}>
 
                 {/* Breadcrumb */}
                 <nav style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 20, fontSize: 12, color: '#6B7280', flexWrap: 'wrap' }}>
-                    <Link href="/corridors" style={{ color: '#F1A91B', textDecoration: 'none' }}>Corridors</Link>
+                    <Link href="/" style={{ color: '#6B7280', textDecoration: 'none' }}>Home</Link>
                     <span>/</span>
-                    <span>Compare</span>
+                    <Link href="/corridors" style={{ color: '#F1A91B', textDecoration: 'none' }}>Corridors</Link>
                     <span>/</span>
                     <span style={{ color: '#F0F0F0' }}>{c.state1} ↔ {c.state2}</span>
                 </nav>
+
+                {/* Sponsor This Corridor — above-fold monetization */}
+                <div style={{ marginBottom: 20 }}>
+                    <TakeoverSponsorBanner
+                        level="state"
+                        territory={c.name}
+                        pricePerMonth={199}
+                    />
+                </div>
+
+                {/* ProofStrip */}
+                <ProofStrip variant="compact" style={{ marginBottom: 20 }} />
 
                 {/* Header */}
                 <div style={{ marginBottom: 28 }}>
@@ -131,7 +168,7 @@ export default async function CorridorComparePage({ params }: Props) {
                                         <span style={{ color: '#22C55E', flexShrink: 0 }}>✓</span> {r}
                                     </div>
                                 ))}
-                                <Link href={`/requirements/${state.toLowerCase()}/escort-vehicle-rules`}
+                                <Link href={`/escort-requirements/${state.toLowerCase()}`}
                                     style={{ display: 'inline-block', marginTop: 8, fontSize: 11, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>
                                     Full {state} Rules →
                                 </Link>
@@ -198,6 +235,19 @@ export default async function CorridorComparePage({ params }: Props) {
                         </Link>
                     </div>
                 </div>
+
+                {/* No-Dead-End block */}
+                <NoDeadEndBlock
+                    heading={`What Would You Like to Do on the ${c.name} Corridor?`}
+                    moves={[
+                        { href: `/find/pilot-car-operator/${origin}`, icon: '🔍', title: `Find ${c.state1} Operators`, desc: 'Available now, verified', primary: true, color: '#D4A844' },
+                        { href: '/claim', icon: '✓', title: 'Claim Corridor Territory', desc: 'Pro listing for this route', primary: true, color: '#22C55E' },
+                        { href: `/escort-requirements/${origin}`, icon: '⚖️', title: `${c.state1} Escort Rules`, desc: 'Full requirements guide' },
+                        { href: `/escort-requirements/${destination}`, icon: '⚖️', title: `${c.state2} Escort Rules`, desc: 'Full requirements guide' },
+                        { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles?' },
+                        { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Loads on this route' },
+                    ]}
+                />
 
                 <DataTeaserStrip geo={`${c.state1}–${c.state2} Corridor`} />
             </div>

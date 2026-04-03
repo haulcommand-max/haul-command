@@ -56,14 +56,21 @@ const DIRECTORY_JSONLD = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   "name": "Pilot Car & Escort Vehicle Directory",
-  "url": "https://haulcommand.com/directory",
+  "url": "https://www.haulcommand.com/directory",
   "description": "The world's largest directory of pilot car operators and escort vehicle professionals for oversize loads across 120 countries.",
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
-      { "@type": "ListItem", "position": 2, "name": "Pilot Car Directory", "item": "https://haulcommand.com/directory" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "Pilot Car Directory", "item": "https://www.haulcommand.com/directory" }
     ]
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Top Pilot Car Operators",
+    "description": "Highest-rated and most active pilot car and escort vehicle operators on Haul Command",
+    "url": "https://www.haulcommand.com/directory",
+    "numberOfItems": 12
   }
 };
 

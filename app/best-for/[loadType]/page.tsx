@@ -6,6 +6,8 @@ import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 interface Props {
     params: Promise<{ loadType: string }>;
@@ -144,20 +146,25 @@ export default async function BestForLoadTypePage({ params }: Props) {
 
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 '@context': 'https://schema.org',
-                '@type': 'Article',
-                name: `Best Escorts for ${lt.name}`,
-                description: lt.ai_answer,
-                url: `https://www.haulcommand.com/best-for/${loadType}`,
-                dateModified: new Date().toISOString(),
-                publisher: { '@type': 'Organization', name: 'Haul Command' },
-                mainEntity: {
-                    '@type': 'FAQPage',
-                    mainEntity: [{
-                        '@type': 'Question',
-                        name: `How many escorts do I need for ${lt.name.toLowerCase()}?`,
-                        acceptedAnswer: { '@type': 'Answer', text: lt.ai_answer },
-                    }],
-                },
+                '@graph': [
+                    {
+                        '@type': 'Article',
+                        name: `Best Escorts for ${lt.name}`,
+                        description: lt.ai_answer,
+                        url: `https://www.haulcommand.com/best-for/${loadType}`,
+                        dateModified: new Date().toISOString(),
+                        publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+                    },
+                    {
+                        '@type': 'FAQPage',
+                        mainEntity: [
+                            { '@type': 'Question', name: `How many escorts do I need for ${lt.name.toLowerCase()}?`, acceptedAnswer: { '@type': 'Answer', text: lt.ai_answer } },
+                            { '@type': 'Question', name: `What states require escorts for ${lt.name.toLowerCase()}?`, acceptedAnswer: { '@type': 'Answer', text: `The highest-activity states for ${lt.name} moves are ${lt.topStates.join(', ')}. Each state has different thresholds for when escorts are required based on width, height, and weight.` } },
+                            { '@type': 'Question', name: `How much does it cost to escort ${lt.name.toLowerCase()}?`, acceptedAnswer: { '@type': 'Answer', text: `${lt.name} escort rates average ${lt.avgRate}. Permit costs run ${lt.permits} depending on the states crossed. Total move cost varies with distance, load class, and convoy size.` } },
+                            { '@type': 'Question', name: `What are the special requirements for ${lt.name.toLowerCase()} transport?`, acceptedAnswer: { '@type': 'Answer', text: lt.specialReqs.join(' ') } },
+                        ],
+                    },
+                ],
             })}} />
 
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '3rem 1rem 5rem' }}>
@@ -264,6 +271,25 @@ export default async function BestForLoadTypePage({ params }: Props) {
                     <TakeoverSponsorBanner level="state" territory={`${lt.name} Moves`} pricePerMonth={299} />
                 </div>
 
+                {/* Internal link mesh — tool + regulation + directory (required per linking rules) */}
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
+                    <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>
+                        🧮 Calculate Escort Count
+                    </Link>
+                    <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>
+                        ⚖️ State Escort Rules
+                    </Link>
+                    <Link href="/directory" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.18)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>
+                        🔍 Find Verified Escorts
+                    </Link>
+                    <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>
+                        📖 What Is an Oversize Load?
+                    </Link>
+                    <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>
+                        📖 What Is a Pilot Car?
+                    </Link>
+                </div>
+
                 {/* Find Escorts CTA */}
                 <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
                     <Link href="/directory" style={{ padding: '10px 22px', background: 'linear-gradient(135deg, #F59E0B, #D97706)', borderRadius: 10, color: '#000', fontSize: 13, fontWeight: 800, textDecoration: 'none' }}>
@@ -286,6 +312,22 @@ export default async function BestForLoadTypePage({ params }: Props) {
                         ))}
                     </div>
                 </div>
+
+                {/* No-Dead-End Block */}
+                <NoDeadEndBlock
+                    heading="What Would You Like to Do Next?"
+                    moves={[
+                        { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
+                        { href: '/claim', icon: '✓', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
+                        { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed' },
+                        { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by state' },
+                        { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                        { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Post or browse loads' },
+                    ]}
+                />
+
+                {/* ProofStrip before data strip */}
+                <ProofStrip variant="compact" style={{ marginBottom: 12 }} />
 
                 <DataTeaserStrip />
             </div>
