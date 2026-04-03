@@ -228,6 +228,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 }} />
                 {/* OpenSearch — Browser Search Integration */}
                 <link rel="search" type="application/opensearchdescription+xml" title="Haul Command" href="/api/opensearch" />
+                {/* RSS Feed For Syndication */}
+                <link rel="alternate" type="application/rss+xml" title="Haul Command | Heavy Haul Intelligence" href="/feed.xml" />
                 {/* Inbound Authority Machine — Tracking Pixels */}
                 <AnalyticsProvider />
             </head>
