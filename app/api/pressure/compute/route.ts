@@ -109,16 +109,18 @@ export async function POST(req: NextRequest) {
         const cycleStrength = VirtuousCycleEngine.computeCycleStrength(signals);
 
         // Log pressure event to swarm_activity_log
-        await admin.from('swarm_activity_log').insert({
-            agent_name: 'freemium_pressure_agent',
-            trigger_reason: 'pressure_compute:user_request',
-            action_taken: `Computed ${pressureDecision.overallPressure} pressure for user ${user.id}`,
-            surfaces_touched: ['dashboard', 'directory', 'profile'],
-            revenue_impact: pressureDecision.pricingPressure.showMissedRevenue ? 25 : 0,
-            trust_impact: null,
-            country: signals.countryCode,
-            status: 'completed',
-        }).catch(() => {});
+        try {
+            await admin.from('swarm_activity_log').insert({
+                agent_name: 'freemium_pressure_agent',
+                trigger_reason: 'pressure_compute:user_request',
+                action_taken: `Computed ${pressureDecision.overallPressure} pressure for user ${user.id}`,
+                surfaces_touched: ['dashboard', 'directory', 'profile'],
+                revenue_impact: pressureDecision.pricingPressure.showMissedRevenue ? 25 : 0,
+                trust_impact: null,
+                country: signals.countryCode,
+                status: 'completed',
+            });
+        } catch { /* non-blocking */ }
 
         return NextResponse.json({
             pressure: pressureDecision.overallPressure,

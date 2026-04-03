@@ -50,5 +50,60 @@ function getStaticFallback(): MetadataRoute.Sitemap {
     { url: `${base}/training`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${base}/advertise`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/developers`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+
+    // ── Market / State Pages ────────────────────────────────────────────────
+    ...['tx','ca','fl','il','oh','pa','ny','ga','nc','az','wa','co','mn','mi','tn','nv','or','mo','ok','al','la','sc','ky','ut','ia','ar','ms','ks','ne','id','nm','sd','nd','mt','wy','wv','vt','nh','me','ri','ct','de','md','va','in','wi','hi','ak'].map(state => ({
+      url: `${base}/market/${state}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.85,
+    })),
+
+    // ── Find / Role / City — Highest Commercial Intent Family ───────────────
+    ...[
+      ['pilot-car-operator','houston'],['pilot-car-operator','dallas'],['pilot-car-operator','los-angeles'],
+      ['pilot-car-operator','chicago'],['pilot-car-operator','phoenix'],['pilot-car-operator','san-antonio'],
+      ['pilot-car-operator','miami'],['pilot-car-operator','denver'],['pilot-car-operator','atlanta'],
+      ['pilot-car-operator','seattle'],['escort-vehicle-operator','houston'],['escort-vehicle-operator','dallas'],
+      ['escort-vehicle-operator','los-angeles'],['escort-vehicle-operator','chicago'],
+      ['height-pole-operator','houston'],['height-pole-operator','los-angeles'],
+      ['route-survey-specialist','dallas'],['route-survey-specialist','chicago'],
+    ].map(([role, city]) => ({
+      url: `${base}/find/${role}/${city}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    })),
+
+    // ── Corridors — High SEO ROI ────────────────────────────────────────────
+    ...[
+      ['tx','la'],['tx','nm'],['tx','ok'],['tx','ar'],['ca','az'],['ca','or'],['ca','nv'],
+      ['fl','ga'],['fl','al'],['il','wi'],['il','in'],['oh','pa'],['oh','ky'],['ny','pa'],
+      ['wa','or'],['co','ut'],['co','nm'],['mn','wi'],['mn','nd'],['ga','sc'],['ga','al'],
+      ['nc','va'],['nc','sc'],['la','ms'],['la','al'],['ok','ks'],['ok','ar'],['az','nm'],
+      ['az','ut'],['nv','ut'],['id','mt'],['id','or'],['wy','mt'],['wy','co'],['sd','nd'],
+    ].map(([origin, dest]) => ({
+      url: `${base}/corridors/${origin}/vs/${dest}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
+
+    // ── Best-For Pages ──────────────────────────────────────────────────────
+    ...['oversize-load','wide-load','heavy-haul','wind-turbine','bridge-beam','oil-field-equipment',
+        'construction-equipment','manufactured-home','crane','utility-poles'].map(loadType => ({
+      url: `${base}/best-for/${loadType}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    })),
+
+    // ── Top Country Regulations ─────────────────────────────────────────────
+    ...['us','ca','au','gb','de','nl','nz','za','mx','br','sg','ae','no','se','fr'].map(country => ({
+      url: `${base}/regulations/${country}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
   ];
 }

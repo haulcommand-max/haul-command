@@ -22,9 +22,9 @@ import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Trucking Services Directory — 23,000+ Businesses | Haul Command',
+  title: 'Pilot Car & Escort Vehicle Directory — Find Operators Near You | Haul Command',
   description:
-    'Search 23,000+ trucking service businesses: truck stops, towing, repair shops, pilot cars, tire shops, and 40+ categories across the US. Claim your free listing today.',
+    'Find verified pilot car and escort vehicle operators for oversize and wide loads. Search 14,000+ providers by state, specialty, and availability. Compare and book coverage across all 50 states and 120 countries.',
   keywords: [
     'trucking services directory',
     'truck stop directory',
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
     'cat scale locations',
   ],
   openGraph: {
-    title: 'Trucking Services Directory — 23,000+ Businesses | Haul Command',
-    description: 'Find truck stops, towing, repair, pilot cars, and 40+ service categories. 23,000+ verified businesses across all 50 states.',
-    url: 'https://haulcommand.com/directory',
+    title: 'Pilot Car & Escort Vehicle Directory | Haul Command',
+    description: 'Find verified pilot car and escort vehicle operators for oversize loads. Browse by state, specialty, and availability. 14,000+ providers across 120 countries.',
+    url: 'https://www.haulcommand.com/directory',
     images: [{ url: '/og-directory.png', width: 1200, height: 630 }],
   },
   alternates: {
-    canonical: 'https://haulcommand.com/directory',
+    canonical: 'https://www.haulcommand.com/directory',
   },
 };
 

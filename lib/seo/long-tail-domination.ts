@@ -189,7 +189,7 @@ export interface LongTailPage {
     priority: number;
 }
 
-export type SnippetBlockType = 'definition' | 'steps' | 'quick_table' | 'faq' | 'cost_range' | 'regulation_summary';
+export type SnippetBlockType = 'definition' | 'steps' | 'quick_table' | 'faq' | 'cost_range' | 'regulation_summary' | 'quick_answer';
 
 /**
  * Generate all long-tail page combinations for a country.

@@ -112,16 +112,18 @@ export async function POST(req: NextRequest) {
         const totalRecovery = signals.reduce((sum, s) => sum + s.estimated_recovery_value, 0);
 
         // Write recovery audit event
-        await admin.from('swarm_activity_log').insert({
-            agent_name: 'recovery_revenue_agent',
-            trigger_reason: 'recovery_scan:operator_request',
-            action_taken: `Scanned ${signals.length} recovery opportunities for ${user.id}`,
-            surfaces_touched: ['operator_dashboard', 'recovery_signals'],
-            revenue_impact: totalRecovery,
-            trust_impact: null,
-            country: 'US',
-            status: 'completed',
-        }).catch(() => {});
+        try {
+            await admin.from('swarm_activity_log').insert({
+                agent_name: 'recovery_revenue_agent',
+                trigger_reason: 'recovery_scan:operator_request',
+                action_taken: `Scanned ${signals.length} recovery opportunities for ${user.id}`,
+                surfaces_touched: ['operator_dashboard', 'recovery_signals'],
+                revenue_impact: totalRecovery,
+                trust_impact: null,
+                country: 'US',
+                status: 'completed',
+            });
+        } catch { /* non-blocking */ }
 
         return NextResponse.json({
             operator_id: profile.id,
@@ -137,16 +139,4 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// Type for RecoverySignal (re-export from engine)
-type RecoverySignal = {
-    type: string;
-    operator_id: string;
-    severity: string;
-    revenue_hook: string;
-    estimated_recovery_value: number;
-    message: string;
-    action_label: string;
-    action_url: string;
-    deadline?: string;
-    context: Record<string, unknown>;
-};
+// RecoverySignal type is imported from @/lib/engines/recovery-revenue (removed local duplicate)

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     publisher: 'Haul Command',
     metadataBase: new URL('https://www.haulcommand.com'),
     alternates: {
-        canonical: '/',
+        canonical: 'https://www.haulcommand.com',
         languages: {
             // Tier A — Gold (10)
             'en-US': 'https://www.haulcommand.com',

@@ -35,7 +35,7 @@ const USER_DATA_TABLES = [
     { table: 'disputes', id_column: 'respondent_id', action: 'anonymize' },
     { table: 'dispute_trust_impacts', id_column: 'user_id', action: 'delete' },
     { table: 'hc_events', id_column: null, action: 'skip' }, // system events, no direct user ID
-] as const;
+];
 
 export async function POST(req: Request) {
     const supabase = createClient();
