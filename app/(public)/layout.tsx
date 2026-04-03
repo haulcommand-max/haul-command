@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import EnhancedFooter from '@/components/layout/EnhancedFooter';
 import { MobileAppNav } from '@/components/mobile/MobileAppNav';
+import { MobileNavSheet } from '@/components/layout/MobileNavSheet';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetargeter';
 
@@ -137,6 +138,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                             {BRAND_NAME_UPPER}
                         </span>
                     </Link>
+                    {/* Hamburger + full nav sheet */}
+                    <MobileNavSheet />
                 </div>
 
                 {/* Desktop header bar */}

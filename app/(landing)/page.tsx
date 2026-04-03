@@ -12,9 +12,9 @@ import HomeClient from "./_components/HomeClient";
 // ═══════════════════════════════════════════════════════
 
 export const metadata = {
-  title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
+  title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
   description:
-    'The #1 pilot car directory and load board for oversize loads. Find verified escort vehicles, post loads, check state requirements, and match with professional pilots across the US and 120 countries.',
+    'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the heavy haul load board, check state escort requirements, and claim your free listing.',
   keywords: [
     'pilot car',
     'escort vehicle',
@@ -34,17 +34,17 @@ export const metadata = {
     'escort vehicle cost per mile',
   ],
   openGraph: {
-    title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
+    title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
     description:
-      'Find verified pilot car operators, post oversize loads, and manage heavy haul operations. The world\'s largest escort vehicle directory across 120 countries.',
-    url: 'https://haulcommand.com',
+      'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the load board, check state requirements, and claim your free listing.',
+    url: 'https://www.haulcommand.com',
     siteName: 'Haul Command',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Haul Command — Global Pilot Car Directory & Heavy Haul Escorts',
+        alt: 'Haul Command — Pilot Car & Escort Vehicle Directory | Heavy Haul Escorts',
       },
     ],
     locale: 'en_US',
@@ -52,13 +52,13 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Haul Command | Global Pilot Car Directory & Heavy Haul Escorts',
-    description: 'Find verified pilot car operators and post oversize loads. The world\'s largest heavy haul directory.',
+    title: 'Pilot Car & Escort Vehicle Directory | Haul Command',
+    description: 'Find verified pilot car and escort vehicle operators across 120 countries. Post and browse oversize loads.',
     images: ['/og-image.png'],
     site: '@haulcommand',
   },
   alternates: {
-    canonical: 'https://haulcommand.com',
+    canonical: 'https://www.haulcommand.com',
   },
 };
 
