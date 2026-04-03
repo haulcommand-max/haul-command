@@ -8,6 +8,7 @@ import { getCountryBySlug, getRegionsByCountry } from '@/lib/server/geo';
 import { MapPin, ChevronRight, Globe, Truck, ShieldCheck, Search } from 'lucide-react';
 import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 
 export default async function CountryPage({ params }: { params: Promise<{ country: string }> }) {
@@ -133,6 +134,12 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                     level="country"
                     territory={countryData.name}
                     pricePerMonth={999}
+                />
+
+                {/* ── Urgent Market Sponsor — country-level mode-aware CTA ── */}
+                <UrgentMarketSponsor
+                    marketKey={countryData.iso2.toLowerCase()}
+                    geo={countryData.name}
                 />
 
                 {/* ── Data Teaser Strip ── */}

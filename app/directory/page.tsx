@@ -17,6 +17,7 @@ import { AdGridKeywordInterceptor } from '@/components/ads/AdGridKeywordIntercep
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 
 export const dynamic = 'force-dynamic';
 
@@ -550,6 +551,14 @@ export default async function DirectoryPage() {
       {/* Data Teaser Strip */}
       <section className="max-w-6xl mx-auto px-4 py-4">
         <DataTeaserStrip />
+      </section>
+
+      {/* UrgentMarketSponsor — market-mode-aware monetization + claim pressure */}
+      <section className="max-w-6xl mx-auto px-4 pb-4">
+        <UrgentMarketSponsor
+          marketKey="us-all"
+          geo="the US heavy haul market"
+        />
       </section>
 
       {/* StickyClaimBar — scroll-triggered */}

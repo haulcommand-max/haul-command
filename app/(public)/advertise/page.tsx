@@ -344,6 +344,8 @@ export default function AdvertisePage() {
                                     monthly={s.priceMonthly}
                                     annual={s.priceAnnualMonthly}
                                     tier={s.tier}
+                                    zone="territory"
+                                    geo={s.code}
                                     features={[
                                         `Top placement in ${s.name} directory searches`,
                                         'Sponsor badge on all state pages',
@@ -368,6 +370,8 @@ export default function AdvertisePage() {
                                 monthly={c.priceMonthly}
                                 annual={c.priceAnnualMonthly}
                                 tier={c.tier}
+                                zone="corridor"
+                                geo={c.slug}
                                 features={[
                                     `Sponsor badge on ${c.slug.toUpperCase()} corridor pages`,
                                     'Featured in corridor intelligence reports',
@@ -390,6 +394,8 @@ export default function AdvertisePage() {
                                 monthly={p.priceMonthly}
                                 annual={p.priceAnnualMonthly}
                                 tier={p.tier}
+                                zone="port"
+                                geo={p.slug}
                                 features={[
                                     'Premium placement on port-adjacent pages',
                                     'Featured in port logistics intelligence',
@@ -435,6 +441,8 @@ export default function AdvertisePage() {
                                         title={`${c.name} (${c.code})`}
                                         monthly={pricing.priceMonthly}
                                         tier={c.tier}
+                                        zone="country"
+                                        geo={c.code}
                                         features={[
                                             `Top placement in ${c.name} directory`,
                                             'Country-wide sponsor badge',

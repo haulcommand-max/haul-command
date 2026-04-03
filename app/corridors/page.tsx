@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 
 export const metadata: Metadata = {
   title: 'Corridor Intelligence Hub — Heavy Haul Escort Routes | Haul Command',
@@ -97,6 +100,21 @@ export default async function CorridorsPage() {
             <p className="text-gray-600">Corridor data loading. <a href="/route-check" className="text-amber-400 hover:underline">Use Route Check for instant answers.</a></p>
           </div>
         )}
+
+        {/* Corridor Sponsor Slot */}
+        <div className="mt-8">
+          <AdGridSlot zone="corridor_sponsor" />
+        </div>
+
+        {/* Data Teaser Strip */}
+        <div className="mt-6">
+          <DataTeaserStrip />
+        </div>
+
+        {/* Urgent Market Sponsor — national-level mode */}
+        <div className="mt-6">
+          <UrgentMarketSponsor marketKey="us" geo="US Corridor Network" />
+        </div>
       </div>
     </div>
   );

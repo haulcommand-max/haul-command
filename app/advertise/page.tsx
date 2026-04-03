@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SelfServeAdBuyer from '@/components/ads/SelfServeAdBuyer';
 import AdGridPartnerSignup from '@/components/ads/AdGridPartnerSignup';
+import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 export const metadata: Metadata = {
     title: 'Advertise on Haul Command | Reach Heavy Haul Operators & Carriers',
     description: 'Reach 50,000+ verified pilot car operators, heavy haul carriers, and brokers. Territory sponsorships, corridor placements, self-serve campaigns, and enterprise packages. Start free.',
@@ -394,6 +396,16 @@ export default function AdvertisePage() {
                         <span>·</span>
                         <Link href="/pricing" className="hover:text-white transition-colors">Subscription Pricing</Link>
                     </div>
+                </div>
+
+                {/* ── Market Intelligence Teaser ── */}
+                <div className="max-w-5xl mx-auto mt-8">
+                    <DataTeaserStrip />
+                </div>
+
+                {/* ── Urgent Market Sponsor — show empty markets to advertisers ── */}
+                <div className="max-w-5xl mx-auto mt-6">
+                    <UrgentMarketSponsor marketKey="us" geo="United States" />
                 </div>
 
             </div>

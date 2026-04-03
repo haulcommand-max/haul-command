@@ -1,58 +1,151 @@
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
 
 // ═══════════════════════════════════════════════════════════════
-// SPONSOR CARD — Contextual sponsor injection for directory
+// SPONSOR CARD — Async Server Component, queries v_active_sponsors
 //
-// Surfaces: directory results, empty market states, corridor pages,
-//           country pages, regulation pages, tool pages
+// Surfaces: directory, empty markets, corridors, regulations, tools
+// Data: v_active_sponsors view (zone + geo match, status='active')
 //
-// Rules per overlay:
-//   - Ads must look premium and native
-//   - Ads must be geo-aware, role-aware, and intent-aware
-//   - Thin markets still monetize
-//   - Sponsor scarcity must be real and visible
-//   - Self-serve buy paths preferred
+// When sponsor active:  renders sponsor creative + badge
+// When no sponsor:      renders "Advertise Here" CTA → /advertise
 // ═══════════════════════════════════════════════════════════════
 
 interface SponsorCardProps {
     zone: 'directory_top' | 'directory_inline' | 'empty_market' | 'corridor' |
           'country' | 'regulation' | 'tool' | 'blog' | 'glossary';
-    geo?: string;           // Country or state code for targeting
-    role?: string;          // User role for relevance
-    intent?: string;        // User intent for contextual message
-    compact?: boolean;      // Compact inline mode
+    geo?: string;
+    role?: string;
+    intent?: string;
+    compact?: boolean;
     className?: string;
 }
 
-// Mock sponsor data — in production, this queries Supabase `sponsors` table
-function getSponsorForZone(zone: string, geo?: string) {
-    // TODO: Wire to Supabase sponsors table with geo targeting
-    // For now, return a placeholder that drives to /advertise
-    return null; // No sponsor yet → show claim CTA
+interface ActiveSponsor {
+    id: string;
+    sponsor_name: string | null;
+    sponsor_logo: string | null;
+    zone: string;
+    geo: string | null;
+    product_name: string | null;
+    price_monthly: number | null;
 }
 
-export function SponsorCard({ zone, geo, role, intent, compact, className }: SponsorCardProps) {
-    const sponsor = getSponsorForZone(zone, geo);
+async function getSponsorForZone(zone: string, geo?: string): Promise<ActiveSponsor | null> {
+    try {
+        const supabase = createClient();
 
-    if (sponsor) {
-        // TODO: Render actual sponsor creative when sponsors are active
-        return null;
+        if (geo) {
+            // Exact geo match first
+            const { data: exact } = await supabase
+                .from('v_active_sponsors')
+                .select('id, sponsor_name, sponsor_logo, zone, geo, product_name, price_monthly')
+                .eq('zone', zone)
+                .eq('geo', geo.toUpperCase())
+                .limit(1)
+                .maybeSingle();
+            if (exact) return exact as ActiveSponsor;
+
+            // Fall back to zone-level sponsor with no geo constraint
+            const { data: zoneLevel } = await supabase
+                .from('v_active_sponsors')
+                .select('id, sponsor_name, sponsor_logo, zone, geo, product_name, price_monthly')
+                .eq('zone', zone)
+                .is('geo', null)
+                .limit(1)
+                .maybeSingle();
+            return (zoneLevel as ActiveSponsor | null) ?? null;
+        }
+
+        const { data } = await supabase
+            .from('v_active_sponsors')
+            .select('id, sponsor_name, sponsor_logo, zone, geo, product_name, price_monthly')
+            .eq('zone', zone)
+            .limit(1)
+            .maybeSingle();
+        return (data as ActiveSponsor | null) ?? null;
+    } catch {
+        return null; // Fail silently — show CTA fallback
     }
+}
 
-    // No sponsor for this zone → show "Advertise Here" CTA
-    const geoLabel = geo ? ` in ${geo.toUpperCase()}` : '';
+export async function SponsorCard({ zone, geo, role, intent, compact, className }: SponsorCardProps) {
+    const sponsor = await getSponsorForZone(zone, geo);
+
+    const geoDisplay = geo ? ` · ${geo.toUpperCase()}` : '';
+    const geoLabel   = geo ? ` in ${geo.toUpperCase()}` : '';
     const zoneLabels: Record<string, string> = {
-        directory_top: 'directory results',
+        directory_top:    'directory results',
         directory_inline: 'search results',
-        empty_market: 'this market',
-        corridor: 'this corridor',
-        country: 'this country',
-        regulation: 'regulation pages',
-        tool: 'this tool',
-        blog: 'industry insights',
-        glossary: 'glossary pages',
+        empty_market:     'this market',
+        corridor:         'this corridor',
+        country:          'this country',
+        regulation:       'regulation pages',
+        tool:             'this tool',
+        blog:             'industry insights',
+        glossary:         'glossary pages',
     };
 
+    // ── Active sponsor — render brand card ──────────────────────
+    if (sponsor) {
+        if (compact) {
+            return (
+                <div className={className} style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '8px 14px', borderRadius: 8,
+                    background: 'rgba(212,168,67,0.04)',
+                    border: '1px solid rgba(212,168,67,0.12)',
+                    fontSize: 11, color: '#9CA3AF',
+                }}>
+                    {sponsor.sponsor_logo && (
+                        <img
+                            src={sponsor.sponsor_logo}
+                            alt={sponsor.sponsor_name ?? ''}
+                            style={{ width: 20, height: 20, borderRadius: 4, objectFit: 'cover' }}
+                        />
+                    )}
+                    <span style={{ fontWeight: 600, color: '#d1d5db' }}>{sponsor.sponsor_name}</span>
+                    <span style={{
+                        fontSize: 9, background: 'rgba(212,168,67,0.10)', color: '#D4A843',
+                        padding: '1px 6px', borderRadius: 4, fontWeight: 800,
+                        textTransform: 'uppercase', letterSpacing: '0.06em', marginLeft: 2,
+                    }}>
+                        Sponsor{geoDisplay}
+                    </span>
+                </div>
+            );
+        }
+
+        return (
+            <div className={className} style={{
+                padding: '16px 20px', borderRadius: 14,
+                background: 'rgba(212,168,67,0.03)',
+                border: '1px solid rgba(212,168,67,0.12)',
+                display: 'flex', alignItems: 'center', gap: 14,
+            }}>
+                {sponsor.sponsor_logo && (
+                    <img
+                        src={sponsor.sponsor_logo}
+                        alt={sponsor.sponsor_name ?? ''}
+                        style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }}
+                    />
+                )}
+                <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: '#f9fafb' }}>{sponsor.sponsor_name}</div>
+                    <div style={{ fontSize: 10, color: '#6b7280' }}>{sponsor.product_name}{geoDisplay}</div>
+                </div>
+                <span style={{
+                    fontSize: 9, background: 'rgba(212,168,67,0.10)', color: '#D4A843',
+                    padding: '3px 10px', borderRadius: 6, fontWeight: 800,
+                    textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap',
+                }}>
+                    Sponsored
+                </span>
+            </div>
+        );
+    }
+
+    // ── No sponsor — "Advertise Here" CTA ──────────────────────
     if (compact) {
         return (
             <Link
@@ -135,15 +228,15 @@ interface TrustBadgeProps {
 }
 
 const TRUST_COLORS: Record<TrustTier, { bg: string; border: string; text: string; icon: string }> = {
-    bronze:    { bg: 'rgba(180,83,9,0.10)', border: 'rgba(180,83,9,0.25)', text: '#d97706', icon: '🛡️' },
+    bronze:    { bg: 'rgba(180,83,9,0.10)',   border: 'rgba(180,83,9,0.25)',   text: '#d97706', icon: '🛡️' },
     silver:    { bg: 'rgba(156,163,175,0.10)', border: 'rgba(156,163,175,0.25)', text: '#d1d5db', icon: '🛡️' },
-    gold:      { bg: 'rgba(251,191,36,0.10)', border: 'rgba(251,191,36,0.25)', text: '#fbbf24', icon: '🛡️' },
-    verified:  { bg: 'rgba(16,185,129,0.10)', border: 'rgba(16,185,129,0.25)', text: '#34d399', icon: '✅' },
-    certified: { bg: 'rgba(59,130,246,0.10)', border: 'rgba(59,130,246,0.25)', text: '#60a5fa', icon: '🏆' },
+    gold:      { bg: 'rgba(251,191,36,0.10)',  border: 'rgba(251,191,36,0.25)',  text: '#fbbf24', icon: '🛡️' },
+    verified:  { bg: 'rgba(16,185,129,0.10)',  border: 'rgba(16,185,129,0.25)',  text: '#34d399', icon: '✅' },
+    certified: { bg: 'rgba(59,130,246,0.10)',  border: 'rgba(59,130,246,0.25)',  text: '#60a5fa', icon: '🏆' },
 };
 
 const TRUST_SIZES: Record<string, { fontSize: number; padding: string; iconSize: number }> = {
-    sm: { fontSize: 9, padding: '2px 8px', iconSize: 12 },
+    sm: { fontSize: 9,  padding: '2px 8px',  iconSize: 12 },
     md: { fontSize: 10, padding: '4px 12px', iconSize: 14 },
     lg: { fontSize: 12, padding: '6px 16px', iconSize: 16 },
 };
@@ -151,23 +244,16 @@ const TRUST_SIZES: Record<string, { fontSize: number; padding: string; iconSize:
 export function TrustBadge({ tier, label, size = 'md' }: TrustBadgeProps) {
     const c = TRUST_COLORS[tier];
     const s = TRUST_SIZES[size];
-
     const defaultLabels: Record<TrustTier, string> = {
-        bronze: 'Bronze',
-        silver: 'Silver',
-        gold: 'Gold',
-        verified: 'Verified',
-        certified: 'Certified',
+        bronze: 'Bronze', silver: 'Silver', gold: 'Gold', verified: 'Verified', certified: 'Certified',
     };
-
     return (
         <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 4,
             padding: s.padding, borderRadius: 6,
             background: c.bg, border: `1px solid ${c.border}`,
             fontSize: s.fontSize, fontWeight: 800,
-            color: c.text, textTransform: 'uppercase',
-            letterSpacing: '0.06em',
+            color: c.text, textTransform: 'uppercase', letterSpacing: '0.06em',
         }}>
             <span style={{ fontSize: s.iconSize }}>{c.icon}</span>
             {label || defaultLabels[tier]}
@@ -176,15 +262,14 @@ export function TrustBadge({ tier, label, size = 'md' }: TrustBadgeProps) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// DATA PRODUCT TEASER CARD
-// preview + blur + unlock CTA
+// DATA PRODUCT TEASER CARD — preview + blur + unlock CTA
 // ═══════════════════════════════════════════════════════════════
 
 interface DataProductTeaserProps {
     title: string;
     description: string;
-    previewData?: string[];      // 2-3 visible preview lines
-    price: string;               // e.g. "$79/mo" or "$39 one-time"
+    previewData?: string[];
+    price: string;
     productSlug: string;
     locked?: boolean;
 }
@@ -196,7 +281,6 @@ export function DataProductTeaser({ title, description, previewData, price, prod
             background: 'rgba(255,255,255,0.02)',
             border: '1px solid rgba(255,255,255,0.06)',
         }}>
-            {/* Header */}
             <div style={{
                 padding: '16px 20px',
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -206,13 +290,9 @@ export function DataProductTeaser({ title, description, previewData, price, prod
                     <h3 style={{ fontSize: 14, fontWeight: 800, margin: 0, color: '#f9fafb' }}>{title}</h3>
                     <p style={{ fontSize: 11, color: '#6b7280', margin: '4px 0 0' }}>{description}</p>
                 </div>
-                <span style={{
-                    fontSize: 16, fontWeight: 900, color: '#D4A843',
-                    whiteSpace: 'nowrap',
-                }}>{price}</span>
+                <span style={{ fontSize: 16, fontWeight: 900, color: '#D4A843', whiteSpace: 'nowrap' }}>{price}</span>
             </div>
 
-            {/* Preview Data */}
             {previewData && previewData.length > 0 && (
                 <div style={{ padding: '12px 20px', position: 'relative' }}>
                     {previewData.map((line, i) => (
@@ -223,7 +303,6 @@ export function DataProductTeaser({ title, description, previewData, price, prod
                             {line}
                         </div>
                     ))}
-                    {/* Blur overlay for locked data */}
                     {locked && (
                         <div style={{
                             position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
@@ -242,7 +321,6 @@ export function DataProductTeaser({ title, description, previewData, price, prod
                 </div>
             )}
 
-            {/* CTA */}
             <div style={{ padding: '12px 20px' }}>
                 <Link
                     href={`/data?product=${productSlug}`}

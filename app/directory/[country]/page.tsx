@@ -9,7 +9,7 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { EmptyMarketState } from '@/components/directory/EmptyMarketState';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
 import { ClaimListingCTA } from '@/components/monetization/ClaimListingCTA';
-import { FreemiumPressureWidget } from '@/components/monetization/FreemiumPressureWidget';
+import { FreemiumPressureWidgetWithUser } from '@/components/monetization/FreemiumPressureWidgetWithUser';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -233,7 +233,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
               </div>
               {/* FreemiumPressureWidget — behavior-driven upgrade prompts */}
               <div style={{ marginTop: 16 }}>
-                <FreemiumPressureWidget
+                <FreemiumPressureWidgetWithUser
                   placement="sidebar"
                   minPressure="soft"
                 />

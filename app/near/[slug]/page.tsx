@@ -21,6 +21,7 @@ import { AdGridCurfewHotelBooking } from '@/components/ads/AdGridCurfewHotelBook
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
 
 // ── Top 50 US cities for programmatic generation ──
 const TOP_US_CITIES: Record<string, { name: string; state: string; stateCode: string; lat: number; lng: number }> = {
@@ -526,10 +527,19 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
         />
       </div>
 
+      {/* ── Urgent Market Sponsor — city mode-aware CTA ── */}
+      <div className="max-w-6xl mx-auto px-4 mt-4">
+        <UrgentMarketSponsor
+          marketKey={`us-${city.stateCode.toLowerCase()}-${slug}`}
+          geo={`${city.name}, ${city.stateCode}`}
+        />
+      </div>
+
       {/* ── Data Teaser Strip ── */}
       <div className="max-w-6xl mx-auto px-4 mt-6 mb-8">
         <DataTeaserStrip geo={city.name} />
       </div>
+
     </div>
   );
 }

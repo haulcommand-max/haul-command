@@ -8,6 +8,7 @@ import AudioPronunciation from '@/components/glossary/AudioPronunciation';
 import CommonlyConfusedWith from '@/components/glossary/CommonlyConfusedWith';
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { ShareButton } from '@/components/social/ShareButton';
+import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -60,6 +61,17 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
 
     return (
         <Fragment>
+            {/* GlossaryPage SchemaOrchestrator: DefinedTermSet parent wrapper for Knowledge Panel */}
+            <SchemaOrchestrator
+                type="GlossaryPage"
+                data={{
+                    term: term.term,
+                    definition: term.short_definition,
+                    url: `https://haulcommand.com/glossary/${term.slug}`,
+                    relatedTerms: term.related_slugs ?? [],
+                }}
+            />
+
             {/* INJECT JSON-LD SCHEMA */}
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
