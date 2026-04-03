@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, MapPin, Phone, Star, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
 import { generateOperatorProfileJsonLd, generateProfileFacts } from '@/lib/platform/ai-entity-graph';
+import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
 
 // ══════════════════════════════════════════════════════════════
 // DIRECTORY PROFILE — /directory/profile/:slug
@@ -157,6 +158,15 @@ function renderProfile(op: any) {
     // Default fallback to Operator style
     return (
         <>
+            {/* Swarm trigger: profile viewed */}
+            <SwarmTriggerPixel
+                trigger="profile_viewed"
+                payload={{
+                    entity_id: op.slug || op.id,
+                    country_code: op.country_code || 'US',
+                    claimed: isClaimed,
+                }}
+            />
             {/* JSON-LD Structured Data for AI/SEO */}
             {profileJsonLd.map((ld, i) => (
                 <script

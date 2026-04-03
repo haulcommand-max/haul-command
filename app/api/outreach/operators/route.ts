@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendEmail, isResendConfigured } from '@/lib/email/bulk';
 import { captureError } from '@/lib/monitoring/error';
+import { computeClaimReadiness, type ClaimReadinessResult } from '@/lib/engines/claim-readiness';
 
 // ═══════════════════════════════════════════════════════════════
 // OPERATOR ACQUISITION — Resend-native Email Outreach
@@ -120,15 +121,49 @@ export async function POST(req: NextRequest) {
 
     const eligible = (operators ?? [])
         .filter((op: any) => !sentIds.has(op.id))
+        .slice(0, limit * 2); // Over-select for readiness filtering
+
+    // ── Claim Readiness Scoring ── Prioritize high-value outreach targets
+    const scoredOperators = eligible.map((op: any) => {
+        const readiness = computeClaimReadiness({
+            surface_id: op.id,
+            operator_id: op.id,
+            impressions_30d: 0,
+            search_impressions_30d: 0,
+            profile_views_30d: 0,
+            profile_completion_pct: 20,
+            has_photo: false,
+            has_reviews: false,
+            review_count: 0,
+            trust_score: 0,
+            related_page_count: 1,
+            internal_links_count: 1,
+            corridor_placements: 0,
+            is_claimed: false,
+            claim_status: 'unclaimed',
+            role_type: 'pilot_car_operator',
+            country_code: op.region_code ?? 'US',
+            state: op.state_code ?? '',
+            city: '',
+            nearby_sponsors: 0,
+            corridor_sponsor_demand: 0,
+        });
+        return { ...op, readiness };
+    });
+
+    // Filter out suppressed operators + sort by readiness score (highest first)
+    const prioritized = scoredOperators
+        .filter(op => op.readiness.outreach_state !== 'suppress')
+        .sort((a, b) => b.readiness.readiness_score - a.readiness.readiness_score)
         .slice(0, limit);
 
-    if (eligible.length === 0) {
-        return NextResponse.json({ queued: 0, message: 'No new operators to reach' });
+    if (prioritized.length === 0) {
+        return NextResponse.json({ queued: 0, message: 'No ready operators to reach (all below readiness threshold)' });
     }
 
     // ── Process each operator
     const results = await Promise.allSettled(
-        eligible.map(async (op: any) => {
+        prioritized.map(async (op: any) => {
             const name = op.company_name ?? 'Pilot Car Operator';
             const state = op.state_code ?? op.region_code ?? 'US';
             const claimUrl = `https://haulcommand.com/claim?id=${op.id}`;
@@ -172,7 +207,13 @@ export async function POST(req: NextRequest) {
                 sent_at: sendStatus === 'sent' ? new Date().toISOString() : null,
             });
 
-            return { id: op.id, email: op.contact_email, status: sendStatus };
+            return {
+                id: op.id,
+                email: op.contact_email,
+                status: sendStatus,
+                readiness_score: op.readiness.readiness_score,
+                outreach_state: op.readiness.outreach_state,
+            };
         })
     );
 
@@ -180,7 +221,7 @@ export async function POST(req: NextRequest) {
     const failed = results.filter(r => r.status === 'rejected').length;
 
     return NextResponse.json({
-        queued: eligible.length,
+        queued: prioritized.length,
         sent,
         failed,
         resend_configured: isResendConfigured(),

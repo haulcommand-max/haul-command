@@ -12,6 +12,11 @@ import {
   getMarketModeConfig,
   type MarketModeConfig,
 } from '@/lib/ads/market-mode';
+import {
+  FreemiumPressureEngine,
+  type UserBehaviorSignals,
+  type PressureDecision,
+} from '@/lib/platform/freemium-pressure-engine';
 
 // ═══════════════════════════════════════════════════════════════
 // SMART PAYWALL BANNER — Renders paywall nudges for free-tier
@@ -30,6 +35,8 @@ interface SmartPaywallBannerProps {
   usage: { searches: number; leads: number; routes: number; daysActive: number };
   countryCode: string;
   className?: string;
+  /** Optional: behavior signals for intelligent pressure. If omitted, falls back to static paywall only. */
+  behaviorSignals?: Partial<UserBehaviorSignals>;
 }
 
 const URGENCY_STYLES: Record<string, { bg: string; border: string; accent: string }> = {
@@ -75,6 +82,7 @@ export default function SmartPaywallBanner({
   usage,
   countryCode,
   className = '',
+  behaviorSignals,
 }: SmartPaywallBannerProps) {
   const [dismissed, setDismissed] = useState(false);
 
@@ -91,8 +99,40 @@ export default function SmartPaywallBanner({
   // Check if monetization is active for this country
   const isMonetizationActive = modeConfig.monetization_active.length > 0;
 
+  // Compute behavior-driven pressure if signals provided
+  const pressureDecision = useMemo(() => {
+    if (!behaviorSignals) return null;
+    const fullSignals: UserBehaviorSignals = {
+      userId: behaviorSignals.userId || 'anon',
+      role: userType === 'broker' ? 'broker' : 'escort',
+      countryCode,
+      profileViews7d: behaviorSignals.profileViews7d || 0,
+      searchAppearances7d: behaviorSignals.searchAppearances7d || 0,
+      responseSpeed_p50_hours: behaviorSignals.responseSpeed_p50_hours || 4,
+      jobAcceptanceRate: behaviorSignals.jobAcceptanceRate || 0.5,
+      profileCompleteness: behaviorSignals.profileCompleteness || 0.3,
+      daysSinceSignup: behaviorSignals.daysSinceSignup || usage.daysActive,
+      lastActiveHoursAgo: behaviorSignals.lastActiveHoursAgo || 1,
+      dailyOpens7d: behaviorSignals.dailyOpens7d || 0,
+      notificationOpenRate: behaviorSignals.notificationOpenRate || 0.3,
+      featureUsageScore: behaviorSignals.featureUsageScore || 0.3,
+      revenueGenerated: behaviorSignals.revenueGenerated || 0,
+      missedOpportunities7d: behaviorSignals.missedOpportunities7d || 0,
+      corridorRank: behaviorSignals.corridorRank || 50,
+      isPaidUser: currentTier !== 'free',
+      currentTier: currentTier === 'free' ? 'free' : currentTier === 'pro' ? 'pro' : 'enterprise',
+      trustScore: behaviorSignals.trustScore || 0.3,
+      verificationLevel: behaviorSignals.verificationLevel || 'none',
+      reviewCount: behaviorSignals.reviewCount || 0,
+      avgRating: behaviorSignals.avgRating || 0,
+    };
+    return FreemiumPressureEngine.computePressure(fullSignals, null);
+  }, [behaviorSignals, userType, countryCode, currentTier, usage.daysActive]);
+
   // Don't show if no paywall needed, dismissed, or monetization inactive
-  if (!decision.show || dismissed || !isMonetizationActive) return null;
+  // If pressure engine says 'none' and basic paywall also says no, skip
+  if (!decision.show && (!pressureDecision || pressureDecision.overallPressure === 'none')) return null;
+  if (dismissed || !isMonetizationActive) return null;
 
   const style = URGENCY_STYLES[decision.urgencyLevel] || URGENCY_STYLES.soft;
   const copy = REASON_COPY[decision.reason] || {
@@ -160,7 +200,9 @@ export default function SmartPaywallBanner({
             whiteSpace: 'nowrap',
           }}
         >
-          Upgrade to {decision.suggestedTier}
+          {pressureDecision?.pricingPressure.discountOffered
+            ? `Upgrade — ${Math.round(pressureDecision.pricingPressure.discountOffered * 100)}% off`
+            : `Upgrade to ${decision.suggestedTier}`}
         </Link>
         <button
           onClick={() => setDismissed(true)}
@@ -176,6 +218,16 @@ export default function SmartPaywallBanner({
           Dismiss
         </button>
       </div>
+
+      {/* Social proof from pressure engine */}
+      {pressureDecision?.pricingPressure.socialProof && (
+        <div style={{
+          width: '100%', marginTop: '0.5rem',
+          fontSize: '0.6875rem', color: '#6B7280', fontStyle: 'italic',
+        }}>
+          📊 {pressureDecision.pricingPressure.socialProof}
+        </div>
+      )}
     </div>
   );
 }

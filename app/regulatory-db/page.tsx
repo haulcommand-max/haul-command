@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import { FreshnessConfidenceBadge } from '@/components/legal/FreshnessConfidenceBadge';
+import type { LegalConfidence } from '@/lib/legal/freshness-confidence';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
+import '@/components/ai-search/answer-block.css';
+import '@/components/hyperlocal/hyperlocal.css';
 
 export const revalidate = 3600; // Rebuild hourly (state_regulations updates frequently)
 
@@ -97,6 +104,18 @@ export default async function RegulatoryDbPage({
                     Official escort vehicle certification, equipment, and reciprocity rules — sourced from state DOTs and provincial transport ministries.
                 </p>
 
+                {/* AI Answer Block — citation-ready for search engines */}
+                <StaticAnswerBlock
+                    question="What are the pilot car requirements for oversize loads in the United States and Canada?"
+                    answer="Pilot car (escort vehicle) requirements vary by state and province. Most US states require at least one escort vehicle for loads exceeding 12-14 feet in width, with two escorts required above 16 feet. Certification requirements, insurance minimums, and equipment standards differ by jurisdiction."
+                    confidence="verified_but_review_due"
+                    lastVerified={new Date().toISOString()}
+                    source="State DOT & Provincial Transport Ministries"
+                    sourceUrl="/regulatory-db"
+                    ctaLabel="Search Requirements by State"
+                    ctaUrl="#search"
+                />
+
                 {/* Search + filter */}
                 <form method="GET" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
                     <input
@@ -144,11 +163,18 @@ export default async function RegulatoryDbPage({
                                                 style={{ fontSize: 15, fontWeight: 800, color: '#d97706', textDecoration: 'none' }}>
                                                 {STATE_NAMES_FULL[reg.state_code] ?? reg.state_code}
                                             </Link>
-                                            {reg.confidence_score && (
-                                                <span style={{ fontSize: 10, color: confColor, fontWeight: 700 }}>
-                                                    {Math.round(confidence * 100)}% conf
-                                                </span>
-                                            )}
+                                            <FreshnessConfidenceBadge
+                                                confidence={
+                                                    confidence >= 0.8 ? 'verified_current' as LegalConfidence
+                                                    : confidence >= 0.5 ? 'verified_but_review_due' as LegalConfidence
+                                                    : confidence > 0 ? 'partially_verified' as LegalConfidence
+                                                    : 'seeded_needs_human_review' as LegalConfidence
+                                                }
+                                                lastVerified={reg.last_updated_at}
+                                                officialSource={reg.dot_source_url ? 'State DOT' : null}
+                                                officialSourceUrl={reg.dot_source_url}
+                                                compact={true}
+                                            />
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, fontSize: 11, color: 'var(--hc-muted, #aaa)' }}>
                                             {reg.single_escort_width_ft && (
@@ -179,6 +205,20 @@ export default async function RegulatoryDbPage({
                     </section>
                 ))
             )}
+
+            {/* Snippet Injector — featured snippet capture */}
+            <SnippetInjector
+                blocks={['definition', 'faq', 'steps', 'regulation_summary']}
+                term="escort vehicle"
+                geo="United States"
+                country="US"
+            />
+
+            {/* Operators Needed conversion CTA */}
+            <OperatorsNeededCTA
+                surfaceName="underserved states"
+                operatorsNeeded={50}
+            />
 
             {/* SEO footer */}
             <section style={{ borderTop: '1px solid var(--hc-border, #222)', paddingTop: 28, marginTop: 8 }}>

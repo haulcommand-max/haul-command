@@ -56,6 +56,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         { href: '/loads', label: '📋 Oversize Load Board' },
                         { href: '/map', label: '🗺 Live Map' },
                         { href: '/directory', label: '🔍 Pilot Car Directory' },
+                        { href: '/estimate', label: '⚡ Instant Quote' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
                         { href: '/corridor', label: '📊 Corridors' },
                     ].map(link => (
@@ -69,8 +70,10 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         Free Tools
                     </div>
                     {[
+                        { href: '/tools', label: '🔧 All Tools' },
                         { href: '/glossary', label: '📖 HC Glossary' },
                         { href: '/regulations', label: '⚖️ Regulations' },
+                        { href: '/blog', label: '📝 Blog & Intel' },
                         { href: '/resources', label: '📚 Resource Hub' },
                         { href: '/rates', label: '💵 Pilot Car Rates' },
                         { href: '/tools/permit-calculator', label: '🧮 Permit Calculator' },

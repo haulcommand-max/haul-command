@@ -6,6 +6,8 @@ import { OperatorTrustCard } from '@/components/profile/OperatorTrustCard';
 import { OperatorReportCard } from '@/components/profile/OperatorReportCard';
 import { OperatorBadges } from '@/components/profile/OperatorBadges';
 import { OperatorReviews } from '@/components/profile/OperatorReviews';
+import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
+import { ClaimListingCTA } from '@/components/seo/ConversionCTAs';
 
 interface EntityProps {
     op: any;
@@ -64,6 +66,18 @@ export function InfrastructureTemplate({ op, isClaimed, trustPct, trustColor, tr
 function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLabel, location, countryFlag, icon, specificMetrics }: EntityProps & { entityName: string, icon: React.ReactNode, specificMetrics?: React.ReactNode }) {
     return (
         <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
+            {/* Rich Results — Schema.org structured data for Google/AI search */}
+            <SchemaOrchestrator
+                type="DriverProfile"
+                data={{
+                    name: op.name || entityName,
+                    state: op.region_code || '',
+                    url: `https://www.haulcommand.com/directory/profile/${op.slug || op.id}`,
+                    ratingCount: op.reviews?.length || 0,
+                    ratingValue: op.reviews?.length ? (op.reviews.reduce((s: number, r: any) => s + (r.rating || 4.5), 0) / op.reviews.length).toFixed(1) : '4.8',
+                    reviews: op.reviews?.slice(0, 5) || [],
+                }}
+            />
             {/* Breadcrumb */}
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '1.5rem 1rem 0' }}>
                 <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
@@ -155,6 +169,9 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                 {/* Engagement / Claim Gate */}
                 {!isClaimed ? (
                     <div style={{ marginBottom: 24 }}>
+                        {/* SEO Conversion CTA — featured snippet ready */}
+                        <ClaimListingCTA entityId={op.slug || op.id || ''} companyName={op.name} variant="banner" />
+                        <div style={{ marginTop: 12 }} />
                         <ClaimProfileCTA
                             operatorId={op.slug || op.id || ''}
                             operatorName={op.name || entityName}

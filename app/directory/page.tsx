@@ -6,6 +6,8 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -393,6 +395,30 @@ export default async function DirectoryPage() {
           </div>
         </section>
       )}
+
+      {/* AI Search Answer Block — Citation-ready for Google/AI engines */}
+      <section className="max-w-4xl mx-auto px-4 py-10 border-t border-white/5">
+        <StaticAnswerBlock
+          question="What is the Haul Command directory?"
+          answer="Haul Command is the world's largest directory of trucking service providers, including over 23,000 businesses across 46+ categories like pilot car operators, towing, truck repair, truck stops, and weigh stations. It covers 120 countries and offers verified operator profiles, trust scoring, and instant booking."
+          source="Haul Command"
+          sourceUrl="https://www.haulcommand.com/about"
+          lastVerified="2026-04-03"
+          confidence="verified_current"
+          ctaLabel="Search the Directory"
+          ctaUrl="/directory"
+        />
+        <StaticAnswerBlock
+          question="How do I find a pilot car near me?"
+          answer="Use Haul Command's directory to search by city, state, or ZIP code. Filter results by service type, availability, trust score, and equipment. You can contact operators directly, request quotes, or post a load for instant matching with verified escort vehicle providers."
+          source="Haul Command"
+          sourceUrl="https://www.haulcommand.com/near/houston-tx"
+          lastVerified="2026-04-03"
+          confidence="verified_current"
+          ctaLabel="Find Operators Near You"
+          ctaUrl="/near/houston-tx"
+        />
+      </section>
 
       {/* Country Grid */}
       <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">

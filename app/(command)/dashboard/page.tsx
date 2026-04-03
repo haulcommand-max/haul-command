@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { LiquidityDashboard } from "@/components/dashboard/LiquidityDashboard";
 import { TodayCommandCenter } from "@/components/intelligence/TodayCommandCenter";
-import { motion } from "framer-motion";
-import { Activity, Shield, Zap } from "lucide-react";
+import { SwarmActivityFeed } from "@/components/swarm/SwarmActivityFeed";
+import { SwarmScoreboard } from "@/components/swarm/SwarmScoreboard";
+import "@/components/swarm/swarm.css";
 
 export default function CommandDashboardPage() {
+    const [activeTab, setActiveTab] = useState<"ops" | "swarm">("ops");
+
     return (
         <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
             {/* Grid Background */}
@@ -27,6 +30,29 @@ export default function CommandDashboardPage() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
+                        {/* Tab switcher */}
+                        <div className="flex bg-[#111] rounded-lg border border-[#222] overflow-hidden">
+                            <button
+                                onClick={() => setActiveTab("ops")}
+                                className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
+                                    activeTab === "ops"
+                                        ? "bg-[#F1A91B] text-black"
+                                        : "text-[#666] hover:text-[#999]"
+                                }`}
+                            >
+                                Operations
+                            </button>
+                            <button
+                                onClick={() => setActiveTab("swarm")}
+                                className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
+                                    activeTab === "swarm"
+                                        ? "bg-[#F1A91B] text-black"
+                                        : "text-[#666] hover:text-[#999]"
+                                }`}
+                            >
+                                🐝 Swarm
+                            </button>
+                        </div>
                         <div className="flex items-center gap-2 bg-emerald-500/8 border border-emerald-500/15 px-3 py-1.5 rounded-full">
                             <span className="relative flex h-1.5 w-1.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -38,23 +64,25 @@ export default function CommandDashboardPage() {
                 </div>
             </header>
 
-            {/* Main Content — 2-col on desktop */}
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Today Command Center — right rail on desktop, top on mobile */}
-                    <div className="lg:col-span-1 lg:order-2">
-                        <TodayCommandCenter
-                            data={null} /* null = skeleton; wire a useCommandData() hook here */
-                        />
+                {activeTab === "ops" ? (
+                    /* ── Operations Tab ── */
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-1 lg:order-2">
+                            <TodayCommandCenter data={null} />
+                        </div>
+                        <div className="lg:col-span-2 lg:order-1">
+                            <LiquidityDashboard />
+                        </div>
                     </div>
-
-                    {/* Liquidity Dashboard — main area */}
-                    <div className="lg:col-span-2 lg:order-1">
-                        <LiquidityDashboard />
+                ) : (
+                    /* ── Swarm Tab — live agent visibility ── */
+                    <div className="space-y-6">
+                        <SwarmScoreboard />
+                        <SwarmActivityFeed limit={50} />
                     </div>
-                </div>
+                )}
             </main>
         </div>
     );
 }
-

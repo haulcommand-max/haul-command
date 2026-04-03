@@ -3,12 +3,15 @@
  * 
  * Scans operator accounts for revenue recovery opportunities.
  * Returns prioritized recovery signals with monetizable hooks.
+ * NOW WIRED: Notification brain for auto-outreach via push/email/in-app.
  * Admin-only endpoint.
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { scanForRecovery, estimateTotalRecovery, type RecoverySignal } from '@/lib/engines/recovery-revenue';
+import { decideNotification, type NotificationPayload } from '@/lib/engines/notification-brain';
+import { emitBatch, type NovuEventName, type NovuPayload, type EmitOptions } from '@/lib/novu';
 
 
 export async function POST(req: NextRequest) {
@@ -90,6 +93,84 @@ export async function POST(req: NextRequest) {
             byType[sig.type] = (byType[sig.type] || 0) + 1;
         }
 
+        // ── Notification Brain Outreach ─────────────────────────────────
+        // Route high/critical recovery signals through notification brain
+        // for automated re-engagement via push/email/in-app
+        const RECOVERY_EVENT_MAP: Record<string, string> = {
+            unfinished_claim: 'claim.started',
+            expiring_docs: 'doc.expiring',
+            stale_freshness: 'freshness.cooling',
+            rank_drop: 'rank.dropped',
+            failed_payment: 'payment.failed',
+            expired_boost: 'boost.expiring',
+            dormant_account: 'freshness.cooling',
+            missed_lead_unlock: 'lead.credit_low',
+            incomplete_profile: 'freshness.cooling',
+        };
+
+        const defaultUserState = {
+            notifications_sent_24h: { in_app: 0, push: 0, email: 0, sms: 0, webhook: 0 },
+            user_preferences: {
+                channels_enabled: ['in_app' as const, 'push' as const, 'email' as const],
+                quiet_hours_enabled: true,
+                timezone_offset_hours: -5,
+            },
+        };
+
+        const notifyEligible = allSignals.filter(s =>
+            s.severity === 'critical' || s.severity === 'high'
+        );
+
+        const notifyEvents: Array<{ eventName: NovuEventName; payload: NovuPayload; options: EmitOptions }> = [];
+        let brainApproved = 0;
+        let brainSuppressed = 0;
+
+        for (const sig of notifyEligible.slice(0, 30)) {
+            const eventType = RECOVERY_EVENT_MAP[sig.type] || 'freshness.cooling';
+            const decision = decideNotification(
+                {
+                    event_type: eventType,
+                    recipient_id: sig.operator_id,
+                    recipient_role: 'operator',
+                    priority: sig.severity === 'critical' ? 'critical' : 'high',
+                    data: {
+                        recovery_type: sig.type,
+                        message: sig.message,
+                        action_label: sig.action_label,
+                        action_url: sig.action_url,
+                        revenue_hook: sig.revenue_hook,
+                        estimated_value: sig.estimated_recovery_value,
+                    },
+                },
+                defaultUserState,
+            );
+
+            if (decision.anti_fatigue_ok && decision.channels.length > 0) {
+                brainApproved++;
+                notifyEvents.push({
+                    eventName: eventType as NovuEventName,
+                    payload: {
+                        recovery_type: sig.type,
+                        operator_id: sig.operator_id,
+                        message: sig.message,
+                        action_label: sig.action_label,
+                        action_url: sig.action_url,
+                        revenue_hook: sig.revenue_hook,
+                        estimated_value: sig.estimated_recovery_value,
+                        channels: decision.channels,
+                    },
+                    options: { subscriberId: sig.operator_id },
+                });
+            } else {
+                brainSuppressed++;
+            }
+        }
+
+        // Emit approved recovery notifications
+        const emitResults = notifyEvents.length > 0 ? await emitBatch(notifyEvents) : [];
+        const notifySent = emitResults.filter(r => r.ok).length;
+        const notifyFailed = emitResults.filter(r => !r.ok).length;
+
         return NextResponse.json({
             ok: true,
             stats: {
@@ -98,6 +179,13 @@ export async function POST(req: NextRequest) {
                 total_recoverable_usd: totalRecoverable,
                 by_severity: bySeverity,
                 by_type: byType,
+            },
+            recovery_outreach: {
+                eligible: notifyEligible.length,
+                brain_approved: brainApproved,
+                brain_suppressed: brainSuppressed,
+                notifications_sent: notifySent,
+                notifications_failed: notifyFailed,
             },
             signals: allSignals.slice(0, 50).map(s => ({
                 operator_id: s.operator_id,

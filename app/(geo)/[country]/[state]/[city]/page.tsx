@@ -3,6 +3,9 @@ import React from 'react';
 import Link from 'next/link';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { GeoMeshLinks } from '@/components/seo/GeoMeshLinks';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
+import { ClaimListingCTA, OperatorsNeededCTA, PostLoadCTA } from '@/components/seo/ConversionCTAs';
 import { getCityData, getAllServices } from '@/lib/seo/programmatic-data';
 import { getCityServiceUrl } from '@/lib/seo/geo-mesh';
 import { notFound } from 'next/navigation';
@@ -66,6 +69,38 @@ export default async function CityHubPage({ params }: { params: Promise<{ countr
 
             {/* Geo Mesh Internal Linking */}
             <GeoMeshLinks currentCity={cityData} />
+
+            {/* SchemaOrchestrator — rich results */}
+            <SchemaOrchestrator
+                type="CityDirectory"
+                data={{
+                    city: cityData.city,
+                    state: state.toUpperCase(),
+                    url: `https://haulcommand.com/${country}/${state}/${citySlug}`,
+                    driverCount: 0,
+                    loadCount: 0,
+                    breadcrumbs: [
+                        { name: 'Home', url: 'https://haulcommand.com' },
+                        { name: country.toUpperCase(), url: `https://haulcommand.com/${country}` },
+                        { name: state.toUpperCase(), url: `https://haulcommand.com/${country}/${state}` },
+                        { name: cityData.city, url: `https://haulcommand.com/${country}/${state}/${citySlug}` },
+                    ],
+                }}
+            />
+
+            {/* Snippet Injector — featured snippet capture */}
+            <SnippetInjector
+                blocks={['definition', 'faq', 'cost_range']}
+                term="pilot car"
+                geo={`${cityData.city}, ${state.toUpperCase()}`}
+                country={country.toUpperCase()}
+            />
+
+            {/* Conversion CTAs */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 32 }}>
+                <PostLoadCTA corridorName={`${cityData.city}, ${state.toUpperCase()}`} variant="card" />
+                <OperatorsNeededCTA surfaceName={`${cityData.city}, ${state.toUpperCase()}`} />
+            </div>
         </div>
     );
 }

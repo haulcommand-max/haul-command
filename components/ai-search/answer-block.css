@@ -1,0 +1,130 @@
+/* components/ai-search/answer-block.css
+   Premium styling for citation-ready AI answer blocks.
+   Steve Jobs bias: clean, inevitable, no clutter. */
+
+.hc-answer-block {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hc-answer-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
+}
+
+.hc-answer-question {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.hc-answer-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin: 0 0 16px;
+}
+
+.hc-answer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.hc-answer-meta a {
+  color: #818cf8;
+  text-decoration: none;
+}
+.hc-answer-meta a:hover { text-decoration: underline; }
+
+.hc-answer-confidence {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+.hc-answer-expand-btn {
+  background: none;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.hc-answer-expand-btn:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.hc-answer-depth {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(99, 102, 241, 0.15);
+  color: #94a3b8;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.hc-answer-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.hc-answer-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.hc-answer-cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+.hc-answer-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.hc-answer-cta-secondary:hover {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+@media (max-width: 640px) {
+  .hc-answer-block { padding: 16px 18px; }
+  .hc-answer-actions { flex-direction: column; }
+  .hc-answer-meta { flex-direction: column; gap: 6px; }
+}

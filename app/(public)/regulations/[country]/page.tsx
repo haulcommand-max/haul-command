@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import MarketModeCTA from '@/components/market/MarketModeCTA';
+import VoiceFaqSchema, { QuickAnswerBlock } from '@/components/seo/VoiceFaqSchema';
+import DataTeaserCard from '@/components/data/DataTeaserCard';
 import {
     REGULATIONS,
     getRegulation,
@@ -194,6 +196,13 @@ export default async function CountryRegulationPage({
                 >
                     {reg.voiceAnswer}
                 </div>
+
+                {/* Voice-intent Quick Answers — SGE/featured snippet capture */}
+                <QuickAnswerBlock
+                    geoEntity={reg.countryName}
+                    pageType="regulation"
+                    maxQuestions={4}
+                />
             </div>
 
             {/* Standard Vehicle Limits */}
@@ -512,6 +521,11 @@ export default async function CountryRegulationPage({
                 </div>
             </section>
 
+            {/* Data Intelligence Upsell */}
+            <section style={{ marginBottom: '2rem' }}>
+                <DataTeaserCard productType="rate_benchmark" context={{ country: reg.countryName }} />
+            </section>
+
             {/* CTA — Market-mode aware */}
             <MarketModeCTA
                 countryCode={reg.countryCode}
@@ -533,6 +547,24 @@ export default async function CountryRegulationPage({
                         ],
                     }),
                 }}
+            />
+            {/* Voice-Intent FAQ Schema (expanded from voice intent engine) */}
+            <VoiceFaqSchema
+                geoEntity={reg.countryName}
+                pageType="regulation"
+                maxQuestions={6}
+                customQA={[
+                    {
+                        question: `Do I need a ${term} in ${reg.countryName}?`,
+                        answer: reg.voiceAnswer,
+                    },
+                    {
+                        question: `What are the escort requirements in ${reg.countryName}?`,
+                        answer: reg.escortThresholds
+                            .map(t => `${t.condition}: ${t.escortsRequired} ${t.escortType} escort(s)${t.notes ? ` (${t.notes})` : ''}`)
+                            .join('. '),
+                    },
+                ]}
             />
             {/* Structured Data — FAQPage + SpeakableSpecification */}
             <script

@@ -71,7 +71,11 @@ export default function EnhancedFooter() {
                                 { href: '/leaderboards', label: 'Leaderboard' },
                                 { href: '/corridor', label: 'Corridor Intelligence' },
                                 { href: '/rates', label: 'Pilot Car Rates (Free)' },
+                                { href: '/tools', label: 'All Tools (18+)' },
+                                { href: '/tools/instant-quote', label: 'Instant Quote →' },
                                 { href: '/tools/permit-checker', label: 'Permit Checker (Free)' },
+                                { href: '/tools/escort-calculator', label: 'Escort Calculator' },
+                                { href: '/blog', label: 'Industry Intel Blog' },
                             ].map(l => (
                                 <Link aria-label="Navigation Link" key={l.href} href={l.href} style={{ fontSize: 14, lineHeight: '28px', color: '#6b7280', textDecoration: 'none', transition: 'color 0.15s' }}
                                     onMouseEnter={e => (e.currentTarget.style.color = '#d1d5db')}

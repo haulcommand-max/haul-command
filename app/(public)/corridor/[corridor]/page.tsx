@@ -14,6 +14,7 @@ import { DensityScoreboard } from '@/components/market/DensityScoreboard';
 import { OutcomeTimeline } from '@/components/outcomes/OutcomeEngine';
 import { NearbySupportModule, SupportBundleCTA } from '@/components/infrastructure/RouteSupportEngine';
 import { CorridorCommunityFeed } from '@/components/social/CorridorCommunityFeed';
+import DataTeaserCard from '@/components/data/DataTeaserCard';
 
 interface Props {
     params: Promise<{ corridor: string }>;
@@ -405,6 +406,11 @@ export default async function CorridorPage({ params }: Props) {
                         variant="banner"
                         showValueContrast={false}
                     />
+
+                    {/* ===== DATA INTELLIGENCE UPSELL ===== */}
+                    <section>
+                        <DataTeaserCard productType="corridor_snapshot" context={{ corridor: corridorDisplay }} />
+                    </section>
 
                     {/* CTAs */}
                     <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">

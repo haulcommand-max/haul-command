@@ -3,6 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { fireSwarmTrigger } from '@/lib/swarm/use-swarm-trigger';
+
+// Fire swarm trigger on tools landing page load
+if (typeof window !== 'undefined') {
+  fireSwarmTrigger('high_intent_page', { page_type: 'tools', slug: 'tools' });
+}
 
 const TOOLS = [
     {
@@ -84,6 +90,56 @@ const TOOLS = [
         href: '/tools/terminology',
         icon: '🌐', badges: ['Premium', '120 Countries'],
         color: '#F1A91B',
+    },
+    {
+        title: 'Instant Escort Quote',
+        description: 'Enter load dimensions, route, and urgency — get instant escort pricing, escort counts, permit estimates, and matched operator availability in 30 seconds.',
+        href: '/tools/instant-quote',
+        icon: '⚡', badges: ['Free', '120 Countries', 'Instant'],
+        color: '#22d3ee',
+        featured: true,
+    },
+    {
+        title: 'Escort Cost Calculator',
+        description: 'Calculate total escort vehicle costs including daily rates, mileage, fuel surcharges, and multi-escort scenarios for any route.',
+        href: '/tools/escort-calculator',
+        icon: '🧮', badges: ['Free', 'Instant'],
+        color: '#a78bfa',
+    },
+    {
+        title: 'Cost Calculator',
+        description: 'Full cost breakdown for oversize load moves — permits, escorts, fuel, insurance, and equipment. Compare quotes against market rates.',
+        href: '/tools/cost-calculator',
+        icon: '💲', badges: ['Free', 'Comprehensive'],
+        color: '#34d399',
+    },
+    {
+        title: 'Cross-Border Intelligence',
+        description: 'Check cross-border requirements and regulatory differences for multi-country oversize load movements. Compare permit systems side-by-side.',
+        href: '/tools/cross-border',
+        icon: '🌍', badges: ['Free', '120 Countries'],
+        color: '#fb923c',
+    },
+    {
+        title: 'Load Analyzer',
+        description: 'Classify oversize loads by dimensions, weight, and legal category. Get escort requirements, permit type, and state-specific compliance data.',
+        href: '/tools/load-analyzer',
+        icon: '📐', badges: ['Free', 'Instant'],
+        color: '#f87171',
+    },
+    {
+        title: 'Permit Filing Assistant',
+        description: 'Step-by-step permit filing guide with state-specific forms, fee schedules, processing times, and submission requirements.',
+        href: '/tools/permit-filing',
+        icon: '📝', badges: ['Free', 'State-Specific'],
+        color: '#60a5fa',
+    },
+    {
+        title: 'Route Survey Planner',
+        description: 'Plan pre-move route surveys with bridge clearances, turn restrictions, utility contacts, and obstruction mapping.',
+        href: '/tools/route-survey',
+        icon: '📍', badges: ['Free', 'Planning'],
+        color: '#c084fc',
     },
 ];
 

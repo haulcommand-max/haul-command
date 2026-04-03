@@ -3,6 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { GeoMeshLinks } from '@/components/seo/GeoMeshLinks';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
 import { getCityData, getServiceData, getProviderStats } from '@/lib/seo/programmatic-data';
 import { notFound } from 'next/navigation';
 
@@ -109,6 +111,25 @@ export default async function CityServicePage({ params }: { params: Promise<{ co
 
             {/* Geo Mesh Internal Linking */}
             <GeoMeshLinks currentCity={cityData} serviceSlug={serviceSlug} />
+
+            {/* Snippet Injector — featured snippet capture */}
+            <SnippetInjector
+                blocks={['definition', 'faq', 'cost_range', 'steps']}
+                term={serviceData.name.toLowerCase()}
+                geo={`${cityData.city}, ${state.toUpperCase()}`}
+                country={country.toUpperCase()}
+            />
+
+            {/* Conversion CTAs */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 32 }}>
+                <PostLoadCTA corridorName={`${cityData.city}, ${state.toUpperCase()}`} variant="card" />
+                <OperatorsNeededCTA surfaceName={`${cityData.city}, ${state.toUpperCase()}`} />
+            </div>
+
+            {/* Claim CTA */}
+            <div style={{ marginTop: 24 }}>
+                <ClaimListingCTA entityId="new" companyName={undefined} variant="banner" />
+            </div>
         </div>
     );
 }

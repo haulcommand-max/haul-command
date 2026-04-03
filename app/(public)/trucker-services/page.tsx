@@ -5,6 +5,9 @@ import {
   Phone, Package, Snowflake, Eye, Building, Car, Gauge, HardHat,
   ShoppingCart, AlertTriangle, Navigation, Zap, FileText, Search
 } from 'lucide-react';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 // ═══════════════════════════════════════════════════════════════
 // TRUCKER SERVICES DIRECTORY — Powered by public.places + place_type_metadata
@@ -176,6 +179,20 @@ export default async function TruckerServicesPage() {
         </div>
       </div>
 
+      {/* ── AI Search Answer Block ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 0' }}>
+        <StaticAnswerBlock
+          question="What trucker services does Haul Command cover?"
+          answer="Haul Command's Trucker Services Directory covers 46+ categories including truck stops, towing and wrecker services, truck and trailer repair, tire shops, CAT scale locations, weigh stations, mobile fueling, truck wash facilities, transportation brokers, and specialized services like pilot car operators, reefer repair, and hazmat spill response. Coverage spans 50+ US states and 120 countries."
+          source="Haul Command"
+          sourceUrl="https://www.haulcommand.com/trucker-services"
+          lastVerified="2026-04-03"
+          confidence="verified_current"
+          ctaLabel="Browse All Categories"
+          ctaUrl="/trucker-services"
+        />
+      </div>
+
       {/* ── Category Groups ──────────────────────────────── */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
 
@@ -260,6 +277,11 @@ export default async function TruckerServicesPage() {
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* ── AdGrid — Trucker Services Mid ── */}
+        <div style={{ marginTop: 24, marginBottom: 24 }}>
+          <AdGridSlot zone="trucker_services_mid" />
         </div>
 
         {/* ── Bottom CTA ──────────────────────────────────── */}

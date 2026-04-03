@@ -7,6 +7,11 @@ import { MapPin, Phone, Shield, Star, Truck, Clock, Search, ChevronRight, Globe,
 import { NativeAdCard } from '@/components/ads/NativeAdCard';
 import { EmailSubscribe } from '@/components/blog/EmailSubscribe';
 import { ShareButton } from '@/components/social/ShareButton';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { PostLoadCTA, OperatorsNeededCTA, ClaimListingCTA } from '@/components/seo/ConversionCTAs';
+import { SnippetInjector } from '@/components/seo/SnippetInjector';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 // ── Top 50 US cities for programmatic generation ──
 const TOP_US_CITIES: Record<string, { name: string; state: string; stateCode: string; lat: number; lng: number }> = {
@@ -284,14 +289,17 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           </div>
         </section>
 
-        {/* ── Requirements & Compliance ── */}
+        {/* ── Requirements & Compliance with AI Answer Block ── */}
         <section className="p-8 bg-hc-surface border border-hc-gold-500/20 rounded-2xl space-y-4">
-          <h2 className="text-xl font-bold text-white">{city.state} Escort Vehicle Requirements</h2>
-          <p className="text-sm text-hc-muted">
-            {city.state} has specific regulations for pilot car and escort vehicle operations. Requirements typically
-            include proper vehicle equipment (flags, signs, amber lights), insurance coverage, and may require
-            state-specific certification or training. Load dimensions that trigger escort requirements vary.
-          </p>
+          <StaticAnswerBlock
+            question={`Do you need a pilot car for oversize loads in ${city.state}?`}
+            answer={`${city.state} has specific regulations for pilot car and escort vehicle operations. Requirements typically include proper vehicle equipment (flags, signs, amber lights), insurance coverage, and may require state-specific certification or training. Load dimensions that trigger escort requirements vary by width, height, length, and weight.`}
+            confidence="verified_but_review_due"
+            source={`${city.stateCode} DOT`}
+            sourceUrl={`/requirements/${city.stateCode.toLowerCase()}/escort-vehicle-rules`}
+            ctaLabel={`View ${city.stateCode} Requirements`}
+            ctaUrl={`/requirements/${city.stateCode.toLowerCase()}/escort-vehicle-rules`}
+          />
           <Link
             href={`/requirements?state=${city.stateCode}`}
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-hc-elevated text-hc-gold-500 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-hc-gold-500/10 transition-all"
@@ -394,6 +402,15 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           />
         </div>
 
+        {/* ── Conversion CTAs — from SEO arsenal ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PostLoadCTA corridorName={`${city.name}, ${city.stateCode}`} variant="card" />
+          <OperatorsNeededCTA surfaceName={`${city.name}, ${city.stateCode}`} />
+        </div>
+
+        {/* ── AdGrid — Near Me Bottom ── */}
+        <AdGridSlot zone="near_me_bottom" />
+
         {/* ── Cross-links (SEO interlinking) ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
           {[
@@ -411,6 +428,14 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
             </Link>
           ))}
         </div>
+
+        {/* ── Snippet Injector — featured snippet capture ── */}
+        <SnippetInjector
+          blocks={['definition', 'faq', 'cost_range', 'regulation_summary']}
+          term="pilot car"
+          geo={city.state}
+          country="US"
+        />
       </div>
     </div>
   );

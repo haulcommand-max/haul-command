@@ -1,0 +1,23 @@
+/* components/swarm/swarm.css */
+.swarm-feed { background: rgba(15,23,42,0.95); border: 1px solid rgba(99,102,241,0.15); border-radius: 12px; padding: 20px; }
+.swarm-feed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.swarm-feed-header h2 { color: #f1f5f9; font-size: 1.1rem; margin: 0; }
+.swarm-feed-filter { background: rgba(30,41,59,0.8); border: 1px solid rgba(99,102,241,0.2); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; }
+.swarm-feed-loading, .swarm-feed-empty { color: #64748b; padding: 24px; text-align: center; }
+.swarm-feed-list { display: flex; flex-direction: column; gap: 8px; max-height: 500px; overflow-y: auto; }
+.swarm-feed-entry { background: rgba(30,41,59,0.6); border: 1px solid rgba(99,102,241,0.1); border-radius: 8px; padding: 12px 14px; }
+.swarm-entry-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.swarm-entry-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.swarm-entry-agent { color: #e2e8f0; font-weight: 600; font-size: 0.85rem; text-transform: capitalize; }
+.swarm-entry-domain { color: #818cf8; font-size: 0.75rem; background: rgba(99,102,241,0.1); padding: 2px 8px; border-radius: 4px; }
+.swarm-entry-time { color: #475569; font-size: 0.75rem; margin-left: auto; }
+.swarm-entry-action { color: #cbd5e1; font-size: 0.85rem; line-height: 1.4; }
+.swarm-entry-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; font-size: 0.75rem; color: #64748b; }
+.swarm-entry-revenue { color: #10b981; font-weight: 600; }
+.swarm-scoreboard { background: rgba(15,23,42,0.95); border: 1px solid rgba(99,102,241,0.15); border-radius: 12px; padding: 20px; }
+.swarm-scoreboard-title { color: #f1f5f9; font-size: 1.1rem; margin: 0 0 16px; }
+.swarm-scoreboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.swarm-metric-card { background: rgba(30,41,59,0.6); border: 1px solid rgba(99,102,241,0.1); border-radius: 8px; padding: 14px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.swarm-metric-icon { font-size: 1.4rem; }
+.swarm-metric-value { color: #f1f5f9; font-size: 1.3rem; font-weight: 700; }
+.swarm-metric-label { color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }

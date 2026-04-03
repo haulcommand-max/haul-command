@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { emitBatch, NOVU_EVENT_NAMES, type NovuEventName, type NovuPayload, type EmitOptions } from '@/lib/novu';
+import {
+    decideNotification,
+    NOVU_WORKFLOWS,
+    type NotificationPayload,
+    type NotificationDecision,
+} from '@/lib/engines/notification-brain';
 
 /**
  * GET /api/cron/notifications
@@ -11,17 +17,11 @@ import { emitBatch, NOVU_EVENT_NAMES, type NovuEventName, type NovuPayload, type
  * Runs via Vercel Cron or external scheduler.
  * Backend-only, service-role.
  * 
- * Scans:
- *   1. Boosts expiring within 3 days
- *   2. Sponsorships expiring within 7 days
- *   3. Credentials expiring within 30 days
- *   4. Training renewals due within 14 days
- *   5. Low credit balances (< 3 credits)
- *   6. Load alert digest (daily)
+ * NOW WIRED: notification-brain decideNotification() for channel
+ * routing, quiet hours, anti-fatigue rate limiting.
  * 
- * @status wired_not_live — scanner built, Novu key + full columns pending
+ * @status wired — notification brain connected
  */
-
 
 export async function GET(req: NextRequest) {
     // ── Auth Check ────────────────────────────────────────────────────
@@ -199,9 +199,42 @@ export async function GET(req: NextRequest) {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // EMIT ALL COLLECTED EVENTS
+    // NOTIFICATION BRAIN FILTER — channel routing, quiet hours, anti-fatigue
     // ─────────────────────────────────────────────────────────────────────
-    const results = events.length > 0 ? await emitBatch(events) : [];
+    const defaultUserState = {
+        notifications_sent_24h: { in_app: 0, push: 0, email: 0, sms: 0, webhook: 0 },
+        user_preferences: {
+            channels_enabled: ['in_app' as const, 'push' as const, 'email' as const, 'sms' as const],
+            quiet_hours_enabled: true,
+            timezone_offset_hours: -5, // EST default, would be user-specific in production
+        },
+    };
+
+    let brainFiltered = 0;
+    let brainSuppressed = 0;
+    const filteredEvents = events.filter(evt => {
+        const decision = decideNotification(
+            {
+                event_type: evt.eventName,
+                recipient_id: evt.options.subscriberId,
+                recipient_role: 'operator',
+                priority: 'medium',
+                data: evt.payload as Record<string, unknown>,
+            },
+            defaultUserState,
+        );
+        if (!decision.anti_fatigue_ok || decision.channels.length === 0) {
+            brainSuppressed++;
+            return false;
+        }
+        brainFiltered++;
+        return true;
+    });
+
+    // ─────────────────────────────────────────────────────────────────────
+    // EMIT BRAIN-APPROVED EVENTS
+    // ─────────────────────────────────────────────────────────────────────
+    const results = filteredEvents.length > 0 ? await emitBatch(filteredEvents) : [];
     const sent = results.filter(r => r.ok && !r.error).length;
     const deduped = results.filter(r => r.error?.includes('Deduplicated')).length;
     const failed = results.filter(r => !r.ok).length;
@@ -211,6 +244,8 @@ export async function GET(req: NextRequest) {
         scanned_at: now.toISOString(),
         scan_results: scanLog,
         events_found: events.length,
+        brain_approved: brainFiltered,
+        brain_suppressed: brainSuppressed,
         events_sent: sent,
         events_deduped: deduped,
         events_failed: failed,

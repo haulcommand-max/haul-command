@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import ClaimStatusBanner from './ClaimStatusBanner';
+import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
 
 export const metadata: Metadata = {
   title: 'Claim Your Listing — Free Verified Profile | Haul Command',
@@ -92,6 +93,11 @@ export default async function ClaimPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Swarm trigger: high-intent claim page */}
+      <SwarmTriggerPixel
+        trigger="high_intent_page"
+        payload={{ page_type: 'claim', slug: 'claim', country_code: 'US' }}
+      />
       {/* Auth-aware claim status banner */}
       {claimData && (
         <ClaimStatusBanner

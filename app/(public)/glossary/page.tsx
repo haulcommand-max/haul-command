@@ -3,6 +3,9 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { ScrollReveal, AnimatedCounter, StickyAlphabetNav, GlossarySearch } from '@/app/components/glossary/GlossaryAnimations';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Glossary | 3,000+ Terms, Definitions & Rules | Haul Command',
@@ -372,6 +375,27 @@ export default async function GlossaryHubPage() {
                     </div>
                 </ScrollReveal>
 
+                {/* ══════════ AI SEARCH ANSWER BLOCK ══════════ */}
+                <ScrollReveal delay={60} className="mb-14">
+                    <div className="max-w-3xl mx-auto">
+                        <StaticAnswerBlock
+                            question="What is a pilot car in heavy haul trucking?"
+                            answer="A pilot car (also called an escort vehicle or lead car) is a vehicle that travels ahead of or behind an oversize or overweight load to warn other drivers, monitor clearances, and ensure safe passage. Requirements for pilot cars vary by state and country, with most jurisdictions requiring escorts for loads exceeding specific width, height, or length thresholds."
+                            source="Haul Command Glossary"
+                            sourceUrl="https://www.haulcommand.com/glossary/pilot-car"
+                            lastVerified="2026-04-03"
+                            confidence="verified_current"
+                            ctaLabel="Browse All 3,000+ Terms"
+                            ctaUrl="/glossary"
+                        />
+                    </div>
+                </ScrollReveal>
+
+                {/* ══════════ AdGrid — Glossary Mid ══════════ */}
+                <div className="mb-10">
+                    <AdGridSlot zone="glossary_mid" />
+                </div>
+
                 {/* ══════════ TERMS GRID BY LETTER ══════════ */}
                 <div>
                     <h2 className="text-[11px] font-black tracking-[0.2em] text-white/40 uppercase mb-6 px-1 flex items-center gap-2">
@@ -436,6 +460,11 @@ export default async function GlossaryHubPage() {
                             </div>
                         ))
                     }
+                </div>
+
+                {/* ══════════ AdGrid — Glossary Bottom ══════════ */}
+                <div className="mt-10 mb-4">
+                    <AdGridSlot zone="glossary_bottom" />
                 </div>
 
                 {/* ══════════ BOTTOM CTA BANNER ══════════ */}

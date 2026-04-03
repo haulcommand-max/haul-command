@@ -2,6 +2,11 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import SaveButton from '@/components/capture/SaveButton';
+import { analyzeRoute, type RouteIntelligenceResult } from '@/lib/routes/route-intelligence-engine';
+import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
+import '@/components/ai-search/answer-block.css';
+import { PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -51,8 +56,35 @@ export default async function CorridorIntelPage({ params }: Props) {
     .order('rating', { ascending: false })
     .limit(6);
 
+  // ── Route Intelligence Engine Computation ──────────────────────────
+  const routeIntel = analyzeRoute(
+    corridor.origin_state,
+    corridor.destination_state,
+    [corridor.origin_state, corridor.destination_state].filter(Boolean),
+    { widthM: 4.0, heightM: 4.5, lengthM: 25, weightT: 50, description: 'Standard oversize load' },
+  );
+
+  const riskColors: Record<string, string> = {
+    A: '#22c55e', B: '#84cc16', C: '#f59e0b', D: '#ef4444', F: '#dc2626',
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* JSON-LD */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": `${corridor.origin_state} to ${corridor.destination_state} Escort Corridor Intel`,
+        "url": `https://haulcommand.com/corridors/${slug}`,
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+            { "@type": "ListItem", "position": 2, "name": "Corridors", "item": "https://haulcommand.com/corridors" },
+            { "@type": "ListItem", "position": 3, "name": `${corridor.origin_state} to ${corridor.destination_state}` },
+          ]
+        }
+      }) }} />
       {/* Header */}
       <section className="py-12 px-4 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
@@ -79,14 +111,98 @@ export default async function CorridorIntelPage({ params }: Props) {
               <span className="text-amber-400 font-bold">{corridor.operator_count ?? 0}</span>
               <span className="text-gray-600 ml-1">active escorts</span>
             </div>
+            <div>
+              <span style={{ color: riskColors[routeIntel.riskGrade] }} className="font-bold">Grade {routeIntel.riskGrade}</span>
+              <span className="text-gray-600 ml-1">risk</span>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* AI Answer Block — citation-ready for search engines */}
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <StaticAnswerBlock
+          question={`What are the escort requirements for the ${corridor.origin_state} to ${corridor.destination_state} corridor?`}
+          answer={`The ${corridor.origin_state} to ${corridor.destination_state} corridor requires ${routeIntel.totalEscortsNeeded} escort vehicle(s) for standard oversize loads. Estimated total cost is $${(routeIntel.estimatedTotalPermitCost + routeIntel.estimatedTotalEscortCost).toLocaleString()} including permits and escorts. Risk grade: ${routeIntel.riskGrade}.`}
+          confidence="verified_but_review_due"
+          ctaLabel="Get a Quote for This Route"
+          ctaUrl={`/route-check?q=${encodeURIComponent(`Oversize load from ${corridor.origin_state} to ${corridor.destination_state}`)}`}
+        />
+      </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Main intel */}
           <div className="md:col-span-2">
+            {/* ── ROUTE INTELLIGENCE PANEL ─────────────────────────── */}
+            <div className="mb-8 p-5 bg-white/[0.03] border border-white/10 rounded-2xl">
+              <h2 className="text-sm font-bold text-amber-400 uppercase tracking-widest mb-4">
+                ⚡ Route Intelligence (Computed)
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="text-center p-3 bg-white/5 rounded-xl">
+                  <div className="text-2xl font-black text-white">{routeIntel.totalDistanceKm.toLocaleString()}</div>
+                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">km total</div>
+                </div>
+                <div className="text-center p-3 bg-white/5 rounded-xl">
+                  <div className="text-2xl font-black text-white">{routeIntel.totalEscortsNeeded}</div>
+                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">escorts needed</div>
+                </div>
+                <div className="text-center p-3 bg-white/5 rounded-xl">
+                  <div className="text-2xl font-black text-amber-400">${(routeIntel.estimatedTotalPermitCost + routeIntel.estimatedTotalEscortCost).toLocaleString()}</div>
+                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">est. total cost</div>
+                </div>
+                <div className="text-center p-3 bg-white/5 rounded-xl">
+                  <div className="text-2xl font-black" style={{ color: riskColors[routeIntel.riskGrade] }}>{routeIntel.riskGrade}</div>
+                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">risk grade</div>
+                </div>
+              </div>
+
+              {/* Segment Details */}
+              {routeIntel.segments.map((seg, i) => (
+                <div key={seg.segmentId} className="mb-3 p-3 bg-white/[0.02] border border-white/5 rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-white">{seg.jurisdiction} Segment</span>
+                    <span className="text-[10px] font-bold text-gray-500">{seg.distanceKm} km · {seg.estimatedHours.toFixed(1)}h</span>
+                  </div>
+                  <div className="text-xs text-gray-400 mb-1">{seg.escortRequirement.reason}</div>
+                  <div className="flex gap-2 flex-wrap">
+                    <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                      {seg.escortRequirement.escortsNeeded} escort(s) · {seg.escortRequirement.escortType}
+                    </span>
+                    {seg.permitRequired && (
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        Permit: ~${seg.permitEstimatedCost}
+                      </span>
+                    )}
+                    {seg.travelRestrictions.map((r, ri) => (
+                      <span key={ri} className={`text-[9px] font-bold px-2 py-0.5 rounded ${
+                        r.severity === 'blocking' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                      }`}>
+                        {r.description}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* Warnings + Recommendations */}
+              {routeIntel.criticalWarnings.length > 0 && (
+                <div className="mt-4 p-3 bg-red-500/5 border border-red-500/15 rounded-lg">
+                  <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-2">Critical Warnings</div>
+                  {routeIntel.criticalWarnings.map((w, i) => (
+                    <div key={i} className="text-xs text-gray-400 mb-1">{w}</div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 p-3 bg-green-500/5 border border-green-500/15 rounded-lg">
+                <div className="text-[10px] font-bold text-green-400 uppercase tracking-wider mb-2">Recommendations</div>
+                {routeIntel.recommendations.map((r, i) => (
+                  <div key={i} className="text-xs text-gray-400 mb-1">✓ {r}</div>
+                ))}
+              </div>
+            </div>
+
             {corridor.intel_content ? (
               <div className="prose prose-invert prose-sm max-w-none
                 prose-headings:text-white prose-headings:font-bold
@@ -158,17 +274,17 @@ export default async function CorridorIntelPage({ params }: Props) {
               )}
             </div>
 
-            {/* Post a load */}
-            <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-              <h2 className="font-bold text-sm mb-2">Need an Escort on This Corridor?</h2>
-              <p className="text-xs text-gray-500 mb-3">Post a load and get responses from verified operators in minutes.</p>
-              <a
-                href="/loads/new"
-                className="w-full block text-center py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors"
-              >
-                Post a Load
-              </a>
-            </div>
+            {/* Post a load — Conversion CTA */}
+            <PostLoadCTA corridorName={`${corridor.origin_state} → ${corridor.destination_state}`} variant="card" />
+
+            {/* Operators needed — Conversion CTA */}
+            <OperatorsNeededCTA
+              surfaceName={`${corridor.origin_state}→${corridor.destination_state}`}
+              operatorsNeeded={Math.max(5, 20 - (corridor.operator_count || 0))}
+            />
+
+            {/* AdGrid — Corridor Sidebar */}
+            <AdGridSlot zone="corridor_sidebar" />
           </div>
         </div>
       </div>

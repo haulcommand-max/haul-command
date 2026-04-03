@@ -25,15 +25,28 @@ export default function BuyButton({ productId, productName, price, purchaseType,
 
     setLoading(true);
     try {
-      const res = await fetch('/api/data/checkout', {
+      // Try canonical Stripe data-checkout route first (supports full catalog)
+      let res = await fetch('/api/stripe/data-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sku: productId,
+          product_id: productId,
           email,
-          billing_interval: purchaseType === 'subscription' ? 'monthly' : undefined,
         }),
       });
+
+      // Fallback to legacy route for enterprise SKUs
+      if (!res.ok) {
+        res = await fetch('/api/data/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sku: productId,
+            email,
+            billing_interval: purchaseType === 'subscription' ? 'monthly' : undefined,
+          }),
+        });
+      }
 
       const data = await res.json();
 

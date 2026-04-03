@@ -63,16 +63,16 @@ type CorridorHeat = 'HOT' | 'WARM' | 'COOL';
 
 // ── Seed operators ──────────────────────────────────────────────
 const SEED_OPERATORS: Operator[] = [
-  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true, trustScore: 94 },
-  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true, trustScore: 82 },
-  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true, trustScore: 38 },
-  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true, trustScore: 91 },
-  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true, trustScore: 77 },
-  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true, trustScore: 28 },
-  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true, trustScore: 85 },
-  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true, trustScore: 63 },
-  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true, trustScore: 15 },
-  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true, trustScore: 79 },
+  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true, trustScore: 94, reviewCount: 48, avgRating: 4.9, reliabilityScore: 97, completionRate: 0.99 },
+  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true, trustScore: 82, reviewCount: 23, avgRating: 4.7, reliabilityScore: 89, completionRate: 0.96 },
+  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true, trustScore: 38, reviewCount: 4, avgRating: 3.8, reliabilityScore: 62 },
+  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true, trustScore: 91, reviewCount: 35, avgRating: 4.8, reliabilityScore: 95, completionRate: 0.98 },
+  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true, trustScore: 77, reviewCount: 19, avgRating: 4.5, reliabilityScore: 84, completionRate: 0.93 },
+  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true, trustScore: 28, reviewCount: 2, avgRating: 3.5, reliabilityScore: 55 },
+  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true, trustScore: 85, reviewCount: 28, avgRating: 4.7, reliabilityScore: 91, completionRate: 0.97 },
+  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true, trustScore: 63, reviewCount: 12, avgRating: 4.3, reliabilityScore: 78, completionRate: 0.91 },
+  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true, trustScore: 15, reviewCount: 1, avgRating: 3.0, reliabilityScore: 40 },
+  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true, trustScore: 79, reviewCount: 22, avgRating: 4.6, reliabilityScore: 86, completionRate: 0.95 },
 ];
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -89,6 +89,8 @@ interface Operator {
   corridorRank?: number; avgResponse?: number; rate?: number; jobCount?: number;
   corridorHeat?: CorridorHeat; corridors?: string[];
   sponsored?: boolean; isSeed?: boolean; trustScore?: number; slug?: string;
+  // Reputation engine fields
+  reviewCount?: number; avgRating?: number; reliabilityScore?: number; completionRate?: number;
 }
 
 interface Filters {
@@ -264,6 +266,28 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
           }}>{SERVICE_LABELS[s] || s}</span>
         ))}
       </div>
+
+      {/* Reputation Row — Star rating + review count + reliability */}
+      {(op.reviewCount != null && op.reviewCount > 0) && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          {op.avgRating != null && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ fontSize: 13, color: '#fbbf24' }}>{'★'.repeat(Math.floor(op.avgRating))}{op.avgRating % 1 >= 0.5 ? '½' : ''}</span>
+              <span style={{ fontSize: 11, fontWeight: 800, color: T.text }}>{op.avgRating.toFixed(1)}</span>
+            </div>
+          )}
+          <span style={{ fontSize: 10, color: T.muted }}>({op.reviewCount} review{op.reviewCount !== 1 ? 's' : ''})</span>
+          {op.reliabilityScore != null && op.reliabilityScore >= 70 && (
+            <span style={{
+              fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 4,
+              background: op.reliabilityScore >= 90 ? T.greenDim : T.goldDim,
+              border: `1px solid ${op.reliabilityScore >= 90 ? 'rgba(34,197,94,0.20)' : T.goldBorder}`,
+              color: op.reliabilityScore >= 90 ? T.green : T.gold,
+              textTransform: 'uppercase', letterSpacing: '0.05em',
+            }}>{op.reliabilityScore}% Reliable</span>
+          )}
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div style={{

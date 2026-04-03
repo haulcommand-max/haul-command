@@ -1,5 +1,25 @@
 // app/robots.ts — Crawler permissions + AI engine rules
+// AI Search Discoverability Layer: deliberate AI crawler access
 import { MetadataRoute } from 'next';
+
+const PUBLIC_HIGH_VALUE_PATHS = [
+  '/tools/',
+  '/directory/',
+  '/escort-requirements/',
+  '/glossary/',
+  '/blog/',
+  '/corridors/',
+  '/roles/',
+  '/permits/',
+  '/rates/',
+  '/regulatory-db/',
+  '/requirements/',
+  '/services/',
+  '/industry/',
+  '/compare/',
+  '/alternatives/',
+  '/near/',
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,18 +30,26 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/',
           '/admin/',
-          '/inbox',
-          '/dashboard',
-          '/settings',
+          '/inbox/',
+          '/dashboard/',
+          '/settings/',
           '/_next/',
+          '/dev/',
+          '/autonomous/',
         ],
       },
-      // Let AI crawlers index all public content — AI SEO strategy
-      { userAgent: 'GPTBot', allow: ['/tools/', '/directory/', '/escort-requirements', '/glossary', '/blog', '/regulations'] },
-      { userAgent: 'ClaudeBot', allow: ['/tools/', '/directory/', '/escort-requirements', '/glossary', '/blog'] },
-      { userAgent: 'PerplexityBot', allow: ['/tools/', '/directory/', '/escort-requirements', '/glossary'] },
+      // ── AI Answer Engines — full access to public commercial + knowledge surfaces ──
+      { userAgent: 'GPTBot', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'OAI-SearchBot', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'ChatGPT-User', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'ClaudeBot', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'PerplexityBot', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'Applebot-Extended', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'cohere-ai', allow: PUBLIC_HIGH_VALUE_PATHS },
+      // ── Traditional Search Engines — full access ──
       { userAgent: 'Googlebot', allow: '/' },
       { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'YandexBot', allow: '/' },
     ],
     sitemap: [
       'https://www.haulcommand.com/sitemap.xml',
