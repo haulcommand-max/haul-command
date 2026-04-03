@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata: Metadata = {
-    title: 'Bridge Weight Overlay | Haul Command',
-    description: 'Cross-reference axle weight against bridge load capacity ratings.',
+    title: 'Bridge Weight Overlay | Heavy Haul Route Planning | Haul Command',
+    description: 'Cross-reference axle weight against bridge load capacity ratings along your oversize route. NBI and DOT bridge data for heavy haul planning.',
+    alternates: { canonical: 'https://haulcommand.com/tools/bridge-weight' },
 };
 
 export default function BridgeWeightPending() {
@@ -18,7 +20,7 @@ export default function BridgeWeightPending() {
                     COMING SOON — PREMIUM TOOL (T-36)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
-                    Cross-references axle weight and spacing against NBI and DOT bridge load capacity ratings along your route. 
+                    Cross-references axle weight and spacing against NBI and DOT bridge load capacity ratings along your route.
                     This tool is currently being provisioned.
                 </p>
                 <Link aria-label="Navigation Link" href="/tools" style={{
@@ -27,6 +29,15 @@ export default function BridgeWeightPending() {
                 }}>
                     ← Back to All Tools
                 </Link>
+            </div>
+
+            {/* SEO Internal Links — this page passes equity even while the tool is pending */}
+            <div style={{ maxWidth: 640, margin: '3rem auto 0' }}>
+                <RelatedLinks
+                    pageType="tool"
+                    context={{ toolSlug: 'bridge-weight' }}
+                    heading="Related tools while you wait"
+                />
             </div>
         </div>
     );

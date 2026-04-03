@@ -1,5 +1,6 @@
 import React from 'react';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export default function CostCalculatorPage() {
     return (
@@ -16,6 +17,15 @@ export default function CostCalculatorPage() {
                         <a href="/tools" style={{ display: 'inline-block', padding: '12px 24px', background: '#F1A91B', color: '#000', fontWeight: 800, borderRadius: 8, textDecoration: 'none' }}>
                             ← Back to Tools
                         </a>
+                    </div>
+
+                    {/* SEO Internal Links — passes equity to escort-calc, permit-checker, directory */}
+                    <div style={{ marginTop: '3rem', textAlign: 'left' }}>
+                        <RelatedLinks
+                            pageType="tool"
+                            context={{ toolSlug: 'cost-calculator' }}
+                            heading="Available tools to try now"
+                        />
                     </div>
                 </div>
                 <aside>
