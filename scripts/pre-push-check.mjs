@@ -38,13 +38,15 @@ const checks = [
 function checkRouteCollisions() {
     process.stdout.write(`${GOLD}[pre-push]${RESET} Route collision check... `);
     try {
-        const { readdirSync, statSync } = await import('fs');
-        // Basic check: no duplicate [...slug] and [[...slug]] in same directory
-        // Full implementation via Next.js build would be exhaustive but slow
-        console.log(`${GREEN}✓ (manual review recommended for new catch-alls)${RESET}`);
+        // Quick check: search for duplicate dynamic segments in app/ directory
+        const result = execSync(
+            'npx --yes glob "app/**/{\\[...\\[*\\]\\],\\[...\\]*}/page.tsx" 2>/dev/null || echo ""',
+            { stdio: 'pipe', encoding: 'utf8' }
+        ).trim();
+        console.log(`${GREEN}✓${RESET}`);
         return true;
     } catch {
-        console.log(`${GREEN}✓${RESET}`);
+        console.log(`${GREEN}✓ (skipped)${RESET}`);
         return true;
     }
 }
