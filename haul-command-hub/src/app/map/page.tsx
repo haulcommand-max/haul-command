@@ -78,10 +78,10 @@ export default async function MapPage() {
 
         {/* Market Tiers */}
         {[
-          { label: 'Tier A — Primary Markets', countries: tierA, tone: 'accent' },
-          { label: 'Tier B — Expanding Markets', countries: tierB, tone: 'blue' },
-          { label: 'Tier C — Emerging Markets', countries: tierC, tone: 'gray' },
-          { label: 'Tier D — Future Markets', countries: tierD, tone: 'gray' },
+          { label: 'Live Markets', countries: tierA, tone: 'accent' },
+          { label: 'Launching Soon', countries: tierB, tone: 'blue' },
+          { label: 'In Development', countries: tierC, tone: 'gray' },
+          { label: 'Future Markets', countries: tierD, tone: 'gray' },
         ].map((tier) => (
           <section key={tier.label} className="mb-10">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -133,9 +133,9 @@ export default async function MapPage() {
 
         <HCFaqModule
           items={[
-            { question: 'What countries does Haul Command cover?', answer: 'Our directory framework covers 120 countries across North America, Europe, Asia-Pacific, Middle East, Latin America, and Africa. Coverage depth varies by market tier.' },
-            { question: 'How do I navigate the map?', answer: 'Click on any country to browse its directory of verified operators, escort services, and infrastructure. You can drill down by state/province, metro area, and service type.' },
-            { question: 'Can I see escort requirements on the map?', answer: 'Yes — each country and jurisdiction page includes escort requirement summaries with dimension thresholds, permit links, and authority contacts.' },
+            { question: 'What countries does Haul Command cover?', answer: 'The United States and Canada are live today. Australia is our next planned expansion. Beyond that, we expand based on operator demand — markets showing the most claims, listings, and activity get prioritized automatically.' },
+            { question: 'How do I navigate the map?', answer: 'Click any country to see its status, key corridors, and regulatory summary. Live markets link directly to the operator directory. Upcoming markets have a waitlist so you\'re first notified when they launch.' },
+            { question: 'Can I see escort requirements on the map?', answer: 'Yes — each live country and jurisdiction page includes escort requirement summaries with dimension thresholds, permit links, and authority contacts.' },
           ]}
         />
 

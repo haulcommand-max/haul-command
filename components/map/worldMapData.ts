@@ -11,22 +11,23 @@ export interface TierCountry {
   operators: number;
   corridors: string[];
   live: boolean;
+  nextMarket?: boolean; // explicitly planned next expansion
 }
 
 export const ALL_COUNTRIES: TierCountry[] = [
-  // ── Tier A — Live (10) ─────────────────────────────────────────
+  // ── Tier A — Live (2 only: US + CA) ───────────────────────────
   { iso: 'US', name: 'United States', flag: '🇺🇸', tier: 'A', operators: 4200, corridors: ['I-10 Sun Belt', 'I-35 Central', 'I-40 Trans-Am', 'I-75 Southeast', 'I-95 East Coast'], live: true },
   { iso: 'CA', name: 'Canada', flag: '🇨🇦', tier: 'A', operators: 820, corridors: ['Trans-Canada Hwy', 'Hwy 401 Ontario', 'Hwy 2 Alberta'], live: true },
-  { iso: 'AU', name: 'Australia', flag: '🇦🇺', tier: 'A', operators: 450, corridors: ['Pacific Hwy', 'Hume Hwy', 'Stuart Hwy'], live: true },
-  { iso: 'GB', name: 'United Kingdom', flag: '🇬🇧', tier: 'A', operators: 210, corridors: ['M1 London-Leeds', 'M6 North', 'A1(M)'], live: true },
-  { iso: 'NZ', name: 'New Zealand', flag: '🇳🇿', tier: 'A', operators: 85, corridors: ['SH1 North', 'SH1 South'], live: true },
-  { iso: 'ZA', name: 'South Africa', flag: '🇿🇦', tier: 'A', operators: 120, corridors: ['N1 Cape-JHB', 'N3 Durban', 'N4 Maputo'], live: true },
-  { iso: 'DE', name: 'Germany', flag: '🇩🇪', tier: 'A', operators: 180, corridors: ['A1 Bremen-Cologne', 'A7 N-S', 'A3 Frankfurt'], live: true },
-  { iso: 'NL', name: 'Netherlands', flag: '🇳🇱', tier: 'A', operators: 95, corridors: ['A15 Rotterdam', 'A2 Amsterdam-Eindhoven'], live: true },
-  { iso: 'AE', name: 'UAE', flag: '🇦🇪', tier: 'A', operators: 60, corridors: ['E11 Sheikh Zayed', 'E311 Emirates'], live: true },
-  { iso: 'BR', name: 'Brazil', flag: '🇧🇷', tier: 'A', operators: 340, corridors: ['BR-101 Coastal', 'BR-116 Dutra'], live: true },
 
-  // ── Tier B — Coming Soon (18) ──────────────────────────────────
+  // ── Tier B — Launching Soon (26: former Tier A + original Tier B) ──
+  { iso: 'AU', name: 'Australia', flag: '🇦🇺', tier: 'B', operators: 0, corridors: ['Pacific Hwy', 'Hume Hwy', 'Stuart Hwy'], live: false, nextMarket: true },
+  { iso: 'GB', name: 'United Kingdom', flag: '🇬🇧', tier: 'B', operators: 0, corridors: ['M1 London-Leeds', 'M6 North', 'A1(M)'], live: false },
+  { iso: 'NZ', name: 'New Zealand', flag: '🇳🇿', tier: 'B', operators: 0, corridors: ['SH1 North', 'SH1 South'], live: false },
+  { iso: 'ZA', name: 'South Africa', flag: '🇿🇦', tier: 'B', operators: 0, corridors: ['N1 Cape-JHB', 'N3 Durban', 'N4 Maputo'], live: false },
+  { iso: 'DE', name: 'Germany', flag: '🇩🇪', tier: 'B', operators: 0, corridors: ['A1 Bremen-Cologne', 'A7 N-S', 'A3 Frankfurt'], live: false },
+  { iso: 'NL', name: 'Netherlands', flag: '🇳🇱', tier: 'B', operators: 0, corridors: ['A15 Rotterdam', 'A2 Amsterdam-Eindhoven'], live: false },
+  { iso: 'AE', name: 'UAE', flag: '🇦🇪', tier: 'B', operators: 0, corridors: ['E11 Sheikh Zayed', 'E311 Emirates'], live: false },
+  { iso: 'BR', name: 'Brazil', flag: '🇧🇷', tier: 'B', operators: 0, corridors: ['BR-101 Coastal', 'BR-116 Dutra'], live: false },
   { iso: 'MX', name: 'Mexico', flag: '🇲🇽', tier: 'B', operators: 0, corridors: ['MEX-QRO Autopista'], live: false },
   { iso: 'FR', name: 'France', flag: '🇫🇷', tier: 'B', operators: 0, corridors: ['A1 Paris-Lille', 'A6 Paris-Lyon'], live: false },
   { iso: 'IT', name: 'Italy', flag: '🇮🇹', tier: 'B', operators: 0, corridors: ['A1 Autostrada del Sole'], live: false },

@@ -255,14 +255,13 @@ export function CinematicMap({
               Global Route Intelligence
             </h3>
             <p className="text-gray-400 text-sm max-w-md mx-auto mb-4">
-              10 markets live now. 18 launching soon. 92 in development — expanding to 120 countries.
+              2 markets live now. Expanding to 120 countries across North America, Europe, Asia-Pacific, and beyond.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {[
-                { label: '10 Live Markets', color: '#C6923A' },
-                { label: '18 Launching Soon', color: '#3A7AC6' },
-                { label: '24 In Development', color: '#6B7A8D' },
-                { label: '68 Future Markets', color: '#3D5068' },
+                { label: '🟡 US + Canada — Live', color: '#C6923A' },
+                { label: '26 Countries — Launching Soon', color: '#3A7AC6' },
+                { label: '92 Markets — In Development', color: '#6B7A8D' },
               ].map((t, i) => (
                 <span key={i} className="border rounded-full px-3 py-1 text-xs font-semibold"
                   style={{ borderColor: `${t.color}40`, color: t.color, background: `${t.color}10` }}>

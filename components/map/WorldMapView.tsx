@@ -117,6 +117,40 @@ function CountryPanel({
         }}>
           View Directory <ChevronRight size={16} />
         </Link>
+      ) : country.nextMarket ? (
+        <div>
+          <div style={{
+            padding: '10px 14px', borderRadius: 12, marginBottom: 10, textAlign: 'center',
+            background: 'rgba(56,189,148,0.08)', border: '1px solid rgba(56,189,148,0.25)',
+            color: '#38bda0', fontSize: 12, fontWeight: 700,
+          }}>
+            🚀 Next planned expansion — launching after Canada
+          </div>
+          <div style={{ fontSize: 12, color: T.muted, marginBottom: 10, lineHeight: 1.5 }}>
+            Join the waitlist to be first notified when Australia goes live.
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              style={{
+                flex: 1, padding: '10px 14px', borderRadius: 10, fontSize: 13,
+                background: T.bg, border: `1px solid ${T.border}`, color: T.text,
+                outline: 'none',
+              }}
+            />
+            <button aria-label="Interactive Button" onClick={handleWaitlist} style={{
+              padding: '10px 18px', borderRadius: 10, border: 'none', cursor: 'pointer',
+              background: 'linear-gradient(135deg, #38bda0, #236e5a)',
+              color: '#000', fontSize: 12, fontWeight: 800, whiteSpace: 'nowrap',
+            }}>
+              <Mail size={13} style={{ marginRight: 4, verticalAlign: 'middle' }} />
+              Join
+            </button>
+          </div>
+        </div>
       ) : submitted ? (
         <div style={{
           padding: '14px', borderRadius: 14, textAlign: 'center',
@@ -384,6 +418,13 @@ export function WorldMapView() {
                   <span style={{ fontSize: 14 }}>{c.flag}</span>
                   <span style={{ fontWeight: 600, color: c.live ? T.text : T.muted }}>{c.name}</span>
                   {c.live && <span style={{ marginLeft: 'auto', width: 5, height: 5, borderRadius: '50%', background: '#27d17f' }} />}
+                  {c.nextMarket && !c.live && (
+                    <span style={{
+                      marginLeft: 'auto', fontSize: 8, fontWeight: 800, color: '#38bda0',
+                      background: 'rgba(56,189,148,0.12)', border: '1px solid rgba(56,189,148,0.25)',
+                      padding: '1px 5px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap',
+                    }}>Next</span>
+                  )}
                 </div>
               ))}
             </div>
