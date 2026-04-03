@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export type LeaderboardScope = 'national' | 'state' | 'corridor';
 
@@ -40,7 +40,7 @@ export async function getLeaders(
   filter?: string,
   limit = 25,
 ): Promise<Leader[]> {
-  const supabase = createServerClient();
+  const supabase = await createClient();
 
   let query = supabase
     .from('operators')
@@ -56,7 +56,15 @@ export async function getLeaders(
   const { data, error } = await query;
   if (error) { console.error('[getLeaders] DB error:', error.message); return []; }
 
-  return (data ?? []).map((row, i) => ({
+  type OperatorRow = {
+    id: string; company_name: string | null; hc_tier: string | null;
+    hc_index_score: number | null; verified_runs: number | null;
+    rating_avg: number | null; avg_response_min: number | null;
+    location_city: string | null; location_state: string | null;
+    location_country: string | null; active_corridors: string[] | null;
+    fmcsa_status: string | null; hc_rank_national: number | null;
+  };
+  return (data ?? []).map((row: OperatorRow, i: number) => ({
     id: row.id,
     company: row.company_name ?? 'Unknown Operator',
     rank: mapTier(row.hc_tier),
