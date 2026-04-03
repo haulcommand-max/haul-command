@@ -19,6 +19,7 @@ const QuickAnswerBox = dynamic(() => import('@/components/blog/QuickAnswerBox'))
 const TableOfContents = dynamic(() => import('@/components/blog/TableOfContents'));
 const WhatChangedBox = dynamic(() => import('@/components/blog/WhatChangedBox'));
 const NativeAdCard = dynamic(() => import('@/components/ads/NativeAdCard').then(m => ({ default: m.NativeAdCard })));
+const ScrollPaywallTrigger = dynamic(() => import('@/components/monetization/ScrollPaywallTrigger'));
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -271,6 +272,14 @@ export default async function BlogArticlePage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
+
+      {/* ── Scroll Paywall Trigger — fires at 2/3 scroll depth ── */}
+      <ScrollPaywallTrigger
+        surfaceName="Blog Article"
+        tier="Pro"
+        urgencyLevel="soft"
+        threshold={0.67}
+      />
 
       <article className="max-w-3xl mx-auto px-4 py-16">
         {/* ── Breadcrumb ── */}

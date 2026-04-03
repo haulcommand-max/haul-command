@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 
 export const metadata = {
   title: 'Oversize Load Board — Post & Find Heavy Haul Loads | Haul Command',
@@ -102,6 +103,15 @@ export default async function LoadBoardPage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      {/* Paywall gate — between hero CTA and load cards: escort free user lead limit hook */}
+      <section className="max-w-5xl mx-auto px-4 pb-2">
+        <PaywallGateBanner
+          surfaceName="Load Board"
+          tier="Pro"
+          description="Unlock unlimited load responses and early access to new jobs across 120 countries."
+        />
       </section>
 
       {/* Load Cards */}

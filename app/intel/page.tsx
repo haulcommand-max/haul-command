@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 
 export const metadata: Metadata = {
   title: 'Industry Intelligence | Haul Command',
@@ -31,8 +32,29 @@ export default function IntelPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {trendData.map((item, i) => (
+          {trendData.slice(0, 3).map((item, i) => (
             <article key={i} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 24, border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color 0.3s' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                <span style={{ padding: '3px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>{item.category}</span>
+                <span style={{ padding: '3px 10px', borderRadius: 8, background: impactColors[item.impact].bg, color: impactColors[item.impact].text, fontSize: 11, fontWeight: 600, textTransform: 'uppercase' }}>{item.impact} impact</span>
+                <span style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>{item.date}</span>
+              </div>
+              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>{item.title}</h2>
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6 }}>{item.summary}</p>
+            </article>
+          ))}
+
+          {/* Paywall gate — after 3rd card, before remaining feed */}
+          <div style={{ margin: '8px 0' }}>
+            <PaywallGateBanner
+              surfaceName="Intelligence Feed"
+              tier="Pro"
+              description="Get the full intelligence feed: AV corridor signals, regulatory alerts, and market data across 120 countries."
+            />
+          </div>
+
+          {trendData.slice(3).map((item, i) => (
+            <article key={`gated-${i}`} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 24, border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color 0.3s' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                 <span style={{ padding: '3px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>{item.category}</span>
                 <span style={{ padding: '3px 10px', borderRadius: 8, background: impactColors[item.impact].bg, color: impactColors[item.impact].text, fontSize: 11, fontWeight: 600, textTransform: 'uppercase' }}>{item.impact} impact</span>

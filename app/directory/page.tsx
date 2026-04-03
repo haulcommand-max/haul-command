@@ -4,6 +4,7 @@ import Link from 'next/link';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectorySearchList } from './_components/DirectorySearchList';
+import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -284,6 +285,15 @@ export default async function DirectoryPage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Paywall Gate — mid-funnel, after service category value is shown */}
+      <section className="max-w-6xl mx-auto px-4 pb-2">
+        <PaywallGateBanner
+          surfaceName="Operator Directory"
+          tier="Pro"
+          description="Unlock verified operator contact details, trust scores, and availability. Join 1.2M+ operators across 120 countries."
+        />
       </section>
 
       {/* US State Quick Nav */}
