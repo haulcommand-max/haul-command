@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
+
+const BuyButton = dynamic(() => import('@/components/data/BuyButton'), { ssr: false });
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
@@ -147,11 +150,13 @@ export default function DataMarketplacePage() {
                                     </div>
 
                                     <div className="flex items-center justify-between mt-auto">
-                                        <span className="text-lg font-extrabold text-white">{formatPrice(product)}</span>
-                                        <Link href={`/data/${product.id}`}
-                                            className="text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
-                                            View details →
-                                        </Link>
+                                        <BuyButton
+                                            productId={product.id}
+                                            productName={product.name}
+                                            price={formatPrice(product)}
+                                            purchaseType={product.purchase_type}
+                                            tierRequired={product.tier_required}
+                                        />
                                     </div>
                                 </div>
                             );
@@ -181,10 +186,13 @@ export default function DataMarketplacePage() {
                                         </div>
                                         <div className="flex items-center justify-between">
                                             <span className="text-lg font-extrabold text-white">{formatPrice(product)}</span>
-                                            <Link href="/data/corridor-intelligence"
-                                                className="text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-                                                Request access →
-                                            </Link>
+                                            <BuyButton
+                                                productId={product.id}
+                                                productName={product.name}
+                                                price={formatPrice(product)}
+                                                purchaseType={product.purchase_type}
+                                                tierRequired={product.tier_required}
+                                            />
                                         </div>
                                     </div>
                                 );

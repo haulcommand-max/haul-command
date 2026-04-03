@@ -419,6 +419,99 @@ export default async function CountryRegulationPage({
                 )}
             </div>
 
+            {/* Internal Linking Mesh — SEO + Navigation */}
+            <section style={{ marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#F3F4F6', marginBottom: '1rem' }}>
+                    Related Resources
+                </h2>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                    gap: '0.75rem',
+                }}>
+                    <Link
+                        href={`/directory?country=${reg.countryCode.toLowerCase()}`}
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.75rem',
+                            padding: '1rem 1.25rem', borderRadius: '0.75rem',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            background: 'rgba(255,255,255,0.02)',
+                            textDecoration: 'none', transition: 'all 0.2s',
+                        }}
+                    >
+                        <span style={{ fontSize: '1.25rem' }}>🔍</span>
+                        <div>
+                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#E5E7EB' }}>
+                                Find {capitalizeFirst(term)}s
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                {reg.countryName} directory
+                            </div>
+                        </div>
+                    </Link>
+                    <Link
+                        href={`/near-me/${reg.countryCode.toLowerCase()}`}
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.75rem',
+                            padding: '1rem 1.25rem', borderRadius: '0.75rem',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            background: 'rgba(255,255,255,0.02)',
+                            textDecoration: 'none', transition: 'all 0.2s',
+                        }}
+                    >
+                        <span style={{ fontSize: '1.25rem' }}>📍</span>
+                        <div>
+                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#E5E7EB' }}>
+                                {capitalizeFirst(term)} Near Me
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                Operators in {reg.countryName}
+                            </div>
+                        </div>
+                    </Link>
+                    <Link
+                        href="/tools/escort-calculator"
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.75rem',
+                            padding: '1rem 1.25rem', borderRadius: '0.75rem',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            background: 'rgba(255,255,255,0.02)',
+                            textDecoration: 'none', transition: 'all 0.2s',
+                        }}
+                    >
+                        <span style={{ fontSize: '1.25rem' }}>🧮</span>
+                        <div>
+                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#E5E7EB' }}>
+                                Escort Calculator
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                Estimate escorts needed
+                            </div>
+                        </div>
+                    </Link>
+                    <Link
+                        href="/tools/permit-checker"
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.75rem',
+                            padding: '1rem 1.25rem', borderRadius: '0.75rem',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            background: 'rgba(255,255,255,0.02)',
+                            textDecoration: 'none', transition: 'all 0.2s',
+                        }}
+                    >
+                        <span style={{ fontSize: '1.25rem' }}>📋</span>
+                        <div>
+                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#E5E7EB' }}>
+                                Permit Checker
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                Check permit requirements
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+            </section>
+
             {/* CTA — Market-mode aware */}
             <MarketModeCTA
                 countryCode={reg.countryCode}
@@ -426,6 +519,21 @@ export default async function CountryRegulationPage({
                 localTerm={term}
             />
 
+            {/* Structured Data — BreadcrumbList */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'BreadcrumbList',
+                        itemListElement: [
+                            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+                            { '@type': 'ListItem', position: 2, name: 'Regulations', item: 'https://www.haulcommand.com/regulations' },
+                            { '@type': 'ListItem', position: 3, name: reg.countryName, item: `https://www.haulcommand.com/regulations/${reg.countryCode.toLowerCase()}` },
+                        ],
+                    }),
+                }}
+            />
             {/* Structured Data — FAQPage + SpeakableSpecification */}
             <script
                 type="application/ld+json"

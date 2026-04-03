@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
 import { SponsoredBadge } from '@/components/directory/SponsoredBadge';
+import DirectorySponsorCard from '@/components/directory/DirectorySponsorCard';
 import TrustBadge from '@/components/trust/TrustBadge';
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -451,11 +452,13 @@ export function PublicDirectory() {
     return ops;
   }, [operators, filters]);
 
-  // Build grid with AdGrid slot at position 7
+  // Build grid with AdGrid slot at position 7, sponsor slots at 3 and 10
   const gridItems = useMemo(() => {
-    const items: Array<{ type: 'operator' | 'ad'; data?: Operator; idx: number }> = [];
+    const items: Array<{ type: 'operator' | 'ad' | 'sponsor-upper' | 'sponsor-lower'; data?: Operator; idx: number }> = [];
     filteredOps.forEach((op, i) => {
+      if (i === 3) items.push({ type: 'sponsor-upper', idx: items.length });
       if (i === 6) items.push({ type: 'ad', idx: items.length });
+      if (i === 10) items.push({ type: 'sponsor-lower', idx: items.length });
       items.push({ type: 'operator', data: op, idx: items.length });
     });
     if (filteredOps.length < 7) items.push({ type: 'ad', idx: items.length });
@@ -640,11 +643,20 @@ export function PublicDirectory() {
                 ))}</div>
               ) : (
                 <div className="dir-grid ag-stagger">
-                  {gridItems.map((item, i) =>
-                    item.type === 'ad'
-                      ? <AdGridSlot key={`ad-${i}`} />
-                      : item.data ? <OperatorCard key={item.data.id} op={item.data} position={i} /> : null
-                  )}
+                  {gridItems.map((item, i) => {
+                    if (item.type === 'ad') return <AdGridSlot key={`ad-${i}`} />;
+                    if (item.type === 'sponsor-upper') return (
+                      <div key="sponsor-upper" style={{ gridColumn: '1 / -1' }}>
+                        <DirectorySponsorCard position="upper" stateCode={filters.state || undefined} />
+                      </div>
+                    );
+                    if (item.type === 'sponsor-lower') return (
+                      <div key="sponsor-lower" style={{ gridColumn: '1 / -1' }}>
+                        <DirectorySponsorCard position="lower" />
+                      </div>
+                    );
+                    return item.data ? <OperatorCard key={item.data.id} op={item.data} position={i} /> : null;
+                  })}
                 </div>
               )}
 
