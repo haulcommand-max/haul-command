@@ -9,6 +9,7 @@ create type public.hc_trust_badge as enum(
   'peer_endorsed','long_standing','rapid_responder'
 );
 
+drop table if exists public.hc_trust_profiles cascade;
 create table if not exists public.hc_trust_profiles (
   id               uuid primary key default gen_random_uuid(),
   user_id          uuid unique not null references auth.users(id) on delete cascade,
