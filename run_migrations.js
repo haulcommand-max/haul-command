@@ -24,7 +24,8 @@ async function run() {
         f.startsWith('20260404_021') ||
         f.startsWith('20260404_022') ||
         f.startsWith('20260404_023') ||
-        f.startsWith('20260404_024')
+        f.startsWith('20260404_024') ||
+        f.startsWith('20260404_025')
       );
     });
 

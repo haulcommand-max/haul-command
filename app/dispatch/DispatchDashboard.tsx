@@ -1,8 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, Users, MapPin, Search, AlertCircle, RefreshCw, Layers, Shield, Zap, Moon, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Activity, Users, MapPin, Search, AlertCircle, RefreshCw, Layers, Shield, Zap, Moon, Globe, MessageSquare } from 'lucide-react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Link from 'next/link';
+
+interface Operator {
+  id: string;
+  business_name: string | null;
+  display_name: string | null;
+  slug: string;
+  city: string | null;
+  country_code: string;
+  trust_score: number | null;
+  is_verified: boolean;
+  vehicle_type: string | null;
+  rate_per_km: number | null;
+  currency: string | null;
+}
 
 interface DispatchStats {
   total_available: number;
@@ -29,6 +45,32 @@ export default function DispatchDashboard({ stats }: Props) {
   const topRoles = Object.entries(stats.by_role)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 6);
+
+  const [liveOps, setLiveOps] = useState<Operator[]>([]);
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    const loadRealtimeFeed = async () => {
+      const { data } = await supabase
+        .from('hc_available_now')
+        .select('id,business_name,display_name,slug,city,country_code,trust_score,is_verified,vehicle_type,rate_per_km,currency')
+        .gte('available_until', new Date().toISOString())
+        .order('trust_score', { ascending: false })
+        .limit(10);
+      setLiveOps((data ?? []) as Operator[]);
+    };
+
+    loadRealtimeFeed();
+
+    const ch = supabase
+      .channel('broker_dispatch_live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'hc_available_now' }, () => {
+        loadRealtimeFeed();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(ch); };
+  }, [supabase]);
 
   const hasLiveData = stats.total_available > 0;
 
@@ -181,6 +223,68 @@ export default function DispatchDashboard({ stats }: Props) {
 
             <div className="bg-black/60 backdrop-blur rounded-full px-4 py-2 text-xs font-mono text-gray-400 border border-white/5 flex items-center gap-2 pointer-events-auto cursor-help">
               <Shield className="w-3 h-3" /> Avg Trust: {stats.avg_trust_score || '—'}
+            </div>
+          </div>
+
+          {/* New Live Feed Layer over Map */}
+          <div className="absolute right-6 top-32 bottom-6 w-96 flex flex-col pointer-events-none">
+            <div className="flex items-center justify-between bg-black/80 backdrop-blur border border-white/10 p-3 rounded-t-xl pointer-events-auto">
+               <h3 className="text-white font-bold text-sm flex items-center gap-2"><Activity className="w-4 h-4 text-emerald-400 animate-pulse" /> TARGET OPERATORS</h3>
+               <span className="text-xs text-gray-400 font-mono">{liveOps.length} HOT</span>
+            </div>
+            <div className="flex-1 bg-black/60 backdrop-blur border-x border-b border-white/10 rounded-b-xl p-3 overflow-y-auto pointer-events-auto space-y-3 custom-scrollbar">
+               <AnimatePresence>
+                 {liveOps.map((op, idx) => (
+                   <motion.div 
+                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                     animate={{ opacity: 1, scale: 1, y: 0 }}
+                     exit={{ opacity: 0, scale: 0.95 }}
+                     key={op.id} 
+                     className="bg-black/80 border border-white/10 hover:border-emerald-500/50 rounded-lg p-3 group transition-colors"
+                   >
+                     <div className="flex justify-between items-start mb-2">
+                       <div className="flex items-center gap-2">
+                         <div className="relative">
+                            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                              <span className="absolute animate-ping h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                              <span className="relative rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                            </span>
+                            <div className="bg-white/5 border border-white/10 rounded w-8 h-8 flex items-center justify-center text-sm">
+                               {op.vehicle_type === 'pilot_car' ? '🚕' : '🚛'}
+                            </div>
+                         </div>
+                         <div>
+                           <Link href={`/directory/${op.slug}`} className="text-white text-sm font-bold truncate block group-hover:text-emerald-400 transition-colors">
+                             {op.business_name || op.display_name}
+                           </Link>
+                           <div className="text-xs text-gray-500 flex items-center gap-1">
+                             <MapPin className="w-3 h-3" /> {op.city || 'Available'}, {op.country_code}
+                           </div>
+                         </div>
+                       </div>
+                       <div className="text-right">
+                         <div className="text-emerald-400 font-bold text-sm">
+                           {op.trust_score ? Math.round(op.trust_score) : 'New'}
+                         </div>
+                         <div className="text-[9px] text-gray-500 font-mono uppercase tracking-widest">Trust</div>
+                       </div>
+                     </div>
+                     <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5">
+                        <div className="text-xs font-mono text-gray-400">
+                          {op.rate_per_km ? `${op.currency||'USD'} ${op.rate_per_km}/km` : 'Rate Neg.'}
+                        </div>
+                        <Link href={`/chat/${op.slug}`} className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded flex items-center gap-1 transition-colors">
+                           <MessageSquare className="w-3 h-3" /> Book Now
+                        </Link>
+                     </div>
+                   </motion.div>
+                 ))}
+               </AnimatePresence>
+               {liveOps.length === 0 && (
+                 <div className="text-center text-gray-500 text-sm py-8">
+                    No active operator feeds in your filter perimeter.
+                 </div>
+               )}
             </div>
           </div>
 
