@@ -96,7 +96,7 @@ export async function POST(req: Request) {
                 }
 
                 // Resolve supabase user from Stripe customer metadata
-                let userId = '00000000-0000-0000-0000-000000000000'; // guest fallback
+                let userId: string | null = null; // null = anonymous/guest checkout (no FK violation)
                 if (session.customer) {
                     try {
                         const customer = await stripe.customers.retrieve(session.customer as string) as Stripe.Customer;
