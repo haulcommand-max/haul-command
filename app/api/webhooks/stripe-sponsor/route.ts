@@ -85,6 +85,8 @@ export async function POST(req: Request) {
                 const session = event.data.object as Stripe.Checkout.Session;
                 if (session.mode !== 'subscription') break;
 
+                // sponsor_zone metadata should be the product_key directly (e.g. 'corridor_primary')
+                // sponsor_geo is the geographic scope (e.g. 'US-TX')
                 const zone  = session.metadata?.sponsor_zone;
                 const geo   = session.metadata?.sponsor_geo;
 
@@ -104,11 +106,11 @@ export async function POST(req: Request) {
                     } catch { /* non-critical */ }
                 }
 
-                const { data: order } = await supabaseAdmin
+                const { data: order, error: orderErr } = await supabaseAdmin
                     .from('sponsorship_orders')
                     .insert({
                         user_id:                    userId,
-                        product_key:                `${zone}_sponsor`,
+                        product_key:                zone,   // zone IS the product_key (e.g. 'corridor_primary')
                         geo_key:                    geo,
                         zone,
                         geo,
@@ -121,6 +123,10 @@ export async function POST(req: Request) {
                     })
                     .select('id')
                     .single();
+
+                if (orderErr) {
+                    console.error('[SponsorWebhook] sponsorship_orders insert failed:', orderErr.message, orderErr.details);
+                }
 
                 orderId = order?.id ?? null;
                 console.log(`[SponsorWebhook] ✅ Activated: ${zone}/${geo} → order ${orderId}`);
