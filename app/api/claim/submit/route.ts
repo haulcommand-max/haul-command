@@ -1,0 +1,47 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { sendPushToUser } from '@/lib/notifications/push-service'
+
+export async function POST(req: NextRequest) {
+  try {
+    const { hcid, company_name, phone, user_id } = Object.fromEntries(await req.formData())
+    const supabase = createClient()
+
+    // Find operator record
+    let operatorId: string | null = null
+    if (hcid) {
+      const { data: op } = await supabase.from('operators').select('id,is_claimed').eq('hc_id', hcid).single()
+      if (op?.is_claimed) {
+        return NextResponse.redirect(new URL('/claim?error=already_claimed', req.url))
+      }
+      operatorId = op?.id ?? null
+    }
+
+    // Create trust profile claim record
+    const { error } = await supabase.from('hc_trust_profiles').upsert({
+      entity_id: operatorId ?? user_id,
+      entity_type: 'operator',
+      claimed: false, // pending review
+      claim_pending: true,
+      claim_submitted_at: new Date().toISOString(),
+      claim_company_name: String(company_name),
+      claim_phone: String(phone),
+      claim_user_id: String(user_id),
+    }, { onConflict: 'entity_id' })
+
+    if (error && !error.message.includes('column')) {
+      throw error
+    }
+
+    // Enqueue notification to admin + confirmation to claimer
+    await sendPushToUser(String(user_id), {
+      title: 'Claim Submitted ✔',
+      body: `Your claim for ${company_name} is under review. We\'ll notify you within 24 hours.`,
+      data: { type: 'claim_submitted', hcid: String(hcid ?? '') },
+    }).catch(()=>{})
+
+    return NextResponse.redirect(new URL('/claim/submitted', req.url))
+  } catch (err: any) {
+    return NextResponse.redirect(new URL(`/claim?error=${encodeURIComponent(err.message)}`, req.url))
+  }
+}
