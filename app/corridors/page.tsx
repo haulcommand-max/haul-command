@@ -1,109 +1,154 @@
-import { Metadata } from 'next';
-import { createClient } from '@/lib/supabase/server';
-import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
-import { AdGridSlot } from '@/components/home/AdGridSlot';
-import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
-import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
-import RelatedLinks from '@/components/seo/RelatedLinks';
+import { Suspense } from 'react';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import Link from 'next/link';
+import CorridorLeaderboard from '@/components/corridors/CorridorLeaderboard';
+import { RelatedLinks } from '@/components/seo/RelatedLinks';
 
-export const metadata: Metadata = {
-  title: 'Corridor Intelligence Hub - Heavy Haul Escort Routes | Haul Command',
-  description: 'Browse heavy haul escort corridors across the US. Permit requirements, escort regulations, operator density, and real load data for 200+ key transport corridors.',
-  alternates: { canonical: 'https://haulcommand.com/corridors' },
+export const metadata = {
+  title: 'Heavy Haul Corridor Intelligence — Ranked Routes Worldwide | Haul Command',
+  description:
+    'Browse the highest-value heavy haul corridors across 120 countries. Compare escort requirements, pricing, and permit rules by route.',
 };
 
-export const dynamic = 'force-dynamic';
+const FILTER_TYPES = [
+  { label: 'All', value: '' },
+  { label: 'National Spines', value: 'country_spine' },
+  { label: 'Port Connectors', value: 'port_connector' },
+  { label: 'Industrial', value: 'industrial_connector' },
+  { label: 'Cross-Border', value: 'border_connector' },
+];
 
-export default async function CorridorsPage() {
-  const supabase = createClient();
+export default async function CorridorsIndexPage({
+  searchParams,
+}: {
+  searchParams: { type?: string; country?: string };
+}) {
+  const supabase = createServerComponentClient({ cookies });
 
-  const { data: corridors } = await supabase
-    .from('corridors')
-    .select('id, origin_state, destination_state, origin_city, destination_city, load_count, operator_count, intel_generated_at')
-    .order('load_count', { ascending: false })
-    .limit(100);
+  // Top-line KPIs from view
+  const { data: stats } = await supabase
+    .from('hc_corridor_public_v1')
+    .select('corridor_type, composite_score, commercial_value_estimate')
+    .eq('status', 'active');
 
-  const byState: Record<string, typeof corridors> = {};
-  for (const c of corridors ?? []) {
-    const key = c.origin_state ?? 'OTHER';
-    if (!byState[key]) byState[key] = [];
-    byState[key]!.push(c);
-  }
+  const totalCorridors = stats?.length ?? 0;
+  const avgScore =
+    totalCorridors > 0
+      ? Math.round(
+          (stats ?? []).reduce((s, r) => s + (r.composite_score ?? 0), 0) / totalCorridors
+        )
+      : 0;
+  const totalCommercialValue = (stats ?? []).reduce(
+    (s, r) => s + (r.commercial_value_estimate ?? 0),
+    0
+  );
 
-  const topStates = Object.keys(byState).sort().slice(0, 20);
+  const activeType = searchParams.type ?? '';
+  const activeCountry = searchParams.country ?? '';
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="py-16 px-4 text-center border-b border-white/5">
-        <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">Route Intelligence</div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Corridor Intelligence Hub</h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          200+ US heavy haul escort corridors with permit requirements, operator availability, and real load activity data.
-        </p>
-        <div className="flex justify-center gap-3 mt-6">
-          <a href="/route-check" className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors text-sm">Use Route Check Tool</a>
-          <a href="/loads/new" className="px-5 py-2.5 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors text-sm">Post a Load</a>
+    <main className="min-h-screen bg-[#0a0d14] text-white">
+      {/* Hero */}
+      <section className="border-b border-white/8 bg-gradient-to-b from-[#0f1420] to-[#0a0d14] px-4 py-16 text-center">
+        <div className="mx-auto max-w-3xl">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-amber-400">
+            🛣 Corridor Intelligence OS
+          </span>
+          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+            Global Heavy Haul
+            <span className="block bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Corridor Rankings
+            </span>
+          </h1>
+          <p className="mt-4 text-lg text-white/60">
+            Ranked escort routes, permit requirements, and pricing intelligence
+            across {totalCorridors.toLocaleString()}+ corridors in 120 countries.
+          </p>
+
+          {/* KPI strip */}
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            {[
+              { label: 'Active Corridors', value: totalCorridors.toLocaleString() },
+              { label: 'Avg. Intelligence Score', value: avgScore.toString() },
+              {
+                label: 'Est. Market Value',
+                value:
+                  '$' +
+                  (totalCommercialValue / 1_000_000).toFixed(0) + 'M+',
+              },
+            ].map(kpi => (
+              <div
+                key={kpi.label}
+                className="rounded-xl border border-white/10 bg-white/5 p-4"
+              >
+                <p className="text-2xl font-black text-white">{kpi.value}</p>
+                <p className="mt-1 text-xs text-white/40">{kpi.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <PaywallGateBanner
-          surfaceName="Corridor Intelligence"
-          tier="Business"
-          description="Unlock full corridor demand scores, fill rates, and operator density across 200+ US corridors."
-        />
+      {/* Body */}
+      <section className="mx-auto max-w-5xl px-4 py-12">
+        {/* Filter bar */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {FILTER_TYPES.map(f => (
+            <Link
+              key={f.value}
+              href={`/corridors${f.value ? `?type=${f.value}` : ''}`}
+              className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeType === f.value
+                  ? 'border-amber-500/60 bg-amber-500/20 text-amber-300'
+                  : 'border-white/10 bg-white/5 text-white/50 hover:border-white/20 hover:text-white'
+              }`}
+            >
+              {f.label}
+            </Link>
+          ))}
+        </div>
 
-        {topStates.map(state => (
-          <div key={state} className="mb-10">
-            <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">From {state}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {(byState[state] ?? []).slice(0, 8).map(c => (
-                <a
-                  key={c.id}
-                  href={`/corridors/${c.origin_state?.toLowerCase()}-${c.destination_state?.toLowerCase()}`}
-                  className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all group"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-bold text-sm text-white group-hover:text-amber-400 transition-colors">
-                      {c.origin_state} to {c.destination_state}
-                    </p>
-                    {c.intel_generated_at && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" title="Intel available" />
-                    )}
-                  </div>
-                  {(c.origin_city || c.destination_city) && (
-                    <p className="text-xs text-gray-600 mb-2">{c.origin_city} to {c.destination_city}</p>
-                  )}
-                  <div className="flex gap-3 text-xs text-gray-600">
-                    {c.load_count > 0 && <span>{c.load_count} loads</span>}
-                    {c.operator_count > 0 && <span>{c.operator_count} escorts</span>}
-                  </div>
-                </a>
+        {/* Leaderboard */}
+        <Suspense
+          fallback={
+            <div className="space-y-3">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="h-16 rounded-xl bg-white/5 animate-pulse" />
               ))}
             </div>
+          }
+        >
+          <CorridorLeaderboard
+            limit={50}
+            corridorType={activeType || undefined}
+            countryCode={activeCountry || undefined}
+            showSponsorSlot
+          />
+        </Suspense>
+
+        {/* Data product CTA */}
+        <div className="mt-12 rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 to-orange-500/5 p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">Corridor Intelligence Pro</p>
+              <h2 className="mt-1 text-xl font-black text-white">Full pricing data, permit maps &amp; demand signals</h2>
+              <p className="mt-1 text-sm text-white/50">Unlock rate benchmarks, demand heatmaps, and corridor requirement exports for any route.</p>
+            </div>
+            <Link
+              href="/data-products/corridor-intelligence"
+              className="shrink-0 rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+            >
+              Unlock Data →
+            </Link>
           </div>
-        ))}
+        </div>
 
-        {!corridors?.length && (
-          <div className="text-center py-16">
-            <p className="text-gray-600">
-              Corridor data loading.{' '}
-              <a href="/route-check" className="text-amber-400 hover:underline">Use Route Check for instant answers.</a>
-            </p>
-          </div>
-        )}
-
-        <div className="mt-8"><AdGridSlot zone="corridor_sponsor" /></div>
-        <div className="mt-6"><DataTeaserStrip /></div>
-        <div className="mt-6"><UrgentMarketSponsor marketKey="us" geo="US Corridor Network" /></div>
-
-        {/* SEO Internal Links - corridor hub flows equity to directory, tools, loads, leaderboards */}
-        <RelatedLinks
-          pageType="corridor"
-          heading="Related corridor and route resources"
-          className="mt-8"
-        />
-      </div>
-    </div>
+        {/* SEO equity */}
+        <div className="mt-12">
+          <RelatedLinks pageType="corridor" />
+        </div>
+      </section>
+    </main>
   );
 }
