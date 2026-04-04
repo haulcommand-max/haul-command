@@ -280,7 +280,10 @@ async function runTests() {
         [createdOrderId]
     );
     r3rows[0]?.status === 'active' ? pass('order still active') : fail(`status=${r3rows[0]?.status}`);
-    const gotDate = String(r3rows[0]?.active_until ?? '').slice(0,10);
+    // pg returns TIMESTAMP columns as JS Date objects — must use .toISOString()
+    const gotDate = r3rows[0]?.active_until instanceof Date
+        ? r3rows[0].active_until.toISOString().slice(0,10)
+        : String(r3rows[0]?.active_until ?? '').slice(0,10);
     gotDate === expectedDate
         ? pass('active_until extended to 60d', gotDate)
         : fail(`active_until mismatch: got ${gotDate} expected ${expectedDate}`);
