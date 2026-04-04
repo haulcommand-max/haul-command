@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
+import { TrustScoreBadge } from '@/components/trust/TrustScoreBadge';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
@@ -472,18 +473,21 @@ export default async function DirectoryPage() {
                       </span>
                     )}
                   </div>
-                  {trustScore != null && (
-                    <div className="flex items-center gap-1 mb-2">
-                      <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(trustScore), 5))}</span>
-                      <span className="text-xs text-gray-500">{trustScore.toFixed(1)} Trust</span>
+                  <div className="flex items-center justify-between mb-3">
+                    {trustScore != null ? (
+                      <TrustScoreBadge score={Math.min(Math.round(trustScore * 20), 100)} variant="compact" />
+                    ) : (
+                      <TrustScoreBadge score={0} variant="compact" />
+                    )}
+                    <div className="flex items-center gap-2 text-[10px] text-gray-600">
                       {jobCount != null && jobCount > 0 && (
-                        <span className="text-xs text-gray-600 ml-1">· {jobCount} jobs</span>
+                        <span>{jobCount} jobs</span>
                       )}
                       {responseRate != null && (
-                        <span className="text-xs text-gray-600 ml-1">· {Math.round(responseRate * 100)}% response</span>
+                        <span>{Math.round(responseRate * 100)}% resp.</span>
                       )}
                     </div>
-                  )}
+                  </div>
                   <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{entityType.replace(/_/g, ' ')} Services</p>
                   <div className="relative">
                     <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>

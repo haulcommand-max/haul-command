@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import SwipeableRunCard from "@/components/mobile/SwipeableRunCard";
 import AvailabilityWidget from "@/components/dispatch/AvailabilityWidget";
+import AvailabilityQuickSet from "@/components/capture/AvailabilityQuickSet";
+import { TrustScoreBadge } from "@/components/trust/TrustScoreBadge";
 import { CheckCircle, AlertCircle, Clock, TrendingUp, DollarSign, Briefcase, User, ChevronRight } from "lucide-react";
 
 const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
@@ -254,6 +256,31 @@ export function OperatorDashboardClient({
 
       {/* ── Availability ── */}
       <AvailabilityWidget className="mb-2" />
+
+      {/* ── One-Tap Availability Broadcast ── */}
+      {/* This directly writes to availability_broadcasts → appears in /available-now broker feed */}
+      {operatorId && (
+        <Card>
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h2 className="text-sm font-bold text-white">Broadcast Availability</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Set your status to appear in the live broker feed at <a href="/available-now" className="text-amber-400 hover:underline">/available-now</a></p>
+              </div>
+              {operatorProfile?.rating_avg && (
+                <TrustScoreBadge
+                  score={Math.round((operatorProfile.rating_avg / 5) * 100)}
+                  variant="compact"
+                />
+              )}
+            </div>
+            <AvailabilityQuickSet
+              operatorId={operatorId}
+              compact={false}
+            />
+          </div>
+        </Card>
+      )}
 
       {/* ── Tabs ── */}
       <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
