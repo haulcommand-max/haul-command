@@ -6,10 +6,47 @@ import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { BadgeProgressRail } from '@/components/social/BadgeProgressRail';
+import { ProofStrip } from '@/components/ui/ProofStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
   title: 'Claim Your Listing — Free Verified Profile | Haul Command',
   description: 'Claim your operator listing on Haul Command. Get verified in minutes, start receiving load offers, and boost your corridor ranking. Free for all operators.',
+  alternates: { canonical: 'https://www.haulcommand.com/claim' },
+  openGraph: {
+    title: 'Claim Your Free Operator Listing | Haul Command',
+    description: 'Get verified. Get found. Start receiving load offers. Free for all pilot car and escort vehicle operators.',
+    url: 'https://www.haulcommand.com/claim',
+  },
+};
+
+const CLAIM_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.haulcommand.com/claim',
+      name: 'Claim Your Listing — Free Verified Profile | Haul Command',
+      description: 'Claim your operator listing on Haul Command. Get verified in minutes, start receiving load offers, and boost your corridor ranking.',
+      url: 'https://www.haulcommand.com/claim',
+      publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
+        { '@type': 'ListItem', position: 2, name: 'Claim Your Listing', item: 'https://www.haulcommand.com/claim' },
+      ],
+    },
+    {
+      '@type': 'Service',
+      name: 'Free Operator Listing Claim',
+      description: 'Claim and verify your pilot car or escort vehicle operator profile on Haul Command. Free for all operators across 120 countries.',
+      url: 'https://www.haulcommand.com/claim',
+      provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+    },
+  ],
 };
 
 const STEPS = [
@@ -95,12 +132,15 @@ export default async function ClaimPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(CLAIM_SCHEMA) }} />
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Swarm trigger: high-intent claim page */}
       <SwarmTriggerPixel
         trigger="high_intent_page"
         payload={{ page_type: 'claim', slug: 'claim', country_code: 'US' }}
       />
+      <ProofStrip variant="bar" />
       {/* Auth-aware claim status banner */}
       {claimData && (
         <ClaimStatusBanner
@@ -222,6 +262,19 @@ export default async function ClaimPage() {
         <DataTeaserStrip />
       </section>
 
+      <NoDeadEndBlock
+        heading="What Would You Like to Do Next?"
+        moves={[
+          { href: '/directory', icon: '🔍', title: 'Browse the Directory', desc: 'See verified operator listings', primary: true, color: '#D4A844' },
+          { href: '/onboarding', icon: '⬆️', title: 'Upgrade to Pro', desc: 'Priority placement from $29/mo', primary: true, color: '#22C55E' },
+          { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by jurisdiction' },
+          { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
+          { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Find loads in your area' },
+          { href: '/pricing', icon: '💎', title: 'See Pricing', desc: 'Compare all plan features' },
+        ]}
+      />
+
     </div>
+    </>
   );
 }

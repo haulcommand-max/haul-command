@@ -224,15 +224,30 @@ check('duplicate JSX style keys', () => {
                     const block = match[1];
                     // Skip react-simple-maps Geography style objects with nested
                     // sub-objects like { default: {...}, hover: {...} }
-                    // Signature: key followed by ': {' inside the block
                     if (/[a-zA-Z]+\s*:\s*\{/.test(block)) continue;
+                    // Skip spread + conditional pattern: style={{...(cond ? {...} : {...})}}
+                    if (block.includes('...(')) continue;
                     // Extract CSS property names at token-start positions only.
-                    // Negative lookbehind for '.' prevents matching property-access
-                    // expressions like `accent.border` or `T.gold` as CSS keys.
+                    // Negative lookbehind for '.' and '$' prevents matching property-access
+                    // (`accent.border`) and template interpolation (`${tierColor}`) as CSS keys.
                     const keys = [];
-                    const keyRe = /(?<![.\w])([a-zA-Z][a-zA-Z0-9]*)\s*:/g;
+                    const keyRe = /(?<![.$\w])([a-zA-Z][a-zA-Z0-9]*)\s*:/g;
                     let km;
-                    while ((km = keyRe.exec(block)) !== null) keys.push(km[1]);
+                    while ((km = keyRe.exec(block)) !== null) {
+                        // Skip if inside a template literal interpolation ${...KEY}
+                        const before = block.slice(0, km.index);
+                        const openBraces = (before.match(/\$\{/g) || []).length;
+                        const closeBraces = (before.match(/\}/g) || []).length;
+                        if (openBraces > closeBraces) continue;
+                        // Skip ternary value colons: `cond ? identifier :` — not a CSS key
+                        const trimmedBefore = before.trimEnd();
+                        if (trimmedBefore.endsWith('?')) continue;
+                        // Skip if immediately preceded by a space and ternary branch value
+                        // e.g. `color: earned ? color :` — second `color` is a value, not a key
+                        const prevToken = trimmedBefore.split(/[\s,({]/).pop() ?? '';
+                        if (prevToken === '?') continue;
+                        keys.push(km[1]);
+                    }
                     const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
                     if (dupes.length > 0) {
                         const lineNum = content.slice(0, match.index).split('\n').length;
