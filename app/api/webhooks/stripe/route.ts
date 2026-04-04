@@ -1,41 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { EntitlementEngine } from '@/lib/monetization/entitlements';
+import { createClient } from '@supabase/supabase-js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' as any });
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-04-10' });
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.text();
-        const sig = req.headers.get('stripe-signature')!;
-        
-        if (!sig) {
-             return NextResponse.json({ error: 'Missing stripe signature' }, { status: 400 });
-        }
+  const rawBody = await req.text();
+  const sig = req.headers.get('stripe-signature')!;
 
-        let event: Stripe.Event;
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+  } catch (err: any) {
+    return NextResponse.json({ error: `Webhook error: ${err.message}` }, { status: 400 });
+  }
 
-        try {
-             // 1. Signature Verification
-             event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-        } catch (err: any) {
-             console.error('Stripe webhook sig verification failed:', err.message);
-             return NextResponse.json({ error: 'Invalid signature', message: err.message }, { status: 400 });
-        }
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as Stripe.CheckoutSession;
+    const slotId = session.metadata?.adgrid_slot_id;
 
-        // 2. Feed into Idempotent Event Log & Canonical Logic
-        const engine = new EntitlementEngine();
-        const resolution = await engine.handleStripeWebhook(event);
-
-        if (resolution.skipped && resolution.reason === 'idempotent_duplicate') {
-             console.log(`[Stripe Webhook] Skipped duplicate event: ${event.id}`);
-        }
-
-        return NextResponse.json({ received: true, ...resolution });
-
-    } catch (error: any) {
-        console.error('Stripe webhook fatal processing error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    if (slotId) {
+      // Activate the AdGrid slot
+      await supabase
+        .from('hc_adgrid_slots')
+        .update({
+          status: 'active',
+          stripe_product_id: session.line_items?.[0]?.price?.product as string ?? null,
+          advertiser_email: session.customer_details?.email ?? null,
+          advertiser_name: session.customer_details?.name ?? null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', slotId);
     }
+  }
+
+  return NextResponse.json({ received: true });
 }
