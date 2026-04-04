@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { RelatedLinks } from '@/components/seo/RelatedLinks';
 import { CorridorSponsorBanner } from '@/components/corridors/CorridorSponsorBanner';
 import { loadCorridorSponsor } from '@/lib/adgrid/corridor-sponsor-loader';
+import { CorridorHeatmap } from '@/components/corridors/CorridorHeatmap';
 
 interface Props {
   params: { slug: string };
@@ -25,6 +26,8 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CorridorSlugPage({ params }: Props) {
   const supabase = createServerComponentClient({ cookies });
+  const { data: { session } } = await supabase.auth.getSession();
+  const isPro = !!session; // Prototype logic: logged in = Pro
 
   const { data: corridor } = await supabase
     .from('hc_corridor_public_v1')
@@ -36,6 +39,15 @@ export default async function CorridorSlugPage({ params }: Props) {
 
   // Load AdGrid sponsor (graceful null if none booked)
   const sponsor = await loadCorridorSponsor(params.slug);
+
+  // Load demand signals (Heatmap Data)
+  const { data: signals } = await supabase
+    .from('hc_corridor_demand_signals')
+    .select('signal_data, composite_score, recorded_at')
+    .eq('corridor_id', corridor.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   // Load requirements
   const { data: reqs } = await supabase
@@ -113,6 +125,13 @@ export default async function CorridorSlugPage({ params }: Props) {
           tier={corridor.tier}
           compositeScore={corridor.composite_score}
           sponsorAd={sponsor}
+        />
+
+        {/* Live Demand Heatmap */}
+        <CorridorHeatmap 
+          corridorName={corridor.short_name ?? corridor.name} 
+          signals={signals || undefined} 
+          isPro={isPro} 
         />
 
         {/* Permit & Escort Requirements */}
