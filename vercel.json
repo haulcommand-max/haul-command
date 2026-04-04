@@ -1,36 +1,8 @@
 {
-    "crons": [
-        {
-            "path": "/api/standing-orders/dispatch",
-            "schedule": "0 6 * * *"
-        },
-        {
-            "path": "/api/cron/rss-alerts",
-            "schedule": "0 5 * * *"
-        },
-        {
-            "path": "/api/cron/content-engine",
-            "schedule": "0 6 * * *"
-        },
-        {
-            "path": "/api/content/generate",
-            "schedule": "0 6 * * *"
-        },
-        {
-            "path": "/api/cron/email-sequences",
-            "schedule": "0 9 * * *"
-        },
-        {
-            "path": "/api/cron/av-briefings",
-            "schedule": "0 7 * * 1"
-        },
-        {
-            "path": "/api/video/check-status",
-            "schedule": "*/5 * * * *"
-        },
-        {
-            "path": "/api/cron/ad-revenue-rollup",
-            "schedule": "0 1 * * *"
-        }
-    ]
+  "crons": [
+    {
+      "path": "/api/notifications/drain-jobs",
+      "schedule": "*/2 * * * *"
+    }
+  ]
 }
