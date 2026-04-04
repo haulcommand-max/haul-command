@@ -8,7 +8,7 @@ import { isEnabled } from '@/lib/feature-flags';
 
 // ── Configuration ──
 
-const TWENTY_API_URL = () => process.env.TWENTY_API_URL || 'http://localhost:3000/api';
+const TWENTY_API_URL = () => process.env.TWENTY_API_URL || 'https://haulcommand.com/api';
 const TWENTY_API_KEY = () => process.env.TWENTY_API_KEY || '';
 
 function twentyHeaders(): Record<string, string> {

@@ -40,6 +40,6 @@ export async function POST(_: Request, { params }: { params: Promise<{ offerId: 
         .update({ status: "matched" })
         .eq("id", offer.load_id);
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://haulcommand.com";
     return NextResponse.redirect(new URL(`/offers/${offerId}?accepted=1`, siteUrl));
 }

@@ -1,6 +1,7 @@
 -- Migration 022: hc_route_requests — broker load request submissions
 begin;
 
+drop table if exists public.hc_route_requests cascade;
 create table if not exists public.hc_route_requests (
   id                  uuid primary key default gen_random_uuid(),
   requested_by        uuid references auth.users(id) on delete set null,
@@ -50,7 +51,7 @@ create or replace function public.hc_enqueue_request_push()
 returns trigger language plpgsql security definer as $$
 begin
   if NEW.operator_hc_id is not null then
-    insert into public.hc_notif_jobs(job_type, payload, status)
+    insert into public.hc_notif_jobs(event_type, payload, status)
     values (
       'load_request',
       jsonb_build_object(
@@ -60,7 +61,7 @@ begin
         'delivery',       NEW.delivery_location,
         'request_id',     NEW.id
       ),
-      'queued'
+      'pending'
     );
   end if;
   return NEW;

@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
         if (destination_state) heartbeatParams.set('destination_state', destination_state);
 
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
             const hbRes = await fetch(`${baseUrl}/api/market/heartbeat?${heartbeatParams}`);
             if (hbRes.ok) {
                 const hbData = await hbRes.json();

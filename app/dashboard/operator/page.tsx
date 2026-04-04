@@ -57,25 +57,27 @@ export default async function OperatorDashboardPage() {
   // If no operator profile linked yet, they need to claim a listing first
   const hasLinkedProfile = !!operatorProfile;
 
-  // ── Active + pending jobs ──
-  const { data: activeJobs } = await supabase
-    .from("hc_jobs")
+  // ── Dispatch Assignments (Sprint 17/18) ──
+  const { data: assignments } = await supabase
+    .from("dispatch_assignments")
     .select(`
       id,
-      status,
-      origin_city,
-      origin_state,
-      destination_city,
-      destination_state,
+      dispatch_request_id,
+      load_id,
+      origin,
+      destination,
       load_type,
-      scheduled_date,
-      accepted_rate,
-      job_reference,
-      created_at
+      date_needed,
+      agreed_rate_per_day,
+      positions,
+      status,
+      accepted_at,
+      started_at,
+      completed_at
     `)
-    .eq("operator_id", operatorProfile?.id ?? userId)
-    .in("status", ["active", "pending", "accepted", "en_route"])
-    .order("scheduled_date", { ascending: true })
+    .eq("operator_user_id", userId)
+    .in("status", ["active", "in_transit"])
+    .order("accepted_at", { ascending: false })
     .limit(10);
 
   // ── Recent earnings (last 30 days) ──
@@ -126,7 +128,7 @@ export default async function OperatorDashboardPage() {
           hasLinkedProfile={hasLinkedProfile}
           claimStatus={claimStatus}
           profileCompleteness={profileCompleteness}
-          activeJobs={activeJobs ?? []}
+          assignments={assignments ?? []}
           recentEarnings={recentEarnings ?? []}
           totalEarnings30d={totalEarnings}
           pendingPayout={pendingPayout}

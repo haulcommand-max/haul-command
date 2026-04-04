@@ -100,8 +100,8 @@ export async function POST(req: NextRequest) {
                     territory_value,
                     company_name,
                 },
-                success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/sponsor/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/sponsor/checkout`,
+                success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/checkout`,
             });
 
             checkoutUrl = session.url;

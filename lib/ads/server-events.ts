@@ -64,7 +64,7 @@ export async function trackServerEvent(
         // Fire to the internal events API (non-blocking)
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
-            : 'http://localhost:3000';
+            : 'https://haulcommand.com';
 
         const response = await fetch(`${baseUrl}/api/events`, {
             method: 'POST',

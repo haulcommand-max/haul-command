@@ -29,8 +29,8 @@ export async function POST(req: NextRequest) {
             mode: 'payment',
             line_items: [{ price_data: { currency: 'usd', product_data: { name: 'Emergency Fill Blast', description: `Urgent load blast on ${corridor_slug}` }, unit_amount: 2500 }, quantity: 1 }],
             metadata: { type: 'emergency_fill', load_id, corridor_slug, broker_id: user.id },
-            success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/loads/${load_id}?emergency=sent`,
-            cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/loads/${load_id}`,
+            success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/loads/${load_id}?emergency=sent`,
+            cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/loads/${load_id}`,
         });
 
         // Record the blast

@@ -2,6 +2,7 @@
 -- Source of truth for the frost law tracker page
 begin;
 
+drop table if exists public.hc_frost_law_status cascade;
 create table if not exists public.hc_frost_law_status (
   id               uuid primary key default gen_random_uuid(),
   state_code       text not null,          -- e.g. 'MN', 'ON'

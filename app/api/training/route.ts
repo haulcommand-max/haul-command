@@ -216,8 +216,8 @@ export async function POST(req: NextRequest) {
                         program_id: program.id,
                         operator_id: body.operator_id,
                     },
-                    success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/training/success?enrollment=${data.id}`,
-                    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/training`,
+                    success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/training/success?enrollment=${data.id}`,
+                    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/training`,
                 });
                 checkoutUrl = session.url;
             }

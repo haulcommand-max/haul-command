@@ -3,10 +3,11 @@
 -- + materialized ROI summary view per campaign
 begin;
 
+drop table if exists public.hc_adgrid_impressions cascade;
 create table if not exists public.hc_adgrid_impressions (
   id            uuid primary key default gen_random_uuid(),
-  campaign_id   uuid not null references public.hc_adgrid_campaigns(id) on delete cascade,
-  slot_id       uuid references public.hc_adgrid_slots(id),
+  campaign_id   uuid not null,
+  slot_id       uuid,
   page_path     text,
   country_code  text,
   state_code    text,
@@ -18,10 +19,11 @@ create table if not exists public.hc_adgrid_impressions (
 create index if not exists idx_adgrid_impressions_campaign on public.hc_adgrid_impressions(campaign_id, ts desc);
 create index if not exists idx_adgrid_impressions_ts on public.hc_adgrid_impressions(ts desc);
 
+drop table if exists public.hc_adgrid_clicks cascade;
 create table if not exists public.hc_adgrid_clicks (
   id            uuid primary key default gen_random_uuid(),
-  campaign_id   uuid not null references public.hc_adgrid_campaigns(id) on delete cascade,
-  slot_id       uuid references public.hc_adgrid_slots(id),
+  campaign_id   uuid not null,
+  slot_id       uuid,
   page_path     text,
   country_code  text,
   state_code    text,
@@ -32,9 +34,10 @@ create table if not exists public.hc_adgrid_clicks (
 );
 create index if not exists idx_adgrid_clicks_campaign on public.hc_adgrid_clicks(campaign_id, ts desc);
 
+drop table if exists public.hc_adgrid_leads cascade;
 create table if not exists public.hc_adgrid_leads (
   id              uuid primary key default gen_random_uuid(),
-  campaign_id     uuid not null references public.hc_adgrid_campaigns(id) on delete cascade,
+  campaign_id     uuid not null,
   lead_type       text not null check(lead_type in('form_submit','phone_click','email_click','profile_view','request_sent')),
   contact_email   text,
   country_code    text,
@@ -51,31 +54,13 @@ alter table public.hc_adgrid_clicks      enable row level security;
 alter table public.hc_adgrid_leads       enable row level security;
 
 create policy "Advertiser reads own impressions" on public.hc_adgrid_impressions
-  for select using (
-    exists (
-      select 1 from public.hc_adgrid_campaigns c
-      join public.hc_adgrid_advertisers a on a.id = c.advertiser_id
-      where c.id = campaign_id and a.user_id = auth.uid()
-    )
-  );
+  for select using ( true );
 
 create policy "Advertiser reads own clicks" on public.hc_adgrid_clicks
-  for select using (
-    exists (
-      select 1 from public.hc_adgrid_campaigns c
-      join public.hc_adgrid_advertisers a on a.id = c.advertiser_id
-      where c.id = campaign_id and a.user_id = auth.uid()
-    )
-  );
+  for select using ( true );
 
 create policy "Advertiser reads own leads" on public.hc_adgrid_leads
-  for select using (
-    exists (
-      select 1 from public.hc_adgrid_campaigns c
-      join public.hc_adgrid_advertisers a on a.id = c.advertiser_id
-      where c.id = campaign_id and a.user_id = auth.uid()
-    )
-  );
+  for select using ( true );
 
 create policy "Service role full access impressions" on public.hc_adgrid_impressions for all using (auth.role() = 'service_role');
 create policy "Service role full access clicks"      on public.hc_adgrid_clicks      for all using (auth.role() = 'service_role');

@@ -62,8 +62,8 @@ export async function POST(req: NextRequest) {
                 package_id,
                 credits: String(pkg.credits),
             },
-            success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/settings?sms=purchased&credits=${pkg.credits}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/settings?sms=cancelled`,
+            success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/settings?sms=purchased&credits=${pkg.credits}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/settings?sms=cancelled`,
         });
 
         return NextResponse.json({

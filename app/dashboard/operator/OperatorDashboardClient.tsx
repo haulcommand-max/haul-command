@@ -35,17 +35,18 @@ interface OperatorProfile {
   is_active?: boolean;
 }
 
-interface Job {
+interface Assignment {
   id: string;
-  status: string;
-  origin_city?: string;
-  origin_state?: string;
-  destination_city?: string;
-  destination_state?: string;
+  dispatch_request_id?: string;
+  load_id?: string;
+  origin?: string;
+  destination?: string;
   load_type?: string;
-  scheduled_date?: string;
-  accepted_rate?: number;
-  job_reference?: string;
+  date_needed?: string;
+  agreed_rate_per_day?: number;
+  positions?: string[];
+  status: string;
+  accepted_at?: string;
 }
 
 interface Earning {
@@ -74,7 +75,7 @@ interface Props {
   hasLinkedProfile: boolean;
   claimStatus: string;
   profileCompleteness: number;
-  activeJobs: Job[];
+  assignments: Assignment[];
   recentEarnings: Earning[];
   totalEarnings30d: number;
   pendingPayout: number;
@@ -96,7 +97,7 @@ export function OperatorDashboardClient({
   hasLinkedProfile,
   claimStatus,
   profileCompleteness,
-  activeJobs,
+  assignments,
   recentEarnings,
   totalEarnings30d,
   pendingPayout,
@@ -106,7 +107,7 @@ export function OperatorDashboardClient({
   const [biddingOn, setBiddingOn] = useState<string | null>(null);
   const [bidAmount, setBidAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'jobs' | 'loads' | 'earnings'>('jobs');
+  const [activeTab, setActiveTab] = useState<'assignments' | 'loads' | 'earnings'>('assignments');
 
   const handleSubmitBid = async (loadId: string) => {
     if (!bidAmount || isNaN(Number(bidAmount))) return alert("Enter a valid bid amount.");
@@ -237,8 +238,8 @@ export function OperatorDashboardClient({
         <Card>
           <div className="p-4 flex flex-col gap-1">
             <Briefcase className="w-4 h-4 text-blue-400 mb-1" />
-            <span className="text-2xl font-black text-white">{activeJobs.length}</span>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Active Jobs</span>
+            <span className="text-2xl font-black text-white">{assignments.length}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Active Missions</span>
           </div>
         </Card>
         <Card>
@@ -284,7 +285,7 @@ export function OperatorDashboardClient({
 
       {/* ── Tabs ── */}
       <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
-        {(['jobs', 'loads', 'earnings'] as const).map(tab => (
+        {(['assignments', 'loads', 'earnings'] as const).map(tab => (
           <button
             key={tab}
             id={`op-tab-${tab}`}
@@ -295,18 +296,18 @@ export function OperatorDashboardClient({
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
-            {tab === 'jobs' ? `Jobs (${activeJobs.length})` : tab === 'loads' ? `Open Loads (${loads.length})` : `Earnings`}
+            {tab === 'assignments' ? `Missions (${assignments.length})` : tab === 'loads' ? `Open Loads (${loads.length})` : `Earnings`}
           </button>
         ))}
       </div>
 
-      {/* ── Jobs Tab ── */}
-      {activeTab === 'jobs' && (
+      {/* ── Assignments Tab ── */}
+      {activeTab === 'assignments' && (
         <Card>
-          {activeJobs.length === 0 ? (
+          {assignments.length === 0 ? (
             <div className="py-12 text-center text-slate-500">
               <Briefcase className="w-10 h-10 mx-auto mb-3 opacity-30" />
-              <p className="font-bold text-slate-400">No active jobs</p>
+              <p className="font-bold text-slate-400">No active missions</p>
               <p className="text-sm mt-1">Switch to "Open Loads" to bid on new routes.</p>
             </div>
           ) : (
@@ -319,32 +320,41 @@ export function OperatorDashboardClient({
                   <TableHead>Date</TableHead>
                   <TableHead>Rate</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {activeJobs.map((job) => (
-                  <TableRow key={job.id}>
+                {assignments.map((assignment) => (
+                  <TableRow key={assignment.id}>
                     <TableCell className="font-mono text-xs text-emerald-400">
-                      {job.job_reference ?? job.id.substring(0, 8)}
+                      {assignment.id.substring(0, 8)}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-slate-300">{job.origin_city}, {job.origin_state}</span>
+                        <span className="text-slate-300">{assignment.origin}</span>
                         <span className="text-slate-600">→</span>
-                        <span className="text-slate-300">{job.destination_city}, {job.destination_state}</span>
+                        <span className="text-slate-300">{assignment.destination}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs text-slate-400">{job.load_type ?? '—'}</TableCell>
+                    <TableCell className="text-xs text-slate-400">{assignment.load_type ?? '—'}</TableCell>
                     <TableCell className="text-xs text-slate-400">
-                      {job.scheduled_date ? new Date(job.scheduled_date).toLocaleDateString() : '—'}
+                      {assignment.date_needed ?? 'ASAP'}
                     </TableCell>
                     <TableCell className="font-bold text-white">
-                      {job.accepted_rate ? `$${job.accepted_rate.toLocaleString()}` : '—'}
+                      {assignment.agreed_rate_per_day ? `$${assignment.agreed_rate_per_day.toLocaleString()} / day` : '—'}
                     </TableCell>
                     <TableCell>
-                      <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full border ${STATUS_COLORS[job.status] ?? STATUS_COLORS.pending}`}>
-                        {job.status}
+                      <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full border ${STATUS_COLORS[assignment.status] ?? STATUS_COLORS.pending}`}>
+                        {assignment.status}
                       </span>
+                    </TableCell>
+                    <TableCell>
+                      <Link 
+                        href={`/dashboard/operator/assignments/${assignment.id}`}
+                        className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 transition gap-1"
+                      >
+                        Action <ChevronRight className="w-3 h-3" />
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
