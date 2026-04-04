@@ -16,7 +16,7 @@ const ZONES = [
   { name:'Training Page Sponsor',  price:'$149/wk',  desc:'Sponsor banner on the HC Training Academy — directly above certification tiers.', icon:'🎫', color:'#f59e0b' },
   { name:'Tool Page Sponsor',      price:'$99/wk',   desc:'Sponsor on permit, axle weight, frost law, and route planner tools.',        icon:'🛠️',  color:'#22c55e' },
   { name:'Directory Search Top',   price:'$249/wk',  desc:'Featured placement above organic results in global directory search.',       icon:'🔍',  color:'#3b82f6' },
-  { name:'Glossary / Regs Sponsor','$79/wk',         desc:'Authority pages. Insurer, law firm, or compliance tool placement.',          icon:'📚',  color:'#8b5cf6' },
+  { name:'Glossary / Regs Sponsor',price:'$79/wk',   desc:'Authority pages. Insurer, law firm, or compliance tool placement.',          icon:'📚',  color:'#8b5cf6' },
 ]
 
 const VERTICALS = [
