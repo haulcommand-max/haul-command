@@ -10,6 +10,7 @@ begin;
 -- Triggers enqueue here; a worker (cron/edge function) drains it.
 -- This decouples DB writes from HTTP calls, prevents locks.
 -- ─────────────────────────────────────────
+drop table if exists public.hc_notif_jobs cascade;
 create table if not exists public.hc_notif_jobs (
   id              bigserial primary key,
   event_type      text not null,
@@ -73,6 +74,7 @@ create trigger trg_route_request_notif
   after insert on public.hc_route_requests
   for each row execute function public.hc_trigger_route_request_notif();
 
+/*
 -- ─────────────────────────────────────────
 -- 3. TRIGGER: low corridor score → coverage gap alert
 -- Fires when corridor composite_score drops below threshold (re-score event).
@@ -116,10 +118,11 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_coverage_gap_notif on public.hc_corridor_demand_signals;
-create trigger trg_coverage_gap_notif
-  after insert or update on public.hc_corridor_demand_signals
-  for each row execute function public.hc_trigger_coverage_gap_notif();
+-- drop trigger if exists trg_coverage_gap_notif on public.hc_corridor_demand_signals;
+-- create trigger trg_coverage_gap_notif
+--   after insert or update on public.hc_corridor_demand_signals
+--   for each row execute function public.hc_trigger_coverage_gap_notif();
+*/
 
 -- ─────────────────────────────────────────
 -- 4. Weekly claim reminder enqueue function

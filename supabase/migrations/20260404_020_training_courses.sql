@@ -2,6 +2,7 @@
 -- HC Training Platform — course catalog, enrollments, credentials
 begin;
 
+drop table if exists public.hc_training_courses cascade;
 create table if not exists public.hc_training_courses (
   id                    uuid primary key default gen_random_uuid(),
   slug                  text unique not null,
@@ -40,6 +41,7 @@ create policy "Public read active courses" on public.hc_training_courses for sel
 create policy "Service role full access courses" on public.hc_training_courses for all using (auth.role() = 'service_role');
 
 -- Enrollments
+drop table if exists public.hc_training_enrollments cascade;
 create table if not exists public.hc_training_enrollments (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid not null references auth.users(id) on delete cascade,

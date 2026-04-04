@@ -2,7 +2,8 @@
 -- Migration: 20260404_019_trust_report_card.sql
 begin;
 
-create type if not exists public.hc_trust_badge as enum(
+drop type if exists public.hc_trust_badge cascade;
+create type public.hc_trust_badge as enum(
   'identity_verified','insurance_verified','license_verified',
   'background_check','safety_record','route_completed',
   'peer_endorsed','long_standing','rapid_responder'

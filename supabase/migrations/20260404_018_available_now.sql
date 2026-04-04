@@ -4,6 +4,7 @@
 -- Operators set a status window; brokers see live feed.
 begin;
 
+drop table if exists public.hc_available_now cascade;
 create table if not exists public.hc_available_now (
   id                uuid primary key default gen_random_uuid(),
   user_id           uuid not null references auth.users(id) on delete cascade,
@@ -48,15 +49,13 @@ create table if not exists public.hc_available_now (
 );
 
 create index if not exists idx_available_now_country
-  on public.hc_available_now(country_code, available_until)
-  where available_until is null or available_until > now();
+  on public.hc_available_now(country_code, available_until);
 
 create index if not exists idx_available_now_trust
-  on public.hc_available_now(trust_score desc, country_code)
-  where available_until is null or available_until > now();
+  on public.hc_available_now(trust_score desc, country_code);
 
 create index if not exists idx_available_now_geo
-  on public.hc_available_now using gist (ll_to_earth(lat::float8, lng::float8))
+  on public.hc_available_now using gist ( (st_setsrid(st_makepoint(lng::float8, lat::float8), 4326)::geography) )
   where lat is not null and lng is not null;
 
 alter table public.hc_available_now enable row level security;

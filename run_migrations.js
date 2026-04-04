@@ -15,20 +15,17 @@ async function run() {
     
     // Find files matching 016 through 024 pattern
     const targetFiles = files.filter(f => {
-      const match = f.match(/_(016|017|018|019|020|021|022|023|024)_/);
-      // Wait, some might be named 20260404_021_... 
-      // check if it starts with things like 20260404 and contains 016
-      return match || [
-        '20260404_016_notification_events.sql',
-        '20260404_017_notification_triggers.sql',
-        '20260404_018_available_now.sql',
-        '20260404_019_trust_report_card.sql',
-        '20260404_020_training_courses.sql',
-        '20260404_021_claim_flow_fields.sql',
-        '20260404_022_route_requests.sql',
-        '20260404_023_adgrid_roi_tables.sql',
-        '20260404_024_frost_law_status.sql'
-      ].includes(f);
+      return (
+        f.startsWith('20260404_016') ||
+        f.startsWith('20260404_017') ||
+        f.startsWith('20260404_018') ||
+        f.startsWith('20260404_019') ||
+        f.startsWith('20260404_020') ||
+        f.startsWith('20260404_021') ||
+        f.startsWith('20260404_022') ||
+        f.startsWith('20260404_023') ||
+        f.startsWith('20260404_024')
+      );
     });
 
     console.log(`Found ${targetFiles.length} migration files to apply:`);

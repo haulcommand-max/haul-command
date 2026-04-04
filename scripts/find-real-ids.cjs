@@ -8,8 +8,12 @@ client.connect().then(async () => {
     console.log('Credential tables:', types.rows.map(r => r.table_name));
 
     if (types.rows.some(r => r.table_name === 'hc_credential_types')) {
-      const c = await client.query(`SELECT id, name FROM hc_credential_types LIMIT 5`);
+      const c = await client.query(`SELECT * FROM hc_credential_types LIMIT 1`);
       console.log('hc_credential_types:', c.rows);
+    }
+    if (types.rows.some(r => r.table_name === 'hc_credential_issuers')) {
+      const i = await client.query(`SELECT * FROM hc_credential_issuers LIMIT 1`);
+      console.log('hc_credential_issuers:', i.rows);
     }
     
     // Find an admin user or any user to use as issuer

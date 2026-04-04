@@ -8,11 +8,13 @@ begin;
 -- ─────────────────────────────────────────
 -- Enums
 -- ─────────────────────────────────────────
-create type if not exists public.hc_notif_channel as enum(
+drop type if exists public.hc_notif_channel cascade;
+create type public.hc_notif_channel as enum(
   'push','email','sms','in_app','voice'
 );
 
-create type if not exists public.hc_notif_event_type as enum(
+drop type if exists public.hc_notif_event_type cascade;
+create type public.hc_notif_event_type as enum(
   -- Operator / supply events
   'new_load_match',
   'missed_opportunity',
@@ -51,11 +53,13 @@ create type if not exists public.hc_notif_event_type as enum(
   'payment_failed'
 );
 
-create type if not exists public.hc_notif_status as enum(
+drop type if exists public.hc_notif_status cascade;
+create type public.hc_notif_status as enum(
   'queued','sent','delivered','opened','clicked','failed','throttled','deduped','opted_out'
 );
 
-create type if not exists public.hc_user_role_key as enum(
+drop type if exists public.hc_user_role_key cascade;
+create type public.hc_user_role_key as enum(
   'pilot_car_operator','escort_driver','heavy_haul_carrier',
   'freight_broker','dispatcher','permit_agent','route_surveyor',
   'yard_operator','shipper','project_planner','directory_user'
@@ -64,6 +68,7 @@ create type if not exists public.hc_user_role_key as enum(
 -- ─────────────────────────────────────────
 -- Device token registry
 -- ─────────────────────────────────────────
+drop table if exists public.hc_device_tokens cascade;
 create table if not exists public.hc_device_tokens (
   id                uuid primary key default gen_random_uuid(),
   user_id           uuid not null references auth.users(id) on delete cascade,
@@ -91,6 +96,7 @@ create policy "Service role full access tokens" on public.hc_device_tokens
 -- ─────────────────────────────────────────
 -- Notification preferences
 -- ─────────────────────────────────────────
+drop table if exists public.hc_notif_preferences cascade;
 create table if not exists public.hc_notif_preferences (
   id                uuid primary key default gen_random_uuid(),
   user_id           uuid unique not null references auth.users(id) on delete cascade,
@@ -130,6 +136,7 @@ create policy "Service role full access preferences" on public.hc_notif_preferen
 -- ─────────────────────────────────────────
 -- Notification event log (audit trail)
 -- ─────────────────────────────────────────
+drop table if exists public.hc_notif_events cascade;
 create table if not exists public.hc_notif_events (
   id                uuid primary key default gen_random_uuid(),
   user_id           uuid references auth.users(id) on delete set null,
