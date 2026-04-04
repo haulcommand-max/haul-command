@@ -1,0 +1,61 @@
+const { Client } = require('pg');
+const fs = require('fs');
+const path = require('path');
+
+const dbUrl = 'postgresql://postgres.hvjyfyzotqobfkakjozp:EvuphRxN3zcgYSk8@aws-0-us-west-2.pooler.supabase.com:5432/postgres';
+
+async function run() {
+  const client = new Client({ connectionString: dbUrl });
+  try {
+    await client.connect();
+    console.log('Connected to DB.');
+    
+    const migrationsDir = path.join(__dirname, 'supabase', 'migrations');
+    const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
+    
+    // Find files matching 016 through 024 pattern
+    const targetFiles = files.filter(f => {
+      const match = f.match(/_(016|017|018|019|020|021|022|023|024)_/);
+      // Wait, some might be named 20260404_021_... 
+      // check if it starts with things like 20260404 and contains 016
+      return match || [
+        '20260404_016_notification_events.sql',
+        '20260404_017_notification_triggers.sql',
+        '20260404_018_available_now.sql',
+        '20260404_019_trust_report_card.sql',
+        '20260404_020_training_courses.sql',
+        '20260404_021_claim_flow_fields.sql',
+        '20260404_022_route_requests.sql',
+        '20260404_023_adgrid_roi_tables.sql',
+        '20260404_024_frost_law_status.sql'
+      ].includes(f);
+    });
+
+    console.log(`Found ${targetFiles.length} migration files to apply:`);
+    console.log(targetFiles.join('\n'));
+
+    for (const file of targetFiles) {
+      console.log(`\n=> Applying ${file}...`);
+      const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+      
+      try {
+        await client.query('BEGIN');
+        await client.query(sql);
+        await client.query('COMMIT');
+        console.log(`✓ successfully applied ${file}.`);
+      } catch (err) {
+        await client.query('ROLLBACK');
+        console.error(`X Error applying ${file}:`, err.message);
+        throw err;
+      }
+    }
+    
+    console.log('\nAll migrations applied successfully!');
+  } catch (err) {
+    console.error('\nFailed:', err.message);
+  } finally {
+    await client.end();
+  }
+}
+
+run();
