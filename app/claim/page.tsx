@@ -1,280 +1,147 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
-import ClaimStatusBanner from './ClaimStatusBanner';
-import { SwarmTriggerPixel } from '@/components/swarm/SwarmTriggerPixel';
-import { AdGridSlot } from '@/components/home/AdGridSlot';
-import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
-import { BadgeProgressRail } from '@/components/social/BadgeProgressRail';
-import { ProofStrip } from '@/components/ui/ProofStrip';
-import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/seo/JsonLd'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Claim Your Listing — Free Verified Profile | Haul Command',
-  description: 'Claim your operator listing on Haul Command. Get verified in minutes, start receiving load offers, and boost your corridor ranking. Free for all operators.',
-  alternates: { canonical: 'https://www.haulcommand.com/claim' },
-  openGraph: {
-    title: 'Claim Your Free Operator Listing | Haul Command',
-    description: 'Get verified. Get found. Start receiving load offers. Free for all pilot car and escort vehicle operators.',
-    url: 'https://www.haulcommand.com/claim',
-  },
-};
+  title: 'Claim Your Profile | Haul Command',
+  description: 'Claim your Haul Command operator profile. Get verified, boost your trust score, and get found by brokers searching for capacity.',
+}
 
-const CLAIM_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebPage',
-      '@id': 'https://www.haulcommand.com/claim',
-      name: 'Claim Your Listing — Free Verified Profile | Haul Command',
-      description: 'Claim your operator listing on Haul Command. Get verified in minutes, start receiving load offers, and boost your corridor ranking.',
-      url: 'https://www.haulcommand.com/claim',
-      publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
-        { '@type': 'ListItem', position: 2, name: 'Claim Your Listing', item: 'https://www.haulcommand.com/claim' },
-      ],
-    },
-    {
-      '@type': 'Service',
-      name: 'Free Operator Listing Claim',
-      description: 'Claim and verify your pilot car or escort vehicle operator profile on Haul Command. Free for all operators across 120 countries.',
-      url: 'https://www.haulcommand.com/claim',
-      provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-    },
-  ],
-};
+export const dynamic = 'force-dynamic'
 
-const STEPS = [
-  {
-    step: 1,
-    title: 'Find Your Listing',
-    desc: 'Search our directory of 1.5M+ operator listings across 120 countries. Your company may already be listed.',
-    icon: '\ud83d\udd0d',
-  },
-  {
-    step: 2,
-    title: 'Verify Your Identity',
-    desc: 'Confirm your phone number, email, and company details. This takes less than 2 minutes.',
-    icon: '\ud83d\udcf1',
-  },
-  {
-    step: 3,
-    title: 'Upload Documents',
-    desc: 'Add your insurance certificate, business license, and any relevant certifications.',
-    icon: '\ud83d\udcc4',
-  },
-  {
-    step: 4,
-    title: 'Set Your Corridors',
-    desc: 'Choose the corridors you operate on. This determines where you appear in search and load matching.',
-    icon: '\ud83d\udee3\ufe0f',
-  },
-  {
-    step: 5,
-    title: 'Set Availability',
-    desc: 'Toggle your real-time availability so brokers know when you\'re ready for work.',
-    icon: '\u2705',
-  },
-  {
-    step: 6,
-    title: 'Start Receiving Offers',
-    desc: 'Your listing goes live immediately. Load offers arrive through the inbox with escrow protection.',
-    icon: '\ud83d\udcb0',
-  },
-];
+export default async function ClaimPage({ searchParams }: { searchParams: { hcid?: string } }) {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-const BENEFITS = [
-  { title: 'Free Verified Badge', desc: 'Verified operators get 3x more load offers than unverified listings.', icon: '\u2713' },
-  { title: 'Corridor Rankings', desc: 'Appear in leaderboards and get priority in load matching on your corridors.', icon: '\ud83c\udfc6' },
-  { title: 'Escrow Protection', desc: 'Every payment goes through escrow. Get paid when the job is done, guaranteed.', icon: '\ud83d\udd12' },
-  { title: 'Real-Time Alerts', desc: 'Get instant notifications when new loads are posted on your corridors.', icon: '\ud83d\udd14' },
-  { title: 'Analytics Dashboard', desc: 'Track your response time, acceptance rate, and earnings over time.', icon: '\ud83d\udcca' },
-  { title: '120 Country Network', desc: 'Access the global heavy haul network spanning 120 countries and 219+ corridors.', icon: '\ud83c\udf0d' },
-];
-
-export default async function ClaimPage() {
-  // Server-side: check auth status for personalized claim banner
-  const supabase = createClient();
-  let claimData: { claimState: string | null; profileCompletion: number; operatorName: string | null } | null = null;
-  
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('claim_state, profile_completion_pct, operator_id')
-        .eq('id', user.id)
-        .single();
-      
-      let operatorName: string | null = null;
-      if (profile?.operator_id) {
-        const { data: operator } = await supabase
-          .from('hc_global_operators')
-          .select('company_name')
-          .eq('id', profile.operator_id)
-          .single();
-        operatorName = operator?.company_name ?? null;
-      }
-
-      claimData = {
-        claimState: profile?.claim_state ?? null,
-        profileCompletion: profile?.profile_completion_pct ?? 0,
-        operatorName,
-      };
-    }
-  } catch {
-    // Not authenticated — show default page
+  // Resolve operator if hcid passed
+  let operator: any = null
+  if (searchParams.hcid) {
+    const { data } = await supabase
+      .from('operators')
+      .select('id,hc_id,company_name,state,country_code,is_claimed')
+      .eq('hc_id', searchParams.hcid)
+      .single()
+    operator = data
   }
+
+  const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Claim Your Haul Command Profile', description:'Verify your identity and claim your listing on Haul Command.' }
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(CLAIM_SCHEMA) }} />
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Swarm trigger: high-intent claim page */}
-      <SwarmTriggerPixel
-        trigger="high_intent_page"
-        payload={{ page_type: 'claim', slug: 'claim', country_code: 'US' }}
-      />
-      <ProofStrip variant="bar" />
-      {/* Auth-aware claim status banner */}
-      {claimData && (
-        <ClaimStatusBanner
-          claimState={claimData.claimState}
-          profileCompletion={claimData.profileCompletion}
-          operatorName={claimData.operatorName}
-        />
-      )}
+      <JsonLd data={schema}/>
+      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+        <div className="px-4 lg:px-10 py-12 max-w-2xl mx-auto">
 
-      {/* Hero */}
-      <section className="py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-          {claimData?.claimState && claimData.claimState !== 'unclaimed'
-            ? 'Complete Your Claim'
-            : 'Claim Your Free Listing'}
-        </h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-          {claimData?.claimState && claimData.claimState !== 'unclaimed'
-            ? `You're ${claimData.profileCompletion}% complete. Keep going to unlock full visibility and start receiving load offers.`
-            : 'Your company may already be in our directory. Claim it in under 5 minutes, get verified, and start receiving load offers with escrow-protected payments.'}
-        </p>
-        <Link aria-label="Navigation Link"
-          href={claimData?.claimState && claimData.claimState !== 'unclaimed' ? '/settings/profile' : '/auth/register?intent=claim'}
-          className="inline-block px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
-        >
-          {claimData?.claimState && claimData.claimState !== 'unclaimed' ? 'Continue Setup' : 'Find My Listing'}
-        </Link>
-      </section>
+          {/* HEADER */}
+          <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">HAUL COMMAND DIRECTORY</p>
+          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-3">Claim Your Profile</h1>
+          <p className="text-sm text-[#8a9ab0] mb-8 leading-relaxed">
+            Your company may already be listed. Claiming takes 2 minutes and immediately boosts your trust score, ranking, and broker visibility.
+          </p>
 
-      {/* Steps */}
-      <section className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold mb-10 text-center">6 Steps to Get Verified</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {STEPS.map((s) => {
-            // Highlight completed steps for authenticated users
-            const isCompleted = claimData && s.step <= Math.ceil((claimData.profileCompletion / 100) * 6);
-            return (
-              <div key={s.step} className={`p-6 rounded-2xl transition-all ${
-                isCompleted
-                  ? 'bg-green-500/10 border border-green-500/20'
-                  : 'bg-white/5 border border-white/10 hover:border-amber-500/20'
-              }`}>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold ${
-                    isCompleted
-                      ? 'bg-green-500/30 text-green-400'
-                      : 'bg-amber-500/20 text-amber-400'
-                  }`}>
-                    {isCompleted ? '\u2713' : s.step}
-                  </span>
-                  <span className="text-2xl">{s.icon}</span>
+          {/* OPERATOR PREVIEW */}
+          {operator && (
+            <div className={`border rounded-2xl p-5 mb-8 ${
+              operator.is_claimed
+                ? 'border-[#22c55e40] bg-[#0d2000]'
+                : 'border-[#d4950e40] bg-[#1a1200]'
+            }`}>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#141e28] flex items-center justify-center text-sm font-bold text-[#8ab0d0]">
+                  {(operator.company_name??'O').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}
                 </div>
-                <h3 className="font-bold text-lg mb-1">{s.title}</h3>
-                <p className="text-sm text-gray-400">{s.desc}</p>
+                <div>
+                  <p className="text-sm font-bold text-[#f0f2f5]">{operator.company_name}</p>
+                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} · {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
+                </div>
+                <div className="ml-auto">
+                  {operator.is_claimed
+                    ? <span className="text-[10px] text-[#22c55e] bg-[#0d2000] border border-[#22c55e40] px-2 py-0.5 rounded">CLAIMED</span>
+                    : <span className="text-[10px] text-[#d4950e] bg-[#2a1f08] border border-[#d4950e40] px-2 py-0.5 rounded">UNCLAIMED</span>
+                  }
+                </div>
               </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold mb-10 text-center">Why Claim Your Listing?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BENEFITS.map((b) => (
-            <div key={b.title} className="p-6 bg-white/5 border border-white/10 rounded-2xl">
-              <span className="text-amber-400 text-xl font-bold">{b.icon}</span>
-              <h3 className="font-bold mt-2">{b.title}</h3>
-              <p className="text-sm text-gray-400 mt-1">{b.desc}</p>
+              {operator.is_claimed && (
+                <p className="text-xs text-[#22c55e] mt-4">✔ This profile has already been claimed. If you believe this is your company, <Link href="/support" className="underline">contact support</Link>.</p>
+              )}
             </div>
-          ))}
+          )}
+
+          {/* BENEFITS */}
+          <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
+            <p className="text-xs text-[#566880] font-semibold tracking-wider mb-4">WHAT YOU GET WHEN YOU CLAIM</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                { icon:'⬆️', label:'Higher directory rank', desc:'Claimed profiles rank above unclaimed listings.' },
+                { icon:'✔️', label:'Verified badge', desc:'Green verified checkmark visible to every broker who views your profile.' },
+                { icon:'📈', label:'Trust score boost', desc:'Claiming adds +20 to your HC Trust Score immediately.' },
+                { icon:'🔔', label:'Broker enquiries', desc:'Brokers can message you directly through the platform.' },
+                { icon:'💼', label:'Load board access', desc:'Receive push notifications for matching loads near you.' },
+                { icon:'🏅', label:'Certification display', desc:'Show your HC certifications and training badges on your profile.' },
+              ].map(b=>(
+                <div key={b.label} className="flex gap-3">
+                  <span className="text-base">{b.icon}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-[#d0dce8]">{b.label}</p>
+                    <p className="text-[11px] text-[#566880] leading-relaxed">{b.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CLAIM CTA */}
+          {(!operator || !operator.is_claimed) && (
+            <div className="flex flex-col gap-3">
+              {!user ? (
+                <>
+                  <Link href={`/sign-up?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
+                    className="bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-4 rounded-xl text-sm text-center transition-colors">
+                    Create Account &amp; Claim Your Profile
+                  </Link>
+                  <Link href={`/sign-in?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
+                    className="border border-[#1e3048] text-[#8a9ab0] hover:border-[#d4950e] py-4 rounded-xl text-sm text-center transition-colors">
+                    Sign In to Claim
+                  </Link>
+                </>
+              ) : (
+                <form action="/api/claim/submit" method="POST">
+                  {searchParams.hcid && <input type="hidden" name="hcid" value={searchParams.hcid}/>}
+                  <input type="hidden" name="user_id" value={user.id}/>
+                  <div className="mb-4">
+                    <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">YOUR COMPANY NAME <span className="text-red-400">*</span></label>
+                    <input name="company_name" defaultValue={operator?.company_name??''} required
+                      className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none" placeholder="Exact legal company name"/>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">BUSINESS PHONE <span className="text-red-400">*</span></label>
+                    <input name="phone" type="tel" required
+                      className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none" placeholder="+1 (555) 000-0000"/>
+                  </div>
+                  <button type="submit" className="w-full bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-4 rounded-xl text-sm transition-colors">
+                    Submit Claim &rarr;
+                  </button>
+                </form>
+              )}
+              <p className="text-[10px] text-[#3a5068] text-center">Claims are reviewed within 24 hours. We may request a copy of your business documentation.</p>
+            </div>
+          )}
+
+          {/* SEARCH YOUR LISTING */}
+          {!searchParams.hcid && (
+            <div className="mt-8 border-t border-[#131c28] pt-8">
+              <p className="text-xs text-[#566880] mb-3">Search for your existing listing first:</p>
+              <form action="/claim" method="GET" className="flex gap-2">
+                <input name="hcid" placeholder="Enter your HC ID (e.g. HC-TX-00123)" className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none"/>
+                <button type="submit" className="bg-[#1e3048] hover:bg-[#2a4060] text-[#8ab0d0] font-semibold px-4 py-3 rounded-xl text-sm">Search</button>
+              </form>
+              <p className="text-[10px] text-[#3a5068] mt-2">Don&apos;t have an HC ID? <Link href="/directory" className="text-[#d4950e] hover:underline">Browse the directory</Link> to find your listing.</p>
+            </div>
+          )}
         </div>
-      </section>
-
-      {/* Stats */}
-      <section className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <div className="grid grid-cols-3 gap-6">
-          <div>
-            <p className="text-3xl font-bold text-amber-400">1.5M+</p>
-            <p className="text-sm text-gray-500">Listings to claim</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold text-amber-400">120</p>
-            <p className="text-sm text-gray-500">Countries</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold text-amber-400">3x</p>
-            <p className="text-sm text-gray-500">More offers when verified</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">Don\u2019t Miss Out</h2>
-        <p className="text-gray-400 mb-8">
-          Operators who claim their listing in the first 30 days get priority corridor placement for free.
-        </p>
-        <Link aria-label="Navigation Link"
-          href="/auth/register?intent=claim"
-          className="px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-xl transition-colors"
-        >
-          Claim Now \u2014 It\u2019s Free
-        </Link>
-      </section>
-
-      {/* Claim Listing Sponsor Slot */}
-      <section className="max-w-4xl mx-auto px-4 py-4">
-        <AdGridSlot zone="claim_listing_sponsor" />
-      </section>
-
-      {/* Badge Progress Rail — show what badges they'll earn */}
-      <section className="max-w-4xl mx-auto px-4 py-4">
-        <BadgeProgressRail showPreview variant="full" />
-      </section>
-
-      {/* Data Teaser Strip — show market activity */}
-      <section className="max-w-4xl mx-auto px-4 pb-12">
-        <DataTeaserStrip />
-      </section>
-
-      <NoDeadEndBlock
-        heading="What Would You Like to Do Next?"
-        moves={[
-          { href: '/directory', icon: '🔍', title: 'Browse the Directory', desc: 'See verified operator listings', primary: true, color: '#D4A844' },
-          { href: '/onboarding', icon: '⬆️', title: 'Upgrade to Pro', desc: 'Priority placement from $29/mo', primary: true, color: '#22C55E' },
-          { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by jurisdiction' },
-          { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
-          { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Find loads in your area' },
-          { href: '/pricing', icon: '💎', title: 'See Pricing', desc: 'Compare all plan features' },
-        ]}
-      />
-
-    </div>
+      </div>
     </>
-  );
+  )
 }
