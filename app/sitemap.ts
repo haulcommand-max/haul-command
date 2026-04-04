@@ -6,113 +6,142 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const revalidate = 3600; // regenerate every hour
 
+const BASE = 'https://www.haulcommand.com';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const supabase = getSupabaseAdmin();
 
-    // Pull all published URLs — Next.js handles 50k limit per file automatically
-    const { data: urls } = await supabase
+    // ── 1. Pull all registered URLs from hc_sitemap_urls ──
+    const { data: dbUrls } = await supabase
       .from('hc_sitemap_urls')
       .select('url, lastmod, priority, changefreq')
       .order('priority', { ascending: false })
-      .limit(50000); // Google's limit per sitemap file
+      .limit(48000); // reserve 2k slots for dynamic pages below
 
-    if (!urls || urls.length === 0) {
-      return getStaticFallback();
-    }
+    type SitemapEntry = MetadataRoute.Sitemap[0];
 
-    return urls.map(u => ({
+    const registeredUrls: SitemapEntry[] = (dbUrls ?? []).map(u => ({
       url: u.url,
       lastModified: u.lastmod ? new Date(u.lastmod) : new Date(),
-      changeFrequency: (u.changefreq as MetadataRoute.Sitemap[0]['changeFrequency']) ?? 'weekly',
+      changeFrequency: (u.changefreq as SitemapEntry['changeFrequency']) ?? 'weekly',
       priority: u.priority ?? 0.5,
     }));
+
+    // ── 2. Corridor slug pages (new Corridor OS — not yet in hc_sitemap_urls) ──
+    const { data: corridors } = await supabase
+      .from('hc_corridors')
+      .select('slug, updated_at')
+      .eq('is_active', true)
+      .limit(500);
+
+    const corridorUrls: SitemapEntry[] = (corridors ?? []).map(c => ({
+      url: `${BASE}/corridors/${c.slug}`,
+      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    }));
+
+    // ── 3. Coming-soon / waitlist pages for dormant markets ──
+    const { data: dormantCountries } = await supabase
+      .from('hc_country_readiness')
+      .select('country_code, updated_at')
+      .in('market_mode', ['dormant'])
+      .limit(200);
+
+    const comingSoonUrls: SitemapEntry[] = (dormantCountries ?? []).map(c => ({
+      url: `${BASE}/${c.country_code.toLowerCase()}/coming-soon`,
+      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
+    }));
+
+    // ── 4. Active country hub pages ──
+    const { data: activeCountries } = await supabase
+      .from('hc_country_readiness')
+      .select('country_code, updated_at')
+      .in('market_mode', ['active', 'seeded'])
+      .limit(100);
+
+    const countryUrls: SitemapEntry[] = (activeCountries ?? []).map(c => ({
+      url: `${BASE}/${c.country_code.toLowerCase()}`,
+      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
+
+    // ── Combine and deduplicate by URL ──
+    const allEntries = [
+      ...registeredUrls,
+      ...corridorUrls,
+      ...comingSoonUrls,
+      ...countryUrls,
+    ];
+
+    const seen = new Set<string>();
+    const deduped = allEntries.filter(e => {
+      if (seen.has(e.url)) return false;
+      seen.add(e.url);
+      return true;
+    });
+
+    // If no DB entries at all, return static fallback
+    if (deduped.length === 0) return getStaticFallback();
+
+    return deduped;
+
   } catch {
     return getStaticFallback();
   }
 }
 
 function getStaticFallback(): MetadataRoute.Sitemap {
-  const base = 'https://www.haulcommand.com';
   return [
-    { url: base, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
-    { url: `${base}/directory`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${base}/tools`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/tools/permit-checker/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/tools/escort-rules/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/escort-requirements`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/directory/us`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${base}/directory/ca`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${base}/directory/au`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${base}/directory/gb`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${base}/glossary`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/training`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/advertise`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${base}/developers`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: BASE, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+    { url: `${BASE}/directory`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/tools`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE}/tools/permit-checker/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE}/tools/escort-rules/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE}/escort-requirements`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE}/directory/us`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/directory/ca`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/directory/au`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/directory/gb`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE}/glossary`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/corridors`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
 
-    // ── Market / State Pages ────────────────────────────────────────────────
+    // US state market pages
     ...['tx','ca','fl','il','oh','pa','ny','ga','nc','az','wa','co','mn','mi','tn','nv','or','mo','ok','al','la','sc','ky','ut','ia','ar','ms','ks','ne','id','nm','sd','nd','mt','wy','wv','vt','nh','me','ri','ct','de','md','va','in','wi','hi','ak'].map(state => ({
-      url: `${base}/market/${state}`,
+      url: `${BASE}/market/${state}`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.85,
     })),
 
-    // ── Find / Role / City — Highest Commercial Intent Family ───────────────
-    ...[
-      ['pilot-car-operator','houston'],['pilot-car-operator','dallas'],['pilot-car-operator','los-angeles'],
-      ['pilot-car-operator','chicago'],['pilot-car-operator','phoenix'],['pilot-car-operator','san-antonio'],
-      ['pilot-car-operator','miami'],['pilot-car-operator','denver'],['pilot-car-operator','atlanta'],
-      ['pilot-car-operator','seattle'],['escort-vehicle-operator','houston'],['escort-vehicle-operator','dallas'],
-      ['escort-vehicle-operator','los-angeles'],['escort-vehicle-operator','chicago'],
-      ['height-pole-operator','houston'],['height-pole-operator','los-angeles'],
-      ['route-survey-specialist','dallas'],['route-survey-specialist','chicago'],
-    ].map(([role, city]) => ({
-      url: `${base}/find/${role}/${city}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    })),
-
-    // ── Corridors — 35 corridors, $199/mo sponsorship each ─────────────────
-    ...([
-      // Gulf Coast
-      ['tx','la'],['tx','ok'],['la','ms'],['ms','al'],['al','ga'],['tx','nm'],
-      // Southeast
-      ['fl','ga'],['ga','sc'],['sc','nc'],['nc','va'],
-      // Mid-Atlantic
-      ['va','md'],['md','pa'],['oh','pa'],['pa','nj'],['nj','ny'],
-      // Midwest
-      ['oh','in'],['in','il'],['il','mo'],['mo','ks'],['mi','oh'],
-      // Plains
-      ['tx','ks'],['ks','ne'],['nd','sd'],
-      // Mountain
-      ['mt','wy'],['wy','co'],['co','ut'],['ut','nv'],['id','mt'],
-      // West Coast
-      ['ca','az'],['or','wa'],['wa','or'],['ca','nv'],
-      // Canada
-      ['ab','sk'],['on','qc'],
-    ] as [string,string][]).map(([origin, dest]) => ({
-      url: `${base}/corridors/${origin}/vs/${dest}`,
+    // Corridor slug pages (static sample — 80 seeded US corridors)
+    ...['houston-tx-to-beaumont-tx','houston-tx-to-baton-rouge-la','dallas-tx-to-oklahoma-city-ok',
+        'los-angeles-ca-to-phoenix-az','chicago-il-to-detroit-mi','atlanta-ga-to-charlotte-nc',
+        'miami-fl-to-jacksonville-fl','denver-co-to-salt-lake-city-ut','seattle-wa-to-portland-or',
+        'kansas-city-mo-to-st-louis-mo'].map(slug => ({
+      url: `${BASE}/corridors/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),
 
-
-    // ── Best-For Pages ──────────────────────────────────────────────────────
-    ...['oversize-load','wide-load','heavy-haul','wind-turbine','bridge-beam','oil-field-equipment',
-        'construction-equipment','manufactured-home','crane','utility-poles'].map(loadType => ({
-      url: `${base}/best-for/${loadType}`,
+    // Dormant market coming-soon pages (slate/copper tier sample)
+    ...['pl','cz','sk','hu','si','ee','lv','lt','hr','ro','bg','gr','tr','kw','om','bh',
+        'sg','my','jp','kr','cl','ar','co','pe','vn','ph'].map(cc => ({
+      url: `${BASE}/${cc}/coming-soon`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
     })),
 
-    // ── Top Country Regulations ─────────────────────────────────────────────
+    // Top country regulation pages
     ...['us','ca','au','gb','de','nl','nz','za','mx','br','sg','ae','no','se','fr'].map(country => ({
-      url: `${base}/regulations/${country}`,
+      url: `${BASE}/regulations/${country}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.75,

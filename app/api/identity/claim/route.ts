@@ -1,43 +1,134 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
-// HAUL COMMAND: IDENTITY & CLAIM FUNNEL
-// Allows an unverified operator to permanently claim their scraper-discovered profile.
-
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+// ═══════════════════════════════════════════════════════════════
+// POST /api/identity/claim — Operator profile claim funnel
+//
+// SECURITY FIX: Replaced fake length > 5 OTP check with real
+// Supabase email OTP verification via verifyOtp().
+//
+// Flow:
+//   1. Client triggers supabase.auth.signInWithOtp({ email })
+//   2. User receives email with 6-digit OTP
+//   3. Client posts { operatorId, claimMethod:'email', token, email }
+//   4. This route calls supabase.auth.verifyOtp() to validate the token
+//   5. On success: upgrades hc_global_operators.claim_status = 'verified'
+//                  links hc_global_operators.user_id = authenticated user
+//   6. Returns redirect URL to operator dashboard
+//
+// Additional protection:
+//   - Rate limit: 5 attempts per email per hour (via hc_claim_attempts)
+//   - Only unclaimed/pending operators can be claimed
+//   - Claim token is single-use (Supabase OTP is invalidated after verify)
+// ═══════════════════════════════════════════════════════════════
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
     const { operatorId, claimMethod, verificationToken, phoneOrEmail } = await req.json();
 
-    if (!operatorId || !claimMethod || !verificationToken) {
-      return NextResponse.json({ error: 'Missing claim funnel attributes.' }, { status: 400 });
+    if (!operatorId || !claimMethod || !verificationToken || !phoneOrEmail) {
+      return NextResponse.json(
+        { error: 'Missing required fields: operatorId, claimMethod, verificationToken, phoneOrEmail.' },
+        { status: 400 }
+      );
     }
 
-    // Normally we would verify a Twilio OTP or magic link token here.
-    const isTokenValid = verificationToken.length > 5; // Simplified verification condition
-
-    if (!isTokenValid) {
-      return NextResponse.json({ error: 'Invalid verification token.' }, { status: 401 });
+    // ── Validate claimMethod ──
+    if (!['email', 'sms'].includes(claimMethod)) {
+      return NextResponse.json({ error: 'Invalid claimMethod. Use "email" or "sms".' }, { status: 400 });
     }
 
-    // 1. Upgrade the Operator's Trust & Claim Status
-    const { error: updateError } = await supabase
+    const sb = getSupabaseAdmin();
+
+    // ── Rate limit: check recent claim attempts ──
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count: attemptCount } = await sb
+      .from('hc_claim_attempts')
+      .select('id', { count: 'exact', head: true })
+      .eq('contact', phoneOrEmail.toLowerCase())
+      .gte('attempted_at', oneHourAgo);
+
+    if ((attemptCount ?? 0) >= 5) {
+      return NextResponse.json(
+        { error: 'Too many claim attempts. Please wait 1 hour before trying again.' },
+        { status: 429 }
+      );
+    }
+
+    // ── Log this attempt ──
+    await sb.from('hc_claim_attempts').insert({
+      operator_id: operatorId,
+      contact: phoneOrEmail.toLowerCase(),
+      claim_method: claimMethod,
+      attempted_at: new Date().toISOString(),
+    }).throwOnError();
+
+    // ── Verify OTP via Supabase Auth ──
+    // Both email and phone OTP verification use the same verifyOtp API.
+    // Email OTP: type = 'email'
+    // SMS OTP: type = 'sms'
+    const verifyPayload = claimMethod === 'email'
+      ? { type: 'email' as const, email: phoneOrEmail, token: verificationToken }
+      : { type: 'sms' as const, phone: phoneOrEmail, token: verificationToken };
+
+    // Use an ephemeral client (not admin) so Supabase runs normal OTP validation
+    const authClient = await createClient();
+    const { data: otpData, error: otpError } = await authClient.auth.verifyOtp(verifyPayload);
+
+    if (otpError || !otpData?.user) {
+      return NextResponse.json(
+        { error: 'Invalid or expired verification code. Request a new one.' },
+        { status: 401 }
+      );
+    }
+
+    const verifiedUserId = otpData.user.id;
+
+    // ── Check operator exists and is claimable ──
+    const { data: operator, error: opError } = await sb
+      .from('hc_global_operators')
+      .select('id, claim_status, user_id, business_name')
+      .eq('id', operatorId)
+      .single();
+
+    if (opError || !operator) {
+      return NextResponse.json({ error: 'Operator profile not found.' }, { status: 404 });
+    }
+
+    if (operator.claim_status === 'verified' && operator.user_id !== verifiedUserId) {
+      return NextResponse.json(
+        { error: 'This profile has already been claimed by another user.' },
+        { status: 409 }
+      );
+    }
+
+    // ── Upgrade operator claim status and link user_id ──
+    const { error: updateError } = await sb
       .from('hc_global_operators')
       .update({
         claim_status: 'verified',
-        primary_trust_source: claimMethod === 'sms' ? 'Twilio Verified SMS' : 'Domain Auth',
-        updated_at: new Date().toISOString()
+        user_id: verifiedUserId,
+        primary_trust_source: claimMethod === 'sms' ? 'Supabase SMS OTP' : 'Supabase Email OTP',
+        claimed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       })
       .eq('id', operatorId);
 
     if (updateError) throw updateError;
 
-    // 2. Generate a proprietary Auth Session / JWT for them to login
+    // ── Mark claim attempts as resolved ──
+    await sb
+      .from('hc_claim_attempts')
+      .update({ resolved: true })
+      .eq('operator_id', operatorId)
+      .eq('contact', phoneOrEmail.toLowerCase());
+
     return NextResponse.json({
       success: true,
-      message: 'Profile Claimed Successfully. You are now verified in the 120-country directory.',
-      redirectUrl: `/dashboard/operator/${operatorId}/setup`
+      message: `Profile "${operator.business_name}" claimed successfully. Welcome to the Haul Command network.`,
+      redirectUrl: `/dashboard/operator`,
     });
 
   } catch (error: any) {
