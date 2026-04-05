@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
       .select('id').single()
     if (campErr || !campaign) throw new Error('Failed to create campaign')
 
-    await supabase.from('hc_ad_creatives').insert({ campaign_id: campaign.id, headline: creative.headline, body: creative.body, cta_label: creative.cta_label, cta_url: creative.cta_url, status: 'pending_review' }).catch(()=>{})
+    try { await supabase.from('hc_ad_creatives').insert({ campaign_id: campaign.id, headline: creative.headline, body: creative.body, cta_label: creative.cta_label, cta_url: creative.cta_url, status: 'pending_review' }) } catch (_) { /* non-fatal */ }
+
 
     return NextResponse.json({ ok: true, campaign_id: campaign.id, advertiser_id: adv.id, message: 'Campaign created. Pending review — typically approved within 2 hours.' })
   } catch (err: any) {

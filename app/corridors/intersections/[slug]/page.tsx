@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ShieldAlert, Map, AlertTriangle, Truck, Eye, ArrowRight, Video, Navigation2 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 // Mock data product resolver for Intersections
 function getIntersectionData(slug: string) {

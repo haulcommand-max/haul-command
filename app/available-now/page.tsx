@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 interface Operator {

@@ -1,5 +1,4 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 
 export interface CorridorSponsorAd {
   headline: string;
@@ -20,7 +19,7 @@ export async function loadCorridorSponsor(
   corridorSlug: string
 ): Promise<CorridorSponsorAd | null> {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    const supabase = createClient();
     const { data } = await supabase
       .from('hc_adgrid_slots')
       .select('headline,subline,cta_label,cta_href,badge_label')

@@ -193,14 +193,14 @@ export default async function RepositionPage() {
                     {/* CTA */}
                     <div style={{ display: 'flex', gap: 8 }}>
                       {post.operator_slug ? (
-                        <Link href={`/directory/profile/${post.operator_slug}`} style={{
+                        <a href={`/api/telemetry/repo-click?id=${post.id}&action=directory&url=${encodeURIComponent('/directory/profile/'+post.operator_slug)}`} style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                           padding: '10px', borderRadius: 10,
                           background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)',
                           color: '#3b82f6', fontSize: 12, fontWeight: 700, textDecoration: 'none',
                         }}>
                           View Profile <ArrowRight style={{ width: 12, height: 12 }} />
-                        </Link>
+                        </a>
                       ) : (
                         <Link href="/directory" style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -212,7 +212,7 @@ export default async function RepositionPage() {
                         </Link>
                       )}
                       {post.phone && (
-                        <a href={`tel:${post.phone}`} style={{
+                        <a href={`/api/telemetry/repo-click?id=${post.id}&action=call&url=${encodeURIComponent('tel:'+post.phone)}`} style={{
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           padding: '10px 16px', borderRadius: 10,
                           background: 'linear-gradient(135deg, #C6923A, #E0B05C)',

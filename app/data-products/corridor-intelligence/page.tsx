@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
-import { RelatedLinks } from '@/components/seo/RelatedLinks';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata = {
   title: 'Corridor Intelligence Data Product — Rate Benchmarks & Permit Maps | Haul Command',

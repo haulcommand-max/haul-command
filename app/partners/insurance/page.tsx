@@ -2,10 +2,17 @@
 
 import { Shield, ChevronRight, CheckCircle2, Award, ArrowRight, Activity, Percent } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 
+import { useState } from "react";
+
 export default function HeavyHaulInsurancePage() {
+  const [usdot, setUsdot] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
       {/* Hero */}
@@ -67,12 +74,30 @@ export default function HeavyHaulInsurancePage() {
               <h2 className="text-3xl font-bold text-white mb-4">Start by linking your USDOT</h2>
               <p className="text-lg text-slate-300 mb-6">If you have a Trust Score over 80 and zero out-of-service violations in the past 12 months, you are guaranteed a better rate than standard market tables. Find out exactly how much.</p>
               
-              <div className="flex gap-2">
-                 <Input className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Enter USDOT Number" />
-                 <Button className="bg-white text-indigo-950 hover:bg-slate-200 h-12 px-6 rounded-xl font-bold">
-                    Check Eligibility <ArrowRight className="h-4 w-4 ml-2" />
-                 </Button>
-              </div>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                try {
+                  await fetch('/api/partners/lead', {
+                    method: 'POST',
+                    body: JSON.stringify({ partner_type: 'insurance', usdot, email })
+                  });
+                  setSubmitted(true);
+                } catch(e) {}
+                setLoading(false);
+              }} className="flex flex-col gap-3 mt-4">
+                 {submitted ? <div className="text-emerald-400 font-bold bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 text-center">Received. Our underwriters will reach out shortly.</div> : (
+                   <>
+                     <div className="flex flex-col sm:flex-row gap-2">
+                       <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Enter USDOT Number" />
+                       <Input type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Email Address" />
+                     </div>
+                     <Button disabled={loading} type="submit" className="bg-white text-indigo-950 hover:bg-slate-200 h-12 px-6 rounded-xl font-bold w-full sm:w-auto self-start">
+                        {loading ? 'Checking...' : <>Check Eligibility <ArrowRight className="h-4 w-4 ml-2" /></>}
+                     </Button>
+                   </>
+                 )}
+              </form>
            </div>
            
            {/* Mockup Example */}

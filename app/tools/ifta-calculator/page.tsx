@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Calculator, CheckCircle2, AlertCircle, ChevronRight, Fuel, Truck, MapPin } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 
 // Minimal mock rates for demonstration
@@ -107,7 +107,7 @@ export default function IftaCalculatorPage() {
                   <Input 
                     type="number" 
                     value={mpg} 
-                    onChange={(e) => setMpg(Number(e.target.value))}
+                    onChange={(e: any) => setMpg(Number(e.target.value))}
                     className="w-20 bg-slate-800 border-slate-700 text-white focus:ring-indigo-500"
                     step="0.1"
                   />
@@ -141,7 +141,7 @@ export default function IftaCalculatorPage() {
                       <Input 
                         type="number"
                         value={entry.miles}
-                        onChange={(e) => updateEntry(idx, 'miles', Number(e.target.value))}
+                        onChange={(e: any) => updateEntry(idx, 'miles', Number(e.target.value))}
                         className="w-full bg-slate-800 border-slate-700 text-white pl-8"
                       />
                       <MapPin className="h-3 w-3 text-slate-500 absolute left-3 top-[13px]" />
@@ -150,7 +150,7 @@ export default function IftaCalculatorPage() {
                       <Input 
                         type="number" 
                         value={entry.gallonsPurchased}
-                        onChange={(e) => updateEntry(idx, 'gallonsPurchased', Number(e.target.value))}
+                        onChange={(e: any) => updateEntry(idx, 'gallonsPurchased', Number(e.target.value))}
                         className="w-full bg-slate-800 border-slate-700 text-white pl-8"
                       />
                       <Fuel className="h-3 w-3 text-slate-500 absolute left-3 top-[13px]" />
@@ -232,9 +232,11 @@ export default function IftaCalculatorPage() {
                   Hook your ELD and Fuel Card APIs into Haul Command to automate IFTA filings entirely.
                 </p>
               </div>
-              <Button variant="secondary" className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200" asChild>
-                <Link href="/tools/compliance-copilot">View Compliance Copilot</Link>
-              </Button>
+              <Link href="/tools/compliance-copilot" className="w-full">
+                <Button variant="outline" className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200">
+                  View Compliance Copilot
+                </Button>
+              </Link>
             </div>
 
           </div>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, ShieldCheck, Map, Truck, Building2, ChevronRight, FileCheck2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 
 export default function DotLookupLandingPage() {
@@ -40,7 +40,7 @@ export default function DotLookupLandingPage() {
               <Search className="h-6 w-6 text-slate-400 ml-3" />
               <Input 
                 value={usdot}
-                onChange={(e) => setUsdot(e.target.value)}
+                onChange={(e: any) => setUsdot(e.target.value)}
                 placeholder="Enter USDOT Number or Company Name (e.g. 1234567)" 
                 className="flex-1 bg-transparent border-none text-lg text-white focus-visible:ring-0 placeholder:text-slate-500"
               />

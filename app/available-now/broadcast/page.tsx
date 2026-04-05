@@ -41,19 +41,33 @@ export default function BroadcastForm() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { setError('You must be signed in to broadcast availability.'); setLoading(false); return }
 
+      // Map form fields to real hc_available_now column names
+      const vehicleTypeMap: Record<string, string> = {
+        pilot_car: 'pilot_car',
+        escort_vehicle: 'escort_vehicle',
+        high_pole: 'high_pole',
+        steerman: 'steerman',
+        route_surveyor: 'route_surveyor',
+        heavy_towing: 'heavy_towing',
+        air_cushion: 'other',
+      }
+
       const { error: err } = await supabase.from('hc_available_now').upsert({
-        operator_id: user.id,
+        user_id: user.id,
+        vehicle_type: vehicleTypeMap[form.service_type] ?? 'pilot_car',
         service_type: form.service_type,
+        city: form.current_city.trim(),
         current_city: form.current_city.trim(),
+        region_code: form.current_state.trim().toUpperCase(),
         current_state: form.current_state.trim().toUpperCase(),
         country_code: form.country_code,
         max_radius_miles: form.max_radius_miles,
-        available_from: form.available_from || null,
+        available_since: form.available_from || new Date().toISOString(),
         available_until: form.available_until || null,
         notes: form.notes.trim() || null,
         is_active: true,
         last_ping_at: new Date().toISOString(),
-      }, { onConflict: 'operator_id,service_type' })
+      }, { onConflict: 'user_id' })
 
       if (err) throw err
       setSuccess(true)

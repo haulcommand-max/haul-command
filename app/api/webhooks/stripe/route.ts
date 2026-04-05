@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { sendPushToUser, buildPushPayload } from '@/lib/notifications/push-service';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-04-10' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' });
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
   // ── checkout.session.completed → activate AdGrid slot
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.CheckoutSession;
+    const session = event.data.object as Stripe.Checkout.Session;
     const slotId = session.metadata?.adgrid_slot_id;
 
     if (slotId) {
@@ -40,8 +40,7 @@ export async function POST(req: NextRequest) {
     // Notify purchaser — payment_confirmed push
     const userId = session.metadata?.user_id;
     if (userId) {
-      await sendPushToUser(
-        buildPushPayload(userId, 'payment_confirmed', {
+      await sendPushToUser(buildPushPayload(userId, 'payment_confirmed', {
           title: '💳 Payment confirmed',
           body: 'Your Haul Command purchase is active. Thank you!',
           deepLink: '/notifications',

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FileText, Upload, Clock, Search, Folder, MoreVertical, Plus, CheckCircle2, ShieldCheck, MailWarning, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 
 // Minimal mockup of forms database and state
@@ -113,7 +113,7 @@ export default function FormsHubPage() {
                   <Clock className="h-3 w-3 mr-1 opacity-50" /> {form.date}
                 </div>
                 <div className="col-span-2 md:col-span-1 flex justify-end">
-                  <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                  <Button size="sm" variant="ghost" className="text-slate-400 hover:text-white">
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>

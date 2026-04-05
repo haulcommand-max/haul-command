@@ -1,7 +1,7 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { RelatedLinks } from '@/components/seo/RelatedLinks';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 import { CorridorSponsorBanner } from '@/components/corridors/CorridorSponsorBanner';
 import { loadCorridorSponsor } from '@/lib/adgrid/corridor-sponsor-loader';
 import { CorridorHeatmap } from '@/components/corridors/CorridorHeatmap';

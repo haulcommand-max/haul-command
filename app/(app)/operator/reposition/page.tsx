@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { ArrowRight, MapPin, Navigation, Calendar, Clock, Truck, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 
 export default function OperatorRepositionPostPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
 
 const NAV_LINKS = [

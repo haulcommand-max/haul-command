@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Users, MapPin, Search, AlertCircle, RefreshCw, Layers, Shield, Zap, Moon, Globe, MessageSquare } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 interface Operator {

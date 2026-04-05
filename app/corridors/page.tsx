@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import CorridorLeaderboard from '@/components/corridors/CorridorLeaderboard';
-import { RelatedLinks } from '@/components/seo/RelatedLinks';
+import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata = {
   title: 'Heavy Haul Corridor Intelligence — Ranked Routes Worldwide | Haul Command',

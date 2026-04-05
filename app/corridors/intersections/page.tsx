@@ -1,15 +1,15 @@
-import { Map, AlertTriangle, ShieldCheck, ChevronRight, Input as SearchIcon } from "lucide-react";
+import { Map, AlertTriangle, ShieldCheck, ChevronRight, Search as SearchIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
+import { createClient } from "@/lib/supabase/server";
 
-const MOCK_INTERSECTIONS = [
-  { slug: "wa-i90-us97-ellensburg", state: "WA", city: "Ellensburg", name: "I-90 / US-97 Interchange", risk: "High", limit: "129,000 lbs" },
-  { slug: "tx-i10-i45-houston", state: "TX", city: "Houston", name: "I-10 / I-45 Pierce Elevated", risk: "Critical", limit: "Bridge Formula" },
-  { slug: "pa-i80-us15-milton", state: "PA", city: "Milton", name: "I-80 / US-15 River Bridge", risk: "Moderate", limit: "100,000 lbs" },
-  { slug: "ca-i5-i80-sacramento", state: "CA", city: "Sacramento", name: "I-5 / I-80 Interchange", risk: "High", limit: "Permit Req" },
-];
+export const revalidate = 3600; // Cache for 1 hour
 
-export default function CorridorIntersectionsIndex() {
+export default async function CorridorIntersectionsIndex() {
+  const supabase = createClient();
+  const { data } = await supabase.from('hc_corridor_intersections').select('*').limit(20).order('risk', { ascending: false });
+  const displayIntersections = data || [];
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
       {/* Hero Header */}
@@ -52,7 +52,7 @@ export default function CorridorIntersectionsIndex() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 mb-16">
-          {MOCK_INTERSECTIONS.map((intersection) => (
+          {displayIntersections.map((intersection) => (
              <Link key={intersection.slug} href={`/corridors/intersections/${intersection.slug}`} className="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-xl p-5 flex items-center justify-between group transition-colors shadow-lg">
                 <div className="flex items-center gap-4">
                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-black text-xl shrink-0 ${intersection.risk === 'Critical' ? 'bg-rose-500/20 text-rose-500' : intersection.risk === 'High' ? 'bg-amber-500/20 text-amber-500' : 'bg-slate-800 text-slate-400'}`}>
@@ -60,7 +60,7 @@ export default function CorridorIntersectionsIndex() {
                    </div>
                    <div>
                      <h3 className="font-bold text-white group-hover:text-indigo-400 transition-colors">{intersection.name}</h3>
-                     <p className="text-sm text-slate-500">{intersection.city}, {intersection.state} • Limit: {intersection.limit}</p>
+                     <p className="text-sm text-slate-500">{intersection.city}, {intersection.state} • Limit: {intersection.weight_limit || 'N/A'}</p>
                    </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-600 group-hover:text-indigo-400 transition-colors" />

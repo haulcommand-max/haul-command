@@ -186,3 +186,29 @@ export async function trySendBulkNotification(
         console.error(`[FCM:error] bulk ${opts.type}:`, err);
     }
 }
+
+// ── Notification Templates ──
+
+export interface DispatchWaveTemplateProps {
+    origin: string;
+    destination: string;
+    waveNumber: number;
+    loadType: string;
+    requestId: string;
+}
+
+/**
+ * Generates the FCM payload for a dispatch wave match
+ */
+export function dispatchWaveTemplate(props: DispatchWaveTemplateProps): Omit<SendNotificationOptions, 'userId'> {
+    return {
+        type: 'dispatch_wave',
+        title: `⚡ URGENT: Wave ${props.waveNumber} Load Match`,
+        body: `${props.loadType}: ${props.origin} → ${props.destination}`,
+        data: {
+            dispatch_id: props.requestId,
+            screen: '/dispatch',
+        },
+    };
+}
+

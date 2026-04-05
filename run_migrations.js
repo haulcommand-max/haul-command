@@ -9,36 +9,40 @@ async function run() {
   try {
     await client.connect();
     console.log('Connected to DB.');
-    
+
+    // Create migration tracking table if it doesn't exist
+    await client.query(`
+      create table if not exists public.schema_migrations (
+        filename text primary key,
+        applied_at timestamptz default now()
+      );
+    `);
+
     const migrationsDir = path.join(__dirname, 'supabase', 'migrations');
     const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
-    
-    // Find files matching 016 through 024 pattern
-    const targetFiles = files.filter(f => {
-      return (
-        f.startsWith('20260404_016') ||
-        f.startsWith('20260404_017') ||
-        f.startsWith('20260404_018') ||
-        f.startsWith('20260404_019') ||
-        f.startsWith('20260404_020') ||
-        f.startsWith('20260404_021') ||
-        f.startsWith('20260404_022') ||
-        f.startsWith('20260404_023') ||
-        f.startsWith('20260404_024') ||
-        f.startsWith('20260404_025')
-      );
-    });
 
-    console.log(`Found ${targetFiles.length} migration files to apply:`);
-    console.log(targetFiles.join('\n'));
+    // Get already-applied migrations
+    const { rows: applied } = await client.query('select filename from public.schema_migrations');
+    const appliedSet = new Set(applied.map(r => r.filename));
 
-    for (const file of targetFiles) {
+    const pending = files.filter(f => !appliedSet.has(f));
+
+    if (pending.length === 0) {
+      console.log('All migrations already applied. Nothing to do.');
+      return;
+    }
+
+    console.log(`Found ${pending.length} pending migration(s):`);
+    console.log(pending.join('\n'));
+
+    for (const file of pending) {
       console.log(`\n=> Applying ${file}...`);
       const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
-      
+
       try {
         await client.query('BEGIN');
         await client.query(sql);
+        await client.query('insert into public.schema_migrations (filename) values ($1)', [file]);
         await client.query('COMMIT');
         console.log(`✓ successfully applied ${file}.`);
       } catch (err) {
@@ -47,10 +51,11 @@ async function run() {
         throw err;
       }
     }
-    
-    console.log('\nAll migrations applied successfully!');
+
+    console.log('\nAll pending migrations applied successfully!');
   } catch (err) {
     console.error('\nFailed:', err.message);
+    process.exit(1);
   } finally {
     await client.end();
   }

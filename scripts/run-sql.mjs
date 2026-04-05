@@ -17,7 +17,8 @@ async function main() {
   });
 
   try {
-    const sql = fs.readFileSync('supabase/migrations/20260401_capture_system.sql', 'utf8');
+    const sqlFile = process.argv[2] || 'supabase/migrations/20260401_capture_system.sql';
+    const sql = fs.readFileSync(sqlFile, 'utf8');
     await client.connect();
     console.log('Connected to Supabase DB. Applying migration...');
     await client.query(sql);

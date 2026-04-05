@@ -1,4 +1,4 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Suspense } from 'react';

@@ -59,8 +59,16 @@ export type NotifEventType =
   | 'rules_update'
   | 'adgrid_slot_active'
   | 'data_product_expiring'
-  | 'payment_confirmed'
-  | 'payment_failed';
+  | 'payment_failed'
+  | 'payment_confirmed';
+
+export function buildPushPayload(userId: string, eventType: NotifEventType, options: any): PushPayload {
+  return {
+    userId,
+    eventType,
+    ...options
+  };
+}
 
 export interface PushPayload {
   userId: string;

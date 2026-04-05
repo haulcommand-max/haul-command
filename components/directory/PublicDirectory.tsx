@@ -180,7 +180,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
 
       {/* Badge Row: Trust Score, Verified, Escrow, AV Ready, Corridor Heat */}
       <div style={{display: 'flex',flexWrap: 'wrap',gap: 5 }}>
-        <TrustBadge score={op.trustScore} />
+        <TrustBadge trustScore={op.trustScore ?? null} isVerified={op.verified} slug={op.slug || op.id} compact />
         {op.verified && (
           <span style={{display: 'inline-flex',alignItems: 'center',gap: 3,fontSize: 9,fontWeight: 700,padding: '3px 8px',borderRadius: 6,background: T.greenDim,border: '1px solid rgba(34,197,94,0.20)',color: T.green,textTransform: 'uppercase',letterSpacing: '0.05em'}}><ShieldCheck size={9} /> Verified</span>
         )}

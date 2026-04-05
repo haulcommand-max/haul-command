@@ -34,10 +34,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Enqueue notification to admin + confirmation to claimer
-    await sendPushToUser(String(user_id), {
-      title: 'Claim Submitted ✔',
-      body: `Your claim for ${company_name} is under review. We\'ll notify you within 24 hours.`,
-      data: { type: 'claim_submitted', hcid: String(hcid ?? '') },
+    await sendPushToUser({
+      userId: String(user_id),
+      eventType: 'claim_reminder',
+      title: 'Claim Submitted \u2714',
+      body: `Your claim for ${company_name} is under review. We'll notify you within 24 hours.`,
+      deepLink: '/claim/submitted',
+      dedupKey: `claim_submitted:${String(hcid ?? user_id)}`,
+      dedupWindowHrs: 48,
     }).catch(()=>{})
 
     return NextResponse.redirect(new URL('/claim/submitted', req.url))

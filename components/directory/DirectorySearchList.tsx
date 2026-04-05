@@ -230,22 +230,13 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {isAuthenticated && (
             <>
-              <VAPIDispatchButton 
+              <LiveKitDispatchButton 
                 compact 
                 operatorId={op.id} 
                 operatorName={op.name} 
                 operatorPhone={phone} 
+                operatorLocation={op.country_code === 'US' ? op.state : op.country_code} 
               />
-              {/* 
-                When VAPI credits burn out, uncomment this to swap to LiveKit 
-                <LiveKitDispatchButton 
-                  compact 
-                  operatorId={op.id} 
-                  operatorName={op.name} 
-                  operatorPhone={phone} 
-                  operatorLocation={op.country_code === 'US' ? op.state : op.country_code} 
-                />
-              */}
             </>
           )}
           <a

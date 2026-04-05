@@ -29,7 +29,7 @@ const STATE_NAMES: Record<string, string> = {
 
 const PAGE_SIZE = 48;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateStateMetadata({ params }: Props): Promise<Metadata> {
   const { state } = await params;
   const stateCode = state.toUpperCase();
   const stateName = STATE_NAMES[stateCode] ?? stateCode;
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function StateDirectoryPage({ params, searchParams }: Props) {
+export async function StateDirectoryPage({ params, searchParams }: Props) {
   const { state, country } = await params;
   const stateCode = state.toUpperCase();
   const stateName = STATE_NAMES[stateCode];

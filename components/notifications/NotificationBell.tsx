@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 
 interface NotifRow {
   id: string;

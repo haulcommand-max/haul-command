@@ -2,9 +2,18 @@
 
 import { Fuel, RefreshCcw, Banknote, DollarSign, Wallet2, ChevronRight, Calculator, Truck } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+
+import { useState } from "react";
 
 export default function HeavyHaulFuelPartnerPage() {
+  const [usdot, setUsdot] = useState("");
+  const [gallons, setGallons] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
       {/* Hero */}
@@ -66,13 +75,29 @@ export default function HeavyHaulFuelPartnerPage() {
               <h3 className="text-xl font-bold text-white mb-2">Check Network Eligibility</h3>
               <p className="text-slate-400 text-sm mb-8">Enter your MC or USDOT number to see if your operating authority instantly qualifies for Tier 1 fleet pricing.</p>
               
-              <div className="space-y-4">
-                 <Input className="bg-slate-950 border-slate-700 h-14" placeholder="USDOT Number" />
-                 <Input className="bg-slate-950 border-slate-700 h-14" placeholder="Estimated Gallons / Month" type="number" />
-                 <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-14 text-lg mt-2">
-                    Check Qualification <ChevronRight className="h-5 w-5 ml-2" />
-                 </Button>
-              </div>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                try {
+                  await fetch('/api/partners/lead', {
+                    method: 'POST',
+                    body: JSON.stringify({ partner_type: 'fuel', usdot, email, estimated_gallons: gallons })
+                  });
+                  setSubmitted(true);
+                } catch(e) {}
+                setLoading(false);
+              }} className="space-y-4">
+                 {submitted ? <div className="text-emerald-400 font-bold bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 text-center mb-6">Qualification request received. We will be in touch!</div> : (
+                   <>
+                     <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className="bg-slate-950 border-slate-700 h-14" placeholder="USDOT Number" />
+                     <Input value={email} onChange={(e: any) => setEmail(e.target.value)} required type="email" className="bg-slate-950 border-slate-700 h-14" placeholder="Email Address" />
+                     <Input value={gallons} onChange={(e: any) => setGallons(e.target.value)} required className="bg-slate-950 border-slate-700 h-14" placeholder="Estimated Gallons / Month" type="number" />
+                     <Button disabled={loading} type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-14 text-lg mt-2">
+                        {loading ? 'Processing...' : <>Check Qualification <ChevronRight className="h-5 w-5 ml-2" /></>}
+                     </Button>
+                   </>
+                 )}
+              </form>
               <p className="text-xs text-slate-500 text-center mt-6">Soft credit check only. Does not affect your credit score.</p>
            </div>
         </div>
