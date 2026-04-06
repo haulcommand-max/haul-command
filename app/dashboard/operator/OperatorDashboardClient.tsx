@@ -68,6 +68,29 @@ interface Load {
   status?: string;
 }
 
+interface TrustProfile {
+  trust_score?: number;
+  identity_verified?: boolean;
+  insurance_verified?: boolean;
+  license_verified?: boolean;
+  background_checked?: boolean;
+  claimed?: boolean;
+  badges?: string[];
+  review_count?: number;
+  review_avg?: number;
+  verified_jobs_count?: number;
+  verified_km_total?: number;
+  active_since?: string;
+  jobs_30d?: number; jobs_90d?: number; jobs_180d?: number; jobs_365d?: number;
+  km_30d?: number;   km_90d?: number;   km_180d?: number;  km_365d?: number;
+  avg_rating_30d?: number; avg_rating_90d?: number; avg_rating_180d?: number; avg_rating_365d?: number;
+  reviews_30d?: number;    reviews_90d?: number;    reviews_180d?: number;    reviews_365d?: number;
+  avg_response_min_30d?: number; avg_response_min_90d?: number;
+  avg_response_min_180d?: number; avg_response_min_365d?: number;
+  period_stats_refreshed_at?: string;
+  score_computed_at?: string;
+}
+
 interface Props {
   userId: string;
   operatorId: string | null;
@@ -80,6 +103,7 @@ interface Props {
   totalEarnings30d: number;
   pendingPayout: number;
   availableLoads: Load[];
+  trustProfile: TrustProfile | null;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -102,12 +126,14 @@ export function OperatorDashboardClient({
   totalEarnings30d,
   pendingPayout,
   availableLoads,
+  trustProfile,
 }: Props) {
   const [loads, setLoads] = useState(availableLoads);
   const [biddingOn, setBiddingOn] = useState<string | null>(null);
   const [bidAmount, setBidAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'assignments' | 'loads' | 'earnings'>('assignments');
+  const [activeTab, setActiveTab] = useState<'assignments' | 'loads' | 'earnings' | 'report_card'>('assignments');
+  const [cardPeriod, setCardPeriod] = useState<30 | 90 | 180 | 365>(30);
 
   const handleSubmitBid = async (loadId: string) => {
     if (!bidAmount || isNaN(Number(bidAmount))) return alert("Enter a valid bid amount.");
@@ -284,8 +310,8 @@ export function OperatorDashboardClient({
       )}
 
       {/* ── Tabs ── */}
-      <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
-        {(['assignments', 'loads', 'earnings'] as const).map(tab => (
+      <div className="flex flex-wrap gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
+        {(['assignments', 'loads', 'earnings', 'report_card'] as const).map(tab => (
           <button
             key={tab}
             id={`op-tab-${tab}`}
@@ -296,7 +322,10 @@ export function OperatorDashboardClient({
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
-            {tab === 'assignments' ? `Missions (${assignments.length})` : tab === 'loads' ? `Open Loads (${loads.length})` : `Earnings`}
+            {tab === 'assignments' ? `Missions (${assignments.length})`
+              : tab === 'loads' ? `Open Loads (${loads.length})`
+              : tab === 'report_card' ? '📊 Report Card'
+              : 'Earnings'}
           </button>
         ))}
       </div>
@@ -502,6 +531,121 @@ export function OperatorDashboardClient({
             ))}
           </div>
         </>
+      )}
+
+      {/* ── Report Card Tab ── */}
+      {activeTab === 'report_card' && (
+        <div className="space-y-4">
+          {/* Period selector */}
+          <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
+            {([30, 90, 180, 365] as const).map(p => (
+              <button key={p} onClick={() => setCardPeriod(p)}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
+                  cardPeriod === p ? 'bg-amber-500 text-black' : 'text-slate-500 hover:text-slate-300'
+                }`}>
+                {p === 365 ? '1 Year' : `${p}d`}
+              </button>
+            ))}
+          </div>
+
+          {!trustProfile ? (
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-10 text-center">
+              <p className="text-2xl mb-2">📊</p>
+              <p className="font-bold text-slate-300 mb-1">No report card yet</p>
+              <p className="text-sm text-slate-500">Complete verified jobs to build your performance record.</p>
+            </div>
+          ) : (() => {
+            const j = trustProfile[`jobs_${cardPeriod}d` as keyof TrustProfile] as number | undefined;
+            const km = trustProfile[`km_${cardPeriod}d` as keyof TrustProfile] as number | undefined;
+            const rating = trustProfile[`avg_rating_${cardPeriod}d` as keyof TrustProfile] as number | undefined;
+            const reviews = trustProfile[`reviews_${cardPeriod}d` as keyof TrustProfile] as number | undefined;
+            const resp = trustProfile[`avg_response_min_${cardPeriod}d` as keyof TrustProfile] as number | undefined;
+            return (
+              <div className="space-y-4">
+                {/* KPI grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: 'Jobs Completed', val: j != null ? j.toLocaleString() : '—', color: 'text-emerald-400', icon: '✅' },
+                    { label: 'Km Covered', val: km != null ? `${(km / 1000).toFixed(1)}K` : '—', color: 'text-blue-400', icon: '🛣️' },
+                    { label: 'Avg Rating', val: rating != null ? `${rating.toFixed(2)}★` : '—', color: 'text-amber-400', icon: '⭐' },
+                    { label: 'Avg Response', val: resp != null ? `${resp}m` : '—', color: 'text-purple-400', icon: '⚡' },
+                  ].map(k => (
+                    <div key={k.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                      <div className="text-lg mb-1">{k.icon}</div>
+                      <p className={`text-2xl font-black ${k.color}`}>{k.val}</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-0.5">{k.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Trust badges */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Verification Status</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { label: 'Identity', ok: trustProfile.identity_verified },
+                      { label: 'Insurance', ok: trustProfile.insurance_verified },
+                      { label: 'License', ok: trustProfile.license_verified },
+                      { label: 'Background', ok: trustProfile.background_checked },
+                      { label: 'Profile Claimed', ok: trustProfile.claimed },
+                    ].map(b => (
+                      <span key={b.label} className={`text-xs font-bold px-3 py-1.5 rounded-full border ${
+                        b.ok
+                          ? 'bg-emerald-400/10 border-emerald-400/30 text-emerald-400'
+                          : 'bg-slate-800 border-slate-700 text-slate-500'
+                      }`}>
+                        {b.ok ? '✓' : '○'} {b.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* All-time totals */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">All-Time Network Record</p>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-xl font-black text-white">{trustProfile.verified_jobs_count ?? '—'}</p>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">Verified Jobs</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-black text-white">
+                        {trustProfile.verified_km_total ? `${(trustProfile.verified_km_total / 1000).toFixed(0)}K km` : '—'}
+                      </p>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">Total Distance</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-black text-white">
+                        {trustProfile.review_avg ? `${trustProfile.review_avg.toFixed(2)}★` : '—'}
+                      </p>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">
+                        Avg Rating ({trustProfile.review_count ?? 0} reviews)
+                      </p>
+                    </div>
+                  </div>
+                  {trustProfile.period_stats_refreshed_at && (
+                    <p className="text-[10px] text-slate-600 mt-4">
+                      Period stats refreshed: {new Date(trustProfile.period_stats_refreshed_at).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+
+                {/* CTA if not fully verified */}
+                {(!trustProfile.identity_verified || !trustProfile.claimed) && (
+                  <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold text-amber-400">Boost your trust score</p>
+                      <p className="text-xs text-slate-400 mt-0.5">Verify identity and claim your profile to unlock higher rankings.</p>
+                    </div>
+                    <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-black text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
+                      Verify Now →
+                    </a>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+        </div>
       )}
 
       {/* ── Earnings Tab ── */}

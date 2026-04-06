@@ -3,6 +3,24 @@ import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 
+// Internal helper — fire push alert to nearby brokers after a broadcast lands
+// Non-blocking: we don't await this, so operator response latency is unaffected
+function fireBrokerAlertAsync(record: Record<string, unknown>, requestUrl: string) {
+  try {
+    const base = new URL(requestUrl).origin
+    fetch(`${base}/api/push/available-now-alert`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''}`,
+      },
+      body: JSON.stringify({ broadcast: record }),
+    }).catch(() => null) // swallow — this is best-effort
+  } catch {
+    // If URL parsing fails (e.g. edge env) — skip silently
+  }
+}
+
 /**
  * GET /api/available-now
  * Returns operators/pilots currently broadcasting availability.
@@ -165,6 +183,26 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (error) throw error
+
+    // ── Fire-and-forget: alert matching brokers who have saved searches ──────
+    // Non-blocking — operator gets their response immediately
+    fireBrokerAlertAsync(
+      {
+        id: data?.id ?? '',
+        operator_id: user.id,
+        operator_name: operator_name ?? user.email?.split('@')[0] ?? 'Operator',
+        service_types,
+        country_code,
+        region_code,
+        city,
+        lat,
+        lng,
+        rate_per_km: rate_per_hour, // map rate_per_hour → rate_per_km for alert copy
+        broadcast_message,
+        available_until: available_until ?? null,
+      },
+      req.url
+    )
 
     return NextResponse.json({ ok: true, id: data?.id })
   } catch (err: any) {

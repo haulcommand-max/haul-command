@@ -111,6 +111,16 @@ function getStaticFallback(): MetadataRoute.Sitemap {
     { url: `${BASE}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/corridors`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
 
+    // Broker + operator engagement surfaces (high search-volume intent pages)
+    { url: `${BASE}/repositioning`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
+    { url: `${BASE}/available-now`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
+    { url: `${BASE}/leaderboards`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/load-board`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
+    { url: `${BASE}/claim`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/roles/escort-provider`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/roles/pilot-car-operator`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/roles/heavy-haul-broker`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+
     // US state market pages
     ...['tx','ca','fl','il','oh','pa','ny','ga','nc','az','wa','co','mn','mi','tn','nv','or','mo','ok','al','la','sc','ky','ut','ia','ar','ms','ks','ne','id','nm','sd','nd','mt','wy','wv','vt','nh','me','ri','ct','de','md','va','in','wi','hi','ak'].map(state => ({
       url: `${BASE}/market/${state}`,
