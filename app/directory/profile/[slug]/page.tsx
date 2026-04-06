@@ -201,6 +201,27 @@ function renderProfile(op: any) {
                 />
             )}
             <OperatorTemplate {...props} />
+            {/* Report Card link — SEO internal link + trust proof surface */}
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0' }}>
+                <Link
+                    href={`/directory/profile/${op.slug || op.id}/report-card`}
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '10px 20px',
+                        background: 'linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05))',
+                        border: '1px solid rgba(245,158,11,0.2)',
+                        borderRadius: '12px',
+                        fontSize: '13px',
+                        fontWeight: 800,
+                        color: '#f59e0b',
+                        textDecoration: 'none',
+                    }}
+                >
+                    📊 View Performance Report Card
+                </Link>
+            </div>
             {/* FollowButton — social gravity */}
             <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0' }}>
                 <FollowButton operatorId={op.id || op.slug} />

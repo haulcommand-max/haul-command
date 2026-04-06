@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { SavedSearchManager } from '@/components/broker/SavedSearchManager'
 
 export const dynamic = 'force-dynamic'
 
@@ -206,6 +207,11 @@ export default async function BrokerDashboardPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Saved Search Watches */}
+        <div className="mt-6">
+          <SavedSearchManager />
         </div>
 
         {/* Market intelligence strip */}

@@ -117,6 +117,7 @@ function getStaticFallback(): MetadataRoute.Sitemap {
     { url: `${BASE}/leaderboards`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: `${BASE}/load-board`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
     { url: `${BASE}/claim`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/dashboard/broker`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.5 },
     { url: `${BASE}/roles/escort-provider`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/roles/pilot-car-operator`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/roles/heavy-haul-broker`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
