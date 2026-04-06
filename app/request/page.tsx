@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -9,6 +9,14 @@ const SERVICE_LABELS: Record<string,string> = {
 }
 
 export default function RequestPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#07090d] flex items-center justify-center"><div className="h-8 w-8 border-2 border-[#3b82f6] border-t-transparent rounded-full animate-spin" /></div>}>
+      <RequestPageInner />
+    </Suspense>
+  )
+}
+
+function RequestPageInner() {
   const params = useSearchParams()
   const router = useRouter()
   const supabase = createClient()
