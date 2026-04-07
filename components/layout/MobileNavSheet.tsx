@@ -41,6 +41,7 @@ const NAV_GROUPS = [
       { href: '/roles/pilot-car-operator', icon: '🚗', label: 'Pilot Car Operator Hub' },
       { href: '/pricing', icon: '💎', label: 'Pricing & Plans' },
       { href: '/available-now', icon: '🟢', label: 'Available Now' },
+      { href: '/reposition', icon: '🛣️', label: 'Post Repositioning' },
     ],
   },
   {
@@ -49,6 +50,7 @@ const NAV_GROUPS = [
     links: [
       { href: '/find/pilot-car-operator', icon: '🔍', label: 'Find Operators Fast' },
       { href: '/available-now', icon: '🚨', label: 'Emergency Coverage' },
+      { href: '/reposition', icon: '🚚', label: 'Repositioning Matches' },
       { href: '/advertise', icon: '📣', label: 'Advertise on Haul Command' },
     ],
   },

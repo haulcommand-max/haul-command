@@ -35,6 +35,9 @@ import { getTopHouseAds } from "@/lib/ads/house-ads";
 import { DataTeaserStrip } from "@/components/data/DataTeaserStrip";
 import { FooterAccordion } from "./FooterAccordion";
 import { MobileNavSheet } from "@/components/layout/MobileNavSheet";
+import dynamic from "next/dynamic";
+
+const CommandMapV2 = dynamic(() => import("@/components/map/CommandMapV2").then(mod => mod.CommandMapV2), { ssr: false });
 
 // ── ODS-Killer Sections ──
 import { WhyCarriersChoose } from "./WhyCarriersChoose";
@@ -289,6 +292,7 @@ export default function HomeClient({
                 openLoads={openLoads}
                 medianFillMin={medianFillMin}
                 avgRate={avgRatePerDay > 0 ? avgRatePerDay : 380}
+                onlineHeartbeat={escortsOnline}
             />
 
             {/* 3b. SERVICE TRIAD — Plan / Find / Share */}
@@ -296,6 +300,21 @@ export default function HomeClient({
 
             {/* 4. GLOBAL ESCORT SUPPLY RADAR */}
             <GlobalEscortSupplyRadar />
+
+            {/* 4.5. INTERACTIVE MAPLIBRE COMMAND MAP */}
+            <section className="relative z-10 py-6 sm:py-10">
+                <div className="hc-container max-w-5xl">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-6 sm:mb-8">
+                        <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-2">Live Heatmap</div>
+                        <h2 className="text-xl sm:text-2xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+                            Escort & Load Density
+                        </h2>
+                    </motion.div>
+                    <div className="rounded-2xl border border-white/[0.06] overflow-hidden" style={{ minHeight: "600px", position: "relative" }}>
+                        <CommandMapV2 className="absolute inset-0 w-full h-full" showHud={true} />
+                    </div>
+                </div>
+            </section>
 
             {/* 4b. LIVE LOADS TICKER */}
             <LiveLoadsTicker />

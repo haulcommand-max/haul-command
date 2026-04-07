@@ -57,6 +57,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                         { href: '/loads', label: '📋 Oversize Load Board' },
                         { href: '/map', label: '🗺 Live Map' },
                         { href: '/directory', label: '🔍 Pilot Car Directory' },
+                        { href: '/available-now', label: '⏱️ Available Now' },
+                        { href: '/reposition', label: '🛣️ Repositioning' },
                         { href: '/estimate', label: '⚡ Instant Quote' },
                         { href: '/leaderboards', label: '🏆 Leaderboard' },
                         { href: '/corridor', label: '📊 Corridors' },

@@ -21,6 +21,7 @@ interface LiveMarketHeroProps {
     hotCorridor?: string;
     hotCorridorDelta?: number;
     avgRate?: number;
+    onlineHeartbeat?: number;
 }
 
 function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
@@ -99,6 +100,7 @@ export function LiveMarketHero({
     hotCorridor = "Texas Gulf Coast",
     hotCorridorDelta = 12,
     avgRate = 380,
+    onlineHeartbeat = 1843,
 }: LiveMarketHeroProps) {
     const { role, setRole, config, clearRole } = useRole();
     const activeRoutes = role ? ROLE_ROUTE_MAP[role] : null;
@@ -109,11 +111,12 @@ export function LiveMarketHero({
             <style>{`
                 .hero-metrics {
                     display: flex;
+                    flex-wrap: wrap;
                     gap: 16px;
                     justify-content: center;
                     margin: 0 auto 16px;
                 }
-                .hero-metric { text-align: center; min-width: 70px; }
+                .hero-metric { text-align: center; min-width: 70px; flex: 1; max-width: 140px; }
                 .hero-metric-third { display: none; }
                 .hero-hot-corridor { display: none; }
                 .hero-roles {
@@ -146,7 +149,7 @@ export function LiveMarketHero({
                     font-size: 9px;
                 }
                 @media (min-width: 768px) {
-                    .hero-metrics { gap: 32px; margin-bottom: 24px; }
+                    .hero-metrics { gap: 32px; margin-bottom: 24px; flex-wrap: nowrap; }
                     .hero-metric-third { display: block; }
                     .hero-hot-corridor { display: flex; }
                     .hero-roles {
@@ -210,6 +213,20 @@ export function LiveMarketHero({
                             </div>
                             <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
                                 Network Contacts
+                            </div>
+                        </div>
+                    )}
+                    {onlineHeartbeat > 0 && (
+                        <div className="hero-metric">
+                            <div className="text-lg sm:text-3xl font-black tracking-tight flex items-center justify-center gap-2" style={{ color: "#3b82f6", fontFamily: "var(--font-mono, monospace)" }}>
+                                <span className="relative flex h-3 w-3 sm:h-4 sm:w-4">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+                                    <span className="relative inline-flex rounded-full h-3 w-3 sm:h-4 sm:w-4 bg-blue-500" />
+                                </span>
+                                <Counter value={onlineHeartbeat} />
+                            </div>
+                            <div className="text-[9px] sm:text-[11px] text-[#8fa3b8] font-semibold uppercase tracking-[0.12em] mt-0.5">
+                                Online Now
                             </div>
                         </div>
                     )}
