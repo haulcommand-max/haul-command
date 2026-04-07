@@ -77,7 +77,7 @@ export function CommandMapV2({
         escorts: true,
         hardFill: true,
         policeZones: true,
-        density: false,
+        density: true,
     });
     const [stats, setStats] = useState<MapStats>({ activeLoads: 0, onlineEscorts: 0, fillRate: 0, hardFillCount: 0 });
     const [alerts, setAlerts] = useState<MapAlert[]>([]);
@@ -386,7 +386,7 @@ export function CommandMapV2({
                 id: 'escort-density',
                 type: 'heatmap',
                 source: 'escorts',
-                layout: { visibility: 'none' },
+                layout: { visibility: 'visible' },
                 paint: {
                     'heatmap-weight': 1,
                     'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 9, 3],
