@@ -1,200 +1,132 @@
-import { createServerComponentClient } from '@/lib/supabase/server-auth';
-import { cookies } from 'next/headers';
-import Link from 'next/link';
-import { Suspense } from 'react';
-import CorridorLeaderboard from '@/components/corridors/CorridorLeaderboard';
+import { getMarketPulse, getDirectoryListings, getCorridors } from "@/lib/server/data";
+import { getCountryFromHeaders } from "@/lib/geo/getCountryFromRequest";
+import { resolveHeroPack } from "@/components/hero/heroPacks";
+import { getGlobalStats } from "@/lib/server/global-stats";
+import HomeClient from "./(landing)/_components/HomeClient";
+
+// ═══════════════════════════════════════════════════════
+// ROOT HOMEPAGE — The Crown Jewel
+// 
+// Previously this was a stripped-down placeholder that
+// competed with (landing)/page.tsx.  Now the root route
+// renders the full premium HomeClient with all server-side
+// data fetching for market pulse, corridors, and stats.
+//
+// The (landing) route group page remains as an alias.
+// ═══════════════════════════════════════════════════════
 
 export const metadata = {
-  title: 'Haul Command — The Global Heavy Haul Intelligence OS',
+  title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
   description:
-    'Find escort operators, check corridor permits, verify providers, and book heavy haul services across 120 countries.',
+    'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the heavy haul load board, check state escort requirements, and claim your free listing.',
+  keywords: [
+    'pilot car',
+    'escort vehicle',
+    'oversize load',
+    'heavy haul',
+    'pilot car near me',
+    'pilot car directory',
+    'oversize load escort',
+    'heavy haul load board',
+    'superload escort',
+    'oversize permit',
+    'escort vehicle directory',
+    'pilot car operator',
+    'heavy haul dispatch',
+    'oversize load transport',
+    'pilot car rates',
+    'escort vehicle cost per mile',
+  ],
+  openGraph: {
+    title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
+    description:
+      'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the load board, check state requirements, and claim your free listing.',
+    url: 'https://www.haulcommand.com',
+    siteName: 'Haul Command',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Haul Command — Pilot Car & Escort Vehicle Directory | Heavy Haul Escorts',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website' as const,
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: 'Pilot Car & Escort Vehicle Directory | Haul Command',
+    description: 'Find verified pilot car and escort vehicle operators across 120 countries. Post and browse oversize loads.',
+    images: ['/og-image.png'],
+    site: '@haulcommand',
+  },
+  alternates: {
+    canonical: 'https://www.haulcommand.com',
+  },
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
-  const supabase = createServerComponentClient({ cookies });
+    const countryCode = await getCountryFromHeaders();
+    const heroPack = resolveHeroPack(countryCode);
 
-  // Pull live stats
-  const [{ count: corridorCount }, { count: operatorCount }] = await Promise.all([
-    supabase.from('hc_corridor_public_v1').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-    supabase.from('hc_available_now').select('*', { count: 'exact', head: true }),
-  ]);
+    const [marketPulse, directoryResult, corridors, globalStats] = await Promise.all([
+        getMarketPulse(),
+        getDirectoryListings({ limit: 8 }),
+        getCorridors(),
+        getGlobalStats(),
+    ]);
 
-  const liveOperators = operatorCount ?? 0;
-  const totalCorridors = corridorCount ?? 309;
-
-  return (
-    <main className="min-h-screen bg-[#0a0d14] text-white">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-white/8 px-4 py-24 text-center">
-        {/* Ambient gradient */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_40%_at_50%_-20%,rgba(251,191,36,0.12),transparent)]" />
-
-        <div className="relative mx-auto max-w-4xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white/60">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            {liveOperators > 0 ? `${liveOperators} operators available now` : '120 countries covered'}
-          </div>
-
-          <h1 className="text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
-            The Global
-            <span className="block bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
-              Heavy Haul OS
-            </span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/55">
-            Find verified escort operators, check corridor permits, benchmark rates,
-            and book heavy haul services across {totalCorridors.toLocaleString()}+ routes in 120 countries.
-          </p>
-
-          {/* Primary CTAs */}
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/available-now"
-              className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-7 py-3.5 text-base font-bold text-black hover:bg-amber-400 transition-colors"
-            >
-              <span className="h-2 w-2 rounded-full bg-black/40" />
-              Find Available Operators
-            </Link>
-            <Link
-              href="/route-check"
-              className="rounded-xl border border-white/15 px-7 py-3.5 text-base font-semibold text-white hover:border-white/30 transition-colors"
-            >
-              Check a Route
-            </Link>
-          </div>
-
-          {/* Quick-link pills */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {[
-              { href: '/corridors', label: '🛣 Corridors' },
-              { href: '/glossary', label: '📚 Glossary' },
-              { href: '/escort-requirements', label: '📋 Escort Rules' },
-              { href: '/data-products/corridor-intelligence', label: '📊 Rate Data' },
-              { href: '/advertise', label: '📢 Advertise' },
-            ].map(p => (
-              <Link
-                key={p.href}
-                href={p.href}
-                className="rounded-full border border-white/10 bg-white/4 px-3.5 py-1.5 text-xs font-medium text-white/60 hover:border-white/20 hover:text-white transition-colors"
-              >
-                {p.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* KPI strip */}
-      <section className="border-b border-white/8 bg-white/2">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 divide-x divide-white/8 sm:grid-cols-4">
-          {[
-            { label: 'Countries', value: '120' },
-            { label: 'Corridors', value: totalCorridors.toLocaleString() },
-            { label: 'Live Operators', value: liveOperators > 0 ? liveOperators.toLocaleString() : '—' },
-            { label: 'Credential Types', value: '60+' },
-          ].map(kpi => (
-            <div key={kpi.label} className="px-6 py-5 text-center">
-              <p className="text-2xl font-black text-white">{kpi.value}</p>
-              <p className="mt-0.5 text-xs text-white/35">{kpi.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Corridor leaderboard strip */}
-      <section className="mx-auto max-w-5xl px-4 py-14">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">Intelligence OS</p>
-            <h2 className="mt-1 text-2xl font-black text-white">Top Ranked Corridors</h2>
-          </div>
-          <Link
-            href="/corridors"
-            className="text-sm font-semibold text-white/40 hover:text-white transition-colors"
-          >
-            View all {totalCorridors.toLocaleString()} →
-          </Link>
-        </div>
-        <Suspense fallback={
-          <div className="space-y-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-14 rounded-xl bg-white/5 animate-pulse" />
-            ))}
-          </div>
-        }>
-          <CorridorLeaderboard limit={8} showSponsorSlot={false} />
-        </Suspense>
-        <div className="mt-6 text-center">
-          <Link
-            href="/corridors"
-            className="rounded-xl border border-white/10 px-6 py-2.5 text-sm font-semibold text-white/50 hover:border-amber-500/30 hover:text-amber-400 transition-colors"
-          >
-            See full corridor leaderboard →
-          </Link>
-        </div>
-      </section>
-
-      {/* Role CTA split */}
-      <section className="border-t border-white/8 bg-[#0f1420] px-4 py-14">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-8 text-center text-2xl font-black text-white">Who is Haul Command for?</h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                icon: '🚛',
-                role: 'Operators & Escorts',
-                desc: 'Broadcast availability, get load matches, build your trust score, earn more.',
-                cta: 'Broadcast availability',
-                href: '/available-now/broadcast',
-              },
-              {
-                icon: '📋',
-                role: 'Brokers & Dispatchers',
-                desc: 'Find verified capacity fast, verify providers, post loads, and track compliance.',
-                cta: 'Find capacity now',
-                href: '/available-now',
-              },
-              {
-                icon: '🌐',
-                role: 'Shippers & Planners',
-                desc: 'Check corridor requirements, benchmark rates, and plan compliant heavy haul moves.',
-                cta: 'Plan a route',
-                href: '/route-check',
-              },
-            ].map(r => (
-              <div key={r.role} className="rounded-2xl border border-white/8 bg-white/4 p-6">
-                <span className="text-3xl">{r.icon}</span>
-                <h3 className="mt-3 font-bold text-white">{r.role}</h3>
-                <p className="mt-1 text-sm text-white/50">{r.desc}</p>
-                <Link
-                  href={r.href}
-                  className="mt-5 inline-flex rounded-xl bg-white/8 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition-colors"
-                >
-                  {r.cta} →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* AdGrid sponsor call-to-action */}
-      <section className="border-t border-white/8 px-4 py-10">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/5 p-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">AdGrid</p>
-          <h2 className="mt-2 text-xl font-black text-white">Reach heavy haul professionals where they make decisions</h2>
-          <p className="mt-2 text-sm text-white/50">Sponsor corridors, country hubs, tools, and leaderboards. Self-serve, geo-aware, role-targeted.</p>
-          <Link
-            href="/advertise"
-            className="mt-5 inline-flex rounded-xl border border-amber-500/30 bg-amber-500/10 px-6 py-2.5 text-sm font-bold text-amber-300 hover:bg-amber-500/20 transition-colors"
-          >
-            Get started with AdGrid →
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
+    return (
+        <main>
+            <h1 className="sr-only">
+                Haul Command — The #1 Global Pilot Car Directory, Oversize Load Board, and Heavy Haul Operating System
+            </h1>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebPage",
+                  "name": "Haul Command — The Operating System for Heavy Haul",
+                  "url": "https://haulcommand.com",
+                  "description": "Haul Command is the global operating system and #1 pilot car directory for the heavy haul, oversize load, and specialized freight transportation industries. Our routing platform provides real-time route surveys, DOT permit compliance, height pole escort verification, and an active oversize load board to match freight brokers with certified PEVO professionals across 120 countries.",
+                  "breadcrumb": {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                      {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://haulcommand.com"
+                      }
+                    ]
+                  },
+                  "mainEntity": {
+                    "@type": "SiteLinksSearchBox",
+                    "url": "https://haulcommand.com",
+                    "potentialAction": {
+                      "@type": "SearchAction",
+                      "target": "https://haulcommand.com/directory?q={search_term_string}",
+                      "query-input": "required name=search_term_string"
+                    }
+                  }
+                })
+            }} />
+            <HomeClient
+                marketPulse={marketPulse}
+                directoryCount={directoryResult.total}
+                corridorCount={corridors.length}
+                topCorridors={corridors}
+                topListings={directoryResult.listings}
+                heroPack={heroPack}
+                totalCountries={globalStats.totalCountries}
+                liveCountries={globalStats.liveCountries}
+                coveredCountries={globalStats.coveredCountries}
+                totalOperators={globalStats.totalOperators}
+                totalCorridors={globalStats.totalCorridors}
+                avgRatePerDay={globalStats.avgRatePerDay}
+            />
+        </main>
+    );
 }

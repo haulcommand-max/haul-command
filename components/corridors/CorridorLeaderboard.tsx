@@ -59,21 +59,46 @@ export function CorridorLeaderboard({
   useEffect(() => {
     async function load() {
       setLoading(true);
-      let q = supabase
-        .from('hc_corridor_public_v1')
-        .select(
-          'slug,name,short_name,country_code,corridor_type,tier,composite_score,search_volume_estimate,commercial_value_estimate,is_cross_border,distance_km,currency_code,origin_city_name,destination_city_name'
-        )
-        .eq('status', 'active')
-        .order('composite_score', { ascending: false })
-        .limit(limit);
 
-      if (countryCode) q = q.eq('country_code', countryCode.toUpperCase());
-      if (corridorType) q = q.eq('corridor_type', corridorType);
+      // Primary query — includes composite_score for ranking
+      const primaryColumns =
+        'slug,name,short_name,country_code,corridor_type,tier,composite_score,search_volume_estimate,commercial_value_estimate,is_cross_border,distance_km,currency_code,origin_city_name,destination_city_name';
+      // Fallback columns — excludes composite_score (graceful degradation if view lacks it)
+      const fallbackColumns =
+        'slug,name,short_name,country_code,corridor_type,tier,search_volume_estimate,commercial_value_estimate,is_cross_border,distance_km,currency_code,origin_city_name,destination_city_name';
 
-      const { data, error: err } = await q;
-      if (err) { setError(err.message); }
-      else { setCorridors((data ?? []) as CorridorRow[]); }
+      async function tryQuery(columns: string, orderBy: string) {
+        let q = supabase
+          .from('hc_corridor_public_v1')
+          .select(columns)
+          .eq('status', 'active')
+          .order(orderBy, { ascending: false })
+          .limit(limit);
+
+        if (countryCode) q = q.eq('country_code', countryCode.toUpperCase());
+        if (corridorType) q = q.eq('corridor_type', corridorType);
+
+        return q;
+      }
+
+      // Try primary query first; if it fails (e.g. missing composite_score column),
+      // fall back to a simpler query that doesn't reference that column.
+      let { data, error: err } = await tryQuery(primaryColumns, 'composite_score');
+
+      if (err) {
+        // Fallback: drop composite_score, sort by search_volume_estimate instead
+        const fallback = await tryQuery(fallbackColumns, 'search_volume_estimate');
+        data = fallback.data;
+        err = fallback.error;
+      }
+
+      if (err) {
+        // Both queries failed — show generic message, log detail for devs
+        console.error('[CorridorLeaderboard] Query failed:', err.message);
+        setError('Unable to load corridor rankings. Please try again later.');
+      } else {
+        setCorridors((data ?? []) as unknown as CorridorRow[]);
+      }
       setLoading(false);
     }
     load();
