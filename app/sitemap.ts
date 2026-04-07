@@ -70,12 +70,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
+    // ── 5. Report card pages for claimed/verified operators ──
+    const { data: claimedOps } = await supabase
+      .from('hc_global_operators')
+      .select('slug, id, updated_at')
+      .eq('is_claimed', true)
+      .not('slug', 'is', null)
+      .limit(500);
+
+    const reportCardUrls: SitemapEntry[] = (claimedOps ?? []).map(op => ({
+      url: `${BASE}/directory/profile/${op.slug || op.id}/report-card`,
+      lastModified: op.updated_at ? new Date(op.updated_at) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }));
+
+    // Profile pages for all operators with slugs (broader than report cards)
+    const profileUrls: SitemapEntry[] = (claimedOps ?? []).map(op => ({
+      url: `${BASE}/directory/profile/${op.slug || op.id}`,
+      lastModified: op.updated_at ? new Date(op.updated_at) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
+    }));
+
     // ── Combine and deduplicate by URL ──
     const allEntries = [
       ...registeredUrls,
       ...corridorUrls,
       ...comingSoonUrls,
       ...countryUrls,
+      ...reportCardUrls,
+      ...profileUrls,
     ];
 
     const seen = new Set<string>();
