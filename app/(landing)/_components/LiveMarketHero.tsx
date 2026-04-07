@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     ArrowRight, TrendingUp, Flame, Radio, Shield, Search,
@@ -160,6 +161,21 @@ export function LiveMarketHero({
 
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-5%,rgba(198,146,58,0.08),transparent_60%)]" />
+                {/* Command Center hero visual — behind metrics */}
+                <div className="absolute inset-0 overflow-hidden" style={{
+                    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)',
+                }}>
+                    <Image
+                        src="/hero-command-center.png"
+                        alt=""
+                        fill
+                        className="object-cover object-center"
+                        style={{ opacity: 0.18 }}
+                        priority={false}
+                        sizes="100vw"
+                    />
+                </div>
             </div>
 
             <div className="hc-container relative z-10 pb-5 pt-5 sm:pt-10 sm:pb-8">
