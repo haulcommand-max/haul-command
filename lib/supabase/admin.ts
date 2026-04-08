@@ -1,12 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 import { env } from "@/lib/env";
+import type { Database } from "@/types/supabase";
 
-let adminClient: ReturnType<typeof createClient> | null = null;
+let adminClient: ReturnType<typeof createClient<Database>> | null = null;
 
 export const getSupabaseAdmin = () => {
   if (adminClient) return adminClient;
 
-  adminClient = createClient(
+  adminClient = createClient<Database>(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.SUPABASE_SERVICE_ROLE_KEY,
     {
@@ -24,7 +25,7 @@ export const getSupabaseAdmin = () => {
  * Lazy-initialized singleton for direct import.
  * Usage: import { supabaseAdmin } from "@/lib/supabase/admin";
  */
-export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient>, {
+export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient<Database>>, {
   get(_target, prop) {
     return (getSupabaseAdmin() as any)[prop];
   },
@@ -39,3 +40,4 @@ export async function broadcastCorridorEvent(channelName: string, event: string,
   const channel = client.channel(channelName);
   await channel.send({ type: "broadcast", event, payload });
 }
+

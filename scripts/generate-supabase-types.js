@@ -1,0 +1,402 @@
+/**
+ * Haul Command Type Generator
+ * 
+ * Pulls the OpenAPI spec from Supabase's PostgREST endpoint
+ * and generates TypeScript types for all tables, views, and functions.
+ * 
+ * This replaces `supabase gen types typescript` without requiring the CLI.
+ * 
+ * Run: node scripts/generate-supabase-types.js
+ */
+
+const fs = require("node:fs");
+const path = require("node:path");
+const { Client } = require("pg");
+
+const POOLER_URL =
+  "postgresql://postgres.hvjyfyzotqobfkakjozp:EvuphRxN3zcgYSk8@aws-0-us-west-2.pooler.supabase.com:6543/postgres";
+const OUTPUT_FILE = path.resolve(__dirname, "../types/supabase.ts");
+
+// Map postgres types to TypeScript types
+function pgTypeToTs(pgType) {
+  const map = {
+    uuid: "string",
+    text: "string",
+    varchar: "string",
+    "character varying": "string",
+    char: "string",
+    character: "string",
+    name: "string",
+    citext: "string",
+    int2: "number",
+    int4: "number",
+    int8: "number",
+    smallint: "number",
+    integer: "number",
+    bigint: "number",
+    float4: "number",
+    float8: "number",
+    numeric: "number",
+    decimal: "number",
+    real: "number",
+    "double precision": "number",
+    serial: "number",
+    bigserial: "number",
+    bool: "boolean",
+    boolean: "boolean",
+    json: "Json",
+    jsonb: "Json",
+    date: "string",
+    timestamp: "string",
+    timestamptz: "string",
+    "timestamp with time zone": "string",
+    "timestamp without time zone": "string",
+    time: "string",
+    timetz: "string",
+    interval: "string",
+    inet: "string",
+    cidr: "string",
+    macaddr: "string",
+    point: "unknown",
+    line: "unknown",
+    lseg: "unknown",
+    box: "unknown",
+    path: "unknown",
+    polygon: "unknown",
+    circle: "unknown",
+    bytea: "string",
+    tsvector: "string",
+    tsquery: "string",
+    xml: "string",
+    money: "string",
+    oid: "number",
+    regclass: "string",
+    regtype: "string",
+    void: "undefined",
+    record: "Record<string, unknown>",
+    "USER-DEFINED": "string", 
+    ARRAY: "unknown[]",
+  };
+
+  // Handle arrays
+  if (pgType.startsWith("_") || pgType.endsWith("[]")) {
+    const baseType = pgType.replace(/^_/, "").replace(/\[\]$/, "");
+    const tsBase = map[baseType] || "unknown";
+    return `${tsBase}[]`;
+  }
+
+  return map[pgType] || "unknown";
+}
+
+async function main() {
+  console.log("🔧 Haul Command Supabase Type Generator");
+  console.log("═══════════════════════════════════════\n");
+
+  const client = new Client({
+    connectionString: POOLER_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+
+  await client.connect();
+  console.log("🔌 Connected to Supabase Postgres\n");
+
+  // 1. Get all tables in public schema
+  const { rows: tables } = await client.query(`
+    SELECT table_name 
+    FROM information_schema.tables 
+    WHERE table_schema = 'public' 
+      AND table_type = 'BASE TABLE'
+    ORDER BY table_name
+  `);
+
+  console.log(`📋 Found ${tables.length} tables in public schema`);
+
+  // 2. Get all columns for each table
+  const { rows: allColumns } = await client.query(`
+    SELECT 
+      c.table_name,
+      c.column_name,
+      c.data_type,
+      c.udt_name,
+      c.is_nullable,
+      c.column_default,
+      c.character_maximum_length
+    FROM information_schema.columns c
+    WHERE c.table_schema = 'public'
+    ORDER BY c.table_name, c.ordinal_position
+  `);
+
+  // 3. Get all views
+  const { rows: views } = await client.query(`
+    SELECT table_name 
+    FROM information_schema.views 
+    WHERE table_schema = 'public'
+    ORDER BY table_name
+  `);
+
+  console.log(`📋 Found ${views.length} views in public schema`);
+
+  // 4. Get all functions
+  const { rows: functions } = await client.query(`
+    SELECT 
+      p.proname as function_name,
+      pg_get_function_arguments(p.oid) as args,
+      t.typname as return_type,
+      p.proretset as returns_set
+    FROM pg_proc p
+    JOIN pg_namespace n ON p.pronamespace = n.oid
+    JOIN pg_type t ON p.prorettype = t.oid
+    WHERE n.nspname = 'public'
+      AND p.prokind = 'f'
+    ORDER BY p.proname
+  `);
+
+  console.log(`📋 Found ${functions.length} functions in public schema`);
+
+  // 5. Get all enums
+  const { rows: enums } = await client.query(`
+    SELECT 
+      t.typname as enum_name,
+      e.enumlabel as enum_value
+    FROM pg_type t
+    JOIN pg_enum e ON t.oid = e.enumtypid
+    JOIN pg_namespace n ON t.typnamespace = n.oid
+    WHERE n.nspname = 'public'
+    ORDER BY t.typname, e.enumsortorder
+  `);
+
+  // Group enums
+  const enumMap = {};
+  for (const row of enums) {
+    if (!enumMap[row.enum_name]) enumMap[row.enum_name] = [];
+    enumMap[row.enum_name].push(row.enum_value);
+  }
+
+  console.log(`📋 Found ${Object.keys(enumMap).length} enums\n`);
+
+  // Group columns by table
+  const tableColumns = {};
+  for (const col of allColumns) {
+    if (!tableColumns[col.table_name]) tableColumns[col.table_name] = [];
+    tableColumns[col.table_name].push(col);
+  }
+
+  // 6. Generate TypeScript
+  let output = `// AUTO-GENERATED — DO NOT EDIT
+// Generated by scripts/generate-supabase-types.js
+// ${new Date().toISOString()}
+
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  public: {
+    Tables: {\n`;
+
+  // Tables
+  for (const table of tables) {
+    const cols = tableColumns[table.table_name] || [];
+    
+    output += `      ${table.table_name}: {\n`;
+    
+    // Row type
+    output += `        Row: {\n`;
+    for (const col of cols) {
+      const tsType = enumMap[col.udt_name]
+        ? `Database["public"]["Enums"]["${col.udt_name}"]`
+        : pgTypeToTs(col.udt_name || col.data_type);
+      const nullable = col.is_nullable === "YES" ? " | null" : "";
+      output += `          ${col.column_name}: ${tsType}${nullable}\n`;
+    }
+    output += `        }\n`;
+
+    // Insert type
+    output += `        Insert: {\n`;
+    for (const col of cols) {
+      const tsType = enumMap[col.udt_name]
+        ? `Database["public"]["Enums"]["${col.udt_name}"]`
+        : pgTypeToTs(col.udt_name || col.data_type);
+      const nullable = col.is_nullable === "YES" ? " | null" : "";
+      const optional = col.column_default || col.is_nullable === "YES" ? "?" : "";
+      output += `          ${col.column_name}${optional}: ${tsType}${nullable}\n`;
+    }
+    output += `        }\n`;
+
+    // Update type
+    output += `        Update: {\n`;
+    for (const col of cols) {
+      const tsType = enumMap[col.udt_name]
+        ? `Database["public"]["Enums"]["${col.udt_name}"]`
+        : pgTypeToTs(col.udt_name || col.data_type);
+      const nullable = col.is_nullable === "YES" ? " | null" : "";
+      output += `          ${col.column_name}?: ${tsType}${nullable}\n`;
+    }
+    output += `        }\n`;
+
+    output += `        Relationships: []\n`;
+    output += `      }\n`;
+  }
+
+  output += `    }\n`;
+
+  // Views
+  output += `    Views: {\n`;
+  for (const view of views) {
+    const cols = tableColumns[view.table_name] || [];
+    output += `      ${view.table_name}: {\n`;
+    output += `        Row: {\n`;
+    for (const col of cols) {
+      const tsType = enumMap[col.udt_name]
+        ? `Database["public"]["Enums"]["${col.udt_name}"]`
+        : pgTypeToTs(col.udt_name || col.data_type);
+      output += `          ${col.column_name}: ${tsType} | null\n`;
+    }
+    output += `        }\n`;
+    output += `        Relationships: []\n`;
+    output += `      }\n`;
+  }
+  output += `    }\n`;
+
+  // Functions
+  output += `    Functions: {\n`;
+  for (const fn of functions) {
+    const returnTs = pgTypeToTs(fn.return_type);
+    const returnType = fn.returns_set ? `${returnTs}[]` : returnTs;
+    
+    // Parse args
+    const argParts = fn.args ? fn.args.split(",").map((a) => a.trim()).filter(Boolean) : [];
+    
+    output += `      ${fn.function_name}: {\n`;
+    output += `        Args: {\n`;
+    for (const arg of argParts) {
+      const parts = arg.split(/\s+/);
+      if (parts.length >= 2) {
+        const argName = parts[0];
+        const argType = parts.slice(1).join(" ");
+        output += `          ${argName}: ${pgTypeToTs(argType)}\n`;
+      }
+    }
+    output += `        }\n`;
+    output += `        Returns: ${returnType}\n`;
+    output += `      }\n`;
+  }
+  output += `    }\n`;
+
+  // Enums
+  output += `    Enums: {\n`;
+  for (const [enumName, values] of Object.entries(enumMap)) {
+    output += `      ${enumName}: ${values.map((v) => `"${v}"`).join(" | ")}\n`;
+  }
+  output += `    }\n`;
+
+  // CompositeTypes (empty placeholder)
+  output += `    CompositeTypes: {\n`;
+  output += `      [_ in never]: never\n`;
+  output += `    }\n`;
+
+  output += `  }\n`;
+  output += `}\n\n`;
+
+  // Helper types
+  output += `type PublicSchema = Database[Extract<keyof Database, "public">]\n\n`;
+
+  output += `export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never\n\n`;
+
+  output += `export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never\n\n`;
+
+  output += `export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never\n\n`;
+
+  output += `export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never\n`;
+
+  // Write the file
+  fs.writeFileSync(OUTPUT_FILE, output, "utf8");
+  const sizeKb = Math.round(fs.statSync(OUTPUT_FILE).size / 1024);
+  
+  console.log(`\n✅ Generated ${OUTPUT_FILE}`);
+  console.log(`   ${tables.length} tables, ${views.length} views, ${functions.length} functions, ${Object.keys(enumMap).length} enums`);
+  console.log(`   File size: ${sizeKb} KB`);
+
+  await client.end();
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -1,4 +1,5 @@
 import { createClient as _createClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/supabase";
 
 // Server-side Supabase client for data fetching — routed through Supavisor pooler.
 //
@@ -20,7 +21,7 @@ import { createClient as _createClient } from "@supabase/supabase-js";
  */
 export function createClient(url?: string, key?: string, options?: Record<string, unknown>) {
     if (url && key) {
-        return _createClient(url, key, options);
+        return _createClient<Database>(url, key, options);
     }
     // Zero-arg: use the REST API url. The Supabase REST API internally uses connection pooling automatically.
     // SUPABASE_DB_POOLER_URL is only for direct database connections (Prisma, pg, etc), NOT the @supabase/supabase-js client.
@@ -28,7 +29,7 @@ export function createClient(url?: string, key?: string, options?: Record<string
         process.env.NEXT_PUBLIC_SUPABASE_URL ||
         process.env.SUPABASE_URL!;
     const envKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    return _createClient(envUrl, envKey, {
+    return _createClient<Database>(envUrl, envKey, {
         auth: { persistSession: false, autoRefreshToken: false },
         db: {
             // Force connection recycling — prevents stale connections under heavy ingestion load
