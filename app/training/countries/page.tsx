@@ -68,7 +68,7 @@ export default function CountriesIndexPage() {
               Haul Command Training is available in 120 countries. Each country page includes localized requirements,
               terminology, compliance notes, and relevant resources for operators in that market.
             </p>
-            <Link href="/training/pilot-car-fundamentals" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
+            <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
               🎓 Start Training — Free
             </Link>
           </div>

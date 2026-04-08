@@ -30,87 +30,87 @@ export const metadata: Metadata = {
 export const MODULES = [
   {
     slot: 1,
-    slug: 'pilot-car-fundamentals',
-    title: 'Pilot Car Fundamentals & Flagging Protocol',
+    slug: 'the-escort-driver-regulatory',
+    title: 'The Escort Driver & Regulatory Protocol',
     description:
-      'Safety basics, escort vehicle roles, required equipment, MUTCD flagging procedures (stop/slow paddle & flag protocols), and the Class 2 High-Vis apparel framework every escort operator must know.',
-    audience: 'New operators, career changers, new-to-US international operators',
+      'Regulatory compliance, pilot car qualification baseline, MUTCD flagging procedures (stop/slow paddle & flag protocols), liability mechanics, and the Class 2 High-Vis apparel framework.',
+    audience: 'New operators, career changers, international operators entering US markets',
     duration: '480 min',
-    outcomes: ['Execute MUTCD flagging protocols correctly', 'Identify Class 2 high-vis apparel requirements', 'Know required vehicle equipment by jurisdiction'],
+    outcomes: ['Understand federal & state qualification options', 'Execute MUTCD flagging protocols correctly', 'Identify required safety apparel and limits of liability'],
     tier: 'HC Certified',
     isFree: true,
   },
   {
     slot: 2,
-    slug: 'route-survey-clearance-intelligence',
-    title: 'Route Survey & Clearance Intelligence',
+    slug: 'the-escort-vehicle-equipment-standards',
+    title: 'The Escort Vehicle & Equipment Standards',
     description:
-      'Heights, widths, vertical and horizontal clearance measurement, obstacle documentation, route planning workflows, and how to log and report route hazards.',
-    audience: 'Operators pursuing route survey work, broker-side planners',
+      'In-depth vehicle specifications, commercial vs. non-commercial considerations, minimum insurance requirements, required DOT interior/exterior equipment, and surviving DOT inspections without fines.',
+    audience: 'All operators configuring their escort vehicles',
     duration: '480 min',
-    outcomes: ['Conduct a legal route survey', 'Document clearance data accurately', 'Identify and report route hazards'],
+    outcomes: ['Configure escort vehicle to pass strict DOT audits', 'Source and mount correct warning lights & signage', 'Understand minimum insurance operational thresholds'],
     tier: 'HC Certified',
     isFree: false,
   },
   {
     slot: 3,
-    slug: 'state-jurisdiction-compliance',
-    title: 'Compliance, Maneuvering & Final Certification',
+    slug: 'over-dimensional-load-permits',
+    title: 'The Over-Dimensional Load & Pre-Trip',
     description:
-      'Permit touchpoints, signage rules, intersection maneuvering techniques, emergency breakdown spacing, and multi-state laws. Concludes with the mandatory 120-minute, 50-question Final Exam.',
-    audience: 'All operators running permitted loads across state lines',
+      'Permit restrictions, load dimension limitations (height, width, weight), broker communication workflows, and leading pre-trip/post-trip carrier meetings.',
+    audience: 'Operators managing multi-state permitted loads',
     duration: '480 min',
-    outcomes: ['Execute safe maneuvering & intersection control', 'Avoid common compliance failures', 'Pass the 50-question exam with an 80% minimum'],
+    outcomes: ['Read and enforce over-dimensional load permits', 'Run professional pre-trip carrier meetings', 'Determine required escort density based on load size'],
     tier: 'HC Certified',
     isFree: false,
   },
   {
     slot: 4,
-    slug: 'communication-convoy-control',
-    title: 'Communication, Convoy Control & Incident Response',
+    slug: 'maneuvering-techniques-emergencies',
+    title: 'Maneuvering Techniques & Emergency Response',
     description:
-      'Radio discipline, position call conventions, emergency stop procedures, intersection management, lane coordination, and how to handle stoppages, breakdowns, and incidents.',
-    audience: 'All operators; required for AV-Ready certification',
+      'Intersection control, safe load maneuvering on various road configurations, emergency breakdown procedures, braking distance calculations, and multi-vehicle convoy radio discipline.',
+    audience: 'All operators; required for incident-free corridor transit',
     duration: '480 min',
-    outcomes: ['Run professional radio communication', 'Manage convoy incidents safely', 'Coordinate multi-vehicle escorts'],
+    outcomes: ['Coordinate multi-vehicle escort intersection takeovers', 'Execute precise emergency breakdown placements', 'Maintain professional convoy radio discipline'],
     tier: 'AV-Ready',
     isFree: false,
   },
   {
     slot: 5,
-    slug: 'broker-carrier-load-workflow',
-    title: 'Broker, Carrier & Load Workflow',
+    slug: 'route-survey-clearance-intelligence',
+    title: 'Route Survey & Clearance Intelligence',
     description:
-      'Dispatch handoff discipline, load documentation, ETA and status reporting expectations, carrier and broker communication norms, and how to handle load changes mid-route.',
-    audience: 'Operators working with brokers and carriers; broker-side planners',
+      'Advanced capability: Heights, widths, vertical/horizontal clearance measurements, bridge capacity documentation, and hazard logging workflows for broker routing teams.',
+    audience: 'Operators pursuing lucrative route survey contracts',
     duration: '480 min',
-    outcomes: ['Work professionally with brokers and carriers', 'Handle dispatch changes mid-load', 'Document load execution correctly'],
+    outcomes: ['Conduct legally binding route surveys', 'Document bridge and tunnel clearance data accurately', 'Identify and report microscopic route hazards'],
     tier: 'AV-Ready',
     isFree: false,
   },
   {
     slot: 6,
     slug: 'specialized-vertical-operations',
-    title: 'Specialized Vertical Operations (High Pole & Wind)',
+    title: 'Specialized Operations (High Pole & AV-Ready)',
     description:
-      'High Pole operations and mounting, Wind Industry (WITPAC) escort standards, superload planning, oilfield norms, port/TWIC procedures, and aerospace load handling.',
+      'Premium capability: High Pole measurement execution, Wind Industry (WITPAC) escort standards, superload planning, oilfield norms, port/TWIC procedures, and autonomous (AV) Kodiak/Aurora protocol.',
     audience: 'Operators pursuing specialist and premium corridor work',
     duration: '480 min',
-    outcomes: ['Execute professional High Pole measurements', 'Qualify for wind and superload dispatch', 'Operate in military and aerospace contexts'],
+    outcomes: ['Execute professional High Pole defense', 'Qualify for wind, superload, and AV autonomous dispatch', 'Operate efficiently in secure military and aerospace contexts'],
     tier: 'Elite',
     isFree: false,
   },
   {
     slot: 7,
-    slug: 'digital-operations-haul-command',
-    title: 'Digital Operations & Haul Command Advantage',
+    slug: 'final-assessment-certification',
+    title: 'Final Assessment & Haul Command Profiling',
     description:
-      'Haul Command profile setup, badge verification, trust signals, marketplace leverage, how brokers search and rank operators, and how to use digital tools to earn more corridor work.',
-    audience: 'All operators; essential for maximizing platform and marketplace earnings',
+      'The definitive 50-question comprehensive closed-book style exam (80% minimum to pass). Concludes with Haul Command digital profile setup, badge verification, and market positioning strategy.',
+    audience: 'All operators seeking certification and directory ranking',
     duration: '480 min',
-    outcomes: ['Maximize Haul Command profile rank', 'Earn verified badge and trust signals', 'Attract broker contact and corridor job requests'],
+    outcomes: ['Pass the 50-question Final Exam', 'Earn verified HC Certified, AV-Ready, or Elite badges', 'Maximize platform visibility for inbound broker jobs'],
     tier: 'HC Certified',
-    isFree: true,
+    isFree: false,
   },
 ]
 
@@ -309,7 +309,7 @@ export default async function TrainingPage() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
-              <Link href="/training/pilot-car-fundamentals" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
+              <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
                 🎓 Start Free — Module 1
               </Link>
               <a href="#modules" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 24px', borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e5e7eb', fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
@@ -365,7 +365,7 @@ export default async function TrainingPage() {
             <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 12px', textAlign: 'center' }}>Who is this for?</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 10 }}>
               {[
-                { icon: '🚗', role: "I'm a Pilot Car Operator", desc: 'Get certified, rank higher, unlock better loads', href: '/training/pilot-car-fundamentals', color: gold },
+                { icon: '🚗', role: "I'm a Pilot Car Operator", desc: 'Get certified, rank higher, unlock better loads', href: '/training/the-escort-driver-regulatory', color: gold },
                 { icon: '📋', role: "I'm a Broker or Dispatcher", desc: 'Verify operator certifications, reduce risk', href: '/training/verify', color: '#3B82F6' },
                 { icon: '🚛', role: "I Run a Fleet or Carrier", desc: 'Certify your escort team at volume', href: '/training/corporate', color: '#8B5CF6' },
                 { icon: '🤖', role: 'AV / Enterprise Partner', desc: 'AV-Ready certified escort capacity', href: '/training/av-certification', color: '#22C55E' },
@@ -457,7 +457,7 @@ export default async function TrainingPage() {
                   name: 'HC Certified', color: '#A8A8A8', price: 'Free with Pro / $49 standalone',
                   modules: 'Modules 1–3', duration: '24 Hours (Gov Standard)', highlight: false,
                   benefits: ['HC Certified badge on your profile', 'Recognized across all 120 countries', 'Meets all 12 US mandatory state requirements', 'Digital credential with instant verification link'],
-                  href: '/training/pilot-car-fundamentals', cta: 'Start Free',
+                  href: '/training/the-escort-driver-regulatory', cta: 'Start Free',
                 },
                 {
                   name: 'AV-Ready', color: '#F5A623', price: '$149/year',
@@ -605,7 +605,7 @@ export default async function TrainingPage() {
               Module 1 is completely free. No account required. Your verified badge goes live the moment you pass.
               Brokers and AV companies can verify it instantly.
             </p>
-            <Link href="/training/pilot-car-fundamentals" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 36px', borderRadius: 14, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 16, fontWeight: 900, textDecoration: 'none', boxShadow: `0 6px 30px rgba(212,168,68,0.4)` }}>
+            <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 36px', borderRadius: 14, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 16, fontWeight: 900, textDecoration: 'none', boxShadow: `0 6px 30px rgba(212,168,68,0.4)` }}>
               🎓 Start Module 1 — Free
             </Link>
             <div style={{ marginTop: 16 }}>

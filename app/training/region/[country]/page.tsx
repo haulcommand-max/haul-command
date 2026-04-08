@@ -126,11 +126,13 @@ export default async function CountryTrainingPage({ params }: Props) {
             <h2 style={{ margin: '0 0 14px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Training Modules</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
-                { slug: 'pilot-car-fundamentals', title: 'Pilot Car Fundamentals', desc: 'Safety, roles, equipment — the global baseline' },
-                { slug: 'route-survey-clearance-intelligence', title: 'Route Survey & Clearance Intelligence', desc: 'Heights, widths, obstacles, and hazard documentation' },
-                { slug: 'state-jurisdiction-compliance', title: 'State & Jurisdiction Compliance', desc: 'Permit rules, signage, escort formation requirements' },
-                { slug: 'communication-convoy-control', title: 'Communication, Convoy Control & Incident Response', desc: 'Radio discipline, emergencies, multi-vehicle coordination' },
-                { slug: 'specialized-vertical-operations', title: 'Specialized Vertical Operations', desc: 'Wind, superload, oilfield, port, military, aerospace' },
+                { slug: 'the-escort-driver-regulatory', title: 'The Escort Driver & Regulatory Protocol', desc: 'Safety, MUTCD flagging, qualifications, and apparel' },
+                { slug: 'the-escort-vehicle-equipment-standards', title: 'The Escort Vehicle & Equipment Standards', desc: 'Vehicle specs, required DOT equipment, insurance' },
+                { slug: 'over-dimensional-load-permits', title: 'The Over-Dimensional Load & Pre-Trip', desc: 'Permits, pre-trip carrier meetings, dimension limits' },
+                { slug: 'maneuvering-techniques-emergencies', title: 'Maneuvering Techniques & Emergency Response', desc: 'Intersection overrides, breakdowns, multi-vehicle radio' },
+                { slug: 'route-survey-clearance-intelligence', title: 'Route Survey & Clearance Intelligence', desc: 'Bridge capacities, height/width measurement, hazard logs' },
+                { slug: 'specialized-vertical-operations', title: 'Specialized Operations (High Pole & AV-Ready)', desc: 'Wind, superload, military, aurora/kodiak protocols' },
+                { slug: 'final-assessment-certification', title: 'Final Assessment & Haul Command Profiling', desc: '50-question comprehensive exam & badge verification' },
               ].map(m => (
                 <Link key={m.slug} href={`/training/${m.slug}`} style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '14px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
                   <div style={{ flex: 1 }}>
