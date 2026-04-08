@@ -66,15 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly' as const,
     priority: 0.75,
     ...(op.primary_photo_url
-      ? {
-          images: [
-            {
-              url: op.primary_photo_url,
-              title: `${op.display_name ?? 'Pilot car operator'} — ${[op.city_name, op.region_code].filter(Boolean).join(', ')}`,
-              caption: `Verified pilot car operator serving ${[op.city_name, op.region_code].filter(Boolean).join(', ')}`,
-            },
-          ],
-        }
+      ? { images: [op.primary_photo_url] }
       : {}),
   }));
 

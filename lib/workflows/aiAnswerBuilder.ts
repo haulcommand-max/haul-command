@@ -9,7 +9,6 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export interface AnswerPage {
   question: string;
@@ -45,8 +44,7 @@ async function generateAnswer(
   question: string,
   jurisdiction: string,
 ): Promise<Omit<AnswerPage, 'citation_score' | 'source_count' | 'confidence'>> {
-  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY!);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
 
   const prompt = `You are a heavy-haul logistics expert writing answer-first content for HaulCommand.com.
 Write a complete answer to this question:
@@ -71,8 +69,16 @@ Return JSON:
 }`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const text = result.response.text().trim().replace(/^```json\n?/, '').replace(/\n?```$/, '');
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      },
+    );
+    const geminiData = await geminiRes.json();
+    const text = (geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? '').trim().replace(/^```json\n?/, '').replace(/\n?```$/, '');
     const parsed = JSON.parse(text);
     return {
       question,

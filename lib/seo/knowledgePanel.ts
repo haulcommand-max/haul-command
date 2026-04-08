@@ -7,7 +7,6 @@
  * 3. generateAltTextForOperatorImage() — Calls Gemini vision to produce semantic alt text, writes to DB
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@supabase/supabase-js';
 
 // ─── 1. Knowledge Panel JSON-LD ──────────────────────────
@@ -167,8 +166,7 @@ export async function generateAltTextForOperatorImage(params: {
   entity_id: string;
   media_type?: 'vehicle' | 'equipment' | 'profile' | 'location';
 }): Promise<{ alt_text: string; confidence: 'high' | 'medium' | 'low' }> {
-  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY!);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
   const db = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -203,12 +201,20 @@ Return only the alt text string, no quotes or punctuation at the end.`;
     const base64 = Buffer.from(buffer).toString('base64');
     const mimeType = imageRes.headers.get('content-type') ?? 'image/jpeg';
 
-    const result = await model.generateContent([
-      { text: prompt },
-      { inlineData: { mimeType, data: base64 } },
-    ]);
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType, data: base64 } }] }],
+        }),
+      },
+    );
+    const geminiData = await geminiRes.json();
+    const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 
-    alt_text = result.response.text().trim().replace(/["'.]$/, '');
+    alt_text = rawText.trim().replace(/[\"'.]$/, '');
     confidence = alt_text.length > 20 ? 'high' : 'medium';
   } catch (err) {
     console.error('[generateAltText] AI error', err);

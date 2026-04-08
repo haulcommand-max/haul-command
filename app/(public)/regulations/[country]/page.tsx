@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import MarketModeCTA from '@/components/market/MarketModeCTA';
 import VoiceFaqSchema, { QuickAnswerBlock } from '@/components/seo/VoiceFaqSchema';
-import { QuickAnswerBlock as RichQuickAnswerBlock } from '@/components/seo/QuickAnswerBlock';
+import RichQuickAnswerBlock from '@/components/seo/QuickAnswerBlock';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
 import DataTeaserCard from '@/components/data/DataTeaserCard';
 import { ProofStrip } from '@/components/ui/ProofStrip';

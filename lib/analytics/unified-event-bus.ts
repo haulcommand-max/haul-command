@@ -119,6 +119,41 @@ async function sinkFirebase(eventType: string, props: Record<string, unknown>) {
     }
 }
 
+// ── Sink: Market Signal Engine ─────────────────────────────
+
+async function sinkMarketSignalEngine(eventType: string, props: Record<string, unknown>) {
+    try {
+        const payload = {
+            event_name: eventType,
+            object_type: typeof props.entity_type === 'string' ? props.entity_type : 'event',
+            object_id: typeof props.entity_id === 'string' ? props.entity_id : 'system',
+            country_code: typeof props.country_code === 'string' ? props.country_code : null,
+            region_code: typeof props.region_code === 'string' ? props.region_code : null,
+            city_slug: typeof props.city_slug === 'string' ? props.city_slug : null,
+            corridor_id: typeof props.corridor_id === 'string' ? props.corridor_id : null,
+            payload_json: props,
+        };
+
+        if (typeof window !== 'undefined') {
+            fetch('/api/events/ingest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                keepalive: true
+            }).catch(() => {});
+        } else {
+            const internalUrl = process.env.INTERNAL_APP_BASE_URL || 'http://localhost:3000';
+            fetch(`${internalUrl}/api/events/ingest`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(() => {});
+        }
+    } catch {
+        // Non-blocking
+    }
+}
+
 // ── Event Categories ───────────────────────────────────────
 
 const REVENUE_EVENTS = new Set([
@@ -162,6 +197,9 @@ export const bus = {
         if (TELEMETRY_EVENTS.has(eventType)) {
             sinkTelemetry(eventType, enriched);
         }
+
+        // Send to Market Signal Engine
+        sinkMarketSignalEngine(eventType, enriched);
     },
 
     /**
@@ -199,6 +237,9 @@ export const bus = {
                 // Non-blocking
             }
         }
+
+        // Send to Market Signal Engine
+        sinkMarketSignalEngine(eventType, enriched);
     },
 
     // ── Convenience Wrappers ──────────────────────────────

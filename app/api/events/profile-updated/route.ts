@@ -50,17 +50,31 @@ export async function POST(req: NextRequest) {
   );
 
   // Emit hc_event so the event bus records this trigger
-  await db.from('hc_events').insert({
+  await db.from('hc_events').upsert({
     event_type: 'profile_audit.triggered',
     event_source: 'profile-updated-webhook',
     entity_type: 'operator',
     entity_id,
     payload_json: { triggered_by: 'profile.updated', original_payload: body },
     idempotency_key: `profile-audit-${entity_id}-${new Date().toISOString().slice(0, 16)}`,
-  }).onConflict('idempotency_key').ignore();
+  }, { onConflict: 'idempotency_key', ignoreDuplicates: true });
 
   try {
-    const result = await runProfileAudit(entity_id);
+    // Fetch operator profile to build the audit input
+    const { data: profile } = await db.from('operator_profiles')
+      .select('id, country_code, region_code, city_name, lat, lng, primary_role_type, listing_score')
+      .eq('id', entity_id)
+      .single();
+
+    const result = runProfileAudit({
+      entity_id,
+      profile_class: 'local',
+      country_code: profile?.country_code ?? 'US',
+      region_code: profile?.region_code,
+      city_name: profile?.city_name,
+      lat: profile?.lat,
+      lng: profile?.lng,
+    });
 
     // Emit completion event
     await db.from('hc_events').insert({
