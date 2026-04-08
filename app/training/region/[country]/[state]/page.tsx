@@ -13,6 +13,26 @@ function toTitle(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 }
 
+const STATE_RESOURCES: Record<string, { title: string; desc: string; url: string }[]> = {
+  'florida': [
+    {
+      title: 'UF T2 Pilot Escort Flagging Database',
+      desc: 'Official database of qualified Florida pilot/escort course graduates.',
+      url: 'https://techtransfer.ce.ufl.edu/training/pilot-escort-flagging/find-a-qualified-florida-escort/'
+    },
+    {
+      title: 'Florida T2 Escort Certification Course',
+      desc: 'FDOT approved 8-hour in-person pilot escort flagging course at the University of Florida.',
+      url: 'https://reg.pwd.aa.ufl.edu/search/publicCourseSearchDetails.do?method=load&courseId=12806312&selectedProgramAreaId=2616680'
+    },
+    {
+      title: 'Florida 2025 PE Participant Workbook',
+      desc: 'Official PDF workbook for Florida Pilot Escort Flagging requirements.',
+      url: 'https://www.eng.ufl.edu/techtransfer/wp-content/uploads/sites/251/2025/11/PE-Participant-Workbook-04-01-2025.pdf'
+    }
+  ]
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { state, country } = await params;
   const stateName = toTitle(state);
@@ -121,6 +141,23 @@ export default async function StateTrainingPage({ params }: Props) {
             ))}
           </div>
         </section>
+
+        {/* State Specific Resources */
+        STATE_RESOURCES[state] && (
+          <section style={{ padding: 'clamp(1.5rem,3vw,2.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}>
+            <div style={{ maxWidth: 820, margin: '0 auto' }}>
+              <h2 style={{ margin: '0 0 14px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Official {stateName} Resources</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 10 }}>
+                {STATE_RESOURCES[state].map(res => (
+                  <a key={res.url} href={res.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: gold, marginBottom: 4 }}>{res.title} ↗</div>
+                    <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{res.desc}</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Related links */}
         <section style={{ padding: 'clamp(1.5rem,2.5vw,2rem) 20px' }}>
