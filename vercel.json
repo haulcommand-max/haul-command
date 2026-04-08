@@ -39,6 +39,22 @@
     {
       "path": "/api/cron/ai-answer-gap-scan",
       "schedule": "0 4 * * 6"
+    },
+    {
+      "path": "/api/cron/content-engine",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/content-pipeline",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/osm-enrichment",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/fmcsa-ingest",
+      "schedule": "0 3 * * 0"
     }
   ],
   "functions": {

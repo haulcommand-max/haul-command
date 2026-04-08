@@ -71,8 +71,44 @@ export default async function CorridorSlugPage({ params }: Props) {
 
   const isFlagship = corridor.tier === 'flagship' || (corridor.composite_score ?? 0) >= 85;
 
+  const hasPricing = pricing && pricing.length > 0;
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
+      { "@type": "ListItem", "position": 2, "name": "Corridors", "item": "https://haulcommand.com/corridors" },
+      { "@type": "ListItem", "position": 3, "name": corridor.name ?? params.slug },
+    ],
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": `${corridor.name} — Heavy Haul Escort & Permit Guide`,
+    "description": `Escort requirements, permit rules, and operator intelligence for the ${corridor.name}.`,
+    "url": `https://haulcommand.com/corridors/${params.slug}`,
+    "breadcrumb": { "@type": "BreadcrumbList", "itemListElement": breadcrumbSchema.itemListElement },
+  };
+
+  const datasetSchema = hasPricing ? {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": `${corridor.name} Rate Benchmarks`,
+    "description": `Pilot car and escort rate benchmarks for the ${corridor.name} corridor.`,
+    "url": `https://haulcommand.com/corridors/${params.slug}`,
+    "creator": { "@type": "Organization", "name": "Haul Command" },
+    "variableMeasured": pricing!.map(p => p.observation_type),
+  } : null;
+
   return (
     <main className="min-h-screen bg-[#0a0d14] text-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      {datasetSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
+      )}
       {/* Hero */}
       <section className="border-b border-white/8 bg-gradient-to-b from-[#0f1420] to-[#0a0d14] px-4 py-14">
         <div className="mx-auto max-w-4xl">

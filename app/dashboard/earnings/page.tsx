@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Lock, TrendingUp, AlertCircle, ChevronRight, Zap, Banknote, ShieldCheck, CheckCircle2, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { QuickPayDashboardCard } from '@/components/quickpay/QuickPayWidget';
 
 type ConnectStatus = {
   connected: boolean;
@@ -98,6 +99,16 @@ export default function EarningsDashboardPage() {
           Toggle Claimed State: {isClaimed ? 'CLAIMED' : 'UNCLAIMED'}
         </button>
       </div>
+
+      {/* QuickPay Dashboard Card — above hero metrics */}
+      {isClaimed && availableDollars > 0 && (
+        <div className="px-4 pt-4">
+          <QuickPayDashboardCard
+            eligibleCount={MOCK_RUNS.length}
+            totalEligibleAmount={MOCK_RUNS.reduce((sum, r) => sum + r.rate, 0)}
+          />
+        </div>
+      )}
 
       {/* Hero Metric Section */}
       <div className="pt-8 pb-6 px-4 border-b border-white/5 bg-gradient-to-b from-hc-gold/5 to-transparent relative overflow-hidden">
