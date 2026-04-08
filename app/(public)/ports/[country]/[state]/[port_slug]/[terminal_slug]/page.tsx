@@ -28,7 +28,7 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
     `)
         .eq('terminal_slug', terminalSlug)
         .eq('port_infrastructure.port_slug', portSlug)
-        .single();
+        .single() as { data: any };
 
     if (!terminal) return null;
 
@@ -37,7 +37,7 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
         .from('terminal_risk_profile')
         .select('denial_rate, avg_delay_minutes, risk_score, total_events, last_calculated_at')
         .eq('terminal_id', terminal.id)
-        .single();
+        .single() as { data: any };
 
     // Nearby TWIC operators (via port proximity)
     const { data: operators } = await getSupabaseAdmin()
@@ -52,7 +52,7 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
         .eq('port_id', terminal.port_id)
         .eq('is_twic_verified', true)
         .order('distance_miles', { ascending: true })
-        .limit(8);
+        .limit(8) as { data: any[] | null };
 
     // Gate event stats
     const { data: gateStats } = await getSupabaseAdmin()
@@ -60,17 +60,18 @@ async function getTerminalData(portSlug: string, terminalSlug: string) {
         .select('event_type, delay_minutes')
         .eq('terminal_id', terminal.id)
         .order('occurred_at', { ascending: false })
-        .limit(50);
+        .limit(50) as { data: any[] | null };
 
-    const successCount = gateStats?.filter(e => e.event_type === 'success').length ?? 0;
+    const successCount = gateStats?.filter((e: any) => e.event_type === 'success').length ?? 0;
     const totalEvents = gateStats?.length ?? 0;
     const successRate = totalEvents > 0 ? Math.round((successCount / totalEvents) * 100) : null;
     const avgDelay = gateStats && gateStats.length > 0
-        ? Math.round(gateStats.reduce((s, e) => s + (e.delay_minutes ?? 0), 0) / gateStats.length)
+        ? Math.round(gateStats.reduce((s: number, e: any) => s + (e.delay_minutes ?? 0), 0) / gateStats.length)
         : null;
 
     return { terminal, risk, operators, successRate, avgDelay, totalEvents };
 }
+
 
 // ── Static params ─────────────────────────────────────────────────────────────
 
