@@ -67,19 +67,18 @@ async function seedCorridorSeoPages() {
       page_type: 'corridor',
       slug: slug,
       title: `${co.name} — Heavy Haul Escort & Permit Guide | Haul Command`,
-      description: `Complete guide to escort requirements, permits, pricing, and certified operators for the ${co.name} from ${co.start_city}, ${co.start_state} to ${co.end_city}, ${co.end_state}.`,
+      meta_description: `Complete guide to escort requirements, permits, pricing, and certified operators for the ${co.name} from ${co.start_city}, ${co.start_state} to ${co.end_city}, ${co.end_state}.`,
       h1: `${co.name}: Escort, Permit & Operator Guide`,
       status: 'published',
       country_code: co.country_code,
-      indexable: true
+      is_indexable: true
     });
 
     if (error) {
       // Try alternate schema
-      const { error: e2 } = await supabase.from('seo_content_corridor_pages').insert({
-        corridor_id: co.id,
+      const { error: e2 } = await supabase.from('hc_page_surfaces').insert({
         slug: slug,
-        title_tag: `${co.name} — Heavy Haul Escort & Permit Guide | Haul Command`,
+        title: `${co.name} — Heavy Haul Escort & Permit Guide | Haul Command`,
         meta_description: `Complete guide for the ${co.name} corridor.`,
         h1: `${co.name}: Escort, Permit & Operator Guide`,
         status: 'published'
@@ -98,7 +97,7 @@ async function seedCorridorSeoPages() {
 
 async function seedAdSlots() {
   console.log('\n=== STEP 3: Ad Slot Generation ===');
-  const { data: products } = await supabase.from('sponsorship_products').select('id,name,price_cents,slot_type,placement_zone');
+  const { data: products } = await supabase.from('sponsorship_products').select('id,name,amount,currency');
   console.log(`  Found ${products?.length || 0} sponsorship products`);
   
   if (!products || products.length === 0) {
@@ -118,9 +117,14 @@ async function seedAdSlots() {
         state_code: state,
         product_id: product.id,
         status: 'available',
-        price_cents: product.price_cents || 9900
+        price_cents: product.amount || 9900,
+        slot_type: 'premium'
       });
-      if (!error) created++;
+      if (!error) {
+        created++;
+      } else {
+        console.log("  ⚠️ " + error.message)
+      }
     }
   }
   console.log(`  ✅ Ad slots created: ${created}`);

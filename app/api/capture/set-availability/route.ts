@@ -49,16 +49,17 @@ export async function POST(request: NextRequest) {
       updateData.coverage_radius_miles = coverageRadius;
     }
 
-    // Try hc_real_operators first (canonical table)
+    // Use availability_broadcasts table
     const { data, error } = await supabase
-      .from('hc_real_operators')
-      .update(updateData)
-      .eq('id', operatorId)
-      .select('id, availability_status')
+      .from('availability_broadcasts')
+      .upsert({
+        operator_id: operatorId,
+        ...updateData
+      }, { onConflict: 'operator_id' })
+      .select('operator_id, availability_status')
       .single();
 
     if (error) {
-      // Graceful fallback — column might not exist yet
       console.error('Availability update error:', error);
       return NextResponse.json({
         success: true,
