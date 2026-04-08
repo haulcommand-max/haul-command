@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Crown, ArrowRight } from "lucide-react";
+import { Suspense } from "react";
 
-export default function SuccessPage() {
+function SuccessContent() {
     const searchParams = useSearchParams();
     const surfaceId = searchParams.get("surface_id");
     const plan = searchParams.get("plan");
@@ -42,5 +43,17 @@ export default function SuccessPage() {
                 </Link>
             </div>
         </div>
+    );
+}
+
+export default function SuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-hc-bg flex items-center justify-center text-hc-text">
+                <div className="animate-pulse text-gray-500">Loading...</div>
+            </div>
+        }>
+            <SuccessContent />
+        </Suspense>
     );
 }

@@ -1,11 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    // ── TypeScript / ESLint ──────────────────────────────────────────────
+    // ── TypeScript ────────────────────────────────────────────────────────
     // Skip tsc during build — Turbopack already catches real import/export errors.
     // Legacy TS errors across 200+ files should not block deployment.
     typescript: { ignoreBuildErrors: true },
-    eslint: { ignoreDuringBuilds: true },
+
 
     // ── Output ───────────────────────────────────────────────────────────────
     // Vercel uses its own builder. No output mode needed.
