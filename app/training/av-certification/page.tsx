@@ -22,7 +22,7 @@ const TIERS = [
       'Valid escort operator license in your country/state',
       'Vehicle meets local oversize escort requirements',
       '$1M minimum liability insurance verified',
-      'Completed Haul Command online training (3 modules, ~4 hours)',
+      'Completed Haul Command online training (3 modules, ~24 hours)',
       'Passed knowledge assessment (80% pass rate)',
       'Active Haul Command profile with verified phone',
     ],
@@ -50,7 +50,7 @@ const TIERS = [
     priceColor: '#f5c842',
     requirements: [
       'HC Certified (Tier 1) prerequisite',
-      'AV Escort Specialist training (6 modules, ~8 hours)',
+      'AV Escort Specialist training (5 modules, ~40 hours)',
       'Passed AV protocol assessment (85% pass rate)',
       'Knowledge of AV behavior patterns in operating region',
       'At least 10 verified escort jobs on the platform',

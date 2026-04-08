@@ -64,6 +64,7 @@ async function seedCorridorSeoPages() {
     const slug = `${co.highway}-${co.start_city}-${co.start_state}-to-${co.end_city}-${co.end_state}`.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
     
     const { error } = await supabase.from('seo_pages').insert({
+      type: 'corridor',
       page_type: 'corridor',
       slug: slug,
       title: `${co.name} — Heavy Haul Escort & Permit Guide | Haul Command`,
@@ -117,7 +118,7 @@ async function seedAdSlots() {
         state_code: state,
         product_id: product.id,
         status: 'available',
-        price_cents: product.amount || 9900,
+        price: product.amount || 99.00,
         slot_type: 'premium'
       });
       if (!error) {

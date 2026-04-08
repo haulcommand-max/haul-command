@@ -35,7 +35,7 @@ export const MODULES = [
     description:
       'Safety basics, escort vehicle roles, required equipment, MUTCD flagging procedures (stop/slow paddle & flag protocols), and the Class 2 High-Vis apparel framework every escort operator must know.',
     audience: 'New operators, career changers, new-to-US international operators',
-    duration: '150 min',
+    duration: '480 min',
     outcomes: ['Execute MUTCD flagging protocols correctly', 'Identify Class 2 high-vis apparel requirements', 'Know required vehicle equipment by jurisdiction'],
     tier: 'HC Certified',
     isFree: true,
@@ -47,7 +47,7 @@ export const MODULES = [
     description:
       'Heights, widths, vertical and horizontal clearance measurement, obstacle documentation, route planning workflows, and how to log and report route hazards.',
     audience: 'Operators pursuing route survey work, broker-side planners',
-    duration: '150 min',
+    duration: '480 min',
     outcomes: ['Conduct a legal route survey', 'Document clearance data accurately', 'Identify and report route hazards'],
     tier: 'HC Certified',
     isFree: false,
@@ -59,7 +59,7 @@ export const MODULES = [
     description:
       'Permit touchpoints, signage rules, intersection maneuvering techniques, emergency breakdown spacing, and multi-state laws. Concludes with the mandatory 120-minute, 50-question Final Exam.',
     audience: 'All operators running permitted loads across state lines',
-    duration: '180 min',
+    duration: '480 min',
     outcomes: ['Execute safe maneuvering & intersection control', 'Avoid common compliance failures', 'Pass the 50-question exam with an 80% minimum'],
     tier: 'HC Certified',
     isFree: false,
@@ -71,7 +71,7 @@ export const MODULES = [
     description:
       'Radio discipline, position call conventions, emergency stop procedures, intersection management, lane coordination, and how to handle stoppages, breakdowns, and incidents.',
     audience: 'All operators; required for AV-Ready certification',
-    duration: '120 min',
+    duration: '480 min',
     outcomes: ['Run professional radio communication', 'Manage convoy incidents safely', 'Coordinate multi-vehicle escorts'],
     tier: 'AV-Ready',
     isFree: false,
@@ -83,7 +83,7 @@ export const MODULES = [
     description:
       'Dispatch handoff discipline, load documentation, ETA and status reporting expectations, carrier and broker communication norms, and how to handle load changes mid-route.',
     audience: 'Operators working with brokers and carriers; broker-side planners',
-    duration: '90 min',
+    duration: '480 min',
     outcomes: ['Work professionally with brokers and carriers', 'Handle dispatch changes mid-load', 'Document load execution correctly'],
     tier: 'AV-Ready',
     isFree: false,
@@ -95,7 +95,7 @@ export const MODULES = [
     description:
       'High Pole operations and mounting, Wind Industry (WITPAC) escort standards, superload planning, oilfield norms, port/TWIC procedures, and aerospace load handling.',
     audience: 'Operators pursuing specialist and premium corridor work',
-    duration: '180 min',
+    duration: '480 min',
     outcomes: ['Execute professional High Pole measurements', 'Qualify for wind and superload dispatch', 'Operate in military and aerospace contexts'],
     tier: 'Elite',
     isFree: false,
@@ -107,7 +107,7 @@ export const MODULES = [
     description:
       'Haul Command profile setup, badge verification, trust signals, marketplace leverage, how brokers search and rank operators, and how to use digital tools to earn more corridor work.',
     audience: 'All operators; essential for maximizing platform and marketplace earnings',
-    duration: '60 min',
+    duration: '480 min',
     outcomes: ['Maximize Haul Command profile rank', 'Earn verified badge and trust signals', 'Attract broker contact and corridor job requests'],
     tier: 'HC Certified',
     isFree: true,
@@ -134,7 +134,7 @@ const FAQS = [
   },
   {
     q: 'How long does the training take?',
-    a: 'Module 1 (Pilot Car Fundamentals) takes approximately 2.5 hours and is free. HC Certified (modules 1–3) totals 8 hours to meet the national baseline standard. AV-Ready (modules 1–5) takes approximately 11.5 hours. Elite (all 7 modules) totals 15.5 hours of comprehensive training. All modules are self-paced.',
+    a: 'Module 1 (Pilot Car Fundamentals) takes approximately 8 hours and is free. HC Certified (modules 1–3) totals 24 hours to meet and exceed national baseline standards. AV-Ready (modules 1–5) takes approximately 40 hours. Elite (all 7 modules) totals 56 hours of comprehensive training. All modules are self-paced.',
   },
   {
     q: 'Is it self-paced?',
@@ -455,19 +455,19 @@ export default async function TrainingPage() {
               {[
                 {
                   name: 'HC Certified', color: '#A8A8A8', price: 'Free with Pro / $49 standalone',
-                  modules: 'Modules 1–3', duration: '8 Hours (Gov Standard)', highlight: false,
+                  modules: 'Modules 1–3', duration: '24 Hours (Gov Standard)', highlight: false,
                   benefits: ['HC Certified badge on your profile', 'Recognized across all 120 countries', 'Meets all 12 US mandatory state requirements', 'Digital credential with instant verification link'],
                   href: '/training/pilot-car-fundamentals', cta: 'Start Free',
                 },
                 {
                   name: 'AV-Ready', color: '#F5A623', price: '$149/year',
-                  modules: 'Modules 1–5', duration: '11.5 Hours', highlight: true,
+                  modules: 'Modules 1–5', duration: '40 Hours', highlight: true,
                   benefits: ['Everything in HC Certified', 'AV-Ready gold badge on profile', 'Priority placement in AV corridor searches', 'Aurora + Kodiak protocol training', 'Oilfield Specialist module included'],
                   href: '/training?enroll=av_ready', cta: 'Get AV-Ready',
                 },
                 {
                   name: 'Elite', color: '#E5E4E2', price: '$299/year',
-                  modules: 'All 7 Modules', duration: '15.5 Hours', highlight: false,
+                  modules: 'All 7 Modules', duration: '56 Hours', highlight: false,
                   benefits: ['Everything in AV-Ready', 'Elite platinum badge — top of all results', 'Superload, military &amp; aerospace module', 'International operations module', 'Dedicated account support'],
                   href: '/training?enroll=elite', cta: 'Become Elite',
                 },
