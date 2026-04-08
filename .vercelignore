@@ -8,7 +8,8 @@
 /command-dashboard/
 /haul-command-hub/
 /source_data/
-/workers/
+# NOTE: Do NOT exclude /workers/ — API routes import from @/workers/
+
 /docs/
 /lighthouse/
 /tmp/
