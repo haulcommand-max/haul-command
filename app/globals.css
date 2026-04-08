@@ -97,6 +97,26 @@ html, body {
   --hc-trust-low: #6B7280;
 
   /* ═══════════════════════════════════════════════════
+     CULTURAL COLOR SENSITIVITY OVERRIDES (120-Country Sync)
+     ═══════════════════════════════════════════════════ */
+  /* China / East Asia Market Variant: Red is success/growth, Green is decline/risk */
+  &[data-market-theme="asia-red-success"] {
+    --hc-success: #EF4444;
+    --hc-danger: #22C55E;
+    --hc-trust-high: #EF4444;
+    --hc-trust-low: #22C55E;
+  }
+  
+  /* High-Contrast / Accessible Market Variant */
+  &[data-market-theme="high-contrast"] {
+    --hc-success: #4ADE80;
+    --hc-warning: #FCD34D;
+    --hc-danger: #F87171;
+    --hc-text: #FFFFFF;
+    --hc-muted: #D1D5DB;
+  }
+
+  /* ═══════════════════════════════════════════════════
      SHADOW SYSTEM — dark surfaces need gold glow
      ═══════════════════════════════════════════════════ */
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04), 0 2px 8px rgba(0, 0, 0, 0.4);

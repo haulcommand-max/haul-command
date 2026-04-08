@@ -37,7 +37,7 @@ export function getTypesenseSearch() {
 }
 
 // Collection name
-export const OPERATORS_COLLECTION = 'operators';
+export const OPERATORS_COLLECTION = 'driver_profiles';
 
 // Schema for the operators collection
 export const OPERATORS_SCHEMA = {

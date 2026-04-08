@@ -1,8 +1,83 @@
 {
   "crons": [
     {
-      "path": "/api/notifications/drain-jobs",
-      "schedule": "*/2 * * * *"
+      "path": "/api/cron/claim-sniper",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/operator-briefing",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/broker-briefing",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/claim-retargeting",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/credential-gap-scan",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/supply-density",
+      "schedule": "0 1 * * 4"
+    },
+    {
+      "path": "/api/cron/partner-hunt",
+      "schedule": "0 2 * * 3"
+    },
+    {
+      "path": "/api/cron/regulation-refresh",
+      "schedule": "0 3 * * 1"
+    },
+    {
+      "path": "/api/cron/listing-rescue",
+      "schedule": "0 2 * * 5"
+    },
+    {
+      "path": "/api/cron/ai-answer-gap-scan",
+      "schedule": "0 4 * * 6"
+    }
+  ],
+  "functions": {
+    "app/api/cron/**": {
+      "maxDuration": 300
+    },
+    "app/api/push/**": {
+      "maxDuration": 30
+    },
+    "app/api/notifications/**": {
+      "maxDuration": 30
+    },
+    "app/api/workflows/**": {
+      "maxDuration": 300
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(self)" }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
     }
   ]
 }

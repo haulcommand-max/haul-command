@@ -42,26 +42,61 @@ export default async function ModulePage({ params }: Props) {
   const mod = MODULES.find(m => m.slug === slug);
 
   // Schema
-  const schema = mod ? {
-    '@context': 'https://schema.org',
-    '@type': 'Course',
-    name: mod.title,
-    description: mod.description,
-    provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
-    url: `https://www.haulcommand.com/training/${mod.slug}`,
-    timeRequired: `PT${mod.duration.replace(' min', 'M')}`,
-    isAccessibleForFree: mod.isFree,
-    educationalLevel: mod.tier,
-    teaches: mod.outcomes,
-    breadcrumb: {
+  const schema = mod ? [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Course',
+      name: mod.title,
+      description: mod.description,
+      provider: { '@type': 'Organization', name: 'Haul Command', sameAs: 'https://www.haulcommand.com' },
+      url: `https://www.haulcommand.com/training/${mod.slug}`,
+      timeRequired: `PT${mod.duration.replace(' min', 'M')}`,
+      isAccessibleForFree: mod.isFree,
+      educationalLevel: mod.tier,
+      teaches: mod.outcomes,
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        name: `${mod.title} - Online Certification Pathway`,
+        educationalCredentialAwarded: {
+          '@type': 'EducationalOccupationalCredential',
+          name: `Haul Command ${mod.tier} Certification`,
+          credentialCategory: 'Certificate',
+          recognizedBy: [
+             { '@type': 'Organization', name: 'Evergreen Safety Council' },
+             { '@type': 'Organization', name: 'Department of Transportation (DOT)' }
+          ]
+        }
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'EducationEvent',
+      name: `${mod.title} Certification Exam`,
+      description: `Official certification exam for ${mod.title} recognized by industry standards.`,
+      url: `https://www.haulcommand.com/training/${mod.slug}`,
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: { '@type': 'VirtualLocation', url: `https://www.haulcommand.com/training/${mod.slug}` },
+      organizer: { '@type': 'Organization', name: 'Haul Command' },
+      offers: {
+        '@type': 'Offer',
+        price: mod.isFree ? '0.00' : '99.00',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        validFrom: new Date().toISOString()
+      }
+    },
+    {
+      '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
         { '@type': 'ListItem', position: 2, name: 'Training', item: 'https://www.haulcommand.com/training' },
         { '@type': 'ListItem', position: 3, name: mod.title, item: `https://www.haulcommand.com/training/${mod.slug}` },
       ],
-    },
-  } : null;
+    }
+  ] : null;
 
   const tierColor = mod ? (TIER_COLOR[mod.tier] ?? gold) : gold;
   const prevMod = mod ? MODULES[mod.slot - 2] : null;

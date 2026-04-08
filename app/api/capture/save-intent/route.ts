@@ -124,3 +124,50 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+// ══════════════════════════════════════════════════════════════
+// DELETE /api/capture/save-intent?entityType=...&entityId=...
+// Remove a saved intent
+// ══════════════════════════════════════════════════════════════
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const entityType = searchParams.get('entityType');
+    const entityId = searchParams.get('entityId');
+    const userId = searchParams.get('userId');
+
+    if (!entityType || !entityId) {
+      return NextResponse.json({ error: 'entityType and entityId required' }, { status: 400 });
+    }
+
+    const supabase = await createClient();
+    let resolvedUserId = userId;
+
+    if (!resolvedUserId) {
+      const { data: { user } } = await supabase.auth.getUser();
+      // If anonymous, we can't reliably delete unless they pass the anon userId, 
+      // but typical unsave is for authenticated users.
+      if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      resolvedUserId = user.id;
+    }
+
+    const { error } = await supabase
+      .from('saved_intents')
+      .delete()
+      .eq('user_id', resolvedUserId)
+      .eq('entity_type', entityType)
+      .eq('entity_id', entityId);
+
+    if (error) {
+      console.error('Delete intent error:', error);
+      return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, message: `Unsaved ${entityType}` });
+  } catch (err) {
+    console.error('Delete intent exception:', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+

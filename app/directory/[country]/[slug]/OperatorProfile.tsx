@@ -8,6 +8,7 @@ import { OperatorReviews } from '@/components/profile/OperatorReviews'
 import { OperatorBadges } from '@/components/profile/OperatorBadges'
 import { ClaimProfileCTA } from '@/components/profile/ClaimProfileCTA'
 import { AdGridSlot } from '@/components/home/AdGridSlot'
+import { SchemaGenerator } from '@/components/seo/SchemaGenerator'
 import Link from 'next/link'
 
 interface Props { params: { country: string; slug: string } }
@@ -58,9 +59,21 @@ export async function OperatorProfilePage({ params }: Props) {
     address: { '@type': 'PostalAddress', addressRegion: operator.state, addressCountry: operator.country_code },
     ...(avgRating && reviewCount > 0 ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: avgRating.toFixed(1), reviewCount, bestRating: '5', worstRating: '1' } } : {}),
   }
+
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Directory", "item": "https://www.haulcommand.com/directory" },
+      { "@type": "ListItem", "position": 2, "name": params.country.toUpperCase() === 'US' ? 'United States' : params.country.toUpperCase(), "item": `https://www.haulcommand.com/directory/${params.country}` },
+      { "@type": "ListItem", "position": 3, "name": name, "item": `https://www.haulcommand.com/directory/${params.country}/${params.slug}` }
+    ]
+  };
+
   return (
     <>
       <JsonLd data={schema} />
+      <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
         <nav className="px-4 lg:px-10 py-2.5 border-b border-[#131c28]">
           <div className="max-w-4xl mx-auto text-xs text-[#566880] flex items-center gap-1.5 flex-wrap">

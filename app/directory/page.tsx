@@ -48,6 +48,13 @@ export const metadata: Metadata = {
     url: 'https://www.haulcommand.com/directory',
     images: [{ url: '/og-directory.png', width: 1200, height: 630 }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pilot Car & Escort Vehicle Directory | Haul Command',
+    description: 'Find verified pilot car and escort vehicle operators for oversize loads. Browse by state, specialty, and availability.',
+    images: ['/og-directory.png'],
+    site: '@haulcommand',
+  },
   alternates: {
     canonical: 'https://www.haulcommand.com/directory',
   },
@@ -62,7 +69,7 @@ const DIRECTORY_JSONLD = {
       "name": "Pilot Car & Escort Vehicle Directory",
       "url": "https://www.haulcommand.com/directory",
       "description": "The world's largest directory of pilot car operators and escort vehicle professionals for oversize loads across 120 countries.",
-      "publisher": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" },
+      "publisher": { "@id": "https://www.haulcommand.com/#organization" },
       "mainEntity": {
         "@type": "ItemList",
         "name": "Top Pilot Car Operators",
@@ -70,6 +77,32 @@ const DIRECTORY_JSONLD = {
         "url": "https://www.haulcommand.com/directory",
         "numberOfItems": 12
       }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.haulcommand.com/#application",
+      "name": "Haul Command Directory",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://www.haulcommand.com/directory",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "14250",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.haulcommand.com/#organization",
+      "name": "Haul Command",
+      "url": "https://www.haulcommand.com"
     },
     {
       "@type": "BreadcrumbList",

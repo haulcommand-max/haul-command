@@ -1,0 +1,694 @@
+haul_command_workflow_templates:
+
+  meta:
+    version: "v1-workflow-templates-execution-grade"
+    purpose: "Turn Haul Command mission families into exact executable workflow templates"
+    status: "CANONICAL — do not modify without owner approval"
+    committed_by: "Anti-Gravity / Claude Sonnet 4.6"
+    committed_at: "2026-04-07"
+    global_stack:
+      frontend: "Vercel / Next.js"
+      database: "Supabase / Postgres / RLS / RPC"
+      workers: "Fly.io"
+      notifications: "Firebase"
+      crm: "Twenty"
+      realtime: "LiveKit"
+      gps: "Traccar"
+      search: "TypeSense"
+    global_rules:
+      - "upgrade-only; never downgrade stronger existing systems"
+      - "every workflow must attach to monopoly graph nodes"
+      - "every workflow must have measurable outcome"
+      - "every async action must go through queues"
+      - "every workflow must support suppression, retries, and escalation"
+      - "every workflow must log cost, outcomes, and failure states"
+      - "every workflow must support role + geography + urgency context"
+      - "every workflow must define human escalation conditions"
+      - "every workflow must avoid spammy or low-value output"
+      - "every workflow must improve at least one of: supply, demand, conversion, trust, retention, authority, monetization, cost-control"
+
+  rollout_recommendation:
+    order:
+      1: claim_sniper
+      2: regulation_capture_engine
+      3: ai_answer_builder
+      4: broker_morning_briefing
+      5: operator_opportunity_briefing
+      6: no_show_recovery
+      7: credential_unlock_engine
+      8: corridor_page_generator
+      9: partner_hunt_engine
+      10: supply_density_builder
+      11: listing_rescue_tactic
+      12: authority_cascade
+      13: corridor_shock_detector
+      14: country_keep_alive
+      15: recovery_packet_automation
+      16: human_escalation_packet
+    reason:
+      - "starts with fast ROI, claims, and retention"
+      - "adds SEO and AI authority next"
+      - "then deepens operational moat"
+      - "then expands infrastructure and global density"
+      - "then adds compounding graph maintenance workflows"
+
+  shared_contracts:
+
+    workflow_contract:
+      required_fields:
+        - key
+        - name
+        - purpose
+        - primary_roles
+        - primary_value_type
+        - inputs
+        - outputs
+        - source_tables
+        - destination_tables
+        - triggers
+        - queues
+        - workers
+        - cron_families
+        - notifications
+        - integrations
+        - scoring
+        - guardrails
+        - acceptance_tests
+
+    queue_naming_rules:
+      format: "domain.action"
+      examples:
+        - "claim.create_packet"
+        - "listing.score"
+        - "country.refresh"
+        - "citation.validate"
+        - "job.reassign"
+
+    trigger_types:
+      supported:
+        - manual
+        - event
+        - cron
+        - threshold
+        - external_webhook
+        - state_transition
+
+    cost_routing:
+      tiers:
+        code_first:
+          allowed_for:
+            - scoring
+            - matching
+            - filtering
+            - dedupe
+            - state_transitions
+            - routing
+            - notification_decisioning
+        local_or_low_cost_model:
+          allowed_for:
+            - summarization
+            - extraction
+            - classification
+            - first_draft_generation
+            - faq_generation
+            - packet_drafting
+        premium_model:
+          allowed_for:
+            - high_stakes_synthesis
+            - sensitive_copy_review
+            - legal_or_regulatory_interpretation_review
+            - complex_planning_when_required
+        human_review:
+          required_for:
+            - irreversible_actions
+            - high_risk_publish
+            - sensitive_dispute_actions
+            - uncertain_compliance_outputs
+
+  workflow_templates:
+
+    - key: "claim_sniper"
+      name: "Claim Sniper Workflow"
+      purpose: "Find high-value unclaimed listings, build personalized claim packets, run follow-up, and maximize listing claims"
+      primary_roles: [admin, internal_growth]
+      primary_value_type: [conversion, supply_growth, monetization]
+      inputs:
+        market_scope: {type: geo_scope}
+        listing_filters: {type: object, includes: [unclaimed_only, minimum_listing_score, role_types, credential_types, freshness_status]}
+        cadence: {type: object, includes: [followup_days, max_touch_count, suppression_window]}
+        packet_rules: {type: object, includes: [include_visibility_loss, include_missing_trust, include_missing_data_fields, include_claim_cta]}
+      outputs:
+        - personalized_claim_packet
+        - outreach_sequence
+        - crm_contact_update
+        - claim_status_timeline
+        - escalation_task
+      source_tables:
+        - hc_listings
+        - hc_listing_states
+        - hc_listing_scores
+        - hc_entities
+        - hc_entity_edges
+        - hc_outreach_log
+      destination_tables:
+        - hc_claims
+        - hc_claim_events
+        - hc_outreach_log
+        - hc_dashboard_state
+        - hc_outcomes
+      triggers:
+        - {type: cron, key: daily_claim_candidate_scan}
+        - {type: threshold, key: listing_score_above_threshold_and_unclaimed}
+        - {type: manual, key: admin_launch_claim_sniper}
+      queues:
+        - claim.scan_candidates
+        - claim.score_candidates
+        - claim.create_packet
+        - claim.push_to_twenty
+        - claim.send_nudge
+        - claim.evaluate_response
+        - claim.escalate
+      workers: [claim-worker, outreach-worker, dashboard-worker]
+      cron_families:
+        - "0 7 * * * daily_claim_candidate_scan"
+        - "0 */4 * * * claim_followup_evaluator"
+      notifications:
+        admin: [firebase_push, dashboard_alert]
+        claimant: [email_draft, firebase_push_if_registered]
+      integrations: [Twenty, Firebase, LiveKit]
+      scoring:
+        candidate_score_formula:
+          expression: "(listing_score * 0.35) + (market_demand_score * 0.25) + (corridor_relevance_score * 0.20) + (traffic_potential_score * 0.10) + (missing_value_score * 0.10)"
+        hot_lead_threshold: 80
+      guardrails:
+        - "never exceed max_touch_count"
+        - "suppress outreach after claim or explicit opt-out"
+        - "escalate only after positive intent or repeated high score"
+        - "do not send identical repeated copy"
+      acceptance_tests:
+        - "unclaimed candidates are discovered correctly"
+        - "claim packet includes real listing-specific deficiencies"
+        - "Twenty contact/task is created or updated"
+        - "follow-up cadence respects suppression rules"
+        - "claimed listings immediately exit the workflow"
+
+    - key: "regulation_capture_engine"
+      name: "Regulation Capture Engine"
+      purpose: "Create and refresh citation-grade regulation and requirement pages that win SEO and AI citations"
+      primary_roles: [seo, content_ops, country_ops]
+      primary_value_type: [authority, SEO, AI_citations]
+      inputs:
+        jurisdiction_scope: {type: jurisdiction}
+        topic_scope: {type: array, examples: [escort_requirements, permit_requirements, credential_requirements, route_rules]}
+        source_policy: {type: object, includes: [official_sources_only_preferred, min_source_count, freshness_threshold_days]}
+      outputs:
+        - answer_first_regulation_page
+        - freshness_log
+        - source_stack
+        - update_delta_summary
+        - linked_tool_recommendations
+      source_tables: [hc_sources, hc_countries, hc_country_readiness, hc_glossary, hc_page_contracts]
+      destination_tables: [hc_regulations, hc_sources, hc_citation_scores, hc_link_graph, hc_page_scores]
+      triggers:
+        - {type: cron, key: weekly_regulation_refresh}
+        - {type: manual, key: admin_generate_regulation_page}
+        - {type: threshold, key: source_freshness_expired}
+      queues:
+        - regulation.source_check
+        - regulation.delta_detect
+        - regulation.build_answer_block
+        - regulation.attach_sources
+        - regulation.link_related_surfaces
+        - regulation.publish_review
+      workers: [citation-worker, page-audit-worker, content-ops-worker]
+      cron_families:
+        - "0 3 * * 1 weekly_regulation_refresh"
+        - "0 5 * * * daily_source_freshness_scan"
+      notifications:
+        admin: [dashboard_alert, morning_brief_entry]
+      integrations: [maps, glossary_engine]
+      scoring:
+        citation_score_formula:
+          expression: "(source_quality_score * 0.35) + (answer_clarity_score * 0.20) + (freshness_score * 0.20) + (jurisdiction_precision_score * 0.15) + (actionability_score * 0.10)"
+      guardrails:
+        - "no publish without source stack"
+        - "mark uncertain material with confidence label"
+        - "route ambiguous interpretations to review"
+      acceptance_tests:
+        - "page opens with direct answer block"
+        - "source stack is attached and readable"
+        - "related tools and glossary links appear"
+        - "freshness state updates on each refresh"
+        - "stale sources trigger review workflow"
+
+    - key: "corridor_page_generator"
+      name: "Corridor Page Generator"
+      purpose: "Build commercial corridor pages that combine demand, providers, alerts, rates, and next actions"
+      primary_roles: [seo, marketplace_ops]
+      primary_value_type: [SEO, commercial_intent, authority]
+      inputs:
+        corridor: {type: object, includes: [origin, destination, corridor_type]}
+        enrichment_policy: {type: object, includes: [include_providers, include_infrastructure, include_rate_signal, include_alert_signup]}
+      outputs:
+        - corridor_page
+        - related_provider_blocks
+        - corridor_alert_product
+        - internal_link_targets
+      source_tables: [hc_corridors, hc_entities, hc_infrastructure, hc_link_graph, hc_rates]
+      destination_tables: [hc_corridors, hc_link_graph, hc_page_scores, hc_outcomes]
+      triggers:
+        - {type: manual, key: admin_generate_corridor}
+        - {type: threshold, key: demand_signal_detected_without_page}
+        - {type: cron, key: weekly_corridor_refresh}
+      queues:
+        - corridor.score
+        - corridor.enrich
+        - corridor.attach_providers
+        - corridor.attach_infrastructure
+        - corridor.link_authority
+      workers: [content-ops-worker, link-worker]
+      cron_families:
+        - "0 4 * * 2 weekly_corridor_refresh"
+      scoring:
+        corridor_priority_formula:
+          expression: "(demand_score * 0.40) + (supply_gap_score * 0.20) + (search_intent_score * 0.20) + (revenue_potential_score * 0.20)"
+      guardrails:
+        - "do not create empty corridor pages"
+        - "must include useful operational modules"
+      acceptance_tests:
+        - "corridor page includes real provider or support data"
+        - "page includes alert/action surfaces"
+        - "page links into directory, tools, and regulations"
+        - "empty-state fallback is useful, not dead"
+
+    - key: "broker_morning_briefing"
+      name: "Broker Morning Briefing"
+      purpose: "Deliver personalized broker briefings with corridor shortages, standby coverage, readiness pools, and risk signals"
+      primary_roles: [broker]
+      primary_value_type: [retention, demand_capture]
+      inputs:
+        broker_profile: {type: broker_id}
+        briefing_preferences: {type: object, includes: [watch_corridors, credential_types, preferred_time, alert_channels]}
+      outputs:
+        - morning_brief
+        - shortage_alerts
+        - standby_recommendations
+        - urgent_action_cards
+      source_tables: [hc_brokers, hc_jobs, hc_corridors, hc_credentials, hc_dashboard_state]
+      destination_tables: [hc_briefings, hc_notifications, hc_outcomes]
+      triggers:
+        - {type: cron, key: daily_broker_briefing}
+        - {type: manual, key: generate_broker_brief_now}
+      queues:
+        - briefing.collect_signals
+        - briefing.rank_items
+        - briefing.compose
+        - briefing.dispatch
+      workers: [worker-reports, worker-notify]
+      cron_families:
+        - "0 6 * * * daily_broker_briefing"
+      notifications:
+        broker: [firebase_push, email, dashboard_card]
+      integrations: [Firebase, Twenty]
+      scoring:
+        item_rank_formula:
+          expression: "(urgency_score * 0.35) + (corridor_relevance_score * 0.25) + (coverage_gap_score * 0.20) + (broker_preference_score * 0.20)"
+      guardrails:
+        - "do not send empty briefings"
+        - "collapse duplicate alerts into one action card"
+      acceptance_tests:
+        - "briefing reflects broker-specific corridors/preferences"
+        - "urgent shortages are prioritized correctly"
+        - "delivery occurs on configured schedule"
+
+    - key: "operator_opportunity_briefing"
+      name: "Operator Opportunity Briefing"
+      purpose: "Give operators a reason to open the app daily with jobs, readiness nudges, expiring credentials, and market opportunities"
+      primary_roles: [operator]
+      primary_value_type: [retention, app_migration, supply_liquidity]
+      inputs:
+        operator_profile: {type: operator_id}
+        preferences: {type: object, includes: [radius, job_types, credential_interest, preferred_time]}
+      outputs:
+        - daily_brief
+        - job_cards
+        - credential_nudges
+        - profile_rescue_actions
+      source_tables: [hc_profiles, hc_credentials, hc_jobs, hc_dashboard_state, hc_listing_scores]
+      destination_tables: [hc_briefings, hc_notifications, hc_app_events]
+      triggers:
+        - {type: cron, key: daily_operator_briefing}
+      queues:
+        - opportunity.collect
+        - opportunity.rank
+        - opportunity.compose
+        - opportunity.dispatch
+      workers: [worker-reports, worker-notify]
+      cron_families:
+        - "0 7 * * * daily_operator_briefing"
+      notifications:
+        operator: [firebase_push, dashboard_card]
+      integrations: [Firebase]
+      scoring:
+        opportunity_formula:
+          expression: "(fit_score * 0.35) + (distance_score * 0.20) + (urgency_score * 0.15) + (earnings_score * 0.15) + (credential_alignment_score * 0.15)"
+      guardrails:
+        - "never recommend jobs outside hard credential requirements"
+        - "suppress stale opportunities"
+      acceptance_tests:
+        - "operator receives role-fit opportunities"
+        - "expiring credentials appear when relevant"
+        - "brief drives in-app engagement events"
+
+    - key: "no_show_recovery"
+      name: "No-Show Recovery Workflow"
+      purpose: "Recover from operator or support no-shows by finding qualified standby replacements fast"
+      primary_roles: [broker, admin]
+      primary_value_type: [operational_reliability, retention, marketplace]
+      inputs:
+        incident: {type: object, includes: [job_id, missing_role, location, time_required, required_credentials, max_radius]}
+      outputs:
+        - replacement_candidates
+        - urgent_outreach
+        - escalation_packet
+        - incident_resolution_log
+      source_tables: [hc_jobs, hc_profiles, hc_credentials, hc_gps_events, hc_notifications]
+      destination_tables: [hc_job_states, hc_assignments, hc_notifications, hc_outcomes]
+      triggers:
+        - {type: event, key: job_marked_no_show}
+        - {type: threshold, key: check_in_not_received_by_time_window}
+      queues:
+        - job.detect_no_show
+        - job.find_standby
+        - job.notify_candidates
+        - job.escalate_human
+        - job.close_incident
+      workers: [job-worker, worker-notify]
+      cron_families:
+        - "*/10 * * * * active_job_checkin_monitor"
+      notifications:
+        broker: [firebase_push, live_alert]
+        candidates: [firebase_push, sms_if_opted_and_urgent]
+      integrations: [Firebase, LiveKit, Traccar]
+      scoring:
+        candidate_formula:
+          expression: "(readiness_score * 0.30) + (distance_score * 0.25) + (credential_match_score * 0.20) + (recent_reliability_score * 0.15) + (availability_score * 0.10)"
+      guardrails:
+        - "do not notify unavailable or opt-out candidates"
+        - "escalate to human after configurable failure threshold"
+      acceptance_tests:
+        - "no-show detection works from check-in/event data"
+        - "replacements are ranked correctly"
+        - "incident resolution updates job state"
+
+    - key: "credential_unlock_engine"
+      name: "Credential Unlock Engine"
+      purpose: "Show operators what credentials unlock better jobs and route brokers to credential-ready workers"
+      primary_roles: [operator, broker]
+      primary_value_type: [retention, monetization, supply_quality]
+      inputs:
+        credential_map: {type: object, includes: [current_credentials, expirations, target_markets]}
+      outputs:
+        - credential_gap_report
+        - unlocked_job_categories
+        - renewal_alerts
+        - broker_filter_updates
+      source_tables: [hc_credentials, hc_jobs, hc_country_readiness, hc_profiles]
+      destination_tables: [hc_credential_events, hc_notifications, hc_dashboard_state]
+      triggers:
+        - {type: cron, key: daily_credential_gap_scan}
+        - {type: manual, key: run_credential_unlock_report}
+      queues:
+        - credential.scan
+        - credential.rank_opportunities
+        - credential.dispatch_alerts
+      workers: [credential-worker, worker-notify]
+      cron_families:
+        - "0 8 * * * daily_credential_gap_scan"
+      notifications:
+        operator: [firebase_push, dashboard_card]
+        broker: [dashboard_filter_refresh]
+      integrations: [Firebase]
+      scoring:
+        unlock_value_formula:
+          expression: "(job_value_potential * 0.35) + (market_demand_score * 0.25) + (credential_gap_size_inverse * 0.20) + (operator_fit_score * 0.20)"
+      guardrails:
+        - "never claim credentials confer access where rules are unclear"
+      acceptance_tests:
+        - "engine identifies real credential gaps"
+        - "operators see credible unlock paths"
+        - "brokers can use credential-ready filtering"
+
+    - key: "partner_hunt_engine"
+      name: "Partner Hunt Engine"
+      purpose: "Find and recruit yards, hotels, installers, repair/support nodes, and other infrastructure partners"
+      primary_roles: [admin, partner_ops]
+      primary_value_type: [ecosystem_expansion, monetization, infrastructure_moat]
+      inputs:
+        market_scope: {type: geo_scope}
+        partner_types: {type: array, examples: [yard, hotel, installer, secure_parking, repair, meetup_zone]}
+        hunt_policy: {type: object, includes: [min_confidence, include_claim_packet, include_partner_application]}
+      outputs:
+        - partner_candidates
+        - partner_packets
+        - outreach_queue
+        - market_gap_fill_log
+      source_tables: [hc_infrastructure, hc_entities, hc_country_readiness, hc_competitors]
+      destination_tables: [hc_partner_leads, hc_outreach_log, hc_entities, hc_outcomes]
+      triggers:
+        - {type: cron, key: weekly_partner_hunt}
+        - {type: threshold, key: market_gap_detected}
+      queues:
+        - partner.scan
+        - partner.score
+        - partner.create_packet
+        - partner.push_outreach
+      workers: [discovery-worker, outreach-worker]
+      cron_families:
+        - "0 2 * * 3 weekly_partner_hunt"
+      notifications:
+        admin: [dashboard_alert]
+      integrations: [Twenty, maps]
+      scoring:
+        partner_score_formula:
+          expression: "(market_gap_score * 0.35) + (partner_relevance_score * 0.25) + (location_value_score * 0.20) + (conversion_probability_score * 0.20)"
+      guardrails:
+        - "dedupe against existing partners and listings"
+      acceptance_tests:
+        - "new partner candidates match target categories"
+        - "market gaps feed hunt priorities"
+        - "partner packets contain useful market-specific value"
+
+    - key: "supply_density_builder"
+      name: "Supply Density Builder"
+      purpose: "Detect thin markets and coordinate actions to raise supply density fast"
+      primary_roles: [admin, growth_ops]
+      primary_value_type: [supply_growth, market_dominance]
+      inputs:
+        supply_targets: {type: object, includes: [min_operator_count, min_partner_count, min_credential_ready_count]}
+      outputs:
+        - market_gap_report
+        - hunt_tasks
+        - claim_tasks
+        - content_tasks
+        - standby_pool_targets
+      source_tables: [hc_entities, hc_jobs, hc_country_readiness, hc_infrastructure]
+      destination_tables: [hc_gap_tasks, hc_outcomes, hc_dashboard_state]
+      triggers:
+        - {type: cron, key: weekly_supply_density_scan}
+      queues:
+        - density.scan
+        - density.create_tasks
+        - density.prioritize
+      workers: [discovery-worker, worker-reports]
+      cron_families:
+        - "0 1 * * 4 weekly_supply_density_scan"
+      notifications:
+        admin: [dashboard_alert, morning_brief_entry]
+      integrations: [maps]
+      scoring:
+        density_gap_formula:
+          expression: "(demand_score * 0.35) + (supply_gap_score * 0.35) + (revenue_potential_score * 0.20) + (strategic_market_score * 0.10)"
+      guardrails:
+        - "prioritize markets with real demand or strategic importance"
+      acceptance_tests:
+        - "thin markets are detected correctly"
+        - "workflow emits real downstream tasks"
+        - "density improvement can be measured over time"
+
+    - key: "ai_answer_builder"
+      name: "AI Answer Builder"
+      purpose: "Create answer-first pages designed to win AI citations, snippets, and question-based search intent"
+      primary_roles: [seo, content_ops]
+      primary_value_type: [authority, SEO, citations]
+      inputs:
+        question_family: {type: string}
+        jurisdiction_scope: {type: jurisdiction}
+        answer_policy: {type: object, includes: [min_sources, required_direct_answer, include_next_action_modules]}
+      outputs:
+        - ai_answer_page
+        - structured_answer_block
+        - related_links
+        - citation_score_update
+      source_tables: [hc_sources, hc_glossary, hc_regulations, hc_page_contracts]
+      destination_tables: [hc_citation_scores, hc_link_graph, hc_page_scores]
+      triggers:
+        - {type: manual, key: create_ai_answer_page}
+        - {type: threshold, key: high_value_question_family_without_owner_surface}
+      queues:
+        - answer.identify_owner_surface
+        - answer.build
+        - answer.attach_sources
+        - answer.link_actions
+        - answer.publish_review
+      workers: [citation-worker, link-worker]
+      cron_families:
+        - "0 4 * * 6 weekly_ai_answer_gap_scan"
+      scoring:
+        ai_answer_priority_formula:
+          expression: "(query_value_score * 0.35) + (citation_probability_score * 0.25) + (authority_gap_score * 0.20) + (commercial_assist_score * 0.20)"
+      guardrails:
+        - "must not be generic fluff"
+        - "must include jurisdiction scope"
+        - "must include meaningful next actions"
+      acceptance_tests:
+        - "answer appears above fold and is direct"
+        - "supporting sources are attached"
+        - "page links to tools, regulations, and directory surfaces"
+
+    - key: "listing_rescue_tactic"
+      name: "Listing Rescue Tactic"
+      purpose: "Detect weak, stale, broken, abandoned, or incomplete surfaces and convert them into Haul Command activation opportunities"
+      primary_roles: [growth_ops, admin]
+      primary_value_type: [claims, activation, conversion]
+      inputs:
+        rescue_scope: {type: object, includes: [markets, listing_types, weak_surface_signals]}
+      outputs:
+        - rescue_candidates
+        - rescue_packet
+        - claim_or_activation_task
+      source_tables: [hc_listings, hc_listing_scores, hc_profiles]
+      destination_tables: [hc_gap_tasks, hc_claim_events, hc_outcomes]
+      triggers:
+        - {type: cron, key: weekly_listing_rescue_scan}
+        - {type: threshold, key: listing_quality_below_threshold_but_recoverable}
+      queues:
+        - rescue.scan
+        - rescue.score
+        - rescue.create_packet
+        - rescue.route
+      workers: [directory-worker, outreach-worker]
+      cron_families:
+        - "0 2 * * 5 weekly_listing_rescue_scan"
+      scoring:
+        rescue_formula:
+          expression: "(recoverability_score * 0.30) + (market_value_score * 0.25) + (traffic_potential_score * 0.20) + (claim_probability_score * 0.25)"
+      guardrails:
+        - "do not route hopeless or duplicate cases"
+      acceptance_tests:
+        - "workflow identifies salvageable listings"
+        - "rescue packet highlights specific deficits"
+        - "output routes into claim or profile-completion workflows"
+
+  add_on_templates:
+
+    - key: "authority_cascade"
+      name: "Authority Cascade Tactic"
+      purpose: "When one important page updates, identify connected pages, tools, glossary, and dashboards that should also refresh"
+      triggers: [{type: state_transition, key: important_page_updated}]
+      queues: [authority.find_dependents, authority.create_refresh_tasks]
+      workers: [link-worker, content-ops-worker]
+
+    - key: "corridor_shock_detector"
+      name: "Corridor Shock Detector"
+      purpose: "Detect sudden demand/supply/risk imbalances and emit alerts, content, and marketplace tasks"
+      triggers: [{type: threshold, key: corridor_gap_or_spike_detected}]
+      queues: [corridor.detect_shock, corridor.route_actions]
+      workers: [discovery-worker, worker-reports]
+
+    - key: "country_keep_alive"
+      name: "Country Keep-Alive Tactic"
+      purpose: "Run low-cost recurring refreshes so lower-priority countries never go cold"
+      triggers: [{type: cron, key: weekly_country_keep_alive}]
+      queues: [country.refresh_sources, country.find_new_entities, country.add_question_gaps]
+      workers: [country-worker, discovery-worker]
+
+    - key: "recovery_packet_automation"
+      name: "Recovery Packet Automation"
+      purpose: "Compile GPS proof, contact trail, event history, and invoice support into one export"
+      triggers:
+        - {type: manual, key: build_recovery_packet}
+        - {type: state_transition, key: invoice_dispute_opened}
+      queues: [recovery.compile_timeline, recovery.attach_proof, recovery.export]
+      workers: [proof-builder, worker-reports]
+
+    - key: "human_escalation_packet"
+      name: "Human Escalation Packet"
+      purpose: "When a workflow escalates, send the human a complete packet instead of a vague handoff"
+      triggers: [{type: state_transition, key: workflow_marked_escalation_required}]
+      queues: [escalation.compile_context, escalation.dispatch_packet]
+      workers: [worker-reports, worker-notify]
+
+  required_supabase_tables:
+    - hc_entities
+    - hc_entity_edges
+    - hc_listings
+    - hc_listing_scores
+    - hc_listing_states
+    - hc_claims
+    - hc_claim_events
+    - hc_outreach_log
+    - hc_dashboard_state
+    - hc_jobs
+    - hc_job_states
+    - hc_assignments
+    - hc_gps_events
+    - hc_proof_packets
+    - hc_credentials
+    - hc_credential_events
+    - hc_corridors
+    - hc_regulations
+    - hc_sources
+    - hc_citation_scores
+    - hc_link_graph
+    - hc_outcomes
+    - hc_notifications
+    - hc_briefings
+    - hc_gap_tasks
+    - hc_country_readiness
+    - hc_partner_leads
+
+  required_fly_services:
+    - control-api
+    - orchestrator
+    - worker-general
+    - worker-notify
+    - worker-reports
+    - discovery-worker
+    - content-ops-worker
+    - link-worker
+    - job-worker
+    - claim-worker
+    - outreach-worker
+    - credential-worker
+    - directory-worker
+    - proof-builder
+    - country-worker
+    - citation-worker
+
+  required_vercel_surfaces:
+    - "/control-tower"
+    - "/dashboard/operator"
+    - "/dashboard/broker"
+    - "/dashboard/admin"
+    - "/directory"
+    - "/directory/[geo]/[category]"
+    - "/requirements/[jurisdiction]/[topic]"
+    - "/corridors/[origin]-to-[destination]"
+    - "/tools/[tool-slug]"
+    - "/claims/[claim-id]"
+    - "/briefings/[role]"
+    - "/jobs/[job-id]"
+    - "/credentials"
+    - "/partner/apply"
+    - "/alerts"

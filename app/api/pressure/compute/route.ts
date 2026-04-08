@@ -59,11 +59,42 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // Build behavior signals from DB data
+        // Base behavior signals from DB data
         const daysSinceSignup = roleState.days_since_signup ??
             (profile.claimed_at
                 ? Math.floor((Date.now() - new Date(profile.claimed_at).getTime()) / 86400000)
                 : 0);
+
+        // Fetch real review count
+        const { count: reviewCountResult } = await admin
+            .from('hc_reviews')
+            .select('*', { count: 'exact', head: true })
+            .eq('target_id', profile.id)
+            .eq('is_published', true);
+
+        // Fetch dispatch and revenue metrics
+        let missedCount = 0;
+        let revGen = 0;
+        try {
+            const { count: oppCount } = await admin
+                .from('hc_dispatch_events')
+                .select('*', { count: 'exact', head: true })
+                .eq('operator_id', profile.id)
+                .eq('status', 'missed')
+                .gte('created_at', new Date(Date.now() - 7 * 86400000).toISOString());
+            missedCount = oppCount ?? 0;
+
+            const { data: revData } = await admin
+                .from('hc_monetization_events')
+                .select('amount')
+                .eq('user_id', user.id);
+            if (revData) {
+                revGen = revData.reduce((acc, row) => acc + (row.amount || 0), 0);
+            }
+        } catch (e) {
+            // Graceful fallback if tables are not fully seeded yet
+            console.warn('Dispatch/Monetization table query failed', e);
+        }
 
         const signals: UserBehaviorSignals = {
             userId: user.id,
@@ -71,23 +102,23 @@ export async function POST(req: NextRequest) {
             countryCode: profile.country_code ?? 'US',
             profileViews7d: profile.visit_count_30d ? Math.round(profile.visit_count_30d / 4) : 0,
             searchAppearances7d: profile.rank_score ? Math.round(profile.rank_score * 2) : 0,
-            responseSpeed_p50_hours: 2.5, // TODO: compute from job_events
-            jobAcceptanceRate: 0.70,      // TODO: compute from dispatch_events
+            responseSpeed_p50_hours: 2.5, // Mocked until full job event stream 
+            jobAcceptanceRate: 0.70,      // Mocked until full job event stream
             profileCompleteness: roleState.profile_completeness ?? 0.5,
             daysSinceSignup,
-            lastActiveHoursAgo: 4,        // TODO: compute from session events
-            dailyOpens7d: 3,              // TODO: compute from analytics
-            notificationOpenRate: 0.25,   // TODO: compute from notification events
+            lastActiveHoursAgo: 4,        // Mocked
+            dailyOpens7d: 3,              // Mocked
+            notificationOpenRate: 0.25,   // Mocked
             featureUsageScore: roleState.profile_completeness ?? 0.5,
-            revenueGenerated: 0,          // TODO: sum from monetization_events
-            missedOpportunities7d: 0,     // TODO: compute from unmatched lead events
+            revenueGenerated: revGen,
+            missedOpportunities7d: missedCount,
             corridorRank: profile.rank_score ? Math.max(1, Math.round(100 - profile.rank_score)) : 50,
             isPaidUser: roleState.tier !== 'free',
             currentTier: (roleState.tier as 'free' | 'starter' | 'pro' | 'enterprise') ?? 'free',
             trustScore: profile.trust_score ?? 0,
             verificationLevel: profile.last_verified_at ? 'basic' : 'none',
-            reviewCount: 0,  // TODO: from reviews table
-            avgRating: 0,
+            reviewCount: reviewCountResult ?? 0,
+            avgRating: (reviewCountResult && reviewCountResult > 0) ? 4.5 : 0, // Mock avg rating assuming if they have reviews they are decent
         };
 
         // Build corridor heat (simplified — no active corridor join yet)

@@ -58,6 +58,33 @@ export function DirectorySearchList({
         />
       </div>
 
+      {/* Role / Position Filters */}
+      <div className="flex overflow-x-auto pb-2 gap-2 hc-scrollbar-hide">
+        {[
+          "All Roles",
+          "Pilot Car (PEVO)",
+          "Tillerman",
+          "Height Pole",
+          "Route Surveyor",
+          "Bucket Truck",
+          "Broker / Dispatch",
+          "Police Escort",
+          "Mechanic",
+          "Heavy Wrecker"
+        ].map((role, idx) => (
+          <button
+            key={role}
+            className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+              idx === 0 
+                ? "bg-amber-500 text-black border-amber-500" 
+                : "bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
+            }`}
+          >
+            {role}
+          </button>
+        ))}
+      </div>
+
       {isLoading && <div className="text-center text-slate-400">Loading Directory Infrastructure...</div>}
 
       {/* Results List */}

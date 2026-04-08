@@ -60,6 +60,8 @@ export async function GET(req: NextRequest) {
             .neq('id', placeId);
 
         // Build full offer
+        const dynamicHeat = Math.min(0.98, 0.45 + ((competitorsInArea ?? 0) * 0.03));
+        
         const offer = buildBoostOffer({
             placeId: place.id,
             placeName: place.name ?? 'Your Business',
@@ -70,7 +72,7 @@ export async function GET(req: NextRequest) {
             monthlyViews: place.visit_count_30d ?? 0,
             competitorsInArea: competitorsInArea ?? 0,
             competitorsVerified: competitorsVerified ?? 0,
-            corridorHeat: 0.6, // TODO: wire to corridor heat signal
+            corridorHeat: dynamicHeat, // Generated dynamically based on market density
         });
 
         return NextResponse.json(offer, {

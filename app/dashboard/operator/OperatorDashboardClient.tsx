@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import SwipeableRunCard from "@/components/mobile/SwipeableRunCard";
-import AvailabilityWidget from "@/components/dispatch/AvailabilityWidget";
+import { AvailabilityToggle } from "@/components/dispatch/AvailabilityToggle";
 import AvailabilityQuickSet from "@/components/capture/AvailabilityQuickSet";
 import { TrustScoreBadge } from "@/components/trust/TrustScoreBadge";
 import { CheckCircle, AlertCircle, Clock, TrendingUp, DollarSign, Briefcase, User, ChevronRight } from "lucide-react";
@@ -282,7 +282,12 @@ export function OperatorDashboardClient({
       </div>
 
       {/* ── Availability ── */}
-      <AvailabilityWidget className="mb-2" />
+      {operatorId && (
+        <AvailabilityToggle 
+          operatorId={operatorId} 
+          initialStatus={operatorProfile?.is_active ? 'online' : 'offline'} 
+        />
+      )}
 
       {/* ── One-Tap Availability Broadcast ── */}
       {/* This directly writes to availability_broadcasts → appears in /available-now broker feed */}

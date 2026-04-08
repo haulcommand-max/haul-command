@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { searchOperators } from '@/lib/typesense/sync';
 
 /**
  * GET /api/directory/search
  *
- * Unified search across BOTH:
- *   1. hc_global_operators (legacy operators)
- *   2. hc_places (23,281+ claimable service businesses)
+ * Unified search now backed by Typesense for blazing fast retrieval,
+ * gracefully falling back to Supabase if the index is unreachable.
  *
  * Full-text + column search with pagination.
  */
@@ -35,7 +35,64 @@ export async function GET(req: NextRequest) {
     const isCensored = !isAuthenticated;
 
     // ═════════════════════════════════════════
-    // QUERY 1: hc_places (23,281+ businesses)
+    // TYPESENSE FAST-PATH EXECUTION
+    // ═════════════════════════════════════════
+    if (process.env.NEXT_PUBLIC_FEATURE_TYPESENSE === 'true' || process.env.FEATURE_TYPESENSE === 'true') {
+      try {
+        const tsRes = await searchOperators(q, {
+          country: country || undefined,
+          state: state || undefined,
+          category: category || undefined,
+          page,
+          perPage: limit
+        });
+
+        if (tsRes && tsRes.hits && tsRes.hits.length > 0) {
+          const operators = tsRes.hits.map((hit: any, index: number) => {
+            const doc = hit.document;
+            return {
+              id: doc.id,
+              slug: doc.id, // Fallback if slug isn't present
+              name: doc.company_name || doc.display_name || 'Operator',
+              city: doc.city,
+              state: doc.state || doc.state_province,
+              location: `${doc.city || ''}, ${doc.state || doc.state_province || ''}`,
+              region_code: doc.state || doc.state_province,
+              country_code: doc.country || doc.country_code,
+              services: doc.service_categories || [],
+              category: (doc.service_categories && doc.service_categories[0]) || 'heavy_haul',
+              is_claimed: doc.is_claimed,
+              rating: doc.reputation_score ? (doc.reputation_score / 20) : null,
+              review_count: 0,
+              rank_score: doc.reputation_score || doc.trust_score || 50,
+              score: doc.reputation_score || doc.trust_score || 50,
+              is_featured: (doc.reputation_score || doc.trust_score) > 80,
+              profile_completeness: doc.completion_pct || 40,
+              phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (doc.phone_e164 || ''),
+              source: 'typesense',
+            };
+          });
+
+          return NextResponse.json({
+            operators,
+            censored: isCensored,
+            total: tsRes.found,
+            page: tsRes.page,
+            limit,
+            total_pages: Math.ceil(tsRes.found / limit),
+            has_more: (page * limit) < tsRes.found,
+            sources: { typesense: tsRes.found },
+          }, {
+            headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },
+          });
+        }
+      } catch (tsErr) {
+        console.error('[Typesense] Fast-path failed, falling back to Supabase:', tsErr);
+      }
+    }
+
+    // ═════════════════════════════════════════
+    // FALLBACK 1: hc_places (23,281+ businesses)
     // ═════════════════════════════════════════
     let hcQuery = supabase
       .from('hc_places')

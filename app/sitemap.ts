@@ -1,186 +1,130 @@
-// app/sitemap.ts — Next.js dynamic sitemap
-// Serves all published URLs from hc_sitemap_urls to Google/Bing/AI crawlers
-// Next.js calls this automatically at /sitemap.xml
 import { MetadataRoute } from 'next';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
-export const revalidate = 3600; // regenerate every hour
+/**
+ * app/sitemap.ts
+ * Haul Command — Dynamic Sitemap with <image:image> tags
+ *
+ * Covers:
+ *   1. Static high-priority pages
+ *   2. Operator profiles with operator vehicle images
+ *   3. Corridor pages
+ *   4. Regulation pages
+ *   5. Load type hubs
+ *   6. Compare pages
+ *   7. Glossary
+ *
+ * Next.js sitemap() supports images via the `images` field on each URL.
+ * Google Image Search reads image:image tags for ranking.
+ */
 
-const BASE = 'https://www.haulcommand.com';
+const BASE = 'https://haulcommand.com';
+const NOW = new Date().toISOString();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  try {
-    const supabase = getSupabaseAdmin();
+  const supabase = await createClient();
 
-    // ── 1. Pull all registered URLs from hc_sitemap_urls ──
-    const { data: dbUrls } = await supabase
-      .from('hc_sitemap_urls')
-      .select('url, lastmod, priority, changefreq')
-      .order('priority', { ascending: false })
-      .limit(48000); // reserve 2k slots for dynamic pages below
+  // ── Static pages ──────────────────────────────────────
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: BASE, lastModified: NOW, changeFrequency: 'daily', priority: 1.0 },
+    { url: `${BASE}/directory`, lastModified: NOW, changeFrequency: 'hourly', priority: 0.95 },
+    { url: `${BASE}/loads`, lastModified: NOW, changeFrequency: 'daily', priority: 0.90 },
+    { url: `${BASE}/rates/corridors`, lastModified: NOW, changeFrequency: 'daily', priority: 0.90 },
+    { url: `${BASE}/regulations`, lastModified: NOW, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${BASE}/training`, lastModified: NOW, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${BASE}/glossary`, lastModified: NOW, changeFrequency: 'weekly', priority: 0.80 },
+    { url: `${BASE}/tools/permit-research`, lastModified: NOW, changeFrequency: 'weekly', priority: 0.80 },
+    { url: `${BASE}/tools/route-planner`, lastModified: NOW, changeFrequency: 'weekly', priority: 0.80 },
+    { url: `${BASE}/claim`, lastModified: NOW, changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${BASE}/partner/apply`, lastModified: NOW, changeFrequency: 'monthly', priority: 0.70 },
+    { url: `${BASE}/compare/us-pilot-cars-vs-haul-command`, lastModified: NOW, changeFrequency: 'monthly', priority: 0.70 },
+    { url: `${BASE}/compare/oversized-io-vs-haul-command`, lastModified: NOW, changeFrequency: 'monthly', priority: 0.70 },
+    { url: `${BASE}/compare/that-trucking-vs-haul-command`, lastModified: NOW, changeFrequency: 'monthly', priority: 0.70 },
+  ];
 
-    type SitemapEntry = MetadataRoute.Sitemap[0];
+  // ── Load type hubs ────────────────────────────────────
+  const loadTypes = ['wind-energy', 'transformers', 'mining-equipment', 'aerospace', 'bridge-beams', 'modular-homes'];
+  const loadTypePages: MetadataRoute.Sitemap = loadTypes.map((t) => ({
+    url: `${BASE}/loads/${t}`,
+    lastModified: NOW,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
+  }));
 
-    const registeredUrls: SitemapEntry[] = (dbUrls ?? []).map(u => ({
-      url: u.url,
-      lastModified: u.lastmod ? new Date(u.lastmod) : new Date(),
-      changeFrequency: (u.changefreq as SitemapEntry['changeFrequency']) ?? 'weekly',
-      priority: u.priority ?? 0.5,
-    }));
+  // ── Operator profiles with images ────────────────────
+  const { data: operators } = await supabase
+    .from('operator_profiles')
+    .select('id, updated_at, slug, primary_photo_url, display_name, city_name, region_code')
+    .eq('visibility_status', 'public')
+    .not('slug', 'is', null)
+    .order('updated_at', { ascending: false })
+    .limit(5000);
 
-    // ── 2. Corridor slug pages (new Corridor OS — not yet in hc_sitemap_urls) ──
-    const { data: corridors } = await supabase
-      .from('hc_corridors')
-      .select('slug, updated_at')
-      .eq('is_active', true)
-      .limit(500);
+  const operatorPages: MetadataRoute.Sitemap = (operators ?? []).map((op: any) => ({
+    url: `${BASE}/directory/operator/${op.slug ?? op.id}`,
+    lastModified: op.updated_at ?? NOW,
+    changeFrequency: 'weekly' as const,
+    priority: 0.75,
+    ...(op.primary_photo_url
+      ? {
+          images: [
+            {
+              url: op.primary_photo_url,
+              title: `${op.display_name ?? 'Pilot car operator'} — ${[op.city_name, op.region_code].filter(Boolean).join(', ')}`,
+              caption: `Verified pilot car operator serving ${[op.city_name, op.region_code].filter(Boolean).join(', ')}`,
+            },
+          ],
+        }
+      : {}),
+  }));
 
-    const corridorUrls: SitemapEntry[] = (corridors ?? []).map(c => ({
-      url: `${BASE}/corridors/${c.slug}`,
-      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.85,
-    }));
+  // ── Corridor pages ────────────────────────────────────
+  const { data: corridors } = await supabase
+    .from('hc_corridors')
+    .select('id, slug, updated_at, origin, destination')
+    .not('slug', 'is', null)
+    .limit(1000);
 
-    // ── 3. Coming-soon / waitlist pages for dormant markets ──
-    const { data: dormantCountries } = await supabase
-      .from('hc_country_readiness')
-      .select('country_code, updated_at')
-      .in('market_mode', ['dormant'])
-      .limit(200);
+  const corridorPages: MetadataRoute.Sitemap = (corridors ?? []).map((c: any) => ({
+    url: `${BASE}/corridors/${c.slug ?? c.id}`,
+    lastModified: c.updated_at ?? NOW,
+    changeFrequency: 'weekly' as const,
+    priority: 0.80,
+  }));
 
-    const comingSoonUrls: SitemapEntry[] = (dormantCountries ?? []).map(c => ({
-      url: `${BASE}/${c.country_code.toLowerCase()}/coming-soon`,
-      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.4,
-    }));
+  // ── Regulation pages ─────────────────────────────────
+  const { data: regulations } = await supabase
+    .from('hc_regulations')
+    .select('jurisdiction_code, topic, updated_at')
+    .limit(500);
 
-    // ── 4. Active country hub pages ──
-    const { data: activeCountries } = await supabase
-      .from('hc_country_readiness')
-      .select('country_code, updated_at')
-      .in('market_mode', ['active', 'seeded'])
-      .limit(100);
+  const regulationPages: MetadataRoute.Sitemap = (regulations ?? []).map((r: any) => ({
+    url: `${BASE}/regulations/${r.jurisdiction_code?.toLowerCase().replace(':', '/')}/${r.topic}`,
+    lastModified: r.updated_at ?? NOW,
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }));
 
-    const countryUrls: SitemapEntry[] = (activeCountries ?? []).map(c => ({
-      url: `${BASE}/${c.country_code.toLowerCase()}`,
-      lastModified: c.updated_at ? new Date(c.updated_at) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }));
+  // ── Glossary terms ────────────────────────────────────
+  const { data: glossaryTerms } = await supabase
+    .from('hc_glossary')
+    .select('slug, updated_at')
+    .not('slug', 'is', null)
+    .limit(300);
 
-    // ── 5. Report card pages for claimed/verified operators ──
-    const { data: claimedOps } = await supabase
-      .from('hc_global_operators')
-      .select('slug, id, updated_at')
-      .eq('is_claimed', true)
-      .not('slug', 'is', null)
-      .limit(500);
+  const glossaryPages: MetadataRoute.Sitemap = (glossaryTerms ?? []).map((g: any) => ({
+    url: `${BASE}/glossary/${g.slug}`,
+    lastModified: g.updated_at ?? NOW,
+    changeFrequency: 'monthly' as const,
+    priority: 0.65,
+  }));
 
-    const reportCardUrls: SitemapEntry[] = (claimedOps ?? []).map(op => ({
-      url: `${BASE}/directory/profile/${op.slug || op.id}/report-card`,
-      lastModified: op.updated_at ? new Date(op.updated_at) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    }));
-
-    // Profile pages for all operators with slugs (broader than report cards)
-    const profileUrls: SitemapEntry[] = (claimedOps ?? []).map(op => ({
-      url: `${BASE}/directory/profile/${op.slug || op.id}`,
-      lastModified: op.updated_at ? new Date(op.updated_at) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.75,
-    }));
-
-    // ── Combine and deduplicate by URL ──
-    const allEntries = [
-      ...registeredUrls,
-      ...corridorUrls,
-      ...comingSoonUrls,
-      ...countryUrls,
-      ...reportCardUrls,
-      ...profileUrls,
-    ];
-
-    const seen = new Set<string>();
-    const deduped = allEntries.filter(e => {
-      if (seen.has(e.url)) return false;
-      seen.add(e.url);
-      return true;
-    });
-
-    // If no DB entries at all, return static fallback
-    if (deduped.length === 0) return getStaticFallback();
-
-    return deduped;
-
-  } catch {
-    return getStaticFallback();
-  }
-}
-
-function getStaticFallback(): MetadataRoute.Sitemap {
   return [
-    { url: BASE, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
-    { url: `${BASE}/directory`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/tools`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE}/tools/permit-checker/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE}/tools/escort-rules/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE}/escort-requirements`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE}/directory/us`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/directory/ca`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/directory/au`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/directory/gb`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/glossary`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/corridors`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
-
-    // Broker + operator engagement surfaces (high search-volume intent pages)
-    { url: `${BASE}/repositioning`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
-    { url: `${BASE}/available-now`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
-    { url: `${BASE}/leaderboards`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: `${BASE}/load-board`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
-    { url: `${BASE}/claim`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE}/dashboard/broker`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.5 },
-    { url: `${BASE}/roles/escort-provider`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE}/roles/pilot-car-operator`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE}/roles/heavy-haul-broker`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-
-    // US state market pages
-    ...['tx','ca','fl','il','oh','pa','ny','ga','nc','az','wa','co','mn','mi','tn','nv','or','mo','ok','al','la','sc','ky','ut','ia','ar','ms','ks','ne','id','nm','sd','nd','mt','wy','wv','vt','nh','me','ri','ct','de','md','va','in','wi','hi','ak'].map(state => ({
-      url: `${BASE}/market/${state}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.85,
-    })),
-
-    // Corridor slug pages (static sample — 80 seeded US corridors)
-    ...['houston-tx-to-beaumont-tx','houston-tx-to-baton-rouge-la','dallas-tx-to-oklahoma-city-ok',
-        'los-angeles-ca-to-phoenix-az','chicago-il-to-detroit-mi','atlanta-ga-to-charlotte-nc',
-        'miami-fl-to-jacksonville-fl','denver-co-to-salt-lake-city-ut','seattle-wa-to-portland-or',
-        'kansas-city-mo-to-st-louis-mo'].map(slug => ({
-      url: `${BASE}/corridors/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.85,
-    })),
-
-    // Dormant market coming-soon pages (slate/copper tier sample)
-    ...['pl','cz','sk','hu','si','ee','lv','lt','hr','ro','bg','gr','tr','kw','om','bh',
-        'sg','my','jp','kr','cl','ar','co','pe','vn','ph'].map(cc => ({
-      url: `${BASE}/${cc}/coming-soon`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.4,
-    })),
-
-    // Top country regulation pages
-    ...['us','ca','au','gb','de','nl','nz','za','mx','br','sg','ae','no','se','fr'].map(country => ({
-      url: `${BASE}/regulations/${country}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.75,
-    })),
+    ...staticPages,
+    ...loadTypePages,
+    ...operatorPages,
+    ...corridorPages,
+    ...regulationPages,
+    ...glossaryPages,
   ];
 }

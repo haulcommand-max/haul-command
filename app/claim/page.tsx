@@ -28,6 +28,10 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
 
   const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Claim Your Haul Command Profile', description:'Verify your identity and claim your listing on Haul Command.' }
 
+  // A/B Split Test: 'Claim Your Profile' vs 'Get Verified'
+  const isGetVerifiedVariation = Math.random() > 0.5;
+  const headingText = isGetVerifiedVariation ? 'Get Verified' : 'Claim Your Profile';
+
   return (
     <>
       <JsonLd data={schema}/>
@@ -36,7 +40,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
 
           {/* HEADER */}
           <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">HAUL COMMAND DIRECTORY</p>
-          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-3">Claim Your Profile</h1>
+          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-3">{headingText}</h1>
           <p className="text-sm text-[#8a9ab0] mb-8 leading-relaxed">
             Your company may already be listed. Claiming takes 2 minutes and immediately boosts your trust score, ranking, and broker visibility.
           </p>

@@ -195,7 +195,7 @@ const COUNTRY_TIERS = [
 ];
 
 /* ── Structured Data ────────────────────────────────────────────── */
-function GlossaryJsonLd({ termCount }: { termCount: number }) {
+function GlossaryJsonLd({ termCount, terms }: { termCount: number, terms: any[] }) {
     const jsonLd = {
         '@context': 'https://schema.org',
         '@type': 'DefinedTermSet',
@@ -208,6 +208,12 @@ function GlossaryJsonLd({ termCount }: { termCount: number }) {
             url: 'https://www.haulcommand.com',
         },
         inLanguage: 'en',
+        hasDefinedTerm: terms.slice(0, 50).map((t) => ({
+            '@type': 'DefinedTerm',
+            name: t.term,
+            description: t.short_definition || '',
+            url: `https://www.haulcommand.com/glossary/${t.slug}`
+        }))
     };
     return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />;
 }
@@ -236,7 +242,7 @@ export default async function GlossaryHubPage() {
 
     return (
         <div className="min-h-[100dvh] bg-[#0B0B0C] text-white">
-            <GlossaryJsonLd termCount={totalTerms} />
+            <GlossaryJsonLd termCount={totalTerms} terms={terms || []} />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24">
 

@@ -67,38 +67,63 @@ export function VideoPlayer({ lessonId, videoUrl, onProgress }: VideoPlayerProps
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
-  // If no video URL, show placeholder with proper messaging
+  // If no video URL, show a high-end Masterclass-style fallback with geometric placeholder
   if (!videoUrl) {
     return (
       <div style={{
-        background: 'linear-gradient(160deg, #111120 0%, #0c0c18 100%)',
-        border: '1px solid rgba(245,166,35,0.15)',
-        borderRadius: 16,
+        position: 'relative',
+        background: 'linear-gradient(rgba(5,5,8,0.7), rgba(17,17,22,0.9)), url(/training-video-placeholder.png) center/cover no-repeat',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 20,
         aspectRatio: '16/9',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 12,
-        color: '#6a6a7a',
-        fontSize: 15,
+        gap: 16,
+        color: '#8a8a9e',
+        fontSize: 16,
         textAlign: 'center',
         padding: 32,
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
       }}>
-        <div style={{ fontSize: 40 }}>🎬</div>
-        <div style={{ fontWeight: 700, color: '#e8e8e8' }}>Video Coming Soon</div>
-        <div style={{ fontSize: 13, lineHeight: 1.5, maxWidth: 300 }}>
-          This video lesson is in production. Read the text content below to complete this lesson.
+        {/* Abstract background grid */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none', backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        
+        {/* Glowing orb */}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%', height: '60%', background: 'radial-gradient(circle, rgba(212,168,68,0.08) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
+
+        <div style={{
+          width: 80, height: 80, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(10px)', marginBottom: 8, zIndex: 1
+        }}>
+          <span style={{ fontSize: 32, opacity: 0.7 }}>🎬</span>
         </div>
+
+        <div style={{ zIndex: 1 }}>
+          <h3 style={{ margin: '0 0 8px', fontSize: 24, fontWeight: 800, color: '#f9fafb', letterSpacing: '-0.02em' }}>
+            Production Pending
+          </h3>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, maxWidth: 360, color: '#9ca3af' }}>
+            This training video is currently being processed. You can bypass the video and read the exact transcript and instructions below.
+          </p>
+        </div>
+
         <button aria-label="Interactive Button"
           onClick={() => onProgress?.(100)}
           style={{
-            marginTop: 8, padding: '10px 20px', borderRadius: 8,
-            background: 'rgba(245,166,35,0.15)', border: '1px solid rgba(245,166,35,0.3)',
-            color: '#F5A623', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+            zIndex: 1, marginTop: 16, padding: '12px 28px', borderRadius: 12,
+            background: 'rgba(212,168,68,0.1)', border: '1px solid rgba(212,168,68,0.3)',
+            color: '#D4A844', fontSize: 13, fontWeight: 800, cursor: 'pointer',
+            transition: 'all 0.2s ease', letterSpacing: '0.04em', textTransform: 'uppercase'
           }}
+          onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(212,168,68,0.2)'; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(212,168,68,0.1)'; }}
         >
-          Mark as Watched →
+          Skip Video & Mark Read
         </button>
       </div>
     );

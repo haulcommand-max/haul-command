@@ -10,6 +10,7 @@ import { EmptyMarketState } from '@/components/directory/EmptyMarketState';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
 import { ClaimListingCTA } from '@/components/monetization/ClaimListingCTA';
 import { FreemiumPressureWidgetWithUser } from '@/components/monetization/FreemiumPressureWidgetWithUser';
+import { NoDeadEndBlock, DIRECTORY_NEXT_MOVES, MARKET_NEXT_MOVES } from '@/components/ui/NoDeadEndBlock';
 
 interface Props {
   params: Promise<{ country: string }>;
@@ -390,6 +391,14 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
           </div>
         </div>
       </div>
+      
+      {/* No Dead Ends Block */}
+      <section className="border-t border-white/5" style={{ background: 'rgba(255,255,255,0.01)' }}>
+          <NoDeadEndBlock 
+            moves={stateFilter ? MARKET_NEXT_MOVES('this state', stateFilter) : DIRECTORY_NEXT_MOVES} 
+            heading={`Explore More in ${stateFilter ? stateFilter : countryName}`}
+          />
+      </section>
     </div>
   );
 }

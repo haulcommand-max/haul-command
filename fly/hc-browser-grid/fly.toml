@@ -1,0 +1,31 @@
+# ═══ HAUL COMMAND — Browser Grid Swarm ═══
+# Architecture: Ephemeral Fly Machines (Scale-to-Zero)
+# Usage: Distributed scraping, permit portal navigation, and proxy-busting.
+
+app = "hc-browser-grid"
+primary_region = "iad" # Can deploy replicas to 'syd', 'ams', 'fra' using fly scale
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PLAYWRIGHT_BROWSERS_PATH = "/ms-playwright"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true   # CRITICAL: This makes it cost $0 when idle!
+  auto_start_machines = true  # Boots in ~300ms when an HTTP request hits
+  min_machines_running = 0    # Let it truly scale to 0
+  processes = ["app"]
+
+[http_service.concurrency]
+  type = "requests"
+  hard_limit = 10     # Max requests per machine before Fly spins up another one
+  soft_limit = 5      # Starts scaling a new machine when we hit this
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1024mb"   # Headless Chrome needs at least 1GB
+  cpus = 1

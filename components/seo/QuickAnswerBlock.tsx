@@ -1,147 +1,190 @@
-"use client";
+/**
+ * components/seo/QuickAnswerBlock.tsx
+ * Machine-readable "Quick Answer" block for AI search visibility.
+ *
+ * Renders:
+ *  - Visible summary block for users
+ *  - schema.org DefinedTerm or speakable JSON-LD
+ *  - Answer Engine / LLM optimized structured text
+ *
+ * Usage:
+ *   <QuickAnswerBlock
+ *     question="What is a pilot car?"
+ *     answer="A pilot car, also called an escort vehicle, leads or follows an oversize load..."
+ *     source="Haul Command Glossary"
+ *     confidence="verified_current"
+ *     lastUpdated="2026-04"
+ *     nextStep={{ label: 'Find pilot cars near you', href: '/directory' }}
+ *   />
+ */
 
-import React from 'react';
+import Link from 'next/link';
 
-interface QuickAnswerBlockProps {
-    question: string;
-    answerHtml: string;
-    source?: string;
-    sourceUrl?: string;
-    confidenceLabel?: 'verified_current' | 'verified_but_review_due' | 'partially_verified' | 'seeded_needs_human_review' | 'historical_reference_only';
-    lastReviewedAt?: string;
+type ConfidenceState =
+  | 'verified_current'
+  | 'verified_but_review_due'
+  | 'partially_verified'
+  | 'seeded_needs_review'
+  | 'historical_reference_only';
+
+const CONFIDENCE_LABELS: Record<ConfidenceState, { label: string; color: string }> = {
+  verified_current: { label: 'Verified', color: 'text-green-400' },
+  verified_but_review_due: { label: 'Verified · Review Due', color: 'text-amber-400' },
+  partially_verified: { label: 'Partially Verified', color: 'text-amber-400' },
+  seeded_needs_review: { label: 'Draft · Needs Review', color: 'text-gray-400' },
+  historical_reference_only: { label: 'Historical Reference', color: 'text-gray-500' },
+};
+
+interface NextStep {
+  label: string;
+  href: string;
 }
 
-export function QuickAnswerBlock({
-    question,
-    answerHtml,
-    source,
-    sourceUrl,
-    confidenceLabel = 'partially_verified',
-    lastReviewedAt
-}: QuickAnswerBlockProps) {
-    const confidenceConfig = {
-        verified_current: { color: '#22C55E', text: 'Verified Current' },
-        verified_but_review_due: { color: '#F59E0B', text: 'Review Due' },
-        partially_verified: { color: '#3B82F6', text: 'Partially Verified' },
-        seeded_needs_human_review: { color: '#6B7280', text: 'AI Seeded' },
-        historical_reference_only: { color: '#EF4444', text: 'Historical Only' }
-    };
+interface QuickAnswerProps {
+  question: string;
+  answer: string;
+  /** Optional short answer (1–2 sentences) for AI snippet extraction */
+  shortAnswer?: string;
+  source?: string;
+  confidence?: ConfidenceState;
+  lastUpdated?: string;
+  nextStep?: NextStep;
+  /** For glossary DefinedTerm schema */
+  termKey?: string;
+  /** Additional FAQs to include in JSON-LD */
+  relatedFaqs?: { question: string; answer: string }[];
+  className?: string;
+}
 
-    const config = confidenceConfig[confidenceLabel];
+export default function QuickAnswerBlock({
+  question,
+  answer,
+  shortAnswer,
+  source,
+  confidence = 'seeded_needs_review',
+  lastUpdated,
+  nextStep,
+  termKey,
+  relatedFaqs,
+  className,
+}: QuickAnswerProps) {
+  const confidenceInfo = CONFIDENCE_LABELS[confidence];
 
-    return (
-        <div style={{
-            background: '#111114',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 16,
-            padding: 24,
-            marginBottom: 24,
-            position: 'relative',
-            overflow: 'hidden'
-        }}>
-            {/* Top gradient accent */}
-            <div style={{
-                position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                background: 'linear-gradient(90deg, #C6923A, #E4B872, transparent)',
-                opacity: 0.8
-            }} />
+  // Build JSON-LD (speakable + FAQ)
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: shortAnswer ?? answer,
+        },
+      },
+      ...(relatedFaqs ?? []).map(({ question: q, answer: a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    ],
+  };
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                <h2 style={{
-                    fontSize: 20,
-                    fontWeight: 800,
-                    color: '#F9FAFB',
-                    margin: 0,
-                    lineHeight: 1.3
-                }}>
-                    A: {question}
-                </h2>
-                
-                <div style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    padding: '4px 8px',
-                    borderRadius: 999,
-                    background: `${config.color}15`,
-                    color: config.color,
-                    border: `1px solid ${config.color}30`,
-                    whiteSpace: 'nowrap',
-                    marginLeft: 16
-                }}>
-                    {config.text}
-                </div>
-            </div>
+  // DefinedTerm for glossary pages
+  const definedTermJsonLd = termKey
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'DefinedTerm',
+        name: question,
+        description: shortAnswer ?? answer,
+        url: `https://haulcommand.com/glossary/${termKey}`,
+        inDefinedTermSet: {
+          '@type': 'DefinedTermSet',
+          name: 'Haul Command Heavy Haul Glossary',
+          url: 'https://haulcommand.com/glossary',
+        },
+      }
+    : null;
 
-            <div 
-                style={{
-                    fontSize: 15,
-                    color: '#E5E7EB',
-                    lineHeight: 1.6,
-                    marginBottom: 20
-                }}
-                dangerouslySetInnerHTML={{ __html: answerHtml }}
-            />
+  return (
+    <>
+      {/* Structured data injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      {definedTermJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermJsonLd) }}
+        />
+      )}
 
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 16,
-                fontSize: 12,
-                color: '#6B7280',
-                borderTop: '1px solid rgba(255,255,255,0.05)',
-                paddingTop: 16
-            }}>
-                {source && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span>Source:</span>
-                        {sourceUrl ? (
-                            <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{
-                                color: '#C6923A',
-                                textDecoration: 'none',
-                                fontWeight: 500
-                            }}>
-                                {source} ↗
-                            </a>
-                        ) : (
-                            <span style={{ color: '#9CA3AF' }}>{source}</span>
-                        )}
-                    </div>
-                )}
-                
-                {lastReviewedAt && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#4B5563' }} />
-                        <span>Last reviewed: {new Date(lastReviewedAt).toLocaleDateString()}</span>
-                    </div>
-                )}
-            </div>
-            
-            {/* Quick action for crowdsourcing corrections */}
-            <div style={{
-                position: 'absolute',
-                bottom: 16,
-                right: 24,
-            }}>
-                <button style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#6B7280',
-                    fontSize: 11,
-                    cursor: 'pointer',
-                    textDecoration: 'underline',
-                    padding: 0
-                }}
-                onClick={() => {
-                    // This would trigger a report modal
-                    console.log('Report incorrect data');
-                }}>
-                    Report incorrect info
-                </button>
-            </div>
+      {/* Visual quick answer block */}
+      <div
+        className={`rounded-xl border border-amber-500/20 bg-amber-500/5 p-5 ${className ?? ''}`}
+        data-qa-block="true"
+        itemScope
+        itemType="https://schema.org/FAQPage"
+      >
+        {/* Header strip */}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">
+            Quick Answer
+          </span>
+          {confidence && (
+            <span className={`text-xs ${confidenceInfo.color} ml-auto`}>
+              {confidenceInfo.label}
+            </span>
+          )}
         </div>
-    );
-}
 
-export default QuickAnswerBlock;
+        {/* Question */}
+        <p
+          className="text-sm font-semibold text-white mb-2"
+          itemProp="mainEntity"
+          itemScope
+          itemType="https://schema.org/Question"
+        >
+          <span itemProp="name">{question}</span>
+        </p>
+
+        {/* Answer */}
+        <div
+          itemProp="acceptedAnswer"
+          itemScope
+          itemType="https://schema.org/Answer"
+        >
+          {shortAnswer && (
+            <p className="text-base text-white font-medium mb-1" itemProp="text">
+              {shortAnswer}
+            </p>
+          )}
+          <p className="text-sm text-gray-300 leading-relaxed">
+            {answer}
+          </p>
+        </div>
+
+        {/* Meta: source + freshness */}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
+          {source && <span>Source: {source}</span>}
+          {lastUpdated && <span>Updated: {lastUpdated}</span>}
+        </div>
+
+        {/* Next step CTA */}
+        {nextStep && (
+          <div className="mt-4 pt-3 border-t border-amber-500/10">
+            <Link
+              href={nextStep.href}
+              className="inline-flex items-center gap-1.5 text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors"
+            >
+              {nextStep.label}
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}

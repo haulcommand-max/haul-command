@@ -59,8 +59,24 @@ export default function SaveButton({
 
   const handleSave = useCallback(async () => {
     if (saved) {
-      // TODO: unsave logic
-      setSaved(false);
+      setSaving(true);
+      try {
+        const res = await fetch(`/api/capture/save-intent?entityType=${entityType}&entityId=${entityId}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) {
+          setSaved(false);
+          setShowAlerts(false);
+          track('entity_unsaved' as any, {
+            entity_type: entityType,
+            entity_id: entityId,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to unsave:', err);
+      } finally {
+        setSaving(false);
+      }
       return;
     }
 

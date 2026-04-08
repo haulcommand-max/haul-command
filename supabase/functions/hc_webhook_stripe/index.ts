@@ -6,6 +6,57 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, stripe-signature',
 };
 
+// ── Stripe HMAC Signature Verification (v1 scheme) ─────────────────────────
+// Stripe signs webhooks using HMAC-SHA256 with the webhook secret.
+// The signed payload format is: `{timestamp}.{rawBody}`
+// The signature header format is: `t={timestamp},v1={signature}`
+async function verifyStripeSignature(
+    rawBody: string,
+    signatureHeader: string,
+    secret: string,
+    toleranceSeconds = 300,
+): Promise<boolean> {
+    const parts = signatureHeader.split(',');
+    const timestampPart = parts.find((p) => p.startsWith('t='));
+    const sigPart = parts.find((p) => p.startsWith('v1='));
+
+    if (!timestampPart || !sigPart) return false;
+
+    const timestamp = timestampPart.split('=')[1];
+    const receivedSig = sigPart.split('=')[1];
+
+    // Reject if timestamp is too old (replay protection)
+    const now = Math.floor(Date.now() / 1000);
+    if (Math.abs(now - parseInt(timestamp)) > toleranceSeconds) {
+        console.error('[Stripe Webhook] Timestamp outside tolerance window');
+        return false;
+    }
+
+    // Compute expected signature: HMAC-SHA256(secret, "{timestamp}.{rawBody}")
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(secret),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign'],
+    );
+
+    const signedPayload = `${timestamp}.${rawBody}`;
+    const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(signedPayload));
+    const expectedSig = Array.from(new Uint8Array(signatureBuffer))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+
+    // Timing-safe comparison
+    if (expectedSig.length !== receivedSig.length) return false;
+    let mismatch = 0;
+    for (let i = 0; i < expectedSig.length; i++) {
+        mismatch |= expectedSig.charCodeAt(i) ^ receivedSig.charCodeAt(i);
+    }
+    return mismatch === 0;
+}
+
 serve(async (req: Request) => {
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders });
@@ -18,11 +69,14 @@ serve(async (req: Request) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     try {
-        const body = await req.json();
+        // Read the raw body ONCE — needed for both JSON parsing and signature verification
+        const rawBody = await req.text();
+        const signatureHeader = req.headers.get('stripe-signature');
+        const body = JSON.parse(rawBody);
 
         // ==========================================
         // ACTION: Create Checkout Session
-        // Called from sponsor/checkout page
+        // Called from sponsor/checkout page (internal, no Stripe signature)
         // ==========================================
         if (body.action === 'create_checkout') {
             if (!stripeSecretKey) {
@@ -73,59 +127,103 @@ serve(async (req: Request) => {
         }
 
         // ==========================================
-        // ACTION: Stripe Webhook Event
-        // Called by Stripe webhook delivery
+        // STRIPE WEBHOOK EVENTS
+        // Called by Stripe webhook delivery — MUST validate signature
         // ==========================================
-        if (body.type === 'checkout.session.completed') {
-            const session = body.data?.object;
-            const orderId = session?.metadata?.order_id;
-            const productKey = session?.metadata?.product_key;
-            const geoKey = session?.metadata?.geo_key;
-
-            if (orderId) {
-                // Mark order as paid
-                await supabase
-                    .from('sponsorship_orders')
-                    .update({
-                        status: 'paid',
-                        stripe_payment_intent_id: session.payment_intent,
-                    })
-                    .eq('id', orderId);
-
-                // Get product for duration
-                const { data: product } = await supabase
-                    .from('sponsorship_products')
-                    .select('duration_days')
-                    .eq('product_key', productKey)
-                    .single();
-
-                const durationDays = product?.duration_days || 30;
-
-                // Create featured placement
-                await supabase
-                    .from('featured_placements')
-                    .insert({
-                        profile_id: session.client_reference_id || null,
-                        geo_key: geoKey,
-                        placement_type: productKey,
-                        starts_at: new Date().toISOString(),
-                        ends_at: new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString(),
-                    });
-
-                // Log monetization event
-                await supabase
-                    .from('monetization_events')
-                    .insert({
-                        event_type: 'sponsorship_purchase',
-                        amount: session.amount_total ? session.amount_total / 100 : 0,
-                        currency: session.currency || 'usd',
-                        metadata: { order_id: orderId, product_key: productKey, geo_key: geoKey },
-                    });
-
-                console.log(`[Stripe Webhook] Order ${orderId} paid. Featured placement created for ${geoKey}.`);
+        if (body.type && body.type.startsWith('checkout.')) {
+            // ── SIGNATURE VERIFICATION (mandatory for webhook events) ──
+            if (!signatureHeader || !stripeWebhookSecret) {
+                console.error('[Stripe Webhook] Missing signature header or webhook secret');
+                return new Response(JSON.stringify({ error: 'Missing signature' }), {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                    status: 401,
+                });
             }
 
-            return new Response(JSON.stringify({ received: true }), {
+            const isValid = await verifyStripeSignature(rawBody, signatureHeader, stripeWebhookSecret);
+            if (!isValid) {
+                console.error('[Stripe Webhook] INVALID SIGNATURE — request rejected');
+                return new Response(JSON.stringify({ error: 'Invalid signature' }), {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                    status: 401,
+                });
+            }
+
+            console.log('[Stripe Webhook] Signature verified ✓');
+
+            // ── Process checkout.session.completed ──
+            if (body.type === 'checkout.session.completed') {
+                const session = body.data?.object;
+                const orderId = session?.metadata?.order_id;
+                const productKey = session?.metadata?.product_key;
+                const geoKey = session?.metadata?.geo_key;
+
+                if (orderId) {
+                    // Mark order as paid (idempotent — only update if not already paid)
+                    const { data: order } = await supabase
+                        .from('sponsorship_orders')
+                        .select('status')
+                        .eq('id', orderId)
+                        .single();
+
+                    if (order?.status === 'paid') {
+                        console.log(`[Stripe Webhook] Order ${orderId} already processed — skipping (idempotent).`);
+                        return new Response(JSON.stringify({ received: true, skipped: true }), {
+                            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                            status: 200,
+                        });
+                    }
+
+                    // Mark order as paid
+                    await supabase
+                        .from('sponsorship_orders')
+                        .update({
+                            status: 'paid',
+                            stripe_payment_intent_id: session.payment_intent,
+                        })
+                        .eq('id', orderId);
+
+                    // Get product for duration
+                    const { data: product } = await supabase
+                        .from('sponsorship_products')
+                        .select('duration_days')
+                        .eq('product_key', productKey)
+                        .single();
+
+                    const durationDays = product?.duration_days || 30;
+
+                    // Create featured placement
+                    await supabase
+                        .from('featured_placements')
+                        .insert({
+                            profile_id: session.client_reference_id || null,
+                            geo_key: geoKey,
+                            placement_type: productKey,
+                            starts_at: new Date().toISOString(),
+                            ends_at: new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString(),
+                        });
+
+                    // Log monetization event
+                    await supabase
+                        .from('monetization_events')
+                        .insert({
+                            event_type: 'sponsorship_purchase',
+                            amount: session.amount_total ? session.amount_total / 100 : 0,
+                            currency: session.currency || 'usd',
+                            metadata: { order_id: orderId, product_key: productKey, geo_key: geoKey },
+                        });
+
+                    console.log(`[Stripe Webhook] Order ${orderId} paid. Featured placement created for ${geoKey}.`);
+                }
+
+                return new Response(JSON.stringify({ received: true }), {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                    status: 200,
+                });
+            }
+
+            // Acknowledge other checkout events we don't handle yet
+            return new Response(JSON.stringify({ received: true, unhandled_type: body.type }), {
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 status: 200,
             });

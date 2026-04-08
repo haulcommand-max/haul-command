@@ -47,8 +47,33 @@ function encodeGeohash(lat: number, lng: number, precision: number): string {
             bit = 0;
             ch = 0;
         }
-    }
+}
     return hash;
+}
+
+export function decodeGeohash(hash: string): { lat: number, lng: number, bbox: [number, number, number, number] } {
+    let latMin = -90, latMax = 90, lngMin = -180, lngMax = 180;
+    let isLng = true;
+    for (let i = 0; i < hash.length; i++) {
+        const ch = GEOHASH_BASE32.indexOf(hash[i]);
+        if (ch === -1) continue;
+        for (let bit = 4; bit >= 0; bit--) {
+            const isSet = (ch & (1 << bit)) !== 0;
+            if (isLng) {
+                const mid = (lngMin + lngMax) / 2;
+                if (isSet) lngMin = mid; else lngMax = mid;
+            } else {
+                const mid = (latMin + latMax) / 2;
+                if (isSet) latMin = mid; else latMax = mid;
+            }
+            isLng = !isLng;
+        }
+    }
+    return {
+        lat: (latMin + latMax) / 2,
+        lng: (lngMin + lngMax) / 2,
+        bbox: [lngMin, latMin, lngMax, latMax] // [minX, minY, maxX, maxY]
+    };
 }
 
 /**
@@ -171,10 +196,13 @@ export async function refreshAllCells(precision: number = 4): Promise<RefreshRes
     // ── Upsert cells ──
     let updated = 0;
     for (const cell of results) {
+        const decoded = decodeGeohash(cell.cell_id);
+
         const { error } = await supabase.from('coverage_cells').upsert({
             cell_id: cell.cell_id,
             geohash: cell.cell_id,
-            centroid_point: null, // Would compute from geohash centroid
+            centroid_point: `POINT(${decoded.lng} ${decoded.lat})`, // GeoJSON text or WKT
+            bounding_box: decoded.bbox, // Bounding box injected for MapLibre dynamic clusters
             updated_at: new Date().toISOString(),
             active_jobs_raw: cell.active_jobs_raw,
             active_operators_raw: cell.active_operators_raw,

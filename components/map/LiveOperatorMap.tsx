@@ -1,15 +1,20 @@
 'use client';
+
 // components/map/LiveOperatorMap.tsx
 // ═══════════════════════════════════════════════════════════════
-// HAUL COMMAND — Live Operator Map
+// HAUL COMMAND — Live Operator Map (100x Upgraded)
 // Shows real-time operator positions from both phone GPS and Motive.
 // Dot colors: green=moving, gold=stationary, grey=recently offline.
-// Filter toggle for GPS-only operators.
 // ═══════════════════════════════════════════════════════════════
 
-'use client';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { createClient } from '@supabase/supabase-js';
 
-import { useState, useEffect, useCallback } from 'react';
+const MAP_STYLE =
+  process.env.NEXT_PUBLIC_MAPLIBRE_STYLE ??
+  'https://demotiles.maplibre.org/style.json';
 
 interface OperatorPosition {
   operator_id: string;
@@ -29,6 +34,9 @@ export default function LiveOperatorMap() {
   const [showGPSOnly, setShowGPSOnly] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+
   const fetchPositions = useCallback(async () => {
     try {
       const res = await fetch('/api/location/live-positions');
@@ -42,25 +50,176 @@ export default function LiveOperatorMap() {
 
   useEffect(() => {
     fetchPositions();
-    const interval = setInterval(fetchPositions, 30000); // refresh every 30s
-    return () => clearInterval(interval);
   }, [fetchPositions]);
 
-  const filtered = showGPSOnly
-    ? positions.filter(p => p.source === 'phone_gps' || p.source === 'motive')
-    : positions;
+  // Initial Map Setup
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return;
+
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      style: MAP_STYLE,
+      center: [-95.7, 37.0],
+      zoom: 3.5,
+      pitch: 0,
+      bearing: 0,
+      attributionControl: false,
+    });
+
+    mapRef.current = map;
+
+    map.on('load', () => {
+      map.addSource('operators', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      // Operator Dots Layer
+      map.addLayer({
+        id: 'operator-dots',
+        type: 'circle',
+        source: 'operators',
+        paint: {
+          'circle-color': [
+            'match',
+            ['get', 'status_color'],
+            'green', '#22c55e',
+            'gold', '#eab308',
+            '#666666'
+          ],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 3, 10, 8],
+          'circle-stroke-width': 1.5,
+          'circle-stroke-color': '#0d1117',
+          'circle-opacity': 0.9,
+        },
+      });
+
+      // Operator Halo Layer (for moving targets)
+      map.addLayer({
+        id: 'operator-halo',
+        type: 'circle',
+        source: 'operators',
+        filter: ['==', ['get', 'status_color'], 'green'],
+        paint: {
+          'circle-color': '#22c55e',
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 6, 10, 20],
+          'circle-stroke-width': 0,
+          'circle-opacity': 0.2,
+        },
+      });
+
+      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+      
+      map.on('mouseenter', 'operator-dots', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const f = e.features?.[0];
+        if (!f) return;
+        const p = f.properties;
+        const name = p.operator_name || p.operator_id.slice(0, 8);
+        const speed = p.speed ? `${Math.round(p.speed)} mph` : 'Stationary';
+        
+        popup.setLngLat((f.geometry as any).coordinates)
+            .setHTML(`<div style="padding:4px;font-size:12px;background:#0d1117;color:#fff;">
+                <strong>${name}</strong><br/>
+                <span style="color:#8b949e;font-size:10px;">${speed} · ${p.source}</span>
+            </div>`)
+            .addTo(map);
+      });
+      map.on('mouseleave', 'operator-dots', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
+
+      // Initialize Supabase Realtime
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      // Listen to presence heartbeat changes
+      const channel = supabase.channel('operator-heartbeats')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'live_operator_heartbeats' }, (payload) => {
+          setPositions(prev => {
+            const newPos = payload.new as any;
+            const updated = prev.filter(p => p.operator_id !== newPos.operator_id);
+            updated.push({
+              operator_id: newPos.operator_id,
+              lat: newPos.lat,
+              lng: newPos.lng,
+              accuracy: newPos.accuracy || 10,
+              heading: newPos.heading || null,
+              speed: newPos.speed || 0,
+              source: newPos.source_system || 'phone_gps',
+              updated_at: newPos.captured_at || new Date().toISOString(),
+              operator_name: newPos.operator_id,
+            });
+            return updated;
+          });
+        })
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'live_operator_heartbeats' }, (payload) => {
+          setPositions(prev => {
+            const newPos = payload.new as any;
+            const updated = prev.filter(p => p.operator_id !== newPos.operator_id);
+            updated.push({
+              operator_id: newPos.operator_id,
+              lat: newPos.lat,
+              lng: newPos.lng,
+              accuracy: newPos.accuracy || 10,
+              heading: newPos.heading || null,
+              speed: newPos.speed || 0,
+              source: newPos.source_system || 'phone_gps',
+              updated_at: newPos.captured_at || new Date().toISOString(),
+              operator_name: newPos.operator_id,
+            });
+            return updated;
+          });
+        })
+        .subscribe();
+    });
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
+
+  const filtered = useMemo(() => {
+    return showGPSOnly
+      ? positions.filter(p => p.source === 'phone_gps' || p.source === 'motive')
+      : positions;
+  }, [positions, showGPSOnly]);
+
+  // Update map source when positions change
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    
+    const src = map.getSource('operators') as maplibregl.GeoJSONSource | undefined;
+    if (src) {
+      const now = Date.now();
+      const features = filtered.map(pos => {
+        const age = now - new Date(pos.updated_at).getTime();
+        const isRecent = age < 5 * 60 * 1000;
+        const isMoving = (pos.speed || 0) > 2;
+        let color = 'grey';
+        if (isRecent) color = isMoving ? 'green' : 'gold';
+
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [pos.lng, pos.lat] },
+          properties: {
+            ...pos,
+            status_color: color,
+          }
+        };
+      });
+      src.setData({ type: 'FeatureCollection', features: features as any });
+    }
+  }, [filtered]);
 
   const now = Date.now();
-
-  function getDotStyle(pos: OperatorPosition) {
-    const age = now - new Date(pos.updated_at).getTime();
-    const isRecent = age < 5 * 60 * 1000; // 5 minutes
-    const isMoving = (pos.speed || 0) > 2;
-
-    if (!isRecent) return { bg: '#666', border: '#444', opacity: 0.5 };
-    if (isMoving) return { bg: '#22c55e', border: '#16a34a', opacity: 1 };
-    return { bg: '#eab308', border: '#ca8a04', opacity: 0.85 };
-  }
 
   return (
     <div style={{
@@ -95,23 +254,13 @@ export default function LiveOperatorMap() {
             />
             🛰️ Live GPS Only
           </label>
-          <button aria-label="Interactive Button"
-            onClick={fetchPositions}
-            style={{
-              background: '#21262d', border: '1px solid #30363d',
-              borderRadius: 6, padding: '4px 10px', color: '#c9d1d9',
-              fontSize: 11, cursor: 'pointer',
-            }}
-          >
-            ↻ Refresh
-          </button>
         </div>
       </div>
 
       {/* Legend */}
       <div style={{
         display: 'flex', gap: 16, padding: '8px 16px',
-        borderBottom: '1px solid #161b22', fontSize: 11, color: '#8b949e',
+        borderBottom: '1px solid #21262d', fontSize: 11, color: '#8b949e',
       }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e' }} />
@@ -128,76 +277,27 @@ export default function LiveOperatorMap() {
       </div>
 
       {/* Map Container */}
-      <div style={{
-        height: 500,
-        background: '#0a0e14',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        {loading ? (
-          <div style={{ color: '#8b949e', fontSize: 14 }}>Loading map data...</div>
-        ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', color: '#8b949e' }}>
-            <div style={{ fontSize: 36, marginBottom: 8 }}>📡</div>
-            <div style={{ fontSize: 14 }}>No operators currently broadcasting</div>
-            <div style={{ fontSize: 12, marginTop: 4 }}>Operators appear when they toggle "Available"</div>
-          </div>
-        ) : (
-          <div id="hc-live-map" style={{ width: '100%', height: '100%', position: 'relative' }}>
-            {/* MapLibre GL JS would render here — displaying dots for now */}
-            {filtered.map(pos => {
-              const dot = getDotStyle(pos);
-              // Simple CSS positioning as fallback (real implementation uses MapLibre)
-              const x = ((pos.lng + 180) / 360) * 100;
-              const y = ((90 - pos.lat) / 180) * 100;
-              return (
-                <div
-                  key={pos.operator_id}
-                  style={{
-                    position: 'absolute',
-                    left: `${x}%`,
-                    top: `${y}%`,
-                    width: pos.accuracy < 50 ? 12 : 8,
-                    height: pos.accuracy < 50 ? 12 : 8,
-                    borderRadius: '50%',
-                    background: dot.bg,
-                    border: `2px solid ${dot.border}`,
-                    opacity: dot.opacity,
-                    cursor: 'pointer',
-                    transform: 'translate(-50%, -50%)',
-                    transition: 'all 0.5s ease',
-                    boxShadow: `0 0 6px ${dot.bg}40`,
-                  }}
-                  title={`${pos.operator_name || pos.operator_id.slice(0, 8)} — ${pos.speed ? `${Math.round(pos.speed)} mph` : 'Stationary'} — ${pos.source}`}
-                >
-                  {/* Direction arrow */}
-                  {pos.heading && pos.speed && pos.speed > 2 && (
-                    <div style={{
-                      position: 'absolute',
-                      top: -8,
-                      left: '50%',
-                      transform: `translateX(-50%) rotate(${pos.heading}deg)`,
-                      fontSize: 8,
-                      color: dot.bg,
-                    }}>
-                      ▲
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+      <div style={{ height: 500, position: 'relative' }}>
+        {loading && (
+          <div style={{
+            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            backgroundColor: 'rgba(13,17,23,0.8)', zIndex: 10, color: '#8b949e'
+          }}>
+            Loading map data...
           </div>
         )}
+        <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
       </div>
 
       {/* Operator List */}
       {filtered.length > 0 && (
         <div style={{ maxHeight: 200, overflowY: 'auto', borderTop: '1px solid #21262d' }}>
           {filtered.map(pos => {
-            const dot = getDotStyle(pos);
             const age = Math.round((now - new Date(pos.updated_at).getTime()) / 60000);
+            const isRecent = age < 5;
+            const isMoving = (pos.speed || 0) > 2;
+            const dotColor = isRecent ? (isMoving ? '#22c55e' : '#eab308') : '#666';
+
             return (
               <div
                 key={pos.operator_id}
@@ -208,10 +308,7 @@ export default function LiveOperatorMap() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{
-                    width: 8, height: 8, borderRadius: '50%',
-                    background: dot.bg, opacity: dot.opacity,
-                  }} />
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor }} />
                   <span style={{ color: '#c9d1d9' }}>
                     {pos.operator_name || pos.operator_id.slice(0, 12)}
                   </span>
@@ -225,7 +322,7 @@ export default function LiveOperatorMap() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: '#8b949e' }}>
                   <span>{pos.speed ? `${Math.round(pos.speed)} mph` : 'Stationary'}</span>
                   <span style={{ fontSize: 10 }}>{pos.source}</span>
-                  <span style={{ fontSize: 10 }}>{age}m ago</span>
+                  <span style={{ fontSize: 10 }}>{age < 1 ? '< 1m' : `${age}m`} ago</span>
                 </div>
               </div>
             );

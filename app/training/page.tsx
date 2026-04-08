@@ -31,12 +31,12 @@ export const MODULES = [
   {
     slot: 1,
     slug: 'pilot-car-fundamentals',
-    title: 'Pilot Car Fundamentals',
+    title: 'Pilot Car Fundamentals & Flagging Protocol',
     description:
-      'Safety basics, escort vehicle roles, required equipment, convoy flow, terminology, and the legal framework every escort operator must know before their first move.',
+      'Safety basics, escort vehicle roles, required equipment, MUTCD flagging procedures (stop/slow paddle & flag protocols), and the Class 2 High-Vis apparel framework every escort operator must know.',
     audience: 'New operators, career changers, new-to-US international operators',
-    duration: '35 min',
-    outcomes: ['Understand escort roles and responsibilities', 'Know required equipment by jurisdiction', 'Pass state knowledge checks'],
+    duration: '150 min',
+    outcomes: ['Execute MUTCD flagging protocols correctly', 'Identify Class 2 high-vis apparel requirements', 'Know required vehicle equipment by jurisdiction'],
     tier: 'HC Certified',
     isFree: true,
   },
@@ -47,7 +47,7 @@ export const MODULES = [
     description:
       'Heights, widths, vertical and horizontal clearance measurement, obstacle documentation, route planning workflows, and how to log and report route hazards.',
     audience: 'Operators pursuing route survey work, broker-side planners',
-    duration: '40 min',
+    duration: '150 min',
     outcomes: ['Conduct a legal route survey', 'Document clearance data accurately', 'Identify and report route hazards'],
     tier: 'HC Certified',
     isFree: false,
@@ -55,12 +55,12 @@ export const MODULES = [
   {
     slot: 3,
     slug: 'state-jurisdiction-compliance',
-    title: 'State & Jurisdiction Compliance',
+    title: 'Compliance, Maneuvering & Final Certification',
     description:
-      'Permit touchpoints, signage requirements, lighting rules, escort formation rules by state, common compliance triggers, and how to stay legal across state lines.',
+      'Permit touchpoints, signage rules, intersection maneuvering techniques, emergency breakdown spacing, and multi-state laws. Concludes with the mandatory 120-minute, 50-question Final Exam.',
     audience: 'All operators running permitted loads across state lines',
-    duration: '45 min',
-    outcomes: ['Identify escort requirements in any US state', 'Avoid common compliance failures', 'Navigate multi-state permit chains'],
+    duration: '180 min',
+    outcomes: ['Execute safe maneuvering & intersection control', 'Avoid common compliance failures', 'Pass the 50-question exam with an 80% minimum'],
     tier: 'HC Certified',
     isFree: false,
   },
@@ -71,7 +71,7 @@ export const MODULES = [
     description:
       'Radio discipline, position call conventions, emergency stop procedures, intersection management, lane coordination, and how to handle stoppages, breakdowns, and incidents.',
     audience: 'All operators; required for AV-Ready certification',
-    duration: '40 min',
+    duration: '120 min',
     outcomes: ['Run professional radio communication', 'Manage convoy incidents safely', 'Coordinate multi-vehicle escorts'],
     tier: 'AV-Ready',
     isFree: false,
@@ -83,7 +83,7 @@ export const MODULES = [
     description:
       'Dispatch handoff discipline, load documentation, ETA and status reporting expectations, carrier and broker communication norms, and how to handle load changes mid-route.',
     audience: 'Operators working with brokers and carriers; broker-side planners',
-    duration: '35 min',
+    duration: '90 min',
     outcomes: ['Work professionally with brokers and carriers', 'Handle dispatch changes mid-load', 'Document load execution correctly'],
     tier: 'AV-Ready',
     isFree: false,
@@ -91,12 +91,12 @@ export const MODULES = [
   {
     slot: 6,
     slug: 'specialized-vertical-operations',
-    title: 'Specialized Vertical Operations',
+    title: 'Specialized Vertical Operations (High Pole & Wind)',
     description:
-      'Wind energy escort specifics, superload planning, oilfield escort norms, port and TWIC-adjacent procedures, military and aerospace load handling, and renewable energy project cargo.',
+      'High Pole operations and mounting, Wind Industry (WITPAC) escort standards, superload planning, oilfield norms, port/TWIC procedures, and aerospace load handling.',
     audience: 'Operators pursuing specialist and premium corridor work',
-    duration: '50 min',
-    outcomes: ['Qualify for wind, superload, and oilfield work', 'Understand port and TWIC procedures', 'Operate in military and aerospace contexts'],
+    duration: '180 min',
+    outcomes: ['Execute professional High Pole measurements', 'Qualify for wind and superload dispatch', 'Operate in military and aerospace contexts'],
     tier: 'Elite',
     isFree: false,
   },
@@ -107,7 +107,7 @@ export const MODULES = [
     description:
       'Haul Command profile setup, badge verification, trust signals, marketplace leverage, how brokers search and rank operators, and how to use digital tools to earn more corridor work.',
     audience: 'All operators; essential for maximizing platform and marketplace earnings',
-    duration: '30 min',
+    duration: '60 min',
     outcomes: ['Maximize Haul Command profile rank', 'Earn verified badge and trust signals', 'Attract broker contact and corridor job requests'],
     tier: 'HC Certified',
     isFree: true,
@@ -126,15 +126,15 @@ const FAQS = [
   },
   {
     q: 'Is this training required in every state or country?',
-    a: 'Requirements vary. Twelve US states currently mandate pilot car certification. The HC Certified curriculum meets or exceeds the curriculum requirements for all 12 states. International requirements vary by country — see the country training pages for jurisdiction-specific details.',
+    a: 'Requirements vary. Twelve US states currently mandate pilot car certification (like WA, UT, FL, NC). The HC Certified curriculum serves as the definitive prep course, mapping perfectly to the national 8-hour core training standard required by these states. International requirements vary by country — see the country training pages for jurisdiction-specific details.',
   },
   {
     q: 'What does the Haul Command certification badge actually prove?',
-    a: 'The HC badge verifies that you completed the HC training curriculum, which is built on FMCSA, CVSA, and SC&RA Best Practices Guidelines. It does not automatically replace state-issued certifications where those are required, but it signals professional knowledge, equipment familiarity, and platform trust to brokers and carriers.',
+    a: 'The HC badge verifies that you completed the platform\'s rigorous prep curriculum, built on FMCSA, CVSA, and SC&RA Best Practices Guidelines. It does not replace state-issued certifications where those are required by law. Instead, it signals professional knowledge, equipment readiness, and platform trust to brokers and carriers.',
   },
   {
     q: 'How long does the training take?',
-    a: 'Module 1 (Pilot Car Fundamentals) takes approximately 35 minutes and is free. HC Certified (modules 1–3) takes approximately 2 hours. AV-Ready (modules 1–5) takes approximately 3.5 hours. Elite (all 7 modules) takes approximately 4.5 hours total. All modules are self-paced.',
+    a: 'Module 1 (Pilot Car Fundamentals) takes approximately 2.5 hours and is free. HC Certified (modules 1–3) totals 8 hours to meet the national baseline standard. AV-Ready (modules 1–5) takes approximately 11.5 hours. Elite (all 7 modules) totals 15.5 hours of comprehensive training. All modules are self-paced.',
   },
   {
     q: 'Is it self-paced?',
@@ -293,12 +293,12 @@ export default async function TrainingPage() {
             {/* H1 — keyword-first */}
             <h1 style={{ margin: '0 0 10px', fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.035em', color: '#f9fafb' }}>
               Pilot Car &amp; Escort<br />
-              <span style={{ color: gold }}>Operator Training</span>
+              <span style={{ color: gold }}>Training &amp; Exam Prep</span>
             </h1>
 
             {/* Emotional subhead */}
             <p style={{ margin: '0 0 12px', fontSize: 'clamp(1rem,2vw,1.25rem)', fontWeight: 700, color: '#d1d5db' }}>
-              Get Certified. Get Chosen First.
+              The definitive pre-certification prep and platform credential.
             </p>
 
             <p style={{ margin: '0 0 28px', fontSize: 16, color: '#9ca3af', lineHeight: 1.7, maxWidth: 600 }}>
@@ -455,19 +455,19 @@ export default async function TrainingPage() {
               {[
                 {
                   name: 'HC Certified', color: '#A8A8A8', price: 'Free with Pro / $49 standalone',
-                  modules: 'Modules 1–3', duration: '~2 hours', highlight: false,
+                  modules: 'Modules 1–3', duration: '8 Hours (Gov Standard)', highlight: false,
                   benefits: ['HC Certified badge on your profile', 'Recognized across all 120 countries', 'Meets all 12 US mandatory state requirements', 'Digital credential with instant verification link'],
                   href: '/training/pilot-car-fundamentals', cta: 'Start Free',
                 },
                 {
                   name: 'AV-Ready', color: '#F5A623', price: '$149/year',
-                  modules: 'Modules 1–5', duration: '~3.5 hours', highlight: true,
+                  modules: 'Modules 1–5', duration: '11.5 Hours', highlight: true,
                   benefits: ['Everything in HC Certified', 'AV-Ready gold badge on profile', 'Priority placement in AV corridor searches', 'Aurora + Kodiak protocol training', 'Oilfield Specialist module included'],
                   href: '/training?enroll=av_ready', cta: 'Get AV-Ready',
                 },
                 {
                   name: 'Elite', color: '#E5E4E2', price: '$299/year',
-                  modules: 'All 7 Modules', duration: '~4.5 hours', highlight: false,
+                  modules: 'All 7 Modules', duration: '15.5 Hours', highlight: false,
                   benefits: ['Everything in AV-Ready', 'Elite platinum badge — top of all results', 'Superload, military &amp; aerospace module', 'International operations module', 'Dedicated account support'],
                   href: '/training?enroll=elite', cta: 'Become Elite',
                 },
@@ -494,13 +494,13 @@ export default async function TrainingPage() {
           </div>
         </section>
 
-        {/* ── COUNTRY & STATE COVERAGE ───────────────────────────────── */}
+        {/* ── JURISDICTION & RECIPROCITY ─────────────────────────────── */}
         <section id="countries" style={{ padding: 'clamp(2rem,4vw,3.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={s.container}>
-            <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 800, color: '#f9fafb' }}>Training by Country &amp; State</h2>
+            <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 800, color: '#f9fafb' }}>Jurisdiction &amp; Certification Reciprocity</h2>
             <p style={{ margin: '0 0 20px', fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>
-              Haul Command Training is built for global operations. Each country and state page includes
-              localized requirements, terminology, and compliance notes.
+              The Haul Command curriculum is built to maximize global and state-to-state reciprocity. 
+              Check localized requirements, certification transferability, and compliance notes below.
             </p>
 
             {/* Top countries */}

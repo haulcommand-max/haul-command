@@ -158,17 +158,18 @@ function RenderContentWithTools({ html }: { html: string }) {
           <div
             key={i}
             className="prose prose-invert prose-amber max-w-none
-              prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white
-              prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4
-              prose-h3:text-lg prose-h3:font-semibold prose-h3:text-white/90
-              prose-p:text-gray-300 prose-p:leading-relaxed
-              prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline
-              prose-li:text-gray-300
-              prose-strong:text-white
-              prose-blockquote:border-amber-500 prose-blockquote:text-gray-400
-              prose-table:border-white/10
-              prose-th:text-amber-400 prose-th:font-semibold
-              prose-td:text-gray-300"
+              prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:font-bold prose-h1:text-white prose-h1:leading-tight
+              prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:font-bold prose-h2:text-white prose-h2:mt-16 prose-h2:mb-6 prose-h2:tracking-tight
+              prose-h3:text-xl md:prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-white/90 prose-h3:mt-10
+              prose-p:text-lg md:prose-p:text-[20px] prose-p:text-gray-300 prose-p:leading-[1.8] prose-p:mb-8
+              prose-a:text-hc-gold prose-a:no-underline hover:prose-a:underline hover:prose-a:text-white transition-colors
+              prose-li:text-lg md:prose-li:text-[20px] prose-li:text-gray-300 prose-li:leading-[1.8]
+              prose-strong:text-white prose-strong:font-semibold
+              prose-blockquote:border-l-4 prose-blockquote:border-hc-gold prose-blockquote:bg-white/[0.02] prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-xl prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-gray-200 prose-blockquote:my-10 prose-blockquote:not-italic
+              prose-table:border-white/10 prose-table:rounded-xl prose-table:overflow-hidden 
+              prose-th:text-hc-gold prose-th:font-semibold prose-th:bg-white/[0.03] prose-th:p-4
+              prose-td:text-gray-300 prose-td:p-4 prose-td:border-t prose-td:border-white/5
+              prose-img:rounded-2xl prose-img:border prose-img:border-hc-border prose-img:shadow-2xl prose-img:my-12"
             dangerouslySetInnerHTML={{ __html: part }}
           />
         );

@@ -74,8 +74,9 @@ function RequirementsTable({ state }: { state: StateData }) {
     const rules = buildEscortRules(state);
     return (
         <div className="overflow-hidden rounded-2xl border border-white/8">
-            <table className="w-full">
-                <thead>
+            <table className="w-full" itemScope itemType="https://schema.org/Table">
+                <caption className="sr-only" itemProp="about">Escort Vehicle Requirements for {state.name} Oversize Loads</caption>
+                <thead itemScope itemType="https://schema.org/Table">
                     <tr className="border-b border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
                         <th className="text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white/40">Condition</th>
                         <th className="text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white/40">{state.abbr} Requirement</th>
@@ -142,8 +143,9 @@ function NationwideComparison({ currentState }: { currentState: StateData }) {
         <section>
             <h2 className="text-base font-black text-white mb-4">Escort Requirements by State — Quick Comparison</h2>
             <div className="overflow-hidden rounded-2xl border border-white/8">
-                <table className="w-full">
-                    <thead>
+                <table className="w-full" itemScope itemType="https://schema.org/Table">
+                    <caption className="sr-only" itemProp="about">Nationwide Comparison of Oversize Load Escort Requirements and Thresholds by State</caption>
+                    <thead itemScope itemType="https://schema.org/Table">
                         <tr className="border-b border-white/8" style={{ background: "rgba(255,255,255,0.03)" }}>
                             <th className="text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white/40">State</th>
                             <th className="text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white/40">Max Width</th>

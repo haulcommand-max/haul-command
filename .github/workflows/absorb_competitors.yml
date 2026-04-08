@@ -1,0 +1,49 @@
+name: Competitor Absorption Swarm (Playwright)
+
+on:
+  schedule:
+    # Run at 02:00 AM UTC every Sunday to absorb fresh competitor directory data
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    # Allow manual triggering from GitHub UI for ad-hoc sweeps
+
+jobs:
+  absorb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run US Pilot Cars Absorption Sweep
+        env:
+          # Only required if the script uploads directly to Supabase
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scrape_uspilotcars_pw.js || true
+
+      - name: Run Truck Stops Absorption Sweep
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scrape_truckstops_pw.js || true
+
+      - name: Archive Absorption Artifacts (Local DB Dumps)
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-data-output
+          path: data/*.json
+          retention-days: 7

@@ -166,6 +166,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                <link rel="preload" as="image" href="/hero-command-center.png" fetchPriority="high" />
+                <link rel="preload" as="image" href="/og-image.png" fetchPriority="low" />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
