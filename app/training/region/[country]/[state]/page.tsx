@@ -142,22 +142,38 @@ export default async function StateTrainingPage({ params }: Props) {
           </div>
         </section>
 
-        {/* State Specific Resources */
-        STATE_RESOURCES[state] && (
-          <section style={{ padding: 'clamp(1.5rem,3vw,2.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}>
-            <div style={{ maxWidth: 820, margin: '0 auto' }}>
-              <h2 style={{ margin: '0 0 14px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Official {stateName} Resources</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 10 }}>
-                {STATE_RESOURCES[state].map(res => (
-                  <a key={res.url} href={res.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: gold, marginBottom: 4 }}>{res.title} ↗</div>
-                    <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{res.desc}</div>
-                  </a>
-                ))}
-              </div>
+        {/* State Specific Resources */}
+        <section style={{ padding: 'clamp(1.5rem,3vw,2.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}>
+          <div style={{ maxWidth: 820, margin: '0 auto' }}>
+            <h2 style={{ margin: '0 0 14px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Official Regulatory Resources</h2>
+            <p style={{ margin: '0 0 16px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }}>Access up-to-date compliance requirements and standardized best practices for {stateName}.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 10 }}>
+              {/* Custom Injected Resources */
+              STATE_RESOURCES[state]?.map(res => (
+                <a key={res.url} href={res.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(212,168,68,0.3)', borderRadius: 12, textDecoration: 'none' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: gold, marginBottom: 4 }}>{res.title} ↗</div>
+                  <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{res.desc}</div>
+                </a>
+              ))}
+              
+              {/* Deterministic Search & National Links */}
+              <a href={`https://www.google.com/search?q=${stateName}+Department+of+Transportation+oversize+overweight+permit+pilot+car+requirements`} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>{stateName} DOT OS/OW Permit Rules ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>Search the official {stateName} Department of Transportation portal for current oversize load and pilot car mandate guidelines.</div>
+              </a>
+              
+              <a href="https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/mutcd2009r1r2edition.pdf" target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>FHWA MUTCD Documentation ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>Federal Highway Administration Manual on Uniform Traffic Control Devices (National Standard).</div>
+              </a>
+              
+              <a href="https://www.scranet.org/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>SC&RA Best Practices ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>Specialized Carriers & Rigging Association global operating standards & guidelines.</div>
+              </a>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Related links */}
         <section style={{ padding: 'clamp(1.5rem,2.5vw,2rem) 20px' }}>

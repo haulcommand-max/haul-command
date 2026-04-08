@@ -144,6 +144,32 @@ export default async function CountryTrainingPage({ params }: Props) {
           </div>
         </section>
 
+        {/* Global Regulatory Resources */}
+        <section style={{ padding: 'clamp(1.5rem,3vw,2.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+            <h2 style={{ margin: '0 0 14px', fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Global Regulatory Resources & Search</h2>
+            <p style={{ margin: '0 0 16px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }}>Access up-to-date compliance requirements and standardized best practices for {countryName}.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 10 }}>
+              
+              <a href={`https://www.google.com/search?q=${countryName}+oversize+overweight+permit+pilot+car+escort+requirements`} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>{countryName} Transport Ministry Rules ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>Search the official transport/highway ministry portal in {countryName} for current oversize load and pilot car mandate guidelines.</div>
+              </a>
+              
+              <a href="https://www.scranet.org/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>SC&RA Best Practices (Global) ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>Specialized Carriers & Rigging Association global operating standards & guidelines.</div>
+              </a>
+
+              <a href="https://www.iru.org/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '16px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, textDecoration: 'none' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>IRU Transport Guidelines ↗</div>
+                <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>International Road Transport Union standards for commercial transport and road safety.</div>
+              </a>
+
+            </div>
+          </div>
+        </section>
+
         {/* Related links */}
         <section style={{ padding: 'clamp(1.5rem,3vw,2rem) 20px' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
