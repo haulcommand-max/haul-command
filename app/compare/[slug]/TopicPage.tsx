@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-const TOPICS: Record<string, { title: string; meta: string; sections: { heading: string; left: { label: string; points: string[] }; right: { label: string; points: string[] } }[] }> = {
+export const TOPICS: Record<string, { title: string; meta: string; sections: { heading: string; left: { label: string; points: string[] }; right: { label: string; points: string[] } }[] }> = {
     'pilot-car-vs-police-escort': {
         title: 'Pilot Car vs Police Escort',
         meta: 'Should you use a pilot car or police escort for your oversize load? Compare cost, availability, requirements, and when each is needed.',

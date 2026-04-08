@@ -39,7 +39,7 @@ interface LoadTypeEntry {
   relatedRegulations: string[];
 }
 
-const LOAD_TYPE_REGISTRY: Record<string, LoadTypeEntry> = {
+export const LOAD_TYPE_REGISTRY: Record<string, LoadTypeEntry> = {
   'wind-energy': {
     title: 'Wind Energy Transport',
     description: 'Pilot car requirements and escort logistics for wind turbine blade, nacelle, and tower section transport.',
