@@ -39,6 +39,17 @@ interface StateReg {
     reciprocity_states: string[] | null;
 }
 
+interface RegulationSource {
+    country_code: string;
+    state_province: string | null;
+    url: string;
+    source_title: string;
+    authority_name: string;
+    year_stated: string | null;
+    official_status: string | null;
+    training_value_score: number | null;
+}
+
 const COUNTRY_LABELS: Record<string, string> = { US: '🇺🇸 United States', CA: '🍁 Canada' };
 
 const STATE_NAMES_FULL: Record<string, string> = {
@@ -78,7 +89,20 @@ export default async function RegulatoryDbPage({
     if (country) dbQuery = dbQuery.eq('country', country);
     if (query) dbQuery = dbQuery.ilike('notes', `%${query}%`);
 
-    const { data: regs = [] } = await dbQuery;
+    const [{ data: regs = [] }, { data: sources = [] }] = await Promise.all([
+        dbQuery,
+        supabase.from('regulation_sources').select('country_code, state_province, url, source_title, authority_name, year_stated, official_status, training_value_score')
+    ]);
+
+    // Map confirmed sources for deterministic joining
+    const sourceMap = new Map<string, RegulationSource>();
+    for (const src of (sources ?? []) as RegulationSource[]) {
+        if (src.state_province) {
+            sourceMap.set(src.state_province, src);
+        } else {
+            sourceMap.set(src.country_code, src);
+        }
+    }
 
     // Group by country → region
     const grouped: Record<string, StateReg[]> = {};
@@ -154,25 +178,33 @@ export default async function RegulatoryDbPage({
                         </h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
                             {stateRegs.map((reg) => {
+                                const fullStateName = STATE_NAMES_FULL[reg.state_code] ?? reg.state_code;
+                                const matchedSource = sourceMap.get(fullStateName) || sourceMap.get(countryCode);
+                                
                                 const confidence = reg.confidence_score ?? 0;
-                                const confColor = confidence >= 0.8 ? '#10b981' : confidence >= 0.5 ? '#f59e0b' : '#ef4444';
+                                // Bump confidence to max if matched deterministic source
+                                const displayConfidence = matchedSource ? 1.0 : confidence;
+                                
+                                const finalSourceUrl = matchedSource ? matchedSource.url : reg.dot_source_url;
+                                const ruleLinkUrl = `/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`;
+
                                 return (
                                     <div key={reg.state_code} style={ruleCard}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                                            <Link aria-label="Navigation Link" href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
+                                            <Link aria-label="Navigation Link" href={ruleLinkUrl}
                                                 style={{ fontSize: 15, fontWeight: 800, color: '#d97706', textDecoration: 'none' }}>
-                                                {STATE_NAMES_FULL[reg.state_code] ?? reg.state_code}
+                                                {fullStateName}
                                             </Link>
                                             <FreshnessConfidenceBadge
                                                 confidence={
-                                                    confidence >= 0.8 ? 'verified_current' as LegalConfidence
-                                                    : confidence >= 0.5 ? 'verified_but_review_due' as LegalConfidence
-                                                    : confidence > 0 ? 'partially_verified' as LegalConfidence
+                                                    displayConfidence >= 0.8 ? 'verified_current' as LegalConfidence
+                                                    : displayConfidence >= 0.5 ? 'verified_but_review_due' as LegalConfidence
+                                                    : displayConfidence > 0 ? 'partially_verified' as LegalConfidence
                                                     : 'seeded_needs_human_review' as LegalConfidence
                                                 }
                                                 lastVerified={reg.last_updated_at}
-                                                officialSource={reg.dot_source_url ? 'State DOT' : null}
-                                                officialSourceUrl={reg.dot_source_url}
+                                                officialSource={matchedSource ? 'Confirmed Source' : reg.dot_source_url ? 'State DOT' : null}
+                                                officialSourceUrl={finalSourceUrl ?? undefined}
                                                 compact={true}
                                             />
                                         </div>
@@ -186,13 +218,29 @@ export default async function RegulatoryDbPage({
                                             <div>Night: <span style={{ color: reg.night_moves_allowed ? '#10b981' : '#ef4444', fontWeight: 700 }}>{reg.night_moves_allowed == null ? '?' : reg.night_moves_allowed ? 'OK' : 'No'}</span></div>
                                             <div>Cert: <span style={{ color: reg.certification_required ? '#f59e0b' : '#10b981', fontWeight: 700 }}>{reg.certification_required == null ? '?' : reg.certification_required ? 'Required' : 'No'}</span></div>
                                         </div>
-                                        <div style={{ display: 'flex', gap: 8, marginTop: 8, alignItems: 'center' }}>
-                                            <Link aria-label="Navigation Link" href={`/requirements/${reg.state_code.toLowerCase()}/escort-vehicle-rules`}
-                                                style={{ fontSize: 10, color: '#d97706', fontWeight: 700, textDecoration: 'none' }}>
-                                                Full Details →
+
+                                        {/* Deterministic Authority Injector */}
+                                        {matchedSource && (
+                                            <div style={{ marginTop: 12, padding: '8px 10px', background: 'var(--hc-bg, #000)', borderRadius: 6, border: '1px dashed rgba(217,119,6,0.3)' }}>
+                                                <div style={{ fontSize: 10, color: '#d97706', fontWeight: 700, marginBottom: 2 }}>
+                                                    OFFICIAL DOCUMENT LOCATED
+                                                </div>
+                                                <a href={matchedSource.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: '#f5f5f5', textDecoration: 'underline', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                    {matchedSource.source_title}
+                                                </a>
+                                                <div style={{ fontSize: 9, color: 'var(--hc-muted, #888)', marginTop: 2 }}>
+                                                    Auth: {matchedSource.authority_name} {matchedSource.year_stated ? `(${matchedSource.year_stated})` : ''}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div style={{ display: 'flex', gap: 8, marginTop: 12, alignItems: 'center' }}>
+                                            <Link aria-label="Navigation Link" href={ruleLinkUrl}
+                                                style={{ fontSize: 11, color: '#d97706', fontWeight: 700, textDecoration: 'none', background: 'rgba(217,119,6,0.1)', padding: '4px 8px', borderRadius: 4 }}>
+                                                Full Guide →
                                             </Link>
-                                            {reg.dot_source_url && (
-                                                <a href={reg.dot_source_url} target="_blank" rel="noopener noreferrer"
+                                            {finalSourceUrl && !matchedSource && (
+                                                <a href={finalSourceUrl} target="_blank" rel="noopener noreferrer"
                                                     style={{ fontSize: 10, color: '#6b7280', textDecoration: 'none' }}>
                                                     DOT Source ↗
                                                 </a>
@@ -254,9 +302,11 @@ const btnStyle: React.CSSProperties = {
 const ruleCard: React.CSSProperties = {
     padding: '14px 16px', background: 'var(--hc-panel, #141414)',
     border: '1px solid var(--hc-border, #222)', borderRadius: 10,
+    display: 'flex', flexDirection: 'column',
 };
 const categoryBadge: React.CSSProperties = {
     display: 'inline-block', padding: '2px 8px', background: 'rgba(217,119,6,0.12)',
     color: '#d97706', border: '1px solid rgba(217,119,6,0.25)',
     borderRadius: 6, fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' as const,
 };
+
