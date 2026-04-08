@@ -567,7 +567,7 @@ export default async function BlogArticlePage({ params }: Props) {
         <div className="mt-12">
           <EmailSubscribe
             title="Get the Heavy Haul Intel Brief"
-            description="Regulatory changes. Corridor alerts. High-paying loads. Join 15,000+ operators who stay ahead."
+            description="Regulatory changes. Corridor alerts. High-paying loads. Join 6,900+ operators who stay ahead."
             ctaText="Subscribe Free"
             source="blog_article"
           />

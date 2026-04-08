@@ -15,6 +15,7 @@ import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import { SessionDNATracker } from "@/components/security/SessionDNATracker";
 import CaptureOverlay from "@/components/capture/CaptureOverlay";
 import { CookieConsent } from "@/components/legal/CookieConsent";
+import PushConsentModal from "@/components/push/PushConsentModal";
 import { StickyMobileChipRail } from "@/components/ads/StickyMobileChipRail";
 import { getHouseAds } from "@/lib/ads/house-ads";
 
@@ -257,6 +258,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <AuthStatusBanner />
                     <SessionDNATracker />
                     <CaptureOverlay />
+                    <PushConsentModal />
                     <CookieConsent />
                     <StickyMobileChipRail ads={getHouseAds({ limit: 4 })} />
                 </RoleProvider>

@@ -168,7 +168,7 @@ export default function HomeClient({
             <section className="relative z-10 py-6 border-y border-white/[0.04] bg-white/[0.01]">
                 <div className="hc-container max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-x-12 text-center text-xs font-semibold text-[#8fa3b8] uppercase tracking-widest">
                     <div className="flex items-center gap-2">
-                        <Shield className="w-4 h-4 text-[#C6923A]" /> 7,000+ Operators
+                        <Shield className="w-4 h-4 text-[#C6923A]" /> {totalOperators.toLocaleString()}+ Operators
                     </div>
                     <div className="hidden sm:block w-1 h-1 rounded-full bg-white/10" />
                     <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function HomeClient({
                     </div>
                     <div className="hidden lg:block w-1 h-1 rounded-full bg-white/10" />
                     <div className="flex items-center gap-2 text-[#C6923A]">
-                        120 Countries Live
+                        {liveCountries} Countries Live
                     </div>
                 </div>
             </section>
@@ -316,7 +316,7 @@ export default function HomeClient({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
                         {[
                             { val: '12M+', lbl: 'Miles Escorted' },
-                            { val: '120', lbl: 'Countries Live' },
+                            { val: liveCountries.toString(), lbl: 'Countries Live' },
                             { val: '99.9%', lbl: 'Uptime' },
                             { val: '$0', lbl: 'Disputes' },
                         ].map((stat, i) => (

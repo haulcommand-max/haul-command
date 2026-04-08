@@ -36,7 +36,7 @@ const SCENARIOS = [
   {
     icon: Truck,
     title: "Multi-Escort Shortage",
-    desc: "Need 4 escorts but can only find 2? Our fleet backup layer fills the remaining positions from our 15,000+ operator network.",
+    desc: "Need 4 escorts but can only find 2? Our fleet backup layer fills the remaining positions from our 6,900+ operator network.",
   },
   {
     icon: Radio,
@@ -74,7 +74,7 @@ export default function FleetBackupPage() {
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
             When escorts no-show, cancel, or break down — our rescue dispatch layer activates in under 
-            15 minutes. 15,000+ operators. 120 countries. No move left stranded.
+            15 minutes. 6,900+ operators. 120 countries. No move left stranded.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -98,7 +98,7 @@ export default function FleetBackupPage() {
               { value: "< 15 min", label: "Response SLA" },
               { value: "24/7/365", label: "Availability" },
               { value: "120", label: "Countries" },
-              { value: "15,000+", label: "Operators" },
+              { value: "6,900+", label: "Operators" },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-xl font-black text-red-400">{value}</div>
