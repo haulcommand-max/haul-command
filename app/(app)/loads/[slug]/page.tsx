@@ -1,5 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import { notFound } from 'next/navigation';
+
 import { LOAD_TYPE_REGISTRY } from './TypePage';
 import TypePage from './TypePage';
 import SlugPage, { generateMetadata as slugGenerateMetadata } from './SlugPage';
@@ -30,7 +30,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   }
 
   // Fallback to load details metadata
-  return slugGenerateMetadata(props, parent);
+  return slugGenerateMetadata(props);
 }
 
 export default async function CombinedLoadPage(props: Props) {
