@@ -522,16 +522,19 @@ export default async function DirectoryPage() {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{entityType.replace(/_/g, ' ')} Services</p>
-                  <div className="relative">
-                    <div className="blur-sm text-xs text-gray-600 select-none">📞 Contact info</div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Link aria-label="Navigation Link"
-                        href="/auth/register"
-                        className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold rounded-lg transition-colors"
-                      >
-                        Sign up to contact
-                      </Link>
-                    </div>
+                  <div className="mt-3 flex gap-2">
+                    <Link aria-label="Navigation Link"
+                      href={`/loads/post?operator=${op.slug || op.id}`}
+                      className="flex-1 text-center px-3 py-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white text-xs font-bold rounded-lg transition-colors shadow-lg shadow-emerald-900/20"
+                    >
+                      Request Direct
+                    </Link>
+                    <Link aria-label="Navigation Link"
+                      href={`/directory/profile/${op.slug || op.id}`}
+                      className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 rounded-lg transition-colors"
+                    >
+                      View Profile
+                    </Link>
                   </div>
                   <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
                     <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>

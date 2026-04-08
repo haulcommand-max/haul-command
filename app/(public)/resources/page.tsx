@@ -277,7 +277,33 @@ export default function ResourceHubPage() {
                     </div>
                 </div>
 
-                <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 1.5rem' }}>
+                <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 3rem' }}>
+                    {/* ── Document Filter Bar (New) ─────────────────────────── */}
+                    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: '2rem', padding: '1rem', background: '#111', borderRadius: 12, border: '1px solid rgba(255,255,255,0.05)' }}>
+                        <select style={{ flex: 1, minWidth: 140, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
+                            <option value="">Any Country (120)</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                        </select>
+                        <select style={{ flex: 1, minWidth: 140, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
+                            <option value="">Any State/Province</option>
+                        </select>
+                        <select style={{ flex: 1, minWidth: 140, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
+                            <option value="">Source Type</option>
+                            <option value="manual">Official Workbooks</option>
+                            <option value="code">Legislative Code</option>
+                            <option value="guideline">Escort Guidelines</option>
+                        </select>
+                        <select style={{ flex: 1, minWidth: 100, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
+                            <option value="">Year</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                        </select>
+                        <button style={{ padding: '8px 24px', background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontWeight: 800, border: 'none', borderRadius: 8, fontSize: 13, cursor: 'pointer' }}>
+                            Filter
+                        </button>
+                    </div>
 
                     {/* ── Resource Clusters ─────────────────────────────────── */}
                     {RESOURCE_CLUSTERS.map(cluster => {
@@ -307,9 +333,9 @@ export default function ResourceHubPage() {
                                                 href={resource.href}
                                                 style={{ display: 'flex', flexDirection: 'column', padding: '1.25rem', background: 'rgba(255,255,255,0.025)', border: `1px solid rgba(255,255,255,0.07)`, borderRadius: 14, textDecoration: 'none', transition: 'all 0.18s', cursor: 'pointer' }}
                                             >
-                                                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 10 }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 10 }}>
                                                     <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#f9fafb', lineHeight: 1.4 }}>{resource.title}</h3>
-                                                    <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                                                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                                         {resource.downloadable && (
                                                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', background: 'rgba(251,146,60,0.12)', border: '1px solid rgba(251,146,60,0.25)', borderRadius: 4, fontSize: 9, fontWeight: 700, color: '#fb923c', textTransform: 'uppercase', letterSpacing: 0.5 }}>
                                                                 <Download style={{ width: 8, height: 8 }} /> PDF

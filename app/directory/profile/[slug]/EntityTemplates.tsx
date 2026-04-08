@@ -177,8 +177,11 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                             operatorName={op.name || entityName}
                             hcId={op.hc_id || null}
                         />
-                        <div style={{ marginTop: 12, textAlign: 'center' }}>
-                            <Link href={`/directory/report?slug=${op.slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', fontSize: 12, fontWeight: 600, borderRadius: 10, textDecoration: 'none' }}>
+                        <div style={{ marginTop: 12, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            <Link href={`/loads/post?operator=${op.slug || op.id}`} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '12px 20px', background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
+                                ✉ Request This Escort Anyway
+                            </Link>
+                            <Link href={`/directory/report?slug=${op.slug}`} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px 20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', fontSize: 12, fontWeight: 600, borderRadius: 10, textDecoration: 'none' }}>
                                 <Flag style={{ width: 12, height: 12 }} /> Report Incorrect Info
                             </Link>
                         </div>

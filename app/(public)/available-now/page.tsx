@@ -312,14 +312,25 @@ export default async function AvailableNowPage() {
 
                     {/* CTA row */}
                     <div style={{ display: 'flex', gap: 8 }}>
+                      <Link href={`/loads/post?operator=${b.operator_slug || b.id}`} style={{
+                        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                        padding: '10px', borderRadius: 10,
+                        background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05))',
+                        border: '1px solid rgba(16,185,129,0.3)',
+                        color: '#10b981', fontSize: 12, fontWeight: 800, textDecoration: 'none',
+                        boxShadow: '0 2px 10px rgba(16,185,129,0.1)'
+                      }}>
+                        ✉ Request Direct
+                      </Link>
+                      
                       {b.operator_slug ? (
                         <Link href={`/directory/profile/${b.operator_slug}`} style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                           padding: '10px', borderRadius: 10,
-                          background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)',
-                          color: '#22c55e', fontSize: 12, fontWeight: 700, textDecoration: 'none',
+                          background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                          color: '#94a3b8', fontSize: 12, fontWeight: 700, textDecoration: 'none',
                         }}>
-                          View Profile <ArrowRight style={{ width: 12, height: 12 }} />
+                          View Profile
                         </Link>
                       ) : (
                         <Link href="/directory" style={{
@@ -328,7 +339,7 @@ export default async function AvailableNowPage() {
                           background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
                           color: '#94a3b8', fontSize: 12, fontWeight: 700, textDecoration: 'none',
                         }}>
-                          View in Directory
+                          In Directory
                         </Link>
                       )}
                       {b.phone && (

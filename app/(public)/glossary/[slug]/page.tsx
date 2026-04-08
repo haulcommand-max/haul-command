@@ -294,13 +294,16 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                         <div>
                                             <span className="text-xs text-gray-500 uppercase font-bold tracking-wider block mb-2">Relevant Regulations</span>
                                             <ul className="space-y-2">
-                                                {term.related_rules.map((r: string) => (
-                                                    <li key={r}>
-                                                        <Link aria-label="Navigation Link" href={`/regulations/${r}`} className="text-sm text-gray-400 hover:text-white underline decoration-white/20 underline-offset-4 line-clamp-2">
-                                                            {r}
-                                                        </Link>
-                                                    </li>
-                                                ))}
+                                                {term.related_rules.map((r: string) => {
+                                                    const formattedRule = r.toLowerCase() === 'united states' ? 'us' : r.replace(/\s+/g, '-').toLowerCase();
+                                                    return (
+                                                        <li key={r}>
+                                                            <Link aria-label="Navigation Link" href={`/regulations/${formattedRule}`} className="text-sm text-gray-400 hover:text-white underline decoration-white/20 underline-offset-4 line-clamp-2">
+                                                                {r}
+                                                            </Link>
+                                                        </li>
+                                                    );
+                                                })}
                                             </ul>
                                         </div>
                                     )}
@@ -312,14 +315,17 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                 <div className="bg-[#121214] border border-white/10 rounded-xl p-5">
                                     <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">See Also</h3>
                                     <ul className="space-y-2">
-                                        {term.related_slugs.map((slug: string) => (
-                                            <li key={slug}>
-                                                <Link aria-label="Navigation Link" href={`/glossary/${slug}`} className="text-gray-400 hover:text-white transition-colors text-sm font-medium capitalize flex items-center gap-2">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50"></span>
-                                                    {slug.replace(/-/g, ' ')}
-                                                </Link>
-                                            </li>
-                                        ))}
+                                        {term.related_slugs.map((slug: string) => {
+                                            const formattedSlug = slug.toLowerCase() === 'united states' ? 'us' : slug;
+                                            return (
+                                                <li key={slug}>
+                                                    <Link aria-label="Navigation Link" href={`/glossary/${formattedSlug}`} className="text-gray-400 hover:text-white transition-colors text-sm font-medium capitalize flex items-center gap-2">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50"></span>
+                                                        {slug.replace(/-/g, ' ')}
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
                                 </div>
                             )}

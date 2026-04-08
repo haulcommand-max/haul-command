@@ -8,6 +8,8 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import '@/components/ai-search/answer-block.css';
 
+
+
 // LIVE MARKET DATA BASED ON 2026 RATE GUIDE
 const RATES = {
   pevo: {

@@ -1,0 +1,25 @@
+{
+  "mode": "interactive",
+  "granularity": "standard",
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": true,
+    "discuss_mode": "assumptions",
+    "use_worktrees": false,
+    "auto_advance": true
+  },
+  "models": {
+    "planning": "quality",
+    "execution": "quality",
+    "verification": "quality"
+  },
+  "git": {
+    "branching_strategy": "none"
+  },
+  "agent_skills": {
+    "planner": [],
+    "executor": [],
+    "verifier": []
+  }
+}

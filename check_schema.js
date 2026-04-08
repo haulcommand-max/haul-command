@@ -1,20 +1,29 @@
-const { createClient } = require('@supabase/supabase-js');
-const dotenv = require('dotenv');
+require('dotenv').config({path: '.env.local'});
+const { Pool } = require('pg');
+const pool = new Pool({ connectionString: process.env.SUPABASE_DB_POOLER_URL });
 
-dotenv.config({ path: '.env.production.local' });
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY);
-
-async function check() {
-    // try to get 1 row from hc_public_operators
-    const { data: d1, error: e1 } = await supabase.from('hc_public_operators').select('*').limit(1);
-    console.log("hc_public_operators:", d1 ? Object.keys(d1[0] || {}) : e1.message);
-
-    // try to get 1 row from provider_directory
-    const { data: d2, error: e2 } = await supabase.from('provider_directory').select('*').limit(1);
-    console.log("provider_directory:", d2 ? Object.keys(d2[0] || {}) : e2?.message);
-
-    // Also directory_listings just in case
-    const { data: d3, error: e3 } = await supabase.from('directory_listings').select('*').limit(1);
-    console.log("directory_listings:", d3 ? Object.keys(d3[0] || {}) : e3?.message);
+async function checkSchema() {
+  try {
+    console.log("Checking schema cache error...");
+    const res = await pool.query(`
+      SELECT tablename, policyname, roles, cmd, qual, with_check 
+      FROM pg_policies 
+      WHERE tablename IN ('country_ingest_queue', 'regulation_sources')
+    `);
+    console.log('--- Policies ---');
+    console.log(res.rows);
+    
+    const accessRes = await pool.query(`
+      SELECT grantee, privilege_type 
+      FROM information_schema.role_table_grants 
+      WHERE table_name IN ('country_ingest_queue', 'regulation_sources')
+    `);
+    console.log('--- Grants ---');
+    console.log(accessRes.rows);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    pool.end();
+  }
 }
-check();
+checkSchema();

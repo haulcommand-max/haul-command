@@ -97,23 +97,47 @@ export function DirectorySearchList({
             return (
               <div
                 key={op.id}
-                className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between"
+                className="bg-[#0B1015] border border-white/5 hover:border-white/10 rounded-xl p-5"
               >
-                <div className={shouldBlur ? "blur-md select-none opacity-50" : ""}>
-                  <h3 className="text-white font-bold">{op.name}</h3>
-                  <div className="flex items-center gap-2 text-sm text-slate-400 mt-1">
-                    <MapPin className="w-4 h-4" />
-                    <span>{op.location}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className={shouldBlur ? "blur-md select-none opacity-50" : ""}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-white font-bold">{op.name}</h3>
+                      {op.score >= 50 && (
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          {op.score >= 80 ? 'Verified' : 'Claimed'}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                      <MapPin className="w-4 h-4" />
+                      <span>{op.location || 'Location Not Set'}</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <span className="block text-xs text-slate-500">Defense Index</span>
-                    <span className="font-mono text-emerald-400">{op.score}</span>
-                  </div>
-                  <div className="bg-slate-800 px-4 py-2 rounded border border-slate-700 text-sm font-mono text-white">
-                    {shouldBlur ? "(XXX) XXX-XXXX" : op.phone}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0 mt-3 sm:mt-0 w-full sm:w-auto">
+                    {/* Trust Score surface */}
+                    <div className="flex items-center gap-3">
+                      <div className="text-right hidden sm:block">
+                        <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trust Score</span>
+                        <span className={`font-mono font-bold ${op.score >= 80 ? 'text-emerald-400' : op.score >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
+                          {op.score}%
+                        </span>
+                      </div>
+                      <div className={`w-10 h-10 rounded block sm:hidden flex items-center justify-center font-bold ${op.score >= 80 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}`}>
+                        {op.score}
+                      </div>
+                    </div>
+
+                    {/* CTAs */}
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <Link href={`/directory/profile/${op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-lg transition-all">
+                        View Profile
+                      </Link>
+                      <Link href={`/loads/post?operator=${op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/20 text-xs font-bold rounded-lg transition-all">
+                        Request Direct
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
