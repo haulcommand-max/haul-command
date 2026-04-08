@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { MapPin, Calendar, DollarSign, Clock, ShieldCheck, Mail, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { AssignmentActions } from "./AssignmentActions";
+import { QuickPayWidget } from "@/components/quickpay/QuickPayWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -233,7 +234,18 @@ export default async function OperatorAssignmentDetailPage({
               <div className="bg-slate-950 p-3 rounded text-xs text-slate-400 leading-relaxed border border-slate-800">
                 The broker's payment is held securely in escrow. Payouts are released automatically when delivery is confirmed.
               </div>
-              
+
+              {/* QuickPay — show for completed assignments with a rate */}
+              {isCompleted && assignment.agreed_rate_per_day > 0 && (
+                <div className="mt-4">
+                  <QuickPayWidget
+                    jobId={assignment.id}
+                    grossAmount={assignment.agreed_rate_per_day}
+                    eligibilityStatus="eligible"
+                  />
+                </div>
+              )}
+
               {/* Active Milestone Actions */}
               {(isActive || assignment.status === "in_transit") && (
                 <AssignmentActions 
