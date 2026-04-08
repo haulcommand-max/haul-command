@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 
 import { LOAD_TYPE_REGISTRY } from './TypePage';
 import TypePage from './TypePage';
@@ -10,7 +10,7 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
   const { slug } = await props.params;
 
   if (LOAD_TYPE_REGISTRY[slug]) {

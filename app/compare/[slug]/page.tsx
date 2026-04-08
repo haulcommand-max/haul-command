@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { COMPARE_REGISTRY } from './SlugPage';
 import { TOPICS } from './TopicPage';
@@ -10,8 +10,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const { slug } = await params;
   
