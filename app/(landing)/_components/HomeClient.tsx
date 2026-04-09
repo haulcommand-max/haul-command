@@ -50,8 +50,8 @@ export interface HomeClientProps {
 }
 
 export default function HomeClient({
-    directoryCount, totalCountries, totalOperators, topCorridors,
-    avgRatePerDay = 380,
+    directoryCount, totalCountries, liveCountries, coveredCountries,
+    totalOperators, topCorridors, avgRatePerDay = 380,
 }: HomeClientProps) {
     return (
         <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)]">
