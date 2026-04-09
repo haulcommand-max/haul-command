@@ -9,6 +9,7 @@ import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/s
 import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
 import { DirectorySearchList } from './_components/DirectorySearchList';
 import { CommandMapWrapper } from '@/components/map/CommandMapWrapper';
+import { DirectoryHardFilter } from '@/components/directory/DirectoryHardFilter';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
@@ -334,6 +335,11 @@ export default async function DirectoryPage() {
           {/* Global Command Map */}
           <div className="max-w-6xl mx-auto mb-8">
             <CommandMapWrapper />
+          </div>
+
+          {/* Hard Filters — Certification / Equipment / Availability */}
+          <div className="max-w-4xl mx-auto mb-6">
+            <DirectoryHardFilter />
           </div>
 
           {/* Search */}
