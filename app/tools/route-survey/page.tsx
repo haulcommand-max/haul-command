@@ -108,7 +108,7 @@ export default function RouteSurveyApp() {
                             <Navigation className="w-5 h-5 text-amber-500" />
                             RouteIQ Survey
                         </h1>
-                        <p className="text-xs text-slate-400 font-medium tracking-wide">DIGITAL HEIGHT POLE LOG</p>
+                        <p className="text-xs text-slate-400 font-medium tracking-wide">DIGITAL <a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">HEIGHT POLE</a> LOG</p>
                     </div>
                 </div>
                 <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full flex items-center gap-2">

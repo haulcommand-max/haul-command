@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Axle Weight Calculator — Federal Bridge Formula by State | Haul Command',
+  title: '<a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Axle Weight</a> Calculator — Federal Bridge Formula by State | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
   description: 'Calculate legal axle weights using the federal bridge formula. Check compliance for all US states. Free, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/axle-weight-calculator' },
 }
@@ -51,7 +51,7 @@ export default function AxleWeightCalculatorPage() {
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Axle Weight Calculator — Federal Bridge Formula</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">Check legal axle weight limits using the federal bridge formula. Select your axle configuration and state to see if your load is compliant — and if an overweight permit is required.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">Check legal axle weight limits using the federal bridge formula. Select your axle configuration and state to see if your load is compliant — and if an <a href="/glossary/overweight-permit" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">overweight permit</a> is required.</p>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function AxleWeightCalculatorPage() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/superload-calculator','Superload Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/tools/frost-law-tracker','Frost Law Tracker']].map(([href,label])=>(
+            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/superload-calculator','<a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Superload</a> Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/tools/frost-law-tracker','<a href="/glossary/frost-law" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Frost Law</a> Tracker']].map(([href,label])=>(
               <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e]">{label} →</Link>
             ))}
           </div>

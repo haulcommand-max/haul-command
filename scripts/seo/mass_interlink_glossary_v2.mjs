@@ -1,27 +1,20 @@
 #!/usr/bin/env node
-/**
- * ═══════════════════════════════════════════════════════════════
- * MASS INTERLINK GLOSSARY v2 — Multi-Surface Content Regen Pipeline
- * 
- * Scans all public-facing pages and injects semantic hyperlinks
- * from industry terms to their glossary definitions.
- * 
- * Targets:
- *   - app/training/page.tsx (modules, descriptions, FAQ answers)
- *   - app/tools/*/page.tsx (FAQ answers, descriptions)
- *   - app/(public)/escort-requirements/[state]/page.tsx
- *   - app/(public)/regulations/page.tsx
- * 
- * Rules:
- *   - Only link first occurrence per term per page
- *   - Never link inside <h1>, <h2>, <h3> tags
- *   - Never link inside already-linked text (<a> tags)
- *   - Sort by term length DESC to avoid partial matches
- * ═══════════════════════════════════════════════════════════════
- */
+// ═══════════════════════════════════════════════════════════════
+// MASS INTERLINK GLOSSARY v2 — Multi-Surface Content Regen Pipeline
+//
+// Scans all public-facing pages and injects semantic hyperlinks
+// from industry terms to their glossary definitions.
+//
+// Targets: training, tools, escort-requirements, regulations, roles
+//
+// Rules:
+//   - Only link first occurrence per term per page
+//   - Never link inside headings or existing links
+//   - Sort by term length DESC to avoid partial matches
+// ═══════════════════════════════════════════════════════════════
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'fast-glob';
+import fg from 'fast-glob';
 
 const ROOT = process.cwd();
 
@@ -101,7 +94,7 @@ const targetPatterns = [
   'app/roles/*/page.tsx',
 ];
 
-const targetFiles = glob.sync(targetPatterns, { cwd: ROOT, absolute: true });
+const targetFiles = fg.sync(targetPatterns, { cwd: ROOT, absolute: true });
 console.log(`🎯 Found ${targetFiles.length} target files.`);
 
 // ── 3. Interlink Engine ─────────────────────────────────────

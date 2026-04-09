@@ -62,8 +62,8 @@ export default function EscortCalculator() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
-          name: 'Haul Command Escort Cost Calculator',
-          description: 'Calculate accurate heavy haul escort vehicle costs by region, service type, and distance using 2026 Haul Command Rate Guide live market data.',
+          name: '<a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a> Escort Cost Calculator',
+          description: 'Calculate accurate <a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">heavy haul</a> <a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> costs by region, service type, and distance using 2026 Haul Command Rate Guide live market data.',
           url: 'https://haulcommand.com/tools/escort-calculator',
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web',
@@ -81,7 +81,7 @@ export default function EscortCalculator() {
             Live Quote <span className="text-amber-500">System</span>
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg">
-            Calculate accurate oversize load support rates based on the official 2026 Haul Command Rate Guide.
+            Calculate accurate <a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> support rates based on the official 2026 Haul Command Rate Guide.
           </p>
         </div>
 
@@ -111,7 +111,7 @@ export default function EscortCalculator() {
                 className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-amber-500"
               >
                 <option value="pevo">Base Escort (Lead/Chase)</option>
-                <option value="heightPole">Height Pole & Specialized</option>
+                <option value="heightPole"><a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Height Pole</a> & Specialized</option>
                 <option value="bucket">Bucket Truck (Line Lift)</option>
               </select>
             </div>

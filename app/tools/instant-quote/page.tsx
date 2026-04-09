@@ -6,9 +6,9 @@ import { generateInstantQuote, type QuoteRequest, type InstantQuote } from '@/li
 
 // ═══════════════════════════════════════════════════════════════
 // INSTANT QUOTE TOOL — Public surface for the #1 commercial query:
-// "How much does a pilot car cost?"
+// "How much does a <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> cost?"
 //
-// Targets: pilot car cost, escort vehicle quote, oversize load
+// Targets: pilot car cost, <a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> quote, <a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a>
 // escort pricing, how much does a pilot car cost in [state]
 //
 // Wires: lib/quotes/instant-quote-engine.ts generateInstantQuote()
@@ -131,7 +131,7 @@ export default function InstantQuotePage() {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "How much does a pilot car cost?", "acceptedAnswer": { "@type": "Answer", "text": "Pilot car costs typically range from $400-$800 per day in the United States, $450-$900 CAD per day in Canada, and $350-$700 GBP per day in the UK. Costs vary by load width, route complexity, number of escorts needed, urgency, and seasonal demand. Use the Haul Command Instant Quote tool for a specific estimate." }},
+          { "@type": "Question", "name": "How much does a pilot car cost?", "acceptedAnswer": { "@type": "Answer", "text": "Pilot car costs typically range from $400-$800 per day in the United States, $450-$900 CAD per day in Canada, and $350-$700 GBP per day in the UK. Costs vary by load width, route complexity, number of escorts needed, urgency, and seasonal demand. Use the <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a> Instant Quote tool for a specific estimate." }},
           { "@type": "Question", "name": "How many escort vehicles do I need?", "acceptedAnswer": { "@type": "Answer", "text": "For loads wider than 12 feet (3.66m), most states require at least 1 escort vehicle. Loads wider than 14 feet (4.27m) typically require 2 escorts. Superloads wider than 16 feet (4.88m) may require police escorts in addition to civil escorts." }},
           { "@type": "Question", "name": "What affects pilot car pricing?", "acceptedAnswer": { "@type": "Answer", "text": "Key factors include: load dimensions (wider loads need more escorts), route length, number of states crossed (each requires separate permits), urgency (emergency moves cost 1.5x), time of year (peak season surcharges), and availability of certified operators in the corridor." }},
         ]

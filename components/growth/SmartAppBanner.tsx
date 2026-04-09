@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { X, Star } from 'lucide-react';
 import { track } from '@/lib/telemetry';
 
 /* ──────────────────────────────────────────────────── */
 /*  Smart App Banner                                     */
-/*  Shows iOS / Android install prompt on web pages       */
+/*  Shows iOS / Android PWA install prompt on mobile     */
 /*  Respects dismissed state via localStorage            */
 /* ──────────────────────────────────────────────────── */
 
@@ -16,10 +16,6 @@ interface SmartAppBannerProps {
     title?: string;
     /** Override CTA button text */
     cta?: string;
-    /** App Store URL */
-    appStoreUrl?: string;
-    /** Play Store URL */
-    playStoreUrl?: string;
     /** Theme variant */
     variant?: 'dark' | 'light';
 }
@@ -52,13 +48,12 @@ function isStandalone(): boolean {
 
 export default function SmartAppBanner({
     title = 'Haul Command',
-    cta = 'Open',
-    appStoreUrl = 'https://apps.apple.com/app/haul-command/id0000000000',
-    playStoreUrl = 'https://play.google.com/store/apps/details?id=com.haulcommand.app',
+    cta = 'Install',
     variant = 'dark',
 }: SmartAppBannerProps) {
     const [visible, setVisible] = useState(false);
     const [platform, setPlatform] = useState<'ios' | 'android' | null>(null);
+    const deferredPromptRef = useRef<any>(null);
     const pathname = usePathname();
 
     // Suppress on core operational flows — top banner must never push content on these routes
@@ -88,6 +83,16 @@ export default function SmartAppBanner({
         // Don't show on desktop
     }, []);
 
+    // Listen for the browser's beforeinstallprompt event (Android/Chrome)
+    useEffect(() => {
+        const handler = (e: Event) => {
+            e.preventDefault();
+            deferredPromptRef.current = e;
+        };
+        window.addEventListener('beforeinstallprompt', handler);
+        return () => window.removeEventListener('beforeinstallprompt', handler);
+    }, []);
+
     useEffect(() => {
         if (visible) {
             track('app_banner_shown' as any, {
@@ -98,14 +103,31 @@ export default function SmartAppBanner({
 
     if (!visible) return null;
 
-    const storeUrl = platform === 'ios' ? appStoreUrl : playStoreUrl;
-    const storeName = platform === 'ios' ? 'App Store' : 'Google Play';
-
-    const handleOpen = () => {
+    const handleOpen = async () => {
         track('app_banner_clicked' as any, {
-            metadata: { platform, action: 'open' },
+            metadata: { platform, action: 'install' },
         });
-        window.location.href = storeUrl;
+
+        // Android/Chrome: use the native install prompt
+        if (deferredPromptRef.current) {
+            try {
+                await deferredPromptRef.current.prompt();
+                const result = await deferredPromptRef.current.userChoice;
+                if (result.outcome === 'accepted') {
+                    setVisible(false);
+                }
+            } catch {
+                // Fallback silently
+            }
+            deferredPromptRef.current = null;
+            return;
+        }
+
+        // iOS: show instruction since there's no native install prompt
+        if (platform === 'ios') {
+            alert('Tap the Share button (↑) at the bottom of Safari, then tap "Add to Home Screen" to install Haul Command.');
+            return;
+        }
     };
 
     const handleDismiss = () => {
@@ -131,7 +153,7 @@ export default function SmartAppBanner({
                 animate-in slide-in-from-top duration-300
             `}
             role="banner"
-            aria-label="Download app"
+            aria-label="Install app"
         >
             {/* Dismiss */}
             <button
@@ -164,7 +186,7 @@ export default function SmartAppBanner({
                         ))}
                     </div>
                     <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                        FREE — {storeName}
+                        {platform === 'ios' ? 'Add to Home Screen' : 'Install App — Free'}
                     </span>
                 </div>
             </div>

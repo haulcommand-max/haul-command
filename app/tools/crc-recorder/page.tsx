@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'CRC Black Box Recorder | Haul Command',
+    title: 'CRC Black Box Recorder | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
     description: 'Voice recording and transcription for critical operational commands.',
 };
 

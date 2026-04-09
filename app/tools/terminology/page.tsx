@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Dynamic Terminology Switcher | Haul Command',
+    title: 'Dynamic Terminology Switcher | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
     description: 'Region-aware localization converting industry terms for 120 countries.',
 };
 
@@ -18,7 +18,7 @@ export default function TerminologyPending() {
                     COMING SOON — PREMIUM TOOL (T-37)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
-                    Region-aware localization converting industry terms instantly based on active jurisdiction (e.g., Pilot Car vs Abnormal Load Escort).
+                    Region-aware localization converting industry terms instantly based on active jurisdiction (e.g., <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Pilot Car</a> vs <a href="/glossary/lead-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Abnormal Load Escort</a>).
                     This feature ensures seamless cross-border regulatory compliance across the 120 countries.
                 </p>
                 <Link aria-label="Navigation Link" href="/tools" style={{

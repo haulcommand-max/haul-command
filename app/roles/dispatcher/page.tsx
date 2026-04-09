@@ -6,12 +6,12 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Dispatchers — Dispatch Tools, Load Board & Escort Coordination | Haul Command',
+  title: '<a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Heavy Haul</a> Dispatchers — Dispatch Tools, Load Board & Escort Coordination | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
   description:
-    'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and connect with verified operators across 120 countries. Real-time load board, dispatch map, and corridor intelligence.',
+    'The complete platform for heavy haul dispatchers. Manage loads, coordinate <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> escorts, track permits, and connect with verified operators across 120 countries. Real-time load board, dispatch map, and corridor intelligence.',
   keywords: [
-    'heavy haul dispatcher', 'oversize load dispatch', 'pilot car dispatch',
-    'escort vehicle coordinator', 'oversize load coordinator', 'heavy haul load board',
+    'heavy haul dispatcher', '<a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> dispatch', 'pilot car dispatch',
+    '<a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> coordinator', 'oversize load coordinator', 'heavy haul load board',
     'dispatch oversize load', 'find pilot car for load', 'heavy haul dispatch platform',
   ],
   alternates: { canonical: 'https://www.haulcommand.com/roles/dispatcher' },
@@ -46,7 +46,7 @@ const PAGE_SCHEMA = {
       mainEntity: [
         { '@type': 'Question', name: 'What does a heavy haul dispatcher do?', acceptedAnswer: { '@type': 'Answer', text: 'A heavy haul dispatcher coordinates the movement of oversize or overweight loads by arranging permits, booking escort vehicles (pilot cars), planning routes, and communicating with drivers, brokers, and state DOT agencies throughout each move.' } },
         { '@type': 'Question', name: 'How do I find a pilot car for my load?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for pilot car operators by state and availability. You can also post a load on the load board and receive quotes from nearby certified escort operators.' } },
-        { '@type': 'Question', name: 'What permits are required for oversize loads?', acceptedAnswer: { '@type': 'Answer', text: 'Every state has different permit thresholds and escort requirements. Use the Haul Command escort requirements tool to look up rules for any US state. For cross-border moves, permits are required in each jurisdiction the load passes through.' } },
+        { '@type': 'Question', name: 'What permits are required for oversize loads?', acceptedAnswer: { '@type': 'Answer', text: 'Every state has different permit thresholds and <a href="/glossary/escort-requirements" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort requirements</a>. Use the Haul Command escort requirements tool to look up rules for any US state. For cross-border moves, permits are required in each jurisdiction the load passes through.' } },
         { '@type': 'Question', name: 'How many pilot cars are required for my load?', acceptedAnswer: { '@type': 'Answer', text: 'The number of escort vehicles required depends on load dimensions (width, height, length, and weight), the specific route, and the state or jurisdiction rules. Use the Haul Command escort vehicle calculator to get an instant estimate.' } },
       ],
     },

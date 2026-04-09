@@ -1,19 +1,26 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
+import { createClient } from '@/lib/supabase/server';
 
-// Extracted from Supabase Plan: 20260220_directory_seo_unclaimed.sql
-// Fills the gap allowing unverified entities to claim their public directory page.
+// Wire claim flow to Supabase — replaces mock data with real unclaimed listing query.
 
-export default async function ClaimDirectoryProfilePage({ params }: { params: { id: string } }) {
-  // In a real build, we fetch the unclaimed_directories view using params.id
-  const mockUnclaimedBusiness = {
-    id: params.id,
-    company_name: "Mock Heavy Haul Services LLC",
-    state: "TX",
-    status: "unclaimed"
-  };
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-  if (mockUnclaimedBusiness.status !== 'unclaimed') {
+export default async function ClaimDirectoryProfilePage({ params }: PageProps) {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  // Fetch the unclaimed listing from the directory
+  const { data: listing, error } = await supabase
+    .from('directory_listings')
+    .select('id, company_name, city, state, country, status, slug')
+    .eq('id', id)
+    .single();
+
+  // If not found or already claimed, 404
+  if (error || !listing || listing.status === 'claimed') {
     return notFound();
   }
 
@@ -22,11 +29,12 @@ export default async function ClaimDirectoryProfilePage({ params }: { params: { 
       <div className="max-w-xl w-full bg-black border border-hc-gray-800 rounded-2xl shadow-2xl p-8">
         <h1 className="text-3xl font-extrabold mb-2 text-white">Claim Your Profile</h1>
         <p className="text-hc-gray-400 mb-8">
-          Verify your identity to take control of the <span className="font-bold text-hc-yellow-400">{mockUnclaimedBusiness.company_name}</span> listing in the Haul Command authority directory.
+          Verify your identity to take control of the <span className="font-bold text-hc-yellow-400">{listing.company_name}</span> listing
+          {listing.city && listing.state ? ` in ${listing.city}, ${listing.state}` : ''} in the Haul Command authority directory.
         </p>
 
         <form className="space-y-6" action="/api/directory/claim" method="POST">
-          <input type="hidden" name="directoryId" value={mockUnclaimedBusiness.id} />
+          <input type="hidden" name="directoryId" value={listing.id} />
           
           <div>
             <label className="block text-xs uppercase text-hc-gray-500 font-bold tracking-widest mb-2">Claimant Name / Title</label>

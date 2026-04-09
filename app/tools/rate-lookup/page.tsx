@@ -18,9 +18,9 @@ const CORRIDOR_RATES: Record<string, { label: string; p25: number; p50: number; 
 
 const SERVICE_TYPES: Record<string, { label: string; multiplier: number }> = {
     'pilot_car': { label: 'Pilot/Escort Car', multiplier: 1.0 },
-    'height_pole': { label: 'Height Pole Vehicle', multiplier: 1.15 },
+    'height_pole': { label: '<a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Height Pole</a> Vehicle', multiplier: 1.15 },
     'police_escort': { label: 'Police Escort', multiplier: 2.2 },
-    'route_survey': { label: 'Route Survey', multiplier: 0.85 },
+    'route_survey': { label: '<a href="/glossary/route-survey-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Route Survey</a>', multiplier: 0.85 },
 };
 
 export default function RateLookupPage() {
@@ -48,7 +48,7 @@ export default function RateLookupPage() {
                     </div>
                     <h1 style={{ margin: 0, fontSize: 36, fontWeight: 900, color: '#f9fafb', letterSpacing: -1, lineHeight: 1.1 }}>Lane Rate Lookup</h1>
                     <p style={{ margin: '12px auto 0', maxWidth: 500, fontSize: 15, color: '#6b7280', lineHeight: 1.6 }}>
-                        See what pilot car services typically cost by corridor type and service. Market intelligence, free.
+                        See what <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> services typically cost by corridor type and service. Market intelligence, free.
                     </p>
                 </div>
 
@@ -151,7 +151,7 @@ export default function RateLookupPage() {
                                 {/* CTA */}
                                 <div style={{ background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 16, padding: '1.5rem', textAlign: 'center' }}>
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Ready to Post at the Right Rate?</h3>
-                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Haul Command's intelligence engine adjusts rate recommendations in real-time.</p>
+                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}><a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>'s intelligence engine adjusts rate recommendations in real-time.</p>
                                     <a href="/onboarding/start?role=broker" style={{
                                         display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px',
                                         background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000',

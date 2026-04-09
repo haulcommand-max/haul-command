@@ -8,11 +8,11 @@ import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
 // Free Tool #4 — State Requirements Cheatsheet
 const STATES = [
-    { code: 'TX', name: 'Texas', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '16\'', night: 'Restricted', notes: 'TX pilot car certification required' },
+    { code: 'TX', name: 'Texas', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '16\'', night: 'Restricted', notes: 'TX <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> certification required' },
     { code: 'FL', name: 'Florida', cert: true, heightPole: true, insurance: '$300K', escort1: '12\'', escort2: '14.6\'', night: 'Restricted', notes: 'FDOT permit required for each move' },
     { code: 'CA', name: 'California', cert: true, heightPole: true, insurance: '$1M', escort1: '12\'', escort2: '14\'', night: 'No', notes: 'Caltrans certification, no night superloads' },
     { code: 'OH', name: 'Ohio', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '14\'', night: 'Some', notes: 'ODOT-approved pilot car operator course' },
-    { code: 'PA', name: 'Pennsylvania', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '16\'', night: 'No', notes: 'PennDOT escort rules, no superload night moves' },
+    { code: 'PA', name: 'Pennsylvania', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '16\'', night: 'No', notes: 'PennDOT escort rules, no <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">superload</a> night moves' },
     { code: 'GA', name: 'Georgia', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '14\'', night: 'Restricted', notes: 'GDOT online certification accepted' },
     { code: 'IL', name: 'Illinois', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '15\'', night: 'Some', notes: 'IDOT permit, special bridge restrictions' },
     { code: 'NY', name: 'New York', cert: false, heightPole: true, insurance: '$1M', escort1: '12\'', escort2: '14\'', night: 'Restricted', notes: 'No state cert but carrier standards apply' },
@@ -67,7 +67,7 @@ export default function StateRequirementsCheatsheet() {
                             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                                 <thead>
                                     <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                                        {['State', 'Cert', 'Height Pole', 'Insurance', '1 Escort @', '2 Escorts @', 'Night', 'Notes'].map(h => (
+                                        {['State', 'Cert', '<a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Height Pole</a>', 'Insurance', '1 Escort @', '2 Escorts @', 'Night', 'Notes'].map(h => (
                                             <th key={h} style={{ padding: '10px 12px', textAlign: 'left', fontSize: 9, fontWeight: 800, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>{h}</th>
                                         ))}
                                     </tr>

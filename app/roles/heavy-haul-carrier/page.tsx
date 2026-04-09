@@ -6,13 +6,13 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Carriers — Find Flatbed, Lowboy & Oversize Operators | Haul Command',
+  title: '<a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Heavy Haul</a> Carriers — Find Flatbed, Lowboy & Oversize Operators | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
   description:
     'Connect with verified heavy haul carriers, flatbed operators, and lowboy specialists across the US and 120 countries. Find equipment for your oversize move, post loads, and manage permits in one platform.',
   keywords: [
-    'heavy haul carrier', 'oversize load carrier', 'flatbed carrier near me',
-    'lowboy transport', 'heavy haul trucking company', 'wide load carrier',
-    'oversize freight carrier', 'superload carrier', 'find heavy haul truck',
+    'heavy haul carrier', '<a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> carrier', 'flatbed carrier near me',
+    'lowboy transport', 'heavy haul trucking company', '<a href="/glossary/wide-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">wide load</a> carrier',
+    'oversize freight carrier', '<a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">superload</a> carrier', 'find heavy haul truck',
   ],
   alternates: { canonical: 'https://www.haulcommand.com/roles/heavy-haul-carrier' },
   openGraph: {
@@ -47,7 +47,7 @@ const PAGE_SCHEMA = {
         { '@type': 'Question', name: 'What is a heavy haul carrier?', acceptedAnswer: { '@type': 'Answer', text: 'A heavy haul carrier is a trucking company or operator specializing in transporting oversize, overweight, or out-of-gauge loads that exceed standard legal limits. They use specialized equipment like lowboy trailers, flatbeds, and multi-axle platforms and must comply with state and federal permit requirements.' } },
         { '@type': 'Question', name: 'What equipment do heavy haul carriers use?', acceptedAnswer: { '@type': 'Answer', text: 'Heavy haul carriers use specialized trailers including flatbeds, step-decks, RGNs (removable gooseneck lowboys), multi-axle lowboys, modular trailers (SPMTs), and dolly combinations. Equipment selection depends on load dimensions, weight, and route requirements.' } },
         { '@type': 'Question', name: 'How do I find a heavy haul carrier near me?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for heavy haul carriers by state, equipment type, and capacity. You can also post your load on the load board and receive quotes from qualified carriers nationwide.' } },
-        { '@type': 'Question', name: 'Do heavy haul loads require escort vehicles?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Most oversize loads require one or more pilot car (escort vehicle) operators. The exact number depends on load dimensions and the states traveled through. Use the Haul Command escort calculator to estimate required escorts for any move.' } },
+        { '@type': 'Question', name: 'Do heavy haul loads require escort vehicles?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Most oversize loads require one or more <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> (<a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a>) operators. The exact number depends on load dimensions and the states traveled through. Use the Haul Command escort calculator to estimate required escorts for any move.' } },
       ],
     },
   ],
@@ -56,7 +56,7 @@ const PAGE_SCHEMA = {
 const ACTIONS = [
   { href: '/directory', icon: '🔍', label: 'Find Heavy Haul Carriers', desc: 'Browse verified carriers by state, equipment type, and capacity', cta: 'Browse Directory →', primary: true },
   { href: '/loads', icon: '📦', label: 'Post a Load', desc: 'List your oversize move and receive quotes from qualified carriers', cta: 'Post a Load →', primary: false },
-  { href: '/escort-requirements', icon: '⚖️', label: 'Permit & Escort Rules', desc: 'State-by-state oversize permit thresholds and escort requirements', cta: 'Check Requirements →', primary: false },
+  { href: '/escort-requirements', icon: '⚖️', label: 'Permit & Escort Rules', desc: 'State-by-state oversize permit thresholds and <a href="/glossary/escort-requirements" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort requirements</a>', cta: 'Check Requirements →', primary: false },
   { href: '/tools/escort-calculator', icon: '🧮', label: 'Escort Calculator', desc: 'Calculate how many pilot cars your load requires by state', cta: 'Calculate →', primary: false },
   { href: '/claim', icon: '🚛', label: 'List Your Operation', desc: 'Add your carrier company to the Haul Command directory — free', cta: 'Get Listed Free →', primary: false },
   { href: '/available-now', icon: '🟢', label: 'Available Right Now', desc: 'Carriers and escort operators broadcasting live availability', cta: 'See Who\'s Available →', primary: false },

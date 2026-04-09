@@ -3,8 +3,8 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Is My Load Oversize? Load Dimension & Weight Checker | Haul Command',
-  description: 'Enter your load dimensions and weight to instantly find out if it is oversize, what permits you need, and whether a pilot car is required. Free, no login.',
+  title: 'Is My Load Oversize? Load Dimension & Weight Checker | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+  description: 'Enter your load dimensions and weight to instantly find out if it is oversize, what permits you need, and whether a <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> is required. Free, no login.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/load-dimension-checker' },
 }
 
@@ -21,10 +21,10 @@ const STATE_OVERRIDES = [
 ]
 
 const ESCORT_MATRIX = [
-  { trigger:'Width 10–12 ft', requirement:'1 escort vehicle (front or rear per state)', states:'Most US states' },
-  { trigger:'Width 12–14 ft', requirement:'1 front escort + 1 rear escort vehicle',       states:'Most US states' },
+  { trigger:'Width 10–12 ft', requirement:'1 <a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> (front or rear per state)', states:'Most US states' },
+  { trigger:'Width 12–14 ft', requirement:'1 front escort + 1 <a href="/glossary/chase-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">rear escort vehicle</a>',       states:'Most US states' },
   { trigger:'Width 14–16 ft', requirement:'2 escorts + high pole operator (some states)',  states:'AZ, TX, CA, WA, OR, NV' },
-  { trigger:'Width 16+ ft',   requirement:'2 escorts + high pole + police escort',         states:'Most US states (superload)' },
+  { trigger:'Width 16+ ft',   requirement:'2 escorts + high pole + police escort',         states:'Most US states (<a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">superload</a>)' },
   { trigger:'Height 14–15 ft',requirement:'High pole operator required',                   states:'AZ, TX, NM, CA' },
   { trigger:'Height 15+ ft',  requirement:'High pole + police escort (many states)',        states:'Most US states' },
   { trigger:'Length 100+ ft', requirement:'Rear steer / steerman operator',               states:'CA, AZ, TX, OR, NV, WA' },
@@ -32,7 +32,7 @@ const ESCORT_MATRIX = [
 
 const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Load Dimension Checker — Is My Load Oversize?', url:'https://www.haulcommand.com/tools/load-dimension-checker', description:'Check if your load is oversize and what permits and escorts are required. Free, no login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
 const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
-  {"@type":'Question', name:'What makes a load oversize in the US?', acceptedAnswer:{"@type":'Answer', text:'In the US, a load is considered oversize if it exceeds any of these federal limits: width over 8 feet 6 inches (8.5 ft), height over 13 feet 6 inches (13.5 ft), length over 53 feet (standard trailer), or weight over 80,000 lbs gross vehicle weight. Exceeding any of these dimensions requires an oversize load permit in every state the load travels through.'}},
+  {"@type":'Question', name:'What makes a load oversize in the US?', acceptedAnswer:{"@type":'Answer', text:'In the US, a load is considered oversize if it exceeds any of these federal limits: width over 8 feet 6 inches (8.5 ft), height over 13 feet 6 inches (13.5 ft), length over 53 feet (standard trailer), or weight over 80,000 lbs gross vehicle weight. Exceeding any of these dimensions requires an <a href="/glossary/oversize-trucking-permit" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load permit</a> in every state the load travels through.'}},
   {"@type":'Question', name:'When is a pilot car required?', acceptedAnswer:{"@type":'Answer', text:'A pilot car (escort vehicle) is required when a load exceeds state-specific width, height, or length thresholds. In most US states, loads exceeding 12 feet wide require at least one pilot car. At 14+ feet wide, two pilot cars are typically required. At 16+ feet wide, police escorts are additionally required in most states.'}},
   {"@type":'Question', name:'What is the maximum legal load width without a permit?', acceptedAnswer:{"@type":'Answer', text:'The maximum legal load width without an oversize permit in the United States is 8 feet 6 inches (8.5 ft) on most highways. Some states allow slightly different legal widths on certain road types. Any load exceeding this requires an oversize permit.'}},
 ]}
@@ -131,7 +131,7 @@ export default function LoadDimensionCheckerPage() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','Axle Weight Calculator'],['/tools/superload-calculator','Superload Calculator'],['/find-capacity','Find Pilot Car Now']].map(([href,label])=>(
+            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','<a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Axle Weight</a> Calculator'],['/tools/superload-calculator','Superload Calculator'],['/find-capacity','Find Pilot Car Now']].map(([href,label])=>(
               <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} →</Link>
             ))}
           </div>

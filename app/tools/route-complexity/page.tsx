@@ -13,12 +13,12 @@ function calcComplexity(states: string[], loadWidth: number, loadHeight: number,
     if (states.length >= 4) { score += 25; factors.push(`${states.length} states = complex permitting`); }
     else if (states.length >= 2) { score += 12; factors.push(`${states.length} states crossed`); }
     // Width
-    if (loadWidth >= 16) { score += 30; factors.push('Superload width (16\'+ wide)'); }
-    else if (loadWidth >= 14) { score += 20; factors.push('Wide load (14\'+ wide, double escort likely)'); }
+    if (loadWidth >= 16) { score += 30; factors.push('<a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Superload</a> width (16\'+ wide)'); }
+    else if (loadWidth >= 14) { score += 20; factors.push('<a href="/glossary/wide-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Wide load</a> (14\'+ wide, double escort likely)'); }
     else if (loadWidth >= 12) { score += 10; factors.push('Oversize width (12\'+ wide)'); }
     // Height
     if (loadHeight >= 16) { score += 25; factors.push('Extreme height — utility crew likely'); }
-    else if (loadHeight >= 14) { score += 15; factors.push('High load — height pole critical'); }
+    else if (loadHeight >= 14) { score += 15; factors.push('High load — <a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">height pole</a> critical'); }
     // Weight
     if (loadWeight >= 200000) { score += 20; factors.push('Superload weight — bridge analysis required'); }
     else if (loadWeight >= 100000) { score += 10; factors.push('Heavy load — route restrictions likely'); }
