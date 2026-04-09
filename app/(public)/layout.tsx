@@ -6,7 +6,7 @@ import { MobileNavSheet } from '@/components/layout/MobileNavSheet';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetargeter';
 import { GlobalOmniSearch } from '@/components/ui/GlobalOmniSearch';
-import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
+
 
 /**
  * (public) Layout — Unified app shell for public-facing pages.
@@ -153,7 +153,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
                 {/* Desktop header bar */}
                 <div className="app-desktop-header">
-                    <GlobalCommandBar />
+
                 </div>
 
                 {/* Content area — padded for mobile bottom nav */}

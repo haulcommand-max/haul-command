@@ -3,7 +3,7 @@ import Link from 'next/link';
 import EnhancedFooter from '@/components/layout/EnhancedFooter';
 import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
-import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
+
 
 /**
  * (app) Layout — App shell with desktop sidebar + mobile native nav.
@@ -122,7 +122,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
                 {/* Desktop header bar */}
                 <div className="app-desktop-header">
-                    <GlobalCommandBar />
+
                 </div>
 
                 {/* Content area — padded for mobile bottom nav */}

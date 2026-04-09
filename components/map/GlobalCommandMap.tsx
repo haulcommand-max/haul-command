@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Map, { Marker, NavigationControl, Popup } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Shield } from 'lucide-react';
 
 interface OperatorNode {
@@ -136,6 +137,17 @@ export function GlobalCommandMap() {
 
       {/* OS Overlay - Scanner UI */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C6923A] to-transparent opacity-50 z-20" />
+
+      {/* Faded HC Logo replacing Mapbox mark */}
+      <div className="absolute bottom-6 left-6 z-20 pointer-events-none opacity-40 mix-blend-plus-lighter">
+        <Image 
+           src="/brand/generated/pwa-icon-192.png" 
+           alt="Haul Command Map" 
+           width={32} 
+           height={32} 
+           className="grayscale saturate-0 brightness-150 drop-shadow-[0_0_2px_#fff]"
+        />
+      </div>
 
       {/* Mapbox Instance */}
       <Map

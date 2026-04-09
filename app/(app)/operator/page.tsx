@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import InviteCard from "@/components/growth/InviteCard";
 import { MilestoneCelebration, BenchmarkCard } from "@/components/psychology/GrowthHooks";
-import { GlobalCommandBar } from "@/components/layout/GlobalCommandBar";
+
 
 interface DashboardData {
     entity_id: string;
@@ -145,7 +145,6 @@ export default function OperatorDashboard() {
     return (
         <div className="min-h-screen bg-gray-950 text-white pb-24">
             {/* Header */}
-            <GlobalCommandBar />
 
             <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
                 {/* ── MODULE 1: Availability Toggle ── */}

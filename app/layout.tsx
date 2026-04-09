@@ -18,6 +18,8 @@ import { CookieConsent } from "@/components/legal/CookieConsent";
 import PushConsentModal from "@/components/push/PushConsentModal";
 import { StickyMobileChipRail } from "@/components/ads/StickyMobileChipRail";
 import { getHouseAds } from "@/lib/ads/house-ads";
+import { GlobalCommandBar } from "@/components/layout/GlobalCommandBar";
+import BetaWaitlistModal from "@/components/capture/BetaWaitlistModal";
 
 // ═══════════════════════════════════════════════════════════════
 // ROOT LAYOUT — Minimal shell only.
@@ -260,6 +262,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <RoleProvider>
                     <GlobalBackground />
                     <SmartAppBanner />
+                    
+                    <GlobalCommandBar />
+
                     <PostHogProvider>
                         {children}
                     </PostHogProvider>
@@ -273,7 +278,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <SpeedInsights />
                     <AuthStatusBanner />
                     <SessionDNATracker />
-                    <CaptureOverlay />
+                    {/* CaptureOverlay was replaced per User directive causing a dark blank issue */}
+                    {/* <CaptureOverlay /> */}
+                    <BetaWaitlistModal />
                     <PushConsentModal />
                     <CookieConsent />
                     <StickyMobileChipRail ads={getHouseAds({ limit: 4 })} />
