@@ -98,38 +98,61 @@ const targetFiles = fg.sync(targetPatterns, { cwd: ROOT, absolute: true });
 console.log(`🎯 Found ${targetFiles.length} target files.`);
 
 // ── 3. Interlink Engine ─────────────────────────────────────
+// APPROACH: Find JSX paragraph text between >...< boundaries.
+// Only inject links into visible JSX text, never into JS code.
 
-function interlinkContent(content, filePath) {
-  let modified = content;
+function interlinkContent(content) {
   let linkCount = 0;
   const linkedTerms = new Set();
-  
+  let modified = content;
+
   for (const { word, slug } of deduped) {
     if (linkedTerms.has(word.toLowerCase())) continue;
-    
-    // Only match inside string literals (single-quoted JSX content)
-    // Pattern: word boundary match, case-insensitive, first occurrence only
+
     const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(?<![<\\/a-zA-Z"=])\\b(${escapedWord})\\b(?![^<]*<\\/a>)(?![^<]*<\\/h[1-3]>)`, 'i');
-    
-    // Only replace inside text content strings (not in JSX attributes or code)
-    const match = modified.match(regex);
-    if (match && match.index !== undefined) {
-      // Verify we're inside a string literal or text content, not in a tag attribute
-      const before = modified.substring(Math.max(0, match.index - 100), match.index);
-      const isInsideTag = /<[a-zA-Z][^>]*$/.test(before);
-      const isInsideHref = /href=["'][^"']*$/.test(before);
-      const isInsideExistingLink = /<a [^>]*$/.test(before);
-      
-      if (!isInsideTag && !isInsideHref && !isInsideExistingLink) {
-        const link = `<a href="/glossary/${slug}" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">${match[0]}</a>`;
-        modified = modified.substring(0, match.index) + link + modified.substring(match.index + match[0].length);
-        linkedTerms.add(word.toLowerCase());
-        linkCount++;
-      }
-    }
+    // Only match the term when preceded by > (end of JSX tag) and text
+    // This ensures we're inside rendered JSX content, not JS code
+    const jsxTextPattern = new RegExp(
+      `(>(?:[^<]*?))\\b(${escapedWord})\\b`,
+      'i'
+    );
+
+    const m = modified.match(jsxTextPattern);
+    if (!m || m.index === undefined) continue;
+
+    // Extra safety: check the line context
+    const lineStart = modified.lastIndexOf('\n', m.index) + 1;
+    const lineEnd = modified.indexOf('\n', m.index);
+    const line = modified.substring(lineStart, lineEnd > 0 ? lineEnd : m.index + 200);
+
+    // SKIP: metadata objects (description:, keywords:, title:, name:)
+    if (/^\s*(description|keywords|title|name|alt)\s*[:=]/.test(line.trimStart())) continue;
+    // SKIP: JS comments
+    if (/^\s*\/\//.test(line.trimStart())) continue;
+    // SKIP: inside string arrays ['term1', 'term2']
+    if (/^\s*\[?\s*'/.test(line.trimStart())) continue;
+    // SKIP: object property lines { key: 'value' }
+    if (/^\s*\{?\s*\w+:\s*['"]/.test(line.trimStart())) continue;
+    // SKIP: JSON-LD or dangerouslySetInnerHTML
+    if (/dangerouslySetInnerHTML|application\/ld\+json|JSON\.stringify/.test(line)) continue;
+    // SKIP: import/export lines
+    if (/^\s*(import|export|const|let|var|function)\s/.test(line.trimStart())) continue;
+    // SKIP: if no JSX tag opener found on this line (pure JS code line)
+    if (!/</.test(line) && !/>\s*$/.test(modified.substring(lineStart - 200, lineStart))) continue;
+
+    // Build the replacement — keep the prefix (>text before match) intact
+    const prefix = m[1];
+    const matched = m[2];
+    const fullMatchStart = m.index;
+    const fullMatchEnd = m.index + m[0].length;
+
+    const link = `<a href="/glossary/${slug}" style={{color: '#D4A844', textDecoration: 'none', borderBottom: '1px dotted rgba(212,168,68,0.3)'}}>${matched}</a>`;
+
+    modified = modified.substring(0, fullMatchEnd - matched.length) + link + modified.substring(fullMatchEnd);
+    linkedTerms.add(word.toLowerCase());
+    linkCount++;
   }
-  
+
   return { content: modified, linkCount };
 }
 
@@ -139,8 +162,8 @@ let filesModified = 0;
 
 for (const filePath of targetFiles) {
   const original = fs.readFileSync(filePath, 'utf8');
-  const { content: modified, linkCount } = interlinkContent(original, filePath);
-  
+  const { content: modified, linkCount } = interlinkContent(original);
+
   if (linkCount > 0) {
     fs.writeFileSync(filePath, modified);
     const relative = path.relative(ROOT, filePath);
@@ -152,3 +175,4 @@ for (const filePath of targetFiles) {
 
 console.log(`\n🔗 COMPLETE: ${totalLinks} glossary links injected across ${filesModified} files.`);
 console.log(`⚠️  Run 'npm run build' to verify no JSX syntax breakage.`);
+
