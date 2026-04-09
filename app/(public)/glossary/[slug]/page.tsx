@@ -46,7 +46,7 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
     const { data: terms, error } = await supabase
         .from('glossary_public')
         .select('*')
-        .or(`slug.eq."${slug}",synonyms.cs.'{"${slug}"}'`)
+        .or(`slug.eq."${slug}",synonyms.cs.{"${slug}"}`)
         .limit(1);
 
     if (error || !terms || terms.length === 0) {
