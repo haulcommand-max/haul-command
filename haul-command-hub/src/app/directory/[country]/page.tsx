@@ -5,6 +5,7 @@ import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import { supabaseServer } from "@/lib/supabase-server";
 import { countryName, categoryLabel, categoryIcon, ALL_COUNTRY_CODES, normalizeCategory } from "@/lib/directory-helpers";
 import { getCountryBySlug } from "@/lib/seo-countries";
+import TrainingBadgeChip from "@/components/directory/TrainingBadgeChip";
 
 export const revalidate = 900;
 
@@ -70,6 +71,11 @@ export default async function DirectoryCountryPage({
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 
+    const rawTrained = Array.isArray(sp.trained) ? sp.trained[0] : sp.trained;
+    const trainedFilter = ['any', 'road_ready', 'certified', 'elite', 'av_ready'].includes(rawTrained ?? '')
+      ? (rawTrained as string)
+      : null;
+
     // Local terminology
     const localPilotCar = countryConfig?.terms?.pilot_car ?? 'Pilot Car';
     const localEscort = countryConfig?.terms?.escort_vehicle ?? 'Escort Vehicle';
@@ -89,20 +95,44 @@ export default async function DirectoryCountryPage({
     }
     const facetList = Array.from(facets.entries()).sort((a, b) => b[1] - a[1]);
 
-    // Paginated listings
-    let listQuery = sb
+    // Paginated listings — trained filter uses RPC; default uses view
+    let rows: any[] = [];
+    let total = 0;
+
+    if (trainedFilter) {
+      const { data: rpcData } = await sb.rpc('trained_operators_filter', {
+        p_country_code: cc,
+        p_min_badge: trainedFilter,
+        p_limit: PAGE_SIZE,
+        p_offset: from,
+      });
+      const parsed = rpcData as { operators: any[]; total: number } | null;
+      rows = parsed?.operators ?? [];
+      total = parsed?.total ?? 0;
+    } else {
+      let listQuery = sb
         .from("hc_public_operators")
         .select("id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at, surface_category_key:entity_type", {
-            count: "exact",
+          count: "exact",
         });
-    if (cc !== 'all') listQuery = listQuery.eq("country_code", country.toUpperCase());
+      if (cc !== 'all') listQuery = listQuery.eq("country_code", country.toUpperCase());
+      const { data: rawRows, count } = await listQuery.order("updated_at", { ascending: false }).range(from, to);
+      rows = (rawRows as any[]) ?? [];
+      total = count ?? 0;
+    }
 
-    const { data: rawRows, count } = await listQuery
-        .order("updated_at", { ascending: false })
-        .range(from, to);
+    // Training badge lookup for rendered rows
+    const operatorIds = rows.map((r: any) => r.id).filter(Boolean);
+    let badgeMap: Map<string, string> = new Map();
+    if (operatorIds.length > 0) {
+      const { data: badgeRows } = await sb.rpc('directory_training_badge_lookup', {
+        p_operator_ids: operatorIds,
+      });
+      for (const b of (badgeRows as any[]) ?? []) {
+        badgeMap.set(b.operator_id, b.badge_slug);
+      }
+    }
 
-    const rows = rawRows as any[];
-    const total = count ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
     // Coverage status
@@ -235,6 +265,43 @@ export default async function DirectoryCountryPage({
                 <div className="max-w-7xl mx-auto px-4 py-12 lg:flex gap-12">
                     {/* ─── Sidebar ─── */}
                     <aside className="lg:w-72 flex-shrink-0 mb-10 lg:mb-0 space-y-8">
+                        {/* Training Filter */}
+                        <div>
+                          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Training Filter</h2>
+                          <p className="text-[10px] text-gray-600 mb-3 leading-relaxed">
+                            Filter to operators with active HC training badges. Badge affects directory ranking and broker trust.
+                          </p>
+                          <div className="space-y-1">
+                            {[
+                              { slug: 'any',       label: '🎓 Any trained', color: 'text-gray-300' },
+                              { slug: 'road_ready', label: '🟢 Road Ready+', color: 'text-green-400' },
+                              { slug: 'certified',  label: '🟡 Certified+',  color: 'text-amber-400' },
+                              { slug: 'elite',      label: '🟣 Elite only',  color: 'text-purple-400' },
+                              { slug: 'av_ready',   label: '🔵 AV-Ready',    color: 'text-blue-400' },
+                            ].map(({ slug, label, color }) => (
+                              <Link
+                                key={slug}
+                                href={`/directory/${cc}?trained=${slug}`}
+                                className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
+                                  trainedFilter === slug
+                                    ? `${color} bg-white/[0.06] font-semibold`
+                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                }`}
+                              >
+                                <span>{label}</span>
+                                {trainedFilter === slug && <span className="text-[10px]">✓</span>}
+                              </Link>
+                            ))}
+                          </div>
+                          {!trainedFilter && (
+                            <p className="text-[10px] text-gray-600 mt-2">
+                              <Link href="/training" className="text-accent/70 hover:text-accent transition-colors">
+                                About HC training →
+                              </Link>
+                            </p>
+                          )}
+                        </div>
+
                         {/* Categories */}
                         <div>
                             <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Categories</h2>
@@ -312,6 +379,25 @@ export default async function DirectoryCountryPage({
 
                     {/* ─── Main Content ─── */}
                     <section className="flex-grow min-w-0">
+                        {/* ─── Training Filter Banner ─── */}
+                        {trainedFilter && (
+                          <div className="flex items-center justify-between mb-6 px-4 py-3 bg-amber-500/[0.06] border border-amber-500/20 rounded-xl">
+                            <div className="flex items-center gap-2 text-sm text-amber-300">
+                              <span>🎓</span>
+                              <span className="font-semibold">
+                                Showing trained operators
+                                {trainedFilter !== 'any' ? ` — ${trainedFilter.replace(/_/g, ' ')} level and above` : ''}
+                              </span>
+                            </div>
+                            <Link
+                              href={`/directory/${cc}`}
+                              className="text-xs text-gray-500 hover:text-white transition-colors ml-4 flex-shrink-0"
+                            >
+                              Clear filter ×
+                            </Link>
+                          </div>
+                        )}
+
                         {/* ─── Three-Lane CTA Block (always visible) ─── */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
                             <Link
@@ -389,17 +475,31 @@ export default async function DirectoryCountryPage({
                                             className="block bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 hover:bg-accent/[0.02] transition-all group"
                                         >
                                             <div className="flex items-start justify-between gap-4">
-                                                <div className="min-w-0">
-                                                    <h3 className="text-white font-semibold group-hover:text-accent transition-colors truncate">
-                                                        {p.name}
-                                                    </h3>
+                                                <div className="min-w-0 flex-grow">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                      <h3 className="text-white font-semibold group-hover:text-accent transition-colors truncate">
+                                                          {p.name}
+                                                      </h3>
+                                                      {badgeMap.get(p.id) && (
+                                                        <TrainingBadgeChip
+                                                          badgeSlug={badgeMap.get(p.id)!}
+                                                          linkable={false}
+                                                        />
+                                                      )}
+                                                      {(p.training_badge) && !badgeMap.get(p.id) && (
+                                                        <TrainingBadgeChip
+                                                          badgeSlug={p.training_badge}
+                                                          linkable={false}
+                                                        />
+                                                      )}
+                                                    </div>
                                                     <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                                                        <span>{categoryIcon(normalizeCategory(p.surface_category_key))}</span>
-                                                        <span>{categoryLabel(normalizeCategory(p.surface_category_key))}</span>
-                                                        {p.locality && (
+                                                        <span>{categoryIcon(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
+                                                        <span>{categoryLabel(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
+                                                        {(p.locality ?? p.city) && (
                                                             <>
                                                                 <span>·</span>
-                                                                <span>{[p.locality, p.admin1_code].filter(Boolean).join(", ")}</span>
+                                                                <span>{[p.locality ?? p.city, p.admin1_code ?? p.state_code].filter(Boolean).join(", ")}</span>
                                                             </>
                                                         )}
                                                     </div>
@@ -414,13 +514,13 @@ export default async function DirectoryCountryPage({
                                 {totalPages > 1 && (
                                     <nav className="flex items-center justify-center gap-4 mt-10">
                                         {page > 1 && (
-                                            <Link href={`/directory/${cc}?page=${page - 1}`} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-accent hover:border-accent/30 transition-all">
+                                            <Link href={`/directory/${cc}?page=${page - 1}${trainedFilter ? `&trained=${trainedFilter}` : ''}`} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-accent hover:border-accent/30 transition-all">
                                                 ← Previous
                                             </Link>
                                         )}
                                         <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
                                         {page < totalPages && (
-                                            <Link href={`/directory/${cc}?page=${page + 1}`} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-accent hover:border-accent/30 transition-all">
+                                            <Link href={`/directory/${cc}?page=${page + 1}${trainedFilter ? `&trained=${trainedFilter}` : ''}`} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-accent hover:border-accent/30 transition-all">
                                                 Next →
                                             </Link>
                                         )}
