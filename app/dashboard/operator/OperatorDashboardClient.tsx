@@ -245,6 +245,26 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
+      {/* ── Compliance Hub CTA ── */}
+      {hasLinkedProfile && (
+        <Card>
+          <div className="p-4 flex items-center justify-between gap-4 border border-[#22c55e]/20 bg-[#22c55e]/5 rounded-xl">
+            <div className="flex items-center gap-4">
+              <CheckCircle className="w-8 h-8 text-[#22c55e] flex-shrink-0" />
+              <div>
+                <h2 className="font-bold text-white text-sm">Compliance Hub</h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Sign auto-filled route surveys, W-9s, and high-pole declarations.
+                </p>
+              </div>
+            </div>
+            <Link href="/dashboard/operator/forms" className="flex-shrink-0 px-4 py-2 bg-[#10b981] hover:bg-[#059669] text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-colors whitespace-nowrap">
+              Manage Forms →
+            </Link>
+          </div>
+        </Card>
+      )}
+
       {/* ── KPI Row ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
