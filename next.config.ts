@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
         "livekit-client",
     ],
 
+    // ── Turbopack ───────────────────────────────────────────────────────────
+    // Pin workspace root to this project to silence the "multiple lockfiles" warning
+    turbopack: {
+        root: process.cwd(),
+    },
+
     experimental: {
         // Tree-shake barrel exports so each route only includes used icons/utils
         // NOTE: Do NOT add @supabase/supabase-js here — it breaks PostgrestBuilder's

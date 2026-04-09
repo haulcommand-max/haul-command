@@ -40,8 +40,14 @@ CREATE OR REPLACE FUNCTION ping_live_status(
 RETURNS void
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = pg_catalog, public, extensions
 AS $$
 BEGIN
+    -- Verify caller owns this operator_id
+    IF auth.uid() IS DISTINCT FROM p_operator_id THEN
+        RAISE EXCEPTION 'unauthorized: can only ping own status';
+    END IF;
+
     INSERT INTO public.operator_live_status (operator_id, status, last_pinged_at, current_lat, current_lng)
     VALUES (p_operator_id, p_status, now(), p_lat, p_lng)
     ON CONFLICT (operator_id) 
