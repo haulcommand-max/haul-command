@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
+import { ChevronRight } from 'lucide-react';
+import { ScrollReveal } from '@/app/components/glossary/GlossaryAnimations';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 interface Props {
     params: Promise<{ code: string }>;
@@ -96,108 +100,143 @@ export default async function CountryGlossaryPage({ params }: Props) {
     };
 
     return (
-        <>
+        <div className="min-h-[100dvh] bg-[#0B0B0C] text-white">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-            <div style={{ maxWidth: '960px', margin: '0 auto', padding: '2rem 1rem' }}>
-                <nav style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '1.5rem' }}>
-                    <Link aria-label="Navigation Link" href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Glossary</Link>
-                    <span style={{ margin: '0 8px' }}>›</span>
-                    <span>{meta.name}</span>
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24">
+                
+                {/* BREADCRUMBS */}
+                <nav className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/50 mb-10">
+                    <Link aria-label="Glossary Index" href="/glossary" className="hover:text-white transition-colors duration-200">Glossary</Link>
+                    <ChevronRight className="w-3 h-3 text-white/20" />
+                    <span className="text-[#D4A844]">{meta.name}</span>
                 </nav>
 
-                <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>
-                    {meta.flag} {meta.name} Transport Terminology
-                </h1>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', marginBottom: '2rem', maxWidth: '640px' }}>
-                    {enriched.length} {meta.demonym} oversize load and escort vehicle terms mapped to global concepts.
-                </p>
+                {/* HERO */}
+                <ScrollReveal className="text-center mb-16 relative z-10">
+                    <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none" aria-hidden="true">
+                        <div className="w-[400px] h-[300px] rounded-full bg-[#D4A844]/[0.08] blur-[120px]" />
+                    </div>
+                    
+                    <div className="inline-flex items-center gap-2 bg-[#D4A844]/10 border border-[#D4A844]/20 rounded-full px-4 py-1.5 mb-6">
+                        <span className="text-lg">{meta.flag}</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-[#D4A844]">
+                            {meta.name} Verified Framework
+                        </span>
+                    </div>
 
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#D4A844] via-[#e8c36a] to-[#D4A844]">
+                            {meta.name}
+                        </span>{' '}
+                        Transport Terminology
+                    </h1>
+                    <p className="text-white/60 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
+                        {enriched.length} {meta.demonym} oversize load and escort vehicle terms mapped to their global counterparts. Understand local regulations and nuanced definitions.
+                    </p>
+                </ScrollReveal>
+
+                {/* AD GRID SLOT */}
+                <div className="mb-14">
+                    <AdGridSlot zone="glossary_country_top" />
+                </div>
+
+                {/* CATEGORIES GRID */}
                 {[...grouped.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([category, items]) => (
-                    <section key={category} style={{ marginBottom: '2rem' }}>
-                        <h2 style={{
-                            fontSize: '1rem', fontWeight: 600, color: '#38bdf8',
-                            textTransform: 'capitalize',
-                            borderBottom: '1px solid rgba(255,255,255,0.08)',
-                            paddingBottom: '8px', marginBottom: '12px',
-                        }}>
+                    <ScrollReveal key={category} className="mb-14">
+                        <h2 className="text-[11px] font-black tracking-[0.2em] text-[#D4A844] uppercase mb-5 flex items-center gap-2">
+                            <span className="w-8 h-px bg-gradient-to-r from-[#D4A844] to-transparent" />
                             {category.replace(/_/g, ' ')}
                         </h2>
-                        <div style={{ display: 'grid', gap: '6px' }}>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {items.map((item, i) => (
-                                <Link aria-label="Navigation Link"
+                                <Link 
+                                    aria-label={`View Term: ${item.term_local}`}
                                     key={`${item.concept_slug}-${i}`}
-                                    href={`/glossary/${item.concept_slug}`}
-                                    style={{
-                                        display: 'block', padding: '10px 14px', borderRadius: '8px',
-                                        background: 'rgba(255,255,255,0.02)',
-                                        border: '1px solid rgba(255,255,255,0.06)',
-                                        textDecoration: 'none',
-                                    }}
+                                    href={`/glossary/${item.concept_slug.toLowerCase()}`}
+                                    className="block group h-full"
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
-                                        <span style={{ color: '#fff', fontWeight: 600, fontSize: '14px' }}>
-                                            {item.term_local}
-                                        </span>
-                                        {item.is_primary && (
-                                            <span style={{ fontSize: '10px', color: '#22c55e', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                                primary
+                                    <div className="bg-[#121214] border border-white/5 rounded-2xl p-5 h-full transition-all duration-300 group-hover:bg-[#1A1A1E] group-hover:border-[#D4A844]/30 relative overflow-hidden group-hover:-translate-y-1">
+                                        
+                                        <div className="flex items-baseline gap-2 mb-2 flex-wrap">
+                                            <span className="text-white font-bold text-base group-hover:text-[#D4A844] transition-colors line-clamp-1">
+                                                {item.term_local}
                                             </span>
+                                            {item.is_primary && (
+                                                <span className="text-[9px] text-[#22c55e] font-bold uppercase tracking-widest bg-[#22c55e]/10 px-1.5 py-0.5 rounded">
+                                                    local primary
+                                                </span>
+                                            )}
+                                            <span className="text-xs text-white/30 hidden sm:inline-block">
+                                                → {item.concept_name}
+                                            </span>
+                                        </div>
+                                        
+                                        <p className="text-white/45 text-sm line-clamp-2 leading-relaxed mb-3">
+                                            {item.concept_description}
+                                        </p>
+                                        
+                                        {item.regulatory_notes && (
+                                            <div className="mt-3 pt-3 border-t border-[#D4A844]/10">
+                                                <span className="block text-xs text-[#D4A844]/80 font-medium leading-relaxed">
+                                                    <span className="mr-1.5">⚖️</span>
+                                                    {item.regulatory_notes}
+                                                </span>
+                                            </div>
                                         )}
-                                        <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)' }}>
-                                            → {item.concept_name}
-                                        </span>
                                     </div>
-                                    {item.regulatory_notes && (
-                                        <span style={{ display: 'block', fontSize: '12px', color: 'rgba(250,204,21,0.7)', marginTop: '4px' }}>
-                                            ⚖ {item.regulatory_notes}
-                                        </span>
-                                    )}
-                                    <span style={{ display: 'block', color: 'rgba(255,255,255,0.45)', fontSize: '13px', marginTop: '4px', lineHeight: 1.4 }}>
-                                        {item.concept_description}
-                                    </span>
                                 </Link>
                             ))}
                         </div>
-                    </section>
+                    </ScrollReveal>
                 ))}
 
                 {enriched.length === 0 && (
-                    <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'rgba(255,255,255,0.4)' }}>
-                        <p style={{ fontSize: '1.1rem', marginBottom: '8px' }}>
-                            {meta.flag} {meta.name} terminology is being mapped.
+                    <div className="text-center py-24 bg-[#121214] border border-white/5 rounded-3xl opacity-80">
+                        <span className="text-4xl mb-4 block opacity-50 grayscale">{meta.flag}</span>
+                        <p className="text-lg text-white/50 mb-4 font-medium">
+                            {meta.name} terminology is actively being mapped to the global framework.
                         </p>
-                        <p style={{ fontSize: '0.9rem' }}>
-                            <Link aria-label="Navigation Link" href="/glossary" style={{ color: '#38bdf8', textDecoration: 'none' }}>Browse the global glossary →</Link>
-                        </p>
+                        <Link href="/glossary" className="text-[#D4A844] font-bold uppercase tracking-widest text-xs hover:text-white transition-colors">
+                            Browse the Global Glossary →
+                        </Link>
                     </div>
                 )}
 
-                <section style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                    <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>
-                        Browse other countries
+                {/* BROWSE OTHER COUNTRIES */}
+                <ScrollReveal delay={100} className="mt-20 pt-10 border-t border-white/5">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-5">
+                        Explore Other Jurisdictions
                     </h3>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <div className="flex flex-wrap gap-3">
                         {Object.entries(COUNTRY_META)
                             .filter(([k]) => k !== code.toLowerCase())
                             .map(([k, v]) => (
-                                <Link aria-label="Navigation Link"
+                                <Link
                                     key={k}
                                     href={`/glossary/country/${k}`}
-                                    style={{
-                                        padding: '6px 12px', borderRadius: '6px',
-                                        background: 'rgba(255,255,255,0.04)',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        color: 'rgba(255,255,255,0.6)', fontSize: '13px',
-                                        textDecoration: 'none',
-                                    }}
+                                    className="bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/15 px-4 py-2 rounded-xl text-white/60 hover:text-white transition-all text-sm font-medium flex items-center gap-2"
                                 >
-                                    {v.flag} {v.name}
+                                    <span className="text-lg">{v.flag}</span> {v.name}
                                 </Link>
                             ))}
                     </div>
-                </section>
-            </div>
-        </>
+                </ScrollReveal>
+
+                {/* NO DEAD END BLOCK */}
+                <div className="mt-16">
+                    <NoDeadEndBlock
+                        heading={`Next Steps in ${meta.name}`}
+                        moves={[
+                            { href: '/directory', icon: '🔍', title: 'Find Operators', desc: `Search ${meta.demonym} specialists`, primary: true, color: '#D4A844' },
+                            { href: `/regulations/${code.toLowerCase()}`, icon: '⚖️', title: 'State Escort Rules', desc: 'Browse local requirements' },
+                            { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'Equipment estimation' },
+                        ]}
+                    />
+                </div>
+
+            </main>
+        </div>
     );
 }

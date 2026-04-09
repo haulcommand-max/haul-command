@@ -1,12 +1,6 @@
-// Mocking other gap comparators since we are establishing the logic scaffold
+import { compareGapLists } from "./compare-gaps";
 import { compareScores } from "./compare-scores";
-
-export function compareGapLists(baseList: any[] = [], headList: any[] = []) {
-    return { introduced: [], resolved: [], unchanged: [] }; 
-}
-export function compareDuplicates(baseRisks: any[] = [], headRisks: any[] = []) {
-    return { introduced: [], resolved: [], unchanged: [] }; 
-}
+import { compareDuplicates } from "./compare-duplicates";
 
 export function detectRegressionDebt(params: {
   baseSnapshot: any;
@@ -15,14 +9,14 @@ export function detectRegressionDebt(params: {
 }) {
   const changedSet = new Set(params.changedFiles);
 
-  const scoreDeltas = compareScores(params.baseSnapshot?.scores || [], params.headSnapshot?.scores || []);
+  const scoreDeltas = compareScores(params.baseSnapshot.scores, params.headSnapshot.scores);
 
-  const deadEnds = compareGapLists(params.baseSnapshot?.deadEnds, params.headSnapshot?.deadEnds);
-  const seoGaps = compareGapLists(params.baseSnapshot?.seoGaps, params.headSnapshot?.seoGaps);
-  const moneyGaps = compareGapLists(params.baseSnapshot?.moneyGaps, params.headSnapshot?.moneyGaps);
-  const mobileGaps = compareGapLists(params.baseSnapshot?.mobileGaps, params.headSnapshot?.mobileGaps);
-  const noDowngradeRisks = compareGapLists(params.baseSnapshot?.noDowngradeRisks, params.headSnapshot?.noDowngradeRisks);
-  const duplicateRisks = compareDuplicates(params.baseSnapshot?.duplicateRisks, params.headSnapshot?.duplicateRisks);
+  const deadEnds = compareGapLists(params.baseSnapshot.deadEnds, params.headSnapshot.deadEnds);
+  const seoGaps = compareGapLists(params.baseSnapshot.seoGaps, params.headSnapshot.seoGaps);
+  const moneyGaps = compareGapLists(params.baseSnapshot.moneyGaps, params.headSnapshot.moneyGaps);
+  const mobileGaps = compareGapLists(params.baseSnapshot.mobileGaps, params.headSnapshot.mobileGaps);
+  const noDowngradeRisks = compareGapLists(params.baseSnapshot.noDowngradeRisks, params.headSnapshot.noDowngradeRisks);
+  const duplicateRisks = compareDuplicates(params.baseSnapshot.duplicateRisks, params.headSnapshot.duplicateRisks);
 
   const introducedOnlyForChanged = (items: any[]) =>
     items.filter((item) => {

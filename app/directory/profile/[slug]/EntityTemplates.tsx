@@ -8,6 +8,8 @@ import { OperatorBadges } from '@/components/profile/OperatorBadges';
 import { OperatorReviews } from '@/components/profile/OperatorReviews';
 import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
 import { ClaimListingCTA } from '@/components/seo/ConversionCTAs';
+import { EquipmentGallery } from '@/components/profile/EquipmentGallery';
+import { RecentActivity } from '@/components/profile/RecentActivity';
 
 interface EntityProps {
     op: any;
@@ -206,6 +208,15 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                     </div>
                 )}
 
+                {/* Premium Visuals & Social Stickiness */}
+                <div style={{ marginBottom: 24 }}>
+                    <EquipmentGallery operatorName={op.name || entityName} isClaimed={isClaimed} />
+                </div>
+
+                <div style={{ marginBottom: 24 }}>
+                    <RecentActivity operatorName={op.name || entityName} />
+                </div>
+
                 {/* Intelligence Modules — Trust, Report Card, Badges, Reviews */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16, marginBottom: 24 }}>
                     <OperatorTrustCard
@@ -234,6 +245,17 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                         operatorId={op.slug || op.id || ''}
                     />
                 </div>
+            </div>
+
+            {/* Persistent Mobile Action Bar (Sticky Conversion) */}
+            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'rgba(10, 17, 24, 0.95)', borderTop: '1px solid #1e3048', padding: '12px 16px', display: 'flex', gap: 10, zIndex: 50, backdropFilter: 'blur(10px)' }} className="md:hidden">
+                <button style={{ flex: 1, background: '#1e3048', color: '#8ab0d0', borderRadius: 8, padding: '12px', fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <svg style={{width: 16, height: 16}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                    Save
+                </button>
+                <Link href={`/loads/post?operator=${op.slug || op.id}`} style={{ flex: 2, background: '#e8a828', color: '#000', borderRadius: 8, padding: '12px', fontSize: 13, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    ✉ Request Quote
+                </Link>
             </div>
         </div>
     );

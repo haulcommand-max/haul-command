@@ -111,6 +111,12 @@ export default async function LoadBoardPage() {
                             {st.label}
                           </span>
                           <span className="text-[10px] text-[#566880]">{timeAgo(load.created_at)}</span>
+                          
+                          {/* Fleet Verification Badge (Simulated for Demo; in production tied to poster's enterprise compliance score) */}
+                          <div className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full ml-auto">
+                            <span className="text-blue-400 text-xs">🛡️</span>
+                            <span className="text-[9px] font-bold text-blue-400 uppercase tracking-widest mt-0.5">Verified Fleet</span>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2 text-sm font-semibold text-[#d0dce8] mb-1">
                           <span>{load.pickup_location}</span>

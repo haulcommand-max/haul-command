@@ -5,7 +5,7 @@ import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 import { MobileNavSheet } from '@/components/layout/MobileNavSheet';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetargeter';
-
+import { GlobalOmniSearch } from '@/components/ui/GlobalOmniSearch';
 /**
  * (public) Layout — Unified app shell for public-facing pages.
  * Mobile: same MobileAppNav as (app) layout — ONE bottom nav system.
@@ -144,19 +144,27 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                     <MobileNavSheet />
                 </div>
 
+                {/* Mobile Search Bar (under the brand header but above content) */}
+                <div className="app-mobile-search md:hidden px-4 py-2 bg-slate-950 border-b border-slate-800">
+                    <GlobalOmniSearch />
+                </div>
+
                 {/* Desktop header bar */}
                 <header className="app-desktop-header" style={{
-                    height: '3.5rem',
+                    height: '4rem',
                     borderBottom: '1px solid rgba(255,255,255,0.06)',
                     position: 'sticky',
                     top: 0,
                     zIndex: 10,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     padding: '0 1.5rem',
                     background: 'rgba(11,11,12,0.85)',
                     backdropFilter: 'blur(24px) saturate(1.5)',
                 }}>
+                    <div style={{ flex: 1, paddingRight: '2rem' }}>
+                        <GlobalOmniSearch />
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', background: 'rgba(34,197,94,0.1)', borderRadius: '9999px', border: '1px solid rgba(34,197,94,0.2)' }}>
                         <span style={{ width: '0.5rem', height: '0.5rem', borderRadius: '9999px', background: '#22C55E', boxShadow: '0 0 8px #4CAF50' }} />
                         <span style={{ fontSize: '10px', color: '#4ade80', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>

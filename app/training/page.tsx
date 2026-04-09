@@ -26,93 +26,115 @@ export const metadata: Metadata = {
   },
 }
 
-// ─── STATIC MODULE DATA (always renders in HTML for Googlebot) ───────────────
-export const MODULES = [
+// ─── STATIC MODULE DATA: TRACK 1 - PILOT CAR & ESCORT ───────────────
+export const PILOT_MODULES = [
   {
-    slot: 1,
-    slug: 'the-escort-driver-regulatory',
-    title: 'The Escort Driver & Regulatory Protocol',
-    description:
-      'Regulatory compliance, pilot car qualification baseline, MUTCD flagging procedures (stop/slow paddle & flag protocols), liability mechanics, and the Class 2 High-Vis apparel framework.',
-    audience: 'New operators, career changers, international operators entering US markets',
-    duration: '480 min',
-    outcomes: ['Understand federal & state qualification options', 'Execute MUTCD flagging protocols correctly', 'Identify required safety apparel and limits of liability'],
-    tier: 'HC Certified',
-    isFree: true,
+    slot: 1, slug: 'pilot-fundamentals-regulatory', title: 'Pilot Car Fundamentals & MUTCD Protocols',
+    description: 'Regulatory compliance, MUTCD flagging procedures, liability mechanics, and the Class 2 High-Vis apparel framework.',
+    audience: 'New pilot car operators', duration: '8 Hours',
+    outcomes: ['Federal qualification options', 'MUTCD flagging protocols', 'Liability limits'], tier: 'HC Certified', isFree: true,
   },
   {
-    slot: 2,
-    slug: 'the-escort-vehicle-equipment-standards',
-    title: 'The Escort Vehicle & Equipment Standards',
-    description:
-      'In-depth vehicle specifications, commercial vs. non-commercial considerations, minimum insurance requirements, required DOT interior/exterior equipment, and surviving DOT inspections without fines.',
-    audience: 'All operators configuring their escort vehicles',
-    duration: '480 min',
-    outcomes: ['Configure escort vehicle to pass strict DOT audits', 'Source and mount correct warning lights & signage', 'Understand minimum insurance operational thresholds'],
-    tier: 'HC Certified',
-    isFree: false,
+    slot: 2, slug: 'escort-equipment-standards', title: 'Vehicle Equipment & DOT Standards',
+    description: 'In-depth vehicle specifications, commercial insurance requirements, required DOT interior/exterior equipment, and inspection survival.',
+    audience: 'All escort operators', duration: '8 Hours',
+    outcomes: ['Pass strict DOT audits', 'Mount warning lights properly', 'Insurance threshold management'], tier: 'HC Certified', isFree: false,
   },
   {
-    slot: 3,
-    slug: 'over-dimensional-load-permits',
-    title: 'The Over-Dimensional Load & Pre-Trip',
-    description:
-      'Permit restrictions, load dimension limitations (height, width, weight), broker communication workflows, and leading pre-trip/post-trip carrier meetings.',
-    audience: 'Operators managing multi-state permitted loads',
-    duration: '480 min',
-    outcomes: ['Read and enforce over-dimensional load permits', 'Run professional pre-trip carrier meetings', 'Determine required escort density based on load size'],
-    tier: 'HC Certified',
-    isFree: false,
+    slot: 3, slug: 'over-dimensional-mechanics', title: 'Over-Dimensional Mechanics & Pre-Trip',
+    description: 'Load dimension limitations (height, width, weight), broker communication workflows, and leading pre-trip/post-trip carrier meetings.',
+    audience: 'Escorts managing multi-state permitted loads', duration: '8 Hours',
+    outcomes: ['Enforce load permits', 'Run professional pre-trips', 'Determine escort density'], tier: 'HC Certified', isFree: false,
   },
   {
-    slot: 4,
-    slug: 'maneuvering-techniques-emergencies',
-    title: 'Maneuvering Techniques & Emergency Response',
-    description:
-      'Intersection control, safe load maneuvering on various road configurations, emergency breakdown procedures, braking distance calculations, and multi-vehicle convoy radio discipline.',
-    audience: 'All operators; required for incident-free corridor transit',
-    duration: '480 min',
-    outcomes: ['Coordinate multi-vehicle escort intersection takeovers', 'Execute precise emergency breakdown placements', 'Maintain professional convoy radio discipline'],
-    tier: 'AV-Ready',
-    isFree: false,
+    slot: 4, slug: 'maneuvering-techniques-emergencies', title: 'Maneuvering & Emergency Response',
+    description: 'Intersection control, safe load maneuvering, emergency breakdown placements, and multi-vehicle convoy radio discipline.',
+    audience: 'Lead and Chase Escorts', duration: '8 Hours',
+    outcomes: ['Coordinate intersection takeovers', 'Execute breakdown placements', 'Radio discipline'], tier: 'AV-Ready', isFree: false,
   },
   {
-    slot: 5,
-    slug: 'route-survey-clearance-intelligence',
-    title: 'Route Survey & Clearance Intelligence',
-    description:
-      'Advanced capability: Heights, widths, vertical/horizontal clearance measurements, bridge capacity documentation, and hazard logging workflows for broker routing teams.',
-    audience: 'Operators pursuing lucrative route survey contracts',
-    duration: '480 min',
-    outcomes: ['Conduct legally binding route surveys', 'Document bridge and tunnel clearance data accurately', 'Identify and report microscopic route hazards'],
-    tier: 'AV-Ready',
-    isFree: false,
+    slot: 5, slug: 'route-survey-clearance-intelligence', title: 'Route Survey & Clearance Intelligence',
+    description: 'Advanced capability: Heights, widths, vertical/horizontal clearance measurements, bridge capacity documentation, and hazard logging.',
+    audience: 'Route Surveyors', duration: '8 Hours',
+    outcomes: ['Conduct binding route surveys', 'Document bridge clearance accurately', 'Identify microscopic hazards'], tier: 'AV-Ready', isFree: false,
   },
   {
-    slot: 6,
-    slug: 'specialized-vertical-operations',
-    title: 'Specialized Operations (High Pole & AV-Ready)',
-    description:
-      'Premium capability: High Pole measurement execution, Wind Industry (WITPAC) escort standards, superload planning, oilfield norms, port/TWIC procedures, and autonomous (AV) Kodiak/Aurora protocol.',
-    audience: 'Operators pursuing specialist and premium corridor work',
-    duration: '480 min',
-    outcomes: ['Execute professional High Pole defense', 'Qualify for wind, superload, and AV autonomous dispatch', 'Operate efficiently in secure military and aerospace contexts'],
-    tier: 'Elite',
-    isFree: false,
+    slot: 6, slug: 'specialized-vertical-operations', title: 'Specialized Operations (High Pole, Wind, Superload)',
+    description: 'Premium capability: High Pole measurement execution, Wind Industry (WITPAC) escort standards, superload planning, and AV readiness.',
+    audience: 'Premium Specialist Escorts', duration: '12 Hours',
+    outcomes: ['Professional High Pole defense', 'Qualify for wind/superload', 'Operate efficiently in secure contexts'], tier: 'Elite', isFree: false,
   },
   {
-    slot: 7,
-    slug: 'final-assessment-certification',
-    title: 'Final Assessment & Haul Command Profiling',
-    description:
-      'The definitive 50-question comprehensive closed-book style exam (80% minimum to pass). Concludes with Haul Command digital profile setup, badge verification, and market positioning strategy.',
-    audience: 'All operators seeking certification and directory ranking',
-    duration: '480 min',
-    outcomes: ['Pass the 50-question Final Exam', 'Earn verified HC Certified, AV-Ready, or Elite badges', 'Maximize platform visibility for inbound broker jobs'],
-    tier: 'HC Certified',
-    isFree: false,
+    slot: 7, slug: 'pilot-final-assessment', title: 'Final Assessment & Certification',
+    description: 'The definitive 50-question comprehensive closed-book style exam (80% minimum to pass).',
+    audience: 'All operators', duration: '4 Hours',
+    outcomes: ['Pass the Final Exam', 'Earn verified badges', 'Maximize platform visibility'], tier: 'Elite', isFree: false,
   },
-]
+];
+
+// ─── STATIC MODULE DATA: TRACK 2 - HEAVY HAUL DRIVER ───────────────
+export const DRIVER_MODULES = [
+  {
+    slot: 1, slug: 'heavy-haul-physics-dynamics', title: 'Heavy Haul Physics & Load Dynamics',
+    description: 'Center of gravity calculation, axle weight distribution, bridge formula compliance, and dynamic rollover thresholds.',
+    audience: 'Heavy Haul Drivers', duration: '10 Hours',
+    outcomes: ['Calculate center of gravity', 'Distribute axle weight', 'Prevent rollovers'], tier: 'HC Certified', isFree: true,
+  },
+  {
+    slot: 2, slug: 'rigging-securement-mastery', title: 'Rigging & Advanced Securement Mastery',
+    description: 'Working load limits (WLL), Grade 70+ chain specifications, indirect vs direct tie-downs, and friction mat calculations.',
+    audience: 'Drivers and Riggers', duration: '12 Hours',
+    outcomes: ['Calculate aggregate WLL', 'Execute direct tie-downs', 'Select proper securement gear'], tier: 'HC Certified', isFree: false,
+  },
+  {
+    slot: 3, slug: 'trailer-mechanics-multi-axle', title: 'Multi-Axle Trailer Mechanics',
+    description: 'Operation of RGNs, steerable dollies, extendable flatbeds, jeep/stinger configurations, and hydraulic pressure management.',
+    audience: 'Superload Drivers', duration: '12 Hours',
+    outcomes: ['Operate steerable dollies', 'Manage hydraulic pressures', 'Configure RGNs'], tier: 'Elite', isFree: false,
+  },
+  {
+    slot: 4, slug: 'permit-compliance-routing', title: 'State Permit Compliance & Routing',
+    description: 'Reading complex state provisions, curfews, holiday restrictions, and interacting with state DOT scale masters.',
+    audience: 'Regional/National Drivers', duration: '8 Hours',
+    outcomes: ['Understand state provisions', 'Navigate scale houses', 'Plan around curfews'], tier: 'Elite', isFree: false,
+  },
+  {
+    slot: 5, slug: 'driver-final-assessment', title: 'Heavy Haul Final Assessment',
+    description: 'Rigging simulation, weight calculation test, and DOT compliance exam.',
+    audience: 'All Drivers', duration: '4 Hours',
+    outcomes: ['Pass rigging exam', 'Earn verified Driver badges', 'Unlock premium loads'], tier: 'Elite', isFree: false,
+  },
+];
+
+// ─── STATIC MODULE DATA: TRACK 3 - BROKER & DISPATCHER ───────────────
+export const DISPATCH_MODULES = [
+  {
+    slot: 1, slug: 'broker-legal-liability', title: 'Broker Legal Liability & Carrier Vetting',
+    description: 'Contingent liability mechanics, verifying carrier cargo insurance, FMCSA compliance checks, and negligent hiring defense.',
+    audience: 'Freight Brokers / Dispatchers', duration: '8 Hours',
+    outcomes: ['Block negligent hiring claims', 'Verify actual insurance limits', 'Read FMCSA safety scores'], tier: 'HC Certified', isFree: true,
+  },
+  {
+    slot: 2, slug: 'heavy-haul-rate-calculation', title: 'Heavy Haul Rate Calculation & Pricing',
+    description: 'Calculating deadhead, fuel surcharges, permit costs, escort density pricing, and police roll-cost estimation.',
+    audience: 'Brokers quoting oversize loads', duration: '12 Hours',
+    outcomes: ['Accurately quote superloads', 'Calculate pilot car spend', 'Maintain 15%+ margins'], tier: 'HC Certified', isFree: false,
+  },
+  {
+    slot: 3, slug: 'permit-acquisition-logistics', title: 'Multi-State Permit Acquisition Logistics',
+    description: 'Ordering multi-state route permits, managing state DOT revisions, superload engineering diagrams, and bridge surveys.',
+    audience: 'Oversize Load Planners', duration: '12 Hours',
+    outcomes: ['Order state permits', 'Handle DOT revisions', 'Read routing diagrams'], tier: 'Elite', isFree: false,
+  },
+  {
+    slot: 4, slug: 'capacity-sourcing-automation', title: 'Capacity Sourcing & Escort Automation',
+    description: 'Using the Haul Command OS to instantly source verified capacity, manage digital contracts, and automate dispatch.',
+    audience: 'Tech-Forward Brokers', duration: '8 Hours',
+    outcomes: ['Source capacity in 60s', 'Deploy automated contracts', 'Track global fleet'], tier: 'Elite', isFree: false,
+  },
+];
+
+export const ALL_COURSES = [...PILOT_MODULES, ...DRIVER_MODULES, ...DISPATCH_MODULES];
 
 // ─── STATIC FAQ DATA (answers always in HTML — required for FAQPage schema) ──
 const FAQS = [
@@ -175,11 +197,11 @@ function buildSchema(courses: any[]) {
   const courseList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Pilot Car & Escort Operator Training — Haul Command',
-    description: 'Global pilot car and escort operator certification training. HC Certified, AV-Ready, and Elite pathways. 120 countries.',
+    name: 'Pilot Car, Heavy Haul, & Broker Training — Haul Command',
+    description: 'Global logistics operator certification training. HC Certified, AV-Ready, and Elite pathways. 120 countries.',
     url: 'https://www.haulcommand.com/training',
-    numberOfItems: MODULES.length,
-    itemListElement: MODULES.map((m, i) => ({
+    numberOfItems: ALL_COURSES.length,
+    itemListElement: ALL_COURSES.map((m, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: {
@@ -188,7 +210,7 @@ function buildSchema(courses: any[]) {
         description: m.description,
         provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
         url: `https://www.haulcommand.com/training/${m.slug}`,
-        timeRequired: `PT${m.duration.replace(' min', 'M')}`,
+        timeRequired: `PT${m.duration.replace(' Hours', 'H')}`,
         isAccessibleForFree: m.isFree,
         educationalLevel: m.tier,
         teaches: m.outcomes,
@@ -381,39 +403,34 @@ export default async function TrainingPage() {
           </div>
         </section>
 
-        {/* ── 7 MODULES IN CRAWLABLE HTML ────────────────────────────── */}
+        {/* ── 3 TRAINING TRACKS IN CRAWLABLE HTML ────────────────────────────── */}
         <section id="modules" style={{ padding: 'clamp(2rem,4vw,3.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={s.container}>
-            <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 800, color: '#f9fafb' }}>All 7 Training Modules</h2>
+            <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 800, color: '#f9fafb' }}>The Haul Command Curriculums</h2>
             <p style={{ margin: '0 0 24px', fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>
-              Each module is a standalone credential. Work through them in sequence or jump to what you need most.
-              Modules 1 and 7 are free — no account required to start.
+              Three definitive certification tracks for the heavy haul ecosystem. Work through them in sequence or jump to what you need most.
+              Module 1 of every track is free.
             </p>
 
+            {/* TRACK 1: PILOT CAR */}
+            <h3 style={{ margin: '40px 0 16px', fontSize: 18, fontWeight: 800, color: gold, borderBottom: `1px solid ${gold}40`, paddingBottom: 10 }}>Track 1: Pilot Car & Escort Certification (56 Hours)</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {MODULES.map(m => {
+              {PILOT_MODULES.map(m => {
                 const live = liveBySlug[m.slug]
                 const tierColor = TIER_COLOR[m.tier] ?? gold
                 return (
                   <Link key={m.slug} href={`/training/${m.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
                     <article style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '20px 22px', display: 'flex', gap: 18, alignItems: 'flex-start' }}>
-                      {/* Slot number */}
                       <div style={{ width: 44, height: 44, borderRadius: '50%', background: `${tierColor}18`, border: `1px solid ${tierColor}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: tierColor, flexShrink: 0 }}>
                         {m.slot}
                       </div>
-
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        {/* Title row */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
                           <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#f0f2f5' }}>{m.title}</h3>
                           {m.isFree && <span style={{ fontSize: 10, fontWeight: 700, background: 'rgba(34,197,94,0.12)', color: '#22C55E', padding: '2px 8px', borderRadius: 20 }}>FREE</span>}
                           <span style={{ fontSize: 10, fontWeight: 700, background: `${tierColor}18`, color: tierColor, padding: '2px 8px', borderRadius: 20 }}>{m.tier.toUpperCase()}</span>
                         </div>
-
-                        {/* Description — always in HTML */}
                         <p style={{ margin: '0 0 10px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: m.description }} />
-
-                        {/* Outcomes — always in HTML */}
                         <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                           {m.outcomes.map(o => (
                             <li key={o} style={{ fontSize: 11, color: '#6b7280', background: 'rgba(255,255,255,0.04)', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -421,14 +438,11 @@ export default async function TrainingPage() {
                             </li>
                           ))}
                         </ul>
-
-                        {/* Meta row */}
                         <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 11, color: '#6b7280', flexWrap: 'wrap' }}>
                           <span>⏱ {m.duration}</span>
                           <span>👤 {m.audience}</span>
                         </div>
                       </div>
-
                       <span style={{ color: tierColor, fontSize: 20, flexShrink: 0 }}>→</span>
                     </article>
                   </Link>
@@ -436,11 +450,76 @@ export default async function TrainingPage() {
               })}
             </div>
 
-            <p style={{ marginTop: 16, fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
-              Advanced modules also available:{' '}
-              <Link href="/training/av-certification" style={{ color: gold }}>AV Corridor Readiness</Link>,{' '}
-              <Link href="/training/corporate" style={{ color: gold }}>Port &amp; International Ops</Link>,{' '}
-              and more launching Q3 2026.
+            {/* TRACK 2: DRIVER */}
+            <h3 style={{ margin: '50px 0 16px', fontSize: 18, fontWeight: 800, color: '#3B82F6', borderBottom: `1px solid #3B82F640`, paddingBottom: 10 }}>Track 2: Heavy Haul Driver & Rigging Mastery (46 Hours)</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {DRIVER_MODULES.map(m => {
+                const tierColor = TIER_COLOR[m.tier] ?? '#3B82F6'
+                return (
+                  <Link key={m.slug} href={`/training/${m.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                    <article style={{ background: 'rgba(59,130,246,0.025)', border: '1px solid rgba(59,130,246,0.07)', borderRadius: 14, padding: '20px 22px', display: 'flex', gap: 18, alignItems: 'flex-start' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: '50%', background: `${tierColor}18`, border: `1px solid ${tierColor}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: tierColor, flexShrink: 0 }}>
+                        {m.slot}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
+                          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#f0f2f5' }}>{m.title}</h3>
+                          {m.isFree && <span style={{ fontSize: 10, fontWeight: 700, background: 'rgba(34,197,94,0.12)', color: '#22C55E', padding: '2px 8px', borderRadius: 20 }}>FREE</span>}
+                        </div>
+                        <p style={{ margin: '0 0 10px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: m.description }} />
+                        <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {m.outcomes.map(o => (
+                            <li key={o} style={{ fontSize: 11, color: '#6b7280', background: 'rgba(255,255,255,0.04)', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(255,255,255,0.06)' }}>✓ {o}</li>
+                          ))}
+                        </ul>
+                        <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 11, color: '#6b7280', flexWrap: 'wrap' }}>
+                          <span>⏱ {m.duration}</span>
+                          <span>👤 {m.audience}</span>
+                        </div>
+                      </div>
+                      <span style={{ color: tierColor, fontSize: 20, flexShrink: 0 }}>→</span>
+                    </article>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {/* TRACK 3: BROKER & DISPATCHER */}
+            <h3 style={{ margin: '50px 0 16px', fontSize: 18, fontWeight: 800, color: '#8B5CF6', borderBottom: `1px solid #8B5CF640`, paddingBottom: 10 }}>Track 3: Broker & Dispatcher Logistics (40 Hours)</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {DISPATCH_MODULES.map(m => {
+                const tierColor = TIER_COLOR[m.tier] ?? '#8B5CF6'
+                return (
+                  <Link key={m.slug} href={`/training/${m.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                    <article style={{ background: 'rgba(139,92,246,0.025)', border: '1px solid rgba(139,92,246,0.07)', borderRadius: 14, padding: '20px 22px', display: 'flex', gap: 18, alignItems: 'flex-start' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: '50%', background: `${tierColor}18`, border: `1px solid ${tierColor}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: tierColor, flexShrink: 0 }}>
+                        {m.slot}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
+                          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#f0f2f5' }}>{m.title}</h3>
+                          {m.isFree && <span style={{ fontSize: 10, fontWeight: 700, background: 'rgba(34,197,94,0.12)', color: '#22C55E', padding: '2px 8px', borderRadius: 20 }}>FREE</span>}
+                        </div>
+                        <p style={{ margin: '0 0 10px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: m.description }} />
+                        <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {m.outcomes.map(o => (
+                            <li key={o} style={{ fontSize: 11, color: '#6b7280', background: 'rgba(255,255,255,0.04)', padding: '3px 10px', borderRadius: 20, border: '1px solid rgba(255,255,255,0.06)' }}>✓ {o}</li>
+                          ))}
+                        </ul>
+                        <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 11, color: '#6b7280', flexWrap: 'wrap' }}>
+                          <span>⏱ {m.duration}</span>
+                          <span>👤 {m.audience}</span>
+                        </div>
+                      </div>
+                      <span style={{ color: tierColor, fontSize: 20, flexShrink: 0 }}>→</span>
+                    </article>
+                  </Link>
+                )
+              })}
+            </div>
+
+            <p style={{ marginTop: 24, fontSize: 12, color: 'rgba(255,255,255,0.25)', textAlign: 'center' }}>
+              Specialized AV Corridor training available for enterprise fleets. <Link href="/training/corporate" style={{ color: gold }}>View Corporate Training</Link>.
             </p>
           </div>
         </section>
@@ -449,26 +528,26 @@ export default async function TrainingPage() {
         <section id="pricing" style={{ padding: 'clamp(2rem,4vw,3.5rem) 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}>
           <div style={s.container}>
             <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 800, color: '#f9fafb' }}>Choose Your Certification Level</h2>
-            <p style={{ margin: '0 0 24px', fontSize: 13, color: '#6b7280' }}>Start free with HC Certified. Upgrade to AV-Ready or Elite when you're ready to open more doors.</p>
+            <p style={{ margin: '0 0 24px', fontSize: 13, color: '#6b7280' }}>Start free with HC Certified. Upgrade to AV-Ready or Elite when you're ready to dominate the directory rankings.</p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16 }}>
               {[
                 {
                   name: 'HC Certified', color: '#A8A8A8', price: 'Free with Pro / $49 standalone',
                   modules: 'Modules 1–3', duration: '24 Hours (Gov Standard)', highlight: false,
-                  benefits: ['HC Certified badge on your profile', 'Recognized across all 120 countries', 'Meets all 12 US mandatory state requirements', 'Digital credential with instant verification link'],
-                  href: '/training/the-escort-driver-regulatory', cta: 'Start Free',
+                  benefits: ['HC Certified badge on your profile', '+15pt Trust Score Boost immediately', 'Meets all 12 US mandatory state requirements', 'Digital credential with instant verification link'],
+                  href: '/training/pilot-fundamentals-regulatory', cta: 'Start Free',
                 },
                 {
                   name: 'AV-Ready', color: '#F5A623', price: '$149/year',
                   modules: 'Modules 1–5', duration: '40 Hours', highlight: true,
-                  benefits: ['Everything in HC Certified', 'AV-Ready gold badge on profile', 'Priority placement in AV corridor searches', 'Aurora + Kodiak protocol training', 'Oilfield Specialist module included'],
+                  benefits: ['Everything in HC Certified', '+25pt Trust Score Boost immediately', 'Priority placement in AV corridor searches', 'Aurora + Kodiak protocol training', 'Oilfield Specialist module included'],
                   href: '/training?enroll=av_ready', cta: 'Get AV-Ready',
                 },
                 {
                   name: 'Elite', color: '#E5E4E2', price: '$299/year',
                   modules: 'All 7 Modules', duration: '56 Hours', highlight: false,
-                  benefits: ['Everything in AV-Ready', 'Elite platinum badge — top of all results', 'Superload, military & aerospace module', 'International operations module', 'Dedicated account support'],
+                  benefits: ['Everything in AV-Ready', 'Elite platinum badge — Directory Supremacy', '+35pt Trust Score Boost (Max Ranking)', 'Superload, military & aerospace operations', 'Dedicated account support'],
                   href: '/training?enroll=elite', cta: 'Become Elite',
                 },
               ].map(tier => (

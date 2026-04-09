@@ -11,6 +11,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { AlertCircle, ChevronRight } from 'lucide-react';
 
 interface ConfusedTerm {
   slug: string;
@@ -41,109 +42,46 @@ export default function CommonlyConfusedWith({
 
   return (
     <section className={`commonly-confused ${className}`}>
-      <div style={{
-        background: '#121214',
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 16,
-        overflow: 'hidden',
-      }}>
+      <div className="bg-[#101012] border border-white/5 rounded-2xl overflow-hidden shadow-lg">
         {/* Header */}
-        <div style={{
-          padding: '20px 24px 16px',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-        }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 10,
-            background: 'rgba(251,146,60,0.12)',
-            border: '1px solid rgba(251,146,60,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FB923C" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
+        <div className="p-6 border-b border-white/5 flex items-center gap-4 bg-gradient-to-r from-orange-500/5 to-transparent">
+          <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+            <AlertCircle className="w-5 h-5 text-orange-400" />
           </div>
           <div>
-            <h3 style={{
-              fontSize: 16,
-              fontWeight: 800,
-              color: '#fff',
-              margin: 0,
-              lineHeight: 1.2,
-            }}>
+            <h3 className="text-lg font-bold text-white leading-tight">
               Commonly Confused With
             </h3>
-            <p style={{
-              fontSize: 12,
-              color: 'rgba(255,255,255,0.4)',
-              margin: '2px 0 0',
-            }}>
-              Know the difference — these terms are often mixed up with <strong style={{ color: 'rgba(255,255,255,0.7)' }}>{currentTerm}</strong>
+            <p className="text-sm text-gray-400 mt-1">
+              Know the difference — these terms are often mixed up with <strong className="text-gray-200">{currentTerm}</strong>
             </p>
           </div>
         </div>
 
         {/* Confused terms list */}
-        <div style={{ padding: '8px 0' }}>
+        <div className="py-2">
           {hasRealData ? (
             confusedTerms.map((ct, i) => (
               <Link
                 key={ct.slug}
                 href={`/glossary/${ct.slug}`}
                 aria-label={`Learn about ${ct.term}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 14,
-                  padding: '14px 24px',
-                  textDecoration: 'none',
-                  borderBottom: i < confusedTerms.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-                  transition: 'background 0.15s ease',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                className={`flex items-start gap-4 p-5 hover:bg-white/5 transition-colors group ${
+                  i < confusedTerms.length - 1 ? 'border-b border-white/5' : ''
+                }`}
               >
                 {/* VS badge */}
-                <div style={{
-                  flexShrink: 0,
-                  width: 36, height: 36, borderRadius: 10,
-                  background: 'rgba(239,68,68,0.08)',
-                  border: '1px solid rgba(239,68,68,0.15)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 10, fontWeight: 900, color: '#EF4444',
-                  letterSpacing: '0.05em',
-                  marginTop: 2,
-                }}>
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-xs font-black text-red-500 tracking-widest mt-1 group-hover:bg-red-500/20 transition-colors">
                   VS
                 </div>
 
                 {/* Content */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: '#fff',
-                    marginBottom: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                  }}>
+                <div className="flex-1 min-w-0">
+                  <div className="text-base font-bold text-white mb-2 flex items-center gap-2 group-hover:text-blue-400 transition-colors">
                     {ct.term}
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                    <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-blue-400 transition-colors" />
                   </div>
-                  <p style={{
-                    fontSize: 13,
-                    color: 'rgba(255,255,255,0.5)',
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}>
+                  <p className="text-sm text-gray-400 leading-relaxed m-0">
                     {ct.difference}
                   </p>
                 </div>
@@ -156,32 +94,15 @@ export default function CommonlyConfusedWith({
                 key={slug}
                 href={`/glossary/${slug}`}
                 aria-label={`Learn about ${slug.replace(/-/g, ' ')}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '12px 24px',
-                  textDecoration: 'none',
-                  borderBottom: i < Math.min(relatedSlugs.length, 3) - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-                  transition: 'background 0.15s ease',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                className={`flex items-center gap-3 py-3 px-6 hover:bg-white/5 transition-colors group ${
+                  i < Math.min(relatedSlugs.length, 3) - 1 ? 'border-b border-white/5' : ''
+                }`}
               >
-                <span style={{
-                  width: 6, height: 6, borderRadius: '50%',
-                  background: '#FB923C', flexShrink: 0, opacity: 0.6,
-                }} />
-                <span style={{
-                  fontSize: 14, fontWeight: 600,
-                  color: 'rgba(255,255,255,0.7)',
-                  textTransform: 'capitalize',
-                }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500/60 shrink-0 group-hover:scale-150 transition-transform" />
+                <span className="text-sm font-semibold text-gray-300 capitalize group-hover:text-white transition-colors">
                   {slug.replace(/-/g, ' ')}
                 </span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                <ChevronRight className="w-4 h-4 text-gray-600 ml-auto group-hover:text-white transition-colors" />
               </Link>
             ))
           )}

@@ -10,14 +10,15 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { SmartPaywallBannerAnon } from '@/components/monetization/SmartPaywallBannerAnon';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
-    title: 'Heavy Haul Glossary | 3,000+ Terms, Definitions & Rules | Haul Command',
-    description: 'The definitive heavy haul and oversize load glossary. 3,000+ industry terms defined across 120 countries. Pilot car, escort vehicle, superload, and DOT compliance terminology.',
+    title: 'Heavy Haul & Pilot Car Glossary | Definitions & Rules | Haul Command',
+    description: 'The definitive heavy haul and oversize load glossary. Industry terms defined across our 120-country framework. Pilot car, escort vehicle, superload, and DOT terminology.',
     alternates: { canonical: 'https://www.haulcommand.com/glossary' },
     openGraph: {
-        title: 'Heavy Haul Glossary | 3,000+ Terms Defined | Haul Command',
-        description: 'The most comprehensive heavy haul, oversize load, and escort terminology reference in the world. 3,000+ terms across 120 countries.',
+        title: 'Heavy Haul Glossary | Terms Defined | Haul Command',
+        description: 'The most comprehensive heavy haul, oversize load, and escort terminology reference in the world.',
         url: 'https://www.haulcommand.com/glossary',
         siteName: 'Haul Command',
         type: 'website',
@@ -26,18 +27,14 @@ export const metadata: Metadata = {
 
 /* ── Topic Categories ───────────────────────────────────────────── */
 const TOPIC_CATEGORIES = [
-    { slug: 'pilot-car', emoji: '🚗', label: 'Pilot Car Terms', sub: 'Escort Basics', gradient: 'from-blue-600/20 to-blue-900/5', accent: 'blue-400' },
-    { slug: 'escort-vehicle', emoji: '🚐', label: 'Escort Vehicle', sub: 'Equipment', gradient: 'from-cyan-600/20 to-cyan-900/5', accent: 'cyan-400' },
-    { slug: 'pevo', emoji: '🎓', label: 'PEVO Lingo', sub: 'Certification', gradient: 'from-violet-600/20 to-violet-900/5', accent: 'violet-400' },
-    { slug: 'oversize-load', emoji: '📦', label: 'Oversize Load', sub: 'Dimensions', gradient: 'from-orange-600/20 to-orange-900/5', accent: 'orange-400' },
-    { slug: 'superload', emoji: '⚡', label: 'Superload', sub: 'Heavy Haul', gradient: 'from-amber-600/20 to-amber-900/5', accent: 'amber-400' },
-    { slug: 'height-pole', emoji: '📏', label: 'Height Pole', sub: 'Clearance', gradient: 'from-emerald-600/20 to-emerald-900/5', accent: 'emerald-400' },
-    { slug: 'route-survey', emoji: '🗺️', label: 'Route Survey', sub: 'Planning', gradient: 'from-teal-600/20 to-teal-900/5', accent: 'teal-400' },
-    { slug: 'bridge-formula', emoji: '🌉', label: 'Bridge & Weight', sub: 'Infrastructure', gradient: 'from-sky-600/20 to-sky-900/5', accent: 'sky-400' },
-    { slug: 'wide-load', emoji: '🔶', label: 'Wide Load', sub: 'Permits', gradient: 'from-red-600/20 to-red-900/5', accent: 'red-400' },
-    { slug: 'deadhead', emoji: '🛣️', label: 'Operations', sub: 'Field Lingo', gradient: 'from-purple-600/20 to-purple-900/5', accent: 'purple-400' },
-    { slug: 'curfew', emoji: '⏰', label: 'Travel Restrict.', sub: 'Time Windows', gradient: 'from-rose-600/20 to-rose-900/5', accent: 'rose-400' },
-    { slug: 'overweight-load', emoji: '⚖️', label: 'Overweight Load', sub: 'Compliance', gradient: 'from-lime-600/20 to-lime-900/5', accent: 'lime-400' },
+    { slug: 'escort-equipment', emoji: '🚐', label: 'Escort Equipment', sub: 'Gear & Tools', gradient: 'from-blue-600/20 to-blue-900/5', accent: 'blue-400' },
+    { slug: 'permits-regulations', emoji: '📜', label: 'Permits & Regulations', sub: 'Legal Rules', gradient: 'from-orange-600/20 to-orange-900/5', accent: 'orange-400' },
+    { slug: 'route-planning', emoji: '🗺️', label: 'Route Planning', sub: 'Surveys & Clearances', gradient: 'from-teal-600/20 to-teal-900/5', accent: 'teal-400' },
+    { slug: 'load-types', emoji: '📦', label: 'Load Types', sub: 'Dimensions & Weight', gradient: 'from-amber-600/20 to-amber-900/5', accent: 'amber-400' },
+    { slug: 'safety', emoji: '🚦', label: 'Safety', sub: 'Compliance & Risks', gradient: 'from-red-600/20 to-red-900/5', accent: 'red-400' },
+    { slug: 'rates-costs', emoji: '💵', label: 'Rates & Costs', sub: 'Negotiation', gradient: 'from-emerald-600/20 to-emerald-900/5', accent: 'emerald-400' },
+    { slug: 'vehicles', emoji: '🚗', label: 'Vehicles', sub: 'Pilot Cars & Trucks', gradient: 'from-cyan-600/20 to-cyan-900/5', accent: 'cyan-400' },
+    { slug: 'documentation', emoji: '📋', label: 'Documentation', sub: 'Certs & Forms', gradient: 'from-violet-600/20 to-violet-900/5', accent: 'violet-400' },
 ];
 
 /* ── Browse by Country — All Tiers ──────────────────────────────── */
@@ -221,12 +218,19 @@ function GlossaryJsonLd({ termCount, terms }: { termCount: number, terms: any[] 
 export default async function GlossaryHubPage() {
     const supabase = await createClient();
 
-    // Fetch featured terms
-    const { data: terms } = await supabase
+    // Fetch featured terms & total count
+    const { data: terms, count: totalTermsValue } = await supabase
         .from('glossary_public')
-        .select('*')
+        .select('*', { count: 'exact' })
         .order('snippet_priority', { ascending: false })
         .limit(100);
+
+    // Fetch recently updated terms for freshness signal
+    const { data: recentlyUpdated } = await supabase
+        .from('glossary_public')
+        .select('term, slug, updated_at')
+        .order('updated_at', { ascending: false })
+        .limit(6);
 
     // Group terms by first letter for A-Z sections
     const termsByLetter: Record<string, typeof terms> = {};
@@ -238,7 +242,7 @@ export default async function GlossaryHubPage() {
         });
     }
 
-    const totalTerms = 3162;
+    const totalTerms = totalTermsValue || 0;
 
     return (
         <div className="min-h-[100dvh] bg-[#0B0B0C] text-white">
@@ -248,7 +252,6 @@ export default async function GlossaryHubPage() {
 
                 {/* ══════════ HERO ══════════ */}
                 <ScrollReveal className="text-center mb-10 relative z-10">
-                    {/* Glow backdrop */}
                     <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none" aria-hidden="true">
                         <div className="w-[500px] h-[300px] rounded-full bg-[#D4A844]/[0.06] blur-[120px]" />
                     </div>
@@ -256,22 +259,62 @@ export default async function GlossaryHubPage() {
                     <div className="inline-flex items-center gap-2 bg-[#D4A844]/10 border border-[#D4A844]/20 rounded-full px-4 py-1.5 mb-6">
                         <span className="w-2 h-2 rounded-full bg-[#D4A844] animate-pulse" />
                         <span className="text-[11px] font-black uppercase tracking-widest text-[#D4A844]">
-                            <AnimatedCounter target={totalTerms} suffix="+" /> industry terms
+                            Verified Terms Expanding
                         </span>
                     </div>
 
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#D4A844] via-[#e8c36a] to-[#D4A844]">
-                            Heavy Haul
+                            Heavy Haul & Pilot Car
                         </span>{' '}
                         Glossary
                     </h1>
                     <p className="text-base md:text-lg text-white/50 max-w-2xl mx-auto mb-8 font-medium leading-relaxed">
-                        The definitive dictionary of terms, slang, regulations, and acronyms for the pilot car and oversize load industry — across <strong className="text-white/70">120 countries</strong>.
+                        The definitive dictionary of terms, slang, regulations, and acronyms for the pilot car and oversize load industry — actively expanding across our <strong className="text-white/70">120-country framework</strong>.
                     </p>
 
                     {/* Live Search */}
                     <GlossarySearch terms={(terms || []).map(t => ({ slug: t.slug, term: t.term, short_definition: t.short_definition || '', category: t.category || '' }))} />
+                </ScrollReveal>
+
+                {/* ══════════ QUICK ORIENTATION BLOCK ══════════ */}
+                <ScrollReveal delay={100} className="mb-14">
+                    <div className="bg-[#121214] border border-white/5 rounded-3xl p-6 md:p-8">
+                        <h2 className="text-[11px] font-black tracking-[0.2em] text-white/40 uppercase mb-5 flex items-center gap-2">
+                            <span className="w-8 h-px bg-gradient-to-r from-[#D4A844] to-transparent" />
+                            Start Here If You Are:
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <Link href="/glossary/topics/pilot-car" className="flex items-center gap-4 bg-white/[0.02] border border-white/[0.04] p-4 rounded-2xl hover:bg-white/[0.04] hover:border-white/[0.1] transition-all">
+                                <span className="text-2xl">🚗</span>
+                                <div>
+                                    <span className="block font-bold text-white text-sm">An Operator</span>
+                                    <span className="text-xs text-white/40 font-medium">PEVO terms & certs</span>
+                                </div>
+                            </Link>
+                            <Link href="/glossary/topics/broker" className="flex items-center gap-4 bg-white/[0.02] border border-white/[0.04] p-4 rounded-2xl hover:bg-white/[0.04] hover:border-white/[0.1] transition-all">
+                                <span className="text-2xl">🤝</span>
+                                <div>
+                                    <span className="block font-bold text-white text-sm">A Broker</span>
+                                    <span className="text-xs text-white/40 font-medium">Rates & negotiation</span>
+                                </div>
+                            </Link>
+                            <Link href="/glossary/topics/carrier" className="flex items-center gap-4 bg-white/[0.02] border border-white/[0.04] p-4 rounded-2xl hover:bg-white/[0.04] hover:border-white/[0.1] transition-all">
+                                <span className="text-2xl">🚛</span>
+                                <div>
+                                    <span className="block font-bold text-white text-sm">A Carrier</span>
+                                    <span className="text-xs text-white/40 font-medium">Clearance & routes</span>
+                                </div>
+                            </Link>
+                            <Link href="/glossary/topics/shipper" className="flex items-center gap-4 bg-white/[0.02] border border-white/[0.04] p-4 rounded-2xl hover:bg-white/[0.04] hover:border-white/[0.1] transition-all">
+                                <span className="text-2xl">📦</span>
+                                <div>
+                                    <span className="block font-bold text-white text-sm">A Shipper</span>
+                                    <span className="text-xs text-white/40 font-medium">Load types & rules</span>
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
                 </ScrollReveal>
 
                 {/* ══════════ STATS BAR ══════════ */}
@@ -335,7 +378,7 @@ export default async function GlossaryHubPage() {
                     <h2 className="text-[11px] font-black tracking-[0.2em] text-white/40 uppercase mb-5 px-1 flex items-center gap-2">
                         <span className="w-8 h-px bg-gradient-to-r from-[#D4A844] to-transparent" />
                         Browse by Country
-                        <span className="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-white/30 ml-1">120 Markets</span>
+                        <span className="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-[#D4A844]/80 ml-1">Rolling Coverage</span>
                     </h2>
                     {COUNTRY_TIERS.map((tier) => (
                         <div key={tier.label} className="mb-6">
@@ -343,10 +386,10 @@ export default async function GlossaryHubPage() {
                                 {tier.label}
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {tier.countries.map((c) => (
+                                {tier.countries.slice(0, 15).map((c) => (
                                     <Link
                                         key={c.code}
-                                        href={`/regulations/${c.code}`}
+                                        href={`/glossary/${c.code}`}
                                         className="inline-flex items-center gap-1.5 bg-white/[0.03] border border-white/[0.07] rounded-xl px-3 py-2 text-sm hover:bg-white/[0.06] hover:border-white/15 transition-all duration-200 group"
                                     >
                                         <span className="text-lg group-hover:scale-110 transition-transform">{c.flag}</span>
@@ -357,6 +400,32 @@ export default async function GlossaryHubPage() {
                         </div>
                     ))}
                 </ScrollReveal>
+
+                {/* ══════════ RECENTLY UPDATED (FRESHNESS SIGNAL) ══════════ */}
+                {recentlyUpdated && recentlyUpdated.length > 0 && (
+                    <ScrollReveal delay={90} className="mb-14">
+                        <div className="bg-[#121214] border border-[#D4A844]/20 rounded-3xl p-6 md:p-8">
+                            <h2 className="text-[11px] font-black tracking-[0.2em] text-[#D4A844] uppercase mb-5 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-[#D4A844] animate-pulse" />
+                                Recently Updated
+                            </h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {recentlyUpdated.map((rt) => (
+                                    <Link key={rt.slug} href={`/glossary/${rt.slug}`} className="block group">
+                                        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 transition-all group-hover:border-[#D4A844]/30">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <h3 className="font-bold text-white text-sm group-hover:text-[#D4A844]">{rt.term}</h3>
+                                                <span className="text-[9px] text-white/30 font-mono">
+                                                    {new Date(rt.updated_at).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                )}
 
                 {/* ══════════ SEO INTERLINKING SECTION ══════════ */}
                 <ScrollReveal delay={80} className="mb-14">
@@ -527,17 +596,17 @@ export default async function GlossaryHubPage() {
 
                 {/* No Dead End — route to high-intent surfaces */}
                 <div className="mt-12">
-                    <div style={{ background: 'rgba(212,168,68,0.04)', border: '1px solid rgba(212,168,68,0.12)', borderRadius: 16, padding: '20px 24px', marginBottom: 16 }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: '#D4A844', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Not finding what you need? Try these resources →</div>
-                        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                            <a href="/directory" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>🔍 Find Pilot Car Operators</a>
-                            <a href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>🧮 Escort Calculator</a>
-                            <a href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</a>
-                            <a href="/regulations/us" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>🌍 US Regulations</a>
-                            <a href="/available-now" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>🟢 Available Now</a>
-                            <a href="/pricing" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>💲 All Plans</a>
-                        </div>
-                    </div>
+                     <NoDeadEndBlock
+                        heading="Not finding what you need? Try these resources:"
+                        moves={[
+                            { href: '/directory', icon: '🔍', title: 'Find Operators', desc: `Search for pilot car specialists`, primary: true, color: '#22C55E' },
+                            { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many escorts do you need?', primary: true, color: '#D4A844' },
+                            { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by state' },
+                            { href: '/regulations/us', icon: '🌍', title: 'US Regulations', desc: 'Browse requirements by country' },
+                            { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Find live pilot cars' },
+                            { href: '/pricing', icon: '💲', title: 'All Plans', desc: 'View enterprise fleet plans' },
+                        ]}
+                    />
                 </div>
 
             </main>

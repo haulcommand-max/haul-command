@@ -64,6 +64,69 @@ SOURCES = [
         "url": "https://www.pilotcarescort.com/boards/",
         "country_hint": "US",
     },
+    # ── HYPER-RARE ROLE NODES (120-COUNTRY) ─────────────────────────────────
+    {
+        "source_name": "WCS Permits - Pilot Cars",
+        "source_type": "wcs_permit_directory",
+        "url": "https://wcspermits.com/pilot-cars/",
+        "country_hint": "US",
+    },
+    {
+        "source_name": "ODSNA Utility Directory",
+        "source_type": "odsna_directory",
+        "url": "https://odsna.com/directory/", 
+        "country_hint": "CA", # NA cross-border
+    },
+    {
+        "source_name": "ESC Regional Infrastructure Board",
+        "source_type": "esc_infrastructure",
+        "url": "https://www.esc.org/", 
+        "country_hint": "EU",
+    },
+    # ── ENTERPRISE / LOAD BOARD ABSORPTION ────────────────────────────────
+    {
+        "source_name": "Wide Load Shipping - Trucking",
+        "source_type": "wideload_shipping_trucking",
+        "url": "https://wideloadshipping.com/trucking/", 
+        "country_hint": "US",
+    },
+    {
+        "source_name": "Wide Load Shipping (Global)",
+        "source_type": "wideload_shipping_global",
+        "url": "https://wideloadshipping.com/", 
+        "country_hint": "US",
+    },
+    {
+        "source_name": "Heavy Haulers Directory",
+        "source_type": "heavy_haulers_directory",
+        "url": "https://www.heavyhaulers.com/", 
+        "country_hint": "US",
+    },
+    {
+        "source_name": "DAT Load Boards - Heavy Haul",
+        "source_type": "dat_load_board_heavy",
+        "url": "https://www.dat.com/load-boards", 
+        "country_hint": "US",
+    },
+    # ── ADVANCED PILOT CAR DIRECTORIES & BROKERS ─────────────────────────
+    {
+        "source_name": "OSW Haven Directory",
+        "source_type": "osw_haven_directory",
+        "url": "https://osowhaven.com/", 
+        "country_hint": "US",
+    },
+    {
+        "source_name": "Pilot Car Loads (Brokers)",
+        "source_type": "pilot_car_loads_brokers",
+        "url": "https://pilotcarloads.com/dashboard/loads", 
+        "country_hint": "US",
+    },
+    {
+        "source_name": "Truck Stops and Services",
+        "source_type": "truck_stops_services",
+        "url": "https://www.truckstopsandservices.com/", 
+        "country_hint": "US",
+    }
 ]
 
 # ─── Helpers ────────────────────────────────────────────────────────────────

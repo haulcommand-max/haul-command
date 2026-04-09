@@ -34,7 +34,8 @@
         "ingest:pipeline": "node scripts/seed/run-full-pipeline.mjs",
         "migrate": "node scripts/migrate.mjs",
         "e2e:stripe": "node scripts/e2e-stripe-webhook.mjs",
-        "e2e:stripe:prod": "node scripts/e2e-stripe-webhook.mjs --prod"
+        "e2e:stripe:prod": "node scripts/e2e-stripe-webhook.mjs --prod",
+        "gsd:diff": "tsx tools/gsd/diff/run-diff-analysis.ts"
     },
     "keywords": [],
     "author": "",
