@@ -110,7 +110,7 @@
         "openai": "^6.32.0",
         "pg": "^8.20.0",
         "playwright": "^1.58.2",
-        "posthog-js": "^1.363.6",
+        "posthog-js": "^1.366.0",
         "posthog-node": "^5.28.6",
         "prop-types": "^15.8.1",
         "react": "^19.2.4",
