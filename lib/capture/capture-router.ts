@@ -54,6 +54,7 @@ export type OfferType =
   | 'save_operator'
   | 'get_urgent_dispatch'
   | 'upgrade_premium'
+  | 'purchase_data_access'
   | 'join_community'
   | 'two_path_chooser'
   | 'none';
@@ -165,6 +166,23 @@ export function decideCaptureOffer(
 // ══════════════════════════════════════════════════════════════
 
 function paidSubscriberOffer(identity: VisitorIdentity, ctx: PageContext): CaptureOffer | null {
+  // Enterprise data upsell: if user has viewed 3+ corridor/rate pages, surface data product
+  if ((identity.directoryPageviews >= 3 || identity.searchCount >= 2) && 
+      (ctx.pageType === 'corridor' || ctx.pageType === 'route_check' || ctx.pageType === 'cost_calculator')) {
+    return {
+      type: 'purchase_data_access',
+      headline: 'Unlock Corridor Intelligence API',
+      subtext: 'Get programmatic access to live rate benchmarks, corridor disruption feeds, and demand heatmaps across all 120 countries',
+      ctaLabel: 'View Data Products',
+      ctaUrl: '/data-products',
+      secondaryCta: { label: 'Talk to Sales', url: '/contact?intent=enterprise-data' },
+      icon: '📊',
+      variant: 'slide_in',
+      priority: 2,
+      dismissKey: 'dismiss_data_access_enterprise',
+      cooldownMinutes: 4320, // 72h
+    };
+  }
   // Only show high-value: save corridor, follow regulation, sponsor opportunity
   if (ctx.pageType === 'corridor') {
     return {

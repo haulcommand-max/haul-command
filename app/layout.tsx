@@ -177,30 +177,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         "url": "https://www.haulcommand.com",
                         "logo": "https://www.haulcommand.com/logo.png",
                         "description": "The operating system for heavy haul — the world's largest directory of pilot car operators, escort vehicles, and oversize load transport professionals across 120 countries.",
+                        "additionalType": "https://schema.org/SoftwareApplication",
                         "sameAs": [
                             "https://x.com/haulcommand",
                             "https://linkedin.com/company/haulcommand",
                             "https://instagram.com/haulcommand",
                             "https://facebook.com/haulcommand",
-                            "https://www.facebook.com/groups/pilotcarjobs"
+                            "https://www.facebook.com/groups/pilotcarjobs",
+                            "https://www.youtube.com/@haulcommand",
+                            "https://www.tiktok.com/@haulcommand",
+                            "https://www.crunchbase.com/organization/haul-command"
                         ],
                         "contactPoint": {
                             "@type": "ContactPoint",
                             "contactType": "customer service",
-                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese"]
+                            "availableLanguage": ["English", "Spanish", "French", "German", "Portuguese", "Japanese", "Arabic"]
                         },
                         "areaServed": {
                             "@type": "GeoShape",
                             "description": "120 countries worldwide"
                         },
                         "foundingDate": "2024",
+                        "knowsLanguage": ["en", "es", "fr", "de", "pt", "ja", "ar", "nl", "sv", "fi"],
+                        "numberOfEmployees": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 1,
+                            "maxValue": 10
+                        },
                         "knowsAbout": [
                             "Pilot Car Operations",
                             "Escort Vehicle Services",
                             "Oversize Load Transport",
                             "Heavy Haul Logistics",
                             "Superload Permits",
-                            "Route Surveys"
+                            "Route Surveys",
+                            "Escort Vehicle Certification",
+                            "DOT Compliance",
+                            "Frost Law Tracking",
+                            "Cross-Border Escort Compliance"
                         ]
                     })
                 }} />

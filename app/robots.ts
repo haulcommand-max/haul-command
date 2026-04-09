@@ -19,6 +19,12 @@ const PUBLIC_HIGH_VALUE_PATHS = [
   '/compare/',
   '/alternatives/',
   '/near/',
+  '/training/',
+  '/data-products/',
+  '/press/',
+  '/resources/',
+  '/united-states/',
+  '/canada/',
 ];
 
 export default function robots(): MetadataRoute.Robots {
@@ -46,9 +52,15 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'PerplexityBot', allow: PUBLIC_HIGH_VALUE_PATHS },
       { userAgent: 'Applebot-Extended', allow: PUBLIC_HIGH_VALUE_PATHS },
       { userAgent: 'cohere-ai', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'Google-Extended', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'Gemini', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'meta-externalagent', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'YouBot', allow: PUBLIC_HIGH_VALUE_PATHS },
+      { userAgent: 'Bytespider', allow: PUBLIC_HIGH_VALUE_PATHS },
       // ── Traditional Search Engines — full access ──
       { userAgent: 'Googlebot', allow: '/' },
       { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'DuckDuckBot', allow: '/' },
       { userAgent: 'YandexBot', allow: '/' },
     ],
     sitemap: [
