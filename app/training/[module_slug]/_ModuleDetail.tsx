@@ -99,7 +99,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ module_slug
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [module_slug]);
 
   const markLessonComplete = useCallback(async (lessonId: string, watchPercent?: number) => {
     const payload = {
