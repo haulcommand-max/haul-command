@@ -24,6 +24,17 @@ const FOOTER_SECTIONS = [
     ],
   },
   {
+    title: 'Training',
+    links: [
+      { href: '/training', label: '🎓 Training Overview' },
+      { href: '/training/levels/road-ready', label: 'Road Ready — $49' },
+      { href: '/training/levels/certified', label: 'Certified — $149' },
+      { href: '/training/levels/elite', label: 'Elite — $29/mo' },
+      { href: '/training/levels/av-ready', label: 'AV-Ready — $199' },
+      { href: '/training/enterprise', label: 'Enterprise & Teams' },
+    ],
+  },
+  {
     title: 'Tools',
     links: [
       { href: '/tools/permit-checker/us', label: 'Permit Checker' },

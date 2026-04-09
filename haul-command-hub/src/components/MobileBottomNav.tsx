@@ -8,9 +8,9 @@ import { useRole } from '@/lib/role-context';
 
 const BOTTOM_NAV_ITEMS = [
   { href: '/', label: 'Home', icon: '🏠' },
-  { href: '/glossary', label: 'Glossary', icon: '📖' },
   { href: '/directory', label: 'Directory', icon: '🔍' },
   { href: '/map', label: 'Map', icon: '🗺️' },
+  { href: '/training', label: 'Training', icon: '🎓' },
   { href: '/tools', label: 'Tools', icon: '🛠️' },
 ];
 
