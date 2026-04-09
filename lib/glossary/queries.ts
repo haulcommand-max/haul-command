@@ -1,33 +1,29 @@
-import { createClient } from '@/utils/supabase/server';
+import { cache } from "react";
+import {
+  rpcGlossaryHubPayload,
+  rpcGlossaryTermPayload,
+  rpcGlossaryTopicPayload,
+  rpcGlossaryCountryPayload,
+} from "./rpc";
 
-export async function getGlossaryHub() {
-    const supabase = await createClient();
-    const { data } = await supabase.rpc('glo_glossary_hub_payload');
-    return data;
-}
+export const getGlossaryHubPayload = cache(async () => {
+  return rpcGlossaryHubPayload();
+});
 
-export async function getGlossaryTerm(slug: string, countryCode?: string, regionCode?: string) {
-    const supabase = await createClient();
-    const { data } = await supabase.rpc('glo_term_page_payload', {
-        p_term_slug: slug,
-        p_country_code: countryCode || null,
-        p_region_code: regionCode || null,
+export const getGlossaryTermPayload = cache(
+  async (termSlug: string, countryCode?: string | null, regionCode?: string | null) => {
+    return rpcGlossaryTermPayload({
+      termSlug,
+      countryCode: countryCode ?? null,
+      regionCode: regionCode ?? null,
     });
-    return data;
-}
+  }
+);
 
-export async function getGlossaryTopic(topicSlug: string) {
-    const supabase = await createClient();
-    const { data } = await supabase.rpc('glo_topic_page_payload', {
-        topic_slug: topicSlug
-    });
-    return data;
-}
+export const getGlossaryTopicPayload = cache(async (topicSlug: string) => {
+  return rpcGlossaryTopicPayload(topicSlug);
+});
 
-export async function getGlossaryCountry(countryCode: string) {
-    const supabase = await createClient();
-    const { data } = await supabase.rpc('glo_country_hub_payload', {
-        c_code: countryCode
-    });
-    return data;
-}
+export const getGlossaryCountryPayload = cache(async (countryCode: string) => {
+  return rpcGlossaryCountryPayload(countryCode.toUpperCase());
+});
