@@ -29,46 +29,46 @@ export function GlobalCommandBar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#D4A348]/20 bg-black/85 backdrop-blur-md supports-[backdrop-filter]:bg-black/70">
       {/* ── Desktop & Main Mobile Shell ── */}
-      <div className="mx-auto flex min-h-14 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:min-h-16 lg:px-6 xl:px-8">
+      <div className="mx-auto flex min-h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:min-h-20 lg:px-8 xl:px-10">
         
         {/* Left cluster: Logo + Desktop Links */}
-        <div className="flex min-w-0 items-center gap-4 lg:gap-6">
+        <div className="flex min-w-0 items-center gap-6 lg:gap-10">
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-2 rounded-xl px-1 py-1 outline-none transition hover:opacity-100 focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
+            className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-100 focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
           >
             <Image
               src={LOGO_SRC}
               alt={ALT_TEXT}
-              width={200}
-              height={44}
+              width={220}
+              height={48}
               priority
-              className="object-contain object-left max-h-[36px] sm:max-h-[40px] drop-shadow-md contrast-105 saturate-105"
+              className="object-contain object-left max-h-[40px] sm:max-h-[44px] drop-shadow-md contrast-105 saturate-105"
             />
           </Link>
 
           {/* Inline desktop command nav */}
-          <nav className="hidden min-w-0 items-center gap-4 md:flex lg:gap-5 xl:gap-6" aria-label="Primary">
+          <nav className="hidden min-w-0 items-center gap-6 md:flex lg:gap-10 xl:gap-12" aria-label="Primary">
             {COMMAND_LINKS.map((link) => {
               const isActive = pathname?.startsWith(link.href) && link.href !== "/";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex h-10 items-center rounded-xl px-2 text-[13px] tracking-[0.02em] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50 relative ${
+                  className={`inline-flex h-12 items-center rounded-xl px-3 text-[14px] tracking-[0.03em] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50 relative ${
                     isActive
-                      ? "font-semibold text-[#D4A348] transition-colors"
-                      : "font-medium text-white/72 hover:text-white transition-colors"
+                      ? "font-bold text-[#D4A348] transition-colors"
+                      : "font-semibold text-white/70 hover:text-white transition-colors"
                   }`}
                 >
                   {link.label}
                   {link.badge && (
-                    <span className="ml-1.5 rounded-md bg-[#D4A348]/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#E3B55D]">
+                    <span className="ml-2 rounded-md bg-[#D4A348]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#E3B55D]">
                       {link.badge}
                     </span>
                   )}
                   {isActive && (
-                    <span className="absolute inset-x-2 bottom-1 h-px rounded-full bg-[#D4A348]" />
+                    <span className="absolute inset-x-3 bottom-1.5 h-[2px] rounded-full bg-[#D4A348]" />
                   )}
                 </Link>
               );

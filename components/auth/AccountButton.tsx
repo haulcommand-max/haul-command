@@ -34,7 +34,7 @@ export function AccountButton() {
     return (
       <Link
         href="/dashboard"
-        className="inline-flex h-11 items-center justify-center rounded-2xl border border-[#D4A348]/60 bg-black/70 px-4 sm:px-5 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(212,163,72,0.05),0_6px_18px_rgba(0,0,0,0.35)] transition duration-150 hover:border-[#D4A348]/90 hover:bg-[#D4A348]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
+        className="inline-flex h-11 items-center justify-center rounded-2xl bg-[#C6923A] px-5 text-sm font-bold text-[#07090D] shadow-lg transition duration-150 hover:bg-[#D4A348] hover:shadow-[#C6923A]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6923A]/50"
       >
         Account
       </Link>
@@ -44,7 +44,7 @@ export function AccountButton() {
   return (
     <Link
       href="/login"
-      className="inline-flex h-11 items-center justify-center rounded-2xl border border-[#D4A348]/60 bg-black/70 px-4 sm:px-5 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(212,163,72,0.05),0_6px_18px_rgba(0,0,0,0.35)] transition duration-150 hover:border-[#D4A348]/90 hover:bg-[#D4A348]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
+      className="inline-flex h-11 items-center justify-center rounded-2xl bg-[#C6923A] px-5 text-sm font-bold text-[#07090D] shadow-lg transition duration-150 hover:bg-[#D4A348] hover:shadow-[#C6923A]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6923A]/50"
     >
       Sign In
     </Link>

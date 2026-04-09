@@ -32,6 +32,20 @@ export function GlobalCommandMap() {
   // Generate synthetic nodes on load for immediate dramatic effect
   // In production, this hooks straight into the `hc_places` or `operator_live_status` RPC.
   useEffect(() => {
+    // 1. Trigger hyperlocal zoom if allowed
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setViewState(prev => ({
+          ...prev,
+          longitude: pos.coords.longitude,
+          latitude: pos.coords.latitude,
+          zoom: 9
+        }));
+      }, () => {
+        console.log("Geolocation denied or unavailable, using fallback.");
+      }, { timeout: 5000 });
+    }
+
     const nodes: OperatorNode[] = [];
     const centers = [
       { lat: 29.76, lng: -95.36, spread: 5, activeRate: 0.8 }, // Houston
@@ -60,6 +74,22 @@ export function GlobalCommandMap() {
         });
       }
     });
+
+    // Add local node if geolocation was granted, simulating user density
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        nodes.push({
+          id: 'local-node',
+          name: 'Hyperlocal Escort',
+          lat: pos.coords.latitude + 0.01,
+          lng: pos.coords.longitude + 0.01,
+          isAvailable: true,
+          score: 99,
+          slug: '#'
+        });
+      });
+    }
+
     setSimulatedOperators(nodes);
   }, []);
 
@@ -92,7 +122,18 @@ export function GlobalCommandMap() {
   }
 
   return (
-    <div className="relative w-full h-[600px] bg-[#0a0a0b] border border-white/5 shadow-2xl overflow-hidden rounded-xl">
+    <div className="relative w-full h-[600px] bg-[#07090D] border border-white/5 shadow-2xl overflow-hidden rounded-xl">
+      <style>{`
+        /* Remove Mapbox Logos completely */
+        .mapboxgl-ctrl-bottom-left { display: none !important; }
+        .mapboxgl-ctrl-logo { display: none !important; }
+        
+        /* Apply Haul Command brand colors (Dark/Gold Custom Filter) */
+        .mapboxgl-canvas {
+          filter: sepia(0.3) saturate(1.2) hue-rotate(345deg) contrast(1.1) brightness(0.8) !important;
+        }
+      `}</style>
+
       {/* OS Overlay - Scanner UI */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C6923A] to-transparent opacity-50 z-20" />
 
