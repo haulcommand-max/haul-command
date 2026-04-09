@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import InviteCard from "@/components/growth/InviteCard";
 import { MilestoneCelebration, BenchmarkCard } from "@/components/psychology/GrowthHooks";
+import { GlobalCommandBar } from "@/components/layout/GlobalCommandBar";
 
 interface DashboardData {
     entity_id: string;
@@ -144,31 +145,7 @@ export default function OperatorDashboard() {
     return (
         <div className="min-h-screen bg-gray-950 text-white pb-24">
             {/* Header */}
-            <header className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur-xl border-b border-white/6">
-                <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-white text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
-                            HC
-                        </div>
-                        <div>
-                            <h1 className="text-sm font-black text-white">{dash.company_name || "Operator"}</h1>
-                            <p className="text-[10px] text-white/30">
-                                {dash.city}{dash.region_code ? `, ${dash.region_code}` : ""}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
-                            <Bell className="w-5 h-5 text-white/40" />
-                            {(dash.unread_notifications > 0) && (
-                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold flex items-center justify-center">
-                                    {dash.unread_notifications}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <GlobalCommandBar />
 
             <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
                 {/* ── MODULE 1: Availability Toggle ── */}

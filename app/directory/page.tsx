@@ -285,384 +285,296 @@ export default async function DirectoryPage() {
       <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_JSONLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_FAQ_JSONLD) }} />
-      <div className="min-h-screen bg-transparent text-white overflow-hidden">
-      {/* Hero */}
-      <section className="relative py-16 px-4 text-center border-b border-white/5">
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="inline-flex gap-2 mb-6">
-            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full">
-              {total.toLocaleString()}+ listings
+      
+      <main className="min-h-screen bg-[#07090D] text-gray-100 relative overflow-x-hidden pt-12">
+        {/* Ambient Top Glow */}
+        <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-amber-500/10 opacity-70 blur-[100px]" />
+
+        {/* --- 1. HERO --- */}
+        <header className="relative mx-auto max-w-5xl px-6 pt-16 pb-12 text-center">
+          <div className="mb-8 flex flex-wrap justify-center gap-2">
+            <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-amber-400">
+              {total.toLocaleString()}+ Live Listings
             </span>
-            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-sm rounded-full">
-              46 categories
+            <span className="rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-blue-400">
+              120 Countries
             </span>
-            <span className="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm rounded-full">
-              120 countries
+            <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-400">
+              Real-Time Verification
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Find Pilot Car &amp; Escort Operators Near You
+
+          <h1 className="mb-6 text-5xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-xl">
+            Command the Real-World <br className="hidden md:block" />
+            <span className="bg-gradient-to-br from-amber-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent">Operator Directory</span>
           </h1>
-          <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto">
-            {total.toLocaleString()}+ verified pilot car operators, escort vehicles, truck stops, and support services across all 50 US states and 120 countries.
-            Claim your free listing today.
+
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 md:text-xl font-medium leading-relaxed">
+            Direct access to {total.toLocaleString()}+ verified pilot cars, towing companies, and heavy-haul specialists globally. Skip the broker boards—connect at the source.
           </p>
 
-          {/* Role Selector Chips — self-sort by intent */}
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+          {/* Quick Filter Roles */}
+          <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-3">
             {[
-              { label: '🔍 I Need Escorts', href: '/directory?role=broker', color: '#D4A844', desc: 'For brokers & carriers' },
-              { label: '🚗 I Drive Pilot Car', href: '/directory?role=operator', color: '#22C55E', desc: 'For operators' },
-              { label: '🚛 I Haul Freight', href: '/directory?role=carrier', color: '#3B82F6', desc: 'For carriers & fleets' },
-              { label: '🏗 I Provide Support', href: '/directory?role=support', color: '#8B5CF6', desc: 'Yards, motels, vendors' },
+              { label: 'Find Capacity', icon: '🔍', href: '/directory?role=broker', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', hover: 'hover:bg-emerald-500/20 hover:border-emerald-400/40', text: 'text-emerald-400' },
+              { label: 'Pilot Cars', icon: '🚗', href: '/directory?role=operator', bg: 'bg-amber-500/10', border: 'border-amber-500/20', hover: 'hover:bg-amber-500/20 hover:border-amber-400/40', text: 'text-amber-400' },
+              { label: 'Heavy Haulers', icon: '🚛', href: '/directory?role=carrier', bg: 'bg-blue-500/10', border: 'border-blue-500/20', hover: 'hover:bg-blue-500/20 hover:border-blue-400/40', text: 'text-blue-400' },
+              { label: 'Yards & Support', icon: '🏗️', href: '/directory?role=support', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', hover: 'hover:bg-indigo-500/20 hover:border-indigo-400/40', text: 'text-indigo-400' },
             ].map(chip => (
-              <a key={chip.href} href={chip.href} style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center',
-                padding: '10px 18px', borderRadius: 12,
-                background: `${chip.color}0d`,
-                border: `1px solid ${chip.color}30`,
-                textDecoration: 'none', fontSize: 13, fontWeight: 700,
-                color: chip.color, gap: 2, minWidth: 140,
-                transition: 'all 0.15s',
-              }}>
-                {chip.label}
-                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{chip.desc}</span>
+              <a
+                key={chip.href}
+                href={chip.href}
+                className={`group flex items-center gap-2 rounded-2xl border px-5 py-3 transition-all duration-300 ${chip.bg} ${chip.border} ${chip.hover}`}
+              >
+                <span className="text-xl shadow-sm">{chip.icon}</span>
+                <span className={`text-sm font-bold tracking-wide ${chip.text}`}>{chip.label}</span>
               </a>
             ))}
           </div>
+        </header>
 
-          {/* Global Command Map */}
-          <div className="max-w-6xl mx-auto mb-8">
-            <CommandMapWrapper />
+        {/* --- 2. THE MAP & LIVE RADAR SURFACES --- */}
+        <section className="relative z-10 mx-auto w-full max-w-[1400px] px-4 md:px-6 mb-12">
+          <div className="rounded-3xl border border-white/5 bg-white/5 p-2 backdrop-blur-3xl shadow-2xl overflow-hidden ring-1 ring-white/10">
+              <CommandMapWrapper />
+              <DirectoryFilterOrchestrator />
           </div>
+        </section>
 
-          {/* Hard Filters + Search — Orchestrated for live filtering */}
-          <DirectoryFilterOrchestrator />
+        {/* --- 3. PROOF BANNER --- */}
+        <SocialProofBanner />
 
-          {/* Stats */}
-          <div className="flex justify-center gap-8 text-sm">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">{total.toLocaleString()}</div>
-              <div className="text-gray-500 text-xs mt-1">Businesses</div>
+        {/* --- 4. TOP PERFORMING OPERATORS GRID --- */}
+        {topOperators.length > 0 && (
+          <section className="mx-auto mt-16 max-w-7xl px-6">
+            <header className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="text-2xl font-extrabold text-white mb-2">Top Rated Dispatch Ready</h2>
+                <p className="text-sm text-gray-400">Operators heavily vetted by the ecosystem, ready for immediate routing.</p>
+              </div>
+              <Link href="/directory/us" className="text-sm font-bold tracking-wide text-amber-500 hover:text-amber-400 transition hidden sm:inline-block">
+                View All US Operators →
+              </Link>
+            </header>
+            
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {topOperators.map((op: any) => {
+                const name = op.display_name || op.name || 'Escort Operator';
+                const isClaimed = op.claim_status === 'claimed' || op.claim_status === 'verified' || op.is_claimed;
+                const trustScore = op.trust_score ?? (op.confidence_score ? op.confidence_score / 20 : null);
+                const entityType = op.entity_type || op.role_primary || 'pilot_car';
+                const countryCode = op.country_code || 'US';
+                return (
+                  <div key={op.id} className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0B0F17] p-5 shadow-lg relative transition-all duration-300 hover:border-amber-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-900/20">
+                    <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-bl from-amber-500/10 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <header className="relative z-10 flex items-start justify-between">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-base font-bold text-gray-100">{name}</h3>
+                        <p className="mt-1 text-[11px] font-bold tracking-widest text-gray-500 uppercase">
+                          {entityType.replace(/_/g, ' ')} · {countryCode}
+                        </p>
+                      </div>
+                      {isClaimed && (
+                        <div className="ml-3 flex items-center justify-center rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 shadow-sm">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Verified</span>
+                        </div>
+                      )}
+                    </header>
+                    <div className="relative z-10 my-5 flex items-center justify-between">
+                       <TrustScoreBadge score={trustScore != null ? Math.min(Math.round(trustScore * 20), 100) : 0} variant="compact" />
+                       <AvailabilityQuickSet operatorId={op.id} currentStatus={'unknown'} compact />
+                    </div>
+                    <footer className="relative z-10 mt-auto grid grid-cols-2 gap-2">
+                       <Link href={`/loads/post?operator=${op.slug || op.id}`} className="flex flex-1 items-center justify-center rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-500 py-2.5 text-xs font-bold text-white transition hover:from-emerald-500 hover:to-emerald-400 shadow shadow-emerald-500/20">
+                         Request Direct
+                       </Link>
+                       <Link href={`/directory/profile/${op.slug || op.id}`} className="flex flex-1 items-center justify-center rounded-lg border border-white/15 bg-white/5 py-2.5 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/15">
+                         View Profile
+                       </Link>
+                    </footer>
+                  </div>
+                );
+              })}
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">46</div>
-              <div className="text-gray-500 text-xs mt-1">Categories</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">50</div>
-              <div className="text-gray-500 text-xs mt-1">US States</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-amber-400">{totalCountries || 120}</div>
-              <div className="text-gray-500 text-xs mt-1">Countries</div>
-            </div>
+          </section>
+        )}
+
+        {/* --- 5. BROWSE BY CATEGORY --- */}
+        <section className="mx-auto mt-24 max-w-7xl px-6">
+          <header className="mb-8">
+            <h2 className="text-2xl font-extrabold text-white mb-2">Ecosystem Categories</h2>
+            <p className="text-sm text-gray-400 font-medium">Drill down through 46 support classifications globally.</p>
+          </header>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7">
+            {SERVICE_CATEGORIES.map(cat => (
+              <Link key={cat.key} href={`/directory?category=${cat.key}`} className="group flex flex-col items-center justify-center rounded-xl border border-white/5 bg-white/[0.03] p-5 text-center transition-all hover:bg-white/10 hover:border-white/20 hover:-translate-y-1">
+                <span className="mb-3 text-2xl filter drop-shadow hover:scale-110 drop-shadow-md transition-transform duration-300">{cat.icon}</span>
+                <span className="text-[11px] font-bold tracking-tight text-gray-400 group-hover:text-white transition-colors">{cat.label}</span>
+              </Link>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Social Proof Banner — perceived value, FOMO */}
-      <SocialProofBanner />
-
-      {/* Browse by Service Category */}
-      <section className="max-w-6xl mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold">Browse by Service Category</h2>
-          <span className="text-xs text-gray-600">46 categories</span>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-          {SERVICE_CATEGORIES.map(cat => (
-            <Link aria-label={`Browse ${cat.label}`}
-              key={cat.key}
-              href={`/directory?category=${cat.key}`}
-              className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all group"
-            >
-              <span className="text-xl block mb-1">{cat.icon}</span>
-              <span className="text-xs font-medium text-white group-hover:text-amber-400 transition-colors block">{cat.label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Paywall Gate — mid-funnel, after service category value is shown */}
-      <section className="max-w-6xl mx-auto px-4 pb-2">
-        <PaywallGateBanner
-          surfaceName="Operator Directory"
-          tier="Pro"
-          description="Unlock verified operator contact details, trust scores, and availability. Join 1.2M+ operators across 120 countries."
-        />
-      </section>
-
-      {/* AdGrid — Directory Mid */}
-      <section className="max-w-6xl mx-auto px-4 py-4">
-        <AdGridSlot zone="directory_mid" />
-      </section>
-
-      {/* AdGrid — Keyword Interceptor — Sponsored Search Result */}
-      <section className="max-w-6xl mx-auto px-4 py-2">
-        <AdGridKeywordInterceptor
-          query="pilot car"
-          sponsored={{
-            id: 'sp-1',
-            company_name: 'Eagle Eye Escorts LLC',
-            tagline: 'Texas’ most trusted oversize load escort — 24/7 dispatch, DOT compliant, GPS tracked.',
-            rating: 4.9,
-            reviews: 142,
-            verified: true,
-            cta_url: '/directory/profile/eagle-eye-escorts',
-            badge: '🏆 Top Rated',
-            states: ['TX', 'OK', 'LA', 'NM'],
-          }}
-        />
-      </section>
-
-      {/* Live Activity Feed — social gravity + recruiter sidebar */}
-      <section className="max-w-6xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1 space-y-4">
-            <DirectoryActivityFeed />
-            {/* Recruiter Card — mega-carrier job board */}
-            <AdGridRecruiterCard
-              offer={{
-                id: 'recruit-1',
-                carrier_name: 'Barnhart Crane & Rigging',
-                pitch: 'We need verified pilot car operators for upcoming wind farm projects across TX, OK, KS.',
-                pay_range: '$1,800 - $2,400/week',
-                region: 'Southwest US',
-                requirements: ['2+ yrs experience', 'DOT compliant vehicle', 'Insurance verified'],
-                perks: ['Weekly pay', 'Fuel card', 'Year-round work'],
-                trust_score_min: 60,
-                apply_url: '/loads',
-                urgent: true,
+        {/* --- 6. CORE MONETIZATION & FEED (MID FUNNEL) --- */}
+        <section className="mx-auto mt-24 max-w-7xl px-6 border-t border-white/5 pt-16">
+          <PaywallGateBanner surfaceName="Operator Directory" tier="Pro" description="Unlock verified operator contact details, trust scores, and availability. Join 1.2M+ operators across 120 countries." />
+          <div className="mt-8">
+            <AdGridSlot zone="directory_mid" />
+          </div>
+          <div className="mt-8">
+             <AdGridKeywordInterceptor
+              query="pilot car"
+              sponsored={{
+                id: 'sp-1',
+                company_name: 'Eagle Eye Escorts LLC',
+                tagline: 'Texas’ most trusted oversize load escort — 24/7 dispatch, DOT compliant, GPS tracked.',
+                rating: 4.9,
+                reviews: 142,
+                verified: true,
+                cta_url: '/directory/profile/eagle-eye-escorts',
+                badge: '🏆 Top Rated',
+                states: ['TX', 'OK', 'LA', 'NM'],
               }}
-              operatorTrustScore={75}
             />
           </div>
-          <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center justify-center text-gray-600 text-sm">
-              Join {total.toLocaleString()} businesses on the fastest-growing trucking directory. Claim your free listing today.
+        </section>
+
+        {/* --- 7. LIVE RADAR / ACTIVITY WALL / LEAD FORMS --- */}
+        <section className="mx-auto mt-24 max-w-7xl px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-1 border border-white/10 bg-[#0B0F17] rounded-3xl p-6 shadow-2xl flex flex-col">
+            <h3 className="text-xs font-bold text-gray-400 mb-6 uppercase tracking-widest flex items-center gap-3">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              Live Market Wire
+            </h3>
+            <div className="flex-1">
+               <DirectoryActivityFeed />
             </div>
-            {/* Instant Lead Form */}
-            <AdGridInstantLeadForm
-              adId="insurance-lead-1"
-              advertiserName="National Truck Insurance"
-              serviceName="Pilot Car Insurance — $89/mo"
-              variant="inline"
-            />
+            <div className="mt-6 border-t border-white/10 pt-6">
+              <AdGridRecruiterCard
+                offer={{
+                  id: 'recruit-1',
+                  carrier_name: 'Barnhart Crane & Rigging',
+                  pitch: 'We need verified pilot car operators for upcoming wind farm projects across TX, OK, KS.',
+                  pay_range: '$1,800 - $2,400/week',
+                  region: 'Southwest US',
+                  requirements: ['2+ yrs experience', 'DOT compliant vehicle', 'Insurance verified'],
+                  perks: ['Weekly pay', 'Fuel card', 'Year-round work'],
+                  trust_score_min: 60,
+                  apply_url: '/loads',
+                  urgent: true,
+                }}
+                operatorTrustScore={75}
+              />
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* US State Quick Nav */}
-      <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold">Browse US States</h2>
-          <span className="text-xs text-gray-600">50 states</span>
-        </div>
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-2">
-          {US_STATES.map(s => (
-            <Link aria-label="Navigation Link"
-              key={s}
-              href={`/directory/us/${s.toLowerCase()}`}
-              className="p-2 bg-white/5 border border-white/10 rounded-lg hover:border-amber-500/40 hover:bg-white/10 transition-all text-center group"
-            >
-              <div className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">{s}</div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Top Operators */}
-      {topOperators.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 py-8 border-t border-white/5">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold">Top Rated Operators</h2>
-            <Link aria-label="Navigation Link" href="/directory/us" className="text-sm text-amber-400 hover:underline">View all US →</Link>
+          
+          <div className="lg:col-span-2 flex flex-col justify-center rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8 lg:p-14 overflow-hidden relative group hover:border-white/15 transition-colors">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+              <h2 className="text-4xl font-extrabold text-white mb-5 tracking-tight relative z-10">Command Your Fleet's Insurance</h2>
+              <p className="text-lg text-gray-400 mb-10 max-w-xl font-medium relative z-10">Protect your runs and lock down compliance instantly. Access heavy haul insurance built strictly for the oversized sector.</p>
+              <div className="relative z-10 block w-full">
+                <AdGridInstantLeadForm
+                  adId="insurance-lead-1"
+                  advertiserName="National Truck Insurance"
+                  serviceName="Pilot Car Insurance — $89/mo"
+                  variant="inline"
+                />
+              </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {topOperators.map((op: any) => {
-              // Support both legacy (hc_global_operators) and production (DirectoryCard) shapes
-              const name = op.display_name || op.name || 'Escort Operator';
-              const isClaimed = op.claim_status === 'claimed' || op.claim_status === 'verified' || op.is_claimed;
-              const trustScore = op.trust_score ?? (op.confidence_score ? op.confidence_score / 20 : null);
-              const entityType = op.entity_type || op.role_primary || 'pilot_car';
-              const countryCode = op.country_code || 'US';
-              const jobCount = op.completed_jobs_count;
-              const responseRate = op.response_rate;
+        </section>
 
+        {/* --- 8. STATE AND COUNTRY QUICK NAV --- */}
+        <section className="mx-auto mt-24 max-w-7xl px-6">
+           <header className="mb-6 flex items-center justify-between">
+             <h2 className="text-2xl font-extrabold text-white">Coverage Maps</h2>
+             <span className="text-xs font-bold text-amber-500 tracking-wider uppercase border border-amber-500/20 bg-amber-500/10 px-3 py-1 rounded-full">120 Markets Active</span>
+           </header>
+           
+           <h3 className="mb-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-10 border-b border-white/10 pb-2">United States Focus</h3>
+           <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-13 gap-2">
+             {US_STATES.map(s => (
+               <Link key={s} href={`/directory/us/${s.toLowerCase()}`}
+                 className="flex h-11 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-xs font-bold text-gray-300 transition hover:border-amber-400/50 hover:bg-amber-400/10 hover:text-amber-400 hover:shadow-lg">
+                 {s}
+               </Link>
+             ))}
+           </div>
+
+           <h3 className="mb-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-12 border-b border-white/10 pb-2">Global Jurisdictions</h3>
+           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 mt-4">
+            {countries.map((country) => {
+              const flag = TIER_FLAGS[country.code?.toUpperCase()] || '🌐';
               return (
-                <div
-                  key={op.id}
-                  data-directory-result="true"
-                  className="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 transition-all"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-white text-sm truncate">{name}</h3>
-                      <p className="text-xs text-gray-500">
-                        {countryCode}{op.country_name ? ` · ${op.country_name}` : ''}
-                        {op.country_tier ? ` (Tier ${op.country_tier})` : ''}
-                      </p>
-                    </div>
-                    {isClaimed && (
-                      <span className="ml-2 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full flex-shrink-0">
-                        ✓ {op.claim_status === 'verified' ? 'Verified' : 'Claimed'}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between mb-3">
-                    {trustScore != null ? (
-                      <TrustScoreBadge score={Math.min(Math.round(trustScore * 20), 100)} variant="compact" />
-                    ) : (
-                      <TrustScoreBadge score={0} variant="compact" />
-                    )}
-                    <div className="flex items-center gap-2 text-[10px] text-gray-600">
-                      {jobCount != null && jobCount > 0 && (
-                        <span>{jobCount} jobs</span>
-                      )}
-                      {responseRate != null && (
-                        <span>{Math.round(responseRate * 100)}% resp.</span>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mb-3 line-clamp-1 capitalize">{entityType.replace(/_/g, ' ')} Services</p>
-                  <div className="mt-3 flex gap-2">
-                    <Link aria-label="Navigation Link"
-                      href={`/loads/post?operator=${op.slug || op.id}`}
-                      className="flex-1 text-center px-3 py-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white text-xs font-bold rounded-lg transition-colors shadow-lg shadow-emerald-900/20"
-                    >
-                      Request Direct
-                    </Link>
-                    <Link aria-label="Navigation Link"
-                      href={`/directory/profile/${op.slug || op.id}`}
-                      className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 rounded-lg transition-colors"
-                    >
-                      View Profile
-                    </Link>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
-                    <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Status</span>
-                    <AvailabilityQuickSet operatorId={op.id} currentStatus={'unknown'} compact />
-                  </div>
-                </div>
+                <Link key={country.code} href={`/directory/${country.code?.toLowerCase()}`} className="group flex flex-col items-center rounded-2xl border border-white/5 bg-[#0a0c10] p-4 transition-all hover:border-amber-500/30 hover:bg-white/5 hover:shadow-lg">
+                  <span className="mb-2 text-3xl drop-shadow">{flag}</span>
+                  <span className="text-[11px] font-bold text-gray-300 group-hover:text-amber-400 uppercase tracking-wide">{country.name}</span>
+                </Link>
               );
             })}
           </div>
         </section>
-      )}
 
-      {/* AI Search Answer Block — Citation-ready for Google/AI engines */}
-      <section className="max-w-4xl mx-auto px-4 py-10 border-t border-white/5">
-        <StaticAnswerBlock
-          question="What is the Haul Command directory?"
-          answer="Haul Command is the world's largest directory of trucking service providers, including over 23,000 businesses across 46+ categories like pilot car operators, towing, truck repair, truck stops, and weigh stations. It covers 120 countries and offers verified operator profiles, trust scoring, and instant booking."
-          source="Haul Command"
-          sourceUrl="https://www.haulcommand.com/about"
-          lastVerified="2026-04-03"
-          confidence="verified_current"
-          ctaLabel="Search the Directory"
-          ctaUrl="/directory"
-        />
-        <StaticAnswerBlock
-          question="How do I find a pilot car near me?"
-          answer="Use Haul Command's directory to search by city, state, or ZIP code. Filter results by service type, availability, trust score, and equipment. You can contact operators directly, request quotes, or post a load for instant matching with verified escort vehicle providers."
-          source="Haul Command"
-          sourceUrl="https://www.haulcommand.com/near/houston-tx"
-          lastVerified="2026-04-03"
-          confidence="verified_current"
-          ctaLabel="Find Operators Near You"
-          ctaUrl="/near/houston-tx"
-        />
-      </section>
+        {/* --- 9. SEO & STATIC ENGINE BLOCKS --- */}
+        <section className="mx-auto mt-24 max-w-4xl px-6 border-t border-white/5 pt-16">
+          <div className="rounded-3xl border border-white/10 bg-[#0B0F17] p-8 mb-6 shadow-xl">
+            <StaticAnswerBlock question="What is the Haul Command directory?" answer="Haul Command is the world's largest directory of trucking service providers, including over 23,000 businesses across 46+ categories like pilot car operators, towing, truck repair, truck stops, and weigh stations. It covers 120 countries and offers verified operator profiles, trust scoring, and instant booking." source="Haul Command" sourceUrl="https://www.haulcommand.com/about" lastVerified="2026-04-03" confidence="verified_current" ctaLabel="Search the Directory" ctaUrl="/directory" />
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-[#0B0F17] p-8 shadow-xl">
+            <StaticAnswerBlock question="How do I find a pilot car near me?" answer="Use Haul Command's directory to search by city, state, or ZIP code. Filter results by service type, availability, trust score, and equipment. You can contact operators directly, request quotes, or post a load for instant matching with verified escort vehicle providers." source="Haul Command" sourceUrl="https://www.haulcommand.com/near/houston-tx" lastVerified="2026-04-03" confidence="verified_current" ctaLabel="Find Operators Near You" ctaUrl="/near/houston-tx" />
+          </div>
+        </section>
 
-      {/* Country Grid */}
-      <section className="max-w-6xl mx-auto px-4 py-10 border-t border-white/5">
-        <h2 className="text-lg font-bold mb-6">Browse by Country</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-          {countries.map((country) => {
-            const flag = TIER_FLAGS[country.code?.toUpperCase()] || '🌐';
-            return (
-              <Link aria-label="Navigation Link"
-                key={country.code}
-                href={`/directory/${country.code?.toLowerCase()}`}
-                className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-amber-500/30 hover:bg-white/8 transition-all text-center"
-              >
-                <span className="text-2xl block mb-2">{flag}</span>
-                <span className="font-medium text-xs block text-white group-hover:text-amber-400 transition-colors">{country.name}</span>
-                <span className="text-xs text-gray-600 mt-0.5 block">
-                  {country.entity_count > 0 ? `${country.entity_count.toLocaleString()} operators` : 'Coming soon'}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        {/* --- 10. SYSTEM FOOTER WRAPPERS --- */}
+        <section className="mx-auto mt-24 max-w-7xl px-6 pt-10">
+          <AdGridSlot zone="directory_bottom" />
+          
+          <div className="mt-16 rounded-[2rem] bg-gradient-to-tr from-amber-500 to-yellow-600 p-1 lg:p-14 text-center text-amber-950 shadow-2xl relative overflow-hidden">
+             <div className="absolute inset-0 bg-black/10"></div>
+             <div className="relative z-10 bg-gradient-to-br from-[#07090D] to-[#0A0D14] rounded-[1.8rem] p-12 lg:p-16 text-white border border-amber-500/20 shadow-inner">
+               <h2 className="mb-4 text-3xl md:text-5xl font-extrabold tracking-tight">Are you an escort operator?</h2>
+               <p className="mx-auto mb-10 max-w-2xl text-lg font-medium text-gray-400">
+                 Claim your free profile and instantly connect to the global routing grid. Receive direct dispatch requests across 120 countries.
+               </p>
+               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                 <Link href="/claim" className="w-full sm:w-auto rounded-xl bg-amber-500 px-8 py-4 text-sm font-bold text-amber-950 transition hover:bg-amber-400 uppercase tracking-widest shadow-lg shadow-amber-500/20">
+                   Claim Your Profile
+                 </Link>
+                 <Link href="/auth/register" className="w-full sm:w-auto rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white transition hover:bg-white/10 uppercase tracking-widest">
+                   Create Free Account
+                 </Link>
+               </div>
+             </div>
+          </div>
+          
+          <div className="my-16">
+            <SnippetInjector blocks={['definition', 'faq', 'cost_range', 'steps']} term="pilot car" geo="United States" country="US" />
+            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+              <ClaimListingCTA entityId="new" variant="card" />
+              <PostLoadCTA variant="card" />
+              <OperatorsNeededCTA surfaceName="underserved areas" operatorsNeeded={100} />
+            </div>
+          </div>
+           
+           <DataTeaserStrip />
+           
+           <div className="mt-16 mb-16">
+             <UrgentMarketSponsor marketKey="us-all" geo="the US heavy haul market" />
+           </div>
+        </section>
 
-      {/* AdGrid — Directory Bottom */}
-      <section className="max-w-6xl mx-auto px-4 py-4">
-        <AdGridSlot zone="directory_bottom" />
-      </section>
-      <section className="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/5">
-        <h2 className="text-2xl font-bold mb-4">Are you an escort operator?</h2>
-        <p className="text-gray-400 mb-6">
-          Claim your free profile and start receiving load offers from brokers across 120 countries.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Link aria-label="Navigation Link" href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors">
-            Claim Your Profile
-          </Link>
-          <Link aria-label="Navigation Link" href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">
-            Sign Up Free
-          </Link>
-        </div>
-      </section>
-      {/* Snippet Injector — featured snippet capture */}
-      <section className="max-w-4xl mx-auto px-4 py-8">
-        <SnippetInjector
-          blocks={['definition', 'faq', 'cost_range', 'steps']}
-          term="pilot car"
-          geo="United States"
-          country="US"
-        />
-      </section>
+        <section className="border-t border-white/5 bg-black/40 pt-16 pb-32">
+          <div className="max-w-7xl mx-auto px-6">
+            <NoDeadEndBlock moves={DIRECTORY_NEXT_MOVES} />
+          </div>
+        </section>
+        
+        <ProofStrip variant="bar" />
+        <StickyClaimBar context="root" claimHref="/claim" suggestHref="/claim" />
 
-      {/* Conversion CTAs */}
-      <section className="max-w-4xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <ClaimListingCTA entityId="new" variant="card" />
-          <PostLoadCTA variant="card" />
-          <OperatorsNeededCTA surfaceName="underserved areas" operatorsNeeded={100} />
-        </div>
-      </section>
-
-      {/* Data Teaser Strip */}
-      <section className="max-w-6xl mx-auto px-4 py-4">
-        <DataTeaserStrip />
-      </section>
-
-      {/* UrgentMarketSponsor — market-mode-aware monetization + claim pressure */}
-      <section className="max-w-6xl mx-auto px-4 pb-4">
-        <UrgentMarketSponsor
-          marketKey="us-all"
-          geo="the US heavy haul market"
-        />
-      </section>
-
-      {/* No-Dead-End Block — every directory visitor gets a clear next move */}
-      <section style={{ background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-        <NoDeadEndBlock moves={DIRECTORY_NEXT_MOVES} />
-      </section>
-
-      {/* ProofStrip — trust before exit */}
-      <ProofStrip variant="bar" style={{ marginBottom: 16 }} />
-
-      {/* StickyClaimBar — scroll-triggered */}
-      <StickyClaimBar
-        context="root"
-        claimHref="/claim"
-        suggestHref="/claim"
-      />
-    </div>
+      </main>
     </>
   );
 }

@@ -51,35 +51,8 @@ create index if not exists idx_places_equipment_tags on public.hc_places using g
 
 
 -- =====================================================================
--- 2) Add same columns to listings (canonical directory table)
+-- 2) (Removed) listings is a view, columns are selected from hc_places
 -- =====================================================================
-do $$
-begin
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='twic_certified') then
-    alter table public.listings add column twic_certified boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='hazmat_endorsed') then
-    alter table public.listings add column hazmat_endorsed boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='high_pole_certified') then
-    alter table public.listings add column high_pole_certified boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='superload_rated') then
-    alter table public.listings add column superload_rated boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='av_escort_certified') then
-    alter table public.listings add column av_escort_certified boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='gps_tracked') then
-    alter table public.listings add column gps_tracked boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='hc_verified') then
-    alter table public.listings add column hc_verified boolean not null default false;
-  end if;
-  if not exists (select 1 from information_schema.columns where table_schema='public' and table_name='listings' and column_name='equipment_tags') then
-    alter table public.listings add column equipment_tags text[] not null default '{}';
-  end if;
-end $$;
 
 
 -- =====================================================================

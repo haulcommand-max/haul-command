@@ -7,6 +7,13 @@
  * and can be extracted to shared LandingHeader/LandingFooter
  * components as more landing pages are added.
  */
+import { GlobalCommandBar } from "@/components/layout/GlobalCommandBar";
+
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+    return (
+        <>
+            <GlobalCommandBar />
+            {children}
+        </>
+    );
 }

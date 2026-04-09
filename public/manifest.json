@@ -9,49 +9,53 @@
   "orientation": "any",
   "scope": "/",
   "lang": "en",
-  "categories": ["business", "logistics", "productivity"],
+  "categories": [
+    "business",
+    "logistics",
+    "productivity"
+  ],
   "icons": [
     {
-      "src": "/icons/app/icon-32.png",
-      "sizes": "32x32",
+      "src": "../icons/icon-48.webp",
       "type": "image/png",
-      "purpose": "any"
+      "sizes": "48x48",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-64.png",
-      "sizes": "64x64",
+      "src": "../icons/icon-72.webp",
       "type": "image/png",
-      "purpose": "any"
+      "sizes": "72x72",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-128.png",
+      "src": "../icons/icon-96.webp",
+      "type": "image/png",
+      "sizes": "96x96",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "../icons/icon-128.webp",
+      "type": "image/png",
       "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-192.png",
+      "src": "../icons/icon-192.webp",
+      "type": "image/png",
       "sizes": "192x192",
-      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-256.png",
+      "src": "../icons/icon-256.webp",
+      "type": "image/png",
       "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/app/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-1024.png",
-      "sizes": "1024x1024",
+      "src": "../icons/icon-512.webp",
       "type": "image/png",
-      "purpose": "any"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "screenshots": [
@@ -76,21 +80,36 @@
       "short_name": "Available",
       "description": "See operators broadcasting availability right now",
       "url": "/available-now",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [
+        {
+          "src": "/icons/app/icon-128.png",
+          "sizes": "128x128"
+        }
+      ]
     },
     {
       "name": "Post a Load",
       "short_name": "Post Load",
       "description": "Instantly post a load to find an escort operator",
       "url": "/loads/post",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [
+        {
+          "src": "/icons/app/icon-128.png",
+          "sizes": "128x128"
+        }
+      ]
     },
     {
       "name": "My Dashboard",
       "short_name": "Dashboard",
       "description": "Your operator command center",
       "url": "/dashboard/operator",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [
+        {
+          "src": "/icons/app/icon-128.png",
+          "sizes": "128x128"
+        }
+      ]
     }
   ],
   "related_applications": [],

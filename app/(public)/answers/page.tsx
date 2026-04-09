@@ -7,7 +7,7 @@ import { AI_ANSWER_SEEDS, LOAD_TYPES } from "@/lib/seo/pilot-car-taxonomy";
 
 export const metadata: Metadata = {
     title: "Pilot Car & Oversize Escort Answers | Haul Command",
-    description: "Expert answers to the most common questions about pilot car service, oversize load escort requirements, equipment, costs, and regulations — updated for 2025.",
+    description: "Expert answers to the most common questions about pilot car service, oversize load escort requirements, equipment, costs, and regulations — updated for 2026.",
     alternates: { canonical: "/answers" },
 };
 

@@ -75,36 +75,7 @@ export default function HomeClient({
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.05),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
             </div>
 
-            {/* NAVIGATION */}
-            <nav className="relative z-50 border-b border-white/[0.06] safe-area-header bg-[#0b0b0c]/90 backdrop-blur-xl">
-                <div className="hc-container h-14 sm:h-16 flex items-center justify-between">
-                    <Link aria-label="Navigation Link" href="/" className="flex items-center flex-shrink-0 pr-4">
-                        <Image
-                            src={LOGO_SRC} alt={ALT_TEXT} width={220} height={48} priority
-                            className="nav-brand-logo object-contain object-left max-h-[40px] drop-shadow-md contrast-105 saturate-105"
-                        />
-                    </Link>
-                    <div className="landing-desktop-only items-center gap-8 text-[11px] text-[#888] font-semibold uppercase tracking-widest">
-                        <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
-                        <Link aria-label="Navigation Link" href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
-                        <Link aria-label="Navigation Link" href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
-                            <Trophy className="w-3 h-3" /> Leaderboard
-                        </Link>
-                        <Link aria-label="Navigation Link" href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Regulations</Link>
-                        <Link aria-label="Navigation Link" href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
-                            Training <span className="bg-gradient-to-br from-[#F5A623] to-[#e08820] text-white text-[8px] font-black px-1.5 py-0.5 rounded tracking-wider">NEW</span>
-                        </Link>
-                    </div>
-                    <div className="flex items-center flex-shrink-0 gap-2">
-                        <Link aria-label="Navigation Link" href="/login" className="hover:text-white transition-colors hc-btn hc-btn--black text-xs px-4 py-2.5 rounded-xl">
-                            Sign In
-                        </Link>
-                        <div className="landing-mobile-only flex">
-                            <MobileNavSheet />
-                        </div>
-                    </div>
-                </div>
-            </nav>
+{/* Navigation is now inherited from (landing)/layout.tsx via GlobalCommandBar */}
 
             {/* 1. HERO SECTION */}
             <section className="relative z-10 pt-16 pb-12 sm:pt-24 sm:pb-16 px-4">

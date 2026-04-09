@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useTransition, useEffect } from 'react';
 import { Globe, Truck, Map, Navigation, AlertTriangle, ShieldCheck, Zap, Send, Loader2 } from 'lucide-react';
+import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -89,20 +90,7 @@ export default function RouteIntelDashboard() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-amber-600/10 blur-[120px] rounded-full z-0" />
 
       {/* Header */}
-      <header className="relative z-20 border-b border-white/5 bg-black/50 backdrop-blur-xl sticky top-0">
-        <div className="max-w-screen-2xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Globe className="w-6 h-6 text-blue-500" />
-            <span className="font-bold text-lg tracking-tight">GLOBAL ROUTE INTEL</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-mono text-emerald-400">NETWORK ACTIVE</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <GlobalCommandBar />
 
       <main className="relative z-10 max-w-screen-2xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 

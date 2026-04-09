@@ -209,7 +209,7 @@ export default async function PilotCarOperatorPage() {
 
                 {/* Rate Reference */}
                 <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px 2.5rem' }}>
-                    <h2 style={{ fontSize: 17, fontWeight: 800, color: '#f9fafb', margin: '0 0 14px' }}>Pilot Car Rates — What to Charge in 2025</h2>
+                    <h2 style={{ fontSize: 17, fontWeight: 800, color: '#f9fafb', margin: '0 0 14px' }}>Pilot Car Rates — What to Charge in {new Date().getFullYear()}</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
                         {[
                             { type: 'Standard Escort', rate: '$1.75–$2.75/mi', color: '#9CA3AF' },
