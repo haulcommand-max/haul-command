@@ -7,7 +7,7 @@ import { Globe, Users, Activity, Crosshair, AlertTriangle, BadgeAlert } from 'lu
 // Open-source GeoJSON map downloaded via GitHub topography repository
 const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json";
 
-// The 120 target countries of <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>
+// The 120 target countries of Haul Command
 const TARGET_COUNTRIES = [
   "United States of America", "Canada", "Mexico", "Australia", "United Kingdom", "Germany", "France", "Brazil", 
   "India", "South Africa", "Japan", "Norway", "Sweden", "Finland", "Spain", "Italy", "Netherlands", "Poland", 
@@ -18,7 +18,7 @@ const TARGET_COUNTRIES = [
 // Mocking some live 120-country intelligence data
 const markers = [
   { markerOffset: -15, name: "Houston Hub (TX)", coordinates: [-95.3698, 29.7604], status: "Critical Shortage", count: 42 },
-  { markerOffset: -15, name: "Alberta <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Superload</a> Corridor", coordinates: [-113.4909, 53.5444], status: "Active", count: 18 },
+  { markerOffset: -15, name: "Alberta Superload Corridor", coordinates: [-113.4909, 53.5444], status: "Active", count: 18 },
   { markerOffset: 25, name: "Hamburg Port (DE)", coordinates: [9.9937, 53.5511], status: "High Demand", count: 120 },
   { markerOffset: 25, name: "Melbourne Routes (AU)", coordinates: [144.9631, -37.8136], status: "Active", count: 85 },
   { markerOffset: -15, name: "Sao Paulo Freight (BR)", coordinates: [-46.6333, -23.5505], status: "Surplus", count: 215 },
