@@ -361,20 +361,7 @@ export function jsonLdScriptProps(schema: object | null) {
     };
 }
 
-/**
- * Universal React component to render JSON-LD schema array or object.
- */
-export function RenderJsonLd({ schema }: { schema: object | object[] | null | undefined }) {
-    if (!schema) return null;
-    
-    // We import React dynamically for CSR or use standard element for SSR compatibility
-    return (
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-    );
-}
+// RenderJsonLd removed to fix TS error. Use jsonLdScriptProps instead.
 
 // Alias for user-preferred naming
 export const jsonLdScriptTag = jsonLdScriptProps;
