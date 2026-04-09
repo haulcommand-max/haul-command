@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Railroad Grade Crossing Profiler | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+    title: 'Railroad Grade Crossing Profiler | Haul Command',
     description: 'Avoid high-center accidents using route ground clearance profiles.',
 };
 

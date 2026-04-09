@@ -8,13 +8,13 @@ import RelatedLinks from '@/components/seo/RelatedLinks';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: '<a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Pilot Car</a> Operator Hub — Find Jobs, Get Listed & Get Verified | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+    title: 'Pilot Car Operator Hub — Find Jobs, Get Listed & Get Verified | Haul Command',
     description:
-        'The complete resource for pilot car and <a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> operators. Find escort jobs, claim your free listing, get verified, check state requirements, and dominate your corridor. 14,000+ operators across 120 countries.',
+        'The complete resource for pilot car and escort vehicle operators. Find escort jobs, claim your free listing, get verified, check state requirements, and dominate your corridor. 14,000+ operators across 120 countries.',
     keywords: [
         'pilot car operator', 'escort vehicle operator', 'pilot car jobs',
         'pilot car near me', 'become a pilot car operator', 'pilot car certification',
-        'escort vehicle jobs', '<a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">heavy haul</a> escort', '<a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> pilot car',
+        'escort vehicle jobs', 'heavy haul escort', 'oversize load pilot car',
         'pilot car directory', 'pilot car rates per mile', 'how to become a pilot car driver',
     ],
     alternates: { canonical: 'https://www.haulcommand.com/roles/pilot-car-operator' },
@@ -48,7 +48,7 @@ const PAGE_SCHEMA = {
             '@type': 'FAQPage',
             mainEntity: [
                 { '@type': 'Question', name: 'What does a pilot car operator do?', acceptedAnswer: { '@type': 'Answer', text: 'A pilot car operator drives an escort vehicle ahead of or behind an oversize or overweight load to warn motorists, assist with navigation, and ensure the load moves safely and legally through every jurisdiction.' } },
-                { '@type': 'Question', name: 'How much do pilot car operators make per mile?', acceptedAnswer: { '@type': 'Answer', text: 'Pilot car rates typically range from $1.50 to $3.50 per mile for single-car escorts. <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Superload</a> escorts and multi-car formations command $3.50 to $6.00+ per mile. Day rates range from $300 to $700 depending on state, load type, and route complexity.' } },
+                { '@type': 'Question', name: 'How much do pilot car operators make per mile?', acceptedAnswer: { '@type': 'Answer', text: 'Pilot car rates typically range from $1.50 to $3.50 per mile for single-car escorts. Superload escorts and multi-car formations command $3.50 to $6.00+ per mile. Day rates range from $300 to $700 depending on state, load type, and route complexity.' } },
                 { '@type': 'Question', name: 'What certifications do pilot car operators need?', acceptedAnswer: { '@type': 'Answer', text: 'Requirements vary by state but typically include a valid driver\'s license, liability insurance ($300K–$1M), a PEVO or state-approved escort certification, and in some states a specific pilot car certification card.' } },
                 { '@type': 'Question', name: 'How do I find pilot car jobs?', acceptedAnswer: { '@type': 'Answer', text: 'Claim your free Haul Command listing to appear in the pilot car directory. Brokers and carriers search for available operators by state and specialty.' } },
                 { '@type': 'Question', name: 'How do I get verified as a pilot car operator on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Claim your free listing on Haul Command, upload your certifications and insurance documents, and complete the verification checklist. Verified operators receive a badge that increases visibility and broker trust.' } },
@@ -214,7 +214,7 @@ export default async function PilotCarOperatorPage() {
                         {[
                             { type: 'Standard Escort', rate: '$1.75–$2.75/mi', color: '#9CA3AF' },
                             { type: 'Superload Escort', rate: '$3.50–$6.00/mi', color: gold },
-                            { type: '<a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Height Pole</a> Op.', rate: '$4.00–$7.00/mi', color: '#D4A844' },
+                            { type: 'Height Pole Op.', rate: '$4.00–$7.00/mi', color: '#D4A844' },
                             { type: 'Day Rate (Avg)', rate: '$350–$700/day', color: '#22C55E' },
                             { type: 'Bridge / Utility', rate: '+$50–200 flat', color: '#3B82F6' },
                         ].map(r => (

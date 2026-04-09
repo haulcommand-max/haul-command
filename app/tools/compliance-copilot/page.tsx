@@ -78,12 +78,12 @@ const US_STATES = [
 ] as const;
 
 const EXAMPLE_QUESTIONS = [
-    'Do I need a <a href="/glossary/high-pole-escort" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">height pole escort</a> in Texas for a 15\'6" load?',
+    'Do I need a height pole escort in Texas for a 15\'6" load?',
     'What are the night travel restrictions in California for oversize loads?',
-    'When does Florida require a police escort instead of a <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a>?',
+    'When does Florida require a police escort instead of a pilot car?',
     'What is the maximum width in Ohio before I need two escort vehicles?',
     'Are there weekend travel bans for oversize loads in Pennsylvania?',
-    'What permits are required for a <a href="/glossary/wide-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">wide load</a> exceeding 16 feet in Georgia?',
+    'What permits are required for a wide load exceeding 16 feet in Georgia?',
 ];
 
 interface Message {
@@ -219,7 +219,7 @@ export default function ComplianceCopilotPage() {
                     margin: '0 auto 24px',
                     lineHeight: 1.6,
                 }}>
-                    Ask any question about <a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> escort regulations, <a href="/glossary/height-pole" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">height pole</a> requirements,
+                    Ask any question about oversize load escort regulations, height pole requirements,
                     night travel bans, permit thresholds — any state, any jurisdiction.
                 </p>
 

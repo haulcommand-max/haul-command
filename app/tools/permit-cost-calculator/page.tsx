@@ -3,8 +3,8 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Free <a href="/glossary/oversize-trucking-permit" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Oversize Load Permit</a> Cost Calculator — All 50 States | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
-  description: 'Calculate <a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> permit costs by state instantly. Enter origin, destination, dimensions and weight. Free, public, no login required.',
+  title: 'Free Oversize Load Permit Cost Calculator — All 50 States | Haul Command',
+  description: 'Calculate oversize load permit costs by state instantly. Enter origin, destination, dimensions and weight. Free, public, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/permit-cost-calculator' },
 }
 
@@ -26,7 +26,7 @@ export default function PermitCostCalculatorPage() {
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Oversize Load Permit Cost Calculator</h1>
             <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10–$0.50. A multi-state route may total $200–$600 in permit fees alone. Enter your load dimensions and route below for an instant estimate covering all states along your corridor.</p>
-            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route — including <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> requirements, escort rules, and <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">superload</a> thresholds.</p>
+            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route — including pilot car requirements, escort rules, and superload thresholds.</p>
             <p className="text-xs text-[#22c55e]">Free · All 50 US States · No account needed</p>
           </div>
         </div>
@@ -114,10 +114,10 @@ export default function PermitCostCalculatorPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Related Tools</h2>
             <div className="flex flex-wrap gap-3">
               {[
-                ['/tools/axle-weight-calculator','<a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Axle Weight</a> Calculator'],
+                ['/tools/axle-weight-calculator','Axle Weight Calculator'],
                 ['/tools/superload-calculator','Superload Calculator'],
                 ['/tools/load-dimension-checker','Load Dimension Checker'],
-                ['/tools/frost-law-tracker','<a href="/glossary/frost-law" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Frost Law</a> Tracker'],
+                ['/tools/frost-law-tracker','Frost Law Tracker'],
                 ['/tools/route-planner','Route Planner'],
               ].map(([href,label])=>(
                 <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} →</Link>

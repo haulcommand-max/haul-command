@@ -4,11 +4,11 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: '<a href="/glossary/frost-law" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Frost Law</a> Tracker — Live US & Canada Spring Weight Restrictions | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+  title: 'Frost Law Tracker — Live US & Canada Spring Weight Restrictions | Haul Command',
   description: 'Real-time frost law and spring road restriction tracker for all 50 US states and Canadian provinces. Email and push alerts when frost laws activate or lift.',
   keywords: [
-    'frost law tracker', 'spring weight restrictions', 'seasonal weight limits', '<a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">heavy haul</a> frost bands', 
-    'spring road bans canada', 'US DOT frost laws', '<a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> weight reduction', 'frost law map 2026'
+    'frost law tracker', 'spring weight restrictions', 'seasonal weight limits', 'heavy haul frost bands', 
+    'spring road bans canada', 'US DOT frost laws', 'oversize load weight reduction', 'frost law map 2026'
   ],
   alternates: { canonical: 'https://www.haulcommand.com/tools/frost-law-tracker' },
 }
@@ -122,7 +122,7 @@ export default function FrostLawTrackerPage() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','<a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Axle Weight</a> Calculator'],['/regulations','Regulations Hub'],['/directory','Operator Directory']].map(([href,label])=>(
+            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','Axle Weight Calculator'],['/regulations','Regulations Hub'],['/directory','Operator Directory']].map(([href,label])=>(
               <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#3b82f6] hover:text-[#3b82f6] transition-colors">{label} →</Link>
             ))}
           </div>

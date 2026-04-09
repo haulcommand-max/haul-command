@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: '<a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Superload</a> Permit Calculator — Requirements by State | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+  title: 'Superload Permit Calculator — Requirements by State | Haul Command',
   description: 'Determine if your load qualifies as a superload. Get superload permit requirements, engineering review thresholds, and police escort rules by state. Free, no login.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/superload-calculator' },
 }
@@ -26,7 +26,7 @@ const schema = { '@context':'https://schema.org','@type':'WebApplication', name:
 const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
   {"@type":'Question', name:'What is a superload?', acceptedAnswer:{"@type":'Answer', text:'A superload is any load that exceeds standard oversize permit thresholds — typically over 16 feet wide, 16 feet tall, or over 200,000 lbs. Exact thresholds vary by state. Superloads require special permits, engineering reviews, police escorts, and often advance coordination with multiple agencies.'}},
   {"@type":'Question', name:'How long does a superload permit take?', acceptedAnswer:{"@type":'Answer', text:'Superload permits typically take 5–15 business days, compared to 1–3 days for standard oversize permits. Engineering reviews, bridge surveys, and police escort coordination all add time. Expedited processing is available in some states for an additional fee.'}},
-  {"@type":'Question', name:'Do superloads always need a police escort?', acceptedAnswer:{"@type":'Answer', text:'Most states require police escorts for loads exceeding 16–18 feet wide. Police <a href="/glossary/escort-requirements" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort requirements</a> also apply after certain hours, on specific road types, or when bridges require traffic control. Requirements vary significantly by state.'}},
+  {"@type":'Question', name:'Do superloads always need a police escort?', acceptedAnswer:{"@type":'Answer', text:'Most states require police escorts for loads exceeding 16–18 feet wide. Police escort requirements also apply after certain hours, on specific road types, or when bridges require traffic control. Requirements vary significantly by state.'}},
   {"@type":'Question', name:'What is an engineering review for a superload?', acceptedAnswer:{"@type":'Answer', text:'An engineering review is a certified analysis by a licensed Professional Engineer (PE) that evaluates whether bridges and roads along the planned route can safely support the superload. Required by most states for loads exceeding 150,000–200,000 lbs.'}},
 ]}
 
@@ -128,7 +128,7 @@ export default function SuperloadCalculatorPage() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','<a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Axle Weight</a> Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/regulations','Regulations Hub']].map(([href,label])=>(
+            {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','Axle Weight Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/regulations','Regulations Hub']].map(([href,label])=>(
               <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#ef4444] hover:text-[#ef4444] transition-colors">{label} →</Link>
             ))}
           </div>

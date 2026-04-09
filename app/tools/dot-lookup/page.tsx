@@ -80,7 +80,7 @@ export default function DotLookupLandingPage() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Validate Insurance</h3>
             <p className="text-slate-400 text-sm">
-              Confirm liability and cargo insurance coverage requirements. Don't risk a <a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">heavy haul</a> with an underinsured carrier.
+              Confirm liability and cargo insurance coverage requirements. Don't risk a heavy haul with an underinsured carrier.
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function DotLookupLandingPage() {
             </div>
             <h2 className="text-3xl font-bold text-white mb-4 leading-tight">Need to lower your commercial truck insurance?</h2>
             <p className="text-slate-300 text-lg">
-              <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a> partners with top heavy-haul insurance underwriters to offer exclusive rates for operators with clean DOT scores. Get a free quote to see how much you could save over your current policy.
+              Haul Command partners with top heavy-haul insurance underwriters to offer exclusive rates for operators with clean DOT scores. Get a free quote to see how much you could save over your current policy.
             </p>
           </div>
           <div className="relative z-10 w-full md:w-auto flex-shrink-0">

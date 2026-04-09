@@ -88,7 +88,7 @@ export default function PermitCheckerPage() {
                     </div>
                     <h1 style={{ margin: 0, fontSize: 36, fontWeight: 900, color: '#f9fafb', letterSpacing: -1, lineHeight: 1.1 }}>Permit Complexity Checker</h1>
                     <p style={{ margin: '12px auto 0', maxWidth: 500, fontSize: 15, color: '#6b7280', lineHeight: 1.6 }}>
-                        Estimate <a href="/glossary/escort-requirements" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort requirements</a>, permit complexity, and costs for your <a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> — instantly, for free.
+                        Estimate escort requirements, permit complexity, and costs for your oversize load — instantly, for free.
                     </p>
                 </div>
 
@@ -191,7 +191,7 @@ export default function PermitCheckerPage() {
 
                                 <div style={{ background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 16, padding: '1.5rem', textAlign: 'center' }}>
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Need Escorts for This Route?</h3>
-                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load on <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a> and get matched with verified escorts in minutes.</p>
+                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load on Haul Command and get matched with verified escorts in minutes.</p>
                                     <a href="/onboarding/start?role=broker" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
                                         Post a Load — Free →
                                     </a>

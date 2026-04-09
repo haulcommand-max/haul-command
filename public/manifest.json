@@ -12,46 +12,68 @@
   "categories": ["business", "logistics", "productivity"],
   "icons": [
     {
-      "src": "/icons/app/icon-32.png",
-      "sizes": "32x32",
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/app/icon-64.png",
-      "sizes": "64x64",
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/app/icon-128.png",
+      "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/app/icon-192.png",
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/app/icon-256.png",
-      "sizes": "256x256",
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/app/icon-512.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Operator Command Dashboard"
     },
     {
-      "src": "/icons/app/icon-1024.png",
-      "sizes": "1024x1024",
+      "src": "/screenshots/dashboard-narrow.png",
+      "sizes": "390x844",
       "type": "image/png",
-      "purpose": "any"
+      "form_factor": "narrow",
+      "label": "Mobile Dispatch View"
     }
   ],
   "shortcuts": [
@@ -60,23 +82,28 @@
       "short_name": "Available",
       "description": "See operators broadcasting availability right now",
       "url": "/available-now",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Post a Load",
       "short_name": "Post Load",
       "description": "Instantly post a load to find an escort operator",
       "url": "/loads/post",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "My Dashboard",
       "short_name": "Dashboard",
       "description": "Your operator command center",
       "url": "/dashboard/operator",
-      "icons": [{ "src": "/icons/app/icon-128.png", "sizes": "128x128" }]
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
-  "related_applications": [],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://haulcommand.com"
+    }
+  ],
   "prefer_related_applications": false
 }

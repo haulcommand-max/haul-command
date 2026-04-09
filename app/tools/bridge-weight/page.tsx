@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata: Metadata = {
-    title: 'Bridge Weight Overlay | <a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Heavy Haul</a> Route Planning | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
-    description: 'Cross-reference <a href="/glossary/axle-weight" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">axle weight</a> against bridge load capacity ratings along your oversize route. NBI and DOT bridge data for heavy haul planning.',
+    title: 'Bridge Weight Overlay | Heavy Haul Route Planning | Haul Command',
+    description: 'Cross-reference axle weight against bridge load capacity ratings along your oversize route. NBI and DOT bridge data for heavy haul planning.',
     alternates: { canonical: 'https://haulcommand.com/tools/bridge-weight' },
 };
 

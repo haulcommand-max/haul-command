@@ -7,13 +7,13 @@ export const revalidate = 3600
 
 // ─── METADATA ──────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
-  title: '<a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Pilot Car</a> & Escort Operator Training — Get Certified | <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Haul Command</a>',
+  title: 'Pilot Car & Escort Operator Training — Get Certified | Haul Command',
   description:
-    'Pilot car and escort operator certification for <a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">heavy haul</a>, wind, oilfield, port, <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">superload</a>, and AV corridors. State-aware and global-ready training pathways for operators, brokers, and fleets. 120 countries.',
+    'Pilot car and escort operator certification for heavy haul, wind, oilfield, port, superload, and AV corridors. State-aware and global-ready training pathways for operators, brokers, and fleets. 120 countries.',
   keywords: [
     'pilot car certification', 'escort operator training', 'PEVO course',
-    'pilot car training online', '<a href="/glossary/escort-vehicle" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">escort vehicle</a> operator certification',
-    'heavy haul training', '<a href="/glossary/oversize-load" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">oversize load</a> escort training', 'AV escort certification',
+    'pilot car training online', 'escort vehicle operator certification',
+    'heavy haul training', 'oversize load escort training', 'AV escort certification',
     'pilot car training state requirements', 'HC certified training',
   ],
   alternates: { canonical: 'https://www.haulcommand.com/training' },
@@ -33,7 +33,7 @@ export const MODULES = [
     slug: 'the-escort-driver-regulatory',
     title: 'The Escort Driver & Regulatory Protocol',
     description:
-      'Regulatory compliance, pilot car qualification baseline, <a href="/glossary/mutcd" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">MUTCD</a> flagging procedures (stop/slow paddle & flag protocols), liability mechanics, and the Class 2 High-Vis apparel framework.',
+      'Regulatory compliance, pilot car qualification baseline, MUTCD flagging procedures (stop/slow paddle & flag protocols), liability mechanics, and the Class 2 High-Vis apparel framework.',
     audience: 'New operators, career changers, international operators entering US markets',
     duration: '480 min',
     outcomes: ['Understand federal & state qualification options', 'Execute MUTCD flagging protocols correctly', 'Identify required safety apparel and limits of liability'],
@@ -79,7 +79,7 @@ export const MODULES = [
   {
     slot: 5,
     slug: 'route-survey-clearance-intelligence',
-    title: '<a href="/glossary/route-survey-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Route Survey</a> & Clearance Intelligence',
+    title: 'Route Survey & Clearance Intelligence',
     description:
       'Advanced capability: Heights, widths, vertical/horizontal clearance measurements, bridge capacity documentation, and hazard logging workflows for broker routing teams.',
     audience: 'Operators pursuing lucrative route survey contracts',
@@ -573,7 +573,7 @@ export default async function TrainingPage() {
             <p style={{ margin: '0 0 14px', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Related Resources</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 8 }}>
               {[
-                { href: '/escort-requirements', label: '📋 <a href="/glossary/escort-requirements" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Escort Requirements</a> by State', desc: 'What each state mandates' },
+                { href: '/escort-requirements', label: '📋 Escort Requirements by State', desc: 'What each state mandates' },
                 { href: '/glossary', label: '📚 Heavy Haul Glossary', desc: 'Terms every operator must know' },
                 { href: '/directory', label: '🔍 Find Pilot Car Operators', desc: 'Search the directory' },
                 { href: '/tools/escort-calculator', label: '🧮 Escort Vehicle Calculator', desc: 'How many escorts required' },

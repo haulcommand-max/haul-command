@@ -258,14 +258,14 @@ export default function CrossBorderCommandCenter() {
                 <BadgeCheck className="w-5 h-5 text-hc-success" /> Reciprocity Engine
               </h2>
               <p className="text-hc-muted mb-6 leading-relaxed">
-                The Reciprocity Engine analyzes {routeCrossings.length} jurisdictions to determine <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">pilot car</a> certification validity across the entire corridor.
+                The Reciprocity Engine analyzes {routeCrossings.length} jurisdictions to determine pilot car certification validity across the entire corridor.
               </p>
 
               <div className="bg-hc-surface/50 border border-hc-border rounded-xl p-6 space-y-6">
                 <div className="flex items-start gap-4 p-4 bg-hc-bg rounded-xl border border-hc-border-high">
                   <Truck className="w-6 h-6 text-hc-gold-500 mt-1" />
                   <div>
-                    <h4 className="text-white font-bold mb-1"><a href="/glossary/lead-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.3);">Lead Pilot Car</a> Certification</h4>
+                    <h4 className="text-white font-bold mb-1">Lead Pilot Car Certification</h4>
                     <p className="text-sm text-hc-muted">Your selected pilot car holds a <strong>Washington State (WA)</strong> Certification.</p>
                     
                     <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
