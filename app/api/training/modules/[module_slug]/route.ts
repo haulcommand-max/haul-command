@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ module_slug: string }> }) {
   try {
-    const { slug } = await params;
+    const { module_slug } = await params;
     const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,7 +23,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     const { data: module, error } = await supabase
       .from('training_modules')
       .select('*')
-      .eq('slug', slug)
+      .eq('module_slug', module_slug)
       .single();
 
     if (error || !module) {
@@ -71,8 +71,21 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
       }
     }
 
+    // Map to frontend interface
+    const mappedModule = {
+      id: module.id,
+      slug: module.module_slug,
+      title: module.module_title,
+      description: module.official_session_title || 'Haul Command Training Module',
+      duration_minutes: module.hc_estimated_minutes || module.official_minutes || 60,
+      order_index: module.sequence_order,
+      certification_tier: 'hc_certified', // Fallback for specific Florida override logic etc.
+      is_free: false,
+      pass_score: 80,
+    };
+
     return NextResponse.json({
-      module,
+      module: mappedModule,
       lessons: lessons || [],
       questions: questions || [],
       moduleProgress,

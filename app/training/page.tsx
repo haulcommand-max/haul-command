@@ -118,15 +118,15 @@ export const MODULES = [
 const FAQS = [
   {
     q: 'What is pilot car training?',
-    a: 'Pilot car training teaches escort vehicle operators how to safely lead or follow oversize and overweight loads on public roads. It covers equipment requirements, communication protocols, route surveying, state compliance rules, and convoy management. Haul Command Training is built on FMCSA and SC&RA Best Practices Guidelines.',
+    a: '<a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Pilot car</a> training teaches escort vehicle operators how to safely lead or follow oversize and overweight loads on public roads. It covers equipment requirements, communication protocols, route surveying, state compliance rules, and convoy management. <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Haul Command</a> Training is built on FMCSA and SC&RA Best Practices Guidelines.',
   },
   {
     q: 'Who is this training for?',
-    a: 'This training is for pilot car operators, escort vehicle operators, heavy haul brokers, fleet managers, dispatchers, and enterprise teams that need certified escort capacity. It is relevant for both US-based and international operations.',
+    a: 'This training is for <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">pilot car</a> operators, escort vehicle operators, <a href="/glossary/heavy-haul" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">heavy haul</a> brokers, fleet managers, dispatchers, and enterprise teams that need certified escort capacity. It is relevant for both US-based and international operations.',
   },
   {
     q: 'Is this training required in every state or country?',
-    a: 'Requirements vary. Twelve US states currently mandate pilot car certification (like WA, UT, FL, NC). The HC Certified curriculum serves as the definitive prep course, mapping perfectly to the national 8-hour core training standard required by these states. International requirements vary by country — see the country training pages for jurisdiction-specific details.',
+    a: 'Requirements vary. Twelve US states currently mandate <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">pilot car</a> certification (like WA, UT, FL, NC). The HC Certified curriculum serves as the definitive prep course, mapping perfectly to the national 8-hour core training standard required by these states. International requirements vary by country — see the country training pages for jurisdiction-specific details.',
   },
   {
     q: 'What does the Haul Command certification badge actually prove?',
@@ -134,15 +134,15 @@ const FAQS = [
   },
   {
     q: 'How long does the training take?',
-    a: 'Module 1 (Pilot Car Fundamentals) takes approximately 8 hours and is free. HC Certified (modules 1–3) totals 24 hours to meet and exceed national baseline standards. AV-Ready (modules 1–5) takes approximately 40 hours. Elite (all 7 modules) totals 56 hours of comprehensive training. All modules are self-paced.',
+    a: 'Module 1 (<a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Pilot Car</a> Fundamentals) takes approximately 8 hours and is free. HC Certified (modules 1–3) totals 24 hours to meet and exceed national baseline standards. AV-Ready (modules 1–5) takes approximately 40 hours. Elite (all 7 modules) totals 56 hours of comprehensive training. All modules are self-paced.',
   },
   {
     q: 'Is it self-paced?',
-    a: 'Yes. All Haul Command Training modules are fully self-paced. You can start, stop, and resume at any time. Progress is saved to your account.',
+    a: 'Yes. All <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Haul Command</a> Training modules are fully self-paced. You can start, stop, and resume at any time. Progress is saved to your account.',
   },
   {
     q: 'Does this training help me get more jobs?',
-    a: 'Yes. Certified operators receive a verified badge on their Haul Command profile, which is visible to brokers and carriers during search. Certified operators consistently receive more broker contact requests and qualify for higher-value loads including wind, superload, oilfield, and AV corridor work.',
+    a: 'Yes. Certified operators receive a verified badge on their <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Haul Command</a> profile, which is visible to brokers and carriers during search. Certified operators consistently receive more broker contact requests and qualify for higher-value loads including wind, <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">superload</a>, oilfield, and AV corridor work.',
   },
   {
     q: 'Can brokers verify my certification status?',
@@ -150,7 +150,7 @@ const FAQS = [
   },
   {
     q: 'Is there training for fleets or corporate teams?',
-    a: 'Yes. Haul Command offers corporate and fleet enrollment with volume pricing, team progress tracking, and compliance reporting. See the Corporate Training page for details.',
+    a: 'Yes. <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Haul Command</a> offers corporate and fleet enrollment with volume pricing, team progress tracking, and compliance reporting. See the Corporate Training page for details.',
   },
   {
     q: 'Does this training cover AV corridor escort work?',
@@ -158,7 +158,7 @@ const FAQS = [
   },
   {
     q: 'Can I take this training outside the United States?',
-    a: 'Yes. Haul Command Training is designed for global operations and is available in 120 countries. Country-specific training pages are available for the US, Canada, Australia, UK, UAE, and other markets, with localized requirements and terminology.',
+    a: 'Yes. <a href="/glossary/haul-command" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">Haul Command</a> Training is designed for global operations and is available in 120 countries. Country-specific training pages are available for the US, Canada, Australia, UK, UAE, and other markets, with localized requirements and terminology.',
   },
   {
     q: 'How often do I need to renew my certification?',
@@ -166,7 +166,7 @@ const FAQS = [
   },
   {
     q: 'What is the difference between HC Certified, AV-Ready, and Elite?',
-    a: 'HC Certified (modules 1–3) covers pilot car fundamentals, route surveying, and jurisdiction compliance — the global baseline. AV-Ready (modules 1–5) adds convoy communication and broker/carrier workflow training, plus AV corridor readiness. Elite (all 7 modules) adds specialized vertical operations including wind, superload, oilfield, port, military, and aerospace, plus full digital operations training.',
+    a: 'HC Certified (modules 1–3) covers <a href="/glossary/pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">pilot car</a> fundamentals, route surveying, and jurisdiction compliance — the global baseline. AV-Ready (modules 1–5) adds convoy communication and broker/carrier workflow training, plus AV corridor readiness. Elite (all 7 modules) adds specialized vertical operations including wind, <a href="/glossary/superload-pilot-car" style="color: #D4A844; text-decoration: none; border-bottom: 1px dotted rgba(212,168,68,0.5);">superload</a>, oilfield, port, military, and aerospace, plus full digital operations training.',
   },
 ]
 
@@ -411,7 +411,7 @@ export default async function TrainingPage() {
                         </div>
 
                         {/* Description — always in HTML */}
-                        <p style={{ margin: '0 0 10px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }}>{m.description}</p>
+                        <p style={{ margin: '0 0 10px', fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: m.description }} />
 
                         {/* Outcomes — always in HTML */}
                         <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -468,7 +468,7 @@ export default async function TrainingPage() {
                 {
                   name: 'Elite', color: '#E5E4E2', price: '$299/year',
                   modules: 'All 7 Modules', duration: '56 Hours', highlight: false,
-                  benefits: ['Everything in AV-Ready', 'Elite platinum badge — top of all results', 'Superload, military &amp; aerospace module', 'International operations module', 'Dedicated account support'],
+                  benefits: ['Everything in AV-Ready', 'Elite platinum badge — top of all results', 'Superload, military & aerospace module', 'International operations module', 'Dedicated account support'],
                   href: '/training?enroll=elite', cta: 'Become Elite',
                 },
               ].map(tier => (
@@ -555,16 +555,14 @@ export default async function TrainingPage() {
 
             {/* Native <details> — crawlable, no JS required */}
             {FAQS.map((faq, i) => (
-              <details key={i} style={{ marginBottom: 10, borderRadius: 12, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
-                <summary style={{ padding: '16px 18px', cursor: 'pointer', fontWeight: 700, fontSize: 14, listStyle: 'none', display: 'flex', alignItems: 'center', gap: 10, color: '#e5e7eb' }}>
-                  <span style={{ color: gold, flexShrink: 0 }}>+</span>
+              <div key={i} style={{ marginBottom: 10, borderRadius: 12, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
+                <h3 style={{ padding: '16px 18px', fontWeight: 700, fontSize: 14, listStyle: 'none', display: 'flex', alignItems: 'center', gap: 10, color: '#e5e7eb'  }}>
+                  <span style={{ color: gold, flexShrink: 0 }}>■</span>
                   {faq.q}
-                </summary>
+                </h3>
                 {/* Answer always present in DOM — visible to Googlebot */}
-                <p style={{ padding: '0 18px 16px', margin: 0, fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                  {faq.a}
-                </p>
-              </details>
+                <p style={{ padding: '16px 18px', margin: 0, fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.7 }}><span dangerouslySetInnerHTML={{ __html: faq.a }} /></p>
+              </div>
             ))}
           </div>
         </section>

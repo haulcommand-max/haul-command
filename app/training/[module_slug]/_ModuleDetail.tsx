@@ -59,8 +59,8 @@ const TIER_COLOR: Record<string, string> = {
   elite: '#E5E4E2',
 };
 
-export default function ModuleDetail({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+export default function ModuleDetail({ params }: { params: Promise<{ module_slug: string }> }) {
+  const { module_slug } = use(params);
   const [module, setModule] = useState<Module | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -72,7 +72,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ slug: strin
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/training/modules/${slug}`)
+    fetch(`/api/training/modules/${module_slug}`)
       .then(r => r.json())
       .then(data => {
         if (data.module) {
