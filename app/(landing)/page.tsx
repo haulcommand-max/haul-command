@@ -122,6 +122,32 @@ export default async function LandingPage() {
                   }
                 })
             }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Organization",
+                  "name": "Haul Command",
+                  "url": "https://www.haulcommand.com",
+                  "logo": "https://www.haulcommand.com/logo.png",
+                  "description": "The global operating system for the heavy haul and oversize load transportation industry. Verified pilot car directory, escort requirements, load board, and compliance training across 120 countries.",
+                  "areaServed": { "@type": "Place", "name": "Worldwide" },
+                  "knowsAbout": ["Pilot Car Services","Oversize Load Escort","Heavy Haul Transportation","PEVO Certification","Escort Vehicle Operator Training","DOT Permit Compliance","Route Survey Services"]
+                })
+            }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "ItemList",
+                  "name": "Haul Command Training Courses",
+                  "description": "Pilot car operator certification and escort vehicle training covering all 50 US states and 120 countries.",
+                  "url": "https://www.haulcommand.com/training",
+                  "itemListElement": [
+                    { "@type": "Course", "position": 1, "name": "Pilot Car Operator Certification Prep — Florida (FDOT)", "url": "https://www.haulcommand.com/training/region/united-states/florida", "description": "Prepare for Florida's 8-hour FDOT escort vehicle operator certification. Covers 6 hours instruction and 2-hour exam requirements.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
+                    { "@type": "Course", "position": 2, "name": "Pilot Car Operator Training — Texas", "url": "https://www.haulcommand.com/training/region/united-states/texas", "description": "Texas escort vehicle operator training covering TxDOT oversize load escort requirements and certification preparation.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
+                    { "@type": "Course", "position": 3, "name": "Global Pilot Car Training Hub — 120 Countries", "url": "https://www.haulcommand.com/training", "description": "Jurisdiction-specific escort vehicle operator training for all 50 US states and 120 countries.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } }
+                  ]
+                })
+            }} />
             <HomeClient
                 marketPulse={marketPulse}
                 directoryCount={directoryResult.total}

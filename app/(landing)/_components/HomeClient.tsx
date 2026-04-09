@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-    ArrowRight, Globe, Shield, MapPin, CheckCircle, Search
+    ArrowRight, Globe, Shield, MapPin, CheckCircle, Search, Trophy
 } from "lucide-react";
 import {
     HcIconLoadAlerts, HcIconInsurance, HcIconDirectory,
@@ -17,6 +17,8 @@ import { LOGO_SRC, BRAND_NAME_UPPER, ALT_TEXT } from "@/lib/config/brand";
 import { MobileNavSheet } from "@/components/layout/MobileNavSheet";
 import { FooterAccordion } from "./FooterAccordion";
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
+import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
+import { TrustArchitecture } from "./TrustArchitecture";
 
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
@@ -85,6 +87,9 @@ export default function HomeClient({
                     <div className="landing-desktop-only items-center gap-8 text-[11px] text-[#888] font-semibold uppercase tracking-widest">
                         <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
                         <Link aria-label="Navigation Link" href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
+                        <Link aria-label="Navigation Link" href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
+                            <Trophy className="w-3 h-3" /> Leaderboard
+                        </Link>
                         <Link aria-label="Navigation Link" href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Regulations</Link>
                         <Link aria-label="Navigation Link" href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
                             Training <span className="bg-gradient-to-br from-[#F5A623] to-[#e08820] text-black text-[8px] font-black px-1.5 py-0.5 rounded tracking-wider">NEW</span>
@@ -112,9 +117,18 @@ export default function HomeClient({
                             The Operating System for <br className="hidden sm:block" />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C6923A] to-[#E0B05C]">Heavy Haul</span>
                         </h1>
-                        <p className="text-[#a0b3c6] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
+                        <p className="text-[#a0b3c6] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
                             Discover verified pilot cars, post oversize loads, and execute complex freight routing with total compliance. The global command center is ready.
                         </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-black font-black text-sm transition-all shadow-[0_0_24px_rgba(198,146,58,0.25)]">
+                                Get Started Free <ArrowRight className="w-4 h-4 ml-1.5" />
+                            </Link>
+                            <Link href="/directory" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-white font-bold text-sm transition-colors">
+                                Browse Directory
+                            </Link>
+                        </div>
+                        <p className="text-[10px] text-[#555] mt-3 uppercase tracking-widest font-semibold">No card required · 60 seconds to claim</p>
                     </motion.div>
                 </div>
             </section>
@@ -164,7 +178,12 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* 3. PROOF STRIP / NETWORK ENTITIES */}
+            {/* 3. MARKET INTELLIGENCE — The moat. Live supply radar. */}
+            <div className="border-t border-white/[0.04]">
+                <GlobalEscortSupplyRadar />
+            </div>
+
+            {/* 4. PROOF STRIP / NETWORK ENTITIES */}
             <section className="relative z-10 py-6 border-y border-white/[0.04] bg-white/[0.01]">
                 <div className="hc-container max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-x-12 text-center text-xs font-semibold text-[#8fa3b8] uppercase tracking-widest">
                     <div className="flex items-center gap-2">
@@ -240,6 +259,26 @@ export default function HomeClient({
                                 </Link>
                             ))}
                         </div>
+                        <div className="mt-6 pt-5 border-t border-white/[0.06]">
+                            <p className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-3 text-center">State Training &amp; Requirements</p>
+                            <div className="flex flex-wrap items-center justify-center gap-2">
+                                {[
+                                    { label: 'Florida', slug: 'florida' },
+                                    { label: 'Texas', slug: 'texas' },
+                                    { label: 'California', slug: 'california' },
+                                    { label: 'Ohio', slug: 'ohio' },
+                                    { label: 'Georgia', slug: 'georgia' },
+                                    { label: 'Washington', slug: 'washington' },
+                                ].map(({ label, slug }) => (
+                                    <Link key={slug} href={`/training/region/united-states/${slug}`} className="text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-[#C6923A]/25 text-[#C6923A] hover:text-white hover:border-white/30 transition-colors flex items-center gap-1">
+                                        {label} <ArrowRight className="w-2.5 h-2.5" />
+                                    </Link>
+                                ))}
+                                <Link href="/training" className="text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10 text-[#8fa3b8] hover:text-white hover:border-white/30 transition-colors">
+                                    All 50 States →
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -290,44 +329,37 @@ export default function HomeClient({
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                         {[
-                            { title: 'Intelligence, Not Spray', desc: 'Stop sending mass emails. Our engine predicts fill probability based on real historical behavior.', icon: HcIconLoadAlerts, color: '#3b82f6' },
-                            { title: 'Escrow-Protected Payments', desc: 'Every job runs through Escrow. Funds release on confirmed completion. No disputes, no chasing.', icon: HcIconInsurance, color: '#22c55e' },
-                            { title: 'Territory Dominance', desc: 'Claim corridors and counties. Find gaps in the supply chain and dominate them before your competitors do.', icon: HcIconRoutePlanner, color: '#a855f7' },
+                            { title: 'Intelligence, Not Spray', desc: 'Stop sending mass emails. Our engine predicts fill probability based on real historical behavior.', icon: HcIconLoadAlerts, color: '#3b82f6', href: '/loads' },
+                            { title: 'Escrow-Protected Payments', desc: 'Every job runs through Escrow. Funds release on confirmed completion. No disputes, no chasing.', icon: HcIconInsurance, color: '#22c55e', href: '/onboarding/broker' },
+                            { title: 'Territory Dominance', desc: 'Claim corridors and counties. Find gaps in the supply chain and dominate them before your competitors do.', icon: HcIconRoutePlanner, color: '#a855f7', href: '/corridors' },
                         ].map((feat, i) => (
-                            <div key={i} className="text-center p-6">
+                            <Link key={i} href={feat.href} className="group text-center p-6 rounded-2xl border border-white/[0.04] hover:border-white/10 transition-colors block">
                                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6" style={{ background: `${feat.color}15`, color: feat.color, border: `1px solid ${feat.color}20` }}>
                                     <feat.icon size={24} />
                                 </div>
-                                <h4 className="font-bold text-lg mb-3">{feat.title}</h4>
+                                <h4 className="font-bold text-lg mb-3 group-hover:text-[#C6923A] transition-colors">{feat.title}</h4>
                                 <p className="text-[#8fa3b8] text-sm leading-relaxed">{feat.desc}</p>
-                            </div>
+                                <div className="flex items-center justify-center gap-1 mt-4 text-xs font-bold text-[#555] group-hover:text-[#C6923A] transition-colors">
+                                    Learn more <ArrowRight className="w-3 h-3" />
+                                </div>
+                            </Link>
                         ))}
+                    </div>
+                    <div className="mt-10 pt-8 border-t border-white/[0.06] flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold text-[#666] uppercase tracking-widest">
+                        <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors">Regulations</Link>
+                        <Link href="/glossary" className="hover:text-[#C6923A] transition-colors">Glossary</Link>
+                        <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors">Rate Calculator</Link>
+                        <Link href="/training" className="hover:text-[#C6923A] transition-colors">Training Hub</Link>
+                        <Link href="/corridors" className="hover:text-[#C6923A] transition-colors">Corridor Intelligence</Link>
+                        <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors">Leaderboard</Link>
                     </div>
                 </div>
             </section>
 
-            {/* 8. TRUST / REVIEWS */}
-            <section className="relative z-10 py-16 sm:py-24 px-4">
-                <div className="hc-container max-w-5xl mx-auto">
-                    <div className="text-center mb-12">
-                        <Shield className="w-8 h-8 text-[#C6923A] mx-auto mb-4" />
-                        <h3 className="text-xl sm:text-2xl font-black font-display tracking-tight">Trusted by Industry Leaders</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-                        {[
-                            { val: '12M+', lbl: 'Miles Escorted' },
-                            { val: liveCountries.toString(), lbl: 'Countries Live' },
-                            { val: '99.9%', lbl: 'Uptime' },
-                            { val: '$0', lbl: 'Disputes' },
-                        ].map((stat, i) => (
-                            <div key={i} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05]">
-                                <div className="text-3xl font-black text-white font-display mb-1">{stat.val}</div>
-                                <div className="text-[10px] font-bold text-[#8fa3b8] uppercase tracking-[0.2em]">{stat.lbl}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {/* 8. TRUST ARCHITECTURE — Report card, verification metrics, industry signals */}
+            <div className="border-t border-white/[0.04]">
+                <TrustArchitecture />
+            </div>
 
             {/* 9. FINAL CTA */}
             <section className="relative z-10 py-16 sm:py-32 px-4">
