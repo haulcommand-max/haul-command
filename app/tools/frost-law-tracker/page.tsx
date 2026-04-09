@@ -6,6 +6,10 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Frost Law Tracker — Live US & Canada Spring Weight Restrictions | Haul Command',
   description: 'Real-time frost law and spring road restriction tracker for all 50 US states and Canadian provinces. Email and push alerts when frost laws activate or lift.',
+  keywords: [
+    'frost law tracker', 'spring weight restrictions', 'seasonal weight limits', 'heavy haul frost bands', 
+    'spring road bans canada', 'US DOT frost laws', 'oversize load weight reduction', 'frost law map 2026'
+  ],
   alternates: { canonical: 'https://www.haulcommand.com/tools/frost-law-tracker' },
 }
 
