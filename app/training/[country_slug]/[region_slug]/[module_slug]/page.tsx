@@ -48,8 +48,8 @@ export default async function ModuleWatchPage({ params }: Props) {
     description: `Official training module covering ${moduleName} for escort operators operating in ${regionName}.`,
     thumbnailUrl: 'https://www.haulcommand.com/images/default-training-poster.jpg',
     uploadDate: '2026-04-01',
-    contentUrl: 'https://www.haulcommand.com/media/dummy-video.mp4',
-    embedUrl: 'https://www.haulcommand.com/embed/dummy-video',
+    contentUrl: 'https://www.haulcommand.com/media/coming-soon.mp4',
+    embedUrl: 'https://www.haulcommand.com/embed/coming-soon',
     hasPart: [ // Chapter markers for SEO Video Clips
       { '@type': 'Clip', name: 'Introduction', startOffset: 0, endOffset: 120, url: `#step-1` },
       { '@type': 'Clip', name: 'Core Rules', startOffset: 120, endOffset: 600, url: `#step-2` }
@@ -115,23 +115,26 @@ export default async function ModuleWatchPage({ params }: Props) {
               This module prepares escort vehicle operators for {regionName} certification by covering jurisdiction-specific flagging procedures, MUTCD compliance thresholds, and visual communication requirements. Complete the full video and transcript below, then take the mock exam to verify your readiness.
             </p>
 
-            {/* Video Player Wrapper Placeholder */}
+            {/* Premium Validation/Unlock State */}
             <div style={{ 
               width: '100%', 
               aspectRatio: '16/9', 
-              background: '#000', 
+              background: 'linear-gradient(135deg, rgba(20,20,20,1) 0%, rgba(10,10,10,1) 100%)', 
               borderRadius: 12, 
-              border: '1px solid rgba(255,255,255,0.1)',
+              border: '1px solid rgba(212,168,68,0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              boxShadow: 'inset 0 0 100px rgba(0,0,0,0.8)'
             }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 40, marginBottom: 12, opacity: 0.8 }}>▶</div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#9ca3af' }}>Cloudflare Stream Video Embed Placeholder</div>
-                <div style={{ fontSize: 12, color: '#6b7280' }}>Loaded for {regionName} prep</div>
+              <div style={{ textAlign: 'center', padding: '0 20px' }}>
+                <div style={{ fontSize: 40, marginBottom: 16, opacity: 0.9 }}>🔒</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: '#f9fafb', marginBottom: 8, letterSpacing: '0.02em' }}>Interactive Video Module Unlocking Soon</div>
+                <div style={{ fontSize: 14, color: '#9ca3af', maxWidth: 450, margin: '0 auto', lineHeight: 1.5 }}>
+                  The {regionName} localized video training and interactive mock exam are currently in the final compliance review phase. Full text transcripts remain fully accessible below.
+                </div>
               </div>
             </div>
 
