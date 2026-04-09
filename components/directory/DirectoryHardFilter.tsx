@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Shield, Zap, Truck, Award, ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 
-interface FilterState {
+export interface FilterState {
   highPole: boolean;
   twic: boolean;
   hazmat: boolean;

@@ -7,9 +7,8 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
 import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
-import { DirectorySearchList } from './_components/DirectorySearchList';
 import { CommandMapWrapper } from '@/components/map/CommandMapWrapper';
-import { DirectoryHardFilter } from '@/components/directory/DirectoryHardFilter';
+import { DirectoryFilterOrchestrator } from './_components/DirectoryFilterOrchestrator';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
@@ -337,15 +336,8 @@ export default async function DirectoryPage() {
             <CommandMapWrapper />
           </div>
 
-          {/* Hard Filters — Certification / Equipment / Availability */}
-          <div className="max-w-4xl mx-auto mb-6">
-            <DirectoryHardFilter />
-          </div>
-
-          {/* Search */}
-          <div className="max-w-4xl mx-auto mb-16 text-left">
-            <DirectorySearchList />
-          </div>
+          {/* Hard Filters + Search — Orchestrated for live filtering */}
+          <DirectoryFilterOrchestrator />
 
           {/* Stats */}
           <div className="flex justify-center gap-8 text-sm">

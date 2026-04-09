@@ -1,48 +1,108 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Search, MapPin, LockKeyhole } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Search, MapPin, LockKeyhole, Shield, Zap } from "lucide-react";
+
+// ─── Shared filter type (matches DirectoryHardFilter) ──────
+export interface HardFilterState {
+  highPole: boolean;
+  twic: boolean;
+  hazmat: boolean;
+  superload: boolean;
+  avCertified: boolean;
+  gpsTracked: boolean;
+  availableNow: boolean;
+  verified: boolean;
+  equipmentType: string[];
+}
 
 interface OperatorResult {
   id: string;
+  slug?: string;
   name: string;
   phone: string;
   location: string;
   score: number;
+  badges?: Record<string, boolean>;
+  equipment_tags?: string[];
+  is_available_now?: boolean;
 }
 
 export function DirectorySearchList({
   initialQuery = "",
+  filters,
 }: {
   initialQuery?: string;
+  filters?: HardFilterState;
 }) {
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<OperatorResult[]>([]);
   const [isCensored, setIsCensored] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+  const [filtersApplied, setFiltersApplied] = useState<Record<string, any> | null>(null);
 
-  const fetchOperators = async (searchQuery: string) => {
+  const fetchOperators = useCallback(async (searchQuery: string, hardFilters?: HardFilterState) => {
     setIsLoading(true);
     try {
-      // Hit the geo-locked/rate-limited Edge API
-      const res = await fetch(`/api/directory/search?q=${encodeURIComponent(searchQuery)}`);
+      // Build query params
+      const params = new URLSearchParams();
+      if (searchQuery) params.set('q', searchQuery);
+      
+      // Hard filter params
+      if (hardFilters) {
+        if (hardFilters.twic) params.set('twic', 'true');
+        if (hardFilters.hazmat) params.set('hazmat', 'true');
+        if (hardFilters.highPole) params.set('highPole', 'true');
+        if (hardFilters.superload) params.set('superload', 'true');
+        if (hardFilters.avCertified) params.set('avCertified', 'true');
+        if (hardFilters.gpsTracked) params.set('gpsTracked', 'true');
+        if (hardFilters.verified) params.set('verified', 'true');
+        if (hardFilters.availableNow) params.set('availableNow', 'true');
+        hardFilters.equipmentType.forEach(eq => params.append('equipment', eq));
+      }
+
+      const res = await fetch(`/api/directory/search?${params.toString()}`);
       const data = await res.json();
 
       setResults(data.operators || []);
-      // If the user is unauthenticated, the response will flag censored
       setIsCensored(data.censored === true);
+      setTotalCount(data.total ?? 0);
+      setFiltersApplied(data.filters_applied || null);
     } catch (e) {
       console.error(e);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchOperators(query);
-  }, [query]);
+    fetchOperators(query, filters);
+  }, [query, filters, fetchOperators]);
+
+  // Badge renderer
+  const renderBadges = (badges?: Record<string, boolean>, isAvailable?: boolean) => {
+    if (!badges && !isAvailable) return null;
+    const active: { key: string; label: string; color: string; icon: string }[] = [];
+    if (isAvailable) active.push({ key: 'live', label: 'LIVE', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30', icon: '🟢' });
+    if (badges?.twic) active.push({ key: 'twic', label: 'TWIC', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: '🔐' });
+    if (badges?.hazmat) active.push({ key: 'hazmat', label: 'HazMat', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: '☢️' });
+    if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: '📏' });
+    if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: '🏗' });
+    if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: '🤖' });
+    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: '✅' });
+    if (active.length === 0) return null;
+    return (
+      <div className="flex flex-wrap gap-1 mt-1.5">
+        {active.map(b => (
+          <span key={b.key} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border ${b.color}`}>
+            <span>{b.icon}</span> {b.label}
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -57,6 +117,19 @@ export function DirectorySearchList({
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
+
+      {/* Active filter indicator */}
+      {filtersApplied && (
+        <div className="flex items-center gap-2 px-3 py-2 bg-[#0b0f14] border border-white/10 rounded-lg">
+          <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
+          <span className="text-[11px] text-neutral-400 font-medium">
+            Filtered results — showing operators matching your certification requirements
+          </span>
+          <span className="ml-auto text-[10px] font-bold text-[#C6923A]">
+            {totalCount.toLocaleString()} match{totalCount !== 1 ? 'es' : ''}
+          </span>
+        </div>
+      )}
 
       {/* Role / Position Filters */}
       <div className="flex overflow-x-auto pb-2 gap-2 hc-scrollbar-hide">
@@ -89,20 +162,26 @@ export function DirectorySearchList({
 
       {/* Results List */}
       <div className="relative">
-        <div className={`space-y-4 ${isCensored ? "" : ""}`}>
+        <div className={`space-y-4`}>
           {results.map((op, idx) => {
-            // If censored, blur everything except the first two results
             const shouldBlur = isCensored && idx >= 2;
 
             return (
               <div
                 key={op.id}
-                className="bg-[#0B1015] border border-white/5 hover:border-white/10 rounded-xl p-5"
+                className={`bg-[#0B1015] border border-white/5 hover:border-white/10 rounded-xl p-5 transition-all ${
+                  op.is_available_now ? 'ring-1 ring-emerald-500/30' : ''
+                }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className={shouldBlur ? "blur-md select-none opacity-50" : ""}>
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="text-white font-bold">{op.name}</h3>
+                      {op.is_available_now && (
+                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 animate-pulse">
+                          <Zap className="w-2.5 h-2.5" /> LIVE
+                        </span>
+                      )}
                       {op.score >= 50 && (
                         <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                           {op.score >= 80 ? 'Verified' : 'Claimed'}
@@ -113,6 +192,7 @@ export function DirectorySearchList({
                       <MapPin className="w-4 h-4" />
                       <span>{op.location || 'Location Not Set'}</span>
                     </div>
+                    {renderBadges(op.badges, false)}
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0 mt-3 sm:mt-0 w-full sm:w-auto">
@@ -131,7 +211,7 @@ export function DirectorySearchList({
 
                     {/* CTAs */}
                     <div className="flex gap-2 w-full sm:w-auto">
-                      <Link href={`/directory/profile/${op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-lg transition-all">
+                      <Link href={`/directory/profile/${op.slug || op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-lg transition-all">
                         View Profile
                       </Link>
                       <Link href={`/loads/post?operator=${op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/20 text-xs font-bold rounded-lg transition-all">

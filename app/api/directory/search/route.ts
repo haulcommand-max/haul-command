@@ -22,6 +22,17 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get('category') || '';
     const claimedOnly = searchParams.get('claimed') === 'true';
     
+    // Hard filter params (certification / equipment / availability)
+    const filterTwic = searchParams.get('twic') === 'true';
+    const filterHazmat = searchParams.get('hazmat') === 'true';
+    const filterHighPole = searchParams.get('highPole') === 'true';
+    const filterSuperload = searchParams.get('superload') === 'true';
+    const filterAvCertified = searchParams.get('avCertified') === 'true';
+    const filterGpsTracked = searchParams.get('gpsTracked') === 'true';
+    const filterVerified = searchParams.get('verified') === 'true';
+    const filterAvailableNow = searchParams.get('availableNow') === 'true';
+    const filterEquipment = searchParams.getAll('equipment');
+    
     // Pagination params
     const page = Math.max(parseInt(searchParams.get('page') || '1'), 1);
     const limit = Math.min(parseInt(searchParams.get('limit') || '48'), 100);
@@ -97,7 +108,7 @@ export async function GET(req: NextRequest) {
     let hcQuery = supabase
       .from('hc_places')
       .select(
-        'id, name, locality, admin1_code, country_code, phone, surface_category_key, slug, claim_status, demand_score',
+        'id, name, locality, admin1_code, country_code, phone, surface_category_key, slug, claim_status, demand_score, twic_certified, hazmat_endorsed, high_pole_certified, superload_rated, av_escort_certified, gps_tracked, hc_verified, equipment_tags',
         { count: 'exact' }
       )
       .eq('status', 'published')
@@ -112,6 +123,19 @@ export async function GET(req: NextRequest) {
     if (state) hcQuery = hcQuery.eq('admin1_code', state.toUpperCase());
     if (category) hcQuery = hcQuery.eq('surface_category_key', category);
     if (claimedOnly) hcQuery = hcQuery.eq('claim_status', 'claimed');
+    
+    // Hard filters — certification boolean columns
+    if (filterTwic) hcQuery = hcQuery.eq('twic_certified', true);
+    if (filterHazmat) hcQuery = hcQuery.eq('hazmat_endorsed', true);
+    if (filterHighPole) hcQuery = hcQuery.eq('high_pole_certified', true);
+    if (filterSuperload) hcQuery = hcQuery.eq('superload_rated', true);
+    if (filterAvCertified) hcQuery = hcQuery.eq('av_escort_certified', true);
+    if (filterGpsTracked) hcQuery = hcQuery.eq('gps_tracked', true);
+    if (filterVerified) hcQuery = hcQuery.eq('hc_verified', true);
+    // Equipment array containment (all selected equipment must be present)
+    if (filterEquipment.length > 0) {
+      hcQuery = hcQuery.contains('equipment_tags', filterEquipment);
+    }
 
     if (sortBy === 'name') {
       hcQuery = hcQuery.order('name', { ascending: true });
@@ -122,6 +146,18 @@ export async function GET(req: NextRequest) {
     hcQuery = hcQuery.range(startRange, endRange);
 
     const { data: hcData, count: hcCount } = await hcQuery;
+
+    // ═══ Available Now: fetch live operator IDs ═══
+    let liveOperatorIds: Set<string> | null = null;
+    if (filterAvailableNow) {
+      const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+      const { data: liveOps } = await supabase
+        .from('operator_live_status')
+        .select('operator_id')
+        .eq('status', 'available')
+        .gte('last_pinged_at', thirtyMinAgo);
+      liveOperatorIds = new Set((liveOps || []).map((r: any) => r.operator_id));
+    }
 
     // Map hc_places → unified shape
     const hcResults = (hcData || []).map((row: any, index: number) => ({
@@ -144,39 +180,60 @@ export async function GET(req: NextRequest) {
       profile_completeness: row.phone ? 50 : 20,
       phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (row.phone || ''),
       source: 'hc_places',
-    }));
+      // Certification badges (new)
+      badges: {
+        twic: row.twic_certified ?? false,
+        hazmat: row.hazmat_endorsed ?? false,
+        highPole: row.high_pole_certified ?? false,
+        superload: row.superload_rated ?? false,
+        avCertified: row.av_escort_certified ?? false,
+        gpsTracked: row.gps_tracked ?? false,
+        verified: row.hc_verified ?? false,
+      },
+      equipment_tags: row.equipment_tags ?? [],
+      is_available_now: liveOperatorIds ? liveOperatorIds.has(row.id) : false,
+    })).filter((row: any) => {
+      // If availability filter is on, only keep operators who are live
+      if (filterAvailableNow && !row.is_available_now) return false;
+      return true;
+    });
 
     // ═════════════════════════════════════════
     // QUERY 2: hc_global_operators (legacy)
+    // Skip when hard filters are active — legacy table has no cert columns
     // ═════════════════════════════════════════
-    let opQuery = supabase
-      .from('hc_global_operators')
-      .select(
-        'id, name, city, admin1_code, country_code, phone_normalized, is_claimed, role_primary, confidence_score, slug',
-        { count: 'exact' }
-      )
-      .not('admin1_code', 'is', null)
-      .not('city', 'is', null);
+    const hasHardFilters = filterTwic || filterHazmat || filterHighPole || filterSuperload ||
+      filterAvCertified || filterGpsTracked || filterVerified || filterAvailableNow ||
+      filterEquipment.length > 0;
 
-    if (q) {
-      opQuery = opQuery.or(
-        `name.ilike.%${q}%,city.ilike.%${q}%,admin1_code.ilike.%${q}%`
-      );
-    }
-    if (country) opQuery = opQuery.eq('country_code', country.toUpperCase());
-    if (state) opQuery = opQuery.eq('admin1_code', state.toUpperCase());
-    if (claimedOnly) opQuery = opQuery.eq('is_claimed', true);
-
-    if (sortBy === 'name') {
-      opQuery = opQuery.order('name', { ascending: true });
-    } else {
-      opQuery = opQuery.order('confidence_score', { ascending: false, nullsFirst: false });
-    }
-
-    // Only fetch legacy if no category filter (legacy doesn't have categories)
     let opResults: any[] = [];
     let opCount = 0;
-    if (!category) {
+
+    if (!category && !hasHardFilters) {
+      let opQuery = supabase
+        .from('hc_global_operators')
+        .select(
+          'id, name, city, admin1_code, country_code, phone_normalized, is_claimed, role_primary, confidence_score, slug',
+          { count: 'exact' }
+        )
+        .not('admin1_code', 'is', null)
+        .not('city', 'is', null);
+
+      if (q) {
+        opQuery = opQuery.or(
+          `name.ilike.%${q}%,city.ilike.%${q}%,admin1_code.ilike.%${q}%`
+        );
+      }
+      if (country) opQuery = opQuery.eq('country_code', country.toUpperCase());
+      if (state) opQuery = opQuery.eq('admin1_code', state.toUpperCase());
+      if (claimedOnly) opQuery = opQuery.eq('is_claimed', true);
+
+      if (sortBy === 'name') {
+        opQuery = opQuery.order('name', { ascending: true });
+      } else {
+        opQuery = opQuery.order('confidence_score', { ascending: false, nullsFirst: false });
+      }
+
       opQuery = opQuery.range(startRange, endRange);
       const { data: opData, count: opTotal } = await opQuery;
       opCount = opTotal ?? 0;
@@ -201,6 +258,9 @@ export async function GET(req: NextRequest) {
         profile_completeness: 40,
         phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (op.phone_normalized || ''),
         source: 'operators',
+        badges: {},
+        equipment_tags: [],
+        is_available_now: false,
       }));
     }
 
@@ -209,8 +269,10 @@ export async function GET(req: NextRequest) {
     // ═════════════════════════════════════════
     const allResults = [...hcResults, ...opResults];
 
-    // Sort merged
+    // Sort merged — available operators bubble to top when filter is active
     allResults.sort((a, b) => {
+      // Available now operators always first
+      if (a.is_available_now !== b.is_available_now) return Number(b.is_available_now) - Number(a.is_available_now);
       if (b.is_claimed !== a.is_claimed) return Number(b.is_claimed) - Number(a.is_claimed);
       return (b.rank_score ?? 0) - (a.rank_score ?? 0);
     });
@@ -227,8 +289,14 @@ export async function GET(req: NextRequest) {
       total_pages: Math.ceil(combinedTotal / limit),
       has_more: (startRange + limit) < combinedTotal,
       sources: { hc_places: hcCount ?? 0, operators: opCount },
+      filters_applied: hasHardFilters ? {
+        twic: filterTwic, hazmat: filterHazmat, highPole: filterHighPole,
+        superload: filterSuperload, avCertified: filterAvCertified,
+        gpsTracked: filterGpsTracked, verified: filterVerified,
+        availableNow: filterAvailableNow, equipment: filterEquipment,
+      } : null,
     }, {
-      headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },
+      headers: { 'Cache-Control': hasHardFilters ? 'private, no-cache' : 'public, s-maxage=60, stale-while-revalidate=120' },
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
