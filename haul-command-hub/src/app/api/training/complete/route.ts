@@ -4,7 +4,7 @@
  * Service-role only — called by internal completion logic or admin.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { supabaseServer } from '@/lib/supabase-server';
 import { BADGE_META } from '@/lib/training/types';
 
 export async function POST(request: NextRequest) {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'user_id and training_node_id required' }, { status: 400 });
     }
 
-    const supabase = await createClient();
+    const supabase = supabaseServer();
 
     // Get catalog entry
     const { data: catalog } = await supabase

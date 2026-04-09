@@ -4,7 +4,7 @@
  * Also handles expiry state propagation from cron checks.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { supabaseServer } from '@/lib/supabase-server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'user_id, badge_slug, and action required' }, { status: 400 });
     }
 
-    const supabase = await createClient();
+    const supabase = supabaseServer();
 
     let newStatus: string;
     switch (action) {
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = supabaseServer();
     const { data, error } = await supabase
       .from('training_user_badges')
       .select('badge_slug, status, issued_at, expires_at, review_due_at')

@@ -3,7 +3,7 @@
  * Server-side Supabase calls for the training system.
  * All functions are safe to call from RSC / server actions.
  */
-import { createClient } from '@/lib/supabase/server';
+import { supabaseServer } from '@/lib/supabase-server';
 import type {
   TrainingHubPayload,
   TrainingPagePayload,
@@ -17,7 +17,7 @@ import type {
 
 // ─── Hub ─────────────────────────────────────────────────────
 export async function getTrainingHubPayload(): Promise<TrainingHubPayload | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase.rpc('training_hub_payload');
   if (error) {
     console.error('[Training RPC] training_hub_payload error:', error.message);
@@ -32,7 +32,7 @@ export async function getTrainingPagePayload(
   countryCode?: string,
   regionCode?: string,
 ): Promise<TrainingPagePayload | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase.rpc('training_page_payload', {
     p_training_slug: trainingSlug,
     p_country_code: countryCode ?? null,
@@ -47,7 +47,7 @@ export async function getTrainingPagePayload(
 
 // ─── Module page ─────────────────────────────────────────────
 export async function getTrainingModuleBySlug(slug: string): Promise<TrainingModule | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase
     .from('training_modules')
     .select('*, training_catalog(*)')
@@ -59,7 +59,7 @@ export async function getTrainingModuleBySlug(slug: string): Promise<TrainingMod
 
 // ─── Level page ──────────────────────────────────────────────
 export async function getTrainingLevelBySlug(levelSlug: string): Promise<TrainingLevel | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase
     .from('training_levels')
     .select('*, training_catalog(*)')
@@ -71,7 +71,7 @@ export async function getTrainingLevelBySlug(levelSlug: string): Promise<Trainin
 
 // ─── Geo fit for country page ─────────────────────────────────
 export async function getTrainingGeoFit(countryCode: string, regionCode?: string): Promise<TrainingGeoFit[]> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   let q = supabase
     .from('training_geo_fit')
     .select('*')
@@ -83,7 +83,7 @@ export async function getTrainingGeoFit(countryCode: string, regionCode?: string
 
 // ─── User training status ─────────────────────────────────────
 export async function getTrainingUserStatus(userId: string): Promise<TrainingUserStatus | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase.rpc('training_user_status_payload', {
     p_user_id: userId,
   });
@@ -93,7 +93,7 @@ export async function getTrainingUserStatus(userId: string): Promise<TrainingUse
 
 // ─── Badge effects ────────────────────────────────────────────
 export async function getTrainingBadgeEffects(badgeSlug: string): Promise<TrainingBadgeEffect[]> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase.rpc('training_badge_effects_payload', {
     p_badge_slug: badgeSlug,
   });
@@ -103,7 +103,7 @@ export async function getTrainingBadgeEffects(badgeSlug: string): Promise<Traini
 
 // ─── Enterprise payload ───────────────────────────────────────
 export async function getTrainingEnterprisePayload(): Promise<TrainingEnterprisePayload | null> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data, error } = await supabase.rpc('training_enterprise_payload');
   if (error) return null;
   return data as TrainingEnterprisePayload;
@@ -111,14 +111,14 @@ export async function getTrainingEnterprisePayload(): Promise<TrainingEnterprise
 
 // ─── All modules (for sitemap / static generation) ───────────
 export async function getAllTrainingModuleSlugs(): Promise<string[]> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data } = await supabase.from('training_modules').select('slug');
   return (data ?? []).map((r: { slug: string }) => r.slug);
 }
 
 // ─── All level slugs ──────────────────────────────────────────
 export async function getAllTrainingLevelSlugs(): Promise<string[]> {
-  const supabase = await createClient();
+  const supabase = supabaseServer();
   const { data } = await supabase.from('training_levels').select('level_slug');
   return (data ?? []).map((r: { level_slug: string }) => r.level_slug);
 }

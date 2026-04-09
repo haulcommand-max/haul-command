@@ -39,31 +39,30 @@ export default async function TrainingLevelPage({ params }: Props) {
   const level = await getTrainingLevelBySlug(slug);
 
   // Graceful static fallback when DB not yet seeded
-  const STATIC_LEVELS: Record<string, {
-    level_slug: string; level_name: string; description: string;
-    badge_slug: 'road_ready' | 'certified' | 'elite' | 'av_ready';
-    rank_weight: number; trust_weight: number;
-    pricing_json: { one_time?: number; subscription?: number; period?: string; currency: string };
-  }> = {
+  const STATIC_LEVELS: Record<string, import('@/lib/training/types').TrainingLevel> = {
     'road-ready': {
+      id: 'static-road-ready', training_id: 'static',
       level_slug: 'road-ready', level_name: 'Road Ready',
       description: 'Foundational training for all heavy haul escort operators. Master compliance, safety, and operations basics.',
       badge_slug: 'road_ready', rank_weight: 0.10, trust_weight: 0.10,
       pricing_json: { one_time: 49, currency: 'usd' },
     },
     'certified': {
+      id: 'static-certified', training_id: 'static',
       level_slug: 'certified', level_name: 'Certified',
       description: 'Core certification path. Unlock broker-visible badge, higher directory ranking, and filter eligibility.',
       badge_slug: 'certified', rank_weight: 0.25, trust_weight: 0.30,
       pricing_json: { one_time: 149, currency: 'usd' },
     },
     'elite': {
+      id: 'static-elite', training_id: 'static',
       level_slug: 'elite', level_name: 'Elite',
       description: 'Advanced mastery. Premium badge, expanded broker trust card, maximum rank weighting, and annual verification.',
       badge_slug: 'elite', rank_weight: 0.45, trust_weight: 0.50,
       pricing_json: { subscription: 29, period: 'month', currency: 'usd' },
     },
     'av-ready': {
+      id: 'static-av-ready', training_id: 'static',
       level_slug: 'av-ready', level_name: 'AV-Ready',
       description: 'Autonomous vehicle escort specialist. Category-specific search weighting and enterprise visibility.',
       badge_slug: 'av_ready', rank_weight: 0.35, trust_weight: 0.35,

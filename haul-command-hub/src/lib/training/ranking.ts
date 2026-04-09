@@ -5,6 +5,7 @@
  */
 import type { TrainingBadgeSlug, TrainingUserBadge } from './types';
 import { BADGE_META } from './types';
+export { BADGE_META };
 import { getHighestActiveBadge, getBadgeDisplayState } from './badges';
 
 // ─── Rank weight caps per badge tier ────────────────────────

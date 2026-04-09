@@ -4,7 +4,7 @@
  * Called by the Stripe webhook (training_enrollment type) or directly by server actions.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { supabaseServer } from '@/lib/supabase-server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'user_id and training_node_id required' }, { status: 400 });
     }
 
-    const supabase = await createClient();
+    const supabase = supabaseServer();
 
     // Resolve training catalog id from node_id
     const { data: catalog, error: catalogErr } = await supabase
