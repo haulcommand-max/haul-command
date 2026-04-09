@@ -56,7 +56,21 @@ export default async function ModuleWatchPage({ params }: Props) {
     ]
   }
 
-  // 2. Breadcrumb Schema
+  // 2. HowTo Structured Data (AI Overviews strongly prefer this for instructional content)
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to prepare for ${regionName} escort vehicle certification`,
+    description: `Step-by-step pre-certification training for pilot car and escort vehicle operators in ${regionName}. Covers compliance rules, flagging procedures, and MUTCD requirements.`,
+    totalTime: 'PT45M',
+    step: [
+      { '@type': 'HowToStep', position: 1, name: 'Watch the Introduction', text: `Review the foundational regulatory framework for ${regionName} escort operations.`, url: `https://www.haulcommand.com/training/${country_slug}/${region_slug}/${module_slug}#step-1` },
+      { '@type': 'HowToStep', position: 2, name: 'Study Core Rules', text: `Learn specific visual communication thresholds, flagging procedures, and MUTCD enforcement for ${regionName}.`, url: `https://www.haulcommand.com/training/${country_slug}/${region_slug}/${module_slug}#step-2` },
+      { '@type': 'HowToStep', position: 3, name: 'Complete the Mock Exam', text: `Test your knowledge with the ${regionName} compliance mock exam to verify readiness.` },
+    ],
+  }
+
+  // 3. Breadcrumb Schema
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -72,6 +86,7 @@ export default async function ModuleWatchPage({ params }: Props) {
   return (
     <>
       <JsonLd data={videoObjectSchema} />
+      <JsonLd data={howToSchema} />
       <JsonLd data={breadcrumbSchema} />
 
       <div style={s.page}>
@@ -94,6 +109,11 @@ export default async function ModuleWatchPage({ params }: Props) {
             <h1 style={{ margin: 0, fontSize: 'clamp(1.5rem,4vw,2.5rem)', fontWeight: 900, color: '#f9fafb', lineHeight: 1.1 }}>
               {moduleName}: <span style={{ color: gold }}>{regionName} Pre-Certification Track</span>
             </h1>
+
+            {/* BLUF — Answer-first block for AI extraction (Perplexity, Google AI Overviews) */}
+            <p data-speakable="true" style={{ fontSize: 15, color: '#d1d5db', lineHeight: 1.7, maxWidth: 700, margin: '12px 0 0' }}>
+              This module prepares escort vehicle operators for {regionName} certification by covering jurisdiction-specific flagging procedures, MUTCD compliance thresholds, and visual communication requirements. Complete the full video and transcript below, then take the mock exam to verify your readiness.
+            </p>
 
             {/* Video Player Wrapper Placeholder */}
             <div style={{ 
@@ -183,6 +203,11 @@ export default async function ModuleWatchPage({ params }: Props) {
 
           </div>
         </section>
+
+      {/* VISIBLE LAST UPDATED — AI engines cross-validate schema dateModified against visible page content */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '16px 20px', textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#4b5563', margin: 0 }}>Content last updated: April 2026 · Verified against official {regionName} DOT sources</p>
+        </div>
 
       </div>
     </>

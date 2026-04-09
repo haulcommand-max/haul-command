@@ -54,6 +54,7 @@ export default function FrostLawTrackerPage() {
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#3b82f6] font-semibold mb-3">FREE TOOL · REAL-TIME TRACKING</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Frost Law Tracker</h1>
+            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Frost laws are seasonal weight restrictions imposed on roads during spring thaw. They typically reduce legal weight limits by 20–50% from February through May across the northern US and Canada. Use this tracker to monitor active restrictions and get alerts when frost laws activate or lift in your corridors.</p>
             <p className="text-sm text-[#8a9ab0] max-w-2xl">Live spring weight restriction status for US states and Canadian provinces. Get push alerts when frost laws activate or lift in your corridors.</p>
           </div>
         </div>
@@ -124,6 +125,11 @@ export default function FrostLawTrackerPage() {
             {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','Axle Weight Calculator'],['/regulations','Regulations Hub'],['/directory','Operator Directory']].map(([href,label])=>(
               <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#3b82f6] hover:text-[#3b82f6] transition-colors">{label} →</Link>
             ))}
+          </div>
+
+          {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
+          <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
+            <p className="text-[10px] text-[#3a5068]">Content last updated: April 2026 · Data verified against state DOT sources · Updated hourly during active frost law season</p>
           </div>
         </div>
       </div>

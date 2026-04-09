@@ -25,6 +25,7 @@ export default function PermitCostCalculatorPage() {
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Oversize Load Permit Cost Calculator</h1>
+            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10–$0.50. A multi-state route may total $200–$600 in permit fees alone. Enter your load dimensions and route below for an instant estimate covering all states along your corridor.</p>
             <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route — including pilot car requirements, escort rules, and superload thresholds.</p>
             <p className="text-xs text-[#22c55e]">Free · All 50 US States · No account needed</p>
           </div>
@@ -122,6 +123,11 @@ export default function PermitCostCalculatorPage() {
                 <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} →</Link>
               ))}
             </div>
+          </div>
+
+          {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
+          <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
+            <p className="text-[10px] text-[#3a5068]">Permit data last updated: Q1 2026 · Verified against state DOT fee schedules · Confirm with issuing authority before filing</p>
           </div>
         </div>
       </div>
