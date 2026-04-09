@@ -8,10 +8,12 @@ import { SnippetInjector } from '@/components/seo/SnippetInjector';
 import { ClaimListingCTA, PostLoadCTA, OperatorsNeededCTA } from '@/components/seo/ConversionCTAs';
 import { StickyClaimBar } from '@/components/directory/StickyClaimBar';
 import { DirectorySearchList } from './_components/DirectorySearchList';
+import { GlobalCommandMap } from '@/components/map/GlobalCommandMap';
 import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
+import { GlobalCommandMap } from '@/components/map/GlobalCommandMap';
 import { AdGridRecruiterCard } from '@/components/ads/AdGridRecruiterCard';
 import { AdGridInstantLeadForm } from '@/components/ads/AdGridInstantLeadForm';
 import { AdGridKeywordInterceptor } from '@/components/ads/AdGridKeywordInterceptor';
@@ -328,6 +330,11 @@ export default async function DirectoryPage() {
                 <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{chip.desc}</span>
               </a>
             ))}
+          </div>
+
+          {/* Global Command Map */}
+          <div className="max-w-6xl mx-auto mb-8">
+            <GlobalCommandMap />
           </div>
 
           {/* Search */}

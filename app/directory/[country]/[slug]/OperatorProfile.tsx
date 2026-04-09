@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { OperatorTrustCard } from '@/components/profile/OperatorTrustCard'
-import { OperatorReportCard } from '@/components/profile/OperatorReportCard'
+import OperatorReportCard from '@/components/profile/OperatorReportCard'
 import { OperatorReviews } from '@/components/profile/OperatorReviews'
 import { OperatorBadges } from '@/components/profile/OperatorBadges'
 import { ClaimProfileCTA } from '@/components/profile/ClaimProfileCTA'
@@ -117,7 +117,12 @@ export async function OperatorProfilePage({ params }: Props) {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <OperatorTrustCard trust={trust} operator={operator} tierColor={tierColor} />
-            <OperatorReportCard reportCard={reportCard} operator={operator} />
+            <OperatorReportCard 
+              score={reportCard?.score || 0}
+              rank={reportCard?.rank || 999}
+              postCount={reportCard?.postCount || 0}
+              region={operator.region_code || operator.state || 'US'}
+            />
           </div>
           {badges.length > 0 && <OperatorBadges badges={badges} />}
           <AdGridSlot zone="profile_mid" />
