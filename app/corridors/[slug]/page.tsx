@@ -227,12 +227,25 @@ export default async function CorridorSlugPage({ params }: Props) {
                   <span className="text-right font-mono text-white/50">
                     {p.currency_code} {p.amount_min?.toFixed(2)}
                   </span>
-                  <span className="text-right font-mono font-semibold text-white">
-                    {p.currency_code} {p.amount_median?.toFixed(2)}
-                  </span>
-                  <span className="text-right font-mono text-white/50">
-                    {p.currency_code} {p.amount_max?.toFixed(2)}
-                  </span>
+                  
+                  {isPro ? (
+                    <>
+                      <span className="text-right font-mono font-semibold text-white cursor-pointer group relative">
+                        {p.currency_code} {p.amount_median?.toFixed(2)}
+                        <span className="absolute -top-7 right-0 text-[10px] bg-emerald-500 text-black px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Verified Rate</span>
+                      </span>
+                      <span className="text-right font-mono text-white/50">
+                        {p.currency_code} {p.amount_max?.toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="col-span-2 flex justify-end items-center gap-2">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Enterprise Exclusive</span>
+                       <span className="text-white/20 blur-sm pointer-events-none font-mono">
+                         {p.currency_code} 1,240.50 | 1,890.00
+                       </span>
+                    </span>
+                  )}
                 </div>
               ))}
             </div>

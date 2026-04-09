@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
+import { InstantAIVerificationCard } from '@/components/support/InstantAIVerificationCard'
 
 export const metadata: Metadata = {
   title: 'Claim Your Profile | Haul Command',
@@ -114,6 +115,9 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 <form action="/api/claim/submit" method="POST">
                   {searchParams.hcid && <input type="hidden" name="hcid" value={searchParams.hcid}/>}
                   <input type="hidden" name="user_id" value={user.id}/>
+
+                  <InstantAIVerificationCard hcid={searchParams.hcid} companyName={operator?.company_name} />
+
                   <div className="mb-4">
                     <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">YOUR COMPANY NAME <span className="text-red-400">*</span></label>
                     <input name="company_name" defaultValue={operator?.company_name??''} required
