@@ -68,12 +68,25 @@ export default async function LandingPage() {
     const countryCode = await getCountryFromHeaders();
     const heroPack = resolveHeroPack(countryCode);
 
-    const [marketPulse, directoryResult, corridors, globalStats] = await Promise.all([
-        getMarketPulse(),
-        getDirectoryListings({ limit: 8 }),
-        getCorridors(),
-        getGlobalStats(),
-    ]);
+    let marketPulse: Awaited<ReturnType<typeof getMarketPulse>>;
+    let directoryResult: Awaited<ReturnType<typeof getDirectoryListings>>;
+    let corridors: Awaited<ReturnType<typeof getCorridors>>;
+    let globalStats: Awaited<ReturnType<typeof getGlobalStats>>;
+
+    try {
+        [marketPulse, directoryResult, corridors, globalStats] = await Promise.all([
+            getMarketPulse(),
+            getDirectoryListings({ limit: 8 }),
+            getCorridors(),
+            getGlobalStats(),
+        ]);
+    } catch (e) {
+        console.error('Homepage data fetch failed:', e);
+        marketPulse = { escorts_online_now: 0, escorts_available_now: 0, open_loads_now: 0, median_fill_time_min_7d: null, fill_rate_7d: null };
+        directoryResult = { listings: [], total: 0 };
+        corridors = [];
+        globalStats = { totalCountries: 120, liveCountries: 2, coveredCountries: 120, nextCountries: 5, plannedCountries: 60, futureCountries: 53, totalOperators: 1566000, totalCorridors: 219, avgRatePerDay: 380 };
+    }
 
     return (
         <main>
