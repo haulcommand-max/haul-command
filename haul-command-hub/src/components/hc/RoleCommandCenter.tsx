@@ -24,7 +24,12 @@ export default function RoleCommandCenter() {
   if (!hasRole || !config) {
     return (
       <section className="relative py-10 sm:py-16 md:py-20 px-4 overflow-hidden border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent" />
+        <picture>
+          <source srcSet="/images/hero_background_1774405015235.png" type="image/png" />
+          <img src="/images/hero_background_1774405015235.png" alt="" aria-hidden
+               className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none select-none" />
+        </picture>
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent z-0" />
         <div className="w-full max-w-5xl mx-auto relative z-10">
           <RoleSelector />
         </div>
@@ -35,7 +40,12 @@ export default function RoleCommandCenter() {
   // Role selected → show command center
   return (
     <section className="relative py-8 sm:py-12 md:py-16 px-4 overflow-hidden border-b border-white/5">
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent" />
+      <picture>
+        <source srcSet="/images/hero_background_1774405015235.png" type="image/png" />
+        <img src="/images/hero_background_1774405015235.png" alt="" aria-hidden
+             className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none select-none" />
+      </picture>
+      <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent z-0" />
       <div className="w-full max-w-5xl mx-auto relative z-10 space-y-6 sm:space-y-8">
 
         {/* ─── Role Header ─────────────────────────────────── */}

@@ -53,14 +53,18 @@ export default async function TrainingHubPage() {
       />
 
       {/* ─── Hero ───────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 pt-12 pb-10">
-        <nav className="flex items-center gap-2 text-xs text-gray-500 mb-6" aria-label="Breadcrumb">
+      <section className="relative max-w-7xl mx-auto px-4 pt-12 pb-10 mb-12 rounded-2xl overflow-hidden border border-white/5 bg-white/[0.01]">
+        <div 
+          className="absolute inset-0 opacity-15 mix-blend-screen bg-cover bg-center bg-no-repeat pointer-events-none select-none z-0" 
+          style={{ backgroundImage: 'url(/images/hero_background_1774405015235.png)' }} 
+        />
+        <nav className="relative z-10 flex items-center gap-2 text-xs text-gray-500 mb-6" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
           <span className="text-gray-300">Training</span>
         </nav>
 
-        <div className="max-w-3xl">
+        <div className="relative z-10 max-w-3xl">
           <div className="flex items-center gap-2 text-yellow-400 mb-3">
             <GraduationCap size={20} />
             <span className="text-xs font-mono uppercase tracking-widest">Haul Command Training</span>

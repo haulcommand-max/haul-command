@@ -1,26 +1,16 @@
-import pg from 'pg';
+import pkg from 'pg';
+const { Client } = pkg;
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
-async function check() {
-    const client = new pg.Client({
-        connectionString: process.env.SUPABASE_DB_POOLER_URL
-    });
-    
-    await client.connect();
-    
-    try {
-        const res = await client.query(`
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-              AND (table_name ILIKE '%listing%' OR table_name ILIKE '%provider%');
-        `);
-        console.log(res.rows);
-    } catch(e) {
-        console.log(e);
-    }
-    
-    await client.end();
+async function query() {
+  const client = new Client({
+    connectionString: process.env.SUPABASE_DB_POOLER_URL,
+    ssl: { rejectUnauthorized: false }
+  });
+  await client.connect();
+  const res = await client.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+  console.log('Tables:', res.rows.map(r => r.table_name));
+  await client.end();
 }
-check();
+query();

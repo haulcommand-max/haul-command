@@ -44,22 +44,28 @@ export default async function LeaderboardsPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8 sm:py-12 overflow-x-hidden">
-        <nav className="text-xs text-gray-500 mb-4 sm:mb-6">
-          <Link href="/" className="hover:text-accent">Home</Link>
-          <span className="mx-2">›</span>
-          <span className="text-white">Leaderboards</span>
-        </nav>
+      <main className="flex-grow w-full relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-10 mix-blend-screen bg-cover bg-top bg-no-repeat pointer-events-none select-none z-0" 
+          style={{ backgroundImage: 'url(/hero/_fallback/fallback-poster.webp)' }} 
+        />
+        
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-8 sm:py-12">
+          <nav className="text-xs text-gray-500 mb-4 sm:mb-6">
+            <Link href="/" className="hover:text-accent">Home</Link>
+            <span className="mx-2">›</span>
+            <span className="text-white">Leaderboards</span>
+          </nav>
 
-        <header className="mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
-            Haul Command <span className="text-accent">Leaderboards</span>
-          </h1>
-          <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl break-words">
-            Win priority loads in your corridor. Every ranking includes methodology disclosure and ranking basis.
-            Paid placements are always labeled.
-          </p>
-        </header>
+          <header className="mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-3 sm:mb-4 break-words">
+              Haul Command <span className="text-accent">Leaderboards</span>
+            </h1>
+            <p className="text-[#b0b0b0] text-base sm:text-lg max-w-2xl break-words">
+              Win priority loads in your corridor. Every ranking includes methodology disclosure and ranking basis.
+              Paid placements are always labeled.
+            </p>
+          </header>
 
         {/* Methodology Disclosure */}
         <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 sm:p-4 mb-6 sm:mb-8 text-sm text-[#b0b0b0] break-words">
@@ -232,6 +238,7 @@ export default async function LeaderboardsPage() {
 
         <div className="mt-8">
           <HCTrustGuardrailsModule />
+        </div>
         </div>
       </main>
     </>

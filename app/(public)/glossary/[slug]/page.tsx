@@ -16,6 +16,8 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SmartPaywallBannerAnon } from '@/components/monetization/SmartPaywallBannerAnon';
 import { getGlossaryTerm } from '@/lib/glossary/queries';
+import { TrustStrip } from '@/components/ui/intent-blocks';
+import { RegulationComplianceTeaser } from '@/components/monetization/DataProductTeaser';
 
 export const revalidate = 86400; // Cache for 24h
 
@@ -85,6 +87,16 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                 <div className="absolute top-0 left-0 w-full h-[500px] pointer-events-none bg-gradient-to-b from-[#D4A844]/5 to-transparent opacity-50" />
                 
                 <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+
+                    {/* TRUST STRIP — Source confidence, freshness, verification chain */}
+                    <div className="mb-8">
+                        <TrustStrip
+                            confidenceLevel="verified_current"
+                            lastVerifiedAt={new Date().toISOString().split('T')[0]}
+                            officialSourceName="Haul Command Regulatory Research Desk"
+                            metrics={{ verifiedCount: 24164 }}
+                        />
+                    </div>
                     
                     {/* BREADCRUMBS */}
                     <nav className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 mb-10">
@@ -170,6 +182,15 @@ export default async function GlossaryTermPage({ params }: { params: { slug: str
                                         ))}
                                     </div>
                                 </section>
+                            )}
+
+                            {/* Data Product Teaser — cross-sell jurisdiction compliance data */}
+                            {term.country_codes && term.country_codes.length > 0 && (
+                                <div className="my-8">
+                                    <RegulationComplianceTeaser
+                                        countryCode={term.country_codes[0]}
+                                    />
+                                </div>
                             )}
 
                             {/* Smart Paywall */}

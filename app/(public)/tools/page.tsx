@@ -26,13 +26,19 @@ const toolsSchema = {
         itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Route IQ', url: 'https://www.haulcommand.com/tools/route-iq' },
             { '@type': 'ListItem', position: 2, name: 'Rate Advisor', url: 'https://www.haulcommand.com/tools/rate-advisor' },
-            { '@type': 'ListItem', position: 3, name: 'Permit Calculator', url: 'https://www.haulcommand.com/tools/permit-calculator' },
-            { '@type': 'ListItem', position: 4, name: 'Load Analyzer', url: 'https://www.haulcommand.com/tools/load-analyzer' },
-            { '@type': 'ListItem', position: 5, name: 'Compliance Card', url: 'https://www.haulcommand.com/tools/compliance-card' },
-            { '@type': 'ListItem', position: 6, name: 'Heavy Haul Index', url: 'https://www.haulcommand.com/tools/heavy-haul-index' },
-            { '@type': 'ListItem', position: 7, name: 'Discovery Map', url: 'https://www.haulcommand.com/tools/discovery-map' },
-            { '@type': 'ListItem', position: 8, name: 'Regulation Alerts', url: 'https://www.haulcommand.com/tools/regulation-alerts' },
-            { '@type': 'ListItem', position: 9, name: 'Instant Quote', url: 'https://www.haulcommand.com/estimate' },
+            { '@type': 'ListItem', position: 3, name: 'Escort Calculator', url: 'https://www.haulcommand.com/tools/escort-calculator' },
+            { '@type': 'ListItem', position: 4, name: 'Permit Calculator', url: 'https://www.haulcommand.com/tools/permit-calculator' },
+            { '@type': 'ListItem', position: 5, name: 'Official Source Finder', url: 'https://www.haulcommand.com/tools/official-source-finder' },
+            { '@type': 'ListItem', position: 6, name: 'Certification Map', url: 'https://www.haulcommand.com/tools/certification-map' },
+            { '@type': 'ListItem', position: 7, name: 'Permit Authority Directory', url: 'https://www.haulcommand.com/tools/permit-authorities' },
+            { '@type': 'ListItem', position: 8, name: 'Regulation Change Log', url: 'https://www.haulcommand.com/tools/regulation-change-log' },
+            { '@type': 'ListItem', position: 9, name: 'Country Source Library', url: 'https://www.haulcommand.com/tools/source-library' },
+            { '@type': 'ListItem', position: 10, name: 'Forms & Document Hub', url: 'https://www.haulcommand.com/forms' },
+            { '@type': 'ListItem', position: 11, name: 'Backhaul Locator', url: 'https://www.haulcommand.com/backhauls' },
+            { '@type': 'ListItem', position: 12, name: 'Load Type Library', url: 'https://www.haulcommand.com/tools/load-types' },
+            { '@type': 'ListItem', position: 13, name: 'Permit SLA Tracker', url: 'https://www.haulcommand.com/tools/permit-sla-tracker' },
+            { '@type': 'ListItem', position: 14, name: 'Corridor Pricing', url: 'https://www.haulcommand.com/tools/corridor-pricing' },
+            { '@type': 'ListItem', position: 15, name: 'Certification Timelines', url: 'https://www.haulcommand.com/tools/certification-timeline' },
         ],
     },
 };
@@ -46,7 +52,7 @@ const faqSchema = {
             name: 'What free tools does Haul Command offer?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command provides free tools for heavy haul logistics: Route IQ for compliance checking, Rate Advisor for escort cost benchmarks, Permit Calculator for multi-state permit estimation, Load Analyzer for dimension classification, Compliance Card for state-by-state requirements, Heavy Haul Market Index, Discovery Map for finding operators, and Regulation Alerts for rule changes across 120 countries.',
+                text: 'Haul Command provides 15 free tools for heavy haul logistics including Route IQ, Rate Advisor, Escort Calculator, Permit Calculator, Official Source Finder, Certification Map, Permit Authority Directory, Regulation Change Log, Country Source Library, Forms & Document Hub, Backhaul Locator, Load Type Library, Permit SLA Tracker, Corridor Pricing, and Certification Timelines. All tools cover 120 countries with no login required.',
             },
         },
         {
@@ -237,7 +243,7 @@ export default function ToolsIndexPage() {
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 13, color: '#6B7280' }}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>●</span> 9 free tools
+                                    <span style={{ color: '#22c55e' }}>●</span> 15 free tools
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <span style={{ color: '#22c55e' }}>●</span> 120 countries
@@ -381,7 +387,7 @@ export default function ToolsIndexPage() {
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <StaticAnswerBlock
                 question="What free tools does Haul Command offer for heavy haul logistics?"
-                answer="Haul Command provides 9 free tools for heavy haul logistics: Route IQ for compliance checking, Rate Advisor for escort cost benchmarks, Permit Calculator for multi-state permit estimation, Load Analyzer for dimension classification, Compliance Card for state-by-state requirements, Heavy Haul Market Index, Discovery Map for operator finding, Regulation Alerts, and Instant Quote for escort cost estimation. All tools cover 120 countries."
+                answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 120 countries."
                 confidence="verified_current"
                 ctaLabel="Try Route IQ — Free"
                 ctaUrl="/tools/route-iq"

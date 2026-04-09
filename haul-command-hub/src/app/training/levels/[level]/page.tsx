@@ -85,12 +85,17 @@ export default async function TrainingLevelPage({ params }: Props) {
     : null;
 
   return (
-    <main className="pb-20">
+    <main className="pb-20 relative overflow-hidden">
       {jsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       )}
 
-      <div className="max-w-7xl mx-auto px-4 pt-10">
+      <div 
+        className="absolute inset-0 opacity-10 mix-blend-screen bg-cover bg-center bg-no-repeat pointer-events-none select-none z-0" 
+        style={{ backgroundImage: 'url(/images/hero_background_1774405015235.png)' }} 
+      />
+
+      <div className="max-w-7xl mx-auto px-4 pt-10 relative z-10">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-gray-500 mb-6" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>

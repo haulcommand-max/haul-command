@@ -15,8 +15,8 @@ export default function ClaimPage() {
         async function load() {
             const sb = createClient();
             const { data } = await sb
-                .from('hc_surfaces')
-                .select('id, name, surface_type, country_code, slug')
+                .from('hc_places')
+                .select('id, name, primary_source_type, country_code, slug')
                 .eq('id', surfaceId)
                 .single();
             setSurface(data);

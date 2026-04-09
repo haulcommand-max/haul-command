@@ -1,281 +1,191 @@
 /**
- * Structured Data Generator (JSON-LD)
- *
- * Generates valid schema.org markup for:
- *  - Organization
- *  - LocalBusiness / Service
- *  - BreadcrumbList
- *  - FAQPage
- *  - ItemList
- *  - JobPosting (load board)
- *  - SoftwareApplication (app)
- *  - Dataset (public intelligence)
+ * Haul Command: JSON-LD Structured Data Factory
+ * 
+ * Centralized generation of schema.org markup.
+ * Every page family calls into this factory to guarantee compliance
+ * with Google's structured data guidelines.
+ * 
+ * Rules from master prompt:
+ * - Structured data must match visible page content
+ * - Must be current, truthful, and non-misleading
+ * - Do not mark up fake reviews, invisible content, or irrelevant content
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
-const ORG_NAME = 'Haul Command';
-const ORG_LOGO = `${SITE_URL}/logo.png`;
-
-// ── Organization ───────────────────────────────────────────────────────────
-
-export function organizationSchema() {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: ORG_NAME,
-        url: SITE_URL,
-        logo: ORG_LOGO,
-        sameAs: [
-            'https://www.facebook.com/haulcommand',
-            'https://twitter.com/haulcommand',
-            'https://www.linkedin.com/company/haulcommand',
-            'https://www.youtube.com/@haulcommand',
-        ],
-        contactPoint: {
-            '@type': 'ContactPoint',
-            contactType: 'customer service',
-            availableLanguage: ['English', 'Spanish', 'French'],
-        },
-    };
+export interface OrganizationSchemaProps {
+  name?: string;
+  url?: string;
+  logo?: string;
+  sameAs?: string[];
 }
 
-// ── LocalBusiness / Service (for geo pages) ────────────────────────────────
-
-export function localBusinessSchema(params: {
-    name: string;
-    description: string;
-    url: string;
-    city?: string;
-    region?: string;
-    country?: string;
-    lat?: number;
-    lon?: number;
-    serviceType?: string;
-    areaServed?: string[];
-}) {
-    return {
-        '@context': 'https://schema.org',
-        '@type': ['LocalBusiness', 'Service'],
-        name: params.name,
-        description: params.description,
-        url: params.url,
-        provider: {
-            '@type': 'Organization',
-            name: ORG_NAME,
-            url: SITE_URL,
-        },
-        serviceType: params.serviceType || 'Oversize Load Escort Services',
-        areaServed: params.areaServed?.map((a) => ({
-            '@type': 'Place',
-            name: a,
-        })),
-        ...(params.lat && params.lon
-            ? {
-                geo: {
-                    '@type': 'GeoCoordinates',
-                    latitude: params.lat,
-                    longitude: params.lon,
-                },
-            }
-            : {}),
-        ...(params.city || params.region
-            ? {
-                address: {
-                    '@type': 'PostalAddress',
-                    addressLocality: params.city,
-                    addressRegion: params.region,
-                    addressCountry: params.country || 'US',
-                },
-            }
-            : {}),
-    };
+export function generateOrganizationSchema(props?: OrganizationSchemaProps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: props?.name || 'Haul Command',
+    url: props?.url || 'https://www.haulcommand.com',
+    logo: props?.logo || 'https://www.haulcommand.com/logo.png',
+    description: 'The global operating system for heavy haul logistics. Pilot car directory, escort dispatch, route intelligence, and compliance tools across 120 countries.',
+    sameAs: props?.sameAs || [],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      availableLanguage: ['English'],
+    },
+  };
 }
 
-// ── BreadcrumbList ─────────────────────────────────────────────────────────
-
-export function breadcrumbSchema(items: Array<{ name: string; url: string }>) {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: items.map((item, i) => ({
-            '@type': 'ListItem',
-            position: i + 1,
-            name: item.name,
-            item: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
-        })),
-    };
+export interface ArticleSchemaProps {
+  title: string;
+  description: string;
+  slug: string;
+  published_at: string;
+  modified_at?: string;
+  author_name?: string;
+  image_url?: string;
 }
 
-// ── FAQPage ────────────────────────────────────────────────────────────────
-
-export function faqSchema(pairs: Array<{ question: string; answer: string }>) {
-    if (!pairs.length) return null;
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: pairs.map((p) => ({
-            '@type': 'Question',
-            name: p.question,
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: p.answer,
-            },
-        })),
-    };
+export function generateArticleSchema(props: ArticleSchemaProps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: props.title,
+    description: props.description,
+    url: `https://www.haulcommand.com/blog/${props.slug}`,
+    datePublished: props.published_at,
+    dateModified: props.modified_at || props.published_at,
+    author: {
+      '@type': 'Organization',
+      name: props.author_name || 'Haul Command Research Desk',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Haul Command',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.haulcommand.com/logo.png',
+      },
+    },
+    image: props.image_url || 'https://www.haulcommand.com/og/blog-default.png',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.haulcommand.com/blog/${props.slug}`,
+    },
+  };
 }
 
-// ── ItemList (directory listings, corridor lists, etc.) ─────────────────────
-
-export function itemListSchema(params: {
-    name: string;
-    url: string;
-    items: Array<{ name: string; url: string; position?: number }>;
-}) {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: params.name,
-        url: params.url.startsWith('http') ? params.url : `${SITE_URL}${params.url}`,
-        numberOfItems: params.items.length,
-        itemListElement: params.items.map((item, i) => ({
-            '@type': 'ListItem',
-            position: item.position ?? i + 1,
-            name: item.name,
-            url: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
-        })),
-    };
+export interface ProfilePageSchemaProps {
+  name: string;
+  slug: string;
+  description: string;
+  image_url?: string;
+  service_area?: string[];
+  telephone?: string;
+  rating?: number;
+  review_count?: number;
 }
 
-// ── JobPosting (load board listings) ───────────────────────────────────────
+export function generateProfilePageSchema(props: ProfilePageSchemaProps) {
+  const schema: any = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: {
+      '@type': 'Organization',
+      name: props.name,
+      url: `https://www.haulcommand.com/profile/${props.slug}`,
+      description: props.description,
+      image: props.image_url,
+      telephone: props.telephone,
+      areaServed: props.service_area?.map(area => ({
+        '@type': 'AdministrativeArea',
+        name: area,
+      })),
+    },
+  };
 
-export function jobPostingSchema(params: {
-    title: string;
-    description: string;
-    slug: string;
-    originCity?: string;
-    originRegion?: string;
-    originCountry?: string;
-    destinationCity?: string;
-    destinationRegion?: string;
-    postedAt: string;
-    expiresAt?: string;
-    salary?: number;
-    currency?: string;
-}) {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'JobPosting',
-        title: params.title,
-        description: params.description,
-        url: `${SITE_URL}/loads/${params.slug}`,
-        datePosted: params.postedAt,
-        validThrough: params.expiresAt,
-        hiringOrganization: {
-            '@type': 'Organization',
-            name: ORG_NAME,
-            sameAs: SITE_URL,
-        },
-        jobLocation: {
-            '@type': 'Place',
-            address: {
-                '@type': 'PostalAddress',
-                addressLocality: params.originCity,
-                addressRegion: params.originRegion,
-                addressCountry: params.originCountry || 'US',
-            },
-        },
-        ...(params.salary
-            ? {
-                baseSalary: {
-                    '@type': 'MonetaryAmount',
-                    currency: params.currency || 'USD',
-                    value: {
-                        '@type': 'QuantitativeValue',
-                        value: params.salary,
-                        unitText: 'PER_TRIP',
-                    },
-                },
-            }
-            : {}),
-        employmentType: 'CONTRACTOR',
-        industry: 'Transportation & Logistics',
+  // Only add aggregate rating if real reviews exist
+  if (props.rating && props.review_count && props.review_count > 0) {
+    schema.mainEntity.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: props.rating,
+      reviewCount: props.review_count,
+      bestRating: 5,
+      worstRating: 1,
     };
+  }
+
+  return schema;
 }
 
-// ── SoftwareApplication (mobile app) ───────────────────────────────────────
-
-export function softwareAppSchema() {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        name: 'Haul Command',
-        operatingSystem: 'iOS, Android',
-        applicationCategory: 'BusinessApplication',
-        offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'USD',
-        },
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.8',
-            ratingCount: '500',
-        },
-        description: 'The #1 app for oversize load escorts and pilot car services. Find escorts, post loads, and manage heavy haul logistics.',
-    };
+export interface HowToSchemaProps {
+  name: string;
+  description: string;
+  steps: { name: string; text: string }[];
+  tool_url: string;
 }
 
-// ── Dataset (public intelligence exports) ──────────────────────────────────
-
-export function datasetSchema(params: {
-    name: string;
-    description: string;
-    url: string;
-    temporalCoverage?: string;
-    spatialCoverage?: string[];
-}) {
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'Dataset',
-        name: params.name,
-        description: params.description,
-        url: params.url.startsWith('http') ? params.url : `${SITE_URL}${params.url}`,
-        creator: {
-            '@type': 'Organization',
-            name: ORG_NAME,
-            url: SITE_URL,
-        },
-        license: 'https://creativecommons.org/licenses/by-nc/4.0/',
-        temporalCoverage: params.temporalCoverage || 'P30D',
-        ...(params.spatialCoverage
-            ? {
-                spatialCoverage: params.spatialCoverage.map((s) => ({
-                    '@type': 'Place',
-                    name: s,
-                })),
-            }
-            : {}),
-    };
+export function generateHowToSchema(props: HowToSchemaProps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: props.name,
+    description: props.description,
+    step: props.steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.name,
+      text: step.text,
+    })),
+    mainEntityOfPage: props.tool_url,
+  };
 }
 
-// ── Script Tag Helper ──────────────────────────────────────────────────────
+export interface BreadcrumbSchemaProps {
+  items: { name: string; url: string }[];
+}
 
-/**
- * Wrap a schema object as a JSON-LD script tag string.
- * Use in Next.js <Script> or dangerouslySetInnerHTML.
- */
-export function jsonLdScript(schema: object | null): string {
-    if (!schema) return '';
-    return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+export function generateBreadcrumbSchema(props: BreadcrumbSchemaProps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: props.items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
 }
 
 /**
- * For React components: returns props for a <script> element.
+ * hreflang Link Generator
+ * For Tier A countries with localized regulation content.
+ * Returns array of <link> attributes for Next.js Head.
  */
-export function jsonLdProps(schema: object | null) {
-    if (!schema) return null;
-    return {
-        type: 'application/ld+json',
-        dangerouslySetInnerHTML: { __html: JSON.stringify(schema) },
-    };
+export function generateHreflangLinks(basePath: string, availableCountries: string[]) {
+  const COUNTRY_LANG_MAP: Record<string, string> = {
+    us: 'en-US',
+    ca: 'en-CA',
+    au: 'en-AU',
+    gb: 'en-GB',
+    nz: 'en-NZ',
+    za: 'en-ZA',
+    de: 'de-DE',
+    nl: 'nl-NL',
+    ae: 'en-AE',
+    br: 'pt-BR',
+  };
+
+  return availableCountries
+    .filter(c => COUNTRY_LANG_MAP[c])
+    .map(c => ({
+      rel: 'alternate',
+      hrefLang: COUNTRY_LANG_MAP[c],
+      href: `https://www.haulcommand.com${basePath}/${c}`,
+    }))
+    .concat([{
+      rel: 'alternate',
+      hrefLang: 'x-default',
+      href: `https://www.haulcommand.com${basePath}`,
+    }]);
 }
