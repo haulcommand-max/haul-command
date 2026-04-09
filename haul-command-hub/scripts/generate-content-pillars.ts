@@ -24,7 +24,7 @@ if (!supabaseUrl || !supabaseKey) {
   console.warn("⚠️  Supabase keys not found in .env.local. Dry run mode only.");
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 // High-value countries for initial pillar seeding
 const TARGET_COUNTRIES = ['US', 'CA', 'AU', 'GB', 'ZA', 'DE', 'AE'];
@@ -114,7 +114,7 @@ async function main() {
 
   console.log(`Generated ${pillarsToInsert.length} Thick Pillar Topics.`);
 
-  if (supabaseUrl && supabaseKey) {
+  if (supabaseUrl && supabaseKey && supabase) {
     console.log("💾 Seeding to Supabase (hc_blog_articles) ...");
     
     // Upsert to handle re-runs gracefully

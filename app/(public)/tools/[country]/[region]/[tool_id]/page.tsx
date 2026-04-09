@@ -41,13 +41,13 @@ export async function generateStaticParams() {
   return paths; 
 }
 
-export default function LocalizedToolPage({ params }: { params: { country: string; region: string; tool_id: string } }) {
-  const { country, region, tool_id } = params;
+export default async function LocalizedToolPage({ params }: { params: Promise<{ country: string; region: string; tool_id: string }> }) {
+  const { country, region, tool_id } = await params;
 
   // Format Display Names
-  const displayCountry = country.toUpperCase();
-  const displayRegion = region.toUpperCase();
-  const displayTool = tool_id.replace(/-/g, " ");
+  const displayCountry = (country ?? '').toUpperCase();
+  const displayRegion = (region ?? '').toUpperCase();
+  const displayTool = (tool_id ?? '').replace(/-/g, " ");
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8">

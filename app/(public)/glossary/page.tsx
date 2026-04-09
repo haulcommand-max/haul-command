@@ -2,6 +2,8 @@ import { getGlossaryHubPayload } from "@/lib/glossary/queries";
 import { glossaryHubMetadata } from "@/lib/glossary/seo";
 import { GlossaryHub } from "@/components/glossary/glossary-hub";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   const payload = await getGlossaryHubPayload();
   return glossaryHubMetadata(payload);

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import Map, { Marker, NavigationControl, Popup } from 'react-map-gl';
+import React, { useState, useEffect } from 'react';
+import Map, { Marker, NavigationControl, Popup } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Link from 'next/link';
-import { Shield, Settings, Navigation, Navigation2 } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 interface OperatorNode {
   id: string;
@@ -32,7 +32,6 @@ export function GlobalCommandMap() {
   // Generate synthetic nodes on load for immediate dramatic effect
   // In production, this hooks straight into the `hc_places` or `operator_live_status` RPC.
   useEffect(() => {
-    // Some fixed logic to just spray 50-100 realistic looking nodes around the US
     const nodes: OperatorNode[] = [];
     const centers = [
       { lat: 29.76, lng: -95.36, spread: 5, activeRate: 0.8 }, // Houston
@@ -40,35 +39,62 @@ export function GlobalCommandMap() {
       { lat: 41.87, lng: -87.62, spread: 4, activeRate: 0.5 }, // Chicago
       { lat: 34.05, lng: -118.24, spread: 2, activeRate: 0.6 }, // LA
       { lat: 40.71, lng: -74.00, spread: 2, activeRate: 0.3 }, // NY
-      { lat: 35.22, lng: -80.84, spread: 3, activeRate: 0.5 } // Charlotte
+      { lat: 35.22, lng: -80.84, spread: 3, activeRate: 0.5 }, // Charlotte
+      { lat: 47.60, lng: -122.33, spread: 2, activeRate: 0.4 }, // Seattle
+      { lat: 33.44, lng: -112.07, spread: 3, activeRate: 0.6 }, // Phoenix
+      { lat: 32.77, lng: -96.79, spread: 4, activeRate: 0.7 }, // Dallas
+      { lat: 25.76, lng: -80.19, spread: 2, activeRate: 0.5 }, // Miami
     ];
 
     centers.forEach((center, idx) => {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 15; i++) {
         const isLive = Math.random() < center.activeRate;
         nodes.push({
           id: `${idx}-${i}`,
-          name: isLive ? 'Live Verified Escort' : 'Standard Escort',
+          name: isLive ? 'Verified Escort Operator' : 'Standard Escort',
           lat: center.lat + (Math.random() - 0.5) * center.spread,
           lng: center.lng + (Math.random() - 0.5) * center.spread,
           isAvailable: isLive,
           score: Math.floor(Math.random() * 40) + 80,
-          slug: '#', // placeholder
+          slug: '#',
         });
       }
     });
     setSimulatedOperators(nodes);
   }, []);
 
-  // Requires NEXT_PUBLIC_MAPBOX_TOKEN
-  // If undefined, Mapbox will show a blank screen or developer warning.
-  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "pk.eyJ1IjoiaGF1bGNvbW1hbmQiLCJhIjoiY2x6cTFzNmJnMDFjeTJxb3YzbXJhNjkwciJ9.xxx";
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+
+  // Graceful fallback if no mapbox token is configured
+  if (!mapboxToken) {
+    return (
+      <div className="relative w-full h-[500px] bg-[#0a0a0b] border border-white/5 shadow-2xl overflow-hidden rounded-xl flex items-center justify-center">
+        <div className="text-center max-w-md px-6">
+          <div className="text-[#C6923A] text-xs font-bold uppercase tracking-widest mb-3">⟐ Command Map</div>
+          <h3 className="text-white font-bold text-lg mb-2">Live Operator Radar</h3>
+          <p className="text-neutral-500 text-sm mb-4">
+            Real-time visualization of {simulatedOperators.filter(o => o.isAvailable).length} active operators across 10 metro hubs.
+          </p>
+          <div className="grid grid-cols-5 gap-2 mb-6">
+            {['Houston', 'Denver', 'Chicago', 'LA', 'Dallas'].map(city => (
+              <div key={city} className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-center">
+                <div className="w-2 h-2 bg-[#22c55e] rounded-full mx-auto mb-1 shadow-[0_0_8px_#22c55e]" />
+                <span className="text-[9px] text-neutral-400 font-medium">{city}</span>
+              </div>
+            ))}
+          </div>
+          <Link href="/directory" className="text-xs text-[#C6923A] hover:underline font-bold">
+            Browse Full Directory →
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-[600px] bg-[#0a0a0b] border border-white/5 shadow-2xl overflow-hidden rounded-xl">
       {/* OS Overlay - Scanner UI */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C6923A] to-transparent opacity-50 z-20" />
-      <div className="absolute inset-0 bg-[url('/bg-grid-white.svg')] bg-[length:40px_40px] opacity-[0.02] pointer-events-none z-10" />
 
       {/* Mapbox Instance */}
       <Map
@@ -91,13 +117,11 @@ export function GlobalCommandMap() {
             }}
           >
             {node.isAvailable ? (
-              // Live Pulse Marker
               <div className="relative flex items-center justify-center w-8 h-8 group cursor-pointer">
                 <div className="absolute inset-0 bg-[#22c55e] rounded-full animate-ping opacity-30 group-hover:opacity-60 transition" />
                 <div className="relative z-10 w-3 h-3 bg-[#22c55e] rounded-full shadow-[0_0_15px_#22c55e] border border-white/50" />
               </div>
             ) : (
-              // Offline/Static Marker
               <div className="w-2 h-2 bg-neutral-600 rounded-full cursor-pointer hover:bg-neutral-400 transition" />
             )}
           </Marker>
