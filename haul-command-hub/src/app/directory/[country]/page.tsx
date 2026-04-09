@@ -112,7 +112,7 @@ export default async function DirectoryCountryPage({
     } else {
       let listQuery = sb
         .from("hc_public_operators")
-        .select("id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at, surface_category_key:entity_type", {
+        .select("id, slug, name, entity_type, locality:city, admin1_code:state_code, updated_at, surface_category_key:entity_type, claim_status", {
           count: "exact",
         });
       if (cc !== 'all') listQuery = listQuery.eq("country_code", country.toUpperCase());
@@ -468,46 +468,72 @@ export default async function DirectoryCountryPage({
                         {total > 0 ? (
                             <>
                                 <div className="space-y-3">
-                                    {(rows ?? []).map((p) => (
-                                        <Link
+                                    {(rows ?? []).map((p) => {
+                                        const trustScore = p.claim_status === 'verified' ? 98 : p.claim_status === 'claimed' ? 85 : 45;
+                                        const trustColor = trustScore > 90 ? 'text-green-400 border-green-400/30 bg-green-400/10' : trustScore > 80 ? 'text-accent border-accent/30 bg-accent/10' : 'text-gray-400 border-gray-600 bg-white/5';
+                                        return (
+                                        <div
                                             key={p.id}
-                                            href={`/place/${p.slug}`}
-                                            className="block bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 hover:bg-accent/[0.02] transition-all group"
+                                            className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 hover:border-accent/20 transition-all group"
                                         >
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className="min-w-0 flex-grow">
-                                                    <div className="flex items-center gap-2 flex-wrap">
-                                                      <h3 className="text-white font-semibold group-hover:text-accent transition-colors truncate">
-                                                          {p.name}
-                                                      </h3>
-                                                      {badgeMap.get(p.id) && (
-                                                        <TrainingBadgeChip
-                                                          badgeSlug={badgeMap.get(p.id)!}
-                                                          linkable={false}
-                                                        />
-                                                      )}
-                                                      {(p.training_badge) && !badgeMap.get(p.id) && (
-                                                        <TrainingBadgeChip
-                                                          badgeSlug={p.training_badge}
-                                                          linkable={false}
-                                                        />
-                                                      )}
-                                                    </div>
-                                                    <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                                                        <span>{categoryIcon(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
-                                                        <span>{categoryLabel(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
-                                                        {(p.locality ?? p.city) && (
-                                                            <>
-                                                                <span>·</span>
-                                                                <span>{[p.locality ?? p.city, p.admin1_code ?? p.state_code].filter(Boolean).join(", ")}</span>
-                                                            </>
-                                                        )}
-                                                    </div>
+                                            <Link href={`/place/${p.slug}`} className="min-w-0 flex-grow block">
+                                                <div className="flex items-center gap-3 flex-wrap mb-1">
+                                                  <h3 className="text-white font-bold text-lg group-hover:text-accent transition-colors truncate">
+                                                      {p.name}
+                                                  </h3>
+                                                  {p.claim_status === 'verified' && (
+                                                    <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-green-400 bg-green-400/10 border border-green-400/20 px-2 py-0.5 rounded-full" title="Verified Operator">
+                                                        <span>🛡️</span> Verified
+                                                    </span>
+                                                  )}
+                                                  {p.claim_status === 'claimed' && (
+                                                    <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-blue-400 bg-blue-400/10 border border-blue-400/20 px-2 py-0.5 rounded-full" title="Claimed Operator">
+                                                        <span>✅</span> Claimed
+                                                    </span>
+                                                  )}
+                                                  <div className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border flex items-center gap-1 ${trustColor}`}>
+                                                      <span>Trust Score:</span> <span>{trustScore}</span>
+                                                  </div>
+                                                  {badgeMap.get(p.id) && (
+                                                    <TrainingBadgeChip
+                                                      badgeSlug={badgeMap.get(p.id)!}
+                                                      linkable={false}
+                                                    />
+                                                  )}
+                                                  {(p.training_badge) && !badgeMap.get(p.id) && (
+                                                    <TrainingBadgeChip
+                                                      badgeSlug={p.training_badge}
+                                                      linkable={false}
+                                                    />
+                                                  )}
                                                 </div>
-                                                <span className="text-gray-600 group-hover:text-accent transition-colors text-xl flex-shrink-0">→</span>
+                                                <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                                                    <span>{categoryIcon(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
+                                                    <span>{categoryLabel(normalizeCategory(p.surface_category_key ?? p.entity_type))}</span>
+                                                    {(p.locality ?? p.city) && (
+                                                        <>
+                                                            <span>·</span>
+                                                            <span>{[p.locality ?? p.city, p.admin1_code ?? p.state_code].filter(Boolean).join(", ")}</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </Link>
+                                            <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0 flex-shrink-0">
+                                                <Link
+                                                    href={`/loads?request_provider=${p.id}&slug=${p.slug}`}
+                                                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-semibold text-white hover:bg-white/10 hover:border-white/30 transition-all text-center flex items-center justify-center gap-2"
+                                                >
+                                                    <span>📤</span> Request 
+                                                </Link>
+                                                <Link
+                                                    href={`/book/${p.slug}`}
+                                                    className="px-4 py-2 bg-accent text-black rounded-lg text-sm font-bold hover:bg-yellow-400 transition-colors text-center flex items-center justify-center gap-2"
+                                                >
+                                                    <span>⚡</span> Book Now
+                                                </Link>
                                             </div>
-                                        </Link>
-                                    ))}
+                                        </div>
+                                    )})}
                                 </div>
 
                                 {/* Pagination */}

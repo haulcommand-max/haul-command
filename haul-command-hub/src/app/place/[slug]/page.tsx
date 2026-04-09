@@ -208,6 +208,10 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
   /* ── Build HC Profile object ── */
   const badges: HCBadge[] = [];
   if (isClaimed) badges.push({ label: "Claimed", tone: "success", icon: "✅" });
+  
+  const trustScore = isClaimed ? (p.claim_status === 'verified' ? 98 : 85) : 45;
+  const trustColor = trustScore > 90 ? "success" : trustScore > 80 ? "premium" : "neutral";
+  badges.push({ label: `Trust Score: ${trustScore}`, tone: trustColor as any, icon: "🛡️" });
   // TODO: Add fast-responder / availability badges when data available
 
   const profile: HCProfile = {
@@ -228,8 +232,12 @@ export default async function PlacePage({ params }: { params: Promise<{ slug: st
     badges,
     freshness,
     claimStatus: isClaimed ? "claimed" : "unclaimed",
-    primaryActions: [],
-    secondaryActions: [],
+    primaryActions: [
+      { id: "request", label: "Request", href: `/loads?request_provider=${p.id}&slug=${p.slug}`, icon: "📤", type: "action", priority: "primary" }
+    ],
+    secondaryActions: [
+      { id: "book", label: "Book Now", href: `/book/${p.slug}`, icon: "⚡", type: "action", priority: "secondary" }
+    ],
   };
 
   /* ── Build nearby entities (real operators from hc_public_operators) ── */

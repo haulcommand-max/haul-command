@@ -34,7 +34,7 @@ export default async function DirectorySearchPage({
   // Real operators from hc_public_operators
   const { data: results } = await sb
     .from('hc_public_operators')
-    .select('id, name, city, state_code, country_code, entity_type, slug')
+    .select('id, name, city, state_code, country_code, entity_type, slug, claim_status')
     .or(`name.ilike.%${query}%,city.ilike.%${query}%,state_code.ilike.%${query}%,entity_type.ilike.%${query}%`)
     .limit(50);
 
@@ -59,20 +59,37 @@ export default async function DirectorySearchPage({
           </div>
         ) : (
           <ul className="space-y-3">
-            {results.map((r: any) => (
+            {results.map((r: any) => {
+              const trustScore = r.claim_status === 'verified' ? 98 : r.claim_status === 'claimed' ? 85 : 45;
+              const trustColor = trustScore > 90 ? 'text-green-400 border-green-400/30 bg-green-400/10' : trustScore > 80 ? 'text-accent border-accent/30 bg-accent/10' : 'text-gray-400 border-gray-600 bg-white/5';
+              return (
               <li key={r.id}>
-                <Link
-                  href={r.slug ? `/directory/${r.country_code?.toLowerCase() ?? 'us'}/${r.slug}` : `/directory/${r.country_code?.toLowerCase() ?? 'us'}`}
-                  className="block bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:border-amber-500/30 hover:bg-amber-500/[0.03] transition-all group"
+                <div
+                  className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:border-amber-500/30 transition-all group"
                 >
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl flex-shrink-0">
+                  <Link href={r.slug ? `/directory/${r.country_code?.toLowerCase() ?? 'us'}/${r.slug}` : `/directory/${r.country_code?.toLowerCase() ?? 'us'}`} className="flex items-start gap-3 min-w-0 flex-grow">
+                    <span className="text-2xl flex-shrink-0 mt-1">
                       {categoryIcon(r.entity_type ?? '')}
                     </span>
                     <div className="min-w-0">
-                      <p className="font-semibold text-white group-hover:text-amber-400 transition-colors truncate">
-                        {r.name}
-                      </p>
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <h3 className="font-bold text-lg text-white group-hover:text-amber-400 transition-colors truncate">
+                          {r.name}
+                        </h3>
+                        {r.claim_status === 'verified' && (
+                          <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-green-400 bg-green-400/10 border border-green-400/20 px-2 py-0.5 rounded-full" title="Verified Operator">
+                              <span>🛡️</span> Verified
+                          </span>
+                        )}
+                        {r.claim_status === 'claimed' && (
+                          <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-blue-400 bg-blue-400/10 border border-blue-400/20 px-2 py-0.5 rounded-full" title="Claimed Operator">
+                              <span>✅</span> Claimed
+                          </span>
+                        )}
+                        <div className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border flex items-center gap-1 ${trustColor}`}>
+                            <span>Trust Score:</span> <span>{trustScore}</span>
+                        </div>
+                      </div>
                       <p className="text-sm text-white/50 mt-0.5">
                         {r.city && `${r.city}, `}
                         {r.state_code ?? ''}
@@ -80,10 +97,24 @@ export default async function DirectorySearchPage({
                         {r.entity_type ? ` · ${categoryLabel(r.entity_type)}` : ''}
                       </p>
                     </div>
+                  </Link>
+                  <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0 flex-shrink-0">
+                      <Link
+                          href={`/loads?request_provider=${r.id}&slug=${r.slug}`}
+                          className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-semibold text-white hover:bg-white/10 hover:border-white/30 transition-all text-center flex items-center justify-center gap-2"
+                      >
+                          <span>📤</span> Request 
+                      </Link>
+                      <Link
+                          href={`/book/${r.slug}`}
+                          className="px-4 py-2 bg-accent text-black rounded-lg text-sm font-bold hover:bg-yellow-400 transition-colors text-center flex items-center justify-center gap-2"
+                      >
+                          <span>⚡</span> Book Now
+                      </Link>
                   </div>
-                </Link>
+                </div>
               </li>
-            ))}
+            )})}
           </ul>
         )}
 

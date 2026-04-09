@@ -3,6 +3,8 @@
 import { useRole } from '@/lib/role-context';
 import type { RoleConfig, RoleAction, RoleModule } from '@/lib/role-config';
 import RoleSelector from './RoleSelector';
+import { useEffect, useState } from 'react';
+import { getLiveMetrics } from '@/app/actions/live-metrics';
 
 /**
  * RoleCommandCenter — The role-aware home layout.
@@ -170,6 +172,28 @@ function PrimaryActionGrid({ actions }: { actions: RoleAction[] }) {
 
 
 function LiveModuleStrip({ modules }: { modules: RoleModule[] }) {
+  const [data, setData] = useState<Record<string, string | number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    if (!modules.length) return;
+
+    setLoading(true);
+    getLiveMetrics(modules.map(m => m.id))
+      .then(res => {
+        if (mounted) {
+          setData(res);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => { mounted = false; };
+  }, [modules]);
+
   if (!modules.length) return null;
 
   return (
@@ -192,13 +216,12 @@ function LiveModuleStrip({ modules }: { modules: RoleModule[] }) {
                 {mod.label}
               </span>
             </div>
-            {/* Placeholder metric — will be replaced with real data */}
-            <div className="text-accent text-lg sm:text-xl font-black tabular-nums">
-              —
+            <div className={`text-accent text-lg sm:text-xl font-black tabular-nums transition-opacity duration-300 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+              {data[mod.id] ?? '—'}
             </div>
             <div className="text-[9px] text-[#6b7280] mt-0.5 flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-green-500/50" />
-              Loading…
+              <span className={`w-1 h-1 rounded-full ${loading ? 'bg-orange-500/50 animate-pulse' : 'bg-green-500/50'}`} />
+              {loading ? 'Loading…' : 'Live Snapshot'}
             </div>
           </div>
         ))}

@@ -52,6 +52,18 @@ export function HCProfileHeader({ profile }: { profile: HCProfile }) {
             ))}
           </div>
         </div>
+        <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0 mt-4 md:mt-0">
+          {(profile.primaryActions || []).map(a => (
+            <a key={a.id} href={a.href} className="px-5 py-2.5 bg-accent text-black font-bold text-sm rounded-xl hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2">
+              {a.icon && <span>{a.icon}</span>} {a.label}
+            </a>
+          ))}
+          {(profile.secondaryActions || []).map(a => (
+            <a key={a.id} href={a.href} className="px-5 py-2.5 bg-white/5 border border-white/10 font-semibold text-white text-sm rounded-xl hover:bg-white/10 hover:border-white/30 transition-all flex items-center justify-center gap-2">
+              {a.icon && <span>{a.icon}</span>} {a.label}
+            </a>
+          ))}
+        </div>
       </div>
       {profile.serviceAreaLabels.length > 0 && (
         <p className="text-xs text-gray-500">📍 {profile.serviceAreaLabels.join(' · ')}</p>
