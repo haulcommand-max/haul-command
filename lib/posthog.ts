@@ -114,6 +114,18 @@ export const ReactivationEvents = {
         posthog.capture('reactivation_completed', props),
 };
 
+// ── QuickPay Events ──
+export const QuickPayEvents = {
+    ctaViewed: (props: { job_id: string; amount: number }) =>
+        posthog.capture('quickpay_cta_view', props),
+
+    ctaClicked: (props: { job_id: string; amount: number; source?: string }) =>
+        posthog.capture('quickpay_cta_click', props),
+
+    advanceSuccess: (props: { job_id: string; amount: number; advance_id: string }) =>
+        posthog.capture('quickpay_advance_success', props),
+};
+
 // ── User Identification ──
 export function identifyUser(userId: string, traits: Record<string, unknown> = {}) {
     posthog.identify(userId, traits);

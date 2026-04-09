@@ -1,0 +1,121 @@
+country_code,country_name,tier,crawl_priority,search_status,coverage_status
+US,United States,Gold,1,not_started,seeded_from_user_tier_map
+CA,Canada,Gold,1,not_started,seeded_from_user_tier_map
+AU,Australia,Gold,1,not_started,seeded_from_user_tier_map
+GB,United Kingdom,Gold,1,not_started,seeded_from_user_tier_map
+NZ,New Zealand,Gold,1,not_started,seeded_from_user_tier_map
+ZA,South Africa,Gold,1,not_started,seeded_from_user_tier_map
+DE,Germany,Gold,1,not_started,seeded_from_user_tier_map
+NL,Netherlands,Gold,1,not_started,seeded_from_user_tier_map
+AE,United Arab Emirates,Gold,1,not_started,seeded_from_user_tier_map
+BR,Brazil,Gold,1,not_started,seeded_from_user_tier_map
+IE,Ireland,Blue,2,not_started,seeded_from_user_tier_map
+SE,Sweden,Blue,2,not_started,seeded_from_user_tier_map
+NO,Norway,Blue,2,not_started,seeded_from_user_tier_map
+DK,Denmark,Blue,2,not_started,seeded_from_user_tier_map
+FI,Finland,Blue,2,not_started,seeded_from_user_tier_map
+BE,Belgium,Blue,2,not_started,seeded_from_user_tier_map
+AT,Austria,Blue,2,not_started,seeded_from_user_tier_map
+CH,Switzerland,Blue,2,not_started,seeded_from_user_tier_map
+ES,Spain,Blue,2,not_started,seeded_from_user_tier_map
+FR,France,Blue,2,not_started,seeded_from_user_tier_map
+IT,Italy,Blue,2,not_started,seeded_from_user_tier_map
+PT,Portugal,Blue,2,not_started,seeded_from_user_tier_map
+SA,Saudi Arabia,Blue,2,not_started,seeded_from_user_tier_map
+QA,Qatar,Blue,2,not_started,seeded_from_user_tier_map
+MX,Mexico,Blue,2,not_started,seeded_from_user_tier_map
+IN,India,Blue,2,not_started,seeded_from_user_tier_map
+ID,Indonesia,Blue,2,not_started,seeded_from_user_tier_map
+TH,Thailand,Blue,2,not_started,seeded_from_user_tier_map
+PL,Poland,Silver,3,not_started,seeded_from_user_tier_map
+CZ,Czech Republic,Silver,3,not_started,seeded_from_user_tier_map
+SK,Slovakia,Silver,3,not_started,seeded_from_user_tier_map
+HU,Hungary,Silver,3,not_started,seeded_from_user_tier_map
+SI,Slovenia,Silver,3,not_started,seeded_from_user_tier_map
+EE,Estonia,Silver,3,not_started,seeded_from_user_tier_map
+LV,Latvia,Silver,3,not_started,seeded_from_user_tier_map
+LT,Lithuania,Silver,3,not_started,seeded_from_user_tier_map
+HR,Croatia,Silver,3,not_started,seeded_from_user_tier_map
+RO,Romania,Silver,3,not_started,seeded_from_user_tier_map
+BG,Bulgaria,Silver,3,not_started,seeded_from_user_tier_map
+GR,Greece,Silver,3,not_started,seeded_from_user_tier_map
+TR,Turkey,Silver,3,not_started,seeded_from_user_tier_map
+KW,Kuwait,Silver,3,not_started,seeded_from_user_tier_map
+OM,Oman,Silver,3,not_started,seeded_from_user_tier_map
+BH,Bahrain,Silver,3,not_started,seeded_from_user_tier_map
+SG,Singapore,Silver,3,not_started,seeded_from_user_tier_map
+MY,Malaysia,Silver,3,not_started,seeded_from_user_tier_map
+JP,Japan,Silver,3,not_started,seeded_from_user_tier_map
+KR,South Korea,Silver,3,not_started,seeded_from_user_tier_map
+CL,Chile,Silver,3,not_started,seeded_from_user_tier_map
+AR,Argentina,Silver,3,not_started,seeded_from_user_tier_map
+CO,Colombia,Silver,3,not_started,seeded_from_user_tier_map
+PE,Peru,Silver,3,not_started,seeded_from_user_tier_map
+VN,Vietnam,Silver,3,not_started,seeded_from_user_tier_map
+PH,Philippines,Silver,3,not_started,seeded_from_user_tier_map
+UY,Uruguay,Slate,4,not_started,seeded_from_user_tier_map
+PA,Panama,Slate,4,not_started,seeded_from_user_tier_map
+CR,Costa Rica,Slate,4,not_started,seeded_from_user_tier_map
+IL,Israel,Slate,4,not_started,seeded_from_user_tier_map
+NG,Nigeria,Slate,4,not_started,seeded_from_user_tier_map
+EG,Egypt,Slate,4,not_started,seeded_from_user_tier_map
+KE,Kenya,Slate,4,not_started,seeded_from_user_tier_map
+MA,Morocco,Slate,4,not_started,seeded_from_user_tier_map
+RS,Serbia,Slate,4,not_started,seeded_from_user_tier_map
+UA,Ukraine,Slate,4,not_started,seeded_from_user_tier_map
+KZ,Kazakhstan,Slate,4,not_started,seeded_from_user_tier_map
+TW,Taiwan,Slate,4,not_started,seeded_from_user_tier_map
+PK,Pakistan,Slate,4,not_started,seeded_from_user_tier_map
+BD,Bangladesh,Slate,4,not_started,seeded_from_user_tier_map
+MN,Mongolia,Slate,4,not_started,seeded_from_user_tier_map
+TT,Trinidad and Tobago,Slate,4,not_started,seeded_from_user_tier_map
+JO,Jordan,Slate,4,not_started,seeded_from_user_tier_map
+GH,Ghana,Slate,4,not_started,seeded_from_user_tier_map
+TZ,Tanzania,Slate,4,not_started,seeded_from_user_tier_map
+GE,Georgia,Slate,4,not_started,seeded_from_user_tier_map
+AZ,Azerbaijan,Slate,4,not_started,seeded_from_user_tier_map
+CY,Cyprus,Slate,4,not_started,seeded_from_user_tier_map
+IS,Iceland,Slate,4,not_started,seeded_from_user_tier_map
+LU,Luxembourg,Slate,4,not_started,seeded_from_user_tier_map
+EC,Ecuador,Slate,4,not_started,seeded_from_user_tier_map
+BO,Bolivia,Copper,5,not_started,seeded_from_user_tier_map
+PY,Paraguay,Copper,5,not_started,seeded_from_user_tier_map
+GT,Guatemala,Copper,5,not_started,seeded_from_user_tier_map
+DO,Dominican Republic,Copper,5,not_started,seeded_from_user_tier_map
+HN,Honduras,Copper,5,not_started,seeded_from_user_tier_map
+SV,El Salvador,Copper,5,not_started,seeded_from_user_tier_map
+NI,Nicaragua,Copper,5,not_started,seeded_from_user_tier_map
+JM,Jamaica,Copper,5,not_started,seeded_from_user_tier_map
+GY,Guyana,Copper,5,not_started,seeded_from_user_tier_map
+SR,Suriname,Copper,5,not_started,seeded_from_user_tier_map
+BA,Bosnia and Herzegovina,Copper,5,not_started,seeded_from_user_tier_map
+ME,Montenegro,Copper,5,not_started,seeded_from_user_tier_map
+MK,North Macedonia,Copper,5,not_started,seeded_from_user_tier_map
+AL,Albania,Copper,5,not_started,seeded_from_user_tier_map
+MD,Moldova,Copper,5,not_started,seeded_from_user_tier_map
+IQ,Iraq,Copper,5,not_started,seeded_from_user_tier_map
+NA,Namibia,Copper,5,not_started,seeded_from_user_tier_map
+AO,Angola,Copper,5,not_started,seeded_from_user_tier_map
+MZ,Mozambique,Copper,5,not_started,seeded_from_user_tier_map
+ET,Ethiopia,Copper,5,not_started,seeded_from_user_tier_map
+CI,Cote d'Ivoire,Copper,5,not_started,seeded_from_user_tier_map
+SN,Senegal,Copper,5,not_started,seeded_from_user_tier_map
+BW,Botswana,Copper,5,not_started,seeded_from_user_tier_map
+ZM,Zambia,Copper,5,not_started,seeded_from_user_tier_map
+UG,Uganda,Copper,5,not_started,seeded_from_user_tier_map
+CM,Cameroon,Copper,5,not_started,seeded_from_user_tier_map
+KH,Cambodia,Copper,5,not_started,seeded_from_user_tier_map
+LK,Sri Lanka,Copper,5,not_started,seeded_from_user_tier_map
+UZ,Uzbekistan,Copper,5,not_started,seeded_from_user_tier_map
+LA,Laos,Copper,5,not_started,seeded_from_user_tier_map
+NP,Nepal,Copper,5,not_started,seeded_from_user_tier_map
+DZ,Algeria,Copper,5,not_started,seeded_from_user_tier_map
+TN,Tunisia,Copper,5,not_started,seeded_from_user_tier_map
+MT,Malta,Copper,5,not_started,seeded_from_user_tier_map
+BN,Brunei,Copper,5,not_started,seeded_from_user_tier_map
+RW,Rwanda,Copper,5,not_started,seeded_from_user_tier_map
+MG,Madagascar,Copper,5,not_started,seeded_from_user_tier_map
+PG,Papua New Guinea,Copper,5,not_started,seeded_from_user_tier_map
+TM,Turkmenistan,Copper,5,not_started,seeded_from_user_tier_map
+KG,Kyrgyzstan,Copper,5,not_started,seeded_from_user_tier_map
+MW,Malawi,Copper,5,not_started,seeded_from_user_tier_map

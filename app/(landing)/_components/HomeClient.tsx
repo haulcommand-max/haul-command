@@ -58,7 +58,7 @@ export default function HomeClient({
             <style>{`
                 .landing-desktop-only { display: none !important; }
                 .landing-mobile-only { display: flex !important; }
-                @media (min-width: 768px) {
+                @media (min-width: 1024px) {
                     .landing-desktop-only { display: flex !important; }
                     .landing-mobile-only { display: none !important; }
                 }

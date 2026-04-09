@@ -121,7 +121,7 @@ export default function SmartAppBanner({
     return (
         <div
             className={`
-                fixed top-0 left-0 right-0 z-[9999]
+                relative w-full z-[9999]
                 flex items-center gap-3 px-4 py-2.5
                 ${isDark
                     ? 'bg-slate-900/95 border-b border-slate-700/50 text-white'

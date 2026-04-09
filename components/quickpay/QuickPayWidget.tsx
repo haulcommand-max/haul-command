@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Zap, DollarSign, Clock, AlertCircle, CheckCircle2, X, ChevronRight } from "lucide-react";
+import { QuickPayEvents } from "@/lib/posthog";
 
 export type QuickPayEligibility =
   | "eligible"
@@ -56,6 +57,12 @@ export function QuickPayWidget({
   // Do not render if invoice is already paid
   if (isPaid || grossAmount <= 0) return null;
 
+  useEffect(() => {
+    if (initialStatus === "eligible") {
+      QuickPayEvents.ctaViewed({ job_id: jobId, amount: grossAmount });
+    }
+  }, [jobId, grossAmount, initialStatus]);
+
   const handleSubmit = async () => {
     setLoading(true);
     setErrorMsg(null);
@@ -82,6 +89,7 @@ export function QuickPayWidget({
       setRequestId(data.advance_id ?? data.id ?? jobId);
       setStatus("funded");
       setShowConfirm(false);
+      QuickPayEvents.advanceSuccess({ job_id: jobId, amount: grossAmount, advance_id: data.advance_id ?? data.id ?? jobId });
     } catch {
       setErrorMsg("Network error. Please try again.");
       setStatus("error");
@@ -199,7 +207,10 @@ export function QuickPayWidget({
   if (compact) {
     return (
       <button
-        onClick={() => setShowConfirm(true)}
+        onClick={() => {
+          QuickPayEvents.ctaClicked({ job_id: jobId, amount: grossAmount, source: "compact" });
+          setShowConfirm(true);
+        }}
         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/20 transition"
         data-event="quickpay_cta_click"
       >
@@ -237,7 +248,10 @@ export function QuickPayWidget({
       </div>
 
       <button
-        onClick={() => setShowConfirm(true)}
+        onClick={() => {
+          QuickPayEvents.ctaClicked({ job_id: jobId, amount: grossAmount, source: "full" });
+          setShowConfirm(true);
+        }}
         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-md bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-bold transition"
         data-event="quickpay_cta_click"
       >

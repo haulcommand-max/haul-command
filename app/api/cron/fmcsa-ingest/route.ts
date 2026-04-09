@@ -48,6 +48,7 @@ const COL = {
 
 export async function GET(req: NextRequest) {
   const start = Date.now();
+  const started_at = new Date(start).toISOString();
   const run_id = crypto.randomUUID();
 
   const guard = await cronGuard();
@@ -199,6 +200,8 @@ export async function GET(req: NextRequest) {
       job: JOB_ID,
       run_id,
       event: "fmcsa_ingest.completed",
+      started_at,
+      ended_at: new Date().toISOString(),
       duration_ms,
       records_fetched,
       records_changed,
@@ -211,6 +214,8 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     run_id,
+    started_at,
+    ended_at: new Date().toISOString(),
     duration_ms,
     records_fetched,
     records_changed,

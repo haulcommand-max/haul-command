@@ -39,7 +39,7 @@ export default function NotFound() {
                     404
                 </h1>
                 <p className="text-lg sm:text-xl font-semibold text-white mb-2">
-                    This corridor doesn&apos;t exist yet
+                    This page could not be found
                 </p>
                 <p className="text-sm text-[#8fa3b8] mb-10 max-w-md mx-auto">
                     The page you&apos;re looking for may have moved or hasn&apos;t been built yet.

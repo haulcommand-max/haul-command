@@ -19,4 +19,4 @@ async function apply(file) {
   }
 }
 
-apply('20260404_028_schema_fixes_and_seed.sql').catch(() => process.exit(1));
+apply('20260408_013_glossary_haul_command.sql').catch(() => process.exit(1));

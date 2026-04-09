@@ -236,6 +236,73 @@ function portPageSchema(data: PortPageData) {
     return { '@context': 'https://schema.org', '@graph': graph };
 }
 
+// Corridor page: Dataset + FAQPage
+interface CorridorData {
+    url: string;
+    name: string;
+    description: string;
+    faqs?: Array<{ question: string; answer: string }>;
+    breadcrumbs?: Array<{ name: string; url: string }>;
+}
+
+function corridorSchema(data: CorridorData) {
+    const graph: object[] = [
+        buildDatasetJsonLd({
+            url: data.url.startsWith('http') ? data.url : `${SITE_URL}${data.url}`,
+            name: `${data.name} Corridor Intelligence`,
+            description: data.description,
+            temporalCoverage: '2025/..',
+        })['@type'] ? buildDatasetJsonLd({
+            url: data.url.startsWith('http') ? data.url : `${SITE_URL}${data.url}`,
+            name: `${data.name} Corridor Intelligence`,
+            description: data.description,
+            temporalCoverage: '2025/..',
+        }) : {}
+    ];
+
+    if (data.faqs?.length) {
+        const faq = faqBlock(data.faqs);
+        if (faq) graph.push(faq);
+    }
+    if (data.breadcrumbs?.length) {
+        graph.push(breadcrumbList(data.breadcrumbs));
+    }
+    return { '@context': 'https://schema.org', '@graph': graph };
+}
+
+// Pricing page: OfferCatalog
+interface PricingData {
+    name: string;
+    description: string;
+    offers: Array<{ name: string; price: number; currency: string; description?: string; }>;
+    breadcrumbs?: Array<{ name: string; url: string }>;
+}
+
+function pricingSchema(data: PricingData) {
+    const graph: object[] = [
+        {
+            '@type': 'OfferCatalog',
+            name: data.name,
+            description: data.description,
+            itemListElement: data.offers.map((offer, i) => ({
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Service',
+                    name: offer.name,
+                    ...(offer.description ? { description: offer.description } : {}),
+                },
+                price: offer.price,
+                priceCurrency: offer.currency,
+                position: i + 1,
+            }))
+        }
+    ];
+    if (data.breadcrumbs?.length) {
+        graph.push(breadcrumbList(data.breadcrumbs));
+    }
+    return { '@context': 'https://schema.org', '@graph': graph };
+}
+
 // ── Master dispatcher ─────────────────────────────────────────────────────────
 
 type EntityDataMap = {
@@ -246,7 +313,8 @@ type EntityDataMap = {
     // Future page types can be added without touching existing code
     directory_city: Record<string, unknown>;
     escort_requirements: Record<string, unknown>;
-    corridor: Record<string, unknown>;
+    corridor: CorridorData;
+    pricing: PricingData;
     answer: Record<string, unknown>;
     rules: Record<string, unknown>;
 };
@@ -264,10 +332,13 @@ export function buildJsonLdPayload<T extends PageType>(
             return leaderboardSchema(entityData as LeaderboardData);
         case 'port_page':
             return portPageSchema(entityData as PortPageData);
+        case 'corridor':
+            return corridorSchema(entityData as CorridorData);
+        case 'pricing':
+            return pricingSchema(entityData as PricingData);
         // These page types already have inline schemas — return null to avoid duplication
         case 'directory_city':
         case 'escort_requirements':
-        case 'corridor':
         case 'answer':
         case 'rules':
             return null;
@@ -288,6 +359,21 @@ export function jsonLdScriptProps(schema: object | null) {
         type: 'application/ld+json' as const,
         dangerouslySetInnerHTML: { __html: JSON.stringify(schema) },
     };
+}
+
+/**
+ * Universal React component to render JSON-LD schema array or object.
+ */
+export function RenderJsonLd({ schema }: { schema: object | object[] | null | undefined }) {
+    if (!schema) return null;
+    
+    // We import React dynamically for CSR or use standard element for SSR compatibility
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+    );
 }
 
 // Alias for user-preferred naming
@@ -556,3 +642,70 @@ export function buildPressHubJsonLd(params: {
     return { '@context': 'https://schema.org', '@graph': graph };
 }
 
+/**
+ * Build Article JSON-LD for blog posts.
+ */
+export function buildArticleJsonLd(params: {
+    url: string;
+    headline: string;
+    description?: string;
+    imageUrl?: string;
+    datePublished: string;
+    dateModified?: string;
+    authorName?: string;
+}) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: params.headline,
+        ...(params.description ? { description: params.description } : {}),
+        ...(params.imageUrl ? { image: params.imageUrl } : {}),
+        datePublished: params.datePublished,
+        ...(params.dateModified ? { dateModified: params.dateModified } : {}),
+        author: {
+            '@type': 'Organization',
+            name: params.authorName || ORG_NAME,
+        },
+        publisher: orgReference(),
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': params.url,
+        },
+    };
+}
+
+/**
+ * Build standalone Service schema.
+ */
+export function buildServiceJsonLd(params: {
+    url: string;
+    name: string;
+    description?: string;
+    serviceType: string;
+    areaServed?: string[];
+    providerName?: string;
+    providerUrl?: string;
+}) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        '@id': params.url,
+        url: params.url,
+        name: params.name,
+        ...(params.description ? { description: params.description } : {}),
+        serviceType: params.serviceType,
+        provider: {
+            '@type': 'Organization',
+            name: params.providerName || ORG_NAME,
+            url: params.providerUrl || SITE_URL,
+        },
+        ...(params.areaServed?.length
+            ? {
+                areaServed: params.areaServed.map((name) => ({
+                    '@type': 'AdministrativeArea',
+                    name,
+                })),
+            }
+            : {}),
+    };
+}

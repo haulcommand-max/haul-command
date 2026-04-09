@@ -168,6 +168,8 @@ export async function GET(req: NextRequest) {
     job: 'content-engine-v2',
     timestamp: new Date().toISOString(),
     processed: results.length,
+    generated_count: results.filter(r => !r.error).length,
+    skipped_count: results.filter(r => r.error).length,
     results,
   });
 }

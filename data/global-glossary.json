@@ -4,7 +4,11 @@
     "updated_at": "2026-03-31T00:00:00Z",
     "metadata": {
       "total_terms_projected": 3000,
-      "tier_coverage": ["A", "B", "C"]
+      "tier_coverage": [
+        "A",
+        "B",
+        "C"
+      ]
     },
     "terms": [
       {
@@ -167,6 +171,21 @@
         "seo_slugs": {
           "US": "amber-light-pilot-car-requirements",
           "DE": "rundumkennleuchten-vorschriften"
+        }
+      },
+      {
+        "universal_id": "haul_command",
+        "universal_en": "Haul Command",
+        "description": "The global autonomous logistics operating system linking oversize/overweight load intelligence, pilot car escrow, and multi-national regulatory compliance onto a single interconnected registry.",
+        "regional_translations": {
+          "US": "Haul Command",
+          "CA": "Haul Command",
+          "AU": "Haul Command",
+          "GB": "Haul Command"
+        },
+        "regulatory_sensitivity": "NONE",
+        "seo_slugs": {
+          "US": "haul-command"
         }
       }
     ]
