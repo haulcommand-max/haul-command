@@ -12,7 +12,7 @@ import { ProofStrip } from '@/components/ui/ProofStrip';
 // Replaces "post in a Facebook group and hope someone sees it."
 // ══════════════════════════════════════════════════════════════
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 10;
 
 export const metadata: Metadata = {
   title: 'Pilot Cars Available Now — Live Escort Availability | Haul Command',
@@ -285,12 +285,12 @@ export default async function AvailableNowPage() {
                     {b.service_types.length > 0 && (
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
                         {b.service_types.map((s: string) => (
-                          <span key={s} style={{
+                          <span key={s || 'unknown'} style={{
                             padding: '3px 8px', borderRadius: 6,
                             background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
                             fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'capitalize',
                           }}>
-                            {s.replace(/_/g, ' ')}
+                            {(s || '').replace(/_/g, ' ')}
                           </span>
                         ))}
                       </div>

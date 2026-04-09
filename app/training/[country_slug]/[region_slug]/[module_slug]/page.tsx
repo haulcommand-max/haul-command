@@ -11,16 +11,17 @@ const s = {
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     country_slug: string
     region_slug: string
     module_slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const regionName = params.region_slug.split('-').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
-  const moduleName = params.module_slug.split('-').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
+  const resolvedParams = await params;
+  const regionName = resolvedParams.region_slug.split('-').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
+  const moduleName = resolvedParams.module_slug.split('-').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
   
   return {
     title: `${moduleName} - ${regionName} Pre-Certification Prep | Haul Command`,
@@ -30,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ModuleWatchPage({ params }: Props) {
   const supabase = createClient()
-  const { country_slug, region_slug, module_slug } = params
+  const resolvedParams = await params;
+  const { country_slug, region_slug, module_slug } = resolvedParams;
 
   const regionName = region_slug.split('-').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
   const countryName = country_slug.toUpperCase() === 'USA' ? 'United States' : country_slug.toUpperCase()
