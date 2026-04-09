@@ -3,7 +3,7 @@ import { MapPin, CheckCircle, AlertTriangle, Flag, Box, Wrench, ShieldAlert } fr
 import { ClaimProfileCTA } from '@/components/profile/ClaimProfileCTA';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { OperatorTrustCard } from '@/components/profile/OperatorTrustCard';
-import { OperatorReportCard } from '@/components/profile/OperatorReportCard';
+import OperatorReportCard from '@/components/profile/OperatorReportCard';
 import { OperatorBadges } from '@/components/profile/OperatorBadges';
 import { OperatorReviews } from '@/components/profile/OperatorReviews';
 import { SchemaOrchestrator } from '@/components/seo/SchemaOrchestrator';
@@ -225,8 +225,10 @@ function BaseTemplate({ entityName, op, isClaimed, trustPct, trustColor, trustLa
                         tierColor={trustColor}
                     />
                     <OperatorReportCard
-                        reportCard={op.report_card ?? null}
-                        operator={op}
+                        score={op.report_card?.score || 0}
+                        rank={op.report_card?.rank || 999}
+                        postCount={op.report_card?.postCount || 0}
+                        region={op.region_code || 'US'}
                     />
                 </div>
 
