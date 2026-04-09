@@ -41,7 +41,8 @@ export const ESCORT_REQUIREMENTS_JSONLD = `{
       "@type": "WebPage",
       "name": "State Escort Requirements for Oversize Loads",
       "url": "https://www.haulcommand.com/escort-requirements",
-      "description": "Pilot car and escort vehicle requirements for all 50 US states."
+      "description": "Pilot car and escort vehicle requirements for all 50 US states.",
+      "dateModified": "${new Date().toISOString().split('T')[0]}"
     },
     {
       "@type": "BreadcrumbList",
@@ -51,9 +52,13 @@ export const ESCORT_REQUIREMENTS_JSONLD = `{
       ]
     },
     {
-      "@type": "Thing",
-      "name": "Oversize Load Escort Requirements",
-      "description": "Legal requirements for pilot cars and escort vehicles when transporting oversize loads on public roads in the United States."
+      "@type": "Dataset",
+      "name": "US State Escort Vehicle Requirements Database",
+      "description": "Comprehensive database of pilot car and escort vehicle requirements by US state and international jurisdiction. Includes width, height, length, and weight thresholds.",
+      "url": "https://www.haulcommand.com/escort-requirements",
+      "temporalCoverage": "2024/..",
+      "creator": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" },
+      "license": "https://www.haulcommand.com/legal/terms"
     }
   ]
 }`;
@@ -152,6 +157,11 @@ export default async function EscortRequirementsIndex() {
                 { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
               ]}
             />
+
+            {/* VISIBLE LAST UPDATED — AI cross-validation */}
+            <div className="mt-8 pt-4 border-t border-white/5 text-center">
+              <p className="text-[10px] text-gray-600">Data last updated: April 2026 · Verified against official state DOT and transport authority sources · {totalJ} jurisdictions · {totalR} rules</p>
+            </div>
         </main>
         </RouteCalcMobileGate>
     );

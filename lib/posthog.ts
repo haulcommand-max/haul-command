@@ -24,6 +24,36 @@ export function initPostHog() {
         },
     });
 
+    // ── AI Referral Intelligence ──────────────────────────────
+    // Track traffic from AI answer engines as a distinct channel
+    const referrer = document.referrer.toLowerCase();
+    const AI_REFERRER_MAP: Record<string, string> = {
+        'perplexity.ai': 'perplexity',
+        'chatgpt.com': 'chatgpt',
+        'chat.openai.com': 'chatgpt',
+        'claude.ai': 'claude',
+        'you.com': 'you_com',
+        'gemini.google.com': 'gemini',
+        'copilot.microsoft.com': 'copilot',
+        'bing.com/chat': 'bing_copilot',
+        'phind.com': 'phind',
+        'kagi.com': 'kagi',
+    };
+    for (const [domain, source] of Object.entries(AI_REFERRER_MAP)) {
+        if (referrer.includes(domain)) {
+            posthog.capture('ai_referral', {
+                ai_source: source,
+                referrer_url: document.referrer,
+                landing_page: window.location.pathname,
+                landing_search: window.location.search,
+            });
+            // Set a super property so ALL subsequent events in this session
+            // carry the AI source attribution
+            posthog.register({ ai_referral_source: source });
+            break;
+        }
+    }
+
     initialized = true;
 }
 

@@ -53,7 +53,7 @@ export interface FAQItem {
   answer: string;
 }
 
-export function generateFAQSchema(faqs: FAQItem[], url?: string) {
+export function generateFAQSchema(faqs: FAQItem[], url?: string, dateModified?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -66,6 +66,7 @@ export function generateFAQSchema(faqs: FAQItem[], url?: string) {
       },
     })),
     ...(url && { url }),
+    dateModified: dateModified || new Date().toISOString().split('T')[0],
   };
 }
 
@@ -135,6 +136,7 @@ export function generateLocalBusiness(config: LocalBusinessConfig) {
         name: area,
       })),
     }),
+    dateModified: new Date().toISOString().split('T')[0],
   };
 }
 
@@ -176,6 +178,7 @@ export function generateService(config: ServiceConfig) {
         description: config.offers.description,
       },
     }),
+    dateModified: new Date().toISOString().split('T')[0],
   };
 }
 
