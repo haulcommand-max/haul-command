@@ -30,7 +30,8 @@ console.log(`\n${GOLD}━━━ Haul Command Pre-Push Gate ━━━${RESET}`);
 
 const checks = [
     // TypeScript — catch type errors before they reach Vercel
-    () => run('npx tsc --noEmit --skipLibCheck', 'TypeScript check'),
+    // Heap bumped to 8GB: large monorepo exhausts default 4GB limit
+    () => run('node --max-old-space-size=8192 ./node_modules/.bin/tsc --noEmit --skipLibCheck', 'TypeScript check'),
     // Route collision — look for duplicate catch-all patterns
     () => checkRouteCollisions(),
 ];
