@@ -29,7 +29,7 @@ export default function TruthReportCardDemo() {
   const [unlocked, setUnlocked] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7] p-8 font-sans selection:bg-[#66fcf1] selection:text-black">
+    <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7] p-8 font-sans selection:bg-[#66fcf1] selection:text-white">
       
       {/* HEADER SECTION */}
       <div className="max-w-6xl mx-auto mb-8">
@@ -102,7 +102,7 @@ export default function TruthReportCardDemo() {
             {!unlocked && (
               <button aria-label="Interactive Button" 
                 onClick={() => setUnlocked(true)}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#45a29e] to-[#66fcf1] text-black font-extrabold uppercase tracking-wide hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:scale-[1.02] active:scale-95"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#45a29e] to-[#66fcf1] text-white font-extrabold uppercase tracking-wide hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:scale-[1.02] active:scale-95"
               >
                 Unlock Contact (1 Data Credit)
               </button>

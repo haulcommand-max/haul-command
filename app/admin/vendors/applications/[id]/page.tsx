@@ -60,7 +60,7 @@ export default function AdminApplicationReviewPage() {
             {/* Header */}
             <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">{app.company_name}</h1>
+                    <h1 className="text-2xl font-bold text-white">{app.company_name}</h1>
                     <p className="mt-1 text-sm text-gray-500">
                         {app.vendor_type.replace(/_/g, " ")} · {app.city}, {app.region1 ?? ""} {app.country}
                     </p>
@@ -134,7 +134,7 @@ export default function AdminApplicationReviewPage() {
 
 function InfoCard({ title, children }: { title: string; children: React.ReactNode }) {
     return (
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
             <h2 className="font-semibold text-gray-800 text-sm mb-3">{title}</h2>
             <div className="space-y-2">{children}</div>
         </div>
@@ -145,7 +145,7 @@ function KV({ label, value }: { label: string; value: string }) {
     return (
         <div className="flex gap-2 text-sm">
             <span className="text-gray-500 shrink-0 w-20">{label}</span>
-            <span className="text-gray-900">{value || "—"}</span>
+            <span className="text-white">{value || "—"}</span>
         </div>
     );
 }

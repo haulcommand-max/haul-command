@@ -33,12 +33,12 @@ export default async function CityHubPage({ params }: { params: Promise<{ countr
                     <li>/</li>
                     <li><Link aria-label="Navigation Link" href={`/${country}/${state}`} className="hover:underline">{state.toUpperCase()}</Link></li>
                     <li>/</li>
-                    <li className="font-bold text-slate-900">{cityData.city}</li>
+                    <li className="font-bold text-white">{cityData.city}</li>
                 </ul>
             </nav>
 
             <header className="mb-12">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
                     Oversize Load Directory: {cityData.city}, {state.toUpperCase()}
                 </h1>
                 <p className="text-xl text-slate-600 max-w-3xl">
@@ -48,15 +48,15 @@ export default async function CityHubPage({ params }: { params: Promise<{ countr
             </header>
 
             <section className="mb-16">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Available Services in {cityData.city}</h2>
+                <h2 className="text-2xl font-bold text-white mb-6">Available Services in {cityData.city}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {services.map((service) => (
                         <Link aria-label="Navigation Link"
                             key={service.id}
                             href={getCityServiceUrl(country, state, citySlug, service.slug)}
-                            className="group block p-6 bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-blue-500 transition-all"
+                            className="group block p-6 bg-[#121212] rounded-xl shadow-sm border border-white/10 hover:shadow-md hover:border-blue-500 transition-all"
                         >
-                            <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 mb-2">
+                            <h3 className="text-xl font-bold text-white group-hover:text-blue-600 mb-2">
                                 {service.name}
                             </h3>
                             <p className="text-slate-600 text-sm">

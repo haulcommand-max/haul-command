@@ -81,7 +81,7 @@ export default async function CorridorRatePage({ params }: Props) {
               <div className="text-2xl font-black text-white mt-1">${baselinePerMile} <span className="text-sm text-gray-500 font-medium tracking-normal">/ mile</span></div>
             </div>
 
-            <Link href={`/directory?intent=corridor&route=${slug}`} className="block w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black text-center font-bold text-sm tracking-wide rounded-xl transition-colors">
+            <Link href={`/directory?intent=corridor&route=${slug}`} className="block w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-white text-center font-bold text-sm tracking-wide rounded-xl transition-colors">
               Find Operators on this Route
             </Link>
           </div>

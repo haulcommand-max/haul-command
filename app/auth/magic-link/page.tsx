@@ -30,7 +30,7 @@ export default function MagicLinkFallback() {
             required
             className="w-full bg-black border border-gray-800 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
           />
-          <button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-colors shadow-lg shadow-yellow-900/30">
+          <button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-lg transition-colors shadow-lg shadow-yellow-900/30">
             Send Secure Link
           </button>
         </form>

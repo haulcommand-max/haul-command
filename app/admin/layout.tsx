@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Admin top bar */}
       <nav className="border-b border-white/5 bg-black/50 px-4 py-3 flex items-center gap-6">
         <a href="/admin" className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-amber-500 rounded flex items-center justify-center text-black font-bold text-xs">HC</div>
+          <div className="w-6 h-6 bg-amber-500 rounded flex items-center justify-center text-white font-bold text-xs">HC</div>
           <span className="text-sm font-bold text-white">Admin</span>
         </a>
         <div className="flex items-center gap-4 text-xs text-gray-500">

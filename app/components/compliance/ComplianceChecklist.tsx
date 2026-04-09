@@ -53,7 +53,7 @@ export default function ComplianceChecklist() {
 
       <button 
         disabled={!isComplete}
-        className={`w-full mt-6 py-4 rounded font-extrabold uppercase tracking-widest transition-all ${isComplete ? 'bg-hc-yellow-400 text-black hover:bg-yellow-500 shadow-lg shadow-yellow-900/50' : 'bg-hc-gray-800 text-hc-gray-600 cursor-not-allowed'}`}
+        className={`w-full mt-6 py-4 rounded font-extrabold uppercase tracking-widest transition-all ${isComplete ? 'bg-hc-yellow-400 text-white hover:bg-yellow-500 shadow-lg shadow-yellow-900/50' : 'bg-hc-gray-800 text-hc-gray-600 cursor-not-allowed'}`}
       >
         {isComplete ? 'Initiate Dispatch' : 'Complete Checks'}
       </button>

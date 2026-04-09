@@ -121,7 +121,7 @@ export default function VendorApplyPage() {
         <div className="max-w-3xl mx-auto px-4 py-10 space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Vendor Application</h1>
+                <h1 className="text-2xl font-bold text-white">Vendor Application</h1>
                 <p className="mt-1 text-sm text-gray-500">
                     Get listed free. Upgrade later for better placement in the app.
                 </p>
@@ -197,8 +197,8 @@ export default function VendorApplyPage() {
                         <Field label="24/7 service?">
                             <label className="flex items-center gap-2 mt-2 cursor-pointer">
                                 <input type="checkbox" checked={form.is_24_7} onChange={e => set("is_24_7", e.target.checked)}
-                                    className="h-4 w-4 rounded border-gray-300" />
-                                <span className="text-sm text-gray-700">Yes, we operate 24/7</span>
+                                    className="h-4 w-4 rounded border-white/20" />
+                                <span className="text-sm text-neutral-300">Yes, we operate 24/7</span>
                             </label>
                         </Field>
                         <Field label="Latitude">
@@ -223,7 +223,7 @@ export default function VendorApplyPage() {
                                 onClick={() => toggleService(s)}
                                 className={`px-3 py-1 rounded-full text-sm border transition-colors ${form.services_quick.includes(s)
                                         ? "bg-orange-500 text-white border-orange-500"
-                                        : "bg-white text-gray-700 border-gray-300 hover:border-orange-400"
+                                        : "bg-[#121212] text-neutral-300 border-white/20 hover:border-orange-400"
                                     }`}>
                                 {s.replace(/_/g, " ")}
                             </button>
@@ -238,7 +238,7 @@ export default function VendorApplyPage() {
                             <label key={tier.value}
                                 className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${form.preferred_plan_tier === tier.value
                                         ? "border-orange-500 bg-orange-50"
-                                        : "border-gray-200 hover:border-orange-300"
+                                        : "border-white/10 hover:border-orange-300"
                                     }`}>
                                 <input type="radio" name="tier" value={tier.value}
                                     checked={form.preferred_plan_tier === tier.value}
@@ -257,7 +257,7 @@ export default function VendorApplyPage() {
                 <div className="border-t pt-6 flex items-center justify-between gap-4">
                     <label className="flex items-start gap-2 cursor-pointer">
                         <input type="checkbox" required checked={form.terms} onChange={e => set("terms", e.target.checked)}
-                            className="mt-0.5 h-4 w-4 rounded border-gray-300" />
+                            className="mt-0.5 h-4 w-4 rounded border-white/20" />
                         <span className="text-sm text-gray-600">
                             I confirm the info is accurate and I&apos;m authorized to submit it.
                         </span>
@@ -275,11 +275,11 @@ export default function VendorApplyPage() {
 }
 
 // ─── Local components ───────────────────────────────────
-const input = "w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
+const input = "w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
     return (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-6">
+        <div className="rounded-xl border border-white/10 bg-[#121212] shadow-sm p-6">
             <h2 className="text-base font-semibold text-gray-800 mb-4">{title}</h2>
             {children}
         </div>
@@ -293,7 +293,7 @@ function Grid2({ children }: { children: React.ReactNode }) {
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
     return (
         <div className={className}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+            <label className="block text-sm font-medium text-neutral-300 mb-1">{label}</label>
             {children}
         </div>
     );

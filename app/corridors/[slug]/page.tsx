@@ -232,7 +232,7 @@ export default async function CorridorSlugPage({ params }: Props) {
                     <>
                       <span className="text-right font-mono font-semibold text-white cursor-pointer group relative">
                         {p.currency_code} {p.amount_median?.toFixed(2)}
-                        <span className="absolute -top-7 right-0 text-[10px] bg-emerald-500 text-black px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Verified Rate</span>
+                        <span className="absolute -top-7 right-0 text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Verified Rate</span>
                       </span>
                       <span className="text-right font-mono text-white/50">
                         {p.currency_code} {p.amount_max?.toFixed(2)}
@@ -286,7 +286,7 @@ export default async function CorridorSlugPage({ params }: Props) {
           <p className="mt-1 text-sm text-white/50">Unlock verified pricing data and demand-signal exports for this corridor.</p>
           <a
             href="/data-products/corridor-intelligence"
-            className="mt-4 inline-flex rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+            className="mt-4 inline-flex rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
           >
             Unlock Intelligence Data →
           </a>

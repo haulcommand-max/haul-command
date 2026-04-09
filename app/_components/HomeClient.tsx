@@ -175,7 +175,7 @@ export default function HomeClient({
                             Sign In
                         </Link>
                         <Link aria-label="Navigation Link" href="/onboarding/start"
-                            className="px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all press-scale text-black"
+                            className="px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all press-scale text-white"
                             style={{
                                 background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                 boxShadow: '0 4px 20px rgba(198,146,58,0.25), 0 0 0 1px rgba(198,146,58,0.3)',
@@ -253,7 +253,7 @@ export default function HomeClient({
                         {/* PRIMARY: Escort — dominant */}
                         <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=escort"
-                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
+                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-white font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
                             style={{
                                 background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                 boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
@@ -566,7 +566,7 @@ export default function HomeClient({
                                 Free for escorts. Brokers get 10 boost credits on activation. No card required.
                             </p>
                             <Link aria-label="Navigation Link" href="/onboarding/start"
-                                className="inline-flex items-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale"
+                                className="inline-flex items-center gap-2.5 px-10 py-4 text-white font-bold text-sm rounded-2xl transition-all press-scale"
                                 style={{
                                     background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                     boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',

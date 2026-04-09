@@ -49,7 +49,7 @@ export function BlurLoadCard({ load, index }: { load: LoadTypes; index: number }
                 <div className="filter blur-md select-none opacity-50">
                     <div className="flex justify-between items-center py-2 border-t border-brand-steel/30">
                         <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-gray-500"></div>
+                            <div className="w-6 h-6 rounded-full bg-[#1A1A1A]0"></div>
                             <div className="h-3 w-24 bg-gray-600 rounded"></div>
                         </div>
                         <div className="h-8 w-20 bg-brand-primary/20 rounded"></div>

@@ -68,7 +68,7 @@ function HotelBookingCard({ corridor }: { corridor: string }) {
           </button>
         ))}
       </div>
-      <button aria-label="Interactive Button" className="w-full bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold py-2 rounded-lg transition-colors">
+      <button aria-label="Interactive Button" className="w-full bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold py-2 rounded-lg transition-colors">
         BOOK CURFEW LAYOVER · GET 12% COMMISSION
       </button>
     </div>

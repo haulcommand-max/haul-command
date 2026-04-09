@@ -105,7 +105,7 @@ export default async function BrokerLandingPage() {
                         <Link aria-label="Navigation Link"
                             href="/map"
                             id="broker-cta-live-coverage"
-                            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
+                            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
                         >
                             Check Live Coverage →
                         </Link>
@@ -211,7 +211,7 @@ export default async function BrokerLandingPage() {
                 <div className="max-w-xl mx-auto">
                     <h2 className="text-3xl font-extrabold text-white mb-4">Ready to stop cold-calling for escorts?</h2>
                     <p className="text-slate-400 mb-8">Free to start. Find your first verified escort today.</p>
-                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage →</Link>
+                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage →</Link>
                 </div>
             </section>
 

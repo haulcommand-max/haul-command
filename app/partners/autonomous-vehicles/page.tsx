@@ -45,7 +45,7 @@ export default function AVPartnerPage() {
           <div className="flex gap-4">
             <a
               href="#inquiry"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors"
             >
               Get Operator Coverage
             </a>

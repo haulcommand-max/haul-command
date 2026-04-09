@@ -237,7 +237,7 @@ export default async function AuthorityRegionPage({ params }: Props) {
                             <p className="text-slate-400 text-sm mb-4">
                                 Post your move and get matched with certified {regionDisplay} escorts in minutes.
                             </p>
-                            <Link aria-label="Navigation Link" href="/start?role=broker" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
+                            <Link aria-label="Navigation Link" href="/start?role=broker" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Post a Move →
                             </Link>
                         </div>

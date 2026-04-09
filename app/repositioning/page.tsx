@@ -180,7 +180,7 @@ export default function RepositioningPage() {
           <div className="flex flex-wrap gap-3 items-center">
             <button
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-black shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-black shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all"
             >
               <Radio className="w-4 h-4" />
               Broadcast My Position
@@ -271,7 +271,7 @@ export default function RepositioningPage() {
             <div className="flex gap-3 mt-5">
               <button
                 onClick={broadcast}
-                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-black"
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-black"
               >
                 Go Live
               </button>

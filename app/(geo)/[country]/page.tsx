@@ -82,7 +82,7 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                         />
                         <Link aria-label="Navigation Link"
                             href={`/directory?country=${countryData.iso2}`}
-                            className="px-5 py-2.5 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
+                            className="px-5 py-2.5 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
                         >
                             Search
                         </Link>
@@ -128,7 +128,7 @@ export default async function CountryPage({ params }: { params: Promise<{ countr
                         <div className="flex flex-wrap gap-3 justify-center">
                             <Link aria-label="Join waitlist"
                                 href={`/${country}/coming-soon`}
-                                className="inline-block px-6 py-3 bg-hc-gold-500 text-black font-bold text-sm rounded-xl hover:bg-hc-gold-400 transition-colors"
+                                className="inline-block px-6 py-3 bg-hc-gold-500 text-white font-bold text-sm rounded-xl hover:bg-hc-gold-400 transition-colors"
                             >
                                 🔔 Join the Waitlist →
                             </Link>

@@ -43,7 +43,7 @@ export default function SponsorSuccessPage() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link aria-label="Navigation Link"
                         href="/directory"
-                        className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl transition-all"
+                        className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-6 py-3 rounded-xl transition-all"
                     >
                         View Directory <ArrowRight className="w-4 h-4" />
                     </Link>

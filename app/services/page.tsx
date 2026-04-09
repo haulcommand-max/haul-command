@@ -229,7 +229,7 @@ export default function ServicesPage() {
         <div className="flex justify-center gap-4 flex-wrap">
           <Link
             href="/quote"
-            className="px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+            className="px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
           >
             Get a Quote

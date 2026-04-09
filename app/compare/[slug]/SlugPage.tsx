@@ -206,7 +206,7 @@ export default function ComparePage({ params }: { params: { slug: string } }) {
           <p className="text-sm text-gray-400 mb-4">{entry.verdict.split('.')[0]}.</p>
           <Link
             href="/claim"
-            className="inline-block px-8 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm transition-all"
+            className="inline-block px-8 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-all"
           >
             {entry.ctaLabel}
           </Link>

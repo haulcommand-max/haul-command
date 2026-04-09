@@ -191,7 +191,7 @@ function SponsorCheckoutInner() {
                     <button aria-label="Interactive Button"
                         onClick={handleCheckout}
                         disabled={submitting || !selectedProduct}
-                        className="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-lg px-8 py-4 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"
+                        className="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-400 text-white font-black text-lg px-8 py-4 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"
                     >
                         {submitting ? (
                             <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>

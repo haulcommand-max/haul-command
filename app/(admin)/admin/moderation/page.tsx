@@ -154,7 +154,7 @@ export default function ModerationPage() {
                         <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleAction('VERIFY', selectedItem)}
-                            className="flex-1 bg-[#22c55e] text-black py-3 rounded text-xs font-black uppercase hover:bg-green-400 transition-all disabled:opacity-50"
+                            className="flex-1 bg-[#22c55e] text-white py-3 rounded text-xs font-black uppercase hover:bg-green-400 transition-all disabled:opacity-50"
                         >
                             {processing ? 'Processing...' : 'Verify Item'}
                         </button>

@@ -79,7 +79,7 @@ export default async function CorridorIntersectionsIndex() {
                Integrate our Chokepoint API directly into your dispatch system to flag under-clearance bridges instantly during quoting.
              </p>
            </div>
-           <Button className="bg-white text-indigo-950 font-bold px-8 h-12 rounded-xl shrink-0 whitespace-nowrap">
+           <Button className="bg-[#121212] text-white font-bold px-8 h-12 rounded-xl shrink-0 whitespace-nowrap">
               Get API Access
            </Button>
         </div>

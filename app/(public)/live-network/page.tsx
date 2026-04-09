@@ -70,7 +70,7 @@ export default async function LiveNetworkFeed() {
                 </div>
 
                 <div className="text-right flex flex-col space-y-2">
-                   <button className="bg-yellow-500 text-black font-black uppercase text-sm px-8 py-3 rounded shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:opacity-80 transition">
+                   <button className="bg-yellow-500 text-white font-black uppercase text-sm px-8 py-3 rounded shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:opacity-80 transition">
                      Dispatch / Lock Rate
                    </button>
                    <span className="text-xs text-gray-500">Requires Broker Pro</span>
@@ -84,7 +84,7 @@ export default async function LiveNetworkFeed() {
         <div className="mt-12 bg-gray-800/50 border border-dashed border-gray-600 p-8 rounded text-center">
             <h3 className="text-yellow-500 font-black uppercase text-xl mb-2">Backhauls & Empty Lanes</h3>
             <p className="text-gray-400">Can't find availability in your corridor? Put a bounty on the lane and operators will come to you.</p>
-            <button className="mt-4 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black font-black uppercase text-xs px-6 py-2 transition">
+            <button className="mt-4 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white font-black uppercase text-xs px-6 py-2 transition">
                Post Immediate Need
             </button>
         </div>

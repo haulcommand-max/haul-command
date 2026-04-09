@@ -74,7 +74,7 @@ export default function RiskMitigationPage() {
           </p>
           <Link
             href="/onboarding/start?role=carrier"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
           >
             Start Dispatching Safer <ArrowRight className="w-4 h-4" />
@@ -103,7 +103,7 @@ export default function RiskMitigationPage() {
           Every carrier on Haul Command gets risk mitigation built in. Enterprise tiers unlock advanced corridor risk analytics.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/onboarding/start" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+          <Link href="/onboarding/start" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors">
             Get Started Free
           </Link>
           <Link href="/enterprise" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">

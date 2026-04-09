@@ -68,7 +68,7 @@ export default function AdminPlacementDetailPage() {
         setToast("Conflict expired.");
     }
 
-    const inp = "w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
+    const inp = "w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
 
     if (loading) return <div className="p-8 text-gray-400 text-sm">Loading…</div>;
     if (!placement) return <div className="p-8 text-red-500 text-sm">Placement not found.</div>;
@@ -77,12 +77,12 @@ export default function AdminPlacementDetailPage() {
         <div className="max-w-3xl mx-auto px-4 py-10 space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Placement Detail</h1>
+                <h1 className="text-2xl font-bold text-white">Placement Detail</h1>
                 <p className="mt-1 text-sm text-gray-500">Edit or expire a placement. Exclusivity conflicts are shown below.</p>
             </div>
 
             {/* Edit card */}
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-4">
+            <div className="rounded-xl border border-white/10 bg-[#121212] p-6 shadow-sm space-y-4">
                 <h2 className="font-semibold text-gray-800">Placement</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -114,8 +114,8 @@ export default function AdminPlacementDetailPage() {
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                         <input type="checkbox" id="excl" checked={placement.is_exclusive ?? false}
-                            onChange={e => set("is_exclusive", e.target.checked)} className="h-4 w-4 rounded border-gray-300" />
-                        <label htmlFor="excl" className="text-sm text-gray-700 cursor-pointer">Exclusive</label>
+                            onChange={e => set("is_exclusive", e.target.checked)} className="h-4 w-4 rounded border-white/20" />
+                        <label htmlFor="excl" className="text-sm text-neutral-300 cursor-pointer">Exclusive</label>
                     </div>
                 </div>
 
@@ -133,7 +133,7 @@ export default function AdminPlacementDetailPage() {
             </div>
 
             {/* Exclusivity conflicts */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-[#121212] shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b">
                     <h2 className="font-semibold text-gray-800">Exclusivity Conflicts</h2>
                     {conflicts.length === 0 && <p className="text-sm text-gray-500 mt-1">No conflicts.</p>}
@@ -141,7 +141,7 @@ export default function AdminPlacementDetailPage() {
                 {conflicts.length > 0 && (
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
-                            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide text-left">
+                            <thead className="bg-[#1A1A1A] text-xs text-gray-500 uppercase tracking-wide text-left">
                                 <tr>
                                     {["Vendor", "Type", "Region", "Corridor", "Overlap", ""].map(h => (
                                         <th key={h} className="px-4 py-3 font-medium">{h}</th>
@@ -153,7 +153,7 @@ export default function AdminPlacementDetailPage() {
                                     const overlapStart = c.start_at > placement.start_at ? c.start_at : placement.start_at;
                                     const overlapEnd = c.end_at < placement.end_at ? c.end_at : placement.end_at;
                                     return (
-                                        <tr key={c.id} className="hover:bg-gray-50">
+                                        <tr key={c.id} className="hover:bg-[#1A1A1A]">
                                             <td className="px-4 py-3 text-gray-600 text-xs">{c.vendor_id.slice(0, 8)}</td>
                                             <td className="px-4 py-3">{c.placement_type.replace(/_/g, " ")}</td>
                                             <td className="px-4 py-3">{c.region1 ?? "—"}</td>

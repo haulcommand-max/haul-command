@@ -116,7 +116,7 @@ export default function DirectoryPage() {
                         <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleToggleVerify(selectedProvider)}
-                            className="flex-1 bg-[#ffb400] text-black py-3 rounded text-xs font-black uppercase hover:bg-yellow-500 transition-all disabled:opacity-50"
+                            className="flex-1 bg-[#ffb400] text-white py-3 rounded text-xs font-black uppercase hover:bg-yellow-500 transition-all disabled:opacity-50"
                         >
                             {processing ? '...' : (selectedProvider?.verified ? 'Unverify' : 'Verify Now')}
                         </button>
@@ -163,7 +163,7 @@ function ProviderCard({ provider, onClick }: any) {
             onClick={onClick}
         >
             {provider.sponsor && (
-                <div className="absolute top-0 right-0 px-2 py-0.5 bg-[#ffb400] text-black text-[8px] font-black uppercase">
+                <div className="absolute top-0 right-0 px-2 py-0.5 bg-[#ffb400] text-white text-[8px] font-black uppercase">
                     Sponsor
                 </div>
             )}

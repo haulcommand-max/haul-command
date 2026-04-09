@@ -88,7 +88,7 @@ export default async function OfferPage({ params }: { params: Promise<{ offerId:
                         <form action={`/api/offers/${offerId}/accept`} method="post">
                             <button aria-label="Interactive Button"
                                 type="submit"
-                                className="w-full py-4 bg-[#F1A91B] hover:bg-[#d4911a] text-black font-black text-base rounded-xl flex items-center justify-center gap-3 transition-all shadow-[0_0_30px_rgba(241,169,27,0.25)] active:scale-98"
+                                className="w-full py-4 bg-[#F1A91B] hover:bg-[#d4911a] text-white font-black text-base rounded-xl flex items-center justify-center gap-3 transition-all shadow-[0_0_30px_rgba(241,169,27,0.25)] active:scale-98"
                             >
                                 <Zap className="w-5 h-5 fill-black" />
                                 ACCEPT THIS OFFER

@@ -71,13 +71,13 @@ export default async function DocumentsHubPage() {
 
                         <div className="bg-[#0a1118] border border-[#e8a828]/30 rounded-xl p-5 pt-8 relative mt-10">
                             <div className="absolute -top-5 inset-x-0 flex justify-center">
-                                <span className="bg-[#e8a828] text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-[0_0_10px_rgba(232,168,40,0.5)]">Pro Feature</span>
+                                <span className="bg-[#e8a828] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-[0_0_10px_rgba(232,168,40,0.5)]">Pro Feature</span>
                             </div>
                             <h3 className="font-bold text-white uppercase tracking-widest text-sm mb-2 text-center">Auto-Fill Contracts</h3>
                             <p className="text-[#8ab0d0] text-xs text-center mb-4">
                                 Upgrade to Pro to automatically generate standard Heavy Haul Master Service Agreements (MSAs) using your stored LLC data.
                             </p>
-                            <button className="w-full border border-[#e8a828] text-[#e8a828] py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#e8a828] hover:text-black transition-colors">
+                            <button className="w-full border border-[#e8a828] text-[#e8a828] py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#e8a828] hover:text-white transition-colors">
                                 Unlock Workflow ($29/mo)
                             </button>
                         </div>

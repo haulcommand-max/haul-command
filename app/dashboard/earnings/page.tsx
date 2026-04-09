@@ -148,7 +148,7 @@ export default function EarningsDashboardPage() {
                 <p className="text-sm font-medium text-white/80 leading-relaxed mb-4">
                   Claim your listing to track your lifetime earnings, payouts, and incoming run offers.
                 </p>
-                <Link href="/claim" className="w-full flex items-center justify-center gap-2 bg-hc-gold text-black font-bold text-sm tracking-wide uppercase py-3.5 px-6 rounded-xl shadow-[0_0_20px_rgba(212,168,68,0.2)]">
+                <Link href="/claim" className="w-full flex items-center justify-center gap-2 bg-hc-gold text-white font-bold text-sm tracking-wide uppercase py-3.5 px-6 rounded-xl shadow-[0_0_20px_rgba(212,168,68,0.2)]">
                   <ShieldCheck className="w-4 h-4" />
                   Claim My Listing
                 </Link>

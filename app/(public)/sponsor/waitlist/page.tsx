@@ -137,7 +137,7 @@ function WaitlistForm() {
           </div>
         </div>
         
-        <button disabled={loading} className="w-full py-4 bg-amber-500 hover:bg-amber-400 font-black text-black uppercase tracking-widest rounded-xl disabled:opacity-50 transition-all">
+        <button disabled={loading} className="w-full py-4 bg-amber-500 hover:bg-amber-400 font-black text-white uppercase tracking-widest rounded-xl disabled:opacity-50 transition-all">
           {loading ? 'Submitting...' : 'Join the VIP Waitlist'}
         </button>
       </form>

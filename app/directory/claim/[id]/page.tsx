@@ -45,7 +45,7 @@ export default async function ClaimDirectoryProfilePage({ params }: { params: { 
           </div>
 
           <div className="pt-4 border-t border-hc-gray-800">
-            <button type="submit" className="w-full bg-hc-yellow-400 hover:bg-yellow-500 text-black font-extrabold py-4 rounded transition-all shadow-lg hover:shadow-yellow-400/20">
+            <button type="submit" className="w-full bg-hc-yellow-400 hover:bg-yellow-500 text-white font-extrabold py-4 rounded transition-all shadow-lg hover:shadow-yellow-400/20">
               Submit Claim Request
             </button>
           </div>

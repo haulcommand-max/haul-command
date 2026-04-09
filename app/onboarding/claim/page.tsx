@@ -66,7 +66,7 @@ function ClaimPageInner() {
                         const isDone = (step === "plan" && i === 0) || (step === "checkout" && i <= 1);
                         return (
                             <div key={label} className="flex items-center gap-2">
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${isDone ? "bg-emerald-500 border-emerald-500 text-black" : isActive ? "border-[#C6923A] text-[#C6923A]" : "border-white/10 text-white/30"}`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border transition-all ${isDone ? "bg-emerald-500 border-emerald-500 text-white" : isActive ? "border-[#C6923A] text-[#C6923A]" : "border-white/10 text-white/30"}`}>
                                     {isDone ? <CheckCircle className="w-4 h-4" /> : i + 1}
                                 </div>
                                 <span className={`text-xs font-semibold uppercase tracking-wider ${isActive || isDone ? "text-white" : "text-white/30"}`}>
@@ -179,7 +179,7 @@ function ClaimPageInner() {
                                 }}
                             >
                                 <div className="absolute top-3 right-3">
-                                    <span className="px-2 py-1 rounded-full bg-[#C6923A] text-[10px] font-black text-black uppercase">Recommended</span>
+                                    <span className="px-2 py-1 rounded-full bg-[#C6923A] text-[10px] font-black text-white uppercase">Recommended</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-3">
                                     <Crown className="w-5 h-5 text-[#C6923A]" />
@@ -205,7 +205,7 @@ function ClaimPageInner() {
 
                         <button aria-label="Interactive Button"
                             onClick={handlePlanSelect}
-                            className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-black"
+                            className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-white"
                             style={{
                                 background: "linear-gradient(135deg, #C6923A, #E0B05C)",
                                 minHeight: "56px",

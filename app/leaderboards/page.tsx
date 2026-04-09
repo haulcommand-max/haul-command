@@ -145,7 +145,7 @@ export default function LeaderboardsPage() {
               onClick={() => setActivePeriod(p.days as 30 | 90 | 180 | 365)}
               className={`px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                 activePeriod === p.days
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-black shadow-[0_0_20px_rgba(245,158,11,0.3)]'
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)]'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -187,7 +187,7 @@ export default function LeaderboardsPage() {
                 {/* Rank 1 */}
                 <div className="w-full md:w-1/3 relative z-20 order-1 md:order-2">
                   <div className="bg-gradient-to-b from-amber-500/10 to-transparent backdrop-blur-3xl border border-amber-500/40 rounded-t-3xl p-8 h-80 flex flex-col justify-between shadow-[0_0_50px_rgba(245,158,11,0.2)]">
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-orange-600 text-black px-4 py-1 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-orange-600 text-white px-4 py-1 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
                       <Star className="w-4 h-4" /> #1 THIS PERIOD
                     </div>
                     <div className="text-center mt-4">

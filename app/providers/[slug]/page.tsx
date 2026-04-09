@@ -14,7 +14,7 @@ import { Star, Award, Briefcase, FileText } from 'lucide-react';
 // ══════════════════════════════════════════════════════════════
 // Provider Profile Page — Haul Command v4
 // Full HC token migration. TrustStrip at top. Avatar in header.
-// No slate-*, no bg-white, no hardcoded colors.
+// No slate-*, no bg-[#121212], no hardcoded colors.
 // ══════════════════════════════════════════════════════════════
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

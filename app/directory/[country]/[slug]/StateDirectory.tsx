@@ -165,7 +165,7 @@ export async function StateDirectoryPage({ params, searchParams }: Props) {
               <option value="rating">Highest rated</option>
               <option value="reviews">Most reviewed</option>
             </select>
-            <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+            <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-lg text-sm">
               Filter
             </button>
           </form>
@@ -244,7 +244,7 @@ export async function StateDirectoryPage({ params, searchParams }: Props) {
             Claim your free Haul Command profile and get found by brokers hauling through {stateName}.
           </p>
           <div className="flex gap-3">
-            <Link aria-label="Navigation Link" href="/claim" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link aria-label="Navigation Link" href="/claim" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
               Claim Free Listing
             </Link>
             <Link aria-label="Navigation Link" href={`/route-check?state=${stateCode}`} className="px-4 py-2 border border-white/20 text-white text-sm rounded-xl hover:border-white/40 transition-colors">

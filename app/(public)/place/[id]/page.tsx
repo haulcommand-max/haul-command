@@ -674,7 +674,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
 
                                 {/* Call to action buttons */}
                                 <div className="flex flex-col gap-2">
-                                    <button aria-label="Interactive Button" className="w-full h-14 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(241,169,27,0.15)] hover:shadow-[0_0_30px_rgba(241,169,27,0.3)] hover:-translate-y-0.5 focus:scale-[0.98]">
+                                    <button aria-label="Interactive Button" className="w-full h-14 bg-[#F1A91B] hover:bg-[#f0b93a] text-white font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(241,169,27,0.15)] hover:shadow-[0_0_30px_rgba(241,169,27,0.3)] hover:-translate-y-0.5 focus:scale-[0.98]">
                                         Request Escort
                                     </button>
                                     <button aria-label="Interactive Button" className="w-full h-12 flex items-center justify-center gap-2 bg-[#111] hover:bg-[#1a1a1a] border border-[#222] hover:border-[#333] text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-all">
@@ -880,7 +880,7 @@ export default function EscortProfilePage({ params }: { params: Promise<{ id: st
                     </p>
                     <Link aria-label="Navigation Link"
                         href={`/claim/${profile.claim_hash || id}`}
-                        className="inline-block bg-[#F1A91B] text-black font-bold text-sm px-8 py-3 rounded-xl hover:bg-[#f0b93a] transition-all hover:scale-105"
+                        className="inline-block bg-[#F1A91B] text-white font-bold text-sm px-8 py-3 rounded-xl hover:bg-[#f0b93a] transition-all hover:scale-105"
                     >
                         Claim & Upgrade →
                     </Link>

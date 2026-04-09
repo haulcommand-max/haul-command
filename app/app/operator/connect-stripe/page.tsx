@@ -166,7 +166,7 @@ function ConnectStripeContent() {
                         <button aria-label="Interactive Button"
                             onClick={startOnboarding}
                             disabled={loading}
-                            className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-black"
+                            className="w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider text-white"
                             style={{
                                 background: "linear-gradient(135deg, #C6923A, #E0B05C)",
                                 minHeight: "56px",

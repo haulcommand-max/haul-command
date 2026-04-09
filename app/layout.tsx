@@ -160,6 +160,7 @@ export const viewport: Viewport = {
 };
 
 import { RoleProvider } from "@/lib/role-context";
+import { GlobalBackground } from "@/app/_components/GlobalBackground";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -257,15 +258,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-hc-bg text-hc-text font-sans antialiased" style={{ minHeight: '100dvh' }}>
                 <RoleProvider>
-                    <div 
-                        className="fixed inset-0 z-[-1] pointer-events-none opacity-15" 
-                        style={{ 
-                            backgroundImage: "url('/images/premium_logistics_hero.png')", 
-                            backgroundSize: "cover", 
-                            backgroundPosition: "center",
-                            backgroundAttachment: "fixed"
-                        }} 
-                    />
+                    <GlobalBackground />
                     <SmartAppBanner />
                     <PostHogProvider>
                         {children}

@@ -98,7 +98,7 @@ export default function AdGridBookPage() {
         <p className="text-sm text-[#8a9ab0] mb-2">Reference: <span className="font-mono text-[#d4950e]">{campaignId.slice(0,8).toUpperCase()}</span></p>
         <p className="text-sm text-[#8a9ab0] mb-6 leading-relaxed">Your campaign is under review. We typically approve within 2 hours. You’ll receive an email confirmation shortly.</p>
         <div className="flex flex-col gap-3 max-w-xs mx-auto">
-          <button onClick={()=>router.push('/advertise')} className="bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-3 rounded-xl text-sm">Back to AdGrid</button>
+          <button onClick={()=>router.push('/advertise')} className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-3 rounded-xl text-sm">Back to AdGrid</button>
           <button onClick={()=>{setStep(0);setForm({...form,campaign_name:''})}} className="border border-[#1e3048] text-[#8a9ab0] py-3 rounded-xl text-sm">Book Another Campaign</button>
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function AdGridBookPage() {
           {STEPS.map((s,i)=>(
             <div key={i} className="flex items-center gap-1 shrink-0">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                i<step?'bg-[#22c55e] text-black':i===step?'bg-[#d4950e] text-black':'bg-[#1e3048] text-[#566880]'
+                i<step?'bg-[#22c55e] text-white':i===step?'bg-[#d4950e] text-white':'bg-[#1e3048] text-[#566880]'
               }`}>{i<step?'✔':i+1}</div>
               <span className={`text-[10px] ${
                 i===step?'text-[#d4950e] font-semibold':'text-[#566880]'
@@ -269,8 +269,8 @@ export default function AdGridBookPage() {
         <div className="flex gap-3">
           {step>0&&<button type="button" onClick={back} className="border border-[#1e3048] text-[#8a9ab0] hover:border-[#d4950e] px-5 py-3 rounded-xl text-sm font-semibold">Back</button>}
           {step<5
-            ? <button type="button" onClick={()=>{if(validate())next()}} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-3 rounded-xl text-sm">Continue →</button>
-            : <button type="button" onClick={submit} disabled={loading} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] disabled:opacity-50 text-black font-bold py-3 rounded-xl text-sm">
+            ? <button type="button" onClick={()=>{if(validate())next()}} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-3 rounded-xl text-sm">Continue →</button>
+            : <button type="button" onClick={submit} disabled={loading} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] disabled:opacity-50 text-white font-bold py-3 rounded-xl text-sm">
                 {loading?'Submitting…':'Submit Campaign →'}
               </button>
           }

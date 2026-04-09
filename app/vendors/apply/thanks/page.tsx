@@ -11,13 +11,13 @@ export default function VendorApplyThanksPage() {
             </div>
 
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">You&apos;re in.</h1>
+                <h1 className="text-2xl font-bold text-white">You&apos;re in.</h1>
                 <p className="mt-2 text-gray-500">
                     Once approved, you&apos;ll appear in the directory and can upgrade for better in-app placement.
                 </p>
             </div>
 
-            <div className="rounded-xl border border-gray-200 bg-white p-6 text-left space-y-3">
+            <div className="rounded-xl border border-white/10 bg-[#121212] p-6 text-left space-y-3">
                 <h2 className="font-semibold text-gray-800">Next steps</h2>
                 <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex gap-2">
@@ -32,7 +32,7 @@ export default function VendorApplyThanksPage() {
             </div>
 
             <Link aria-label="Navigation Link" href="/"
-                className="inline-block px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                className="inline-block px-6 py-2.5 border border-white/20 text-neutral-300 rounded-lg text-sm font-medium hover:bg-[#1A1A1A] transition-colors">
                 Back to home
             </Link>
         </div>

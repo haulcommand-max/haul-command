@@ -125,7 +125,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                         <p className="text-sm font-bold text-white">This location hasn&apos;t been claimed yet.</p>
                         <p className="text-xs text-[#888] mt-0.5">Is this your business? Claim it to manage your listing, add photos, and get matched with loads.</p>
                     </div>
-                    <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-black font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
+                    <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="bg-[#F1A91B] text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-[#f0b93a] transition-colors whitespace-nowrap">
                         Claim This Location →
                     </Link>
                 </div>
@@ -267,7 +267,7 @@ export default async function SurfaceDetailPage({ params }: { params: Promise<{ 
                             <p className="text-[10px] text-[#666] mb-4 leading-relaxed">
                                 Claim this listing to manage your profile, respond to leads, and boost visibility.
                             </p>
-                            <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-black font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
+                            <Link aria-label="Navigation Link" href={`/claim?surface=${surface.surface_id}`} className="block w-full bg-[#F1A91B] text-white font-bold text-xs px-5 py-3 rounded-xl hover:bg-[#f0b93a] transition-colors">
                                 Claim This Location
                             </Link>
                             <p className="text-[9px] text-[#444] mt-3">Free to claim • Verification required</p>

@@ -105,7 +105,7 @@ export default function PricingPage() {
                                     }`}>
                                 {i === 1 && (
                                     <div className="absolute -mt-12">
-                                        <span className="bg-hc-gold-500 text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                                        <span className="bg-hc-gold-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
                                             Most Popular
                                         </span>
                                     </div>
@@ -141,7 +141,7 @@ export default function PricingPage() {
                                 )}
                                 <Link href={tier.price === 0 ? '/claim' : '/onboarding'}
                                     className={`inline-flex items-center justify-center w-full py-3 rounded-xl font-semibold text-sm transition-all ${i === 1
-                                        ? 'bg-hc-gold-500 text-black hover:bg-hc-gold-400'
+                                        ? 'bg-hc-gold-500 text-white hover:bg-hc-gold-400'
                                         : 'border border-white/20 text-white hover:bg-white/5'
                                         }`}>
                                     {tier.price === 0 ? 'Claim Your Profile — Free' : `Start ${tier.name} Trial`}
@@ -267,7 +267,7 @@ export default function PricingPage() {
                     <p className="text-gray-400 mb-6 max-w-md mx-auto text-sm">Claim your profile now at no cost. Upgrade to Pro when you start receiving leads and want to accelerate.</p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <Link href="/claim"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-hc-gold-500 text-black font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-hc-gold-400 transition-all">
+                            className="inline-flex items-center justify-center px-8 py-4 bg-hc-gold-500 text-white font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-hc-gold-400 transition-all">
                             Claim Your Free Profile
                         </Link>
                         <Link href="/advertise"

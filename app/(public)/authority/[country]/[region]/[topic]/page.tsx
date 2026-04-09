@@ -522,7 +522,7 @@ export default async function AuthorityHubPage({ params }: Props) {
                         </p>
                         <Link aria-label="Navigation Link"
                             href={`/directory/${country}/${region}`}
-                            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors"
+                            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-6 py-3 rounded-lg transition-colors"
                         >
                             Browse {regionDisplay} Escorts →
                         </Link>

@@ -53,7 +53,7 @@ export default function CommunityLandingPage() {
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">
               Are you part of the official Heavy Haul Facebook community? Sync your account to inherit your group trust score and immediately bypass the manual verification queue.
             </p>
-            <Link aria-label="Navigation Link" href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-black font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
+            <Link aria-label="Navigation Link" href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-white font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
               Connect Facebook
             </Link>
           </div>

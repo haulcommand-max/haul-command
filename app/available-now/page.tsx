@@ -66,7 +66,7 @@ export default async function AvailableNowPage() {
                             <div className="relative z-10 text-center p-6 border border-[#e8a828]/20 bg-[#0a1118]/80 backdrop-blur-sm rounded-xl">
                                 <h3 className="text-[#e8a828] font-bold uppercase tracking-widest text-sm mb-2">RouteRadar Map</h3>
                                 <p className="text-xs text-[#8ab0d0] mb-4">Visual asset tracking limited to Pro dispatchers.</p>
-                                <button className="w-full py-2 bg-transparent border border-[#e8a828] text-[#e8a828] rounded font-bold uppercase text-xs hover:bg-[#e8a828] hover:text-black transition-colors delay-75">
+                                <button className="w-full py-2 bg-transparent border border-[#e8a828] text-[#e8a828] rounded font-bold uppercase text-xs hover:bg-[#e8a828] hover:text-white transition-colors delay-75">
                                     Unlock Map View
                                 </button>
                             </div>

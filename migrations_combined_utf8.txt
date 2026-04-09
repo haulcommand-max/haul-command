@@ -1,0 +1,1857 @@
+﻿-- Haul Command Content OS Schema Migration
+-- Defines the unified graph for Blog, Regulations, and Tools to act as a single intent system.
+
+-- ==========================================
+-- 1. ENUMS (System-Wide Truth States)
+-- ==========================================
+CREATE TYPE content_freshness_state AS ENUM (
+    'updated_recently', 
+    'review_due', 
+    'stable_reference', 
+    'seeded_needs_review', 
+    'historical_reference_only'
+);
+
+CREATE TYPE content_confidence_state AS ENUM (
+    'verified_current', 
+    'verified_but_review_due', 
+    'partially_verified', 
+    'seeded_needs_review', 
+    'historical_reference_only'
+);
+
+-- ==========================================
+-- 2. BLOG SYSTEM
+-- ==========================================
+CREATE TABLE blog_articles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    deck TEXT,
+    summary TEXT,
+    quick_answer TEXT,
+    article_type TEXT NOT NULL, -- e.g. 'regulation_update', 'corridor_intelligence'
+    topic_primary_id TEXT,
+    country_code TEXT,
+    region_code TEXT,
+    city_slug TEXT,
+    corridor_slug TEXT,
+    freshness_state content_freshness_state DEFAULT 'seeded_needs_review',
+    confidence_state content_confidence_state DEFAULT 'seeded_needs_review',
+    sponsor_eligible BOOLEAN DEFAULT true,
+    cta_primary_intent TEXT,
+    is_indexable BOOLEAN DEFAULT true,
+    published_at TIMESTAMPTZ DEFAULT NOW(),
+    reviewed_at TIMESTAMPTZ DEFAULT NOW(),
+    next_review_due TIMESTAMPTZ DEFAULT NOW() + INTERVAL '90 days',
+    metadata JSONB DEFAULT '{}'::JSONB
+);
+
+CREATE TABLE blog_article_blocks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    article_id UUID REFERENCES blog_articles(id) ON DELETE CASCADE,
+    block_type TEXT NOT NULL, -- e.g. 'h2', 'paragraph', 'faq'
+    sort_order INTEGER NOT NULL,
+    body_json JSONB NOT NULL
+);
+
+CREATE TABLE blog_article_links (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    article_id UUID REFERENCES blog_articles(id) ON DELETE CASCADE,
+    link_type TEXT NOT NULL, -- 'regulation', 'tool', 'glossary', 'local'
+    target_type TEXT NOT NULL,
+    target_id TEXT NOT NULL,
+    anchor_text TEXT,
+    priority INTEGER DEFAULT 1
+);
+
+-- ==========================================
+-- 3. REGULATIONS COMMAND ENGINE
+-- ==========================================
+CREATE TABLE reg_jurisdictions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    country_code TEXT NOT NULL,
+    region_code TEXT, -- Null means Federal/Country level
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    summary TEXT,
+    tier_label TEXT, -- e.g. 'Platinum', 'Gold', 'Bronze (Seed)'
+    confidence_state content_confidence_state DEFAULT 'seeded_needs_review',
+    freshness_state content_freshness_state DEFAULT 'seeded_needs_review',
+    reviewed_at TIMESTAMPTZ DEFAULT NOW(),
+    next_review_due TIMESTAMPTZ DEFAULT NOW() + INTERVAL '180 days',
+    is_indexable BOOLEAN DEFAULT true
+);
+
+CREATE TABLE reg_requirements (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    jurisdiction_id UUID REFERENCES reg_jurisdictions(id) ON DELETE CASCADE,
+    requirement_type TEXT NOT NULL, -- 'escort_threshold', 'curfew', 'equipment'
+    requirement_label TEXT NOT NULL,
+    requirement_value TEXT NOT NULL,
+    notes TEXT,
+    source_url TEXT
+);
+
+CREATE TABLE reg_authorities (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    jurisdiction_id UUID REFERENCES reg_jurisdictions(id) ON DELETE CASCADE,
+    authority_name TEXT NOT NULL, -- 'TXDOT'
+    authority_type TEXT NOT NULL, -- 'Permit Office'
+    official_url TEXT,
+    contact_phone TEXT,
+    contact_hours TEXT
+);
+
+CREATE TABLE reg_links (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    jurisdiction_id UUID REFERENCES reg_jurisdictions(id) ON DELETE CASCADE,
+    link_type TEXT NOT NULL,
+    target_type TEXT NOT NULL,
+    target_id TEXT NOT NULL,
+    anchor_text TEXT,
+    priority INTEGER DEFAULT 1
+);
+
+-- ==========================================
+-- 4. TOOLS (UTILITY ENGINE)
+-- ==========================================
+CREATE TABLE tool_catalog (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    category_primary_id TEXT,
+    problem_primary TEXT,
+    summary TEXT,
+    quick_answer TEXT,
+    what_it_solves TEXT,
+    when_to_use TEXT,
+    no_login_required BOOLEAN DEFAULT true,
+    pricing_mode TEXT DEFAULT 'free',
+    sponsor_eligible BOOLEAN DEFAULT true,
+    freshness_state content_freshness_state DEFAULT 'stable_reference',
+    trust_state content_confidence_state DEFAULT 'verified_current',
+    is_indexable BOOLEAN DEFAULT true,
+    metadata JSONB DEFAULT '{}'::JSONB
+);
+
+CREATE TABLE tool_links (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tool_id UUID REFERENCES tool_catalog(id) ON DELETE CASCADE,
+    link_type TEXT NOT NULL,
+    target_type TEXT NOT NULL,
+    target_id TEXT NOT NULL,
+    anchor_text TEXT,
+    priority INTEGER DEFAULT 1
+);
+
+-- ==========================================
+-- 5. THE GRAPH RPCs (Unified Fetchers)
+-- ==========================================
+-- These RPCs ensure that when we load a page, we fetch the entity + all its required structural adacencies in one trip.
+
+CREATE OR REPLACE FUNCTION get_blog_article_structured(p_slug TEXT)
+RETURNS JSON AS $$
+DECLARE
+    result JSON;
+BEGIN
+    SELECT json_build_object(
+        'article', row_to_json(a),
+        'blocks', (SELECT json_agg(b ORDER BY b.sort_order) FROM blog_article_blocks b WHERE b.article_id = a.id),
+        'links', (SELECT json_agg(l ORDER BY l.priority) FROM blog_article_links l WHERE l.article_id = a.id)
+    ) INTO result
+    FROM blog_articles a
+    WHERE a.slug = p_slug;
+    
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_reg_jurisdiction_structured(p_country_code TEXT, p_region_code TEXT DEFAULT NULL)
+RETURNS JSON AS $$
+DECLARE
+    result JSON;
+BEGIN
+    SELECT json_build_object(
+        'jurisdiction', row_to_json(j),
+        'requirements', (SELECT json_agg(req) FROM reg_requirements req WHERE req.jurisdiction_id = j.id),
+        'authorities', (SELECT json_agg(auth) FROM reg_authorities auth WHERE auth.jurisdiction_id = j.id),
+        'links', (SELECT json_agg(l ORDER BY l.priority) FROM reg_links l WHERE l.jurisdiction_id = j.id)
+    ) INTO result
+    FROM reg_jurisdictions j
+    WHERE j.country_code = p_country_code 
+      AND (p_region_code IS NULL OR j.region_code = p_region_code);
+    
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_tool_structured(p_slug TEXT)
+RETURNS JSON AS $$
+DECLARE
+    result JSON;
+BEGIN
+    SELECT json_build_object(
+        'tool', row_to_json(t),
+        'links', (SELECT json_agg(l ORDER BY l.priority) FROM tool_links l WHERE l.tool_id = t.id)
+    ) INTO result
+    FROM tool_catalog t
+    WHERE t.slug = p_slug;
+    
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Set up Realtime Triggers for edge cache invalidations
+ALTER PUBLICATION supabase_realtime ADD TABLE blog_articles;
+ALTER PUBLICATION supabase_realtime ADD TABLE reg_jurisdictions;
+ALTER PUBLICATION supabase_realtime ADD TABLE tool_catalog;
+-- Haul Command Content OS: Content Graph + Quality Scoring + Staleness Queue
+-- Extension to the core Content OS schema (20260409120000)
+
+-- ==========================================
+-- 1. THE CONTENT GRAPH (Anti-Orphan Engine)
+-- ==========================================
+-- Every page is a node. Every internal link is an edge.
+-- The system can query: "Which nodes have zero inbound edges?" ΓåÆ orphans.
+
+CREATE TABLE content_nodes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    page_family TEXT NOT NULL, -- 'blog', 'regulation', 'tool', 'glossary', 'corridor', 'directory', 'resource'
+    entity_id TEXT NOT NULL, -- slug or UUID of the actual entity
+    entity_title TEXT NOT NULL,
+    country_code TEXT,
+    region_code TEXT,
+    canonical_url TEXT NOT NULL,
+    freshness_state content_freshness_state DEFAULT 'seeded_needs_review',
+    confidence_state content_confidence_state DEFAULT 'seeded_needs_review',
+    is_indexable BOOLEAN DEFAULT true,
+    sponsor_eligible BOOLEAN DEFAULT true,
+    has_monetization_block BOOLEAN DEFAULT false,
+    inbound_link_count INTEGER DEFAULT 0,
+    outbound_link_count INTEGER DEFAULT 0,
+    quality_score NUMERIC(5,2) DEFAULT 0,
+    last_scored_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(page_family, entity_id)
+);
+
+CREATE TABLE content_edges (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    source_node_id UUID REFERENCES content_nodes(id) ON DELETE CASCADE,
+    target_node_id UUID REFERENCES content_nodes(id) ON DELETE CASCADE,
+    edge_type TEXT NOT NULL, -- 'support', 'sibling', 'parent', 'child', 'commercial', 'glossary_ref'
+    anchor_text TEXT,
+    rel_attribute TEXT, -- 'sponsored', 'ugc', null (standard dofollow)
+    priority INTEGER DEFAULT 1,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(source_node_id, target_node_id, edge_type)
+);
+
+-- Index for orphan detection (nodes with zero inbound)
+CREATE INDEX idx_content_nodes_inbound ON content_nodes (inbound_link_count) WHERE inbound_link_count = 0;
+CREATE INDEX idx_content_nodes_family ON content_nodes (page_family);
+CREATE INDEX idx_content_edges_target ON content_edges (target_node_id);
+
+-- ==========================================
+-- 2. QUALITY SCORING ENGINE
+-- ==========================================
+CREATE TABLE content_quality_scores (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    node_id UUID REFERENCES content_nodes(id) ON DELETE CASCADE,
+    scored_at TIMESTAMPTZ DEFAULT NOW(),
+    
+    -- Category Scores (0-100)
+    editorial_utility SMALLINT DEFAULT 0,
+    support_link_density SMALLINT DEFAULT 0,
+    geo_relevance SMALLINT DEFAULT 0,
+    trust_source_clarity SMALLINT DEFAULT 0,
+    commercial_routing SMALLINT DEFAULT 0,
+    freshness SMALLINT DEFAULT 0,
+    
+    -- Computed total
+    total_score NUMERIC(5,2) GENERATED ALWAYS AS (
+        (editorial_utility + support_link_density + geo_relevance + trust_source_clarity + commercial_routing + freshness) / 6.0
+    ) STORED,
+    
+    -- Flags
+    has_quick_answer BOOLEAN DEFAULT false,
+    has_trust_strip BOOLEAN DEFAULT false,
+    has_intent_router BOOLEAN DEFAULT false,
+    has_monetization_block BOOLEAN DEFAULT false,
+    has_next_step_cta BOOLEAN DEFAULT false,
+    is_dead_end BOOLEAN DEFAULT true, -- True = VIOLATION of no-dead-end law
+    is_orphan BOOLEAN DEFAULT true, -- True = VIOLATION of no-orphan law
+    
+    -- Pass/Fail
+    passes_crown_jewel_standard BOOLEAN GENERATED ALWAYS AS (
+        (editorial_utility + support_link_density + geo_relevance + trust_source_clarity + commercial_routing + freshness) / 6.0 >= 75
+        AND has_quick_answer = true
+        AND is_dead_end = false
+        AND is_orphan = false
+    ) STORED
+);
+
+-- ==========================================
+-- 3. STALENESS REVIEW QUEUE (Cron Target)
+-- ==========================================
+CREATE TABLE content_review_queue (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    node_id UUID REFERENCES content_nodes(id) ON DELETE CASCADE,
+    page_family TEXT NOT NULL,
+    entity_id TEXT NOT NULL,
+    reason TEXT NOT NULL, -- 'review_due', 'low_quality_score', 'orphan_detected', 'dead_end_detected'
+    priority TEXT NOT NULL DEFAULT 'normal', -- 'critical', 'high', 'normal', 'low'
+    queued_at TIMESTAMPTZ DEFAULT NOW(),
+    resolved_at TIMESTAMPTZ,
+    resolved_by TEXT -- 'human', 'ai_agent', 'auto_fix'
+);
+
+-- ==========================================
+-- 4. ORPHAN DETECTION RPC
+-- ==========================================
+CREATE OR REPLACE FUNCTION detect_content_orphans()
+RETURNS TABLE(node_id UUID, page_family TEXT, entity_title TEXT, canonical_url TEXT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT cn.id, cn.page_family, cn.entity_title, cn.canonical_url
+    FROM content_nodes cn
+    WHERE cn.inbound_link_count = 0
+      AND cn.is_indexable = true
+    ORDER BY cn.page_family, cn.entity_title;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ==========================================
+-- 5. DEAD-END DETECTION RPC
+-- ==========================================
+CREATE OR REPLACE FUNCTION detect_content_dead_ends()
+RETURNS TABLE(node_id UUID, page_family TEXT, entity_title TEXT, canonical_url TEXT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT cn.id, cn.page_family, cn.entity_title, cn.canonical_url
+    FROM content_nodes cn
+    WHERE cn.outbound_link_count = 0
+      AND cn.is_indexable = true
+    ORDER BY cn.page_family, cn.entity_title;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ==========================================
+-- 6. STALENESS SCANNER (pg_cron target)
+-- ==========================================
+-- Run daily: SELECT queue_stale_content();
+CREATE OR REPLACE FUNCTION queue_stale_content()
+RETURNS INTEGER AS $$
+DECLARE
+    queued_count INTEGER := 0;
+BEGIN
+    -- Blog articles past review due
+    INSERT INTO content_review_queue (node_id, page_family, entity_id, reason, priority)
+    SELECT cn.id, 'blog', ba.slug, 'review_due', 'high'
+    FROM blog_articles ba
+    JOIN content_nodes cn ON cn.page_family = 'blog' AND cn.entity_id = ba.slug
+    WHERE ba.next_review_due < NOW()
+      AND NOT EXISTS (
+          SELECT 1 FROM content_review_queue crq 
+          WHERE crq.node_id = cn.id AND crq.resolved_at IS NULL
+      );
+    GET DIAGNOSTICS queued_count = ROW_COUNT;
+
+    -- Regulation jurisdictions past review due
+    INSERT INTO content_review_queue (node_id, page_family, entity_id, reason, priority)
+    SELECT cn.id, 'regulation', rj.slug, 'review_due', 'critical'
+    FROM reg_jurisdictions rj
+    JOIN content_nodes cn ON cn.page_family = 'regulation' AND cn.entity_id = rj.slug
+    WHERE rj.next_review_due < NOW()
+      AND NOT EXISTS (
+          SELECT 1 FROM content_review_queue crq 
+          WHERE crq.node_id = cn.id AND crq.resolved_at IS NULL
+      );
+
+    -- Orphan detection pass
+    INSERT INTO content_review_queue (node_id, page_family, entity_id, reason, priority)
+    SELECT cn.id, cn.page_family, cn.entity_id, 'orphan_detected', 'high'
+    FROM content_nodes cn
+    WHERE cn.inbound_link_count = 0
+      AND cn.is_indexable = true
+      AND NOT EXISTS (
+          SELECT 1 FROM content_review_queue crq 
+          WHERE crq.node_id = cn.id AND crq.reason = 'orphan_detected' AND crq.resolved_at IS NULL
+      );
+
+    RETURN queued_count;
+END;
+$$ LANGUAGE plpgsql;
+-- Haul Command: Content OS Staleness Cron Activation
+-- Migration: 20260409150000_content_staleness_cron.sql
+-- 
+-- Adds staleness scanner, orphan detector, and quality review
+-- to the existing pg_cron schedule.
+--
+-- DEPENDS ON:
+--   20260409120000_content_os_schema.sql (blog_articles, reg_jurisdictions, tool_catalog)
+--   20260409130000_content_graph_and_quality_engine.sql (queue_stale_content, detect_content_orphans)
+--   20260220_pg_cron_schedules.sql (pg_cron extension already enabled)
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 1: Daily Staleness Scanner ΓÇö 03:00 UTC
+-- Queues articles/regulations past their next_review_due date.
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+SELECT cron.schedule(
+    'content-staleness-scanner',
+    '0 3 * * *',
+    $$ SELECT queue_stale_content(); $$
+);
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 2: Orphan Page Detector ΓÇö Every 6 hours
+-- Finds content_nodes with zero inbound links and queues for fix.
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+SELECT cron.schedule(
+    'content-orphan-detector',
+    '0 */6 * * *',
+    $$
+    INSERT INTO content_review_queue (node_id, page_family, entity_id, reason, priority)
+    SELECT cn.id, cn.page_family, cn.entity_id, 'orphan_detected', 'high'
+    FROM content_nodes cn
+    WHERE cn.inbound_link_count = 0
+      AND cn.is_indexable = true
+      AND NOT EXISTS (
+          SELECT 1 FROM content_review_queue crq 
+          WHERE crq.node_id = cn.id AND crq.reason = 'orphan_detected' AND crq.resolved_at IS NULL
+      );
+    $$
+);
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 3: Dead-End Page Detector ΓÇö Every 6 hours
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+SELECT cron.schedule(
+    'content-dead-end-detector',
+    '30 */6 * * *',
+    $$
+    INSERT INTO content_review_queue (node_id, page_family, entity_id, reason, priority)
+    SELECT cn.id, cn.page_family, cn.entity_id, 'dead_end_detected', 'high'
+    FROM content_nodes cn
+    WHERE cn.outbound_link_count = 0
+      AND cn.is_indexable = true
+      AND NOT EXISTS (
+          SELECT 1 FROM content_review_queue crq 
+          WHERE crq.node_id = cn.id AND crq.reason = 'dead_end_detected' AND crq.resolved_at IS NULL
+      );
+    $$
+);
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 4: Blog Freshness Counter ΓÇö Daily at 04:00 UTC
+-- Promotes stable_reference articles to seeded_needs_review
+-- if not touched in 90 days (forces editorial review cycle).
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+SELECT cron.schedule(
+    'blog-freshness-counter',
+    '0 4 * * *',
+    $$
+    UPDATE blog_articles
+    SET freshness_state = 'seeded_needs_review',
+        next_review_due = NOW()
+    WHERE freshness_state = 'stable_reference'
+      AND updated_at < NOW() - INTERVAL '90 days'
+      AND next_review_due < NOW();
+    $$
+);
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 5: Regulation Freshness Counter ΓÇö Daily at 04:30 UTC
+-- Marks regulations urgent if source_authority changed or
+-- not reviewed in 60 days.
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+SELECT cron.schedule(
+    'regulation-freshness-counter',
+    '30 4 * * *',
+    $$
+    UPDATE reg_jurisdictions
+    SET freshness_state = 'seeded_needs_review',
+        next_review_due = NOW()
+    WHERE next_review_due < NOW()
+      AND freshness_state != 'updated_recently';
+    $$
+);
+
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+-- CRON 6: Tool Count Sync ΓÇö Daily at 05:00 UTC
+-- Keeps a materialized count that the tools page hero reads,
+-- eliminating the hardcoded "15 free tools" staleness risk.
+-- ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+CREATE TABLE IF NOT EXISTS content_platform_stats (
+    key TEXT PRIMARY KEY,
+    value BIGINT NOT NULL DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Seed initial values
+INSERT INTO content_platform_stats (key, value) VALUES
+    ('tool_count', 15),
+    ('verified_operator_count', 24164),
+    ('active_corridor_count', 847),
+    ('country_count', 120),
+    ('blog_article_count', 5)
+ON CONFLICT (key) DO NOTHING;
+
+SELECT cron.schedule(
+    'platform-stats-sync',
+    '0 5 * * *',
+    $$
+    UPDATE content_platform_stats SET value = (
+        SELECT COUNT(*) FROM tool_catalog WHERE is_active = true
+    ), updated_at = NOW() WHERE key = 'tool_count';
+
+    UPDATE content_platform_stats SET value = (
+        SELECT COUNT(*) FROM profiles WHERE status = 'active'
+    ), updated_at = NOW() WHERE key = 'verified_operator_count';
+
+    UPDATE content_platform_stats SET value = (
+        SELECT COUNT(*) FROM blog_articles WHERE published_at <= NOW()
+    ), updated_at = NOW() WHERE key = 'blog_article_count';
+    $$
+);
+
+-- RPC: Read canonical platform stats (used by TrustStrip and homepage)
+CREATE OR REPLACE FUNCTION get_platform_stats()
+RETURNS JSONB AS $$
+    SELECT jsonb_object_agg(key, value)
+    FROM content_platform_stats;
+$$ LANGUAGE sql STABLE SECURITY DEFINER;
+-- ================================================================
+-- Haul Command Unified Content OS ΓÇö Phase 2 Combined Schema Pack
+-- Adds Training as first-class page family alongside Blog, 
+-- Regulations, and Tools. Integrates with existing glossary
+-- knowledge graph via content_edges.
+-- ================================================================
+begin;
+
+-- ============================================================
+-- 1. TRAINING CATALOG (REVENUE-CRITICAL)
+-- ============================================================
+
+create table if not exists public.training_catalog (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null,
+  title text not null,
+  summary text,
+  quick_answer text,
+
+  training_type text,                -- 'course', 'certification', 'module_bundle'
+  credential_level text,             -- 'road_ready', 'certified', 'elite', 'av_ready'
+
+  module_count int default 0,
+  hours_total int default 0,
+
+  jurisdiction_scope text,           -- 'national', 'state', 'multi-state', 'global'
+  reciprocity_scope text,            -- description of cross-jurisdiction portability
+
+  requirement_fit text,              -- 'required', 'useful', 'optional'
+  ranking_impact text,               -- description of on-platform ranking effect
+  trust_badge_effect jsonb default '{}'::jsonb,
+
+  pricing_mode text default 'paid',  -- 'free', 'freemium', 'paid', 'subscription', 'enterprise'
+  pricing_json jsonb default '{}'::jsonb,
+
+  sponsor_eligible boolean default false,
+
+  confidence_state text not null default 'seeded_needs_review',
+  freshness_state text not null default 'seeded_needs_review',
+
+  is_active boolean default true,
+  is_indexable boolean default true,
+
+  cta_primary text,
+  cta_secondary text,
+
+  reviewed_at timestamptz default now(),
+  next_review_due timestamptz default now() + interval '90 days',
+
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_training_catalog_slug on public.training_catalog(slug);
+create index if not exists idx_training_catalog_active on public.training_catalog(is_active, is_indexable);
+
+-- ============================================================
+-- 2. TRAINING MODULES
+-- ============================================================
+
+create table if not exists public.training_modules (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  slug text not null,
+  title text not null,
+  summary text,
+  hours int default 0,
+  sort_order int default 0,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_training_modules_training on public.training_modules(training_id, sort_order);
+
+-- ============================================================
+-- 3. TRAINING LEVELS (Badge/Tier System)
+-- ============================================================
+
+create table if not exists public.training_levels (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  level_slug text not null,
+  level_name text not null,
+  description text,
+  badge_slug text,
+  rank_weight int default 0,
+  trust_weight int default 0,
+  pricing_json jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 4. TRAINING GEO FIT (Country/Region Training Applicability)
+-- ============================================================
+
+create table if not exists public.training_geo_fit (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  country_code text not null,
+  region_code text,
+  fit_type text not null default 'useful', -- 'required', 'useful', 'optional', 'not_applicable'
+  note text,
+  confidence_state text default 'seeded_needs_review',
+  freshness_state text default 'seeded_needs_review',
+  created_at timestamptz default now(),
+  unique (training_id, country_code, region_code)
+);
+
+create index if not exists idx_training_geo_fit_country on public.training_geo_fit(country_code);
+
+-- ============================================================
+-- 5. TRAINING RECIPROCITY NOTES
+-- ============================================================
+
+create table if not exists public.training_reciprocity_notes (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  from_geo text not null,
+  to_geo text not null,
+  note text,
+  confidence_state text default 'seeded_needs_review',
+  freshness_state text default 'seeded_needs_review',
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 6. TRAINING LINKS (Cross-System Routing)
+-- ============================================================
+
+create table if not exists public.training_links (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  link_type text not null,     -- 'related_regulation', 'related_tool', 'related_glossary', 
+                               -- 'related_location', 'related_corridor', 'next_action',
+                               -- 'claim_path', 'sponsor_path'
+  target_type text not null,
+  target_id text not null,
+  anchor_text text,
+  priority int default 50,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_training_links_training on public.training_links(training_id, priority desc);
+
+-- ============================================================
+-- 7. TRAINING BADGE EFFECTS
+-- ============================================================
+
+create table if not exists public.training_badge_effects (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  badge_slug text not null,
+  on_platform_effect_json jsonb default '{}'::jsonb,
+  visible_copy text,
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 8. TRAINING ENROLLMENTS (Revenue Engine)
+-- ============================================================
+
+create table if not exists public.training_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  status text not null default 'enrolled', -- 'enrolled', 'in_progress', 'completed', 'expired', 'cancelled'
+  purchased_at timestamptz default now(),
+  completed_at timestamptz,
+  expires_at timestamptz,
+  review_due_at timestamptz,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_training_enrollments_user on public.training_enrollments(user_id, status);
+
+-- ============================================================
+-- 9. TRAINING USER BADGES
+-- ============================================================
+
+create table if not exists public.training_user_badges (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  badge_slug text not null,
+  source_training_id uuid references public.training_catalog(id) on delete set null,
+  status text not null default 'active', -- 'active', 'expired', 'review_due', 'revoked'
+  issued_at timestamptz default now(),
+  expires_at timestamptz,
+  review_due_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_training_user_badges_user on public.training_user_badges(user_id, status);
+
+-- ============================================================
+-- 10. TRAINING TEAM ACCOUNTS (Enterprise Revenue)
+-- ============================================================
+
+create table if not exists public.training_team_accounts (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid,
+  plan_type text not null default 'team', -- 'team', 'enterprise', 'government'
+  seat_count int default 5,
+  renewal_at timestamptz,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.training_team_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  team_account_id uuid references public.training_team_accounts(id) on delete cascade,
+  user_id uuid not null,
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  status text not null default 'enrolled',
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 11. CONTENT EDGES ΓÇö CROSS-SYSTEM LINK GRAPH
+-- Enables blog <-> regulations <-> tools <-> training <-> glossary
+-- ============================================================
+
+create table if not exists public.content_edges (
+  id uuid primary key default gen_random_uuid(),
+  from_type text not null,       -- 'blog', 'regulation', 'tool', 'training', 'glossary', 'location', 'corridor'
+  from_id text not null,         -- slug or uuid
+  to_type text not null,
+  to_id text not null,
+  link_type text not null,       -- 'supports', 'requires', 'explains', 'trains_for', 'next_action'
+  anchor_text text,
+  priority int default 50,
+  is_auto_generated boolean default false,
+  created_at timestamptz default now(),
+  unique (from_type, from_id, to_type, to_id, link_type)
+);
+
+create index if not exists idx_content_edges_from on public.content_edges(from_type, from_id, priority desc);
+create index if not exists idx_content_edges_to on public.content_edges(to_type, to_id);
+
+-- ============================================================
+-- 12. CONTENT QUALITY SCORES (Unified Scoring Engine)
+-- ============================================================
+
+create table if not exists public.content_quality_scores (
+  id uuid primary key default gen_random_uuid(),
+  page_family text not null,    -- 'blog', 'regulations', 'tools', 'training', 'glossary'
+  entity_id text not null,      -- slug or uuid
+  
+  editorial_utility numeric(3,2) default 0,
+  support_link_density numeric(3,2) default 0,
+  geo_relevance numeric(3,2) default 0,
+  trust_source_clarity numeric(3,2) default 0,
+  commercial_routing numeric(3,2) default 0,
+  freshness numeric(3,2) default 0,
+  overall_score numeric(3,2) default 0,
+  
+  notes text,
+  scored_at timestamptz default now(),
+  
+  unique (page_family, entity_id)
+);
+
+-- ============================================================
+-- 13. RLS POLICIES
+-- ============================================================
+
+alter table public.training_catalog enable row level security;
+alter table public.training_modules enable row level security;
+alter table public.training_levels enable row level security;
+alter table public.training_geo_fit enable row level security;
+alter table public.training_reciprocity_notes enable row level security;
+alter table public.training_links enable row level security;
+alter table public.training_badge_effects enable row level security;
+alter table public.training_enrollments enable row level security;
+alter table public.training_user_badges enable row level security;
+alter table public.training_team_accounts enable row level security;
+alter table public.training_team_enrollments enable row level security;
+alter table public.content_edges enable row level security;
+alter table public.content_quality_scores enable row level security;
+
+-- Public read for catalog/modules/levels/links/geo/reciprocity/badges
+create policy "Public can view training catalog" on public.training_catalog for select using (true);
+create policy "Public can view training modules" on public.training_modules for select using (true);
+create policy "Public can view training levels" on public.training_levels for select using (true);
+create policy "Public can view training geo fit" on public.training_geo_fit for select using (true);
+create policy "Public can view training reciprocity" on public.training_reciprocity_notes for select using (true);
+create policy "Public can view training links" on public.training_links for select using (true);
+create policy "Public can view badge effects" on public.training_badge_effects for select using (true);
+create policy "Public can view content edges" on public.content_edges for select using (true);
+create policy "Public can view quality scores" on public.content_quality_scores for select using (true);
+
+-- User-scoped policies for enrollments and badges
+create policy "Users can view own enrollments" on public.training_enrollments
+  for select using (auth.uid() = user_id);
+create policy "Users can view own badges" on public.training_user_badges
+  for select using (auth.uid() = user_id);
+
+-- Team account scoped
+create policy "Team admins can view team accounts" on public.training_team_accounts
+  for select using (true);
+create policy "Team enrollments viewable by member" on public.training_team_enrollments
+  for select using (auth.uid() = user_id);
+
+commit;
+-- ================================================================
+-- Training RPC Pack ΓÇö Unified Payload Engine
+-- ================================================================
+begin;
+
+-- TRAINING HUB PAYLOAD
+create or replace function public.training_hub_payload()
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with catalog as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'slug', tc.slug,
+      'title', tc.title,
+      'summary', tc.summary,
+      'training_type', tc.training_type,
+      'credential_level', tc.credential_level,
+      'module_count', tc.module_count,
+      'hours_total', tc.hours_total,
+      'pricing_mode', tc.pricing_mode,
+      'requirement_fit', tc.requirement_fit,
+      'ranking_impact', tc.ranking_impact,
+      'sponsor_eligible', tc.sponsor_eligible
+    )
+    order by tc.credential_level asc, tc.title asc
+  ) as items
+  from public.training_catalog tc
+  where tc.is_active = true
+    and tc.is_indexable = true
+),
+geo_coverage as (
+  select jsonb_agg(distinct tgf.country_code) as items
+  from public.training_geo_fit tgf
+),
+level_overview as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'level_slug', tl.level_slug,
+      'level_name', tl.level_name,
+      'description', tl.description,
+      'badge_slug', tl.badge_slug,
+      'rank_weight', tl.rank_weight
+    )
+  ) as items
+  from public.training_levels tl
+)
+select jsonb_build_object(
+  'catalog', coalesce((select items from catalog), '[]'::jsonb),
+  'geo_coverage', coalesce((select items from geo_coverage), '[]'::jsonb),
+  'levels', coalesce((select items from level_overview), '[]'::jsonb)
+);
+$$;
+
+-- TRAINING PAGE PAYLOAD
+create or replace function public.training_page_payload(
+  p_slug text,
+  p_country_code text default null,
+  p_region_code text default null
+)
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with base as (
+  select * from public.training_catalog
+  where slug = p_slug
+    and is_active = true
+  limit 1
+),
+modules as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'slug', m.slug,
+      'title', m.title,
+      'summary', m.summary,
+      'hours', m.hours,
+      'sort_order', m.sort_order
+    )
+    order by m.sort_order asc
+  ) as items
+  from public.training_modules m
+  join base b on b.id = m.training_id
+),
+levels as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'level_slug', l.level_slug,
+      'level_name', l.level_name,
+      'description', l.description,
+      'badge_slug', l.badge_slug,
+      'rank_weight', l.rank_weight,
+      'trust_weight', l.trust_weight,
+      'pricing_json', l.pricing_json
+    )
+  ) as items
+  from public.training_levels l
+  join base b on b.id = l.training_id
+),
+geo_fit as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'country_code', gf.country_code,
+      'region_code', gf.region_code,
+      'fit_type', gf.fit_type,
+      'note', gf.note,
+      'confidence_state', gf.confidence_state,
+      'freshness_state', gf.freshness_state
+    )
+  ) as items
+  from public.training_geo_fit gf
+  join base b on b.id = gf.training_id
+  where (p_country_code is null or gf.country_code = p_country_code)
+),
+reciprocity as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'from_geo', rn.from_geo,
+      'to_geo', rn.to_geo,
+      'note', rn.note,
+      'confidence_state', rn.confidence_state,
+      'freshness_state', rn.freshness_state
+    )
+  ) as items
+  from public.training_reciprocity_notes rn
+  join base b on b.id = rn.training_id
+),
+links as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'link_type', tl.link_type,
+      'target_type', tl.target_type,
+      'target_id', tl.target_id,
+      'anchor_text', tl.anchor_text,
+      'priority', tl.priority
+    )
+    order by tl.priority desc
+  ) as items
+  from public.training_links tl
+  join base b on b.id = tl.training_id
+),
+badge_effects as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'badge_slug', be.badge_slug,
+      'on_platform_effect_json', be.on_platform_effect_json,
+      'visible_copy', be.visible_copy
+    )
+  ) as items
+  from public.training_badge_effects be
+  join base b on b.id = be.training_id
+)
+select jsonb_build_object(
+  'training', (
+    select jsonb_build_object(
+      'id', b.id,
+      'slug', b.slug,
+      'title', b.title,
+      'summary', b.summary,
+      'quick_answer', b.quick_answer,
+      'training_type', b.training_type,
+      'credential_level', b.credential_level,
+      'module_count', b.module_count,
+      'hours_total', b.hours_total,
+      'jurisdiction_scope', b.jurisdiction_scope,
+      'reciprocity_scope', b.reciprocity_scope,
+      'requirement_fit', b.requirement_fit,
+      'ranking_impact', b.ranking_impact,
+      'trust_badge_effect', b.trust_badge_effect,
+      'pricing_mode', b.pricing_mode,
+      'pricing_json', b.pricing_json,
+      'confidence_state', b.confidence_state,
+      'freshness_state', b.freshness_state,
+      'cta_primary', b.cta_primary,
+      'cta_secondary', b.cta_secondary,
+      'reviewed_at', b.reviewed_at,
+      'next_review_due', b.next_review_due
+    )
+    from base b
+  ),
+  'modules', coalesce((select items from modules), '[]'::jsonb),
+  'levels', coalesce((select items from levels), '[]'::jsonb),
+  'geo_fit', coalesce((select items from geo_fit), '[]'::jsonb),
+  'reciprocity', coalesce((select items from reciprocity), '[]'::jsonb),
+  'links', coalesce((select items from links), '[]'::jsonb),
+  'badge_effects', coalesce((select items from badge_effects), '[]'::jsonb)
+)
+from base
+limit 1;
+$$;
+
+-- TRAINING COUNTRY PAYLOAD
+create or replace function public.training_country_payload(p_country_code text)
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with geo_trainings as (
+  select
+    tc.slug,
+    tc.title,
+    tc.summary,
+    tc.credential_level,
+    tc.pricing_mode,
+    gf.fit_type,
+    gf.note,
+    gf.confidence_state,
+    gf.freshness_state
+  from public.training_geo_fit gf
+  join public.training_catalog tc on tc.id = gf.training_id
+  where gf.country_code = p_country_code
+    and tc.is_active = true
+)
+select jsonb_build_object(
+  'country_code', p_country_code,
+  'trainings', (
+    select jsonb_agg(
+      jsonb_build_object(
+        'slug', gt.slug,
+        'title', gt.title,
+        'summary', gt.summary,
+        'credential_level', gt.credential_level,
+        'pricing_mode', gt.pricing_mode,
+        'fit_type', gt.fit_type,
+        'note', gt.note,
+        'confidence_state', gt.confidence_state,
+        'freshness_state', gt.freshness_state
+      )
+    )
+    from geo_trainings gt
+  )
+);
+$$;
+
+grant execute on function public.training_hub_payload() to anon, authenticated;
+grant execute on function public.training_page_payload(text, text, text) to anon, authenticated;
+grant execute on function public.training_country_payload(text) to anon, authenticated;
+
+commit;
+-- ================================================================
+-- Content OS Training Integration ΓÇö Reconciliation Patch
+-- Handles collision with pre-existing training table schema
+-- by creating only the NEW tables and adding missing columns
+-- ================================================================
+begin;
+
+-- ============================================================
+-- 1. TRAINING CATALOG ΓÇö New unified training program table
+-- Coexists alongside existing training_courses & training_programs
+-- ============================================================
+create table if not exists public.training_catalog (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null,
+  title text not null,
+  summary text,
+  quick_answer text,
+  training_type text,
+  credential_level text,
+  module_count int default 0,
+  hours_total int default 0,
+  jurisdiction_scope text,
+  reciprocity_scope text,
+  requirement_fit text,
+  ranking_impact text,
+  trust_badge_effect jsonb default '{}'::jsonb,
+  pricing_mode text default 'paid',
+  pricing_json jsonb default '{}'::jsonb,
+  sponsor_eligible boolean default false,
+  confidence_state text not null default 'seeded_needs_review',
+  freshness_state text not null default 'seeded_needs_review',
+  is_active boolean default true,
+  is_indexable boolean default true,
+  cta_primary text,
+  cta_secondary text,
+  reviewed_at timestamptz default now(),
+  next_review_due timestamptz default now() + interval '90 days',
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_tc_catalog_slug on public.training_catalog(slug);
+create index if not exists idx_tc_catalog_active on public.training_catalog(is_active, is_indexable);
+
+-- ============================================================
+-- 2. TRAINING CATALOG MODULES ΓÇö separate from training_modules
+-- ============================================================
+create table if not exists public.tc_modules (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  slug text not null,
+  title text not null,
+  summary text,
+  hours int default 0,
+  sort_order int default 0,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_tc_modules_training on public.tc_modules(training_id, sort_order);
+
+-- ============================================================
+-- 3. TRAINING LEVELS (Badge/Tier System)
+-- ============================================================
+create table if not exists public.training_levels (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  level_slug text not null,
+  level_name text not null,
+  description text,
+  badge_slug text,
+  rank_weight int default 0,
+  trust_weight int default 0,
+  pricing_json jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 4. TRAINING GEO FIT
+-- ============================================================
+create table if not exists public.training_geo_fit (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  country_code text not null,
+  region_code text,
+  fit_type text not null default 'useful',
+  note text,
+  confidence_state text default 'seeded_needs_review',
+  freshness_state text default 'seeded_needs_review',
+  created_at timestamptz default now(),
+  unique (training_id, country_code, region_code)
+);
+
+create index if not exists idx_tgf_country on public.training_geo_fit(country_code);
+
+-- ============================================================
+-- 5. TRAINING RECIPROCITY NOTES
+-- ============================================================
+create table if not exists public.training_reciprocity_notes (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  from_geo text not null,
+  to_geo text not null,
+  note text,
+  confidence_state text default 'seeded_needs_review',
+  freshness_state text default 'seeded_needs_review',
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 6. TRAINING LINKS (Cross-System Routing)
+-- ============================================================
+create table if not exists public.training_links (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  link_type text not null,
+  target_type text not null,
+  target_id text not null,
+  anchor_text text,
+  priority int default 50,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_tl_training on public.training_links(training_id, priority desc);
+
+-- ============================================================
+-- 7. TRAINING BADGE EFFECTS
+-- ============================================================
+create table if not exists public.training_badge_effects (
+  id uuid primary key default gen_random_uuid(),
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  badge_slug text not null,
+  on_platform_effect_json jsonb default '{}'::jsonb,
+  visible_copy text,
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 8. TRAINING CATALOG ENROLLMENTS
+-- (Separate from existing training_enrollments which uses program_id)
+-- ============================================================
+create table if not exists public.tc_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  status text not null default 'enrolled',
+  purchased_at timestamptz default now(),
+  completed_at timestamptz,
+  expires_at timestamptz,
+  review_due_at timestamptz,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_tce_user on public.tc_enrollments(user_id, status);
+
+-- ============================================================
+-- 9. TRAINING USER BADGES
+-- ============================================================
+create table if not exists public.training_user_badges (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  badge_slug text not null,
+  source_training_id uuid references public.training_catalog(id) on delete set null,
+  status text not null default 'active',
+  issued_at timestamptz default now(),
+  expires_at timestamptz,
+  review_due_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_tub_user on public.training_user_badges(user_id, status);
+
+-- ============================================================
+-- 10. TEAM ACCOUNTS
+-- ============================================================
+create table if not exists public.training_team_accounts (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid,
+  plan_type text not null default 'team',
+  seat_count int default 5,
+  renewal_at timestamptz,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.training_team_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  team_account_id uuid references public.training_team_accounts(id) on delete cascade,
+  user_id uuid not null,
+  training_id uuid references public.training_catalog(id) on delete cascade,
+  status text not null default 'enrolled',
+  created_at timestamptz default now()
+);
+
+-- ============================================================
+-- 11. CONTENT EDGES
+-- ============================================================
+create table if not exists public.content_edges (
+  id uuid primary key default gen_random_uuid(),
+  from_type text not null,
+  from_id text not null,
+  to_type text not null,
+  to_id text not null,
+  link_type text not null,
+  anchor_text text,
+  priority int default 50,
+  is_auto_generated boolean default false,
+  created_at timestamptz default now(),
+  unique (from_type, from_id, to_type, to_id, link_type)
+);
+
+create index if not exists idx_ce_from on public.content_edges(from_type, from_id, priority desc);
+create index if not exists idx_ce_to on public.content_edges(to_type, to_id);
+
+-- ============================================================
+-- 12. CONTENT QUALITY SCORES
+-- ============================================================
+create table if not exists public.content_quality_scores (
+  id uuid primary key default gen_random_uuid(),
+  page_family text not null,
+  entity_id text not null,
+  editorial_utility numeric(3,2) default 0,
+  support_link_density numeric(3,2) default 0,
+  geo_relevance numeric(3,2) default 0,
+  trust_source_clarity numeric(3,2) default 0,
+  commercial_routing numeric(3,2) default 0,
+  freshness numeric(3,2) default 0,
+  overall_score numeric(3,2) default 0,
+  notes text,
+  scored_at timestamptz default now(),
+  unique (page_family, entity_id)
+);
+
+-- ============================================================
+-- 13. RLS POLICIES
+-- ============================================================
+alter table public.training_catalog enable row level security;
+alter table public.tc_modules enable row level security;
+alter table public.training_levels enable row level security;
+alter table public.training_geo_fit enable row level security;
+alter table public.training_reciprocity_notes enable row level security;
+alter table public.training_links enable row level security;
+alter table public.training_badge_effects enable row level security;
+alter table public.tc_enrollments enable row level security;
+alter table public.training_user_badges enable row level security;
+alter table public.training_team_accounts enable row level security;
+alter table public.training_team_enrollments enable row level security;
+alter table public.content_edges enable row level security;
+alter table public.content_quality_scores enable row level security;
+
+-- Safe idempotent policy creation
+do $$ begin
+  create policy "anon_select_training_catalog" on public.training_catalog for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_tc_modules" on public.tc_modules for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_levels" on public.training_levels for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_geo_fit" on public.training_geo_fit for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_reciprocity_notes" on public.training_reciprocity_notes for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_links" on public.training_links for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_badge_effects" on public.training_badge_effects for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_content_edges" on public.content_edges for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_content_quality_scores" on public.content_quality_scores for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "user_select_tc_enrollments" on public.tc_enrollments for select using (auth.uid() = user_id);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "user_select_training_user_badges" on public.training_user_badges for select using (auth.uid() = user_id);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "anon_select_training_team_accounts" on public.training_team_accounts for select using (true);
+exception when duplicate_object then null;
+end $$;
+do $$ begin
+  create policy "user_select_training_team_enrollments" on public.training_team_enrollments for select using (auth.uid() = user_id);
+exception when duplicate_object then null;
+end $$;
+
+commit;
+-- ================================================================
+-- Training RPC Pack ΓÇö Reconciled (uses tc_modules, tc_enrollments)
+-- ================================================================
+begin;
+
+-- Drop old versions if they exist
+drop function if exists public.training_hub_payload();
+drop function if exists public.training_page_payload(text, text, text);
+drop function if exists public.training_country_payload(text);
+
+-- TRAINING HUB PAYLOAD
+create or replace function public.training_hub_payload()
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with catalog as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'slug', tc.slug,
+      'title', tc.title,
+      'summary', tc.summary,
+      'training_type', tc.training_type,
+      'credential_level', tc.credential_level,
+      'module_count', tc.module_count,
+      'hours_total', tc.hours_total,
+      'pricing_mode', tc.pricing_mode,
+      'requirement_fit', tc.requirement_fit,
+      'ranking_impact', tc.ranking_impact,
+      'sponsor_eligible', tc.sponsor_eligible
+    )
+    order by tc.credential_level asc, tc.title asc
+  ) as items
+  from public.training_catalog tc
+  where tc.is_active = true
+    and tc.is_indexable = true
+),
+geo_coverage as (
+  select jsonb_agg(distinct tgf.country_code) as items
+  from public.training_geo_fit tgf
+),
+level_overview as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'level_slug', tl.level_slug,
+      'level_name', tl.level_name,
+      'description', tl.description,
+      'badge_slug', tl.badge_slug,
+      'rank_weight', tl.rank_weight
+    )
+  ) as items
+  from public.training_levels tl
+)
+select jsonb_build_object(
+  'catalog', coalesce((select items from catalog), '[]'::jsonb),
+  'geo_coverage', coalesce((select items from geo_coverage), '[]'::jsonb),
+  'levels', coalesce((select items from level_overview), '[]'::jsonb)
+);
+$$;
+
+-- TRAINING PAGE PAYLOAD (uses tc_modules instead of training_modules)
+create or replace function public.training_page_payload(
+  p_slug text,
+  p_country_code text default null,
+  p_region_code text default null
+)
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with base as (
+  select * from public.training_catalog
+  where slug = p_slug
+    and is_active = true
+  limit 1
+),
+modules as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'slug', m.slug,
+      'title', m.title,
+      'summary', m.summary,
+      'hours', m.hours,
+      'sort_order', m.sort_order
+    )
+    order by m.sort_order asc
+  ) as items
+  from public.tc_modules m
+  join base b on b.id = m.training_id
+),
+levels as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'level_slug', l.level_slug,
+      'level_name', l.level_name,
+      'description', l.description,
+      'badge_slug', l.badge_slug,
+      'rank_weight', l.rank_weight,
+      'trust_weight', l.trust_weight,
+      'pricing_json', l.pricing_json
+    )
+  ) as items
+  from public.training_levels l
+  join base b on b.id = l.training_id
+),
+geo_fit as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'country_code', gf.country_code,
+      'region_code', gf.region_code,
+      'fit_type', gf.fit_type,
+      'note', gf.note,
+      'confidence_state', gf.confidence_state,
+      'freshness_state', gf.freshness_state
+    )
+  ) as items
+  from public.training_geo_fit gf
+  join base b on b.id = gf.training_id
+  where (p_country_code is null or gf.country_code = p_country_code)
+),
+reciprocity as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'from_geo', rn.from_geo,
+      'to_geo', rn.to_geo,
+      'note', rn.note,
+      'confidence_state', rn.confidence_state,
+      'freshness_state', rn.freshness_state
+    )
+  ) as items
+  from public.training_reciprocity_notes rn
+  join base b on b.id = rn.training_id
+),
+links as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'link_type', tl.link_type,
+      'target_type', tl.target_type,
+      'target_id', tl.target_id,
+      'anchor_text', tl.anchor_text,
+      'priority', tl.priority
+    )
+    order by tl.priority desc
+  ) as items
+  from public.training_links tl
+  join base b on b.id = tl.training_id
+),
+badge_effects as (
+  select jsonb_agg(
+    jsonb_build_object(
+      'badge_slug', be.badge_slug,
+      'on_platform_effect_json', be.on_platform_effect_json,
+      'visible_copy', be.visible_copy
+    )
+  ) as items
+  from public.training_badge_effects be
+  join base b on b.id = be.training_id
+)
+select jsonb_build_object(
+  'training', (
+    select jsonb_build_object(
+      'id', b.id,
+      'slug', b.slug,
+      'title', b.title,
+      'summary', b.summary,
+      'quick_answer', b.quick_answer,
+      'training_type', b.training_type,
+      'credential_level', b.credential_level,
+      'module_count', b.module_count,
+      'hours_total', b.hours_total,
+      'jurisdiction_scope', b.jurisdiction_scope,
+      'reciprocity_scope', b.reciprocity_scope,
+      'requirement_fit', b.requirement_fit,
+      'ranking_impact', b.ranking_impact,
+      'trust_badge_effect', b.trust_badge_effect,
+      'pricing_mode', b.pricing_mode,
+      'pricing_json', b.pricing_json,
+      'confidence_state', b.confidence_state,
+      'freshness_state', b.freshness_state,
+      'cta_primary', b.cta_primary,
+      'cta_secondary', b.cta_secondary,
+      'reviewed_at', b.reviewed_at,
+      'next_review_due', b.next_review_due
+    )
+    from base b
+  ),
+  'modules', coalesce((select items from modules), '[]'::jsonb),
+  'levels', coalesce((select items from levels), '[]'::jsonb),
+  'geo_fit', coalesce((select items from geo_fit), '[]'::jsonb),
+  'reciprocity', coalesce((select items from reciprocity), '[]'::jsonb),
+  'links', coalesce((select items from links), '[]'::jsonb),
+  'badge_effects', coalesce((select items from badge_effects), '[]'::jsonb)
+)
+from base
+limit 1;
+$$;
+
+-- TRAINING COUNTRY PAYLOAD
+create or replace function public.training_country_payload(p_country_code text)
+returns jsonb
+language sql
+stable
+set search_path = public
+as $$
+with geo_trainings as (
+  select
+    tc.slug,
+    tc.title,
+    tc.summary,
+    tc.credential_level,
+    tc.pricing_mode,
+    gf.fit_type,
+    gf.note,
+    gf.confidence_state,
+    gf.freshness_state
+  from public.training_geo_fit gf
+  join public.training_catalog tc on tc.id = gf.training_id
+  where gf.country_code = p_country_code
+    and tc.is_active = true
+)
+select jsonb_build_object(
+  'country_code', p_country_code,
+  'trainings', (
+    select jsonb_agg(
+      jsonb_build_object(
+        'slug', gt.slug,
+        'title', gt.title,
+        'summary', gt.summary,
+        'credential_level', gt.credential_level,
+        'pricing_mode', gt.pricing_mode,
+        'fit_type', gt.fit_type,
+        'note', gt.note,
+        'confidence_state', gt.confidence_state,
+        'freshness_state', gt.freshness_state
+      )
+    )
+    from geo_trainings gt
+  )
+);
+$$;
+
+grant execute on function public.training_hub_payload() to anon, authenticated;
+grant execute on function public.training_page_payload(text, text, text) to anon, authenticated;
+grant execute on function public.training_country_payload(text) to anon, authenticated;
+
+commit;
+-- ================================================================
+-- Training Catalog Seed Data
+-- Seeds the core training programs, modules, levels, geo fit,
+-- and cross-system links for the initial launch inventory.
+-- ================================================================
+begin;
+
+-- ============================================================
+-- 1. CORE TRAINING PROGRAMS
+-- ============================================================
+INSERT INTO training_catalog (slug, title, summary, quick_answer, training_type, credential_level, module_count, hours_total, jurisdiction_scope, reciprocity_scope, requirement_fit, ranking_impact, pricing_mode, sponsor_eligible, confidence_state, freshness_state, cta_primary, cta_secondary) VALUES
+
+('pilot-car-operator-certification', 
+ 'Pilot Car Operator Certification',
+ 'Comprehensive certification program for escort vehicle operators covering flagging, communication, route surveying, legal compliance, and emergency procedures across all US states and Canadian provinces.',
+ 'Become a certified pilot car operator with Haul Command training. Learn flagging, route surveys, legal requirements, and earn your Road Ready or Certified badge.',
+ 'certification', 'certified', 12, 40,
+ 'multi-state', 'Recognized across all US states. Canadian provinces may require supplemental provincial exam.',
+ 'required', 'Certified badge adds +25 rank points and unlocks priority dispatch.',
+ 'paid', true, 'verified_current', 'updated_recently',
+ '/training/pilot-car-operator-certification/enroll', '/training/pilot-car-operator-certification'),
+
+('heavy-haul-driver-essentials',
+ 'Heavy Haul Driver Essentials',
+ 'Foundational training for oversize/overweight load drivers covering permit requirements, route planning, load securement, bridge formula compliance, and multi-state legal frameworks.',
+ 'Master the fundamentals of heavy haul driving. Covers permits, load securement, bridge formulas, and route planning for oversize loads.',
+ 'course', 'road_ready', 8, 24,
+ 'national', 'US-focused with international regulations overview module.',
+ 'useful', 'Road Ready badge adds +15 rank points.',
+ 'freemium', true, 'verified_current', 'updated_recently',
+ '/training/heavy-haul-driver-essentials/enroll', '/training/heavy-haul-driver-essentials'),
+
+('escort-vehicle-elite',
+ 'Escort Vehicle Elite Program',
+ 'Advanced pilot car training covering night operations, multi-vehicle convoy coordination, superload escort protocols, adverse weather procedures, and AV integration readiness.',
+ 'Elite-level escort vehicle training. Night ops, superload convoys, adverse weather, and autonomous vehicle integration.',
+ 'certification', 'elite', 16, 60,
+ 'global', 'Recognized across US, CA, AU, NZ, GB, and EU member states.',
+ 'useful', 'Elite badge adds +50 rank points, unlocks superload dispatch priority, and appears on broker-side trust display.',
+ 'paid', true, 'verified_current', 'updated_recently',
+ '/training/escort-vehicle-elite/enroll', '/training/escort-vehicle-elite'),
+
+('av-integration-specialist',
+ 'AV Integration Specialist',
+ 'Cutting-edge certification for operators working alongside autonomous and semi-autonomous heavy haul vehicles. Covers V2X communication, remote monitoring, fallback protocols, and regulatory frameworks.',
+ 'Get certified for the autonomous freight era. V2X comms, remote monitoring, and AV regulatory compliance.',
+ 'certification', 'av_ready', 10, 30,
+ 'global', 'Globally applicable ΓÇö aligned with FHWA, NHTSA, and EU AV framework guidelines.',
+ 'optional', 'AV-Ready badge adds +75 rank points and future-proofs your profile for autonomous load opportunities.',
+ 'paid', true, 'seeded_needs_review', 'seeded_needs_review',
+ '/training/av-integration-specialist/enroll', '/training/av-integration-specialist'),
+
+('state-permit-compliance-masterclass',
+ 'State Permit Compliance Masterclass',
+ 'Deep-dive into US state-by-state permit requirements, application procedures, fee structures, and common rejection pitfalls. Includes live walkthroughs of 10 highest-volume state permit portals.',
+ 'Master the US state permit maze. Every state''s requirements, fees, portals, and common mistakes ΓÇö in one course.',
+ 'course', 'certified', 6, 18,
+ 'national', 'US-only. Each state module can be taken independently.',
+ 'useful', 'Certified badge adds +25 rank points. Completing all 50 state modules earns the Permit Master achievement.',
+ 'paid', false, 'verified_current', 'updated_recently',
+ '/training/state-permit-compliance-masterclass/enroll', '/training/state-permit-compliance-masterclass'),
+
+('load-securement-fundamentals',
+ 'Load Securement Fundamentals',
+ 'Essential training on FMCSA load securement standards, tie-down calculations, equipment inspection, and liability frameworks for oversize/overweight loads.',
+ 'Learn FMCSA load securement standards, tie-down math, equipment checks, and liability protection for heavy haul.',
+ 'course', 'road_ready', 5, 12,
+ 'national', 'US FMCSA standards. International equivalents covered in supplemental module.',
+ 'required', 'Road Ready badge adds +15 rank points.',
+ 'free', true, 'verified_current', 'stable_reference',
+ '/training/load-securement-fundamentals/enroll', '/training/load-securement-fundamentals'),
+
+('global-escort-regulations-overview',
+ 'Global Escort Regulations Overview',
+ 'Survey of escort vehicle regulations across 120 countries. Covers certification requirements, vehicle specifications, marking rules, and authority notification procedures by jurisdiction.',
+ 'Understand escort regulations worldwide. 120 countries, certification paths, vehicle specs, and notification rules.',
+ 'course', 'road_ready', 20, 40,
+ 'global', 'Covers all 120 countries in the Haul Command operating map across 5 tiers.',
+ 'useful', 'Completing all country modules unlocks the Global Operator badge (+40 rank points).',
+ 'freemium', true, 'seeded_needs_review', 'seeded_needs_review',
+ '/training/global-escort-regulations-overview/enroll', '/training/global-escort-regulations-overview'),
+
+('route-survey-and-planning',
+ 'Route Survey & Planning',
+ 'Professional route survey training covering bridge clearance verification, utility line assessment, turn radius analysis, time-of-travel restrictions, and digital route documentation tools.',
+ 'Learn professional route surveying: bridge clearances, utility lines, turn radii, curfews, and digital documentation.',
+ 'course', 'certified', 6, 16,
+ 'multi-state', 'US and Canada. Principles apply globally.',
+ 'useful', 'Route Survey Certified badge adds +20 rank points and unlocks route survey job eligibility.',
+ 'paid', false, 'verified_current', 'updated_recently',
+ '/training/route-survey-and-planning/enroll', '/training/route-survey-and-planning')
+
+ON CONFLICT (slug) DO NOTHING;
+
+-- ============================================================
+-- 2. TRAINING LEVELS (Badge System)
+-- ============================================================
+INSERT INTO training_levels (training_id, level_slug, level_name, description, badge_slug, rank_weight, trust_weight) VALUES
+
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'road_ready', 'Road Ready', 'Complete modules 1-6 to earn your Road Ready badge. Demonstrates foundational escort knowledge.', 'road-ready', 15, 10),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'certified', 'Certified Operator', 'Complete all 12 modules and pass the certification exam. Full pilot car operator credential.', 'certified-operator', 25, 20),
+
+((SELECT id FROM training_catalog WHERE slug = 'escort-vehicle-elite'), 'elite', 'Elite Escort', 'Complete advanced modules including night ops, superload, and adverse weather. Reserved for experienced operators.', 'elite-escort', 50, 40),
+
+((SELECT id FROM training_catalog WHERE slug = 'av-integration-specialist'), 'av_ready', 'AV-Ready Specialist', 'Complete AV integration training and demonstrate V2X communication competency.', 'av-ready', 75, 50),
+
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'road_ready', 'Road Ready Driver', 'Complete all 8 modules for foundational heavy haul driving competency.', 'road-ready-driver', 15, 10),
+
+((SELECT id FROM training_catalog WHERE slug = 'state-permit-compliance-masterclass'), 'certified', 'Permit Specialist', 'Complete the masterclass and pass the compliance exam.', 'permit-specialist', 25, 15),
+
+((SELECT id FROM training_catalog WHERE slug = 'route-survey-and-planning'), 'certified', 'Route Survey Certified', 'Complete route survey training and field assessment.', 'route-survey-certified', 20, 15)
+
+ON CONFLICT DO NOTHING;
+
+-- ============================================================
+-- 3. TRAINING GEO FIT (Tier A + B countries)
+-- ============================================================
+INSERT INTO training_geo_fit (training_id, country_code, fit_type, note, confidence_state, freshness_state) VALUES
+
+-- Pilot Car Certification ΓÇö Tier A
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'US', 'required', 'Most US states require formal certification or training for escort vehicle operators.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'CA', 'required', 'Canadian provinces each have unique certification requirements. Alberta, BC, Ontario are most stringent.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'AU', 'required', 'NHVR requires pilot certification. State-level recognition varies.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'GB', 'useful', 'UK self-escort code of practice recommends but does not mandate certification.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'NZ', 'required', 'NZQA Unit Standard 23892 mandates formal pilot certification.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'ZA', 'useful', 'South Africa TRH11 framework recommends escort training.', 'partially_verified', 'seeded_needs_review'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'DE', 'required', 'BF3 transport escort training is legally mandated.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'NL', 'required', 'RDW requires certified escort operators for exceptional transport.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'AE', 'useful', 'UAE requires escort for abnormal loads; operator training framework varies by emirate.', 'partially_verified', 'seeded_needs_review'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'BR', 'required', 'PRF Manual M-017 mandates trained escort operators for oversized loads.', 'verified_current', 'updated_recently'),
+
+-- Pilot Car Certification ΓÇö Tier B
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'IE', 'useful', 'Ireland follows UK abnormal load framework with some differences.', 'partially_verified', 'seeded_needs_review'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'SE', 'required', 'Trafikverket mandates V├ñgtransportledare certification.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'FR', 'required', 'Arr├¬t├⌐ du 2 mai 2011 mandates formation professionnelle for guide vehicle drivers.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'ES', 'required', 'DGT ACC framework requires trained accompaniment for oversized loads.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'BE', 'required', 'Wallonia requires exam + stage for escort operators.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'FI', 'required', 'Traficom Erikoiskuljetus framework requires warning car operators to be trained.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'MX', 'useful', 'SCT guidance recommends escort training but enforcement varies by state.', 'partially_verified', 'seeded_needs_review'),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'IN', 'useful', 'ODC permit framework recommends pilot vehicle operators. State-level requirements vary.', 'partially_verified', 'seeded_needs_review'),
+
+-- Heavy Haul Essentials ΓÇö broad applicability
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'US', 'required', 'FMCSA compliance is mandatory for all oversize/overweight loads.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'CA', 'useful', 'Canadian highway standards differ from FMCSA but principles align.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'AU', 'useful', 'NHVR standards differ but heavy haul principles are universal.', 'partially_verified', 'seeded_needs_review'),
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'BR', 'useful', 'DNIT oversized transport regulations apply. FMCSA-equivalent concepts.', 'partially_verified', 'seeded_needs_review'),
+
+-- Load Securement ΓÇö US-focused
+((SELECT id FROM training_catalog WHERE slug = 'load-securement-fundamentals'), 'US', 'required', 'FMCSA Part 393 Subpart I mandates load securement compliance.', 'verified_current', 'stable_reference'),
+((SELECT id FROM training_catalog WHERE slug = 'load-securement-fundamentals'), 'CA', 'useful', 'NSC Standard 10 aligns with FMCSA standards.', 'verified_current', 'stable_reference'),
+
+-- Global Escort Regulations ΓÇö all Tier A countries
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'US', 'useful', 'US module covers all 50 states + DC.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'CA', 'useful', 'Canada module covers all provinces/territories.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'AU', 'useful', 'Australia module covers NHVR + all states.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'GB', 'useful', 'UK module covers abnormal load self-escort framework.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'DE', 'useful', 'Germany module covers BF3 and Schwertransporte regulations.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'FR', 'useful', 'France module covers transport exceptionnel framework.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'BR', 'useful', 'Brazil module covers PRF and DNIT frameworks.', 'verified_current', 'updated_recently'),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'JP', 'useful', 'Japan module covers MLIT special vehicle guidance.', 'verified_current', 'updated_recently')
+
+ON CONFLICT DO NOTHING;
+
+-- ============================================================
+-- 4. CROSS-SYSTEM CONTENT EDGES (Training Γåö Glossary/Regulations)
+-- ============================================================
+INSERT INTO content_edges (from_type, from_id, to_type, to_id, link_type, anchor_text, priority) VALUES
+
+-- Training ΓåÆ Glossary links
+('training', 'pilot-car-operator-certification', 'glossary', 'pilot-car', 'explains', 'What is a Pilot Car?', 80),
+('training', 'pilot-car-operator-certification', 'glossary', 'escort-vehicle', 'explains', 'Escort Vehicle Definition', 75),
+('training', 'pilot-car-operator-certification', 'glossary', 'superload', 'explains', 'What is a Superload?', 70),
+('training', 'pilot-car-operator-certification', 'glossary', 'route-survey', 'explains', 'Route Survey Explained', 65),
+('training', 'pilot-car-operator-certification', 'glossary', 'curfew', 'explains', 'Curfew Restrictions', 60),
+
+('training', 'heavy-haul-driver-essentials', 'glossary', 'heavy-haul', 'explains', 'What is Heavy Haul?', 80),
+('training', 'heavy-haul-driver-essentials', 'glossary', 'overdimensional', 'explains', 'Overdimensional Loads', 75),
+('training', 'heavy-haul-driver-essentials', 'glossary', 'bill-of-lading', 'explains', 'Bill of Lading', 70),
+('training', 'heavy-haul-driver-essentials', 'glossary', 'steerable-trailer', 'explains', 'Steerable Trailers', 65),
+
+('training', 'load-securement-fundamentals', 'glossary', 'heavy-haul', 'supports', 'Heavy Haul Load Securement', 75),
+
+-- Training ΓåÆ Regulations links
+('training', 'pilot-car-operator-certification', 'regulation', 'us-federal', 'trains_for', 'FHWA National Escort Manual', 80),
+('training', 'state-permit-compliance-masterclass', 'regulation', 'us-federal', 'trains_for', 'Federal Permit Requirements', 85),
+('training', 'load-securement-fundamentals', 'regulation', 'us-federal', 'trains_for', 'FMCSA Part 393 Subpart I', 90),
+
+-- Training ΓåÆ Tools links
+('training', 'route-survey-and-planning', 'tool', 'route-planner', 'supports', 'Route Planning Tool', 80),
+('training', 'state-permit-compliance-masterclass', 'tool', 'permit-calculator', 'supports', 'Permit Cost Calculator', 75),
+
+-- Glossary ΓåÆ Training (reverse links for "training available" sections)
+('glossary', 'pilot-car', 'training', 'pilot-car-operator-certification', 'next_action', 'Get Pilot Car Certified', 90),
+('glossary', 'escort-vehicle', 'training', 'pilot-car-operator-certification', 'next_action', 'Escort Vehicle Certification', 85),
+('glossary', 'heavy-haul', 'training', 'heavy-haul-driver-essentials', 'next_action', 'Heavy Haul Driver Training', 90),
+('glossary', 'superload', 'training', 'escort-vehicle-elite', 'next_action', 'Superload Elite Certification', 85),
+('glossary', 'route-survey', 'training', 'route-survey-and-planning', 'next_action', 'Route Survey Training', 90)
+
+ON CONFLICT DO NOTHING;
+
+-- ============================================================
+-- 5. TRAINING LINKS (within training_links table)
+-- ============================================================
+INSERT INTO training_links (training_id, link_type, target_type, target_id, anchor_text, priority) VALUES
+
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'related_glossary', 'glossary', '/glossary/pilot-car', 'Pilot Car', 80),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'related_glossary', 'glossary', '/glossary/escort-vehicle', 'Escort Vehicle', 75),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'related_glossary', 'glossary', '/glossary/superload', 'Superload', 70),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'related_regulation', 'regulation', '/regulations/us', 'US Federal Escort Requirements', 85),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'next_action', 'page', '/directory', 'Find Pilot Car Operators', 90),
+((SELECT id FROM training_catalog WHERE slug = 'pilot-car-operator-certification'), 'claim_path', 'page', '/claim', 'Claim Your Profile', 70),
+
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'related_glossary', 'glossary', '/glossary/heavy-haul', 'Heavy Haul', 80),
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'related_glossary', 'glossary', '/glossary/overdimensional', 'Overdimensional', 75),
+((SELECT id FROM training_catalog WHERE slug = 'heavy-haul-driver-essentials'), 'next_action', 'page', '/tools', 'Heavy Haul Tools', 85),
+
+((SELECT id FROM training_catalog WHERE slug = 'escort-vehicle-elite'), 'related_glossary', 'glossary', '/glossary/superload', 'Superload', 80),
+((SELECT id FROM training_catalog WHERE slug = 'escort-vehicle-elite'), 'next_action', 'page', '/directory', 'Elite Operator Directory', 90),
+
+((SELECT id FROM training_catalog WHERE slug = 'load-securement-fundamentals'), 'related_regulation', 'regulation', '/regulations/us', 'FMCSA Load Securement Rules', 85),
+
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'related_regulation', 'regulation', '/regulations', 'Regulations Hub', 90),
+((SELECT id FROM training_catalog WHERE slug = 'global-escort-regulations-overview'), 'related_glossary', 'glossary', '/glossary', 'Full Glossary', 75),
+
+((SELECT id FROM training_catalog WHERE slug = 'route-survey-and-planning'), 'related_tool', 'tool', '/tools', 'Route Planning Tools', 80),
+((SELECT id FROM training_catalog WHERE slug = 'route-survey-and-planning'), 'related_glossary', 'glossary', '/glossary/route-survey', 'Route Survey', 75)
+
+ON CONFLICT DO NOTHING;
+
+commit;

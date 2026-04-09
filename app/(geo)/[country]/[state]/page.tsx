@@ -115,7 +115,7 @@ export default async function StatePage({ params }: { params: Promise<{ country:
                             />
                             <Link aria-label="Navigation Link"
                                 href={`/directory?country=${countryData.iso2}&region=${state.toUpperCase()}`}
-                                className="px-6 py-3 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
+                                className="px-6 py-3 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
                             >
                                 Find Escorts
                             </Link>

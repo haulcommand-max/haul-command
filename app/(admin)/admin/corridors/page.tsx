@@ -167,7 +167,7 @@ export default function AdminCorridorsPage() {
                                                 <button aria-label="Interactive Button"
                                                     onClick={() => handleNudge(row.corridor_slug)}
                                                     disabled={nudging === row.corridor_slug}
-                                                    className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                                                    className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
                                                 >
                                                     <Bell className="w-3 h-3" />
                                                     {nudging === row.corridor_slug ? "Sending..." : "Nudge Escorts"}

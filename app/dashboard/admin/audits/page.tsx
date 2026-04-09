@@ -138,7 +138,7 @@ export default async function AdminAuditsPage({
               href={`/dashboard/admin/audits?filter=${f.key}${country ? `&country=${country}` : ''}`}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 filter === f.key
-                  ? 'bg-amber-500 text-black'
+                  ? 'bg-amber-500 text-white'
                   : 'bg-white/5 border border-white/10 text-gray-400 hover:border-white/20'
               }`}
             >

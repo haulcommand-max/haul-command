@@ -166,7 +166,7 @@ export default function BroadcastForm() {
           {error&&<p className="text-xs text-red-400 bg-red-900/20 border border-red-900/30 rounded-xl px-4 py-3">{error}</p>}
 
           <button type="submit" disabled={loading}
-            className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-black font-bold py-4 rounded-xl text-sm transition-colors">
+            className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-white font-bold py-4 rounded-xl text-sm transition-colors">
             {loading ? 'Broadcasting…' : '● Go Live Now — Broadcast Availability'}
           </button>
 

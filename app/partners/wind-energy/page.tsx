@@ -22,7 +22,7 @@ export default function WindEnergyPartnerPage() {
             Modern wind turbine blades exceed 260 feet and require 4-5 escort vehicles,
             multi-state coordination, and operators experienced in the unique demands of renewable energy transport.
           </p>
-          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors">
+          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors">
             Find Wind Energy Escorts
           </a>
         </div>

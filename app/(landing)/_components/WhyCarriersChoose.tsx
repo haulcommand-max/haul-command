@@ -157,7 +157,7 @@ export function WhyCarriersChoose() {
             <Link
               aria-label="Get started as a carrier"
               href="/onboarding/start?role=carrier"
-              className="inline-flex items-center gap-2 text-xs font-bold text-black px-5 py-2.5 rounded-xl transition-all flex-shrink-0 press-scale"
+              className="inline-flex items-center gap-2 text-xs font-bold text-white px-5 py-2.5 rounded-xl transition-all flex-shrink-0 press-scale"
               style={{
                 background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)",
                 boxShadow: '0 4px 16px rgba(198,146,58,0.25)',

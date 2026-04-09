@@ -150,45 +150,45 @@ export default function EmergencyNearbyPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Incident type */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Incident type *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Incident type *</label>
                         <select required value={form.incident_type} onChange={e => set("incident_type", e.target.value)}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400">
+                            className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400">
                             {INCIDENT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                         </select>
                     </div>
 
                     {/* State / Province */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">State / Province (optional)</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">State / Province (optional)</label>
                         <input value={form.region1} onChange={e => set("region1", e.target.value)}
-                            placeholder="FL, ON…" className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                            placeholder="FL, ON…" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                     </div>
 
                     {/* Lat */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Latitude *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Latitude *</label>
                         <input value={form.lat} onChange={e => set("lat", e.target.value)} type="number" step="any"
-                            placeholder="e.g. 27.9944" className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                            placeholder="e.g. 27.9944" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                     </div>
 
                     {/* Lng */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Longitude *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Longitude *</label>
                         <input value={form.lng} onChange={e => set("lng", e.target.value)} type="number" step="any"
-                            placeholder="e.g. -81.7602" className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                            placeholder="e.g. -81.7602" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                     </div>
                 </div>
 
                 {/* Notes */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Notes (optional)</label>
+                    <label className="block text-sm font-medium text-neutral-300 mb-1">Notes (optional)</label>
                     <textarea value={form.notes} onChange={e => set("notes", e.target.value)} rows={2}
-                        placeholder="Vehicle height, what broke, load type…" className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                        placeholder="Vehicle height, what broke, load type…" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                 </div>
 
                 <div className="flex items-center gap-3">
                     <button aria-label="Interactive Button" type="button" onClick={useMyLocation} disabled={locating}
-                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50">
+                        className="px-4 py-2 bg-[#121212] border border-white/20 rounded-lg text-sm text-neutral-300 hover:bg-[#1A1A1A] transition-colors disabled:opacity-50">
                         {locating ? "Locating…" : "📍 Use my location"}
                     </button>
                     <button aria-label="Interactive Button" type="submit" disabled={loading}
@@ -206,20 +206,20 @@ export default function EmergencyNearbyPage() {
                         {results.length} vendors nearby
                     </h2>
                     {results.map((r) => (
-                        <div key={r.vendor_id} className={`rounded-xl border bg-white p-5 shadow-sm flex items-start justify-between gap-4 ${r.rank === 1 ? "border-orange-300 ring-1 ring-orange-200" : "border-gray-200"
+                        <div key={r.vendor_id} className={`rounded-xl border bg-[#121212] p-5 shadow-sm flex items-start justify-between gap-4 ${r.rank === 1 ? "border-orange-300 ring-1 ring-orange-200" : "border-white/10"
                             }`}>
                             <div className="space-y-1 min-w-0">
                                 <div className="flex items-center gap-2 flex-wrap">
                                     {r.rank === 1 && (
                                         <span className="px-1.5 py-0.5 bg-orange-500 text-white text-xs rounded font-medium">Top Pick</span>
                                     )}
-                                    <span className="font-semibold text-gray-900">{r.vendor_name}</span>
+                                    <span className="font-semibold text-white">{r.vendor_name}</span>
                                     {r.verified_status === "verified" && (
                                         <span className="text-green-600 text-xs">✓ Verified</span>
                                     )}
                                     {r.is_24_7 && <span className="text-gray-500 text-xs">24/7</span>}
                                     {r.plan_tier !== "free" && (
-                                        <span className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">{r.plan_tier}</span>
+                                        <span className="px-1.5 py-0.5 bg-[#1A1A1A] text-gray-600 text-xs rounded">{r.plan_tier}</span>
                                     )}
                                 </div>
                                 <p className="text-sm text-gray-500">
@@ -237,7 +237,7 @@ export default function EmergencyNearbyPage() {
                                     📞 Call
                                 </a>
                                 <a href={`/vendors/${r.vendor_id}`}
-                                    className="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg text-sm text-center transition-colors whitespace-nowrap">
+                                    className="px-4 py-2 border border-white/20 text-neutral-300 hover:bg-[#1A1A1A] rounded-lg text-sm text-center transition-colors whitespace-nowrap">
                                     Profile
                                 </a>
                             </div>

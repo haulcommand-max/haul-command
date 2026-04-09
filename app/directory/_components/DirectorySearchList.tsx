@@ -76,7 +76,7 @@ export function DirectorySearchList({
             key={role}
             className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
               idx === 0 
-                ? "bg-amber-500 text-black border-amber-500" 
+                ? "bg-amber-500 text-white border-amber-500" 
                 : "bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
             }`}
           >
@@ -154,7 +154,7 @@ export function DirectorySearchList({
               <p className="text-slate-400 text-sm mt-2 mb-4 leading-relaxed">
                 To prevent data scraping and protect our operator network, you must login to view all 1.5M+ unmasked profiles, phone numbers, and live availability schedules.
               </p>
-              <Link href="/auth/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold mt-4">
+              <Link href="/auth/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold mt-4">
                 Login to Unlock Directory
               </Link>
             </div>

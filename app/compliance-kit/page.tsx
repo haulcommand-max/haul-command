@@ -36,7 +36,7 @@ export default function ComplianceKitPage() {
           <div className="flex gap-4">
             <Link 
               href="/signup?redirect=/dashboard/compliance" 
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors shadow-[0_0_40px_-10px_rgba(245,158,11,0.4)]"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors shadow-[0_0_40px_-10px_rgba(245,158,11,0.4)]"
             >
               Download the Full Kit (Free)
             </Link>
@@ -62,7 +62,7 @@ export default function ComplianceKitPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-amber-500 text-black text-center">
+      <section className="py-20 px-4 bg-amber-500 text-white text-center">
          <div className="max-w-3xl mx-auto">
              <h2 className="text-3xl font-black mb-4">Stop Paying For Basic Documents.</h2>
              <p className="text-lg font-medium opacity-80 mb-8">

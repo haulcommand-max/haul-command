@@ -54,7 +54,7 @@ export default function CrossBorderCommandCenter() {
               <button className="px-5 py-2.5 bg-hc-surface border border-hc-border rounded-xl text-sm font-bold text-white uppercase flex items-center gap-2 hover:bg-hc-border transition-colors">
                 <Share2 className="w-4 h-4" /> Share Route
               </button>
-              <button className="px-5 py-2.5 bg-hc-success text-black rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2 hover:bg-emerald-500 transition-colors">
+              <button className="px-5 py-2.5 bg-hc-success text-white rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2 hover:bg-emerald-500 transition-colors">
                 <Download className="w-4 h-4" /> Export Itinerary
               </button>
             </div>
@@ -136,7 +136,7 @@ export default function CrossBorderCommandCenter() {
                 </div>
               </div>
 
-              <button className="w-full py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 mt-4" data-tool-interact="generate-itinerary">
+              <button className="w-full py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 mt-4" data-tool-interact="generate-itinerary">
                 <Zap className="w-4 h-4" /> Calculate Compliance
               </button>
             </div>

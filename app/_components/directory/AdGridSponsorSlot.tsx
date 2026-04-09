@@ -14,7 +14,7 @@ export function AdGridSponsorSlot({ regionName, type, countryCode }: { regionNam
         <div className="text-center mt-2">
           <TrackedLink
             href={`/sponsor/waitlist?regionName=${encodeURIComponent(regionName)}&type=${encodeURIComponent(type)}&country=${encodeURIComponent(countryCode)}`}
-            className="inline-flex mx-auto items-center justify-center px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-wider text-sm rounded-lg transition-colors shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+            className="inline-flex mx-auto items-center justify-center px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-white font-black uppercase tracking-wider text-sm rounded-lg transition-colors shadow-[0_0_15px_rgba(245,158,11,0.2)]"
             eventName="sponsor_waitlist_click"
             eventParams={{ region_name: regionName, entity_type: type, country_code: countryCode, block_name: 'adgrid_native' }}
           >

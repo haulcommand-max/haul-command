@@ -259,7 +259,7 @@ export default async function BrokerAssignmentDetailPage({
               
               {isCompleted && (
                 <div className="mt-6 flex flex-col gap-2">
-                  <Button aria-label="Release Escrow" className="w-full bg-gold hover:bg-yellow-500 text-black font-bold py-3 rounded-lg shadow-lg">
+                  <Button aria-label="Release Escrow" className="w-full bg-gold hover:bg-yellow-500 text-white font-bold py-3 rounded-lg shadow-lg">
                     Release Escrow Payout
                   </Button>
                 </div>

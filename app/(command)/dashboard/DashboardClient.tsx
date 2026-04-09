@@ -29,7 +29,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
             <header className="sticky top-0 z-50 bg-[#000]/90 backdrop-blur-xl border-b border-[#1a1a1a]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-black text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
+                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-white text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
                             HC
                         </div>
                         <div>
@@ -44,7 +44,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                                 onClick={() => setActiveTab("ops")}
                                 className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
                                     activeTab === "ops"
-                                        ? "bg-[#F1A91B] text-black"
+                                        ? "bg-[#F1A91B] text-white"
                                         : "text-[#666] hover:text-[#999]"
                                 }`}
                             >
@@ -54,7 +54,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                                 onClick={() => setActiveTab("swarm")}
                                 className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
                                     activeTab === "swarm"
-                                        ? "bg-[#F1A91B] text-black"
+                                        ? "bg-[#F1A91B] text-white"
                                         : "text-[#666] hover:text-[#999]"
                                 }`}
                             >

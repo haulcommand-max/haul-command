@@ -124,7 +124,7 @@ export default function VideoGuidePage() {
           {STEPS.map((s) => (
             <div key={s.step} className="p-6 bg-white/5 border border-white/10 rounded-2xl">
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-amber-500 text-black font-bold rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 bg-amber-500 text-white font-bold rounded-lg flex items-center justify-center flex-shrink-0">
                   {s.step}
                 </div>
                 <div className="flex-1">

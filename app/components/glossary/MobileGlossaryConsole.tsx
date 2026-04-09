@@ -173,7 +173,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
               onClick={() => setActiveLetter(letter)}
               className={`min-w-[44px] h-[48px] rounded-xl flex items-center justify-center font-black text-lg snap-center border-2 ${
                 activeLetter === letter 
-                  ? 'bg-hc-yellow-400 border-hc-yellow-400 text-black shadow-[0_0_15px_rgba(250,204,21,0.3)]' 
+                  ? 'bg-hc-yellow-400 border-hc-yellow-400 text-white shadow-[0_0_15px_rgba(250,204,21,0.3)]' 
                   : 'bg-hc-gray-800 border-amber-500/40 text-amber-400'
               }`}
             >

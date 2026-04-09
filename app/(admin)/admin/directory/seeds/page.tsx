@@ -115,7 +115,7 @@ export default function DirectorySeedsPage() {
             {/* Process Button */}
             <div className="flex flex-wrap items-center gap-3">
                 <button aria-label="Interactive Button" onClick={handleProcessAll} disabled={processing || stats.pending === 0}
-                    className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-900 font-bold px-5 py-2 rounded-lg transition-colors">
+                    className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-white font-bold px-5 py-2 rounded-lg transition-colors">
                     {processing ? '⟳ Processing...' : `▶ Process All Pending (${stats.pending})`}
                 </button>
                 {processResult && <span className="text-sm text-slate-300">{processResult}</span>}

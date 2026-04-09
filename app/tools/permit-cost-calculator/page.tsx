@@ -49,7 +49,7 @@ export default function PermitCostCalculatorPage() {
                 </div>
               ))}
             </div>
-            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold py-3.5 rounded-xl text-sm transition-colors">Calculate Permit Costs →</button>
+            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Calculate Permit Costs →</button>
             <p className="text-[10px] text-[#3a5068] text-center mt-3">Full dynamic calculation engine coming Q2 2026. Contact us for manual quotes: <a href="mailto:permits@haulcommand.com" className="text-[#d4950e]">permits@haulcommand.com</a></p>
           </div>
 

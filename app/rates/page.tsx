@@ -109,7 +109,7 @@ export default async function RatesPage() {
           <p className="text-gray-400 mb-4">Rates vary by corridor, load type, and season.</p>
           <Link aria-label="Navigation Link"
             href="/loads"
-            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
+            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors"
           >
             See Current Loads & Rates
           </Link>

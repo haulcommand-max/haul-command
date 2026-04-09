@@ -92,7 +92,7 @@ export default function HeavyHaulInsurancePage() {
                        <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Enter USDOT Number" />
                        <Input type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Email Address" />
                      </div>
-                     <Button disabled={loading} type="submit" className="bg-white text-indigo-950 hover:bg-slate-200 h-12 px-6 rounded-xl font-bold w-full sm:w-auto self-start">
+                     <Button disabled={loading} type="submit" className="bg-[#121212] text-white hover:bg-[#252525] h-12 px-6 rounded-xl font-bold w-full sm:w-auto self-start">
                         {loading ? 'Checking...' : <>Check Eligibility <ArrowRight className="h-4 w-4 ml-2" /></>}
                      </Button>
                    </>

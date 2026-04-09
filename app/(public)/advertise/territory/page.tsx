@@ -47,7 +47,7 @@ const STATUS_CONFIG: Record<SlotStatus, { label: string; dotClass: string; badge
     },
     sold_out: {
         label: 'Taken',
-        dotClass: 'bg-gray-500',
+        dotClass: 'bg-[#1A1A1A]0',
         badgeClass: 'bg-white/5 border border-white/10 text-gray-500',
         ctaText: 'Fully Booked',
     },
@@ -252,7 +252,7 @@ export default async function TerritoryAvailabilityPage() {
                                             ? `/advertise/territory/checkout?id=${row.id}`
                                             : `/advertise/territory/waitlist?id=${row.id}`}
                                         className={`text-center text-sm font-semibold py-2.5 rounded-lg transition-all ${status === 'available'
-                                            ? 'bg-hc-gold-500 text-black hover:bg-hc-gold-400'
+                                            ? 'bg-hc-gold-500 text-white hover:bg-hc-gold-400'
                                             : 'bg-white/5 border border-hc-gold-500/30 text-hc-gold-400 hover:bg-hc-gold-500/10'
                                             }`}>
                                         {cfg.ctaText}
@@ -320,7 +320,7 @@ export default async function TerritoryAvailabilityPage() {
                                         {status !== 'sold_out' ? (
                                             <Link
                                                 href={`/advertise/territory/checkout?id=${row.id}`}
-                                                className="text-center text-sm font-semibold py-2.5 rounded-lg bg-hc-gold-500 text-black hover:bg-hc-gold-400 transition-all">
+                                                className="text-center text-sm font-semibold py-2.5 rounded-lg bg-hc-gold-500 text-white hover:bg-hc-gold-400 transition-all">
                                                 {cfg.ctaText}
                                             </Link>
                                         ) : (

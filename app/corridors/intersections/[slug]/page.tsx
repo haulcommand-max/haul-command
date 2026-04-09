@@ -134,7 +134,7 @@ export default function CorridorIntersectionPage({ params }: { params: { slug: s
                <p className="text-sm text-slate-300 mb-6">
                  Avoid out-of-state routing errors. Book an operator who runs this interchange daily.
                </p>
-               <Button className="w-full bg-white text-indigo-950 font-bold hover:bg-slate-200">
+               <Button className="w-full bg-[#121212] text-white font-bold hover:bg-[#252525]">
                  Find Local Operators
                </Button>
             </div>

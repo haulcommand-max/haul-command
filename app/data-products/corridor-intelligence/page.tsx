@@ -117,7 +117,7 @@ export default async function CorridorIntelligencePage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="#pricing"
-              className="rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+              className="rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
               View Pricing
             </Link>
@@ -162,7 +162,7 @@ export default async function CorridorIntelligencePage() {
             <p className="mb-4 text-sm font-semibold text-white/70">Unlock full rate benchmarks for this corridor</p>
             <Link
               href="/checkout?product=corridor-starter"
-              className="rounded-xl bg-amber-500 px-8 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+              className="rounded-xl bg-amber-500 px-8 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
               Unlock for $49 / mo
             </Link>
@@ -213,7 +213,7 @@ export default async function CorridorIntelligencePage() {
                 }`}
               >
                 {t.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 px-4 py-0.5 text-xs font-bold text-black">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 px-4 py-0.5 text-xs font-bold text-white">
                     Most Popular
                   </span>
                 )}
@@ -235,7 +235,7 @@ export default async function CorridorIntelligencePage() {
                   href={t.href}
                   className={`mt-6 rounded-xl py-3 text-center text-sm font-bold transition-colors ${
                     t.highlight
-                      ? 'bg-amber-500 text-black hover:bg-amber-400'
+                      ? 'bg-amber-500 text-white hover:bg-amber-400'
                       : 'border border-white/15 text-white hover:border-white/30'
                   }`}
                 >

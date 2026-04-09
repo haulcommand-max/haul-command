@@ -20,7 +20,7 @@ const PRIORITY_COLORS: Record<string, string> = {
     P0: 'bg-[#C6923A]/20 text-[#C6923A]',
     P1: 'bg-blue-500/20 text-blue-400',
     P2: 'bg-purple-500/20 text-purple-400',
-    P3: 'bg-gray-500/20 text-gray-400',
+    P3: 'bg-[#1A1A1A]0/20 text-gray-400',
 };
 
 export default function IconPreviewPage() {
@@ -38,11 +38,11 @@ export default function IconPreviewPage() {
         return true;
     });
 
-    const bg = darkMode ? 'bg-[#0B0B0C] text-white' : 'bg-gray-50 text-gray-900';
-    const headerBg = darkMode ? 'bg-[rgba(11,11,12,0.97)] border-white/10' : 'bg-white/97 border-gray-200';
+    const bg = darkMode ? 'bg-[#0B0B0C] text-white' : 'bg-[#1A1A1A] text-white';
+    const headerBg = darkMode ? 'bg-[rgba(11,11,12,0.97)] border-white/10' : 'bg-white/97 border-white/10';
     const cardBg = darkMode
         ? 'bg-[rgba(255,255,255,0.02)] border-white/[0.06] hover:border-[#C6923A]/30 hover:bg-white/[0.04]'
-        : 'bg-white border-gray-200 hover:border-[#C6923A]/40 hover:shadow-md';
+        : 'bg-[#121212] border-white/10 hover:border-[#C6923A]/40 hover:shadow-md';
     const mutedText = darkMode ? 'text-gray-500' : 'text-gray-400';
     const subText = darkMode ? 'text-gray-400' : 'text-gray-500';
 
@@ -57,13 +57,13 @@ export default function IconPreviewPage() {
                                 <span className="text-[#C6923A] font-bold">{HC_ICON_REGISTRY.length}</span> icons &middot; <span className="text-[#C6923A] font-bold">8</span> variants &middot; <span className="text-[#C6923A] font-bold">{HC_ICON_REGISTRY.length * 8}</span> total states
                             </p>
                         </div>
-                        <button aria-label="Interactive Button" onClick={() => setDarkMode(!darkMode)} className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-all ${darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-100 border-gray-200 hover:bg-gray-200'}`}>
+                        <button aria-label="Interactive Button" onClick={() => setDarkMode(!darkMode)} className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-all ${darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-[#1A1A1A] border-white/10 hover:bg-gray-200'}`}>
                             {darkMode ? '☀ Light' : '🌙 Dark'}
                         </button>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
-                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search icons..." className={`px-3 py-1.5 rounded-lg text-sm border ${darkMode ? 'bg-white/5 border-white/10 placeholder:text-gray-600' : 'bg-gray-50 border-gray-200'}`} />
+                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search icons..." className={`px-3 py-1.5 rounded-lg text-sm border ${darkMode ? 'bg-white/5 border-white/10 placeholder:text-gray-600' : 'bg-[#1A1A1A] border-white/10'}`} />
                         <div className="flex gap-1 flex-wrap">
                             <button aria-label="Interactive Button" onClick={() => setActiveGroup('all')} className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase transition-all ${activeGroup === 'all' ? 'bg-[#C6923A]/20 text-[#C6923A] border border-[#C6923A]/30' : `${mutedText} border border-transparent`}`}>All ({HC_ICON_REGISTRY.length})</button>
                             {groups.map(g => {
@@ -98,7 +98,7 @@ export default function IconPreviewPage() {
                         <div key={group} className="mb-8">
                             <h2 className="text-sm font-black uppercase tracking-wider mb-3 flex items-center gap-2">
                                 <span className="text-[#C6923A]">{GROUP_LABELS[group] || group}</span>
-                                <span className={`text-[9px] px-1.5 py-0.5 rounded ${darkMode ? 'bg-white/5 text-gray-500' : 'bg-gray-100 text-gray-400'}`}>{icons.length}</span>
+                                <span className={`text-[9px] px-1.5 py-0.5 rounded ${darkMode ? 'bg-white/5 text-gray-500' : 'bg-[#1A1A1A] text-gray-400'}`}>{icons.length}</span>
                             </h2>
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
                                 {icons.map(icon => <IconCard key={icon.id} icon={icon} size={activeSize} variant={activeVariant} darkMode={darkMode} cardBg={cardBg} mutedText={mutedText} />)}
@@ -112,7 +112,7 @@ export default function IconPreviewPage() {
                 )}
 
                 {/* All-variants strip */}
-                <div className={`mt-10 p-6 rounded-2xl border ${darkMode ? 'bg-white/[0.02] border-white/[0.06]' : 'bg-white border-gray-200'}`}>
+                <div className={`mt-10 p-6 rounded-2xl border ${darkMode ? 'bg-white/[0.02] border-white/[0.06]' : 'bg-[#121212] border-white/10'}`}>
                     <h3 className="text-sm font-black uppercase tracking-wider mb-4">All 8 Variants — Side by Side</h3>
                     <div className="space-y-3 max-h-[600px] overflow-y-auto">
                         {filtered.slice(0, 30).map(icon => {
@@ -123,7 +123,7 @@ export default function IconPreviewPage() {
                                     {VARIANTS.map(v => (
                                         <div key={v} className="flex flex-col items-center gap-0.5">
                                             <Ic size={activeSize} variant={v} />
-                                            <span className={`text-[6px] ${darkMode ? 'text-gray-700' : 'text-gray-300'}`}>{v.replace(/_/g, ' ')}</span>
+                                            <span className={`text-[6px] ${darkMode ? 'text-neutral-300' : 'text-gray-300'}`}>{v.replace(/_/g, ' ')}</span>
                                         </div>
                                     ))}
                                 </div>

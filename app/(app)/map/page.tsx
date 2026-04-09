@@ -232,14 +232,14 @@ export default function MapPage() {
                         onClick={() => { setView(v); if (v !== "jurisdictions") setSelectedCode(null); }}
                         className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all capitalize ${view === v
                             ? v === "operations"
-                                ? "bg-orange-500 text-black shadow-lg shadow-orange-500/20"
+                                ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
                                 : v === "jurisdictions"
-                                    ? "bg-amber-500 text-black"
+                                    ? "bg-amber-500 text-white"
                                     : v === "grid"
-                                        ? "bg-blue-500 text-black"
+                                        ? "bg-blue-500 text-white"
                                         : v === "global"
-                                            ? "bg-purple-500 text-black"
-                                            : "bg-emerald-500 text-black"
+                                            ? "bg-purple-500 text-white"
+                                            : "bg-emerald-500 text-white"
                             : "text-gray-400 hover:text-white"
                             }`}
                     >

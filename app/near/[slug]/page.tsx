@@ -266,7 +266,7 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
           <Link
             href={`/directory?state=${city.stateCode}`}
-            className="px-8 py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-bold text-sm uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm"
+            className="px-8 py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-bold text-sm uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm"
           >
             <Search className="w-4 h-4 inline mr-2" />
             Search {city.stateCode} Operators
@@ -404,7 +404,7 @@ export default async function NearCityPage({ params }: { params: Promise<{ slug:
           </p>
           <Link
             href="/claim"
-            className="inline-block px-8 py-4 bg-hc-gold-500 text-black font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-hc-gold-400 transition-all hover:shadow-gold-sm"
+            className="inline-block px-8 py-4 bg-hc-gold-500 text-white font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-hc-gold-400 transition-all hover:shadow-gold-sm"
           >
             Claim Your Profile — Free
           </Link>

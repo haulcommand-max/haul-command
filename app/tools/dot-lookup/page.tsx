@@ -99,7 +99,7 @@ export default function DotLookupLandingPage() {
             </p>
           </div>
           <div className="relative z-10 w-full md:w-auto flex-shrink-0">
-             <Link href="/partners/insurance" className="flex items-center justify-center bg-white text-indigo-950 hover:bg-slate-200 font-bold py-4 px-8 rounded-xl transition-all shadow-xl shadow-indigo-900/20 w-full md:w-auto whitespace-nowrap">
+             <Link href="/partners/insurance" className="flex items-center justify-center bg-[#121212] text-white hover:bg-[#252525] font-bold py-4 px-8 rounded-xl transition-all shadow-xl shadow-indigo-900/20 w-full md:w-auto whitespace-nowrap">
                Get Insurance Quote <ChevronRight className="h-5 w-5 ml-2" />
              </Link>
           </div>

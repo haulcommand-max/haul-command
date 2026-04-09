@@ -45,7 +45,7 @@ export default async function DotLookupResultPage({ params }: { params: { usdot:
     Satisfactory: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50",
     Conditional: "bg-yellow-500/20 text-yellow-400 border-yellow-500/50",
     Unsatisfactory: "bg-red-500/20 text-red-500 border-red-500/50",
-    None: "bg-slate-500/20 text-slate-400 border-slate-500/50",
+    None: "bg-[#0A0A0A]0/20 text-slate-400 border-slate-500/50",
   };
 
   return (
@@ -169,7 +169,7 @@ export default async function DotLookupResultPage({ params }: { params: { usdot:
               <p className="text-sm text-slate-300 mb-6 relative z-10">
                 Claim this USDOT number to unlock your Haul Command Company Profile, gain the verified shield, respond to reviews, and book direct loads.
               </p>
-              <Link href={`/claim/usdot/${data.usdot}`} className="w-full inline-flex items-center justify-center bg-slate-100 hover:bg-white text-slate-900 font-bold py-2.5 px-4 rounded-lg transition-colors relative z-10">
+              <Link href={`/claim/usdot/${data.usdot}`} className="w-full inline-flex items-center justify-center bg-[#1E1E1E] hover:bg-[#121212] text-white font-bold py-2.5 px-4 rounded-lg transition-colors relative z-10">
                 Claim Profile — It&apos;s Free
               </Link>
             </div>

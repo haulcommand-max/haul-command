@@ -139,7 +139,7 @@ export default async function EnterpriseDashboardPage() {
                     <td className="px-5 py-4">
                       {d.status === 'completed' && <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full font-semibold">Completed</span>}
                       {d.status === 'in_progress' && <span className="bg-amber-500/10 text-amber-500 px-2 py-1 rounded-full font-semibold">In Progress</span>}
-                      {d.status === 'invited' && <span className="bg-gray-500/10 text-gray-400 px-2 py-1 rounded-full font-semibold">Invite Sent</span>}
+                      {d.status === 'invited' && <span className="bg-[#1A1A1A]0/10 text-gray-400 px-2 py-1 rounded-full font-semibold">Invite Sent</span>}
                     </td>
                     <td className="px-5 py-4">
                       {d.tier !== 'Pending' ? (
@@ -171,7 +171,7 @@ export default async function EnterpriseDashboardPage() {
               Integrate Haul Command's 120-country rules engine and live Trust Scores directly into your TMS. Prevent negligent hiring liability before dispatching a load.
             </p>
           </div>
-          <Link href="/enterprise/api" className="flex-shrink-0 px-5 py-2.5 bg-white text-black text-xs font-bold rounded-xl hover:bg-gray-200 transition-colors">
+          <Link href="/enterprise/api" className="flex-shrink-0 px-5 py-2.5 bg-[#121212] text-white text-xs font-bold rounded-xl hover:bg-gray-200 transition-colors">
             Generate API Keys
           </Link>
         </div>

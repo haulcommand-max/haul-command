@@ -75,7 +75,7 @@ export default function ProjectPlanningPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
               style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
             >
               Request a Plan <ArrowRight className="w-4 h-4" />
@@ -112,7 +112,7 @@ export default function ProjectPlanningPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
         >
           Get a Custom Plan <ArrowRight className="w-4 h-4" />

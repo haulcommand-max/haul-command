@@ -134,7 +134,7 @@ export default function OperatorDashboard() {
                 <Shield className="w-12 h-12 text-[#F1A91B]" />
                 <h2 className="text-xl font-black text-white text-center">Operator Dashboard</h2>
                 <p className="text-white/40 text-sm text-center">Sign in and claim your listing to access the dashboard.</p>
-                <a href="/login" className="mt-4 px-6 py-3 bg-[#F1A91B] text-black font-bold rounded-xl text-sm">
+                <a href="/login" className="mt-4 px-6 py-3 bg-[#F1A91B] text-white font-bold rounded-xl text-sm">
                     Sign In
                 </a>
             </div>
@@ -147,7 +147,7 @@ export default function OperatorDashboard() {
             <header className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur-xl border-b border-white/6">
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-black text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
+                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-white text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
                             HC
                         </div>
                         <div>
@@ -217,7 +217,7 @@ export default function OperatorDashboard() {
                             }}
                         >
                             <motion.div
-                                className="absolute top-1 w-6 h-6 rounded-full bg-white shadow-lg"
+                                className="absolute top-1 w-6 h-6 rounded-full bg-[#121212] shadow-lg"
                                 animate={{ x: isOnline ? 34 : 4 }}
                                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                             />

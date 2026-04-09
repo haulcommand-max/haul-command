@@ -45,7 +45,7 @@ export default async function HeatAdminPage() {
                         <div className="relative z-10 text-center">
                             <h3 className="text-3xl font-black uppercase italic tracking-tighter text-[#444] mb-2 opacity-50">Operational Heat Map</h3>
                             <p className="text-xs font-bold text-[#ffb400]/50 tracking-widest uppercase mb-8">Live Supply/Demand Overlay</p>
-                            <button aria-label="Interactive Button" className="px-8 py-3 bg-[#ffb400] text-black text-xs font-black uppercase rounded shadow-2xl hover:bg-yellow-500 transition-all">
+                            <button aria-label="Interactive Button" className="px-8 py-3 bg-[#ffb400] text-white text-xs font-black uppercase rounded shadow-2xl hover:bg-yellow-500 transition-all">
                                 Initialize Map Engine
                             </button>
                         </div>

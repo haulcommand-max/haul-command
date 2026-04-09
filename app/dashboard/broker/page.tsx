@@ -60,7 +60,7 @@ const STATUS_BADGE: Record<string, { c: string; label: string }> = {
   open:        { c: 'bg-emerald-500/15 text-emerald-400', label: 'Open' },
   matched:     { c: 'bg-blue-500/15 text-blue-400',      label: 'Matched' },
   in_progress: { c: 'bg-amber-500/15 text-amber-400',    label: 'In Progress' },
-  completed:   { c: 'bg-gray-500/15 text-gray-400',      label: 'Completed' },
+  completed:   { c: 'bg-[#1A1A1A]0/15 text-gray-400',      label: 'Completed' },
   cancelled:   { c: 'bg-red-500/15 text-red-400',        label: 'Cancelled' },
   pending:     { c: 'bg-yellow-500/15 text-yellow-400',  label: 'Pending' },
   accepted:    { c: 'bg-blue-500/15 text-blue-400',      label: 'Accepted' },
@@ -100,7 +100,7 @@ export default async function BrokerDashboardPage() {
             <Link href="/dashboard/broker/loads" className="px-4 py-2 text-xs font-bold rounded-xl border border-[#1e3048] text-[#8a9ab0] hover:text-white transition-colors">
               My Loads
             </Link>
-            <Link href="/load-board/post" className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black">
+            <Link href="/load-board/post" className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white">
               + Post Load
             </Link>
           </div>

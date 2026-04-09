@@ -87,7 +87,7 @@ export default function VsHeavyHaulersPage() {
             <h2 className="text-base font-bold text-[#f0f2f5] mb-3">Join the Platform HeavyHaulers Can’t Build</h2>
             <p className="text-sm text-[#8a9ab0] mb-5">Self-serve. Real-time. 120 countries. Trust-verified.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/register" className="bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
+              <Link href="/register" className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
               <Link href="/available-now/broadcast" className="border border-[#1e3048] text-[#8a9ab0] hover:border-[#22c55e] px-5 py-2.5 rounded-xl text-sm">Broadcast Availability</Link>
             </div>
           </div>

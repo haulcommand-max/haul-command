@@ -103,7 +103,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
               {!user ? (
                 <>
                   <Link href={`/sign-up?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
-                    className="bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-4 rounded-xl text-sm text-center transition-colors">
+                    className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-4 rounded-xl text-sm text-center transition-colors">
                     Create Account &amp; Claim Your Profile
                   </Link>
                   <Link href={`/sign-in?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
@@ -128,7 +128,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                     <input name="phone" type="tel" required
                       className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none" placeholder="+1 (555) 000-0000"/>
                   </div>
-                  <button type="submit" className="w-full bg-[#d4950e] hover:bg-[#c4850e] text-black font-bold py-4 rounded-xl text-sm transition-colors">
+                  <button type="submit" className="w-full bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-4 rounded-xl text-sm transition-colors">
                     Submit Claim &rarr;
                   </button>
                 </form>

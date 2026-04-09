@@ -38,7 +38,7 @@ export default async function BlogIndexPage() {
   const posts = await getBlogPosts();
 
   return (
-    <div className="min-h-screen bg-[#0B0B0C] text-hc-text font-sans selection:bg-hc-gold selection:text-black">
+    <div className="min-h-screen bg-[#0B0B0C] text-hc-text font-sans selection:bg-hc-gold selection:text-white">
       {/* ── Magazine Style Hero ── */}
       <section className="relative pt-24 pb-20 px-4 text-center overflow-hidden border-b border-hc-border">
         {/* Subtle background glow */}
@@ -104,7 +104,7 @@ export default async function BlogIndexPage() {
                       </span>
                     )}
                     {index === 0 && (
-                      <span className="px-2.5 py-1 bg-hc-gold text-black text-[10px] font-bold rounded-lg uppercase tracking-wider shadow-gold-sm">
+                      <span className="px-2.5 py-1 bg-hc-gold text-white text-[10px] font-bold rounded-lg uppercase tracking-wider shadow-gold-sm">
                         Latest
                       </span>
                     )}

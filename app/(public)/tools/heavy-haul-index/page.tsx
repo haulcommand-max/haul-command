@@ -140,7 +140,7 @@ export default function HeavyHaulIndexPage() {
                             <p className="text-sm text-slate-400 mb-6">
                                 Integrate the Heavy Haul Index directly into your TMS or Brokerage dashboard using our enterprise API.
                             </p>
-                            <button aria-label="Interactive Button" className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                            <button aria-label="Interactive Button" className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                                 Request API Access
                             </button>
                         </div>

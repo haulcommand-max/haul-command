@@ -59,7 +59,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 </div>
                 <h1 className="text-2xl font-black text-white mb-2">Already Connected</h1>
                 <p className="text-slate-400 mb-8 max-w-sm">This invite has already been used. You&apos;re all set.</p>
-                <Link aria-label="Navigation Link" href="/directory" className="px-6 py-3 bg-amber-500 text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+                <Link aria-label="Navigation Link" href="/directory" className="px-6 py-3 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-400 transition-colors">
                     Browse Escorts →
                 </Link>
             </div>
@@ -161,7 +161,7 @@ export default async function BrokerInvitePage({ params }: Props) {
                 {/* CTA */}
                 <Link aria-label="Navigation Link"
                     href={`/start?${signupParams.toString()}`}
-                    className="w-full flex items-center justify-center gap-3 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-black text-sm uppercase tracking-widest rounded-2xl transition-all group shadow-lg shadow-amber-500/20"
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm uppercase tracking-widest rounded-2xl transition-all group shadow-lg shadow-amber-500/20"
                 >
                     Get Access Free
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

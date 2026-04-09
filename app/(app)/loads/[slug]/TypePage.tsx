@@ -247,7 +247,7 @@ export default async function LoadTypePage({ params }: { params: { type: string 
               <p className="text-xs text-gray-400 mb-4">Compare trust scores, certifications, and live availability.</p>
               <Link
                 href="/directory"
-                className="block text-center py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm transition-all"
+                className="block text-center py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-all"
               >
                 Browse the Directory
               </Link>

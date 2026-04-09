@@ -92,7 +92,7 @@ export default function HomeClient({
                         </Link>
                         <Link aria-label="Navigation Link" href="/escort-requirements" className="hover:text-[#C6923A] transition-colors py-2">Regulations</Link>
                         <Link aria-label="Navigation Link" href="/training" className="hover:text-[#C6923A] transition-colors py-2 flex items-center gap-1.5">
-                            Training <span className="bg-gradient-to-br from-[#F5A623] to-[#e08820] text-black text-[8px] font-black px-1.5 py-0.5 rounded tracking-wider">NEW</span>
+                            Training <span className="bg-gradient-to-br from-[#F5A623] to-[#e08820] text-white text-[8px] font-black px-1.5 py-0.5 rounded tracking-wider">NEW</span>
                         </Link>
                     </div>
                     <div className="flex items-center flex-shrink-0 gap-2">
@@ -121,7 +121,7 @@ export default function HomeClient({
                             Discover verified pilot cars, post oversize loads, and execute complex freight routing with total compliance. The global command center is ready.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-black font-black text-sm transition-all shadow-[0_0_24px_rgba(198,146,58,0.25)]">
+                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-white font-black text-sm transition-all shadow-[0_0_24px_rgba(198,146,58,0.25)]">
                                 Get Started Free <ArrowRight className="w-4 h-4 ml-1.5" />
                             </Link>
                             <Link href="/directory" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-white font-bold text-sm transition-colors">
@@ -248,7 +248,7 @@ export default function HomeClient({
                                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8fa3b8]" />
                                 <input type="text" placeholder="State, Province, or Country..." className="w-full h-14 bg-white/[0.05] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#C6923A] transition-colors" />
                             </div>
-                            <Link href="/directory" className="h-14 px-8 rounded-xl bg-[#C6923A] hover:bg-[#E0B05C] text-black font-bold flex items-center justify-center whitespace-nowrap transition-colors">
+                            <Link href="/directory" className="h-14 px-8 rounded-xl bg-[#C6923A] hover:bg-[#E0B05C] text-white font-bold flex items-center justify-center whitespace-nowrap transition-colors">
                                 Browse Network
                             </Link>
                         </div>
@@ -373,7 +373,7 @@ export default function HomeClient({
                             <p className="text-[#8fa3b8] text-sm sm:text-base leading-relaxed mb-8 mx-auto max-w-sm">
                                 Stop hunting for emails and spreadsheets. The global command center is ready.
                             </p>
-                            <Link href="/onboarding/start" className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-black font-black text-sm transition-all shadow-[0_0_30px_rgba(198,146,58,0.3)]">
+                            <Link href="/onboarding/start" className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-white font-black text-sm transition-all shadow-[0_0_30px_rgba(198,146,58,0.3)]">
                                 Create Your Free Account
                             </Link>
                             <p className="text-[#888] text-[10px] mt-4 uppercase tracking-widest font-semibold">

@@ -284,10 +284,10 @@ export default async function DirectoryPage() {
       <SchemaGenerator type="BreadcrumbList" data={breadcrumbData} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_JSONLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_FAQ_JSONLD) }} />
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="min-h-screen bg-transparent text-white overflow-hidden">
       {/* Hero */}
       <section className="relative py-16 px-4 text-center border-b border-white/5">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto relative z-10">
           <div className="inline-flex gap-2 mb-6">
             <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full">
               {total.toLocaleString()}+ listings
@@ -604,7 +604,7 @@ export default async function DirectoryPage() {
           Claim your free profile and start receiving load offers from brokers across 120 countries.
         </p>
         <div className="flex justify-center gap-4">
-          <Link aria-label="Navigation Link" href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+          <Link aria-label="Navigation Link" href="/claim" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors">
             Claim Your Profile
           </Link>
           <Link aria-label="Navigation Link" href="/auth/register" className="px-8 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">

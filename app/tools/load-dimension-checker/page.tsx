@@ -63,7 +63,7 @@ export default function LoadDimensionCheckerPage() {
                 </div>
               ))}
             </div>
-            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold py-3.5 rounded-xl text-sm transition-colors">Check My Load →</button>
+            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Check My Load →</button>
             <p className="text-[10px] text-[#3a5068] text-center mt-3">Interactive engine launching Q2 2026. Use the reference tables below for immediate guidance.</p>
           </div>
 

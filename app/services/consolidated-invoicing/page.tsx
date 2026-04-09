@@ -76,7 +76,7 @@ export default function ConsolidatedInvoicingPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/onboarding/start?role=carrier"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
               style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}
             >
               Get Started Free <ArrowRight className="w-4 h-4" />
@@ -138,7 +138,7 @@ export default function ConsolidatedInvoicingPage() {
         </p>
         <Link
           href="/onboarding/start?role=carrier"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}
         >
           Start Free <ArrowRight className="w-4 h-4" />

@@ -52,7 +52,7 @@ export default function AdminPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-black font-bold text-sm">HC</div>
+            <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">HC</div>
             <h1 className="text-2xl font-bold">Haul Command Admin</h1>
           </div>
           <p className="text-gray-500 text-sm">

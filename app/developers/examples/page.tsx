@@ -125,7 +125,7 @@ print(f"Recommended lead time: {pred.recommended_lead_time_hours}h")`}</Pre>
                     {/* cURL */}
                     <div>
                         <h2 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-                            <span className="rounded bg-gray-500/10 px-2 py-0.5 text-xs font-mono text-gray-400">cURL</span>
+                            <span className="rounded bg-[#1A1A1A]0/10 px-2 py-0.5 text-xs font-mono text-gray-400">cURL</span>
                             Common Operations
                         </h2>
                         <div className="space-y-6">

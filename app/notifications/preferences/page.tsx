@@ -40,7 +40,7 @@ function Toggle({ checked, onChange, label, sub }: { checked: boolean; onChange:
           checked ? 'bg-amber-500' : 'bg-white/15'
         }`}
       >
-        <span className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+        <span className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-[#121212] shadow transition-transform ${
           checked ? 'translate-x-5' : 'translate-x-0'
         }`} />
       </button>
@@ -169,7 +169,7 @@ export default function NotificationPreferencesPage() {
           <button
             onClick={save}
             disabled={saving}
-            className="w-full rounded-xl bg-amber-500 py-3 text-sm font-black text-black hover:bg-amber-400 disabled:opacity-50 transition-colors"
+            className="w-full rounded-xl bg-amber-500 py-3 text-sm font-black text-white hover:bg-amber-400 disabled:opacity-50 transition-colors"
           >
             {saved ? '✅ Saved!' : saving ? 'Saving…' : 'Save Preferences'}
           </button>

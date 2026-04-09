@@ -27,7 +27,7 @@ type PartnerInquiry = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  queued: 'bg-gray-500/20 text-gray-400',
+  queued: 'bg-[#1A1A1A]0/20 text-gray-400',
   generating: 'bg-blue-500/20 text-blue-400',
   generated: 'bg-amber-500/20 text-amber-400',
   published: 'bg-green-500/20 text-green-400',
@@ -141,7 +141,7 @@ export default function AdminContentPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-amber-500 text-black'
+                  ? 'bg-amber-500 text-white'
                   : 'bg-white/5 text-gray-400 hover:bg-white/10'
               }`}
             >
@@ -175,7 +175,7 @@ export default function AdminContentPage() {
                     </td>
                     <td className="py-3 pr-4 text-xs text-gray-500">{item.target_audience}</td>
                     <td className="py-3 pr-4">
-                      <span className={`px-2 py-0.5 rounded-full text-xs ${STATUS_COLORS[item.status] || 'bg-gray-500/20 text-gray-400'}`}>
+                      <span className={`px-2 py-0.5 rounded-full text-xs ${STATUS_COLORS[item.status] || 'bg-[#1A1A1A]0/20 text-gray-400'}`}>
                         {item.status}
                       </span>
                     </td>
@@ -227,7 +227,7 @@ export default function AdminContentPage() {
                 <div className="flex gap-3">
                   <button aria-label="Interactive Button"
                     onClick={() => { navigator.clipboard.writeText(item.generated_content || ''); updateStatus(item.id, 'published'); }}
-                    className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg text-sm"
+                    className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-medium rounded-lg text-sm"
                   >
                     Copy + Mark Approved
                   </button>
@@ -259,7 +259,7 @@ export default function AdminContentPage() {
                 <div className="flex gap-3">
                   <button aria-label="Interactive Button"
                     onClick={() => navigator.clipboard.writeText(item.generated_content || '')}
-                    className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg text-sm"
+                    className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-medium rounded-lg text-sm"
                   >
                     Copy Script
                   </button>
@@ -305,7 +305,7 @@ export default function AdminContentPage() {
                     <span className={`px-2 py-0.5 rounded-full text-xs ${
                       inq.status === 'new' ? 'bg-amber-500/20 text-amber-400' :
                       inq.status === 'contacted' ? 'bg-green-500/20 text-green-400' :
-                      'bg-gray-500/20 text-gray-400'
+                      'bg-[#1A1A1A]0/20 text-gray-400'
                     }`}>{inq.status}</span>
                     {inq.status === 'new' && (
                       <button aria-label="Interactive Button"

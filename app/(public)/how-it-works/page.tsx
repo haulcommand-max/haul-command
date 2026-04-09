@@ -30,7 +30,7 @@ export default function HowItWorksPage() {
                         Old pilot car directories make you fill out a form, wait hours for quotes, and pray the operator is compliant. Haul Command is an intelligence engine that dispatches the closest verified operator in milliseconds.
                     </p>
                     
-                    <Link href="/loads/new" className="inline-flex items-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-black text-lg tracking-wide uppercase rounded-xl transition-all group shadow-[0_0_40px_-10px_rgba(245,158,11,0.5)]">
+                    <Link href="/loads/new" className="inline-flex items-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black text-lg tracking-wide uppercase rounded-xl transition-all group shadow-[0_0_40px_-10px_rgba(245,158,11,0.5)]">
                         Dispatch a Load Now
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
                             <h3 className="text-xl font-black text-amber-500 mb-6 uppercase tracking-widest">Haul Command <br/><span className="text-sm font-medium text-white">Algorithmic OS</span></h3>
                             <ul className="space-y-6 relative z-10">
                                 <li className="flex gap-4">
-                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-black flex items-center justify-center shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
                                         <Bot className="w-4 h-4" />
                                     </div>
                                     <div>
@@ -91,7 +91,7 @@ export default function HowItWorksPage() {
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
-                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-black flex items-center justify-center shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
                                         <Zap className="w-4 h-4" />
                                     </div>
                                     <div>
@@ -100,7 +100,7 @@ export default function HowItWorksPage() {
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
-                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-black flex items-center justify-center shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
                                         <ShieldCheck className="w-4 h-4" />
                                     </div>
                                     <div>
@@ -149,7 +149,7 @@ export default function HowItWorksPage() {
                                 </div>
                                 
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-black font-black text-xl">L</div>
+                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white font-black text-xl">L</div>
                                     <div>
                                         <div className="text-white font-bold">Lone Star Pilot Cars</div>
                                         <div className="text-xs text-gray-400 flex items-center gap-2">
@@ -160,7 +160,7 @@ export default function HowItWorksPage() {
                                     </div>
                                 </div>
 
-                                <div className="bg-amber-500 hover:bg-amber-400 cursor-pointer text-black text-center font-black py-3 rounded-lg text-sm transition-colors">
+                                <div className="bg-amber-500 hover:bg-amber-400 cursor-pointer text-white text-center font-black py-3 rounded-lg text-sm transition-colors">
                                     TRACK LIVE
                                 </div>
                             </div>

@@ -200,7 +200,7 @@ export default function BatchJobsPage() {
           </div>
           <button aria-label="Interactive Button"
             onClick={downloadClaimCSV}
-            className="px-4 py-2 bg-green-500 hover:bg-green-400 text-black font-bold text-sm rounded-xl transition-colors flex-shrink-0"
+            className="px-4 py-2 bg-green-500 hover:bg-green-400 text-white font-bold text-sm rounded-xl transition-colors flex-shrink-0"
           >
             Download CSV
           </button>
@@ -225,7 +225,7 @@ export default function BatchJobsPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-xs font-bold flex items-center justify-center flex-shrink-0">
+                      <span className="w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                         {job.priority}
                       </span>
                       <h2 className="font-bold text-sm">{job.name}</h2>
@@ -246,7 +246,7 @@ export default function BatchJobsPage() {
                     className={`px-4 py-2 font-bold text-sm rounded-xl transition-colors disabled:opacity-50 flex-shrink-0 ${
                       isLive
                         ? 'bg-red-500 hover:bg-red-400 text-white'
-                        : 'bg-amber-500 hover:bg-amber-400 text-black'
+                        : 'bg-amber-500 hover:bg-amber-400 text-white'
                     }`}
                   >
                     {isRunning ? 'Running...' : isLive ? '📧 Send' : 'Run'}

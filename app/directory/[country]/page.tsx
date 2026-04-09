@@ -199,7 +199,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                 className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/40"
               />
               {stateFilter && <input type="hidden" name="state" value={stateFilter} />}
-              <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg text-sm">
+              <button aria-label="Interactive Button" type="submit" className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-lg text-sm">
                 Search
               </button>
             </form>
@@ -293,7 +293,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                         <span className="text-amber-400 text-xs">{'★'.repeat(Math.min(Math.round(op.rating), 5))}</span>
                         <span className="text-xs text-gray-500">{op.rating.toFixed(1)}</span>
                         {op.review_count > 0 && (
-                          <span className="text-xs text-gray-700">({op.review_count})</span>
+                          <span className="text-xs text-neutral-300">({op.review_count})</span>
                         )}
                       </div>
                     )}
@@ -304,7 +304,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                     )}
                     {/* Claim pressure */}
                     {!op.claimed && (
-                      <div className="text-xs text-gray-700 mb-3">
+                      <div className="text-xs text-neutral-300 mb-3">
                         <Link aria-label="Navigation Link" href={`/claim/${op.id}`} className="text-amber-500 hover:underline">
                           Unclaimed — Is this you? →
                         </Link>
@@ -315,7 +315,7 @@ export default async function CountryDirectoryPage({ params, searchParams }: Pro
                       <div className="absolute inset-0 flex items-center">
                         <Link aria-label="Navigation Link"
                           href="/auth/register"
-                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-colors"
+                          className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold rounded-lg transition-colors"
                         >
                           Sign up to contact
                         </Link>

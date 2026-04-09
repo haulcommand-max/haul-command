@@ -160,11 +160,11 @@ export default function VendorUpgradePage() {
             {/* Header */}
             <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Upgrade & Placements</h1>
+                    <h1 className="text-2xl font-bold text-white">Upgrade & Placements</h1>
                     <p className="mt-1 text-sm text-gray-500">Boost visibility inside Emergency Nearby and route/corridor surfacing.</p>
                 </div>
                 <a href={`/vendors/${vendorId}`}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                    className="px-4 py-2 border border-white/20 text-neutral-300 rounded-lg text-sm hover:bg-[#1A1A1A] transition-colors">
                     View Profile
                 </a>
             </div>
@@ -172,13 +172,13 @@ export default function VendorUpgradePage() {
             {/* Plan grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Current plan */}
-                <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-3">
+                <div className="rounded-xl border border-white/10 bg-[#121212] p-6 shadow-sm space-y-3">
                     <h2 className="font-semibold text-gray-800">Current Plan</h2>
                     <div className="grid grid-cols-3 gap-2 text-center">
                         {[["Tier", plan?.plan_tier], ["Status", plan?.plan_status], ["Monthly", `$${plan?.monthly_price ?? 0}`]].map(([l, v]) => (
-                            <div key={l} className="bg-gray-50 rounded-lg p-2">
+                            <div key={l} className="bg-[#1A1A1A] rounded-lg p-2">
                                 <p className="text-xs text-gray-500">{l}</p>
-                                <p className="font-semibold text-gray-900 text-sm">{v}</p>
+                                <p className="font-semibold text-white text-sm">{v}</p>
                             </div>
                         ))}
                     </div>
@@ -192,12 +192,12 @@ export default function VendorUpgradePage() {
                 </div>
 
                 {/* Upgrade selector */}
-                <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-4">
+                <div className="rounded-xl border border-white/10 bg-[#121212] p-6 shadow-sm space-y-4">
                     <h2 className="font-semibold text-gray-800">Upgrade Plan</h2>
                     <div className="space-y-2">
                         {PLAN_TIERS.map(tier => (
                             <label key={tier.value}
-                                className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${nextTier === tier.value ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-orange-300"
+                                className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${nextTier === tier.value ? "border-orange-500 bg-orange-50" : "border-white/10 hover:border-orange-300"
                                     }`}>
                                 <input type="radio" name="tier" value={tier.value} checked={nextTier === tier.value}
                                     onChange={() => setNextTier(tier.value)} className="mt-0.5" />
@@ -218,7 +218,7 @@ export default function VendorUpgradePage() {
             </div>
 
             {/* Premium Placements */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-[#121212] shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b">
                     <h2 className="font-semibold text-gray-800">Premium Placements (In-App)</h2>
                     <p className="text-xs text-gray-500 mt-0.5">Workflow placements — not banner ads.</p>
@@ -228,7 +228,7 @@ export default function VendorUpgradePage() {
                 <div className="border-b border-gray-100 flex">
                     {PLACEMENT_TABS.map(t => (
                         <button aria-label="Interactive Button" key={t} onClick={() => setActiveTab(t)}
-                            className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === t ? "border-orange-500 text-orange-600" : "border-transparent text-gray-500 hover:text-gray-700"
+                            className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === t ? "border-orange-500 text-orange-600" : "border-transparent text-gray-500 hover:text-neutral-300"
                                 }`}>
                             {t}
                         </button>
@@ -237,7 +237,7 @@ export default function VendorUpgradePage() {
 
                 <div className="p-6 space-y-4">
                     <div>
-                        <p className="text-sm text-gray-700">{pd.desc}</p>
+                        <p className="text-sm text-neutral-300">{pd.desc}</p>
                         <p className="text-xs text-gray-500 mt-0.5">Best for: {pd.bestFor}</p>
                     </div>
 
@@ -246,7 +246,7 @@ export default function VendorUpgradePage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-600 mb-1">State/Province</label>
                             <select value={pf.region1} onChange={e => setForm(activeTab, "region1", e.target.value)}
-                                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm">
+                                className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm">
                                 <option value="">— select —</option>
                                 {regions.map(r => <option key={r} value={r}>{r}</option>)}
                             </select>
@@ -260,33 +260,33 @@ export default function VendorUpgradePage() {
                                 <input value={pf.corridor} onChange={e => setForm(activeTab, "corridor", e.target.value)}
                                     required={pd.needsCorridor}
                                     placeholder="I-75, I-95, 401…"
-                                    className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm" />
+                                    className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                             </div>
                         )}
                         {/* Bid */}
                         <div>
                             <label className="block text-xs font-medium text-gray-600 mb-1">Monthly bid ($)</label>
                             <input type="number" min={0} value={pf.bid} onChange={e => setForm(activeTab, "bid", Number(e.target.value))}
-                                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm" />
+                                className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                         </div>
                         {/* Start */}
                         <div>
                             <label className="block text-xs font-medium text-gray-600 mb-1">Start date *</label>
                             <input type="date" required value={pf.start} onChange={e => setForm(activeTab, "start", e.target.value)}
-                                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm" />
+                                className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                         </div>
                         {/* End */}
                         <div>
                             <label className="block text-xs font-medium text-gray-600 mb-1">End date *</label>
                             <input type="date" required value={pf.end} onChange={e => setForm(activeTab, "end", e.target.value)}
-                                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm" />
+                                className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                         </div>
                         {/* Exclusive toggle (not shown for corridor_exclusive – always true) */}
                         {activeTab !== "Corridor Exclusive" && (
                             <div className="flex items-end pb-1">
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" checked={pf.exclusive} onChange={e => setForm(activeTab, "exclusive", e.target.checked)}
-                                        className="h-4 w-4 rounded border-gray-300" />
+                                        className="h-4 w-4 rounded border-white/20" />
                                     <span className="text-xs text-gray-600">Exclusive (if available)</span>
                                 </label>
                             </div>
@@ -302,7 +302,7 @@ export default function VendorUpgradePage() {
 
                 {/* Active placements table */}
                 <div className="border-t">
-                    <div className="px-6 py-3 bg-gray-50">
+                    <div className="px-6 py-3 bg-[#1A1A1A]">
                         <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Your Active / Upcoming Placements</p>
                     </div>
                     {placements.length === 0 ? (
@@ -310,7 +310,7 @@ export default function VendorUpgradePage() {
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+                                <thead className="bg-[#1A1A1A] text-xs text-gray-500 uppercase tracking-wide">
                                     <tr>
                                         {["Type", "Region", "Corridor", "Bid ($/mo)", "Exclusive", "Start", "End", ""].map(h => (
                                             <th key={h} className="px-4 py-2 text-left font-medium">{h}</th>
@@ -319,8 +319,8 @@ export default function VendorUpgradePage() {
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
                                     {placements.map(p => (
-                                        <tr key={p.id} className="hover:bg-gray-50">
-                                            <td className="px-4 py-2 text-gray-700">{p.placement_type.replace(/_/g, " ")}</td>
+                                        <tr key={p.id} className="hover:bg-[#1A1A1A]">
+                                            <td className="px-4 py-2 text-neutral-300">{p.placement_type.replace(/_/g, " ")}</td>
                                             <td className="px-4 py-2 text-gray-600">{p.region1 ?? "—"}</td>
                                             <td className="px-4 py-2 text-gray-600">{p.corridor_name ?? "—"}</td>
                                             <td className="px-4 py-2 text-gray-600">${p.bid_monthly}</td>

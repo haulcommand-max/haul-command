@@ -55,7 +55,7 @@ export default function VendorProfilePage() {
             <div className="flex items-start justify-between gap-4">
                 <div>
                     <div className="flex items-center gap-2">
-                        <h1 className="text-2xl font-bold text-gray-900">
+                        <h1 className="text-2xl font-bold text-white">
                             {vendor.dba_name ?? vendor.legal_name}
                         </h1>
                         {vendor.verified_status === "verified" && (
@@ -81,13 +81,13 @@ export default function VendorProfilePage() {
             </div>
 
             {/* Tabs */}
-            <div className="border-b border-gray-200">
+            <div className="border-b border-white/10">
                 <div className="flex gap-6">
                     {(["overview", "locations", "reviews"] as TabId[]).map(t => (
                         <button aria-label="Interactive Button" key={t} onClick={() => setTab(t)}
                             className={`pb-3 text-sm font-medium border-b-2 transition-colors ${tab === t
                                     ? "border-orange-500 text-orange-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700"
+                                    : "border-transparent text-gray-500 hover:text-neutral-300"
                                 }`}>
                             {t.charAt(0).toUpperCase() + t.slice(1)}
                         </button>
@@ -99,18 +99,18 @@ export default function VendorProfilePage() {
             {tab === "overview" && (
                 <div className="space-y-4">
                     {vendor.description && (
-                        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                        <div className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
                             <h2 className="font-semibold text-gray-800 text-sm mb-2">About</h2>
                             <p className="text-sm text-gray-600">{vendor.description}</p>
                         </div>
                     )}
 
-                    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                    <div className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
                         <h2 className="font-semibold text-gray-800 text-sm mb-3">Services</h2>
                         {services.length ? (
                             <div className="flex flex-wrap gap-2">
                                 {services.map(s => (
-                                    <div key={s.id} className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+                                    <div key={s.id} className="px-3 py-1.5 bg-[#1A1A1A] border border-white/10 rounded-lg text-sm">
                                         <span className="font-medium text-gray-800">{s.service_name}</span>
                                         {s.rate_unit !== "quote" && s.rate_amount && (
                                             <span className="ml-1.5 text-gray-500">${s.rate_amount}/{s.rate_unit}</span>
@@ -123,11 +123,11 @@ export default function VendorProfilePage() {
                     </div>
 
                     {vendor.primary_contact_phone && (
-                        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                        <div className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
                             <h2 className="font-semibold text-gray-800 text-sm mb-3">Contact</h2>
                             <div className="space-y-2 text-sm">
                                 {vendor.primary_contact_name && (
-                                    <p className="text-gray-700">{vendor.primary_contact_name}</p>
+                                    <p className="text-neutral-300">{vendor.primary_contact_name}</p>
                                 )}
                                 <a href={`tel:${vendor.primary_contact_phone}`}
                                     className="inline-flex items-center gap-2 text-orange-600 font-medium hover:underline">
@@ -145,10 +145,10 @@ export default function VendorProfilePage() {
                     {locations.length === 0 ? (
                         <p className="text-sm text-gray-500">No locations on file.</p>
                     ) : locations.map(loc => (
-                        <div key={loc.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                        <div key={loc.id} className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
                             <div className="flex items-start justify-between gap-2">
                                 <div>
-                                    <p className="font-medium text-gray-900">
+                                    <p className="font-medium text-white">
                                         {loc.location_name ??
                                             [loc.city, loc.region1, loc.country].filter(Boolean).join(", ")}
                                     </p>
@@ -179,7 +179,7 @@ export default function VendorProfilePage() {
                     {reviews.length === 0 ? (
                         <p className="text-sm text-gray-500">No reviews yet.</p>
                     ) : reviews.map(r => (
-                        <div key={r.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                        <div key={r.id} className="rounded-xl border border-white/10 bg-[#121212] p-5 shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="text-orange-500 font-semibold">{r.rating}/5</span>
                                 <span className="text-gray-400 text-xs">
@@ -189,11 +189,11 @@ export default function VendorProfilePage() {
                                     <span className="px-1.5 py-0.5 bg-green-50 text-green-700 text-xs rounded">Verified</span>
                                 )}
                             </div>
-                            {r.review_text && <p className="text-sm text-gray-700">{r.review_text}</p>}
+                            {r.review_text && <p className="text-sm text-neutral-300">{r.review_text}</p>}
                             {r.tags?.length > 0 && (
                                 <div className="flex flex-wrap gap-1.5 mt-2">
                                     {(r.tags as string[]).map(tag => (
-                                        <span key={tag} className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">{tag}</span>
+                                        <span key={tag} className="px-2 py-0.5 bg-[#1A1A1A] text-gray-600 text-xs rounded-full">{tag}</span>
                                     ))}
                                 </div>
                             )}

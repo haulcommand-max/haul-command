@@ -23,7 +23,7 @@ export default function RegulationAlertsPage() {
     return (
         <main className="flex-grow max-w-5xl mx-auto px-4 py-12 sm:py-16">
             <header className="mb-12 sm:mb-16">
-                <div className="flex items-center space-x-4 mb-4"><span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded italic">LIVE ALERTS</span><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">FREE</span></div>
+                <div className="flex items-center space-x-4 mb-4"><span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded italic">LIVE ALERTS</span><span className="bg-[var(--color-accent)] text-white text-[10px] font-black px-2 py-0.5 rounded italic">FREE</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">REGULATION <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">CHANGE ALERTS</span></h1>
                 <p className="text-gray-400 text-base sm:text-lg max-w-3xl mt-4">Get notified instantly when escort requirements change in your operating states. Never get caught by a surprise regulation update again.</p>
             </header>
@@ -34,8 +34,8 @@ export default function RegulationAlertsPage() {
                             <h2 className="text-white font-black text-xl mb-6">🔔 Subscribe to Alerts</h2>
                             <div className="space-y-4">
                                 <input type="email" placeholder="your@email.com" required className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[var(--color-accent)] outline-none" value={email} onChange={e => setEmail(e.target.value)} />
-                                <div><p className="text-gray-500 text-[10px] font-black uppercase mb-3">Select jurisdictions (or leave blank for all)</p><div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">{JURISDICTIONS.map(j => (<button aria-label="Interactive Button" key={j} onClick={() => toggleJ(j)} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${subJurisdictions.includes(j) ? 'bg-[var(--color-accent)] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{j}</button>))}</div></div>
-                                <button aria-label="Interactive Button" onClick={handleSubscribe} disabled={!email} className="w-full bg-[var(--color-accent)] text-black py-4 rounded-xl font-black text-sm hover:bg-white transition-all disabled:opacity-50">SUBSCRIBE — FREE</button>
+                                <div><p className="text-gray-500 text-[10px] font-black uppercase mb-3">Select jurisdictions (or leave blank for all)</p><div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">{JURISDICTIONS.map(j => (<button aria-label="Interactive Button" key={j} onClick={() => toggleJ(j)} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${subJurisdictions.includes(j) ? 'bg-[var(--color-accent)] text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{j}</button>))}</div></div>
+                                <button aria-label="Interactive Button" onClick={handleSubscribe} disabled={!email} className="w-full bg-[var(--color-accent)] text-white py-4 rounded-xl font-black text-sm hover:bg-[#121212] transition-all disabled:opacity-50">SUBSCRIBE — FREE</button>
                             </div>
                             <div className="mt-6 pt-6 border-t border-white/5 space-y-3">
                                 <p className="text-gray-500 text-[10px] font-black uppercase">What you&apos;ll get:</p>

@@ -194,7 +194,7 @@ export function OperatorDashboardClient({
               {claimStatus === 'verified' ? '✓ Verified Operator' : `⏳ ${claimStatus}`}
             </span>
           ) : (
-            <Link href="/claim" className="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link href="/claim" className="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
               Claim Your Listing →
             </Link>
           )}
@@ -213,7 +213,7 @@ export function OperatorDashboardClient({
                 It takes less than 2 minutes with email or SMS verification.
               </p>
             </div>
-            <Link href="/claim" className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link href="/claim" className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
               Claim Now →
             </Link>
           </div>
@@ -258,7 +258,7 @@ export function OperatorDashboardClient({
                 </p>
               </div>
             </div>
-            <Link href="/dashboard/operator/forms" className="flex-shrink-0 px-4 py-2 bg-[#10b981] hover:bg-[#059669] text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-colors whitespace-nowrap">
+            <Link href="/dashboard/operator/forms" className="flex-shrink-0 px-4 py-2 bg-[#10b981] hover:bg-[#059669] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-colors whitespace-nowrap">
               Manage Forms →
             </Link>
           </div>
@@ -343,7 +343,7 @@ export function OperatorDashboardClient({
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors ${
               activeTab === tab
-                ? 'bg-amber-500 text-black'
+                ? 'bg-amber-500 text-white'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -544,7 +544,7 @@ export function OperatorDashboardClient({
                         min="50"
                       />
                       <div className="flex space-x-3">
-                        <Button aria-label="Submit bid" className="flex-1 py-6 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl" disabled={isProcessing} onClick={() => handleSubmitBid(l.id)}>
+                        <Button aria-label="Submit bid" className="flex-1 py-6 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl" disabled={isProcessing} onClick={() => handleSubmitBid(l.id)}>
                           Submit Bid
                         </Button>
                         <Button aria-label="Cancel bid" variant="ghost" className="py-6 px-4 bg-white/5 text-slate-400 hover:text-white rounded-xl" onClick={() => setBiddingOn(null)}>Cancel</Button>
@@ -566,7 +566,7 @@ export function OperatorDashboardClient({
             {([30, 90, 180, 365] as const).map(p => (
               <button key={p} onClick={() => setCardPeriod(p)}
                 className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                  cardPeriod === p ? 'bg-amber-500 text-black' : 'text-slate-500 hover:text-slate-300'
+                  cardPeriod === p ? 'bg-amber-500 text-white' : 'text-slate-500 hover:text-slate-300'
                 }`}>
                 {p === 365 ? '1 Year' : `${p}d`}
               </button>
@@ -662,7 +662,7 @@ export function OperatorDashboardClient({
                       <p className="text-sm font-bold text-amber-400">Boost your trust score</p>
                       <p className="text-xs text-slate-400 mt-0.5">Verify identity and claim your profile to unlock higher rankings.</p>
                     </div>
-                    <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-black text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
+                    <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-white text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
                       Verify Now →
                     </a>
                   </div>

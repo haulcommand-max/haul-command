@@ -31,16 +31,16 @@ export default function AvailabilityMapPage() {
     return (
         <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
             <header className="mb-8 sm:mb-12">
-                <div className="flex items-center space-x-4 mb-4"><span className="bg-green-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">LIVE MAP</span><span className="bg-[var(--color-accent)] text-black text-[10px] font-black px-2 py-0.5 rounded italic">{zones.length} ZONES</span></div>
+                <div className="flex items-center space-x-4 mb-4"><span className="bg-green-500 text-white text-[10px] font-black px-2 py-0.5 rounded italic">LIVE MAP</span><span className="bg-[var(--color-accent)] text-white text-[10px] font-black px-2 py-0.5 rounded italic">{zones.length} ZONES</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">GLOBAL ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">DISCOVERY MAP</span></h1>
                 <p className="text-gray-400 text-base sm:text-lg max-w-3xl mt-4">{viewMode === 'broker' ? 'Find escort operators near your route. Freight hubs and industrial origins mapped worldwide.' : 'See where oversize loads originate. Position near high-demand corridors.'}</p>
             </header>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                 <div className="bg-white/5 border border-white/10 rounded-xl p-1 flex">
-                    <button aria-label="Interactive Button" onClick={() => setViewMode('broker')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'broker' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🏢 Broker</button>
-                    <button aria-label="Interactive Button" onClick={() => setViewMode('operator')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'operator' ? 'bg-[var(--color-accent)] text-black' : 'text-gray-400 hover:text-white'}`}>🚗 Operator</button>
+                    <button aria-label="Interactive Button" onClick={() => setViewMode('broker')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'broker' ? 'bg-[var(--color-accent)] text-white' : 'text-gray-400 hover:text-white'}`}>🏢 Broker</button>
+                    <button aria-label="Interactive Button" onClick={() => setViewMode('operator')} className={`px-4 sm:px-6 py-2 rounded-lg text-sm font-black transition-all ${viewMode === 'operator' ? 'bg-[var(--color-accent)] text-white' : 'text-gray-400 hover:text-white'}`}>🚗 Operator</button>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-1">{countries.map(c => (<button aria-label="Interactive Button" key={c} onClick={() => setSelectedCountry(c)} className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${selectedCountry === c ? 'bg-[var(--color-accent)] text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{c === 'ALL' ? 'All' : `${FLAG[c] || '🌍'} ${c}`}</button>))}</div>
+                <div className="flex gap-2 overflow-x-auto pb-1">{countries.map(c => (<button aria-label="Interactive Button" key={c} onClick={() => setSelectedCountry(c)} className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${selectedCountry === c ? 'bg-[var(--color-accent)] text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{c === 'ALL' ? 'All' : `${FLAG[c] || '🌍'} ${c}`}</button>))}</div>
             </div>
             {loading ? (
                 <div className="text-center py-20"><div className="w-16 h-16 border-4 border-[var(--color-accent)]/20 border-t-[var(--color-accent)] rounded-full animate-spin mx-auto mb-6"></div><p className="text-gray-500 font-black uppercase tracking-widest text-sm">Loading Discovery Map...</p></div>
@@ -68,7 +68,7 @@ export default function AvailabilityMapPage() {
                         <div className="bg-gradient-to-b from-[var(--color-accent)]/10 to-transparent border border-[var(--color-accent)]/20 rounded-3xl p-6 sm:p-8">
                             <h3 className="text-white font-black text-lg mb-3">📍 Claim Your Territory</h3>
                             <p className="text-gray-400 text-sm mb-4">Be the first listed escort operator in your zone.</p>
-                            <a href="/claim" className="bg-[var(--color-accent)] text-black px-6 py-3 rounded-xl font-black text-sm block text-center hover:bg-white transition-all">CLAIM YOUR PROFILE — FREE</a>
+                            <a href="/claim" className="bg-[var(--color-accent)] text-white px-6 py-3 rounded-xl font-black text-sm block text-center hover:bg-[#121212] transition-all">CLAIM YOUR PROFILE — FREE</a>
                         </div>
                     </div>
                 </div>

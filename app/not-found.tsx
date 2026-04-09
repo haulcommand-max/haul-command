@@ -103,7 +103,7 @@ export default function NotFound() {
                 {/* Return CTA */}
                 <Link aria-label="Navigation Link"
                     href="/home"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-black font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_30px_rgba(241,169,27,0.2)]"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-white font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_30px_rgba(241,169,27,0.2)]"
                 >
                     Return to Command Center
                     <ArrowRight className="w-4 h-4" />

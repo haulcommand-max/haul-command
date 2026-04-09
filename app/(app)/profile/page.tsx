@@ -229,7 +229,7 @@ export default function ProfilePage() {
                         style={{ background: T.surface, border: `1px solid ${T.border}` }}>
 
                         {/* Avatar */}
-                        <div className="w-20 h-20 rounded-2xl flex-shrink-0 flex items-center justify-center font-black text-2xl text-black shadow-lg"
+                        <div className="w-20 h-20 rounded-2xl flex-shrink-0 flex items-center justify-center font-black text-2xl text-white shadow-lg"
                             style={{ background: `linear-gradient(135deg, ${T.gold}, #C6923A)` }}>
                             {loading ? "â€¦" : (profileData?.full_name?.[0] ?? "?")}
                         </div>

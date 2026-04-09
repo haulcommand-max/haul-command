@@ -192,7 +192,7 @@ export function WhyOperatorsJoin() {
             <Link
               aria-label="Join as an operator"
               href="/onboarding/start?role=operator"
-              className="inline-flex items-center gap-2 text-xs font-bold text-black px-6 py-3 rounded-xl transition-all flex-shrink-0 press-scale"
+              className="inline-flex items-center gap-2 text-xs font-bold text-white px-6 py-3 rounded-xl transition-all flex-shrink-0 press-scale"
               style={{
                 background: "linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #22c55e 100%)",
                 boxShadow: '0 4px 16px rgba(34,197,94,0.3)',

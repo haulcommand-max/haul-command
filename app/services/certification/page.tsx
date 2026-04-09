@@ -76,7 +76,7 @@ export default function CertificationPage() {
           </p>
           <Link
             href="/training"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
           >
             Browse Programs <ArrowRight className="w-4 h-4" />
@@ -120,7 +120,7 @@ export default function CertificationPage() {
         </p>
         <Link
           href="/training"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
         >
           Start Certification <ArrowRight className="w-4 h-4" />

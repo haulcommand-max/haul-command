@@ -23,7 +23,7 @@ export default function OilfieldPartnerPage() {
             Each rig move needs multiple escorts across FM roads that Google Maps doesn\u2019t know exist.
             Haul Command has the operators in Midland, Odessa, Andrews, and Pecos \u2014 ready now.
           </p>
-          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors">
+          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors">
             Find Oilfield Escorts
           </a>
         </div>

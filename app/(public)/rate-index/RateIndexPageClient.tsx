@@ -43,7 +43,7 @@ const DEMAND_COLORS: Record<string, { bg: string; text: string; label: string }>
     dominant: { bg: 'bg-emerald-500/15', text: 'text-emerald-400', label: 'High Demand' },
     strong: { bg: 'bg-blue-500/15', text: 'text-blue-400', label: 'Strong' },
     emerging: { bg: 'bg-amber-500/15', text: 'text-amber-400', label: 'Emerging' },
-    cold: { bg: 'bg-slate-500/15', text: 'text-slate-400', label: 'Low Volume' },
+    cold: { bg: 'bg-[#0A0A0A]0/15', text: 'text-slate-400', label: 'Low Volume' },
     baseline: { bg: 'bg-purple-500/15', text: 'text-purple-400', label: 'Baseline' },
 };
 
@@ -408,7 +408,7 @@ export default function RateIndexPageClient() {
                             <a
                                 href="/pricing"
                                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500
-                                    text-black font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/25
+                                    text-white font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/25
                                     transition-all duration-200 text-sm"
                             >
                                 Start Free Trial <ArrowUpRight className="w-4 h-4" />
@@ -475,7 +475,7 @@ export default function RateIndexPageClient() {
                             </button>
                             <a
                                 href="/pricing"
-                                className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black
+                                className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white
                                     font-black rounded-xl text-center text-sm hover:shadow-lg hover:shadow-amber-500/25
                                     transition-all"
                             >

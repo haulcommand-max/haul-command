@@ -173,7 +173,7 @@ export default function EscortCalculator() {
               </div>
 
               <div className="mt-10 max-w-lg mx-auto text-center">
-                <Link aria-label="Navigation Link" href={`/directory/us`} className="inline-block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black py-4 rounded-xl font-black text-sm tracking-widest uppercase shadow-xl shadow-amber-500/20 transition-all">
+                <Link aria-label="Navigation Link" href={`/directory/us`} className="inline-block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white py-4 rounded-xl font-black text-sm tracking-widest uppercase shadow-xl shadow-amber-500/20 transition-all">
                   Find {serviceType === 'bucket' ? 'Bucket Trucks' : 'Pilot Cars'} in {region}
                 </Link>
                 <div className="text-[10px] text-gray-500 mt-4 leading-relaxed">

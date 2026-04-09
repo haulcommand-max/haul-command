@@ -30,7 +30,7 @@ export default function ProfileNotFound() {
                         <Search className="w-4 h-4 text-[#8fa3b8]" />
                         Search Directory
                     </Link>
-                    <Link href="/home" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-black font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_20px_rgba(241,169,27,0.15)]">
+                    <Link href="/home" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#F1A91B] hover:bg-[#E0A318] text-white font-bold text-sm rounded-xl transition-all press-scale shadow-[0_0_20px_rgba(241,169,27,0.15)]">
                         Go to Command Center
                         <ArrowRight className="w-4 h-4" />
                     </Link>

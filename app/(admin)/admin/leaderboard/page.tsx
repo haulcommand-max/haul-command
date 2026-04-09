@@ -71,7 +71,7 @@ export default function LeaderboardAdminPage() {
                                     {Object.values(weights).reduce((a, b) => a + b, 0)}%
                                 </span>
                             </div>
-                            <button aria-label="Interactive Button" className="px-6 py-2 bg-[#ffb400] text-black text-xs font-black uppercase rounded hover:bg-yellow-500 transition-all shadow-lg shadow-yellow-500/10">
+                            <button aria-label="Interactive Button" className="px-6 py-2 bg-[#ffb400] text-white text-xs font-black uppercase rounded hover:bg-yellow-500 transition-all shadow-lg shadow-yellow-500/10">
                                 Save & Deploy
                             </button>
                         </div>

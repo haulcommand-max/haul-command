@@ -338,7 +338,7 @@ export default async function BlogArticlePage({ params }: Props) {
             </time>
             {lastModified !== post.published_at && (
               <>
-                <span className="text-gray-700">•</span>
+                <span className="text-neutral-300">•</span>
                 <time dateTime={lastModified} className="text-amber-500/80 font-medium">
                   Updated{' '}
                   {new Date(lastModified).toLocaleDateString('en-US', {
@@ -466,7 +466,7 @@ export default async function BlogArticlePage({ params }: Props) {
             >
               TxDMV Permits →
             </a>
-            <span className="text-gray-700">•</span>
+            <span className="text-neutral-300">•</span>
             <a
               href="https://www.fhwa.dot.gov/specialpermits/"
               target="_blank"
@@ -475,7 +475,7 @@ export default async function BlogArticlePage({ params }: Props) {
             >
               FHWA Guidelines →
             </a>
-            <span className="text-gray-700">•</span>
+            <span className="text-neutral-300">•</span>
             <a
               href="https://www.escortservicecoordinators.org/"
               target="_blank"
@@ -484,7 +484,7 @@ export default async function BlogArticlePage({ params }: Props) {
             >
               ESCA →
             </a>
-            <span className="text-gray-700">•</span>
+            <span className="text-neutral-300">•</span>
             <Link aria-label="Navigation Link"
               href="/requirements"
               className="text-xs text-amber-500/70 hover:text-amber-400 transition-colors"
@@ -525,7 +525,7 @@ export default async function BlogArticlePage({ params }: Props) {
                   href={cta.href}
                   className={`px-5 py-2.5 font-semibold rounded-xl text-sm transition-colors ${
                     cta.variant === 'primary'
-                      ? 'bg-amber-500 hover:bg-amber-400 text-black'
+                      ? 'bg-amber-500 hover:bg-amber-400 text-white'
                       : cta.variant === 'secondary'
                       ? 'bg-white/8 hover:bg-white/12 text-white border border-white/10'
                       : 'border border-white/15 hover:border-white/30 text-white'
@@ -546,7 +546,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 </Link>
                 <Link aria-label="Navigation Link"
                   href="/claim"
-                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl text-sm transition-colors"
+                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl text-sm transition-colors"
                   id="cta-join-network"
                 >
                   Join Network

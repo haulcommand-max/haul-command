@@ -114,7 +114,7 @@ export default function VsOversizeIoPage() {
             <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free — No Credit Card</h2>
             <p className="text-sm text-[#8a9ab0] mb-6">All tools. All public. No login required for core features.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
+              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
               <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
             </div>
           </div>

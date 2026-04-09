@@ -137,7 +137,7 @@ export default async function CorridorsIndexPage({
             </div>
             <Link
               href="/data-products/corridor-intelligence"
-              className="shrink-0 rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+              className="shrink-0 rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
               Unlock Data →
             </Link>

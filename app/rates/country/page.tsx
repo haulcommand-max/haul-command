@@ -143,7 +143,7 @@ export default async function CountryRatePage({ params }: Props) {
           </div>
 
           <div className="flex gap-4">
-            <Link aria-label="Navigation Link" href="/loads" className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors">
+            <Link aria-label="Navigation Link" href="/loads" className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors">
               Post a Load in {data.name}
             </Link>
             <Link aria-label="Navigation Link" href={`/directory/${country}`} className="px-6 py-3 border border-white/20 hover:border-white/40 text-white font-semibold rounded-xl transition-colors">

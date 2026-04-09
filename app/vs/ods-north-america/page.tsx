@@ -107,7 +107,7 @@ export default function VsODSPage() {
           <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-8">
             <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command — Free</h2>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/find-capacity" className="bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold px-5 py-2.5 rounded-xl text-sm">Find Capacity Now →</Link>
+              <Link href="/find-capacity" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Find Capacity Now →</Link>
               <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
             </div>
           </div>

@@ -145,7 +145,7 @@ export function FormHubClient({ userId, templates, documents, profile }: any) {
                   </div>
                   <Button 
                     onClick={() => initiateSign(t)}
-                    className="bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-widest whitespace-nowrap"
+                    className="bg-amber-500 hover:bg-amber-400 text-white font-bold uppercase tracking-widest whitespace-nowrap"
                   >
                     <PenTool className="w-4 h-4 mr-2" /> Auto-Fill & Sign
                   </Button>
@@ -245,7 +245,7 @@ export function FormHubClient({ userId, templates, documents, profile }: any) {
               </Button>
               <Button 
                 onClick={submitForm} 
-                className="bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-widest"
+                className="bg-amber-500 hover:bg-amber-400 text-white font-bold uppercase tracking-widest"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Stamping Form...' : 'Sign & Store Document'}

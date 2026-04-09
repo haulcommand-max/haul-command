@@ -34,7 +34,7 @@ export function InsuranceDiscountBanner({ trustScore }: { trustScore: number }) 
         <h3 className="text-xl font-bold text-white mb-1">Unlock 20% Off Liability Insurance</h3>
         <p className="text-sm text-blue-200">Your Trust Score of {trustScore} qualifies you for Tier-1 broker premiums with our partners.</p>
       </div>
-      <button className="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200">Claim Reward</button>
+      <button className="bg-[#121212] text-white font-bold py-2 px-6 rounded hover:bg-gray-200">Claim Reward</button>
     </div>
   );
 }

@@ -169,7 +169,7 @@ export default async function RegionRulePage({ params }: Props) {
                                 Post your move and get matched with certified {regionDisplay} escorts in minutes.
                             </p>
                             <Link aria-label="Navigation Link" href="/start?role=broker"
-                                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
+                                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                                 Post a Move →
                             </Link>
                         </div>
@@ -211,7 +211,7 @@ export default async function RegionRulePage({ params }: Props) {
                             Browse verified escort operators who know {regionDisplay} regulations inside and out.
                         </p>
                         <Link aria-label="Navigation Link" href={`/directory/us/${region}`}
-                            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors">
+                            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-6 py-3 rounded-lg transition-colors">
                             Browse {regionDisplay} Escorts →
                         </Link>
                     </section>

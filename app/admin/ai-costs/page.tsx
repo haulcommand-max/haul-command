@@ -93,7 +93,7 @@ export default function AICostDashboard() {
                 key={d}
                 onClick={() => setDays(d)}
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  days === d ? 'bg-amber-500 text-black font-bold' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                  days === d ? 'bg-amber-500 text-white font-bold' : 'bg-white/5 text-gray-400 hover:bg-white/10'
                 }`}
               >
                 {d}d

@@ -281,7 +281,7 @@ export default async function PublicReportCardPage({ params }: Props) {
                 </Link>
                 <Link
                   href={`/available-now?country=${op.country_code}&region=${op.admin1_code ?? ''}`}
-                  className="px-5 py-2.5 bg-amber-500 text-black text-xs font-black rounded-lg hover:bg-amber-400 transition-colors"
+                  className="px-5 py-2.5 bg-amber-500 text-white text-xs font-black rounded-lg hover:bg-amber-400 transition-colors"
                 >
                   Check Availability →
                 </Link>

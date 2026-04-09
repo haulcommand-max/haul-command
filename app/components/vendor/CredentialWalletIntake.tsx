@@ -53,7 +53,7 @@ export default function CredentialWalletIntake() {
           </div>
           <button 
             onClick={() => setStep(2)}
-            className="w-full bg-white text-black font-bold py-4 rounded hover:bg-gray-200 transition-colors"
+            className="w-full bg-[#121212] text-white font-bold py-4 rounded hover:bg-gray-200 transition-colors"
           >
             Continue to Insurance & ACORD
           </button>
@@ -80,7 +80,7 @@ export default function CredentialWalletIntake() {
             </button>
             <button 
               onClick={() => setStep(3)}
-              className="w-2/3 bg-white text-black font-bold py-4 rounded hover:bg-gray-200 transition-colors"
+              className="w-2/3 bg-[#121212] text-white font-bold py-4 rounded hover:bg-gray-200 transition-colors"
             >
               Continue to Certifications
             </button>

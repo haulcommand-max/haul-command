@@ -78,7 +78,7 @@ export default function PartnersPage() {
           <div className="flex justify-center gap-4">
             <a
               href="#how-it-works"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors"
             >
               See How It Works
             </a>

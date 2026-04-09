@@ -49,14 +49,14 @@ export default function RequirementCalculator({ jurisdictionCode }: { jurisdicti
         <div className="flex bg-hc-gray-800 rounded-md p-1 border border-hc-gray-700 text-xs font-semibold">
           <button 
             type="button"
-            className={`px-3 py-1 rounded ${format === 'imperial' ? 'bg-hc-yellow-400 text-black' : 'text-hc-gray-400'}`}
+            className={`px-3 py-1 rounded ${format === 'imperial' ? 'bg-hc-yellow-400 text-white' : 'text-hc-gray-400'}`}
             onClick={() => setFormat('imperial')}
           >
             US/Imperial (ft)
           </button>
           <button 
             type="button"
-            className={`px-3 py-1 rounded ${format === 'metric' ? 'bg-hc-yellow-400 text-black' : 'text-hc-gray-400'}`}
+            className={`px-3 py-1 rounded ${format === 'metric' ? 'bg-hc-yellow-400 text-white' : 'text-hc-gray-400'}`}
             onClick={() => setFormat('metric')}
           >
             Global/Metric (m)

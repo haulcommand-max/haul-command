@@ -83,7 +83,7 @@ const API_TIERS = [
         missing: ['Real-time feeds', 'White-label', 'Dedicated account manager'],
         cta: 'Start Developer Trial',
         ctaAnchor: '#sandbox-form',
-        ctaClass: 'bg-hc-gold-500 text-black hover:bg-hc-gold-400',
+        ctaClass: 'bg-hc-gold-500 text-white hover:bg-hc-gold-400',
     },
     {
         name: 'Enterprise',
