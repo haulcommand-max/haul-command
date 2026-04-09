@@ -142,7 +142,7 @@
         "zod": "^4.3.6"
     },
     "devDependencies": {
-        "@capacitor/app": "^8.0.1",
+        "@capacitor/app": "^8.1.0",
         "@capacitor/assets": "^3.0.5",
         "@capacitor/haptics": "^8.0.1",
         "@capacitor/push-notifications": "^8.0.1",
