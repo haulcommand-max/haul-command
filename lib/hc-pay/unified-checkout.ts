@@ -1,42 +1,46 @@
 /**
  * Haul Command Unified Checkout Gateway
- * 
- * Supports two strict parallel paths per architectural spec:
- * 1. Stripe (Fiat, Cards, CashApp, Apple Pay, Google Pay)
- * 2. NOWPayments (Crypto: ADA, BTC, and 350+ coins)
+ * Includes Dynamic Corridor-Aware Pricing Logic
  */
-
 import { createPayment as createCryptoPayment, NOWPaymentResult } from './nowpayments';
 
 export interface CheckoutRequest {
     userId: string;
     orderId: string;
-    amountUsd: number;
-    description: string;
+    baseAmountUsd: number;
+    statesCrossed: number; // For Dynamic Routing Pricing
     paymentMethod: 'stripe' | 'crypto';
-    cryptoCurrency?: string; // e.g., 'ada', 'btc'
+    cryptoCurrency?: string;
 }
 
 export class CheckoutGateway {
+    
+    // MSB Tax/Fee Routing Logic (Route-Aware Markup)
+    static calculateEscrowFee(statesCrossed: number): number {
+        if (statesCrossed === 1) return 15.00; // Standard Flatbed run
+        if (statesCrossed > 1) return 15 + (statesCrossed * 10); // Superload dynamic risk premium
+        return 15.00;
+    }
+
     static async initiate(req: CheckoutRequest) {
+        const escrowFee = this.calculateEscrowFee(req.statesCrossed);
+        const finalAmountUsd = req.baseAmountUsd + escrowFee;
+
         if (req.paymentMethod === 'stripe') {
-            // Initiate Stripe Checkout session
-            // Requires 'stripe' package, simplified for architecture mapping
-            // It will natively support CashApp and other local payment interfaces
             return {
                 type: 'stripe',
                 checkoutUrl: `https://checkout.stripe.com/c/pay/${req.orderId}`,
-                amountUsd: req.amountUsd
+                amountUsd: finalAmountUsd,
+                feeCaptured: escrowFee
             };
         } else if (req.paymentMethod === 'crypto') {
-            if (!req.cryptoCurrency) {
-                throw new Error("cryptoCurrency is required for crypto payments");
-            }
+            if (!req.cryptoCurrency) throw new Error("cryptoCurrency required");
+
             const cryptoRes: NOWPaymentResult = await createCryptoPayment({
-                priceAmountUsd: req.amountUsd,
-                payCurrency: req.cryptoCurrency, // NowPayments code (ada, btc, etc.)
+                priceAmountUsd: finalAmountUsd,
+                payCurrency: req.cryptoCurrency,
                 orderId: req.orderId,
-                orderDescription: req.description,
+                orderDescription: "Escrow Deposit",
                 ipnCallbackUrl: `https://api.haulcommand.com/webhooks/nowpayments`
             });
 
@@ -44,11 +48,11 @@ export class CheckoutGateway {
                 type: 'crypto',
                 payAddress: cryptoRes.pay_address,
                 payAmount: cryptoRes.pay_amount,
-                payCurrency: cryptoRes.pay_currency,
+                feeCaptured: escrowFee,
                 invoiceUrl: cryptoRes.invoice_url
             };
         }
         
-        throw new Error("Invalid payment method selected.");
+        throw new Error("Invalid payment method.");
     }
 }
