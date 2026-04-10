@@ -18,6 +18,8 @@ type CommandLink = {
 const COMMAND_LINKS: CommandLink[] = [
   { label: "Directory", href: "/directory" },
   { label: "Load Board", href: "/loads" },
+  { label: "Permits", href: "/permits", badge: "Fast" },
+  { label: "Forms", href: "/forms" },
   { label: "Regulations", href: "/escort-requirements" },
   { label: "Training", href: "/training", badge: "New" },
   { label: "Leaderboard", href: "/leaderboards" },

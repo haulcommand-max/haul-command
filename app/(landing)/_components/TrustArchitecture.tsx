@@ -136,7 +136,7 @@ export function TrustArchitecture() {
           <div className="px-4 sm:px-5 pb-6 flex flex-wrap items-center justify-center gap-3">
             {[
               { label: "Insurance Verified", color: "#22c55e" },
-              { label: "CEVO Certified", color: "#3b82f6" },
+              { label: "PEVO Certified", color: "#3b82f6" },
               { label: "Background Checked", color: "#F59E0B" },
               { label: "GPS Tracked", color: "#a855f7" },
             ].map(({ label, color }) => (

@@ -286,50 +286,68 @@ export default async function DirectoryPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_JSONLD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(DIRECTORY_FAQ_JSONLD) }} />
       
-      <main className="min-h-screen bg-[#07090D] text-gray-100 relative overflow-x-hidden pt-12">
-        {/* Ambient Top Glow */}
-        <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-amber-500/10 opacity-70 blur-[100px]" />
-
-        {/* --- 1. HERO --- */}
-        <header className="relative mx-auto max-w-5xl px-6 pt-16 pb-12 text-center">
-          <div className="mb-8 flex flex-wrap justify-center gap-2">
-            <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-amber-400">
-              {total.toLocaleString()}+ Live Listings
-            </span>
-            <span className="rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-blue-400">
-              120 Countries
-            </span>
-            <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-400">
-              Real-Time Verification
-            </span>
+      <main className="min-h-screen bg-[#07090D] text-gray-100 relative overflow-x-hidden">
+        {/* --- 1. PREMIUM CROWN JEWEL HERO --- */}
+        <header className="relative w-full overflow-hidden bg-[#0A0D14] pt-24 pb-20 md:pt-32 md:pb-28">
+          {/* 8K Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/ads/directory-hero-bg.png" 
+              alt="Haul Command Global Escalation Grid" 
+              className="h-full w-full object-cover opacity-30 mix-blend-screen"
+            />
+            {/* Gradients to fade smoothly into the black page content */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#07090D] via-transparent to-[#07090D]/50"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#07090D]/90 via-[#07090D]/60 to-transparent"></div>
           </div>
 
-          <h1 className="mb-6 text-5xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-xl">
-            Command the Real-World <br className="hidden md:block" />
-            <span className="bg-gradient-to-br from-amber-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent">Operator Directory</span>
-          </h1>
+          <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-12">
+            
+            <div className="flex-1 max-w-3xl text-left">
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-4 py-1.5 text-[11px] font-black tracking-widest text-amber-500 uppercase">
+                  {total.toLocaleString()}+ Live Operators
+                </span>
+                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 text-[11px] font-black tracking-widest text-emerald-400 uppercase">
+                  Real-Time Availability
+                </span>
+              </div>
 
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 md:text-xl font-medium leading-relaxed">
-            Direct access to {total.toLocaleString()}+ verified pilot cars, towing companies, and heavy-haul specialists globally. Skip the broker boards—connect at the source.
-          </p>
+              <h1 className="mb-6 text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.05]">
+                Command The <br />
+                <span className="bg-gradient-to-br from-amber-300 via-[#C6923A] to-[#8A6428] bg-clip-text text-transparent">Global Network.</span>
+              </h1>
 
-          {/* Quick Filter Roles */}
-          <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-3">
-            {[
-              { label: 'Find Capacity', icon: '🔍', href: '/directory?role=broker', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', hover: 'hover:bg-emerald-500/20 hover:border-emerald-400/40', text: 'text-emerald-400' },
-              { label: 'Pilot Cars', icon: '🚗', href: '/directory?role=operator', bg: 'bg-amber-500/10', border: 'border-amber-500/20', hover: 'hover:bg-amber-500/20 hover:border-amber-400/40', text: 'text-amber-400' },
-              { label: 'Heavy Haulers', icon: '🚛', href: '/directory?role=carrier', bg: 'bg-blue-500/10', border: 'border-blue-500/20', hover: 'hover:bg-blue-500/20 hover:border-blue-400/40', text: 'text-blue-400' },
-              { label: 'Yards & Support', icon: '🏗️', href: '/directory?role=support', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', hover: 'hover:bg-indigo-500/20 hover:border-indigo-400/40', text: 'text-indigo-400' },
-            ].map(chip => (
-              <a
-                key={chip.href}
-                href={chip.href}
-                className={`group flex items-center gap-2 rounded-2xl border px-5 py-3 transition-all duration-300 ${chip.bg} ${chip.border} ${chip.hover}`}
-              >
-                <span className="text-xl shadow-sm">{chip.icon}</span>
-                <span className={`text-sm font-bold tracking-wide ${chip.text}`}>{chip.label}</span>
-              </a>
-            ))}
+              <p className="mb-10 text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-2xl drop-shadow-md">
+                Direct access to vetted pilot cars, heavy towers, and route surveyors across 120 countries. Stop relying on outdated phone lists. Instantly connect to the source.
+              </p>
+
+              {/* Ultra-Premium Role Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                <a href="/directory?role=broker" className="group relative overflow-hidden rounded-xl bg-[#C6923A] hover:bg-[#E0B05C] px-8 py-4 text-sm font-black uppercase text-black tracking-widest transition-all shadow-[0_0_30px_rgba(198,146,58,0.2)]">
+                  Find Capacity Now
+                </a>
+                <a href="/directory?role=operator" className="rounded-xl border border-white/20 bg-black/40 hover:bg-white/10 px-8 py-4 text-sm font-black uppercase text-white tracking-widest backdrop-blur-md transition-all">
+                  Browse As Operator
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Stats or Trust Card embedded in the Hero right side */}
+            <div className="hidden lg:block w-full max-w-[340px] shrink-0">
+              <div className="rounded-3xl border border-white/10 bg-black/60 backdrop-blur-2xl p-8 shadow-2xl flex flex-col gap-6 transform hover:-translate-y-2 transition-transform duration-500">
+                <div>
+                  <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Global Reach</h4>
+                  <p className="text-3xl font-black text-white">120 <span className="text-lg text-amber-500">Countries</span></p>
+                </div>
+                <div className="h-px bg-white/10 w-full"></div>
+                <div>
+                  <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Active Surfaces</h4>
+                  <p className="text-3xl font-black text-white">{total.toLocaleString()} <span className="text-lg text-emerald-500">Verified</span></p>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </header>
 

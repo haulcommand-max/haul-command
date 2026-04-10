@@ -169,53 +169,70 @@ export function DirectorySearchList({
             return (
               <div
                 key={op.id}
-                className={`bg-[#0B1015] border border-white/5 hover:border-white/10 rounded-xl p-5 transition-all ${
-                  op.is_available_now ? 'ring-1 ring-emerald-500/30' : ''
+                className={`group relative flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-b from-[#16181B] to-[#0A0D14] p-6 shadow-2xl transition-all duration-300 hover:border-amber-500/40 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(198,146,58,0.15)] ${
+                  op.is_available_now ? 'ring-2 ring-emerald-500/30' : ''
                 }`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className={shouldBlur ? "blur-md select-none opacity-50" : ""}>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-white font-bold">{op.name}</h3>
+                {/* Glow Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+                <div className={`flex flex-col md:flex-row gap-5 ${shouldBlur ? "blur-md select-none opacity-40" : ""} relative z-10 w-full`}>
+                  {/* Operator Avatar/Vehicle Photo */}
+                  <div className="hidden sm:block shrink-0">
+                    <div className="w-24 h-24 rounded-2xl bg-[#0B0B0C] border border-white/10 overflow-hidden relative shadow-inner">
+                      {/* Placeholder for high-quality profile imagery */}
+                      <img src={`/ads/premium-operator.png`} alt={op.name} className="w-full h-full object-cover opacity-80" />
+                    </div>
+                  </div>
+
+                  <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-white font-extrabold text-xl tracking-tight">{op.name}</h3>
                       {op.is_available_now && (
-                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 animate-pulse">
-                          <Zap className="w-2.5 h-2.5" /> LIVE
+                        <span className="flex items-center gap-1 text-[10px] uppercase font-black tracking-widest px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                          <Zap className="w-3 h-3 fill-emerald-400" /> DISPATCH READY
                         </span>
                       )}
                       {op.score >= 50 && (
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          {op.score >= 80 ? 'Verified' : 'Claimed'}
+                        <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
+                          {op.score >= 80 ? 'Verified Authority' : 'Claimed'}
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-400">
-                      <MapPin className="w-4 h-4" />
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-400 font-medium mb-3">
+                      <MapPin className="w-4 h-4 text-emerald-500" />
                       <span>{op.location || 'Location Not Set'}</span>
                     </div>
-                    {renderBadges(op.badges, false)}
+
+                    <div className="mt-auto">
+                      {renderBadges(op.badges, false)}
+                    </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0 mt-3 sm:mt-0 w-full sm:w-auto">
-                    {/* Trust Score surface */}
-                    <div className="flex items-center gap-3">
-                      <div className="text-right hidden sm:block">
-                        <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trust Score</span>
-                        <span className={`font-mono font-bold ${op.score >= 80 ? 'text-emerald-400' : op.score >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
-                          {op.score}%
-                        </span>
+                  {/* Pricing / Trust / CTA Column */}
+                  <div className="flex flex-col md:items-end justify-center gap-4 relative z-10 border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6 shrink-0 min-w-[200px]">
+                    <div className="flex items-center justify-between md:justify-end gap-3 w-full">
+                      <div className="text-left md:text-right">
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Command Score</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-2xl font-black tracking-tighter ${op.score >= 80 ? 'text-emerald-400' : op.score >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
+                            {op.score}
+                          </span>
+                          <span className="text-sm font-medium text-gray-600">/ 100</span>
+                        </div>
                       </div>
-                      <div className={`w-10 h-10 rounded block sm:hidden flex items-center justify-center font-bold ${op.score >= 80 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}`}>
+                      <div className={`w-12 h-12 rounded-xl flex md:hidden items-center justify-center font-black text-lg ${op.score >= 80 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}`}>
                         {op.score}
                       </div>
                     </div>
 
-                    {/* CTAs */}
-                    <div className="flex gap-2 w-full sm:w-auto">
-                      <Link href={`/directory/profile/${op.slug || op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-lg transition-all">
-                        View Profile
+                    <div className="flex flex-row md:flex-col gap-2 w-full mt-2 md:mt-0">
+                      <Link href={`/directory/profile/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
+                        View Dossier
                       </Link>
-                      <Link href={`/loads/post?operator=${op.id}`} className="flex-1 sm:flex-none text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/20 text-xs font-bold rounded-lg transition-all">
-                        Request Direct
+                      <Link href={`/loads/post?operator=${op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black shadow-[0_0_15px_rgba(198,146,58,0.4)] text-[11px] uppercase tracking-widest font-black rounded-xl transition-all">
+                        Request Route
                       </Link>
                     </div>
                   </div>
