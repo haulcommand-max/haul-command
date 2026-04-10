@@ -1,12 +1,17 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ReportCard() {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+    );
     
     // Retrieve Auth User
     const { data: { session } } = await supabase.auth.getSession();

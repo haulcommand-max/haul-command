@@ -1,13 +1,18 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default async function LessonPage({ params }: { params: { track: string, module: string, lesson: string } }) {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+    );
     
     // Fetch the lesson from the database mapped by the AI Content Engine
     const { data: lessonData, error } = await supabase
