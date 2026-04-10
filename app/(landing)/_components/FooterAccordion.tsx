@@ -122,11 +122,11 @@ export function FooterAccordion() {
                     display: none;
                 }
 
-                /* ── Desktop (≥768px): 4-col grid, no accordion ── */
+                /* ── Desktop (≥768px): 5-col grid, no accordion ── */
                 @media (min-width: 768px) {
                     .ft-grid {
                         display: grid;
-                        grid-template-columns: repeat(4, 1fr);
+                        grid-template-columns: repeat(5, 1fr);
                         gap: 2rem;
                     }
                     .ft-section {
@@ -191,13 +191,13 @@ export function FooterAccordion() {
             </div>
 
             {/* Crown Jewel SEO Density Block */}
-            <div className="border-t border-white/[0.04] py-8 sm:py-12 mt-8">
-                <div className="hc-container max-w-5xl">
-                    <h3 className="text-[#C6923A] text-xs sm:text-sm font-bold uppercase tracking-[0.1em] mb-3">
+            <div className="py-8 sm:py-12 mt-8">
+                <div className="hc-container max-w-4xl mx-auto text-center">
+                    <h3 className="text-[#C6923A] text-sm sm:text-base font-bold uppercase tracking-[0.1em] mb-4">
                         The Global OS for Pilot Cars & Heavy Haul
                     </h3>
-                    <p className="text-[#5A6577] text-[10px] sm:text-xs leading-relaxed max-w-4xl">
-                        Haul Command is the world&apos;s premier logistics infrastructure network for oversize load transportation and superload freight. 
+                    <p className="text-[#5A6577] text-xs leading-relaxed max-w-4xl mx-auto">
+                        Haul Command is the world's premier logistics infrastructure network for oversize load transportation and superload freight. 
                         We instantly match commercial freight brokers, specialized heavy haul trucking companies, and logistics dispatchers with 
                         certified pilot car operators and escort vehicles across 120 countries. Whether you require standard DOT permit compliance, 
                         complex route surveys, lead car height pole validation, or police escort routing, our real-time oversize load board 

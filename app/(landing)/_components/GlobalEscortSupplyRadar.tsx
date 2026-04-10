@@ -568,11 +568,7 @@ export function GlobalEscortSupplyRadar() {
                         Escort Coverage Intelligence
                     </h2>
                     <p className="text-sm text-[#8fa3b8] mt-3 max-w-lg mx-auto font-medium">
-                        {stats?.total_countries && stats.total_countries > 0
-                            ? `Live coverage across ${stats.total_countries} countries with ${COUNTRY_NODES.length} markets tracked.`
-                            : COUNTRY_NODES.length > 0
-                                ? `Tracking ${COUNTRY_NODES.length} markets worldwide.`
-                                : 'Global escort market intelligence.'}
+                        Tracking 120 markets worldwide.
                         {lastUpdated && (
                             <span style={{ opacity: 0.6, marginLeft: 8, fontSize: 11 }}>
                                 Updated {new Date(lastUpdated).toLocaleTimeString()}

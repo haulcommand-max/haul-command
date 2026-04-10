@@ -91,11 +91,11 @@ export default function HomeClient({
                         <p className="text-[#a0b3c6] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
                             Discover verified pilot cars, post oversize loads, and execute complex freight routing with total compliance. The global command center is ready.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-white font-black text-sm transition-all shadow-[0_0_24px_rgba(198,146,58,0.25)]">
-                                Get Started Free <ArrowRight className="w-4 h-4 ml-1.5" />
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#C6923A] hover:bg-[#E0B05C] text-[#111] font-black text-[15px] uppercase tracking-wider transition-all shadow-lg hover:scale-105">
+                                Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
                             </Link>
-                            <Link href="/directory" className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-white font-bold text-sm transition-colors">
+                            <Link href="/directory" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white font-bold text-[15px] uppercase tracking-wider transition-colors hover:scale-105">
                                 Browse Directory
                             </Link>
                         </div>
@@ -110,18 +110,18 @@ export default function HomeClient({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         {/* Broker/Carrier Card */}
                         <motion.div initial="hidden" animate="visible" custom={1} variants={scaleIn}>
-                            <Link href="/onboarding/broker" className="block h-full relative group rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden p-6 sm:p-8 hover:border-[#C6923A]/40 transition-colors">
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="w-12 h-12 rounded-xl bg-[#22c55e]/10 border border-[#22c55e]/20 flex items-center justify-center mb-6">
-                                        <Search className="w-6 h-6 text-[#22c55e]" />
+                            <Link href="/onboarding/broker" className="block h-full relative group rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-8 sm:p-10 hover:from-white/[0.08] transition-colors text-center">
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+                                <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                                    <div className="w-16 h-16 rounded-2xl bg-[#22c55e]/10 flex items-center justify-center mb-6">
+                                        <Search className="w-8 h-8 text-[#22c55e]" />
                                     </div>
-                                    <h2 className="text-xl sm:text-2xl font-bold mb-2">I need an Escort</h2>
-                                    <p className="text-[#8fa3b8] text-sm leading-relaxed mb-6 flex-grow">
+                                    <h2 className="text-2xl sm:text-3xl font-bold mb-3 font-display">I need an Escort</h2>
+                                    <p className="text-[#8fa3b8] text-base leading-relaxed mb-8 max-w-sm mx-auto">
                                         Post your route, check state requirements, and hire verified PEVOs instantly. Your freight, protected.
                                     </p>
-                                    <div className="flex items-center font-bold text-sm text-[#22c55e] group-hover:translate-x-1 transition-transform">
-                                        Post a Load <ArrowRight className="w-4 h-4 ml-1" />
+                                    <div className="flex items-center font-bold text-base uppercase tracking-widest text-[#22c55e] group-hover:translate-x-1 transition-transform">
+                                        Post a Load <ArrowRight className="w-5 h-5 ml-2" />
                                     </div>
                                 </div>
                             </Link>
@@ -129,18 +129,18 @@ export default function HomeClient({
 
                         {/* Operator Card */}
                         <motion.div initial="hidden" animate="visible" custom={2} variants={scaleIn}>
-                            <Link href="/onboarding/operator" className="block h-full relative group rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden p-6 sm:p-8 hover:border-[#C6923A]/40 transition-colors">
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#F5A623]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="w-12 h-12 rounded-xl bg-[#C6923A]/10 border border-[#C6923A]/20 flex items-center justify-center mb-6">
-                                        <Shield className="w-6 h-6 text-[#C6923A]" />
+                            <Link href="/onboarding/operator" className="block h-full relative group rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-8 sm:p-10 hover:from-white/[0.08] transition-colors text-center">
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#C6923A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+                                <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                                    <div className="w-16 h-16 rounded-2xl bg-[#C6923A]/10 flex items-center justify-center mb-6">
+                                        <Shield className="w-8 h-8 text-[#C6923A]" />
                                     </div>
-                                    <h2 className="text-xl sm:text-2xl font-bold mb-2">I am an Escort</h2>
-                                    <p className="text-[#8fa3b8] text-sm leading-relaxed mb-6 flex-grow">
+                                    <h2 className="text-2xl sm:text-3xl font-bold mb-3 font-display">I am an Escort</h2>
+                                    <p className="text-[#8fa3b8] text-base leading-relaxed mb-8 max-w-sm mx-auto">
                                         Get localized load alerts, claim your territory, and get paid via Escrow. Built for the field.
                                     </p>
-                                    <div className="flex items-center font-bold text-sm text-[#C6923A] group-hover:translate-x-1 transition-transform">
-                                        Claim Profile <ArrowRight className="w-4 h-4 ml-1" />
+                                    <div className="flex items-center font-bold text-base uppercase tracking-widest text-[#C6923A] group-hover:translate-x-1 transition-transform">
+                                        Claim Profile <ArrowRight className="w-5 h-5 ml-2" />
                                     </div>
                                 </div>
                             </Link>
@@ -150,12 +150,12 @@ export default function HomeClient({
             </section>
 
             {/* 3. MARKET INTELLIGENCE — The moat. Live supply radar. */}
-            <div className="border-t border-white/[0.04]">
+            <div className="mt-12 sm:mt-20">
                 <GlobalEscortSupplyRadar />
             </div>
 
             {/* 4. PROOF STRIP / NETWORK ENTITIES */}
-            <section className="relative z-10 py-6 border-y border-white/[0.04] bg-white/[0.01]">
+            <section className="relative z-10 py-8 bg-white/[0.01]">
                 <div className="hc-container max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-x-12 text-center text-xs font-semibold text-[#8fa3b8] uppercase tracking-widest">
                     <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-[#C6923A]" /> {totalOperators.toLocaleString()}+ Operators
@@ -186,22 +186,22 @@ export default function HomeClient({
             {/* 4. WHAT YOU CAN DO HERE (ICON GRID) */}
             <section className="relative z-10 py-16 sm:py-24 px-4">
                 <div className="hc-container max-w-5xl mx-auto">
-                    <div className="text-center mb-10">
-                        <h2 className="text-sm font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-2">Core Tools</h2>
-                        <h3 className="text-2xl sm:text-3xl font-black font-display tracking-tight">Everything You Need</h3>
+                    <div className="text-center mb-16">
+                        <h2 className="text-sm font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-3">Core Tools</h2>
+                        <h3 className="text-3xl sm:text-4xl font-black font-display tracking-wide">Everything You Need</h3>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { icon: HcIconPermitServices, color: '#3b82f6', title: 'Permits', link: '/tools/escort-calculator' },
                             { icon: HcIconLoadAlerts, color: '#22c55e', title: 'Load Board', link: '/loads' },
                             { icon: HcIconDirectory, color: '#F1A91B', title: 'Directory', link: '/directory' },
                             { icon: HcIconLegalCompliance, color: '#ef4444', title: 'Regulations', link: '/escort-requirements' },
                         ].map((tool, i) => (
-                            <Link key={i} href={tool.link} className="flex flex-col items-center justify-center p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors group">
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110" style={{ background: `${tool.color}15`, color: tool.color }}>
-                                    <tool.icon size={24} />
+                            <Link key={i} href={tool.link} className="flex flex-col items-center justify-center p-8 rounded-3xl bg-white/[0.02] hover:bg-white/[0.05] transition-all group">
+                                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-110" style={{ background: `${tool.color}15`, color: tool.color }}>
+                                    <tool.icon size={32} />
                                 </div>
-                                <span className="font-bold text-sm tracking-wide text-white group-hover:text-[#C6923A] transition-colors">{tool.title}</span>
+                                <span className="font-bold text-base tracking-wide text-white group-hover:text-[#C6923A] transition-colors">{tool.title}</span>
                             </Link>
                         ))}
                     </div>
@@ -209,30 +209,30 @@ export default function HomeClient({
             </section>
 
             {/* 5. HYPERLOCAL ROUTER */}
-            <section className="relative z-10 py-16 sm:py-24 bg-[#0a0a0b] px-4 border-y border-white/[0.04]">
+            <section className="relative z-10 py-16 sm:py-24 bg-[#0a0a0b] px-4">
                 <div className="hc-container max-w-4xl mx-auto text-center">
                     <h2 className="text-sm font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Hyperlocal Routing</h2>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display tracking-tight mb-8">Search by Market</h3>
+                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black font-display tracking-wide mb-10">Search by Market</h3>
                     <div className="max-w-2xl mx-auto">
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <div className="relative flex-grow">
-                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8fa3b8]" />
-                                <input type="text" placeholder="State, Province, or Country..." className="w-full h-14 bg-white/[0.05] border border-white/10 rounded-xl pl-12 pr-4 text-white focus:outline-none focus:border-[#C6923A] transition-colors" />
+                        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-4">
+                            <div className="relative w-full sm:w-2/3">
+                                <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-[#8fa3b8]" />
+                                <input type="text" placeholder="State, Province, or Country..." className="w-full h-16 bg-white/[0.05] rounded-full pl-16 pr-6 text-white text-lg focus:outline-none focus:bg-white/[0.08] transition-colors" />
                             </div>
-                            <Link href="/directory" className="h-14 px-8 rounded-xl bg-[#C6923A] hover:bg-[#E0B05C] text-white font-bold flex items-center justify-center whitespace-nowrap transition-colors">
+                            <Link href="/directory" className="h-16 px-10 rounded-full bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-[#111] font-black text-lg flex items-center justify-center whitespace-nowrap transition-colors shadow-lg">
                                 Browse Network
                             </Link>
                         </div>
-                        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+                        <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
                             {['Texas', 'Alberta', 'Florida', 'I-80 Corridor', 'United Kingdom', 'New South Wales'].map(loc => (
-                                <Link key={loc} href={`/directory?q=${encodeURIComponent(loc)}`} className="text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10 text-[#8fa3b8] hover:text-white hover:border-white/30 transition-colors">
+                                <Link key={loc} href={`/directory?q=${encodeURIComponent(loc)}`} className="text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full bg-white/[0.03] text-[#a0b3c6] hover:text-white hover:bg-white/[0.1] transition-all">
                                     {loc}
                                 </Link>
                             ))}
                         </div>
-                        <div className="mt-6 pt-5 border-t border-white/[0.06]">
-                            <p className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-3 text-center">State Training &amp; Requirements</p>
-                            <div className="flex flex-wrap items-center justify-center gap-2">
+                        <div className="mt-12 pt-8">
+                            <p className="text-xs font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-5 text-center">State Training & Requirements</p>
+                            <div className="flex flex-wrap items-center justify-center gap-3">
                                 {[
                                     { label: 'Florida', slug: 'florida' },
                                     { label: 'Texas', slug: 'texas' },
@@ -241,11 +241,11 @@ export default function HomeClient({
                                     { label: 'Georgia', slug: 'georgia' },
                                     { label: 'Washington', slug: 'washington' },
                                 ].map(({ label, slug }) => (
-                                    <Link key={slug} href={`/training/region/united-states/${slug}`} className="text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-[#C6923A]/25 text-[#C6923A] hover:text-white hover:border-white/30 transition-colors flex items-center gap-1">
-                                        {label} <ArrowRight className="w-2.5 h-2.5" />
+                                    <Link key={slug} href={`/training/region/united-states/${slug}`} className="text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full bg-[#C6923A]/10 text-[#E0B05C] hover:text-white hover:bg-[#C6923A]/30 transition-all flex items-center gap-2">
+                                        {label} <ArrowRight className="w-3.5 h-3.5" />
                                     </Link>
                                 ))}
-                                <Link href="/training" className="text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10 text-[#8fa3b8] hover:text-white hover:border-white/30 transition-colors">
+                                <Link href="/training" className="text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full bg-white/[0.03] text-[#8fa3b8] hover:text-white hover:bg-white/[0.1] transition-all">
                                     All 50 States →
                                 </Link>
                             </div>
@@ -292,11 +292,11 @@ export default function HomeClient({
             </section>
 
             {/* 7. WHY HAUL COMMAND VS OLD WAY */}
-            <section className="relative z-10 py-16 sm:py-24 px-4 bg-[#0a0a0b] border-y border-white/[0.04]">
+            <section className="relative z-10 py-16 sm:py-24 px-4 bg-[#0a0a0b]">
                 <div className="hc-container max-w-5xl mx-auto">
                     <div className="text-center mb-12 sm:mb-16">
-                        <h2 className="text-sm font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-2">The Moat</h2>
-                        <h3 className="text-2xl sm:text-3xl font-black font-display tracking-tight">Why Haul Command</h3>
+                        <h2 className="text-base font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-3">The Moat</h2>
+                        <h3 className="text-3xl sm:text-4xl font-black font-display tracking-wide">Why Haul Command</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                         {[
@@ -304,25 +304,25 @@ export default function HomeClient({
                             { title: 'Escrow-Protected Payments', desc: 'Every job runs through Escrow. Funds release on confirmed completion. No disputes, no chasing.', icon: HcIconInsurance, color: '#22c55e', href: '/onboarding/broker' },
                             { title: 'Territory Dominance', desc: 'Claim corridors and counties. Find gaps in the supply chain and dominate them before your competitors do.', icon: HcIconRoutePlanner, color: '#a855f7', href: '/corridors' },
                         ].map((feat, i) => (
-                            <Link key={i} href={feat.href} className="group text-center p-6 rounded-2xl border border-white/[0.04] hover:border-white/10 transition-colors block">
-                                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6" style={{ background: `${feat.color}15`, color: feat.color, border: `1px solid ${feat.color}20` }}>
-                                    <feat.icon size={24} />
+                            <Link key={i} href={feat.href} className="group text-center p-8 rounded-3xl bg-white/[0.02] hover:bg-white/[0.05] transition-all block">
+                                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-transform group-hover:scale-110" style={{ background: `${feat.color}15`, color: feat.color }}>
+                                    <feat.icon size={32} />
                                 </div>
-                                <h4 className="font-bold text-lg mb-3 group-hover:text-[#C6923A] transition-colors">{feat.title}</h4>
-                                <p className="text-[#8fa3b8] text-sm leading-relaxed">{feat.desc}</p>
-                                <div className="flex items-center justify-center gap-1 mt-4 text-xs font-bold text-[#555] group-hover:text-[#C6923A] transition-colors">
-                                    Learn more <ArrowRight className="w-3 h-3" />
+                                <h4 className="font-bold text-xl mb-4 group-hover:text-[#C6923A] transition-colors">{feat.title}</h4>
+                                <p className="text-[#8fa3b8] text-base leading-relaxed">{feat.desc}</p>
+                                <div className="flex items-center justify-center gap-2 mt-6 text-sm font-bold text-[#666] group-hover:text-[#C6923A] transition-colors uppercase tracking-widest">
+                                    Learn more <ArrowRight className="w-4 h-4" />
                                 </div>
                             </Link>
                         ))}
                     </div>
-                    <div className="mt-10 pt-8 border-t border-white/[0.06] flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold text-[#666] uppercase tracking-widest">
+                    <div className="mt-16 pt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm font-bold text-[#8fa3b8] uppercase tracking-[0.1em]">
                         <Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors">Regulations</Link>
                         <Link href="/glossary" className="hover:text-[#C6923A] transition-colors">Glossary</Link>
                         <Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors">Rate Calculator</Link>
                         <Link href="/training" className="hover:text-[#C6923A] transition-colors">Training Hub</Link>
                         <Link href="/corridors" className="hover:text-[#C6923A] transition-colors">Corridor Intelligence</Link>
-                        <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors">Leaderboard</Link>
+                        <Link href="/leaderboards" className="hover:text-[#C6923A] transition-colors">Leaderboards</Link>
                     </div>
                 </div>
             </section>
@@ -338,7 +338,7 @@ export default function HomeClient({
                     <div className="relative bg-gradient-to-b from-[#111] to-[#0a0a0b] border border-[#C6923A]/20 rounded-3xl p-8 sm:p-12 shadow-[0_0_80px_rgba(198,146,58,0.1)] overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(198,146,58,0.1),transparent)] pointer-events-none" />
                         <div className="relative z-10">
-                            <h2 className="text-2xl sm:text-3xl font-black font-display tracking-tight mb-4">
+                            <h2 className="text-3xl sm:text-4xl font-black font-display tracking-normal leading-tight mb-5">
                                 Ready to command your territory?
                             </h2>
                             <p className="text-[#8fa3b8] text-sm sm:text-base leading-relaxed mb-8 mx-auto max-w-sm">

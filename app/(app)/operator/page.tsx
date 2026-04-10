@@ -402,7 +402,7 @@ export default function OperatorDashboard() {
                 </motion.div>
 
                 {/* ── Quick Actions ── */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <a
                         href="/loads"
                         className="rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
@@ -429,6 +429,16 @@ export default function OperatorDashboard() {
                         <div>
                             <div className="text-sm font-bold text-white">Messages</div>
                             <div className="text-[10px] text-white/30">Chat with brokers</div>
+                        </div>
+                    </a>
+                    <a
+                        href="/operator/backhaul"
+                        className="col-span-2 md:col-span-1 border border-[#10B981]/20 bg-[#10B981]/5 hover:bg-[#10B981]/10 rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
+                    >
+                        <MapPin className="w-5 h-5 text-[#10B981]" />
+                        <div>
+                            <div className="text-sm font-bold text-white">Post Backhaul</div>
+                            <div className="text-[10px] text-[#10B981]/60">Broadcast empty run</div>
                         </div>
                     </a>
                 </div>
