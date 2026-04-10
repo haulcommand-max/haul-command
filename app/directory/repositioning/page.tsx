@@ -47,9 +47,16 @@ export default async function RepositioningFeed() {
                                             <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-white/5 text-white/40">
                                                 {hauls.service_types?.[0] || 'Escort Operator'}
                                             </span>
-                                            {hauls.trust_score >= 80 && (
-                                                <span className="flex items-center gap-1 text-[10px] text-[#C6923A] font-bold">
-                                                    <Shield className="w-3 h-3" /> Verified
+                                            {hauls.trust_score ? (
+                                                <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
+                                                    <Shield className="w-3 h-3 fill-[#C6923A]/20" /> 
+                                                    <span className="text-white bg-[#C6923A] px-1.5 py-0.5 rounded text-[9px]">{hauls.trust_score} TP</span>
+                                                    {hauls.trust_score >= 80 ? 'Verified' : 'Claimed'}
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-neutral-800 text-neutral-400 border border-white/10">
+                                                    <Shield className="w-3 h-3" /> 
+                                                    Unverified
                                                 </span>
                                             )}
                                         </div>

@@ -69,10 +69,18 @@ export default function HomeClient({
                 @media (min-width: 1024px) { .nav-brand-logo { height: 56px !important; } }
             `}</style>
             
-            {/* ── Ambient Background ── */}
+            {/* ── Ambient Background (4K/8K Photographic) ── */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-                <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.05),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
+                <Image
+                    src="/ads/directory-hero-bg.png"
+                    alt="Heavy haul escort intelligence"
+                    fill
+                    priority
+                    className="object-cover opacity-25 mix-blend-screen"
+                    quality={90}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-hc-bg via-hc-bg/80 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.15),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
             </div>
 
 {/* Navigation is now inherited from (landing)/layout.tsx via GlobalCommandBar */}

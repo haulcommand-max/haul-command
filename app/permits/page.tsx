@@ -4,7 +4,9 @@ import React, { useState } from "react"
 import { Shield, FastForward, Clock, Globe, Award, ChevronRight, Truck } from "lucide-react"
 
 export default function PermitIntakePage() {
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [formState, setFormState] = useState<any>({});
     
     return (
         <div className="min-h-screen bg-[#07090D] pt-24 pb-32">
@@ -44,60 +46,98 @@ export default function PermitIntakePage() {
 
                         {step === 1 && (
                             <div className="space-y-6 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-white/60">Origin State</label>
-                                        <select className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] appearance-none transition">
-                                            <option>Texas (TX)</option>
-                                            <option>Oklahoma (OK)</option>
-                                            <option>Louisiana (LA)</option>
-                                            <option>New Mexico (NM)</option>
-                                        </select>
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const fd = new FormData(e.currentTarget);
+                                    setFormState({
+                                        originState: fd.get('originState') as string,
+                                        destinationState: fd.get('destinationState') as string,
+                                        width: fd.get('width') as string,
+                                        height: fd.get('height') as string,
+                                        weight: fd.get('weight') as string
+                                    });
+                                    setStep(2);
+                                }}>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-white/60">Origin State</label>
+                                            <select name="originState" required className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] appearance-none transition">
+                                                <option value="TX">Texas (TX)</option>
+                                                <option value="OK">Oklahoma (OK)</option>
+                                                <option value="LA">Louisiana (LA)</option>
+                                                <option value="NM">New Mexico (NM)</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-white/60">Destination State</label>
+                                            <select name="destinationState" required className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] appearance-none transition">
+                                                <option value="CO">Colorado (CO)</option>
+                                                <option value="WY">Wyoming (WY)</option>
+                                                <option value="KS">Kansas (KS)</option>
+                                                <option value="UT">Utah (UT)</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-white/60">Destination State</label>
-                                        <select className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] appearance-none transition">
-                                            <option>Colorado (CO)</option>
-                                            <option>Wyoming (WY)</option>
-                                            <option>Kansas (KS)</option>
-                                            <option>Utah (UT)</option>
-                                        </select>
+                                    <div className="space-y-2 mt-6">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-white/60">Max Overall Dimensions</label>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <input name="width" type="text" required placeholder="Width (ft)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
+                                            <input name="height" type="text" required placeholder="Height (ft)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
+                                            <input name="weight" type="text" required placeholder="Weight (lbs)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Max Overall Dimensions</label>
-                                    <div className="grid grid-cols-3 gap-4">
-                                        <input type="text" placeholder="Width (ft)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
-                                        <input type="text" placeholder="Height (ft)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
-                                        <input type="text" placeholder="Weight (lbs)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#C6923A] transition" />
+                                    
+                                    <div className="pt-8">
+                                        <button 
+                                            type="submit"
+                                            className="w-full group bg-[#C6923A] hover:bg-[#b0802e] text-black font-black uppercase tracking-widest rounded-xl py-4 flex items-center justify-center gap-2 transition"
+                                        >
+                                            Start Load Intake <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        </button>
                                     </div>
-                                </div>
-                                
-                                <div className="pt-4">
-                                    <button 
-                                        onClick={() => setStep(2)}
-                                        className="w-full group bg-[#C6923A] hover:bg-[#b0802e] text-black font-black uppercase tracking-widest rounded-xl py-4 flex items-center justify-center gap-2 transition"
-                                    >
-                                        Start Load Intake <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </button>
-                                </div>
+                                </form>
                             </div>
                         )}
 
                         {step === 2 && (
                             <div className="space-y-6 relative z-10 animate-in fade-in slide-in-from-right-8 duration-500 text-center py-12">
-                                <div className="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <Shield className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-2xl font-black text-white mb-2">Create an Account to Autofill</h3>
+                                <h3 className="text-2xl font-black text-white mb-2">Expedited Concierge Processing</h3>
                                 <p className="text-white/50 mb-8 max-w-sm mx-auto">
-                                    We vault your USDOT, Insurance, and Truck configurations so you never have to type them again. 
+                                    Secure your guaranteed clearance. We process the native DOT compliance documentation for {formState.originState || 'TX'} to {formState.destinationState || 'CO'}.
                                 </p>
-                                <a href="/login" className="inline-flex items-center justify-center w-full max-w-xs bg-white text-black font-black uppercase text-sm tracking-widest rounded-xl py-4 hover:bg-neutral-200 transition">
-                                    Sign Up & Continue
-                                </a>
+                                <div className="bg-black border border-white/5 p-4 rounded-xl max-w-sm mx-auto mb-8 flex items-center justify-between">
+                                    <div className="text-left">
+                                        <div className="text-sm font-bold text-white">Priority Setup Fee</div>
+                                        <div className="text-xs text-white/40">Includes local DOT fast-track</div>
+                                    </div>
+                                    <div className="text-xl font-black text-emerald-400">$150</div>
+                                </div>
+                                <button 
+                                    onClick={async () => {
+                                        setIsLoading(true);
+                                        const res = await fetch('/api/stripe/permit-checkout', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify(formState)
+                                        });
+                                        const data = await res.json();
+                                        if (data.url) {
+                                            window.location.href = data.url;
+                                        } else {
+                                            alert("Checkout failed: " + data.error);
+                                            setIsLoading(false);
+                                        }
+                                    }}
+                                    disabled={isLoading}
+                                    className="inline-flex items-center justify-center w-full max-w-xs bg-emerald-500 text-black font-black uppercase text-sm tracking-widest rounded-xl py-4 hover:bg-emerald-400 transition disabled:opacity-50"
+                                >
+                                    {isLoading ? 'Encrypting...' : 'Checkout Securely'}
+                                </button>
                                 <button onClick={() => setStep(1)} className="block w-full text-xs text-white/30 font-bold hover:text-white mt-6 underline">
-                                    Back to Step 1
+                                    Edit Load Dimensions
                                 </button>
                             </div>
                         )}

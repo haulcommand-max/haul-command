@@ -198,9 +198,13 @@ export function GlobalCommandMap() {
                     Offline
                   </span>
                 )}
-                <span className="text-[10px] text-[#C6923A] font-bold ml-auto">{selectedNode.score} TP</span>
               </div>
-              <h3 className="text-sm font-bold truncate mb-1">{selectedNode.name}</h3>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-sm font-bold truncate">{selectedNode.name}</h3>
+                <span className="flex items-center gap-1 bg-[#C6923A]/10 text-[#C6923A] px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-[#C6923A]/30 whitespace-nowrap">
+                  <Shield className="w-3 h-3" /> {selectedNode.score} TP
+                </span>
+              </div>
               <p className="text-xs text-neutral-400 mb-3">Verified Escort Operator</p>
               
               <Link href={`/directory/profile/${selectedNode.slug}`} className="block w-full text-center bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2 rounded-lg transition">

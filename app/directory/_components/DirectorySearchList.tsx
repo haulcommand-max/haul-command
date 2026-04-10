@@ -193,9 +193,17 @@ export function DirectorySearchList({
                           <Zap className="w-3 h-3 fill-emerald-400" /> DISPATCH READY
                         </span>
                       )}
-                      {op.score >= 50 && (
-                        <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
+                      {op.score >= 50 ? (
+                        <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
+                          <Shield className="w-3 h-3 fill-[#C6923A]/20" />
+                          <span className="text-white bg-[#C6923A] px-1.5 py-0.5 rounded text-[9px]">{op.score} TP</span>
                           {op.score >= 80 ? 'Verified Authority' : 'Claimed'}
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-neutral-800 text-neutral-400 border border-white/10">
+                          <Shield className="w-3 h-3" />
+                          <span className="text-white bg-neutral-600 px-1.5 py-0.5 rounded text-[9px]">{op.score} TP</span>
+                          Unverified
                         </span>
                       )}
                     </div>
