@@ -1,0 +1,17 @@
+sanity_checks:
+  glossary:
+    - rule: "All H1s must exact match the Glossary Term"
+    - rule: "All glossary pages must have an internal link to a related regulation or corridor"
+    - rule: "No orphan glossary pages. Must be reachable via sitemap or index in <= 3 clicks."
+    - rule: "Check IndexNow payload for batched terminology updates"
+  regulations:
+    - rule: "State/Province specific regulations must include valid date of last authoritative check"
+    - rule: "External citations to DOT pages must have rel='nofollow' unless explicitly whitelisted"
+    - rule: "Disclaimer copy must be present when an interpretation is unsourced"
+  rates:
+    - rule: "Rate tables must serialize into Schema.org JSON-LD Dataset/Table format"
+    - rule: "High volatility corridors display a 'Rates fluctuate rapidly' warning banner"
+  corridors:
+    - rule: "Corridor slugs follow standard format (e.g., 'i-80-wyoming-to-nebraska')"
+    - rule: "Duplicate risk mitigation: Check canonical tag points to primary direction (A to B, not B to A)"
+    - rule: "AutoLinker doesn't inadvertently create infinite SEO loops between connecting corridors"

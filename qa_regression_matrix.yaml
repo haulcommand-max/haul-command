@@ -1,0 +1,56 @@
+qa_regression_matrix:
+  route_by_route_acceptance:
+    - route: "/directory/[id]"
+      scenarios:
+        - render_profile_data_accurately
+        - handle_404_on_invalid_id
+        - display_verified_badges_if_trusted
+        - connect_call_button_to_pbx
+    - route: "/corridors/[id]"
+      scenarios:
+        - load_real_time_rate_aggregations
+        - handle_missing_rate_data_gracefully
+        - display_nearest_operators_list
+        - seo_metadata_matches_corridor_intent
+    - route: "/dashboard"
+      scenarios:
+        - render_operator_stats
+        - redirect_to_login_if_unauthenticated
+        - validate_wallet_balance_realtime
+    - route: "/training/[moduleId]"
+      scenarios:
+        - load_lesson_video
+        - record_progress_on_completion
+        - block_certification_if_uncompleted
+
+  api_contract_test_cases:
+    - endpoint: "/api/matches/hc_match_candidates"
+      method: "POST"
+      contract:
+        - require_valid_bearer_token
+        - param_lat_lon_required
+        - return_sorted_candidates_array
+        - handle_pg_timeout_gracefully
+    - endpoint: "/api/offers/accept"
+      method: "POST"
+      contract:
+        - require_auth
+        - validate_offer_status_is_pending
+        - apply_idempotency_key
+        - return_200_on_success_with_job_id
+
+  push_notification_qa_scenarios:
+    - scenario: "Offer Received"
+      triggers:
+        - "hc_match_candidates emit"
+      expected_payload:
+        - title: "New Load Available"
+        - body: "Origin to Destination - $Rate"
+        - deep_link: "/dashboard/offers/[id]"
+    - scenario: "Compliance Expiry Reminder"
+      triggers:
+        - "compliance-reminders-run cron"
+      expected_payload:
+        - title: "Action Required: Insurance Expiring"
+        - body: "Your insurance expires in X days."
+        - deep_link: "/dashboard/compliance"

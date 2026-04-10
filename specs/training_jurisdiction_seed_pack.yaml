@@ -1,0 +1,35 @@
+jurisdictions:
+  north_america:
+    usa_states:
+      - id: "US-WA"
+        name: "Washington"
+        certification_requirement: "WA State Pilot Car Certification"
+        renewal_period_years: 3
+        required_course_modules: ["Defensive Driving", "Bridge Traffic Control", "Pole Car Operations"]
+      - id: "US-FL"
+        name: "Florida"
+        certification_requirement: "FDOT FDLE Pilot Car Certification"
+        renewal_period_years: 4
+      - id: "US-CO"
+        name: "Colorado"
+        certification_requirement: "Colorado DOT Escort Certification"
+        renewal_period_years: 4
+    canada_provinces:
+      - id: "CA-AB"
+        name: "Alberta"
+        certification_requirement: "Alberta Transportation Escort Requirement"
+      - id: "CA-QC"
+        name: "Quebec"
+        certification_requirement: "SAAQ Francophone Escort Permit"
+  
+  emea:
+    uk:
+      - id: "UK-ENG"
+        name: "England"
+        certification_requirement: "City & Guilds Abnormal Load Escort"
+  
+  apac:
+    australia:
+      - id: "AU-QLD"
+        name: "Queensland"
+        certification_requirement: "Level 1/2 Pilot Vehicle Driver"

@@ -52,6 +52,50 @@ serve(async (req) => {
         };
 
         for (const ep of endpoints) {
+            // ── Build personalized payload per operator ──
+            let personalPayload = {
+                title: "Morning Market Pulse",
+                body: "New loads posted overnight. Check the board.",
+                data: { url: "/load-board" }
+            };
+
+            try {
+                // Fetch operator's home corridor/state for personalization
+                const { data: profile } = await supabase
+                    .from("escort_profiles")
+                    .select("home_base_state, display_name")
+                    .eq("user_id", ep.user_id)
+                    .single();
+
+                if (profile?.home_base_state) {
+                    // Count loads posted in operator's state since yesterday
+                    const yesterday = new Date(Date.now() - 86_400_000).toISOString();
+                    const { count } = await supabase
+                        .from("loads")
+                        .select("id", { count: "exact", head: true })
+                        .eq("origin_state", profile.home_base_state)
+                        .gte("created_at", yesterday)
+                        .eq("status", "active");
+
+                    const loadCount = count ?? 0;
+                    const name = profile.display_name?.split(" ")[0] || "Operator";
+
+                    personalPayload = loadCount > 0
+                        ? {
+                            title: `Morning Pulse — ${profile.home_base_state}`,
+                            body: `${name}, ${loadCount} new load${loadCount > 1 ? 's' : ''} posted near ${profile.home_base_state} overnight. Check the board.`,
+                            data: { url: `/load-board?state=${profile.home_base_state}` }
+                        }
+                        : {
+                            title: `Morning Pulse — ${profile.home_base_state}`,
+                            body: `${name}, corridor activity is quiet today. A good time to update your availability.`,
+                            data: { url: "/dashboard/availability" }
+                        };
+                }
+            } catch (_e) {
+                // Non-fatal — use default payload
+            }
+
             if (ep.provider === 'fcm' && accessToken) {
                 // Native push via Firebase Cloud Messaging API v1
                 const response = await fetch(`https://fcm.googleapis.com/v1/projects/${project_id}/messages:send`, {
@@ -64,10 +108,10 @@ serve(async (req) => {
                         message: {
                             token: ep.token,
                             notification: {
-                                title: payload.title,
-                                body: payload.body,
+                                title: personalPayload.title,
+                                body: personalPayload.body,
                             },
-                            data: payload.data
+                            data: personalPayload.data
                         }
                     })
                 });
@@ -77,7 +121,7 @@ serve(async (req) => {
                 // Web push via VAPID
                 try {
                     const sub = JSON.parse(ep.token);
-                    await webpush.sendNotification(sub, JSON.stringify(payload));
+                    await webpush.sendNotification(sub, JSON.stringify(personalPayload));
                     successes.push(sub.endpoint);
                 } catch (e: any) {
                     failures.push(ep.token);

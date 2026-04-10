@@ -1,0 +1,50 @@
+schema_drafts:
+  - type: "VideoObject"
+    target: "Training node pages"
+    json_ld_template: |
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "{{video_title}}",
+        "description": "{{video_description}}",
+        "thumbnailUrl": "{{thumbnail_url}}",
+        "uploadDate": "{{upload_date}}",
+        "contentUrl": "{{video_url}}",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Haul Command Training Institute"
+        }
+      }
+      
+  - type: "Course"
+    target: "Certification course index"
+    json_ld_template: |
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "{{course_title}}",
+        "description": "Certification required for {{state_name}} heavy haul operations.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Haul Command",
+          "sameAs": "https://haulcommand.com"
+        }
+      }
+
+  - type: "FAQPage"
+    target: "Corridor report footnotes"
+    json_ld_template: |
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the permit requirements for {{corridor_name}}?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "{{permit_summary_text}}"
+            }
+          }
+        ]
+      }

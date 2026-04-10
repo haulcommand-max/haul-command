@@ -1,0 +1,28 @@
+routes:
+  - path: "/directory/corridor/[slug]"
+    qa_scenarios:
+      - "Loads correctly with 100+ operator dots on map"
+      - "Fallback displays gracefully when no active operators in region"
+      - "Schema.org renders correctly for Corridor"
+      - "Internal links injected by SmartAutoLinker do not break layout"
+  - path: "/onboarding/operator"
+    qa_scenarios:
+      - "KYC manual step-up path prevents immediate activation"
+      - "Stripe sandbox token flows through to active subscription status"
+      - "LiveKit credential alignment test drops invalid tokens"
+  - path: "/search"
+    qa_scenarios:
+      - "Radar map fallbacks render when GPS proof engine goes offline"
+      - "Truth-first UI: Unverified operators shown with visual degradation"
+api_contracts:
+  - endpoint: "/api/reports/corridor-intelligence"
+    tests:
+      - "Enforces rate limits by IP/API Key"
+      - "Returns 400 on malformed geographic bounding box"
+      - "Enterprise lead is captured in DB even on error (if parsable)"
+push_notifications:
+  - scenario: "Urgent Load Match"
+    tests:
+      - "Delivers to FCM within 500ms"
+      - "Deep links directly to Load Accept modal"
+      - "Fallback to SMS if push receipt not acknowledged within 60s"

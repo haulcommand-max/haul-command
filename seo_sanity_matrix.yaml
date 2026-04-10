@@ -1,0 +1,23 @@
+seo_sanity_matrix:
+  glossary:
+    - check: "Schema.org Article & DefinedTerm existence"
+    - check: "Canonical tag points to primary definition"
+    - check: "Internal links auto-generated to related terms"
+    - check: "Meta description < 160 characters"
+
+  regulations:
+    - check: "State/Province title includes current year"
+    - check: "JSON-LD FAQPage schema for specific state rules"
+    - check: "H1 targets 'State Escort Requirements'"
+    - check: "No duplicate content across similar states"
+
+  rates:
+    - check: "Table data rendered in HTML (no client-side only render)"
+    - check: "Title targets '[City] to [City] Escort Rates'"
+    - check: "Refresh frequency tag in headers"
+    
+  corridors:
+    - check: "H1 matches high-intent freight corridor search"
+    - check: "Include Local Business schema for top escorts nearby"
+    - check: "Breadcrumb schema points back to regional hub"
+    - check: "URL slug is evergreen (no dates)"

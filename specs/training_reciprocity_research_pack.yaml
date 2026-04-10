@@ -1,0 +1,17 @@
+reciprocity_framework:
+  research_goals:
+    - "Determine which USA states accept Washington State Certification."
+    - "Map out exceptions for Night Travel under reciprocal agreements."
+  
+  known_agreements:
+    - primary_state: "US-WA"
+      accepted_in: ["US-CO", "US-UT", "US-NV", "US-TX", "US-OK", "US-GA"]
+      notes: "Utah requires an additional lighting permit even with reciprocal WA certification."
+    - primary_state: "US-FL"
+      accepted_in: ["US-GA", "US-AL", "US-LA"]
+  
+  verification_placeholders:
+    - state: "US-NY"
+      question_for_human: "Does NY currently accept the FL credential for runs on the completely I-90 thruway, or do they mandate the standalone NY certification?"
+    - state: "CA-BC"
+      question_for_human: "Does British Columbia still recognize Washington state pilot car credentials for heavy hauls originating from the USA?"

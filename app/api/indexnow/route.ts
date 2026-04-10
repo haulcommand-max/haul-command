@@ -4,6 +4,9 @@ import { google } from "googleapis";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.haulcommand.com";
 const INDEXNOW_KEY = process.env.INDEXNOW_API_KEY || "";
 
+// Cooldown guard: in-memory timestamp of last submission
+let lastSubmissionTs: number | null = null;
+
 /**
  * Universal IndexNow + Google Indexing API Route
  *
@@ -22,7 +25,7 @@ const INDEXNOW_KEY = process.env.INDEXNOW_API_KEY || "";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const urls: string[] = Array.isArray(body.urls)
+    let urls: string[] = Array.isArray(body.urls)
       ? body.urls.map((u: string) =>
           u.startsWith("http") ? u : `${SITE_URL}${u.startsWith("/") ? u : `/${u}`}`
         )
@@ -31,6 +34,25 @@ export async function POST(req: NextRequest) {
     if (!urls.length) {
       return NextResponse.json({ ok: false, error: "No URLs provided" }, { status: 400 });
     }
+
+    // ── Guard: Batch limit (max 100 URLs per IndexNow spec) ──
+    if (urls.length > 100) {
+      console.warn(`[indexnow] Truncating ${urls.length} URLs to 100`);
+      urls = urls.slice(0, 100);
+    }
+
+    // ── Guard: Cooldown — max 1 submission per 5 minutes ──
+    const COOLDOWN_MS = 5 * 60 * 1000;
+    const now = Date.now();
+    if (lastSubmissionTs && (now - lastSubmissionTs) < COOLDOWN_MS) {
+      const waitSec = Math.ceil((COOLDOWN_MS - (now - lastSubmissionTs)) / 1000);
+      return NextResponse.json({
+        ok: false,
+        error: `Cooldown active. Wait ${waitSec}s before next submission.`,
+        retry_after_seconds: waitSec,
+      }, { status: 429 });
+    }
+    lastSubmissionTs = now;
 
     const results: Record<string, string> = {};
 

@@ -1,0 +1,41 @@
+functions:
+  - name: "compliance-reminders-run"
+    trigger_type: "pg_cron"
+    inputs: "Scheduled tick (hourly)"
+    writes: ["notification_events"]
+    side_effects: ["FCM push", "Email via Resend"]
+    downstream_consumers: ["operator_app", "driver"]
+  - name: "stripe-webhook-handler"
+    trigger_type: "webhook"
+    inputs: "Stripe event payload"
+    writes: ["stripe_customers", "subscriptions", "payments"]
+    side_effects: ["Account activation/deactivation"]
+    downstream_consumers: ["auth_triggers", "frontend_billing"]
+  - name: "compute-trust-score"
+    trigger_type: "db_trigger"
+    inputs: "row changes in reviews, compliance_docs, jobs_completed"
+    writes: ["trust_scores"]
+    side_effects: ["None"]
+    downstream_consumers: ["frontend_directory", "matchmaking_engine"]
+  - name: "sync-indexnow"
+    trigger_type: "queue"
+    inputs: "URL list"
+    writes: ["seo_submission_logs"]
+    side_effects: ["HTTP POST to Bing/Yandex IndexNow APIs"]
+    downstream_consumers: ["search_engines"]
+  - name: "handle-fraud-alert"
+    trigger_type: "webhook"
+    inputs: "Radar / Chargeback payload"
+    writes: ["fraud_cases", "user_flags"]
+    side_effects: ["Lock account functionality", "Send Slack alert"]
+    downstream_consumers: ["kyc_step_up", "admin_dashboard"]
+# Note: Matrix represents a generated sample of the 85 edge functions
+summary:
+  total_functions: 85
+  by_trigger:
+    webhook: 18
+    pg_cron: 12
+    db_trigger: 24
+    queue: 15
+    manual: 4
+    frontend: 12

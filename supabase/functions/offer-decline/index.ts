@@ -78,6 +78,32 @@ Deno.serve(async (req: Request) => {
         })
         .eq("id", offer_id);
 
+    // ── Wire data spine — ingest escort_responded (declined) event ──
+    // Feeds: fill probability, response rate metrics, broker risk scorer, decline-reason analysis
+    const { data: fullOffer } = await supabase
+        .from("match_offers")
+        .select("load_id, broker_id, wave, offered_rate")
+        .eq("id", offer_id)
+        .single();
+
+    if (fullOffer) {
+        await supabase.rpc('ingest_event', {
+            p_event_type: 'escort_responded',
+            p_actor_id: user.id,
+            p_entity_id: fullOffer.load_id,
+            p_payload: {
+                offer_id,
+                wave: fullOffer.wave,
+                response: 'declined',
+                decline_reason,
+                responded_at: now,
+                broker_id: fullOffer.broker_id,
+                offered_rate: fullOffer.offered_rate,
+            },
+            p_corridor_id: null,
+        }).catch(() => { /* non-fatal */ });
+    }
+
     return new Response(JSON.stringify({ ok: true, offer_id, declined_at: now }), {
         status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

@@ -1,0 +1,27 @@
+scrape_targets:
+  infrastructure:
+    - category: "Hotels / Extended Stays"
+      parameters: "Must have 'Truck Parking' or 'Oversize Parking' in amenities"
+      sources: ["booking.com/truck-parking", "truckerpath.com/hotels"]
+      priority: "high"
+    
+    - category: "Truck Stops & Scales"
+      parameters: "Determine CAT scale availability, specialized heavy load bypass lanes"
+      sources: ["catscale.com/locator", "findfuelstops.com"]
+      priority: "critical"
+
+  services:
+    - category: "Pilot Cars / Escorts"
+      parameters: "Name, Phone, Base City, Certifications held"
+      sources: ["uspilotcars.com", "wideloadshipping.com/pilot-cars"]
+      priority: "completed (Batch 4 seeded)"
+      
+    - category: "Chambers of Commerce"
+      parameters: "Local contact for specialized municipal permits"
+      sources: ["chamberofcommerce.com/directory"]
+      priority: "medium"
+
+    - category: "Vendor Density Targets"
+      parameters: "Mobile diesel mechanics, heavy rotator tow companies, tire repair"
+      sources: ["nttsbreakdown.com", "yellowpages.com/heavy-towing"]
+      priority: "high"

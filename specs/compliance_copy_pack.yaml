@@ -1,0 +1,13 @@
+compliance_disclaimers:
+  general_unsourced:
+    variant_a: "Disclaimer: This regulatory interpretation has not been verified by state DOT officials. Use at your own risk and consult local authorities before routing."
+    variant_b: "Warning: Data presented may be outdated. Route managers are responsible for final compliance verification."
+  
+  quebec_canada_bilingual:
+    en: "Important: Transporting oversize loads into Quebec requires specific provincial permits and French-speaking pilot cars in some jurisdictions."
+    fr: "Important: Le transport de charges hors normes au Québec nécessite des permis provinciaux spécifiques et des véhicules d'escorte francophones dans certaines juridictions."
+    en_warning: "Permit rules are strictly enforced by the SAAQ."
+    fr_warning: "Les règles de permis sont strictement appliquées par la SAAQ."
+    
+  live_rate_boards:
+    copy: "Rates shown are historical aggregates from marketplace data and do not constitute a binding offer to transport."

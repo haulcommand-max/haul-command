@@ -1,0 +1,26 @@
+reciprocity_research_framework:
+  methodology:
+    - step: 1
+      action: "Identify Base Jurisdiction Certification (e.g., WA State Pilot Car Cert)"
+    - step: 2
+      action: "Cross-reference target jurisdiction recognized list (e.g., NV, CO, FL)"
+    - step: 3
+      action: "Log specific exclusions (e.g., FL recognizes NY but requires separate FDOT exam)"
+
+  state_province_placeholders:
+    - region: "US-WA"
+      status: "TO_VERIFY"
+      recognizes: ["US-CO", "US-FL", "US-NY"]
+      requires_local_endorsement: false
+    - region: "US-NY"
+      status: "TO_VERIFY"
+      recognizes: []
+      requires_local_endorsement: true
+    - region: "CA-ON"
+      status: "TO_VERIFY"
+      recognizes: ["CA-QC"]
+      requires_local_endorsement: false
+    - region: "US-FL"
+      status: "TO_VERIFY"
+      recognizes: ["US-WA", "US-CO", "US-NY", "US-GA"]
+      special_rule: "8-hour FDOT refresher required regardless of reciprocity"

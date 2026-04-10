@@ -48,7 +48,14 @@ function scoreCandidate(op: any, incident: NoShowIncident): number {
   const distance = op.distance_km
     ? Math.max(0, 100 - (op.distance_km / (incident.max_radius_km ?? 100)) * 100)
     : 50;
-  const credentialMatch = 80; // TODO: compare op.certifications against incident.required_credentials
+
+  // Credential match: compare operator certifications against required credentials
+  const opCerts: string[] = Array.isArray(op.certifications) ? op.certifications : [];
+  const requiredCreds = incident.required_credentials ?? [];
+  const credentialMatch = requiredCreds.length === 0
+    ? 80 // no requirements = base score
+    : Math.round((requiredCreds.filter((c: string) => opCerts.includes(c)).length / requiredCreds.length) * 100);
+
   const reliability = (op.completion_rate ?? 0.8) * 100;
   const availability = readiness > 50 ? 100 : 50;
 
@@ -101,7 +108,6 @@ export async function runNoShowRecovery(incident: NoShowIncident): Promise<{
     .from('operator_profiles')
     .select('id, user_id, display_name, lat, lng, availability_status, completion_rate')
     .in('availability_status', ['online', 'away'])
-    .eq('country_code', 'US') // TODO: derive from job location
     .not('lat', 'is', null)
     .not('lng', 'is', null)
     .limit(30);

@@ -1,0 +1,37 @@
+risk_regression_matrix:
+  payment_flows:
+    - flow: "Premium Auction Pre-Auth"
+      risks:
+        - Insufficient funds during hold
+        - Stripe API timeout
+        - Idempotency collision
+      mitigations:
+        - Verify balance before place_bid
+        - Implement robust retry queue with backoff
+        - Unique job_id + user_id lock
+    
+    - flow: "Load Settlement Capture"
+      risks:
+        - Double capture
+        - Operator account unlinked
+      mitigations:
+        - Enforce state machine (pending -> captured only)
+        - Validate Stripe Connect account status before job start
+
+  dispute_flows:
+    - flow: "Auto-Resolve Timeout"
+      risks:
+        - Erroneous payout to bad actor
+        - Notification failure for dispute period
+      mitigations:
+        - 48-hour mandatory hold
+        - Escalate to manual queue if high-risk score
+        - Send 3 redundant webhooks/emails before resolution execution
+
+    - flow: "GPS Fraud Detection"
+      risks:
+        - Spoofed coordinates
+        - Disabled app tracking
+      mitigations:
+        - Check Navixy integration confidence score
+        - Reject payout if breadcrumb density < 50%

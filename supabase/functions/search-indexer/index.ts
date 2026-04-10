@@ -31,6 +31,7 @@ const COLLECTION_MAP: Record<string, string> = {
     provider_directory: "provider_directory",
     loads: "loads",
     corridors: "corridors",
+    hc_global_operators: "hc_operators",
 };
 
 /** Transform a raw DB row into a Typesense document.
@@ -61,6 +62,27 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         doc.response_time_min = row.response_time_minutes || 0;
         doc.acceptance_rate = row.acceptance_rate || 0;
         doc.on_time_rate = row.on_time_rate || 0;
+        doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
+    } else if (tableName === "hc_global_operators") {
+        doc.display_name = row.name || "";
+        doc.slug = row.slug || "";
+        doc.entity_type = row.entity_type || "escort";
+        doc.country = row.country_code || "US";
+        doc.state_province = row.admin1_code || "";
+        doc.city = row.city || "";
+        doc.phone = row.phone || "";
+        doc.email = row.email || "";
+        if (row.lat && row.lng) {
+            doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
+        }
+        doc.trust_score = row.trust_score || 0;
+        doc.compliance_score = row.compliance_score || 0;
+        doc.is_verified = row.is_verified ?? false;
+        doc.is_claimed = row.is_claimed ?? false;
+        doc.service_types = row.service_types || [];
+        doc.equipment_types = row.equipment_types || [];
+        doc.coverage_status = row.coverage_status || "coming_soon";
+        doc.source_table = row.source_table || "";
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
     } else if (tableName === "loads") {
         doc.status = row.status || "open";

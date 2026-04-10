@@ -51,7 +51,10 @@ export default function SmartAutoLinker({
   }
 
   // Sort terms by length descending so "steerable schnabel" matches before "steerable"
-  const terms = Object.keys(termMap).sort((a, b) => b.length - a.length);
+  // Filter out terms shorter than 4 chars to prevent over-linking ("load", "job", etc.)
+  const terms = Object.keys(termMap)
+    .filter(t => t.length >= 4)
+    .sort((a, b) => b.length - a.length);
 
   // Escape regex special chars
   const escaped = terms.map((t) =>
@@ -62,6 +65,7 @@ export default function SmartAutoLinker({
 
   const parts = text.split(pattern);
   let linkCount = 0;
+  const linkedTerms = new Set<string>(); // Track first-occurrence-only per term
 
   return (
     <span className={className}>
@@ -69,8 +73,10 @@ export default function SmartAutoLinker({
         const lowerPart = part.toLowerCase();
         const entry = termMap[lowerPart];
 
-        if (entry && linkCount < maxLinks) {
+        // Only link if: (1) term exists, (2) under maxLinks, (3) first occurrence of this term
+        if (entry && linkCount < maxLinks && !linkedTerms.has(lowerPart)) {
           linkCount++;
+          linkedTerms.add(lowerPart);
           return (
             <Link
               key={`autolink-${i}`}

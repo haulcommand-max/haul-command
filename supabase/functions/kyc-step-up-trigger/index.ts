@@ -28,28 +28,70 @@ serve(async (req: Request) => {
   }
 
   const { driver_id, rate_cents } = payload.record;
+  const stepUpReasons: string[] = [];
 
-  // Rule: If rate_cents > 50000 ($500) and user KYC level < 2, dispatch a step-up event
+  // Fetch current profile
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("kyc_level, fraud_score")
+    .eq("id", driver_id)
+    .single();
+
+  if (!profile || profile.kyc_level >= 2) {
+    // Already KYC L2+ or profile not found — no action needed
+    return new Response(JSON.stringify({ ok: true, stepUpTriggered: false, reason: "already_l2_or_missing" }), {
+      headers: { ...corsHeaders, "content-type": "application/json" }
+    });
+  }
+
+  // ── Signal 1: High-value job (>$500) ──
   if (rate_cents > 50000) {
-    const { data: profile } = await supabase.from("profiles").select("kyc_level").eq("id", driver_id).single();
+    stepUpReasons.push("high_value_job");
+  }
+
+  // ── Signal 2: Elevated fraud score (>=50) ──
+  if ((profile.fraud_score ?? 0) >= 50) {
+    stepUpReasons.push("elevated_fraud_score");
+  }
+
+  // ── Signal 3: Repeated payment failures (>=3 in 30 days) ──
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000).toISOString();
+  const { count: paymentFailures } = await supabase
+    .from("trust_events")
+    .select("id", { count: "exact", head: true })
+    .eq("entity_profile_id", driver_id)
+    .in("event_type", ["payment_decline", "preauth_failed", "payout_failed"])
+    .gte("occurred_at", thirtyDaysAgo);
+
+  if ((paymentFailures ?? 0) >= 3) {
+    stepUpReasons.push("repeated_payment_failures");
+  }
+
+  // If any signal triggered, dispatch step-up notification
+  if (stepUpReasons.length > 0) {
+    await supabase.from("notification_events").insert({
+      user_id: driver_id,
+      type: "KYC_STEP_UP_REQUIRED",
+      title: "KYC Verification Upgrade Required",
+      body: stepUpReasons.includes("high_value_job")
+        ? "This job's value requires KYC Level 2. Please upload additional documentation."
+        : stepUpReasons.includes("elevated_fraud_score")
+        ? "Your account requires additional verification. Please complete KYC Level 2."
+        : "Multiple payment issues detected. Please verify your identity to continue.",
+      data: {
+        job_id: payload.record.id,
+        required_level: 2,
+        reasons: stepUpReasons,
+      }
+    });
     
-    if (profile && profile.kyc_level < 2) {
-      // Dispatch notification event for step up required
-      await supabase.from("notification_events").insert({
-        user_id: driver_id,
-        type: "KYC_STEP_UP_REQUIRED",
-        title: "KYC Verification Upgrade Required",
-        body: "This job's value requires KYC Level 2. Please upload additional documentation.",
-        data: { job_id: payload.record.id, required_level: 2 }
-      });
-      
-      return new Response(JSON.stringify({ ok: true, stepUpTriggered: true }), {
-        headers: { ...corsHeaders, "content-type": "application/json" }
-      });
-    }
+    return new Response(JSON.stringify({ ok: true, stepUpTriggered: true, reasons: stepUpReasons }), {
+      headers: { ...corsHeaders, "content-type": "application/json" }
+    });
   }
 
   return new Response(JSON.stringify({ ok: true, stepUpTriggered: false }), {
     headers: { ...corsHeaders, "content-type": "application/json" }
   });
 });
+

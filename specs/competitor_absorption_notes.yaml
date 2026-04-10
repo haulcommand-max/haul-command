@@ -1,0 +1,17 @@
+absorption_notes:
+  feature_clones:
+    - competitor: "Truckstop.com"
+      feature: "Available Now / 'Trucks in Hand'"
+      absorption_strategy: "Implement ping/pulse via our React Native app to show real-time 'active' dots on the radar map. Instead of a list, map it visually."
+      
+    - competitor: "DAT"
+      feature: "Backhaul routing"
+      absorption_strategy: "Use our 'corridor-intelligence' engine to predict backhauls based on seasonal permit volume. Show predictive return loads to operators viewing a long-haul."
+      
+    - competitor: "Permit Service Agencies (e.g. Wideload Shipping)"
+      feature: "Forms Hub"
+      absorption_strategy: "Automate form filling via LLM. Provide the generated PDF to the operator. Absorb the entire processing margin."
+
+    - competitor: "Pilot Car Directories"
+      feature: "Vendor Density"
+      absorption_strategy: "Display vendors directly integrated on the map route. Allow instant booking/messaging through LiveKit infrastructure. Render standalone directory models obsolete."

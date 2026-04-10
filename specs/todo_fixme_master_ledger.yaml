@@ -1,0 +1,112 @@
+blocks:
+  - file: "app/api/developers/sandbox-key/route.ts"
+    line: 61
+    content: "TODO: Trigger Supabase Edge Function or Resend to deliver key by email"
+    type: "TODO"
+    category: "money-critical" # Sandbox onboarding is part of developer funnel
+    status: "open"
+
+  - file: "app/api/reports/corridor-intelligence/route.ts"
+    line: 81
+    content: "TODO: Store lead in Supabase enterprise_leads table"
+    type: "TODO"
+    category: "launch-critical" # We can't lose enterprise leads at launch
+    status: "open"
+
+  - file: "app/sitemap.ts"
+    line: 7
+    content: "DA 97 Hack #4b — Dynamic Sitemap Builder"
+    type: "HACK"
+    category: "seo-critical"
+    status: "open"
+
+  - file: "app/api/glossary/indexnow/route.ts"
+    line: 7
+    content: "IndexNow API Route — DA 97 Accelerator Hack #1"
+    type: "HACK"
+    category: "seo-critical"
+    status: "open"
+    
+  - file: "lib/workflows/operatorBriefing.ts"
+    line: 70
+    content: "TODO: wire to actual credential check"
+    type: "TODO"
+    category: "launch-critical" # Trust anchor
+    status: "open"
+
+  - file: "lib/workflows/compoundedWorkflows.ts"
+    line: 64
+    content: "TODO: join to dom_scorecards"
+    type: "TODO"
+    category: "deferred"
+    status: "open"
+
+  - file: "lib/trust/composite-trust-engine.ts"
+    line: 482
+    content: "TODO: wire photos when available"
+    type: "TODO"
+    category: "deferred"
+    status: "open"
+
+  - file: "lib/predictive/execution-engine.ts"
+    line: 96
+    content: "TODO: localize per entity timezone"
+    type: "TODO"
+    category: "launch-critical"
+    status: "open"
+
+  - file: "lib/link-graph.ts"
+    line: 34
+    content: "TODO: Implement Supabase RPC call \"get_nearest_corridors\""
+    type: "TODO"
+    category: "seo-critical"
+    status: "open"
+
+  - file: "lib/link-graph.ts"
+    line: 72
+    content: "TODO: Implement \"get_operators_for_corridor\""
+    type: "TODO"
+    category: "seo-critical"
+    status: "open"
+
+  - file: "lib/funnel/control-loop.ts"
+    line: 234
+    content: "TODO: Get from finance config"
+    type: "TODO"
+    category: "money-critical"
+    status: "open"
+    
+  - file: "supabase/functions/compliance-reminders-run/index.ts"
+    line: 61
+    content: "TODO: wire to FCM via notification_events"
+    type: "TODO"
+    category: "launch-critical" # Essential for operator engagement loop
+    status: "open"
+
+  - file: "fly/hc-worker/worker.mjs"
+    line: 44
+    content: "TODO: Wire to Firebase Admin SDK"
+    type: "TODO"
+    category: "launch-critical"
+    status: "open"
+
+  - file: "fly/hc-worker/worker.mjs"
+    line: 51
+    content: "TODO: Call hc_match_candidates() and create offers"
+    type: "TODO"
+    category: "money-critical"
+    status: "open"
+
+  - file: "fly/hc-worker/worker.mjs"
+    line: 105
+    content: "TODO: Sync subscriber lists to Listmonk"
+    type: "TODO"
+    category: "deferred"
+    status: "open"
+
+summary:
+  total_blockers: 15
+  launch_critical: 5
+  money_critical: 3
+  seo_critical: 4
+  deferred: 3

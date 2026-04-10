@@ -1,0 +1,16 @@
+competitor_absorption:
+  available_now:
+    competitor_baseline: "Traditional load boards require manual calling to verify 'available now' status."
+    haul_command_absorption: "Implement real-time GPS websocket presence. 'Available Now' is restricted to users with app open and moving < 5mph, completely destroying competitor stale-data problem."
+  
+  backhaul:
+    competitor_baseline: "Drivers post 'deadhead' routes manually."
+    haul_command_absorption: "Auto-detect destination from active load and programmatically inject return-route availability into the search index before they drop off the load."
+  
+  forms_hub:
+    competitor_baseline: "Competitors charge for PDF downloads."
+    haul_command_absorption: "Provide all forms for free, auto-filled with operator profile data. Monetize via Stripe premium permit expedition instead of raw downloads."
+  
+  vendor_density:
+    competitor_baseline: "Static directories that are outdated."
+    haul_command_absorption: "Scrape and auto-ingest 1.5M places via Google Places API and aggregate 'Truck Route Support' clusters along Navixy mapped corridors, creating a dynamic density heat map."
