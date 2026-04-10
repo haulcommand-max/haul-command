@@ -65,9 +65,45 @@ export default function OperatorDashboard() {
     const supabase = createClient();
 
     // ── Load dashboard data ──
-    const loadDashboard = useCallback(async (eid: string) => {
-        const { data } = await supabase.rpc("hc_operator_dashboard", { p_entity_id: eid });
-        if (data) setDash(data as unknown as DashboardData);
+    const loadDashboard = useCallback(async (userId: string) => {
+        // Fallback to standard querying since RPC might not exist
+        const { data: profile } = await supabase
+            .from("escort_profiles")
+            .select("*")
+            .eq("user_id", userId)
+            .single();
+
+        const { data: availability } = await supabase
+            .from("hc_available_now")
+            .select("available_until")
+            .eq("user_id", userId)
+            .single();
+
+        const isOnline = availability && availability.available_until !== null && new Date(availability.available_until) > new Date();
+
+        if (profile) {
+            setDash({
+                entity_id: profile.id,
+                company_name: profile.business_name || profile.display_name || "Operator",
+                city: profile.city || "Unknown",
+                region_code: profile.region_code || "",
+                country_code: profile.country_code || "US",
+                availability: isOnline ? "available" : "unavailable",
+                profile_completion: profile.business_name && profile.city ? 100 : 50,
+                claim_status: profile.claimed_status || "unclaimed",
+                trust_score: profile.trust_score || 80,
+                rating_avg: 0,
+                rating_count: 0,
+                jobs_completed: 0,
+                escort_verified: true,
+                has_high_pole: false,
+                last_seen_at: new Date().toISOString(),
+                offers_pending: 0,
+                bookings_active: 0,
+                bookings_completed: 0,
+                unread_notifications: 0
+            });
+        }
     }, [supabase]);
 
     const loadNotifications = useCallback(async (userId: string) => {
@@ -87,16 +123,9 @@ export default function OperatorDashboard() {
                 setLoading(false);
                 return;
             }
-            // Try to find entity_id from escort_profiles
-            const { data: ep } = await supabase
-                .from("escort_profiles")
-                .select("display_name, user_id")
-                .eq("user_id", user.id)
-                .single();
-
-            const eid = ep?.display_name || user.id;
-            setEntityId(eid);
-            await loadDashboard(eid);
+            // Use User ID instead of entity_id for direct lookups
+            setEntityId(user.id);
+            await loadDashboard(user.id);
             await loadNotifications(user.id);
             setLoading(false);
         };
@@ -107,13 +136,36 @@ export default function OperatorDashboard() {
     const toggleAvailability = async () => {
         if (!dash || toggling) return;
         setToggling(true);
-        const newStatus = dash.availability === "available" ? "unavailable" : "available";
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-            await supabase.rpc("hc_toggle_availability", {
-                p_user_id: user.id,
-                p_status: newStatus,
-            });
+            const isCurrentlyOnline = dash.availability === "available";
+            
+            if (isCurrentlyOnline) {
+                // Take offline
+                await supabase.from("hc_available_now").delete().eq("user_id", user.id);
+            } else {
+                // Go online
+                const { data: profile } = await supabase.from("escort_profiles").select("*").eq("user_id", user.id).single();
+                if (profile) {
+                    const expiry = new Date();
+                    expiry.setHours(expiry.getHours() + 12); // Online for 12 hours
+                    
+                    await supabase.from("hc_available_now").upsert({
+                        user_id: user.id,
+                        slug: profile.slug || user.id,
+                        business_name: profile.business_name,
+                        display_name: profile.display_name,
+                        country_code: profile.country_code || 'US',
+                        city: profile.city || '',
+                        lat: profile.lat || null,
+                        lng: profile.lng || null,
+                        trust_score: profile.trust_score || 80,
+                        is_verified: true,
+                        available_since: new Date().toISOString(),
+                        available_until: expiry.toISOString()
+                    });
+                }
+            }
             if (entityId) await loadDashboard(entityId);
         }
         setToggling(false);

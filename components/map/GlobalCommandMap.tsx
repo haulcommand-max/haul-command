@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Shield } from 'lucide-react';
 
+import { createClient } from '@/lib/supabase/client';
+
 interface OperatorNode {
   id: string;
   lat: number;
@@ -27,13 +29,50 @@ export function GlobalCommandMap() {
     pitch: 45
   });
 
-  const [simulatedOperators, setSimulatedOperators] = useState<OperatorNode[]>([]);
+  const [liveOperators, setLiveOperators] = useState<OperatorNode[]>([]);
   const [selectedNode, setSelectedNode] = useState<OperatorNode | null>(null);
+  const supabase = createClient();
 
-  // Generate synthetic nodes on load for immediate dramatic effect
-  // In production, this hooks straight into the `hc_places` or `operator_live_status` RPC.
   useEffect(() => {
-    // 1. Trigger hyperlocal zoom if allowed
+    // 1. Initial Data Load
+    async function loadAvailability() {
+      const { data, error } = await supabase
+        .from('hc_available_now')
+        .select('id, slug, display_name, business_name, lat, lng, trust_score, is_verified, available_until')
+        .or(`available_until.is.null,available_until.gt.${new Date().toISOString()}`)
+        .not('lat', 'is', null)
+        .not('lng', 'is', null);
+
+      if (error) {
+        console.error('Failed to load map liquidity', error);
+        return;
+      }
+
+      if (data) {
+        const nodes: OperatorNode[] = data.map(item => ({
+          id: item.id,
+          name: item.display_name || item.business_name || 'Verified operator',
+          lat: Number(item.lat),
+          lng: Number(item.lng),
+          score: item.trust_score || 85,
+          slug: item.slug || '#',
+          isAvailable: true,
+        }));
+        setLiveOperators(nodes);
+      }
+    }
+
+    loadAvailability();
+
+    // 2. Realtime Subscription
+    const channel = supabase
+      .channel('public:hc_available_now')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'hc_available_now' }, payload => {
+          loadAvailability(); // Refetch on ANY change to ensure accuracy
+      })
+      .subscribe();
+
+    // 3. Hyperlocal GPS Targeting
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((pos) => {
         setViewState(prev => ({
@@ -47,51 +86,9 @@ export function GlobalCommandMap() {
       }, { timeout: 5000 });
     }
 
-    const nodes: OperatorNode[] = [];
-    const centers = [
-      { lat: 29.76, lng: -95.36, spread: 5, activeRate: 0.8 }, // Houston
-      { lat: 39.73, lng: -104.99, spread: 3, activeRate: 0.4 }, // Denver
-      { lat: 41.87, lng: -87.62, spread: 4, activeRate: 0.5 }, // Chicago
-      { lat: 34.05, lng: -118.24, spread: 2, activeRate: 0.6 }, // LA
-      { lat: 40.71, lng: -74.00, spread: 2, activeRate: 0.3 }, // NY
-      { lat: 35.22, lng: -80.84, spread: 3, activeRate: 0.5 }, // Charlotte
-      { lat: 47.60, lng: -122.33, spread: 2, activeRate: 0.4 }, // Seattle
-      { lat: 33.44, lng: -112.07, spread: 3, activeRate: 0.6 }, // Phoenix
-      { lat: 32.77, lng: -96.79, spread: 4, activeRate: 0.7 }, // Dallas
-      { lat: 25.76, lng: -80.19, spread: 2, activeRate: 0.5 }, // Miami
-    ];
-
-    centers.forEach((center, idx) => {
-      for (let i = 0; i < 15; i++) {
-        const isLive = Math.random() < center.activeRate;
-        nodes.push({
-          id: `${idx}-${i}`,
-          name: isLive ? 'Verified Escort Operator' : 'Standard Escort',
-          lat: center.lat + (Math.random() - 0.5) * center.spread,
-          lng: center.lng + (Math.random() - 0.5) * center.spread,
-          isAvailable: isLive,
-          score: Math.floor(Math.random() * 40) + 80,
-          slug: '#',
-        });
-      }
-    });
-
-    // Add local node if geolocation was granted, simulating user density
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        nodes.push({
-          id: 'local-node',
-          name: 'Hyperlocal Escort',
-          lat: pos.coords.latitude + 0.01,
-          lng: pos.coords.longitude + 0.01,
-          isAvailable: true,
-          score: 99,
-          slug: '#'
-        });
-      });
-    }
-
-    setSimulatedOperators(nodes);
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
@@ -104,7 +101,7 @@ export function GlobalCommandMap() {
           <div className="text-[#C6923A] text-xs font-bold uppercase tracking-widest mb-3">⟐ Command Map</div>
           <h3 className="text-white font-bold text-lg mb-2">Live Operator Radar</h3>
           <p className="text-neutral-500 text-sm mb-4">
-            Real-time visualization of {simulatedOperators.filter(o => o.isAvailable).length} active operators across 10 metro hubs.
+            Real-time visualization of {liveOperators.length} active operators across the grid.
           </p>
           <div className="grid grid-cols-5 gap-2 mb-6">
             {['Houston', 'Denver', 'Chicago', 'LA', 'Dallas'].map(city => (
@@ -159,7 +156,7 @@ export function GlobalCommandMap() {
       >
         <NavigationControl position="bottom-right" />
 
-        {simulatedOperators.map(node => (
+        {liveOperators.map(node => (
           <Marker
             key={node.id}
             longitude={node.lng}
