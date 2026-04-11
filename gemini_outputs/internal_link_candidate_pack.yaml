@@ -1,0 +1,8 @@
+# GEMINI-04: Internal Link Candidates
+candidates:
+  - source_page: "/glossary/superload"
+    target_link: "/training/core/permit-convoys"
+    context: "Linking theoretical heavy haul definition to practical required training."
+  - source_page: "/load-board/[loadId]"
+    target_link: "/compliance-kit"
+    context: "If operator lacks compliance level %, inject link to Concierge."

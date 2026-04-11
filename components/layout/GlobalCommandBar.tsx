@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LOGO_SRC, ALT_TEXT } from "@/lib/config/brand";
-import { MobileNavSheet } from "@/components/layout/MobileNavSheet";
+import { HCMobileMenu } from "@/components/landing-system/mobile-menu/HCMobileMenu";
 import { AccountButton } from "@/components/auth/AccountButton";
 
 type CommandLink = {
@@ -83,7 +83,7 @@ export function GlobalCommandBar() {
           <AccountButton />
           
           <div className="flex md:hidden">
-            <MobileNavSheet />
+            <HCMobileMenu mode="app" />
           </div>
         </div>
       </div>

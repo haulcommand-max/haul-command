@@ -5,6 +5,9 @@ import { SponsorCard } from '@/components/monetization/SponsorCard';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
+import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
+import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
+
 export const metadata: Metadata = {
     title: 'Pilot Car & Escort Vehicle Regulations by Country',
     description:
@@ -48,42 +51,42 @@ function RegulationCard({ reg }: { reg: CountryRegulation }) {
                 flexDirection: 'column',
                 height: '100%',
                 padding: '1.25rem',
-                borderRadius: '0.75rem',
+                borderRadius: '16px',
                 border: '1px solid rgba(255,255,255,0.06)',
-                background: 'rgba(255,255,255,0.02)',
+                background: '#111214',
                 transition: 'all 0.2s ease',
                 textDecoration: 'none',
                 position: 'relative',
                 overflow: 'hidden'
             }}
-            className="hover:border-[var(--hc-gold-500)]/30 hover:bg-[rgba(255,255,255,0.04)] group"
+            className="hover:border-[rgba(255,255,255,0.16)] hover:-translate-y-1 group"
         >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '1.25rem' }}>{getCountryFlag(reg.countryCode)}</span>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#F9FAFB', margin: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '1.5rem' }}>{getCountryFlag(reg.countryCode)}</span>
+                    <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#F9FAFB', margin: 0, letterSpacing: '-0.02em' }}>
                         {reg.countryName}
                     </h3>
                 </div>
                 <span
                     style={{
-                        fontSize: '0.625rem',
+                        fontSize: '11px',
                         fontWeight: 700,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
+                        letterSpacing: '0.05em',
                         padding: '0.25rem 0.625rem',
-                        borderRadius: '9999px',
+                        borderRadius: '6px',
                         border: `1px solid ${tier.color}33`,
                         color: tier.color,
-                        background: `${tier.color}15`
+                        background: `${tier.color}10`
                     }}
                 >
                     {tier.label}
                 </span>
             </div>
             
-            <p style={{ fontSize: '0.875rem', color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 1rem 0', flex: 1 }}>
-                Complete legal requirements for <strong>{reg.terminology.primary}</strong>. 
+            <p style={{ fontSize: '0.875rem', color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 1.25rem 0', flex: 1, fontWeight: 500 }}>
+                Complete legal requirements for <strong style={{ color: '#E5E7EB' }}>{reg.terminology.primary}</strong>. 
                 Includes {reg.escortThresholds.length} escort threshold configurations and permit details provided by {reg.permitSystem.authority}.
             </p>
             
@@ -93,10 +96,11 @@ function RegulationCard({ reg }: { reg: CountryRegulation }) {
                 alignItems: 'center',
                 gap: '0.5rem',
                 fontSize: '0.8125rem',
-                fontWeight: 600,
+                fontWeight: 700,
                 color: tier.color,
+                letterSpacing: '0.03em'
             }}>
-                View Regulations <span className="group-hover:translate-x-1 transition-transform">→</span>
+                View Directory Pivot <span className="group-hover:translate-x-1 transition-transform">→</span>
             </div>
         </Link>
     );
@@ -112,76 +116,80 @@ export default function RegulationsIndexPage() {
     };
 
     return (
-        <>
+        <HCContentPageShell>
             <ProofStrip variant="bar" />
-            <div style={{ maxWidth: '72rem', margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
-            {/* Hero */}
-            <div style={{ marginBottom: '3rem' }}>
-                <h1
-                    className="speakable-headline"
-                    data-speakable="true"
-                    style={{
-                        fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                        fontWeight: 800,
-                        letterSpacing: '-0.025em',
-                        lineHeight: 1.15,
-                        color: '#F9FAFB',
-                        marginBottom: '1rem',
-                    }}
-                >
-                    Pilot Car & Escort Vehicle Regulations
-                </h1>
-                <p
-                    className="speakable-summary"
-                    data-speakable="true"
-                    style={{
-                        fontSize: '1.125rem',
-                        color: '#9CA3AF',
-                        lineHeight: 1.6,
-                        maxWidth: '48rem',
-                    }}
-                >
-                    Complete guide to oversize load escort requirements across {REGULATIONS.length} countries.
+            
+            <HCEditorialHero
+                eyebrow="Global Database"
+                title="Pilot Car & Escort Regulations"
+                imageUrl="/images/regulations_hero_bg_1775877308369.png"
+                overlayOpacity="heavy"
+                metaRow={
+                    <div className="flex flex-wrap gap-4 mt-6">
+                        <span className="text-[13px] font-bold text-[#E0B05C] uppercase tracking-widest">{REGULATIONS.length} Active Corridors</span>
+                    </div>
+                }
+            >
+                <p className="text-lg text-[#9CA3AF] max-w-2xl leading-relaxed mt-4 font-medium mb-8">
+                    Complete guide to oversize load escort requirements across 120 jurisdictions.
                     Know the local terminology, escort thresholds, permit authorities, and equipment requirements
                     before you move.
                 </p>
-            </div>
+            </HCEditorialHero>
 
-            {/* Tier Sections */}
-            {(['A', 'B', 'C', 'D', 'E'] as const).map(tierKey => {
-                const regs = byTier[tierKey];
-                const tier = TIER_META[tierKey];
-                if (regs.length === 0) return null;
-                return (
-                    <section key={tierKey} style={{ marginBottom: '3rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: tier.color, margin: 0 }}>
-                                Tier {tierKey} — {tier.label}
-                            </h2>
-                            <span style={{ fontSize: '0.75rem', color: '#6B7280' }}>
-                                {tier.description} · {regs.length} countries
-                            </span>
-                        </div>
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                                gap: '0.75rem',
-                            }}
-                        >
-                            {regs.map(reg => (
-                                <RegulationCard key={reg.countryCode} reg={reg} />
-                            ))}
-                        </div>
-                        {/* AdGrid: Inject sponsor after Tier B */}
-                        {tierKey === 'B' && (
-                            <div style={{ marginTop: 16, marginBottom: 8 }}>
-                                <SponsorCard zone="regulation" compact />
-                            </div>
-                        )}
-                    </section>
-                );
-            })}
+            <HCContentSection pad="section_balanced_pad">
+                <div style={{ maxWidth: '80rem', margin: '0 auto', width: '100%' }}>
+                    {/* Tier Sections */}
+                    {(['A', 'B', 'C', 'D', 'E'] as const).map(tierKey => {
+                        const regs = byTier[tierKey];
+                        const tier = TIER_META[tierKey];
+                        if (regs.length === 0) return null;
+                        return (
+                            <section key={tierKey} style={{ marginBottom: '4rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: tier.color, margin: 0, letterSpacing: '-0.02em' }}>
+                                        Tier {tierKey} — {tier.label}
+                                    </h2>
+                                    <span style={{ fontSize: '0.8125rem', color: '#9CA3AF', fontWeight: 600 }}>
+                                        {tier.description} · {regs.length} countries
+                                    </span>
+                                </div>
+                                <div
+                                    style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                                        gap: '1rem',
+                                    }}
+                                >
+                                    {regs.map(reg => (
+                                        <RegulationCard key={reg.countryCode} reg={reg} />
+                                    ))}
+                                </div>
+                                {/* AdGrid: Inject sponsor after Tier B */}
+                                {tierKey === 'B' && (
+                                    <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+                                        <SponsorCard zone="regulation" compact />
+                                    </div>
+                                )}
+                            </section>
+                        );
+                    })}
+                </div>
+            </HCContentSection>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+                <NoDeadEndBlock
+                    heading="Explore Heavy Haul Resources"
+                    moves={[
+                        { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
+                        { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
+                        { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
+                        { href: '/escort-requirements', icon: '⚖️', title: 'US State Rules', desc: 'All 50 state requirements' },
+                        { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                        { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Live operator availability' },
+                    ]}
+                />
+            </div>
 
             {/* Structured Data — FAQPage for snippets (expanded for maximum coverage) */}
             <script
@@ -215,19 +223,6 @@ export default function RegulationsIndexPage() {
                     }),
                 }}
             />
-            </div>
-
-            <NoDeadEndBlock
-                heading="Explore Heavy Haul Resources"
-                moves={[
-                    { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
-                    { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
-                    { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
-                    { href: '/escort-requirements', icon: '⚖️', title: 'US State Rules', desc: 'All 50 state requirements' },
-                    { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
-                    { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Live operator availability' },
-                ]}
-            />
-        </>
+        </HCContentPageShell>
     );
 }

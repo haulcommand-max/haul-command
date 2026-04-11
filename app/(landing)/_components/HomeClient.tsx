@@ -14,11 +14,12 @@ import {
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
 import type { HeroPack } from "@/components/hero/heroPacks";
 import { LOGO_SRC, BRAND_NAME_UPPER, ALT_TEXT } from "@/lib/config/brand";
-import { MobileNavSheet } from "@/components/layout/MobileNavSheet";
+
 import { FooterAccordion } from "./FooterAccordion";
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
 import { TrustArchitecture } from "./TrustArchitecture";
+import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
 
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
@@ -69,48 +70,27 @@ export default function HomeClient({
                 @media (min-width: 1024px) { .nav-brand-logo { height: 56px !important; } }
             `}</style>
             
-            {/* ── Ambient Background (4K/8K Photographic) ── */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <Image
-                    src="/ads/directory-hero-bg.png"
-                    alt="Heavy haul escort intelligence"
-                    fill
-                    priority
-                    className="object-cover opacity-25 mix-blend-screen"
-                    quality={90}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-hc-bg via-hc-bg/80 to-transparent" />
-                <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.15),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
-            </div>
-
-{/* Navigation is now inherited from (landing)/layout.tsx via GlobalCommandBar */}
-
-            {/* 1. HERO SECTION */}
-            <section className="relative z-10 pt-16 pb-12 sm:pt-24 sm:pb-16 px-4">
-                <div className="hc-container text-center max-w-4xl mx-auto">
-                    <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#C6923A]/30 bg-[#C6923A]/10 text-xs font-bold text-[#C6923A] mb-8 tracking-widest uppercase">
-                            <Globe size={14} /> 120 Countries Covered
-                        </div>
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6 font-display drop-shadow-lg">
-                            The Operating System for <br className="hidden sm:block" />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C6923A] to-[#E0B05C]">Heavy Haul</span>
-                        </h1>
-                        <p className="text-[#a0b3c6] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-                            Discover verified pilot cars, post oversize loads, and execute complex freight routing with total compliance. The global command center is ready.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#C6923A] hover:bg-[#E0B05C] text-[#111] font-black text-[15px] uppercase tracking-wider transition-all shadow-lg hover:scale-105">
-                                Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
-                            </Link>
-                            <Link href="/directory" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white font-bold text-[15px] uppercase tracking-wider transition-colors hover:scale-105">
-                                Browse Directory
-                            </Link>
-                        </div>
-                        <p className="text-[10px] text-[#555] mt-3 uppercase tracking-widest font-semibold">No card required · 60 seconds to claim</p>
-                    </motion.div>
+            {/* 1. HERO SECTION (Anti-Gravity Canonical) */}
+            <HCEditorialHero
+                eyebrow="120 Countries Covered"
+                title={<>The Operating System for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C6923A] to-[#E0B05C]">Heavy Haul</span></>}
+                description="Discover verified pilot cars, post oversize loads, and execute complex freight routing with total compliance. The global command center is ready."
+                imageUrl="/images/homepage_hero_bg_1775877319950.png"
+                overlayOpacity="heavy"
+            >
+                <div className="flex flex-col gap-4 w-full sm:w-auto">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <Link href="/onboarding/start" className="inline-flex items-center justify-center px-8 py-4 rounded-[12px] bg-gradient-to-r from-[#C6923A] to-[#E0B05C] hover:from-[#E0B05C] hover:to-[#C6923A] text-[#111] font-black text-[15px] uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(198,146,58,0.2)] hover:scale-105 w-full sm:w-auto">
+                            Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
+                        </Link>
+                        <Link href="/directory" className="inline-flex items-center justify-center px-8 py-4 rounded-[12px] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)] text-white font-bold text-[15px] uppercase tracking-wider transition-all hover:scale-105 shadow-sm w-full sm:w-auto">
+                            Browse Network
+                        </Link>
+                    </div>
+                    <p className="text-[10px] text-[#9CA3AF] uppercase tracking-widest font-bold">No card required · 60 seconds to claim</p>
                 </div>
-            </section>
+            </HCEditorialHero>
+
 
             {/* 2. ROLE SELECTOR CARDS */}
             <section className="relative z-10 pb-16 px-4">

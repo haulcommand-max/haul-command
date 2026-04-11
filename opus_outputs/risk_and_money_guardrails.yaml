@@ -1,0 +1,180 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS-02: RISK, MONEY, AND TRUST GUARDRAILS
+# Decision Authority: Claude Opus 4.6
+# Rule: No fake trust. No fake live data. Idempotent or die.
+# ═══════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────
+# 1. GPS PROOF ENGINE — CANONICAL FLOW
+# ─────────────────────────────────────────────────
+gps_proof_engine:
+  description: "Establishes cryptographic proof of operator presence at pickup/delivery coordinates."
+  flow:
+    - step: "OPERATOR_CHECKIN"
+      trigger: "Mobile app geofence entry"
+      writes: ["gps_breadcrumbs.lat", "gps_breadcrumbs.lng", "gps_breadcrumbs.timestamp", "gps_breadcrumbs.accuracy_m"]
+      validation: "accuracy_m < 50 OR reject"
+    - step: "GEOFENCE_MATCH"
+      trigger: "gps-breadcrumb-ingest edge function"
+      reads: ["jobs.pickup_lat", "jobs.pickup_lng"]
+      validation: "haversine(breadcrumb, job_location) < 500m"
+      writes: ["job_milestones.gps_verified = true"]
+    - step: "BOL_PHOTO_CAPTURE"
+      trigger: "Operator uploads BOL photo"
+      writes: ["storage.secure_vault/{uid}/bol_{job_id}.jpg"]
+      validation: "file_size < 10MB AND mime_type IN ('image/jpeg', 'image/png', 'application/pdf')"
+    - step: "DELIVERY_CONFIRMATION"
+      trigger: "Geofence entry at delivery coordinates"
+      writes: ["job_milestones.delivered_at", "hc_escrows.status = 'DELIVERED_HOLDBACK'"]
+      downstream: "OS_EVENTS.DELIVERY_HOLDBACK_CLEARED"
+  rollback:
+    - "If GPS accuracy > 50m: reject silently, log to fraud_events"
+    - "If geofence mismatch: flag for manual review, do NOT auto-release escrow"
+    - "If BOL upload fails: retry 3x, then notify operator via push"
+
+# ─────────────────────────────────────────────────
+# 2. DISPUTE AUTO-RESOLUTION DEPENDENCY CHAIN
+# ─────────────────────────────────────────────────
+dispute_resolution:
+  description: "Automated dispute resolution with human escalation gates."
+  preconditions:
+    - "Escrow must be in DELIVERED_HOLDBACK or SETTLED status"
+    - "Dispute must be filed within 72 hours of delivery_confirmed_at"
+  flow:
+    - step: "DISPUTE_FILED"
+      trigger: "Broker or operator submits dispute form"
+      writes: ["hc_escrows.status = 'DISPUTED'", "hc_disputes.created_at"]
+      side_effects: ["Push to both parties", "Email to HC admin"]
+    - step: "EVIDENCE_REVIEW"
+      trigger: "72-hour evidence collection window"
+      reads: ["gps_breadcrumbs", "bol_photos", "chat_transcripts"]
+      decision_logic:
+        auto_resolve_broker_wins: "BOL missing OR GPS proof absent"
+        auto_resolve_operator_wins: "BOL present AND GPS verified AND no damage report"
+        escalate_to_human: "Conflicting evidence OR damage claim > $5000"
+    - step: "RESOLUTION_EXECUTE"
+      writes: ["hc_escrows.status = 'SETTLED' or 'REFUNDED'", "hc_payouts"]
+      downstream: "OS_EVENTS.DISPUTE_RESOLVED"
+  rollback:
+    - "If auto-resolution confidence < 0.8: ALWAYS escalate to human"
+    - "If payout already executed: create credit memo, do NOT reverse Stripe transfer"
+    - "If both parties appeal: freeze escrow for 14 days pending admin tribunal"
+
+# ─────────────────────────────────────────────────
+# 3. IDEMPOTENT STRIPE CAPTURE ENFORCEMENT
+# ─────────────────────────────────────────────────
+stripe_idempotency:
+  description: "Every Stripe mutation uses idempotency keys to prevent double-charges."
+  rules:
+    - "Every PaymentIntent.create MUST include idempotency_key = `hc_{escrow_id}_{action}_{timestamp_bucket}`"
+    - "timestamp_bucket = floor(unix_timestamp / 300) — 5-minute dedup window"
+    - "Every Stripe webhook handler MUST check hc_escrows.gateway_reference_id before processing"
+    - "If gateway_reference_id already matches: return 200 OK, do NOT re-process"
+    - "All Stripe API calls MUST go through lib/stripe.ts wrapper — no direct SDK usage"
+  writes:
+    - "hc_escrows.gateway_reference_id = stripe_payment_intent_id"
+    - "hc_escrows.idempotency_key = generated_key"
+  rollback:
+    - "If capture fails after pre-auth: notify broker, hold escrow in PENDING_FUNDS for 24h"
+    - "If duplicate webhook detected: log to idempotency_violations table, alert ops"
+
+# ─────────────────────────────────────────────────
+# 4. PRE-AUTH HARD-STOP AT POST-A-LOAD
+# ─────────────────────────────────────────────────
+preauth_enforcement:
+  description: "No load is visible on the board until escrow pre-auth succeeds."
+  flow:
+    - step: "BROKER_SUBMITS_LOAD"
+      trigger: "POST /api/loads/create"
+      validation: ["session.role === 'broker'", "kyc_verified_at IS NOT NULL"]
+      writes: ["jobs.status = 'DRAFT'"]
+    - step: "ESCROW_PREAUTH"
+      trigger: "Immediate after draft creation"
+      action: "Stripe PaymentIntent.create with capture_method='manual'"
+      writes: ["hc_escrows.status = 'PENDING_FUNDS'", "hc_escrows.gateway_reference_id"]
+    - step: "LOAD_GOES_LIVE"
+      trigger: "PaymentIntent.status === 'requires_capture'"
+      writes: ["jobs.status = 'OPEN'"]
+      downstream: "OS_EVENTS.LOAD_MATCHED for route-matcher-agent"
+  hard_stops:
+    - "If broker has NO Stripe customer_id: block post, redirect to /settings/billing"
+    - "If pre-auth fails: jobs.status remains 'DRAFT', load NEVER appears on board"
+    - "If broker KYC not verified: block post entirely with 403"
+
+# ─────────────────────────────────────────────────
+# 5. PAYOUT FAILURE PUSH PATH
+# ─────────────────────────────────────────────────
+payout_failure:
+  description: "Operator is immediately notified and given recovery actions on payout failure."
+  flow:
+    - step: "PAYOUT_INITIATED"
+      trigger: "financial-sync worker"
+      writes: ["hc_payouts.status = 'INITIATED'"]
+    - step: "STRIPE_TRANSFER_ATTEMPT"
+      action: "Stripe Transfer.create to operator's connected account"
+    - step: "FAILURE_DETECTED"
+      trigger: "Stripe webhook: transfer.failed"
+      writes: ["hc_payouts.status = 'FAILED'", "hc_payouts.failure_reason"]
+      side_effects:
+        - "FCM push: 'Payout failed — verify your bank details'"
+        - "Deep link: haulcommand://settings/payout-methods"
+        - "Email fallback via comms-core"
+    - step: "RETRY_LOGIC"
+      rules: "Retry 2x at 24h intervals. After 3rd failure, hold funds and notify admin."
+
+# ─────────────────────────────────────────────────
+# 6. KYC STEP-UP TRIGGER THRESHOLDS
+# ─────────────────────────────────────────────────
+kyc_stepup:
+  description: "Progressive KYC enforcement based on transaction thresholds."
+  tiers:
+    - tier: "TIER_0_BROWSE"
+      threshold: "$0"
+      requirements: ["Email verified"]
+      lockout: "Can browse directory and load board only"
+    - tier: "TIER_1_TRANSACT"
+      threshold: "$500 lifetime volume"
+      requirements: ["Email verified", "Phone verified"]
+      lockout: "Can bid on loads, cannot post loads"
+    - tier: "TIER_2_ESCROW"
+      threshold: "$5,000 lifetime volume"
+      requirements: ["Email", "Phone", "Government ID via Stripe Identity"]
+      lockout: "Can post loads with escrow pre-auth"
+    - tier: "TIER_3_ENTERPRISE"
+      threshold: "$50,000 lifetime volume"
+      requirements: ["Full KYC", "Business verification", "Insurance on file"]
+      lockout: "Full platform access including instant payouts"
+  writes:
+    - "profiles.kyc_tier = 0|1|2|3"
+    - "profiles.kyc_verified_at"
+    - "profiles.kyc_provider_ref"
+  enforcement:
+    - "Every payment mutation checks kyc_tier against required tier"
+    - "Step-up triggers push notification with deep link to verification flow"
+    - "Lockout is enforced at API level, not just UI — no client-side bypass"
+
+# ─────────────────────────────────────────────────
+# 7. LIVEKIT COMPLETION PATH
+# ─────────────────────────────────────────────────
+livekit_completion:
+  description: "Voice/video call lifecycle tracking for billing and transcript storage."
+  flow:
+    - step: "ROOM_CREATED"
+      trigger: "LiveKit webhook: room_started"
+      writes: ["mm_event_log.event_type = 'call_started'"]
+    - step: "PARTICIPANT_JOINED"
+      trigger: "LiveKit webhook: participant_joined"
+      writes: ["mm_event_log.participant_count++"]
+    - step: "ROOM_ENDED"
+      trigger: "LiveKit webhook: room_finished"
+      writes: ["mm_event_log.event_type = 'call_ended'", "mm_event_log.duration_seconds"]
+    - step: "BILLING_CAPTURE"
+      trigger: "Cron 15min after room_finished"
+      action: "Calculate cost = ceil(duration_seconds / 60) * per_minute_rate"
+      writes: ["hc_call_billing.amount", "hc_call_billing.status = 'PENDING'"]
+    - step: "TRANSCRIPT_STORE"
+      trigger: "LiveKit egress webhook with transcript"
+      writes: ["storage.secure_vault/{room_id}/transcript.json"]
+  rollback:
+    - "If room_finished never received: timeout at 4h, force-close, bill for recorded duration"
+    - "If billing fails: retry 3x, then flag for manual review"

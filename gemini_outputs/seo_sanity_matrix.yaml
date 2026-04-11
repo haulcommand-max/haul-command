@@ -1,0 +1,6 @@
+# GEMINI-03: SEO Sanity Check Matrix
+checks:
+  - asset: "Glossary Pages (/glossary/[term])"
+    criteria: "Ensure 'Lexicon Core Definition' answers top-level Google Questions block."
+  - asset: "Sitemap (/sitemap.xml)"
+    criteria: "Verify /directory parameters correctly output static URL nodes for all 120 countries."

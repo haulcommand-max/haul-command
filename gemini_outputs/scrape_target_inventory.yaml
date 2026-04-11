@@ -1,0 +1,8 @@
+# GEMINI-06: Market Absorption Scrape Targets
+targets:
+  - category: "vendors"
+    focus: "Oversized Load Banner Manufacturers"
+    goal: "Inject into AdGrid pipeline for P5 Monetization."
+  - category: "chambers"
+    focus: "State trucking associations"
+    goal: "Absorb state-by-state permit URLs for the Compliance kit."

@@ -67,7 +67,11 @@ function scoreJob(job: any, operator: any): number {
     : 60;
   const urgency = job.depart_within_hours < 24 ? 100 : job.depart_within_hours < 72 ? 60 : 30;
   const earnings = Math.min(100, (job.estimated_earnings ?? 0) / 20); // $2000 = 100
-  const credAlign = 80; // TODO: wire to actual credential check
+  const opCerts: string[] = Array.isArray(operator.certifications) ? operator.certifications : [];
+  const requiredCreds = job.required_credentials ?? [];
+  const credAlign = requiredCreds.length === 0
+    ? 80
+    : Math.round((requiredCreds.filter((c: string) => opCerts.includes(c)).length / requiredCreds.length) * 100);
 
   return Math.round(fit * 0.35 + distanceScore * 0.20 + urgency * 0.15 + earnings * 0.15 + credAlign * 0.15);
 }

@@ -1,0 +1,11 @@
+# GEMINI-05: 120-Country Jurisdiction Seed
+jurisdictions:
+  - iso: "US"
+    authority: "Federal Motor Carrier Safety Administration (FMCSA)"
+    overlay_modules: ["US_HOS", "US_Bridge_Formula"]
+  - iso: "CA"
+    authority: "Transport Canada"
+    overlay_modules: ["CA_Winter_Weight_Premiums", "CA_Bilingual_Logbooks"]
+  - iso: "AU"
+    authority: "National Heavy Vehicle Regulator (NHVR)"
+    overlay_modules: ["AU_Road_Train_Dynamics"]

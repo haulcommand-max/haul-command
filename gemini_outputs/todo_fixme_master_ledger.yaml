@@ -1,0 +1,21 @@
+# GEMINI-01: TODO/FIXME/HACK Master Audit Ledger
+# Grouped by business criticality
+launch_critical:
+  - file: "lib/hc-pay/unified-checkout.ts"
+    marker: "TODO"
+    description: "Replace Stripe test keys with MSB live vault keys."
+  - file: "app/api/webhooks/nowpayments/route.ts"
+    marker: "FIXME"
+    description: "Crypto IPN signature check throws edge-case error on duplicate payloads."
+money_critical:
+  - file: "workers/financial-sync.ts"
+    marker: "FIXME"
+    description: "USDC conversion fee rate-limit can cause 30s delay on instant payout."
+seo_critical:
+  - file: "app/sitemap.ts"
+    marker: "TODO"
+    description: "Implement pagination for /directory sitemap if profiles exceed 50,000."
+deferred:
+  - file: "app/(app)/dashboard/operator/page.tsx"
+    marker: "HACK"
+    description: "Temporary manual progress bar state for Document Vault until pusher sync is added."

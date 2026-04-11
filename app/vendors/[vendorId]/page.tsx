@@ -1,11 +1,11 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function VendorDashboard({ params }: { params: { vendorId: string } }) {
-    const supabase = createServerComponentClient({ cookies });
+    const supabase = createClient();
     
     // Vendor metrics query
     const { data: vendor } = await supabase.from('hc_vendors').select('*').eq('vendor_slug', params.vendorId).single();

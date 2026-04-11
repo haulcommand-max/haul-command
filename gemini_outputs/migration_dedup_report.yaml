@@ -1,0 +1,1302 @@
+# GEM-R01: 569-Migration Deduplication & Conflict Scan
+# Scanned 572 migration files. Found 47 duplicated CREATE TABLE bounds.
+# Priority: HIGH
+# Deadline: Before Sonnet WAVE-1
+
+duplicate_tables_detected:
+  - table: public
+    migrations:
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0001_init.sql
+      - 0005_leaderboards.sql
+      - 0005_leaderboards.sql
+      - 0009_trust_report_cards.sql
+      - 0014_fortune_5_enhancements.sql
+      - 0014_fortune_5_enhancements.sql
+      - 0014_fortune_5_enhancements.sql
+      - 0014_fortune_5_enhancements.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0015_the_brain.sql
+      - 0016_core_directory_authz.sql
+      - 0016_core_directory_authz.sql
+      - 0016_core_directory_authz.sql
+      - 0016_core_directory_authz.sql
+      - 0016_core_directory_authz.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0016_leaderboard_trust_reminders.sql
+      - 0017_rpc_atomic_jobs_create.sql
+      - 0019_admin_settings_feature_flags.sql
+      - 0019_admin_settings_feature_flags.sql
+      - 0022_pricing_engine.sql
+      - 0022_pricing_engine.sql
+      - 0022_pricing_engine.sql
+      - 0024_growth_installs_referrals.sql
+      - 0024_growth_installs_referrals.sql
+      - 0024_growth_installs_referrals.sql
+      - 0024_growth_installs_referrals.sql
+      - 0026_claim_triggers_seo.sql
+      - 0026_claim_triggers_seo.sql
+      - 0027_event_log.sql
+      - 0028_insurance_docs.sql
+      - 0029_high_pole_calibration.sql
+      - 0030_invoicing.sql
+      - 0031_certifications_reciprocity.sql
+      - 0031_certifications_reciprocity.sql
+      - 0032_rank_snapshots.sql
+      - 0034_full_contact_unlock.sql
+      - 20240322000000_heavy_haul_index.sql
+      - 20240322000000_heavy_haul_index.sql
+      - 20240322000000_heavy_haul_index.sql
+      - 20240322000000_heavy_haul_index.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20240322000001_marketplace_schema_v1_augment.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_antigravity_providers.sql
+      - 20260219_auto_miles_compute_v2.sql
+      - 20260219_coord_capture_geocode_queue.sql
+      - 20260219_corridor_heat_engine.sql
+      - 20260219_demand_heat.sql
+      - 20260219_fair_range_engine.sql
+      - 20260219_fair_range_engine.sql
+      - 20260219_fair_range_engine.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hcos_v2_schema.sql
+      - 20260219_hotels_schema.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_jurisdiction_registry.sql
+      - 20260219_live_status_certifications.sql
+      - 20260219_load_signals.sql
+      - 20260219_load_signals.sql
+      - 20260219_load_signals.sql
+      - 20260219_marketplace_core.sql
+      - 20260219_marketplace_core.sql
+      - 20260219_monetization_layer.sql
+      - 20260219_monetization_layer.sql
+      - 20260219_monetization_layer.sql
+      - 20260219_polyline_compute_secrets.sql
+      - 20260219_polyline_storage_pack.sql
+      - 20260219_rate_intel_heartbeat.sql
+      - 20260219_regulations_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_fix_schema.sql
+      - 20260219_smart_sort_incremental.sql
+      - 20260219_smart_sort_incremental.sql
+      - 20260219_smart_sort_incremental.sql
+      - 20260219_smart_sort_intel.sql
+      - 20260219_stale_load_sweeper.sql
+      - 20260219_truck_stops_schema.sql
+      - 20260219_unlock_velocity_engine.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_layer.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260219_vendor_network_schema.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220000100_liquidity_pricing_recruiting.sql
+      - 20260220162501_leaderboard_sponsor_tables_v1.sql
+      - 20260220162501_leaderboard_sponsor_tables_v1.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_ad_network_schema.sql
+      - 20260220_affiliate_engine_schema.sql
+      - 20260220_affiliate_engine_schema.sql
+      - 20260220_affiliate_engine_schema.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_antigravity_execute.sql
+      - 20260220_boost_sla_log.sql
+      - 20260220_broker_report_card_crowd_signals.sql
+      - 20260220_chamber_seo_engine.sql
+      - 20260220_chamber_seo_engine.sql
+      - 20260220_chamber_seo_engine.sql
+      - 20260220_chamber_seo_engine.sql
+      - 20260220_chamber_seo_engine.sql
+      - 20260220_corridor_match.sql
+      - 20260220_corridor_match.sql
+      - 20260220_corridor_match.sql
+      - 20260220_directory_elite_and_store.sql
+      - 20260220_directory_elite_and_store.sql
+      - 20260220_directory_elite_and_store.sql
+      - 20260220_directory_elite_and_store.sql
+      - 20260220_directory_views.sql
+      - 20260220_email_claim_pipeline.sql
+      - 20260220_email_claim_pipeline.sql
+      - 20260220_email_core.sql
+      - 20260220_email_core.sql
+      - 20260220_email_core.sql
+      - 20260220_email_core.sql
+      - 20260220_email_core.sql
+      - 20260220_factoring_engine_schema.sql
+      - 20260220_factoring_engine_schema.sql
+      - 20260220_geo_hex_aggregates.sql
+      - 20260220_geo_hex_aggregates.sql
+      - 20260220_hc_core.sql
+      - 20260220_hc_core.sql
+      - 20260220_hc_core.sql
+      - 20260220_hc_core.sql
+      - 20260220_hc_core.sql
+      - 20260220_hc_core.sql
+      - 20260220_inapp_inbox.sql
+      - 20260220_inapp_inbox.sql
+      - 20260220_jurisdiction_map_schema.sql
+      - 20260220_jurisdiction_map_schema.sql
+      - 20260220_jurisdiction_map_schema.sql
+      - 20260220_jurisdiction_map_schema.sql
+      - 20260220_jurisdiction_map_schema.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_liquidity_engine_v2.sql
+      - 20260220_load_intelligence_stage_columns.sql
+      - 20260220_market_aggregates_priors.sql
+      - 20260220_market_aggregates_priors.sql
+      - 20260220_market_aggregates_priors.sql
+      - 20260220_market_aggregates_priors.sql
+      - 20260220_market_aggregates_priors.sql
+      - 20260220_observability_hooks.sql
+      - 20260220_panic_fill_log.sql
+      - 20260220_panic_fill_log.sql
+      - 20260220_protocol_zero_advanced_engines.sql
+      - 20260220_push_unification_report_cards.sql
+      - 20260220_push_unification_report_cards.sql
+      - 20260220_routeiq_surveys.sql
+      - 20260220_routeiq_surveys.sql
+      - 20260220_routeiq_surveys.sql
+      - 20260220_routeiq_surveys.sql
+      - 20260220_search_provider_abstraction.sql
+      - 20260220_search_provider_abstraction.sql
+      - 20260220_seed_launch_gating.sql
+      - 20260220_seed_launch_gating.sql
+      - 20260220_trust_engine.sql
+      - 20260220_trust_engine.sql
+      - 20260220_trust_engine.sql
+      - 20260220_trust_engine.sql
+      - 20260220_trust_engine_upgrades.sql
+      - 20260220_web_push_subscriptions.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_decision_engine.sql
+      - 20260221_ad_rank_fraud_production.sql
+      - 20260221_ad_rank_fraud_production.sql
+      - 20260221_ad_rank_fraud_production.sql
+      - 20260221_ad_rank_fraud_production.sql
+      - 20260221_ad_rank_fraud_production.sql
+      - 20260221_broker_shortlist.sql
+      - 20260221_broker_shortlist.sql
+      - 20260221_ecosystem_data_spine.sql
+      - 20260221_ecosystem_data_spine.sql
+      - 20260221_ecosystem_data_spine.sql
+      - 20260221_ecosystem_data_spine.sql
+      - 20260221_ecosystem_data_spine.sql
+      - 20260221_enterprise_data_products.sql
+      - 20260221_enterprise_data_products.sql
+      - 20260221_enterprise_data_products.sql
+      - 20260221_enterprise_data_products.sql
+      - 20260221_escort_activation.sql
+      - 20260221_escort_activation.sql
+      - 20260221_liquidity_control_tower.sql
+      - 20260221_liquidity_control_tower.sql
+      - 20260221_liquidity_prediction_guarantee.sql
+      - 20260221_liquidity_prediction_guarantee.sql
+      - 20260221_liquidity_prediction_guarantee.sql
+      - 20260221_liquidity_prediction_guarantee.sql
+      - 20260221_liquidity_prediction_guarantee.sql
+      - 20260221_market_intelligence_engines.sql
+      - 20260221_market_intelligence_engines.sql
+      - 20260221_market_intelligence_engines.sql
+      - 20260221_native_ad_network.sql
+      - 20260221_native_ad_network.sql
+      - 20260221_native_ad_network.sql
+      - 20260221_native_ad_network.sql
+      - 20260221_native_ad_network.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_premium_page_auctions.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_pretraffic_hardening.sql
+      - 20260221_progressive_onboarding_engine.sql
+      - 20260221_progressive_onboarding_engine.sql
+      - 20260221_supercharger_wave1.sql
+      - 20260221_supercharger_wave1.sql
+      - 20260221_supercharger_wave1.sql
+      - 20260221_supercharger_wave2.sql
+      - 20260221_supercharger_wave2.sql
+      - 20260221_supercharger_wave2.sql
+      - 20260221_supercharger_wave3.sql
+      - 20260221_supercharger_wave3.sql
+      - 20260221_supercharger_wave3.sql
+      - 20260222_directory_upgrade.sql
+      - 20260222_directory_upgrade.sql
+      - 20260222_directory_upgrade.sql
+      - 20260222_idempotency_keys.sql
+      - 20260222_notification_events.sql
+      - 20260222_trust_crowd_intelligence.sql
+      - 20260222_trust_crowd_intelligence.sql
+      - 20260222_trust_crowd_intelligence.sql
+      - 20260222_trust_crowd_intelligence.sql
+      - 20260224_exposure_allocation_engine.sql
+      - 20260224_exposure_allocation_engine.sql
+      - 20260224_exposure_allocation_engine.sql
+      - 20260224_surge_brain.sql
+      - 20260224_surge_brain.sql
+      - 20260224_surge_brain.sql
+      - 20260224_surge_brain.sql
+      - 20260224_trust_score_neural_moat.sql
+      - 20260224_trust_score_neural_moat.sql
+      - 20260224_trust_score_neural_moat.sql
+      - 20260225_corridor_intelligence.sql
+      - 20260225_corridor_intelligence.sql
+      - 20260225_corridor_intelligence.sql
+      - 20260225_corridor_intelligence.sql
+      - 20260225_corridor_intelligence.sql
+      - 20260225_dynamic_pricing_engine.sql
+      - 20260225_dynamic_pricing_engine.sql
+      - 20260225_dynamic_pricing_engine.sql
+      - 20260225_dynamic_pricing_engine.sql
+      - 20260225_dynamic_pricing_engine.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_experiments_adgrid_revenue.sql
+      - 20260225_geo_expansion_load_board.sql
+      - 20260225_global_concepts.sql
+      - 20260225_global_concepts.sql
+      - 20260225_global_concepts.sql
+      - 20260225_global_concepts.sql
+      - 20260225_global_infrastructure.sql
+      - 20260225_global_infrastructure.sql
+      - 20260225_global_localization.sql
+      - 20260225_global_localization.sql
+      - 20260225_global_localization.sql
+      - 20260225_global_localization.sql
+      - 20260225_global_localization.sql
+      - 20260225_global_localization.sql
+      - 20260225_glossary_i18n.sql
+      - 20260225_glossary_tables.sql
+      - 20260225_glossary_tables.sql
+      - 20260225_intel_event_wiring.sql
+      - 20260225_intel_event_wiring.sql
+      - 20260225_intel_event_wiring.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_international_seo_core.sql
+      - 20260225_ops_job_runs.sql
+      - 20260225_ops_notifications.sql
+      - 20260225_ops_notifications.sql
+      - 20260225_pricing_oracle.sql
+      - 20260225_pricing_oracle.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_seo_ops_intelligence.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_social_reputation_intel.sql
+      - 20260225_zones_crossings_scarcity_ml.sql
+      - 20260225_zones_crossings_scarcity_ml.sql
+      - 20260225_zones_crossings_scarcity_ml.sql
+      - 20260225_zones_crossings_scarcity_ml.sql
+      - 20260225_zones_crossings_scarcity_ml.sql
+      - 20260226_0005_vapi_data_layer.sql
+      - 20260226_0005_vapi_data_layer.sql
+      - 20260226_0005_vapi_data_layer.sql
+      - 20260226_0005_vapi_data_layer.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0010_claimable_places_engine.sql
+      - 20260226_0015_niche_enrichment_engine.sql
+      - 20260226_0015_niche_enrichment_engine.sql
+      - 20260226_0015_niche_enrichment_engine.sql
+      - 20260226_0015_niche_enrichment_engine.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0020_oversize_intel_suite.sql
+      - 20260226_0025_country_normalization_and_compliance.sql
+      - 20260226_0025_country_normalization_and_compliance.sql
+      - 20260226_0025_country_normalization_and_compliance.sql
+      - 20260226_0030_comms_localization_and_dnc.sql
+      - 20260226_0030_comms_localization_and_dnc.sql
+      - 20260226_0030_comms_localization_and_dnc.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_global_compliance_engine.sql
+      - 20260226_rls_000_user_roles.sql
+      - 20260227_000010_link_weight_signals.sql
+      - 20260227_000010_link_weight_signals.sql
+      - 20260227_000030_crawl_budget.sql
+      - 20260227_000030_crawl_budget.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000100_authority_directory_schema.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000200_pr_engine_tables.sql
+      - 20260227_000300_growth_engine_schema.sql
+      - 20260227_000300_growth_engine_schema.sql
+      - 20260227_000300_growth_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_001000_pr_engine_schema.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0010_tier2_self_serve_monetization.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0020_tier3_enterprise_trust_infrastructure.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0030_stripe_metered_billing_hardening.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_0040_escort_marketplace_auto_match_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_007000_social_intelligence_engine.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_sociable_directory_upgrades.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_three_layer_trust_stack.sql
+      - 20260227_translation_matrix_and_vapi_skills.sql
+      - 20260228_data_marketplace_purchases.sql
+      - 20260228_health_notifications_pricing_guard.sql
+      - 20260228_health_notifications_pricing_guard.sql
+      - 20260228_health_notifications_pricing_guard.sql
+      - 20260228_health_notifications_pricing_guard.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_country_density_and_authority.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_daily_habit_engine.sql
+      - 20260301_demand_intelligence_infrastructure.sql
+      - 20260301_demand_intelligence_infrastructure.sql
+      - 20260301_demand_intelligence_infrastructure.sql
+      - 20260301_demand_intelligence_infrastructure.sql
+      - 20260301_demand_intelligence_infrastructure.sql
+      - 20260301_operator_legal_intelligence_engine.sql
+      - 20260301_operator_legal_intelligence_engine.sql
+      - 20260301_operator_legal_intelligence_engine.sql
+      - 20260301_operator_legal_intelligence_engine.sql
+      - 20260301_presence_engine.sql
+      - 20260301_presence_engine.sql
+      - 20260301_presence_experiments.sql
+      - 20260301_profile_completion_engine.sql
+      - 20260301_prospect_pipeline_and_corridor_seeding.sql
+      - 20260301_prospect_pipeline_and_corridor_seeding.sql
+      - 20260301_regional_demand_scoring_and_prospects_v2.sql
+      - 20260301_regional_demand_scoring_and_prospects_v2.sql
+      - 20260301_social_avatar_auto_import.sql
+      - 20260301_social_avatar_auto_import.sql
+      - 20260301_social_avatar_auto_import.sql
+      - 20260301_social_avatar_auto_import.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_gravity_engine_v2.sql
+      - 20260301_social_login_identity_enrichment.sql
+      - 20260301_social_login_identity_enrichment.sql
+      - 20260301_social_login_identity_enrichment.sql
+      - 20260301_social_login_identity_enrichment.sql
+      - 20260301_social_login_identity_enrichment.sql
+      - 20260301_watchlist_and_reactivation.sql
+      - 20260301_watchlist_and_reactivation.sql
+      - 20260301_watchlist_and_reactivation.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_adgrid_moat_layer.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_predictive_market_maker.sql
+      - 20260302_wiring_gaps_fix.sql
+      - 20260302_wiring_gaps_fix.sql
+      - 20260302_wiring_gaps_fix.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000002_social_gravity_upgrades.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000003_social_gravity_v4_identity_reputation_threads.sql
+      - 20260303000004_social_gravity_scoring_engine.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000005_nuclear_load_dna_convoy_tracker_handoff.sql
+      - 20260303000007_ingestion_matching_render_queue.sql
+      - 20260305_broker_discovery_engine.sql
+      - 20260305_broker_discovery_engine.sql
+      - 20260305_broker_discovery_engine.sql
+      - 20260307_claim_readiness_outreach.sql
+      - 20260307_claim_readiness_outreach.sql
+      - 20260307_lead_unlock_system.sql
+      - 20260307_lead_unlock_system.sql
+      - 20260307_lead_unlock_system.sql
+      - 20260307_lead_unlock_system.sql
+      - 20260307_phase1_search_boost_sponsor.sql
+      - 20260307_phase1_search_boost_sponsor.sql
+      - 20260307_phase1_search_boost_sponsor.sql
+      - 20260307_reputation_system.sql
+      - 20260307_reputation_system.sql
+      - 20260307_reputation_system.sql
+      - 20260307_reputation_system.sql
+      - 20260308_load_alerts.sql
+      - 20260308_notification_events_audit.sql
+      - 20260308_training_credentials.sql
+      - 20260308_training_credentials.sql
+      - 20260312_comms_ptt_tables.sql
+      - 20260312_comms_ptt_tables.sql
+      - 20260312_comms_ptt_tables.sql
+      - 20260312_comms_ptt_tables.sql
+      - 20260312_comms_ptt_tables.sql
+      - 20260312_trust_visibility_patch.sql
+      - 20260313_0052_create_metros_cities.sql
+      - 20260313_0052_create_metros_cities.sql
+      - 20260313_0053_create_master_entities.sql
+      - 20260313_0053_create_master_entities.sql
+      - 20260313_0056_create_observation_tables.sql
+      - 20260313_0056_create_observation_tables.sql
+      - 20260313_0056_create_observation_tables.sql
+      - 20260313_0056_create_observation_tables.sql
+      - 20260313_0056_create_observation_tables.sql
+      - 20260313_0057_create_registry_scoreboards.sql
+      - 20260313_0057_create_registry_scoreboards.sql
+      - 20260313_create_hc_generated_assets_and_links.sql
+      - 20260313_create_hc_generated_assets_and_links.sql
+      - 20260313_create_variant_pack_tables.sql
+      - 20260313_create_variant_pack_tables.sql
+      - 20260313_create_variant_pack_tables.sql
+      - 20260313_create_variant_pack_tables.sql
+      - 20260319_adgrid_57country_seed_and_engines.sql
+      - 20260319_adgrid_57country_seed_and_engines.sql
+      - 20260319_adgrid_57country_seed_and_engines.sql
+      - 20260319_adgrid_57country_seed_and_engines.sql
+      - 20260319_data_purchases.sql
+      - 20260319_social_adgrid.sql
+      - 20260319_social_adgrid.sql
+      - 20260319_social_adgrid.sql
+      - 20260319_social_adgrid.sql
+      - 20260324_esc_glossary_57country_tiers.sql
+      - 20260324_esc_glossary_57country_tiers.sql
+      - 20260324_esc_safety_library_knowledge.sql
+      - 20260324_esc_safety_library_knowledge.sql
+      - 20260324_esc_safety_library_knowledge.sql
+      - 20260324_esc_training_programs.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260324_ingestion_pipeline_schema.sql
+      - 20260325200000_competitor_dominance_schemas.sql
+      - 20260325200000_competitor_dominance_schemas.sql
+      - 20260325200000_competitor_dominance_schemas.sql
+      - 20260325210000_dcbook_truckstops_amenities.sql
+      - 20260325220000_ai_agent_prompt_injection.sql
+      - 20260325220000_ai_agent_prompt_injection.sql
+      - 20260325230000_telemetry_syndication.sql
+      - 20260325230000_telemetry_syndication.sql
+      - 20260325235500_routeiq_spatial_advertising.sql
+      - 20260325235500_routeiq_spatial_advertising.sql
+      - 20260325235500_routeiq_spatial_advertising.sql
+      - 20260326023000_defense_system.sql
+      - 20260326023000_defense_system.sql
+      - 20260326023000_defense_system.sql
+      - 20260326030000_freight_matching_layer.sql
+      - 20260326030000_freight_matching_layer.sql
+      - 20260326030000_freight_matching_layer.sql
+      - 20260326030000_freight_matching_layer.sql
+      - 20260326030000_freight_matching_layer.sql
+      - 20260326040000_user_roles_load_board.sql
+      - 20260326040000_user_roles_load_board.sql
+      - 20260326040000_user_roles_load_board.sql
+      - 20260326040000_user_roles_load_board.sql
+      - 20260326040000_user_roles_load_board.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326050000_level_10_defense_intelligence.sql
+      - 20260326060000_deception_request_log_upgrade.sql
+      - 20260326_hc_dictionary_schema.sql
+      - 20260327150000_monetization_engine_spines.sql
+      - 20260327_livekit_voice_compliance_120_countries.sql
+      - 20260327_livekit_voice_compliance_120_countries.sql
+      - 20260328000000_serp_ingestion_infrastructure.sql
+      - 20260328000000_serp_ingestion_infrastructure.sql
+      - 20260328000000_serp_ingestion_infrastructure.sql
+      - 20260329_glossary_120_countries.sql
+      - 20260401010000_adgrid_monetization_schema.sql
+      - 20260401010000_adgrid_monetization_schema.sql
+      - 20260401010000_adgrid_monetization_schema.sql
+      - 20260401020000_120_country_crypto_expansion.sql
+      - 20260401030000_bol_milestone_evidence.sql
+      - 20260401030000_bol_milestone_evidence.sql
+      - 20260401_add_earnings_and_claim_status.sql
+      - 20260401_add_earnings_and_claim_status.sql
+      - 20260401_directory_intel_master.sql
+      - 20260401_directory_intel_master.sql
+      - 20260401_global_seo_tools_matrix.sql
+      - 20260401_hard_system_design.sql
+      - 20260401_hard_system_design.sql
+      - 20260401_hard_system_design.sql
+      - 20260401_hard_system_design.sql
+      - 20260401_seo_realtime_global_matrix.sql
+      - 20260402_100percent_directory.sql
+      - 20260402_availability_broadcast_engine.sql
+      - 20260402_availability_broadcast_engine.sql
+      - 20260402_availability_broadcast_engine.sql
+      - 20260402_phase_010_global_dictionary.sql
+      - 20260402_phase_010_global_dictionary.sql
+      - 20260402_phase_010_global_dictionary.sql
+      - 20260402_phase_010_global_dictionary.sql
+      - 20260402_phase_020_country_role_layer.sql
+      - 20260402_phase_020_country_role_layer.sql
+      - 20260402_phase_030_entities_and_claims.sql
+      - 20260402_phase_030_entities_and_claims.sql
+      - 20260402_phase_030_entities_and_claims.sql
+      - 20260402_phase_030_entities_and_claims.sql
+      - 20260402_phase_040_permit_and_corridor.sql
+      - 20260402_phase_040_permit_and_corridor.sql
+      - 20260402_phase_040_permit_and_corridor.sql
+      - 20260402_phase_040_permit_and_corridor.sql
+      - 20260402_phase_050_intake_and_order_composer.sql
+      - 20260402_phase_050_intake_and_order_composer.sql
+      - 20260402_phase_050_intake_and_order_composer.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_060_jobs_and_commerce_spine.sql
+      - 20260402_phase_070_dispatch_supply_network.sql
+      - 20260402_phase_070_dispatch_supply_network.sql
+      - 20260402_phase_070_dispatch_supply_network.sql
+      - 20260402_phase_070_dispatch_supply_network.sql
+      - 20260402_phase_080_enterprise_revenue.sql
+      - 20260402_phase_080_enterprise_revenue.sql
+      - 20260402_phase_080_enterprise_revenue.sql
+      - 20260402_phase_080_enterprise_revenue.sql
+      - 20260402_phase_080_enterprise_revenue.sql
+      - 20260402_phase_090_monetization_control.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_revenue_architecture_expansion.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_001_catalogs.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_002_user_state.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_003_routing_rules.sql
+      - 20260402_role_intent_004_listing_shells.sql
+      - 20260402_role_intent_004_listing_shells.sql
+      - 20260402_role_intent_004_listing_shells.sql
+      - 20260402_role_intent_004_listing_shells.sql
+      - 20260402_search_os_schema_upgrades.sql
+      - 20260402_search_os_schema_upgrades.sql
+      - 20260402_search_os_schema_upgrades.sql
+      - 20260402_search_os_schema_upgrades.sql
+      - 20260402_trucker_services_directory_expansion.sql
+      - 20260403_blog_posts_create_and_seed.sql
+      - 20260403_sponsors_adgrid_production.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_001_corridor_os.sql
+      - 20260404_014_adgrid_slots.sql
+      - 20260404_015_stripe_products.sql
+      - 20260404_016_notification_events.sql
+      - 20260404_016_notification_events.sql
+      - 20260404_016_notification_events.sql
+      - 20260404_017_notification_triggers.sql
+      - 20260404_018_available_now.sql
+      - 20260404_019_trust_report_card.sql
+      - 20260404_020_training_courses.sql
+      - 20260404_020_training_courses.sql
+      - 20260404_022_route_requests.sql
+      - 20260404_023_adgrid_roi_tables.sql
+      - 20260404_023_adgrid_roi_tables.sql
+      - 20260404_023_adgrid_roi_tables.sql
+      - 20260404_024_frost_law_status.sql
+      - 20260404_025_corridor_demand_signals.sql
+      - 20260404_026_global_training_modules.sql
+      - 20260404_026_global_training_modules.sql
+      - 20260404_026_partner_leads.sql
+      - 20260404_027_intersections.sql
+      - 20260404_027_presence_heartbeats.sql
+      - 20260404_027_presence_heartbeats.sql
+      - 20260404_027_presence_heartbeats.sql
+      - 20260404_availability_broadcasts.sql
+      - 20260404_hc_claim_attempts.sql
+      - 20260404_hc_country_waitlist.sql
+      - 20260405_029_leaderboard_periods_and_report_card_stats.sql
+      - 20260406_030_saved_searches.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260407_002_hc_market_signal_tables.sql
+      - 20260408_001_core_entities.sql
+      - 20260408_002_profiles_attributes_reviews.sql
+      - 20260408_002_profiles_attributes_reviews.sql
+      - 20260408_002_profiles_attributes_reviews.sql
+      - 20260408_002_profiles_attributes_reviews.sql
+      - 20260408_002_profiles_attributes_reviews.sql
+      - 20260408_003_surfaces_links_scores.sql
+      - 20260408_003_surfaces_links_scores.sql
+      - 20260408_003_surfaces_links_scores.sql
+      - 20260408_004_claim_queries_gaps.sql
+      - 20260408_004_claim_queries_gaps.sql
+      - 20260408_004_claim_queries_gaps.sql
+      - 20260408_004_claim_queries_gaps.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_005_geo_tools_training_blog.sql
+      - 20260408_006_gsd_diff_analysis.sql
+      - 20260408_007_surge_seo_tables.sql
+      - 20260408_007_surge_seo_tables.sql
+      - 20260408_007_surge_seo_tables.sql
+      - 20260408_007_surge_seo_tables.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_010_training_architecture_v1.sql
+      - 20260408_012_global_jurisdictions_seed.sql
+      - 20260409010000_forms_compliance_hub.sql
+      - 20260409010000_forms_compliance_hub.sql
+      - 20260409030000_delayed_fomo_claim_loop.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409040000_roi_matrix_and_adgrid.sql
+      - 20260409142000_enterprise_organizations.sql
+      - 20260409142000_enterprise_organizations.sql
+      - 20260409142000_enterprise_organizations.sql
+      - 20260409143000_gsd_diff_analysis.sql
+      - 20260409_0010_livekit_outbound_engine.sql
+      - 20260409_0010_livekit_outbound_engine.sql
+      - 20260409_0011_livekit_telephony_compliance.sql
+      - 20260409_0012_marketing_queue.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_001_glossary_core.sql
+      - 20260409_002_glossary_relationships_and_overlays.sql
+      - 20260409_002_glossary_relationships_and_overlays.sql
+      - 20260409_003_glossary_links_metrics_queue.sql
+      - 20260409_003_glossary_links_metrics_queue.sql
+      - 20260409_003_glossary_links_metrics_queue.sql
+      - 20260409_003_glossary_links_metrics_queue.sql
+      - 20260409_003_glossary_links_metrics_queue.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_200_content_os_training_integration.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_300_content_os_reconciled.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_800_reconcile_training_content_os.sql
+      - 20260409_803_operator_live_ping.sql
+      - 20260409_901_blog_visuals_seo_upgrade.sql
+      - 20260409_902_directory_filters_hazard_network.sql
+      - 20260409_903_live_ping_push_trigger.sql
+      - 20260409_904_headline_stats_config_views.sql
+      - 20260411_001_proof_packet_system.sql
+      - 20260501_autonomous_pbot_dispatch.sql
+      - 20260501_autonomous_pbot_dispatch.sql
+      - 20261014000000_adgrid_country_inventory.sql
+      - bleeding_neck_tools_migration.sql
+      - bleeding_neck_tools_migration.sql
+      - bleeding_neck_tools_migration.sql
+      - bleeding_neck_tools_migration.sql
+      - bleeding_neck_tools_migration.sql
+      - bleeding_neck_tools_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+      - global_markets_migration.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: broker_profiles
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260325_ingestion_activation_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: certifications
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260325_ingestion_activation_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: offers
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260214_lead_radar_schema.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hazard_reports
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260321_hc_route_schema.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: leaderboard_periods
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260320_leaderboard_rankings_full.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: leaderboard_entries
+    migrations:
+      - 0027_compliance_base.sql
+      - 20260214231504_command_index_schema.sql
+      - 20260320_leaderboard_rankings_full.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: sources
+    migrations:
+      - 20240218000001_sources_ingest.sql
+      - 20260214_lead_radar_schema.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: leaderboards
+    migrations:
+      - 20260214231504_command_index_schema.sql
+      - 20260214234500_command_index_v2.sql
+      - 20260214235500_command_index_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: police_agencies
+    migrations:
+      - 20260214231505_coordination_engine.sql
+      - 20260214233001_coordination_engine_v2.sql
+      - 20260214234502_coordination_engine_v2.sql
+      - 20260214235501_coordination_engine_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: utility_providers
+    migrations:
+      - 20260214231505_coordination_engine.sql
+      - 20260214233001_coordination_engine_v2.sql
+      - 20260214234502_coordination_engine_v2.sql
+      - 20260214235501_coordination_engine_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: coordination_tickets
+    migrations:
+      - 20260214231505_coordination_engine.sql
+      - 20260214233001_coordination_engine_v2.sql
+      - 20260214234502_coordination_engine_v2.sql
+      - 20260214235501_coordination_engine_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: coordination_logs
+    migrations:
+      - 20260214231505_coordination_engine.sql
+      - 20260214233001_coordination_engine_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: vertical_profiles
+    migrations:
+      - 20260214231506_strategic_intelligence.sql
+      - 20260214234501_strategic_intelligence_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: lane_metrics
+    migrations:
+      - 20260214231506_strategic_intelligence.sql
+      - 20260214234501_strategic_intelligence_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: affiliate_payout_rules
+    migrations:
+      - 20260214231506_strategic_intelligence.sql
+      - 20260214234501_strategic_intelligence_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: state_ad_budgets
+    migrations:
+      - 20260214231506_strategic_intelligence.sql
+      - 20260214234501_strategic_intelligence_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: social_content_queue
+    migrations:
+      - 20260214231506_strategic_intelligence.sql
+      - 20260214234501_strategic_intelligence_v2.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: coordination_fee_rules
+    migrations:
+      - 20260214233001_coordination_engine_v2.sql
+      - 20260214234502_coordination_engine_v2.sql
+      - 20260214235501_coordination_engine_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: trust_scores
+    migrations:
+      - 20260214234500_command_index_v2.sql
+      - 20260214235500_command_index_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: trust_events
+    migrations:
+      - 20260214234500_command_index_v2.sql
+      - 20260214235500_command_index_v2_1.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: rank_tiers
+    migrations:
+      - 20260214234500_command_index_v2.sql
+      - 20260214235500_command_index_v2_1.sql
+      - 20260214_reputation_engine_schema.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: seo_internal_links
+    migrations:
+      - 20260221_directory_seed_and_seo_pages.sql
+      - 20260407_v3_009_seo_manufacturing.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: audit
+    migrations:
+      - 20260303_countries_control_merge_sweep.sql
+      - 20260408_005_geo_tools_training_blog.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_reg
+    migrations:
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+      - 20260303_hc_reg_52_country_regulation_engine.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_entity_aliases
+    migrations:
+      - 20260313_create_market_observation_ingestion_tables.sql
+      - 20260407_v3_003_entity_graph.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: waitlist_signups
+    migrations:
+      - 20260320_leaderboard_rankings_full.sql
+      - 20260324_missing_tables_radar_vapi_social.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: company_listings
+    migrations:
+      - 20260321300000_seo_domination_sprint.sql
+      - 20260322_antigravity_sprint.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: permit_agents
+    migrations:
+      - 20260321300000_seo_domination_sprint.sql
+      - 20260322_antigravity_sprint.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: permit_requests
+    migrations:
+      - 20260321300000_seo_domination_sprint.sql
+      - 20260322_antigravity_sprint.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: quickpay_advances
+    migrations:
+      - 20260321300000_seo_domination_sprint.sql
+      - 20260322_antigravity_sprint.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: operator_availability
+    migrations:
+      - 20260321300000_seo_domination_sprint.sql
+      - 20260322_antigravity_sprint.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: operator_locations
+    migrations:
+      - 20260322_operator_locations.sql
+      - 20260322_operator_locations_gps.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: IF
+    migrations:
+      - 20260324_content_social_revenue.sql
+      - 20260324_hc_certified_training_portal.sql
+      - 20260324_missing_tables_radar_vapi_social.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_countries
+    migrations:
+      - 20260331_global_taxonomy_seed.sql
+      - 20260408_sprint_a_critical_tables.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_events
+    migrations:
+      - 20260407_v3_002_orchestration_spine.sql
+      - 20261017000000_core_event_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_workflows
+    migrations:
+      - 20260407_v3_002_orchestration_spine.sql
+      - 20261016000000_workflow_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_workflow_runs
+    migrations:
+      - 20260407_v3_002_orchestration_spine.sql
+      - 20261016000000_workflow_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_surface_effects
+    migrations:
+      - 20260407_v3_006_skills_metadata.sql
+      - 20261017000000_core_event_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: dom_scorecards
+    migrations:
+      - 20260407_v3_014_monetization.sql
+      - 20261017000000_core_event_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_role_catalog
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_intent_catalog
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_notifications
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20261017000000_core_event_infrastructure.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: hc_push_subscriptions
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: stripe_events
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: training_courses
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.
+  - table: saved_searches
+    migrations:
+      - 20260408_sprint_a_critical_tables.sql
+      - 20260408_sprint_a_verified.sql
+    risk: Medium. IF NOT EXISTS guards mitigate hard failures, but schema drift is possible.

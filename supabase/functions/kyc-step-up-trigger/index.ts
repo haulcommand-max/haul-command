@@ -2,6 +2,14 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 import { getServiceClient } from "../_shared/supabase.ts";
 
+// Canonical KYC tier thresholds per Opus OPUS-02 guardrails
+export const KYC_TIER_THRESHOLDS = {
+  TIER_0_BROWSE:     { min_tier: 0, label: 'Browse Only' },
+  TIER_1_TRANSACT:   { min_tier: 1, label: 'Bid on Loads',   lifetime_usd: 500 },
+  TIER_2_ESCROW:     { min_tier: 2, label: 'Post Loads',     lifetime_usd: 5_000 },
+  TIER_3_ENTERPRISE: { min_tier: 3, label: 'Instant Payouts', lifetime_usd: 50_000 },
+};
+
 interface WebhookPayload {
   type: "INSERT" | "UPDATE";
   table: string;
@@ -30,23 +38,39 @@ serve(async (req: Request) => {
   const { driver_id, rate_cents } = payload.record;
   const stepUpReasons: string[] = [];
 
-  // Fetch current profile
+  // Fetch current profile — use kyc_tier (canonical) with kyc_level as fallback
   const { data: profile } = await supabase
     .from("profiles")
-    .select("kyc_level, fraud_score")
+    .select("kyc_tier, kyc_level, fraud_score, lifetime_volume_usd")
     .eq("id", driver_id)
     .single();
 
-  if (!profile || profile.kyc_level >= 2) {
-    // Already KYC L2+ or profile not found — no action needed
-    return new Response(JSON.stringify({ ok: true, stepUpTriggered: false, reason: "already_l2_or_missing" }), {
+  // Resolve canonical tier: prefer kyc_tier, fall back to kyc_level
+  const currentTier = profile?.kyc_tier ?? profile?.kyc_level ?? 0;
+
+  if (!profile || currentTier >= 2) {
+    // Already KYC Tier 2+ or profile not found — no action needed
+    return new Response(JSON.stringify({ ok: true, stepUpTriggered: false, reason: "already_tier2_or_missing" }), {
       headers: { ...corsHeaders, "content-type": "application/json" }
     });
   }
 
-  // ── Signal 1: High-value job (>$500) ──
-  if (rate_cents > 50000) {
-    stepUpReasons.push("high_value_job");
+  // Auto-upgrade tier based on lifetime volume
+  const lifetimeUsd = profile.lifetime_volume_usd ?? 0;
+  let requiredTier = 0;
+  if (lifetimeUsd >= KYC_TIER_THRESHOLDS.TIER_3_ENTERPRISE.lifetime_usd!) requiredTier = 3;
+  else if (lifetimeUsd >= KYC_TIER_THRESHOLDS.TIER_2_ESCROW.lifetime_usd!) requiredTier = 2;
+  else if (lifetimeUsd >= KYC_TIER_THRESHOLDS.TIER_1_TRANSACT.lifetime_usd!) requiredTier = 1;
+
+  if (requiredTier > currentTier) {
+    await supabase.from('profiles').update({ kyc_tier: requiredTier }).eq('id', driver_id);
+  }
+
+  // ── Signal 1: High-value job tier thresholds (Opus OPUS-02) ──
+  if (rate_cents > 5_000_00) {          // > $5,000 → requires Tier 2
+    stepUpReasons.push("high_value_job_tier2");
+  } else if (rate_cents > 50_000) {    // > $500 → requires Tier 1
+    stepUpReasons.push("high_value_job_tier1");
   }
 
   // ── Signal 2: Elevated fraud score (>=50) ──

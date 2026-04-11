@@ -1,19 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@supabase/supabase-js";
+import { WebhookReceiver } from "livekit-server-sdk";
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json();
+        // Require Auth Header
+        const authHeader = req.headers.get("Authorization");
+        if (!authHeader) {
+            return NextResponse.json({ success: false, message: "Missing Authorization header" }, { status: 401 });
+        }
+
+        const receiver = new WebhookReceiver(
+            process.env.LIVEKIT_API_KEY!,
+            process.env.LIVEKIT_API_SECRET!
+        );
+
+        // This verifies the signature and parses the event payload
+        const rawBody = await req.text();
+        const eventData = receiver.receive(rawBody, authHeader);
+        const body = JSON.parse(rawBody);
         
         // This expects the LiveKit Egress/Call Completion Webhook format
         const { event, room, participant, sip_call_status, ai_disposition, target_phone, transcript, duration_seconds } = body;
 
         // Ensure this is a SIP Call termination event or AI Summary event
-        if (event !== 'participant_left' && event !== 'room_finished' && event !== 'ai_summary') {
+        if (event !== 'participant_left' && event !== 'room_finished' && event !== 'ai_summary' && eventData.event !== 'room_finished') {
             return NextResponse.json({ success: true, message: "Ignored non-termination event." });
         }
 
-        const supabase = await createClient(process.env.SUPABASE_SERVICE_ROLE_KEY!);
+        const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
         const roomName = room?.name || body.room_name;
 
         // If the AI explicitly flagged them as angry/DNC via tool call or summary disposition

@@ -1,0 +1,22 @@
+# GEM-R05: Corridor Rate Data Validation
+# Priority: MEDIUM
+# Deadline: Before Sonnet WAVE-9
+
+validation_flags:
+  - corridor_slug: "texas-triangle-to-colorado-front-range"
+    issue: "Implausible rate_per_mile"
+    found_value: "$0.45/mile"
+    expected_value: "> $3.50/mile (Heavy haul baseline)"
+    action_required: "Update seed migration 20260404_002_corridor_seed_us.sql"
+
+  - corridor_slug: "alberta-oil-sands-to-texas-basin"
+    issue: "Missing demand_score"
+    found_value: "NULL"
+    expected_value: "Integer 1-100"
+    action_required: "Inject default demand_score into 20260404_004_corridor_seed_canada.sql"
+
+  - corridor_slug: "eu-central-spine|berlin-to-madrid"
+    issue: "URL Safety Violation"
+    found_value: "Contains pipe character '|'"
+    expected_value: "eu-central-spine-berlin-to-madrid"
+    action_required: "Sanitize slug generation in seo-engine mapping script."

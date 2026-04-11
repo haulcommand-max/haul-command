@@ -7,7 +7,7 @@
  * Links from:
  *   - DirectorySponsorCard (lower position) → /advertise/buy
  *   - /advertise main page → /advertise/buy
- *   - EnhancedFooter → /advertise
+ *   - HCFooterShell → /advertise
  */
 import type { Metadata } from 'next';
 import Link from 'next/link';

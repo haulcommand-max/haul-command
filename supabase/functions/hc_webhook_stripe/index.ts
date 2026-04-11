@@ -229,6 +229,85 @@ serve(async (req: Request) => {
             });
         }
 
+        if (body.type && (body.type.startsWith('payment_intent.') || body.type.startsWith('payout.'))) {
+            // ── SIGNATURE VERIFICATION ──
+            if (!signatureHeader || !stripeWebhookSecret) {
+                return new Response(JSON.stringify({ error: 'Missing signature' }), { status: 401 });
+            }
+            const isValid = await verifyStripeSignature(rawBody, signatureHeader, stripeWebhookSecret);
+            if (!isValid) return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 401 });
+
+            // ── PAYMENT INTENT EVENTS ──
+            if (body.type === 'payment_intent.succeeded') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+                
+                if (jobId) {
+                    await supabase.from('hc_jobs').update({ preauth_status: 'captured' }).eq('id', jobId);
+                    await supabase.from('event_log').insert({
+                        actor_profile_id: null,
+                        actor_role: 'system',
+                        event_type: 'payment.captured_webhook',
+                        entity_type: 'hc_jobs',
+                        entity_id: jobId,
+                        payload: { payment_intent_id: intent.id, amount_received: intent.amount_received },
+                    });
+                }
+            } else if (body.type === 'payment_intent.payment_failed') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+                const brokerId = intent?.metadata?.broker_user_id;
+                
+                if (jobId) {
+                    await supabase.from('hc_jobs').update({ preauth_status: 'failed' }).eq('id', jobId);
+                    if (brokerId) {
+                        await supabase.from('trust_events').insert({
+                            entity_profile_id: brokerId,
+                            event_type: 'preauth_failed',
+                            payload: { job_id: jobId, error: intent.last_payment_error?.message },
+                        });
+                    }
+                }
+            }
+
+            // ── PAYOUT EVENTS ──
+            if (body.type === 'payout.failed' || body.type === 'payout.canceled') {
+                const payout = body.data?.object;
+                const accountId = payout?.destination;
+                
+                // Lookup user by stripe_account_id
+                const { data: profile } = await supabase
+                    .from('operator_profiles')
+                    .select('user_id')
+                    .eq('stripe_account_id', accountId)
+                    .single();
+                    
+                if (profile?.user_id) {
+                    // Update trust score negative signal
+                    await supabase.from('trust_events').insert({
+                        entity_profile_id: profile.user_id,
+                        event_type: 'payout_failed',
+                        payload: { payout_id: payout.id, amount: payout.amount, error: payout.failure_reason },
+                    });
+                    
+                    // Dispatch FCM Push required by SONNET-01
+                    await supabase.from('hc_notifications').insert({
+                        user_id: profile.user_id,
+                        title: '⚠️ Payout Failed',
+                        body: 'Your recent payout failed. Please update your bank details to resume transfers.',
+                        data_json: { type: 'payout_failed', retry_url: '/dashboard/wallet/settings' },
+                        channel: 'push',
+                        status: 'queued',
+                    });
+                }
+            }
+
+            return new Response(JSON.stringify({ received: true }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                status: 200,
+            });
+        }
+
         return new Response(JSON.stringify({ error: 'Unknown action or event type' }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 400,

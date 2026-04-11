@@ -28,12 +28,58 @@ serve(async (req) => {
     }
 
     // Call Firebase HTTP v1 API
-    const FCM_SERVER_KEY = Deno.env.get('FIREBASE_SERVER_KEY') || 'MOCK';
+    const FCM_PROJECT_ID = Deno.env.get('FIREBASE_PROJECT_ID');
+    const FCM_OAUTH_TOKEN = Deno.env.get('FIREBASE_OAUTH_TOKEN'); // Assuming short-lived token generated elsewhere or static test token
     
-    // In Production: We'd lookup the user's FCM device token from a device_tokens table
-    console.log(`[FCM-WORKER] Dispatching Push (Simulated) -> Title: ${pushTitle} | Body: ${pushBody} | Link: ${deepLink}`);
+    // Lookup the user's FCM device token from push_subscriptions table
+    const { getServiceClient } = await import('../_shared/supabase.ts');
+    const supabase = getServiceClient();
     
-    return new Response(JSON.stringify({ success: true, dispatched: true }), { headers: { "Content-Type": "application/json" } });
+    let targetUserId = record.user_id || record.profile_id;
+    if (table === 'job_applications') targetUserId = record.operator_id;
+
+    if (!targetUserId) {
+        return new Response(JSON.stringify({ error: "No user_id found in record" }), { status: 400 });
+    }
+
+    const { data: tokens } = await supabase
+      .from('push_subscriptions')
+      .select('fcm_token')
+      .eq('user_id', targetUserId)
+      .not('fcm_token', 'is', null);
+
+    if (!tokens || tokens.length === 0) {
+        console.log(`[FCM-WORKER] No tokens found for user ${targetUserId}, skipping push.`);
+        return new Response(JSON.stringify({ success: true, dispatched: false, reason: "no_token" }), { headers: { "Content-Type": "application/json" } });
+    }
+
+    let successCount = 0;
+    
+    if (FCM_PROJECT_ID && FCM_OAUTH_TOKEN) {
+        for (const t of tokens) {
+            const res = await fetch(`https://fcm.googleapis.com/v1/projects/${FCM_PROJECT_ID}/messages:send`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${FCM_OAUTH_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: {
+                        token: t.fcm_token,
+                        notification: { title: pushTitle, body: pushBody },
+                        data: { deepLink }
+                    }
+                })
+            });
+            if (res.ok) successCount++;
+        }
+    } else {
+         console.warn("[FCM-WORKER] Missing FIREBASE_PROJECT_ID/OAUTH_TOKEN - skipping actual API call.");
+    }
+    
+    console.log(`[FCM-WORKER] Dispatched Push -> Title: ${pushTitle} | Body: ${pushBody} | Link: ${deepLink} | Successes: ${successCount}/${tokens.length}`);
+    
+    return new Response(JSON.stringify({ success: true, dispatched: true, successCount }), { headers: { "Content-Type": "application/json" } });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 400 });
   }

@@ -1,0 +1,35 @@
+# GEM-R04: 30-Country Jurisdiction Seed Expansion
+# Priority: MEDIUM
+# Deadline: Before Sonnet WAVE-9
+
+jurisdictions:
+  - iso: "UK"
+    authority: "Driver and Vehicle Standards Agency (DVSA)"
+    permit_types: ["Abnormal Load Notification", "Special Order"]
+    weight_limit_baseline: "44,000 kg"
+    crypto_restricted: false
+  
+  - iso: "DE"
+    authority: "Bundesamt für Logistik und Mobilität (BALM)"
+    permit_types: ["Grossraum- und Schwertransport (§ 29 StVO)"]
+    weight_limit_baseline: "40,000 kg"
+    crypto_restricted: false
+
+  - iso: "IN"
+    authority: "Ministry of Road Transport and Highways (MoRTH)"
+    permit_types: ["ODC Permit", "National Permit"]
+    weight_limit_baseline: "49,000 kg"
+    crypto_restricted: true
+    note: "Crypto payments face heavy RBI scrutiny. Default to Fiat Stripe flows."
+
+  - iso: "BR"
+    authority: "Agência Nacional de Transportes Terrestres (ANTT)"
+    permit_types: ["AET (Autorização Especial de Trânsito)"]
+    weight_limit_baseline: "74,000 kg"
+    crypto_restricted: false
+
+  - iso: "MX"
+    authority: "Secretaría de Infraestructura, Comunicaciones y Transportes (SICT)"
+    permit_types: ["Permiso Especial de Carga"]
+    weight_limit_baseline: "75,500 kg"
+    crypto_restricted: false

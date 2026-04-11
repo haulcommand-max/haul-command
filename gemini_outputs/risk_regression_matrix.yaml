@@ -1,0 +1,6 @@
+# GEMINI-03: Risk & Fraud Regression Pack
+scenarios:
+  - attack: "Operator uploads false BOL to trigger delivery holdback release."
+    mitigation: "Manual escrow verification or OCR check prior to payout worker executing."
+  - attack: "Broker attempts to cancel Stripe checkout post-lock to ghost the operator."
+    mitigation: "Webhook enforces non-refundable escrow state; disputes require Admin tribunal."

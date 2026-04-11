@@ -1,0 +1,146 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS: CANONICAL TOOL WIRING MAP
+# Maps every lib/ module to its canonical cluster owner
+# ═══════════════════════════════════════════════════════════════
+
+wiring_map:
+  # PAYMENT / SETTLEMENT
+  - module: "lib/hc-pay/unified-checkout.ts"
+    owner: "risk-payment-core"
+    status: "ACTIVE"
+  - module: "lib/hc-pay/nowpayments.ts"
+    owner: "risk-payment-core"
+    status: "ACTIVE"
+  - module: "lib/stripe.ts"
+    owner: "risk-payment-core"
+    status: "UPGRADE_NEEDED — add idempotency wrapper"
+  - module: "lib/stripe/"
+    owner: "risk-payment-core"
+    status: "ACTIVE"
+
+  # TRUST
+  - module: "lib/trust/unified-trust-engine.ts"
+    owner: "trust-and-ranking-core"
+    status: "ACTIVE — canonical orchestrator facade"
+  - module: "lib/trust/composite-trust-engine.ts"
+    owner: "trust-and-ranking-core"
+    status: "ACTIVE — absorbed by unified facade"
+  - module: "lib/trust/anti-gaming-engine.ts"
+    owner: "trust-and-ranking-core"
+    status: "ACTIVE — fraud dimension"
+  - module: "lib/reputation-engine.ts"
+    owner: "trust-and-ranking-core"
+    status: "ACTIVE"
+  - module: "lib/scoring/"
+    owner: "trust-and-ranking-core"
+    status: "ACTIVE"
+
+  # PRESENCE
+  - module: "lib/presence/"
+    owner: "presence-and-availability-core"
+    status: "ACTIVE"
+
+  # SEARCH
+  - module: "lib/search.ts"
+    owner: "discovery-search-core"
+    status: "ACTIVE"
+  - module: "lib/search/"
+    owner: "discovery-search-core"
+    status: "ACTIVE"
+  - module: "lib/typesense/"
+    owner: "discovery-search-core"
+    status: "ACTIVE"
+
+  # NOTIFICATIONS
+  - module: "lib/push-send.ts"
+    owner: "comms-core"
+    status: "ACTIVE"
+  - module: "lib/push-admin.ts"
+    owner: "comms-core"
+    status: "ACTIVE"
+  - module: "lib/firebase.ts"
+    owner: "comms-core"
+    status: "ACTIVE"
+  - module: "lib/firebase/"
+    owner: "comms-core"
+    status: "ACTIVE"
+  - module: "lib/notifications/"
+    owner: "comms-core"
+    status: "ACTIVE"
+  - module: "lib/resend.ts"
+    owner: "comms-core"
+    status: "ACTIVE"
+
+  # EVENTS
+  - module: "lib/os-events.ts"
+    owner: "GLOBAL — cross-cutting event bus"
+    status: "ACTIVE — canonical event definitions"
+
+  # GEO / ROUTING
+  - module: "lib/geo/"
+    owner: "route-intelligence-core"
+    status: "ACTIVE"
+  - module: "lib/here/"
+    owner: "route-intelligence-core"
+    status: "ACTIVE"
+  - module: "lib/corridors/"
+    owner: "route-intelligence-core"
+    status: "ACTIVE"
+  - module: "lib/map/"
+    owner: "route-intelligence-core"
+    status: "ACTIVE"
+
+  # CONTENT / SEO
+  - module: "lib/ai/content-engine.ts"
+    owner: "content-os"
+    status: "ACTIVE"
+  - module: "lib/content-os/"
+    owner: "content-os"
+    status: "ACTIVE"
+  - module: "lib/seo/"
+    owner: "content-os"
+    status: "ACTIVE"
+  - module: "lib/seo-engine/"
+    owner: "content-os"
+    status: "ACTIVE"
+  - module: "lib/glossary/"
+    owner: "content-os"
+    status: "ACTIVE"
+
+  # ADS
+  - module: "lib/adgrid-injector.ts"
+    owner: "adgrid-yield-core"
+    status: "ACTIVE"
+  - module: "lib/adgrid/"
+    owner: "adgrid-yield-core"
+    status: "ACTIVE"
+  - module: "lib/ads/"
+    owner: "adgrid-yield-core"
+    status: "ACTIVE"
+  - module: "lib/monetization/"
+    owner: "adgrid-yield-core"
+    status: "ACTIVE"
+
+  # GROWTH
+  - module: "lib/claims/"
+    owner: "claim-growth-core"
+    status: "ACTIVE"
+  - module: "lib/growth/"
+    owner: "claim-growth-core"
+    status: "ACTIVE"
+  - module: "lib/engagement/"
+    owner: "claim-growth-core"
+    status: "ACTIVE"
+
+  # TRAINING
+  - module: "lib/training/"
+    owner: "content-os"
+    status: "ACTIVE"
+
+  # COMPLIANCE
+  - module: "lib/compliance/"
+    owner: "standalone — regulatory domain"
+    status: "ACTIVE"
+  - module: "lib/regulations/"
+    owner: "standalone — regulatory domain"
+    status: "ACTIVE"

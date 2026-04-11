@@ -1,0 +1,158 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS-03: EVENT CONTRACTS
+# Decision Authority: Claude Opus 4.6
+# Canonical event bus connecting Next.js, Supabase, Firebase,
+# Stripe, LiveKit, Fly workers, and Typesense
+# ═══════════════════════════════════════════════════════════════
+
+event_bus_topology:
+  primary_bus: "Supabase pg_net + Edge Functions"
+  secondary_bus: "Stripe Webhooks -> Next.js API routes -> pg_net"
+  push_channel: "Firebase Cloud Messaging via fcm-push-worker"
+  search_sync: "Supabase DB trigger -> search-indexer -> Typesense"
+  voice_channel: "LiveKit Webhooks -> Next.js API routes -> mm_event_log"
+
+# ─────────────────────────────────────────────────
+# CANONICAL EVENT DEFINITIONS
+# ─────────────────────────────────────────────────
+events:
+
+  # SETTLEMENT DOMAIN
+  - name: "escrow.created"
+    source: "risk-payment-core"
+    payload: {escrow_id: "uuid", load_id: "uuid", amount_usd: "numeric", gateway: "stripe|crypto"}
+    consumers: ["fcm-push-worker", "comms-core"]
+    write_targets: ["hc_escrows"]
+
+  - name: "escrow.locked"
+    source: "hc_webhook_stripe OR nowpayments webhook"
+    payload: {escrow_id: "uuid", gateway_ref: "string", locked_at: "timestamptz"}
+    consumers: ["trust-and-ranking-core", "fcm-push-worker", "route-matcher-agent"]
+    write_targets: ["hc_escrows.status", "jobs.status -> OPEN"]
+
+  - name: "escrow.permit_released"
+    source: "risk-payment-core"
+    payload: {escrow_id: "uuid", milestone: "PERMIT"}
+    consumers: ["comms-core"]
+    write_targets: ["hc_escrows.status"]
+
+  - name: "escrow.holdback_cleared"
+    source: "financial-sync worker (BOL verification)"
+    payload: {escrow_id: "uuid", operator_id: "uuid", bol_verified: "boolean"}
+    consumers: ["fcm-push-worker", "trust-and-ranking-core"]
+    write_targets: ["hc_escrows.status", "hc_payouts"]
+
+  - name: "escrow.disputed"
+    source: "dispute-auto-resolve"
+    payload: {escrow_id: "uuid", dispute_reason: "string", filed_by: "uuid"}
+    consumers: ["comms-core", "fcm-push-worker"]
+    write_targets: ["hc_escrows.status", "hc_disputes"]
+
+  - name: "payout.instant_triggered"
+    source: "financial-sync worker"
+    payload: {payout_id: "uuid", operator_id: "uuid", amount: "numeric", fee: "numeric"}
+    consumers: ["fcm-push-worker", "comms-core"]
+    write_targets: ["hc_payouts"]
+
+  - name: "payout.failed"
+    source: "Stripe webhook: transfer.failed"
+    payload: {payout_id: "uuid", failure_reason: "string"}
+    consumers: ["fcm-push-worker", "comms-core"]
+    write_targets: ["hc_payouts.status"]
+
+  # MARKETPLACE DOMAIN
+  - name: "load.created"
+    source: "broker dashboard POST"
+    payload: {job_id: "uuid", broker_id: "uuid", origin: "string", destination: "string"}
+    consumers: ["search-indexer", "route-matcher-agent"]
+    write_targets: ["jobs"]
+
+  - name: "load.matched"
+    source: "route-matcher-agent OR match-generate"
+    payload: {job_id: "uuid", operator_id: "uuid", match_score: "numeric"}
+    consumers: ["fcm-push-worker", "comms-core"]
+    write_targets: ["job_matches"]
+
+  - name: "bid.submitted"
+    source: "operator load-board action"
+    payload: {job_id: "uuid", applicant_id: "uuid"}
+    consumers: ["fcm-push-worker", "trust-and-ranking-core"]
+    write_targets: ["job_applications"]
+
+  - name: "offer.accepted"
+    source: "broker dashboard action"
+    payload: {offer_id: "uuid", job_id: "uuid", operator_id: "uuid"}
+    consumers: ["risk-payment-core", "fcm-push-worker", "comms-core"]
+    write_targets: ["offers.status", "jobs.status"]
+
+  # TRUST DOMAIN
+  - name: "trust.updated"
+    source: "trust-and-ranking-core"
+    payload: {profile_id: "uuid", old_score: "numeric", new_score: "numeric", reason: "string"}
+    consumers: ["search-indexer", "adgrid-yield-core"]
+    write_targets: ["profiles.trust_score", "trust_event_log"]
+
+  - name: "kyc.verified"
+    source: "/api/webhooks/kyc"
+    payload: {user_id: "uuid", provider: "string", verification_level: "integer"}
+    consumers: ["trust-and-ranking-core", "fcm-push-worker"]
+    write_targets: ["profiles.kyc_verified_at", "profiles.kyc_tier"]
+
+  # PRESENCE DOMAIN
+  - name: "presence.online"
+    source: "presence-and-availability-core"
+    payload: {profile_id: "uuid", lat: "numeric", lng: "numeric"}
+    consumers: ["search-indexer", "route-matcher-agent"]
+    write_targets: ["profiles.last_seen_at", "presence_log"]
+
+  - name: "presence.offline"
+    source: "presence-and-availability-core (timeout)"
+    payload: {profile_id: "uuid", offline_reason: "timeout|manual"}
+    consumers: ["search-indexer"]
+    write_targets: ["profiles.availability_status"]
+
+  # TRAINING DOMAIN
+  - name: "training.completed"
+    source: "training lesson page server action"
+    payload: {user_id: "uuid", lesson_id: "uuid", track: "string"}
+    consumers: ["trust-and-ranking-core", "fcm-push-worker", "adgrid-yield-core"]
+    write_targets: ["hc_training_report_cards", "hc_training_diagnostics"]
+
+  - name: "training.diagnostic_failed"
+    source: "training diagnostic engine"
+    payload: {user_id: "uuid", diagnostic_id: "uuid", likely_reason: "string"}
+    consumers: ["fcm-push-worker", "adgrid-yield-core"]
+    write_targets: ["hc_training_diagnostics"]
+
+  # CLAIM / GROWTH DOMAIN
+  - name: "directory.claimed"
+    source: "claim-growth-core"
+    payload: {profile_id: "uuid", listing_id: "uuid"}
+    consumers: ["trust-and-ranking-core", "comms-core", "search-indexer"]
+    write_targets: ["directory.claimed_by", "directory.claimed_at"]
+
+  # ADGRID DOMAIN
+  - name: "adgrid.impression"
+    source: "adgrid-yield-core"
+    payload: {vendor_id: "uuid", surface_id: "string", operator_id: "uuid"}
+    consumers: []
+    write_targets: ["hc_adgrid_metrics"]
+
+  - name: "adgrid.click"
+    source: "adgrid-yield-core"
+    payload: {vendor_id: "uuid", surface_id: "string", operator_id: "uuid"}
+    consumers: ["comms-core"]
+    write_targets: ["hc_adgrid_metrics"]
+
+  # VOICE / LIVEKIT DOMAIN
+  - name: "call.started"
+    source: "LiveKit webhook"
+    payload: {room_id: "string", participants: "string[]"}
+    consumers: []
+    write_targets: ["mm_event_log"]
+
+  - name: "call.ended"
+    source: "LiveKit webhook"
+    payload: {room_id: "string", duration_seconds: "integer"}
+    consumers: ["risk-payment-core"]
+    write_targets: ["mm_event_log", "hc_call_billing"]
