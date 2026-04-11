@@ -1,6 +1,6 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { redirect } from 'next/navigation';
 
 export default async function FirstJobJourney() {
