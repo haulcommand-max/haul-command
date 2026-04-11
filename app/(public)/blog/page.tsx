@@ -5,6 +5,7 @@ import { TrustStrip, IntentMonetizationSurface } from "@/components/ui/intent-bl
 import { Button } from "@/components/ui/Button";
 import { Search, Filter, ArrowRight, ChevronRight, BarChart3, ShieldCheck, MapPin, Clock } from "lucide-react";
 import type { Metadata } from 'next';
+import { BlogAnalyticsTrigger } from "@/components/analytics/BlogAnalyticsTrigger";
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Intelligence & Escort Regulations | Haul Command',
@@ -139,6 +140,7 @@ export default function BlogHub() {
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-[#030303] text-gray-200">
+      <BlogAnalyticsTrigger eventName="blog_index_view" properties={{ source: 'public_layout' }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
@@ -182,9 +184,9 @@ export default function BlogHub() {
               <Button size="lg" variant="primary">
                 Browse Latest Reports
               </Button>
-              <Button size="lg" variant="secondary" onClick={() => window.location.href = '/tools/rate-advisor'}>
+              <Link href="/tools/rate-advisor" className="inline-flex items-center justify-center font-semibold transition-all duration-200 tracking-wide bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20 shadow-[0_4px_14px_0_rgba(255,255,255,0.05)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.1)] hover:scale-[1.02] h-14 rounded-2xl px-10 text-base">
                 View Live Corridor Rates <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -378,12 +380,12 @@ export default function BlogHub() {
             <p className="text-gray-400 text-sm max-w-xl">Claim your firm's profile to appear on route searches, or sponsor our intelligence hub to reach 10,000+ active operators and brokers daily.</p>
           </div>
           <div className="flex w-full md:w-auto flex-col sm:flex-row gap-3">
-            <Button variant="outline" onClick={() => window.location.href = '/claim'} className="w-full sm:w-auto">
+            <Link href="/claim" className="inline-flex items-center justify-center font-semibold transition-all duration-200 tracking-wide border-2 border-slate-700 bg-transparent text-slate-300 hover:text-white hover:border-slate-500 hover:bg-slate-800/50 h-12 px-6 rounded-xl text-[15px] w-full sm:w-auto">
               Claim Business Page
-            </Button>
-            <Button variant="primary" onClick={() => window.location.href = '/advertise'} className="w-full sm:w-auto truncate">
+            </Link>
+            <Link href="/advertise" className="inline-flex items-center justify-center font-semibold transition-all duration-200 tracking-wide bg-gradient-to-r from-yellow-500 to-yellow-600 text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] hover:shadow-[0_6px_20px_rgba(234,179,8,0.23)] hover:scale-[1.02] border border-yellow-400/50 h-12 px-6 rounded-xl text-[15px] w-full sm:w-auto truncate">
               Sponsor Reports
-            </Button>
+            </Link>
           </div>
         </div>
       </section>
