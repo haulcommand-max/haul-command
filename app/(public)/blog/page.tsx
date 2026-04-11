@@ -5,7 +5,6 @@ import { TrustStrip, IntentMonetizationSurface } from "@/components/ui/intent-bl
 import { Button } from "@/components/ui/Button";
 import { Search, Filter, ArrowRight, ChevronRight, BarChart3, ShieldCheck, MapPin, Clock } from "lucide-react";
 import type { Metadata } from 'next';
-import { BlogAnalyticsTrigger } from "@/components/analytics/BlogAnalyticsTrigger";
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Intelligence & Escort Regulations | Haul Command',
@@ -140,7 +139,6 @@ export default function BlogHub() {
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-[#030303] text-gray-200">
-      <BlogAnalyticsTrigger eventName="blog_index_view" properties={{ source: 'public_layout' }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
