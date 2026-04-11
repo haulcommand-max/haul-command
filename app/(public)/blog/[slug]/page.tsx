@@ -3,35 +3,47 @@ import Link from "next/link";
 import { TrustStrip, AnswerBlock, ActionBlock, IntentRouter, MarketSurface, IntentMonetizationSurface, MasterIntent } from "@/components/ui/intent-blocks";
 import type { Metadata } from 'next';
 import { ArrowLeft, Clock, MapPin, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
+import { BlogAnalyticsTrigger } from "@/components/analytics/BlogAnalyticsTrigger";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const displayTitle = params.slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  const supabase = createClient();
+  const { data: article } = await supabase.from('hc_blog_articles').select('title, excerpt, hero_image_url').eq('slug', params.slug).single();
+  
+  if (!article) return { title: 'Not Found' };
+
   return {
-    title: `${displayTitle} | Haul Command Intelligence`,
-    description: `Heavy haul intelligence report on ${displayTitle}. Sourced from platform data and verified regulations.`,
+    title: `${article.title} | Haul Command Intelligence`,
+    description: article.excerpt || `Heavy haul intelligence report. Sourced from platform data and verified regulations.`,
     alternates: {
       canonical: `https://www.haulcommand.com/blog/${params.slug}`,
     },
     openGraph: {
-      title: `${displayTitle} | Haul Command`,
-      description: `Heavy haul intelligence report on ${displayTitle}.`,
-      images: [{ url: '/images/blog/heavy_haul_hero.png', width: 1200, height: 630 }],
+      title: `${article.title} | Haul Command`,
+      description: article.excerpt || `Heavy haul intelligence report.`,
+      images: [{ url: article.hero_image_url || '/images/blog/heavy_haul_hero.png', width: 1200, height: 630 }],
     },
   };
 }
 
-export default function BlogArticlePage({ params }: { params: { slug: string } }) {
-  const displayTitle = params.slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+export default async function BlogArticlePage({ params }: { params: { slug: string } }) {
+  const supabase = createClient();
+  const { data: article } = await supabase.from('hc_blog_articles').select('*').eq('slug', params.slug).single();
 
-  // Generate structured data
+  if (!article) {
+    notFound();
+  }
+
+  const displayTitle = article.title;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": displayTitle,
     "image": [
-      "https://www.haulcommand.com/images/blog/heavy_haul_hero.png"
+      article.hero_image_url || "https://www.haulcommand.com/images/blog/heavy_haul_hero.png"
     ],
-    "datePublished": new Date().toISOString().split('T')[0],
+    "datePublished": article.published_at || new Date().toISOString().split('T')[0],
     "dateModified": new Date().toISOString().split('T')[0],
     "author": [{
       "@type": "Organization",
@@ -125,22 +137,17 @@ export default function BlogArticlePage({ params }: { params: { slug: string } }
         {/* Content Area */}
         <article className="prose prose-invert prose-lg max-w-none text-gray-300 font-medium leading-relaxed mb-16">
           {/* Answer Block (Quick Answer for UI & Scraping) */}
-          <div className="not-prose mb-8">
-            <AnswerBlock
-              queryTitle="Executive Summary"
-              quickSummaryMarkdown="This intelligence report is dynamically aggregated from Haul Command's verified regulatory tracking and live operational datasets. It contains critical updates for escort vehicle compliance and heavy haul operations."
-              detailedContentMarkdown="Detailed content modules will be rendered here via the centralized CMS pipeline. They will include structured data elements, high-resolution media, and localized compliance notices tailored for operators."
-            />
-          </div>
-          <p>
-            The heavy haul industry evolves rapidly. Route planners, brokers, and pilot car operators demand precise, verified intelligence to avoid delays, fines, and compliance failures across jurisdictions.
-          </p>
-          <p>
-            In the upcoming release of Haul Command's intelligence network, rigorous standards apply to all regional and global corridor analyses.
-          </p>
-          <blockquote>
-            "Precision is not optional. When moving half-a-million pounds on interstate corridors, outdated regulatory knowledge is a catastrophic liability."
-          </blockquote>
+          {article.quick_answer_block && (
+            <div className="not-prose mb-8">
+              <AnswerBlock
+                queryTitle="Executive Summary"
+                quickSummaryMarkdown={JSON.parse(article.quick_answer_block).answer || article.excerpt}
+                detailedContentMarkdown={JSON.parse(article.quick_answer_block).question || "Key takeaways from this report."}
+              />
+            </div>
+          )}
+          
+          <div dangerouslySetInnerHTML={{ __html: article.content_html || "<p>No content available.</p>" }} />
         </article>
 
         {/* Action Block */}

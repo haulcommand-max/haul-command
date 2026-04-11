@@ -5,10 +5,12 @@ import { TrustStrip, IntentMonetizationSurface } from "@/components/ui/intent-bl
 import { Button } from "@/components/ui/Button";
 import { Search, Filter, ArrowRight, ChevronRight, BarChart3, ShieldCheck, MapPin, Clock } from "lucide-react";
 import type { Metadata } from 'next';
+import { BlogAnalyticsTrigger } from "@/components/analytics/BlogAnalyticsTrigger";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Intelligence & Escort Regulations | Haul Command',
-  description: 'The authoritative source for oversize load logistics. Live corridor intelligence, escort vehicle regulations, rate benchmarks, and operational newsroom.',
+  description: 'Verified heavy haul routing intelligence, escort vehicle compliance data, and operational deep-dives across 50 US states and 120 countries.',
   alternates: {
     canonical: 'https://www.haulcommand.com/blog',
   },
@@ -26,80 +28,81 @@ export const metadata: Metadata = {
   }
 };
 
-const getSeedArticles = () => [
-  {
-    slug: "2026-escort-requirements-by-state",
-    title: "2026 Escort Requirements by State — What Changed",
-    deck: "Side-by-side regulatory changes across all 50 states including new curfew exceptions and equipment mandates.",
-    article_type: "Regulation Update",
-    type_color: "text-red-500 bg-red-500/10 border-red-500/20",
-    country_code: "US",
-    published_at: "Apr 07, 2026",
-    read_time: "8 min read",
-    thumbnail: "/images/blog/featured_article_thumb.png",
-  },
-  {
-    slug: "i-10-corridor-intelligence-q2-2026",
-    title: "I-10 Corridor Intelligence Report — Q2 2026",
-    deck: "Live rate benchmarks, escort supply density, and regulatory choke points across America's most trafficked heavy haul corridor.",
-    article_type: "Corridor Intel",
-    type_color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-    country_code: "US",
-    published_at: "Apr 05, 2026",
-    read_time: "5 min read",
-    thumbnail: "/images/blog/heavy_haul_hero.png",
-  },
-  {
-    slug: "how-to-start-pilot-car-business-2026",
-    title: "How to Start a Pilot Car Business in 2026",
-    deck: "Complete operational playbook. Equipment, certifications, insurance, Haul Command listing, and first-job acquisition strategy.",
-    article_type: "Operations Guide",
-    type_color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    country_code: "US",
-    published_at: "Apr 03, 2026",
-    read_time: "12 min read",
-    thumbnail: "/images/blog/featured_article_thumb.png",
-  },
-  {
-    slug: "heavy-haul-rate-index-live-benchmark",
-    title: "Heavy Haul Rate Index — Live Benchmark Data",
-    deck: "Per-mile escort rates by state, corridor, and role type. Updated weekly from platform transaction data.",
-    article_type: "Market Data",
-    type_color: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20",
-    country_code: "US",
-    published_at: "Apr 01, 2026",
-    read_time: "4 min read",
-    thumbnail: "/images/blog/heavy_haul_hero.png",
-  },
-  {
-    slug: "autonomous-freight-escort-requirements",
-    title: "Autonomous Freight Escort Requirements",
-    deck: "Federal and state-level requirements for escorting autonomous and remote-assist freight vehicles.",
-    article_type: "Emerging Sector",
-    type_color: "text-purple-500 bg-purple-500/10 border-purple-500/20",
-    country_code: "US",
-    published_at: "Mar 28, 2026",
-    read_time: "6 min read",
-    thumbnail: "/images/blog/featured_article_thumb.png",
-  },
-  {
-    slug: "bridge-collapse-supply-chain-impact",
-    title: "Bridge Reroutes & Heavy Haul Delays Analysis",
-    deck: "Detailed analysis on how recent infrastructure collapses are impacting regional superload routing and escort availability.",
-    article_type: "Corridor Intel",
-    type_color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-    country_code: "US",
-    published_at: "Mar 25, 2026",
-    read_time: "7 min read",
-    thumbnail: "/images/blog/heavy_haul_hero.png",
-  }
-];
+async function getArticles() {
+  const supabase = createClient();
+  const { data: articles, error } = await supabase
+    .from('hc_blog_articles')
+    .select('slug, title, excerpt, hero_image_url, published_at, schema_markup, visual_assets')
+    .order('published_at', { ascending: false });
 
-export default function BlogHub() {
-  const articles = getSeedArticles();
-  const featuredArticle = articles[0];
+  if (error || !articles || articles.length === 0) {
+    // Fallback seed just in case the db is empty or error occurs
+    return [
+      {
+        slug: "texas-superload-strategy-2026",
+        title: "Texas Superload Blueprint: Navigating I-10 and I-35 Escort Thresholds in 2026",
+        deck: "Analyzing the newly adopted TxDMV routing procedures and how they impact civilian police escort availability and total load economics across the Texas Triangle.",
+        article_type: "Corridor Intel",
+        type_color: "border-blue-500/30 text-blue-400 bg-blue-500/10",
+        thumbnail: "/images/blog/featured_article_thumb.png",
+        read_time: "5 min",
+        country_code: "US",
+        published_at: "Apr 07, 2026",
+      },
+      {
+        slug: "escort-reciprocity-guide",
+        title: "Cross-Border Escort Reciprocity: The Pilot Car Certification Matrix",
+        deck: "A comprehensive map of which states accept out-of-state pilot car certifications, focusing on the critical Washington-Oregon-California corridor.",
+        article_type: "Regulation Monitor",
+        type_color: "border-yellow-500/30 text-yellow-400 bg-yellow-500/10",
+        thumbnail: "/images/blog/featured_article_thumb.png",
+        read_time: "8 min",
+        country_code: "US",
+        published_at: "Apr 06, 2026",
+      },
+      {
+        slug: "q3-rate-report-escorts",
+        title: "Q3 2026 Escort Rate Analytics: Surge Pricing on Wind Energy Routes",
+        deck: "Real-time pricing data from the Haul Command Terminal showing a 22% rate surge for high-pole escorts on key midwestern wind energy supply chains.",
+        article_type: "Market Data",
+        type_color: "border-emerald-500/30 text-emerald-400 bg-emerald-500/10",
+        thumbnail: "/images/blog/featured_article_thumb.png",
+        read_time: "6 min",
+        country_code: "US",
+        published_at: "Apr 05, 2026",
+      },
+      {
+         slug: "emergency-escort-retention",
+         title: "Dispatch Psychology: Retaining Top Escort Vendors in Heat States",
+         deck: "When standard loads pivot, high-tier escort operators evaporate. How top brokers use Haul Command Trust Scores to lock in verified capacity.",
+         article_type: "Strategic Ops",
+         type_color: "border-purple-500/30 text-purple-400 bg-purple-500/10",
+         thumbnail: "/images/blog/featured_article_thumb.png",
+         read_time: "4 min",
+         country_code: "US",
+         published_at: "Apr 04, 2026",
+      }
+    ];
+  }
+
+  return articles.map((article: any, index: number) => ({
+    slug: article.slug,
+    title: article.title,
+    deck: article.excerpt || "Heavy haul operational intelligence.",
+    article_type: index === 0 ? "Corridor Intel" : (index % 2 === 0 ? "Strategic Ops" : "Market Data"),
+    type_color: index === 0 ? "border-blue-500/30 text-blue-400 bg-blue-500/10" : "border-emerald-500/30 text-emerald-400 bg-emerald-500/10",
+    thumbnail: article.hero_image_url || "/images/blog/featured_article_thumb.png",
+    read_time: "5 min",
+    country_code: "US",
+    published_at: new Date(article.published_at || new Date()).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+  }));
+}
+
+export default async function BlogHub() {
+  const articles = await getArticles();
+  const featuredArticle = articles[0] || {};
   const secondaryArticles = articles.slice(1, 3);
-  const gridArticles = articles.slice(3);
+  const gridArticles = articles.slice(3) || [];
 
   // Generate structured data
   const jsonLd = {
@@ -139,6 +142,7 @@ export default function BlogHub() {
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-[#030303] text-gray-200">
+      <BlogAnalyticsTrigger eventName="blog_index_view" properties={{ source: 'public_layout' }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
@@ -200,64 +204,66 @@ export default function BlogHub() {
       </section>
 
       {/* Featured Zone */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-20">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Feature */}
-          <Link href={`/blog/${featuredArticle.slug}`} className="group relative block w-full lg:w-2/3 h-[500px] lg:h-[600px] overflow-hidden rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 transform md:hover:-translate-y-1 bg-[#0a0a0a]">
-            <Image
-              src={featuredArticle.thumbnail}
-              alt={featuredArticle.title}
-              fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-            <div className="absolute inset-0 p-8 lg:p-12 flex flex-col justify-end">
-              <div className="flex items-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border backdrop-blur-md ${featuredArticle.type_color}`}>
-                  {featuredArticle.article_type}
-                </span>
-                <span className="text-gray-300 text-xs font-semibold flex items-center gap-1.5"><Clock className="w-3 h-3"/> {featuredArticle.read_time}</span>
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 group-hover:text-yellow-400 transition-colors leading-tight">
-                {featuredArticle.title}
-              </h2>
-              <p className="text-gray-300 text-base md:text-lg mb-6 max-w-3xl line-clamp-2">
-                {featuredArticle.deck}
-              </p>
-              <div className="flex items-center gap-4 text-xs font-semibold text-gray-400">
-                <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {featuredArticle.country_code} Context</span>
-                <span>{featuredArticle.published_at}</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Secondary Features */}
-          <div className="flex flex-col gap-6 w-full lg:w-1/3">
-            <div className="flex items-center justify-between pb-2 border-b border-white/5">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white">Trending Briefs</h3>
-            </div>
-            {secondaryArticles.map((article) => (
-              <Link key={article.slug} href={`/blog/${article.slug}`} className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-[#080808] border border-white/5 hover:border-white/10 transition-all p-5 hover:bg-[#0c0c0c]">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest border ${article.type_color}`}>
-                    {article.article_type}
+      {featuredArticle.slug && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-20">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Feature */}
+            <Link href={`/blog/${featuredArticle.slug}`} className="group relative block w-full lg:w-2/3 h-[500px] lg:h-[600px] overflow-hidden rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 transform md:hover:-translate-y-1 bg-[#0a0a0a]">
+              <Image
+                src={featuredArticle.thumbnail}
+                alt={featuredArticle.title || "Featured Article"}
+                fill
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+              <div className="absolute inset-0 p-8 lg:p-12 flex flex-col justify-end">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border backdrop-blur-md ${featuredArticle.type_color || "border-blue-500/30 text-blue-400 bg-blue-500/10"}`}>
+                    {featuredArticle.article_type}
                   </span>
-                  <span className="text-gray-500 text-[10px] uppercase font-bold">{article.published_at}</span>
+                  <span className="text-gray-300 text-xs font-semibold flex items-center gap-1.5"><Clock className="w-3 h-3"/> {featuredArticle.read_time}</span>
                 </div>
-                <h4 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-yellow-400 transition-colors leading-snug">
-                  {article.title}
-                </h4>
-                <p className="text-sm text-gray-400 line-clamp-3 mb-4">
-                  {article.deck}
+                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 group-hover:text-yellow-400 transition-colors leading-tight">
+                  {featuredArticle.title}
+                </h2>
+                <p className="text-gray-300 text-base md:text-lg mb-6 max-w-3xl line-clamp-2">
+                  {featuredArticle.deck}
                 </p>
-                <div className="mt-auto flex items-center text-xs font-semibold text-gray-500">
-                  <Clock className="w-3.5 h-3.5 mr-1.5"/> {article.read_time}
+                <div className="flex items-center gap-4 text-xs font-semibold text-gray-400">
+                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {featuredArticle.country_code} Context</span>
+                  <span>{featuredArticle.published_at}</span>
                 </div>
-              </Link>
-            ))}
+              </div>
+            </Link>
+
+            {/* Secondary Features */}
+            <div className="flex flex-col gap-6 w-full lg:w-1/3">
+              <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-white">Trending Briefs</h3>
+              </div>
+              {secondaryArticles.map((article) => (
+                <Link key={article.slug} href={`/blog/${article.slug}`} className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-[#080808] border border-white/5 hover:border-white/10 transition-all p-5 hover:bg-[#0c0c0c]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest border ${article.type_color || ''}`}>
+                      {article.article_type}
+                    </span>
+                    <span className="text-gray-500 text-[10px] uppercase font-bold">{article.published_at}</span>
+                  </div>
+                  <h4 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-yellow-400 transition-colors leading-snug">
+                    {article.title}
+                  </h4>
+                  <p className="text-sm text-gray-400 line-clamp-3 mb-4">
+                    {article.deck}
+                  </p>
+                  <div className="mt-auto flex items-center text-xs font-semibold text-gray-500">
+                    <Clock className="w-3.5 h-3.5 mr-1.5"/> {article.read_time}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Discovery / Filters */}
       <section className="border-y border-white/5 bg-[#050505] py-6 sticky top-[52px] md:top-[64px] z-30 backdrop-blur-xl mb-16">
@@ -300,7 +306,7 @@ export default function BlogHub() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105 opacity-80"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className={`px-2.5 py-1 rounded-md text-[9px] font-extrabold uppercase tracking-widest border backdrop-blur-md bg-black/60 ${article.type_color.replace('bg-', 'dummy-')}`}>
+                  <span className={`px-2.5 py-1 rounded-md text-[9px] font-extrabold uppercase tracking-widest border backdrop-blur-md bg-black/60 ${(article.type_color || '').replace('bg-', 'dummy-')}`}>
                     {article.article_type}
                   </span>
                 </div>
