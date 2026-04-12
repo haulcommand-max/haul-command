@@ -28,8 +28,8 @@ on conflict (key) do update set value = 'true';
 
 do $$
 begin
-  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'hc_agents') then
-    update public.hc_agents set status = 'active' where slug in ('kyc-step-up-trigger', 'claim-welcome-sequence', 'fcm-push-worker');
+  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'hc_command_agents') then
+    update public.hc_command_agents set status = 'active' where slug in ('kyc-step-up-trigger', 'claim-welcome-sequence', 'fcm-push-worker');
   end if;
 end $$;
 
@@ -83,8 +83,8 @@ returns trigger as $$
 declare
   edge_url text;
 begin
-  -- Only fire when transitioning from unclaimed to claimed
-  if NEW.is_claimed = true and OLD.is_claimed = false then
+  -- Rule 34 logic: Target claim_status transitions instead of legacy is_claimed booleans
+  if NEW.claim_status = 'claimed' and OLD.claim_status != 'claimed' then
     select value into edge_url from public.app_settings where key = 'EDGE_BASE_URL';
     if edge_url is null then
        edge_url := 'http://localhost:54321/functions/v1';
@@ -96,7 +96,8 @@ begin
       body := jsonb_build_object(
         'profile_id', NEW.id,
         'user_id', NEW.user_id,
-        'claim_hash', 'verified_db_trigger'
+        'claim_hash', 'verified_db_trigger',
+        'event_family', 'trt.proof_packet.created'
       )
     );
   end if;
@@ -104,25 +105,14 @@ begin
 end;
 $$ language plpgsql security definer;
 
--- Need to be gentle about what table represents the Profile.
--- Older systems used 'driver_profiles', canonical OS uses 'operator_profiles'. We will attach to whichever exists.
+-- Attach to the canonical OS profiles table (Rule 34 / ent_identities)
 do $$
 begin
-  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'operator_profiles') then
-    if exists (select 1 from information_schema.columns where table_name = 'operator_profiles' and column_name = 'is_claimed') then
-      drop trigger if exists trigger_claim_welcome_operator on public.operator_profiles;
-      create trigger trigger_claim_welcome_operator
-        after update of is_claimed on public.operator_profiles
-        for each row
-        execute function public.tr_claim_welcome_sequence();
-    end if;
-  end if;
-
-  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'driver_profiles') then
-    if exists (select 1 from information_schema.columns where table_name = 'driver_profiles' and column_name = 'is_claimed') then
-      drop trigger if exists trigger_claim_welcome_driver on public.driver_profiles;
-      create trigger trigger_claim_welcome_driver
-        after update of is_claimed on public.driver_profiles
+  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'profiles') then
+    if exists (select 1 from information_schema.columns where table_name = 'profiles' and column_name = 'claim_status') then
+      drop trigger if exists trigger_claim_welcome_profile on public.profiles;
+      create trigger trigger_claim_welcome_profile
+        after update of claim_status on public.profiles
         for each row
         execute function public.tr_claim_welcome_sequence();
     end if;
