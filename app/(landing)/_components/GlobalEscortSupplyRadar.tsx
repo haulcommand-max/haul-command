@@ -1013,8 +1013,8 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: 12, padding: "12px", backdropFilter: "blur(12px)",
                                     textAlign: "center",
                                 }}>
-                                    <div style={{ fontSize: 10, color: "#8fa3b8", fontWeight: 600 }}>Active signal: {hoverNode.content.liquidity ? hoverNode.content.liquidity * 3 : 15} operators nearby</div>
-                                    <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 700, marginTop: 2 }}>{hoverNode.content.liquidity ? hoverNode.content.liquidity : 5} matches today</div>
+                                    <div style={{ fontSize: 10, color: "#8fa3b8", fontWeight: 600 }}>Active signal: {hoverNode?.content?.liquidity ? hoverNode.content.liquidity * 3 : 15} operators nearby</div>
+                                    <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 700, marginTop: 2 }}>{hoverNode?.content?.liquidity ? hoverNode.content.liquidity : 5} matches today</div>
                                     <div style={{ fontSize: 9, color: "#6b7280", marginTop: 4 }}>Signals appear when escorts report conditions</div>
                                 </div>
                             )}
