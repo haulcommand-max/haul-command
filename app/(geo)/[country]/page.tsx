@@ -21,8 +21,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { country: string } }): Promise<Metadata> {
-  const market = TOP_MARKETS.find(m => m.code === params.country);
+export async function generateMetadata({ params }: { params: Promise<{ country: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const market = TOP_MARKETS.find(m => m.code === resolvedParams.country);
   if (!market) return { title: "Market Not Found" };
 
   const term = market.term || 'Oversize Load';
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: { params: { country: string }
   };
 }
 
-export default async function CountryHub({ params }: { params: { country: string } }) {
-  const market = TOP_MARKETS.find(m => m.code === params.country);
+export default async function CountryHub({ params }: { params: Promise<{ country: string }> }) {
+  const resolvedParams = await params;
+  const market = TOP_MARKETS.find(m => m.code === resolvedParams.country);
   if (!market) notFound();
 
   const term = market.term || 'Oversize Load';

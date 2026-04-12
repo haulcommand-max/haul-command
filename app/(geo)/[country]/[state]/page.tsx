@@ -24,9 +24,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { country: string, state: string } }): Promise<Metadata> {
-  const seed = PRIORITY_STATES.find(s => s.state === params.state);
-  const stateName = seed ? seed.name : params.state.toUpperCase();
+export async function generateMetadata({ params }: { params: Promise<{ country: string, state: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const seed = PRIORITY_STATES.find(s => s.state === resolvedParams.state);
+  const stateName = seed ? seed.name : resolvedParams.state.toUpperCase();
   
   return {
     title: `Oversize Transport & Corridor Directory | ${stateName} | Haul Command`,
@@ -34,9 +35,10 @@ export async function generateMetadata({ params }: { params: { country: string, 
   };
 }
 
-export default async function StateHub({ params }: { params: { country: string, state: string } }) {
-  const seed = PRIORITY_STATES.find(s => s.state === params.state);
-  const stateName = seed ? seed.name : params.state.toUpperCase();
+export default async function StateHub({ params }: { params: Promise<{ country: string, state: string }> }) {
+  const resolvedParams = await params;
+  const seed = PRIORITY_STATES.find(s => s.state === resolvedParams.state);
+  const stateName = seed ? seed.name : resolvedParams.state.toUpperCase();
 
   return (
     <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col pt-32">
@@ -44,8 +46,8 @@ export default async function StateHub({ params }: { params: { country: string, 
             {/* SEO Hero & Intent Capture */}
             <div className="text-center space-y-6">
                 <div className="flex items-center justify-center gap-3">
-                    <Link href={`/${params.country}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
-                        {params.country} /
+                    <Link href={`/${resolvedParams.country}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
+                        {resolvedParams.country} /
                     </Link>
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hc-surface border border-white/5 text-xs font-mono text-amber-500 uppercase tracking-widest glass-premium">
                         <MapPin className="h-3 w-3" /> {stateName}
@@ -87,7 +89,7 @@ export default async function StateHub({ params }: { params: { country: string, 
                     <p className="text-slate-400 text-sm mb-6">
                         Buy the top visibility slot for all {stateName} traffic. Targets brokers with $5k+ intent.
                     </p>
-                    <Link href={`/advertise/state?market=${params.state}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
+                    <Link href={`/advertise/state?market=${resolvedParams.state}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
                         Buy Slot — $299/mo
                     </Link>
                 </div>
@@ -104,7 +106,7 @@ export default async function StateHub({ params }: { params: { country: string, 
                     <p className="text-slate-400 text-sm mb-6">
                         Unlock exact carrier density mapping and historical rate APIs across {stateName} corridors.
                     </p>
-                    <Link href={`/data-products?market=${params.state}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
+                    <Link href={`/data-products?market=${resolvedParams.state}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
                         <Lock className="h-3 w-3" /> Unlock Data — $99
                     </Link>
                 </div>
@@ -120,7 +122,7 @@ export default async function StateHub({ params }: { params: { country: string, 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* Placeholder structural links targeting Corridors */}
                     {['I-10-Express', 'Permian-Basin-Route', 'Coastal-Access', 'Wind-Energy-Lane', 'Industrial-Loop'].map((corridor) => (
-                        <Link key={corridor} href={`/${params.country}/${params.state}/${corridor.toLowerCase()}`} className="glass-premium border border-white/5 rounded-lg p-6 group hover:border-white/20 transition-all flex flex-col gap-2">
+                        <Link key={corridor} href={`/${resolvedParams.country}/${resolvedParams.state}/${corridor.toLowerCase()}`} className="glass-premium border border-white/5 rounded-lg p-6 group hover:border-white/20 transition-all flex flex-col gap-2">
                             <span className="text-lg text-slate-100 font-medium group-hover:text-amber-400 transition-colors">{corridor.replace(/-/g, ' ')}</span>
                             <div className="flex justify-between text-xs text-slate-500 font-mono">
                                 <span>24 Active Operators</span>
