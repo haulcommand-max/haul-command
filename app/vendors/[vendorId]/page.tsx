@@ -13,7 +13,7 @@ export default async function VendorDashboard({ params }: { params: { vendorId: 
     if (!vendor) return <div className="p-10 font-mono text-red-500">Access Denied: Unregistered Affiliate Vector.</div>;
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white p-10 font-sans">
+        <div className="min-h-screen bg-transparent text-white p-10 font-sans">
             <h1 className="text-4xl font-black uppercase text-white mb-2">Partner AdGrid: {vendor.vendor_name}</h1>
             <p className="text-blue-500 font-mono tracking-widest text-xs mb-8 uppercase">Live Pipeline Telemetry</p>
             

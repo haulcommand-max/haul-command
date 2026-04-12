@@ -271,7 +271,7 @@ export default function ModuleDetail({ params }: { params: Promise<{ module_slug
             </button>
             {!authenticated && (
               <p style={{fontSize: 11,color: '#5a5a6a',textAlign: 'center',marginTop: 8 }}>
-                <Link aria-label="Navigation Link" href="/auth/login?return=/training" style={{color: '#F5A623' }}>Sign in</Link> to save progress
+                <Link aria-label="Navigation Link" href="/login?return=/training" style={{color: '#F5A623' }}>Sign in</Link> to save progress
               </p>
             )}
           </div>

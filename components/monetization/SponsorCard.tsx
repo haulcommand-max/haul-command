@@ -31,7 +31,7 @@ interface ActiveSponsor {
     price_monthly: number | null;
 }
 
-async function getSponsorForZone(zone: string, geo?: string): Promise<ActiveSponsor | null> {
+async function getSponsorForZone(zone: string, geo?: string): Promise<{ sponsor: ActiveSponsor | null, slotInfo: any }> {
     try {
         const supabase = createClient();
 
@@ -44,7 +44,7 @@ async function getSponsorForZone(zone: string, geo?: string): Promise<ActiveSpon
                 .eq('geo', geo.toUpperCase())
                 .limit(1)
                 .maybeSingle();
-            if (exact) return exact as ActiveSponsor;
+            if (exact) return { sponsor: exact as ActiveSponsor, slotInfo: null };
 
             // Fall back to zone-level sponsor with no geo constraint
             const { data: zoneLevel } = await supabase
@@ -54,7 +54,29 @@ async function getSponsorForZone(zone: string, geo?: string): Promise<ActiveSpon
                 .is('geo', null)
                 .limit(1)
                 .maybeSingle();
-            return (zoneLevel as ActiveSponsor | null) ?? null;
+            if (zoneLevel) return { sponsor: zoneLevel as ActiveSponsor, slotInfo: null };
+            
+            // If no sponsor, try to fetch the slot price from hc_adgrid_inventory
+            let surface_level = 'directory';
+            let target_node = geo.toLowerCase();
+            let slot_name = 'leaderboard';
+            
+            if (zone === 'empty_market' || zone === 'country') {
+                surface_level = 'country';
+                target_node = geo.toLowerCase() + '-main';
+                slot_name = 'launch_sponsor';
+            }
+            
+            const { data: slotInfo } = await supabase
+                .from('hc_adgrid_inventory')
+                .select('base_price_cents')
+                .eq('surface_level', surface_level)
+                .eq('target_node', target_node)
+                .eq('slot_name', slot_name)
+                .limit(1)
+                .maybeSingle();
+                
+            return { sponsor: null, slotInfo };
         }
 
         const { data } = await supabase
@@ -63,28 +85,30 @@ async function getSponsorForZone(zone: string, geo?: string): Promise<ActiveSpon
             .eq('zone', zone)
             .limit(1)
             .maybeSingle();
-        return (data as ActiveSponsor | null) ?? null;
+        return { sponsor: (data as ActiveSponsor | null) ?? null, slotInfo: null };
     } catch {
-        return null; // Fail silently — show CTA fallback
+        return { sponsor: null, slotInfo: null }; // Fail silently — show CTA fallback
     }
 }
 
 export async function SponsorCard({ zone, geo, role, intent, compact, className }: SponsorCardProps) {
-    const sponsor = await getSponsorForZone(zone, geo);
+    const { sponsor, slotInfo } = await getSponsorForZone(zone, geo);
 
     const geoDisplay = geo ? ` · ${geo.toUpperCase()}` : '';
     const geoLabel   = geo ? ` in ${geo.toUpperCase()}` : '';
     const zoneLabels: Record<string, string> = {
         directory_top:    'directory results',
         directory_inline: 'search results',
-        empty_market:     'this market',
-        corridor:         'this corridor',
-        country:          'this country',
-        regulation:       'regulation pages',
-        tool:             'this tool',
-        blog:             'industry insights',
-        glossary:         'glossary pages',
+        empty_market:     'market',
+        corridor:         'corridor',
+        country:          'country',
+        regulation:       'regulation page',
+        tool:             'tool',
+        blog:             'industry insight',
+        glossary:         'glossary term',
     };
+    
+    const displayPrice = slotInfo?.base_price_cents ? `$${(slotInfo.base_price_cents / 100).toLocaleString()}/mo` : `$149/mo`;
 
     // ── Active sponsor — render brand card ──────────────────────
     if (sponsor) {
@@ -169,7 +193,7 @@ export async function SponsorCard({ zone, geo, role, intent, compact, className 
                     borderRadius: 4, background: 'rgba(212,168,67,0.08)',
                     color: '#D4A843', textTransform: 'uppercase', letterSpacing: '0.08em',
                 }}>
-                    From $149/mo
+                    From {displayPrice}
                 </span>
             </Link>
         );
@@ -209,7 +233,7 @@ export async function SponsorCard({ zone, geo, role, intent, compact, className 
                     letterSpacing: '0.02em',
                 }}
             >
-                Claim This Spot — From $149/mo →
+                Claim This Spot — From {displayPrice} →
             </Link>
         </div>
     );

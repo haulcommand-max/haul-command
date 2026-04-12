@@ -1,24 +1,19 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Metadata } from 'next';
 import { HCBadge } from '@/components/training/HCBadge';
+import { PageFamilyBackground } from '@/components/ui/PageFamilyBackground';
+import { FAQAccordion } from '@/components/training/FAQAccordion';
+import { EnrollButton } from '@/components/training/EnrollButton';
+import { ModuleList, HardcodedModule } from '@/components/training/ModuleList';
 
-interface TrainingModule {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  duration_minutes: number;
-  order_index: number;
-  certification_tier: 'hc_certified' | 'av_ready' | 'elite';
-  is_free: boolean;
-  pass_score: number;
-  progress?: {
-    status: string;
-    score: number | null;
-  } | null;
-}
+export const metadata: Metadata = {
+  title: 'Haul Command | Global Pilot Car Certification & Escort Training',
+  description: 'The only global training protocol for heavy haul, autonomous vehicle escorting, and wind energy pilot cars. Exceeds 12 US state standards. 120-country valid.',
+  openGraph: {
+    title: 'Haul Command | Double Platinum Pilot Car Certification',
+    description: 'The ultimate operating system training for escorts. Get matched in minutes. Build your broker-ready compliance packet.',
+  }
+};
 
 const TIER_CONFIG = {
   hc_certified: {
@@ -31,7 +26,6 @@ const TIER_CONFIG = {
     color: '#A8A8A8',
     glow: 'rgba(168,168,168,0.25)',
     cta: 'Start Free',
-    href: '/training/platform-fundamentals',
     benefits: [
       'HC Certified badge on your profile',
       'Recognized across all 120 countries',
@@ -49,7 +43,6 @@ const TIER_CONFIG = {
     color: '#F5A623',
     glow: 'rgba(245,166,35,0.3)',
     cta: 'Get AV-Ready',
-    href: '/training?enroll=av_ready',
     highlight: true,
     benefits: [
       'Everything in HC Certified',
@@ -70,7 +63,6 @@ const TIER_CONFIG = {
     color: '#E5E4E2',
     glow: 'rgba(229,228,226,0.2)',
     cta: 'Become Elite',
-    href: '/training?enroll=elite',
     benefits: [
       'Everything in AV-Ready',
       'Elite platinum badge on profile',
@@ -105,153 +97,177 @@ const FAQS = [
   },
 ];
 
+const CANONICAL_MODULES: HardcodedModule[] = [
+  {
+    id: 'mod_1', slug: 'platform-fundamentals', title: 'Platform Fundamentals & Compliance Matrix',
+    description: 'Learn the core UI of Haul Command, how to secure loads, upload your state COIs, and operate defensively within the platform. The undisputed starting point.',
+    duration_minutes: 120, order_index: 1, certification_tier: 'hc_certified', is_free: true
+  },
+  {
+    id: 'mod_2', slug: 'state-restrictions-curfew', title: 'State Restrictions & Curfew Navigation',
+    description: 'In-depth analysis of municipal curfews, routing restrictions, and how to verify load dimensions against DOT permits securely.',
+    duration_minutes: 240, order_index: 2, certification_tier: 'hc_certified', is_free: false
+  },
+  {
+    id: 'mod_3', slug: 'pre-trip-rigging', title: 'Pre-Trip Rigging & Front Pilot Command',
+    description: 'Visual sweeps, required equipment, lighting protocols, and commanding the front end of an oversize formation.',
+    duration_minutes: 180, order_index: 3, certification_tier: 'hc_certified', is_free: false
+  },
+  {
+    id: 'mod_4', slug: 'av-protocol', title: 'AV Protocol & Sensor Field Proximity',
+    description: 'The first global guide to operating alongside Aurora, Kodiak, and autonomous Class 8 platforms. Understand LiDAR, sensor cone blind spots, and fail-safe protocols.',
+    duration_minutes: 320, order_index: 4, certification_tier: 'av_ready', is_free: false
+  },
+  {
+    id: 'mod_5', slug: 'oilfield-navigation', title: 'Rural / Oilfield Navigation & Radio Discipline',
+    description: 'Off-grid routing, harsh environment radio protocol, CB terminology, and avoiding fatal mud/ice hazards in upstream logistics.',
+    duration_minutes: 200, order_index: 5, certification_tier: 'av_ready', is_free: false
+  },
+  {
+    id: 'mod_6', slug: 'superload-dynamics', title: 'Superload Dynamics & Rear Steer Coordination',
+    description: 'Escorting loads exceeding 200,000 lbs. Managing deflections, bridge integrity speeds, and coordinating with a rear tiller/steerman.',
+    duration_minutes: 400, order_index: 6, certification_tier: 'elite', is_free: false
+  },
+  {
+    id: 'mod_7', slug: 'cross-border-logistics', title: 'Cross-Border Logistics & Multi-State Continuity',
+    description: 'Master customs clearances, pilot handoffs at state lines, international jurisdictions (US/MX/CA, EU, Oceania), and continuous chain of command.',
+    duration_minutes: 360, order_index: 7, certification_tier: 'elite', is_free: false
+  }
+];
+
 export default function TrainingHome() {
-  const [modules, setModules] = useState<TrainingModule[]>([]);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [enrolling, setEnrolling] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch('/api/training/modules')
-      .then(r => r.json())
-      .then(d => {
-        if (d.modules) setModules(d.modules);
-      })
-      .catch(console.error);
-  }, []);
-
-  const handleEnroll = async (tier: string) => {
-    setEnrolling(tier);
-    try {
-      const res = await fetch('/api/training/enroll', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ certification_tier: tier }),
-      });
-      const data = await res.json();
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url;
-      } else if (data.enrolled || data.already_enrolled) {
-        window.location.href = `/training/${tierFirstModule(tier)}`;
-      } else if (res.status === 401) {
-        window.location.href = `/auth/login?return=/training`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Haul Command Pilot Car Certification",
+    "description": "Global certification program for pilot car and escort operators. Covers AV-ready routing, superload dynamics, and compliance.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Haul Command",
+      "url": "https://www.haulcommand.com"
+    },
+    "coursePrerequisites": "None. Suitable for new and veteran operators.",
+    "hasCourseInstance": [
+      {
+        "@type": "CourseInstance",
+        "courseMode": "Online",
+        "courseWorkload": "PT24H"
       }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setEnrolling(null);
-    }
+    ]
   };
 
-  const tierFirstModule = (tier: string) => {
-    if (tier === 'hc_certified') return 'platform-fundamentals';
-    if (tier === 'av_ready') return 'platform-fundamentals';
-    return 'platform-fundamentals';
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": FAQS.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
   };
 
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#080808',
       color: '#e8e8e8',
       fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
     }}>
-      {/* ── HERO RESTORED ── */}
-      <section style={{
-        background: 'linear-gradient(160deg, #0c0c0c 0%, #111118 40%, #0c0c14 100%)',
-        padding: '80px 24px 60px',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid #1a1a2a',
-      }}>
-        <div style={{
-          position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)',
-          width: 600, height: 300, borderRadius: '50%',
-          background: 'radial-gradient(ellipse, rgba(245,166,35,0.08) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
+      <PageFamilyBackground
+        family="training"
+        intensity="heavy"
+        gradientAnchor="top"
+        height="clamp(420px, 58vh, 720px)"
+        asSection
+      >
         <div style={{
-          display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 28,
-          flexWrap: 'wrap',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', height: '100%',
+          padding: '80px 24px 60px',
+          textAlign: 'center',
+          position: 'relative',
         }}>
-          {[
-            { icon: '🛡️', text: 'Built on FMCSA + SC&RA Standards' },
-            { icon: '🌐', text: '120 countries' },
-            { icon: '⚡', text: 'AV-Ready Certified Available' },
-          ].map((b, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              background: 'rgba(245,166,35,0.08)',
-              border: '1px solid rgba(245,166,35,0.2)',
-              borderRadius: 20, padding: '5px 14px',
-              fontSize: 12, fontWeight: 600, color: '#F5A623',
-              letterSpacing: '0.02em',
+          <div style={{
+            position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)',
+            width: 600, height: 300, borderRadius: '50%',
+            background: 'radial-gradient(ellipse, rgba(245,166,35,0.12) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 28, flexWrap: 'wrap' }}>
+            {[
+              { icon: '🛡️', text: 'Built on FMCSA + SC&RA Standards' },
+              { icon: '🌐', text: '120 countries' },
+              { icon: '⚡', text: 'AV-Ready Certified Available' },
+            ].map((b, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                background: 'rgba(245,166,35,0.1)',
+                border: '1px solid rgba(245,166,35,0.25)',
+                borderRadius: 20, padding: '5px 14px',
+                fontSize: 12, fontWeight: 600, color: '#F5A623',
+                letterSpacing: '0.02em',
+                backdropFilter: 'blur(8px)',
+              }}>
+                <span>{b.icon}</span>
+                <span>{b.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <h1 style={{
+            fontSize: 'clamp(32px, 6vw, 64px)',
+            fontWeight: 900,
+            margin: '0 0 20px',
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #ffffff 0%, #F5A623 60%, #fff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
+            Get Certified.<br />Get Chosen First.
+          </h1>
+
+          <p style={{
+            fontSize: 18, color: 'rgba(200,210,230,0.85)', maxWidth: 680, margin: '0 auto 36px',
+            lineHeight: 1.65,
+          }}>
+            The only global training program built specifically for pilot car and escort operators
+            working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <Link aria-label="Start Free" href="/training/platform-fundamentals" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'linear-gradient(135deg, #F5A623, #e08820)',
+              color: '#000', fontWeight: 800, fontSize: 16,
+              padding: '14px 28px', borderRadius: 12,
+              textDecoration: 'none', letterSpacing: '0.01em',
+              boxShadow: '0 4px 24px rgba(245,166,35,0.40)',
             }}>
-              <span>{b.icon}</span>
-              <span>{b.text}</span>
-            </div>
-          ))}
+              🎓 Start Free — Module 1 is free
+            </Link>
+            <a href="#modules" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              color: '#e8e8e8', fontWeight: 600, fontSize: 16,
+              padding: '14px 28px', borderRadius: 12,
+              textDecoration: 'none', backdropFilter: 'blur(12px)',
+            }}>
+              View All Modules ↓
+            </a>
+          </div>
         </div>
+      </PageFamilyBackground>
 
-        <h1 style={{
-          fontSize: 'clamp(32px, 6vw, 64px)',
-          fontWeight: 900,
-          margin: '0 0 20px',
-          lineHeight: 1.05,
-          letterSpacing: '-0.02em',
-          background: 'linear-gradient(135deg, #ffffff 0%, #F5A623 60%, #fff 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
-          Get Certified.<br />Get Chosen First.
-        </h1>
-
-        <p style={{
-          fontSize: 18, color: '#9a9ab0', maxWidth: 680, margin: '0 auto 36px',
-          lineHeight: 1.65,
-        }}>
-          The only global training program built specifically for pilot car and escort operators
-          working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors.
-        </p>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'linear-gradient(135deg, #F5A623, #e08820)',
-            color: '#000', fontWeight: 800, fontSize: 16,
-            padding: '14px 28px', borderRadius: 12,
-            textDecoration: 'none', letterSpacing: '0.01em',
-            boxShadow: '0 4px 24px rgba(245,166,35,0.35)',
-            transition: 'transform 0.15s, box-shadow 0.15s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(245,166,35,0.5)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 24px rgba(245,166,35,0.35)'; }}
-          >
-            🎓 Start Free — Module 1 is free
-          </Link>
-          <a href="#modules" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            color: '#e8e8e8', fontWeight: 600, fontSize: 16,
-            padding: '14px 28px', borderRadius: 12,
-            textDecoration: 'none',
-            transition: 'background 0.15s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
-          >
-            View All Modules ↓
-          </a>
-        </div>
-      </section>
-
-      {/* ── NEW ENTRANT / FAST START MERGE ── */}
       <section style={{
-        background: '#0c0c10',
+        background: 'rgba(12,12,16,0.95)',
         borderBottom: '1px solid #1a1a22',
         padding: '64px 24px',
+        backdropFilter: 'blur(10px)',
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 40, alignItems: 'center' }}>
             <div style={{ flex: 1, minWidth: 300 }}>
@@ -282,22 +298,20 @@ export default function TrainingHome() {
         </div>
       </section>
 
-      {/* ── PROFILE & REPORT CARD BRIDGE ── */}
       <section style={{ padding: '64px 24px', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ background: 'linear-gradient(135deg, #11111a, #0c0c10)', border: '1px solid #1a1a2a', padding: '48px 24px', borderRadius: 20 }}>
+          <div style={{ background: 'linear-gradient(135deg, rgba(17,17,26,0.9), rgba(12,12,16,0.9))', border: '1px solid #1a1a2a', padding: '48px 24px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
               <div style={{ color: '#F5A623', fontSize: 12, fontWeight: 800, letterSpacing: '0.1em', marginBottom: 12 }}>YOUR CAREER ON THE NETWORK</div>
               <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 16, color: '#fff' }}>Training Powers Your Report Card</h2>
               <p style={{ color: '#9a9ab0', maxWidth: 640, margin: '0 auto 32px', fontSize: 16, lineHeight: 1.65 }}>
                   Every module you complete, badge you earn, and certificate you hold is directly attached to your Operator Profile. Stop storing PDFs—your Profile Report Card proves your readiness to brokers automatically.
               </p>
-              <Link href="/training/report-card" style={{ display: 'inline-flex', background: 'transparent', color: '#fff', borderBottom: '2px solid #F5A623', paddingBottom: 4, fontWeight: 700, textDecoration: 'none', fontSize: 16 }}>
+              <Link href="/profile/report-card" style={{ display: 'inline-flex', background: 'transparent', color: '#fff', borderBottom: '2px solid #F5A623', paddingBottom: 4, fontWeight: 700, textDecoration: 'none', fontSize: 16 }}>
                   View Your Profile Report Card →
               </Link>
           </div>
       </section>
 
-      {/* ── CERTIFICATION TIERS ── */}
-      <section id="modules" style={{ padding: '64px 24px', maxWidth: 1200, margin: '0 auto' }}>
+      <section id="training-tiers" style={{ padding: '64px 24px', maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <h2 style={{ fontSize: 36, fontWeight: 800, margin: '0 0 12px', letterSpacing: '-0.02em' }}>
             Choose Your Certification Level
@@ -306,124 +320,69 @@ export default function TrainingHome() {
             Start free with HC Certified. Upgrade to AV-Ready or Elite when you're ready to open more doors.
           </p>
         </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 20,
-        }}>
-          {(Object.entries(TIER_CONFIG) as [keyof typeof TIER_CONFIG, typeof TIER_CONFIG[keyof typeof TIER_CONFIG]][]).map(([tierKey, tier]) => {
-            const isHighlight = 'highlight' in tier && tier.highlight;
-            return (
-              <div key={tierKey} style={{
-                background: isHighlight
-                  ? 'linear-gradient(160deg, #141420 0%, #1a1a0a 100%)'
-                  : 'linear-gradient(160deg, #111116 0%, #0f0f14 100%)',
-                border: `1px solid ${isHighlight ? 'rgba(245,166,35,0.35)' : 'rgba(255,255,255,0.06)'}`,
-                borderRadius: 20,
-                padding: 28,
-                position: 'relative',
-                boxShadow: isHighlight ? `0 0 40px rgba(245,166,35,0.12)` : 'none',
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                {isHighlight && (
-                  <div style={{
-                    position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
-                    background: 'linear-gradient(90deg, #F5A623, #e08820)',
-                    color: '#000', fontSize: 11, fontWeight: 800,
-                    padding: '4px 14px', borderRadius: 20, letterSpacing: '0.08em',
-                    whiteSpace: 'nowrap',
-                  }}>
-                    ⭐ MOST POPULAR
-                  </div>
-                )}
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-                  <HCBadge tier={tier.badge} size={56} />
-                  <div>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: tier.color }}>{tier.name}</div>
-                    <div style={{ fontSize: 13, color: '#7a7a8a', marginTop: 2 }}>{tier.tagline}</div>
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#fff' }}>{tier.price}</div>
-                </div>
-
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+          {Object.entries(TIER_CONFIG).map(([tierKey, tier]) => (
+            <div key={tierKey} style={{
+              background: tier.highlight
+                ? 'linear-gradient(160deg, rgba(20,20,32,0.95) 0%, rgba(26,26,10,0.95) 100%)'
+                : 'linear-gradient(160deg, rgba(17,17,22,0.95) 0%, rgba(15,15,20,0.95) 100%)',
+              border: `1px solid ${tier.highlight ? 'rgba(245,166,35,0.35)' : 'rgba(255,255,255,0.06)'}`,
+              borderRadius: 20, padding: 28, position: 'relative',
+              boxShadow: tier.highlight ? `0 0 40px rgba(245,166,35,0.12)` : 'none',
+              display: 'flex', flexDirection: 'column', backdropFilter: 'blur(8px)'
+            }}>
+              {tier.highlight && (
                 <div style={{
-                  display: 'flex', gap: 12, marginBottom: 20,
-                  fontSize: 12, color: '#7a7a8a',
+                  position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
+                  background: 'linear-gradient(90deg, #F5A623, #e08820)', color: '#000',
+                  fontSize: 11, fontWeight: 800, padding: '4px 14px', borderRadius: 20,
+                  letterSpacing: '0.08em', whiteSpace: 'nowrap',
                 }}>
-                  <span>⏱ {tier.duration}</span>
-                  <span>📚 {tier.modules.length} modules</span>
+                  ⭐ MOST POPULAR
                 </div>
-
-                <div style={{ flex: 1, marginBottom: 24 }}>
-                  {tier.benefits.map((b, i) => (
-                    <div key={i} style={{
-                      display: 'flex', gap: 10, alignItems: 'flex-start',
-                      marginBottom: 10, fontSize: 13, lineHeight: 1.5, color: '#b0b0c0',
-                    }}>
-                      <span style={{ color: tier.color, flexShrink: 0, marginTop: 1 }}>✓</span>
-                      <span>{b}</span>
-                    </div>
-                  ))}
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+                <HCBadge tier={tier.badge} size={56} />
+                <div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: tier.color }}>{tier.name}</div>
+                  <div style={{ fontSize: 13, color: '#7a7a8a', marginTop: 2 }}>{tier.tagline}</div>
                 </div>
-
-                <button aria-label="Interactive Button"
-                  id={`enroll-${tierKey}`}
-                  onClick={() => handleEnroll(tierKey)}
-                  disabled={enrolling === tierKey}
-                  style={{
-                    width: '100%',
-                    background: isHighlight
-                      ? 'linear-gradient(135deg, #F5A623, #e08820)'
-                      : `rgba(${tierKey === 'elite' ? '229,228,226' : '168,168,168'},0.1)`,
-                    color: isHighlight ? '#000' : tier.color,
-                    border: `1px solid ${tier.color}40`,
-                    borderRadius: 10,
-                    padding: '13px 20px',
-                    fontSize: 15, fontWeight: 800,
-                    cursor: enrolling === tierKey ? 'wait' : 'pointer',
-                    letterSpacing: '0.02em',
-                    transition: 'all 0.2s',
-                    opacity: enrolling === tierKey ? 0.7 : 1,
-                  }}
-                  onMouseEnter={e => {
-                    if (!enrolling) {
-                      e.currentTarget.style.transform = 'translateY(-1px)';
-                      e.currentTarget.style.boxShadow = `0 6px 20px ${tier.glow}`;
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = '';
-                    e.currentTarget.style.boxShadow = '';
-                  }}
-                >
-                  {enrolling === tierKey ? 'Processing...' : tier.cta}
-                </button>
               </div>
-            );
-          })}
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: '#fff' }}>{tier.price}</div>
+              </div>
+              <div style={{ display: 'flex', gap: 12, marginBottom: 20, fontSize: 12, color: '#7a7a8a' }}>
+                <span>⏱ {tier.duration}</span>
+                <span>📚 {tier.modules.length} modules</span>
+              </div>
+              <div style={{ flex: 1, marginBottom: 24 }}>
+                {tier.benefits.map((b, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 10, fontSize: 13, lineHeight: 1.5, color: '#b0b0c0' }}>
+                    <span style={{ color: tier.color, flexShrink: 0, marginTop: 1 }}>✓</span>
+                    <span>{b}</span>
+                  </div>
+                ))}
+              </div>
+              <EnrollButton tierKey={tierKey} cta={tier.cta} color={tier.color} glow={tier.glow} isHighlight={tier.highlight} />
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── CAREER PROGRESSION TEASER ── */}
       <section style={{ padding: '64px 24px', maxWidth: 1200, margin: '0 auto' }}>
           <h2 style={{ fontSize: 32, fontWeight: 900, textAlign: 'center', marginBottom: 40 }}>The 18-Month Scale Path</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
-              <div style={{ background: '#111118', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16 }}>
+              <div style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16, backdropFilter: 'blur(8px)' }}>
                   <div style={{ color: '#3b82f6', fontSize: 12, fontWeight: 800, letterSpacing: '0.05em', marginBottom: 12 }}>PHASE 01 // ONBOARDING</div>
                   <h3 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12, color: '#fff' }}>First Job Journey</h3>
                   <p style={{ color: '#9a9ab0', fontSize: 14, lineHeight: 1.6 }}>A 14-day intensive protocol to activate availability, build a broker-ready compliance packet, and master the entry path.</p>
               </div>
-              <div style={{ background: '#111118', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16 }}>
+              <div style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16, backdropFilter: 'blur(8px)' }}>
                   <div style={{ color: '#8b5cf6', fontSize: 12, fontWeight: 800, letterSpacing: '0.05em', marginBottom: 12 }}>PHASE 02 // SCALE</div>
                   <h3 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12, color: '#fff' }}>18-Month Accelerator</h3>
                   <p style={{ color: '#9a9ab0', fontSize: 14, lineHeight: 1.6 }}>Elevate your Trust Score. Unlock badges, advanced specializations, and premium market load placements over time.</p>
               </div>
-              <div style={{ background: '#111118', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16 }}>
+              <div style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid #1a1a2a', padding: 32, borderRadius: 16, backdropFilter: 'blur(8px)' }}>
                   <div style={{ color: '#ef4444', fontSize: 12, fontWeight: 800, letterSpacing: '0.05em', marginBottom: 12 }}>PHASE 03 // ELITE</div>
                   <h3 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12, color: '#fff' }}>Premium Elite Network</h3>
                   <p style={{ color: '#9a9ab0', fontSize: 14, lineHeight: 1.6 }}>Master route surveying, payload dynamics, and multi-state escort command. Fully verified on your immutable ID.</p>
@@ -431,103 +390,16 @@ export default function TrainingHome() {
           </div>
       </section>
 
-      {/* ── MODULE LIST ── */}
-      <section style={{
-        background: '#0c0c10',
+      <section id="modules" style={{
+        background: 'rgba(12,12,16,0.95)',
         borderTop: '1px solid #1a1a22',
         borderBottom: '1px solid #1a1a22',
         padding: '64px 24px',
+        backdropFilter: 'blur(10px)'
       }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.02em' }}>
-            All 7 Modules
-          </h2>
-          <p style={{ color: '#6a6a7a', marginBottom: 40, fontSize: 15 }}>
-            Each module is a standalone credential. Work through them in sequence or jump to what you need most.
-          </p>
-
-          {modules.map((m) => {
-            const tierConf = TIER_CONFIG[m.certification_tier] || TIER_CONFIG.hc_certified;
-            const statusColors: Record<string, string> = {
-              passed: '#22c55e', in_progress: '#F5A623', failed: '#ef4444', not_started: '#6a6a7a',
-            };
-            const status = m.progress?.status || 'not_started';
-            return (
-              <Link aria-label="Navigation Link" key={m.id} href={`/training/${m.slug}`}
-                style={{ textDecoration: 'none', display: 'block', marginBottom: 12 }}
-              >
-                <div style={{
-                  background: '#111118',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: 14,
-                  padding: '20px 24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 20,
-                  transition: 'border-color 0.2s, transform 0.15s',
-                }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.borderColor = tierConf.color + '50';
-                    e.currentTarget.style.transform = 'translateX(4px)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                    e.currentTarget.style.transform = '';
-                  }}
-                >
-                  <div style={{
-                    width: 44, height: 44, borderRadius: '50%',
-                    background: `${tierConf.color}18`,
-                    border: `1px solid ${tierConf.color}40`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 16, fontWeight: 800, color: tierConf.color,
-                    flexShrink: 0,
-                  }}>
-                    {m.order_index}
-                  </div>
-
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-                      <span style={{ fontWeight: 700, fontSize: 15, color: '#fff' }}>{m.title}</span>
-                      {m.is_free && (
-                        <span style={{
-                          background: 'rgba(34,197,94,0.12)', color: '#22c55e',
-                          fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
-                          letterSpacing: '0.06em',
-                        }}>FREE</span>
-                      )}
-                      <span style={{
-                        background: `${tierConf.color}15`, color: tierConf.color,
-                        fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
-                        letterSpacing: '0.04em',
-                      }}>{tierConf.name.toUpperCase()}</span>
-                    </div>
-                    <div style={{ fontSize: 13, color: '#6a6a7a', lineHeight: 1.4 }}>
-                      {m.description?.slice(0, 100)}{(m.description?.length || 0) > 100 ? '…' : ''}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
-                    <div style={{ fontSize: 12, color: '#6a6a7a' }}>⏱ {m.duration_minutes}m</div>
-                    {m.progress && (
-                      <div style={{
-                        fontSize: 11, fontWeight: 600, color: statusColors[status] || '#6a6a7a',
-                        textTransform: 'uppercase', letterSpacing: '0.05em',
-                      }}>
-                        {status.replace('_', ' ')}
-                        {m.progress.score !== null && ` — ${m.progress.score}%`}
-                      </div>
-                    )}
-                    <span style={{ color: tierConf.color, fontSize: 18 }}>→</span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+        <ModuleList modules={CANONICAL_MODULES} />
       </section>
 
-      {/* ── CREDIBILITY ── */}
       <section style={{ padding: '64px 24px', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 16, letterSpacing: '-0.02em', color: '#fff' }}>
           Built on Real Standards.<br />Exceeds Every State Requirement.
@@ -537,27 +409,14 @@ export default function TrainingHome() {
           developed by the FMCSA, CVSA, and SC&RA — the same standards used by all 12 US states that
           require pilot car certification. We start where they stop and go further.
         </p>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: 16,
-          maxWidth: 800,
-          margin: '0 auto',
-        }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, maxWidth: 800, margin: '0 auto' }}>
           {[
             { icon: '🛡️', text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
             { icon: '📋', text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
             { icon: '🌍', text: '120 countries', sub: 'Global recognition' },
             { icon: '🏛️', text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
           ].map((item, i) => (
-            <div key={i} style={{
-              background: '#111118',
-              border: '1px solid rgba(245,166,35,0.15)',
-              borderRadius: 14,
-              padding: '20px 16px',
-              textAlign: 'center',
-            }}>
+            <div key={i} style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid rgba(245,166,35,0.15)', borderRadius: 14, padding: '20px 16px', textAlign: 'center', backdropFilter: 'blur(8px)' }}>
               <div style={{ fontSize: 28, marginBottom: 8 }}>{item.icon}</div>
               <div style={{ fontSize: 14, fontWeight: 700, color: '#e8e8e8', lineHeight: 1.3, marginBottom: 4 }}>{item.text}</div>
               <div style={{ fontSize: 12, color: '#6a6a7a' }}>{item.sub}</div>
@@ -566,12 +425,7 @@ export default function TrainingHome() {
         </div>
       </section>
 
-      {/* ── INSTRUCTORS ── */}
-      <section style={{
-        background: '#0c0c10',
-        borderTop: '1px solid #1a1a22',
-        padding: '64px 24px',
-      }}>
+      <section style={{ background: 'rgba(12,12,16,0.95)', borderTop: '1px solid #1a1a22', padding: '64px 24px', backdropFilter: 'blur(10px)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12, letterSpacing: '-0.02em', color: '#fff' }}>
             Trained by Operators. Built for Operators.
@@ -584,65 +438,18 @@ export default function TrainingHome() {
         </div>
       </section>
 
-      {/* ── FAQ ── */}
       <section style={{ padding: '64px 24px', maxWidth: 800, margin: '0 auto' }}>
         <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.02em', color: '#fff' }}>
           Frequently Asked Questions
         </h2>
         <p style={{ color: '#6a6a7a', marginBottom: 40 }}>Everything you need to know before you start.</p>
-
-        {FAQS.map((faq, i) => (
-          <div key={i} style={{
-            background: expandedFaq === i ? '#111118' : 'transparent',
-            border: '1px solid',
-            borderColor: expandedFaq === i ? 'rgba(245,166,35,0.2)' : 'rgba(255,255,255,0.06)',
-            borderRadius: 12,
-            marginBottom: 10,
-            overflow: 'hidden',
-            transition: 'all 0.2s',
-          }}>
-            <button aria-label="Interactive Button"
-              onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-              style={{
-                width: '100%', textAlign: 'left',
-                padding: '18px 20px',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 16,
-                color: 'inherit',
-              }}
-            >
-              <span style={{ fontWeight: 600, fontSize: 15, color: expandedFaq === i ? '#F5A623' : '#e8e8e8', lineHeight: 1.4 }}>
-                {faq.q}
-              </span>
-              <span style={{
-                color: '#F5A623', fontSize: 20, flexShrink: 0,
-                transform: expandedFaq === i ? 'rotate(45deg)' : 'none',
-                transition: 'transform 0.2s',
-              }}>+</span>
-            </button>
-            {expandedFaq === i && (
-              <div style={{
-                padding: '0 20px 20px',
-                fontSize: 14, lineHeight: 1.7, color: '#8a8a9a',
-              }}>
-                {faq.a}
-              </div>
-            )}
-          </div>
-        ))}
+        <FAQAccordion faqs={FAQS} />
       </section>
 
-      {/* ── BOTTOM CTA ── */}
       <section style={{
-        background: 'linear-gradient(160deg, #111120 0%, #0c0c18 100%)',
+        background: 'linear-gradient(160deg, rgba(17,17,32,0.95) 0%, rgba(12,12,24,0.95) 100%)',
         borderTop: '1px solid rgba(245,166,35,0.12)',
-        padding: '64px 24px',
-        textAlign: 'center',
+        padding: '64px 24px', textAlign: 'center', backdropFilter: 'blur(10px)'
       }}>
         <HCBadge tier="gold" size={80} style={{ margin: '0 auto 24px' }} />
         <h2 style={{ fontSize: 36, fontWeight: 900, margin: '0 0 16px', letterSpacing: '-0.02em', color: '#fff' }}>
@@ -652,25 +459,14 @@ export default function TrainingHome() {
           Module 1 is completely free. Your badge goes live the moment you pass. 
           Brokers and AV companies can verify it instantly.
         </p>
-        <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{
+        <Link aria-label="Start Free" href="/training/platform-fundamentals" style={{
           display: 'inline-flex', alignItems: 'center', gap: 10,
           background: 'linear-gradient(135deg, #F5A623, #e08820)',
           color: '#000', fontWeight: 800, fontSize: 18,
           padding: '16px 36px', borderRadius: 14,
-          textDecoration: 'none',
-          boxShadow: '0 6px 30px rgba(245,166,35,0.4)',
+          textDecoration: 'none', boxShadow: '0 6px 30px rgba(245,166,35,0.4)',
           letterSpacing: '0.01em',
-          transition: 'transform 0.15s, box-shadow 0.15s',
-        }}
-          onMouseEnter={e => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 10px 40px rgba(245,166,35,0.55)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.transform = '';
-            e.currentTarget.style.boxShadow = '0 6px 30px rgba(245,166,35,0.4)';
-          }}
-        >
+        }}>
           🎓 Start Module 1 — Free
         </Link>
       </section>

@@ -20,7 +20,7 @@ export default async function LoadDetail({ params }: { params: { loadId: string 
     if (!load) return <div className="p-10 text-center text-red-500">Vector Unavailable or Retracted.</div>;
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white p-10 font-sans">
+        <div className="min-h-screen bg-transparent text-white p-10 font-sans">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-4xl font-black uppercase tracking-tight mb-2">VECTOR: {params.loadId.split('-')[0]}</h1>
                 <h3 className="text-2xl text-gray-400 uppercase tracking-tighter mb-8">{load.origin_city} to {load.destination_city}</h3>

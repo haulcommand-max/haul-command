@@ -5,8 +5,26 @@ import Link from 'next/link';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
 import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
+import { getPageFamilyOgImage } from "@/components/ui/PageFamilyBackground";
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: "Global Force Directory | Haul Command",
+        description: "Explore the verified, real-time directory of 120-country permitted heavy haul operators.",
+        openGraph: {
+            title: "Global Force Directory | Haul Command",
+            description: "Explore the verified, real-time directory of 120-country permitted heavy haul operators.",
+            images: [getPageFamilyOgImage('directory')],
+        },
+        twitter: {
+            card: "summary_large_image",
+            images: [getPageFamilyOgImage('directory')],
+        }
+    };
+}
 
 export default async function GlobalDirectory({ searchParams }: { searchParams: { country?: string } }) {
     const cookieStore = await cookies();

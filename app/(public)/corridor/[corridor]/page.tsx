@@ -12,6 +12,7 @@ import { ClaimPressureEngine } from '@/components/market/ClaimPressureEngine';
 import { OutcomeProofBlock } from '@/components/market/OutcomeProofBlock';
 import { DensityScoreboard } from '@/components/market/DensityScoreboard';
 import { OutcomeTimeline } from '@/components/outcomes/OutcomeEngine';
+import { BrokerAvailabilityWidget } from '@/components/broker/BrokerAvailabilityWidget';
 import { NearbySupportModule, SupportBundleCTA } from '@/components/infrastructure/RouteSupportEngine';
 import { CorridorCommunityFeed } from '@/components/social/CorridorCommunityFeed';
 import DataTeaserCard from '@/components/data/DataTeaserCard';
@@ -189,6 +190,14 @@ export default async function CorridorPage({ params }: Props) {
                 {/* ━━━ LIVE MARKET TRUTH STRIP ━━━ */}
                 <div className="hc-container pt-8 pb-0">
                     <CorridorHeartbeatStrip corridorSlug={corridor} displayName={corridorDisplay} />
+                </div>
+
+                {/* ━━━ BROKER CAPACITY INTELLIGENCE ━━━ */}
+                <div className="hc-container pt-8 pb-0">
+                    <BrokerAvailabilityWidget 
+                        state={staticData?.stateRequirements?.[0]?.stateCode}
+                        className="w-full"
+                    />
                 </div>
 
                 {/* ━━━ OUTCOME PROOF ━━━ */}

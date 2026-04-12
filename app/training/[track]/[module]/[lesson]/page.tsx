@@ -48,7 +48,7 @@ export default async function LessonPage({ params }: { params: { track: string, 
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white font-sans selection:bg-blue-500/30">
+        <div className="min-h-screen bg-transparent text-white font-sans selection:bg-blue-500/30">
             {/* PROGRESS HEADER */}
             <div className="w-full bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">

@@ -22,7 +22,7 @@ export default async function LoadBoard() {
         .limit(50);
 
     return (
-        <main className="min-h-screen bg-gray-950 text-white p-10 font-sans selection:bg-blue-500/30">
+        <main className="min-h-screen bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
             <header className="mb-10 max-w-7xl mx-auto border-b border-gray-900 pb-6 flex justify-between items-end">
                 <div>
                     <h1 className="text-5xl font-black uppercase text-white tracking-tighter">Command Center</h1>

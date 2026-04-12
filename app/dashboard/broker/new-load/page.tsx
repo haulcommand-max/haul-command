@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function PostLoadForm() {
     return (
-        <div className="min-h-screen bg-gray-950 text-white p-10 font-sans">
+        <div className="min-h-screen bg-transparent text-white p-10 font-sans">
             <h1 className="text-4xl font-black uppercase text-white mb-2">Deploy Load Vector</h1>
             <p className="text-xl text-gray-400 mb-10 border-l-2 border-blue-500 pl-4">Inject a high-priority logistical operation directly into the load board for Tier-1 routing.</p>
 

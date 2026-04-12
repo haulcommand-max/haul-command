@@ -88,38 +88,7 @@ export function EmptyMarketState({ country, region, city }: EmptyMarketStateProp
                     </Link>
                 </div>
                 
-                {/* Sponsor placeholder for the empty state */}
-                <div style={{
-                    background: 'rgba(198, 146, 58, 0.05)',
-                    border: '1px solid rgba(198, 146, 58, 0.2)',
-                    borderRadius: 12,
-                    padding: 20,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
-                }}>
-                    <div style={{
-                        fontSize: 10,
-                        fontWeight: 800,
-                        color: '#C6923A',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        marginBottom: 8
-                    }}>
-                        Exclusive Sponsorship Available
-                    </div>
-                    <div style={{ fontSize: 14, color: '#E5E7EB', marginBottom: 12 }}>
-                        Own the entire {locationName} market. Your business will appear here permanently.
-                    </div>
-                    <Link href="/advertise/buy" style={{
-                        fontSize: 12,
-                        color: '#C6923A',
-                        fontWeight: 700,
-                        textDecoration: 'none'
-                    }}>
-                        View Sponsorship Pricing
-                    </Link>
-                </div>
+                {/* Sponsor card is rendered externally by the parent page via AdGrid */}
             </div>
         </div>
     );

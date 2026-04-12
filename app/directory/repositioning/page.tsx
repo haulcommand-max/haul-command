@@ -12,7 +12,7 @@ export default async function RepositioningFeed() {
         .limit(50)
 
     return (
-        <div className="min-h-screen bg-[#07090D] pt-24 pb-32">
+        <div className="min-h-screen bg-transparent pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
                 {/* Header */}

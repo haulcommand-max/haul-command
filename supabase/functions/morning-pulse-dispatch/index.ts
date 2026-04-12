@@ -20,7 +20,7 @@ serve(async (req) => {
             return new Response("No active endpoints", { status: 200 });
         }
 
-        const project_id = "haul-command"; // Hardcoded for this demo, usually env
+        const project_id = Deno.env.get("FIREBASE_PROJECT_ID") ?? "haul-command"; // env var preferred
         let accessToken = "";
         try {
             const auth = new GoogleAuth({

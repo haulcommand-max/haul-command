@@ -46,7 +46,7 @@ export default function AdminAbusePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className="min-h-screen bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Abuse Flags</h1>
                 <p className="text-gray-400 text-sm">Open: {flags.length}</p>

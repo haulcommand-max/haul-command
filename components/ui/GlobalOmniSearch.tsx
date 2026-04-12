@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Search, Mic, MapPin, Briefcase, Navigation, ShieldAlert, Cpu } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
 interface SearchPrediction {
   id: string;
@@ -76,35 +77,49 @@ export function GlobalOmniSearch() {
     }
   };
 
-  // Simulate TypeSense / pg_trgm Typo-Tolerant Predictor
-  const simulateTypoTolerantPrediction = (input: string) => {
+  // Active TypeSense Search Integration (Wave 3)
+  const simulateTypoTolerantPrediction = async (input: string) => {
     if (input.length < 2) {
       setPredictions([]);
       return;
     }
-
-    const lowerInput = input.toLowerCase();
-    const results: SearchPrediction[] = [];
-
-    // Typo matching logic (simulating TypeSense fuzzy match)
-    if ("aroozina".includes(lowerInput) || "arizona".includes(lowerInput) || "az".includes(lowerInput)) {
-      results.push({ id: "az-corr", type: "route", label: "Arizona Corridor", subtitle: "Live Rates & Availability", url: "/corridors/az", confidence: 0.99 });
-    }
     
-    if ("escrot".includes(lowerInput) || "escort".includes(lowerInput) || "pilot".includes(lowerInput)) {
-      results.push({ id: "dir-escort", type: "entity", label: "Escort Drivers & Pilot Cars", subtitle: "2,400+ Available Now", url: "/directory/escorts", confidence: 0.95 });
+    // Check if we have supabase client initialized
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    if (!supabaseUrl) return;
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data, error } = await supabase.functions.invoke("discovery-search-core", {
+      body: { action: "search", query: input }
+    });
+
+    if (error || !data || !data.ok || !data.results) return;
+
+    const results: SearchPrediction[] = [];
+    const [profilesData, corridorsData, glossaryData] = data.results;
+
+    if (corridorsData?.hits) {
+      corridorsData.hits.forEach((h: any) => {
+         const doc = h.document;
+         results.push({ id: `c-${doc.id}`, type: "route", label: `${doc.origin_state || ''} to ${doc.dest_state || doc.corridor_id}`, subtitle: "Live Rates & Availability", url: `/rates/corridors/${doc.corridor_id.toLowerCase()}`, confidence: 0.99 });
+      });
     }
 
-    if ("buckt".includes(lowerInput) || "bucket".includes(lowerInput) || "wire".includes(lowerInput) || "line".includes(lowerInput)) {
-      results.push({ id: "rr-bucket", type: "rare_role", label: "Bucket Truck (Line Lift)", subtitle: "Utility clearance operators", url: "/directory/bucket-trucks", confidence: 0.92 });
+    if (profilesData?.hits) {
+      profilesData.hits.forEach((h: any) => {
+         const doc = h.document;
+         const isRare = doc.equipment_tags?.includes("bucket_truck") || doc.equipment_tags?.includes("height_pole");
+         results.push({ id: `p-${doc.id}`, type: isRare ? "rare_role" : "entity", label: doc.display_name, subtitle: `${doc.home_base_state || 'US'} · ${doc.vehicle_type?.replace(/_/g, " ")}`, url: `/directory/profile/${doc.slug}`, confidence: 0.95 });
+      });
     }
 
-    if ("pole".includes(lowerInput) || "height".includes(lowerInput)) {
-      results.push({ id: "rr-pole", type: "rare_role", label: "Height Pole Operator", subtitle: "Specialized vertical clearance", url: "/directory/height-pole", confidence: 0.96 });
-    }
-
-    if ("prmit".includes(lowerInput) || "permit".includes(lowerInput)) {
-      results.push({ id: "perm-tx", type: "permit", label: "Texas Super-Load Permits", subtitle: "TxDOT Regulations", url: "/permits/tx", confidence: 0.88 });
+    if (glossaryData?.hits) {
+      glossaryData.hits.forEach((h: any) => {
+         const doc = h.document;
+         results.push({ id: `g-${doc.id}`, type: "permit", label: doc.term, subtitle: "Glossary & Regulations", url: `/glossary/${doc.slug}`, confidence: 0.88 });
+      });
     }
 
     setPredictions(results);

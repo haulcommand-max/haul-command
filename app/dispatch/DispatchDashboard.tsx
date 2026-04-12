@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Users, MapPin, Search, AlertCircle, RefreshCw, Layers, Shield, Zap, Moon, Globe, MessageSquare } from 'lucide-react';
 import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
 
 interface Operator {
   id: string;
@@ -170,18 +173,25 @@ export default function DispatchDashboard({ stats }: Props) {
         {/* Center/Right: Map & HUD */}
         <div className="xl:col-span-3 bg-black flex flex-col rounded-3xl border border-white/10 overflow-hidden relative shadow-2xl">
           
-          {/* Map Background */}
-          <div className="absolute inset-0 bg-[url('https://maps.wikimedia.org/osm-intl/9/127/198.png')] bg-cover bg-center opacity-40 mix-blend-screen filter brightness-[0.2] contrast-[1.5] grayscale" />
+          <div className="absolute inset-0 z-0 opacity-80 mix-blend-screen overflow-hidden">
+            <HeavyHaulMap 
+              mode="dispatch" 
+              showPermitRoute={false} 
+              showHud={false} 
+              initialZoom={3} 
+            />
+          </div>
 
           {/* H3 Density Hexagons */}
-          <div className="absolute inset-0 w-full h-full opacity-30 select-none pointer-events-none">
+          <div className="absolute inset-0 w-full h-full opacity-10 select-none pointer-events-none z-0">
             <svg width="100%" height="100%">
               <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
-                <path d="M25 0 L50 14.4 L50 43.3 L25 57.7 L0 43.3 L0 14.4 Z" fill="none" stroke="rgba(59,130,246,0.3)" strokeWidth="0.5" />
+                <path d="M25 0 L50 14.4 L50 43.3 L25 57.7 L0 43.3 L0 14.4 Z" fill="none" stroke="rgba(59,130,246,0.5)" strokeWidth="0.5" />
               </pattern>
               <rect width="100%" height="100%" fill="url(#hexagons)" />
             </svg>
           </div>
+
 
           {/* Live Supply HUD — wired to v_dispatch_ready_supply_internal */}
           <div className="absolute top-6 left-6 right-6 flex justify-between items-start pointer-events-none">

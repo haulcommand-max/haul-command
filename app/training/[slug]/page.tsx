@@ -66,7 +66,7 @@ const gold = '#D4A844';
 
 function CountryTrainingView({ country }: { country: string }) {
     return (
-        <div className="p-10 text-white bg-gray-950 min-h-screen">
+        <div className="p-10 text-white bg-transparent min-h-screen">
             <h1 className="text-3xl font-bold">Compliance Operations in {country.toUpperCase()}</h1>
             <p className="text-gray-400">Loading country-specific overlay variables, terminology, and enforcing authority context...</p>
         </div>

@@ -187,7 +187,7 @@ export default async function PortGatePage(
     };
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className="min-h-screen bg-transparent text-white">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
             {/* Breadcrumb */}

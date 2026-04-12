@@ -143,10 +143,11 @@ export default function LoginCard() {
       resetFeedback()
       setLoading(provider)
 
+      const returnUrl = searchParams.get('return') || '/app'
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(returnUrl)}`,
         },
       })
 
@@ -198,9 +199,10 @@ export default function LoginCard() {
 
       if (error) throw error
 
+      const returnUrl = searchParams.get('return') || '/app'
       setMessage('Phone verified. Signing you in...')
       router.refresh()
-      window.location.href = '/home'
+      window.location.href = returnUrl
     } catch (err: any) {
       setError(err?.message ?? 'Invalid code. Please try again.')
     } finally {
@@ -215,10 +217,11 @@ export default function LoginCard() {
       resetFeedback()
       setLoading('email')
 
+      const returnUrl = searchParams.get('return') || '/app'
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(returnUrl)}`,
         },
       })
 

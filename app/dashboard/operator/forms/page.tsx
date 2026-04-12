@@ -15,7 +15,7 @@ export default async function OperatorFormsPage() {
   const { data: { session } } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/auth/login');
+    redirect('/login?return=/dashboard/operator/forms');
   }
 
   // 1. Fetch available templates

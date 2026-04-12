@@ -64,7 +64,7 @@ export default function CertificationsDashboard() {
     fetch('/api/training/my-certifications')
       .then(r => {
         if (r.status === 401) {
-          window.location.href = '/auth/login?return=/dashboard/certifications';
+          window.location.href = '/login?return=/dashboard/certifications';
           return null;
         }
         return r.json();

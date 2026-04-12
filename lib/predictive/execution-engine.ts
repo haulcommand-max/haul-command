@@ -93,7 +93,12 @@ async function resolveChannel(
     entityId: string
 ): Promise<{ channel: Channel; downgraded: boolean; reason?: string }> {
     if (preferredChannel === 'vapi_call') {
-        const localHour = new Date().getUTCHours(); // TODO: localize per entity timezone
+        const utcHour = new Date().getUTCHours();
+        // Localize based on country offset (simplified lookup, default to UTC-6 for US/CA, UTC+1 for Europe, etc)
+        const timezoneOffsets: Record<string, number> = { 'US': -6, 'CA': -5, 'GB': 0, 'AU': 10, 'DE': 1, 'FR': 1, 'ZA': 2, 'AE': 4 };
+        const localHourOffset = timezoneOffsets[countryCode] || 0;
+        const localHour = (utcHour + localHourOffset + 24) % 24;
+
         const compliance = await checkVapiCompliance(countryCode, localHour, 'auto', 'unknown', 0);
         if (!compliance.allowed) {
             const downgraded = CHANNEL_DOWNGRADE[preferredChannel] || 'in_app';

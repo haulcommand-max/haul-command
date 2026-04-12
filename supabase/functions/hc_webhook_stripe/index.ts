@@ -238,7 +238,40 @@ serve(async (req: Request) => {
             if (!isValid) return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 401 });
 
             // ── PAYMENT INTENT EVENTS ──
-            if (body.type === 'payment_intent.succeeded') {
+            // OPUS-02 S1-02/S1-03: Pre-auth clearance — idempotent DRAFT → OPEN transition
+            if (body.type === 'payment_intent.amount_capturable_updated') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+
+                if (jobId) {
+                    // S1-03: Idempotency check via preauth_status
+                    const { data: existingJob } = await supabase
+                        .from('hc_jobs')
+                        .select('preauth_status')
+                        .eq('id', jobId)
+                        .single();
+
+                    if (existingJob?.preauth_status === 'authorized') {
+                        console.log(`[Stripe Webhook] Job ${jobId} pre-auth already processed — idempotent skip.`);
+                    } else {
+                        await supabase.from('hc_jobs')
+                            .update({ preauth_status: 'authorized', status: 'OPEN' })
+                            .eq('id', jobId);
+                        await supabase.from('hc_escrows')
+                            .update({ status: 'FUNDED' })
+                            .eq('job_id', jobId)
+                            .eq('status', 'PENDING_FUNDS');
+                        await supabase.from('event_log').insert({
+                            actor_role: 'system',
+                            event_type: 'payment.preauth_cleared',
+                            entity_type: 'hc_jobs',
+                            entity_id: jobId,
+                            payload: { payment_intent_id: intent.id, amount: intent.amount },
+                        });
+                        console.log(`[Stripe Webhook] Job ${jobId} OPEN — pre-auth cleared.`);
+                    }
+                }
+            } else if (body.type === 'payment_intent.succeeded') {
                 const intent = body.data?.object;
                 const jobId = intent?.metadata?.job_id;
                 
@@ -270,7 +303,10 @@ serve(async (req: Request) => {
                 }
             }
 
+
             // ── PAYOUT EVENTS ──
+            let payoutFailedUserId: string | null = null;
+
             if (body.type === 'payout.failed' || body.type === 'payout.canceled') {
                 const payout = body.data?.object;
                 const accountId = payout?.destination;
@@ -283,26 +319,33 @@ serve(async (req: Request) => {
                     .single();
                     
                 if (profile?.user_id) {
-                    // Update trust score negative signal
+                    payoutFailedUserId = profile.user_id;
+
+                    // Trust negative signal
                     await supabase.from('trust_events').insert({
                         entity_profile_id: profile.user_id,
                         event_type: 'payout_failed',
                         payload: { payout_id: payout.id, amount: payout.amount, error: payout.failure_reason },
                     });
                     
-                    // Dispatch FCM Push required by SONNET-01
+                    // Queue push notification (FCM worker will dequeue)
                     await supabase.from('hc_notifications').insert({
                         user_id: profile.user_id,
                         title: '⚠️ Payout Failed',
                         body: 'Your recent payout failed. Please update your bank details to resume transfers.',
-                        data_json: { type: 'payout_failed', retry_url: '/dashboard/wallet/settings' },
+                        data_json: {
+                            type: 'payout_failed',
+                            deep_link: 'haulcommand://dashboard/wallet/settings',
+                            retry_url: '/dashboard/wallet/settings',
+                        },
                         channel: 'push',
                         status: 'queued',
                     });
                 }
             }
 
-            return new Response(JSON.stringify({ received: true }), {
+            // Return payout_failed_user_id so Next.js proxy can flush FCM immediately
+            return new Response(JSON.stringify({ received: true, payout_failed_user_id: payoutFailedUserId }), {
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 status: 200,
             });

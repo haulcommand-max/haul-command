@@ -49,14 +49,14 @@ export default function AlertsSettingsPage() {
 
     if (!s) {
         return (
-            <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+            <div className="min-h-screen bg-transparent flex items-center justify-center">
                 <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className="min-h-screen bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Alert Settings</h1>
                 <p className="text-gray-400 text-sm mt-1">Control when and how you get notified.</p>

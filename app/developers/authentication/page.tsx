@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function AuthenticationPage() {
     return (
-        <main className="min-h-screen bg-gray-950 text-gray-100">
+        <main className="min-h-screen bg-transparent text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
                 <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Authentication</h1>

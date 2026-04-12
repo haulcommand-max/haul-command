@@ -22,7 +22,7 @@ async function main() {
     try {
         const { data: pages, error } = await supabase
             .from('seo_pages')
-            .select('type, status, updated_at')
+            .select('id, type, status, updated_at')
             .order('updated_at', { ascending: true });
 
         if (error) throw new Error(`Fetch pages: ${error.message}`);
@@ -42,7 +42,17 @@ async function main() {
         const stale = (pages || []).filter(p => p.updated_at < thirtyDaysAgo);
         console.log(`[seo_regen] ${stale.length} stale pages (>30d old)`);
 
-        // TODO: Re-enqueue stale pages
+        if (stale.length > 0) {
+            // Re-enqueue stale pages to trigger IndexNow
+            const staleIds = stale.map(p => p.id);
+            const { error: updateError } = await supabase
+                .from('seo_pages')
+                .update({ status: 'pending', updated_at: new Date().toISOString() })
+                .in('id', staleIds);
+            
+            if (updateError) throw new Error(`Re-enqueue failed: ${updateError.message}`);
+            console.log(`[seo_regen] Re-enqueued ${stale.length} pages for crawl.`);
+        }
 
         await logger.finish('success', (pages || []).length, null, {
             stale_count: stale.length,

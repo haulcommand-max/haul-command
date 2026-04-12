@@ -18,7 +18,7 @@ export default async function PublicCareerCard({ params }: { params: { slug: str
     const isVerified = !!card.profiles?.kyc_verified_at;
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white p-10 font-sans selection:bg-blue-500/30">
+        <div className="min-h-screen bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
             <div className="max-w-3xl mx-auto border border-gray-800 bg-gray-900 p-8 md:p-12 shadow-2xl relative">
                 {/* Visual Stamp */}
                 <div className="absolute top-4 right-4 md:top-8 md:right-8 opacity-20 hover:opacity-80 transition-opacity">

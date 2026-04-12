@@ -175,7 +175,7 @@ export default function OperatorDashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+            <div className="min-h-screen bg-transparent flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#F1A91B]/30 border-t-[#F1A91B] rounded-full animate-spin" />
             </div>
         );
@@ -183,7 +183,7 @@ export default function OperatorDashboard() {
 
     if (!dash) {
         return (
-            <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-4 px-4">
+            <div className="min-h-screen bg-transparent flex flex-col items-center justify-center gap-4 px-4">
                 <Shield className="w-12 h-12 text-[#F1A91B]" />
                 <h2 className="text-xl font-black text-white text-center">Operator Dashboard</h2>
                 <p className="text-white/40 text-sm text-center">Sign in and claim your listing to access the dashboard.</p>
@@ -195,7 +195,7 @@ export default function OperatorDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white pb-24">
+        <div className="min-h-screen bg-transparent text-white pb-24">
             {/* Header */}
 
             <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">

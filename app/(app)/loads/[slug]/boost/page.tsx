@@ -59,7 +59,7 @@ export default function LoadBoostPage() {
     }
 
     if (done) return (
-        <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="min-h-screen bg-transparent flex items-center justify-center">
             <div className="text-center space-y-3">
                 <div className="text-5xl">🚀</div>
                 <h1 className="text-2xl font-black text-white">Boost Active!</h1>
@@ -69,7 +69,7 @@ export default function LoadBoostPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className="min-h-screen bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Boost This Load</h1>
                 <p className="text-gray-400 text-sm mt-1">Priority routing gets you filled faster.</p>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { indexBlogPost, triggerIndexNow } from '@/lib/seo/indexnow';
 
 /**
  * POST /api/blog/revalidate
@@ -19,10 +20,14 @@ export async function POST(req: NextRequest) {
 
         if (slug) {
             revalidatePath(`/blog/${slug}`);
+            // S3-04: Ping IndexNow on publish — async, non-blocking
+            indexBlogPost(slug).catch(() => {});
             return NextResponse.json({ revalidated: true, path: `/blog/${slug}` });
         }
 
         revalidatePath('/blog');
+        // Revalidate hub — no specific slug to index
+        triggerIndexNow(['/intelligence']).catch(() => {});
         return NextResponse.json({ revalidated: true, path: '/blog' });
     } catch (err) {
         return NextResponse.json({ error: 'Revalidation failed' }, { status: 500 });

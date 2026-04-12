@@ -259,7 +259,7 @@ export function DirectorySearchList({
               <p className="text-slate-400 text-sm mt-2 mb-4 leading-relaxed">
                 To prevent data scraping and protect our operator network, you must login to view all 1.5M+ unmasked profiles, phone numbers, and live availability schedules.
               </p>
-              <Link href="/auth/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold mt-4">
+              <Link href="/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold mt-4">
                 Login to Unlock Directory
               </Link>
             </div>

@@ -125,10 +125,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
+
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params;
   const service = SERVICES[slug];
   if (!service) notFound();
+
+  // Map slugs to roles or vehicle_types for real DB queries
+  const mapSlugToRole = (s: string) => {
+      if (s === 'pilot-car') return { col: 'role', val: 'pilot_car' };
+      if (s === 'wide-load-escort') return { col: 'vehicle_type', val: 'chase_car' };
+      if (s === 'heavy-haul-escort') return { col: 'role', val: 'heavy_haul_driver' };
+      if (s === 'wind-energy') return { col: 'equipment_tags', val: 'blade_trailer' }; // array contains
+      if (s === 'route-survey') return { col: 'equipment_tags', val: 'height_pole' };
+      if (s === 'high-pole') return { col: 'equipment_tags', val: 'height_pole' };
+      return { col: 'role', val: 'pilot_car' }; // fallback
+  };
+
+  const dbFilter = mapSlugToRole(slug);
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+
+  let query = supabase.from('profiles').select('id, display_name, trust_score, home_base_state, slug', { count: 'exact' });
+  if (dbFilter.col === 'equipment_tags') {
+      query = query.contains('equipment_tags', [dbFilter.val]);
+  } else {
+      query = query.eq(dbFilter.col, dbFilter.val);
+  }
+  
+  const { data: topOperators, count } = await query
+      .order('trust_score', { ascending: false })
+      .limit(3);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -177,6 +210,39 @@ export default async function ServiceDetailPage({ params }: Props) {
               </div>
             </div>
           )}
+
+          {/* Real Vendor/Partner Density */}
+          <div className="mb-12 border-t border-white/10 pt-10">
+             <div className="flex justify-between items-end mb-6">
+                 <div>
+                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                        Top {service.title} Providers
+                    </h2>
+                    <p className="text-gray-400 text-sm mt-1">{count ? `${count.toLocaleString()}+ verified operators available` : 'Verified operators available'}</p>
+                 </div>
+                 <Link href="/directory" className="text-sm font-bold text-amber-400 hover:text-amber-300">View All →</Link>
+             </div>
+             
+             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                 {topOperators?.map(op => (
+                     <div key={op.id} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/20 transition-all group">
+                         <div className="flex justify-between items-start mb-2">
+                             <div className="font-bold text-white truncate max-w-[75%]">{op.display_name}</div>
+                             <div className="text-amber-400 font-bold text-sm bg-amber-500/10 px-2 py-0.5 rounded">R: {op.trust_score || 75}</div>
+                         </div>
+                         <div className="text-xs text-gray-500 mb-4">{op.home_base_state || 'US'}</div>
+                         <Link href={`/directory/profile/${op.slug}`} className="block w-full text-center py-2 text-xs font-bold uppercase tracking-wider bg-white/5 hover:bg-amber-500 hover:text-white rounded text-gray-300 transition-colors">
+                            View Dossier
+                         </Link>
+                     </div>
+                 ))}
+                 {(!topOperators || topOperators.length === 0) && (
+                     <div className="col-span-3 py-8 text-center bg-white/5 border border-white/10 rounded-xl">
+                         <p className="text-gray-500 text-sm">No registered operators match this specific equipment tag yet.</p>
+                     </div>
+                 )}
+             </div>
+          </div>
 
           <div className="flex gap-4">
             <Link aria-label="Navigation Link" href="/loads" className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors">

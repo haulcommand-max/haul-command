@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { WebhookReceiver } from "livekit-server-sdk";
 
+// ── Billing rate: $0.012 / minute (adjust via env)
+const PER_MINUTE_RATE_CENTS = parseInt(process.env.LIVEKIT_BILLING_CENTS_PER_MIN || '2', 10);
+
 export async function POST(req: NextRequest) {
     try {
         // Require Auth Header
@@ -131,6 +134,65 @@ export async function POST(req: NextRequest) {
             await supabase.from('livekit_call_events').update({
                 transcript_text: transcript,
             }).eq('room_name', roomName);
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // GUARDRAIL #7: LiveKit Completion Billing + Transcript Storage
+        // Handles room_finished + ai_summary events for the ESCROW billing path
+        // ═══════════════════════════════════════════════════════════════
+        if ((event === 'room_finished' || eventData.event === 'room_finished') && roomName) {
+            const actualDuration = duration_seconds ?? room?.duration ?? null;
+
+            // 7a. Mark call ended in mm_event_log
+            await supabase.from('mm_event_log').upsert({
+                event_type: 'call_ended',
+                entity_id: roomName,
+                source: 'livekit_webhook',
+                payload: {
+                    room_name: roomName,
+                    duration_seconds: actualDuration,
+                    participant_count: room?.num_participants ?? null,
+                },
+                created_at: new Date().toISOString(),
+            }, { onConflict: 'entity_id,event_type' }).catch(() => {});
+
+            // 7b. Billing Capture — ceil to nearest minute
+            if (actualDuration && actualDuration > 0) {
+                const billableMinutes = Math.ceil(actualDuration / 60);
+                const billAmountCents = billableMinutes * PER_MINUTE_RATE_CENTS;
+                await supabase.from('hc_call_billing').insert({
+                    room_name: roomName,
+                    duration_seconds: actualDuration,
+                    billable_minutes: billableMinutes,
+                    amount_cents: billAmountCents,
+                    status: 'PENDING',
+                    billed_at: new Date().toISOString(),
+                }).catch((e: any) => console.warn('[LiveKit] Billing insert skip:', e?.message));
+            }
+
+            // 7c. Transcript storage → secure_vault (Supabase Storage)
+            if (transcript) {
+                const vaultPath = `livekit_transcripts/${roomName}/transcript.json`;
+                const vaultPayload = JSON.stringify({
+                    room_name: roomName,
+                    duration_seconds: actualDuration,
+                    transcript,
+                    stored_at: new Date().toISOString(),
+                });
+                await supabase.storage
+                    .from('secure_vault')
+                    .upload(vaultPath, vaultPayload, {
+                        contentType: 'application/json',
+                        upsert: true,
+                    }).catch((e: any) => console.warn('[LiveKit] Transcript vault skip:', e?.message));
+
+                // Also update the call event row
+                await supabase.from('livekit_call_events').update({
+                    transcript_text: transcript,
+                    duration_seconds: actualDuration,
+                    completed_at: new Date().toISOString(),
+                }).eq('room_name', roomName).catch(() => {});
+            }
         }
 
         return NextResponse.json({ success: true });

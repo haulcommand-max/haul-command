@@ -66,7 +66,7 @@ function SponsorCheckoutInner() {
             const supabase = createClient();
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) {
-                window.location.href = '/auth/login?redirect=/sponsor/checkout';
+                window.location.href = '/login?return=/sponsor/checkout';
                 return;
             }
 
