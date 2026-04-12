@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { supabaseMiddleware } from './lib/supabase/middleware'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // First, run the existing supabase auth middleware to sync cookies
   const { res, user, supabase } = await supabaseMiddleware(request);
 
