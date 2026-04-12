@@ -51,7 +51,7 @@ html, body {
      Depth: base → panel → elevated → high
      Source: OSOW-Killer YAML — lock these values
      ═══════════════════════════════════════════════════ */
-  --hc-bg: #0B0B0C;
+  --hc-bg: #0F1318;
   /* Level 0 — App shell (deepest black) */
   --hc-surface: #111214;
   /* Level 1 — Cards, panels */

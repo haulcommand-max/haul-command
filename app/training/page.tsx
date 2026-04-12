@@ -264,7 +264,7 @@ export default async function TrainingHome() {
               textDecoration: 'none', letterSpacing: '0.01em',
               boxShadow: '0 4px 24px rgba(245,166,35,0.40)',
             }}>
-              ðŸŽ“ <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
+              <ShieldCheck className="w-4 h-4" /> Start Your Certification
             </Link>
             <a href="#catalog" style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -274,7 +274,7 @@ export default async function TrainingHome() {
               padding: '14px 28px', borderRadius: 12,
               textDecoration: 'none', backdropFilter: 'blur(12px)',
             }}>
-              View All Programs â†“
+              View All Programs 
             </a>
           </div>
         </div>
@@ -310,7 +310,7 @@ export default async function TrainingHome() {
                 <h3 style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 16 }}>Start Your 14-Day Readiness</h3>
                 <p style={{ color: '#e2e8f0', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Activate availability, build a broker-ready packet, and master the entry path from your first module.</p>
                 <Link href="/training/pilot-car-operator-certification" style={{ display: 'block', textAlign: 'center', background: '#2563eb', color: '#fff', padding: '14px 20px', borderRadius: 10, fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
+                    <ShieldCheck className="w-4 h-4" /> Start Your Certification
                 </Link>
             </div>
         </div>
@@ -362,7 +362,7 @@ export default async function TrainingHome() {
                       fontSize: 11, fontWeight: 800, padding: '4px 14px', borderRadius: 20,
                       letterSpacing: '0.08em', whiteSpace: 'nowrap',
                     }}>
-                      â­ FUTURE-PROOF
+                      FUTURE-PROOF
                     </div>
                   )}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
@@ -494,7 +494,7 @@ export default async function TrainingHome() {
           textDecoration: 'none', boxShadow: '0 6px 30px rgba(245,166,35,0.4)',
           letterSpacing: '0.01em',
         }}>
-          ðŸŽ“ <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
+          <ShieldCheck className="w-4 h-4" /> Start Your Certification
         </Link>
       </section>
       </div>
