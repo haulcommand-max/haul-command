@@ -293,6 +293,7 @@ export default async function TrainingHome() {
           </div>
         </div>
       </PageFamilyBackground>
+      <section style={{ padding: '64px 24px', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
           <div style={{ background: 'linear-gradient(135deg, rgba(17,17,26,0.9), rgba(12,12,16,0.9))', border: '1px solid #1a1a2a', padding: '48px 24px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
               <div style={{ color: '#F5A623', fontSize: 12, fontWeight: 800, letterSpacing: '0.1em', marginBottom: 12 }}>YOUR CAREER ON THE NETWORK</div>
               <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 16, color: '#fff' }}>Training Powers Your Report Card</h2>
