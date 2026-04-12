@@ -76,10 +76,21 @@ export default async function TrainingHome() {
   // ---- FETCH FROM SUPABASE ----
   const supabase = createClient();
 
-  // 1. Call the canonical training_hub_payload() RPC
-  const { data: hubPayload } = await supabase.rpc('training_hub_payload');
+  // 1. Call the canonical training_hub_payload() RPC — returns flat array of catalog rows
+  const { data: catalogRows } = await supabase.rpc('training_hub_payload');
 
-  // 2. Fetch cross-system content edges (training → glossary, regulation, tool)
+  // 2. Fetch training levels separately (the RPC returns catalog only)
+  const { data: levelsRows } = await supabase
+    .from('training_levels')
+    .select('*')
+    .order('rank_weight', { ascending: true });
+
+  // 3. Fetch geo coverage count
+  const { count: geoCount } = await supabase
+    .from('training_geo_fit')
+    .select('*', { count: 'exact', head: true });
+
+  // 4. Fetch cross-system content edges (training → glossary, regulation, tool)
   const { data: contentEdges } = await supabase
     .from('content_edges')
     .select('from_type, from_id, to_type, to_id, link_type, anchor_text, priority')
@@ -87,9 +98,9 @@ export default async function TrainingHome() {
     .order('priority', { ascending: false })
     .limit(30);
 
-  let catalog = hubPayload?.catalog ?? [];
-  const geoCoverage = hubPayload?.geo_coverage ?? [];
-  const levels = hubPayload?.levels ?? [];
+  let catalog = Array.isArray(catalogRows) && catalogRows.length > 0 ? catalogRows : [];
+  const geoCoverage = geoCount ? Array.from({ length: geoCount }) : [];
+  const levels = Array.isArray(levelsRows) ? levelsRows : [];
 
   // Fallback catalog if the DB is empty (handles migrating / unseeded states)
   if (!catalog || catalog.length === 0) {
