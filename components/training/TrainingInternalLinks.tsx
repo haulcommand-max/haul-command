@@ -88,7 +88,7 @@ export function TrainingInternalLinks({ edges }: { edges: ContentEdge[] }) {
                 <span>{section.icon}</span>
                 <span>{section.title}</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {items.slice(0, 8).map((edge, i) => {
                   const isOutbound = edge.from_type === 'training';
                   const targetType = isOutbound ? edge.to_type : edge.from_type;
@@ -100,21 +100,28 @@ export function TrainingInternalLinks({ edges }: { edges: ContentEdge[] }) {
                       key={`${edge.from_id}-${edge.to_id}-${i}`}
                       href={href}
                       style={{
-                        display: 'flex', alignItems: 'center', gap: 8,
-                        fontSize: 13, color: '#b0b0c0',
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        fontSize: 13, color: '#e2e8f0',
                         textDecoration: 'none',
-                        padding: '6px 0',
-                        borderBottom: '1px solid rgba(255,255,255,0.03)',
-                        transition: 'color 0.15s',
+                        padding: '10px 12px',
+                        background: 'rgba(255,255,255,0.02)',
+                        border: '1px solid rgba(255,255,255,0.04)',
+                        borderRadius: 8,
+                        transition: 'all 0.2s',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.color = '#F5A623';
+                        e.currentTarget.style.background = 'rgba(245,166,35,0.05)';
+                        e.currentTarget.style.borderColor = 'rgba(245,166,35,0.2)';
+                        e.currentTarget.style.transform = 'translateY(-1px)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '#b0b0c0';
-                      }}
-                    >
-                      <span style={{ color: '#4a4a5a', fontSize: 11 }}>↗</span>
+                        e.currentTarget.style.color = '#e2e8f0';
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}>
+                      <span style={{ color: '#6a6a7a', fontSize: 12 }}>↗</span>
                       <span>{edge.anchor_text || targetId}</span>
                     </Link>
                   );

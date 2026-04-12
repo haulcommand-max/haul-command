@@ -83,10 +83,54 @@ export default async function TrainingHome() {
     .order('priority', { ascending: false })
     .limit(30);
 
-  // 3. Parse the payload
-  const catalog = hubPayload?.catalog ?? [];
+  let catalog = hubPayload?.catalog ?? [];
   const geoCoverage = hubPayload?.geo_coverage ?? [];
   const levels = hubPayload?.levels ?? [];
+
+  // Fallback catalog if the DB is empty (handles migrating / unseeded states)
+  if (!catalog || catalog.length === 0) {
+    catalog = [
+      {
+        slug: 'pilot-car-operator-certification',
+        title: 'Pilot Car Operator Certification',
+        summary: 'The ultimate operating system training for escorts. Get matched in minutes. Build your broker-ready compliance packet.',
+        training_type: 'certification',
+        credential_level: 'certified',
+        module_count: 12,
+        hours_total: 40,
+        pricing_mode: 'freemium',
+        requirement_fit: 'required',
+        ranking_impact: '+15 Trust Score, Broker Packet Unlock',
+        sponsor_eligible: true,
+      },
+      {
+        slug: 'av-integration-specialist',
+        title: 'AV Integration Specialist',
+        summary: 'Learn to escort Aurora, Kodiak, and Waabi autonomous trucks. Real-time procedures for staging, drafting, and comms.',
+        training_type: 'certification',
+        credential_level: 'av_ready',
+        module_count: 8,
+        hours_total: 24,
+        pricing_mode: 'freemium',
+        requirement_fit: 'useful',
+        ranking_impact: 'Eligibility for AV runs',
+        sponsor_eligible: true,
+      },
+      {
+        slug: 'load-securement-fundamentals',
+        title: 'Load Securement Fundamentals',
+        summary: 'A critical primer on chaining, strapping, and load math before you hit the road.',
+        training_type: 'course',
+        credential_level: 'road_ready',
+        module_count: 4,
+        hours_total: 10,
+        pricing_mode: 'free',
+        requirement_fit: 'useful',
+        ranking_impact: '+5 Trust Score',
+        sponsor_eligible: false,
+      }
+    ];
+  }
 
   // Group catalog by credential level for tier display
   const tierGroups: Record<string, typeof catalog> = {};
@@ -165,7 +209,7 @@ export default async function TrainingHome() {
             pointerEvents: 'none',
           }} />
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 28, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 32, flexWrap: 'wrap' }}>
             {[
               { icon: 'ðŸ›¡ï¸', text: 'Built on FMCSA + SC&RA Standards' },
               { icon: 'ðŸŒ', text: `${countryCount || 120} countries` },
@@ -175,9 +219,9 @@ export default async function TrainingHome() {
                 display: 'flex', alignItems: 'center', gap: 6,
                 background: 'rgba(245,166,35,0.1)',
                 border: '1px solid rgba(245,166,35,0.25)',
-                borderRadius: 20, padding: '5px 14px',
-                fontSize: 12, fontWeight: 600, color: '#F5A623',
-                letterSpacing: '0.02em',
+                borderRadius: 20, padding: '4px 12px',
+                fontSize: 11, fontWeight: 700, color: '#F5A623',
+                letterSpacing: '0.04em', textTransform: 'uppercase',
                 backdropFilter: 'blur(8px)',
               }}>
                 <span>{b.icon}</span>
@@ -274,10 +318,10 @@ export default async function TrainingHome() {
               <div style={{ color: '#F5A623', fontSize: 12, fontWeight: 800, letterSpacing: '0.1em', marginBottom: 12 }}>YOUR CAREER ON THE NETWORK</div>
               <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 16, color: '#fff' }}>Training Powers Your Report Card</h2>
               <p style={{ color: '#e2e8f0', maxWidth: 640, margin: '0 auto 32px', fontSize: 16, lineHeight: 1.65 }}>
-                  Every module you complete, badge you earn, and certificate you hold is directly attached to your Operator Profile. Stop storing PDFsâ€”your Profile Report Card proves your readiness to brokers automatically.
+                  Every module you complete, badge you earn, and certificate you hold is directly attached to your Operator Profile. Stop storing PDFs—your Profile Report Card proves your readiness to brokers automatically.
               </p>
-              <Link href="/profile/report-card" style={{ display: 'inline-flex', background: 'transparent', color: '#fff', borderBottom: '2px solid #F5A623', paddingBottom: 4, fontWeight: 700, textDecoration: 'none', fontSize: 16 }}>
-                  View Your Profile Report Card â†’
+              <Link href="/training/report-card" style={{ display: 'inline-flex', background: 'transparent', color: '#fff', borderBottom: '2px solid #F5A623', paddingBottom: 4, fontWeight: 700, textDecoration: 'none', fontSize: 16 }}>
+                  View Your Profile Report Card →
               </Link>
           </div>
       </section>
@@ -380,17 +424,17 @@ export default async function TrainingHome() {
           developed by the FMCSA, CVSA, and SC&RA â€” the same standards used by all 12 US states that
           require pilot car certification. We start where they stop and go further.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 16, maxWidth: 840, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20, maxWidth: 960, margin: '0 auto' }}>
           {[
             { icon: 'ðŸ›¡ï¸', text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
             { icon: 'ðŸ“‹', text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
             { icon: 'ðŸŒ', text: `${countryCount || 120} countries`, sub: 'Global recognition' },
             { icon: 'ðŸ›ï¸', text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
           ].map((item, i) => (
-            <div key={i} style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid rgba(245,166,35,0.15)', borderRadius: 14, padding: '20px 16px', textAlign: 'center', backdropFilter: 'blur(8px)' }}>
-              <div style={{ fontSize: 28, marginBottom: 8 }}>{item.icon}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#e8e8e8', lineHeight: 1.3, marginBottom: 4 }}>{item.text}</div>
-              <div style={{ fontSize: 12, color: '#cbd5e1' }}>{item.sub}</div>
+            <div key={i} style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 16, padding: '24px 20px', textAlign: 'center', backdropFilter: 'blur(8px)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+              <div style={{ fontSize: 36, marginBottom: 16 }}>{item.icon}</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#F5A623', lineHeight: 1.35, marginBottom: 8 }}>{item.text}</div>
+              <div style={{ fontSize: 14, color: '#e2e8f0', fontWeight: 500 }}>{item.sub}</div>
             </div>
           ))}
         </div>
