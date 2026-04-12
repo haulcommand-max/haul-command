@@ -1,5 +1,4 @@
 'use client';
-ï»¿"use client";
 
 /**
  * /profile Ã¢â‚¬â€ Operator Trust Report Card

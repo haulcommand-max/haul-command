@@ -21,9 +21,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { country: string, state: string, corridor: string } }): Promise<Metadata> {
-  const seed = PRIORITY_CORRIDORS.find(c => c.corridor === params.corridor);
-  const corridorName = seed ? seed.name : params.corridor.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+export async function generateMetadata({ params }: { params: Promise<{ country: string, state: string, corridor: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const seed = PRIORITY_CORRIDORS.find(c => c.corridor === resolvedParams.corridor);
+  const corridorName = seed ? seed.name : resolvedParams.corridor.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   
   return {
     title: `${corridorName} Heavy Haul Directory & Route Intelligence | Haul Command`,
@@ -31,9 +32,10 @@ export async function generateMetadata({ params }: { params: { country: string, 
   };
 }
 
-export default async function CorridorHub({ params }: { params: { country: string, state: string, corridor: string } }) {
-  const seed = PRIORITY_CORRIDORS.find(c => c.corridor === params.corridor);
-  const corridorName = seed ? seed.name : params.corridor.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+export default async function CorridorHub({ params }: { params: Promise<{ country: string, state: string, corridor: string }> }) {
+  const resolvedParams = await params;
+  const seed = PRIORITY_CORRIDORS.find(c => c.corridor === resolvedParams.corridor);
+  const corridorName = seed ? seed.name : resolvedParams.corridor.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
   return (
     <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col pt-32">
@@ -41,11 +43,11 @@ export default async function CorridorHub({ params }: { params: { country: strin
             {/* SEO Hero & Intent Capture */}
             <div className="text-center space-y-6">
                 <div className="flex items-center justify-center gap-2">
-                    <Link href={`/${params.country}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
-                        {params.country} /
+                    <Link href={`/${resolvedParams.country}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
+                        {resolvedParams.country} /
                     </Link>
-                    <Link href={`/${params.country}/${params.state}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
-                        {params.state} /
+                    <Link href={`/${resolvedParams.country}/${resolvedParams.state}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
+                        {resolvedParams.state} /
                     </Link>
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hc-surface border border-emerald-500/20 text-xs font-mono text-emerald-500 uppercase tracking-widest glass-premium">
                         <Route className="h-3 w-3" /> ACTIVE CORRIDOR
@@ -87,7 +89,7 @@ export default async function CorridorHub({ params }: { params: { country: strin
                     <p className="text-slate-400 text-sm mb-6">
                         Dominate broker searches exclusively for the {corridorName} lane. Lock out local competitors instantly.
                     </p>
-                    <Link href={`/advertise/corridor?lane=${params.corridor}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
+                    <Link href={`/advertise/corridor?lane=${resolvedParams.corridor}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
                         Buy Slot — $149/mo
                     </Link>
                 </div>
@@ -104,7 +106,7 @@ export default async function CorridorHub({ params }: { params: { country: strin
                     <p className="text-slate-400 text-sm mb-6">
                         Export live quote averages and carrier density bottlenecks specific to the {corridorName}.
                     </p>
-                    <Link href={`/data-products?lane=${params.corridor}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
+                    <Link href={`/data-products?lane=${resolvedParams.corridor}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
                         <Lock className="h-3 w-3" /> Unlock API — $49/mo
                     </Link>
                 </div>

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { TrustScoreBadge } from '@/components/trust/TrustScoreBadge';
+import EnterprisePlannerUploader from '@/components/enterprise/EnterprisePlannerUploader';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,6 +63,11 @@ export default async function EnterpriseDashboardPage() {
 
       <div className="max-w-6xl mx-auto px-4 lg:px-10 py-8">
         
+        {/* Bulk Route Planner */}
+        <div className="mb-8">
+          <EnterprisePlannerUploader />
+        </div>
+
         {/* Fleet Verification Banner */}
         <div className={`mb-8 p-6 rounded-2xl border ${stats.badgeUnlocked ? 'bg-[rgba(59,130,246,0.05)] border-blue-500/30' : 'bg-[#0f1a24] border-[#1e3048]'} relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6`}>
           <div className="relative z-10 flex items-center gap-6">

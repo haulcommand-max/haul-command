@@ -10,6 +10,7 @@ import SwipeableRunCard from "@/components/mobile/SwipeableRunCard";
 import { AvailabilityToggle } from "@/components/dispatch/AvailabilityToggle";
 import AvailabilityQuickSet from "@/components/capture/AvailabilityQuickSet";
 import { TrustScoreBadge } from "@/components/trust/TrustScoreBadge";
+import RewardsCenterCard from "@/components/carrier/RewardsCenterCard";
 import { CheckCircle, AlertCircle, Clock, TrendingUp, DollarSign, Briefcase, User, ChevronRight } from "lucide-react";
 
 const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
@@ -663,8 +664,17 @@ export function OperatorDashboardClient({
                       <p className="text-xs text-slate-400 mt-0.5">Verify identity and claim your profile to unlock higher rankings.</p>
                     </div>
                     <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-white text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
-                      Verify Now â†’
+                      Verify Now →
                     </a>
+                  </div>
+                )}
+
+                {operatorId && (
+                  <div className="mt-4">
+                    <RewardsCenterCard 
+                      operatorId={operatorId} 
+                      trustScore={trustProfile.trust_score ?? operatorProfile?.trust_score ?? 0} 
+                    />
                   </div>
                 )}
               </div>

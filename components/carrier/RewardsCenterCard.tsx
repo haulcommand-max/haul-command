@@ -2,13 +2,14 @@
 
 import { Crown, Zap, ShieldCheck, Fuel, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export default function RewardsCenterCard({ operatorId, trustScore }: { operatorId: string, trustScore: number }) {
   const [tier, setTier] = useState<any>(null);
 
   useEffect(() => {
     async function fetchTier() {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from('operator_reward_tiers')
         .select('*')

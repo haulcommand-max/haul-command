@@ -1,11 +1,8 @@
 -- 20260412_wave11_facility_ugc_and_rewards.sql
 -- Haul Command Wave 11: Facility UGC rating engine and early-visibility moats
 
-DROP TABLE IF EXISTS public.facility_reviews CASCADE;
-DROP TABLE IF EXISTS public.facilities CASCADE;
-
 -- 1. FACILITIES (Drop yards, warehouses, ports, heavy haul checkpoints)
-CREATE TABLE public.facilities (
+CREATE TABLE IF NOT EXISTS public.facilities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     type TEXT NOT NULL, -- 'port', 'warehouse', 'drop_yard', 'weigh_station', 'rest_stop'
@@ -23,7 +20,7 @@ CREATE TABLE public.facilities (
 CREATE INDEX IF NOT EXISTS idx_facilities_location ON public.facilities(country_code, state_province, city);
 
 -- 2. FACILITY REVIEWS (The UGC Moat)
-CREATE TABLE public.facility_reviews (
+CREATE TABLE IF NOT EXISTS public.facility_reviews (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     facility_id UUID NOT NULL REFERENCES public.facilities(id) ON DELETE CASCADE,
     operator_id UUID NOT NULL REFERENCES auth.users(id),
@@ -64,20 +61,22 @@ ALTER TABLE public.loads ADD COLUMN IF NOT EXISTS published_at TIMESTAMPTZ;
 UPDATE public.loads SET published_at = created_at WHERE published_at IS NULL;
 
 -- Create an RPC to fetch loads that respects the operator's early access perk
-/* CREATE OR REPLACE FUNCTION get_available_loads_for_operator(p_operator_id UUID)
+CREATE OR REPLACE FUNCTION get_available_loads_for_operator(p_operator_id UUID)
 RETURNS SETOF public.loads AS $$
 DECLARE
     v_trust_score INTEGER;
     v_early_access_mins INTEGER;
 BEGIN
+    -- 1. Get Operator Trust Score (Fall back to 0 if not calculated)
     SELECT COALESCE(composite_score, 0) INTO v_trust_score 
     FROM public.operator_trust_scores 
-    WHERE profile_id = p_operator_id;
+    WHERE operator_id = p_operator_id;
 
     IF NOT FOUND THEN
         v_trust_score := 0;
     END IF;
 
+    -- 2. Determine their early access window
     SELECT early_load_access_mins INTO v_early_access_mins
     FROM public.operator_reward_tiers
     WHERE min_trust_score <= v_trust_score
@@ -88,6 +87,8 @@ BEGIN
         v_early_access_mins := 0;
     END IF;
 
+    -- 3. Return loads that are published + their early access window is met
+    -- A platinum operator (30 mins early) can see a load published at 12:30 at 12:00.
     RETURN QUERY
     SELECT *
     FROM public.loads
@@ -95,7 +96,7 @@ BEGIN
     AND published_at - (v_early_access_mins || ' minutes')::interval <= now()
     ORDER BY published_at DESC;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER; */
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- 5. RLS
 ALTER TABLE public.facilities ENABLE ROW LEVEL SECURITY;
