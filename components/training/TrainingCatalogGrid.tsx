@@ -14,6 +14,7 @@ type CatalogItem = {
   requirement_fit: string;
   ranking_impact: string;
   sponsor_eligible: boolean;
+  price_display?: string;
 };
 
 type TierDisplay = {
@@ -127,6 +128,15 @@ export function TrainingCatalogGrid({
                       fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
                       letterSpacing: '0.04em',
                     }}>FREEMIUM</span>
+                  )}
+                  {item.pricing_mode === 'paid' && (
+                    <span style={{
+                      background: 'rgba(245,166,35,0.12)', color: '#F5A623',
+                      fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                      letterSpacing: '0.04em', textTransform: 'uppercase',
+                    }}>
+                      {item.price_display || 'PAID'}
+                    </span>
                   )}
                   {isRequired && (
                     <span style={{

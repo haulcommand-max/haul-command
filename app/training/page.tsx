@@ -293,32 +293,6 @@ export default async function TrainingHome() {
           </div>
         </div>
       </PageFamilyBackground>
-
-      {/* â”â”â” VALUE PROPOSITION â”â”â” */}
-      <section style={{
-        background: 'rgba(12,12,16,0.95)',
-        borderBottom: '1px solid #1a1a22',
-        padding: '64px 24px',
-        backdropFilter: 'blur(10px)',
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 40, alignItems: 'center' }}>
-            <div style={{ flex: 1, minWidth: 300 }}>
-                <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, letterSpacing: '-0.02em', color: '#fff' }}>
-                    The Cost of Ignorance is <span style={{ color: '#ef4444' }}>Unsettled Escrows.</span>
-                </h2>
-                <p style={{ color: '#e2e8f0', fontSize: 16, lineHeight: 1.65, marginBottom: 24 }}>
-                    Haul Command isn't just an academy; it's a Settlement OS. Unverified operators are screened out immediately. Completing your first free module enables your <strong>14-day First Job Journey</strong>, helping you build a broker-ready compliance packet fast so you can start working.
-                <h3 style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 16 }}>Start Your 14-Day Readiness</h3>
-                <p style={{ color: '#e2e8f0', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Activate availability, build a broker-ready packet, and master the entry path from your first module.</p>
-                <Link href="/training/pilot-car-operator-certification" style={{ display: 'block', textAlign: 'center', background: '#2563eb', color: '#fff', padding: '14px 20px', borderRadius: 10, fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    <ShieldCheck className="w-4 h-4" /> Start Your Certification
-                </Link>
-            </div>
-        </div>
-      </section>
-
-      {/* â”â”â” REPORT CARD LINK â”â”â” */}
-      <section style={{ padding: '64px 24px', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
           <div style={{ background: 'linear-gradient(135deg, rgba(17,17,26,0.9), rgba(12,12,16,0.9))', border: '1px solid #1a1a2a', padding: '48px 24px', borderRadius: 20, backdropFilter: 'blur(8px)' }}>
               <div style={{ color: '#F5A623', fontSize: 12, fontWeight: 800, letterSpacing: '0.1em', marginBottom: 12 }}>YOUR CAREER ON THE NETWORK</div>
               <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 16, color: '#fff' }}>Training Powers Your Report Card</h2>
