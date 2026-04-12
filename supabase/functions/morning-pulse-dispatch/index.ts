@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { GoogleAuth } from "https://deno.land/x/google_auth@0.5.1/mod.ts";
+import { GoogleAuth } from "npm:google-auth-library";
 import webpush from "npm:web-push@3.6.7";
 
 serve(async (req) => {

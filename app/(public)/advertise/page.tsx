@@ -319,6 +319,39 @@ export default function AdvertisePage() {
             {/* Content */}
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 80px' }}>
 
+                {/* â”€â”€ BUNDLES TAB (New) â”€â”€ */}
+                {tab === 'territory' && (
+                    <div style={{ marginBottom: 40, padding: 32, borderRadius: 16, background: 'linear-gradient(145deg, #1D170A, #111118)', border: `1px solid ${T.goldBorder}` }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+                            <div>
+                                <h2 style={{ fontSize: 24, fontWeight: 900, color: T.gold, margin: '0 0 8px 0' }}>🔥 Dominance Packages</h2>
+                                <p style={{ fontSize: 13, color: T.dim, margin: 0 }}>Bundle inventory to guarantee the highest ROAS and local dominance.</p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>State Dominator</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Top of state directory, 3 major corridors, and alert inclusion.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$899<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                            <div style={{ background: 'rgba(212,168,67,0.1)', padding: 24, borderRadius: 12, border: `1px solid ${T.goldBorder}`, position: 'relative', overflow: 'hidden' }}>
+                                <div style={{ position: 'absolute', top: 12, right: -24, background: T.gold, color: '#000', fontSize: 9, fontWeight: 900, padding: '4px 24px', transform: 'rotate(45deg)' }}>POPULAR</div>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Corridor + Port Combo</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Own the route from the port to the major industrial zone.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,299<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: T.gold, color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Multi-State Launch</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Dominate 3 adjacent states (+ all their corridors) instantly.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,999<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* â”€â”€ TERRITORY TAB â”€â”€ */}
                 {tab === 'territory' && (
                     <>

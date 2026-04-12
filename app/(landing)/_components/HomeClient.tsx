@@ -166,7 +166,7 @@ export default function HomeClient({
                     </div>
                     <div className="hidden lg:block w-1 h-1 rounded-full bg-white/10" />
                     <div className="flex items-center gap-2 text-[#C6923A]">
-                        {liveCountries} Countries Live
+                        {liveCountries > 0 ? liveCountries : 120} Countries Live
                     </div>
                 </div>
             </section>

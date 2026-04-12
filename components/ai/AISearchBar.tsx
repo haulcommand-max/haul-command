@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Loader2, Bot } from 'lucide-react';
+import { VoiceMicButton } from './VoiceMicButton';
+import { useVoiceSession } from '@/hooks/useVoiceSession';
 
 /* ═══════════════════════════════════════════════════════════════════
    AISearchBar — Claude-powered natural language search for directory
@@ -17,6 +19,19 @@ export function AISearchBar({ onFiltersApplied }: AISearchBarProps) {
   const [query, setQuery] = useState('');
   const [thinking, setThinking] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
+
+  // Voice: transcript feeds into the search query
+  const voice = useVoiceSession({
+    provider: 'claude',
+    systemPrompt: 'You are a directory search assistant for Haul Command, a pilot car escort operator platform. Parse the user\'s spoken search query and extract structured filters. Return ONLY valid JSON: { "search": "...", "state": "XX", "serviceType": "...", "summary": "..." }',
+    onTranscript: (text, isFinal) => {
+      if (isFinal && text.trim()) {
+        setQuery(text.trim());
+        // Auto-trigger search after voice
+        setTimeout(() => handleAISearch(), 100);
+      }
+    },
+  });
 
   const handleAISearch = async () => {
     if (!query.trim() || thinking) return;
@@ -84,6 +99,13 @@ export function AISearchBar({ onFiltersApplied }: AISearchBarProps) {
         }}>
           AI
         </div>
+        <VoiceMicButton
+          state={voice.voiceState}
+          provider="claude"
+          onToggle={voice.toggleVoice}
+          onInterrupt={voice.interruptVoice}
+          size={32}
+        />
         <button aria-label="Interactive Button"
           onClick={handleAISearch}
           disabled={thinking}
@@ -132,6 +154,34 @@ export function AIAssistantDrawer() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Voice: transcript feeds into the chat input and auto-sends
+  const voice = useVoiceSession({
+    provider: 'claude',
+    systemPrompt: 'You are the Haul Command AI assistant. You help with oversize load escort requirements, pilot car regulations, rate benchmarks, corridor conditions, and general heavy haul questions. Be helpful, concise, and conversational — your response will be spoken aloud.',
+    onTranscript: (text, isFinal) => {
+      if (isFinal && text.trim()) {
+        // Add user message
+        const userMsg: Message = { role: 'user', content: text.trim() };
+        setMessages(prev => [...prev, userMsg]);
+      }
+    },
+    onAssistantText: () => {
+      // Voice adapter streams directly — we just display the final text
+    },
+  });
+
+  // When voice finishes a full response, add it to messages
+  useEffect(() => {
+    if (voice.assistantText && voice.voiceState === 'idle') {
+      setMessages(prev => {
+        // Avoid duplicates
+        const last = prev[prev.length - 1];
+        if (last?.role === 'assistant' && last.content === voice.assistantText) return prev;
+        return [...prev, { role: 'assistant', content: voice.assistantText }];
+      });
+    }
+  }, [voice.assistantText, voice.voiceState]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -240,6 +290,13 @@ export function AIAssistantDrawer() {
                   borderRadius: 10, padding: '8px 12px', fontSize: 13, color: '#f0f4f8',
                   outline: 'none', caretColor: '#a78bfa',
                 }}
+              />
+              <VoiceMicButton
+                state={voice.voiceState}
+                provider="claude"
+                onToggle={voice.toggleVoice}
+                onInterrupt={voice.interruptVoice}
+                size={34}
               />
               <button aria-label="Interactive Button" onClick={send} disabled={loading} style={{
                 background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',

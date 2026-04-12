@@ -305,19 +305,6 @@ export default async function TrainingHome() {
                 </h2>
                 <p style={{ color: '#e2e8f0', fontSize: 16, lineHeight: 1.65, marginBottom: 24 }}>
                     Haul Command isn't just an academy; it's a Settlement OS. Unverified operators are screened out immediately. Completing your first free module enables your <strong>14-day First Job Journey</strong>, helping you build a broker-ready compliance packet fast so you can start working.
-                </p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, marginBottom: 24 }}>
-                    <div style={{ background: '#111118', padding: '16px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <div style={{ fontSize: 24, fontWeight: 900, color: '#fff' }}>100%</div>
-                        <div style={{ fontSize: 11, color: '#6a6a7a', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>Dispute Protected</div>
-                    </div>
-                    <div style={{ background: '#111118', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '16px', borderRadius: 8 }}>
-                        <div style={{ fontSize: 24, fontWeight: 900, color: '#ef4444' }}>3.4x</div>
-                        <div style={{ fontSize: 11, color: '#6a6a7a', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>Higher Close Rate</div>
-                    </div>
-                </div>
-            </div>
-            <div style={{ flex: 1, minWidth: 300, background: 'linear-gradient(145deg, rgba(37,99,235,0.1), transparent)', border: '1px solid rgba(37,99,235,0.2)', padding: 40, borderRadius: 20 }}>
                 <h3 style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 16 }}>Start Your 14-Day Readiness</h3>
                 <p style={{ color: '#e2e8f0', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Activate availability, build a broker-ready packet, and master the entry path from your first module.</p>
                 <Link href="/training/pilot-car-operator-certification" style={{ display: 'block', textAlign: 'center', background: '#2563eb', color: '#fff', padding: '14px 20px', borderRadius: 10, fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
