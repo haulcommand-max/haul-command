@@ -68,8 +68,24 @@ export default async function LoadBoard() {
                         </div>
                     )
                 }) : (
-                    <div className="p-16 border border-gray-800 text-center bg-gray-900/50">
-                        <p className="text-gray-500 font-mono tracking-widest uppercase">No Active Vectors Found in Local Radius.</p>
+                    <div className="border border-green-900/40 bg-green-950/10 p-8 rounded-lg text-center backdrop-blur-sm">
+                        <h4 className="text-xl font-bold uppercase tracking-widest text-green-500 mb-2">Market Liquidity Hydrating</h4>
+                        <p className="text-gray-400 font-mono tracking-wide mb-6">Real-time signals are currently routing through the 120-country aggregation layer.</p>
+                        
+                        <div className="grid gap-3 opacity-60 pointer-events-none">
+                            <div className="bg-gray-900 border border-gray-800 p-4 flex justify-between mx-auto w-full max-w-4xl text-left">
+                                <div><span className="text-blue-500 mr-2 font-bold">[ SIGNAL ING ]</span> Houston, TX <span className="text-gray-600 mx-2">→</span> Oklahoma City, OK</div>
+                                <div className="text-green-500 font-mono">$1,200 <span className="text-gray-500 text-xs ml-2">ESCROW PENDING</span></div>
+                            </div>
+                            <div className="bg-gray-900 border border-gray-800 p-4 flex justify-between mx-auto w-full max-w-4xl text-left">
+                                <div><span className="text-blue-500 mr-2 font-bold">[ SIGNAL ING ]</span> Miami, FL <span className="text-gray-600 mx-2">→</span> Savannah, GA</div>
+                                <div className="text-green-500 font-mono">RFQ <span className="text-gray-500 text-xs ml-2">CARRIER MATCHING</span></div>
+                            </div>
+                            <div className="bg-gray-900 border border-gray-800 p-4 flex justify-between mx-auto w-full max-w-4xl text-left">
+                                <div><span className="text-blue-500 mr-2 font-bold">[ SIGNAL ING ]</span> Denver, CO <span className="text-gray-600 mx-2">→</span> Salt Lake City, UT</div>
+                                <div className="text-green-500 font-mono">$2,450 <span className="text-gray-500 text-xs ml-2">ESCROW PENDING</span></div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
