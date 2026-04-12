@@ -3,8 +3,8 @@ import { ArrowRight, ShieldCheck, Zap, Globe, Map, Truck, BarChart3, Clock, Chec
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Broker Logistics OS | Haul Command Global 57-Country Network',
-  description: 'Automate your entire oversize load dispatch pipeline. Connect with pre-vetted pilot cars in 120 countries, calculate instant route costs, and dominate your lane operations.',
+  title: 'Broker Logistics OS | Haul Command Global 120-Country Network',
+  description: 'Automate your entire oversize load dispatch pipeline. Forward your tenders via email to ingest across 120 countries, calculate instant route costs, and dominate your lane operations.',
   alternates: {
     canonical: 'https://haulcommand.com/broker',
   },
@@ -32,22 +32,22 @@ export default function BrokerCapturePage() {
                 </span>
               </h1>
               <p className="text-xl text-slate-400 max-w-xl mx-auto md:mx-0">
-                The first autonomous operating system for oversized freight brokers. Source vetted escorts, predict accurate lane costs, and instantly manage DOT permits across our Global Tier A network.
+                Stop logging into secondary software. Forward your active load sheets via email and our AI intercepts, scales, and dispatches the route parameters directly to verified escorts across 120 countries instantly.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 justify-center md:justify-start">
                 <a 
-                  href="/tools" 
+                  href="mailto:ingest@haulcommand.com?subject=Load%20Tender%20Access" 
                   className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)]"
                 >
                   <Zap className="w-5 h-5" />
-                  Try Global Routing Tools
+                  Forward First Load To Ingest
                 </a>
                 <Link 
-                  href="/pricing"
+                  href="/advertise"
                   className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-lg border border-slate-700 flex items-center justify-center transition-all"
                 >
-                  View Agency Pricing
+                  Buy AdGrid Visibility
                 </Link>
               </div>
               
@@ -166,10 +166,10 @@ export default function BrokerCapturePage() {
                 Managed Logistics Services
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Let our AI handle the entire 57-country pipeline.
+                Let our AI handle the entire 120-country pipeline.
               </h2>
               <p className="text-slate-300 text-lg mb-8 max-w-2xl">
-                Need end-to-end management? We provide dedicated account executives embedded with our Global OS to handle route surveys, permitting arrays, and multi-vehicle orchestration from origin to destination.
+                Need end-to-end management? Contact our control plane to handle complex localized operations, translating single-point loads into complex multi-vehicle escort arrays automatically.
               </p>
               <div className="flex items-center gap-4">
                 <a 
@@ -184,8 +184,8 @@ export default function BrokerCapturePage() {
             <div className="md:w-1/3 flex justify-center">
               <div className="w-64 h-64 rounded-full border-[12px] border-blue-500/20 flex flex-col items-center justify-center relative bg-slate-900 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
                 <Truck className="w-16 h-16 text-blue-400 mb-2" />
-                <div className="text-3xl font-black text-white">57</div>
-                <div className="text-sm font-medium text-slate-400">Global Regions</div>
+                <div className="text-3xl font-black text-white">120</div>
+                <div className="text-sm font-medium text-slate-400">Global Markets</div>
                 
                 {/* Orbiting dots */}
                 <div className="absolute inset-[-12px] border border-blue-400/30 rounded-full animate-[spin_10s_linear_infinite]" style={{ borderStyle: 'dashed' }}></div>

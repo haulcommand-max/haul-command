@@ -58,7 +58,7 @@
 
 ### Description (4000 chars max)
 ```
-Haul Command is the operating system for oversize and heavy haul transport. Find verified pilot car operators, post escort loads, and manage compliance across 57 countries — all from your phone.
+Haul Command is the operating system for oversize and heavy haul transport. Find verified pilot car operators, post escort loads, and manage compliance across 120 countries — all from your phone.
 
 FOR ESCORT OPERATORS:
 • Get matched with loads near your location in real-time

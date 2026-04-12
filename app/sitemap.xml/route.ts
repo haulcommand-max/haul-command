@@ -34,6 +34,11 @@ export async function GET() {
     { url: '/', priority: '1.0', changeFreq: 'daily' },
     { url: '/directory', priority: '0.95', changeFreq: 'hourly' },
     { url: '/load-board', priority: '0.95', changeFreq: 'hourly' },
+    { url: '/broker', priority: '0.90', changeFreq: 'weekly' },
+    { url: '/advertise', priority: '0.90', changeFreq: 'weekly' },
+    { url: '/advertise/territory', priority: '0.85', changeFreq: 'weekly' },
+    { url: '/advertise/corridor', priority: '0.85', changeFreq: 'weekly' },
+    { url: '/hq', priority: '0.80', changeFreq: 'daily' },
     { url: '/regulations', priority: '0.85', changeFreq: 'weekly' },
     { url: '/glossary', priority: '0.80', changeFreq: 'weekly' },
     { url: '/training', priority: '0.80', changeFreq: 'weekly' },
@@ -57,7 +62,34 @@ export async function GET() {
     priority: p.priority,
   }));
 
-  const allEntries = [...staticEntries, ...registryEntries];
+  // Dynamically fetch 120-Country Market Hubs
+  const { data: markets } = await supabase
+    .from('mkt_markets')
+    .select('country, target_type');
+    
+  const marketEntries = (markets || [])
+    .filter(m => m.country)
+    .map((m: any) => ({
+      url: `${siteUrl}/${m.country.toLowerCase()}`,
+      lastMod: now,
+      changeFreq: 'weekly',
+      priority: '0.85',
+    }));
+
+  // Dynamically fetch Global Corridors
+  const { data: corridors } = await supabase
+    .from('mkt_corridors')
+    .select('id, origin, destination')
+    .limit(5000); // Batched constraint
+
+  const corridorEntries = (corridors || []).map((c: any) => ({
+      url: `${siteUrl}/corridors/${c.id}`,
+      lastMod: now,
+      changeFreq: 'daily',
+      priority: '0.90',
+  }));
+
+  const allEntries = [...staticEntries, ...registryEntries, ...marketEntries, ...corridorEntries];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

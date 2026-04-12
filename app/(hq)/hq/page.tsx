@@ -1,7 +1,8 @@
 import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { cookies } from 'next/headers';
-import { Server, Activity, ArrowRight, ShieldCheck, DollarSign, Database, BrainCircuit, BarChart3, TrendingUp, Target } from "lucide-react";
+import { Server, Activity, ArrowRight, ShieldCheck, DollarSign, Database, BrainCircuit, BarChart3, TrendingUp, Target, Map as MapIcon } from "lucide-react";
 import Link from "next/link";
+import LiquidityMap from '@/components/dashboard/LiquidityMap';
 
 export default async function HQDashboard() {
   const supabase = createServerComponentClient({ cookies });
@@ -49,6 +50,22 @@ export default async function HQDashboard() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Global 120-Country Liquidity Radar */}
+      <div className="rounded-xl border border-white/5 bg-hc-surface bg-grid-white/5 glass-premium flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-slate-800 /50 flex justify-between items-center bg-slate-950/40">
+          <h3 className="text-xl font-bold text-slate-100 flex items-center gap-3">
+            <MapIcon className="h-6 w-6 text-blue-500" />
+            Global 120-Country Liquidity Radar
+          </h3>
+          <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono font-bold rounded-full animate-pulse">
+            LIVE TELEMETRY
+          </span>
+        </div>
+        <div className="h-[500px] w-full relative">
+          <LiquidityMap />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
