@@ -117,7 +117,7 @@
         "posthog-node": "^5.28.6",
         "prop-types": "^15.8.1",
         "react": "^19.2.4",
-        "react-dom": "^19.2.4",
+        "react-dom": "^19.2.5",
         "react-is": "^19.2.4",
         "react-leaflet": "^5.0.0",
         "react-map-gl": "^8.1.0",
