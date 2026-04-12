@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   }
 };
 
-// ---- TIER CONFIG (visual â€” pricing comes from DB) ----
+// ---- TIER CONFIG (visual — pricing comes from DB) ----
 const TIER_DISPLAY = {
   road_ready: {
     name: 'Road Ready',
@@ -57,7 +57,7 @@ const FAQS = [
   },
   {
     q: 'How long does it take to get certified?',
-    a: 'Course duration varies by program. Our flagship Pilot Car Operator Certification takes approximately 40 hours across 12 modules. Shorter courses like Load Securement Fundamentals take about 12 hours. You can complete modules in pieces â€” your progress is saved.',
+    a: 'Course duration varies by program. Our flagship Pilot Car Operator Certification takes approximately 40 hours across 12 modules. Shorter courses like Load Securement Fundamentals take about 12 hours. You can complete modules in pieces — your progress is saved.',
   },
   {
     q: 'Does the HC AV-Ready certification really cover autonomous trucks?',
@@ -79,7 +79,7 @@ export default async function TrainingHome() {
   // 1. Call the canonical training_hub_payload() RPC
   const { data: hubPayload } = await supabase.rpc('training_hub_payload');
 
-  // 2. Fetch cross-system content edges (training â†’ glossary, regulation, tool)
+  // 2. Fetch cross-system content edges (training → glossary, regulation, tool)
   const { data: contentEdges } = await supabase
     .from('content_edges')
     .select('from_type, from_id, to_type, to_id, link_type, anchor_text, priority')
@@ -264,7 +264,7 @@ export default async function TrainingHome() {
               textDecoration: 'none', letterSpacing: '0.01em',
               boxShadow: '0 4px 24px rgba(245,166,35,0.40)',
             }}>
-              ðŸŽ“ Start Your Certification
+              ðŸŽ“ <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
             </Link>
             <a href="#catalog" style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -310,7 +310,7 @@ export default async function TrainingHome() {
                 <h3 style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 16 }}>Start Your 14-Day Readiness</h3>
                 <p style={{ color: '#e2e8f0', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Activate availability, build a broker-ready packet, and master the entry path from your first module.</p>
                 <Link href="/training/pilot-car-operator-certification" style={{ display: 'block', textAlign: 'center', background: '#2563eb', color: '#fff', padding: '14px 20px', borderRadius: 10, fontWeight: 800, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Start Your Certification
+                    <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
                 </Link>
             </div>
         </div>
@@ -425,7 +425,7 @@ export default async function TrainingHome() {
         </h2>
         <p style={{ color: '#cbd5e1', fontSize: 16, maxWidth: 700, margin: '0 auto 40px', lineHeight: 1.65, textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
           The HC Certified curriculum is aligned with the Pilot Car Escort Best Practices Guidelines
-          developed by the FMCSA, CVSA, and SC&RA â€” the same standards used by all 12 US states that
+          developed by the FMCSA, CVSA, and SC&RA — the same standards used by all 12 US states that
           require pilot car certification. We start where they stop and go further.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20, maxWidth: 960, margin: '0 auto' }}>
@@ -494,7 +494,7 @@ export default async function TrainingHome() {
           textDecoration: 'none', boxShadow: '0 6px 30px rgba(245,166,35,0.4)',
           letterSpacing: '0.01em',
         }}>
-          ðŸŽ“ Start Your Certification
+          ðŸŽ“ <ShieldCheck className="w-4 h-4 mr-2" /> Start Your Certification
         </Link>
       </section>
       </div>
