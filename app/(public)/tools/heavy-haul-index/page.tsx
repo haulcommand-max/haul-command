@@ -12,7 +12,7 @@ export default function HeavyHaulIndexPage() {
     const currentMonth = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date());
 
     return (
-        <div className="min-h-screen bg-[#030303] text-slate-200">
+        <div className=" bg-[#030303] text-slate-200">
             <div className="max-w-5xl mx-auto px-4 py-16">
 
                 {/* Header (Authoritative / Citation-Worthy) */}
@@ -110,7 +110,7 @@ export default function HeavyHaulIndexPage() {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+                        <div className="p-6  border border-slate-800 rounded-2xl">
                             <h3 className="font-bold text-white mb-2 flex items-center gap-2">
                                 <ShieldCheck className="w-5 h-5 text-emerald-500" /> Journalist & PR Snippet
                             </h3>

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 // Extracted from heavy regulatory environments like France (Voiture Pilote) and US Superloads.
 
 const CHECKS = [
-  "Verify Amber Lights / Strobes active and visible 360°",
+  "Verify Amber Lights / Strobes active and visible 360Â°",
   "Oversize Load / Convoi Exceptionnel banners deployed securely",
   "High pole calibrated strictly 6 inches above max load height",
   "UHF/CB Radio communication established with driver",
@@ -28,7 +28,7 @@ export default function ComplianceChecklist() {
   return (
     <div className="bg-black border border-hc-gray-700 rounded-lg p-6 max-w-md w-full text-white mx-auto shadow-2xl">
       <h2 className="text-xl font-bold mb-1 flex items-center gap-2">
-        <span className="text-hc-yellow-400">⚠</span> Pre-Trip Safety Protocol
+        <span className="text-hc-yellow-400">âš </span> Pre-Trip Safety Protocol
       </h2>
       <p className="text-xs text-hc-gray-400 mb-6">Must be completed before route initiation.</p>
 

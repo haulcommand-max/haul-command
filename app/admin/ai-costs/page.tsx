@@ -64,7 +64,7 @@ export default function AICostDashboard() {
   }, [days]);
 
   if (loading) return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+    <div className=" bg-[#0a0a0a] flex items-center justify-center">
       <div className="animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full" />
     </div>
   );
@@ -78,7 +78,7 @@ export default function AICostDashboard() {
   const topFeature = data.by_feature[0];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -117,7 +117,7 @@ export default function AICostDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Top Cost Feature</p>
-              <p className="text-lg font-bold text-white">{topFeature?.feature ?? '—'}</p>
+              <p className="text-lg font-bold text-white">{topFeature?.feature ?? 'â€”'}</p>
               <p className="text-xs text-gray-600">{fmtCost(topFeature?.total_cost_cents ?? 0)}</p>
             </div>
             <div>
@@ -172,7 +172,7 @@ export default function AICostDashboard() {
                   <div className="flex justify-between text-sm pt-2 border-t border-white/5">
                     <span className="text-gray-500">Cost/call</span>
                     <span className="font-mono text-gray-300">
-                      {stats.calls > 0 ? fmtCost(stats.cost_cents / stats.calls) : '—'}
+                      {stats.calls > 0 ? fmtCost(stats.cost_cents / stats.calls) : 'â€”'}
                     </span>
                   </div>
                 </div>

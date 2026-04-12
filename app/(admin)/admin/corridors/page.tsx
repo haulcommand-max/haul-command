@@ -43,7 +43,7 @@ export default function AdminCorridorsPage() {
                 body: JSON.stringify({ corridor_slug: slug }),
             });
             const data = await res.json();
-            setNudgeResult(prev => ({ ...prev, [slug]: res.ok ? `✓ ${data.notified ?? 0} escorts notified` : `✗ ${data.error ?? "error"}` }));
+            setNudgeResult(prev => ({ ...prev, [slug]: res.ok ? `âœ“ ${data.notified ?? 0} escorts notified` : `âœ— ${data.error ?? "error"}` }));
         } finally {
             setNudging(null);
         }
@@ -53,7 +53,7 @@ export default function AdminCorridorsPage() {
     const atRisk = rows.filter(r => r.band === "at_risk");
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200 p-6">
+        <div className="  text-slate-200 p-6">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
@@ -63,7 +63,7 @@ export default function AdminCorridorsPage() {
                             <TrendingUp className="w-6 h-6 text-amber-400" />
                             Escort Supply Radar
                         </h1>
-                        <p className="text-slate-400 text-sm mt-1">Corridor stress scores — updated every 6 hours</p>
+                        <p className="text-slate-400 text-sm mt-1">Corridor stress scores â€” updated every 6 hours</p>
                     </div>
                     <button aria-label="Interactive Button" onClick={load} disabled={loading}
                         className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-medium px-4 py-2 rounded-xl transition-colors disabled:opacity-50">
@@ -78,7 +78,7 @@ export default function AdminCorridorsPage() {
                         <div>
                             <p className="text-red-400 font-bold text-sm">Coverage Alert</p>
                             <p className="text-slate-400 text-xs mt-0.5">
-                                {critical.length > 0 && `${critical.length} critical corridor${critical.length > 1 ? "s" : ""} — immediate action needed. `}
+                                {critical.length > 0 && `${critical.length} critical corridor${critical.length > 1 ? "s" : ""} â€” immediate action needed. `}
                                 {atRisk.length > 0 && `${atRisk.length} corridor${atRisk.length > 1 ? "s" : ""} at risk.`}
                             </p>
                         </div>
@@ -98,7 +98,7 @@ export default function AdminCorridorsPage() {
                 </div>
 
                 {/* Corridor table */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <div className=" border border-slate-800 rounded-2xl overflow-hidden">
                     <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                         <h2 className="font-bold text-white">All Corridors</h2>
                         <span className="text-xs text-slate-500">{rows.length} monitored</span>
@@ -111,7 +111,7 @@ export default function AdminCorridorsPage() {
 
                         {!loading && rows.length === 0 && (
                             <div className="p-8 text-center text-slate-500 text-sm">
-                                No corridor data yet — run the stress refresh edge function.
+                                No corridor data yet â€” run the stress refresh edge function.
                             </div>
                         )}
 
@@ -119,10 +119,10 @@ export default function AdminCorridorsPage() {
                             const style = BAND_STYLES[row.band] ?? BAND_STYLES.healthy;
                             const timeAgo = row.computed_at
                                 ? Math.round((Date.now() - new Date(row.computed_at).getTime()) / 60000) + "m ago"
-                                : "—";
+                                : "â€”";
                             const pressureRatio = row.active_escort_count > 0
                                 ? (row.load_count_24h / row.active_escort_count).toFixed(1)
-                                : "—";
+                                : "â€”";
 
                             return (
                                 <div key={row.corridor_slug} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-800/30 transition-colors">
@@ -150,7 +150,7 @@ export default function AdminCorridorsPage() {
                                             <div className="text-[9px] text-slate-500 uppercase tracking-wide">Loads 24h</div>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-sm font-bold text-slate-300">{pressureRatio}×</div>
+                                            <div className="text-sm font-bold text-slate-300">{pressureRatio}Ã—</div>
                                             <div className="text-[9px] text-slate-500 uppercase tracking-wide">Pressure</div>
                                         </div>
                                         <div className="text-center">

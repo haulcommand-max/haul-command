@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
 
-// Free Tool #3 — Route Complexity Calculator
+// Free Tool #3 â€” Route Complexity Calculator
 const US_STATES = ['AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 
 function calcComplexity(states: string[], loadWidth: number, loadHeight: number, loadWeight: number, hasUrban: boolean, hasNight: boolean) {
@@ -17,11 +17,11 @@ function calcComplexity(states: string[], loadWidth: number, loadHeight: number,
     else if (loadWidth >= 14) { score += 20; factors.push('Wide load (14\'+ wide, double escort likely)'); }
     else if (loadWidth >= 12) { score += 10; factors.push('Oversize width (12\'+ wide)'); }
     // Height
-    if (loadHeight >= 16) { score += 25; factors.push('Extreme height — utility crew likely'); }
-    else if (loadHeight >= 14) { score += 15; factors.push('High load — height pole critical'); }
+    if (loadHeight >= 16) { score += 25; factors.push('Extreme height â€” utility crew likely'); }
+    else if (loadHeight >= 14) { score += 15; factors.push('High load â€” height pole critical'); }
     // Weight
-    if (loadWeight >= 200000) { score += 20; factors.push('Superload weight — bridge analysis required'); }
-    else if (loadWeight >= 100000) { score += 10; factors.push('Heavy load — route restrictions likely'); }
+    if (loadWeight >= 200000) { score += 20; factors.push('Superload weight â€” bridge analysis required'); }
+    else if (loadWeight >= 100000) { score += 10; factors.push('Heavy load â€” route restrictions likely'); }
     // Modifiers
     if (hasUrban) { score += 10; factors.push('Urban segments increase complexity'); }
     if (hasNight) { score += 5; factors.push('Night moves may be restricted'); }
@@ -52,7 +52,7 @@ export default function RouteComplexityCalculator() {
             <div style={{ maxWidth: 1100, margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', marginBottom: 32 }}>
                     <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 20, marginBottom: 12 }}>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: '#818cf8', textTransform: 'uppercase', letterSpacing: 2 }}>🗺️ Free Tool</span>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: '#818cf8', textTransform: 'uppercase', letterSpacing: 2 }}>ðŸ—ºï¸ Free Tool</span>
                     </div>
                     <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900, color: '#f9fafb' }}>Route Complexity Calculator</h1>
                     <p style={{ margin: '8px 0 0', fontSize: 13, color: '#6b7280' }}>Estimate escort needs, permit timelines, and risk before you dispatch.</p>
@@ -130,11 +130,11 @@ export default function RouteComplexityCalculator() {
 
                                 <div style={{ fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', marginBottom: 8 }}>Factors</div>
                                 {result.factors.map((f, i) => (
-                                    <div key={i} style={{ fontSize: 12, color: '#d1d5db', padding: '4px 0', borderBottom: i < result.factors.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>→ {f}</div>
+                                    <div key={i} style={{ fontSize: 12, color: '#d1d5db', padding: '4px 0', borderBottom: i < result.factors.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>â†’ {f}</div>
                                 ))}
 
                                 <div style={{ marginTop: 20, textAlign: 'center' }}>
-                                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post This Load →</Link>
+                                    <Link aria-label="Navigation Link" href="/loads/post" style={{ display: 'inline-flex', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>Post This Load â†’</Link>
                                 </div>
                             </div>
                         )}

@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 // The Haul Command Mobile Glossary Console
-// 120-country glossary — real Supabase data, no mocks.
+// 120-country glossary â€” real Supabase data, no mocks.
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -107,7 +107,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
   });
 
   return (
-    <div className="bg-hc-gray-900 min-h-screen pb-20 font-sans text-white">
+    <div className="bg-hc-gray-900  pb-20 font-sans text-white">
       {/* 1. Header & Primary Promise */}
       <div className="p-4 pt-8">
         <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-hc-yellow-400 to-yellow-600 mb-2">
@@ -127,7 +127,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
             onChange={(e) => setActiveCountry(e.target.value)}
             className="w-full bg-black border border-hc-gray-700 rounded-lg p-3 text-white font-bold appearance-none focus:outline-none focus:border-hc-yellow-400 focus:ring-1 focus:ring-hc-yellow-400"
           >
-            <option value="Global">🌍 Global Dictionary</option>
+            <option value="Global">ðŸŒ Global Dictionary</option>
             {countries.length > 0
               ? countries.map(c => (
                   <option key={c.country_code} value={c.country_code}>
@@ -135,11 +135,11 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
                   </option>
                 ))
               : <>
-                  <option value="AU">🇦🇺 Australia</option>
-                  <option value="US">🇺🇸 United States</option>
-                  <option value="DE">🇩🇪 Germany</option>
-                  <option value="GB">🇬🇧 United Kingdom</option>
-                  <option value="CA">🇨🇦 Canada</option>
+                  <option value="AU">ðŸ‡¦ðŸ‡º Australia</option>
+                  <option value="US">ðŸ‡ºðŸ‡¸ United States</option>
+                  <option value="DE">ðŸ‡©ðŸ‡ª Germany</option>
+                  <option value="GB">ðŸ‡¬ðŸ‡§ United Kingdom</option>
+                  <option value="CA">ðŸ‡¨ðŸ‡¦ Canada</option>
                 </>
             }
           </select>
@@ -183,7 +183,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
         </div>
       </div>
 
-      {/* 5. Definitions — Real data from Supabase */}
+      {/* 5. Definitions â€” Real data from Supabase */}
       <div className="p-4 space-y-4">
         {activeCountry !== 'Global' && (
           <h2 className="text-xs font-black uppercase text-hc-yellow-400 tracking-widest border-b border-hc-gray-800 pb-2 mb-4">
@@ -204,7 +204,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
           </div>
         ) : filteredDefinitions.length === 0 ? (
           <div className="text-center py-12 text-hc-gray-500">
-            <div className="text-3xl mb-3">📖</div>
+            <div className="text-3xl mb-3">ðŸ“–</div>
             <p className="text-sm font-bold">No terms found for &quot;{activeLetter}&quot;{activeCountry !== 'Global' ? ` in ${activeCountry}` : ''}</p>
             <p className="text-xs mt-1">Try another letter or switch to All Terms</p>
           </div>
@@ -246,7 +246,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
             onClick={() => setTopicCollapsed(!topicCollapsed)}
             className="w-full flex justify-between items-center p-4 bg-hc-gray-800 text-white font-bold"
           >
-            📂 More Ways to Browse (Topics)
+            ðŸ“‚ More Ways to Browse (Topics)
             <span className="text-hc-gray-400">{topicCollapsed ? '+' : '-'}</span>
           </button>
           {!topicCollapsed && (

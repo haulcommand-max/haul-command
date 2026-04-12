@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function DirectoryEliteStore() {
   return (
-    <div className="bg-hc-gray-900 min-h-screen pt-20 pb-20">
+    <div className="bg-hc-gray-900  pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-extrabold text-white mb-4">

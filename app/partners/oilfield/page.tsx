@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Oilfield Escort Operators — Permian Basin, Eagle Ford, Bakken | Haul Command',
+  title: 'Oilfield Escort Operators â€” Permian Basin, Eagle Ford, Bakken | Haul Command',
   description: 'Verified escort operators for oilfield equipment moves in the Permian Basin, Eagle Ford, Bakken, and oil patch regions across 120 countries. Post a rig move in 90 seconds.',
 };
 
 export default function OilfieldPartnerPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">

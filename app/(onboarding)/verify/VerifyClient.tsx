@@ -45,7 +45,7 @@ function VerifyPageInner() {
                 // We can do the profile update in a useEffect or a server action later to be secure.
             }
 
-            // Redirect to success/invite page — highest-conversion moment for escort invites
+            // Redirect to success/invite page â€” highest-conversion moment for escort invites
             router.push("/success");
         } catch (err: any) {
             setError(err.message || "Invalid code");

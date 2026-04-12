@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function AdvertiserDashboardPage() {
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header styling matching the standard Haul Command dashboard look */}

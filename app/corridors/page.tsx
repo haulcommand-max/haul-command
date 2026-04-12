@@ -6,7 +6,7 @@ import CorridorLeaderboard from '@/components/corridors/CorridorLeaderboard';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata = {
-  title: 'Heavy Haul Corridor Intelligence — Ranked Routes Worldwide | Haul Command',
+  title: 'Heavy Haul Corridor Intelligence â€” Ranked Routes Worldwide | Haul Command',
   description:
     'Browse the highest-value heavy haul corridors across 120 countries. Compare escort requirements, pricing, and permit rules by route.',
 };
@@ -48,12 +48,12 @@ export default async function CorridorsIndexPage({
   const activeCountry = searchParams.country ?? '';
 
   return (
-    <main className="min-h-screen bg-[#0a0d14] text-white">
+    <main className=" bg-[#0a0d14] text-white">
       {/* Hero */}
       <section className="border-b border-white/8 bg-gradient-to-b from-[#0f1420] to-[#0a0d14] px-4 py-16 text-center">
         <div className="mx-auto max-w-3xl">
           <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-amber-400">
-            🛣 Corridor Intelligence OS
+            ðŸ›£ Corridor Intelligence OS
           </span>
           <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
             Global Heavy Haul
@@ -139,7 +139,7 @@ export default async function CorridorsIndexPage({
               href="/data-products/corridor-intelligence"
               className="shrink-0 rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
-              Unlock Data →
+              Unlock Data â†’
             </Link>
           </div>
         </div>

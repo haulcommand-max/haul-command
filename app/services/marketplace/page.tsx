@@ -12,7 +12,7 @@ const fadeUp = {
 const categories = [
     {
         title: 'Insurance Partners',
-        emoji: '🛡️',
+        emoji: 'ðŸ›¡ï¸',
         description: 'Commercial auto insurance designed for pilot car and escort vehicle operators.',
         items: [
             { name: 'Progressive Commercial', desc: 'Specialized oversize load escort policies', badge: 'Popular' },
@@ -24,7 +24,7 @@ const categories = [
     },
     {
         title: 'Training & Certification',
-        emoji: '📚',
+        emoji: 'ðŸ“š',
         description: 'Get certified. Boost your leaderboard rank. Required in states like Florida (FAC 14-26).',
         items: [
             { name: 'Pilot Car Certification Course', desc: 'NPTCA-recognized, online, self-paced', badge: '$149' },
@@ -36,7 +36,7 @@ const categories = [
     },
     {
         title: 'Equipment & Gear',
-        emoji: '🚗',
+        emoji: 'ðŸš—',
         description: 'DOT-compliant signage, lights, flags, and height poles. All verified for escort use.',
         items: [
             { name: 'OVERSIZE LOAD Sign Kit', desc: 'Reflective, DOT-compliant, magnetic mount', badge: '$89' },
@@ -48,10 +48,10 @@ const categories = [
     },
     {
         title: 'Fuel & Maintenance',
-        emoji: '⛽',
+        emoji: 'â›½',
         description: 'Fuel card programs and maintenance networks for escort vehicle operators.',
         items: [
-            { name: 'WEX Fleet Card', desc: '5¢/gal savings at 95% of US stations', badge: 'Top Choice' },
+            { name: 'WEX Fleet Card', desc: '5Â¢/gal savings at 95% of US stations', badge: 'Top Choice' },
             { name: 'Tire Network', desc: 'Priority roadside service, 24/7', badge: 'Partnership' },
             { name: 'Maintenance Tracker', desc: 'Log vehicle maintenance, get reminders', badge: 'Free' },
         ],
@@ -72,7 +72,7 @@ export default function MarketplacePage() {
                         Everything You Need to Run
                     </h1>
                     <p style={{ margin: '8px 0 0', fontSize: 15, color: '#6b7280' }}>
-                        Insurance, training, equipment, and fuel — curated for escort operators.
+                        Insurance, training, equipment, and fuel â€” curated for escort operators.
                     </p>
                 </motion.div>
 
@@ -114,7 +114,7 @@ export default function MarketplacePage() {
                                     background: `${cat.color}10`, color: cat.color, fontSize: 12, fontWeight: 700,
                                     cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase', letterSpacing: 0.5,
                                 }}>
-                                    {cat.cta} →
+                                    {cat.cta} â†’
                                 </button>
                             </div>
                         </motion.div>

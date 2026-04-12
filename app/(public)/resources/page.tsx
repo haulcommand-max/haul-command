@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ChevronRight, Download, BookOpen, Shield, Truck, Globe, Scale, Wrench, AlertTriangle, Star, Users, FileText, Map, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Heavy Haul Resource Hub — Guides, Permits & Pilot Car Training | Haul Command',
+    title: 'Heavy Haul Resource Hub â€” Guides, Permits & Pilot Car Training | Haul Command',
     description: 'Free guides, permit checklists, state certification maps, escort requirement summaries, and downloadable templates for pilot car operators, freight brokers, and heavy haul professionals.',
     keywords: [
         'pilot car training guide', 'oversize load permit guide', 'how to start pilot car company',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     },
 };
 
-// ── Schema ────────────────────────────────────────────────────────────────────
+// â”€â”€ Schema â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const COLLECTION_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -57,7 +57,7 @@ const FAQ_SCHEMA = {
             name: 'What are the maximum legal dimensions for a load without a permit?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'In most US states: 8\'6" wide, 13\'6" tall, 53\' long, 80,000 lbs gross. Individual state limits vary — always verify with our state regulations tool.',
+                text: 'In most US states: 8\'6" wide, 13\'6" tall, 53\' long, 80,000 lbs gross. Individual state limits vary â€” always verify with our state regulations tool.',
             },
         },
         {
@@ -79,7 +79,7 @@ const FAQ_SCHEMA = {
     ],
 };
 
-// ── Resource Data ──────────────────────────────────────────────────────────────
+// â”€â”€ Resource Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const RESOURCE_CLUSTERS = [
     {
@@ -91,10 +91,10 @@ const RESOURCE_CLUSTERS = [
         resources: [
             { title: 'How to Start a Pilot Car Company', desc: 'Business formation, insurance, equipment, and certification in one guide.', href: '/resources/guides/how-to-start-pilot-car-company', tag: 'Guide', downloadable: false },
             { title: 'How to Become a Certified Escort Driver', desc: 'State-by-state requirements, testing prep, and reciprocity rules explained.', href: '/resources/guides/become-certified-escort-driver', tag: 'Guide', downloadable: false },
-            { title: 'Heavy Equipment Transport — Complete Guide', desc: 'Oversized cargo planning, route surveys, escort specs, and permit workflow.', href: '/resources/guides/heavy-equipment-transport', tag: 'Guide', downloadable: false },
-            { title: 'Aircraft Shipping & Transport Guide', desc: 'Special considerations for aviation component transport — clearances, routes, and escorts.', href: '/resources/guides/aircraft-shipping', tag: 'Specialty', downloadable: false },
+            { title: 'Heavy Equipment Transport â€” Complete Guide', desc: 'Oversized cargo planning, route surveys, escort specs, and permit workflow.', href: '/resources/guides/heavy-equipment-transport', tag: 'Guide', downloadable: false },
+            { title: 'Aircraft Shipping & Transport Guide', desc: 'Special considerations for aviation component transport â€” clearances, routes, and escorts.', href: '/resources/guides/aircraft-shipping', tag: 'Specialty', downloadable: false },
             { title: 'Boat & Marine Equipment Shipping Guide', desc: 'Permits, escort requirements, and width considerations for oversize boat and marine vessel transport.', href: '/resources/guides/boat-shipping', tag: 'Specialty', downloadable: false },
-            { title: 'Trailer Types — Complete Reference', desc: 'Flatbed, lowboy, RGN, double-drop, stretch, and specialty trailers — specs, capacity, and best use cases.', href: '/resources/guides/trailer-types', tag: 'Reference', downloadable: false },
+            { title: 'Trailer Types â€” Complete Reference', desc: 'Flatbed, lowboy, RGN, double-drop, stretch, and specialty trailers â€” specs, capacity, and best use cases.', href: '/resources/guides/trailer-types', tag: 'Reference', downloadable: false },
             { title: 'Cross-Border Oversize Hauling (US/Canada)', desc: 'Regulatory differences, cabotage rules, and escort requirements for cross-border moves.', href: '/resources/guides/cross-border-oversize', tag: 'Guide', downloadable: false },
             { title: 'Wind Turbine Blade Transport Guide', desc: 'Specialized routing, turning geometry tools, and escort configurations for blade hauls.', href: '/resources/guides/wind-turbine-transport', tag: 'Specialty', downloadable: false },
             { title: 'Autonomous Vehicle Escort Operations', desc: 'Emerging regulations and operational protocols for escorting autonomous trucks and AV test vehicles.', href: '/resources/guides/autonomous-vehicle-escort', tag: 'Specialty', downloadable: false },
@@ -107,19 +107,19 @@ const RESOURCE_CLUSTERS = [
         label: 'Legal & Permits',
         description: 'Permit workflows, dimensional limits, and compliance references',
         resources: [
-            { title: 'Maximum Legal Load Sizes by State', desc: 'Width, height, length, and weight limits for all 50 states — no permit needed thresholds.', href: '/regulations', tag: 'Reference', downloadable: false },
-            { title: 'Superload Permit Process — Step by Step', desc: 'Engineering studies, route approvals, and multi-state coordination for loads over 200,000 lbs.', href: '/resources/legal/superload-permit-process', tag: 'Permits', downloadable: false },
-            { title: 'Frost Law Guide — Spring Restrictions by State', desc: '20 states covered — when frost laws activate, weight reduction %, severity ratings, and exemptions.', href: '/resources/legal/frost-law-guide', tag: 'Law', downloadable: false },
-            { title: 'Tire Chain Laws & Requirements', desc: '17 states — chain control levels (R1/R2/R3), escort vehicle requirements, and equipment specs.', href: '/resources/legal/tire-chain-laws', tag: 'Law', downloadable: false },
+            { title: 'Maximum Legal Load Sizes by State', desc: 'Width, height, length, and weight limits for all 50 states â€” no permit needed thresholds.', href: '/regulations', tag: 'Reference', downloadable: false },
+            { title: 'Superload Permit Process â€” Step by Step', desc: 'Engineering studies, route approvals, and multi-state coordination for loads over 200,000 lbs.', href: '/resources/legal/superload-permit-process', tag: 'Permits', downloadable: false },
+            { title: 'Frost Law Guide â€” Spring Restrictions by State', desc: '20 states covered â€” when frost laws activate, weight reduction %, severity ratings, and exemptions.', href: '/resources/legal/frost-law-guide', tag: 'Law', downloadable: false },
+            { title: 'Tire Chain Laws & Requirements', desc: '17 states â€” chain control levels (R1/R2/R3), escort vehicle requirements, and equipment specs.', href: '/resources/legal/tire-chain-laws', tag: 'Law', downloadable: false },
             { title: 'Federal Bridge Formula Calculator', desc: 'Understand axle weight distribution requirements and FHWA bridge formula compliance.', href: '/tools/bridge-weight', tag: 'Tool', downloadable: false },
-            { title: 'Divisible Load Guide', desc: 'When loads must be broken down by law — definitions, exceptions, and exemptions by state.', href: '/resources/legal/divisible-load-guide', tag: 'Law', downloadable: false },
+            { title: 'Divisible Load Guide', desc: 'When loads must be broken down by law â€” definitions, exceptions, and exemptions by state.', href: '/resources/legal/divisible-load-guide', tag: 'Law', downloadable: false },
             { title: 'Holiday Restrictions by State', desc: 'Oversize load travel restrictions during federal holidays, weekends, and state-observed holidays.', href: '/resources/legal/holiday-restrictions', tag: 'Law', downloadable: false },
-            { title: 'Maximum Overhang & Rear Projection Laws', desc: 'How far loads can stick out the front, back, and sides of a vehicle — state-by-state limits.', href: '/resources/legal/overhang-laws', tag: 'Law', downloadable: false },
-            { title: 'Axle Weight Regulations by State', desc: 'Legal axle weight limits — steer, drive, single, tandem, tridem — and overweight permit thresholds for all 50 states.', href: '/resources/legal/axle-regulations', tag: 'Law', downloadable: false },
-            { title: 'Trip / IRP Permits Guide', desc: 'International Registration Plan permits — apportioned registration, reciprocity rules, and filing process by state.', href: '/resources/legal/irp-permits', tag: 'Permits', downloadable: false },
+            { title: 'Maximum Overhang & Rear Projection Laws', desc: 'How far loads can stick out the front, back, and sides of a vehicle â€” state-by-state limits.', href: '/resources/legal/overhang-laws', tag: 'Law', downloadable: false },
+            { title: 'Axle Weight Regulations by State', desc: 'Legal axle weight limits â€” steer, drive, single, tandem, tridem â€” and overweight permit thresholds for all 50 states.', href: '/resources/legal/axle-regulations', tag: 'Law', downloadable: false },
+            { title: 'Trip / IRP Permits Guide', desc: 'International Registration Plan permits â€” apportioned registration, reciprocity rules, and filing process by state.', href: '/resources/legal/irp-permits', tag: 'Permits', downloadable: false },
             { title: 'Fuel / IFTA Permits Guide', desc: 'IFTA fuel tax reporting, temporary permits, and compliance requirements for interstate carriers.', href: '/resources/legal/ifta-permits', tag: 'Permits', downloadable: false },
             { title: 'Oversize / Overweight Fines & Penalties', desc: 'State-by-state fine schedules, penalty structures, and enforcement consequences for oversize and overweight violations.', href: '/resources/legal/oversize-fines', tag: 'Law', downloadable: false },
-            { title: 'Annual Permits — Oversize/Overweight', desc: 'Annual blanket permits vs. single-trip permits — when each type makes sense, costs, and application process by state.', href: '/resources/legal/annual-permits', tag: 'Permits', downloadable: false },
+            { title: 'Annual Permits â€” Oversize/Overweight', desc: 'Annual blanket permits vs. single-trip permits â€” when each type makes sense, costs, and application process by state.', href: '/resources/legal/annual-permits', tag: 'Permits', downloadable: false },
         ],
     },
     {
@@ -129,7 +129,7 @@ const RESOURCE_CLUSTERS = [
         label: 'Certifications & Training',
         description: 'State-by-state pilot car certification requirements and training resources',
         resources: [
-            { title: 'State Pilot Car Certification Map', desc: 'Interactive guide showing certification requirements for all 50 states — testing, reciprocity, and renewal.', href: '/resources/certification/state-pilot-car-certifications', tag: 'Certification', downloadable: false },
+            { title: 'State Pilot Car Certification Map', desc: 'Interactive guide showing certification requirements for all 50 states â€” testing, reciprocity, and renewal.', href: '/resources/certification/state-pilot-car-certifications', tag: 'Certification', downloadable: false },
             { title: 'NPCA Certification Overview', desc: 'National Pilot Car Association certification process, exam prep, and industry recognition.', href: '/resources/certification/npca-overview', tag: 'Certification', downloadable: false },
             { title: 'Height Pole Operation & Testing', desc: 'Rules for height pole setup, calibration, and state-specific height pole operator requirements.', href: '/resources/certification/height-pole-guide', tag: 'Training', downloadable: false },
             { title: 'Escort Vehicle Equipment Requirements', desc: 'Flags, lights, signs, radios, and vehicle specs required by state law.', href: '/resources/certification/equipment-requirements', tag: 'Reference', downloadable: false },
@@ -144,9 +144,9 @@ const RESOURCE_CLUSTERS = [
         label: 'Business Resources',
         description: 'Templates, contracts, and business tools for operators and brokers',
         resources: [
-            { title: 'Bill of Lading Template (Download)', desc: 'Industry-standard BOL template for oversize and heavy haul shipments — print-ready PDF.', href: '/resources/business/bill-of-lading-template', tag: 'Download', downloadable: true },
-            { title: 'Pilot Car Service Agreement Template', desc: 'Legal contract template for escort service engagements — fully editable.', href: '/resources/business/service-agreement-template', tag: 'Download', downloadable: true },
-            { title: 'Escort Checklist — Pre-Trip (Download)', desc: 'Vehicle inspection, equipment check, and comms pre-trip checklist for escort operators.', href: '/resources/business/escort-pre-trip-checklist', tag: 'Download', downloadable: true },
+            { title: 'Bill of Lading Template (Download)', desc: 'Industry-standard BOL template for oversize and heavy haul shipments â€” print-ready PDF.', href: '/resources/business/bill-of-lading-template', tag: 'Download', downloadable: true },
+            { title: 'Pilot Car Service Agreement Template', desc: 'Legal contract template for escort service engagements â€” fully editable.', href: '/resources/business/service-agreement-template', tag: 'Download', downloadable: true },
+            { title: 'Escort Checklist â€” Pre-Trip (Download)', desc: 'Vehicle inspection, equipment check, and comms pre-trip checklist for escort operators.', href: '/resources/business/escort-pre-trip-checklist', tag: 'Download', downloadable: true },
             { title: 'Insurance Requirements for Pilot Cars', desc: 'Minimum auto liability limits, commercial endorsements, and state-specific requirements.', href: '/resources/business/insurance-requirements', tag: 'Guide', downloadable: false },
             { title: 'Broker-Operator Rate Negotiation Guide', desc: 'How to price escort services, negotiate with brokers, and avoid below-market contracts.', href: '/resources/business/rate-negotiation-guide', tag: 'Guide', downloadable: false },
             { title: 'Pilot Car Rates by State (2026)', desc: 'Market rate data for local, regional, and long-haul escort services across all 50 states.', href: '/rates', tag: 'Data', downloadable: false },
@@ -159,7 +159,7 @@ const RESOURCE_CLUSTERS = [
         label: 'Equipment & Safety',
         description: 'Required gear, safety standards, and equipment specifications',
         resources: [
-            { title: 'Oversize Signage Requirements by State', desc: '"OVERSIZE LOAD" sign specs — size, placement, and lighting requirements per state law.', href: '/resources/equipment/oversize-signage', tag: 'Compliance', downloadable: false },
+            { title: 'Oversize Signage Requirements by State', desc: '"OVERSIZE LOAD" sign specs â€” size, placement, and lighting requirements per state law.', href: '/resources/equipment/oversize-signage', tag: 'Compliance', downloadable: false },
             { title: 'CB Radio & Communication Protocols', desc: 'Channel assignments, callout procedures, and communication standards for escort operations.', href: '/resources/equipment/cb-radio-guide', tag: 'Guide', downloadable: false },
             { title: 'Escort Vehicle Lighting Requirements', desc: 'Amber flashing light specs, placement rules, and state-by-state lighting law summary.', href: '/resources/equipment/lighting-requirements', tag: 'Compliance', downloadable: false },
             { title: 'Flag & Safety Equipment Guide', desc: 'Flag color, size, and placement specifications for oversize load escorts.', href: '/resources/equipment/flag-requirements', tag: 'Compliance', downloadable: false },
@@ -174,8 +174,8 @@ const RESOURCE_CLUSTERS = [
         resources: [
             { title: 'Road Conditions by State', desc: 'Live highway conditions, seasonal closures, and construction delay feeds for all 50 states.', href: '/resources/data/road-conditions', tag: 'Live', downloadable: false },
             { title: 'Live Highway Closures & Alerts', desc: 'Real-time DOT closure notices affecting oversize load routes across the US and Canada.', href: '/resources/data/highway-closures', tag: 'Live', downloadable: false },
-            { title: 'Permit Processing Times by State', desc: 'Average permit processing delays by state DOT — plan your haul accordingly.', href: '/resources/data/permit-processing-times', tag: 'Data', downloadable: false },
-            { title: 'Pilot Car Market Rate Index', desc: 'Weekly market rate index for escort services — regional and national benchmarks.', href: '/rates', tag: 'Data', downloadable: false },
+            { title: 'Permit Processing Times by State', desc: 'Average permit processing delays by state DOT â€” plan your haul accordingly.', href: '/resources/data/permit-processing-times', tag: 'Data', downloadable: false },
+            { title: 'Pilot Car Market Rate Index', desc: 'Weekly market rate index for escort services â€” regional and national benchmarks.', href: '/rates', tag: 'Data', downloadable: false },
             { title: 'Oversize Load Running Hours by State', desc: 'Sunrise/sunset, curfew hours, and state-by-state operating windows for oversize movements.', href: '/resources/data/running-hours', tag: 'Data', downloadable: false },
             { title: 'Peak Season Rate Trends', desc: 'Historical and current rate data showing seasonal demand patterns for escort services.', href: '/resources/data/peak-season-rates', tag: 'Data', downloadable: false },
         ],
@@ -212,7 +212,7 @@ export default function ResourceHubPage() {
 
             <div style={{ minHeight: '100vh', background: '#080810', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-                {/* ── Hero ────────────────────────────────────────────────── */}
+                {/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(198,146,58,0.1), transparent 70%)', pointerEvents: 'none' }} />
                     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -235,7 +235,7 @@ export default function ResourceHubPage() {
                                     <span style={{ color: '#C6923A' }}>Resource Library</span>
                                 </h1>
                                 <p style={{ margin: '0 0 2rem', fontSize: '1.1rem', color: '#9ca3af', lineHeight: 1.65, maxWidth: 560 }}>
-                                    Every guide, permit reference, checklist, and certification map a pilot car operator, broker, or shipper needs — free, accurate, and sourced from 24+ months of heavy haul market intelligence.
+                                    Every guide, permit reference, checklist, and certification map a pilot car operator, broker, or shipper needs â€” free, accurate, and sourced from 24+ months of heavy haul market intelligence.
                                 </p>
                                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                                     <Link href="/directory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
@@ -260,7 +260,7 @@ export default function ResourceHubPage() {
                     </div>
                 </div>
 
-                {/* ── Quick Jump Navigation ────────────────────────────────── */}
+                {/* â”€â”€ Quick Jump Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 <div style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
                     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 1.5rem' }}>
                         <div style={{ display: 'flex', gap: 0, overflowX: 'auto' }}>
@@ -278,7 +278,7 @@ export default function ResourceHubPage() {
                 </div>
 
                 <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 3rem' }}>
-                    {/* ── Document Filter Bar (New) ─────────────────────────── */}
+                    {/* â”€â”€ Document Filter Bar (New) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: '2rem', padding: '1rem', background: '#111', borderRadius: 12, border: '1px solid rgba(255,255,255,0.05)' }}>
                         <select style={{ flex: 1, minWidth: 140, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
                             <option value="">Any Country (120)</option>
@@ -305,7 +305,7 @@ export default function ResourceHubPage() {
                         </button>
                     </div>
 
-                    {/* ── Resource Clusters ─────────────────────────────────── */}
+                    {/* â”€â”€ Resource Clusters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {RESOURCE_CLUSTERS.map(cluster => {
                         const ClusterIcon = cluster.icon;
                         return (
@@ -358,7 +358,7 @@ export default function ResourceHubPage() {
                         );
                     })}
 
-                    {/* ── FAQ Section ───────────────────────────────────────── */}
+                    {/* â”€â”€ FAQ Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ marginBottom: '4rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.5rem' }}>
                             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -386,12 +386,12 @@ export default function ResourceHubPage() {
 
                         <div style={{ marginTop: 16, textAlign: 'center' }}>
                             <Link href="/glossary" style={{ fontSize: 13, color: '#C6923A', fontWeight: 700, textDecoration: 'none' }}>
-                                Browse the full industry glossary (3,000+ terms) →
+                                Browse the full industry glossary (3,000+ terms) â†’
                             </Link>
                         </div>
                     </section>
 
-                    {/* ── Lead Gen / Gated Downloads CTA ───────────────────── */}
+                    {/* â”€â”€ Lead Gen / Gated Downloads CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ background: 'linear-gradient(135deg, rgba(198,146,58,0.08) 0%, rgba(198,146,58,0.03) 100%)', border: '1px solid rgba(198,146,58,0.2)', borderRadius: 20, padding: '2.5rem', marginBottom: '4rem', textAlign: 'center' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: 'rgba(198,146,58,0.1)', borderRadius: 20, marginBottom: 16 }}>
                             <Download style={{ width: 12, height: 12, color: '#C6923A' }} />
@@ -401,7 +401,7 @@ export default function ResourceHubPage() {
                             Get the Complete Escort Toolkit
                         </h2>
                         <p style={{ margin: '0 0 2rem', fontSize: '1rem', color: '#9ca3af', maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
-                            Bill of lading template, pre-trip checklist, service agreement, and state certification guide — all in one free download bundle.
+                            Bill of lading template, pre-trip checklist, service agreement, and state certification guide â€” all in one free download bundle.
                         </p>
 
                         {/* Email capture form */}
@@ -429,7 +429,7 @@ export default function ResourceHubPage() {
                         </p>
                     </section>
 
-                    {/* ── Cross-Links Section ───────────────────────────────── */}
+                    {/* â”€â”€ Cross-Links Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ marginBottom: '3rem' }}>
                         <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#f9fafb', marginBottom: '1.25rem' }}>Explore Haul Command</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
@@ -457,7 +457,7 @@ export default function ResourceHubPage() {
                         </div>
                     </section>
 
-                    {/* ── Bottom CTA ───────────────────────────────────────── */}
+                    {/* â”€â”€ Bottom CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                             <AlertTriangle style={{ width: 20, height: 20, color: '#C6923A', flexShrink: 0 }} />

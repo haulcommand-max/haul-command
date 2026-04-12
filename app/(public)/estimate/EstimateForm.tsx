@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { InstantQuote } from '@/lib/quotes/instant-quote-engine';
 
-// ── Design Tokens ──
+// â”€â”€ Design Tokens â”€â”€
 const T = {
     bg: '#0B0B0C',
     card: '#111114',
@@ -87,7 +87,7 @@ export default function EstimateForm() {
 
     return (
         <section style={{ maxWidth: 720, margin: '0 auto', padding: '48px 24px 96px' }}>
-            {/* ── Form Card ── */}
+            {/* â”€â”€ Form Card â”€â”€ */}
             <form onSubmit={handleSubmit} style={{
                 background: T.card, border: `1px solid ${T.border}`,
                 borderRadius: 20, padding: 32,
@@ -189,7 +189,7 @@ export default function EstimateForm() {
                     textTransform: 'uppercase' as const, letterSpacing: '0.03em',
                     transition: 'all 0.2s',
                 }}>
-                    {loading ? 'Calculating…' : '⚡ Get Instant Estimate'}
+                    {loading ? 'Calculatingâ€¦' : 'âš¡ Get Instant Estimate'}
                 </button>
 
                 {error && (
@@ -203,7 +203,7 @@ export default function EstimateForm() {
                 )}
             </form>
 
-            {/* ── Quote Results ── */}
+            {/* â”€â”€ Quote Results â”€â”€ */}
             {quote && (
                 <div style={{
                     marginTop: 24, background: T.card, border: `1px solid ${T.border}`,
@@ -239,7 +239,7 @@ export default function EstimateForm() {
                             Estimated Total Cost
                         </div>
                         <div style={{ fontSize: 36, fontWeight: 900, color: T.gold, marginBottom: 4 }}>
-                            {quote.pricing.currency} {quote.pricing.totalLow.toLocaleString()} – {quote.pricing.totalHigh.toLocaleString()}
+                            {quote.pricing.currency} {quote.pricing.totalLow.toLocaleString()} â€“ {quote.pricing.totalHigh.toLocaleString()}
                         </div>
                         <div style={{ fontSize: 12, color: T.muted }}>
                             {quote.pricing.seasonalNote}
@@ -251,7 +251,7 @@ export default function EstimateForm() {
                         display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
                         marginBottom: 20,
                     }}>
-                        <StatBox label="Escorts Needed" value={`${quote.escortRequirements.minEscortsNeeded}–${quote.escortRequirements.maxEscortsNeeded}`} />
+                        <StatBox label="Escorts Needed" value={`${quote.escortRequirements.minEscortsNeeded}â€“${quote.escortRequirements.maxEscortsNeeded}`} />
                         <StatBox label="Transit Days" value={`${quote.routeSummary.estimatedTransitDays}`} />
                         <StatBox label="Coverage" value={`${quote.coverage.overallConfidence}%`}
                             color={quote.coverage.overallConfidence >= 70 ? T.green : quote.coverage.overallConfidence >= 50 ? T.orange : T.red} />
@@ -261,7 +261,7 @@ export default function EstimateForm() {
                         display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
                         marginBottom: 20,
                     }}>
-                        <StatBox label="Escort Cost" value={`${quote.pricing.currency} ${quote.pricing.escortLow}–${quote.pricing.escortHigh}`} />
+                        <StatBox label="Escort Cost" value={`${quote.pricing.currency} ${quote.pricing.escortLow}â€“${quote.pricing.escortHigh}`} />
                         <StatBox label="Permit Estimate" value={`${quote.pricing.currency} ${quote.pricing.permitEstimate}`} />
                         <StatBox label="Matched Operators" value={`${quote.coverage.matchedOperators}`} />
                     </div>
@@ -277,7 +277,7 @@ export default function EstimateForm() {
                                     border: '1px solid rgba(245,158,11,0.15)',
                                     fontSize: 12, color: T.orange, lineHeight: 1.5,
                                 }}>
-                                    <span style={{ flexShrink: 0 }}>⚠️</span>
+                                    <span style={{ flexShrink: 0 }}>âš ï¸</span>
                                     {w}
                                 </div>
                             ))}
@@ -293,7 +293,7 @@ export default function EstimateForm() {
                             color: '#0B0B0C', fontWeight: 800, fontSize: 13,
                             textTransform: 'uppercase' as const,
                         }}>
-                            Find Escorts Now →
+                            Find Escorts Now â†’
                         </Link>
                         <Link href="/tools" style={{
                             flex: 1, minWidth: 160, padding: '14px 20px', borderRadius: 12,
@@ -307,22 +307,22 @@ export default function EstimateForm() {
                 </div>
             )}
 
-            {/* ── Trust Footer ── */}
+            {/* â”€â”€ Trust Footer â”€â”€ */}
             <div style={{
                 marginTop: 32, textAlign: 'center', padding: '0 24px',
             }}>
                 <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 20, fontSize: 12, color: T.subtle }}>
-                    <span>✅ Free — no sign-up</span>
-                    <span>🔒 Data not stored</span>
-                    <span>🌍 120 countries</span>
-                    <span>⚡ 30 second results</span>
+                    <span>âœ… Free â€” no sign-up</span>
+                    <span>ðŸ”’ Data not stored</span>
+                    <span>ðŸŒ 120 countries</span>
+                    <span>âš¡ 30 second results</span>
                 </div>
             </div>
         </section>
     );
 }
 
-// ── Stat Box ──
+// â”€â”€ Stat Box â”€â”€
 function StatBox({ label, value, color }: { label: string; value: string; color?: string }) {
     return (
         <div style={{

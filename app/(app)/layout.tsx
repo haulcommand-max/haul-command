@@ -8,7 +8,7 @@ import { HCFooterShell } from '@/components/landing-system/footer/HCFooterShell'
 import { HCMobileMenu } from '@/components/landing-system/mobile-menu/HCMobileMenu';
 
 /**
- * (app) Layout — App shell with top header + mobile native bottom nav.
+ * (app) Layout â€” App shell with top header + mobile native bottom nav.
  * Mobile: Frame 1 shell (bottom nav + content)
  * Desktop: top header
  */
@@ -25,7 +25,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 }
             `}</style>
             
-            <main className="app-main bg-slate-950">
+            <main className="app-main ">
                 {/* Desktop Global Header */}
                 <div className="app-desktop-header">
                     <HCGlobalHeader mode="app" is_authenticated={true} />
@@ -61,7 +61,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <HCMobileMenu mode="app" />
                 </div>
 
-                {/* Content area — padded for mobile bottom nav */}
+                {/* Content area â€” padded for mobile bottom nav */}
                 <div className="m-shell-content" style={{ position: 'relative', zIndex: 0, flex: 1 }}>
                     {children}
                 </div>

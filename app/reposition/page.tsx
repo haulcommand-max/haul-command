@@ -3,16 +3,16 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Navigation, MapPin, Clock, ArrowRight, ChevronRight, Truck, Shield, Calendar } from 'lucide-react';
 
-// ══════════════════════════════════════════════════════════════
-// /reposition — REPOSITIONING FEED
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// /reposition â€” REPOSITIONING FEED
 // "I'm finishing a job in Dallas, heading to Houston, available along the way"
-// Deadhead reduction surface — the #2 competitor function.
-// ══════════════════════════════════════════════════════════════
+// Deadhead reduction surface â€” the #2 competitor function.
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Repositioning — Reduce Deadhead Miles | Haul Command',
+  title: 'Pilot Car Repositioning â€” Reduce Deadhead Miles | Haul Command',
   description:
     'Escort operators posting their repositioning routes. Find available pilot cars heading your direction. Reduce deadhead miles and save on escort costs.',
   keywords: [
@@ -138,7 +138,7 @@ export default async function RepositionPage() {
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb' }}>
                           {post.origin_city}, {post.origin_state}
-                          {post.dest_city && ` → ${post.dest_city}, ${post.dest_state}`}
+                          {post.dest_city && ` â†’ ${post.dest_city}, ${post.dest_state}`}
                         </div>
                         <div style={{ fontSize: 11, color: '#64748b' }}>
                           {post.operator_name || 'Operator'}
@@ -186,7 +186,7 @@ export default async function RepositionPage() {
                     {/* Rate note */}
                     {post.rate_note && (
                       <div style={{ fontSize: 12, color: '#22c55e', fontWeight: 700, marginBottom: 12 }}>
-                        💰 {post.rate_note}
+                        ðŸ’° {post.rate_note}
                       </div>
                     )}
 
@@ -232,7 +232,7 @@ export default async function RepositionPage() {
               background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)',
               borderRadius: 20, padding: '60px 24px', textAlign: 'center', marginBottom: 48,
             }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>🛣️</div>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ›£ï¸</div>
               <h3 style={{ fontSize: 20, fontWeight: 800, color: '#f9fafb', marginBottom: 8 }}>
                 No Repositioning Posts Yet
               </h3>

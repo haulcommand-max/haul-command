@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Oilfield Equipment Escort Services — Permian Basin, Eagle Ford, Bakken | Haul Command',
+  title: 'Oilfield Equipment Escort Services â€” Permian Basin, Eagle Ford, Bakken | Haul Command',
   description:
     'Certified oilfield escort operators for drilling rigs, fracking equipment, pressure vessels, and pipe racks. Permian Basin, Eagle Ford, Bakken, Marcellus, Gulf Coast. TxDMV Subchapter D specialists.',
   keywords: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const CORRIDORS = [
   {
-    code: 'permian', name: 'Permian Basin', state: 'Texas', flag: '🛢️',
+    code: 'permian', name: 'Permian Basin', state: 'Texas', flag: 'ðŸ›¢ï¸',
     basin: 'Permian Basin',
     cities: ['Midland', 'Odessa', 'Pecos', 'Andrews', 'Ward County'],
     roads: ['US-287', 'FM-1788', 'I-20', 'TX-349'],
@@ -27,7 +27,7 @@ const CORRIDORS = [
     fun_fact: '579 new drilling permits issued in February 2026 alone.',
   },
   {
-    code: 'eagle_ford', name: 'Eagle Ford Shale', state: 'Texas', flag: '🔥',
+    code: 'eagle_ford', name: 'Eagle Ford Shale', state: 'Texas', flag: 'ðŸ”¥',
     basin: 'Eagle Ford',
     cities: ['Laredo', 'Corpus Christi', 'San Antonio', 'Cotulla'],
     roads: ['I-35', 'US-59', 'TX-16', 'US-83'],
@@ -37,27 +37,27 @@ const CORRIDORS = [
     fun_fact: 'Eagle Ford spans 50+ counties in South Texas with county-road-heavy access routes.',
   },
   {
-    code: 'bakken', name: 'Bakken Formation', state: 'North Dakota', flag: '❄️',
+    code: 'bakken', name: 'Bakken Formation', state: 'North Dakota', flag: 'â„ï¸',
     basin: 'Williston Basin',
     cities: ['Williston', 'Minot', 'Bismarck', 'Dickinson'],
     roads: ['US-2', 'US-85', 'ND-8', 'US-85'],
     operators_est: 134,
     avg_rate: '$4.10/mile',
     load_types: ['Drilling Rigs', 'LACT Units', 'Saltwater Disposal Equipment', 'Tank Batteries'],
-    fun_fact: 'North Dakota\'s Bakken requires NDDET permits — specific to heavy oilfield transport.',
+    fun_fact: 'North Dakota\'s Bakken requires NDDET permits â€” specific to heavy oilfield transport.',
   },
   {
-    code: 'marcellus', name: 'Marcellus / Utica', state: 'Pennsylvania / West Virginia', flag: '🏔️',
+    code: 'marcellus', name: 'Marcellus / Utica', state: 'Pennsylvania / West Virginia', flag: 'ðŸ”ï¸',
     basin: 'Appalachian',
     cities: ['Pittsburgh PA', 'Morgantown WV', 'Columbus OH', 'Charleston WV'],
     roads: ['I-79', 'I-77', 'US-19', 'WV-2'],
     operators_est: 156,
     avg_rate: '$3.90/mile',
     load_types: ['Compressor Packages', 'Gas Processing Skids', 'Wellhead Equipment', 'Pipeline Pigs'],
-    fun_fact: 'Marcellus/Utica is natural gas dominant — compressor packages are the key load type.',
+    fun_fact: 'Marcellus/Utica is natural gas dominant â€” compressor packages are the key load type.',
   },
   {
-    code: 'gulf_coast', name: 'Gulf Coast Petrochem', state: 'Texas / Louisiana', flag: '⛽',
+    code: 'gulf_coast', name: 'Gulf Coast Petrochem', state: 'Texas / Louisiana', flag: 'â›½',
     basin: 'Gulf Coast',
     cities: ['Port Arthur', 'Beaumont', 'Houston Ship Channel', 'Freeport'],
     roads: ['I-10', 'TX-87', 'US-90', 'FM-365'],
@@ -69,16 +69,16 @@ const CORRIDORS = [
 ];
 
 const LOAD_TYPES = [
-  { icon: '🏗️', name: 'Complete Drilling Rig', complexity: 'EXTREME', escort: '2–4 escorts', notes: 'Multi-move over multiple days. Route survey required. Permit specialist needed.' },
-  { icon: '⚙️', name: 'Mud Pump (Triplex)', complexity: 'STANDARD', escort: '1 escort', notes: 'Heavy and wide. Standard oilfield move.' },
-  { icon: '💨', name: 'Fracking Blender / Pump Unit', complexity: 'HIGH', escort: '2 escorts', notes: 'Tier 4 units are heavy and long. Often night moves.' },
-  { icon: '🔘', name: 'Pressure Vessel / Separator', complexity: 'HIGH', escort: '2 escorts', notes: 'Often superload weight. Engineered route required.' },
-  { icon: '📦', name: 'Tubular Rack (Pipe / Casing)', complexity: 'STANDARD', escort: '1 escort', notes: 'Long loads. Pipe box regulations in Texas.' },
-  { icon: '🌀', name: 'Coil Tubing Unit', complexity: 'STANDARD', escort: '1 escort', notes: 'Compact but heavy. Spool unit is wide.' },
-  { icon: '🏭', name: 'Compressor Package', complexity: 'HIGH', escort: '2 escorts', notes: 'Gas compression equipment. Heavy base.' },
-  { icon: '🔧', name: 'Workover Rig', complexity: 'HIGH', escort: '2 escorts', notes: 'Mast section separate move. Multi-day.' },
-  { icon: '⛽', name: 'Tank Battery', complexity: 'STANDARD', escort: '1 escort', notes: 'Oil and water storage tanks. Often multiple loads.' },
-  { icon: '🔥', name: 'Flare Stack', complexity: 'EXTREME', escort: '2–3 escorts', notes: 'Tall and long. Utility coordination required.' },
+  { icon: 'ðŸ—ï¸', name: 'Complete Drilling Rig', complexity: 'EXTREME', escort: '2â€“4 escorts', notes: 'Multi-move over multiple days. Route survey required. Permit specialist needed.' },
+  { icon: 'âš™ï¸', name: 'Mud Pump (Triplex)', complexity: 'STANDARD', escort: '1 escort', notes: 'Heavy and wide. Standard oilfield move.' },
+  { icon: 'ðŸ’¨', name: 'Fracking Blender / Pump Unit', complexity: 'HIGH', escort: '2 escorts', notes: 'Tier 4 units are heavy and long. Often night moves.' },
+  { icon: 'ðŸ”˜', name: 'Pressure Vessel / Separator', complexity: 'HIGH', escort: '2 escorts', notes: 'Often superload weight. Engineered route required.' },
+  { icon: 'ðŸ“¦', name: 'Tubular Rack (Pipe / Casing)', complexity: 'STANDARD', escort: '1 escort', notes: 'Long loads. Pipe box regulations in Texas.' },
+  { icon: 'ðŸŒ€', name: 'Coil Tubing Unit', complexity: 'STANDARD', escort: '1 escort', notes: 'Compact but heavy. Spool unit is wide.' },
+  { icon: 'ðŸ­', name: 'Compressor Package', complexity: 'HIGH', escort: '2 escorts', notes: 'Gas compression equipment. Heavy base.' },
+  { icon: 'ðŸ”§', name: 'Workover Rig', complexity: 'HIGH', escort: '2 escorts', notes: 'Mast section separate move. Multi-day.' },
+  { icon: 'â›½', name: 'Tank Battery', complexity: 'STANDARD', escort: '1 escort', notes: 'Oil and water storage tanks. Often multiple loads.' },
+  { icon: 'ðŸ”¥', name: 'Flare Stack', complexity: 'EXTREME', escort: '2â€“3 escorts', notes: 'Tall and long. Utility coordination required.' },
 ];
 
 const COMPLEXITY_CONFIG: Record<string, { color: string; bg: string }> = {
@@ -102,7 +102,7 @@ export default function OilfieldCorridorsPage() {
           background: 'rgba(255,149,0,0.12)', border: '1px solid rgba(255,149,0,0.3)',
           color: '#ff9500', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24,
         }}>
-          🛢️ OILFIELD ESCORT SPECIALIST NETWORK
+          ðŸ›¢ï¸ OILFIELD ESCORT SPECIALIST NETWORK
         </div>
         <h1 style={{
           fontSize: 'clamp(26px, 4vw, 50px)', fontWeight: 900, margin: '0 0 16px',
@@ -119,7 +119,7 @@ export default function OilfieldCorridorsPage() {
           {[
             { val: '579', label: 'TX drilling permits Feb 2026' },
             { val: '5', label: 'Major US oilfield corridors' },
-            { val: '$5K–$15K', label: 'Per rig move (escort total)' },
+            { val: '$5Kâ€“$15K', label: 'Per rig move (escort total)' },
             { val: '47 min', label: 'Median fill time' },
           ].map(s => (
             <div key={s.label} style={{
@@ -156,7 +156,7 @@ export default function OilfieldCorridorsPage() {
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '64px 24px' }}>
         <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>US Oilfield Corridors</h2>
         <p style={{ color: '#8fa3c0', marginBottom: 40, fontSize: 15 }}>
-          Pre-positioned operators on every major basin. International corridors: Alberta, Saudi Ghawar, Pilbara WA, North Sea →
+          Pre-positioned operators on every major basin. International corridors: Alberta, Saudi Ghawar, Pilbara WA, North Sea â†’
         </p>
         <div style={{ display: 'grid', gap: 20 }}>
           {CORRIDORS.map(c => (
@@ -174,7 +174,7 @@ export default function OilfieldCorridorsPage() {
                   <span style={{ fontSize: 32 }}>{c.flag}</span>
                   <div>
                     <div style={{ fontWeight: 800, fontSize: 18, color: '#f0f4f8' }}>{c.name}</div>
-                    <div style={{ fontSize: 13, color: '#8fa3c0' }}>{c.state} · {c.basin}</div>
+                    <div style={{ fontSize: 13, color: '#8fa3c0' }}>{c.state} Â· {c.basin}</div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
@@ -192,7 +192,7 @@ export default function OilfieldCorridorsPage() {
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 700, color: '#8fa3c0', letterSpacing: '0.08em', marginBottom: 8 }}>KEY CITIES</div>
                   {c.cities.map(ci => (
-                    <div key={ci} style={{ fontSize: 13, color: '#b0bcd0', marginBottom: 4 }}>→ {ci}</div>
+                    <div key={ci} style={{ fontSize: 13, color: '#b0bcd0', marginBottom: 4 }}>â†’ {ci}</div>
                   ))}
                 </div>
                 <div>
@@ -210,7 +210,7 @@ export default function OilfieldCorridorsPage() {
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 700, color: '#8fa3c0', letterSpacing: '0.08em', marginBottom: 8 }}>COMMON LOADS</div>
                   {c.load_types.map(lt => (
-                    <div key={lt} style={{ fontSize: 13, color: '#b0bcd0', marginBottom: 4 }}>✓ {lt}</div>
+                    <div key={lt} style={{ fontSize: 13, color: '#b0bcd0', marginBottom: 4 }}>âœ“ {lt}</div>
                   ))}
                 </div>
               </div>
@@ -219,7 +219,7 @@ export default function OilfieldCorridorsPage() {
                 background: 'rgba(255,149,0,0.04)',
                 borderTop: '1px solid rgba(255,149,0,0.08)',
               }}>
-                <span style={{ fontSize: 12, color: '#ff9500', fontStyle: 'italic' }}>💡 {c.fun_fact}</span>
+                <span style={{ fontSize: 12, color: '#ff9500', fontStyle: 'italic' }}>ðŸ’¡ {c.fun_fact}</span>
               </div>
             </div>
           ))}
@@ -229,7 +229,7 @@ export default function OilfieldCorridorsPage() {
       {/* Load types */}
       <div style={{ background: '#0a0d16', borderTop: '1px solid #1a223a', borderBottom: '1px solid #1a223a', padding: '64px 24px' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>Oilfield Load Types — What You Need to Know</h2>
+          <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>Oilfield Load Types â€” What You Need to Know</h2>
           <p style={{ color: '#8fa3c0', marginBottom: 40, fontSize: 15 }}>
             20+ oilfield equipment categories on the load board. Each with escort complexity rating and permit guidance.
           </p>
@@ -252,7 +252,7 @@ export default function OilfieldCorridorsPage() {
                     }}>{lt.complexity}</span>
                   </div>
                   <div style={{ fontWeight: 700, fontSize: 14, color: '#f0f4f8', marginBottom: 6 }}>{lt.name}</div>
-                  <div style={{ fontSize: 12, color: '#ff9500', marginBottom: 6 }}>🚗 {lt.escort}</div>
+                  <div style={{ fontSize: 12, color: '#ff9500', marginBottom: 6 }}>ðŸš— {lt.escort}</div>
                   <div style={{ fontSize: 12, color: '#8fa3c0', lineHeight: 1.6 }}>{lt.notes}</div>
                 </div>
               );
@@ -268,7 +268,7 @@ export default function OilfieldCorridorsPage() {
           border: '1px solid rgba(255,149,0,0.2)', borderRadius: 20, padding: '36px 36px',
         }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 8px', color: '#ff9500' }}>
-            Texas Oilfield Permit Basics — TxDMV Subchapter D
+            Texas Oilfield Permit Basics â€” TxDMV Subchapter D
           </h2>
           <p style={{ color: '#8fa3c0', fontSize: 14, margin: '0 0 24px', lineHeight: 1.7 }}>
             Texas has specific oilfield equipment permit provisions that are separate from standard oversize permits.
@@ -276,7 +276,7 @@ export default function OilfieldCorridorsPage() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 16 }}>
             {[
-              { title: 'Subchapter D Permits', body: 'Special oilfield equipment permits under Texas Admin Code §217.67. Covers rigs, fracking units, mud systems en route to production sites.' },
+              { title: 'Subchapter D Permits', body: 'Special oilfield equipment permits under Texas Admin Code Â§217.67. Covers rigs, fracking units, mud systems en route to production sites.' },
               { title: 'Pipe Box Transport', body: 'Drill collars transported in a "pipe box" qualify for oilfield permits. Specific tie-down and escort requirements differ from general oversize.' },
               { title: 'Annual Oilfield Permits', body: 'Companies with regular moves can obtain annual permits for specific equipment types, avoiding single-trip permitting for each move.' },
               { title: 'County Sheriff Coordination', body: 'West Texas counties (Midland, Ector, Pecos, Ward) often require advance coordination with county sheriff for large rig moves.' },
@@ -305,8 +305,8 @@ export default function OilfieldCorridorsPage() {
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
             {[
-              { stat: '$5K–$15K', label: 'Total escort fees for complete rig move', sub: 'Multiple loads over multiple days' },
-              { stat: '$250–$750', label: 'Per rig move at 5% escrow', sub: 'Haul Command platform fee' },
+              { stat: '$5Kâ€“$15K', label: 'Total escort fees for complete rig move', sub: 'Multiple loads over multiple days' },
+              { stat: '$250â€“$750', label: 'Per rig move at 5% escrow', sub: 'Haul Command platform fee' },
               { stat: '579', label: 'New TX drilling permits Feb 2026', sub: 'Monthly market volume' },
               { stat: '~58/month', label: '10% conversion = 58 loads', sub: 'Conservative estimate' },
             ].map(s => (
@@ -328,7 +328,7 @@ export default function OilfieldCorridorsPage() {
             Get your Oilfield Specialist certification
           </h3>
           <p style={{ color: '#8fa3c0', marginBottom: 24 }}>
-            Module 5 of the Haul Command training covers everything above — plus international basins and safety protocols.
+            Module 5 of the Haul Command training covers everything above â€” plus international basins and safety protocols.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
             <Link href="/training/av-certification">

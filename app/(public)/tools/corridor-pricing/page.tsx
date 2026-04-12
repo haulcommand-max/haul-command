@@ -53,7 +53,7 @@ export default async function CorridorPricingHistoryPage() {
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
             <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 20, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
               <Link href="/tools" style={{ color: '#6b7280', textDecoration: 'none' }}>Tools Hub</Link>
-              <span style={{ color: '#4b5563' }}>›</span>
+              <span style={{ color: '#4b5563' }}>â€º</span>
               <span style={{ color: '#10b981' }}>Pricing & Rates</span>
             </nav>
             <h1 style={{ margin: '0 0 12px', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
@@ -145,8 +145,8 @@ export default async function CorridorPricingHistoryPage() {
           <NoDeadEndBlock
             heading="Negotiate with Confidence"
             moves={[
-              { href: '/available-now', icon: '🟢', title: 'Find Escorts Now', desc: 'Secure capacity on these lanes', primary: true, color: '#10b981' },
-              { href: '/loads', icon: '📦', title: 'Post a Load', desc: 'Broadcast to active operators' },
+              { href: '/available-now', icon: 'ðŸŸ¢', title: 'Find Escorts Now', desc: 'Secure capacity on these lanes', primary: true, color: '#10b981' },
+              { href: '/loads', icon: 'ðŸ“¦', title: 'Post a Load', desc: 'Broadcast to active operators' },
             ]}
           />
         </div>

@@ -43,7 +43,7 @@ export default async function OperatorFormsPage() {
   const documents = rawDocuments || [];
 
   return (
-    <div className="min-h-screen bg-[#07090d] pt-24 pb-20">
+    <div className=" bg-[#07090d] pt-24 pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         <div className="mb-8">
@@ -60,7 +60,7 @@ export default async function OperatorFormsPage() {
             </div>
             <div className="text-right flex flex-col items-end">
               <span className="text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border text-emerald-400 bg-emerald-400/10 border-emerald-400/20 mb-2">
-                ✓ System Active
+                âœ“ System Active
               </span>
             </div>
           </div>

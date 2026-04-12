@@ -11,51 +11,51 @@ import Link from 'next/link';
 const DASHBOARDS = [
     {
         name: 'Revenue',
-        description: 'All monetization surfaces • By country • By time period',
+        description: 'All monetization surfaces â€¢ By country â€¢ By time period',
         href: '/admin/dashboards/revenue',
-        icon: '💰',
+        icon: 'ðŸ’°',
         color: '#F1A91B',
     },
     {
         name: 'Country Readiness',
-        description: '120 countries • Market modes • Transition status',
+        description: '120 countries â€¢ Market modes â€¢ Transition status',
         href: '/admin/dashboards/country-readiness',
-        icon: '🌍',
+        icon: 'ðŸŒ',
         color: '#3B82F6',
     },
     {
         name: 'AdGrid Fill & Yield',
-        description: 'Fill rates • CPM/CPC • Slot utilization',
+        description: 'Fill rates â€¢ CPM/CPC â€¢ Slot utilization',
         href: '/admin/dashboards/fill-yield',
-        icon: '📊',
+        icon: 'ðŸ“Š',
         color: '#22C55E',
     },
     {
         name: 'Creative Performance',
-        description: 'Gemini output • A/B tests • Winner detection',
+        description: 'Gemini output â€¢ A/B tests â€¢ Winner detection',
         href: '/admin/dashboards/creative-performance',
-        icon: '🎨',
+        icon: 'ðŸŽ¨',
         color: '#8B5CF6',
     },
     {
         name: 'Distribution',
-        description: 'Social engine • Posts • Funnel attribution',
+        description: 'Social engine â€¢ Posts â€¢ Funnel attribution',
         href: '/admin/dashboards/distribution',
-        icon: '📡',
+        icon: 'ðŸ“¡',
         color: '#F59E0B',
     },
     {
         name: 'Data Products',
-        description: 'Self-serve catalog • Sales • Access patterns',
+        description: 'Self-serve catalog â€¢ Sales â€¢ Access patterns',
         href: '/admin/dashboards/data-products',
-        icon: '📦',
+        icon: 'ðŸ“¦',
         color: '#EF4444',
     },
     {
         name: 'Ad Campaigns',
-        description: 'Active campaigns • Budget tracking • ROI',
+        description: 'Active campaigns â€¢ Budget tracking â€¢ ROI',
         href: '/admin/ads/campaigns',
-        icon: '📢',
+        icon: 'ðŸ“¢',
         color: '#06B6D4',
     },
 ];
@@ -86,7 +86,7 @@ export default function DashboardsHub() {
                             marginTop: 14, fontSize: 11, fontWeight: 700, color: d.color,
                             display: 'flex', alignItems: 'center', gap: 4,
                         }}>
-                            View Dashboard →
+                            View Dashboard â†’
                         </div>
                     </Link>
                 ))}

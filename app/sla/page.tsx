@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Service Level Agreement | Haul Command',
-  description: 'Haul Command SLA — 99.9% uptime guarantee, response time commitments, and support tiers for enterprise escort dispatch.',
+  description: 'Haul Command SLA â€” 99.9% uptime guarantee, response time commitments, and support tiers for enterprise escort dispatch.',
 };
 
 export default function SLAPage() {
@@ -20,7 +20,7 @@ export default function SLAPage() {
             <div style={{ display: 'grid', gap: 12 }}>
               {[{ tier: 'Critical (P1)', time: '< 15 minutes', desc: 'Platform down, payments broken' }, { tier: 'High (P2)', time: '< 1 hour', desc: 'Feature degraded, data delays' }, { tier: 'Medium (P3)', time: '< 4 hours', desc: 'Non-critical bug, UI issue' }, { tier: 'Low (P4)', time: '< 24 hours', desc: 'Feature request, enhancement' }].map((t, i) => (
                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 16, background: 'rgba(255,255,255,0.04)', borderRadius: 8 }}>
-                  <div><strong>{t.tier}</strong> <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>— {t.desc}</span></div>
+                  <div><strong>{t.tier}</strong> <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>â€” {t.desc}</span></div>
                   <span style={{ color: '#00ff88', fontWeight: 700 }}>{t.time}</span>
                 </div>
               ))}

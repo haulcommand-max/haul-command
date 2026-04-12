@@ -1,5 +1,5 @@
 /**
- * Landing Layout — Marketing pages (homepage, about, pricing)
+ * Landing Layout â€” Marketing pages (homepage, about, pricing)
  * 
  * NO sidebar. NO mobile bottom nav. NO app shell.
  * This is a clean, full-width marketing layout.

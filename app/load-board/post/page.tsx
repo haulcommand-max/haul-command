@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LoadBoardPostPage() {
   return (
-    <div className="min-h-screen bg-[#07090d] text-white font-sans selection:bg-blue-500/30">
+    <div className=" bg-[#07090d] text-white font-sans selection:bg-blue-500/30">
 
       <main className="container max-w-3xl mx-auto px-4 py-8 md:py-16 pb-32">
         <div className="mb-8">

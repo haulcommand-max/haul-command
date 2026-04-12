@@ -66,10 +66,10 @@ export function LanguageSwitcher() {
       onChange={(e) => setLang(e.target.value)}
       className="bg-hc-gray-900 text-hc-gray-300 text-sm border border-hc-gray-700 rounded px-2 py-1 focus:outline-none"
     >
-      <option value="US">🇺🇸 EN-US (Pilot Car)</option>
-      <option value="FR">🇫🇷 FR-FR (Voiture Pilote)</option>
-      <option value="DE">🇩🇪 DE-DE (Begleitfahrzeug)</option>
-      <option value="AU">🇦🇺 EN-AU (Pilot Vehicle)</option>
+      <option value="US">ðŸ‡ºðŸ‡¸ EN-US (Pilot Car)</option>
+      <option value="FR">ðŸ‡«ðŸ‡· FR-FR (Voiture Pilote)</option>
+      <option value="DE">ðŸ‡©ðŸ‡ª DE-DE (Begleitfahrzeug)</option>
+      <option value="AU">ðŸ‡¦ðŸ‡º EN-AU (Pilot Vehicle)</option>
     </select>
   );
 }

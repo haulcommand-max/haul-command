@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /operator — Operator Dashboard
+ * /operator â€” Operator Dashboard
  * 
  * Three modules:
  *   1. Availability Toggle (online/offline)
@@ -64,7 +64,7 @@ export default function OperatorDashboard() {
 
     const supabase = createClient();
 
-    // ── Load dashboard data ──
+    // â”€â”€ Load dashboard data â”€â”€
     const loadDashboard = useCallback(async (userId: string) => {
         // Fallback to standard querying since RPC might not exist
         const { data: profile } = await supabase
@@ -132,7 +132,7 @@ export default function OperatorDashboard() {
         init();
     }, [supabase, loadDashboard, loadNotifications]);
 
-    // ── Toggle availability ──
+    // â”€â”€ Toggle availability â”€â”€
     const toggleAvailability = async () => {
         if (!dash || toggling) return;
         setToggling(true);
@@ -175,7 +175,7 @@ export default function OperatorDashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-transparent flex items-center justify-center">
+            <div className=" bg-transparent flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#F1A91B]/30 border-t-[#F1A91B] rounded-full animate-spin" />
             </div>
         );
@@ -183,7 +183,7 @@ export default function OperatorDashboard() {
 
     if (!dash) {
         return (
-            <div className="min-h-screen bg-transparent flex flex-col items-center justify-center gap-4 px-4">
+            <div className=" bg-transparent flex flex-col items-center justify-center gap-4 px-4">
                 <Shield className="w-12 h-12 text-[#F1A91B]" />
                 <h2 className="text-xl font-black text-white text-center">Operator Dashboard</h2>
                 <p className="text-white/40 text-sm text-center">Sign in and claim your listing to access the dashboard.</p>
@@ -195,11 +195,11 @@ export default function OperatorDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-transparent text-white pb-24">
+        <div className=" bg-transparent text-white pb-24">
             {/* Header */}
 
             <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-                {/* ── MODULE 1: Availability Toggle ── */}
+                {/* â”€â”€ MODULE 1: Availability Toggle â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -253,11 +253,11 @@ export default function OperatorDashboard() {
                     </div>
                 </motion.div>
 
-                {/* ── MODULE 2: Stats Grid ── */}
+                {/* â”€â”€ MODULE 2: Stats Grid â”€â”€ */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
                         { label: "Trust Score", value: dash.trust_score, icon: Shield, color: "#F1A91B" },
-                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}★` : "—", icon: Star, color: "#FBBF24" },
+                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}â˜…` : "â€”", icon: Star, color: "#FBBF24" },
                         { label: "Jobs Done", value: dash.jobs_completed, icon: Award, color: "#10B981" },
                         { label: "Offers", value: dash.offers_pending, icon: Activity, color: "#8B5CF6" },
                     ].map((stat, i) => (
@@ -279,7 +279,7 @@ export default function OperatorDashboard() {
                     ))}
                 </div>
 
-                {/* ── MODULE 3: Profile Completion ── */}
+                {/* â”€â”€ MODULE 3: Profile Completion â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -318,37 +318,37 @@ export default function OperatorDashboard() {
                     <div className="flex gap-2 mt-3 flex-wrap">
                         {dash.escort_verified && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                ✓ Verified
+                                âœ“ Verified
                             </span>
                         )}
                         {dash.has_high_pole && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-[#F1A91B]/10 text-[#F1A91B] border border-[#F1A91B]/20">
-                                ⚡ High Pole
+                                âš¡ High Pole
                             </span>
                         )}
                         {dash.claim_status === "claimed" && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                ✓ Claimed
+                                âœ“ Claimed
                             </span>
                         )}
                     </div>
                 </motion.div>
 
-                {/* ── MODULE 3.5: Invite & Growth ── */}
+                {/* â”€â”€ MODULE 3.5: Invite & Growth â”€â”€ */}
                 <InviteCard />
 
-                {/* Milestone celebration — triggers once per session */}
+                {/* Milestone celebration â€” triggers once per session */}
                 {dash.jobs_completed > 0 && !sessionStorage?.getItem('hc_milestone_dismiss') && (
                     <MilestoneCelebration
                         type={dash.jobs_completed >= 100 ? '100_jobs' : dash.jobs_completed >= 50 ? '50_jobs' : dash.jobs_completed >= 10 ? '10_jobs' : 'first_job'}
-                        title={dash.jobs_completed >= 100 ? 'Century Club 🏆' : dash.jobs_completed >= 50 ? 'Elite Hauler' : dash.jobs_completed >= 10 ? 'First Fleet' : 'First Run Complete'}
+                        title={dash.jobs_completed >= 100 ? 'Century Club ðŸ†' : dash.jobs_completed >= 50 ? 'Elite Hauler' : dash.jobs_completed >= 10 ? 'First Fleet' : 'First Run Complete'}
                         description={`You've completed ${dash.jobs_completed} job${dash.jobs_completed > 1 ? 's' : ''} on Haul Command. Keep going to climb the leaderboard.`}
-                        emoji={dash.jobs_completed >= 100 ? '👑' : dash.jobs_completed >= 50 ? '🔥' : dash.jobs_completed >= 10 ? '⚡' : '🎉'}
+                        emoji={dash.jobs_completed >= 100 ? 'ðŸ‘‘' : dash.jobs_completed >= 50 ? 'ðŸ”¥' : dash.jobs_completed >= 10 ? 'âš¡' : 'ðŸŽ‰'}
                         onDismiss={() => { try { sessionStorage.setItem('hc_milestone_dismiss', '1'); } catch { } }}
                     />
                 )}
 
-                {/* ── MODULE 4: Incoming Offers / Notifications ── */}
+                {/* â”€â”€ MODULE 4: Incoming Offers / Notifications â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -401,7 +401,7 @@ export default function OperatorDashboard() {
                     )}
                 </motion.div>
 
-                {/* ── Quick Actions ── */}
+                {/* â”€â”€ Quick Actions â”€â”€ */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <a
                         href="/loads"
@@ -443,12 +443,12 @@ export default function OperatorDashboard() {
                     </a>
                 </div>
 
-                {/* ── MODULE 6: Benchmark Comparison ── */}
+                {/* â”€â”€ MODULE 6: Benchmark Comparison â”€â”€ */}
                 <BenchmarkCard
                     metrics={[
                         { label: 'Trust Score', yours: dash.trust_score, avg: 65, top10: 95, unit: '' },
                         { label: 'Jobs Completed', yours: dash.jobs_completed, avg: 12, top10: 85, unit: '' },
-                        { label: 'Rating', yours: Math.round(dash.rating_avg * 10) / 10, avg: 3.8, top10: 4.9, unit: '★' },
+                        { label: 'Rating', yours: Math.round(dash.rating_avg * 10) / 10, avg: 3.8, top10: 4.9, unit: 'â˜…' },
                     ]}
                 />
 

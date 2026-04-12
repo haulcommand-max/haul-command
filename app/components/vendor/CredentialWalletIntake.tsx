@@ -65,7 +65,7 @@ export default function CredentialWalletIntake() {
           <div>
             <h3 className="text-lg font-bold mb-4">Insurance Compliance Upload</h3>
             <div className="bg-hc-gray-900 border-2 border-dashed border-hc-gray-700 rounded-xl p-8 text-center cursor-pointer hover:border-hc-yellow-400 transition-colors">
-              <span className="text-4xl block mb-2">📁</span>
+              <span className="text-4xl block mb-2">ðŸ“</span>
               <p className="font-bold">Upload ACORD Certificate</p>
               <p className="text-xs text-hc-gray-400 mt-2">Must show minimum $1M Auto & General Liability.</p>
               <p className="text-xs text-hc-yellow-400 mt-1">Our AI extracts expiration dates directly from the document.</p>

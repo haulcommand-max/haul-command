@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function EnterpriseTrainingHub() {
   return (
-    <main className="min-h-screen bg-transparent text-white selection:bg-[#FF3333] selection:text-white">
+    <main className=" bg-transparent text-white selection:bg-[#FF3333] selection:text-white">
       {/* 1. HERO SECTION */}
       <section className="relative px-6 pt-32 pb-24 md:pt-48 md:pb-32 overflow-hidden border-b border-white/10">
         <div className="max-w-7xl mx-auto relative z-10 text-center">
@@ -97,13 +97,13 @@ export default function EnterpriseTrainingHub() {
               <div className="text-4xl font-bold mb-6">$1,250<span className="text-lg text-neutral-500 font-normal">/yr</span></div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> 10 Operator Seats
+                  <span className="text-[#FF3333]">âœ“</span> 10 Operator Seats
                 </li>
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> Unified Progress Dashboard
+                  <span className="text-[#FF3333]">âœ“</span> Unified Progress Dashboard
                 </li>
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> Digital Badge Verification
+                  <span className="text-[#FF3333]">âœ“</span> Digital Badge Verification
                 </li>
               </ul>
               <button className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all font-medium text-white">
@@ -120,16 +120,16 @@ export default function EnterpriseTrainingHub() {
               <div className="text-4xl font-bold mb-6">$5,000<span className="text-lg text-neutral-500 font-normal">/yr</span></div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-white">
-                  <span className="text-[#FF3333]">✓</span> 50 Operator Seats
+                  <span className="text-[#FF3333]">âœ“</span> 50 Operator Seats
                 </li>
                 <li className="flex items-center gap-3 text-white">
-                  <span className="text-[#FF3333]">✓</span> Unified Progress Dashboard
+                  <span className="text-[#FF3333]">âœ“</span> Unified Progress Dashboard
                 </li>
                 <li className="flex items-center gap-3 text-white">
-                  <span className="text-[#FF3333]">✓</span> Digital Badge Verification
+                  <span className="text-[#FF3333]">âœ“</span> Digital Badge Verification
                 </li>
                 <li className="flex items-center gap-3 text-white">
-                  <span className="text-[#FF3333]">✓</span> API Insurance Integrations
+                  <span className="text-[#FF3333]">âœ“</span> API Insurance Integrations
                 </li>
               </ul>
               <button className="w-full py-4 rounded-xl bg-[#FF3333] hover:bg-[#E60000] transition-all font-bold text-white shadow-lg">
@@ -143,13 +143,13 @@ export default function EnterpriseTrainingHub() {
               <div className="text-4xl font-bold mb-6">$18,000<span className="text-lg text-neutral-500 font-normal">/yr</span></div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> 250 Operator Seats
+                  <span className="text-[#FF3333]">âœ“</span> 250 Operator Seats
                 </li>
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> Custom White-Labeling
+                  <span className="text-[#FF3333]">âœ“</span> Custom White-Labeling
                 </li>
                 <li className="flex items-center gap-3 text-neutral-300">
-                  <span className="text-[#FF3333]">✓</span> Dedicated Operations Engineer
+                  <span className="text-[#FF3333]">âœ“</span> Dedicated Operations Engineer
                 </li>
               </ul>
               <button className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all font-medium text-white">
@@ -164,8 +164,8 @@ export default function EnterpriseTrainingHub() {
       <section className="py-24 border-t border-white/10 bg-black text-center">
         <div className="max-w-2xl mx-auto px-6">
           <p className="text-sm font-mono text-neutral-500">
-            Powered by HC Content OS · Data Architecture: 
-            <span className="text-[#FF3333]"> training_team_accounts</span> → 
+            Powered by HC Content OS Â· Data Architecture: 
+            <span className="text-[#FF3333]"> training_team_accounts</span> â†’ 
             <span className="text-[#FF3333]"> training_team_enrollments</span>.
             {/* The hooks for these buttons will trigger the Stripe /checkout/sessions endpoints we built */}
           </p>

@@ -25,7 +25,7 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Campaign {
   id: string;
   name: string;
@@ -53,16 +53,16 @@ const AD_TYPES = [
 ];
 
 const STATUS_STYLES: Record<string, { color: string; bg: string; border: string; label: string }> = {
-  active:  { color: '#34d399', bg: 'rgba(52,211,153,0.1)',  border: 'rgba(52,211,153,0.3)',  label: '● Active' },
-  paused:  { color: '#fbbf24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.3)',  label: '⏸ Paused' },
-  draft:   { color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.3)', label: '✎ Draft' },
-  ended:   { color: '#64748b', bg: 'rgba(100,116,139,0.1)', border: 'rgba(100,116,139,0.3)', label: '✓ Ended' },
+  active:  { color: '#34d399', bg: 'rgba(52,211,153,0.1)',  border: 'rgba(52,211,153,0.3)',  label: 'â— Active' },
+  paused:  { color: '#fbbf24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.3)',  label: 'â¸ Paused' },
+  draft:   { color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.3)', label: 'âœŽ Draft' },
+  ended:   { color: '#64748b', bg: 'rgba(100,116,139,0.1)', border: 'rgba(100,116,139,0.3)', label: 'âœ“ Ended' },
 };
 
 function fmtUSD(n: number) { return `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; }
 function fmtNum(n: number) { return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n); }
 
-// ─── Stat Card ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Stat Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StatCard({ label, value, sub, icon: Icon, color }: { label: string; value: string; sub?: string; icon: React.ElementType; color: string }) {
   return (
     <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '20px 22px' }}>
@@ -75,7 +75,7 @@ function StatCard({ label, value, sub, icon: Icon, color }: { label: string; val
   );
 }
 
-// ─── Campaign Row ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Campaign Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CampaignRow({ c, onToggle }: { c: Campaign; onToggle: (id: string, status: 'active' | 'paused') => void }) {
   const ss = STATUS_STYLES[c.status];
   const ctr = c.impressions > 0 ? ((c.clicks / c.impressions) * 100).toFixed(2) : '0.00';
@@ -135,7 +135,7 @@ function CampaignRow({ c, onToggle }: { c: Campaign; onToggle: (id: string, stat
   );
 }
 
-// ─── Campaign Creator Modal ────────────────────────────────────────────────────
+// â”€â”€â”€ Campaign Creator Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CreateCampaignModal({ onClose, onCreated }: { onClose: () => void; onCreated: (c: Campaign) => void }) {
   const [step, setStep] = useState<CreateStep>('type');
   const [adType, setAdType] = useState<string>('native');
@@ -205,7 +205,7 @@ function CreateCampaignModal({ onClose, onCreated }: { onClose: () => void; onCr
         <div style={{ padding: '20px 24px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <h2 style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#f1f5f9' }}>New Ad Campaign</h2>
-            <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 20 }}>✕</button>
+            <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 20 }}>âœ•</button>
           </div>
           <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
             {Steps.map((s, i) => (
@@ -339,9 +339,9 @@ function CreateCampaignModal({ onClose, onCreated }: { onClose: () => void; onCr
 
         {/* Footer */}
         <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-          {stepIdx > 0 ? <Btn label="← Back" onClick={() => setStep(Steps[stepIdx - 1])} /> : <div />}
+          {stepIdx > 0 ? <Btn label="â† Back" onClick={() => setStep(Steps[stepIdx - 1])} /> : <div />}
           {step !== 'review'
-            ? <Btn label="Next →" primary onClick={() => setStep(Steps[stepIdx + 1])} />
+            ? <Btn label="Next â†’" primary onClick={() => setStep(Steps[stepIdx + 1])} />
             : <button onClick={handleCreate} disabled={submitting} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '11px 22px', background: 'linear-gradient(135deg, #34d399, #059669)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 800, fontSize: 14, cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}>
                 {submitting ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> : <CheckCircle2 size={15} />}
                 {submitting ? 'Launching...' : 'Launch Campaign'}
@@ -354,7 +354,7 @@ function CreateCampaignModal({ onClose, onCreated }: { onClose: () => void; onCr
   );
 }
 
-// ─── Main AdGrid Dashboard ────────────────────────────────────────────────────
+// â”€â”€â”€ Main AdGrid Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function AdGridDashboard() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
@@ -412,7 +412,7 @@ export default function AdGridDashboard() {
               </h1>
             </div>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>
-              {activeCnt} active campaign{activeCnt !== 1 ? 's' : ''} · Reach 1.5M+ logistics operators
+              {activeCnt} active campaign{activeCnt !== 1 ? 's' : ''} Â· Reach 1.5M+ logistics operators
             </p>
           </div>
           <button

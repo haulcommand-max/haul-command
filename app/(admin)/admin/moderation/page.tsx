@@ -23,7 +23,7 @@ export default function ModerationPage() {
                 if (data) {
                     setItems(data.map((d: any) => ({
                         id: d.id, type: d.entity_type || 'claim',
-                        summary: d.note || d.action, region: '—',
+                        summary: d.note || d.action, region: 'â€”',
                         created: new Date(d.created_at).toLocaleDateString(),
                         status: d.action?.includes('VERIFY') ? 'resolved' : d.action?.includes('REJECT') ? 'resolved' : 'open',
                         priority: d.action?.includes('REJECT') ? 90 : 50,
@@ -83,7 +83,7 @@ export default function ModerationPage() {
                     <div className="text-center py-20 text-[#444]">Loading moderation queue...</div>
                 ) : items.length === 0 ? (
                     <div className="text-center py-20">
-                        <div className="text-4xl mb-4">✅</div>
+                        <div className="text-4xl mb-4">âœ…</div>
                         <h3 className="text-lg font-bold text-[#888] mb-2">Moderation Queue Clear</h3>
                         <p className="text-sm text-[#444]">No pending items. New claims, reports, and verifications will appear here automatically.</p>
                     </div>

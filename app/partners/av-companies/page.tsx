@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'AV Company Partnerships — Haul Command',
+  title: 'AV Company Partnerships â€” Haul Command',
   description:
     'Partner with Haul Command to connect your autonomous trucking operations with AV-Ready certified escort operators. White-label, preferred provider, and data partnership models.',
   keywords: [
@@ -25,7 +25,7 @@ const PITCH_PAGES = [
   {
     num: '01',
     headline: 'Your trucks are autonomous. Your escorts shouldn\'t be random.',
-    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command has them — verified, AV-Ready certified, on your corridors.',
+    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command has them â€” verified, AV-Ready certified, on your corridors.',
     accent: '#ff9500',
   },
   {
@@ -46,11 +46,11 @@ const PITCH_PAGES = [
     headline: 'The Haul Command solution',
     body: null,
     bullets: [
-      'AV-Ready Certified operator network — trained on your truck\'s specific protocols',
+      'AV-Ready Certified operator network â€” trained on your truck\'s specific protocols',
       'Pre-vetted operators on your specific corridors, available within 47 minutes',
       'Single API call or dashboard to dispatch a certified escort',
-      'Escrow-protected payment — automatic on job completion, no disputes',
-      'Real-time tracking — your ops team sees the escort live alongside your truck',
+      'Escrow-protected payment â€” automatic on job completion, no disputes',
+      'Real-time tracking â€” your ops team sees the escort live alongside your truck',
     ],
     accent: '#00ff88',
   },
@@ -85,7 +85,7 @@ export default function AVPartnersPage() {
             background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.25)',
             color: '#00ff88', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24,
           }}>
-            🤝 AV COMPANY PARTNERSHIP PROGRAM
+            ðŸ¤ AV COMPANY PARTNERSHIP PROGRAM
           </div>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 54px)', fontWeight: 900, margin: '0 0 16px',
@@ -105,7 +105,7 @@ export default function AVPartnersPage() {
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
               }}>
-                Become a Partner →
+                Become a Partner â†’
               </button>
             </Link>
             <a href="mailto:partners@haulcommand.com">
@@ -151,7 +151,7 @@ export default function AVPartnersPage() {
                     borderRadius: 12, padding: '14px 16px',
                   }}>
                     <span style={{ color: page.accent, fontWeight: 900, flexShrink: 0, fontSize: 16 }}>
-                      {page.accent === '#ef4444' ? '✕' : '✓'}
+                      {page.accent === '#ef4444' ? 'âœ•' : 'âœ“'}
                     </span>
                     <span style={{ color: '#b0bcd0', fontSize: 15, lineHeight: 1.6 }}>{b}</span>
                   </div>
@@ -184,7 +184,7 @@ export default function AVPartnersPage() {
             {[
               {
                 letter: 'A', title: 'White-Label Integration',
-                desc: '"[YourBrand] Escort Connect" — powered by Haul Command. Your branding. Your logistics partners. We handle dispatch, verification, and payment.',
+                desc: '"[YourBrand] Escort Connect" â€” powered by Haul Command. Your branding. Your logistics partners. We handle dispatch, verification, and payment.',
                 price: 'Flat API fee + revenue share', accent: '#f5c842',
               },
               {
@@ -194,7 +194,7 @@ export default function AVPartnersPage() {
               },
               {
                 letter: 'C', title: 'Data Partnership',
-                desc: 'Share route data → we pre-position certified operators before your trucks arrive. Predictive availability = sub-47-minute fill times.',
+                desc: 'Share route data â†’ we pre-position certified operators before your trucks arrive. Predictive availability = sub-47-minute fill times.',
                 price: 'Data licensing + SLA guarantee', accent: '#00ccff',
               },
             ].map(opt => (
@@ -211,7 +211,7 @@ export default function AVPartnersPage() {
                 }}>{opt.letter}</div>
                 <div style={{ fontWeight: 800, fontSize: 18, color: '#f0f4f8', marginBottom: 10 }}>{opt.title}</div>
                 <div style={{ fontSize: 14, color: '#b0bcd0', lineHeight: 1.7, marginBottom: 16 }}>{opt.desc}</div>
-                <div style={{ fontSize: 12, color: opt.accent, fontWeight: 600 }}>💰 {opt.price}</div>
+                <div style={{ fontSize: 12, color: opt.accent, fontWeight: 600 }}>ðŸ’° {opt.price}</div>
               </div>
             ))}
           </div>
@@ -252,7 +252,7 @@ export default function AVPartnersPage() {
 
         <div style={{ textAlign: 'center', marginTop: 40 }}>
           <Link aria-label="Navigation Link" href="/training/av-certification" style={{ color: '#8fa3c0', fontSize: 14, textDecoration: 'none' }}>
-            ← AV-Ready Certification for Individual Operators
+            â† AV-Ready Certification for Individual Operators
           </Link>
         </div>
       </div>

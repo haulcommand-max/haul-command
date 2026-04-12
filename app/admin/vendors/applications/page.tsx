@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { VendorApplication } from "@/lib/vendor/types";
 
 // =========================================================
-// Admin Vendor Applications Queue — /admin/vendors/applications
+// Admin Vendor Applications Queue â€” /admin/vendors/applications
 // Shows pending + needs_info applications
 // =========================================================
 
@@ -51,7 +51,7 @@ export default function AdminVendorApplicationsPage() {
                 </div>
 
                 {loading ? (
-                    <div className="p-8 text-center text-gray-400 text-sm">Loading…</div>
+                    <div className="p-8 text-center text-gray-400 text-sm">Loadingâ€¦</div>
                 ) : apps.length === 0 ? (
                     <div className="p-8 text-center text-gray-400 text-sm">No pending applications.</div>
                 ) : (
@@ -73,9 +73,9 @@ export default function AdminVendorApplicationsPage() {
                                         <td className="px-4 py-3 font-medium text-white">{app.company_name}</td>
                                         <td className="px-4 py-3 text-gray-600">{app.vendor_type.replace(/_/g, " ")}</td>
                                         <td className="px-4 py-3 text-gray-600">{app.country}</td>
-                                        <td className="px-4 py-3 text-gray-600">{app.region1 ?? "—"}</td>
+                                        <td className="px-4 py-3 text-gray-600">{app.region1 ?? "â€”"}</td>
                                         <td className="px-4 py-3 text-gray-600">{app.city}</td>
-                                        <td className="px-4 py-3">{app.is_24_7 ? "✓" : "—"}</td>
+                                        <td className="px-4 py-3">{app.is_24_7 ? "âœ“" : "â€”"}</td>
                                         <td className="px-4 py-3">
                                             <span className="px-2 py-0.5 bg-[#1A1A1A] text-neutral-300 rounded text-xs">
                                                 {app.preferred_plan_tier}
@@ -89,7 +89,7 @@ export default function AdminVendorApplicationsPage() {
                                         <td className="px-4 py-3">
                                             <Link aria-label="Navigation Link" href={`/admin/vendors/applications/${app.id}`}
                                                 className="text-orange-600 hover:underline font-medium text-xs">
-                                                Review →
+                                                Review â†’
                                             </Link>
                                         </td>
                                     </tr>

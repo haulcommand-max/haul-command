@@ -66,12 +66,12 @@ const faqSchema = {
     ],
 };
 
-// ── Tool Card Data ──
+// â”€â”€ Tool Card Data â”€â”€
 const TOOLS = [
     {
         name: 'Route IQ',
         slug: '/tools/route-iq',
-        icon: '🛣️',
+        icon: 'ðŸ›£ï¸',
         color: '#3b82f6',
         tagline: 'Route Compliance Checker',
         description: 'Check escort requirements, restrictions, and compliance for any oversize route across multiple states or countries.',
@@ -80,7 +80,7 @@ const TOOLS = [
     {
         name: 'Rate Advisor',
         slug: '/tools/rate-advisor',
-        icon: '💰',
+        icon: 'ðŸ’°',
         color: '#22c55e',
         tagline: 'Escort Cost Benchmarks',
         description: 'Get real-time rate benchmarks for pilot car escorts by corridor, region, and season. Stop overpaying.',
@@ -89,7 +89,7 @@ const TOOLS = [
     {
         name: 'Escort Calculator',
         slug: '/tools/escort-calculator',
-        icon: '🧮',
+        icon: 'ðŸ§®',
         color: '#C6923A',
         tagline: 'Escort Cost Estimator',
         description: 'Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using live benchmarks across 120 countries.',
@@ -97,7 +97,7 @@ const TOOLS = [
     {
         name: 'Permit Calculator',
         slug: '/tools/permit-calculator',
-        icon: '📋',
+        icon: 'ðŸ“‹',
         color: '#f59e0b',
         tagline: 'Multi-State Permit Estimator',
         description: 'Estimate permit costs, lead times, and authority contacts for oversize loads crossing multiple jurisdictions.',
@@ -105,7 +105,7 @@ const TOOLS = [
     {
         name: 'Official Source Finder',
         slug: '/tools/official-source-finder',
-        icon: '🏛️',
+        icon: 'ðŸ›ï¸',
         color: '#10b981',
         tagline: 'Verified Government Documents',
         description: 'Locate and download verifiable DOT workbooks, official escort guidelines, and legislative code directly from global authorities.',
@@ -114,7 +114,7 @@ const TOOLS = [
     {
         name: 'Certification Map',
         slug: '/tools/certification-map',
-        icon: '🗺️',
+        icon: 'ðŸ—ºï¸',
         color: '#8b5cf6',
         tagline: '120-Country Credential Index',
         description: 'Look up certification reciprocity, local credential requirements, and training authority paths per jurisdiction.',
@@ -122,7 +122,7 @@ const TOOLS = [
     {
         name: 'Permit Authority Directory',
         slug: '/tools/permit-authorities',
-        icon: '🏛️',
+        icon: 'ðŸ›ï¸',
         color: '#ec4899',
         tagline: 'Direct Routing Agency Portal Links',
         description: 'A global 120-country directory of direct routing permit portals, contact phone numbers, and operational hours.',
@@ -130,7 +130,7 @@ const TOOLS = [
     {
         name: 'Regulation Change Log',
         slug: '/tools/regulation-change-log',
-        icon: '🔔',
+        icon: 'ðŸ””',
         color: '#f97316',
         tagline: 'Rule Change Notifications',
         description: 'Direct visibility into daily log updates for escort regulations, size limit tweaks, and emergency route revisions.',
@@ -138,7 +138,7 @@ const TOOLS = [
     {
         name: 'Country Source Library',
         slug: '/tools/source-library',
-        icon: '📚',
+        icon: 'ðŸ“š',
         color: '#06b6d4',
         tagline: '120-Country Regulatory Source Map',
         description: 'A dedicated library of authoritative rule books and threshold guides per country, mapped into actionable steps.',
@@ -146,7 +146,7 @@ const TOOLS = [
     {
         name: 'Forms & Document Hub',
         slug: '/forms',
-        icon: '📄',
+        icon: 'ðŸ“„',
         color: '#14b8a6',
         tagline: 'Autofill & Expiration Alerts',
         description: 'Download industry-standard Bills of Lading, Service Agreements, and store compliance documents for fast autofill.',
@@ -154,7 +154,7 @@ const TOOLS = [
     {
         name: 'Backhaul Locator',
         slug: '/backhauls',
-        icon: '🛣️',
+        icon: 'ðŸ›£ï¸',
         color: '#8b5cf6',
         tagline: 'Repositioning Broadcasts',
         description: 'Find verified escort operators repositioning and available for return-trip loads to lower deadhead costs.',
@@ -162,7 +162,7 @@ const TOOLS = [
     {
         name: 'Load Type Library',
         slug: '/tools/load-types',
-        icon: '🗃️',
+        icon: 'ðŸ—ƒï¸',
         color: '#3b82f6',
         tagline: 'Dimension & Escort Index',
         description: 'A comprehensive directory of oversize load types encompassing typical dimensions, escort requirements, and industry-specific traversal risks.',
@@ -171,7 +171,7 @@ const TOOLS = [
     {
         name: 'Permit SLA Tracker',
         slug: '/tools/permit-sla-tracker',
-        icon: '⏱️',
+        icon: 'â±ï¸',
         color: '#a855f7',
         tagline: 'Processing Time Averages',
         description: 'Live visibility into state DOT permit processing times. Don\'t let your truck sit idle at the border waiting on a superload permit.',
@@ -180,7 +180,7 @@ const TOOLS = [
     {
         name: 'Corridor Pricing',
         slug: '/tools/corridor-pricing',
-        icon: '📈',
+        icon: 'ðŸ“ˆ',
         color: '#10b981',
         tagline: 'Historical Lane Rates',
         description: 'Track real-time and historical per-mile pricing for pilot cars across major industrial transit corridors.',
@@ -189,7 +189,7 @@ const TOOLS = [
     {
         name: 'Certification Timelines',
         slug: '/tools/certification-timeline',
-        icon: '🎓',
+        icon: 'ðŸŽ“',
         color: '#f59e0b',
         tagline: 'State Protocols & Cost',
         description: 'Understand exactly how long it takes and what it costs to get legally certified in each state, plus a live reciprocity matrix.',
@@ -205,7 +205,7 @@ export default function ToolsIndexPage() {
             <ProofStrip variant="bar" />
 
             <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#F0F0F2' }}>
-                {/* ── Hero ── */}
+                {/* â”€â”€ Hero â”€â”€ */}
                 <section style={{
                     position: 'relative', overflow: 'hidden',
                     borderBottom: '1px solid rgba(255,255,255,0.05)',
@@ -223,7 +223,7 @@ export default function ToolsIndexPage() {
                                 fontSize: 11, fontWeight: 800, textTransform: 'uppercase' as const,
                                 letterSpacing: '0.1em', color: '#C6923A', marginBottom: 24,
                             }}>
-                                🔧 Free Tools · No Login Required
+                                ðŸ”§ Free Tools Â· No Login Required
                             </div>
                             <h1 style={{
                                 fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1,
@@ -243,23 +243,23 @@ export default function ToolsIndexPage() {
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 13, color: '#6B7280' }}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>●</span> 15 free tools
+                                    <span style={{ color: '#22c55e' }}>â—</span> 15 free tools
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>●</span> 120 countries
+                                    <span style={{ color: '#22c55e' }}>â—</span> 120 countries
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>●</span> No sign-up needed
+                                    <span style={{ color: '#22c55e' }}>â—</span> No sign-up needed
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>●</span> Updated daily
+                                    <span style={{ color: '#22c55e' }}>â—</span> Updated daily
                                 </span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* ── Tool Grid ── */}
+                {/* â”€â”€ Tool Grid â”€â”€ */}
                 <section style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px' }}>
                     <div style={{
                         display: 'grid',
@@ -331,19 +331,19 @@ export default function ToolsIndexPage() {
                                     marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 6,
                                     fontSize: 12, fontWeight: 700, color: tool.color,
                                 }}>
-                                    Open Tool →
+                                    Open Tool â†’
                                 </div>
                             </Link>
                         ))}
                     </div>
                 </section>
 
-                {/* ── Tool Sponsor Slot ── */}
+                {/* â”€â”€ Tool Sponsor Slot â”€â”€ */}
                 <div style={{ marginTop: 32 }}>
                     <SponsorCard zone="tool" compact />
                 </div>
 
-                {/* ── Bottom CTA ── */}
+                {/* â”€â”€ Bottom CTA â”€â”€ */}
                 <section style={{
                     borderTop: '1px solid rgba(255,255,255,0.05)',
                     background: '#0f0f12',
@@ -376,25 +376,25 @@ export default function ToolsIndexPage() {
                                 color: '#F0F0F2', fontWeight: 700, fontSize: 13,
                                 textDecoration: 'none',
                             }}>
-                                Find Operators →
+                                Find Operators â†’
                             </Link>
                         </div>
                     </div>
                 </section>
             </div>
 
-            {/* ── AI Search Answer Block ── */}
+            {/* â”€â”€ AI Search Answer Block â”€â”€ */}
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <StaticAnswerBlock
                 question="What free tools does Haul Command offer for heavy haul logistics?"
                 answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 120 countries."
                 confidence="verified_current"
-                ctaLabel="Try Route IQ — Free"
+                ctaLabel="Try Route IQ â€” Free"
                 ctaUrl="/tools/route-iq"
               />
             </section>
 
-            {/* ── AdGrid — Tools Page Bottom ── */}
+            {/* â”€â”€ AdGrid â€” Tools Page Bottom â”€â”€ */}
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <AdGridSlot zone="tools_bottom" />
             </div>
@@ -402,12 +402,12 @@ export default function ToolsIndexPage() {
             <NoDeadEndBlock
               heading="Explore More Haul Command Resources"
               moves={[
-                { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
-                { href: '/claim', icon: '✓', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
-                { href: '/escort-requirements', icon: '⚖️', title: 'State Escort Rules', desc: 'Requirements by state' },
-                { href: '/regulations', icon: '🌍', title: 'Global Regulations', desc: '120 country rules' },
-                { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
-                { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
+                { href: '/directory', icon: 'ðŸ”', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
+                { href: '/claim', icon: 'âœ“', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
+                { href: '/escort-requirements', icon: 'âš–ï¸', title: 'State Escort Rules', desc: 'Requirements by state' },
+                { href: '/regulations', icon: 'ðŸŒ', title: 'Global Regulations', desc: '120 country rules' },
+                { href: '/glossary/pilot-car', icon: 'ðŸ“–', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Now', desc: 'Operators broadcasting live' },
               ]}
             />
 

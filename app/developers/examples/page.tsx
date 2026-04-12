@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function ExamplesPage() {
     return (
-        <main className="min-h-screen bg-transparent text-gray-100">
+        <main className=" bg-transparent text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
-                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
+                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">â† Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Code Examples</h1>
                 <p className="text-lg text-gray-400 mb-12">Ready-to-use integration patterns in TypeScript, Python, and cURL.</p>
 

@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs WideLoadShipping.com — Full Comparison 2026 | Haul Command',
+  title: 'Haul Command vs WideLoadShipping.com â€” Full Comparison 2026 | Haul Command',
   description: 'Haul Command vs WideLoadShipping.com: Compare features, tools, operator directory, booking, and global coverage. See which platform wins for heavy haul.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/wideloadshipping' },
 }
@@ -38,12 +38,12 @@ export default function VsWideLoadShippingPage() {
   return (
     <>
       <JsonLd data={schema}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON Â· 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs WideLoadShipping</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">WideLoadShipping built a basic directory and quote-request model. Haul Command built a live marketplace, trust system, tools suite, and global operator OS. Here’s the comparison.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">WideLoadShipping built a basic directory and quote-request model. Haul Command built a live marketplace, trust system, tools suite, and global operator OS. Hereâ€™s the comparison.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -73,10 +73,10 @@ export default function VsWideLoadShippingPage() {
                   <tr key={i} className="border-b border-[#131c28] hover:bg-[#0f1a24]">
                     <td className="py-3 pr-4 text-[#d0dce8] font-semibold">{row.feature}</td>
                     <td className="py-3 px-4 text-center">
-                      {row.hc ? <><span className="text-[#22c55e] font-bold">✔</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</> : <span className="text-[#3a5068]">-</span>}
+                      {row.hc ? <><span className="text-[#22c55e] font-bold">âœ”</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</> : <span className="text-[#3a5068]">-</span>}
                     </td>
                     <td className="py-3 px-4 text-center">
-                      {row.comp ? <><span className="text-[#566880] font-bold">✔</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</> : <><span className="text-[#3a5068]">✕</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
+                      {row.comp ? <><span className="text-[#566880] font-bold">âœ”</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</> : <><span className="text-[#3a5068]">âœ•</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
                     </td>
                   </tr>
                 ))}
@@ -91,9 +91,9 @@ export default function VsWideLoadShippingPage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href="/vs/oversize-io" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs Oversize.io →</Link>
-            <Link href="/vs/ods-north-america" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs ODS North America →</Link>
-            <Link href="/vs/heavyhaulers" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs HeavyHaulers →</Link>
+            <Link href="/vs/oversize-io" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs Oversize.io â†’</Link>
+            <Link href="/vs/ods-north-america" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs ODS North America â†’</Link>
+            <Link href="/vs/heavyhaulers" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs HeavyHaulers â†’</Link>
           </div>
         </div>
       </div>

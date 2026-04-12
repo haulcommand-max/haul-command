@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
     return (
-        <div className="min-h-screen bg-[#0a0a0f] text-slate-200 font-sans selection:bg-amber-500/30">
+        <div className=" bg-[#0a0a0f] text-slate-200 font-sans selection:bg-amber-500/30">
             {/* Hero Section */}
             <section className="relative pt-32 pb-20 px-4 overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-5 mix-blend-overlay"></div>
@@ -154,7 +154,7 @@ export default function HowItWorksPage() {
                                         <div className="text-white font-bold">Lone Star Pilot Cars</div>
                                         <div className="text-xs text-gray-400 flex items-center gap-2">
                                             <span>ETA: 14 mins</span>
-                                            <span>•</span>
+                                            <span>â€¢</span>
                                             <span className="text-amber-500">Trust: 96%</span>
                                         </div>
                                     </div>

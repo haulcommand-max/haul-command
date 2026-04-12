@@ -78,7 +78,7 @@ export default function DispatchDashboard({ stats }: Props) {
   const hasLiveData = stats.total_available > 0;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans overflow-hidden">
+    <div className=" bg-[#050505] text-white font-sans overflow-hidden">
       
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
@@ -89,7 +89,7 @@ export default function DispatchDashboard({ stats }: Props) {
           <Activity className="w-5 h-5 text-red-500 animate-pulse" />
           <h1 className="text-xl font-bold tracking-widest text-gray-200 uppercase">Live Dispatch Control</h1>
           <div className="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-xs font-mono text-red-400">
-            {hasLiveData ? 'LIVE' : 'CONNECTING'} · v_dispatch_ready_supply
+            {hasLiveData ? 'LIVE' : 'CONNECTING'} Â· v_dispatch_ready_supply
           </div>
         </div>
         <div className="flex gap-4">
@@ -193,7 +193,7 @@ export default function DispatchDashboard({ stats }: Props) {
           </div>
 
 
-          {/* Live Supply HUD — wired to v_dispatch_ready_supply_internal */}
+          {/* Live Supply HUD â€” wired to v_dispatch_ready_supply_internal */}
           <div className="absolute top-6 left-6 right-6 flex justify-between items-start pointer-events-none">
             <div className="bg-black/80 backdrop-blur border border-white/5 p-4 rounded-xl flex gap-6 shadow-2xl pointer-events-auto">
               <div>
@@ -232,7 +232,7 @@ export default function DispatchDashboard({ stats }: Props) {
             </div>
 
             <div className="bg-black/60 backdrop-blur rounded-full px-4 py-2 text-xs font-mono text-gray-400 border border-white/5 flex items-center gap-2 pointer-events-auto cursor-help">
-              <Shield className="w-3 h-3" /> Avg Trust: {stats.avg_trust_score || '—'}
+              <Shield className="w-3 h-3" /> Avg Trust: {stats.avg_trust_score || 'â€”'}
             </div>
           </div>
 
@@ -260,7 +260,7 @@ export default function DispatchDashboard({ stats }: Props) {
                               <span className="relative rounded-full h-2.5 w-2.5 bg-emerald-500" />
                             </span>
                             <div className="bg-white/5 border border-white/10 rounded w-8 h-8 flex items-center justify-center text-sm">
-                               {op.vehicle_type === 'pilot_car' ? '🚕' : '🚛'}
+                               {op.vehicle_type === 'pilot_car' ? 'ðŸš•' : 'ðŸš›'}
                             </div>
                          </div>
                          <div>
@@ -305,7 +305,7 @@ export default function DispatchDashboard({ stats }: Props) {
               <span>v_dispatch_ready_supply_internal</span>
             </div>
             <div className="text-[10px] text-gray-600 mt-1">
-              {Object.keys(stats.by_country).length} countries · {Object.keys(stats.by_role).length} roles
+              {Object.keys(stats.by_country).length} countries Â· {Object.keys(stats.by_role).length} roles
             </div>
           </div>
 
@@ -319,7 +319,7 @@ export default function DispatchDashboard({ stats }: Props) {
                   The dispatch_supply table needs operator records. Once operators set availability status to &quot;available&quot;, they&apos;ll populate v_dispatch_ready_supply_internal.
                 </p>
                 <div className="text-xs text-gray-600 font-mono">
-                  Tables ready: dispatch_supply → v_dispatch_ready_supply_internal ✓
+                  Tables ready: dispatch_supply â†’ v_dispatch_ready_supply_internal âœ“
                 </div>
               </div>
             </div>

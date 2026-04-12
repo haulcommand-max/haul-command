@@ -187,7 +187,88 @@ serve(async (req: Request) => {
     });
   }
 
-  return new Response(JSON.stringify({ error: `Unknown action: ${action}. Valid: flush, push, email` }), {
+  // ─────────────────────────────────────────────────
+  // SMS — transactional SMS text routing 
+  // Primary: Telnyx (30% cheaper)
+  // Fallback: Twilio
+  // ─────────────────────────────────────────────────
+  if (action === "sms") {
+    const to = body.to as string;
+    const smsBody = body.body as string;
+    const reason = body.reason as string;
+
+    if (!to || !smsBody || !reason) {
+      return new Response(JSON.stringify({ error: "to, body, reason required for SMS" }), { status: 400 });
+    }
+
+    const telnyxKey = Deno.env.get("TELNYX_API_KEY");
+    const twilioSid = Deno.env.get("TWILIO_ACCOUNT_SID");
+    const twilioAuth = Deno.env.get("TWILIO_AUTH_TOKEN");
+    const fromNumber = Deno.env.get("SMS_FROM_NUMBER") || "+18005550199";
+
+    let ok = false;
+    let provider = "none";
+    let providerResp = null;
+
+    // Phase 1: Telnyx First (Cheaper)
+    if (telnyxKey) {
+      provider = "telnyx";
+      try {
+        const res = await fetch("https://api.telnyx.com/v2/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${telnyxKey}`
+          },
+          body: JSON.stringify({
+            from: fromNumber,
+            to: to,
+            text: smsBody
+          })
+        });
+        ok = res.ok;
+        providerResp = await res.json().catch(() => ({}));
+      } catch (e) {
+        ok = false;
+      }
+    }
+
+    // Phase 2: Twilio Fallback
+    if (!ok && twilioSid && twilioAuth) {
+      provider = "twilio_fallback";
+      try {
+        const params = new URLSearchParams();
+        params.append("To", to);
+        params.append("From", fromNumber);
+        params.append("Body", smsBody);
+
+        const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + btoa(`${twilioSid}:${twilioAuth}`)
+          },
+          body: params.toString()
+        });
+        ok = res.ok;
+        providerResp = await res.json().catch(() => ({}));
+      } catch (e) {
+        ok = false;
+      }
+    }
+
+    await supabase.from("os_event_log").insert({
+      event_type: "comms.sms_sent",
+      payload: { to, reason, provider, success: ok },
+      created_at: now,
+    });
+
+    return new Response(JSON.stringify({ ok, action: "sms", provider, payload: providerResp }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  return new Response(JSON.stringify({ error: `Unknown action: ${action}. Valid: flush, push, email, sms` }), {
     status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 });

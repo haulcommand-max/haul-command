@@ -112,7 +112,7 @@ function SponsorCheckoutInner() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050508] text-white">
+        <div className=" bg-[#050508] text-white">
             <div className="max-w-4xl mx-auto px-4 py-16">
                 {/* Hero */}
                 <div className="text-center mb-12">
@@ -208,7 +208,7 @@ function SponsorCheckoutInner() {
 
 export default function SponsorCheckoutPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-[#050508] flex items-center justify-center"><Loader2 className="w-8 h-8 text-amber-500 animate-spin" /></div>}>
+        <Suspense fallback={<div className=" bg-[#050508] flex items-center justify-center"><Loader2 className="w-8 h-8 text-amber-500 animate-spin" /></div>}>
             <SponsorCheckoutInner />
         </Suspense>
     );

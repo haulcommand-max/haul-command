@@ -19,8 +19,8 @@ import {
     type GlobalMarketTier,
 } from '@/lib/monetization/sponsor-pricing';
 
-// ═══════════════════════════════════════════════════════════════
-// /advertise — SELF-SERVE SPONSOR STOREFRONT
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// /advertise â€” SELF-SERVE SPONSOR STOREFRONT
 //
 // Monetization surfaces:
 //   - Territory sponsorship (50 US states, tiered pricing)
@@ -30,7 +30,7 @@ import {
 //
 // Role+Intent: sponsor + acquire_territory + geo
 // AdGrid: Every surface on this page IS the product
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const T = {
     bg: '#0B0B0C',
@@ -62,11 +62,11 @@ const US_STATES_FULL: Record<string, string> = {
 };
 
 const TIER_LABEL: Record<USMarketTier, string> = {
-    mega: '🔥 Mega Market',
-    major: '⚡ Major Market',
-    mid: '📊 Mid Market',
-    growth: '🌱 Growth Market',
-    emerging: '🌍 Emerging Market',
+    mega: 'ðŸ”¥ Mega Market',
+    major: 'âš¡ Major Market',
+    mid: 'ðŸ“Š Mid Market',
+    growth: 'ðŸŒ± Growth Market',
+    emerging: 'ðŸŒ Emerging Market',
 };
 
 function TierBadge({ tier }: { tier: string }) {
@@ -158,7 +158,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
                 </div>
                 {annual && (
                     <div style={{ fontSize: 11, color: T.green, marginTop: 4 }}>
-                        ${annual}/mo billed annually · Save {Math.round((1 - annual / monthly) * 100)}%
+                        ${annual}/mo billed annually Â· Save {Math.round((1 - annual / monthly) * 100)}%
                     </div>
                 )}
             </div>
@@ -166,7 +166,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {features.map((f, i) => (
                     <li key={i} style={{ fontSize: 12, color: T.dim, display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ color: T.green, fontSize: 11 }}>✓</span> {f}
+                        <span style={{ color: T.green, fontSize: 11 }}>âœ“</span> {f}
                     </li>
                 ))}
             </ul>
@@ -231,7 +231,7 @@ export default function AdvertisePage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebPage",
-                "name": "Advertise on Haul Command — Sponsor Territory, Corridor, or Port",
+                "name": "Advertise on Haul Command â€” Sponsor Territory, Corridor, or Port",
                 "url": "https://haulcommand.com/advertise",
                 "description": "Sponsor a territory, corridor, or port on the #1 heavy haul logistics platform. Tiered pricing from $149/mo. 50 US states, 12 corridors, 10 ports, 120 countries.",
             }) }} />
@@ -249,7 +249,7 @@ export default function AdvertisePage() {
                         borderRadius: 999, padding: '6px 16px', fontSize: 10, fontWeight: 800,
                         textTransform: 'uppercase', letterSpacing: '0.12em', color: T.gold, marginBottom: 24,
                     }}>
-                        💰 Revenue Opportunity · Limited Slots
+                        ðŸ’° Revenue Opportunity Â· Limited Slots
                     </div>
                     <h1 style={{
                         fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, lineHeight: 1.08,
@@ -271,19 +271,19 @@ export default function AdvertisePage() {
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, fontSize: 13 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(16,185,129,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>📍</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(16,185,129,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸ“</span>
                             <div><div style={{ fontWeight: 700 }}>50 US States</div><div style={{ fontSize: 11, color: T.muted }}>$149-$499/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🛣️</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸ›£ï¸</span>
                             <div><div style={{ fontWeight: 700 }}>12 Corridors</div><div style={{ fontSize: 11, color: T.muted }}>$179-$349/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(139,92,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>⚓</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(139,92,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>âš“</span>
                             <div><div style={{ fontWeight: 700 }}>10 Ports</div><div style={{ fontSize: 11, color: T.muted }}>$299-$599/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(212,168,67,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🌍</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(212,168,67,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸŒ</span>
                             <div><div style={{ fontWeight: 700 }}>120 Countries</div><div style={{ fontSize: 11, color: T.muted }}>$219-$399/mo</div></div>
                         </div>
                     </div>
@@ -294,10 +294,10 @@ export default function AdvertisePage() {
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
                 <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4, marginBottom: 24 }}>
                     {([
-                        { id: 'territory' as SponsorTab, label: '📍 US Territories', count: Object.keys(US_STATE_MARKET_TIER).length },
-                        { id: 'corridor' as SponsorTab, label: '🛣️ Corridors', count: Object.keys(CORRIDOR_TIER_MAP).length },
-                        { id: 'port' as SponsorTab, label: '⚓ Ports', count: Object.keys(PORT_TIER_MAP).length },
-                        { id: 'country' as SponsorTab, label: '🌍 Countries', count: 120 },
+                        { id: 'territory' as SponsorTab, label: 'ðŸ“ US Territories', count: Object.keys(US_STATE_MARKET_TIER).length },
+                        { id: 'corridor' as SponsorTab, label: 'ðŸ›£ï¸ Corridors', count: Object.keys(CORRIDOR_TIER_MAP).length },
+                        { id: 'port' as SponsorTab, label: 'âš“ Ports', count: Object.keys(PORT_TIER_MAP).length },
+                        { id: 'country' as SponsorTab, label: 'ðŸŒ Countries', count: 120 },
                     ] as const).map(t => (
                         <button
                             key={t.id}
@@ -319,7 +319,7 @@ export default function AdvertisePage() {
             {/* Content */}
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 80px' }}>
 
-                {/* ── TERRITORY TAB ── */}
+                {/* â”€â”€ TERRITORY TAB â”€â”€ */}
                 {tab === 'territory' && (
                     <>
                         <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
@@ -353,14 +353,14 @@ export default function AdvertisePage() {
                                         'Priority support + analytics dashboard',
                                         s.tier === 'mega' ? 'Exclusive: max 2 sponsors per state' : 'Limited slots available',
                                     ]}
-                                    cta={`Own ${s.code} — $${s.priceMonthly}/mo`}
+                                    cta={`Own ${s.code} â€” $${s.priceMonthly}/mo`}
                                 />
                             ))}
                         </div>
                     </>
                 )}
 
-                {/* ── CORRIDOR TAB ── */}
+                {/* â”€â”€ CORRIDOR TAB â”€â”€ */}
                 {tab === 'corridor' && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
                         {corridorEntries.map(c => (
@@ -378,13 +378,13 @@ export default function AdvertisePage() {
                                     'Priority listing for all operators in this corridor',
                                     'Corridor activity alerts + analytics',
                                 ]}
-                                cta={`Own ${c.slug.toUpperCase()} — $${c.priceMonthly}/mo`}
+                                cta={`Own ${c.slug.toUpperCase()} â€” $${c.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
                 )}
 
-                {/* ── PORT TAB ── */}
+                {/* â”€â”€ PORT TAB â”€â”€ */}
                 {tab === 'port' && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
                         {portEntries.map(p => (
@@ -399,16 +399,16 @@ export default function AdvertisePage() {
                                 features={[
                                     'Premium placement on port-adjacent pages',
                                     'Featured in port logistics intelligence',
-                                    `Max ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''} — exclusivity`,
+                                    `Max ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''} â€” exclusivity`,
                                     'Port activity alerts + demand data',
                                 ]}
-                                cta={`Claim Port — $${p.priceMonthly}/mo`}
+                                cta={`Claim Port â€” $${p.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
                 )}
 
-                {/* ── COUNTRY TAB ── */}
+                {/* â”€â”€ COUNTRY TAB â”€â”€ */}
                 {tab === 'country' && (
                     <div>
                         <p style={{ fontSize: 13, color: T.dim, marginBottom: 24, lineHeight: 1.6 }}>
@@ -449,7 +449,7 @@ export default function AdvertisePage() {
                                             `Max ${pricing.maxSlots} sponsor slot${pricing.maxSlots > 1 ? 's' : ''}`,
                                             'Featured in country intelligence reports',
                                         ]}
-                                        cta={`Own ${c.code} — $${pricing.priceMonthly}/mo`}
+                                        cta={`Own ${c.code} â€” $${pricing.priceMonthly}/mo`}
                                     />
                                 );
                             })}
@@ -501,7 +501,7 @@ export default function AdvertisePage() {
                             color: '#000', fontWeight: 900, fontSize: 14, textDecoration: 'none',
                             textTransform: 'uppercase', letterSpacing: '0.03em',
                         }}>
-                            Start Sponsoring →
+                            Start Sponsoring â†’
                         </Link>
                         <Link href="/data" style={{
                             padding: '16px 40px', borderRadius: 12,

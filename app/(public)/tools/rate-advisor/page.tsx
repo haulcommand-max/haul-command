@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * PRICING INTELLIGENCE ENGINE — /tools/rate-advisor
- * "What Should I Charge?" — the exact phrase operators search for
+ * PRICING INTELLIGENCE ENGINE â€” /tools/rate-advisor
+ * "What Should I Charge?" â€” the exact phrase operators search for
  * 
  * Free: rate range only
  * Pro: full breakdown with negotiation strategy
@@ -25,10 +25,10 @@ interface RateAdvice {
 }
 
 const STATUS_CONFIG: Record<string, { color: string; bg: string; icon: string }> = {
-  HOT: { color: '#ef4444', bg: 'rgba(239,68,68,0.1)', icon: '🔥' },
-  WARM: { color: '#f5a623', bg: 'rgba(245,166,35,0.1)', icon: '🟡' },
-  COOL: { color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', icon: '🔵' },
-  COLD: { color: '#64748b', bg: 'rgba(100,116,139,0.1)', icon: '❄️' },
+  HOT: { color: '#ef4444', bg: 'rgba(239,68,68,0.1)', icon: 'ðŸ”¥' },
+  WARM: { color: '#f5a623', bg: 'rgba(245,166,35,0.1)', icon: 'ðŸŸ¡' },
+  COOL: { color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', icon: 'ðŸ”µ' },
+  COLD: { color: '#64748b', bg: 'rgba(100,116,139,0.1)', icon: 'â„ï¸' },
 };
 
 export default function RateAdvisorPage() {
@@ -70,10 +70,10 @@ export default function RateAdvisorPage() {
       <div style={{ background: 'linear-gradient(135deg, #0a1a0a, #0a0b10 60%)', borderBottom: '1px solid rgba(34,197,94,0.2)', padding: '40px 24px 32px' }}>
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-            <span style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 1 }}>💰 Stop Undercharging</span>
+            <span style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 1 }}>ðŸ’° Stop Undercharging</span>
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 8px', background: 'linear-gradient(135deg, #fff, #94a3b8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>What Should I Charge?</h1>
-          <p style={{ color: '#64748b', fontSize: 15 }}>AI-powered rate intelligence — corridor pricing, demand signals, and negotiation strategy</p>
+          <p style={{ color: '#64748b', fontSize: 15 }}>AI-powered rate intelligence â€” corridor pricing, demand signals, and negotiation strategy</p>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export default function RateAdvisorPage() {
         {/* Input form */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           <div style={{ gridColumn: '1 / -1' }}>
-            <input value={corridor} onChange={e => setCorridor(e.target.value)} placeholder="Corridor (e.g. Dallas TX → Atlanta GA, or I-10 Gulf Coast)" style={inputStyle} />
+            <input value={corridor} onChange={e => setCorridor(e.target.value)} placeholder="Corridor (e.g. Dallas TX â†’ Atlanta GA, or I-10 Gulf Coast)" style={inputStyle} />
           </div>
           <select value={position} onChange={e => setPosition(e.target.value)} style={{ ...inputStyle, cursor: 'pointer' }}>
             <option value="Chase">Chase Car</option>
@@ -102,7 +102,7 @@ export default function RateAdvisorPage() {
         </div>
 
         <button aria-label="Interactive Button" onClick={getAdvice} disabled={loading || !corridor.trim()} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #22c55e, #059669)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', transition: 'all .2s' }}>
-          {loading ? '⏳ Analyzing Rates…' : '💰 Get Rate Intelligence'}
+          {loading ? 'â³ Analyzing Ratesâ€¦' : 'ðŸ’° Get Rate Intelligence'}
         </button>
 
         {error && <div style={{ marginTop: 16, padding: 16, background: 'rgba(239,68,68,0.1)', borderLeft: '3px solid #ef4444', borderRadius: 8, color: '#fca5a5', fontSize: 13 }}>{error}</div>}
@@ -155,7 +155,7 @@ export default function RateAdvisorPage() {
                 <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Unlock Full Breakdown</h3>
                 <p style={{ color: '#64748b', fontSize: 13, marginBottom: 16 }}>Negotiation strategy, demand signals, seasonal factors, and competitor insights</p>
                 <a href="/pricing" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: '#22c55e', color: '#000', fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: 'none' }}>
-                  Upgrade to Pro — $99/mo <ChevronRight size={16} />
+                  Upgrade to Pro â€” $99/mo <ChevronRight size={16} />
                 </a>
               </div>
             ) : (
@@ -181,17 +181,17 @@ export default function RateAdvisorPage() {
 
                 {/* Negotiation strategy */}
                 <div style={{ background: 'rgba(245,166,35,0.05)', border: '1px solid rgba(245,166,35,0.15)', borderRadius: 16, padding: 20, marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, marginBottom: 10 }}>🗣 Negotiation Strategy</div>
+                  <div style={{ fontWeight: 700, marginBottom: 10 }}>ðŸ—£ Negotiation Strategy</div>
                   {advice.negotiationStrategy.map((s, i) => (
                     <div key={i} style={{ padding: '6px 0', fontSize: 13, color: '#e2e8f0', display: 'flex', gap: 8 }}>
-                      <span style={{ color: '#f5a623' }}>•</span> {s}
+                      <span style={{ color: '#f5a623' }}>â€¢</span> {s}
                     </div>
                   ))}
                 </div>
 
                 {/* Bottom line */}
                 <div style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 16, padding: 20 }}>
-                  <div style={{ fontWeight: 700, marginBottom: 8, color: '#22c55e' }}>💡 Bottom Line</div>
+                  <div style={{ fontWeight: 700, marginBottom: 8, color: '#22c55e' }}>ðŸ’¡ Bottom Line</div>
                   <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.7 }}>{advice.bottomLine}</p>
                 </div>
               </>

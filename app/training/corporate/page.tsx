@@ -95,7 +95,7 @@ export default function CorporateTrainingPage() {
           borderRadius: 20, padding: '5px 14px', fontSize: 12, fontWeight: 700,
           color: '#F5A623', letterSpacing: '0.06em', marginBottom: 20,
         }}>
-          🏢 CORPORATE TRAINING
+          ðŸ¢ CORPORATE TRAINING
         </div>
 
         <h1 style={{
@@ -111,14 +111,14 @@ export default function CorporateTrainingPage() {
         <p style={{
           fontSize: 18, color: '#8a8a9a', maxWidth: 680, margin: '0 auto 32px', lineHeight: 1.65,
         }}>
-          Aurora, Kodiak, Uber Freight, Ryder, Hirschbach, Atlas Energy — if your operations require
+          Aurora, Kodiak, Uber Freight, Ryder, Hirschbach, Atlas Energy â€” if your operations require
           verified, trained escort operators, we can certify your preferred network and prioritize
           them on your corridors.
         </p>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
           {[
-            { val: '$5K–$25K', label: 'Per cohort' },
+            { val: '$5Kâ€“$25K', label: 'Per cohort' },
             { val: '7 Modules', label: 'Full curriculum' },
             { val: '120 countries', label: 'Global recognition' },
             { val: '24h', label: 'Response time' },
@@ -209,7 +209,7 @@ export default function CorporateTrainingPage() {
                       display: 'flex', gap: 8, fontSize: 13, lineHeight: 1.5,
                       color: '#9a9ab0', marginBottom: 8,
                     }}>
-                      <span style={{ color: '#22c55e', flexShrink: 0 }}>✓</span>
+                      <span style={{ color: '#22c55e', flexShrink: 0 }}>âœ“</span>
                       {item}
                     </div>
                   ))}
@@ -237,7 +237,7 @@ export default function CorporateTrainingPage() {
             border: '1px solid rgba(34,197,94,0.2)',
             borderRadius: 16, padding: 40, textAlign: 'center',
           }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>âœ…</div>
             <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8 }}>Request Received</h3>
             <p style={{ color: '#6a6a7a', lineHeight: 1.65 }}>
               Our team will review your request and respond within 24 hours at the email you provided.
@@ -326,7 +326,7 @@ export default function CorporateTrainingPage() {
               onMouseEnter={e => { if (!submitting) e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; }}
             >
-              {submitting ? 'Sending...' : 'Request Corporate Training Info →'}
+              {submitting ? 'Sending...' : 'Request Corporate Training Info â†’'}
             </button>
           </form>
         )}

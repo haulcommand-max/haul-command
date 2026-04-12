@@ -5,11 +5,11 @@ import { getTerritoryPrice, type USMarketTier, US_STATE_MARKET_TIER, US_MARKET_T
 
 export const metadata: Metadata = {
     title: 'Territory Sponsor Availability | Haul Command',
-    description: 'Check availability for exclusive territory sponsorships on Haul Command. Own a US state or country — your business appears first in all directory, near-me, and corridor searches.',
+    description: 'Check availability for exclusive territory sponsorships on Haul Command. Own a US state or country â€” your business appears first in all directory, near-me, and corridor searches.',
     alternates: { canonical: 'https://www.haulcommand.com/advertise/territory' },
 };
 
-// ── Supabase types for this page ──────────────────────────────
+// â”€â”€ Supabase types for this page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface SponsorInventoryRow {
     id: string;
     sponsor_type: string;
@@ -37,13 +37,13 @@ const STATUS_CONFIG: Record<SlotStatus, { label: string; dotClass: string; badge
         label: 'Available',
         dotClass: 'bg-green-400',
         badgeClass: 'bg-green-500/10 border border-green-500/30 text-green-400',
-        ctaText: 'Claim Territory →',
+        ctaText: 'Claim Territory â†’',
     },
     waitlist: {
         label: 'Waitlist',
         dotClass: 'bg-hc-gold-400',
         badgeClass: 'bg-hc-gold-500/10 border border-hc-gold-500/30 text-hc-gold-400',
-        ctaText: 'Join Waitlist →',
+        ctaText: 'Join Waitlist â†’',
     },
     sold_out: {
         label: 'Taken',
@@ -53,7 +53,7 @@ const STATUS_CONFIG: Record<SlotStatus, { label: string; dotClass: string; badge
     },
 };
 
-// ── Fallback rows if migration not yet applied ────────────────
+// â”€â”€ Fallback rows if migration not yet applied â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // These use the pricing from lib/monetization/sponsor-pricing.ts
 const FALLBACK_US_TERRITORIES: SponsorInventoryRow[] = [
     // MEGA ($499/mo)
@@ -65,7 +65,7 @@ const FALLBACK_US_TERRITORIES: SponsorInventoryRow[] = [
     { id: '5', sponsor_type: 'territory', geo_key: 'OH', geo_label: 'Ohio',              geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=OH', description: 'Industrial heartland.', active: true },
     { id: '6', sponsor_type: 'territory', geo_key: 'PA', geo_label: 'Pennsylvania',      geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=PA', description: 'Northeast corridor anchor.', active: true },
     { id: '7', sponsor_type: 'territory', geo_key: 'IL', geo_label: 'Illinois',          geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=IL', description: 'Chicago logistics hub.', active: true },
-    { id: '8', sponsor_type: 'territory', geo_key: 'GA', geo_label: 'Georgia',           geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=GA', description: 'Port of Savannah — 4th busiest US port.', active: true },
+    { id: '8', sponsor_type: 'territory', geo_key: 'GA', geo_label: 'Georgia',           geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=GA', description: 'Port of Savannah â€” 4th busiest US port.', active: true },
     // MID ($299/mo)
     { id: '9', sponsor_type: 'territory', geo_key: 'NC', geo_label: 'North Carolina',    geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 29900, discovery_url: '/directory?state=NC', description: 'Growing wind energy market.', active: true },
     { id: '10', sponsor_type: 'territory', geo_key: 'WA', geo_label: 'Washington',       geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 29900, discovery_url: '/directory?state=WA', description: 'Port of Seattle/Tacoma + wind corridor.', active: true },
@@ -80,7 +80,7 @@ const FALLBACK_GLOBAL: SponsorInventoryRow[] = [
     { id: '14', sponsor_type: 'territory', geo_key: 'MX', geo_label: 'Mexico',           geo_type: 'country', max_slots: 2, filled_slots: 0, price_monthly_cents: 33900, discovery_url: '/directory?country=MX', description: 'Nearshoring boom, Monterrey-Laredo corridor.', active: true },
 ];
 
-// ── Page component (Server) ───────────────────────────────────
+// â”€â”€ Page component (Server) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default async function TerritoryAvailabilityPage() {
     let usRows: SponsorInventoryRow[] = FALLBACK_US_TERRITORIES;
     let globalRows: SponsorInventoryRow[] = FALLBACK_GLOBAL;
@@ -101,22 +101,22 @@ export default async function TerritoryAvailabilityPage() {
             globalRows = (data as SponsorInventoryRow[]).filter(r => r.geo_type === 'country');
         }
     } catch {
-        // Supabase not configured or migration not applied — fallback data is fine
+        // Supabase not configured or migration not applied â€” fallback data is fine
     }
 
     const availableCount = [...usRows, ...globalRows].filter(r => getSlotStatus(r) === 'available').length;
     const waitlistCount = [...usRows, ...globalRows].filter(r => getSlotStatus(r) === 'waitlist').length;
 
     return (
-        <div className="min-h-screen bg-[#0B0B0C] text-white">
+        <div className=" bg-[#0B0B0C] text-white">
 
-            {/* ── Hero ── */}
+            {/* â”€â”€ Hero â”€â”€ */}
             <section className="border-b border-white/5 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-20 pointer-events-none"
                     style={{ backgroundImage: 'radial-gradient(ellipse at 50% 0%, #D4A72440 0%, transparent 70%)' }} />
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center relative z-10">
                     <Link href="/advertise" className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-300 transition-colors mb-6 group">
-                        <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+                        <span className="group-hover:-translate-x-0.5 transition-transform">â†</span>
                         All advertising options
                     </Link>
                     <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-[1.1]">
@@ -151,15 +151,15 @@ export default async function TerritoryAvailabilityPage() {
                 </div>
             </section>
 
-            {/* ── What you get ── */}
+            {/* â”€â”€ What you get â”€â”€ */}
             <section className="border-b border-white/5 bg-[#0f1115]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {[
-                            { icon: '🏆', title: 'Exclusive placement', sub: 'One sponsor per territory' },
-                            { icon: '📍', title: 'All near-me pages', sub: 'Every city in your state' },
-                            { icon: '🔍', title: 'Search priority', sub: 'First in all results' },
-                            { icon: '📊', title: 'Monthly report', sub: 'Impressions, clicks, leads' },
+                            { icon: 'ðŸ†', title: 'Exclusive placement', sub: 'One sponsor per territory' },
+                            { icon: 'ðŸ“', title: 'All near-me pages', sub: 'Every city in your state' },
+                            { icon: 'ðŸ”', title: 'Search priority', sub: 'First in all results' },
+                            { icon: 'ðŸ“Š', title: 'Monthly report', sub: 'Impressions, clicks, leads' },
                         ].map(({ icon, title, sub }) => (
                             <div key={title}>
                                 <div className="text-2xl mb-2">{icon}</div>
@@ -171,10 +171,10 @@ export default async function TerritoryAvailabilityPage() {
                 </div>
             </section>
 
-            {/* ── US Territory Grid ── */}
+            {/* â”€â”€ US Territory Grid â”€â”€ */}
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                 <h2 className="text-xl font-bold text-white mb-1">United States</h2>
-                <p className="text-sm text-gray-400 mb-6">High-priority heavy haul states. Full US roster available — contact us if your state isn't listed.</p>
+                <p className="text-sm text-gray-400 mb-6">High-priority heavy haul states. Full US roster available â€” contact us if your state isn't listed.</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {usRows.map(row => {
@@ -239,7 +239,7 @@ export default async function TerritoryAvailabilityPage() {
                                         const pricing = getTerritoryPrice(row.geo_key);
                                         return (
                                             <span className="text-[10px] text-green-400/70">
-                                                ${pricing.priceAnnualMonthly}/mo with annual billing — save {pricing.savingsPercent}%
+                                                ${pricing.priceAnnualMonthly}/mo with annual billing â€” save {pricing.savingsPercent}%
                                             </span>
                                         );
                                     })()}
@@ -271,11 +271,11 @@ export default async function TerritoryAvailabilityPage() {
                     <Link href="/advertise/enterprise" className="text-hc-gold-400 hover:text-hc-gold-300 underline transition-colors">
                         Contact our team
                     </Link>{' '}
-                    — all 50 US states are available.
+                    â€” all 50 US states are available.
                 </p>
             </section>
 
-            {/* ── Global Territories ── */}
+            {/* â”€â”€ Global Territories â”€â”€ */}
             {globalRows.length > 0 && (
                 <section className="border-t border-white/5 bg-[#0f1115]">
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
@@ -334,30 +334,30 @@ export default async function TerritoryAvailabilityPage() {
                         <p className="mt-6 text-sm text-gray-500 text-center">
                             120 countries in our network. More tiers launching soon.{' '}
                             <Link href="/advertise/enterprise" className="text-hc-gold-400 hover:text-hc-gold-300 underline transition-colors">
-                                Inquire for your country →
+                                Inquire for your country â†’
                             </Link>
                         </p>
                     </div>
                 </section>
             )}
 
-            {/* ── Why territory sponsors win ── */}
+            {/* â”€â”€ Why territory sponsors win â”€â”€ */}
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                 <h2 className="text-xl font-bold text-white mb-8 text-center">Why Territory Sponsors Win</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[
                         {
-                            icon: '🎯',
+                            icon: 'ðŸŽ¯',
                             title: 'Zero competition on your pages',
-                            body: 'You\'re the only sponsor shown in your territory. Every broker searching for an escort in your state sees your business first — always.',
+                            body: 'You\'re the only sponsor shown in your territory. Every broker searching for an escort in your state sees your business first â€” always.',
                         },
                         {
-                            icon: '📈',
+                            icon: 'ðŸ“ˆ',
                             title: 'Compounds over time',
                             body: 'Territory sponsorships appear on every new near-me page we publish for your state. As we add cities, your impressions grow automatically.',
                         },
                         {
-                            icon: '🔒',
+                            icon: 'ðŸ”’',
                             title: 'Lock out competitors',
                             body: 'While your slot is active, no competing escort service can hold a territory sponsor position in your state. Renewal keeps you protected.',
                         },
@@ -371,7 +371,7 @@ export default async function TerritoryAvailabilityPage() {
                 </div>
             </section>
 
-            {/* ── Bottom CTA ── */}
+            {/* â”€â”€ Bottom CTA â”€â”€ */}
             <section className="border-t border-white/5 text-center py-14 px-4">
                 <h2 className="text-2xl font-bold text-white mb-3">Ready to own your market?</h2>
                 <p className="text-gray-400 mb-6 text-sm max-w-md mx-auto">Select any available territory above, or contact us to reserve a territory not yet listed.</p>
@@ -382,7 +382,7 @@ export default async function TerritoryAvailabilityPage() {
                     </Link>
                     <Link href="/advertise/enterprise"
                         className="inline-flex items-center justify-center px-6 py-3 border border-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/5 transition-all">
-                        Enterprise / Custom →
+                        Enterprise / Custom â†’
                     </Link>
                 </div>
             </section>

@@ -49,14 +49,14 @@ export default function AlertsSettingsPage() {
 
     if (!s) {
         return (
-            <div className="min-h-screen bg-transparent flex items-center justify-center">
+            <div className=" bg-transparent flex items-center justify-center">
                 <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-transparent text-white">
+        <div className=" bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Alert Settings</h1>
                 <p className="text-gray-400 text-sm mt-1">Control when and how you get notified.</p>
@@ -185,7 +185,7 @@ export default function AlertsSettingsPage() {
                     disabled={saving}
                     className={`w-full py-3.5 rounded-xl font-bold text-white transition-all ${saved ? "bg-green-600" : "bg-orange-500 hover:bg-orange-400"} disabled:opacity-60`}
                 >
-                    {saving ? "Saving…" : saved ? "✓ Saved" : "Save Settings"}
+                    {saving ? "Savingâ€¦" : saved ? "âœ“ Saved" : "Save Settings"}
                 </button>
             </div>
         </div>

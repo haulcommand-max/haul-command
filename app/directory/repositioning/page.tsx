@@ -12,7 +12,7 @@ export default async function RepositioningFeed() {
         .limit(50)
 
     return (
-        <div className="min-h-screen bg-transparent pt-24 pb-32">
+        <div className=" bg-transparent pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
                 {/* Header */}
@@ -87,7 +87,7 @@ export default async function RepositioningFeed() {
                                         href={`/directory/profile/${hauls.operator_slug}`} 
                                         className="px-6 py-2.5 bg-[#C6923A] hover:bg-[#C6923A]/90 text-black font-black uppercase text-xs tracking-wider rounded-lg transition"
                                     >
-                                        Intercept Load →
+                                        Intercept Load â†’
                                     </a>
                                 </div>
                             </div>

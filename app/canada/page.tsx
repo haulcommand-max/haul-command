@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Pilot Car Services in Canada | Haul Command',
-    description: 'Find verified pilot car and escort vehicle operators across all Canadian provinces. Real-time availability, trust scores, and corridor intelligence — powered by Haul Command.',
+    description: 'Find verified pilot car and escort vehicle operators across all Canadian provinces. Real-time availability, trust scores, and corridor intelligence â€” powered by Haul Command.',
     openGraph: {
         title: 'Pilot Car Services in Canada | Haul Command',
         description: 'Verified pilot car operators in all Canadian provinces. Click your province to search.',
@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 };
 
 const TOP_PROVINCES = [
-    { code: 'ab', label: 'Alberta', emoji: '🛢️', note: 'Oil sands + pipeline ops' },
-    { code: 'bc', label: 'British Columbia', emoji: '🌲', note: 'Port of Vancouver gateway' },
-    { code: 'on', label: 'Ontario', emoji: '🏭', note: 'Highway 400 corridor' },
-    { code: 'qc', label: 'Québec', emoji: '⚜️', note: 'A-20/A-40 logistics spine' },
-    { code: 'sk', label: 'Saskatchewan', emoji: '🌾', note: 'Ag equipment season' },
-    { code: 'mb', label: 'Manitoba', emoji: '🦌', note: 'Trans-Canada crossroads' },
+    { code: 'ab', label: 'Alberta', emoji: 'ðŸ›¢ï¸', note: 'Oil sands + pipeline ops' },
+    { code: 'bc', label: 'British Columbia', emoji: 'ðŸŒ²', note: 'Port of Vancouver gateway' },
+    { code: 'on', label: 'Ontario', emoji: 'ðŸ­', note: 'Highway 400 corridor' },
+    { code: 'qc', label: 'QuÃ©bec', emoji: 'âšœï¸', note: 'A-20/A-40 logistics spine' },
+    { code: 'sk', label: 'Saskatchewan', emoji: 'ðŸŒ¾', note: 'Ag equipment season' },
+    { code: 'mb', label: 'Manitoba', emoji: 'ðŸ¦Œ', note: 'Trans-Canada crossroads' },
 ];
 
 export default function CanadaPage() {
@@ -30,13 +30,13 @@ export default function CanadaPage() {
             {/* Hero */}
             <section style={{ textAlign: 'center', marginBottom: 48 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', color: '#d97706', textTransform: 'uppercase', marginBottom: 12 }}>
-                    🍁 Canada Directory
+                    ðŸ Canada Directory
                 </div>
                 <h1 style={{ fontSize: 'clamp(28px,5vw,46px)', fontWeight: 900, margin: '0 0 16px', lineHeight: 1.15 }}>
                     Pilot Car Services Across Canada
                 </h1>
                 <p style={{ fontSize: 16, color: 'var(--hc-muted, #aaa)', maxWidth: 640, margin: '0 auto 32px' }}>
-                    From the Bakken fields of Alberta to the Port of Prince Rupert, Haul Command connects heavy haul brokers with verified Canadian escort operators — province by province.
+                    From the Bakken fields of Alberta to the Port of Prince Rupert, Haul Command connects heavy haul brokers with verified Canadian escort operators â€” province by province.
                 </p>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                     <Link aria-label="Navigation Link" href="/directory/ca" style={primaryBtn}>Browse Canadian Directory</Link>
@@ -68,10 +68,10 @@ export default function CanadaPage() {
 
             {/* Cross-border note */}
             <section style={{ marginBottom: 40, padding: '20px 24px', background: 'rgba(217,119,6,0.06)', border: '1px solid rgba(217,119,6,0.2)', borderRadius: 14 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>🔁 Cross-Border Loads</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>ðŸ” Cross-Border Loads</h3>
                 <p style={{ fontSize: 13, color: 'var(--hc-muted, #aaa)', margin: 0, lineHeight: 1.6 }}>
-                    Running a US–Canada cross-border load? Haul Command tracks CBSA crossing requirements and can match you with operators licensed in both countries.{' '}
-                    <Link aria-label="Navigation Link" href="/border" style={{ color: '#d97706' }}>View border crossing protocols →</Link>
+                    Running a USâ€“Canada cross-border load? Haul Command tracks CBSA crossing requirements and can match you with operators licensed in both countries.{' '}
+                    <Link aria-label="Navigation Link" href="/border" style={{ color: '#d97706' }}>View border crossing protocols â†’</Link>
                 </p>
             </section>
 
@@ -90,7 +90,7 @@ export default function CanadaPage() {
                     maintain their own escort vehicle certification programs. Quebec requires certified accompanateurs
                     for loads exceeding provincial oversize thresholds. Haul Command tracks all provincial requirements
                     and reciprocity agreements.{' '}
-                    <Link aria-label="Navigation Link" href="/regulatory-db?country=ca" style={{ color: '#d97706' }}>Browse the Canadian regulatory database →</Link>
+                    <Link aria-label="Navigation Link" href="/regulatory-db?country=ca" style={{ color: '#d97706' }}>Browse the Canadian regulatory database â†’</Link>
                 </p>
             </section>
         </main>

@@ -1,6 +1,6 @@
 /**
  * app/api/og/route.tsx
- * Haul Command — Dynamic OpenGraph Image Generator
+ * Haul Command â€” Dynamic OpenGraph Image Generator
  *
  * Generates branded OG images for:
  *   - Operators: /api/og?type=operator&name=John+Smith&city=Houston&score=94&role=Pilot+Car
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
   const W = 1200;
   const H = 630;
 
-  // ── Shared design tokens ──────────────────────────────
+  // â”€â”€ Shared design tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const bg = '#07090d';
   const amber = '#f59e0b';
   const amberDim = '#92400e';
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     weight_limits: 'Weight Limits',
   };
 
-  // ── Build image content ───────────────────────────────
+  // â”€â”€ Build image content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   let content;
 
   if (type === 'operator') {
@@ -115,7 +115,7 @@ export async function GET(req: NextRequest) {
           {/* Location */}
           {location && (
             <div style={{ fontSize: 24, color: gray400, marginBottom: 32 }}>
-              📍 {location}
+              ðŸ“ {location}
             </div>
           )}
 
@@ -143,7 +143,7 @@ export async function GET(req: NextRequest) {
                 borderRadius: 12, padding: '12px 20px',
                 fontSize: 13, color: '#93c5fd', fontWeight: 600,
               }}>
-                ✓ Verified Operator
+                âœ“ Verified Operator
               </div>
             )}
           </div>
@@ -156,7 +156,7 @@ export async function GET(req: NextRequest) {
             background: amber, color: '#000', fontWeight: 700,
             fontSize: 13, padding: '8px 16px', borderRadius: 8,
           }}>
-            View Profile →
+            View Profile â†’
           </div>
         </div>
       </div>
@@ -169,7 +169,7 @@ export async function GET(req: NextRequest) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}>
           <div style={{ width: 40, height: 40, background: amber, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: '#000' }}>HC</div>
-          <span style={{ color: gray400, fontSize: 16 }}>Haul Command · Corridor Intelligence</span>
+          <span style={{ color: gray400, fontSize: 16 }}>Haul Command Â· Corridor Intelligence</span>
         </div>
 
         <div style={{ fontSize: 18, color: amber, fontWeight: 600, marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
@@ -178,7 +178,7 @@ export async function GET(req: NextRequest) {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 32 }}>
           <div style={{ fontSize: 42, fontWeight: 800, color: white }}>{origin}</div>
-          <div style={{ fontSize: 32, color: amber }}>→</div>
+          <div style={{ fontSize: 32, color: amber }}>â†’</div>
           <div style={{ fontSize: 42, fontWeight: 800, color: white }}>{destination}</div>
         </div>
 
@@ -202,7 +202,7 @@ export async function GET(req: NextRequest) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 32 }}>
           <div style={{ fontSize: 14, color: gray600 }}>haulcommand.com/rates/corridors</div>
           <div style={{ background: amber, color: '#000', fontWeight: 700, fontSize: 13, padding: '8px 16px', borderRadius: 8 }}>
-            Find Operators →
+            Find Operators â†’
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ export async function GET(req: NextRequest) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 48 }}>
           <div style={{ width: 40, height: 40, background: amber, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: '#000' }}>HC</div>
-          <span style={{ color: gray400, fontSize: 16 }}>Haul Command · Compliance Intelligence</span>
+          <span style={{ color: gray400, fontSize: 16 }}>Haul Command Â· Compliance Intelligence</span>
         </div>
 
         <div style={{ fontSize: 16, color: amber, fontWeight: 600, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -243,7 +243,7 @@ export async function GET(req: NextRequest) {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
           <div style={{ fontSize: 14, color: gray600 }}>haulcommand.com/regulations</div>
           <div style={{ background: amber, color: '#000', fontWeight: 700, fontSize: 13, padding: '8px 16px', borderRadius: 8 }}>
-            Read the Guide →
+            Read the Guide â†’
           </div>
         </div>
       </div>
@@ -270,7 +270,7 @@ export async function GET(req: NextRequest) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ fontSize: 14, color: gray600 }}>haulcommand.com</div>
           <div style={{ background: amber, color: '#000', fontWeight: 700, fontSize: 13, padding: '8px 16px', borderRadius: 8 }}>
-            Explore →
+            Explore â†’
           </div>
         </div>
       </div>

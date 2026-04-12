@@ -28,7 +28,7 @@ export default async function DocumentsHubPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a1118] text-[#f0f2f5] pt-24 pb-16">
+        <div className=" bg-[#0a1118] text-[#f0f2f5] pt-24 pb-16">
             <div className="container mx-auto px-4 max-w-6xl">
                 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 border-b border-[#1e3048] pb-6">

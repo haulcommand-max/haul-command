@@ -28,7 +28,7 @@ export default async function BrokerLoadsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
          <LoadBoardClient brokerId={brokerId} initialLoads={activeLoads || []} />
       </div>

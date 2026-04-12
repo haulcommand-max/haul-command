@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 /**
- * (public) Layout — Unified app shell for public-facing pages.
+ * (public) Layout â€” Unified app shell for public-facing pages.
  * Mobile: same MobileAppNav as (app) layout.
  * Desktop: Global Header.
  */
@@ -29,7 +29,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 }
             `}</style>
             
-            <main className="app-main">
+            <main className="app-main bg-hc-bg bg-industrial-noise text-slate-100 scrollbar-hide">
+                <div className="absolute inset-0 bg-grid-white/5 pointer-events-none" />
                 {/* Desktop Global Header */}
                 <div className="app-desktop-header">
                     <HCGlobalHeader mode="public" />
@@ -66,7 +67,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 </div>
 
                 {/* Mobile Search Bar */}
-                <div className="app-mobile-search lg:hidden px-4 py-2 bg-slate-950 border-b border-slate-800">
+                <div className="app-mobile-search lg:hidden px-4 py-2  border-b border-slate-800">
                     <GlobalOmniSearch />
                 </div>
 
@@ -76,7 +77,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 </div>
 
                 {/* Desktop footer only */}
-                <div className="app-desktop-footer bg-slate-950 border-t border-slate-800">
+                <div className="app-desktop-footer  border-t border-slate-800">
                     <HCFooterShell mode="public" />
                 </div>
 

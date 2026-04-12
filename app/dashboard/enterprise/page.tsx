@@ -41,12 +41,12 @@ export default async function EnterpriseDashboardPage() {
   const complianceRate = Math.round((stats.seatsCompleted / stats.seatsAssigned) * 100) || 0;
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className=" bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
       {/* Header */}
       <div className="border-b border-[#131c28] bg-[#0a0d14] px-4 lg:px-10 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">ENTERPRISE HQ · TRAINING & COMPLIANCE</p>
+            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">ENTERPRISE HQ Â· TRAINING & COMPLIANCE</p>
             <h1 className="text-xl font-black text-[#f0f2f5] mt-0.5 tracking-tight">{stats.fleetName}</h1>
           </div>
           <div className="flex gap-2">
@@ -93,10 +93,10 @@ export default async function EnterpriseDashboardPage() {
         {/* KPI Scorecards */}
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Purchased Seats', val: stats.seatsPurchased, color: '#f0f2f5', icon: '🎟️' },
-            { label: 'Assigned Seats', val: stats.seatsAssigned, color: '#f0f2f5', icon: '👥' },
-            { label: 'Completed Training', val: stats.seatsCompleted, color: '#22c55e', icon: '✅' },
-            { label: 'Fleet Trust Score', val: stats.trustScore, color: '#F5A623', icon: '⭐' },
+            { label: 'Purchased Seats', val: stats.seatsPurchased, color: '#f0f2f5', icon: 'ðŸŽŸï¸' },
+            { label: 'Assigned Seats', val: stats.seatsAssigned, color: '#f0f2f5', icon: 'ðŸ‘¥' },
+            { label: 'Completed Training', val: stats.seatsCompleted, color: '#22c55e', icon: 'âœ…' },
+            { label: 'Fleet Trust Score', val: stats.trustScore, color: '#F5A623', icon: 'â­' },
           ].map(kpi => (
             <div key={kpi.label} className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-5 hover:border-[#2a4060] transition-all">
               <div className="flex items-center gap-3 mb-3">

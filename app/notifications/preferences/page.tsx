@@ -92,7 +92,7 @@ export default function NotificationPreferencesPage() {
   }
 
   if (loading) return (
-    <main className="min-h-screen bg-[#0a0d14] px-4 py-12">
+    <main className=" bg-[#0a0d14] px-4 py-12">
       <div className="mx-auto max-w-lg space-y-4">
         {[1,2,3,4].map(i => <div key={i} className="h-14 rounded-xl bg-white/5 animate-pulse" />)}
       </div>
@@ -100,9 +100,9 @@ export default function NotificationPreferencesPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#0a0d14] text-white">
+    <main className=" bg-[#0a0d14] text-white">
       <div className="mx-auto max-w-lg px-4 py-12">
-        <button onClick={() => router.back()} className="mb-6 text-sm text-white/40 hover:text-white">← Back</button>
+        <button onClick={() => router.back()} className="mb-6 text-sm text-white/40 hover:text-white">â† Back</button>
         <h1 className="mb-8 text-2xl font-black">Notification Preferences</h1>
 
         <div className="space-y-6">
@@ -171,7 +171,7 @@ export default function NotificationPreferencesPage() {
             disabled={saving}
             className="w-full rounded-xl bg-amber-500 py-3 text-sm font-black text-white hover:bg-amber-400 disabled:opacity-50 transition-colors"
           >
-            {saved ? '✅ Saved!' : saving ? 'Saving…' : 'Save Preferences'}
+            {saved ? 'âœ… Saved!' : saving ? 'Savingâ€¦' : 'Save Preferences'}
           </button>
         </div>
       </div>

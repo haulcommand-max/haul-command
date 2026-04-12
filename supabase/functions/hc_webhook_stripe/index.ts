@@ -151,6 +151,16 @@ serve(async (req: Request) => {
 
             console.log('[Stripe Webhook] Signature verified ✓');
 
+            // ── GLOBAL WEBHOOK IDEMPOTENCY CHECK (24-hour overlap monitor) ──
+            if (body.id) {
+                const { data: existingEvent } = await supabase.from('idempotency_keys').select('status').eq('key', body.id).single();
+                if (existingEvent) {
+                    console.warn(`[Stripe Webhook MONITOR] Idempotency cache hit: ${body.id} is already ${existingEvent.status}. Overlap handled properly.`);
+                    return new Response(JSON.stringify({ received: true, idempotent: true }), { status: 200, headers: corsHeaders });
+                }
+                await supabase.from('idempotency_keys').upsert({ key: body.id, status: 'PROCESSING' });
+            }
+
             // ── Process checkout.session.completed ──
             if (body.type === 'checkout.session.completed') {
                 const session = body.data?.object;
@@ -236,6 +246,16 @@ serve(async (req: Request) => {
             }
             const isValid = await verifyStripeSignature(rawBody, signatureHeader, stripeWebhookSecret);
             if (!isValid) return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 401 });
+
+            // ── GLOBAL WEBHOOK IDEMPOTENCY CHECK (24-hour overlap monitor) ──
+            if (body.id) {
+                const { data: existingEvent } = await supabase.from('idempotency_keys').select('status').eq('key', body.id).single();
+                if (existingEvent) {
+                    console.warn(`[Stripe Webhook MONITOR] Idempotency cache hit: ${body.id} is already ${existingEvent.status}. Overlap handled properly.`);
+                    return new Response(JSON.stringify({ received: true, idempotent: true }), { status: 200, headers: corsHeaders });
+                }
+                await supabase.from('idempotency_keys').upsert({ key: body.id, status: 'PROCESSING' });
+            }
 
             // ── PAYMENT INTENT EVENTS ──
             // OPUS-02 S1-02/S1-03: Pre-auth clearance — idempotent DRAFT → OPEN transition

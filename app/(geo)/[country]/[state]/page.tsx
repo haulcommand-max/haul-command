@@ -1,318 +1,136 @@
-import React from 'react';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
-import { SnippetInjector } from '@/components/seo/SnippetInjector';
-import { RegulatoryMoat } from '@/components/seo/RegulatoryMoat';
-import { PostLoadCTA, OperatorsNeededCTA, ClaimListingCTA } from '@/components/seo/ConversionCTAs';
-import { CitySponsorshipCTA } from '@/components/monetization/CitySponsorshipCTA';
-import SocialProofBanner from '@/components/social/SocialProofBanner';
-import { DirectoryActivityFeed } from '@/components/social/DirectoryActivityFeed';
-import { AdGridGeofenceTrigger } from '@/components/ads/AdGridGeofenceTrigger';
-import { TakeoverSponsorBanner } from '@/components/ads/TakeoverSponsorBanner';
-import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
-import { UrgentMarketSponsor } from '@/components/ads/UrgentMarketSponsor';
-import { getCityHubUrl } from '@/lib/seo/geo-mesh';
-import { getCountryBySlug, getRegionByCode, getCitiesByCountryRegion } from '@/lib/server/geo';
-import { MapPin, ChevronRight, Truck, ShieldCheck, Search, ArrowLeft, Users, Zap, Compass, AlertOctagon, CheckCircle2 } from 'lucide-react';
-import { InteractiveComplianceCalculator } from '@/components/tools/InteractiveComplianceCalculator';
-import SaveButton from '@/components/capture/SaveButton';
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import Link from "next/link";
+import { MapPin, ShieldCheck, TrendingUp, Search, Database, Lock } from "lucide-react";
 
-export default async function StatePage({ params }: { params: Promise<{ country: string; state: string }> }) {
-    const { country, state } = await params;
+// Enable Incremental Static Regeneration for the long-tail 120-country states
+export const dynamicParams = true;
+export const revalidate = 86400; // Cache for 24 hours
 
-    const countryData = await getCountryBySlug(country);
-    if (!countryData) return notFound();
+// Canonical seed states (only build the highest priority to save Next.js compile time)
+const PRIORITY_STATES = [
+  { country: 'us', state: 'tx', name: 'Texas' },
+  { country: 'us', state: 'fl', name: 'Florida' },
+  { country: 'us', state: 'ca', name: 'California' },
+  { country: 'us', state: 'az', name: 'Arizona' },
+  { country: 'ca', state: 'ab', name: 'Alberta' },
+  { country: 'au', state: 'wa', name: 'Western Australia' },
+];
 
-    const region = await getRegionByCode(countryData.iso2, state);
-    const regionName = region?.name ?? state.toUpperCase();
+export async function generateStaticParams() {
+  return PRIORITY_STATES.map(s => ({
+    country: s.country,
+    state: s.state,
+  }));
+}
 
-    const cities = await getCitiesByCountryRegion(countryData.iso2, state);
+export async function generateMetadata({ params }: { params: { country: string, state: string } }): Promise<Metadata> {
+  const seed = PRIORITY_STATES.find(s => s.state === params.state);
+  const stateName = seed ? seed.name : params.state.toUpperCase();
+  
+  return {
+    title: `Oversize Transport & Corridor Directory | ${stateName} | Haul Command`,
+    description: `Find verified heavy haul escorts, state restrictions, and active corridors in ${stateName}. Secure AdGrid placement and export local rate intelligence.`,
+  };
+}
 
-    // AI-Optimized Schema for "People Also Ask" Rich Snippets
-    const faqSchemaData = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": `What are the legal pilot car requirements in ${regionName}?`,
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `Legal requirements in ${regionName} are strictly enforced. Loads exceeding 12 feet wide generally require at least one front pilot car. Loads exceeding 14 feet wide require both front and rear escorts. High pole lead cars are mandatory for loads taller than 14 feet 6 inches.`
-                }
-            },
-            {
-                "@type": "Question",
-                "name": `How many escorts do I need for my oversize load in ${regionName}?`,
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `The exact number of needed escorts in ${regionName} depends on dimension thresholds. Typically, 1 to 4 pilot cars are required. Extreme dimensions over 16 feet wide or 100 feet long may require immediate local law enforcement (police) escorts in addition to civilian pilots.`
-                }
-            }
-        ]
-    };
+export default async function StateHub({ params }: { params: { country: string, state: string } }) {
+  const seed = PRIORITY_STATES.find(s => s.state === params.state);
+  const stateName = seed ? seed.name : params.state.toUpperCase();
 
-    const breadcrumbSchemaData = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": countryData.name, "item": `https://haulcommand.com/${country}` },
-            { "@type": "ListItem", "position": 2, "name": regionName, "item": `https://haulcommand.com/${country}/${state}` }
-        ]
-    };
-
-    return (
-        <div className="min-h-screen bg-hc-bg text-hc-text font-display">
-            {/* Grid Background */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
+  return (
+    <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col pt-32">
+        <div className="max-w-6xl mx-auto w-full space-y-12 animate-in slide-up duration-700">
+            {/* SEO Hero & Intent Capture */}
+            <div className="text-center space-y-6">
+                <div className="flex items-center justify-center gap-3">
+                    <Link href={`/${params.country}`} className="text-sm font-mono text-slate-500 hover:text-amber-500 transition-colors uppercase">
+                        {params.country} /
+                    </Link>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hc-surface border border-white/5 text-xs font-mono text-amber-500 uppercase tracking-widest glass-premium">
+                        <MapPin className="h-3 w-3" /> {stateName}
+                    </span>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gradient-gold">
+                    {stateName} Directory & Intelligence
+                </h1>
+                <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-400">
+                    The verified command layer for heavy haul logistics in {stateName}. Search pilots, claim your local authority, and unlock real-time corridor rate intelligence.
+                </p>
             </div>
 
-            <SchemaGenerator type="FAQPage" data={faqSchemaData} />
-            <SchemaGenerator type="BreadcrumbList" data={breadcrumbSchemaData} />
-            <SchemaGenerator type="Organization" data={{}} />
-
-            <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-
-                {/* ── Breadcrumb ── */}
-                <nav className="flex items-center gap-2 text-xs font-bold text-hc-muted uppercase tracking-[0.15em] mb-[-2rem]">
-                    <Link aria-label="Navigation Link" href={`/${country}`} className="flex items-center gap-1 hover:text-hc-gold-500 transition-colors">
-                        <ArrowLeft className="w-3 h-3" />
-                        {countryData.name}
+            {/* Trifold Monetization Engine: AdGrid | Data | Claims */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-16">
+                {/* 1. Claim Trap */}
+                <div className="glass-premium border border-white/10 rounded-2xl p-6 relative group hover:border-gold/30 transition-all">
+                    <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4">
+                        <ShieldCheck className="h-5 w-5 text-amber-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Claim Local Profile</h3>
+                    <p className="text-slate-400 text-sm mb-6">
+                        Stop missing MSB-settled loads. Verified operators rank first in {stateName} searches.
+                    </p>
+                    <Link href="/claim" className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded text-black bg-gradient-to-r from-[#F8DFB0] to-[#C6923A] uppercase">
+                        Verify Identity
                     </Link>
-                    <span className="text-hc-subtle">/</span>
-                    <span className="text-hc-gold-500">{regionName}</span>
-                </nav>
-
-                {/* ── Hero Header ── */}
-                <div className="space-y-6">
-                    <div className="space-y-4 max-w-3xl">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-hc-gold-500/10 border border-hc-gold-500/20 rounded-full text-[10px] font-bold text-hc-gold-500 uppercase tracking-[0.2em]">
-                            <MapPin className="w-3 h-3" />
-                            {regionName}, {countryData.name} Pilot Cars
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-[-0.03em] leading-none">
-                                Certified Escort & Pilot Cars in {regionName}
-                            </h1>
-                            <SaveButton entityType="state" entityId={state.toUpperCase()} entityLabel={regionName} variant="pill" />
-                        </div>
-                        <p className="text-lg text-hc-muted leading-relaxed">
-                            Stop guessing compliance rules. Calculate exact oversize requirements, verify active DOT pilot cars, 
-                            and book top-rated lead, chase, and high pole operations directly in {regionName}. 
-                        </p>
-                    </div>
-
-                    {/* ── Search Bar & KPIs ── */}
-                    <div className="flex flex-col md:flex-row gap-6 md:items-center">
-                        <div className="w-full max-w-xl flex items-center gap-3 bg-hc-surface border border-hc-border rounded-2xl p-3 focus-within:border-hc-gold-500/40 transition-colors">
-                            <Search className="w-5 h-5 text-hc-subtle flex-shrink-0" />
-                            <input
-                                type="text"
-                                placeholder={`Search compliant operators in ${regionName}...`}
-                                className="flex-1 bg-transparent text-white text-sm placeholder:text-hc-subtle outline-none"
-                            />
-                            <Link aria-label="Navigation Link"
-                                href={`/directory?country=${countryData.iso2}&region=${state.toUpperCase()}`}
-                                className="px-6 py-3 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:shadow-gold-sm flex-shrink-0"
-                            >
-                                Find Escorts
-                            </Link>
-                        </div>
-                        <div className="flex gap-4 px-2">
-                            <div className="flex flex-col">
-                                <span className="text-2xl font-black text-white">{cities.length * 3}+</span>
-                                <span className="text-[10px] font-bold text-hc-muted uppercase tracking-widest">Active Operators</span>
-                            </div>
-                            <div className="w-px h-8 bg-hc-border mx-2 mt-1" />
-                            <div className="flex flex-col">
-                                <span className="text-2xl font-black text-hc-success">&lt;9 min</span>
-                                <span className="text-[10px] font-bold text-hc-muted uppercase tracking-widest">Avg Response Time</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                {/* ── Interactive Compliance Calculator ── */}
-                <section>
-                    <InteractiveComplianceCalculator regionName={regionName} countryCode={countryData.iso2} />
-                </section>
-
-                {/* ── Comprehensive Pilot Car Roles (SEO & Educational) ── */}
-                <section className="grid md:grid-cols-2 gap-12">
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-black text-white uppercase tracking-[-0.02em]">
-                            Why You Need Pilot Cars in {regionName}
-                        </h2>
-                        <ul className="space-y-4">
-                            <li className="flex gap-4">
-                                <ShieldCheck className="w-6 h-6 text-hc-gold-500 flex-shrink-0" />
-                                <div>
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Flawless Regulatory Compliance</h3>
-                                    <p className="text-sm text-hc-muted leading-relaxed mt-1">
-                                        Failing to adhere to local {regionName} dimension thresholds isn't just dangerous—it results in crushed licenses and massive fines. Pilot cars ensure your load adheres to specific permitted routes, curfews, and overhead bridge capacities.
-                                    </p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <Compass className="w-6 h-6 text-hc-gold-500 flex-shrink-0" />
-                                <div>
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Pre-Trip Route Surveys</h3>
-                                    <p className="text-sm text-hc-muted leading-relaxed mt-1">
-                                        Advanced operators conduct physical route surveys before your truck fires its engine. They map out the safest corridors, identifying low clearances, tight roundabouts, and ongoing state road construction.
-                                    </p>
-                                </div>
-                            </li>
-                            <li className="flex gap-4">
-                                <AlertOctagon className="w-6 h-6 text-hc-gold-500 flex-shrink-0" />
-                                <div>
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Traffic Control & Civilian Safety</h3>
-                                    <p className="text-sm text-hc-muted leading-relaxed mt-1">
-                                        Civilians are unpredictable. Pilots utilize dual-band radios, flashing amber strobes, and high-visibility flags to block intersections, manage blind corners, and warn oncoming traffic of your dimensional footprint.
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
+                {/* 2. AdGrid Self-Serve */}
+                <div className="glass-premium border border-white/10 rounded-2xl p-6 relative group hover:border-emerald-500/30 transition-all">
+                    <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <TrendingUp className="h-5 w-5 text-emerald-500" />
                     </div>
-
-                    <div className="bg-hc-surface border border-hc-border rounded-2xl p-8 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-hc-gold-500/5 blur-[80px] pointer-events-none rounded-full" />
-                        <h2 className="text-2xl font-black text-white uppercase tracking-[-0.02em] mb-6">
-                            Verified Operator Standard
-                        </h2>
-                        <p className="text-sm text-hc-muted mb-6">
-                            Every pilot listed via Haul Command undergoes algorithmic KYC verification. 
-                            We out-class manual brokerage matching by displaying the mathematical truth.
-                        </p>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between p-3 bg-black border border-hc-border rounded-xl">
-                                <span className="text-xs font-bold text-white uppercase tracking-widest">Liability Insurance</span>
-                                <CheckCircle2 className="w-4 h-4 text-hc-success" />
-                            </div>
-                            <div className="flex items-center justify-between p-3 bg-black border border-hc-border rounded-xl">
-                                <span className="text-xs font-bold text-white uppercase tracking-widest">Amber Light Cert.</span>
-                                <CheckCircle2 className="w-4 h-4 text-hc-success" />
-                            </div>
-                            <div className="flex items-center justify-between p-3 bg-black border border-hc-border rounded-xl">
-                                <span className="text-xs font-bold text-white uppercase tracking-widest">High Pole Equip. Confirmed</span>
-                                <CheckCircle2 className="w-4 h-4 text-hc-success" />
-                            </div>
-                            <div className="flex items-center justify-between p-3 bg-black border border-hc-border rounded-xl">
-                                <span className="text-xs font-bold text-white uppercase tracking-widest">Public Trust Score</span>
-                                <div className="flex items-center gap-1.5 text-hc-gold-500 text-xs font-bold"><Zap className="w-3 h-3"/> Active</div>
-                            </div>
-                        </div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-xl font-bold text-white">AdGrid Sponsor</h3>
+                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">SELF-SERVE</span>
                     </div>
-                </section>
-
-                {/* ── SEO FAQ Section (Question-Based Headings) ── */}
-                <section className="space-y-6 max-w-4xl">
-                    <h2 className="text-2xl font-black text-white uppercase tracking-[-0.02em]">
-                        Frequently Asked Questions
-                    </h2>
-                    <div className="grid gap-4">
-                        <div className="p-5 bg-hc-surface border border-hc-border rounded-2xl">
-                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">What are the legal pilot car requirements in {regionName}?</h3>
-                            <p className="text-sm text-hc-muted leading-relaxed mt-2">
-                                Legal requirements in {regionName} are strictly enforced based on dimensions and route classification. Generally, any load exceeding 12 feet wide mandates at least one front pilot car on two-lane highways. Loads exceeding 14 feet wide typically require front and rear escorts. Finally, loads surpassing 14'6" in height strictly require a lead high pole vehicle to identify overhead obstructions.
-                            </p>
-                        </div>
-                        <div className="p-5 bg-hc-surface border border-hc-border rounded-2xl">
-                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">What equipment must an escort vehicle carry?</h3>
-                            <p className="text-sm text-hc-muted leading-relaxed mt-2">
-                                Certified escorts must carry specific safety gear. This includes 360-degree visibility amber flashing / rotating strobe lights, minimum 18-inch square red or orange warning flags, and an 'OVERSIZE LOAD' banner mounted visibly across the front/rear bumpers. Two-way VHF/CB radio communication with the heavy haul driver is legally required at all times.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ── City Grid ── */}
-                {cities.length > 0 ? (
-                    <section className="space-y-6 pt-8 border-t border-hc-border">
-                        <div className="flex items-center gap-4">
-                            <h2 className="text-xl font-black text-white uppercase tracking-[-0.02em]">Local Coverage Networks</h2>
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                            {cities.map((cityName) => {
-                                const slug = cityName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                                return (
-                                    <Link aria-label="Navigation Link"
-                                        key={slug}
-                                        href={getCityHubUrl(country, state, slug)}
-                                        className="group flex items-center gap-3 p-3 bg-hc-surface border border-hc-border hover:border-hc-gold-500/40 rounded-xl transition-all"
-                                    >
-                                        <div className="w-6 h-6 rounded-md bg-hc-elevated flex items-center justify-center group-hover:bg-hc-gold-500/10 transition-colors">
-                                            <MapPin className="w-3 h-3 text-hc-gold-500" />
-                                        </div>
-                                        <span className="text-xs font-bold text-white group-hover:text-hc-gold-400 transition-colors truncate">
-                                            {cityName}
-                                        </span>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    </section>
-                ) : null}
-                {/* ── Snippet Injector — featured snippet capture ── */}
-                <SnippetInjector
-                    blocks={['definition', 'faq', 'cost_range', 'regulation_summary', 'steps']}
-                    term="pilot car"
-                    geo={regionName}
-                    country={countryData.iso2}
-                />
-                {/* ── Regulatory Moat — state-specific compliance intelligence ── */}
-                <RegulatoryMoat
-                    stateName={regionName}
-                    escortWidth={`12' wide (two-lane) / 14' wide (multi-lane)`}
-                    escortHeight={`14'6" requires height pole`}
-                    poleTrigger={`14'6" overall height`}
-                    nightRules="Most states restrict OS/OW movements 30 min after sunset to 30 min before sunrise"
-                    holidayRules={`No travel on major holidays (New Year's, Memorial Day, July 4th, Labor Day, Thanksgiving, Christmas)`}
-                    confidence={82}
-                />
-
-                {/* ── Conversion CTAs ── */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 border-t border-hc-border">
-                    <PostLoadCTA corridorName={regionName} variant="card" />
-                    <OperatorsNeededCTA surfaceName={regionName} />
-                    <ClaimListingCTA entityId="new" variant="card" />
+                    <p className="text-slate-400 text-sm mb-6">
+                        Buy the top visibility slot for all {stateName} traffic. Targets brokers with $5k+ intent.
+                    </p>
+                    <Link href={`/advertise/state?market=${params.state}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
+                        Buy Slot — $299/mo
+                    </Link>
                 </div>
 
-                {/* ── Social Proof Banner ── */}
-                <SocialProofBanner />
-
-                {/* ── Live Activity Feed — social gravity ── */}
-                <div className="flex justify-center pt-6">
-                    <DirectoryActivityFeed />
+                {/* 3. Data Product Monetization */}
+                <div className="glass-premium border border-white/10 rounded-2xl p-6 relative group hover:border-blue-500/30 transition-all">
+                    <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4">
+                        <Database className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-xl font-bold text-white">Market Intelligence</h3>
+                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-blue-500/20 text-blue-400 border border-blue-500/20">ENTERPRISE</span>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-6">
+                        Unlock exact carrier density mapping and historical rate APIs across {stateName} corridors.
+                    </p>
+                    <Link href={`/data-products?market=${params.state}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
+                        <Lock className="h-3 w-3" /> Unlock Data — $99
+                    </Link>
                 </div>
+            </div>
 
-                {/* ── Region Sponsorship CTA — monetization ── */}
-                <CitySponsorshipCTA
-                    cityName={regionName}
-                    regionName={countryData.name}
-                    pricePerMonth={299}
-                />
-
-                {/* ── State Takeover Sponsor ── */}
-                <TakeoverSponsorBanner
-                    level="state"
-                    territory={regionName}
-                    pricePerMonth={499}
-                />
-
-                {/* ── Urgent Market Sponsor — mode-aware CTA ── */}
-                <UrgentMarketSponsor
-                    marketKey={`${countryData.iso2.toLowerCase()}-${state.toLowerCase()}`}
-                    geo={regionName}
-                />
-
-                {/* ── Data Teaser Strip ── */}
-                <DataTeaserStrip geo={regionName} />
-
-                {/* ── Geofence Trigger — Weigh station proximity ad overlay ── */}
-                <AdGridGeofenceTrigger ad={null} />
+            {/* State Corridors / Routes */}
+            <div className="pt-16 border-t border-white/5">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-xl font-bold text-slate-100">Major Heavy Haul Corridors</h2>
+                    <span className="text-xs text-slate-500 font-mono">LIVE TELEMETRY</span>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* Placeholder structural links targeting Corridors */}
+                    {['I-10-Express', 'Permian-Basin-Route', 'Coastal-Access', 'Wind-Energy-Lane', 'Industrial-Loop'].map((corridor) => (
+                        <Link key={corridor} href={`/${params.country}/${params.state}/${corridor.toLowerCase()}`} className="glass-premium border border-white/5 rounded-lg p-6 group hover:border-white/20 transition-all flex flex-col gap-2">
+                            <span className="text-lg text-slate-100 font-medium group-hover:text-amber-400 transition-colors">{corridor.replace(/-/g, ' ')}</span>
+                            <div className="flex justify-between text-xs text-slate-500 font-mono">
+                                <span>24 Active Operators</span>
+                                <span className="text-emerald-500">CLEAR</span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
-    );
+    </div>
+  );
 }

@@ -125,9 +125,9 @@ export default function DevelopersPage() {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-            <div className="min-h-screen bg-[#0B0B0C] text-white">
+            <div className=" bg-[#0B0B0C] text-white">
 
-                {/* ── Hero ── */}
+                {/* â”€â”€ Hero â”€â”€ */}
                 <section className="border-b border-white/5 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-25 pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(ellipse at 70% 0%, #3b82f640 0%, transparent 65%)' }} />
@@ -145,7 +145,7 @@ export default function DevelopersPage() {
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
                                 Programmatic access to 50,000+ verified operator profiles, corridor demand data,
                                 escort rate benchmarks, and coverage confidence scores across 120 countries.
-                                Sandbox keys are free — no credit card required.
+                                Sandbox keys are free â€” no credit card required.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <a href="#sandbox-form"
@@ -154,14 +154,14 @@ export default function DevelopersPage() {
                                 </a>
                                 <Link href="/developers/documentation"
                                     className="inline-flex items-center justify-center px-8 py-4 border border-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/5 transition-all">
-                                    View Documentation →
+                                    View Documentation â†’
                                 </Link>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* ── Quick stats ── */}
+                {/* â”€â”€ Quick stats â”€â”€ */}
                 <section className="border-b border-white/5 bg-[#0f1115]">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -180,7 +180,7 @@ export default function DevelopersPage() {
                     </div>
                 </section>
 
-                {/* ── Pricing tiers ── */}
+                {/* â”€â”€ Pricing tiers â”€â”€ */}
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <h2 className="text-2xl font-bold text-white mb-2 text-center">API Pricing</h2>
                     <p className="text-gray-400 text-sm text-center mb-10">Start free. Upgrade when you need more.</p>
@@ -208,13 +208,13 @@ export default function DevelopersPage() {
                                 <ul className="space-y-2 flex-1">
                                     {tier.features.map(f => (
                                         <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                                            <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>
+                                            <span className="text-blue-400 mt-0.5 flex-shrink-0">âœ“</span>
                                             {f}
                                         </li>
                                     ))}
                                     {tier.missing.map(f => (
                                         <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
-                                            <span className="mt-0.5 flex-shrink-0">✗</span>
+                                            <span className="mt-0.5 flex-shrink-0">âœ—</span>
                                             {f}
                                         </li>
                                     ))}
@@ -236,7 +236,7 @@ export default function DevelopersPage() {
                     </div>
                 </section>
 
-                {/* ── Endpoint catalog ── */}
+                {/* â”€â”€ Endpoint catalog â”€â”€ */}
                 <section className="border-t border-white/5 bg-[#0f1115]">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                         <h2 className="text-xl font-bold text-white mb-2">Available Endpoints</h2>
@@ -260,7 +260,7 @@ export default function DevelopersPage() {
                     </div>
                 </section>
 
-                {/* ── Sandbox signup form ── */}
+                {/* â”€â”€ Sandbox signup form â”€â”€ */}
                 <section id="sandbox-form" className="max-w-xl mx-auto px-4 sm:px-6 py-16">
                     <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-transparent p-8">
                         <h2 className="text-2xl font-bold text-white mb-2 text-center">Get Your Free Sandbox Key</h2>
@@ -271,7 +271,7 @@ export default function DevelopersPage() {
                     </div>
                 </section>
 
-                {/* ── FAQ ── */}
+                {/* â”€â”€ FAQ â”€â”€ */}
                 <section className="border-t border-white/5 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                     <h2 className="text-xl font-bold text-white text-center mb-8">API FAQ</h2>
                     <div className="space-y-4">
@@ -301,17 +301,17 @@ export default function DevelopersPage() {
                     </div>
                 </section>
 
-                {/* ── Cross-links ── */}
+                {/* â”€â”€ Cross-links â”€â”€ */}
                 <div className="border-t border-white/5 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-wrap gap-4 text-sm text-gray-500 justify-center">
                         <Link href="/developers/documentation" className="hover:text-white transition-colors">Documentation</Link>
-                        <span>·</span>
+                        <span>Â·</span>
                         <Link href="/data" className="hover:text-white transition-colors">Data Marketplace</Link>
-                        <span>·</span>
+                        <span>Â·</span>
                         <Link href="/pricing" className="hover:text-white transition-colors">All Pricing</Link>
-                        <span>·</span>
+                        <span>Â·</span>
                         <Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link>
-                        <span>·</span>
+                        <span>Â·</span>
                         <Link href="/claim" className="hover:text-white transition-colors">Claim Your Profile</Link>
                     </div>
                 </div>

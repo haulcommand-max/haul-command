@@ -1,16 +1,17 @@
 /**
- * /advertise/buy — Self-Serve Ad Campaign Launcher
+ * /advertise/buy â€” Self-Serve Ad Campaign Launcher
  *
  * This page converts DirectorySponsorCard CTAs into actual campaign setup.
  * Supports CPC campaigns, corridor sponsorships, and territory takeovers.
  *
  * Links from:
- *   - DirectorySponsorCard (lower position) → /advertise/buy
- *   - /advertise main page → /advertise/buy
- *   - HCFooterShell → /advertise
+ *   - DirectorySponsorCard (lower position) â†’ /advertise/buy
+ *   - /advertise main page â†’ /advertise/buy
+ *   - HCFooterShell â†’ /advertise
  */
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import CheckoutButton from './CheckoutButton';
 
 export const metadata: Metadata = {
     title: 'Launch a Campaign | Haul Command Advertising',
@@ -22,25 +23,25 @@ export const metadata: Metadata = {
 const CAMPAIGN_TYPES = [
     {
         id: 'cpc',
-        icon: '⚡',
+        icon: 'âš¡',
         name: 'Self-Serve CPC Campaign',
         price: 'From $0.75/click',
         period: 'Pay as you go',
         color: '#3b82f6',
         features: [
             'Geo-target by state, corridor, or nationwide',
-            'Industry-only traffic — no consumer clicks',
+            'Industry-only traffic â€” no consumer clicks',
             'Appear in directory results, tool pages, corridor feeds',
             'Real-time dashboard with click, impression, and CTR metrics',
             'Pause or adjust budget any time',
-            'Average CPC: $0.75–$2.50 depending on market',
+            'Average CPC: $0.75â€“$2.50 depending on market',
         ],
         bestFor: 'Equipment vendors, insurance providers, training programs',
         cta: 'Launch CPC Campaign',
     },
     {
         id: 'corridor',
-        icon: '🛣️',
+        icon: 'ðŸ›£ï¸',
         name: 'Corridor Sponsorship',
         price: '$199/mo',
         period: 'Monthly or annual (15% off)',
@@ -58,9 +59,9 @@ const CAMPAIGN_TYPES = [
     },
     {
         id: 'territory',
-        icon: '🗺️',
+        icon: 'ðŸ—ºï¸',
         name: 'Territory Takeover',
-        price: '$149–$499/mo',
+        price: '$149â€“$499/mo',
         period: 'Varies by state tier',
         color: '#22c55e',
         features: [
@@ -76,7 +77,7 @@ const CAMPAIGN_TYPES = [
     },
     {
         id: 'enterprise',
-        icon: '🏢',
+        icon: 'ðŸ¢',
         name: 'Enterprise Package',
         price: 'Custom',
         period: 'Annual contract',
@@ -119,7 +120,7 @@ export default function AdvertiseBuyPage() {
                     textTransform: 'uppercase' as const, letterSpacing: '0.08em',
                     marginBottom: 20,
                 }}>
-                    ⚡ Self-Serve Campaigns
+                    âš¡ Self-Serve Campaigns
                 </div>
                 <h1 style={{
                     fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900,
@@ -222,19 +223,13 @@ export default function AdvertiseBuyPage() {
                             </div>
 
                             {/* CTA */}
-                            <Link
+                            <CheckoutButton 
+                                campaignId={ct.id}
+                                price={ct.price}
+                                color={ct.color}
+                                label={ct.cta}
                                 href={ct.id === 'territory' ? '/advertise/territory' : ct.id === 'enterprise' ? '/advertise?contact=enterprise' : '/advertise/territory'}
-                                style={{
-                                    display: 'block', textAlign: 'center', textDecoration: 'none',
-                                    padding: '12px 20px', borderRadius: 10,
-                                    background: `${ct.color}15`,
-                                    border: `1px solid ${ct.color}30`,
-                                    color: ct.color, fontWeight: 700, fontSize: 13,
-                                    transition: 'all 0.2s',
-                                }}
-                            >
-                                {ct.cta} →
-                            </Link>
+                            />
                         </div>
                     ))}
                 </div>
@@ -261,7 +256,7 @@ export default function AdvertiseBuyPage() {
                         color: '#D4A843', fontWeight: 700, fontSize: 13,
                         textDecoration: 'none',
                     }}>
-                        View All Options →
+                        View All Options â†’
                     </Link>
                     <Link href="/advertise/territory" style={{
                         padding: '10px 20px', borderRadius: 10,
@@ -269,7 +264,7 @@ export default function AdvertiseBuyPage() {
                         color: '#9CA3AF', fontWeight: 700, fontSize: 13,
                         textDecoration: 'none',
                     }}>
-                        Territory Pricing →
+                        Territory Pricing â†’
                     </Link>
                 </div>
             </section>

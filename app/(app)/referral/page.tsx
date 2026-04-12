@@ -58,7 +58,7 @@ export default function ReferralPage() {
     };
 
     const statusEmoji: Record<string, string> = {
-        signed_up: '📝', activated: '✅', first_job_completed: '💰', reward_paid: '🎉', fraud_blocked: '🚫',
+        signed_up: 'ðŸ“', activated: 'âœ…', first_job_completed: 'ðŸ’°', reward_paid: 'ðŸŽ‰', fraud_blocked: 'ðŸš«',
     };
 
     return (
@@ -76,7 +76,7 @@ export default function ReferralPage() {
                 </div>
             ) : !code ? (
                 <div style={{ textAlign: 'center', padding: '3rem 2rem', background: 'rgba(241,169,27,0.04)', border: '1px dashed rgba(241,169,27,0.2)', borderRadius: 20 }}>
-                    <div style={{ fontSize: 48, marginBottom: 16 }}>🔗</div>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ”—</div>
                     <h2 style={{ fontSize: 20, fontWeight: 800, color: '#f9fafb', marginBottom: 8 }}>Get Your Referral Link</h2>
                     <p style={{ fontSize: 13, color: '#6b7280', maxWidth: 400, margin: '0 auto 24px', lineHeight: 1.6 }}>
                         Generate your unique referral code. Share it in Facebook groups, text it to fellow drivers, or post it on social media.
@@ -86,7 +86,7 @@ export default function ReferralPage() {
                         background: generating ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#F1A91B,#d97706)',
                         color: generating ? '#6b7280' : '#000', fontSize: 14, fontWeight: 800, cursor: generating ? 'wait' : 'pointer',
                     }}>
-                        {generating ? '⏳ Generating...' : '🔗 Generate My Code'}
+                        {generating ? 'â³ Generating...' : 'ðŸ”— Generate My Code'}
                     </button>
                 </div>
             ) : (
@@ -121,7 +121,7 @@ export default function ReferralPage() {
                                     padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.03)',
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <span>{statusEmoji[ev.status] ?? '·'}</span>
+                                        <span>{statusEmoji[ev.status] ?? 'Â·'}</span>
                                         <div>
                                             <div style={{ fontSize: 12, color: '#d1d5db', fontWeight: 600 }}>{ev.referred_role} referral</div>
                                             <div style={{ fontSize: 10, color: '#4b5563' }}>{new Date(ev.created_at).toLocaleDateString()}</div>

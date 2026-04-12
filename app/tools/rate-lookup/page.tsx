@@ -13,7 +13,7 @@ const CORRIDOR_RATES: Record<string, { label: string; p25: number; p50: number; 
     'regional': { label: 'Regional (50-150 mi)', p25: 350, p50: 450, p75: 600, avg_miles: 100 },
     'long_haul': { label: 'Long Haul (150-400 mi)', p25: 500, p50: 700, p75: 950, avg_miles: 275 },
     'cross_state': { label: 'Cross-State (400+ mi)', p25: 800, p50: 1100, p75: 1500, avg_miles: 550 },
-    'cross_border': { label: 'US ↔ Canada', p25: 900, p50: 1300, p75: 1800, avg_miles: 400 },
+    'cross_border': { label: 'US â†” Canada', p25: 900, p50: 1300, p75: 1800, avg_miles: 400 },
 };
 
 const SERVICE_TYPES: Record<string, { label: string; multiplier: number }> = {
@@ -109,7 +109,7 @@ export default function RateLookupPage() {
                             background: 'linear-gradient(135deg,#10b981,#059669)', color: '#000',
                             fontSize: 15, fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s', marginBottom: '1.5rem',
                         }}>
-                            📊 See Market Rates
+                            ðŸ“Š See Market Rates
                         </button>
 
                         {showResult && (
@@ -141,7 +141,7 @@ export default function RateLookupPage() {
 
                                 {/* Context */}
                                 <div style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: 12, padding: '1rem 1.25rem', marginBottom: '1.5rem' }}>
-                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>💡 Market Context</div>
+                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>ðŸ’¡ Market Context</div>
                                     <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7 }}>
                                         Rates vary based on: time of year, urban density, permit complexity, day of week (weekend premiums common), and driver availability.
                                         Posting at the median rate typically fills in under 2 hours. Posting at 75th percentile attracts premium, experienced escorts faster.
@@ -157,7 +157,7 @@ export default function RateLookupPage() {
                                         background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000',
                                         fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none',
                                     }}>
-                                        Post a Load — Free →
+                                        Post a Load â€” Free â†’
                                     </a>
                                 </div>
                             </div>

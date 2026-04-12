@@ -84,7 +84,7 @@ export default function EscrowCheckoutPage() {
                 {/* Header */}
                 <div style={{ marginBottom: '2rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>💳</div>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>ðŸ’³</div>
                         <div>
                             <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#f9fafb' }}>Escrow Checkout</h1>
                             <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>Secure payment initiation for escort services</p>
@@ -142,7 +142,7 @@ export default function EscrowCheckoutPage() {
                 {/* Cost Summary */}
                 {form.subtotal_usd > 0 && (
                     <div style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 14, padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
-                        <h3 style={{ margin: '0 0 1rem', fontSize: 14, fontWeight: 600, color: '#f59e0b' }}>💰 Cost Breakdown</h3>
+                        <h3 style={{ margin: '0 0 1rem', fontSize: 14, fontWeight: 600, color: '#f59e0b' }}>ðŸ’° Cost Breakdown</h3>
                         {[
                             { label: 'Service Subtotal', val: `$${form.subtotal_usd.toFixed(2)}` },
                             { label: 'Platform Fee (2%)', val: `$${platformFee.toFixed(2)}`, sub: true },
@@ -162,15 +162,15 @@ export default function EscrowCheckoutPage() {
                     <p style={{ margin: '0 0 0.5rem', fontSize: 12, fontWeight: 600, color: '#10b981', textTransform: 'uppercase', letterSpacing: 0.5 }}>Auto-Release Conditions</p>
                     {['GPS check-in verified at pickup', 'Arrival photo uploaded', '10+ minutes elapsed since check-in', 'No open dispute on this payment'].map(c => (
                         <div key={c} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0.3rem 0', fontSize: 13, color: '#6b7280' }}>
-                            <span style={{ color: '#10b981', fontSize: 11 }}>✓</span> {c}
+                            <span style={{ color: '#10b981', fontSize: 11 }}>âœ“</span> {c}
                         </div>
                     ))}
                 </div>
 
-                {error && <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '0.75rem 1rem', marginBottom: '1rem', fontSize: 13, color: '#f87171' }}>⚠ {error}</div>}
+                {error && <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '0.75rem 1rem', marginBottom: '1rem', fontSize: 13, color: '#f87171' }}>âš  {error}</div>}
                 {result && (
                     <div style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 10, padding: '1rem 1.25rem', marginBottom: '1rem' }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: '#10b981', marginBottom: 8 }}>✅ Payment Initiated</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: '#10b981', marginBottom: 8 }}>âœ… Payment Initiated</div>
                         {[['Payment ID', result.payment_id], ['Status', result.status], ['Deposit Held', `$${result.deposit_usd?.toFixed(2) ?? 0}`], ['Platform Fee', `$${result.platform_fee_usd?.toFixed(2) ?? 0}`]].map(([k, v]) => (
                             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6b7280', padding: '0.2rem 0' }}>
                                 <span>{k}</span><span style={{ color: '#d1d5db', fontFamily: 'monospace' }}>{v}</span>
@@ -184,7 +184,7 @@ export default function EscrowCheckoutPage() {
                     disabled={submitting || !form.escort_id || form.subtotal_usd <= 0}
                     style={{ width: '100%', padding: '0.9rem', borderRadius: 10, border: 'none', background: submitting || !form.escort_id ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#f59e0b,#d97706)', color: submitting || !form.escort_id ? '#4b5563' : '#000', fontSize: 15, fontWeight: 700, cursor: submitting || !form.escort_id ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}
                 >
-                    {submitting ? '⏳ Processing...' : escrow?.escrow_required ? `🔒 Fund Escrow · $${depositAmt.toFixed(2)} deposit` : `💳 Initiate Payment · $${form.subtotal_usd.toFixed(2)}`}
+                    {submitting ? 'â³ Processing...' : escrow?.escrow_required ? `ðŸ”’ Fund Escrow Â· $${depositAmt.toFixed(2)} deposit` : `ðŸ’³ Initiate Payment Â· $${form.subtotal_usd.toFixed(2)}`}
                 </button>
                 <p style={{ textAlign: 'center', fontSize: 11, color: '#4b5563', marginTop: '0.75rem' }}>Funds are secured via HC Escrow. Release triggers automatically when proof conditions are met.</p>
             </div>

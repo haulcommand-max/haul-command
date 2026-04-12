@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Admin — Haul Command',
+  title: 'Admin â€” Haul Command',
   description: 'Haul Command internal operations dashboard.',
   robots: { index: false, follow: false },
 };
 
 const NAV_SECTIONS = [
   {
-    label: '🧠👁️⚙️ AI Command',
+    label: 'ðŸ§ ðŸ‘ï¸âš™ï¸ AI Command',
     links: [
       { href: '/admin/ai-costs', label: 'AI Cost Dashboard', desc: 'Brain spend, latency, success rates' },
       { href: '/admin/batch-jobs', label: 'Batch AI Jobs', desc: 'Run meta, enrich, corridor, regulation batches' },
@@ -18,7 +18,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: '📊 Revenue & Growth',
+    label: 'ðŸ“Š Revenue & Growth',
     links: [
       { href: '/admin/revenue', label: 'Revenue', desc: 'MRR, Stripe, payouts' },
       { href: '/admin/dashboards', label: 'Analytics', desc: 'Traffic, conversion, funnels' },
@@ -27,7 +27,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: '🗂️ Content & SEO',
+    label: 'ðŸ—‚ï¸ Content & SEO',
     links: [
       { href: '/admin/content', label: 'Content Queue', desc: 'Blog, LinkedIn, YouTube pipeline' },
       { href: '/admin/content/video-guide', label: 'Video Guide', desc: 'Free-tool video production guide' },
@@ -35,7 +35,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: '🚨 Operations',
+    label: 'ðŸš¨ Operations',
     links: [
       { href: '/admin/directory', label: 'Directory', desc: '7,745 listings management' },
       { href: '/admin/ops', label: 'Ops', desc: 'Platform operations' },
@@ -48,7 +48,7 @@ const NAV_SECTIONS = [
 
 export default function AdminPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -56,7 +56,7 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold">Haul Command Admin</h1>
           </div>
           <p className="text-gray-500 text-sm">
-            3-Brain AI Stack: 🧠 Claude THINK · 👁️ Gemini SEE · ⚙️ OpenAI ACT
+            3-Brain AI Stack: ðŸ§  Claude THINK Â· ðŸ‘ï¸ Gemini SEE Â· âš™ï¸ OpenAI ACT
           </p>
         </div>
 
@@ -64,9 +64,9 @@ export default function AdminPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {[
             { label: 'Directory Listings', value: '1.5M+', sub: 'across 120 countries' },
-            { label: 'AI Cost Dashboard', value: '👁️', href: '/admin/ai-costs', sub: 'Monitor 3-brain spend' },
-            { label: 'Batch Jobs', value: '🚀', href: '/admin/batch-jobs', sub: '$1.76 total to fill all' },
-            { label: 'Route Check Tool', value: '✔', href: '/route-check', sub: 'SEO inbound trap' },
+            { label: 'AI Cost Dashboard', value: 'ðŸ‘ï¸', href: '/admin/ai-costs', sub: 'Monitor 3-brain spend' },
+            { label: 'Batch Jobs', value: 'ðŸš€', href: '/admin/batch-jobs', sub: '$1.76 total to fill all' },
+            { label: 'Route Check Tool', value: 'âœ”', href: '/route-check', sub: 'SEO inbound trap' },
           ].map(card => (
             <Link aria-label="Navigation Link"
               key={card.label}
@@ -96,7 +96,7 @@ export default function AdminPage() {
                       <p className="text-sm font-medium text-white group-hover:text-amber-400 transition-colors">{link.label}</p>
                       <p className="text-xs text-gray-600 mt-0.5">{link.desc}</p>
                     </div>
-                    <span className="text-gray-600 group-hover:text-amber-400 transition-colors">→</span>
+                    <span className="text-gray-600 group-hover:text-amber-400 transition-colors">â†’</span>
                   </Link>
                 ))}
               </div>
@@ -106,7 +106,7 @@ export default function AdminPage() {
 
         <div className="mt-8 p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
           <p className="text-xs text-amber-400/70">
-            📄 Run migration: <code className="text-amber-300">db/migrations/20260324_full_ai_sprint.sql</code> in Supabase SQL Editor to activate all AI features.
+            ðŸ“„ Run migration: <code className="text-amber-300">db/migrations/20260324_full_ai_sprint.sql</code> in Supabase SQL Editor to activate all AI features.
           </p>
         </div>
       </div>

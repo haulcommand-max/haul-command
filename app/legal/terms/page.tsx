@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Terms of Service | HAUL COMMAND',
-    description: 'HAUL COMMAND Terms of Service — governing platform usage, operator agreements, and service conditions.',
+    description: 'HAUL COMMAND Terms of Service â€” governing platform usage, operator agreements, and service conditions.',
 };
 
 export default function TermsPage() {

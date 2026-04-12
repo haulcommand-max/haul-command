@@ -1,9 +1,9 @@
 'use client';
 
 /**
- * LOAD INTELLIGENCE ANALYZER — /tools/load-analyzer
+ * LOAD INTELLIGENCE ANALYZER â€” /tools/load-analyzer
  * 
- * Broker/operator pastes load details → AI returns:
+ * Broker/operator pastes load details â†’ AI returns:
  * - Profit Score (0-100) + Risk Score (0-100)
  * - Hidden Costs (escorts, police, night restrictions)
  * - Recommendation: Accept / Negotiate / Decline
@@ -39,7 +39,7 @@ const REC_COLORS: Record<string, string> = {
   ACCEPT: '#22c55e', NEGOTIATE: '#f5a623', DECLINE: '#ef4444',
 };
 const REC_ICONS: Record<string, string> = {
-  ACCEPT: '✅', NEGOTIATE: '⚠️', DECLINE: '❌',
+  ACCEPT: 'âœ…', NEGOTIATE: 'âš ï¸', DECLINE: 'âŒ',
 };
 
 export default function LoadAnalyzerPage() {
@@ -83,24 +83,24 @@ export default function LoadAnalyzerPage() {
       <div style={{ background: 'linear-gradient(135deg, #1a0a0a, #0a0b10 60%)', borderBottom: '1px solid rgba(239,68,68,0.2)', padding: '40px 24px 32px' }}>
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-            <span style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 1 }}>⚠️ Avoid Bad Loads</span>
+            <span style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 1 }}>âš ï¸ Avoid Bad Loads</span>
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 8px', background: 'linear-gradient(135deg, #fff, #94a3b8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Load Intelligence Analyzer</h1>
-          <p style={{ color: '#64748b', fontSize: 15 }}>AI-powered load analysis — profit score, risk assessment, hidden costs, and go/no-go recommendation</p>
+          <p style={{ color: '#64748b', fontSize: 15 }}>AI-powered load analysis â€” profit score, risk assessment, hidden costs, and go/no-go recommendation</p>
         </div>
       </div>
 
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 20px' }}>
         {/* Mode toggle */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4 }}>
-          {[{ k: 'paste', l: '📋 Paste Load Description' }, { k: 'fields', l: '📝 Fill in Fields' }].map(m => (
+          {[{ k: 'paste', l: 'ðŸ“‹ Paste Load Description' }, { k: 'fields', l: 'ðŸ“ Fill in Fields' }].map(m => (
             <button aria-label="Interactive Button" key={m.k} onClick={() => setMode(m.k as 'paste' | 'fields')} style={{ flex: 1, padding: '10px 16px', borderRadius: 10, border: 'none', background: mode === m.k ? 'rgba(245,166,35,0.12)' : 'transparent', color: mode === m.k ? '#f5a623' : '#64748b', fontWeight: 600, fontSize: 13, cursor: 'pointer', transition: 'all .2s' }}>{m.l}</button>
           ))}
         </div>
 
         {/* Input */}
         {mode === 'paste' ? (
-          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Paste load posting here…&#10;&#10;Example: Load Alert!! FCI 9092527549 Atlanta GA to Los Angeles CA, 14'6&quot; wide x 16' tall transformer, $1.80/mi, need Chase + High Pole, Quick Pay available" rows={5} style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }} />
+          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Paste load posting hereâ€¦&#10;&#10;Example: Load Alert!! FCI 9092527549 Atlanta GA to Los Angeles CA, 14'6&quot; wide x 16' tall transformer, $1.80/mi, need Chase + High Pole, Quick Pay available" rows={5} style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }} />
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
             <input value={origin} onChange={e => setOrigin(e.target.value)} placeholder="Origin (e.g. Houston, TX)" style={inputStyle} />
@@ -119,7 +119,7 @@ export default function LoadAnalyzerPage() {
         )}
 
         <button aria-label="Interactive Button" onClick={analyze} disabled={loading || (!description.trim() && !origin.trim())} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #f5a623, #ef4444)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', marginTop: 12, transition: 'all .2s' }}>
-          {loading ? '⏳ Analyzing…' : '⚡ Analyze This Load'}
+          {loading ? 'â³ Analyzingâ€¦' : 'âš¡ Analyze This Load'}
         </button>
 
         {error && <div style={{ marginTop: 16, padding: 16, background: 'rgba(239,68,68,0.1)', borderLeft: '3px solid #ef4444', borderRadius: 8, color: '#fca5a5', fontSize: 13 }}>{error}</div>}
@@ -159,7 +159,7 @@ export default function LoadAnalyzerPage() {
                 <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Unlock Full Report</h3>
                 <p style={{ color: '#64748b', fontSize: 13, marginBottom: 16 }}>Hidden costs, escort requirements, rate analysis, and corridor insights</p>
                 <a href="/pricing" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '12px 24px', background: '#f5a623', color: '#000', fontWeight: 700, fontSize: 14, borderRadius: 10, textDecoration: 'none' }}>
-                  Upgrade to Pro — $99/mo <ChevronRight size={16} />
+                  Upgrade to Pro â€” $99/mo <ChevronRight size={16} />
                 </a>
               </div>
             ) : (
@@ -195,13 +195,13 @@ export default function LoadAnalyzerPage() {
                       { l: 'Chase Cars', v: analysis.escortRequirements.chaseCarsNeeded },
                       { l: 'Lead Cars', v: analysis.escortRequirements.leadCarsNeeded },
                       { l: 'High Pole', v: analysis.escortRequirements.highPoleNeeded ? 'YES' : 'No' },
-                      { l: 'Police Escort', v: analysis.escortRequirements.policeEscortLikely ? '⚠️ LIKELY' : 'No' },
-                      { l: 'Night Restrict', v: analysis.escortRequirements.nightRestrictions ? '⚠️ YES' : 'No' },
-                      { l: 'Weekend Restrict', v: analysis.escortRequirements.weekendRestrictions ? '⚠️ YES' : 'No' },
+                      { l: 'Police Escort', v: analysis.escortRequirements.policeEscortLikely ? 'âš ï¸ LIKELY' : 'No' },
+                      { l: 'Night Restrict', v: analysis.escortRequirements.nightRestrictions ? 'âš ï¸ YES' : 'No' },
+                      { l: 'Weekend Restrict', v: analysis.escortRequirements.weekendRestrictions ? 'âš ï¸ YES' : 'No' },
                     ].map((r, i) => (
                       <div key={i} style={{ padding: 10, background: 'rgba(255,255,255,0.02)', borderRadius: 8, textAlign: 'center' }}>
                         <div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>{r.l}</div>
-                        <div style={{ fontWeight: 700, fontSize: 16, color: typeof r.v === 'string' && r.v.includes('⚠️') ? '#f5a623' : '#e2e8f0' }}>{r.v}</div>
+                        <div style={{ fontWeight: 700, fontSize: 16, color: typeof r.v === 'string' && r.v.includes('âš ï¸') ? '#f5a623' : '#e2e8f0' }}>{r.v}</div>
                       </div>
                     ))}
                   </div>
@@ -218,7 +218,7 @@ export default function LoadAnalyzerPage() {
                   <div style={{ background: 'rgba(245,166,35,0.05)', border: '1px solid rgba(245,166,35,0.15)', borderRadius: 16, padding: 20 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}><Shield size={16} color="#f5a623" /><span style={{ fontWeight: 700 }}>Warnings</span></div>
                     {analysis.warnings.map((w, i) => (
-                      <div key={i} style={{ padding: '6px 0', fontSize: 13, color: '#f5a623' }}>⚠️ {w}</div>
+                      <div key={i} style={{ padding: '6px 0', fontSize: 13, color: '#f5a623' }}>âš ï¸ {w}</div>
                     ))}
                   </div>
                 )}

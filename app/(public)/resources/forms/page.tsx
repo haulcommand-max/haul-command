@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FileText, Download, ChevronRight, ArrowRight, Shield, BookOpen, Truck, Star } from 'lucide-react';
 
-// ══════════════════════════════════════════════════════════════
-// /resources/forms — FORMS HUB
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// /resources/forms â€” FORMS HUB
 // Absorbs the forms-bundle competitor's entire catalog.
 // Free starter templates + paid autofill/vault/branding upgrade path.
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Forms & Templates — Free Downloads | Haul Command',
+  title: 'Pilot Car Forms & Templates â€” Free Downloads | Haul Command',
   description:
     'Free downloadable forms, checklists, and templates for pilot car operators, heavy haul carriers, and freight brokers. Pre-trip inspection, bill of lading, service agreement, and route packet templates.',
   keywords: [
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://haulcommand.com/resources/forms' },
   openGraph: {
-    title: 'Pilot Car Forms & Templates — Free Downloads | Haul Command',
+    title: 'Pilot Car Forms & Templates â€” Free Downloads | Haul Command',
     description: 'The industry\'s most complete collection of pilot car, escort vehicle, and heavy haul forms. Free starter templates.',
     url: 'https://haulcommand.com/resources/forms',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
@@ -48,7 +48,7 @@ interface FormItem {
 }
 
 const FORMS: FormItem[] = [
-  // ── FREE TIER ────────────────────────
+  // â”€â”€ FREE TIER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'escort-pre-trip-checklist',
     title: 'Escort Pre-Trip Inspection Checklist',
@@ -61,7 +61,7 @@ const FORMS: FormItem[] = [
   {
     slug: 'heavy-haul-readiness-checklist',
     title: 'Heavy Haul Readiness Checklist',
-    description: 'Everything you need verified before accepting an oversize load assignment — permits, equipment, route, escorts.',
+    description: 'Everything you need verified before accepting an oversize load assignment â€” permits, equipment, route, escorts.',
     category: 'Checklists',
     tier: 'free',
     format: 'PDF',
@@ -95,7 +95,7 @@ const FORMS: FormItem[] = [
     downloadable: true,
   },
 
-  // ── PRO TIER ($29/mo) ────────────────
+  // â”€â”€ PRO TIER ($29/mo) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'service-agreement-template',
     title: 'Pilot Car Service Agreement',
@@ -142,7 +142,7 @@ const FORMS: FormItem[] = [
     downloadable: true,
   },
 
-  // ── ELITE TIER ($79/mo) ──────────────
+  // â”€â”€ ELITE TIER ($79/mo) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'branded-forms-pack',
     title: 'Branded Company Forms Pack',
@@ -215,7 +215,7 @@ export default function FormsHubPage() {
 
       <div style={{ minHeight: '100vh', background: '#080810', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-        {/* ── Hero ── */}
+        {/* â”€â”€ Hero â”€â”€ */}
         <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59,130,246,0.08), transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -238,7 +238,7 @@ export default function FormsHubPage() {
               <span style={{ color: '#3b82f6' }}>Compliance Templates</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 560 }}>
-              {freeCount} free templates to get started. Pre-trip checklists, service agreements, route packets, and compliance bundles — used by 3,000+ operators.
+              {freeCount} free templates to get started. Pre-trip checklists, service agreements, route packets, and compliance bundles â€” used by 3,000+ operators.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -262,7 +262,7 @@ export default function FormsHubPage() {
 
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 1.5rem' }}>
 
-          {/* ── Category nav ── */}
+          {/* â”€â”€ Category nav â”€â”€ */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
             {categories.map(cat => (
               <a key={cat} href={`#${cat.toLowerCase()}`} style={{
@@ -276,7 +276,7 @@ export default function FormsHubPage() {
             ))}
           </div>
 
-          {/* ── Free section ── */}
+          {/* â”€â”€ Free section â”€â”€ */}
           <section id="free" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -295,7 +295,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Pro section ── */}
+          {/* â”€â”€ Pro section â”€â”€ */}
           <section id="pro" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -303,7 +303,7 @@ export default function FormsHubPage() {
               </div>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Pro Templates</h2>
-                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Pro ($29/mo) — autofill, vault storage, and reminders</p>
+                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Pro ($29/mo) â€” autofill, vault storage, and reminders</p>
               </div>
             </div>
 
@@ -314,7 +314,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Elite section ── */}
+          {/* â”€â”€ Elite section â”€â”€ */}
           <section id="elite" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -322,7 +322,7 @@ export default function FormsHubPage() {
               </div>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Elite Templates</h2>
-                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Elite ($79/mo) — branded, audit-ready, fleet-grade</p>
+                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Elite ($79/mo) â€” branded, audit-ready, fleet-grade</p>
               </div>
             </div>
 
@@ -333,7 +333,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Email capture CTA ── */}
+          {/* â”€â”€ Email capture CTA â”€â”€ */}
           <section style={{
             background: 'linear-gradient(135deg, rgba(59,130,246,0.08), rgba(59,130,246,0.03))',
             border: '1px solid rgba(59,130,246,0.2)',
@@ -347,7 +347,7 @@ export default function FormsHubPage() {
               Get All {freeCount} Free Templates
             </h2>
             <p style={{ margin: '0 0 24px', fontSize: 14, color: '#94a3b8', maxWidth: 450, marginLeft: 'auto', marginRight: 'auto' }}>
-              Pre-trip checklist, bill of lading, daily log, and startup guide — in one download. Used by 3,000+ operators.
+              Pre-trip checklist, bill of lading, daily log, and startup guide â€” in one download. Used by 3,000+ operators.
             </p>
             <form
               action="/api/leads/resource-download"
@@ -374,7 +374,7 @@ export default function FormsHubPage() {
             <p style={{ marginTop: 12, fontSize: 11, color: '#4b5563' }}>No spam. Unsubscribe anytime.</p>
           </section>
 
-          {/* ── Cross-links ── */}
+          {/* â”€â”€ Cross-links â”€â”€ */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
             {[
               { href: '/resources', icon: BookOpen, label: 'Resource Hub', desc: '40+ guides & references', color: '#C6923A' },

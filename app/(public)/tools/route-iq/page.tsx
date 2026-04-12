@@ -82,13 +82,13 @@ export default function RouteIQPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#030303] text-slate-200">
+        <div className=" bg-[#030303] text-slate-200">
             <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
 
                 {/* Header Section */}
                 <div className="max-w-3xl mx-auto text-center mb-16">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F1A91B]/10 border border-[#F1A91B]/20 rounded-full text-[#F1A91B] text-xs font-bold uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(241,169,27,0.15)]">
-                        <Cpu className="w-3.5 h-3.5" /> HAUL COMMAND ROUTE IQ™
+                        <Cpu className="w-3.5 h-3.5" /> HAUL COMMAND ROUTE IQâ„¢
                     </div>
                     <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight mb-6 leading-tight">
                         Stop Guessing on <br />
@@ -214,7 +214,7 @@ export default function RouteIQPage() {
                     <div className="lg:col-span-7 space-y-6">
                         {!result ? (
                             <div className="bg-[#111] border border-white/5 rounded-3xl p-8 md:p-12 text-center h-full flex flex-col items-center justify-center min-h-[500px]">
-                                <div className="w-20 h-20 bg-slate-900 rounded-full flex items-center justify-center mb-6 border border-white/5">
+                                <div className="w-20 h-20  rounded-full flex items-center justify-center mb-6 border border-white/5">
                                     <ShieldAlert className="w-8 h-8 text-slate-600" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-white mb-3">Awaiting Load Parameters</h3>

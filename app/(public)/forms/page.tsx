@@ -13,10 +13,10 @@ export default async function FormsHubPage() {
         .order('created_at', { ascending: false })
 
     return (
-        <div className="min-h-screen bg-transparent pt-24 pb-32">
+        <div className=" bg-transparent pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
-                {/* ── SEO Headers & Hero ── */}
+                {/* â”€â”€ SEO Headers & Hero â”€â”€ */}
                 <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8">
                     <div>
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#C6923A]/10 border border-[#C6923A]/20 rounded-full mb-4">
@@ -32,13 +32,13 @@ export default async function FormsHubPage() {
                     </div>
                     <div className="flex-shrink-0 flex gap-3">
                         <a href="/login" className="px-6 py-3 bg-[#C6923A] text-black font-black uppercase text-sm tracking-widest rounded-xl hover:bg-[#b0802e] transition shadow-[0_0_20px_rgba(198,146,58,0.2)]">
-                            Auto-Fill Forms →
+                            Auto-Fill Forms â†’
                         </a>
                     </div>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8">
-                    {/* ── Left Column: Required Forms ── */}
+                    {/* â”€â”€ Left Column: Required Forms â”€â”€ */}
                     <div className="md:col-span-2 space-y-6">
                         <h2 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-2">Required Network Templates</h2>
                         
@@ -71,7 +71,7 @@ export default async function FormsHubPage() {
                                     </div>
                                     <div className="mt-5 pt-5 border-t border-white/5 flex gap-3">
                                         <a href="/login" className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg transition">Preview Document</a>
-                                        <a href="/login" className="px-4 py-2 bg-[#C6923A]/10 hover:bg-[#C6923A]/20 text-[#C6923A] text-xs font-bold rounded-lg transition ml-auto">Autofill & Sign →</a>
+                                        <a href="/login" className="px-4 py-2 bg-[#C6923A]/10 hover:bg-[#C6923A]/20 text-[#C6923A] text-xs font-bold rounded-lg transition ml-auto">Autofill & Sign â†’</a>
                                     </div>
                                 </div>
                             ))
@@ -90,13 +90,13 @@ export default async function FormsHubPage() {
                                 <div>
                                     <h3 className="text-lg font-bold text-white mb-1">Upload Certificates of Insurance (COI)</h3>
                                     <p className="text-sm text-white/50 mb-4">Securely upload and store your external COI PDFs. Smart OCR automatically extracts your policy limits for broker verification.</p>
-                                    <a href="/login" className="text-emerald-400 text-xs font-bold hover:underline">Go to Secure Vault →</a>
+                                    <a href="/login" className="text-emerald-400 text-xs font-bold hover:underline">Go to Secure Vault â†’</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* ── Right Column: Trust & Reminders Engine ── */}
+                    {/* â”€â”€ Right Column: Trust & Reminders Engine â”€â”€ */}
                     <div className="space-y-6">
                         <div className="bg-[#121212] border border-white/5 rounded-2xl p-6">
                             <h3 className="font-bold text-white mb-4 flex items-center gap-2">
@@ -132,7 +132,7 @@ export default async function FormsHubPage() {
                                 Need Nationwide Oversize Load Permits? Skip the line. Our logistics team processes permits 3x faster using your vaulted credentials.
                             </p>
                             <a href="/permits" className="block w-full text-center py-3 bg-[#C6923A] text-black font-black uppercase text-xs tracking-widest rounded-xl hover:bg-[#b0802e] transition relative z-10 shadow-[0_0_15px_rgba(198,146,58,0.3)]">
-                                Request Permits →
+                                Request Permits â†’
                             </a>
                         </div>
                     </div>

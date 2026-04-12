@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy | HAUL COMMAND',
-    description: 'HAUL COMMAND Privacy Policy — how we collect, use, and protect your data across 120 countries.',
+    description: 'HAUL COMMAND Privacy Policy â€” how we collect, use, and protect your data across 120 countries.',
 };
 
 export default function PrivacyPage() {
@@ -54,12 +54,12 @@ export default function PrivacyPage() {
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>7. Data Monetization & Anonymized Products</h2>
                     <p>HAUL COMMAND generates anonymized, aggregated market intelligence products including corridor demand snapshots, rate benchmarks, operator density maps, and market reports. These products:</p>
                     <ul style={{ paddingLeft: 20 }}>
-                        <li><strong style={{ color: '#F9FAFB' }}>Never contain personally identifiable information</strong> — all data is aggregated across multiple operators within a region or corridor</li>
-                        <li><strong style={{ color: '#F9FAFB' }}>Use statistical aggregation</strong> — minimum 5 data points per cell, no individual operator can be identified</li>
-                        <li><strong style={{ color: '#F9FAFB' }}>Are derived from platform activity</strong> — search patterns, load postings, fill rates, and pricing trends</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Never contain personally identifiable information</strong> â€” all data is aggregated across multiple operators within a region or corridor</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Use statistical aggregation</strong> â€” minimum 5 data points per cell, no individual operator can be identified</li>
+                        <li><strong style={{ color: '#F9FAFB' }}>Are derived from platform activity</strong> â€” search patterns, load postings, fill rates, and pricing trends</li>
                     </ul>
                     <p><strong style={{ color: '#F9FAFB' }}>Your Rights:</strong> You may opt out of having your anonymized activity included in data products by contacting <a href="mailto:privacy@haulcommand.com" style={{ color: '#F59E0B' }}>privacy@haulcommand.com</a> or toggling the &quot;Data Products Opt-Out&quot; setting in your account dashboard. Note: opting out does not affect your use of the Platform.</p>
-                    <p><strong style={{ color: '#F9FAFB' }}>Legal Basis (GDPR):</strong> We process this data under Article 6(1)(f) — legitimate interest in operating and improving a logistics marketplace. For EU/EEA users, this processing is covered by our balancing test documentation available upon request.</p>
+                    <p><strong style={{ color: '#F9FAFB' }}>Legal Basis (GDPR):</strong> We process this data under Article 6(1)(f) â€” legitimate interest in operating and improving a logistics marketplace. For EU/EEA users, this processing is covered by our balancing test documentation available upon request.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>8. Data Retention</h2>
                     <p>We retain your account data for as long as your account is active. After account deletion, we retain anonymized data for analytics purposes for up to 3 years. Payment records are retained for 7 years as required by financial regulations.</p>

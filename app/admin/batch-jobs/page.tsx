@@ -34,7 +34,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_analyze',
-    name: '🔥 Claim Sweep — Analyze (7,745 listings)',
+    name: 'ðŸ”¥ Claim Sweep â€” Analyze (7,745 listings)',
     description: 'Gemini writes email/SMS copy + Claude scores steal risk for every unclaimed listing. Run repeatedly until all analyzed.',
     endpoint: '/api/admin/claim-analysis',
     method: 'POST',
@@ -48,7 +48,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_preview',
-    name: '👀 Claim Sweep — Preview Outreach (risk >= 7)',
+    name: 'ðŸ‘€ Claim Sweep â€” Preview Outreach (risk >= 7)',
     description: 'Dry-run: preview which high-risk unclaimed listings would receive outreach emails.',
     endpoint: '/api/admin/batch/claim-sweep',
     method: 'POST',
@@ -62,7 +62,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_send',
-    name: '📧 Claim Sweep — SEND Outreach (risk >= 7)',
+    name: 'ðŸ“§ Claim Sweep â€” SEND Outreach (risk >= 7)',
     description: 'LIVE: Send personalized claim invite emails to high-risk unclaimed listings. Only sends to listings with email on file.',
     endpoint: '/api/admin/batch/claim-sweep',
     method: 'POST',
@@ -72,7 +72,7 @@ const BATCH_JOBS = [
     cost: 'Resend pricing',
     time: '~10 sec per 50 emails',
     priority: 5,
-    badge: '🔴 LIVE',
+    badge: 'ðŸ”´ LIVE',
   },
   {
     id: 'regulations',
@@ -146,7 +146,7 @@ const BADGE_COLORS: Record<string, string> = {
   Quality: 'bg-purple-500/20 text-purple-300',
   Intel: 'bg-amber-500/20 text-amber-300',
   Content: 'bg-pink-500/20 text-pink-300',
-  '🔴 LIVE': 'bg-red-500/20 text-red-400 animate-pulse',
+  'ðŸ”´ LIVE': 'bg-red-500/20 text-red-400 animate-pulse',
 };
 
 export default function BatchJobsPage() {
@@ -183,7 +183,7 @@ export default function BatchJobsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-bold">Batch AI Jobs</h1>
@@ -195,8 +195,8 @@ export default function BatchJobsPage() {
         {/* Claim export shortcut */}
         <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold text-green-400">📄 Export Claim Outreach CSV</p>
-            <p className="text-xs text-gray-500 mt-0.5">Download all analyzed high-risk listings (score ≥ 7) as CSV for email campaigns.</p>
+            <p className="text-sm font-bold text-green-400">ðŸ“„ Export Claim Outreach CSV</p>
+            <p className="text-xs text-gray-500 mt-0.5">Download all analyzed high-risk listings (score â‰¥ 7) as CSV for email campaigns.</p>
           </div>
           <button aria-label="Interactive Button"
             onClick={downloadClaimCSV}
@@ -211,7 +211,7 @@ export default function BatchJobsPage() {
             const isRunning = running[job.id];
             const result = results[job.id];
             const error = errors[job.id];
-            const isLive = job.badge === '🔴 LIVE';
+            const isLive = job.badge === 'ðŸ”´ LIVE';
 
             return (
               <div
@@ -249,13 +249,13 @@ export default function BatchJobsPage() {
                         : 'bg-amber-500 hover:bg-amber-400 text-white'
                     }`}
                   >
-                    {isRunning ? 'Running...' : isLive ? '📧 Send' : 'Run'}
+                    {isRunning ? 'Running...' : isLive ? 'ðŸ“§ Send' : 'Run'}
                   </button>
                 </div>
 
                 {result && (
                   <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-xl">
-                    <p className="text-xs text-green-400 font-bold mb-1">✓ Completed</p>
+                    <p className="text-xs text-green-400 font-bold mb-1">âœ“ Completed</p>
                     <pre className="text-xs text-gray-400 overflow-x-auto whitespace-pre-wrap">
                       {JSON.stringify(result, null, 2).slice(0, 600)}
                       {JSON.stringify(result).length > 600 ? '\n...' : ''}
@@ -264,13 +264,13 @@ export default function BatchJobsPage() {
                 )}
                 {error && (
                   <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                    <p className="text-xs text-red-400">✗ {error}</p>
+                    <p className="text-xs text-red-400">âœ— {error}</p>
                   </div>
                 )}
                 {isRunning && (
                   <div className="mt-4 flex items-center gap-2">
                     <div className="animate-spin w-3 h-3 border-2 border-amber-500 border-t-transparent rounded-full" />
-                    <p className="text-xs text-gray-500">Running…</p>
+                    <p className="text-xs text-gray-500">Runningâ€¦</p>
                   </div>
                 )}
               </div>
@@ -280,7 +280,7 @@ export default function BatchJobsPage() {
 
         <div className="mt-8 p-4 bg-white/3 border border-white/5 rounded-xl">
           <p className="text-xs text-gray-600">
-            🧠 Claude THINK · 👁️ Gemini SEE · ⚙️ OpenAI ACT &mdash; monitor spend at{' '}
+            ðŸ§  Claude THINK Â· ðŸ‘ï¸ Gemini SEE Â· âš™ï¸ OpenAI ACT &mdash; monitor spend at{' '}
             <a href="/admin/ai-costs" className="text-amber-400 hover:underline">/admin/ai-costs</a>.
             Run 20 in Supabase SQL editor:{' '}
             <code className="text-amber-300 text-xs">SELECT * FROM get_ai_cost_summary(7);</code>

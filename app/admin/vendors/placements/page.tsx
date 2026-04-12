@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { nowTs } from "@/lib/vendor/helpers";
 
 // =========================================================
-// Admin Placements Manager — /admin/vendors/placements
+// Admin Placements Manager â€” /admin/vendors/placements
 // =========================================================
 
 const TYPE_OPTIONS = ["all", "near_route", "emergency_top", "category_top", "corridor_exclusive", "push_eligible"];
@@ -73,12 +73,12 @@ export default function AdminPlacementsPage() {
                     <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">Region</label>
                         <input value={filters.region1} onChange={e => setFilter("region1", e.target.value)}
-                            placeholder="FL, ON…" className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
+                            placeholder="FL, ONâ€¦" className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                     </div>
                     <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">Corridor</label>
                         <input value={filters.corridor} onChange={e => setFilter("corridor", e.target.value)}
-                            placeholder="I-75, 401…" className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
+                            placeholder="I-75, 401â€¦" className="w-full border border-white/20 rounded-md px-2 py-1.5 text-sm" />
                     </div>
                     <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
@@ -96,7 +96,7 @@ export default function AdminPlacementsPage() {
             {/* Table */}
             <div className="rounded-xl border border-white/10 bg-[#121212] shadow-sm overflow-hidden">
                 {loading ? (
-                    <p className="p-6 text-gray-400 text-sm">Loading…</p>
+                    <p className="p-6 text-gray-400 text-sm">Loadingâ€¦</p>
                 ) : placements.length === 0 ? (
                     <p className="p-6 text-gray-500 text-sm">No placements found.</p>
                 ) : (
@@ -116,10 +116,10 @@ export default function AdminPlacementsPage() {
                                         <td className="px-4 py-3 text-neutral-300 font-medium">
                                             {(p.vendors as any)?.dba_name ?? (p.vendors as any)?.legal_name ?? p.vendor_id.slice(0, 8)}
                                         </td>
-                                        <td className="px-4 py-3 text-gray-600">{p.region1 ?? "—"}</td>
-                                        <td className="px-4 py-3 text-gray-600">{p.corridor_name ?? "—"}</td>
+                                        <td className="px-4 py-3 text-gray-600">{p.region1 ?? "â€”"}</td>
+                                        <td className="px-4 py-3 text-gray-600">{p.corridor_name ?? "â€”"}</td>
                                         <td className="px-4 py-3">${p.bid_monthly}</td>
-                                        <td className="px-4 py-3">{p.is_exclusive ? "✓" : "—"}</td>
+                                        <td className="px-4 py-3">{p.is_exclusive ? "âœ“" : "â€”"}</td>
                                         <td className="px-4 py-3 text-gray-500 text-xs">{new Date(p.start_at).toLocaleDateString()}</td>
                                         <td className="px-4 py-3 text-gray-500 text-xs">{new Date(p.end_at).toLocaleDateString()}</td>
                                         <td className="px-4 py-3 flex gap-3">

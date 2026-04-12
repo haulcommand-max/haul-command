@@ -1,8 +1,8 @@
 'use client';
 /**
- * Admin Video Dashboard — /admin/content/videos
+ * Admin Video Dashboard â€” /admin/content/videos
  * Shows: Pending Approval | In Production | Published
- * Approve → triggers translation + YouTube pipeline
+ * Approve â†’ triggers translation + YouTube pipeline
  */
 'use client';
 
@@ -25,16 +25,16 @@ interface VideoJob {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  rendering:      { label: '⟳ Rendering', color: '#f5c842' },
-  translating:    { label: '🌐 Translating', color: '#00ccff' },
-  complete:       { label: '✓ Ready', color: '#00ff88' },
-  failed:         { label: '✗ Failed', color: '#ef4444' },
-  queued:         { label: '⏳ Queued', color: '#8fa3c0' },
+  rendering:      { label: 'âŸ³ Rendering', color: '#f5c842' },
+  translating:    { label: 'ðŸŒ Translating', color: '#00ccff' },
+  complete:       { label: 'âœ“ Ready', color: '#00ff88' },
+  failed:         { label: 'âœ— Failed', color: '#ef4444' },
+  queued:         { label: 'â³ Queued', color: '#8fa3c0' },
 };
 
 const LANG_FLAGS: Record<string, string> = {
-  en: '🇺🇸', es: '🇪🇸', pt: '🇧🇷', de: '🇩🇪', fr: '🇫🇷',
-  ar: '🇦🇪', nl: '🇳🇱', ja: '🇯🇵', ko: '🇰🇷', hi: '🇮🇳',
+  en: 'ðŸ‡ºðŸ‡¸', es: 'ðŸ‡ªðŸ‡¸', pt: 'ðŸ‡§ðŸ‡·', de: 'ðŸ‡©ðŸ‡ª', fr: 'ðŸ‡«ðŸ‡·',
+  ar: 'ðŸ‡¦ðŸ‡ª', nl: 'ðŸ‡³ðŸ‡±', ja: 'ðŸ‡¯ðŸ‡µ', ko: 'ðŸ‡°ðŸ‡·', hi: 'ðŸ‡®ðŸ‡³',
 };
 
 export default function VideoAdminPage() {
@@ -102,18 +102,18 @@ export default function VideoAdminPage() {
       {/* Header */}
       <div style={{ background: '#0a0d16', borderBottom: '1px solid #1a223a', padding: '20px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>🎬 Video Dashboard</h1>
-          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>HeyGen pipeline · 10 languages · YouTube auto-publish</div>
+          <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>ðŸŽ¬ Video Dashboard</h1>
+          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>HeyGen pipeline Â· 10 languages Â· YouTube auto-publish</div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button aria-label="Interactive Button" onClick={fetchJobs} style={{
             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
             color: '#e0e0e6', borderRadius: 10, padding: '8px 16px', fontSize: 13, cursor: 'pointer',
-          }}>↻ Refresh</button>
+          }}>â†» Refresh</button>
           <a href="/admin/content" style={{
             background: 'transparent', border: '1px solid rgba(0,204,255,0.2)',
             color: '#00ccff', borderRadius: 10, padding: '8px 16px', fontSize: 13, textDecoration: 'none',
-          }}>← Content Admin</a>
+          }}>â† Content Admin</a>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default function VideoAdminPage() {
           borderRadius: 12, padding: '12px 18px',
         }}>
           <div style={{ fontSize: 12, color: '#8fa3c0', marginBottom: 4 }}>Time investment</div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#00ff88' }}>~2 min/video · Everything else automated</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#00ff88' }}>~2 min/video Â· Everything else automated</div>
         </div>
       </div>
 
@@ -163,7 +163,7 @@ export default function VideoAdminPage() {
 
         {!loading && activeList.length === 0 && (
           <div style={{ textAlign: 'center', padding: 60, color: '#8fa3c0' }}>
-            {activeTab === 'pending' ? '✓ No videos awaiting approval' : `No videos in this category`}
+            {activeTab === 'pending' ? 'âœ“ No videos awaiting approval' : `No videos in this category`}
           </div>
         )}
 
@@ -184,7 +184,7 @@ export default function VideoAdminPage() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 24, flexShrink: 0, border: '1px solid #2a2a3a', cursor: job.video_url ? 'pointer' : 'default',
                 }} onClick={() => job.video_url && setPreviewJob(job)}>
-                  {job.video_url ? '▶' : '⏳'}
+                  {job.video_url ? 'â–¶' : 'â³'}
                 </div>
 
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -192,12 +192,12 @@ export default function VideoAdminPage() {
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
                     <span style={{ fontSize: 12, color: statusCfg.color, fontWeight: 700 }}>{statusCfg.label}</span>
                     <span style={{ fontSize: 11, color: '#8fa3c0' }}>{LANG_FLAGS[job.language]} {job.language.toUpperCase()}</span>
-                    {job.duration_secs && <span style={{ fontSize: 11, color: '#8fa3c0' }}>⏱ {Math.round(job.duration_secs / 60)}m {job.duration_secs % 60}s</span>}
+                    {job.duration_secs && <span style={{ fontSize: 11, color: '#8fa3c0' }}>â± {Math.round(job.duration_secs / 60)}m {job.duration_secs % 60}s</span>}
                     <span style={{ fontSize: 11, color: '#8fa3c0' }}>{new Date(job.created_at).toLocaleDateString()}</span>
                   </div>
                   {job.youtube_url && (
                     <a href={job.youtube_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#ef4444', marginTop: 4, display: 'block' }}>
-                      ▶ YouTube →
+                      â–¶ YouTube â†’
                     </a>
                   )}
                 </div>
@@ -217,14 +217,14 @@ export default function VideoAdminPage() {
                         color: '#00ff88', borderRadius: 10, padding: '7px 16px', fontSize: 13,
                         cursor: 'pointer', fontWeight: 700, opacity: actionLoading[job.id] ? 0.6 : 1,
                       }}>
-                        {actionLoading[job.id] ? '...' : '✓ Approve'}
+                        {actionLoading[job.id] ? '...' : 'âœ“ Approve'}
                       </button>
                       <button aria-label="Interactive Button" disabled={actionLoading[job.id]} onClick={() => reject(job)} style={{
                         background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
                         color: '#ef4444', borderRadius: 10, padding: '7px 14px', fontSize: 13,
                         cursor: 'pointer', opacity: actionLoading[job.id] ? 0.6 : 1,
                       }}>
-                        ✗ Reject
+                        âœ— Reject
                       </button>
                     </>
                   )}
@@ -250,10 +250,10 @@ export default function VideoAdminPage() {
               <div>
                 <div style={{ fontWeight: 700, fontSize: 16 }}>{previewJob.blog_post?.title || previewJob.topic_slug}</div>
                 <div style={{ fontSize: 12, color: '#8fa3c0', marginTop: 4 }}>
-                  {LANG_FLAGS[previewJob.language]} {previewJob.language.toUpperCase()} · {previewJob.duration_secs ? `${Math.round(previewJob.duration_secs / 60)}m` : '?'}
+                  {LANG_FLAGS[previewJob.language]} {previewJob.language.toUpperCase()} Â· {previewJob.duration_secs ? `${Math.round(previewJob.duration_secs / 60)}m` : '?'}
                 </div>
               </div>
-              <button aria-label="Interactive Button" onClick={() => setPreviewJob(null)} style={{ background: 'none', border: 'none', color: '#8fa3c0', fontSize: 20, cursor: 'pointer' }}>✕</button>
+              <button aria-label="Interactive Button" onClick={() => setPreviewJob(null)} style={{ background: 'none', border: 'none', color: '#8fa3c0', fontSize: 20, cursor: 'pointer' }}>âœ•</button>
             </div>
 
             {previewJob.video_url && (
@@ -267,12 +267,12 @@ export default function VideoAdminPage() {
                 <button aria-label="Interactive Button" onClick={() => reject(previewJob)} style={{
                   background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
                   color: '#ef4444', borderRadius: 10, padding: '10px 20px', fontSize: 14, cursor: 'pointer',
-                }}>✗ Reject</button>
+                }}>âœ— Reject</button>
                 <button aria-label="Interactive Button" onClick={() => approve(previewJob)} style={{
                   background: 'linear-gradient(90deg, #00cc66, #00ff88)',
                   color: '#07090f', border: 'none', borderRadius: 10,
                   padding: '10px 24px', fontSize: 14, fontWeight: 800, cursor: 'pointer',
-                }}>✓ Approve → Publish to YouTube</button>
+                }}>âœ“ Approve â†’ Publish to YouTube</button>
               </div>
             )}
           </div>

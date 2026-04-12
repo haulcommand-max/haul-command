@@ -9,10 +9,10 @@ import {
 
 const SLOTS = [
     { id: "operator_profile_sidebar", label: "Operator Profile Sidebar", minBid: 200 },
-    { id: "corridor_top_slot", label: "Corridor Page — Top", minBid: 500 },
-    { id: "surface_directory_top", label: "Directory — Top", minBid: 300 },
-    { id: "glossary_term_sidebar", label: "Glossary — Sidebar", minBid: 100 },
-    { id: "homepage_mid", label: "Homepage — Mid Feed", minBid: 800 },
+    { id: "corridor_top_slot", label: "Corridor Page â€” Top", minBid: 500 },
+    { id: "surface_directory_top", label: "Directory â€” Top", minBid: 300 },
+    { id: "glossary_term_sidebar", label: "Glossary â€” Sidebar", minBid: 100 },
+    { id: "homepage_mid", label: "Homepage â€” Mid Feed", minBid: 800 },
     { id: "booking_confirmation", label: "Booking Confirmation", minBid: 400 },
 ];
 
@@ -53,7 +53,7 @@ export default function NewCampaignPage() {
     };
 
     return (
-        <div className="min-h-screen bg-hc-bg text-white">
+        <div className=" bg-hc-bg text-white">
             <div className="max-w-xl mx-auto px-4 py-16">
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C6923A]/10 border border-[#C6923A]/20 mb-4">
@@ -166,7 +166,7 @@ export default function NewCampaignPage() {
                         <div className="p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
                             <div className="text-[10px] text-white/30 uppercase tracking-wider mb-2">Preview</div>
                             <div className="p-3 rounded-xl bg-[#C6923A]/5 border border-[#C6923A]/10">
-                                <div className="text-[10px] text-[#C6923A]/50 uppercase mb-1">Sponsored · {campaign.sponsorName || "Your Company"}</div>
+                                <div className="text-[10px] text-[#C6923A]/50 uppercase mb-1">Sponsored Â· {campaign.sponsorName || "Your Company"}</div>
                                 <div className="font-bold text-sm mb-1">{campaign.headline || "Your headline"}</div>
                                 <div className="text-xs text-white/50">{campaign.body || "Your body text"}</div>
                             </div>

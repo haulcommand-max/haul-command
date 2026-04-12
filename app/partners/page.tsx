@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Haul Command for Operations Teams — Escort Dispatch Platform | Haul Command',
+  title: 'Haul Command for Operations Teams â€” Escort Dispatch Platform | Haul Command',
   description: 'The escort dispatch platform built for AV companies, oilfield operations, wind energy projects, and large carriers. Post once, fill fast. Escrow-protected payments.',
 };
 
@@ -60,7 +60,7 @@ const USE_CASES = [
 
 export default function PartnersPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       {/* Hero */}
       <section className="py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto">

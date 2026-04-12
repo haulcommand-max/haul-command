@@ -7,7 +7,7 @@ export default function BillingPage() {
     const supabase = createClient();
     const [sponsors, setSponsors] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({ revenue: '—', leads: '—', active: '—' });
+    const [stats, setStats] = useState({ revenue: 'â€”', leads: 'â€”', active: 'â€”' });
 
     useEffect(() => {
         async function fetchSponsors() {
@@ -22,11 +22,11 @@ export default function BillingPage() {
                         id: s.id, sponsor: s.sponsor_company || 'Unknown',
                         mode: s.territory_type === 'country' ? 'Premium' : 'Performance',
                         budget: `$${s.plan_price_monthly || 0}/mo`,
-                        spent: '—', leads: '—',
+                        spent: 'â€”', leads: 'â€”',
                         status: s.status === 'active' ? 'Active' : s.status,
                     })));
                     const activeCount = data.filter((s: any) => s.status === 'active').length;
-                    setStats({ revenue: `$${data.reduce((sum: number, s: any) => sum + (s.plan_price_monthly || 0), 0)}/mo`, leads: '—', active: String(activeCount) });
+                    setStats({ revenue: `$${data.reduce((sum: number, s: any) => sum + (s.plan_price_monthly || 0), 0)}/mo`, leads: 'â€”', active: String(activeCount) });
                 }
             } catch { /* graceful */ }
             setLoading(false);
@@ -47,9 +47,9 @@ export default function BillingPage() {
 
             <div className="p-8 space-y-8 flex-1 overflow-y-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Total Revenue (30d)" value={stats.revenue} color={stats.revenue !== '—' ? 'text-[#22c55e]' : 'text-[#444]'} />
+                    <StatCard label="Total Revenue (30d)" value={stats.revenue} color={stats.revenue !== 'â€”' ? 'text-[#22c55e]' : 'text-[#444]'} />
                     <StatCard label="Billable Leads" value={stats.leads} color="text-[#444]" />
-                    <StatCard label="Active Sponsors" value={stats.active} color={stats.active !== '—' ? 'text-[#ffb400]' : 'text-[#444]'} />
+                    <StatCard label="Active Sponsors" value={stats.active} color={stats.active !== 'â€”' ? 'text-[#ffb400]' : 'text-[#444]'} />
                 </div>
 
                 <div className="bg-[#0c0c0c] border border-[#1a1a1a] rounded-lg overflow-hidden">
@@ -69,7 +69,7 @@ export default function BillingPage() {
                             {loading ? (
                                 <tr><td colSpan={7} className="px-6 py-12 text-center text-[#444]">Loading sponsors...</td></tr>
                             ) : sponsors.length === 0 ? (
-                                <tr><td colSpan={7} className="px-6 py-12 text-center"><div className="text-2xl mb-2">📍</div><span className="text-[#444]">No active sponsors yet. Territories are available at <a href="/sponsor" className="text-[#ffb400] hover:underline">/sponsor</a></span></td></tr>
+                                <tr><td colSpan={7} className="px-6 py-12 text-center"><div className="text-2xl mb-2">ðŸ“</div><span className="text-[#444]">No active sponsors yet. Territories are available at <a href="/sponsor" className="text-[#ffb400] hover:underline">/sponsor</a></span></td></tr>
                             ) : sponsors.map((b) => (
                                 <tr key={b.id} className="hover:bg-[#111] transition-colors">
                                     <td className="px-6 py-4 font-black uppercase text-[11px] tracking-tight">{b.sponsor}</td>

@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { Share2, FileWarning, ShieldAlert, BadgeCheck, Globe, Truck, Map, Calculator, ArrowRight, Zap, Download } from 'lucide-react';
 
-/* ═══════════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CROSS-BORDER COMMAND CENTER & PERMIT WIZARD
    High-fidelity interactive tool for calculating cross-jurisdictional
    compliance requirements (US-Canada, State-to-State).
-   ═══════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 export default function CrossBorderCommandCenter() {
   const [origin, setOrigin] = useState('TX');
@@ -36,7 +36,7 @@ export default function CrossBorderCommandCenter() {
   ];
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
+    <div className=" bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
       {/* Header */}
       <div className="border-b border-hc-border bg-hc-surface/50 backdrop-blur-xl sticky top-[80px] z-30">
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -285,7 +285,7 @@ export default function CrossBorderCommandCenter() {
                     Alberta does not formally accept US Pilot Car certifications. You must hire a Canadian-based pilot car or ensure your US operator has specific temporary clearances and high-load training.
                   </p>
                   <button className="mt-4 px-4 py-2 bg-hc-surface border border-hc-gold-500 text-white text-xs font-bold uppercase rounded hover:bg-hc-bg transition-colors">
-                    Find Alberta Escorts →
+                    Find Alberta Escorts â†’
                   </button>
                 </div>
               </div>

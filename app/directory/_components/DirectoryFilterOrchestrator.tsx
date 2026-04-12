@@ -31,12 +31,12 @@ export function DirectoryFilterOrchestrator() {
 
   return (
     <>
-      {/* Hard Filters — Certification / Equipment / Availability */}
+      {/* Hard Filters â€” Certification / Equipment / Availability */}
       <div className="max-w-4xl mx-auto mb-6">
         <DirectoryHardFilter onFilterChange={handleFilterChange} />
       </div>
 
-      {/* Search — receives live filter state */}
+      {/* Search â€” receives live filter state */}
       <div className="max-w-4xl mx-auto mb-16 text-left">
         <DirectorySearchList filters={filters} />
       </div>

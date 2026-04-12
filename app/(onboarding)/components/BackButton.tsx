@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 /**
- * BackButton — Smart escape with fallback.
+ * BackButton â€” Smart escape with fallback.
  * Uses router.back() if history exists, otherwise shows explicit escape links
  * so direct-landing users (e.g. /claim via SMS link) never get stranded.
  */

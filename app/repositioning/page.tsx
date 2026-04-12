@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { MapPin, Clock, Zap, ArrowRight, Truck, Radio } from 'lucide-react'
 
 /**
- * /repositioning — Operator backhaul / reposition broadcast page
+ * /repositioning â€” Operator backhaul / reposition broadcast page
  *
  * Competitive kill surface vs. Facebook groups / WhatsApp chains.
  * Operators returning empty can broadcast their position and get matched.
@@ -37,11 +37,11 @@ function timeAgo(iso: string) {
 }
 
 const SERVICE_LABEL: Record<string, string> = {
-  pilot_car: '🚕 Pilot Car',
-  escort_truck: '🚚 Escort Truck',
-  height_pole: '⚠️ Height Pole',
-  wide_load: '↔️ Wide Load',
-  oversize: '📏 Oversize',
+  pilot_car: 'ðŸš• Pilot Car',
+  escort_truck: 'ðŸšš Escort Truck',
+  height_pole: 'âš ï¸ Height Pole',
+  wide_load: 'â†”ï¸ Wide Load',
+  oversize: 'ðŸ“ Oversize',
 }
 
 export default function RepositioningPage() {
@@ -148,7 +148,7 @@ export default function RepositioningPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className=" bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
 
       {/* Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -191,7 +191,7 @@ export default function RepositioningPage() {
               </button>
             )}
             <Link href="/available-now" className="px-4 py-2.5 rounded-xl border border-[#1e3048] text-[#8a9ab0] text-sm font-semibold hover:text-white transition-colors">
-              Full Available Feed →
+              Full Available Feed â†’
             </Link>
           </div>
         </div>
@@ -294,7 +294,7 @@ export default function RepositioningPage() {
           <input
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Filter by location, service, operator…"
+            placeholder="Filter by location, service, operatorâ€¦"
             className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-2.5 text-sm focus:border-amber-500/50 focus:outline-none"
           />
           <div className="text-xs text-[#566880] shrink-0">{filtered.length} broadcasting</div>
@@ -308,9 +308,9 @@ export default function RepositioningPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 rounded-2xl border border-[#1e3048] bg-[#0f1a24]">
-            <div className="text-4xl mb-3">📡</div>
+            <div className="text-4xl mb-3">ðŸ“¡</div>
             <p className="font-bold text-white mb-1">No repositioning broadcasts right now</p>
-            <p className="text-sm text-[#566880] mb-4">Be the first — broadcast your position and get found by brokers looking for capacity.</p>
+            <p className="text-sm text-[#566880] mb-4">Be the first â€” broadcast your position and get found by brokers looking for capacity.</p>
             <button
               onClick={() => setShowForm(true)}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/15 text-amber-400 text-sm font-bold border border-amber-500/25 hover:bg-amber-500/25 transition-colors"
@@ -358,7 +358,7 @@ export default function RepositioningPage() {
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {timeAgo(op.updated_at)}
-                        {op.available_until && ` · avail until ${new Date(op.available_until).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                        {op.available_until && ` Â· avail until ${new Date(op.available_until).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                       </span>
                     </div>
                   </div>
@@ -380,11 +380,11 @@ export default function RepositioningPage() {
           <p className="text-xs text-[#3a5068] mb-3">Related resources</p>
           <div className="flex flex-wrap gap-2">
             {[
-              { href: '/available-now', label: '🟢 Available Now' },
-              { href: '/load-board', label: '📋 Load Board' },
-              { href: '/directory', label: '🔍 Operator Directory' },
-              { href: '/tools/route-planner', label: '🗺️ Route Planner' },
-              { href: '/corridors', label: '🛣️ Corridor Intelligence' },
+              { href: '/available-now', label: 'ðŸŸ¢ Available Now' },
+              { href: '/load-board', label: 'ðŸ“‹ Load Board' },
+              { href: '/directory', label: 'ðŸ” Operator Directory' },
+              { href: '/tools/route-planner', label: 'ðŸ—ºï¸ Route Planner' },
+              { href: '/corridors', label: 'ðŸ›£ï¸ Corridor Intelligence' },
             ].map(l => (
               <Link key={l.href} href={l.href} className="text-xs px-3 py-1.5 rounded-lg border border-[#1e3048] text-[#566880] hover:text-amber-400 hover:border-amber-500/25 transition-all">
                 {l.label}

@@ -6,7 +6,7 @@ import { PaywallGateBanner } from '@/components/monetization/PaywallBanner';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Live Dispatch Control — Haul Command',
+  title: 'Live Dispatch Control â€” Haul Command',
   description:
     'Real-time dispatch control center. Match available operators to active loads with intelligent geo-filtering, trust scoring, and capability matching.',
   robots: { index: false, follow: false },

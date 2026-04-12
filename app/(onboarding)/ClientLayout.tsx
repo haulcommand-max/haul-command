@@ -23,7 +23,7 @@ export default function ClientLayout({
     const currentStep = steps[pathname] || 1;
 
     return (
-        <div className="min-h-screen bg-brand-dark text-brand-text flex flex-col relative overflow-hidden">
+        <div className=" bg-brand-dark text-brand-text flex flex-col relative overflow-hidden">
             {/* Background Gradients */}
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand-gold/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-brand-bronze/5 blur-[100px] rounded-full pointer-events-none" />
@@ -47,7 +47,7 @@ export default function ClientLayout({
 
             {/* Content */}
             <main className="flex-1 flex flex-col px-6 pb-12 max-w-md mx-auto w-full z-10">
-                <Suspense fallback={<div className="min-h-screen bg-brand-dark flex items-center justify-center p-8">Loading setup...</div>}>
+                <Suspense fallback={<div className=" bg-brand-dark flex items-center justify-center p-8">Loading setup...</div>}>
                     {children}
                 </Suspense>
             </main>

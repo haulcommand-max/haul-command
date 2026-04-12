@@ -20,7 +20,7 @@ export default async function BillingDashboardPage() {
   const currentTier = profile?.subscription_tier || "free";
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-8 border-b border-white/5 pb-6">

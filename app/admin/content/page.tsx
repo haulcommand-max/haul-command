@@ -92,7 +92,7 @@ export default function AdminContentPage() {
   const youtubeItems = items.filter(i => i.content_type === 'youtube_script' && i.status === 'script_ready');
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold">Content Command Center</h1>

@@ -3,18 +3,18 @@
 import { MapMobileGate } from '@/components/mobile/gates/MapMobileGate';
 
 /**
- * /map — Command Center Map Page
+ * /map â€” Command Center Map Page
  *
  * Layout guarantees for MapLibre:
- *  - Root is `position:fixed; inset:0` → full viewport
- *  - ActivityTicker is position:relative (in-flow) — h-9 = 36px when visible
- *  - View toggle is `position:absolute` overlay — doesn't affect layout
+ *  - Root is `position:fixed; inset:0` â†’ full viewport
+ *  - ActivityTicker is position:relative (in-flow) â€” h-9 = 36px when visible
+ *  - View toggle is `position:absolute` overlay â€” doesn't affect layout
  *  - Map container uses explicit style={{ height: "..." }} so MapLibre always
  *    has a concrete pixel height regardless of flex/ticker state
  *
  *  FEATURES (JBH-inspired):
  *  - Small States Sidebar: vertical rail for dense NE states (avoids pin overlap)
- *  - Grid View: sortable, filterable table/card load view (hybrid map↔grid)
+ *  - Grid View: sortable, filterable table/card load view (hybrid mapâ†”grid)
  *  - Live count badge + freshness timestamp
  */
 
@@ -32,39 +32,39 @@ import { SmallStatesSidebar } from "@/components/map/SmallStatesSidebar";
 import { useMapAnalytics } from "@/hooks/useMapAnalytics";
 import { WorldMapView } from "@/components/map/WorldMapView";
 
-// ── Dynamic imports (browser-only) ────────────────────────────────────────────
+// â”€â”€ Dynamic imports (browser-only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const CommandMap = dynamic(
     () => import("@/components/map/CommandMap").then((m) => m.CommandMap),
     { ssr: false, loading: () => <MapSkeleton /> }
 );
 
-// NorthAmericaMap — clickable SVG map (US states + CA provinces → router.push)
+// NorthAmericaMap â€” clickable SVG map (US states + CA provinces â†’ router.push)
 const NorthAmericaMap = dynamic(
     () => import("@/components/maps/NorthAmericaMap").then((m) => m.NorthAmericaMap),
     { ssr: false, loading: () => <MapSkeleton /> }
 );
 
-// LoadGridView — sortable/filterable table (JBH grid navigation equivalent)
+// LoadGridView â€” sortable/filterable table (JBH grid navigation equivalent)
 const LoadGridView = dynamic(
     () => import("@/components/map/LoadGridView").then((m) => m.LoadGridView),
     { ssr: false, loading: () => <MapSkeleton /> }
 );
 
-// ── Skeleton ─────────────────────────────────────────────────────────────────
+// â”€â”€ Skeleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function MapSkeleton() {
     return (
         <div className="w-full h-full flex items-center justify-center bg-gray-950">
             <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 rounded-full border-2 border-orange-500/60 border-t-transparent animate-spin" />
-                <p className="text-gray-600 text-sm font-medium tracking-wide">Initialising map…</p>
+                <p className="text-gray-600 text-sm font-medium tracking-wide">Initialising mapâ€¦</p>
             </div>
         </div>
     );
 }
 
-// ── Legend (operations view) ──────────────────────────────────────────────────
+// â”€â”€ Legend (operations view) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function MapLegend() {
     return (
@@ -102,11 +102,11 @@ function MapLegend() {
     );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type MapView = "operations" | "jurisdictions" | "corridors" | "grid" | "global";
 
-// ── Country counts hook (global 52-country rail) ────────────────────────────
+// â”€â”€ Country counts hook (global 52-country rail) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function useCountryCounts(): Record<string, number> {
     const [counts, setCounts] = useState<Record<string, number>>({});
 
@@ -118,7 +118,7 @@ function useCountryCounts(): Record<string, number> {
                 const fc = await res.json();
                 const features = fc.features ?? [];
 
-                // Aggregate by country — currently loads are US-dominant;
+                // Aggregate by country â€” currently loads are US-dominant;
                 // once loads table has country_code column, use that directly.
                 const result: Record<string, number> = {};
                 for (const f of features) {
@@ -140,7 +140,7 @@ function useCountryCounts(): Record<string, number> {
     return counts;
 }
 
-// ── Grid view data hook ─────────────────────────────────────────────────────
+// â”€â”€ Grid view data hook â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function useGridLoads() {
     const [loads, setLoads] = useState<any[]>([]);
 
@@ -214,12 +214,12 @@ export default function MapPage() {
         <MapMobileGate>
         <div className="bg-gray-950 flex flex-col overflow-hidden" style={{ height: "calc(100dvh - 56px)" }}>
 
-            {/* ── In-flow ticker — measured by ResizeObserver ─────────────── */}
+            {/* â”€â”€ In-flow ticker â€” measured by ResizeObserver â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <div ref={tickerRef}>
                 <ActivityTicker />
             </div>
 
-            {/* ── View toggle — absolute, doesn't affect layout ────────────── */}
+            {/* â”€â”€ View toggle â€” absolute, doesn't affect layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <div
                 data-testid="map-view-toggle"
                 className="absolute left-1/2 -translate-x-1/2 z-30 flex bg-gray-900/90 backdrop-blur-sm border border-gray-700/60 rounded-full p-0.5 shadow-2xl"
@@ -243,15 +243,15 @@ export default function MapPage() {
                             : "text-gray-400 hover:text-white"
                             }`}
                     >
-                        {v === "grid" ? "Grid" : v === "global" ? "🌍 Global" : v}
+                        {v === "grid" ? "Grid" : v === "global" ? "ðŸŒ Global" : v}
                     </button>
                 ))}
             </div>
 
-            {/* ── Main content — explicit pixel height ─────────────────────── */}
+            {/* â”€â”€ Main content â€” explicit pixel height â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <div className="flex" style={{ height: mapAreaHeight }}>
 
-                {/* Left Intel Rail — Operations view only, desktop only */}
+                {/* Left Intel Rail â€” Operations view only, desktop only */}
                 {view === "operations" && (
                     <div className="hidden md:flex h-full" style={{ zIndex: 10 }}>
                         <MapIntelRail className="h-full" />
@@ -261,13 +261,13 @@ export default function MapPage() {
                 {/* Map / content region */}
                 <div className="relative flex-1 overflow-hidden">
 
-                    {/* ── Operations: live MapLibre map ───────────────────── */}
+                    {/* â”€â”€ Operations: live MapLibre map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {view === "operations" && (
                         <>
                             {/* CommandMap fills container absolutely */}
                             <CommandMap className="absolute inset-0" />
 
-                            {/* Global Country Rail — 52-country sidebar */}
+                            {/* Global Country Rail â€” 52-country sidebar */}
                             <SmallStatesSidebar
                                 countryCounts={countryCounts}
                                 onCountrySelect={(iso2) => {
@@ -279,7 +279,7 @@ export default function MapPage() {
 
                             <MapLegend />
 
-                            {/* "Go to Grid" link — JBH-style */}
+                            {/* "Go to Grid" link â€” JBH-style */}
                             <button aria-label="Interactive Button"
                                 onClick={() => { setGridStateFilter(null); setView("grid"); }}
                                 className="absolute top-3 right-[88px] z-20 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all hover:-translate-y-0.5"
@@ -290,34 +290,34 @@ export default function MapPage() {
                                     backdropFilter: "blur(12px)",
                                 }}
                             >
-                                Go to Grid Navigation →
+                                Go to Grid Navigation â†’
                             </button>
 
-                            {/* Mobile liquidity prompt — bottom of screen */}
+                            {/* Mobile liquidity prompt â€” bottom of screen */}
                             <div className="absolute bottom-6 left-4 right-4 md:hidden z-10 pointer-events-none">
                                 <LiquidityPromptCard className="pointer-events-auto" />
                             </div>
                         </>
                     )}
 
-                    {/* ── Corridors: Intelligence Heatmap panel ───────────── */}
+                    {/* â”€â”€ Corridors: Intelligence Heatmap panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {view === "corridors" && (
                         <div className="absolute inset-0 overflow-auto bg-gray-950">
                             <CorridorLiquidityHeatmap className="h-full min-h-full" />
                         </div>
                     )}
 
-                    {/* ── Jurisdictions: interactive SVG shape-map ──────────── */}
+                    {/* â”€â”€ Jurisdictions: interactive SVG shape-map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {view === "jurisdictions" && (
                         <div className="flex-1 overflow-y-auto bg-gray-950">
                             <div className="max-w-5xl mx-auto px-6 py-6">
-                                {/* Clickable SVG map — each state/province routes to /directory/{country}/{code} */}
+                                {/* Clickable SVG map â€” each state/province routes to /directory/{country}/{code} */}
                                 <NorthAmericaMap />
                             </div>
                         </div>
                     )}
 
-                    {/* ── Grid: sortable/filterable load table (JBH-inspired) ─ */}
+                    {/* â”€â”€ Grid: sortable/filterable load table (JBH-inspired) â”€ */}
                     {view === "grid" && (
                         <div className="absolute inset-0 overflow-hidden">
                             <LoadGridView
@@ -331,7 +331,7 @@ export default function MapPage() {
                         </div>
                     )}
 
-                    {/* ── Global: 57-country world map ──────────────── */}
+                    {/* â”€â”€ Global: 57-country world map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {view === "global" && (
                         <div className="absolute inset-0 overflow-hidden">
                             <WorldMapView />
@@ -340,7 +340,7 @@ export default function MapPage() {
                 </div>
             </div>
 
-            {/* ── Jurisdiction Drawer ───────────────────────────────────── */}
+            {/* â”€â”€ Jurisdiction Drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             {selectedCode && (
                 <JurisdictionDrawer
                     jurisdictionCode={selectedCode}

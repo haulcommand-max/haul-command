@@ -9,7 +9,7 @@ import { Suspense } from "react";
 
 export default function ConnectStripePage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-hc-bg text-white flex items-center justify-center p-8">Loading verification...</div>}>
+        <Suspense fallback={<div className=" bg-hc-bg text-white flex items-center justify-center p-8">Loading verification...</div>}>
             <ConnectStripeContent />
         </Suspense>
     );
@@ -75,7 +75,7 @@ function ConnectStripeContent() {
     const isComplete = account?.charges_enabled && account?.payouts_enabled;
 
     return (
-        <div className="min-h-screen bg-hc-bg text-white">
+        <div className=" bg-hc-bg text-white">
             <div className="max-w-lg mx-auto px-4 py-16">
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-4"

@@ -39,7 +39,7 @@ export default function CreateLoadPage() {
 
     async function computeMilesServerSide(): Promise<number | null> {
         // Best practice: RPC that computes miles once and caches it.
-        // You’ll implement compute_miles_and_cache() in backend later (HERE/Google optional).
+        // Youâ€™ll implement compute_miles_and_cache() in backend later (HERE/Google optional).
         // For now, return what broker typed or null.
         return miles;
     }
@@ -96,7 +96,7 @@ export default function CreateLoadPage() {
 
                 if (preauthErr || preauthData?.status === "failed") {
                     // Hard UI Block
-                    setMsg("⚠️ Pre-authorization failed. Please update your payment method in billing settings. Load saved as draft.");
+                    setMsg("âš ï¸ Pre-authorization failed. Please update your payment method in billing settings. Load saved as draft.");
                     setSubmitting(false);
                     return;
                 }
@@ -136,7 +136,7 @@ export default function CreateLoadPage() {
                     color: "#f59e0b",
                     fontWeight: "bold"
                 }}>
-                    ⚠️ Miles required to publish. Loads with full route data fill significantly faster.
+                    âš ï¸ Miles required to publish. Loads with full route data fill significantly faster.
                 </div>
             )}
 
@@ -241,7 +241,7 @@ export default function CreateLoadPage() {
             }}>
                 <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 13, fontWeight: 900, textTransform: "uppercase", display: "flex", alignItems: "center", gap: 6 }}>
-                        ⚡ Instant Match & One-Tap Dispatch
+                        âš¡ Instant Match & One-Tap Dispatch
                         {isCompetitive && <span style={{ fontSize: 10, background: "var(--hc-gold-600)", color: "#000", padding: "2px 6px", borderRadius: 4 }}>RECOMMENDED</span>}
                     </div>
                     <p style={{ fontSize: 11, color: "var(--hc-muted)", margin: "4px 0 0 0" }}>

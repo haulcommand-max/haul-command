@@ -12,7 +12,7 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
   const { slug } = searchParams;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-4">
+    <div className=" bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-4">
       <div className="max-w-xl w-full bg-white/5 border border-white/10 rounded-2xl p-8">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center">
@@ -36,7 +36,7 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
         <div className="mt-8 pt-6 border-t border-white/10 text-center flex flex-col items-center gap-2">
            <h3 className="font-bold text-sm text-white">Is this your business?</h3>
            <p className="text-xs text-gray-500 px-4">Instead of reporting, you can claim this profile to correct the data instantly and take control.</p>
-           <Link href={`/claim${slug ? `?claim_id=${slug}` : ''}`} className="text-amber-500 hover:text-amber-400 text-sm font-bold mt-1">Claim Profile Now →</Link>
+           <Link href={`/claim${slug ? `?claim_id=${slug}` : ''}`} className="text-amber-500 hover:text-amber-400 text-sm font-bold mt-1">Claim Profile Now â†’</Link>
         </div>
       </div>
     </div>

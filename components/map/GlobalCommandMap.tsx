@@ -221,7 +221,11 @@ export function GlobalCommandMap() {
           <h2 className="text-[#C6923A] font-bold text-xs uppercase tracking-widest mb-1 flex items-center gap-2">
             <Shield className="w-4 h-4" /> Global Command Map
           </h2>
-          <p className="text-xs text-neutral-400 mb-4">
+          <p className="text-[10px] text-neutral-400 mb-1 border-b border-white/5 pb-2">
+            <span className="text-[#22c55e]">Traccar </span> Telemetry Sink 📡<br/>
+            <span className="text-[#3ba4ff]">OS GPS Engine</span> Active ⚡
+          </p>
+          <p className="text-xs text-neutral-400 mt-2 mb-4">
             Live liquidity radar. Click pulsing green dots for available operators.
           </p>
           

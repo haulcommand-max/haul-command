@@ -13,7 +13,7 @@ export default async function PermitAgentDashboardPage() {
   if (!user) redirect("/login?next=/dashboard/permit-agent");
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-8 border-b border-white/5 pb-6">
@@ -38,7 +38,7 @@ export default async function PermitAgentDashboardPage() {
         </div>
 
         <div className="bg-hc-surface border border-white/5 rounded-xl p-6 text-center py-16">
-          <div className="text-3xl mb-4 opacity-20">📜</div>
+          <div className="text-3xl mb-4 opacity-20">ðŸ“œ</div>
           <h3 className="text-lg text-white font-medium mb-2">No Active Permit Requests</h3>
           <p className="text-slate-400 text-sm max-w-md mx-auto mb-6">Carriers will request document filing here based on the states/corridors you service.</p>
           <a href="/dashboard/advertiser" className="inline-block bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-md font-medium text-sm transition">

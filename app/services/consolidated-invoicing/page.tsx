@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Consolidated Invoicing for Heavy Haul & Oversize Loads | Haul Command',
-  description: 'One invoice per project. Multi-escort, multi-state, multi-day heavy haul moves — all consolidated into a single billing document. Streamline your escort billing with Haul Command.',
+  description: 'One invoice per project. Multi-escort, multi-state, multi-day heavy haul moves â€” all consolidated into a single billing document. Streamline your escort billing with Haul Command.',
   keywords: ['consolidated invoicing', 'heavy haul billing', 'escort invoicing', 'pilot car billing', 'oversize load billing', 'multi-escort invoice'],
   openGraph: {
     title: 'Consolidated Invoicing for Heavy Haul & Oversize Loads | Haul Command',
@@ -52,7 +52,7 @@ const BENEFITS = [
 
 export default function ConsolidatedInvoicingPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       {/* Hero */}
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(168,85,247,0.08),transparent)] pointer-events-none" />
@@ -70,7 +70,7 @@ export default function ConsolidatedInvoicingPage() {
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-            One project. One invoice. Multi-escort, multi-state, multi-day — all consolidated. 
+            One project. One invoice. Multi-escort, multi-state, multi-day â€” all consolidated. 
             Stop managing 15 different escort invoices for a single load.
           </p>
           <div className="flex flex-wrap justify-center gap-3">

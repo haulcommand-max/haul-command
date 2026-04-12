@@ -15,7 +15,7 @@ export default function HeavyHaulFuelPartnerPage() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="  text-slate-50">
       {/* Hero */}
       <div className="relative border-b border-blue-900/50 bg-gradient-to-b from-blue-950/30 to-slate-950 pt-24 pb-20">
         <div className="container max-w-5xl mx-auto px-4 relative z-10 text-center">
@@ -54,7 +54,7 @@ export default function HeavyHaulFuelPartnerPage() {
               <ul className="space-y-4">
                  <li className="flex items-start gap-3">
                    <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
-                   <span className="text-slate-300">Save an average of <strong className="text-white">40¢ per gallon on diesel</strong> across 14,000 national stops.</span>
+                   <span className="text-slate-300">Save an average of <strong className="text-white">40Â¢ per gallon on diesel</strong> across 14,000 national stops.</span>
                  </li>
                  <li className="flex items-start gap-3">
                    <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
@@ -67,7 +67,7 @@ export default function HeavyHaulFuelPartnerPage() {
               </ul>
            </div>
            
-           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative">
+           <div className=" border border-slate-800 rounded-3xl p-8 shadow-2xl relative">
               <div className="absolute top-4 right-4 bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-500/30">
                  Active Approvals
               </div>
@@ -89,9 +89,9 @@ export default function HeavyHaulFuelPartnerPage() {
               }} className="space-y-4">
                  {submitted ? <div className="text-emerald-400 font-bold bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 text-center mb-6">Qualification request received. We will be in touch!</div> : (
                    <>
-                     <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className="bg-slate-950 border-slate-700 h-14" placeholder="USDOT Number" />
-                     <Input value={email} onChange={(e: any) => setEmail(e.target.value)} required type="email" className="bg-slate-950 border-slate-700 h-14" placeholder="Email Address" />
-                     <Input value={gallons} onChange={(e: any) => setGallons(e.target.value)} required className="bg-slate-950 border-slate-700 h-14" placeholder="Estimated Gallons / Month" type="number" />
+                     <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className=" border-slate-700 h-14" placeholder="USDOT Number" />
+                     <Input value={email} onChange={(e: any) => setEmail(e.target.value)} required type="email" className=" border-slate-700 h-14" placeholder="Email Address" />
+                     <Input value={gallons} onChange={(e: any) => setGallons(e.target.value)} required className=" border-slate-700 h-14" placeholder="Estimated Gallons / Month" type="number" />
                      <Button disabled={loading} type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-14 text-lg mt-2">
                         {loading ? 'Processing...' : <>Check Qualification <ChevronRight className="h-5 w-5 ml-2" /></>}
                      </Button>

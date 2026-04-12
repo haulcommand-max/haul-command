@@ -48,9 +48,9 @@ serve(async (req: Request) => {
   const rejected: Array<{ job_id: string; reason: string }> = [];
 
   for (const b of breads) {
-    // OPUS-02: Accuracy hard-stop
-    if (!b.accuracy_m || b.accuracy_m > 50) {
-      rejected.push({ job_id: b.job_id, reason: `accuracy_m=${b.accuracy_m} exceeds 50m` });
+    // OPUS-02: Accuracy hard-stop (Widened for legacy device jitter)
+    if (!b.accuracy_m || b.accuracy_m > 350) {
+      rejected.push({ job_id: b.job_id, reason: `accuracy_m=${b.accuracy_m} exceeds 350m` });
       // Log to fraud_events silently
       await supabase.from("fraud_events").insert({
         entity_id: b.driver_id,

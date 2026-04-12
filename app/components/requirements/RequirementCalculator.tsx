@@ -34,7 +34,7 @@ export default function RequirementCalculator({ jurisdictionCode }: { jurisdicti
     if (jurisdictionCode.toUpperCase() === 'BW') {
       if (widthMeters >= 3.00) rules.push('BF3 Begleitfahrzeug Required');
       if (widthMeters >= 4.00) rules.push('BF4 (Polizeiersatz) Required');
-      if (heightMeters >= 4.00) warnings.push('Streckenprüfung (Route Survey) Recommended');
+      if (heightMeters >= 4.00) warnings.push('StreckenprÃ¼fung (Route Survey) Recommended');
     }
 
     setResults({ required: rules.length ? rules : ['No Escort Required'], warnings });
@@ -44,7 +44,7 @@ export default function RequirementCalculator({ jurisdictionCode }: { jurisdicti
     <div className="bg-hc-gray-900 border border-hc-gray-700 rounded-lg p-6 font-sans text-hc-gray-100 shadow-xl">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-bold flex items-center gap-2">
-          <span className="text-hc-yellow-400">⚡</span> Live Escort Calculator ({jurisdictionCode.toUpperCase()})
+          <span className="text-hc-yellow-400">âš¡</span> Live Escort Calculator ({jurisdictionCode.toUpperCase()})
         </h3>
         <div className="flex bg-hc-gray-800 rounded-md p-1 border border-hc-gray-700 text-xs font-semibold">
           <button 
@@ -102,12 +102,12 @@ export default function RequirementCalculator({ jurisdictionCode }: { jurisdicti
           <ul className="space-y-2">
             {results.required.map((req, i) => (
               <li key={i} className="flex items-center gap-2 font-medium">
-                <span className="text-red-500">⚠</span> {req}
+                <span className="text-red-500">âš </span> {req}
               </li>
             ))}
             {results.warnings.map((warn, i) => (
               <li key={`w-${i}`} className="flex items-start gap-2 text-sm text-hc-gray-300 mt-2">
-                <span className="text-blue-400">ℹ</span> {warn}
+                <span className="text-blue-400">â„¹</span> {warn}
               </li>
             ))}
           </ul>

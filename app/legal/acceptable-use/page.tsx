@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Acceptable Use Policy | HAUL COMMAND',
-    description: 'HAUL COMMAND Acceptable Use Policy — prohibited activities, enforcement actions, and platform integrity standards.',
+    description: 'HAUL COMMAND Acceptable Use Policy â€” prohibited activities, enforcement actions, and platform integrity standards.',
 };
 
 export default function AcceptableUsePage() {
@@ -15,7 +15,7 @@ export default function AcceptableUsePage() {
 
                 <div style={{ lineHeight: 1.8, fontSize: 14 }}>
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>1. Purpose</h2>
-                    <p>This Acceptable Use Policy (&quot;AUP&quot;) defines the rules for using the HAUL COMMAND platform. All users — operators, brokers, carriers, shippers, and visitors — must comply with this AUP in addition to our <a href="/legal/terms" style={{ color: '#F59E0B' }}>Terms of Service</a>.</p>
+                    <p>This Acceptable Use Policy (&quot;AUP&quot;) defines the rules for using the HAUL COMMAND platform. All users â€” operators, brokers, carriers, shippers, and visitors â€” must comply with this AUP in addition to our <a href="/legal/terms" style={{ color: '#F59E0B' }}>Terms of Service</a>.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>2. Prohibited Activities</h2>
                     <p>You may NOT use the Platform to:</p>
@@ -31,7 +31,7 @@ export default function AcceptableUsePage() {
                     </ul>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>3. Trust Score Integrity</h2>
-                    <p>Manipulating Trust Scores — through fake reviews, sham transactions, or coordinated rating schemes — is strictly prohibited and will result in immediate account suspension. Trust Scores are calculated algorithmically and are not influenced by advertising spend or subscription tier.</p>
+                    <p>Manipulating Trust Scores â€” through fake reviews, sham transactions, or coordinated rating schemes â€” is strictly prohibited and will result in immediate account suspension. Trust Scores are calculated algorithmically and are not influenced by advertising spend or subscription tier.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>4. Advertising & Sponsored Content</h2>
                     <p>All paid placements (AdGrid boosts, featured listings, territory sponsorships) are clearly labeled as &quot;Ad&quot;, &quot;Featured&quot;, or &quot;Sponsored&quot; in compliance with FTC, CMA, and EU DSA requirements. Advertisers may not disguise paid placements as organic content.</p>
@@ -40,7 +40,7 @@ export default function AcceptableUsePage() {
                     <p>Purchased data products (corridor reports, market intelligence, rate benchmarks) are for the buyer&apos;s internal business use only. Reselling, redistribution, or publication of data products without written authorization is prohibited. API access is subject to rate limits and usage terms.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>6. International Compliance</h2>
-                    <p>Users operating in multiple countries must comply with the laws and regulations of each jurisdiction. HAUL COMMAND provides regulatory information for guidance only — compliance remains the user&apos;s responsibility. Operating without required local licenses, permits, or insurance is a violation of this AUP.</p>
+                    <p>Users operating in multiple countries must comply with the laws and regulations of each jurisdiction. HAUL COMMAND provides regulatory information for guidance only â€” compliance remains the user&apos;s responsibility. Operating without required local licenses, permits, or insurance is a violation of this AUP.</p>
 
                     <h2 style={{ color: '#F9FAFB', fontSize: 18, fontWeight: 700, marginTop: '2rem' }}>7. Enforcement Actions</h2>
                     <p>Violations may result in one or more of the following:</p>

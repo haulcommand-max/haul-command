@@ -60,7 +60,7 @@ const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
     both: [
         { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Need coverage", color: "#C6923A", primary: true },
         { href: "/loads", icon: Package, label: "Find Jobs", desc: "Take a load", color: "#22c55e", primary: true },
-        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker ↔ Operator", color: "#3b82f6", primary: false },
+        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker â†” Operator", color: "#3b82f6", primary: false },
         { href: "/messages", icon: MessageSquare, label: "Inbox", desc: "Messages", color: "#a855f7", primary: false },
     ],
     fleet_owner: [
@@ -164,7 +164,7 @@ export function LiveMarketHero({
 
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-5%,rgba(198,146,58,0.08),transparent_60%)]" />
-                {/* Command Center hero visual — behind metrics */}
+                {/* Command Center hero visual â€” behind metrics */}
                 <div className="absolute inset-0 overflow-hidden" style={{
                     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)',
                     WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)',
@@ -252,7 +252,7 @@ export function LiveMarketHero({
                     )}
                 </motion.div>
 
-                {/* HOTTEST CORRIDOR — hidden on mobile */}
+                {/* HOTTEST CORRIDOR â€” hidden on mobile */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -272,7 +272,7 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ROLE ROUTER — 3×2 grid on mobile, 6-col on desktop */}
+                {/* ROLE ROUTER â€” 3Ã—2 grid on mobile, 6-col on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}

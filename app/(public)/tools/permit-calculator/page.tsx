@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { estimateEscortCost } from '@/lib/data/corridors';
 
-// ── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface LoadDimensions {
     widthFt: number;
@@ -26,7 +26,7 @@ interface StateResult {
     escortCostEstimate: { low: number; high: number };
 }
 
-// ── Per-state rules (simplified — shows the logic model) ─────────────────────
+// â”€â”€ Per-state rules (simplified â€” shows the logic model) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const STATE_RULES: Record<string, {
     name: string;
@@ -42,13 +42,13 @@ const STATE_RULES: Record<string, {
     GA: { name: "Georgia", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (d) => d.widthFt >= 16 ? "Pre-move route notification required for loads >16ft wide." : "GDOT ePPermitting." },
     OH: { name: "Ohio", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (d) => d.widthFt >= 18 ? "State police escort required. Schedule with local district." : "ODOT permit required." },
     MS: { name: "Mississippi", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Weekend restrictions on Pearl River bridges." },
-    AL: { name: "Alabama", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ALDOT online permit. Holiday blackouts apply Oct–Jan." },
-    TN: { name: "Tennessee", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "TDOT permit. Spring weight restrictions Feb–Mar statewide." },
+    AL: { name: "Alabama", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ALDOT online permit. Holiday blackouts apply Octâ€“Jan." },
+    TN: { name: "Tennessee", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "TDOT permit. Spring weight restrictions Febâ€“Mar statewide." },
     KY: { name: "Kentucky", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Annual permits available for repeat routes." },
     OK: { name: "Oklahoma", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ODOT permit. Turnpike-specific rules. Event period blackouts Sep." },
     KS: { name: "Kansas", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Annual permits available. Night movement allowed in rural areas." },
     MO: { name: "Missouri", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "MoDOT portal. KC metro has additional peak hour restrictions." },
-    IA: { name: "Iowa", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Iowa DOT permit. Spring load restrictions April–May." },
+    IA: { name: "Iowa", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Iowa DOT permit. Spring load restrictions Aprilâ€“May." },
     MN: { name: "Minnesota", escortWidthFt: 14, policeWidthFt: 16, nightWidthFt: null, escortConfig: (w) => w >= 16 ? "2 Front + 2 Rear" : "1 Front + 1 Rear", notes: (_) => "MNDOT 5-day processing for wide loads. Twin Cities metro restricted." },
     CA: { name: "California", escortWidthFt: 14, policeWidthFt: 20, nightWidthFt: null, escortConfig: (w) => w >= 16 ? "1 Front + 1 Rear + Route Survey" : "1 Front", notes: (d) => d.widthFt >= 16 ? "Route survey required for loads >16ft wide. Caltrans permit." : "Caltrans permit required." },
     AZ: { name: "Arizona", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ADOT online portal. 24-48hr permit processing." },
@@ -63,7 +63,7 @@ const US_STATES = Object.entries(STATE_RULES)
     .map(([code, r]) => ({ code, name: r.name }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
-// ── Calculation engine ────────────────────────────────────────────────────────
+// â”€â”€ Calculation engine â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function computeStateResults(dims: LoadDimensions, states: string[], miles: number): StateResult[] {
     const milesPerState = miles / Math.max(states.length, 1);
@@ -96,7 +96,7 @@ function computeStateResults(dims: LoadDimensions, states: string[], miles: numb
     }).filter((r): r is StateResult => r !== null);
 }
 
-// ── Small UI helpers ──────────────────────────────────────────────────────────
+// â”€â”€ Small UI helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const T = {
     bg: '#060b12', panel: '#0d1520', card: '#111922',
@@ -117,9 +117,9 @@ function inp(extra?: React.CSSProperties): React.CSSProperties {
 
 function NightBadge({ status }: { status: 'allowed' | 'restricted' | 'prohibited' }) {
     const cfg = {
-        allowed: { bg: 'rgba(39,209,127,0.12)', color: T.green, border: 'rgba(39,209,127,0.3)', label: '✓ Night OK' },
-        restricted: { bg: 'rgba(245,158,11,0.12)', color: T.amber, border: 'rgba(245,158,11,0.3)', label: '⚠ Night Restricted' },
-        prohibited: { bg: 'rgba(248,113,113,0.12)', color: T.red, border: 'rgba(248,113,113,0.3)', label: '✗ Night Banned' },
+        allowed: { bg: 'rgba(39,209,127,0.12)', color: T.green, border: 'rgba(39,209,127,0.3)', label: 'âœ“ Night OK' },
+        restricted: { bg: 'rgba(245,158,11,0.12)', color: T.amber, border: 'rgba(245,158,11,0.3)', label: 'âš  Night Restricted' },
+        prohibited: { bg: 'rgba(248,113,113,0.12)', color: T.red, border: 'rgba(248,113,113,0.3)', label: 'âœ— Night Banned' },
     }[status];
     return (
         <span style={{display: 'inline-block',padding: '2px 9px',borderRadius: 8,background: cfg.bg,color: cfg.color,border: `1px solid ${cfg.border}`,fontSize: 10,fontWeight: 800 }}>
@@ -128,7 +128,7 @@ function NightBadge({ status }: { status: 'allowed' | 'restricted' | 'prohibited
     );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function PermitCalculatorPage() {
     const [dims, setDims] = useState<LoadDimensions>({ widthFt: 14, heightFt: 14, lengthFt: 80, weightLbs: 120000 });
@@ -181,13 +181,13 @@ export default function PermitCalculatorPage() {
                     </h1>
                     <p style={{fontSize: 16,color: T.muted,maxWidth: 640,margin: '0 auto' }}>
                         Calculate escort configurations, police triggers, night movement restrictions,
-                        and estimated costs for any multi-state route — instantly.
+                        and estimated costs for any multi-state route â€” instantly.
                     </p>
                 </div>
 
                 <div style={{display: 'grid',gap: 20,gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
 
-                    {/* ── Input Panel ── */}
+                    {/* â”€â”€ Input Panel â”€â”€ */}
                     <div style={{background: T.panel,border: `1px solid ${T.border}`,borderRadius: 20,padding: 24 }}>
                         <h2 style={{fontSize: 15,fontWeight: 800,textTransform: 'uppercase',letterSpacing: '0.08em',color: T.muted,marginBottom: 20 }}>
                             <Calculator size={14} style={{display: 'inline',marginRight: 6 }} /> Load Dimensions
@@ -232,7 +232,7 @@ export default function PermitCalculatorPage() {
                             <div style={{marginTop: 14,padding: '10px 14px',borderRadius: 12,background: 'rgba(245,158,11,0.08)',border: '1px solid rgba(245,158,11,0.22)',display: 'flex',gap: 10,alignItems: 'flex-start' }}>
                                 <AlertTriangle size={14} color={T.amber} style={{marginTop: 2,flexShrink: 0 }} />
                                 <div style={{fontSize: 12,color: T.amber,lineHeight: 1.5 }}>
-                                    <strong>Oversize load detected:</strong> width ≥14ft triggers pilot car requirements in all 50 states. Select states below to see per-state breakdown.
+                                    <strong>Oversize load detected:</strong> width â‰¥14ft triggers pilot car requirements in all 50 states. Select states below to see per-state breakdown.
                                 </div>
                             </div>
                         )}
@@ -240,13 +240,13 @@ export default function PermitCalculatorPage() {
                             <div style={{marginTop: 8,padding: '10px 14px',borderRadius: 12,background: 'rgba(248,113,113,0.08)',border: '1px solid rgba(248,113,113,0.22)',display: 'flex',gap: 10,alignItems: 'flex-start' }}>
                                 <AlertTriangle size={14} color={T.red} style={{marginTop: 2,flexShrink: 0 }} />
                                 <div style={{fontSize: 12,color: T.red,lineHeight: 1.5 }}>
-                                    <strong>Superload:</strong> width ≥18ft triggers police escort requirements in TX, OH, MN and others. Route surveys likely required.
+                                    <strong>Superload:</strong> width â‰¥18ft triggers police escort requirements in TX, OH, MN and others. Route surveys likely required.
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* ── State Selector ── */}
+                    {/* â”€â”€ State Selector â”€â”€ */}
                     <div style={{background: T.panel,border: `1px solid ${T.border}`,borderRadius: 20,padding: 24 }}>
                         <h2 style={{fontSize: 15,fontWeight: 800,textTransform: 'uppercase',letterSpacing: '0.08em',color: T.muted,marginBottom: 8 }}>
                             States On Route
@@ -269,12 +269,12 @@ export default function PermitCalculatorPage() {
                             disabled={selectedStates.length === 0}
                             style={{width: '100%',marginTop: 20,padding: 16,borderRadius: 14,background: selectedStates.length === 0 ? T.border : `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#000',fontWeight: 900,fontSize: 14,textTransform: 'uppercase',letterSpacing: '0.06em',border: 'none',cursor: selectedStates.length === 0 ? 'not-allowed' : 'pointer',boxShadow: selectedStates.length > 0 ? '0 0 24px rgba(245,185,66,0.25)' : 'none',transition: 'all 0.2s'}}
                         >
-                            Run Compliance Check →
+                            Run Compliance Check â†’
                         </button>
                     </div>
                 </div>
 
-                {/* ── Results ── */}
+                {/* â”€â”€ Results â”€â”€ */}
                 {showResults && results.length > 0 && (
                     <div style={{marginTop: 28 }}>
 
@@ -282,9 +282,9 @@ export default function PermitCalculatorPage() {
                         <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',gap: 12,marginBottom: 20 }}>
                             {[
                                 { label: 'Max Escorts', val: maxEscorts + (maxEscorts === 0 ? '' : ' units'), color: maxEscorts >= 3 ? T.red : maxEscorts >= 2 ? T.amber : T.green },
-                                { label: 'States w/ Police', val: policeStates.length > 0 ? policeStates.map(r => r.code).join(', ') : '—', color: policeStates.length > 0 ? T.red : T.green },
-                                { label: 'Night Bans', val: nightBanStates.length > 0 ? nightBanStates.map(r => r.code).join(', ') : '— None', color: nightBanStates.length > 0 ? T.amber : T.green },
-                                { label: 'Est. Total Cost', val: totalCost ? `$${totalCost.low.toLocaleString()} – $${totalCost.high.toLocaleString()}` : '—', color: T.gold },
+                                { label: 'States w/ Police', val: policeStates.length > 0 ? policeStates.map(r => r.code).join(', ') : 'â€”', color: policeStates.length > 0 ? T.red : T.green },
+                                { label: 'Night Bans', val: nightBanStates.length > 0 ? nightBanStates.map(r => r.code).join(', ') : 'â€” None', color: nightBanStates.length > 0 ? T.amber : T.green },
+                                { label: 'Est. Total Cost', val: totalCost ? `$${totalCost.low.toLocaleString()} â€“ $${totalCost.high.toLocaleString()}` : 'â€”', color: T.gold },
                             ].map(({ label, val, color }) => (
                                 <div key={label} style={{background: T.card,border: `1px solid ${T.border}`,borderRadius: 14,padding: '14px 16px' }}>
                                     <div style={{fontSize: 9,fontWeight: 800,textTransform: 'uppercase',letterSpacing: '0.12em',color: T.muted,marginBottom: 6 }}>{label}</div>
@@ -303,7 +303,7 @@ export default function PermitCalculatorPage() {
                                                 <span style={{fontSize: 15,fontWeight: 900,color: '#fff' }}>{r.state}</span>
                                                 {r.policeRequired && (
                                                     <span style={{padding: '2px 8px',borderRadius: 6,fontSize: 10,fontWeight: 800,background: 'rgba(248,113,113,0.15)',color: T.red,border: '1px solid rgba(248,113,113,0.3)',textTransform: 'uppercase' }}>
-                                                        🚔 Police Required
+                                                        ðŸš” Police Required
                                                     </span>
                                                 )}
                                                 <NightBadge status={r.nightMovement} />
@@ -312,7 +312,7 @@ export default function PermitCalculatorPage() {
                                                 <span style={{fontSize: 12,color: T.muted }}><strong style={{color: T.text }}>Escorts:</strong> {r.escortsRequired}</span>
                                                 {r.escortCostEstimate.low > 0 && (
                                                     <span style={{fontSize: 12,color: T.muted }}>
-                                                        · <strong style={{color: T.gold }}>${r.escortCostEstimate.low.toLocaleString()}–${r.escortCostEstimate.high.toLocaleString()}</strong> est.
+                                                        Â· <strong style={{color: T.gold }}>${r.escortCostEstimate.low.toLocaleString()}â€“${r.escortCostEstimate.high.toLocaleString()}</strong> est.
                                                     </span>
                                                 )}
                                             </div>
@@ -336,12 +336,12 @@ export default function PermitCalculatorPage() {
                         <div style={{marginTop: 24,padding: 24,borderRadius: 20,background: 'rgba(245,185,66,0.06)',border: '1px solid rgba(245,185,66,0.2)',display: 'flex',flexDirection: 'column',gap: 12 }}>
                             <div style={{fontSize: 16,fontWeight: 900,color: T.gold }}>Need these escorts right now?</div>
                             <p style={{margin: 0,fontSize: 13,color: T.muted,lineHeight: 1.6 }}>
-                                Post to the Haul Command network — 847 certified escort operators across{' '}
+                                Post to the Haul Command network â€” 847 certified escort operators across{' '}
                                 {results.map(r => r.state).join(', ')} and beyond. Average fill time: <strong style={{color: T.text }}>8 minutes</strong> for active loads.
                             </p>
                             <div style={{display: 'flex',gap: 10,flexWrap: 'wrap' }}>
                                 <Link aria-label="Navigation Link" href="/loads/new" style={{padding: '12px 24px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#000',fontWeight: 900,fontSize: 13,textDecoration: 'none',textTransform: 'uppercase',letterSpacing: '0.05em' }}>
-                                    Post Load → Get Quotes
+                                    Post Load â†’ Get Quotes
                                 </Link>
                                 <Link aria-label="Navigation Link" href="/directory" style={{padding: '12px 24px',borderRadius: 12,background: 'transparent',border: `1px solid ${T.border}`,color: T.text,fontWeight: 700,fontSize: 13,textDecoration: 'none' }}>
                                     Browse Escort Directory
@@ -353,7 +353,7 @@ export default function PermitCalculatorPage() {
                         <div style={{marginTop: 16,padding: '10px 14px',borderRadius: 10,background: 'rgba(255,255,255,0.02)',border: `1px solid ${T.border}` }}>
                             <p style={{margin: 0,fontSize: 11,color: T.muted,lineHeight: 1.6 }}>
                                 <Info size={11} style={{display: 'inline',marginRight: 4 }} />
-                                Estimates are for planning purposes only. Requirements change frequently — always confirm with each state DOT before move.
+                                Estimates are for planning purposes only. Requirements change frequently â€” always confirm with each state DOT before move.
                                 Cost estimates assume {tier} tier operators and do not include permit fees, fuel surcharges, or police overtime rates.
                             </p>
                         </div>

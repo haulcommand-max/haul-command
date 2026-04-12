@@ -8,13 +8,13 @@ import {
   ArrowRight, Smartphone, Award, Route, Bell, BarChart3,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    WHY OPERATORS JOIN HAUL COMMAND
-   ─ Direct counter to ODS "Join Our Network" page.
+   â”€ Direct counter to ODS "Join Our Network" page.
      ODS says: "free to join, guaranteed pay, paid fast, 
      more miles, minimize deadhead."
      HC says the same + 12 money-making surfaces they can't match.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -50,7 +50,7 @@ const OPERATOR_HOOKS = [
   {
     icon: TrendingUp,
     title: "See Your Earnings Grow",
-    desc: "Your earnings counter, job history, and demand alerts — all visible in your dashboard.",
+    desc: "Your earnings counter, job history, and demand alerts â€” all visible in your dashboard.",
     accent: "#a855f7",
     badge: null,
   },
@@ -132,7 +132,7 @@ export function WhyOperatorsJoin() {
             Why Operators Join Haul Command
           </h2>
           <p className="text-sm sm:text-base text-[#8fa3b8] max-w-2xl mx-auto leading-relaxed">
-            More jobs. Better pay. Less deadhead. Free to join. The app that makes you money — not just lists your name.
+            More jobs. Better pay. Less deadhead. Free to join. The app that makes you money â€” not just lists your name.
           </p>
         </motion.div>
 

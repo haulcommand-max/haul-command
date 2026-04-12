@@ -57,7 +57,7 @@ export default function HomeClient({
     totalOperators, topCorridors, avgRatePerDay = 380,
 }: HomeClientProps) {
     return (
-        <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)]">
+        <div className=" bg-hc-bg text-white font-[family-name:var(--font-body)]">
             <style>{`
                 .landing-desktop-only { display: none !important; }
                 .landing-mobile-only { display: flex !important; }
@@ -87,7 +87,7 @@ export default function HomeClient({
                             Browse Network
                         </Link>
                     </div>
-                    <p className="text-[10px] text-[#9CA3AF] uppercase tracking-widest font-bold">No card required · 60 seconds to claim</p>
+                    <p className="text-[10px] text-[#9CA3AF] uppercase tracking-widest font-bold">No card required Â· 60 seconds to claim</p>
                 </div>
             </HCEditorialHero>
 
@@ -137,7 +137,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* 3. MARKET INTELLIGENCE — The moat. Live supply radar. */}
+            {/* 3. MARKET INTELLIGENCE â€” The moat. Live supply radar. */}
             <div className="mt-12 sm:mt-20">
                 <GlobalEscortSupplyRadar />
             </div>
@@ -234,7 +234,7 @@ export default function HomeClient({
                                     </Link>
                                 ))}
                                 <Link href="/training" className="text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full bg-white/[0.03] text-[#8fa3b8] hover:text-white hover:bg-white/[0.1] transition-all">
-                                    All 50 States →
+                                    All 50 States â†’
                                 </Link>
                             </div>
                         </div>
@@ -315,7 +315,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* 8. TRUST ARCHITECTURE — Report card, verification metrics, industry signals */}
+            {/* 8. TRUST ARCHITECTURE â€” Report card, verification metrics, industry signals */}
             <div className="border-t border-white/[0.04]">
                 <TrustArchitecture />
             </div>

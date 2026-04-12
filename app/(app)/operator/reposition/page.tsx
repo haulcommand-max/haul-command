@@ -101,8 +101,8 @@ export default function OperatorRepositionPostPage() {
             </div>
          </div>
       ) : (
-         <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-           <div className="bg-slate-900/50 border-b border-slate-800 p-6 flex items-center justify-between">
+         <form onSubmit={handleSubmit} className=" border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+           <div className="/50 border-b border-slate-800 p-6 flex items-center justify-between">
               <h2 className="font-bold text-white text-lg">Route Details</h2>
               <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">
                 High Priority Feed
@@ -124,7 +124,7 @@ export default function OperatorRepositionPostPage() {
                         <Input 
                           placeholder="City (e.g. Phoenix)" 
                           required 
-                          className="bg-slate-950 border-slate-800 h-14 text-white flex-1"
+                          className=" border-slate-800 h-14 text-white flex-1"
                           value={form.originCity}
                           onChange={(e) => updateForm('originCity', e.target.value)}
                         />
@@ -132,7 +132,7 @@ export default function OperatorRepositionPostPage() {
                           placeholder="State (e.g. AZ)" 
                           required 
                           maxLength={2} 
-                          className="bg-slate-950 border-slate-800 h-14 text-white w-24 uppercase"
+                          className=" border-slate-800 h-14 text-white w-24 uppercase"
                           value={form.originState}
                           onChange={(e) => updateForm('originState', e.target.value.toUpperCase())}
                         />
@@ -151,7 +151,7 @@ export default function OperatorRepositionPostPage() {
                    <div className="flex gap-4">
                       <Input 
                         placeholder="City (e.g. Dallas) - Optional" 
-                        className="bg-slate-950 border-slate-800 h-14 text-white flex-1"
+                        className=" border-slate-800 h-14 text-white flex-1"
                         value={form.destCity}
                         onChange={(e) => updateForm('destCity', e.target.value)}
                       />
@@ -159,7 +159,7 @@ export default function OperatorRepositionPostPage() {
                         placeholder="State (TX)" 
                         required 
                         maxLength={2} 
-                        className="bg-slate-950 border-slate-800 h-14 text-white w-24 uppercase"
+                        className=" border-slate-800 h-14 text-white w-24 uppercase"
                         value={form.destState}
                         onChange={(e) => updateForm('destState', e.target.value.toUpperCase())}
                       />
@@ -176,7 +176,7 @@ export default function OperatorRepositionPostPage() {
                     <Input 
                       type="date"
                       required
-                      className="bg-slate-950 border-slate-800 h-14 text-white"
+                      className=" border-slate-800 h-14 text-white"
                       value={form.departDate}
                       onChange={(e) => updateForm('departDate', e.target.value)}
                     />
@@ -190,7 +190,7 @@ export default function OperatorRepositionPostPage() {
                     <div className="relative">
                       <Input 
                         type="number"
-                        className="bg-slate-950 border-slate-800 h-14 text-white pr-16"
+                        className=" border-slate-800 h-14 text-white pr-16"
                         value={form.detourMiles}
                         onChange={(e) => updateForm('detourMiles', e.target.value)}
                       />
@@ -201,11 +201,11 @@ export default function OperatorRepositionPostPage() {
                  {/* Rate */}
                  <div className="space-y-2">
                     <label className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                      💰 Desired Rate
+                      ðŸ’° Desired Rate
                     </label>
                     <Input 
                       placeholder="e.g. $450/day or Negotiable"
-                      className="bg-slate-950 border-slate-800 h-14 text-white"
+                      className=" border-slate-800 h-14 text-white"
                       value={form.rateNote}
                       onChange={(e) => updateForm('rateNote', e.target.value)}
                     />
@@ -213,7 +213,7 @@ export default function OperatorRepositionPostPage() {
              </div>
            </div>
 
-           <div className="bg-slate-900/80 border-t border-slate-800 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+           <div className="/80 border-t border-slate-800 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-xs text-slate-500 max-w-sm">
                 Your broadcast will be automatically categorized as <strong className="text-emerald-400">Backhaul Capacity</strong> and injected directly into broker dispatch mapping systems.
               </p>

@@ -56,7 +56,8 @@ export function DynamicBackgroundEngine() {
     else if (pathLower.startsWith('/dashboard') || pathLower.startsWith('/admin')) bgImage = '/backgrounds/dashboard-hero.jpg';
 
     return (
-        <div className="fixed inset-0 -z-50 pointer-events-none bg-[#07090D]">
+        <div className="fixed inset-0 -z-50 pointer-events-none bg-hc-bg bg-industrial-noise">
+            <div className="absolute inset-0 bg-grid-white/5 pointer-events-none z-0" />
             <Image
                 src={bgImage}
                 alt="Haul Command Global Operations"

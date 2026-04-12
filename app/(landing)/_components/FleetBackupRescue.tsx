@@ -8,12 +8,12 @@ import {
   ArrowRight, CheckCircle, Radio,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    FLEET BACKUP & URGENT RESCUE SECTION
-   ─ ODS mentions "fleet backup" but doesn't surface it as
+   â”€ ODS mentions "fleet backup" but doesn't surface it as
      a named product. HC turns it into a visible, urgent
      dispatching layer with specific SLAs.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -58,7 +58,7 @@ export function FleetBackupRescue() {
 
             <p className="text-[#8fa3b8] text-xs sm:text-sm leading-relaxed mb-6 max-w-2xl">
               Escort no-shows. Last-minute cancellations. Emergency re-routes. When a move goes wrong, 
-              our rescue dispatch layer activates in under 15 minutes — finding the nearest available, 
+              our rescue dispatch layer activates in under 15 minutes â€” finding the nearest available, 
               qualified replacement from our 15,000+ operator network.
             </p>
 

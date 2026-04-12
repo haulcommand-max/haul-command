@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 
 export default function SecurityPage() {
   const practices = [
-    { icon: '🔐', title: 'Encryption', desc: 'All data encrypted at rest (AES-256) and in transit (TLS 1.3). API keys hashed with bcrypt.' },
-    { icon: '🏗️', title: 'Infrastructure', desc: 'Hosted on Vercel with SOC2 Type II compliance. Database on Supabase with automatic backups and point-in-time recovery.' },
-    { icon: '🛡️', title: 'Authentication', desc: 'Multi-factor authentication, OAuth 2.0, JWT tokens with short expiry. Role-based access control (RBAC) throughout.' },
-    { icon: '📋', title: 'Compliance', desc: 'GDPR compliant with full data export and deletion capabilities. Privacy by design architecture.' },
-    { icon: '🔍', title: 'Monitoring', desc: 'Real-time threat detection, automated vulnerability scanning, and 24/7 incident response.' },
-    { icon: '📊', title: 'Audit Trail', desc: 'Complete audit logging for all data access and modifications. Immutable event log for compliance reporting.' },
+    { icon: 'ðŸ”', title: 'Encryption', desc: 'All data encrypted at rest (AES-256) and in transit (TLS 1.3). API keys hashed with bcrypt.' },
+    { icon: 'ðŸ—ï¸', title: 'Infrastructure', desc: 'Hosted on Vercel with SOC2 Type II compliance. Database on Supabase with automatic backups and point-in-time recovery.' },
+    { icon: 'ðŸ›¡ï¸', title: 'Authentication', desc: 'Multi-factor authentication, OAuth 2.0, JWT tokens with short expiry. Role-based access control (RBAC) throughout.' },
+    { icon: 'ðŸ“‹', title: 'Compliance', desc: 'GDPR compliant with full data export and deletion capabilities. Privacy by design architecture.' },
+    { icon: 'ðŸ”', title: 'Monitoring', desc: 'Real-time threat detection, automated vulnerability scanning, and 24/7 incident response.' },
+    { icon: 'ðŸ“Š', title: 'Audit Trail', desc: 'Complete audit logging for all data access and modifications. Immutable event log for compliance reporting.' },
   ];
 
   return (

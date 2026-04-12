@@ -25,11 +25,11 @@ export const metadata: Metadata = {
 };
 
 const TIER_META: Record<string, { label: string; color: string; description: string }> = {
-    A: { label: 'Gold', color: '#D4A843', description: 'Full regulatory data · High confidence' },
-    B: { label: 'Blue', color: '#60A5FA', description: 'Good coverage · Some gaps' },
-    C: { label: 'Silver', color: '#94A3B8', description: 'Partial data · Expanding' },
-    D: { label: 'Slate', color: '#64748B', description: 'Limited data · Contact local authority' },
-    E: { label: 'Copper', color: '#B87333', description: 'Emerging market · Frontier data' },
+    A: { label: 'Gold', color: '#D4A843', description: 'Full regulatory data Â· High confidence' },
+    B: { label: 'Blue', color: '#60A5FA', description: 'Good coverage Â· Some gaps' },
+    C: { label: 'Silver', color: '#94A3B8', description: 'Partial data Â· Expanding' },
+    D: { label: 'Slate', color: '#64748B', description: 'Limited data Â· Contact local authority' },
+    E: { label: 'Copper', color: '#B87333', description: 'Emerging market Â· Frontier data' },
 };
 
 function getCountryFlag(code: string): string {
@@ -100,7 +100,7 @@ function RegulationCard({ reg }: { reg: CountryRegulation }) {
                 color: tier.color,
                 letterSpacing: '0.03em'
             }}>
-                View Directory Pivot <span className="group-hover:translate-x-1 transition-transform">→</span>
+                View Directory Pivot <span className="group-hover:translate-x-1 transition-transform">â†’</span>
             </div>
         </Link>
     );
@@ -148,10 +148,10 @@ export default function RegulationsIndexPage() {
                             <section key={tierKey} style={{ marginBottom: '4rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                                     <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: tier.color, margin: 0, letterSpacing: '-0.02em' }}>
-                                        Tier {tierKey} — {tier.label}
+                                        Tier {tierKey} â€” {tier.label}
                                     </h2>
                                     <span style={{ fontSize: '0.8125rem', color: '#9CA3AF', fontWeight: 600 }}>
-                                        {tier.description} · {regs.length} countries
+                                        {tier.description} Â· {regs.length} countries
                                     </span>
                                 </div>
                                 <div
@@ -181,17 +181,17 @@ export default function RegulationsIndexPage() {
                 <NoDeadEndBlock
                     heading="Explore Heavy Haul Resources"
                     moves={[
-                        { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
-                        { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
-                        { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
-                        { href: '/escort-requirements', icon: '⚖️', title: 'US State Rules', desc: 'All 50 state requirements' },
-                        { href: '/glossary/pilot-car', icon: '📖', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
-                        { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Live operator availability' },
+                        { href: '/directory', icon: 'ðŸ”', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
+                        { href: '/claim', icon: 'âœ“', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
+                        { href: '/tools/escort-calculator', icon: 'ðŸ§®', title: 'Escort Calculator', desc: 'How many vehicles needed?' },
+                        { href: '/escort-requirements', icon: 'âš–ï¸', title: 'US State Rules', desc: 'All 50 state requirements' },
+                        { href: '/glossary/pilot-car', icon: 'ðŸ“–', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
+                        { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Now', desc: 'Live operator availability' },
                     ]}
                 />
             </div>
 
-            {/* Structured Data — FAQPage for snippets (expanded for maximum coverage) */}
+            {/* Structured Data â€” FAQPage for snippets (expanded for maximum coverage) */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

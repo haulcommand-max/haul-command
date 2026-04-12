@@ -22,9 +22,9 @@ export function BlurLoadCard({ load, index }: { load: LoadTypes; index: number }
                     </div>
                     <div>
                         <div className="font-bold text-brand-text text-sm md:text-base">
-                            {load.origin} <span className="text-brand-muted">→</span> {load.destination}
+                            {load.origin} <span className="text-brand-muted">â†’</span> {load.destination}
                         </div>
-                        <div className="text-xs text-brand-muted">{load.miles} mi • Ready Now</div>
+                        <div className="text-xs text-brand-muted">{load.miles} mi â€¢ Ready Now</div>
                     </div>
                 </div>
                 <div className="text-right">

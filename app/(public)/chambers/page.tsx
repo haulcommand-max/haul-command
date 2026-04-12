@@ -5,7 +5,7 @@ import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Chambers of Commerce Directory — US & Canada | Haul Command',
+    title: 'Chambers of Commerce Directory â€” US & Canada | Haul Command',
     description: 'Browse Chambers of Commerce across all US states and Canadian provinces. Connect with your local business community for pilot car and heavy haul support.',
 };
 
@@ -52,7 +52,7 @@ export default async function ChambersLandingPage() {
     const chamberCounts = counts || {};
 
     return (
-        <main className="min-h-screen bg-slate-900 text-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+        <main className="  text-slate-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto space-y-12">
 
                 {/* Header */}
@@ -61,14 +61,14 @@ export default async function ChambersLandingPage() {
                         Chambers of Commerce Directory
                     </h1>
                     <p className="text-xl text-slate-400">
-                        US & Canada — Your link to local business networks, regulations, and pilot car support.
+                        US & Canada â€” Your link to local business networks, regulations, and pilot car support.
                     </p>
                 </div>
 
                 {/* US States */}
                 <section>
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <span className="text-amber-500">🇺🇸</span> United States
+                        <span className="text-amber-500">ðŸ‡ºðŸ‡¸</span> United States
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                         {US_STATES.map(code => (
@@ -86,7 +86,7 @@ export default async function ChambersLandingPage() {
                     </div>
                 </section>
 
-                {/* Native Ad — between US and Canada */}
+                {/* Native Ad â€” between US and Canada */}
                 <NativeAdCard
                     surface="chambers_mid"
                     placementId="chambers-us-ca-break"
@@ -96,7 +96,7 @@ export default async function ChambersLandingPage() {
                 {/* CA Provinces */}
                 <section>
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <span className="text-amber-500">🇨🇦</span> Canada
+                        <span className="text-amber-500">ðŸ‡¨ðŸ‡¦</span> Canada
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {CA_PROVINCES.map(code => (

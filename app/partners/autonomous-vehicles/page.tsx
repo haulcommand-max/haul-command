@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Escort Dispatch for Autonomous Trucks — AV-Ready Operators | Haul Command',
+  title: 'Escort Dispatch for Autonomous Trucks â€” AV-Ready Operators | Haul Command',
   description: 'Haul Command connects autonomous vehicle operations teams with HC AV-Ready certified escort operators. Aurora, Kodiak, Waabi, Gatik corridor coverage. 47-min fill time.',
 };
 
@@ -28,7 +28,7 @@ const AV_FEATURES = [
 
 export default function AVPartnerPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">

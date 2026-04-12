@@ -48,7 +48,7 @@ export default function AdvertiserDashboard() {
   const avgCTR = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : "0";
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-8">
+    <div className=" bg-[#050505] text-white p-8">
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* Header */}

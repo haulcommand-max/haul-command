@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Wind Energy Transport Escorts — Blade, Tower & Nacelle | Haul Command',
+  title: 'Wind Energy Transport Escorts â€” Blade, Tower & Nacelle | Haul Command',
   description: 'Specialized escort operators for wind turbine blade, tower, and nacelle transportation. Multi-state coordination, 200+ ft blade escorts, renewable energy corridors.',
 };
 
 export default function WindEnergyPartnerPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">

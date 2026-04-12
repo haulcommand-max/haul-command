@@ -50,13 +50,13 @@ function ClaimPageInner() {
         if (selectedPlan === "premium") {
             router.push(`/onboarding/claim/checkout?surface_id=${surfaceId}&plan=premium`);
         } else {
-            // Free claim — just register
+            // Free claim â€” just register
             router.push(`/onboarding/claim/success?surface_id=${surfaceId}&plan=free`);
         }
     }
 
     return (
-        <div className="min-h-screen bg-hc-bg text-white">
+        <div className=" bg-hc-bg text-white">
             <div className="max-w-2xl mx-auto px-4 py-16">
                 {/* Progress */}
                 <div className="flex items-center justify-center gap-3 mb-12">
@@ -212,7 +212,7 @@ function ClaimPageInner() {
                                 cursor: "pointer",
                             }}
                         >
-                            {selectedPlan === "premium" ? `Continue to Checkout — $${PREMIUM_PRICE}/mo` : "Continue with Free"}
+                            {selectedPlan === "premium" ? `Continue to Checkout â€” $${PREMIUM_PRICE}/mo` : "Continue with Free"}
                             <ArrowRight className="w-4 h-4 inline ml-2" />
                         </button>
                     </div>
@@ -224,7 +224,7 @@ function ClaimPageInner() {
 
 export default function ClaimPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-hc-bg flex items-center justify-center text-white/50">Loading...</div>}>
+        <Suspense fallback={<div className=" bg-hc-bg flex items-center justify-center text-white/50">Loading...</div>}>
             <ClaimPageInner />
         </Suspense>
     );

@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function CommunityLandingPage() {
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className=" bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Grid & Gradient */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(39,209,127,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(39,209,127,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -47,7 +47,7 @@ export default function CommunityLandingPage() {
 
           <div className="bg-hc-success/10 backdrop-blur-md border border-hc-success/30 rounded-2xl p-8 hover:border-hc-success/50 transition-colors relative overflow-hidden">
              <div className="absolute top-0 right-0 p-8 opacity-10">
-                <span className="font-serif text-8xl text-hc-success">“</span>
+                <span className="font-serif text-8xl text-hc-success">â€œ</span>
              </div>
             <h3 className="text-2xl font-black text-hc-success mb-2 uppercase">Connect With Group</h3>
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">

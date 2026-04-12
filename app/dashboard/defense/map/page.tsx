@@ -83,12 +83,12 @@ export default function DispatchMapPage() {
   }, [repaintTicker, points]);
 
   return (
-    <div className="min-h-screen bg-[#080b11] text-white flex flex-col">
+    <div className=" bg-[#080b11] text-white flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-[#1e2230]">
         <div>
-          <h1 className="text-lg font-black tracking-tight">🌍 GLOBAL THREAT &amp; DISPATCH MAP</h1>
-          <p className="text-gray-500 text-xs">Real-time request_log stream · Anti-Gravity Defense Layer</p>
+          <h1 className="text-lg font-black tracking-tight">ðŸŒ GLOBAL THREAT &amp; DISPATCH MAP</h1>
+          <p className="text-gray-500 text-xs">Real-time request_log stream Â· Anti-Gravity Defense Layer</p>
         </div>
         <div className="flex gap-6 text-sm">
           <div className="text-center">

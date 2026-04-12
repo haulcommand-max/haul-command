@@ -8,11 +8,11 @@ import {
 } from "lucide-react";
 
 const ESCORT_TYPES = [
-    { value: "front", label: "Front Escort", icon: "🚗" },
-    { value: "rear", label: "Rear Escort", icon: "🚙" },
-    { value: "both", label: "Front & Rear", icon: "🚗🚙" },
-    { value: "high_pole", label: "Height Pole", icon: "📡" },
-    { value: "route_survey", label: "Route Survey", icon: "🗺️" },
+    { value: "front", label: "Front Escort", icon: "ðŸš—" },
+    { value: "rear", label: "Rear Escort", icon: "ðŸš™" },
+    { value: "both", label: "Front & Rear", icon: "ðŸš—ðŸš™" },
+    { value: "high_pole", label: "Height Pole", icon: "ðŸ“¡" },
+    { value: "route_survey", label: "Route Survey", icon: "ðŸ—ºï¸" },
 ];
 
 const EQUIPMENT_OPTIONS = [
@@ -76,7 +76,7 @@ export default function AvailabilityPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0f] text-white">
+        <div className=" bg-[#0a0a0f] text-white">
             {/* Hero */}
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-cyan-500/10" />
@@ -165,7 +165,7 @@ export default function AvailabilityPage() {
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-500">Status</span>
-                                    <span className="text-emerald-400">● Broadcasting</span>
+                                    <span className="text-emerald-400">â— Broadcasting</span>
                                 </div>
                             </div>
                             <p className="text-sm text-gray-500">
@@ -198,7 +198,7 @@ export default function AvailabilityPage() {
                                         exit={{ opacity: 0, x: -20 }}
                                     >
                                         <h2 className="text-xl font-bold mb-1">Who are you?</h2>
-                                        <p className="text-sm text-gray-500 mb-6">Basic contact info — takes 30 seconds.</p>
+                                        <p className="text-sm text-gray-500 mb-6">Basic contact info â€” takes 30 seconds.</p>
 
                                         <div className="space-y-4">
                                             <div>
@@ -431,17 +431,17 @@ export default function AvailabilityPage() {
                     <div className="grid md:grid-cols-3 gap-4 mt-8">
                         {[
                             {
-                                icon: "⚡",
+                                icon: "âš¡",
                                 title: "Instant Profile",
                                 desc: "Your HAUL COMMAND listing is created automatically.",
                             },
                             {
-                                icon: "📡",
+                                icon: "ðŸ“¡",
                                 title: "Live Signal",
                                 desc: "Brokers see you on the corridor in real-time.",
                             },
                             {
-                                icon: "💰",
+                                icon: "ðŸ’°",
                                 title: "Profit Miles",
                                 desc: "Get matched with loads on your deadhead route.",
                             },

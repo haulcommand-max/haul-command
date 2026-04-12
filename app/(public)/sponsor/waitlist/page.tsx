@@ -147,8 +147,8 @@ function WaitlistForm() {
 
 export default function SponsorWaitlistPage() {
   return (
-    <div className="min-h-screen bg-[#060b12] text-white">
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading Waitlist...</div>}>
+    <div className=" bg-[#060b12] text-white">
+      <Suspense fallback={<div className=" flex items-center justify-center">Loading Waitlist...</div>}>
         <WaitlistForm />
       </Suspense>
     </div>

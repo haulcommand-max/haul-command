@@ -1,218 +1,178 @@
-/**
- * /available-now/[city-state] — "Available Now Near [City]" SEO Page
- *
- * Programmatic SEO: captures "pilot car available now near [city]" searches.
- * Shows real-time escort availability with live counts and booking CTA.
- */
+'use client'
+import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 
-import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
-import { Metadata } from 'next';
-import OperatorTrustCard from '@/components/directory/OperatorTrustCard';
+const SERVICE_TYPES = [
+  { value:'pilot_car',         label:'Pilot Car' },
+  { value:'escort_vehicle',    label:'Escort Vehicle' },
+  { value:'high_pole',         label:'High Pole Operator' },
+  { value:'steerman',          label:'Steerman / Rear Steer' },
+  { value:'route_surveyor',    label:'Route Surveyor' },
+  { value:'heavy_towing',      label:'Heavy Towing' },
+  { value:'air_cushion',       label:'Air Cushion' },
+]
 
-interface Props {
-    params: Promise<{ 'city-state': string }>;
+export default function BroadcastForm() {
+  const router = useRouter()
+  const supabase = createClient()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+
+  const [form, setForm] = useState({
+    service_type: 'pilot_car',
+    current_city: '', current_state: '', country_code: 'US',
+    available_from: '', available_until: '',
+    max_radius_miles: 150,
+    notes: '',
+  })
+
+  function set(field: string, val: string | number) {
+    setForm(prev => ({ ...prev, [field]: val }))
+  }
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault()
+    setError('')
+    if (!form.current_city || !form.current_state) { setError('City and state are required.'); return }
+    setLoading(true)
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { setError('You must be signed in to broadcast availability.'); setLoading(false); return }
+
+      // Map form fields to real hc_available_now column names
+      const vehicleTypeMap: Record<string, string> = {
+        pilot_car: 'pilot_car',
+        escort_vehicle: 'escort_vehicle',
+        high_pole: 'high_pole',
+        steerman: 'steerman',
+        route_surveyor: 'route_surveyor',
+        heavy_towing: 'heavy_towing',
+        air_cushion: 'other',
+      }
+
+      const { error: err } = await supabase.from('hc_available_now').upsert({
+        user_id: user.id,
+        vehicle_type: vehicleTypeMap[form.service_type] ?? 'pilot_car',
+        service_type: form.service_type,
+        city: form.current_city.trim(),
+        current_city: form.current_city.trim(),
+        region_code: form.current_state.trim().toUpperCase(),
+        current_state: form.current_state.trim().toUpperCase(),
+        country_code: form.country_code,
+        max_radius_miles: form.max_radius_miles,
+        available_since: form.available_from || new Date().toISOString(),
+        available_until: form.available_until || null,
+        notes: form.notes.trim() || null,
+        is_active: true,
+        last_ping_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' })
+
+      if (err) throw err
+      setSuccess(true)
+      setTimeout(() => router.push('/available-now'), 1800)
+    } catch (err: any) {
+      setError(err.message ?? 'Failed to broadcast. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (success) return (
+    <div className=" bg-[#07090d] flex items-center justify-center p-4">
+      <div className="text-center max-w-sm">
+        <div className="text-4xl mb-4">âœ…</div>
+        <h2 className="text-xl font-bold text-[#22c55e] mb-2">You&apos;re Live!</h2>
+        <p className="text-sm text-[#8a9ab0]">Your availability is now broadcasting to brokers in real time. Redirecting to the live feed&hellip;</p>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className=" bg-[#07090d] text-[#f0f2f5]">
+      <div className="px-4 lg:px-10 py-10 max-w-2xl mx-auto">
+        <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">BROADCAST AVAILABILITY</p>
+        <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-2">Go Live â€” Brokers Are Watching</h1>
+        <p className="text-sm text-[#8a9ab0] mb-8">Broadcast your current location and availability. You appear on the live operator map instantly.</p>
+
+        <form onSubmit={submit} className="flex flex-col gap-5">
+          {/* SERVICE TYPE */}
+          <div>
+            <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">SERVICE TYPE</label>
+            <div className="grid grid-cols-2 gap-2">
+              {SERVICE_TYPES.map(s=>(
+                <button key={s.value} type="button" onClick={()=>set('service_type',s.value)}
+                  className={`text-xs px-3 py-2 rounded-lg border text-left transition-colors ${
+                    form.service_type===s.value
+                      ? 'border-[#22c55e] bg-[#0d2000] text-[#22c55e] font-semibold'
+                      : 'border-[#1e3048] bg-[#0f1a24] text-[#8a9ab0] hover:border-[#22c55e40]'
+                  }`}>{s.label}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* LOCATION */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">CURRENT CITY</label>
+              <input type="text" placeholder="e.g. Houston" value={form.current_city} onChange={e=>set('current_city',e.target.value)}
+                className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#22c55e] focus:outline-none"/>
+            </div>
+            <div>
+              <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">STATE / PROVINCE</label>
+              <input type="text" placeholder="e.g. TX" maxLength={4} value={form.current_state} onChange={e=>set('current_state',e.target.value)}
+                className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#22c55e] focus:outline-none"/>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">COUNTRY</label>
+            <select value={form.country_code} onChange={e=>set('country_code',e.target.value)}
+              className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] focus:border-[#22c55e] focus:outline-none">
+              {['US','CA','AU','GB','NZ','ZA','DE','NL','AE','BR','MX','IN'].map(cc=><option key={cc} value={cc}>{cc}</option>)}
+            </select>
+          </div>
+
+          {/* AVAILABILITY WINDOW */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">AVAILABLE FROM</label>
+              <input type="datetime-local" value={form.available_from} onChange={e=>set('available_from',e.target.value)}
+                className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] focus:border-[#22c55e] focus:outline-none"/>
+            </div>
+            <div>
+              <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">AVAILABLE UNTIL</label>
+              <input type="datetime-local" value={form.available_until} onChange={e=>set('available_until',e.target.value)}
+                className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] focus:border-[#22c55e] focus:outline-none"/>
+            </div>
+          </div>
+
+          {/* RADIUS */}
+          <div>
+            <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">MAX TRAVEL RADIUS: <span className="text-[#d4950e]">{form.max_radius_miles} mi</span></label>
+            <input type="range" min={25} max={500} step={25} value={form.max_radius_miles} onChange={e=>set('max_radius_miles',Number(e.target.value))}
+              className="w-full accent-[#22c55e]"/>
+            <div className="flex justify-between text-[10px] text-[#3a5068] mt-1"><span>25 mi</span><span>500 mi</span></div>
+          </div>
+
+          {/* NOTES */}
+          <div>
+            <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">ADDITIONAL NOTES (OPTIONAL)</label>
+            <textarea placeholder="e.g. Available for wide loads only. Have high pole. Licensed for AZ." value={form.notes} onChange={e=>set('notes',e.target.value)} rows={3}
+              className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#22c55e] focus:outline-none resize-none"/>
+          </div>
+
+          {error&&<p className="text-xs text-red-400 bg-red-900/20 border border-red-900/30 rounded-xl px-4 py-3">{error}</p>}
+
+          <button type="submit" disabled={loading}
+            className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-white font-bold py-4 rounded-xl text-sm transition-colors">
+            {loading ? 'Broadcastingâ€¦' : 'â— Go Live Now â€” Broadcast Availability'}
+          </button>
+
+          <p className="text-[10px] text-[#3a5068] text-center">Your listing appears in the live feed and is visible to brokers searching for capacity in your area. You can remove it anytime.</p>
+        </form>
+      </div>
+    </div>
+  )
 }
-
-function parseCityState(slug: string): { city: string; stateCode: string } {
-    const parts = slug.split('-');
-    const stateCode = (parts.pop() ?? '').toUpperCase();
-    const city = parts.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    return { city, stateCode };
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { city, stateCode } = parseCityState((await params)['city-state']);
-    return {
-        title: `Pilot Car Available Now Near ${city}, ${stateCode} | Haul Command`,
-        description: `Find pilot car and escort vehicle operators available right now near ${city}, ${stateCode}. Real-time status, verified trust scores, instant booking. Updated every 30 seconds.`,
-        openGraph: {
-            title: `Available Now: Pilot Car Escorts Near ${city}, ${stateCode}`,
-            description: `Live escort vehicle availability near ${city}. Verified operators ready for dispatch.`,
-        },
-    };
-}
-
-export default async function AvailableNowPage({ params }: Props) {
-    const { city, stateCode } = parseCityState((await params)['city-state']);
-    const supabase = await createClient();
-
-    // Fetch available escorts in this state — include trust_score, is_claimed, equipment_tags for card upgrades
-    const { data: escorts } = await supabase
-        .from('directory_listings')
-        .select(`
-            id, user_id, base_lat, base_lng, service_radius_miles,
-            availability_status, has_high_pole, has_dashcam, equipment_tags,
-            last_active_at, trust_score, is_claimed, verification_status,
-            completed_escorts, reliability_score,
-            profiles!inner ( display_name, home_state )
-        `)
-        .eq('profiles.home_state', stateCode)
-        .eq('availability_status', 'available')
-        .order('last_active_at', { ascending: false })
-        .limit(20);
-
-    const availableCount = escorts?.length ?? 0;
-    const withHighPole = (escorts ?? []).filter((e: any) => e.has_high_pole).length;
-
-    return (
-        <div style={{
-            minHeight: '100vh',
-            background: 'linear-gradient(160deg, #030712, #041e1a, #030712)',
-            color: '#e2e8f0',
-            fontFamily: "'Inter', system-ui, sans-serif",
-        }}>
-            {/* Hero */}
-            <header style={{ padding: '60px 24px 40px', maxWidth: 900, margin: '0 auto' }}>
-                <div style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                    padding: '6px 14px', borderRadius: 20,
-                    background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)',
-                    fontSize: 11, fontWeight: 800, color: '#22c55e', marginBottom: 16,
-                }}>
-                    <span style={{
-                        width: 8, height: 8, borderRadius: '50%', background: '#22c55e',
-                        animation: 'pulse 2s ease-in-out infinite',
-                    }} />
-                    LIVE · Updated every 30 seconds
-                </div>
-
-                <h1 style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1, marginBottom: 12 }}>
-                    Pilot Cars Available Now Near {city}
-                </h1>
-                <p style={{ fontSize: 15, color: '#94a3b8', lineHeight: 1.7, maxWidth: 600 }}>
-                    {availableCount} verified escort operators are currently available in {stateCode}.
-                    Real-time availability, trust scores, and instant booking.
-                </p>
-            </header>
-
-            <main style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px 60px' }}>
-                {/* Stats */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 32 }}>
-                    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 14, padding: '16px 20px' }}>
-                        <div style={{ fontSize: 10, color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>🟢 Available Now</div>
-                        <div style={{ fontSize: 32, fontWeight: 900, color: '#22c55e', fontFeatureSettings: '"tnum"' }}>{availableCount}</div>
-                    </div>
-                    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 14, padding: '16px 20px' }}>
-                        <div style={{ fontSize: 10, color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>📡 High Pole</div>
-                        <div style={{ fontSize: 32, fontWeight: 900, color: '#3b82f6', fontFeatureSettings: '"tnum"' }}>{withHighPole}</div>
-                    </div>
-                    <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 14, padding: '16px 20px' }}>
-                        <div style={{ fontSize: 10, color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>📍 Region</div>
-                        <div style={{ fontSize: 20, fontWeight: 900, color: '#f97316' }}>{city}, {stateCode}</div>
-                    </div>
-                </div>
-
-                {/* Escorts List — upgraded with OperatorTrustCard (3 competitive wins) */}
-                {availableCount > 0 ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: 40 }}>
-                        {(escorts as any[]).map((e) => {
-                            const lastActive = e.last_active_at
-                                ? Math.floor((Date.now() - new Date(e.last_active_at).getTime()) / 60000)
-                                : null;
-
-                            // Build equipment flair tags from data
-                            const equipmentTypes: string[] = [];
-                            if (e.has_high_pole) equipmentTypes.push('High Pole');
-                            if (e.has_dashcam) equipmentTypes.push('Dashcam');
-                            if (Array.isArray(e.equipment_tags)) {
-                                e.equipment_tags.forEach((t: string) => {
-                                    if (!equipmentTypes.includes(t)) equipmentTypes.push(t);
-                                });
-                            }
-
-                            const socialLine = lastActive !== null && lastActive < 60
-                                ? `Active ${lastActive < 1 ? 'just now' : `${lastActive}m ago`}`
-                                : undefined;
-
-                            return (
-                                <OperatorTrustCard
-                                    key={e.user_id}
-                                    id={e.id ?? e.user_id}
-                                    name={e.profiles?.display_name ?? 'Operator'}
-                                    profileHref={`/place/${e.id ?? e.user_id}`}
-                                    location={`${city}, ${e.profiles?.home_state ?? stateCode}`}
-                                    status="available"
-                                    isVerified={e.verification_status === 'verified'}
-                                    trustScore={e.trust_score ?? undefined}
-                                    equipmentTypes={equipmentTypes}
-                                    jobsCompleted={e.completed_escorts ?? undefined}
-                                    confidenceScore={e.reliability_score ?? undefined}
-                                    socialProofLine={socialLine}
-                                    isClaimed={e.is_claimed ?? false}
-                                    compact
-                                />
-                            );
-                        })}
-                    </div>
-                ) : (
-                    <div style={{
-                        background: '#0f172a', border: '1px solid #1e293b',
-                        borderRadius: 16, padding: '40px', textAlign: 'center', marginBottom: 40,
-                    }}>
-                        <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
-                        <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>No Escorts Available Right Now</h3>
-                        <p style={{ fontSize: 13, color: '#64748b' }}>
-                            Post a load and our matching engine will find the best operators as they come online.
-                        </p>
-                    </div>
-                )}
-
-                {/* CTA */}
-                <div style={{
-                    background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-                    borderRadius: 20, padding: '32px', textAlign: 'center',
-                }}>
-                    <h3 style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8 }}>
-                        Need an Escort Near {city}?
-                    </h3>
-                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 20 }}>
-                        Post your load and get matched with {availableCount > 0 ? `${availableCount} available` : 'verified'} operators instantly.
-                    </p>
-                    <Link aria-label="Navigation Link" href="/loads/post" style={{
-                        display: 'inline-block', padding: '14px 32px',
-                        background: '#fff', color: '#16a34a',
-                        borderRadius: 12, fontWeight: 800, fontSize: 14,
-                        textDecoration: 'none',
-                    }}>
-                        Post a Load →
-                    </Link>
-                </div>
-
-                {/* SEO: nearby cities links */}
-                <div style={{ marginTop: 40 }}>
-                    <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 12 }}>Also Available In</h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                        {['Orlando', 'Tampa', 'Miami', 'Jacksonville', 'Dallas', 'Houston', 'Atlanta', 'Charlotte'].map(c => (
-                            <Link aria-label="Navigation Link" key={c} href={`/available-now/${c.toLowerCase()}-${stateCode.toLowerCase()}`} style={{
-                                padding: '6px 14px', borderRadius: 8,
-                                background: '#0f172a', border: '1px solid #1e293b',
-                                color: '#94a3b8', fontSize: 12, fontWeight: 600,
-                                textDecoration: 'none',
-                            }}>
-                                {c}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </main>
-
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'Service',
-                        name: `Pilot Car Services Available Near ${city}, ${stateCode}`,
-                        description: `${availableCount} escort vehicle operators available now near ${city}.`,
-                        areaServed: { '@type': 'City', name: city, containedInPlace: { '@type': 'State', name: stateCode } },
-                        provider: { '@type': 'Organization', name: 'Haul Command' },
-                    }),
-                }}
-            />
-
-            <style>{`@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }`}</style>
-        </div>
-    );
-}
-

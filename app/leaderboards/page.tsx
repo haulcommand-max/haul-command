@@ -8,7 +8,7 @@ import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { createClient } from '@/lib/supabase/client';
 
-// ── Types ────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface LeaderEntry {
   id: string;
   rank_position: number;
@@ -29,7 +29,7 @@ interface LeaderEntry {
   window_days: number;
 }
 
-// ── Static fallback (used only while loading / if DB is empty) ───
+// â”€â”€ Static fallback (used only while loading / if DB is empty) â”€â”€â”€
 const FALLBACK: LeaderEntry[] = [
   { id: 'f1', rank_position: 1, display_name: 'Apex Heavy Haul', location_label: 'Dallas, TX', country_code: 'US', tier_label: 'Vanguard', jobs_completed: 2450, km_total: 489000, avg_rating: 4.98, review_count: 312, avg_response_min: 2, hc_index_score: 99.8, trust_score: 98, identity_verified: true, claimed: true, badges: ['identity_verified','insurance_verified'], window_days: 30 },
   { id: 'f2', rank_position: 2, display_name: 'Titan Escort Services', location_label: 'Houston, TX', country_code: 'US', tier_label: 'Centurion', jobs_completed: 1890, km_total: 380000, avg_rating: 4.95, review_count: 228, avg_response_min: 4, hc_index_score: 98.5, trust_score: 95, identity_verified: true, claimed: true, badges: ['identity_verified'], window_days: 30 },
@@ -38,7 +38,7 @@ const FALLBACK: LeaderEntry[] = [
   { id: 'f5', rank_position: 5, display_name: 'Oversize Authority', location_label: 'Atlanta, GA', country_code: 'US', tier_label: 'Sentinel', jobs_completed: 980, km_total: 198000, avg_rating: 4.85, review_count: 97, avg_response_min: 12, hc_index_score: 94.1, trust_score: 84, identity_verified: false, claimed: false, badges: [], window_days: 30 },
 ];
 
-// ── Period config ─────────────────────────────────────────────────
+// â”€â”€ Period config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PERIODS = [
   { days: 30,  label: '30 Days',  abbr: '30D' },
   { days: 90,  label: '90 Days',  abbr: '90D' },
@@ -46,7 +46,7 @@ const PERIODS = [
   { days: 365, label: '1 Year',   abbr: '1Y' },
 ] as const;
 
-// ── Tier styling ──────────────────────────────────────────────────
+// â”€â”€ Tier styling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TIER: Record<string, { bg: string; text: string; border: string; glow: string }> = {
   'Vanguard':  { bg: 'from-amber-500/15 to-amber-900/5', text: 'text-amber-400', border: 'border-amber-500/40', glow: 'shadow-[0_0_30px_rgba(245,158,11,0.15)]' },
   'Centurion': { bg: 'from-gray-400/10 to-gray-700/5',   text: 'text-gray-300',  border: 'border-gray-400/30',  glow: '' },
@@ -59,7 +59,7 @@ function getTier(t: string | null) { return t ? (TIER[t] ?? DEFAULT_TIER) : DEFA
 
 const gold = '#D4A844';
 
-// ── Component ─────────────────────────────────────────────────────
+// â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function LeaderboardsPage() {
   const [activePeriod, setActivePeriod] = useState<30 | 90 | 180 | 365>(30);
   const [leaders, setLeaders] = useState<LeaderEntry[]>(FALLBACK);
@@ -83,7 +83,7 @@ export default function LeaderboardsPage() {
           setLeaders(data as LeaderEntry[]);
           setIsLive(true);
         } else if (!cancelled) {
-          // Graceful fallback — filter mock by period tag
+          // Graceful fallback â€” filter mock by period tag
           setLeaders(FALLBACK.map(l => ({ ...l, window_days: activePeriod })));
           setIsLive(false);
         }
@@ -105,12 +105,12 @@ export default function LeaderboardsPage() {
   const leader = leaders[0];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-amber-500/30 overflow-hidden font-sans relative">
+    <div className=" bg-[#050505] text-white selection:bg-amber-500/30 overflow-hidden font-sans relative">
       {/* Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
         '@graph': [
-          { '@type': 'WebPage', name: 'Heavy Haul Operator Leaderboards | Haul Command', url: 'https://www.haulcommand.com/leaderboards', description: 'Rankings of top-performing heavy haul and pilot car operators — 30, 90, 180, and 365-day windows. Ranked by verified escort runs, broker trust score, and response time.' },
+          { '@type': 'WebPage', name: 'Heavy Haul Operator Leaderboards | Haul Command', url: 'https://www.haulcommand.com/leaderboards', description: 'Rankings of top-performing heavy haul and pilot car operators â€” 30, 90, 180, and 365-day windows. Ranked by verified escort runs, broker trust score, and response time.' },
           { '@type': 'BreadcrumbList', itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
             { '@type': 'ListItem', position: 2, name: 'Leaderboards', item: 'https://www.haulcommand.com/leaderboards' },
@@ -130,13 +130,13 @@ export default function LeaderboardsPage() {
             Elite heavy haul operators ranked by verified completions, broker trust, and response time.
           </p>
           {isLive
-            ? <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />Live data · refreshed nightly</span>
-            : <span className="inline-flex items-center gap-1.5 text-xs text-amber-500/70 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-amber-500/70" />Preview rankings — live data activates as operators earn verified completions</span>
+            ? <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />Live data Â· refreshed nightly</span>
+            : <span className="inline-flex items-center gap-1.5 text-xs text-amber-500/70 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-amber-500/70" />Preview rankings â€” live data activates as operators earn verified completions</span>
           }
         </motion.div>
       </section>
 
-      {/* ── Period Tabs ───────────────────────────────────────────── */}
+      {/* â”€â”€ Period Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="flex justify-center gap-2 px-6 pb-8 z-10 relative">
         <div className="inline-flex gap-1 bg-white/5 border border-white/10 rounded-2xl p-1">
           {PERIODS.map(p => (
@@ -163,7 +163,7 @@ export default function LeaderboardsPage() {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.3 }}
         >
-          {/* ── Top 3 Podium ─────────────────────────────────────── */}
+          {/* â”€â”€ Top 3 Podium â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {top3.length >= 3 && (
             <section className="max-w-7xl mx-auto px-6 pb-16 z-10 relative">
               <div className="flex flex-col md:flex-row justify-center items-end gap-6 h-auto md:h-96">
@@ -194,7 +194,7 @@ export default function LeaderboardsPage() {
                       <Medal className="w-16 h-16 mx-auto text-amber-400 mb-2 drop-shadow-lg" />
                       <h3 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">{top3[0].display_name}</h3>
                       <p className="text-amber-400/80 text-sm mt-1">{top3[0].location_label}</p>
-                      {top3[0].identity_verified && <span className="text-xs text-emerald-400 font-semibold">✓ Verified</span>}
+                      {top3[0].identity_verified && <span className="text-xs text-emerald-400 font-semibold">âœ“ Verified</span>}
                     </div>
                     <div className="text-center space-y-2">
                       <p className="font-mono text-amber-400 text-xl font-bold">{top3[0].hc_index_score.toFixed(1)} <span className="text-xs text-gray-500">HC INDEX</span></p>
@@ -223,13 +223,13 @@ export default function LeaderboardsPage() {
             </section>
           )}
 
-          {/* ── Full Rankings Table ───────────────────────────────── */}
+          {/* â”€â”€ Full Rankings Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <section className="max-w-7xl mx-auto px-6 pb-32 z-10 relative">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-white/90">
-                Global Rankings <span className="text-amber-400 text-xl font-normal">— Last {activePeriod} Days</span>
+                Global Rankings <span className="text-amber-400 text-xl font-normal">â€” Last {activePeriod} Days</span>
               </h2>
-              {loading && <span className="text-xs text-gray-500 animate-pulse">Loading…</span>}
+              {loading && <span className="text-xs text-gray-500 animate-pulse">Loadingâ€¦</span>}
             </div>
 
             <div className="space-y-3">
@@ -269,12 +269,12 @@ export default function LeaderboardsPage() {
                         <StatCell label="Km" val={(leader.km_total / 1000).toFixed(1) + 'K'} icon={<MapPin className="w-3 h-3 text-blue-400" />} />
                         <StatCell
                           label="Response"
-                          val={leader.avg_response_min != null ? `${leader.avg_response_min}m` : '—'}
+                          val={leader.avg_response_min != null ? `${leader.avg_response_min}m` : 'â€”'}
                           icon={<Clock className="w-3 h-3 text-amber-400" />}
                         />
                         <StatCell
                           label="Rating"
-                          val={leader.avg_rating != null ? `${leader.avg_rating.toFixed(2)}★` : '—'}
+                          val={leader.avg_rating != null ? `${leader.avg_rating.toFixed(2)}â˜…` : 'â€”'}
                           icon={<Star className="w-3 h-3 text-amber-500 fill-amber-500/50" />}
                         />
                       </div>
@@ -318,27 +318,27 @@ export default function LeaderboardsPage() {
       <NoDeadEndBlock
         heading="Join the Haul Command Elite Network"
         moves={[
-          { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'Get listed and ranked', primary: true, color: gold },
-          { href: '/directory', icon: '🔍', title: 'Browse Directory', desc: 'Find top-ranked operators', primary: true, color: '#22C55E' },
-          { href: '/loads', icon: '📋', title: 'Open Load Board', desc: 'Active loads needing escorts' },
-          { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
-          { href: '/pricing', icon: '💎', title: 'Pro Verification', desc: 'Boost your rank visibility' },
-          { href: '/roles/pilot-car-operator', icon: '🚗', title: 'Pilot Car Hub', desc: 'All pilot car resources' },
+          { href: '/claim', icon: 'âœ“', title: 'Claim Your Profile', desc: 'Get listed and ranked', primary: true, color: gold },
+          { href: '/directory', icon: 'ðŸ”', title: 'Browse Directory', desc: 'Find top-ranked operators', primary: true, color: '#22C55E' },
+          { href: '/loads', icon: 'ðŸ“‹', title: 'Open Load Board', desc: 'Active loads needing escorts' },
+          { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Now', desc: 'Operators broadcasting live' },
+          { href: '/pricing', icon: 'ðŸ’Ž', title: 'Pro Verification', desc: 'Boost your rank visibility' },
+          { href: '/roles/pilot-car-operator', icon: 'ðŸš—', title: 'Pilot Car Hub', desc: 'All pilot car resources' },
         ]}
       />
 
       {/* Internal link mesh */}
       <section className="max-w-7xl mx-auto px-6 pb-20 flex flex-wrap gap-3">
-        <a href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 hover:border-amber-500/25 transition-all no-underline">📖 What Is a Pilot Car?</a>
-        <a href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 transition-all no-underline">⚖️ State Escort Rules</a>
-        <a href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400/70 hover:text-amber-400 transition-all no-underline">🧮 Escort Calculator</a>
-        <a href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400/70 hover:text-green-400 transition-all no-underline">🔍 Browse Directory</a>
+        <a href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 hover:border-amber-500/25 transition-all no-underline">ðŸ“– What Is a Pilot Car?</a>
+        <a href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/40 hover:text-amber-400 transition-all no-underline">âš–ï¸ State Escort Rules</a>
+        <a href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400/70 hover:text-amber-400 transition-all no-underline">ðŸ§® Escort Calculator</a>
+        <a href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400/70 hover:text-green-400 transition-all no-underline">ðŸ” Browse Directory</a>
       </section>
     </div>
   );
 }
 
-// ── Sub-components ────────────────────────────────────────────────
+// â”€â”€ Sub-components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StatCell({ label, val, icon }: { label: string; val: string; icon?: React.ReactNode }) {
   return (
     <div className="text-center">
@@ -353,7 +353,7 @@ function PeriodStats({ e, gold }: { e: LeaderEntry; gold?: boolean }) {
   return (
     <div className={`flex justify-center gap-3 text-xs ${c} my-1`}>
       <span>{e.jobs_completed.toLocaleString()} jobs</span>
-      {e.avg_rating != null && <span>{e.avg_rating.toFixed(2)}★</span>}
+      {e.avg_rating != null && <span>{e.avg_rating.toFixed(2)}â˜…</span>}
       {e.avg_response_min != null && <span>{e.avg_response_min}m resp.</span>}
     </div>
   );

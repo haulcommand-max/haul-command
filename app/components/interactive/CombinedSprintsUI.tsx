@@ -23,7 +23,7 @@ export function RouteSurveyDashboard({ routeId }: { routeId: string }) {
       <ul className="space-y-2">
         {hazards.map((h, i) => (
           <li key={i} className="flex justify-between p-3 bg-hc-gray-800 rounded text-sm">
-            <span className="font-bold text-red-400">⚠ {h.type}</span>
+            <span className="font-bold text-red-400">âš  {h.type}</span>
             <span className="text-hc-gray-300">{h.height || h.desc}</span>
           </li>
         ))}
@@ -119,7 +119,7 @@ export function DispatchRequestWizard() {
 
       {step === 3 && (
         <div className="space-y-4 text-center animate-in fade-in">
-          <div className="text-5xl mb-4">✅</div>
+          <div className="text-5xl mb-4">âœ…</div>
           <h3 className="text-xl font-bold">Dispatch Ready for Broadcast</h3>
           <p className="text-hc-gray-400 text-sm">Targeting verified operators with active High-Pole capabilities in the TX/CO corridor.</p>
           <div className="flex gap-4 mt-6">

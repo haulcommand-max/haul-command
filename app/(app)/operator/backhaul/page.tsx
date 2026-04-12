@@ -56,7 +56,7 @@ export default function PostBackhaulPage() {
 
     if (success) {
         return (
-            <div className="min-h-screen bg-transparent flex items-center justify-center p-4">
+            <div className=" bg-transparent flex items-center justify-center p-4">
                 <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-8 max-w-md w-full text-center">
                     <div className="w-16 h-16 bg-[#10B981]/20 text-[#10B981] rounded-full flex items-center justify-center mx-auto mb-6">
                         <Truck className="w-8 h-8" />
@@ -72,7 +72,7 @@ export default function PostBackhaulPage() {
     }
 
     return (
-        <div className="min-h-screen bg-transparent pt-24 pb-32">
+        <div className=" bg-transparent pt-24 pb-32">
             <div className="max-w-2xl mx-auto px-4 md:px-6">
                 
                 <div className="mb-8 border-b border-white/5 pb-8">

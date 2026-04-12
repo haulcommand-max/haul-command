@@ -1,6 +1,6 @@
 import { TrackedLink } from '@/app/_components/TrackedLink';
 
-export function AdGridSponsorSlot({ regionName, type, countryCode }: { regionName: string, type: 'operator' | 'hotel' | 'repair', countryCode: string }) {
+export function AdGridSponsorSlot({ regionName, type, countryCode }: { regionName: string, type: string, countryCode: string }) {
   return (
     <div className="block p-5 border-2 border-dashed border-amber-500/30 bg-amber-500/[0.03] rounded-xl transition-all hover:bg-amber-500/[0.05] relative isolate">
       <div className="absolute top-2 right-2 px-2 py-0.5 bg-amber-500/10 text-amber-500 text-[10px] font-bold uppercase rounded tracking-wider">

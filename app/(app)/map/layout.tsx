@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Global Coverage Map — 120 Countries | Haul Command',
+  title: 'Global Coverage Map â€” 120 Countries | Haul Command',
   description:
     'Explore Haul Command\'s global heavy haul and oversize load directory covering 120 countries. Find pilot car operators, escort vehicles, and permit information by country.',
   openGraph: {
-    title: 'Global Coverage Map — 120 Countries | Haul Command',
+    title: 'Global Coverage Map â€” 120 Countries | Haul Command',
     description: 'Find heavy haul operators, escort services, and oversize load intelligence across 120 countries worldwide.',
     url: 'https://haulcommand.com/map',
   },
@@ -29,7 +29,7 @@ const FAQ_SCHEMA = {
       name: 'What is a pilot car or escort vehicle?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'A pilot car (also called escort vehicle or flag car) is a vehicle that accompanies oversize loads on public roads to warn traffic and ensure safe passage. Requirements vary by country and state — typically loads wider than 3.0–4.0 meters require at least one escort.',
+        text: 'A pilot car (also called escort vehicle or flag car) is a vehicle that accompanies oversize loads on public roads to warn traffic and ensure safe passage. Requirements vary by country and state â€” typically loads wider than 3.0â€“4.0 meters require at least one escort.',
       },
     },
     {
@@ -45,7 +45,7 @@ const FAQ_SCHEMA = {
       name: 'What are the primary heavy haul corridors in the United States?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The primary US heavy haul corridors include I-10 (Sun Belt — TX to FL), I-35 (Central — TX to MN), I-40 (Trans-America — NC to CA), I-75 (Southeast — FL to MI), and I-95 (East Coast — FL to ME). Oversize permits are issued state-by-state through individual DOTs.',
+        text: 'The primary US heavy haul corridors include I-10 (Sun Belt â€” TX to FL), I-35 (Central â€” TX to MN), I-40 (Trans-America â€” NC to CA), I-75 (Southeast â€” FL to MI), and I-95 (East Coast â€” FL to ME). Oversize permits are issued state-by-state through individual DOTs.',
       },
     },
     {

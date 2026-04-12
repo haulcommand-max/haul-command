@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const EVENT_ICONS: Record<string, string> = {
-  new_load_match: '📍', urgent_nearby_work: '⚡', repositioning_opportunity: '🚛',
-  operator_match_found: '✅', coverage_gap_alert: '⚠️', urgent_replacement_needed: '🚨',
-  claim_reminder: '🏷️', claim_approved: '✅', profile_incomplete: '📊',
-  profile_benefit_unlocked: '🌟', trust_score_changed: '🛡️',
-  payment_confirmed: '💳', payment_failed: '⚠️', data_product_expiring: '⏳',
-  saved_corridor_update: '🛣️', nearby_market_active: '📍',
+  new_load_match: 'ðŸ“', urgent_nearby_work: 'âš¡', repositioning_opportunity: 'ðŸš›',
+  operator_match_found: 'âœ…', coverage_gap_alert: 'âš ï¸', urgent_replacement_needed: 'ðŸš¨',
+  claim_reminder: 'ðŸ·ï¸', claim_approved: 'âœ…', profile_incomplete: 'ðŸ“Š',
+  profile_benefit_unlocked: 'ðŸŒŸ', trust_score_changed: 'ðŸ›¡ï¸',
+  payment_confirmed: 'ðŸ’³', payment_failed: 'âš ï¸', data_product_expiring: 'â³',
+  saved_corridor_update: 'ðŸ›£ï¸', nearby_market_active: 'ðŸ“',
 };
 
 function timeAgo(iso: string): string {
@@ -42,7 +42,7 @@ export default async function NotificationsPage() {
   const unread = rows.filter(r => r.status === 'sent' || r.status === 'delivered').length;
 
   return (
-    <main className="min-h-screen bg-[#0a0d14] text-white">
+    <main className=" bg-[#0a0d14] text-white">
       <div className="mx-auto max-w-2xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -61,14 +61,14 @@ export default async function NotificationsPage() {
 
         {rows.length === 0 ? (
           <div className="rounded-2xl border border-white/8 bg-white/4 p-10 text-center">
-            <div className="text-4xl">🔔</div>
+            <div className="text-4xl">ðŸ””</div>
             <p className="mt-3 font-semibold text-white">No notifications yet</p>
-            <p className="mt-1 text-sm text-white/40">We’ll alert you when loads match, markets activate, or your profile needs attention.</p>
+            <p className="mt-1 text-sm text-white/40">Weâ€™ll alert you when loads match, markets activate, or your profile needs attention.</p>
           </div>
         ) : (
           <div className="space-y-2">
             {rows.map(n => {
-              const icon = EVENT_ICONS[n.event_type] ?? '🔔';
+              const icon = EVENT_ICONS[n.event_type] ?? 'ðŸ””';
               const isUnread = n.status === 'sent' || n.status === 'delivered';
               const card = (
                 <div className={`flex gap-4 rounded-xl border px-4 py-4 transition-all ${
@@ -93,7 +93,7 @@ export default async function NotificationsPage() {
                         href={`/corridors/${n.corridor_slug}`}
                         className="mt-2 inline-flex text-xs text-amber-400 hover:underline"
                       >
-                        View corridor →
+                        View corridor â†’
                       </Link>
                     )}
                   </div>

@@ -150,7 +150,7 @@ export function GlossarySearch({ terms }: { terms: { slug: string; term: string;
               className="flex items-start gap-3 px-5 py-3.5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0"
               style={{ animationDelay: `${i * 30}ms` }}
             >
-              <span className="text-[#D4A844] text-lg mt-0.5">◆</span>
+              <span className="text-[#D4A844] text-lg mt-0.5">â—†</span>
               <div className="flex-1 min-w-0">
                 <div className="text-white font-semibold text-sm">{t.term}</div>
                 <div className="text-white/40 text-xs mt-0.5 line-clamp-1">{t.short_definition}</div>
@@ -162,7 +162,7 @@ export function GlossarySearch({ terms }: { terms: { slug: string; term: string;
           ))}
           <div className="px-5 py-2.5 bg-white/[0.02] text-center">
             <span className="text-[10px] text-white/30 uppercase tracking-widest font-bold">
-              {results.length} results · Press Enter for full search
+              {results.length} results Â· Press Enter for full search
             </span>
           </div>
         </div>

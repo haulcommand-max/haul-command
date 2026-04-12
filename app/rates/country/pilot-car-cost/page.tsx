@@ -95,7 +95,7 @@ export default async function StateRatePage({ params }: any) {
 
                 {[
                     { label: 'Local / Daily (< 50 mi)', data: rates.local_daily },
-                    { label: 'Regional (50–150 mi)', data: rates.regional },
+                    { label: 'Regional (50â€“150 mi)', data: rates.regional },
                     { label: 'Long Haul (150+ mi)', data: rates.long_haul },
                 ].map(tier => (
                     <div key={tier.label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 14, padding: '1.25rem', marginBottom: 12 }}>
@@ -129,7 +129,7 @@ export default async function StateRatePage({ params }: any) {
                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Find pilot cars in {name}</h3>
                     <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href={`/directory/us/${st}`} style={{ display: 'inline-flex', padding: '10px 20px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 12, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
-                            {name} Operators →
+                            {name} Operators â†’
                         </Link>
                         <Link href="/loads" style={{ display: 'inline-flex', padding: '10px 20px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 12, fontWeight: 700, borderRadius: 10, textDecoration: 'none' }}>
                             Post a Load
@@ -161,13 +161,13 @@ export default async function StateRatePage({ params }: any) {
 
                 <div style={{ textAlign: 'center', padding: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.04)', marginTop: 8 }}>
                     <Link href={`/directory/us/${st}`} style={{ fontSize: 12, color: '#C6923A', fontWeight: 700, textDecoration: 'none', marginRight: 20 }}>
-                        Find {name} Operators →
+                        Find {name} Operators â†’
                     </Link>
                     <Link href="/escort-requirements" style={{ fontSize: 12, color: '#6b7280', fontWeight: 600, textDecoration: 'none', marginRight: 20 }}>
-                        {name} Escort Rules →
+                        {name} Escort Rules â†’
                     </Link>
                     <Link href="/glossary" style={{ fontSize: 12, color: '#6b7280', fontWeight: 600, textDecoration: 'none' }}>
-                        Industry Glossary →
+                        Industry Glossary â†’
                     </Link>
                 </div>
             </div>

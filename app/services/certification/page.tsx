@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 const PROGRAMS = [
   {
-    title: "CEVO — Certified Escort Vehicle Operator",
+    title: "CEVO â€” Certified Escort Vehicle Operator",
     desc: "The industry-standard certification for pilot car operators. Our CEVO-aligned training covers safety protocols, communication procedures, equipment standards, and state-specific requirements.",
     price: "$299",
     duration: "Self-paced, ~16 hours",
@@ -27,7 +27,7 @@ const PROGRAMS = [
     accent: "#F59E0B",
   },
   {
-    title: "CSE — Certified Safety Escort",
+    title: "CSE â€” Certified Safety Escort",
     desc: "Advanced safety escort certification covering complex moves, multi-escort coordination, night operations, and incident response for heavy haul professionals.",
     price: "$449",
     duration: "Self-paced, ~24 hours",
@@ -54,7 +54,7 @@ const PROGRAMS = [
 
 export default function CertificationPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(198,146,58,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -71,7 +71,7 @@ export default function CertificationPage() {
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-            CEVO, CSE, and state-specific certifications — all available through Haul Command. 
+            CEVO, CSE, and state-specific certifications â€” all available through Haul Command. 
             Certified operators earn 40% more and get dispatched 3x faster.
           </p>
           <Link

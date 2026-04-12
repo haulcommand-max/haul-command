@@ -91,9 +91,9 @@ export default function OffersClient() {
       });
       const data = await res.json();
       if (data.ok) {
-        setFlash({ id: offerId, type: 'success', msg: action === 'accept' ? '✅ Offer accepted!' : '❌ Offer declined' });
+        setFlash({ id: offerId, type: 'success', msg: action === 'accept' ? 'âœ… Offer accepted!' : 'âŒ Offer declined' });
         if (data.booking?.all_escorts_filled) {
-          setFlash({ id: offerId, type: 'success', msg: `✅ Booking confirmed! Job: ${data.booking.job_id?.slice(0, 8)}` });
+          setFlash({ id: offerId, type: 'success', msg: `âœ… Booking confirmed! Job: ${data.booking.job_id?.slice(0, 8)}` });
         }
         loadOffers();
       } else {
@@ -136,7 +136,7 @@ export default function OffersClient() {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0f19', color: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>🔔</div>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>ðŸ””</div>
           <div style={{ color: '#F1A91B', fontWeight: 700 }}>Loading offers...</div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function OffersClient() {
         {/* Pending Offers */}
         {pendingOffers.length > 0 && (
           <div style={{ marginBottom: 32 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>⏳ PENDING RESPONSE</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>â³ PENDING RESPONSE</div>
             {pendingOffers.map(offer => (
               <OfferCard key={offer.offer_id} offer={offer} isPending
                 flash={flash?.id === offer.offer_id ? flash : null}
@@ -200,7 +200,7 @@ export default function OffersClient() {
 
         {offers.length === 0 && (
           <div style={{ textAlign: 'center', padding: '48px 24px', color: '#64748b' }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>ðŸ“­</div>
             <p style={{ fontWeight: 700 }}>No offers yet</p>
             <p style={{ fontSize: 13 }}>Set your status to "Available" to start receiving offers.</p>
           </div>
@@ -210,7 +210,7 @@ export default function OffersClient() {
   );
 }
 
-// ── Offer Card Component ──
+// â”€â”€ Offer Card Component â”€â”€
 
 function OfferCard({
   offer, isPending, flash, responding, showDecline,
@@ -264,7 +264,7 @@ function OfferCard({
               color: isExpiringSoon ? '#ef4444' : '#f59e0b',
               animation: isExpiringSoon ? 'pulse 1s infinite' : undefined,
             }}>
-              ⏱ {deadlineStr}
+              â± {deadlineStr}
             </span>
           )}
         </div>
@@ -278,10 +278,10 @@ function OfferCard({
       {/* Load details */}
       {lr && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-          <Detail label="Region" value={lr.admin1_code || '—'} />
+          <Detail label="Region" value={lr.admin1_code || 'â€”'} />
           <Detail label="Escorts Needed" value={String(lr.required_escort_count)} />
           <Detail label="Load Type" value={lr.load_type_tags?.join(', ') || 'General'} />
-          <Detail label="Pickup" value={lr.pickup_time_window?.start ? new Date(lr.pickup_time_window.start).toLocaleDateString() : '—'} />
+          <Detail label="Pickup" value={lr.pickup_time_window?.start ? new Date(lr.pickup_time_window.start).toLocaleDateString() : 'â€”'} />
           {lr.dimensions?.width && <Detail label="Width" value={`${lr.dimensions.width}m`} />}
           {lr.dimensions?.height && <Detail label="Height" value={`${lr.dimensions.height}m`} />}
           {lr.special_requirements?.length > 0 && (
@@ -304,7 +304,7 @@ function OfferCard({
               cursor: responding ? 'wait' : 'pointer', opacity: responding ? 0.5 : 1,
             }}
           >
-            {responding ? '...' : '✅ Accept'}
+            {responding ? '...' : 'âœ… Accept'}
           </button>
           <button
             onClick={onDeclineStart}
@@ -317,7 +317,7 @@ function OfferCard({
               cursor: responding ? 'wait' : 'pointer',
             }}
           >
-            ❌ Decline
+            âŒ Decline
           </button>
         </div>
       )}

@@ -54,8 +54,10 @@ serve(async (req: Request) => {
     const geoKey = String(body.geo_key || "US");       // e.g. "US:TX", "AU:NSW", "US:TX:houston"
     const role = body.role as string | null;
     const userId = body.user_id as string | null;
+    const intentEquipment = body.equipment_type as string | null;
+    const intentLoadValue = parseInt(String(body.load_value_cents || "0"), 10);
 
-    // Find active sponsored placements for this geo+placement
+    // Find active sponsored placements for this geo+placement. Also fetch targeting criteria.
     const { data: placements } = await supabase
       .from("featured_placements")
       .select(`
@@ -69,18 +71,31 @@ serve(async (req: Request) => {
       .lte("starts_at", now)
       .gte("ends_at", now)
       .order("starts_at", { ascending: false })
-      .limit(10);
+      .limit(20);
 
-    // Filter by geo match: exact > region > country
-    const geoMatched = (placements || []).filter((p: any) => {
-      if (p.geo_key === geoKey) return true; // exact match
-      const geoPrefix = geoKey.split(":")[0] + ":" + (geoKey.split(":")[1] || "");
-      if (p.geo_key === geoPrefix) return true; // region match
-      if (p.geo_key === geoKey.split(":")[0]) return true; // country match
-      return false;
+    // Filter by geo match, then apply Hyper-ROI intent targeting
+    const intentMatched = (placements || []).filter((p: any) => {
+      // Geo Matching (Exact > Region > Country)
+      let geoMatch = false;
+      if (p.geo_key === geoKey) geoMatch = true; 
+      else {
+        const geoPrefix = geoKey.split(":")[0] + ":" + (geoKey.split(":")[1] || "");
+        if (p.geo_key === geoPrefix) geoMatch = true;
+        else if (p.geo_key === geoKey.split(":")[0]) geoMatch = true; 
+      }
+      if (!geoMatch) return false;
+
+      // Intent Matching (If sponsor required specific load values or equipment)
+      const reqEquip = p.profiles?.target_equipment;
+      const reqVal = p.profiles?.min_load_value_cents || 0;
+
+      if (reqVal > 0 && intentLoadValue < reqVal) return false;
+      if (reqEquip && intentEquipment && reqEquip !== intentEquipment) return false;
+
+      return true;
     });
 
-    if (geoMatched.length === 0) {
+    if (intentMatched.length === 0) {
       // No sponsor — return empty slot signal for graceful degradation
       return new Response(JSON.stringify({
         ok: true,
@@ -91,7 +106,7 @@ serve(async (req: Request) => {
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const winner = geoMatched[0];
+    const winner = intentMatched[0];
     const profile = (winner as any).profiles;
 
     // Record impression (async, fire-and-forget)
@@ -262,6 +277,62 @@ serve(async (req: Request) => {
       message: available
         ? "This premium slot is currently unclaimed in your market."
         : "This slot is currently sponsored.",
+    }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+  }
+
+  // ─────────────────────────────────────────────────
+  // ROI_REPORT — Generate ROI for Enterprise AdGrid Users
+  // ─────────────────────────────────────────────────
+  if (action === "roi_report") {
+    const profileId = body.profile_id as string;
+    
+    if (!profileId) {
+      return new Response(JSON.stringify({ error: "profile_id required" }), { status: 400 });
+    }
+
+    const reportRangeMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+    const reportStart = new Date(Date.now() - reportRangeMs).toISOString();
+
+    // Sum clicks
+    const { count: clicks } = await supabase
+      .from("ad_clicks")
+      .select("id", { count: "exact", head: true })
+      .in("placement_id", (
+        supabase.from("featured_placements").select("id").eq("profile_id", profileId)
+      ))
+      .gte("created_at", reportStart);
+
+    // Sum impressions
+    const { count: impressions } = await supabase
+      .from("ad_impressions")
+      .select("id", { count: "exact", head: true })
+      .in("placement_id", (
+        supabase.from("featured_placements").select("id").eq("profile_id", profileId)
+      ))
+      .gte("created_at", reportStart);
+
+    // Compute metrics
+    const clickCount = clicks ?? 0;
+    const impCount = impressions ?? 0;
+    const ctr = impCount > 0 ? ((clickCount / impCount) * 100).toFixed(2) : "0.00";
+    
+    // Estimate pipeline value (Industry Average: $5,000 per closed deal, ~2% closing rate from clicks on HQ B2B)
+    const pipelineValueUsd = Math.floor(clickCount * 0.02 * 5000); 
+
+    return new Response(JSON.stringify({
+      ok: true,
+      report: {
+        timeframe: "30_days",
+        impressions: impCount,
+        clicks: clickCount,
+        ctr_percent: ctr,
+        estimated_pipeline_value_usd: pipelineValueUsd,
+        competitor_reference: {
+          google_ads_avg_ctr: "3.17",
+          reddit_ads_avg_ctr: "0.20",
+          haul_command_ctr: ctr
+        }
+      }
     }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 

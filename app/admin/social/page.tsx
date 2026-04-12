@@ -27,9 +27,9 @@ const PLATFORM_COLORS: Record<string, string> = {
 const PLATFORM_ICONS: Record<string, string> = {
   linkedin: 'in',
   facebook_page: 'f',
-  facebook_group: 'f●',
-  youtube_community: '▶',
-  twitter: '𝕏',
+  facebook_group: 'fâ—',
+  youtube_community: 'â–¶',
+  twitter: 'ð•',
 };
 
 export default function AdminSocialPage() {
@@ -86,8 +86,8 @@ export default function AdminSocialPage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link aria-label="Navigation Link" href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue →</Link>
-          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content →</Link>
+          <Link aria-label="Navigation Link" href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue â†’</Link>
+          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content â†’</Link>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export default function AdminSocialPage() {
           <div style={{ textAlign: 'center', color: '#5a5a6a', padding: 48 }}>Loading posts...</div>
         ) : posts.length === 0 ? (
           <div style={{ textAlign: 'center', color: '#5a5a6a', padding: 48 }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>âœ“</div>
             <div style={{ fontWeight: 600 }}>No {tab} posts</div>
             <div style={{ fontSize: 13, marginTop: 4 }}>
               {tab === 'draft' ? 'Content machine will populate this queue when new articles publish or corridors go HOT.' : `No ${tab} posts yet.`}
@@ -121,7 +121,7 @@ export default function AdminSocialPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {posts.map(post => {
               const platColor = PLATFORM_COLORS[post.platform] || '#555';
-              const platIcon = PLATFORM_ICONS[post.platform] || '📣';
+              const platIcon = PLATFORM_ICONS[post.platform] || 'ðŸ“£';
               return (
                 <div key={post.id} style={{
                   background: '#111118', border: '1px solid #1a1a22',
@@ -185,7 +185,7 @@ export default function AdminSocialPage() {
                           cursor: 'pointer',
                         }}
                       >
-                        {approvingId === post.id ? 'Approving...' : '✓ Approve & Schedule'}
+                        {approvingId === post.id ? 'Approving...' : 'âœ“ Approve & Schedule'}
                       </button>
                       <button aria-label="Interactive Button"
                         onClick={() => reject(post.id)}
@@ -206,7 +206,7 @@ export default function AdminSocialPage() {
                       background: '#111118', border: `1px solid ${platColor}40`,
                       color: platColor, fontSize: 12, fontWeight: 600, textDecoration: 'none',
                     }}>
-                      View on {post.platform.replace('_', ' ')} →
+                      View on {post.platform.replace('_', ' ')} â†’
                     </a>
                   )}
                 </div>

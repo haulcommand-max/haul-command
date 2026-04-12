@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Search, MapPin, LockKeyhole, Shield, Zap } from "lucide-react";
 
-// ─── Shared filter type (matches DirectoryHardFilter) ──────
+// â”€â”€â”€ Shared filter type (matches DirectoryHardFilter) â”€â”€â”€â”€â”€â”€
 export interface HardFilterState {
   highPole: boolean;
   twic: boolean;
@@ -85,13 +85,13 @@ export function DirectorySearchList({
   const renderBadges = (badges?: Record<string, boolean>, isAvailable?: boolean) => {
     if (!badges && !isAvailable) return null;
     const active: { key: string; label: string; color: string; icon: string }[] = [];
-    if (isAvailable) active.push({ key: 'live', label: 'LIVE', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30', icon: '🟢' });
-    if (badges?.twic) active.push({ key: 'twic', label: 'TWIC', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: '🔐' });
-    if (badges?.hazmat) active.push({ key: 'hazmat', label: 'HazMat', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: '☢️' });
-    if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: '📏' });
-    if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: '🏗' });
-    if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: '🤖' });
-    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: '✅' });
+    if (isAvailable) active.push({ key: 'live', label: 'LIVE', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30', icon: 'ðŸŸ¢' });
+    if (badges?.twic) active.push({ key: 'twic', label: 'TWIC', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: 'ðŸ”' });
+    if (badges?.hazmat) active.push({ key: 'hazmat', label: 'HazMat', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: 'â˜¢ï¸' });
+    if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: 'ðŸ“' });
+    if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: 'ðŸ—' });
+    if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: 'ðŸ¤–' });
+    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: 'âœ…' });
     if (active.length === 0) return null;
     return (
       <div className="flex flex-wrap gap-1 mt-1.5">
@@ -112,7 +112,7 @@ export function DirectorySearchList({
         <input
           type="text"
           placeholder="Search by city, state, or company name..."
-          className="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 pl-12 pr-4 text-white focus:outline-none focus:border-amber-500"
+          className="w-full  border border-slate-700 rounded-lg py-3 pl-12 pr-4 text-white focus:outline-none focus:border-amber-500"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -123,7 +123,7 @@ export function DirectorySearchList({
         <div className="flex items-center gap-2 px-3 py-2 bg-[#0b0f14] border border-white/10 rounded-lg">
           <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
           <span className="text-[11px] text-neutral-400 font-medium">
-            Filtered results — showing operators matching your certification requirements
+            Filtered results â€” showing operators matching your certification requirements
           </span>
           <span className="ml-auto text-[10px] font-bold text-[#C6923A]">
             {totalCount.toLocaleString()} match{totalCount !== 1 ? 'es' : ''}
@@ -150,7 +150,7 @@ export function DirectorySearchList({
             className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
               idx === 0 
                 ? "bg-amber-500 text-white border-amber-500" 
-                : "bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
+                : " text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
             }`}
           >
             {role}
@@ -253,7 +253,7 @@ export function DirectorySearchList({
         {/* Censorship Honeypot Overlay */}
         {isCensored && results.length > 2 && (
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#020617] to-transparent flex flex-col items-center justify-end pb-8">
-            <div className="bg-slate-900 border border-slate-700/50 p-6 rounded-xl text-center max-w-md shadow-2xl backdrop-blur-md">
+            <div className=" border border-slate-700/50 p-6 rounded-xl text-center max-w-md shadow-2xl backdrop-blur-md">
               <LockKeyhole className="w-8 h-8 text-amber-500 mx-auto mb-3" />
               <h4 className="text-white font-bold text-lg">Identity Verification Required</h4>
               <p className="text-slate-400 text-sm mt-2 mb-4 leading-relaxed">

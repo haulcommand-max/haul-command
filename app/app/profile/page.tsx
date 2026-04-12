@@ -53,7 +53,7 @@ export default function MobileProfilePage() {
         : { step: "loading", reason: "Calculating your next step...", seconds: 0 };
 
     return (
-        <main className="min-h-screen bg-hc-bg pb-24">
+        <main className=" bg-hc-bg pb-24">
             <MobileBackHeader title="My Profile" />
 
             <div className="px-4 py-6 space-y-6">

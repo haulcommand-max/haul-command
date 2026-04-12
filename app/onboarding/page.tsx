@@ -78,7 +78,7 @@ export default function OnboardingPage() {
 
     // Compute real-time strength
     const strength = computeStrength({
-        full_name: homeCity, // proxy — name captured in step 1
+        full_name: homeCity, // proxy â€” name captured in step 1
         home_base_state: homeState,
         phone_verified: false,
         vehicle_type: Object.keys(caps).find(k => caps[k]) ?? "",
@@ -124,7 +124,7 @@ export default function OnboardingPage() {
                 });
                 const latency_ms = Math.round(performance.now() - t0);
 
-                // Fire after successful save — never before
+                // Fire after successful save â€” never before
                 track.onboardingCompleted({
                     role: 'escort',
                     steps_completed: 3,
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-hc-bg flex items-center justify-center px-4 py-12">
+        <div className=" bg-hc-bg flex items-center justify-center px-4 py-12">
             <div className="w-full max-w-md space-y-6">
 
                 {/* Header */}
@@ -158,7 +158,7 @@ export default function OnboardingPage() {
                     <p className="text-hc-muted text-sm mt-1">Fast entry now. Refine details later.</p>
                 </div>
 
-                {/* Live strength meter — shows from step 1 onward */}
+                {/* Live strength meter â€” shows from step 1 onward */}
                 <ProfileStrengthMeter strength={strength} tier={tier} compact />
 
                 {/* Progress steps */}
@@ -179,7 +179,7 @@ export default function OnboardingPage() {
                     })}
                 </div>
 
-                {/* Step 1 — Home Base */}
+                {/* Step 1 â€” Home Base */}
                 {step === 1 && (
                     <div className="hc-card p-6 space-y-5">
                         <div>
@@ -207,7 +207,7 @@ export default function OnboardingPage() {
                         </div>
                         <div>
                             <label className="block text-[10px] text-hc-muted uppercase font-black tracking-[0.2em] mb-2">
-                                Run Radius — <span className="text-hc-gold-500">{radius} miles</span>
+                                Run Radius â€” <span className="text-hc-gold-500">{radius} miles</span>
                             </label>
                             <input
                                 type="range" min={25} max={500} step={25}
@@ -229,7 +229,7 @@ export default function OnboardingPage() {
                     </div>
                 )}
 
-                {/* Step 2 — Capabilities */}
+                {/* Step 2 â€” Capabilities */}
                 {step === 2 && (
                     <div className="hc-card p-6 space-y-5">
                         <div>
@@ -260,7 +260,7 @@ export default function OnboardingPage() {
                     </div>
                 )}
 
-                {/* Step 3 — Availability */}
+                {/* Step 3 â€” Availability */}
                 {step === 3 && (
                     <div className="hc-card p-6 space-y-5">
                         <div>
@@ -269,7 +269,7 @@ export default function OnboardingPage() {
                         </div>
                         <div className="space-y-2">
                             {(["available", "busy", "offline"] as const).map(v => {
-                                const labels = { available: "Available — show me loads", busy: "Busy — light alerts only", offline: "Offline — no alerts" };
+                                const labels = { available: "Available â€” show me loads", busy: "Busy â€” light alerts only", offline: "Offline â€” no alerts" };
                                 const dotColors = { available: "bg-hc-success", busy: "bg-hc-warning", offline: "bg-hc-subtle" };
                                 const active = availability === v;
                                 return (

@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Axle Weight Calculator — Federal Bridge Formula by State | Haul Command',
+  title: 'Axle Weight Calculator â€” Federal Bridge Formula by State | Haul Command',
   description: 'Calculate legal axle weights using the federal bridge formula. Check compliance for all US states. Free, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/axle-weight-calculator' },
 }
@@ -35,7 +35,7 @@ const STATE_GVW: Record<string, { gvw: number; single: number; tandem: number; n
 }
 
 export default function AxleWeightCalculatorPage() {
-  const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Axle Weight Calculator — Federal Bridge Formula', url:'https://www.haulcommand.com/tools/axle-weight-calculator', description:'Calculate legal axle weights using the federal bridge formula. Free for all US states.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
+  const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Axle Weight Calculator â€” Federal Bridge Formula', url:'https://www.haulcommand.com/tools/axle-weight-calculator', description:'Calculate legal axle weights using the federal bridge formula. Free for all US states.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
   const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
     {"@type":'Question', name:'What is the federal bridge formula?', acceptedAnswer:{"@type":'Answer', text:'The federal bridge formula (Federal Bridge Gross Weight Formula) limits the weight any set of axles can carry based on the spacing between them. Formula: W = 500 x (LN / (N-1) + 12N + 36), where W is the max weight in lbs, L is the distance in feet between the outer axles, and N is the number of axles.'}},
     {"@type":'Question', name:'What is the maximum legal weight for a 5-axle semi-truck?', acceptedAnswer:{"@type":'Answer', text:'The federal maximum gross vehicle weight for a 5-axle semi-truck is 80,000 lbs. Individual axle limits are 20,000 lbs for a single axle and 34,000 lbs for a tandem axle group.'}},
@@ -46,12 +46,12 @@ export default function AxleWeightCalculatorPage() {
     <>
       <JsonLd data={schema}/>
       <JsonLd data={faq}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
-            <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Axle Weight Calculator — Federal Bridge Formula</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">Check legal axle weight limits using the federal bridge formula. Select your axle configuration and state to see if your load is compliant — and if an overweight permit is required.</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL Â· NO LOGIN REQUIRED</p>
+            <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Axle Weight Calculator â€” Federal Bridge Formula</h1>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">Check legal axle weight limits using the federal bridge formula. Select your axle configuration and state to see if your load is compliant â€” and if an overweight permit is required.</p>
           </div>
         </div>
 
@@ -76,7 +76,7 @@ export default function AxleWeightCalculatorPage() {
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-10">
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-3">The Federal Bridge Formula</h2>
             <div className="bg-[#07090d] rounded-xl p-4 mb-4 font-mono text-sm text-[#22c55e] text-center">
-              W = 500 × (LN ÷ (N−1) + 12N + 36)
+              W = 500 Ã— (LN Ã· (Nâˆ’1) + 12N + 36)
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
               <div className="bg-[#07090d] rounded-xl p-3"><span className="text-[#d4950e] font-bold">W</span> = Maximum weight in lbs that can be carried by the axle group</div>
@@ -87,7 +87,7 @@ export default function AxleWeightCalculatorPage() {
 
           {/* STATE LIMITS TABLE */}
           <div className="mb-10">
-            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">State Weight Limits — Key States</h2>
+            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">State Weight Limits â€” Key States</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-xs border-collapse">
                 <thead>
@@ -118,9 +118,9 @@ export default function AxleWeightCalculatorPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Axle Weight FAQs</h2>
             <div className="space-y-3">
               {[
-                {q:'What is the federal bridge formula?', a:'The federal bridge formula limits the weight any set of axles can carry based on the spacing between them. W = 500 × (LN ÷ (N−1) + 12N + 36). Where W = max weight (lbs), L = distance between outer axles (ft), N = number of axles. It protects bridges from overloading.'},
+                {q:'What is the federal bridge formula?', a:'The federal bridge formula limits the weight any set of axles can carry based on the spacing between them. W = 500 Ã— (LN Ã· (Nâˆ’1) + 12N + 36). Where W = max weight (lbs), L = distance between outer axles (ft), N = number of axles. It protects bridges from overloading.'},
                 {q:'What is the maximum legal weight for a 5-axle semi?', a:'The federal cap is 80,000 lbs gross. Single axle: 20,000 lbs. Tandem axle: 34,000 lbs. Many states match federal limits. Michigan and Washington allow higher weights on specific routes with permits.'},
-                {q:'What happens if I exceed axle weight limits?', a:'Overweight loads require permits in every state you travel through. Without a permit, you risk fines of $100–$5,000+ per violation, load rejection at weigh stations, and potential bridge damage liability.'},
+                {q:'What happens if I exceed axle weight limits?', a:'Overweight loads require permits in every state you travel through. Without a permit, you risk fines of $100â€“$5,000+ per violation, load rejection at weigh stations, and potential bridge damage liability.'},
                 {q:'Do pilot cars have their own weight requirements?', a:'Pilot cars and escort vehicles must comply with standard highway vehicle weight limits. They are not exempt from axle weight regulations and must have valid registration.'},
               ].map((item,i)=>(
                 <details key={i} className="border border-[#131c28] rounded-xl p-4">
@@ -133,7 +133,7 @@ export default function AxleWeightCalculatorPage() {
 
           <div className="flex flex-wrap gap-3">
             {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/superload-calculator','Superload Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/tools/frost-law-tracker','Frost Law Tracker']].map(([href,label])=>(
-              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e]">{label} →</Link>
+              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e]">{label} â†’</Link>
             ))}
           </div>
         </div>

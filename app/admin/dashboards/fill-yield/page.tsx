@@ -41,7 +41,7 @@ export default function FillYieldDashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Placeholder data — would be populated from real metrics
+        // Placeholder data â€” would be populated from real metrics
         setFillData([
             { surface: 'Directory Inline', total_requests: 0, filled: 0, fill_rate: 0, avg_cpm: 0, avg_cpc: 0, total_impressions: 0, total_clicks: 0, ctr: 0, revenue_usd: 0 },
             { surface: 'Sidebar', total_requests: 0, filled: 0, fill_rate: 0, avg_cpm: 0, avg_cpc: 0, total_impressions: 0, total_clicks: 0, ctr: 0, revenue_usd: 0 },

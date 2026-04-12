@@ -19,12 +19,12 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
-// ─── Stripe singleton (never re-init on re-renders) ────────────────────────
+// â”€â”€â”€ Stripe singleton (never re-init on re-renders) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
 );
 
-// ─── Inner Escrow Form (inside <Elements> context) ─────────────────────────
+// â”€â”€â”€ Inner Escrow Form (inside <Elements> context) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function EscrowPaymentForm({
   clientSecret,
   loadId,
@@ -48,12 +48,12 @@ function EscrowPaymentForm({
     setStatus("processing");
     setErrorMsg("");
 
-    // Confirm the PaymentIntent — but it was created with capture_method:'manual'
+    // Confirm the PaymentIntent â€” but it was created with capture_method:'manual'
     // so no charge fires yet; funds are only held (authorized).
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // No redirect — this is a manual-capture hold, not a full charge.
+        // No redirect â€” this is a manual-capture hold, not a full charge.
         return_url: `${window.location.origin}/dashboard/broker/loads?escrow=funded&load=${loadId}`,
       },
       redirect: "if_required",
@@ -71,18 +71,18 @@ function EscrowPaymentForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        🔒 Escrow Authorized — ${amount} held. Operator payout unlocks on delivery.
+        ðŸ”’ Escrow Authorized â€” ${amount} held. Operator payout unlocks on delivery.
       </div>
     );
   }
 
   return (
-    <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
+    <div className="mt-4 p-5  border border-slate-700 rounded-xl space-y-4 max-w-md">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-white font-bold text-sm">Authorize Escrow Hold</p>
           <p className="text-slate-400 text-xs mt-0.5">
-            ${amount} will be held — not charged until delivery confirmed.
+            ${amount} will be held â€” not charged until delivery confirmed.
           </p>
         </div>
         <span className="text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-1 rounded">
@@ -90,7 +90,7 @@ function EscrowPaymentForm({
         </span>
       </div>
 
-      {/* Stripe Payment Element — renders card input, Apple Pay, etc. */}
+      {/* Stripe Payment Element â€” renders card input, Apple Pay, etc. */}
       <PaymentElement
         options={{
           layout: "tabs",
@@ -100,7 +100,7 @@ function EscrowPaymentForm({
 
       {errorMsg && (
         <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded px-3 py-2">
-          ⚠️ {errorMsg}
+          âš ï¸ {errorMsg}
         </p>
       )}
 
@@ -111,7 +111,7 @@ function EscrowPaymentForm({
           onClick={handleFundEscrow}
           className="flex-1"
         >
-          {status === "processing" ? "Authorizing..." : `🔒 Fund Escrow — $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Escrow â€” $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -129,7 +129,7 @@ function EscrowPaymentForm({
   );
 }
 
-// ─── Inner Escrow Form (Crypto) ─────────────────────────────────────────────
+// â”€â”€â”€ Inner Escrow Form (Crypto) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CryptoEscrowForm({
   loadId,
   amount,
@@ -146,8 +146,8 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
-    { id: "ada_stable", label: "Cardano (ADA) → Auto-Stable", icon: "₳" },
-    { id: "btc_stable", label: "Bitcoin (BTC) → Auto-Stable", icon: "₿" },
+    { id: "ada_stable", label: "Cardano (ADA) â†’ Auto-Stable", icon: "â‚³" },
+    { id: "btc_stable", label: "Bitcoin (BTC) â†’ Auto-Stable", icon: "â‚¿" },
     { id: "usdc", label: "USDC (Global Stable USD)", icon: "$" },
   ];
 
@@ -181,13 +181,13 @@ function CryptoEscrowForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        🔒 Crypto Escrow Authorized — ${amount} held in smart contract.
+        ðŸ”’ Crypto Escrow Authorized â€” ${amount} held in smart contract.
       </div>
     );
   }
 
   return (
-    <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
+    <div className="mt-4 p-5  border border-slate-700 rounded-xl space-y-4 max-w-md">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-white font-bold text-sm">Fund Milestone Escrow</p>
@@ -235,7 +235,7 @@ function CryptoEscrowForm({
 
       {errorMsg && (
         <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded px-3 py-2 mt-2">
-          ⚠️ {errorMsg}
+          âš ï¸ {errorMsg}
         </p>
       )}
 
@@ -246,7 +246,7 @@ function CryptoEscrowForm({
           onClick={handleFundEscrow}
           className="flex-1 bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-700 disabled:text-slate-400"
         >
-          {status === "processing" ? "Authorizing..." : `🔒 Fund Crypto Escrow — $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Crypto Escrow â€” $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -263,7 +263,7 @@ function CryptoEscrowForm({
   );
 }
 
-// ─── Main LoadBoard Component ───────────────────────────────────────────────
+// â”€â”€â”€ Main LoadBoard Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ActiveEscrow {
   loadId: string;
   bidId: string;
@@ -283,7 +283,7 @@ export function LoadBoardClient({
   const [isFetching, setIsFetching] = useState(false);
   const [activeEscrow, setActiveEscrow] = useState<ActiveEscrow | null>(null);
 
-  // Step 1: Hit /api/escrow/accept-bid → get back clientSecret + escrowSummary
+  // Step 1: Hit /api/escrow/accept-bid â†’ get back clientSecret + escrowSummary
   const handleAcceptBid = async (loadId: string, bidId: string, method: "stripe" | "crypto", amountFallback: number) => {
     setIsFetching(true);
     
@@ -324,7 +324,7 @@ export function LoadBoardClient({
     }
   };
 
-  // Step 2: Stripe Elements confirmPayment succeeded — update local state
+  // Step 2: Stripe Elements confirmPayment succeeded â€” update local state
   const handleEscrowSuccess = useCallback((loadId: string) => {
     setLoads((prev) =>
       prev.map((l) => (l.id === loadId ? { ...l, status: "ESCROW_HELD" } : l))
@@ -348,7 +348,7 @@ export function LoadBoardClient({
         <Button aria-label="Interactive Button" variant="default">+ Post New Load</Button>
       </div>
 
-      {/* Stripe OR Crypto Escrow Panel — rendered above the table when active */}
+      {/* Stripe OR Crypto Escrow Panel â€” rendered above the table when active */}
       {activeEscrow && activeEscrow.method === "stripe" && (
         <Elements
           stripe={stripePromise}
@@ -417,7 +417,7 @@ export function LoadBoardClient({
                     <span className="font-medium text-slate-300">
                       {l.origin_city}, {l.origin_state}
                     </span>
-                    <span className="text-slate-600">→</span>
+                    <span className="text-slate-600">â†’</span>
                     <span className="font-medium text-slate-300">
                       {l.destination_city}, {l.destination_state}
                     </span>
@@ -427,7 +427,7 @@ export function LoadBoardClient({
                   <div className="flex flex-col">
                     <span>
                       {l.equipment_type?.length > 0
-                        ? l.equipment_type.join(" • ")
+                        ? l.equipment_type.join(" â€¢ ")
                         : "Standard Escort"}
                     </span>
                     {l.status === "OPEN" && (
@@ -514,7 +514,7 @@ export function LoadBoardClient({
       </Card>
 
       {/* Legal Shield Disclaimer */}
-      <div className="mt-8 p-4 bg-slate-900/50 border border-slate-800 rounded-lg max-w-3xl">
+      <div className="mt-8 p-4 /50 border border-slate-800 rounded-lg max-w-3xl">
         <p className="text-xs text-slate-500 leading-relaxed text-center">
           <strong>LEGAL DISCLAIMER:</strong> Haul Command is a technology platform connecting property-carrying commercial entities with independent pilot car escort vehicles. <strong>Haul Command does not dispatch freight or operate as a licensed freight broker under FMCSA regulations.</strong> Services govern the movement of escort vehicles exclusively, not semi-trucks or the underlying freight. By using this dashboard, you confirm understanding of our SaaS marketplace role.
         </p>

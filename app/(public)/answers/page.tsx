@@ -7,13 +7,13 @@ import { AI_ANSWER_SEEDS, LOAD_TYPES } from "@/lib/seo/pilot-car-taxonomy";
 
 export const metadata: Metadata = {
     title: "Pilot Car & Oversize Escort Answers | Haul Command",
-    description: "Expert answers to the most common questions about pilot car service, oversize load escort requirements, equipment, costs, and regulations — updated for 2026.",
+    description: "Expert answers to the most common questions about pilot car service, oversize load escort requirements, equipment, costs, and regulations â€” updated for 2026.",
     alternates: { canonical: "/answers" },
 };
 
 export default function AnswersIndexPage() {
     return (
-        <main className="min-h-screen" style={{ background: "#050505" }}>
+        <main className="" style={{ background: "#050505" }}>
             <div className="border-b border-white/5 px-6 py-3">
                 <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30">
                     <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
@@ -30,7 +30,7 @@ export default function AnswersIndexPage() {
                     </div>
                     <h1 className="text-3xl font-black text-white mb-3">Pilot Car & Escort Answers</h1>
                     <p className="text-sm text-white/50 max-w-xl leading-relaxed">
-                        Verified answers to the most common oversize escort and pilot car questions — written for freight brokers, carriers, and operators.
+                        Verified answers to the most common oversize escort and pilot car questions â€” written for freight brokers, carriers, and operators.
                     </p>
                 </div>
             </div>
@@ -46,7 +46,7 @@ export default function AnswersIndexPage() {
                             <BookOpen className="w-4 h-4 text-amber-400/50 flex-shrink-0 mt-0.5" />
                             <div>
                                 <div className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors mb-1">{a.question}</div>
-                                <div className="text-[11px] text-white/35 leading-snug">{a.shortAnswer.slice(0, 90)}…</div>
+                                <div className="text-[11px] text-white/35 leading-snug">{a.shortAnswer.slice(0, 90)}â€¦</div>
                             </div>
                         </Link>
                     ))}

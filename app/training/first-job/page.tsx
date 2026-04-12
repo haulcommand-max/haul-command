@@ -8,7 +8,7 @@ export default async function FirstJobJourney() {
     const { data: { session } } = await supabase.auth.getSession();
 
     return (
-        <div className="min-h-screen bg-transparent text-white p-10 font-sans">
+        <div className=" bg-transparent text-white p-10 font-sans">
             <h1 className="text-5xl font-black uppercase tracking-tight mb-6">14-Day Readiness Journey</h1>
             <p className="text-xl text-gray-400 mb-8 border-l-2 border-blue-500 pl-4">The exact protocol to build your compliance packet and secure your first operational dispatch.</p>
             

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
+import { GlobalNavOverlay } from '@/components/layout/GlobalNavOverlay';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,12 +22,17 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+  manifest: '/manifest.json',
 };
+
+import { PwaRegistry } from '@/components/layout/PwaRegistry';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-transparent text-white antialiased`}>
+        <PwaRegistry />
+        <GlobalNavOverlay />
         <DynamicBackgroundEngine />
         {children}
       </body>

@@ -13,13 +13,13 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-// ── Supabase Realtime client (public anon key — safe) ──────────────────────
+// â”€â”€ Supabase Realtime client (public anon key â€” safe) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface RequestLog {
   id: string;
   ip: string;
@@ -43,17 +43,17 @@ interface BlockedIP {
   request_count?: number;
 }
 
-// ── Equirectangular projection helpers ─────────────────────────────────────
+// â”€â”€ Equirectangular projection helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const toSVGCoords = (lat: number, lng: number, W: number, H: number) => ({
   x: ((lng + 180) / 360) * W,
   y: ((90 - lat) / 180) * H,
 });
 
-// ── 10° graticule grid lines ───────────────────────────────────────────────
+// â”€â”€ 10Â° graticule grid lines â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const GRATICULE_H = Array.from({ length: 17 }, (_, i) => (i - 8) * 10);
 const GRATICULE_V = Array.from({ length: 37 }, (_, i) => (i - 18) * 10);
 
-// ── Animated live dot ─────────────────────────────────────────────────────
+// â”€â”€ Animated live dot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Dot {
   id: string;
   x: number;
@@ -65,7 +65,7 @@ interface Dot {
   ip: string;
 }
 
-// ── Main Component ─────────────────────────────────────────────────────────
+// â”€â”€ Main Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function DefenseDashboard() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [logs, setLogs] = useState<RequestLog[]>([]);
@@ -151,7 +151,7 @@ export default function DefenseDashboard() {
   const threatRatio = stats.total > 0 ? Math.round((stats.bots / stats.total) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-[#060810] text-slate-100 font-mono">
+    <div className=" bg-[#060810] text-slate-100 font-mono">
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,100,0.05) 2px, rgba(0,255,100,0.05) 4px)" }} />
       <div className="max-w-[1600px] mx-auto px-4 py-6 space-y-5">
 
@@ -163,7 +163,7 @@ export default function DefenseDashboard() {
             </div>
             <div>
               <h1 className="text-xl font-black tracking-widest uppercase text-white">Haul Command <span className="text-rose-500">AEGIS</span></h1>
-              <p className="text-xs text-slate-500 tracking-widest uppercase mt-0.5">Adversarial Edge Intelligence — Global Perimeter Defense</p>
+              <p className="text-xs text-slate-500 tracking-widest uppercase mt-0.5">Adversarial Edge Intelligence â€” Global Perimeter Defense</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -220,12 +220,12 @@ export default function DefenseDashboard() {
                   return (
                     <g key={dot.id}>
                       <circle cx={dot.x} cy={dot.y} r={dot.isBot ? 12 * (1 - age * 0.5) : 8 * (1 - age * 0.5)} fill="none" stroke={dot.isBot ? "#ef4444" : "#34d399"} strokeWidth={0.8} opacity={opacity * 0.4} />
-                      <circle cx={dot.x} cy={dot.y} r={dot.isBot ? 3 : 2} fill={dot.isBot ? "#ef4444" : "#34d399"} opacity={opacity}><title>{dot.city}, {dot.country} — {dot.ip}</title></circle>
+                      <circle cx={dot.x} cy={dot.y} r={dot.isBot ? 3 : 2} fill={dot.isBot ? "#ef4444" : "#34d399"} opacity={opacity}><title>{dot.city}, {dot.country} â€” {dot.ip}</title></circle>
                     </g>
                   );
                 })}
               </svg>
-              <div className="absolute bottom-3 left-3 text-[9px] text-slate-600 font-mono tracking-wider uppercase">Equirectangular · Supabase Realtime · Vercel Edge Telemetry</div>
+              <div className="absolute bottom-3 left-3 text-[9px] text-slate-600 font-mono tracking-wider uppercase">Equirectangular Â· Supabase Realtime Â· Vercel Edge Telemetry</div>
               <div className="absolute top-3 right-3 text-[9px] text-slate-700 font-mono">{dots.length} active vectors</div>
             </div>
           </div>
@@ -252,8 +252,8 @@ export default function DefenseDashboard() {
         </div>
 
         <div className="bg-[#040810] border border-slate-800/70 rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/30">
-            <div className="flex items-center gap-2 text-sm font-bold tracking-wider uppercase text-slate-300"><Eye className="h-4 w-4 text-rose-400" />Live Feed — Incoming Signatures</div>
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/70 /30">
+            <div className="flex items-center gap-2 text-sm font-bold tracking-wider uppercase text-slate-300"><Eye className="h-4 w-4 text-rose-400" />Live Feed â€” Incoming Signatures</div>
             <div className="flex items-center gap-2 text-xs text-rose-500 font-bold tracking-wider"><span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />REC</div>
           </div>
           <div className="overflow-x-auto">
@@ -269,7 +269,7 @@ export default function DefenseDashboard() {
                   <tr key={log.id} className={`hover:bg-slate-800/30 transition-colors ${i === 0 ? "bg-slate-800/20" : ""}`}>
                     <td className="px-5 py-2.5 text-slate-600 tabular-nums">{new Date(log.created_at).toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" })}</td>
                     <td className="px-5 py-2.5 font-mono text-slate-300">{log.ip}</td>
-                    <td className="px-5 py-2.5 text-slate-600 font-mono text-[10px]">{log.asn ?? "—"}</td>
+                    <td className="px-5 py-2.5 text-slate-600 font-mono text-[10px]">{log.asn ?? "â€”"}</td>
                     <td className="px-5 py-2.5">
                       {log.is_bot
                         ? <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 tracking-wider"><Bot className="h-2.5 w-2.5" /> HOSTILE BOT</span>

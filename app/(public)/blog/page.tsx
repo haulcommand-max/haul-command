@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { TrustStrip } from "@/components/ui/intent-blocks";
-import { Search, Filter, ShieldCheck, Clock, MapPin, ChevronRight, ArrowRight } from "lucide-react";
+import { Search, Filter, ShieldCheck, Clock, MapPin, ChevronRight, ArrowRight, BookOpen, TrendingUp, Landmark, Globe } from "lucide-react";
 import type { Metadata } from 'next';
 import { BlogAnalyticsTrigger } from "@/components/analytics/BlogAnalyticsTrigger";
 import { createClient } from "@/lib/supabase/server";
@@ -150,7 +150,7 @@ export default async function BlogHub() {
         description="Real-time regulation updates, live corridor pricing analysis, and operational guides for oversize load professionals. Built for the route, not the noise."
         imageUrl="/images/blog_hero_bg.png"
         metaRow={
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-2">
                 <HCButton href="#latest" variant="primary">Browse Reports</HCButton>
                 <HCButton href="/tools/rate-advisor" variant="ghost">Live Rates <ArrowRight className="w-4 h-4 ml-2" /></HCButton>
             </div>
@@ -158,7 +158,7 @@ export default async function BlogHub() {
       />
 
       {/* Trust Strip */}
-      <div className="relative z-20 -mt-10 px-4 max-w-7xl mx-auto mb-16">
+      <div className="relative z-20 -mt-10 px-4 max-w-7xl mx-auto mb-20">
         <TrustStrip
           confidenceLevel="verified_current"
           lastVerifiedAt={new Date().toISOString().split('T')[0]}
@@ -166,11 +166,12 @@ export default async function BlogHub() {
         />
       </div>
 
-      <HCContentSection className="mb-16">
+      {/* Featured + Trending Section â€” Mapbox-style generous spacing */}
+      <HCContentSection className="mb-24">
         <HCContentContainer>
         {featuredArticle ? (
-            <div className="flex flex-col lg:flex-row gap-8">
-                <div className="w-full lg:w-2/3">
+            <div className="flex flex-col lg:flex-row gap-10">
+                <div className="w-full lg:w-[62%]">
                     <HCContentCard
                         variant="featured"
                         href={`/blog/${featuredArticle.slug}`}
@@ -182,11 +183,12 @@ export default async function BlogHub() {
                         readTime={featuredArticle.read_time}
                     />
                 </div>
-                <div className="w-full lg:w-1/3 flex flex-col gap-6">
-                    <div className="flex items-center justify-between pb-2 border-b border-[rgba(255,255,255,0.08)]">
-                        <h3 className="text-[13px] font-bold uppercase tracking-widest text-[#F3F4F6]">Trending Briefs</h3>
+                <div className="w-full lg:w-[38%] flex flex-col gap-6">
+                    <div className="flex items-center gap-3 pb-4 border-b border-[rgba(255,255,255,0.06)]">
+                        <TrendingUp className="w-4 h-4 text-[#C6923A]" />
+                        <h3 className="text-[13px] font-bold uppercase tracking-[0.15em] text-[#9CA3AF]">Trending Briefs</h3>
                     </div>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-5">
                         {secondaryArticles.map((article: any) => (
                             <HCContentCard
                                 key={article.slug}
@@ -208,16 +210,16 @@ export default async function BlogHub() {
         </HCContentContainer>
       </HCContentSection>
 
-      {/* Filter / Search Bar */}
-      <div className="sticky top-[64px] z-30 bg-[#0B0B0C]/90 backdrop-blur-xl border-y border-[rgba(255,255,255,0.08)] py-4 mb-20">
+      {/* Filter / Search Bar â€” cleaner with more breathing room */}
+      <div className="sticky top-[64px] z-30 bg-[#0B0B0C]/90 backdrop-blur-xl border-y border-[rgba(255,255,255,0.06)] py-5 mb-24">
         <HCContentContainer>
             <div className="flex flex-col md:flex-row gap-6 justify-between items-center">
                 <div className="relative w-full md:w-96">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                     <input 
                         type="text" 
                         placeholder="Search intelligence..." 
-                        className="w-full bg-[#111214] border border-[rgba(255,255,255,0.1)] rounded-full py-3 pl-12 pr-6 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#C6923A]"
+                        className="w-full bg-[#111214] border border-[rgba(255,255,255,0.08)] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-[#F3F4F6] placeholder:text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#C6923A]/50 focus:border-[#C6923A]/30 transition-all duration-200"
                     />
                 </div>
                 <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
@@ -231,13 +233,15 @@ export default async function BlogHub() {
         </HCContentContainer>
       </div>
 
-      <HCContentSection id="latest" className="mb-24">
+      {/* Latest Publications â€” Mapbox-style 3-column grid with generous gap */}
+      <HCContentSection id="latest" className="mb-32">
         <HCContentContainer>
-            <h3 className="text-2xl font-bold text-[#F3F4F6] mb-8 flex items-center gap-3">
-                Latest Publications
-            </h3>
+            <div className="flex items-center gap-3 mb-10">
+                <BookOpen className="w-5 h-5 text-[#C6923A]" />
+                <h2 className="text-[22px] font-bold text-[#F3F4F6] tracking-[-0.01em]">Latest Publications</h2>
+            </div>
             {gridArticles.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     {gridArticles.map((article: any) => (
                         <HCContentCard
                             key={article.slug}
@@ -258,24 +262,35 @@ export default async function BlogHub() {
         </HCContentContainer>
       </HCContentSection>
 
-      <HCContentSection className="bg-[#111214] py-20 border-t border-[rgba(255,255,255,0.05)]">
+      {/* Explore Systems â€” Mapbox-style resource grid with icons */}
+      <HCContentSection className="bg-[#0E0F11] py-24 border-t border-[rgba(255,255,255,0.04)]">
          <HCContentContainer>
-            <div className="text-center mb-16">
-                 <h2 className="text-2xl lg:text-3xl font-bold text-[#F3F4F6] mb-4">Explore Haul Command Systems</h2>
-                 <p className="text-[#9CA3AF] max-w-2xl mx-auto text-lg">Connect intelligence directly to tools and operators in your immediate coverage area.</p>
+            <div className="text-center mb-20">
+                 <h2 className="text-[28px] lg:text-[36px] font-bold text-[#F3F4F6] mb-5 tracking-[-0.02em]">Explore Haul Command</h2>
+                 <p className="text-[#6B7280] max-w-2xl mx-auto text-[17px] leading-[1.7]">Connect intelligence directly to operational tools and verified operators.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                  {[
-                     { title: "Compliance", links: [ { t: "State Regulations", u: "/regulations" }, { t: "Certification Hub", u: "/resources" }, { t: "Permit Calc", u: "/tools" } ] },
-                     { title: "Network", links: [ { t: "Pilot Car Directory", u: "/directory" }, { t: "Oversize Load Board", u: "/loads" }, { t: "Corridor Maps", u: "/corridors" } ] },
-                     { title: "Tools", links: [ { t: "Rate Benchmarks", u: "/rates" }, { t: "Live Map", u: "/map" }, { t: "Quote Tool", u: "/estimate" } ] },
-                     { title: "Growth", links: [ { t: "Claim Business", u: "/claim" }, { t: "Advertise", u: "/advertise" }, { t: "Data Products", u: "/data" } ] }
+                     { title: "Compliance", icon: Landmark, links: [ { t: "State Regulations", u: "/regulations" }, { t: "Certification Hub", u: "/resources" }, { t: "Permit Calc", u: "/tools" } ] },
+                     { title: "Network", icon: Globe, links: [ { t: "Pilot Car Directory", u: "/directory" }, { t: "Oversize Load Board", u: "/loads" }, { t: "Corridor Maps", u: "/corridors" } ] },
+                     { title: "Tools", icon: TrendingUp, links: [ { t: "Rate Benchmarks", u: "/rates" }, { t: "Live Map", u: "/map" }, { t: "Quote Tool", u: "/estimate" } ] },
+                     { title: "Growth", icon: ArrowRight, links: [ { t: "Claim Business", u: "/claim" }, { t: "Advertise", u: "/advertise" }, { t: "Data Products", u: "/data" } ] }
                  ].map(col => (
-                     <div key={col.title} className="p-8 rounded-[24px] bg-[#16181B] border border-[rgba(255,255,255,0.05)]">
-                         <h4 className="font-bold text-[#F3F4F6] text-[13px] uppercase tracking-widest mb-6">{col.title}</h4>
+                     <div key={col.title} className="p-8 rounded-[20px] bg-[#111214] border border-[rgba(255,255,255,0.04)] hover:border-[rgba(198,146,58,0.15)] transition-all duration-300 group">
+                         <div className="flex items-center gap-3 mb-7">
+                             <div className="w-9 h-9 rounded-xl bg-[#C6923A]/8 flex items-center justify-center">
+                                 <col.icon className="w-[18px] h-[18px] text-[#C6923A]" />
+                             </div>
+                             <h4 className="font-bold text-[#E5E7EB] text-[14px] uppercase tracking-[0.12em]">{col.title}</h4>
+                         </div>
                          <ul className="space-y-4">
                              {col.links.map(l => (
-                                 <li key={l.t}><Link href={l.u} className="text-[#9CA3AF] hover:text-[#C6923A] transition-colors font-medium">{l.t}</Link></li>
+                                 <li key={l.t}>
+                                     <Link href={l.u} className="flex items-center gap-2 text-[#6B7280] hover:text-[#E0B05C] transition-colors duration-200 font-medium text-[15px] group/link">
+                                         {l.t}
+                                         <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 transition-all duration-200 group-hover/link:opacity-100 group-hover/link:translate-x-0" />
+                                     </Link>
+                                 </li>
                              ))}
                          </ul>
                      </div>

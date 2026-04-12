@@ -36,7 +36,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
   return (
     <>
       <JsonLd data={schema}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="px-4 lg:px-10 py-12 max-w-2xl mx-auto">
 
           {/* HEADER */}
@@ -59,7 +59,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 </div>
                 <div>
                   <p className="text-sm font-bold text-[#f0f2f5]">{operator.company_name}</p>
-                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} · {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
+                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} Â· {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
                 </div>
                 <div className="ml-auto">
                   {operator.is_claimed
@@ -69,7 +69,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 </div>
               </div>
               {operator.is_claimed && (
-                <p className="text-xs text-[#22c55e] mt-4">✔ This profile has already been claimed. If you believe this is your company, <Link href="/support" className="underline">contact support</Link>.</p>
+                <p className="text-xs text-[#22c55e] mt-4">âœ” This profile has already been claimed. If you believe this is your company, <Link href="/support" className="underline">contact support</Link>.</p>
               )}
             </div>
           )}
@@ -79,12 +79,12 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
             <p className="text-xs text-[#566880] font-semibold tracking-wider mb-4">WHAT YOU GET WHEN YOU CLAIM</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
-                { icon:'⬆️', label:'Higher directory rank', desc:'Claimed profiles rank above unclaimed listings.' },
-                { icon:'✔️', label:'Verified badge', desc:'Green verified checkmark visible to every broker who views your profile.' },
-                { icon:'📈', label:'Trust score boost', desc:'Claiming adds +20 to your HC Trust Score immediately.' },
-                { icon:'🔔', label:'Broker enquiries', desc:'Brokers can message you directly through the platform.' },
-                { icon:'💼', label:'Load board access', desc:'Receive push notifications for matching loads near you.' },
-                { icon:'🏅', label:'Certification display', desc:'Show your HC certifications and training badges on your profile.' },
+                { icon:'â¬†ï¸', label:'Higher directory rank', desc:'Claimed profiles rank above unclaimed listings.' },
+                { icon:'âœ”ï¸', label:'Verified badge', desc:'Green verified checkmark visible to every broker who views your profile.' },
+                { icon:'ðŸ“ˆ', label:'Trust score boost', desc:'Claiming adds +20 to your HC Trust Score immediately.' },
+                { icon:'ðŸ””', label:'Broker enquiries', desc:'Brokers can message you directly through the platform.' },
+                { icon:'ðŸ’¼', label:'Load board access', desc:'Receive push notifications for matching loads near you.' },
+                { icon:'ðŸ…', label:'Certification display', desc:'Show your HC certifications and training badges on your profile.' },
               ].map(b=>(
                 <div key={b.label} className="flex gap-3">
                   <span className="text-base">{b.icon}</span>

@@ -31,7 +31,7 @@ export function EnrollButton({
       } else if (data.enrolled || data.already_enrolled) {
         window.location.href = '/training/platform-fundamentals';
       } else if (res.status === 401) {
-        window.location.href = '/auth/login?return=/training';
+        window.location.href = '/login?return=/training';
       }
     } catch (e) {
       console.error(e);

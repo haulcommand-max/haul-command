@@ -29,7 +29,7 @@ export default function PermitRequestPage() {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a1a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', padding: 40 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>âœ…</div>
           <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Permit Request Submitted</h1>
           <p style={{ color: 'rgba(255,255,255,0.6)' }}>Qualified agents will be notified. Expect quotes within 2 hours.</p>
         </div>

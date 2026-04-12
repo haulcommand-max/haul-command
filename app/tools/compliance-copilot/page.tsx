@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-// Lightweight markdown renderer — no external dependency needed
+// Lightweight markdown renderer â€” no external dependency needed
 function MarkdownBlock({ content, T }: { content: string; T: Record<string, string> }) {
     const lines = content.split('\n');
     const elements: React.ReactNode[] = [];
@@ -47,10 +47,10 @@ function MarkdownBlock({ content, T }: { content: string; T: Record<string, stri
     return <div style={{ fontSize: 14, fontFamily: "'Inter', system-ui" }}>{elements}</div>;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// COMPLIANCE COPILOT — Jurisdiction-Aware Regulation Q&A
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// COMPLIANCE COPILOT â€” Jurisdiction-Aware Regulation Q&A
 // The #1 free tool on the site. Drives SEO from every state.
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const US_STATES = [
     ['', 'All States / General'],
@@ -179,7 +179,7 @@ export default function ComplianceCopilotPage() {
     return (
         <div style={{ background: T.bg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-            {/* ── Hero Header */}
+            {/* â”€â”€ Hero Header */}
             <div style={{
                 background: `linear-gradient(180deg, rgba(245,185,66,0.06) 0%, transparent 100%)`,
                 borderBottom: `1px solid ${T.border}`,
@@ -220,7 +220,7 @@ export default function ComplianceCopilotPage() {
                     lineHeight: 1.6,
                 }}>
                     Ask any question about oversize load escort regulations, height pole requirements,
-                    night travel bans, permit thresholds — any state, any jurisdiction.
+                    night travel bans, permit thresholds â€” any state, any jurisdiction.
                 </p>
 
                 {/* Trust bar */}
@@ -229,9 +229,9 @@ export default function ComplianceCopilotPage() {
                     justifyContent: 'center',
                     fontSize: 12, color: T.subtle, fontWeight: 600,
                 }}>
-                    {['All 50 US States', '10 Canadian Provinces', 'Free — No Login Required', 'Answers in seconds'].map(t => (
+                    {['All 50 US States', '10 Canadian Provinces', 'Free â€” No Login Required', 'Answers in seconds'].map(t => (
                         <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <span style={{ color: T.green }}>✓</span> {t}
+                            <span style={{ color: T.green }}>âœ“</span> {t}
                         </span>
                     ))}
                 </div>
@@ -239,7 +239,7 @@ export default function ComplianceCopilotPage() {
 
             <div style={{ flex: 1, maxWidth: 800, width: '100%', margin: '0 auto', padding: '0 16px', display: 'flex', flexDirection: 'column' }}>
 
-                {/* ── Example questions (shown when no messages) */}
+                {/* â”€â”€ Example questions (shown when no messages) */}
                 {messages.length === 0 && (
                     <div style={{ padding: '32px 0' }}>
                         <p style={{ fontSize: 11, fontWeight: 800, color: T.subtle, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 14 }}>
@@ -275,7 +275,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* ── Message thread */}
+                {/* â”€â”€ Message thread */}
                 {messages.length > 0 && (
                     <div style={{ padding: '24px 0', display: 'flex', flexDirection: 'column', gap: 20 }}>
                         {messages.map((msg, i) => (
@@ -311,9 +311,9 @@ export default function ComplianceCopilotPage() {
                                             fontSize: 9, fontWeight: 700, color: T.subtle,
                                             textTransform: 'uppercase', letterSpacing: '0.12em',
                                         }}>
-                                            <span style={{ color: T.gold }}>⚖</span>
+                                            <span style={{ color: T.gold }}>âš–</span>
                                             Compliance Copilot
-                                            {msg.cached && <span style={{ color: T.green, marginLeft: 4 }}>· Cached</span>}
+                                            {msg.cached && <span style={{ color: T.green, marginLeft: 4 }}>Â· Cached</span>}
                                         </div>
 
                                         {msg.loading ? (
@@ -356,7 +356,7 @@ export default function ComplianceCopilotPage() {
                                                                     textDecoration: 'none',
                                                                     marginBottom: 4,
                                                                 }}>
-                                                                <span>↗</span>
+                                                                <span>â†—</span>
                                                                 <span>{s.label}</span>
                                                             </a>
                                                         ))}
@@ -372,7 +372,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* ── Error */}
+                {/* â”€â”€ Error */}
                 {error && (
                     <div style={{
                         padding: '12px 16px', borderRadius: 10,
@@ -384,7 +384,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* ── Input bar */}
+                {/* â”€â”€ Input bar */}
                 <div style={{
                     position: 'sticky', bottom: 0,
                     background: T.bg,
@@ -429,7 +429,7 @@ export default function ComplianceCopilotPage() {
                                         handleSubmit();
                                     }
                                 }}
-                                placeholder="Ask a compliance question… (e.g. 'When do I need two escort vehicles in Texas?')"
+                                placeholder="Ask a compliance questionâ€¦ (e.g. 'When do I need two escort vehicles in Texas?')"
                                 rows={3}
                                 maxLength={1000}
                                 style={{
@@ -470,13 +470,13 @@ export default function ComplianceCopilotPage() {
                                     transition: 'all 0.15s',
                                 }}
                             >
-                                {loading ? '⏳' : '↑'}
+                                {loading ? 'â³' : 'â†‘'}
                             </button>
                         </div>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <p style={{ fontSize: 11, color: T.subtle, margin: 0 }}>
-                                Press Enter to send · Shift+Enter for new line
+                                Press Enter to send Â· Shift+Enter for new line
                             </p>
                             <p style={{ fontSize: 11, color: T.subtle, margin: 0 }}>
                                 {question.length}/1000
@@ -486,7 +486,7 @@ export default function ComplianceCopilotPage() {
                 </div>
             </div>
 
-            {/* ── Footer CTA */}
+            {/* â”€â”€ Footer CTA */}
             <div style={{
                 borderTop: `1px solid ${T.border}`,
                 padding: '32px 24px',

@@ -247,6 +247,80 @@ export class MapboxDataSource {
         if (opts.apiBase !== undefined) this.options.apiBase = opts.apiBase;
         if (opts.stateFilter !== undefined) this.options.stateFilter = opts.stateFilter;
     }
+
+    // ─── HYBRID ARCHITECTURE: Traccar Telemetry & Custom GPS ─────────
+
+    /**
+     * Pulls raw Traccar JSON pings and converts them instantly to GeoJSON for Mapbox.
+     * Maps Traccar `device_id` to Haul Command `operator_id`.
+     */
+    async fetchTraccarEscorts(deviceGroup: string = 'live_map'): Promise<GeoJSONFeatureCollection> {
+        const start = performance.now();
+        try {
+            // Note: In production, proxy this via Next.js API to inject Traccar API key
+            // This allows us to bypass Mapbox telemetry charges fully.
+            const params = new URLSearchParams({ group: deviceGroup });
+            const res = await fetch(`${this.options.apiBase}/api/telemetry/traccar/devices?${params}`);
+            if (!res.ok) throw new Error(`Traccar API error: ${res.status}`);
+            
+            const traccarDevices = await res.json();
+            
+            // Map Traccar output specifically to Mapbox GL Compatible FeatureCollection
+            const features = traccarDevices.map((device: any) => ({
+                type: 'Feature',
+                properties: {
+                    user_id: device.uniqueId,
+                    is_moving: device.speed > 2.0,
+                    heading: device.course,
+                    status: device.status,
+                },
+                geometry: {
+                    type: 'Point',
+                    coordinates: [device.longitude, device.latitude],
+                }
+            }));
+
+            this.lastFetch = {
+                data: { type: 'FeatureCollection', features },
+                source: 'api',
+                durationMs: Math.round(performance.now() - start),
+            };
+            return this.lastFetch.data;
+        } catch (err) {
+            console.error('[TraccarDataSource] fetchTraccarEscorts failed:', err);
+            return { type: 'FeatureCollection', features: [] };
+        }
+    }
+
+    /**
+     * Executes the Haul Command proprietary Heavy-Haul Geofence & Safe-Route Generator.
+     * Prevents oversized loads from being routed under low bridges (defeating standard Google Maps limits).
+     */
+    async fetchCustomSafeRoute(origin: [number, number], destination: [number, number], loadSpecs?: any): Promise<GeoJSONFeatureCollection> {
+        try {
+            // Calls the internal Custom GPS engine
+            const payload = {
+                origin,
+                destination,
+                width: loadSpecs?.width ?? 8.5,
+                height: loadSpecs?.height ?? 13.5,
+                weight: loadSpecs?.weight ?? 80000
+            };
+            
+            const res = await fetch(`${this.options.apiBase}/api/map/custom-route`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!res.ok) throw new Error(`Custom Routing API error: ${res.status}`);
+            const geojson = await res.json();
+            return geojson;
+        } catch (err) {
+            console.error('[CustomGPSDataSource] fetchCustomSafeRoute failed:', err);
+            return { type: 'FeatureCollection', features: [] };
+        }
+    }
 }
 
 // ─── Convenience: pre-configured singleton ────────────────

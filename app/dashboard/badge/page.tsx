@@ -1,5 +1,5 @@
 /**
- * /dashboard/badge — Operator badge embed page
+ * /dashboard/badge â€” Operator badge embed page
  * Shows the operator their embeddable badge snippet + preview.
  * Accessible to authenticated operators from their dashboard.
  */
@@ -21,7 +21,7 @@ async function getBadgeForUser() {
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     const svc = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-    // Get the user from the session cookie — client-side will handle auth redirect
+    // Get the user from the session cookie â€” client-side will handle auth redirect
     // Return null to let the page handle it gracefully
     return null as null | { badge_token: string; badge_type: string; tier: string; embed_count: number };
 }
@@ -65,7 +65,7 @@ export default async function BadgePage() {
                     </h1>
                     <p style={{ margin: 0, fontSize: 14, color: '#9ca3af', lineHeight: 1.6 }}>
                         Embed your verification badge on your website.
-                        Every embed creates a backlink to your Haul Command profile — boosting your SEO authority.
+                        Every embed creates a backlink to your Haul Command profile â€” boosting your SEO authority.
                     </p>
                 </div>
 
@@ -99,7 +99,7 @@ export default async function BadgePage() {
                             <div style={{ minWidth: 28, height: 28, borderRadius: '50%', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#10b981' }}>3</div>
                             <div>
                                 <div style={{ fontSize: 13, fontWeight: 700, color: '#e5e7eb', marginBottom: 4 }}>Get discovered + build authority</div>
-                                <div style={{ fontSize: 12, color: '#6b7280' }}>Each embed links back to your profile — Google sees this as a trust signal.</div>
+                                <div style={{ fontSize: 12, color: '#6b7280' }}>Each embed links back to your profile â€” Google sees this as a trust signal.</div>
                             </div>
                         </div>
                     </div>
@@ -142,14 +142,14 @@ export default async function BadgePage() {
                         href="/app/profile"
                         style={{ display: 'inline-block', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}
                     >
-                        Go to Profile Settings →
+                        Go to Profile Settings â†’
                     </a>
                 </section>
 
                 {/* SEO note */}
                 <p style={{ marginTop: 24, fontSize: 11, color: '#4b5563', textAlign: 'center' }}>
                     Each badge served generates a <strong style={{ color: '#6b7280' }}>do-follow backlink</strong> to your Haul Command profile.
-                    Haul Command DA grows as more operators embed badges — your profile rides that authority.
+                    Haul Command DA grows as more operators embed badges â€” your profile rides that authority.
                 </p>
             </div>
         </div>

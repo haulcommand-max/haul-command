@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import LoginCard from '@/components/auth/LoginCard'
 
 /**
- * /auth/register — Registration page
+ * /auth/register â€” Registration page
  *
  * Supabase OTP-based auth creates accounts automatically for new users,
  * so registration and login share the same LoginCard component.
@@ -27,7 +27,7 @@ function RegisterContent() {
 
   // Determine contextual heading
   let heading = 'Create Your Free Account'
-  let subheading = 'Sign up to access the world\'s largest heavy haul network — 120 countries, escrow-protected payments, verified operators.'
+  let subheading = 'Sign up to access the world\'s largest heavy haul network â€” 120 countries, escrow-protected payments, verified operators.'
 
   if (intent === 'claim') {
     heading = 'Sign Up to Claim Your Listing'

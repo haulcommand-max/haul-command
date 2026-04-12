@@ -172,7 +172,7 @@ export function FormHubClient({ userId, templates, documents, profile }: any) {
                    <div>
                      <h3 className="font-bold text-white text-lg">{doc.title}</h3>
                      <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-mono">
-                       ID: {doc.id.split('-')[0]} • Signed: {new Date(doc.created_at).toLocaleDateString()}
+                       ID: {doc.id.split('-')[0]} â€¢ Signed: {new Date(doc.created_at).toLocaleDateString()}
                      </p>
                    </div>
                  </div>

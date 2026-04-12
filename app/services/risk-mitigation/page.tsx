@@ -31,7 +31,7 @@ const RISK_LAYERS = [
   {
     icon: Scale,
     title: "Compliance Automation",
-    desc: "Escort count requirements, permit needs, equipment mandates — auto-checked for every state on the route. Never get fined for a compliance gap again.",
+    desc: "Escort count requirements, permit needs, equipment mandates â€” auto-checked for every state on the route. Never get fined for a compliance gap again.",
   },
   {
     icon: Eye,
@@ -52,7 +52,7 @@ const RISK_LAYERS = [
 
 export default function RiskMitigationPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(245,158,11,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto">

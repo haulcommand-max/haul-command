@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function AlertsSubscribePage() {
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className=" bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Grid & Gradient */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />

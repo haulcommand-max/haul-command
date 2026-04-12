@@ -24,10 +24,10 @@ const SEVERITY_COLORS: Record<string, string> = {
 };
 
 const SEVERITY_EMOJI: Record<string, string> = {
-    P0: '🔴',
-    P1: '🟠',
-    P2: '🔵',
-    P3: '⚪',
+    P0: 'ðŸ”´',
+    P1: 'ðŸŸ ',
+    P2: 'ðŸ”µ',
+    P3: 'âšª',
 };
 
 export default function OpsAdminPage() {
@@ -77,10 +77,10 @@ export default function OpsAdminPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div>
                     <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', margin: 0 }}>
-                        ⚙️ Ops Events
+                        âš™ï¸ Ops Events
                     </h1>
                     <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', margin: '4px 0 0' }}>
-                        {events.length} events · {unackCount > 0 && (
+                        {events.length} events Â· {unackCount > 0 && (
                             <span style={{ color: '#ef4444', fontWeight: 600 }}>
                                 {unackCount} unacknowledged critical
                             </span>
@@ -189,7 +189,7 @@ export default function OpsAdminPage() {
                                         rel="noopener"
                                         style={{ color: '#38bdf8', fontSize: '11px', marginLeft: '8px', textDecoration: 'none' }}
                                     >
-                                        View Run ↗
+                                        View Run â†—
                                     </a>
                                 )}
                                 {typeof ev.metadata?.deploy_url === 'string' && (
@@ -199,7 +199,7 @@ export default function OpsAdminPage() {
                                         rel="noopener"
                                         style={{ color: '#22c55e', fontSize: '11px', marginLeft: '8px', textDecoration: 'none' }}
                                     >
-                                        Deploy ↗
+                                        Deploy â†—
                                     </a>
                                 )}
                             </div>
@@ -222,7 +222,7 @@ export default function OpsAdminPage() {
                                     </button>
                                 )}
                                 {ev.acknowledged && (
-                                    <span style={{ fontSize: '11px', color: '#22c55e' }}>✓</span>
+                                    <span style={{ fontSize: '11px', color: '#22c55e' }}>âœ“</span>
                                 )}
                             </div>
                         </div>

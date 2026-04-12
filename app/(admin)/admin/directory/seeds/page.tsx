@@ -64,7 +64,7 @@ export default function DirectorySeedsPage() {
         });
         const data = await res.json();
         const r = data.result;
-        setProcessResult(`✅ Imported: ${r?.imported ?? 0} · Duplicates: ${r?.duplicate ?? 0} · Failed: ${r?.failed ?? 0}`);
+        setProcessResult(`âœ… Imported: ${r?.imported ?? 0} Â· Duplicates: ${r?.duplicate ?? 0} Â· Failed: ${r?.failed ?? 0}`);
         setProcessing(false);
         fetchEntries(statusFilter);
         fetchStats();
@@ -76,7 +76,7 @@ export default function DirectorySeedsPage() {
         setImportResult(null);
         const lines = pasteInput.trim().split('\n').filter(l => l.trim());
         const rowEntries = lines.map(line => {
-            const m = line.match(/^(.+?)\s*[-–|,]\s*(.+?),\s*([A-Z]{2})$/i);
+            const m = line.match(/^(.+?)\s*[-â€“|,]\s*(.+?),\s*([A-Z]{2})$/i);
             if (m) return { company_name: m[1].trim(), city: m[2].trim(), state_abbr: m[3].toUpperCase() };
             return { company_name: line.trim() };
         }).filter(e => e.company_name.length > 2);
@@ -87,7 +87,7 @@ export default function DirectorySeedsPage() {
             body: JSON.stringify({ entries: rowEntries }),
         });
         const data = await res.json();
-        setImportResult(`✅ Queued ${data.inserted ?? 0} entries`);
+        setImportResult(`âœ… Queued ${data.inserted ?? 0} entries`);
         setPasteInput('');
         setImporting(false);
         fetchEntries(statusFilter);
@@ -95,10 +95,10 @@ export default function DirectorySeedsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-50 p-6 space-y-8">
+        <div className="  text-slate-50 p-6 space-y-8">
             <div>
                 <h1 className="text-3xl font-extrabold text-white">Directory Seed Queue</h1>
-                <p className="text-slate-400 mt-1">Import competitor listings → unclaimed profiles → claim campaign.</p>
+                <p className="text-slate-400 mt-1">Import competitor listings â†’ unclaimed profiles â†’ claim campaign.</p>
             </div>
 
             {/* Stats */}
@@ -116,7 +116,7 @@ export default function DirectorySeedsPage() {
             <div className="flex flex-wrap items-center gap-3">
                 <button aria-label="Interactive Button" onClick={handleProcessAll} disabled={processing || stats.pending === 0}
                     className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-white font-bold px-5 py-2 rounded-lg transition-colors">
-                    {processing ? '⟳ Processing...' : `▶ Process All Pending (${stats.pending})`}
+                    {processing ? 'âŸ³ Processing...' : `â–¶ Process All Pending (${stats.pending})`}
                 </button>
                 {processResult && <span className="text-sm text-slate-300">{processResult}</span>}
             </div>
@@ -127,11 +127,11 @@ export default function DirectorySeedsPage() {
                 <p className="text-slate-400 text-sm">One per line: <code className="text-amber-400">Company Name - City, ST</code></p>
                 <textarea value={pasteInput} onChange={e => setPasteInput(e.target.value)} rows={5}
                     placeholder="1st Amber Lights Pilot Car - Boring, OR&#10;A-1 Pilot Car Inc - Phoenix, AZ"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-amber-500" />
+                    className="w-full  border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-amber-500" />
                 <div className="flex items-center gap-3">
                     <button aria-label="Interactive Button" onClick={handleImport} disabled={importing || !pasteInput.trim()}
                         className="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-white font-semibold px-4 py-2 rounded-lg text-sm">
-                        {importing ? '⟳ Importing...' : '↑ Queue for Import'}
+                        {importing ? 'âŸ³ Importing...' : 'â†‘ Queue for Import'}
                     </button>
                     {importResult && <span className="text-sm text-slate-300">{importResult}</span>}
                 </div>
@@ -158,19 +158,19 @@ export default function DirectorySeedsPage() {
                         ) : entries.map(e => (
                             <tr key={e.id} className="border-t border-slate-700/50 hover:bg-slate-800/30">
                                 <td className="px-4 py-3 text-white font-medium">{e.company_name}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.city ?? '—'}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.state_abbr ?? '—'}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.phone ?? '—'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.city ?? 'â€”'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.state_abbr ?? 'â€”'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.phone ?? 'â€”'}</td>
                                 <td className="px-4 py-3">
                                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${STATUS_COLORS[e.status] ?? ''}`}>{e.status}</span>
                                 </td>
-                                <td className="px-4 py-3 text-slate-500 text-xs">{e.notes ?? '—'}</td>
+                                <td className="px-4 py-3 text-slate-500 text-xs">{e.notes ?? 'â€”'}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            {total > 0 && <p className="text-slate-500 text-sm">{total} total entries · showing {entries.length}</p>}
+            {total > 0 && <p className="text-slate-500 text-sm">{total} total entries Â· showing {entries.length}</p>}
         </div>
     );
 }

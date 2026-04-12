@@ -21,12 +21,12 @@ export default function VendorApplyThanksPage() {
                 <h2 className="font-semibold text-gray-800">Next steps</h2>
                 <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex gap-2">
-                        <span className="text-orange-500">›</span>
+                        <span className="text-orange-500">â€º</span>
                         If you chose a paid tier, we&apos;ll send the setup link after approval.
                     </li>
                     <li className="flex gap-2">
-                        <span className="text-orange-500">›</span>
-                        Make sure dispatch answers fast — missed calls hurt rankings later.
+                        <span className="text-orange-500">â€º</span>
+                        Make sure dispatch answers fast â€” missed calls hurt rankings later.
                     </li>
                 </ul>
             </div>

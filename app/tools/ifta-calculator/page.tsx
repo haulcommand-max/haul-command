@@ -59,9 +59,9 @@ export default function IftaCalculatorPage() {
   const totalOwed = results.reduce((acc, curr) => acc + curr.tax, 0);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="  text-slate-50">
       {/* Hero Header */}
-      <div className="border-b border-slate-800 bg-slate-900/50 pt-20 pb-16">
+      <div className="border-b border-slate-800 /50 pt-20 pb-16">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="flex gap-2 items-center text-orange-500 mb-6 font-mono text-sm uppercase tracking-wider">
             <Fuel className="h-4 w-4" />
@@ -75,15 +75,15 @@ export default function IftaCalculatorPage() {
           </p>
           
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center gap-3">
+            <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
               <span className="text-sm text-slate-300">2026 Q1 Rates Loaded</span>
             </div>
-            <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center gap-3">
+            <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
               <span className="text-sm text-slate-300">Fast & Accurate</span>
             </div>
-            <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center gap-3">
+            <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
               <span className="text-sm text-slate-300">No Account Required</span>
             </div>
@@ -96,7 +96,7 @@ export default function IftaCalculatorPage() {
           
           {/* Main Calculator */}
           <div className="md:col-span-2 space-y-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+            <div className=" border border-slate-800 rounded-xl p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   <Calculator className="h-5 w-5 text-indigo-400" />
@@ -125,7 +125,7 @@ export default function IftaCalculatorPage() {
               {/* Rows */}
               <div className="space-y-3 mb-6">
                 {entries.map((entry, idx) => (
-                  <div key={idx} className="grid grid-cols-12 gap-4 items-center px-2 py-1 rounded bg-slate-900 hover:bg-slate-800/50 transition-colors">
+                  <div key={idx} className="grid grid-cols-12 gap-4 items-center px-2 py-1 rounded  hover:bg-slate-800/50 transition-colors">
                     <div className="col-span-3">
                       <select 
                         value={entry.state}
@@ -185,8 +185,8 @@ export default function IftaCalculatorPage() {
           <div className="space-y-6">
             
             {/* Results Panel */}
-            <div className="bg-slate-900 border border-indigo-500/30 rounded-xl overflow-hidden shadow-2xl shadow-indigo-900/20">
-              <div className="bg-slate-900 border-b border-slate-800 p-6 text-center relative overflow-hidden">
+            <div className=" border border-indigo-500/30 rounded-xl overflow-hidden shadow-2xl shadow-indigo-900/20">
+              <div className=" border-b border-slate-800 p-6 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
                 <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2">Estimated IFTA {totalOwed >= 0 ? "Owed" : "Credit"}</h3>
                 <div className="text-4xl font-black text-white">
@@ -194,7 +194,7 @@ export default function IftaCalculatorPage() {
                 </div>
               </div>
               
-              <div className="bg-slate-950 p-6 space-y-4">
+              <div className=" p-6 space-y-4">
                 <div className="text-sm font-medium text-slate-300 border-b border-slate-800 pb-2">Breakdown</div>
                 {results.map((r, i) => (
                   <div key={i} className="flex justify-between items-center text-sm">
@@ -214,7 +214,7 @@ export default function IftaCalculatorPage() {
                 <Fuel className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2 leading-tight">
-                Save 40¢/gal on diesel across the US.
+                Save 40Â¢/gal on diesel across the US.
               </h3>
               <p className="text-sm text-slate-300 mb-6 drop-shadow-sm">
                 Tired of massive IFTA bills? Connect your Haul Command account with the leading heavy-haul fuel card and get exclusive discounts.
@@ -225,7 +225,7 @@ export default function IftaCalculatorPage() {
             </div>
             
             {/* Tax Help Ops Prompt */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+            <div className=" border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
               <div>
                 <h3 className="font-bold text-white mb-2">Automate Your Compliance</h3>
                 <p className="text-sm text-slate-400 mb-4">

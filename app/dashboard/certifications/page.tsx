@@ -93,7 +93,7 @@ export default function CertificationsDashboard() {
 
   const share = (cert: Certification) => {
     const url = `${window.location.origin}/training/verify/${cert.id}`;
-    const text = `I just earned my ${TIER_NAMES[cert.certification_tier]} Certification from Haul Command — the only global training program for escort operators working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors. #HaulCommand #PilotCar #HeavyHaul ${url}`;
+    const text = `I just earned my ${TIER_NAMES[cert.certification_tier]} Certification from Haul Command â€” the only global training program for escort operators working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors. #HaulCommand #PilotCar #HeavyHaul ${url}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(() => {
         setShareMsg('Copied to clipboard!');
@@ -115,7 +115,7 @@ export default function CertificationsDashboard() {
         fontFamily: "'Inter','Segoe UI',system-ui,sans-serif",
       }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>⏳</div>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>â³</div>
           <div style={{ fontWeight: 600 }}>Loading your certifications...</div>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function CertificationsDashboard() {
           padding: '10px 20px', borderRadius: 10, fontWeight: 700, fontSize: 14,
           boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
         }}>
-          ✓ {shareMsg}
+          âœ“ {shareMsg}
         </div>
       )}
 
@@ -161,7 +161,7 @@ export default function CertificationsDashboard() {
       </div>
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '32px 24px' }}>
-        {/* ── ACTIVE CERTIFICATIONS ── */}
+        {/* â”€â”€ ACTIVE CERTIFICATIONS â”€â”€ */}
         {activeCerts.length > 0 ? (
           <section style={{ marginBottom: 48 }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 20 }}>Active Credentials</h2>
@@ -186,9 +186,9 @@ export default function CertificationsDashboard() {
                         fontSize: 13, color: '#ef4444', fontWeight: 600,
                         display: 'flex', alignItems: 'center', gap: 8,
                       }}>
-                        ⚠️ Your {TIER_NAMES[cert.certification_tier]} expires in {days} days. Renew now to keep your badge active.
+                        âš ï¸ Your {TIER_NAMES[cert.certification_tier]} expires in {days} days. Renew now to keep your badge active.
                         <Link aria-label="Navigation Link" href="/training" style={{ color: '#F5A623', marginLeft: 'auto', flexShrink: 0, textDecoration: 'none' }}>
-                          Renew →
+                          Renew â†’
                         </Link>
                       </div>
                     )}
@@ -236,7 +236,7 @@ export default function CertificationsDashboard() {
                             color: '#9a9ab0', fontSize: 12, fontWeight: 600,
                             textDecoration: 'none', textAlign: 'center',
                           }}>
-                          🔗 Verify
+                          ðŸ”— Verify
                         </Link>
                         <button aria-label="Interactive Button"
                           onClick={() => share(cert)}
@@ -246,7 +246,7 @@ export default function CertificationsDashboard() {
                             color: '#F5A623', fontSize: 12, fontWeight: 600,
                             cursor: 'pointer',
                           }}>
-                          📤 Share
+                          ðŸ“¤ Share
                         </button>
                       </div>
                     </div>
@@ -260,7 +260,7 @@ export default function CertificationsDashboard() {
             background: '#111118', border: '1px solid #1a1a22',
             borderRadius: 14, padding: '32px 24px', textAlign: 'center', marginBottom: 48,
           }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>🏅</div>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>ðŸ…</div>
             <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>No active certifications yet</h3>
             <p style={{ color: '#6a6a7a', marginBottom: 20, fontSize: 14, lineHeight: 1.6 }}>
               Certified operators get 3x more load offers and priority placement in AV corridor searches.<br />
@@ -271,12 +271,12 @@ export default function CertificationsDashboard() {
               background: 'linear-gradient(135deg, #F5A623, #e08820)',
               color: '#000', fontWeight: 800, textDecoration: 'none', fontSize: 14,
             }}>
-              🎓 Start Module 1 — Free
+              ðŸŽ“ Start Module 1 â€” Free
             </Link>
           </div>
         )}
 
-        {/* ── MODULE PROGRESS ── */}
+        {/* â”€â”€ MODULE PROGRESS â”€â”€ */}
         <section>
           <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 20 }}>Module Progress</h2>
 
@@ -305,7 +305,7 @@ export default function CertificationsDashboard() {
                   <div style={{ flex: 1, minWidth: 200 }}>
                     <div style={{ fontSize: 14, fontWeight: 700 }}>{m.title}</div>
                     <div style={{ fontSize: 11, color: '#6a6a7a', marginTop: 2 }}>
-                      ⏱ {m.duration_minutes}m
+                      â± {m.duration_minutes}m
                     </div>
                   </div>
 
@@ -315,7 +315,7 @@ export default function CertificationsDashboard() {
                     minWidth: 80, textAlign: 'right',
                   }}>
                     {status.replace('_', ' ')}
-                    {m.progress?.score !== null && m.progress?.score !== undefined && ` — ${m.progress.score}%`}
+                    {m.progress?.score !== null && m.progress?.score !== undefined && ` â€” ${m.progress.score}%`}
                   </div>
 
                   <Link aria-label="Navigation Link" href={`/training/${m.slug}`} style={{
@@ -328,7 +328,7 @@ export default function CertificationsDashboard() {
                     fontSize: 12, fontWeight: 700,
                     textDecoration: 'none', flexShrink: 0,
                   }}>
-                    {status === 'passed' ? '✓ Review' : status === 'in_progress' ? 'Resume →' : 'Start →'}
+                    {status === 'passed' ? 'âœ“ Review' : status === 'in_progress' ? 'Resume â†’' : 'Start â†’'}
                   </Link>
                 </div>
               );

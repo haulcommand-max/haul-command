@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function GettingStartedPage() {
     return (
-        <main className="min-h-screen bg-transparent text-gray-100">
+        <main className=" bg-transparent text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
-                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
+                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">â† Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Getting Started</h1>
                 <p className="text-lg text-gray-400 mb-12">Integrate with the Haul Command Data API in 5 minutes.</p>
 
@@ -24,7 +24,7 @@ export default function GettingStartedPage() {
      -H "Content-Type: application/json" \\
      -H "Cookie: your_session_cookie" \\
      -d '{"label": "Production Key"}'`}</Pre>
-                        <p className="mt-3 text-sm text-amber-400">⚠ The API key is shown only once. Store it securely.</p>
+                        <p className="mt-3 text-sm text-amber-400">âš  The API key is shown only once. Store it securely.</p>
                     </Step>
 
                     <Step number={3} title="Make Your First Request">
@@ -35,7 +35,7 @@ export default function GettingStartedPage() {
                     <Step number={4} title="Read Confidence Metadata">
                         <p className="mb-4">Every response includes a <code className="text-blue-400">_confidence</code> object with machine-readable trust signals:</p>
                         <Pre>{`{
-  "confidence_score": 0.82,     // 0–1 float
+  "confidence_score": 0.82,     // 0â€“1 float
   "confidence_band": "high",    // verified | high | medium | low
   "data_freshness_seconds": 1847,
   "geo_precision_level": "corridor",
@@ -58,10 +58,10 @@ export default function GettingStartedPage() {
                 <div className="mt-16 rounded-xl bg-gray-900 border border-gray-800 p-6">
                     <h3 className="font-semibold text-white mb-2">Next Steps</h3>
                     <ul className="space-y-2 text-sm text-gray-400">
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/authentication" className="text-blue-400 hover:underline">Authentication deep dive</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/rate-limits" className="text-blue-400 hover:underline">Rate limits & quotas</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/developers/examples" className="text-blue-400 hover:underline">Code examples (TS, Python, cURL)</Link></li>
-                        <li>→ <Link aria-label="Navigation Link" href="/api/enterprise/openapi.json" className="text-blue-400 hover:underline">Full OpenAPI specification</Link></li>
+                        <li>â†’ <Link aria-label="Navigation Link" href="/developers/authentication" className="text-blue-400 hover:underline">Authentication deep dive</Link></li>
+                        <li>â†’ <Link aria-label="Navigation Link" href="/developers/rate-limits" className="text-blue-400 hover:underline">Rate limits & quotas</Link></li>
+                        <li>â†’ <Link aria-label="Navigation Link" href="/developers/examples" className="text-blue-400 hover:underline">Code examples (TS, Python, cURL)</Link></li>
+                        <li>â†’ <Link aria-label="Navigation Link" href="/api/enterprise/openapi.json" className="text-blue-400 hover:underline">Full OpenAPI specification</Link></li>
                     </ul>
                 </div>
             </div>

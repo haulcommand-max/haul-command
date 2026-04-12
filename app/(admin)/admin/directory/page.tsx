@@ -27,7 +27,7 @@ export default function DirectoryPage() {
                         rating: p.trust_score || 0, jobs: 0,
                         verified: p.is_verified || false,
                         sponsor: !!p.boost_tier,
-                        response: '—',
+                        response: 'â€”',
                     })));
                 }
             } catch { /* graceful */ }
@@ -87,7 +87,7 @@ export default function DirectoryPage() {
                     <div className="text-center py-20 text-[#444]">Loading directory...</div>
                 ) : providers.length === 0 ? (
                     <div className="text-center py-20">
-                        <div className="text-4xl mb-4">📂</div>
+                        <div className="text-4xl mb-4">ðŸ“‚</div>
                         <h3 className="text-lg font-bold text-[#888] mb-2">Directory Empty</h3>
                         <p className="text-sm text-[#444]">No operators in the directory yet. Run the seed script or import operators to populate.</p>
                     </div>
@@ -175,7 +175,7 @@ function ProviderCard({ provider, onClick }: any) {
             </div>
             <div className="flex items-center gap-4 text-[10px] font-bold text-[#444]">
                 <div className="flex items-center gap-1">
-                    <span className="text-[#ffb400]">★</span> {provider.rating}
+                    <span className="text-[#ffb400]">â˜…</span> {provider.rating}
                 </div>
                 <div>{provider.jobs} Jobs</div>
                 <div className="text-[#ffb400]">{provider.region}</div>

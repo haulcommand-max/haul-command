@@ -100,7 +100,7 @@ export default function EarningsDashboardPage() {
         </button>
       </div>
 
-      {/* QuickPay Dashboard Card — above hero metrics */}
+      {/* QuickPay Dashboard Card â€” above hero metrics */}
       {isClaimed && availableDollars > 0 && (
         <div className="px-4 pt-4">
           <QuickPayDashboardCard
@@ -234,7 +234,7 @@ export default function EarningsDashboardPage() {
                   {/* Route row */}
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-white/90 truncate">{run.origin}</span>
-                    <span className="text-white/30 text-xs">→</span>
+                    <span className="text-white/30 text-xs">â†’</span>
                     <span className="text-sm font-bold text-white/90 truncate">{run.dest}</span>
                   </div>
 
@@ -266,4 +266,3 @@ export default function EarningsDashboardPage() {
     </div>
   );
 }
-

@@ -19,7 +19,7 @@ export default async function LiveNetworkFeed() {
   const operators = await getLiveOperators();
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-8">
+    <div className=" bg-[#050505] text-white p-8">
       <div className="max-w-6xl mx-auto">
         
         {/* Header section with live dopamine indicators */}
@@ -61,9 +61,9 @@ export default async function LiveNetworkFeed() {
                         </span>
                      </div>
                      <div className="text-sm text-gray-400 mt-1 flex space-x-4">
-                        <span>📍 {op.location}</span>
-                        <span>⭐ {op.rating}</span>
-                        <span>⏱️ Active {op.lastActive}</span>
+                        <span>ðŸ“ {op.location}</span>
+                        <span>â­ {op.rating}</span>
+                        <span>â±ï¸ Active {op.lastActive}</span>
                      </div>
                      <div className="text-xs text-yellow-600 mt-1 font-mono">{op.role} // {op.vehicle}</div>
                    </div>

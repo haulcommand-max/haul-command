@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Video Production Guide — Free Tools Only | Haul Command Admin',
+  title: 'Video Production Guide â€” Free Tools Only | Haul Command Admin',
   description: 'Step-by-step guide to producing YouTube videos using only free tools.',
 };
 
@@ -29,9 +29,9 @@ const STEPS = [
       'Select voice: \'Adam\' (authoritative) or \'Rachel\' (clear)',
       'Paste your script into the text box',
       'Click Generate, then Download MP3',
-      'OPTIONAL (→ $22/month): Go to Voice Lab → Clone a Voice',
+      'OPTIONAL (â†’ $22/month): Go to Voice Lab â†’ Clone a Voice',
       'Record yourself speaking for 60 seconds',
-      'Upload recording — ElevenLabs clones your voice',
+      'Upload recording â€” ElevenLabs clones your voice',
       'All future videos sound like you. No recording booth needed.',
     ],
   },
@@ -62,7 +62,7 @@ const STEPS = [
       'Play your ElevenLabs MP3 through headphones',
       'Start recording, advance slides to match the audio',
       'One slide every 15-30 seconds',
-      'Record in one take — perfection is not required',
+      'Record in one take â€” perfection is not required',
     ],
   },
   {
@@ -73,7 +73,7 @@ const STEPS = [
     instructions: [
       'Download CapCut free at capcut.com/tools/desktop-video-editor',
       'Import your screen recording',
-      'Click \'Auto Captions\' — CapCut generates captions in one click',
+      'Click \'Auto Captions\' â€” CapCut generates captions in one click',
       'Optional: Add 3-second intro card with Haul Command logo + black background',
       'Optional: Add end screen with haulcommand.com URL',
       'Export at 1080p HD',
@@ -90,7 +90,7 @@ const STEPS = [
       'Description: 300+ words. Put haulcommand.com link in first 3 lines.',
       'Tags: Add 10-15 tags from the script topic',
       'Thumbnail: Create in Canva (free). Dark background + bold gold text.',
-      'Thumbnail text example: “47 MIN FILL TIME” or “AV TRUCKS NEED ESCORTS”',
+      'Thumbnail text example: â€œ47 MIN FILL TIMEâ€ or â€œAV TRUCKS NEED ESCORTSâ€',
       'Set End Screen: link to haulcommand.com and suggest related video',
       'Add Cards: link to haulcommand.com/directory or relevant page',
     ],
@@ -109,7 +109,7 @@ const COST_SUMMARY = [
 
 export default function VideoGuidePage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">YouTube Video Production Guide</h1>
@@ -136,7 +136,7 @@ export default function VideoGuidePage() {
                   <ul className="space-y-1.5">
                     {s.instructions.map((inst, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                        <span className="text-amber-500 mt-0.5">→</span>
+                        <span className="text-amber-500 mt-0.5">â†’</span>
                         {inst}
                       </li>
                     ))}
@@ -163,7 +163,7 @@ export default function VideoGuidePage() {
           </table>
           <div className="mt-4 pt-4 border-t border-white/10 flex justify-between">
             <span className="font-bold">Total</span>
-            <span className="font-bold text-green-400">$0 — $22/month</span>
+            <span className="font-bold text-green-400">$0 â€” $22/month</span>
           </div>
         </div>
       </div>

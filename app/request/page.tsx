@@ -10,7 +10,7 @@ const SERVICE_LABELS: Record<string,string> = {
 
 export default function RequestPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#07090d] flex items-center justify-center"><div className="h-8 w-8 border-2 border-[#3b82f6] border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense fallback={<div className=" bg-[#07090d] flex items-center justify-center"><div className="h-8 w-8 border-2 border-[#3b82f6] border-t-transparent rounded-full animate-spin" /></div>}>
       <RequestPageInner />
     </Suspense>
   )
@@ -71,9 +71,9 @@ function RequestPageInner() {
   }
 
   if (done) return (
-    <div className="min-h-screen bg-[#07090d] flex items-center justify-center p-4">
+    <div className=" bg-[#07090d] flex items-center justify-center p-4">
       <div className="text-center max-w-sm">
-        <div className="text-4xl mb-4">✅</div>
+        <div className="text-4xl mb-4">âœ…</div>
         <h1 className="text-xl font-bold text-[#22c55e] mb-2">Request Sent!</h1>
         <p className="text-sm text-[#8a9ab0] mb-6">Your load request has been submitted. The operator will be notified immediately via push notification.</p>
         <div className="flex flex-col gap-2">
@@ -85,11 +85,11 @@ function RequestPageInner() {
   )
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+    <div className=" bg-[#07090d] text-[#f0f2f5]">
       <div className="px-4 lg:px-10 py-10 max-w-2xl mx-auto">
         <p className="text-[11px] tracking-[0.2em] text-[#3b82f6] font-semibold mb-2">LOAD REQUEST</p>
         <h1 className="text-2xl font-extrabold text-[#f0f2f5] mb-1">
-          Request {SERVICE_LABELS[serviceType] ?? 'Operator'}{state ? ` — ${state}` : ''}
+          Request {SERVICE_LABELS[serviceType] ?? 'Operator'}{state ? ` â€” ${state}` : ''}
         </h1>
         {operatorId && <p className="text-xs text-[#566880] mb-6 font-mono">Operator: {operatorId}</p>}
         <p className="text-sm text-[#8a9ab0] mb-8">Fill in your load details. The operator will receive a push notification and respond within their normal response window.</p>
@@ -143,7 +143,7 @@ function RequestPageInner() {
           {error&&<p className="text-xs text-red-400 bg-red-900/20 border border-red-900/30 rounded-xl px-4 py-3">{error}</p>}
 
           <button type="submit" disabled={loading} className="bg-[#3b82f6] hover:bg-[#2563eb] disabled:opacity-50 text-white font-bold py-4 rounded-xl text-sm transition-colors">
-            {loading ? 'Sending…' : 'Send Load Request →'}
+            {loading ? 'Sendingâ€¦' : 'Send Load Request â†’'}
           </button>
           <p className="text-[10px] text-[#3a5068] text-center">The operator receives a push notification immediately. Your contact details are only shared with this operator.</p>
         </form>

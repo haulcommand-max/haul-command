@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
-/* ══════════════════════════════════════════════════════════════
-   FOOTER ACCORDION — Mobile-First
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   FOOTER ACCORDION â€” Mobile-First
    Mobile: stacked accordion sections, tap to expand.
-   Desktop (≥768px): 4-column grid, all sections visible.
-   ══════════════════════════════════════════════════════════════ */
+   Desktop (â‰¥768px): 4-column grid, all sections visible.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const FOOTER_SECTIONS = [
     {
@@ -76,7 +76,7 @@ export function FooterAccordion() {
         <footer className="relative z-10 border-t border-white/[0.06]">
             {/* Mobile-first footer styles */}
             <style>{`
-                /* ── Mobile default: stacked accordion ── */
+                /* â”€â”€ Mobile default: stacked accordion â”€â”€ */
                 .ft-grid {
                     display: flex;
                     flex-direction: column;
@@ -117,12 +117,12 @@ export function FooterAccordion() {
                 .ft-body-inner {
                     padding-bottom: 16px;
                 }
-                /* Desktop title — hidden on mobile */
+                /* Desktop title â€” hidden on mobile */
                 .ft-desktop-title {
                     display: none;
                 }
 
-                /* ── Desktop (≥768px): 5-col grid, no accordion ── */
+                /* â”€â”€ Desktop (â‰¥768px): 5-col grid, no accordion â”€â”€ */
                 @media (min-width: 768px) {
                     .ft-grid {
                         display: grid;
@@ -213,14 +213,14 @@ export function FooterAccordion() {
                 <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
                         <span className="text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                            © 2026 Haul Command. The Operating System for Heavy Haul.
+                            Â© 2026 Haul Command. The Operating System for Heavy Haul.
                         </span>
                     </div>
                     <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
                         <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                        <span className="opacity-50 text-[10px]">•</span>
+                        <span className="opacity-50 text-[10px]">â€¢</span>
                         <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                        <span className="opacity-50 text-[10px]">•</span>
+                        <span className="opacity-50 text-[10px]">â€¢</span>
                         <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                     </div>
                 </div>

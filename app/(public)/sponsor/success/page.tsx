@@ -6,14 +6,14 @@ import Link from 'next/link';
 
 export default function SponsorSuccessPage() {
     return (
-        <div className="min-h-screen bg-[#050508] text-white flex items-center justify-center">
+        <div className=" bg-[#050508] text-white flex items-center justify-center">
             <div className="max-w-lg mx-auto text-center px-4">
                 <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-8">
                     <CheckCircle className="w-10 h-10 text-emerald-500" />
                 </div>
 
                 <h1 className="text-4xl font-black tracking-tight mb-4">
-                    Territory Claimed! 🎉
+                    Territory Claimed! ðŸŽ‰
                 </h1>
 
                 <p className="text-slate-400 text-lg mb-8">

@@ -6,7 +6,7 @@ import { ProofStrip } from '@/components/ui/ProofStrip';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
-    title: "Find Verified Escorts Fast — Without the Guesswork | Haul Command",
+    title: "Find Verified Escorts Fast â€” Without the Guesswork | Haul Command",
     description: "Real coverage visibility, compliance tracked, faster backfill. Built for brokers who can't afford delays on oversize load escorts. Find verified pilot car operators in any US state.",
     keywords: ['heavy haul broker','find pilot car for load','oversize load broker','escort vehicle for load','pilot car availability'],
     alternates: { canonical: 'https://www.haulcommand.com/broker' },
@@ -43,8 +43,8 @@ const BROKER_SCHEMA = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'WebPage', name: 'Find Verified Escorts Fast | Haul Command Broker Hub', url: 'https://www.haulcommand.com/broker', description: 'The broker hub for finding verified pilot car operators and posting escort loads.', breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },{ '@type': 'ListItem', position: 2, name: 'Broker Hub', item: 'https://www.haulcommand.com/broker' }] } },
     { '@type': 'FAQPage', mainEntity: [
         { '@type': 'Question', name: 'How do I find a verified pilot car operator for my load?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for verified pilot car operators by state. You can also post your load on the load board and receive quotes from certified escorts in your area.' } },
-        { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement — include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
-        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3× more contact requests from brokers.' } },
+        { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement â€” include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
+        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3Ã— more contact requests from brokers.' } },
     ]},
 ] };
 
@@ -52,27 +52,27 @@ export default async function BrokerLandingPage() {
     const stats = await getBrokerStats();
 
     const brokerHooks = [
-        { icon: "👁️", text: "See who's actually available — not just listed" },
-        { icon: "🛡️", text: "Avoid no-show escorts — compliance verified before dispatch" },
-        { icon: "📋", text: "Keep compliance organized — certs and insurance on file" },
-        { icon: "⚡", text: "Backfill faster on tight loads — live coverage density map" },
+        { icon: "ðŸ‘ï¸", text: "See who's actually available â€” not just listed" },
+        { icon: "ðŸ›¡ï¸", text: "Avoid no-show escorts â€” compliance verified before dispatch" },
+        { icon: "ðŸ“‹", text: "Keep compliance organized â€” certs and insurance on file" },
+        { icon: "âš¡", text: "Backfill faster on tight loads â€” live coverage density map" },
     ];
 
     const trustStack = [
         {
             metric: stats.activeEscorts > 0 ? stats.activeEscorts.toString() : "Live",
             label: "Verified escorts active",
-            icon: "🚘",
+            icon: "ðŸš˜",
         },
         {
             metric: "< 15 min",
             label: "Median first response",
-            icon: "⚡",
+            icon: "âš¡",
         },
         {
             metric: stats.jobsThisWeek > 0 ? `${stats.jobsThisWeek}` : "Active",
             label: "Jobs covered this week",
-            icon: "✅",
+            icon: "âœ…",
         },
     ];
 
@@ -80,8 +80,8 @@ export default async function BrokerLandingPage() {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(BROKER_SCHEMA) }} />
             <ProofStrip variant="bar" />
-            <main className="min-h-screen bg-slate-900 text-slate-50">
-            {/* ── HERO ─────────────────────────────────────────────── */}
+            <main className="  text-slate-50">
+            {/* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-b border-slate-700/50 py-24 px-4 overflow-hidden">
                 {/* Background glow */}
                 <div className="absolute inset-0 bg-amber-500/5 pointer-events-none" />
@@ -89,16 +89,16 @@ export default async function BrokerLandingPage() {
 
                 <div className="max-w-3xl mx-auto text-center relative">
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-6">
-                        🚛 Built for Heavy Haul Brokers
+                        ðŸš› Built for Heavy Haul Brokers
                     </div>
 
                     <h1 className="text-5xl lg:text-6xl font-extrabold text-white mb-5 leading-tight tracking-tight">
-                        Find Verified Escorts Fast —{" "}
+                        Find Verified Escorts Fast â€”{" "}
                         <span className="text-amber-400">Without the Guesswork</span>
                     </h1>
 
                     <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
-                        Real coverage visibility · Compliance tracked · Faster backfill
+                        Real coverage visibility Â· Compliance tracked Â· Faster backfill
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -107,7 +107,7 @@ export default async function BrokerLandingPage() {
                             id="broker-cta-live-coverage"
                             className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
                         >
-                            Check Live Coverage →
+                            Check Live Coverage â†’
                         </Link>
                         <Link aria-label="Navigation Link"
                             href="/loads/new"
@@ -120,7 +120,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── TRUST STACK ──────────────────────────────────────── */}
+            {/* â”€â”€ TRUST STACK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="border-b border-slate-700/50 py-8 px-4">
                 <div className="max-w-3xl mx-auto grid grid-cols-3 gap-6 text-center">
                     {trustStack.map((s) => (
@@ -133,7 +133,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── NATIVE AD ──────────────────────────────────────── */}
+            {/* â”€â”€ NATIVE AD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="py-6 px-4">
                 <div className="max-w-3xl mx-auto">
                     <NativeAdCard
@@ -144,7 +144,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── BROKER HOOKS ─────────────────────────────────────── */}
+            {/* â”€â”€ BROKER HOOKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="py-20 px-4">
                 <div className="max-w-3xl mx-auto">
                     <div className="text-center mb-12">
@@ -170,7 +170,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── HOW IT WORKS ─────────────────────────────────────── */}
+            {/* â”€â”€ HOW IT WORKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="bg-slate-800/40 border-y border-slate-700/50 py-20 px-4">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl font-extrabold text-white mb-12">
@@ -206,34 +206,34 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── FINAL CTA ────────────────────────────────────────── */}
+            {/* â”€â”€ FINAL CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <section className="py-20 px-4 text-center">
                 <div className="max-w-xl mx-auto">
                     <h2 className="text-3xl font-extrabold text-white mb-4">Ready to stop cold-calling for escorts?</h2>
                     <p className="text-slate-400 mb-8">Free to start. Find your first verified escort today.</p>
-                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage →</Link>
+                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage â†’</Link>
                 </div>
             </section>
 
             {/* Internal link mesh */}
             <section className="border-t border-slate-700/50 py-8 px-4">
                 <div className="max-w-3xl mx-auto flex flex-wrap gap-3 justify-center">
-                    <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">📖 What Is a Pilot Car?</Link>
-                    <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400 hover:bg-amber-500/10 transition-all">🧮 Escort Calculator</Link>
-                    <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">⚖️ State Escort Rules</Link>
-                    <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400 hover:bg-green-500/10 transition-all">🔍 Browse Directory</Link>
-                    <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">🟢 Available Right Now</Link>
-                    <Link href="/pricing" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">💲 Broker Plans</Link>
+                    <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">ðŸ“– What Is a Pilot Car?</Link>
+                    <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400 hover:bg-amber-500/10 transition-all">ðŸ§® Escort Calculator</Link>
+                    <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">âš–ï¸ State Escort Rules</Link>
+                    <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400 hover:bg-green-500/10 transition-all">ðŸ” Browse Directory</Link>
+                    <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">ðŸŸ¢ Available Right Now</Link>
+                    <Link href="/pricing" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">ðŸ’² Broker Plans</Link>
                 </div>
             </section>
 
             <NoDeadEndBlock heading="Ready to Find Escorts or Cover a Load?" moves={[
-                { href: '/map', icon: '🗺️', title: 'Check Live Coverage', desc: 'Real-time operator density', primary: true, color: '#D4A844' },
-                { href: '/loads/new', icon: '📦', title: 'Post an Escort Need', desc: 'Quotes in under 15 min', primary: true, color: '#22C55E' },
-                { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators broadcasting live' },
-                { href: '/directory', icon: '🔍', title: 'Browse Directory', desc: 'Search by state & specialty' },
-                { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many pilot cars?' },
-                { href: '/pricing', icon: '💎', title: 'Broker Pro Plan', desc: 'Priority access $99/mo' },
+                { href: '/map', icon: 'ðŸ—ºï¸', title: 'Check Live Coverage', desc: 'Real-time operator density', primary: true, color: '#D4A844' },
+                { href: '/loads/new', icon: 'ðŸ“¦', title: 'Post an Escort Need', desc: 'Quotes in under 15 min', primary: true, color: '#22C55E' },
+                { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Now', desc: 'Operators broadcasting live' },
+                { href: '/directory', icon: 'ðŸ”', title: 'Browse Directory', desc: 'Search by state & specialty' },
+                { href: '/tools/escort-calculator', icon: 'ðŸ§®', title: 'Escort Calculator', desc: 'How many pilot cars?' },
+                { href: '/pricing', icon: 'ðŸ’Ž', title: 'Broker Pro Plan', desc: 'Priority access $99/mo' },
             ]} />
 
             </main>

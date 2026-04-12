@@ -7,13 +7,13 @@ const SIZES = [14, 16, 18, 20, 24, 32];
 const VARIANTS: HcVariant[] = ['outline', 'filled', 'duotone', 'active_selected', 'map_pin', 'badge_mini', 'app_nav', 'empty_state'];
 
 const GROUP_LABELS: Record<string, string> = {
-    core_market: '🏗️ Core Market',
-    infrastructure: '🛣️ Infrastructure',
-    support_services: '🔧 Support Services',
-    commerce_marketplace: '🏪 Commerce & Marketplace',
-    compliance_finance: '📋 Compliance & Finance',
-    platform_surfaces: '💻 Platform Surfaces',
-    status_badges: '🏷️ Status Badges',
+    core_market: 'ðŸ—ï¸ Core Market',
+    infrastructure: 'ðŸ›£ï¸ Infrastructure',
+    support_services: 'ðŸ”§ Support Services',
+    commerce_marketplace: 'ðŸª Commerce & Marketplace',
+    compliance_finance: 'ðŸ“‹ Compliance & Finance',
+    platform_surfaces: 'ðŸ’» Platform Surfaces',
+    status_badges: 'ðŸ·ï¸ Status Badges',
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -47,7 +47,7 @@ export default function IconPreviewPage() {
     const subText = darkMode ? 'text-gray-400' : 'text-gray-500';
 
     return (
-        <div className={`min-h-screen transition-colors ${bg}`}>
+        <div className={` transition-colors ${bg}`}>
             <div className={`sticky top-0 z-50 backdrop-blur-xl border-b ${headerBg}`}>
                 <div className="max-w-[1600px] mx-auto px-6 py-4">
                     <div className="flex items-center justify-between mb-3">
@@ -58,7 +58,7 @@ export default function IconPreviewPage() {
                             </p>
                         </div>
                         <button aria-label="Interactive Button" onClick={() => setDarkMode(!darkMode)} className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-all ${darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-[#1A1A1A] border-white/10 hover:bg-gray-200'}`}>
-                            {darkMode ? '☀ Light' : '🌙 Dark'}
+                            {darkMode ? 'â˜€ Light' : 'ðŸŒ™ Dark'}
                         </button>
                     </div>
 
@@ -113,7 +113,7 @@ export default function IconPreviewPage() {
 
                 {/* All-variants strip */}
                 <div className={`mt-10 p-6 rounded-2xl border ${darkMode ? 'bg-white/[0.02] border-white/[0.06]' : 'bg-[#121212] border-white/10'}`}>
-                    <h3 className="text-sm font-black uppercase tracking-wider mb-4">All 8 Variants — Side by Side</h3>
+                    <h3 className="text-sm font-black uppercase tracking-wider mb-4">All 8 Variants â€” Side by Side</h3>
                     <div className="space-y-3 max-h-[600px] overflow-y-auto">
                         {filtered.slice(0, 30).map(icon => {
                             const Ic = icon.component;

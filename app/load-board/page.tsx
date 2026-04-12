@@ -22,7 +22,7 @@ export default async function LoadBoard() {
         .limit(50);
 
     return (
-        <main className="min-h-screen bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
+        <main className=" bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
             <header className="mb-10 max-w-7xl mx-auto border-b border-gray-900 pb-6 flex justify-between items-end">
                 <div>
                     <h1 className="text-5xl font-black uppercase text-white tracking-tighter">Command Center</h1>
@@ -45,10 +45,10 @@ export default async function LoadBoard() {
                         <div key={load.id} className="bg-gray-900 border border-gray-800 p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:border-gray-600 transition-colors group">
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <h3 className="text-2xl font-bold uppercase tracking-tight">{load.origin_city} <span className="text-gray-500 mx-2">→</span> {load.destination_city}</h3>
+                                    <h3 className="text-2xl font-bold uppercase tracking-tight">{load.origin_city} <span className="text-gray-500 mx-2">â†’</span> {load.destination_city}</h3>
                                     {isVerifiedEscrow && (
                                         <span className="bg-green-900/30 text-green-400 border border-green-800 px-3 py-1 text-xs font-bold uppercase tracking-widest">
-                                            ✅ VERIFIED FUNDS
+                                            âœ… VERIFIED FUNDS
                                         </span>
                                     )}
                                 </div>

@@ -21,13 +21,13 @@ export default async function GearStorePage() {
         .order('price_usd', { ascending: false });
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200">
+        <div className="  text-slate-200">
             {/* Hero Section */}
             <div className="relative pt-32 pb-20 overflow-hidden">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-amber-500/10 blur-[120px] rounded-full point-events-none" />
 
                 <div className="max-w-6xl mx-auto px-6 relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full mb-8">
+                    <div className="inline-flex items-center gap-2 px-4 py-2  border border-slate-800 rounded-full mb-8">
                         <ShoppingCart className="w-4 h-4 text-amber-500" />
                         <span className="text-sm font-bold text-slate-300 tracking-widest uppercase">Outfitters</span>
                     </div>
@@ -53,12 +53,12 @@ export default async function GearStorePage() {
             <div className="max-w-6xl mx-auto px-6 pb-32">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {products?.map((product) => (
-                        <div key={product.id} className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all group flex flex-col">
+                        <div key={product.id} className=" border border-slate-800 rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all group flex flex-col">
                             {/* Product Image Placeholder */}
-                            <div className="h-64 bg-slate-950 w-full relative p-6 flex flex-col items-center justify-center border-b border-slate-800">
+                            <div className="h-64  w-full relative p-6 flex flex-col items-center justify-center border-b border-slate-800">
                                 <span className="text-6xl group-hover:scale-110 transition-transform duration-500 delay-75">
-                                    {product.category === 'height_poles' ? '📏' :
-                                        product.category === 'light_bars' ? '🚨' : '🚩'}
+                                    {product.category === 'height_poles' ? 'ðŸ“' :
+                                        product.category === 'light_bars' ? 'ðŸš¨' : 'ðŸš©'}
                                 </span>
                                 {product.fulfillment_type === 'internal_fba' && (
                                     <div className="absolute top-4 left-4 px-3 py-1 bg-amber-500/20 text-amber-500 text-xs font-black uppercase tracking-widest rounded-full">
@@ -93,7 +93,7 @@ export default async function GearStorePage() {
                 </div>
 
                 {products?.length === 0 && (
-                    <div className="text-center py-20 bg-slate-900 rounded-3xl border border-slate-800">
+                    <div className="text-center py-20  rounded-3xl border border-slate-800">
                         <h3 className="text-2xl font-bold text-white mb-2">Store is restocking...</h3>
                         <p className="text-slate-400">Our first batch of Outfitters gear sold out. Check back soon.</p>
                     </div>
@@ -111,7 +111,7 @@ export default async function GearStorePage() {
 
             {/* Become Elite CTA */}
             <div className="max-w-6xl mx-auto px-6 mb-32">
-                <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 p-10 md:p-16 text-center">
+                <div className="relative rounded-3xl overflow-hidden  border border-slate-800 p-10 md:p-16 text-center">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
 
                     <h2 className="text-3xl md:text-5xl font-black text-white mb-4 relative z-10">Verified Elite Status</h2>
@@ -127,4 +127,3 @@ export default async function GearStorePage() {
         </div>
     );
 }
-

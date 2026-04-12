@@ -4,9 +4,9 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 // =========================================================
-// Emergency Nearby — /emergency/nearby
-// Authenticated. Incident form → calls emergency-vendors
-// edge function → ranked results list.
+// Emergency Nearby â€” /emergency/nearby
+// Authenticated. Incident form â†’ calls emergency-vendors
+// edge function â†’ ranked results list.
 // =========================================================
 
 const INCIDENT_TYPES = [
@@ -74,7 +74,7 @@ export default function EmergencyNearbyPage() {
 
     async function handleSearch(e: React.FormEvent) {
         e.preventDefault();
-        if (!form.lat || !form.lng) { setError("Lat/lng required — use the button above or enter manually."); return; }
+        if (!form.lat || !form.lng) { setError("Lat/lng required â€” use the button above or enter manually."); return; }
         setLoading(true);
         setError("");
         setResults([]);
@@ -139,7 +139,7 @@ export default function EmergencyNearbyPage() {
         <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-red-600">🚨 Emergency Nearby</h1>
+                <h1 className="text-2xl font-bold text-red-600">ðŸš¨ Emergency Nearby</h1>
                 <p className="mt-1 text-sm text-gray-500">
                     Find the nearest available service provider for your situation.
                 </p>
@@ -161,7 +161,7 @@ export default function EmergencyNearbyPage() {
                     <div>
                         <label className="block text-sm font-medium text-neutral-300 mb-1">State / Province (optional)</label>
                         <input value={form.region1} onChange={e => set("region1", e.target.value)}
-                            placeholder="FL, ON…" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                            placeholder="FL, ONâ€¦" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                     </div>
 
                     {/* Lat */}
@@ -183,17 +183,17 @@ export default function EmergencyNearbyPage() {
                 <div>
                     <label className="block text-sm font-medium text-neutral-300 mb-1">Notes (optional)</label>
                     <textarea value={form.notes} onChange={e => set("notes", e.target.value)} rows={2}
-                        placeholder="Vehicle height, what broke, load type…" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
+                        placeholder="Vehicle height, what broke, load typeâ€¦" className="w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400" />
                 </div>
 
                 <div className="flex items-center gap-3">
                     <button aria-label="Interactive Button" type="button" onClick={useMyLocation} disabled={locating}
                         className="px-4 py-2 bg-[#121212] border border-white/20 rounded-lg text-sm text-neutral-300 hover:bg-[#1A1A1A] transition-colors disabled:opacity-50">
-                        {locating ? "Locating…" : "📍 Use my location"}
+                        {locating ? "Locatingâ€¦" : "ðŸ“ Use my location"}
                     </button>
                     <button aria-label="Interactive Button" type="submit" disabled={loading}
                         className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
-                        {loading ? "Searching…" : "Find Help Now"}
+                        {loading ? "Searchingâ€¦" : "Find Help Now"}
                     </button>
                 </div>
                 {error && <p className="text-sm text-red-600">{error}</p>}
@@ -215,7 +215,7 @@ export default function EmergencyNearbyPage() {
                                     )}
                                     <span className="font-semibold text-white">{r.vendor_name}</span>
                                     {r.verified_status === "verified" && (
-                                        <span className="text-green-600 text-xs">✓ Verified</span>
+                                        <span className="text-green-600 text-xs">âœ“ Verified</span>
                                     )}
                                     {r.is_24_7 && <span className="text-gray-500 text-xs">24/7</span>}
                                     {r.plan_tier !== "free" && (
@@ -223,7 +223,7 @@ export default function EmergencyNearbyPage() {
                                     )}
                                 </div>
                                 <p className="text-sm text-gray-500">
-                                    {r.vendor_type.replace(/_/g, " ")} · {r.city}, {r.region1} · {r.distance_miles} mi away
+                                    {r.vendor_type.replace(/_/g, " ")} Â· {r.city}, {r.region1} Â· {r.distance_miles} mi away
                                 </p>
                                 {r.services_joined && (
                                     <p className="text-xs text-gray-400 truncate">{r.services_joined}</p>
@@ -234,7 +234,7 @@ export default function EmergencyNearbyPage() {
                                 <a href={`tel:${r.dispatch_phone}`}
                                     onClick={() => logCall(r)}
                                     className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
-                                    📞 Call
+                                    ðŸ“ž Call
                                 </a>
                                 <a href={`/vendors/${r.vendor_id}`}
                                     className="px-4 py-2 border border-white/20 text-neutral-300 hover:bg-[#1A1A1A] rounded-lg text-sm text-center transition-colors whitespace-nowrap">

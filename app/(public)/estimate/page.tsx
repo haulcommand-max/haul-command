@@ -3,7 +3,7 @@ import EstimateForm from './EstimateForm';
 
 export const metadata: Metadata = {
     title: 'Instant Pilot Car Cost Estimate | Heavy Haul Quote in 30 Seconds',
-    description: 'Get an instant escort cost estimate for your oversize load. Enter dimensions and route — see pilot car pricing, escort requirements, permit costs, and operator availability in 30 seconds. Free. No login.',
+    description: 'Get an instant escort cost estimate for your oversize load. Enter dimensions and route â€” see pilot car pricing, escort requirements, permit costs, and operator availability in 30 seconds. Free. No login.',
     alternates: {
         canonical: 'https://www.haulcommand.com/estimate',
     },
@@ -41,7 +41,7 @@ const faqSchema = {
             name: 'How many escort vehicles do I need?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Escort requirements depend on load dimensions: loads wider than 14 feet (4.27m) typically need 2 escorts, loads wider than 12 feet (3.66m) or taller than 14.5 feet (4.42m) need at least 1 escort. Loads wider than 16 feet (4.88m) may also require police escorts. Requirements vary by state and country — this estimator calculates the exact needs for your route.',
+                text: 'Escort requirements depend on load dimensions: loads wider than 14 feet (4.27m) typically need 2 escorts, loads wider than 12 feet (3.66m) or taller than 14.5 feet (4.42m) need at least 1 escort. Loads wider than 16 feet (4.88m) may also require police escorts. Requirements vary by state and country â€” this estimator calculates the exact needs for your route.',
             },
         },
         {
@@ -62,7 +62,7 @@ export default function EstimatePage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#F0F0F2' }}>
-                {/* ── Hero ── */}
+                {/* â”€â”€ Hero â”€â”€ */}
                 <section style={{
                     position: 'relative', overflow: 'hidden',
                     borderBottom: '1px solid rgba(255,255,255,0.05)',
@@ -82,7 +82,7 @@ export default function EstimatePage() {
                             fontSize: 10, fontWeight: 800, textTransform: 'uppercase' as const,
                             letterSpacing: '0.1em', color: '#C6923A', marginBottom: 20,
                         }}>
-                            ⚡ #1 commercial-intent tool in heavy haul
+                            âš¡ #1 commercial-intent tool in heavy haul
                         </div>
                         <h1 style={{
                             fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900,
@@ -103,7 +103,7 @@ export default function EstimatePage() {
                     </div>
                 </section>
 
-                {/* ── Quote Form ── */}
+                {/* â”€â”€ Quote Form â”€â”€ */}
                 <EstimateForm />
             </div>
         </>

@@ -8,12 +8,12 @@ import {
   ArrowRight, CreditCard, Route, Users, CheckCircle,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    WHY CARRIERS CHOOSE HAUL COMMAND
-   ─ Direct ODS-killer section. Their pitch: "easy, safe, 
+   â”€ Direct ODS-killer section. Their pitch: "easy, safe, 
      insured, nationwide." Ours adds software, intelligence,
      global scale, and self-serve tooling.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -46,13 +46,13 @@ const CARRIER_BENEFITS = [
   {
     icon: CreditCard,
     title: "Consolidated Invoicing",
-    desc: "One invoice per project. Multi-escort, multi-state, multi-day — all consolidated. No billing chaos.",
+    desc: "One invoice per project. Multi-escort, multi-state, multi-day â€” all consolidated. No billing chaos.",
     accent: "#a855f7",
   },
   {
     icon: Route,
     title: "Route Intelligence Built In",
-    desc: "Bridge clearances, weight limits, construction zones, permit requirements — checked before you dispatch.",
+    desc: "Bridge clearances, weight limits, construction zones, permit requirements â€” checked before you dispatch.",
     accent: "#ef4444",
   },
   {
@@ -145,7 +145,7 @@ export function WhyCarriersChoose() {
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] text-[#8fa3b8]">
               {[
                 { label: "North America's largest convoy is still just a subset of our network", icon: CheckCircle, color: "#22c55e" },
-                { label: "Self-serve dispatch — no phone calls required", icon: CheckCircle, color: "#3b82f6" },
+                { label: "Self-serve dispatch â€” no phone calls required", icon: CheckCircle, color: "#3b82f6" },
                 { label: "Insurance verified before every dispatch", icon: CheckCircle, color: "#F59E0B" },
               ].map(({ label, icon: I, color }) => (
                 <span key={label} className="inline-flex items-center gap-1.5">

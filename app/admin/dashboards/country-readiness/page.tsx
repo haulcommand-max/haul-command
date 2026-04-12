@@ -132,7 +132,7 @@ export default function CountryReadinessDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Country Readiness</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 120 countries • Market modes • Transition status</p>
+                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 120 countries â€¢ Market modes â€¢ Transition status</p>
                 </div>
             </div>
 
@@ -198,7 +198,7 @@ export default function CountryReadinessDashboard() {
                                     background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)',
                                 }}>
                                     <td style={{ padding: '10px 14px', fontSize: 13, fontWeight: 700, color: '#fff' }}>
-                                        {c.code} — {c.name}
+                                        {c.code} â€” {c.name}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center' }}>
                                         <span style={{
@@ -222,14 +222,14 @@ export default function CountryReadinessDashboard() {
                                                 color: MODE_COLORS[c.db_market_state] || '#888',
                                                 textTransform: 'uppercase', letterSpacing: '0.08em',
                                             }}>{c.db_market_state}</span>
-                                        ) : <span style={{ color: '#444' }}>—</span>}
+                                        ) : <span style={{ color: '#444' }}>â€”</span>}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12, fontVariantNumeric: 'tabular-nums' }}>
                                         {c.db_total_score != null ? (
                                             <span style={{ color: c.db_total_score > 0.5 ? '#22C55E' : c.db_total_score > 0.2 ? '#F59E0B' : '#888', fontWeight: 700 }}>
                                                 {(c.db_total_score * 100).toFixed(0)}%
                                             </span>
-                                        ) : <span style={{ color: '#444' }}>—</span>}
+                                        ) : <span style={{ color: '#444' }}>â€”</span>}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 13, fontWeight: 700, color: c.operators > 0 ? '#22C55E' : '#888' }}>
                                         {c.operators}
@@ -241,20 +241,20 @@ export default function CountryReadinessDashboard() {
                                         }}>{c.cds_band}</span>
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 14 }}>
-                                        {c.has_pricing ? '✅' : '❌'}
+                                        {c.has_pricing ? 'âœ…' : 'âŒ'}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 14 }}>
-                                        {c.has_locale ? '✅' : '❌'}
+                                        {c.has_locale ? 'âœ…' : 'âŒ'}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12 }}>
                                         {c.db_recommendation && c.db_recommendation !== 'hold' ? (
                                             <span style={{ color: '#F1A91B', fontWeight: 700, fontSize: 10 }}>
-                                                ⬆ {c.db_recommendation.replace('promote_to_', '').toUpperCase()}
+                                                â¬† {c.db_recommendation.replace('promote_to_', '').toUpperCase()}
                                             </span>
                                         ) : c.transition_ready ? (
-                                            <span style={{ color: '#F59E0B', fontWeight: 700 }}>⬆ Ready</span>
+                                            <span style={{ color: '#F59E0B', fontWeight: 700 }}>â¬† Ready</span>
                                         ) : (
-                                            <span style={{ color: '#888' }}>—</span>
+                                            <span style={{ color: '#888' }}>â€”</span>
                                         )}
                                     </td>
                                 </tr>

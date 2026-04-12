@@ -8,13 +8,13 @@ import {
   ArrowRight, Search, BarChart3, FileCheck,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TRUST ARCHITECTURE SECTION
-   ─ ODS says "trust us" with testimonials and logos.
+   â”€ ODS says "trust us" with testimonials and logos.
      HC shows the score: verified insurance, certifications,
      response speed, completion count, trust score, real-time
      structured trust that a brokerage cannot replicate.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -27,7 +27,7 @@ const stagger = { visible: { transition: { staggerChildren: 0.06 } } };
 
 const TRUST_METRICS = [
   { icon: Shield, label: "Insurance Verified", value: "COI on File", color: "#22c55e" },
-  { icon: Award, label: "Certifications", value: "CEVO • CSE • State", color: "#F59E0B" },
+  { icon: Award, label: "Certifications", value: "CEVO â€¢ CSE â€¢ State", color: "#F59E0B" },
   { icon: Clock, label: "Avg Response", value: "< 4 min", color: "#3b82f6" },
   { icon: Star, label: "Completion Rate", value: "97.3%", color: "#a855f7" },
   { icon: BarChart3, label: "Trust Score", value: "Calculated Live", color: "#C6923A" },
@@ -65,7 +65,7 @@ export function TrustArchitecture() {
           </h2>
           <p className="text-sm sm:text-base text-[#8fa3b8] max-w-2xl mx-auto leading-relaxed">
             Every operator on Haul Command has a live trust report card. Insurance verified. Certifications confirmed. 
-            Performance measured. No guesswork — just data.
+            Performance measured. No guesswork â€” just data.
           </p>
         </motion.div>
 
@@ -113,7 +113,7 @@ export function TrustArchitecture() {
               href="/demo-report-card"
               className="text-[10px] font-bold text-[#C6923A] uppercase tracking-wider hover:text-white transition-colors"
             >
-              See Full Demo →
+              See Full Demo â†’
             </Link>
           </div>
 

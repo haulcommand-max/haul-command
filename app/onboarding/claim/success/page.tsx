@@ -12,7 +12,7 @@ function SuccessContent() {
     const isPremium = plan === "premium";
 
     return (
-        <div className="min-h-screen bg-hc-bg flex items-center justify-center text-hc-text p-4 font-sans">
+        <div className=" bg-hc-bg flex items-center justify-center text-hc-text p-4 font-sans">
             <div className="max-w-md w-full text-center space-y-6">
                 <div className={`w-20 h-20 mx-auto rounded-3xl flex items-center justify-center border
                     ${isPremium ? "bg-[#C6923A]/10 border-[#C6923A]/30 text-[#C6923A]" : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"}
@@ -49,7 +49,7 @@ function SuccessContent() {
 export default function SuccessPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen bg-hc-bg flex items-center justify-center text-hc-text">
+            <div className=" bg-hc-bg flex items-center justify-center text-hc-text">
                 <div className="animate-pulse text-gray-500">Loading...</div>
             </div>
         }>

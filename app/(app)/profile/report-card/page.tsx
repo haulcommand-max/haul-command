@@ -45,7 +45,7 @@ export default async function ReportCard() {
         .order('created_at', { ascending: false });
 
     return (
-        <div className="p-10 text-white bg-transparent min-h-screen">
+        <div className="p-10 text-white bg-transparent ">
             <h1 className="text-4xl font-bold uppercase tracking-tighter shadow-sm text-gray-100">Career & Report Card</h1>
             <p className="text-gray-400 font-mono text-sm tracking-widest mt-2 border-l-2 border-blue-500 pl-4 py-1">
                 OPERATOR ID: {user.id.split('-')[0].toUpperCase()}

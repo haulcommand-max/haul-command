@@ -21,7 +21,7 @@ export default function UpgradePage() {
   ];
 
   return (
-    <main className="min-h-screen bg-slate-950 flex flex-col items-center py-16 px-4">
+    <main className="  flex flex-col items-center py-16 px-4">
       {/* 1. Hormozi Lens: Value Proposition & Urgency */}
       <div className="max-w-3xl text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-4">
@@ -34,7 +34,7 @@ export default function UpgradePage() {
 
       <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-start">
         {/* 2. Steve Jobs Lens: Clean, one-action card */}
-        <div className="bg-slate-900 border border-hc-gold-500/30 rounded-3xl p-8 relative shadow-[0_0_40px_rgba(202,138,4,0.1)]">
+        <div className=" border border-hc-gold-500/30 rounded-3xl p-8 relative shadow-[0_0_40px_rgba(202,138,4,0.1)]">
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-hc-gold-500 text-slate-950 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full">
             Most Popular
           </div>
@@ -71,7 +71,7 @@ export default function UpgradePage() {
 
         {/* 3. Proof & Risk Reversal */}
         <div className="flex flex-col justify-center space-y-8 md:pl-8">
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+          <div className="/50 border border-slate-800 rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-4">
               <Shield className="w-8 h-8 text-emerald-500" />
               <h3 className="text-xl font-bold text-white">7-Day Guarantee</h3>
@@ -85,13 +85,13 @@ export default function UpgradePage() {
             <h3 className="text-sm uppercase tracking-widest text-slate-500 font-bold mb-4">Why Operators Upgrade</h3>
             <blockquote className="border-l-2 border-hc-gold-500 pl-4 text-slate-300">
               "I upgraded just to see the direct broker contacts on two loads in Texas. Booked them both within an hour. The $49 paid for itself before lunch."
-              <footer className="mt-2 text-sm text-slate-500">— Mike T., Heavy Haul Specialist (Texas)</footer>
+              <footer className="mt-2 text-sm text-slate-500">â€” Mike T., Heavy Haul Specialist (Texas)</footer>
             </blockquote>
           </div>
           
           <div className="pt-4">
             <Link href="/" className="text-sm font-semibold text-slate-400 hover:text-white transition-colors">
-              ← Return to Dashboard
+              â† Return to Dashboard
             </Link>
           </div>
         </div>

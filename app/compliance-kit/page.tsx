@@ -3,7 +3,7 @@ import { RouteIQVisualizer } from '@/app/components/RouteIQVisualizer';
 
 export default function CompliancePermitConcierge() {
     return (
-        <main className="min-h-screen bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
+        <main className=" bg-transparent text-white p-10 font-sans selection:bg-blue-500/30">
             <div className="max-w-5xl mx-auto">
                 <h1 className="text-5xl font-black uppercase text-white tracking-tighter mb-4">Permit Operations Hub</h1>
                 <p className="text-gray-400 font-mono tracking-widest text-sm mb-10 border-l-2 border-blue-500 pl-4">

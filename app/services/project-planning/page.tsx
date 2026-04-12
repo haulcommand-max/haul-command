@@ -21,7 +21,7 @@ const FEATURES = [
   {
     icon: ClipboardList,
     title: "Full-Service Coordination",
-    desc: "From initial route survey to final delivery, we manage every moving piece of your project — escorts, permits, staging, and communications.",
+    desc: "From initial route survey to final delivery, we manage every moving piece of your project â€” escorts, permits, staging, and communications.",
   },
   {
     icon: Calendar,
@@ -36,7 +36,7 @@ const FEATURES = [
   {
     icon: Map,
     title: "Route Engineering",
-    desc: "Pre-haul route surveys, bridge clearance verification, turning radius assessment, and utility coordination — all included.",
+    desc: "Pre-haul route surveys, bridge clearance verification, turning radius assessment, and utility coordination â€” all included.",
   },
   {
     icon: Shield,
@@ -46,13 +46,13 @@ const FEATURES = [
   {
     icon: Globe,
     title: "Cross-Border Logistics",
-    desc: "U.S.–Canada, EU cross-border, or any international move — we handle customs escort requirements, documentation, and local compliance.",
+    desc: "U.S.â€“Canada, EU cross-border, or any international move â€” we handle customs escort requirements, documentation, and local compliance.",
   },
 ];
 
 export default function ProjectPlanningPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto">

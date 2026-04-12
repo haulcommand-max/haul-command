@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, useTransition, useEffect } from 'react';
 import { Globe, Truck, Map, Navigation, AlertTriangle, ShieldCheck, Zap, Send, Loader2 } from 'lucide-react';
+import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot';
 
-
-// ─── Types ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface LoadProfile {
   weight: string;
@@ -26,7 +26,7 @@ interface SubmitResult {
   status: 'ok' | 'no_match' | 'error';
 }
 
-// ─── Server action wrapper (API route) ─────────────────────────────────────
+// â”€â”€â”€ Server action wrapper (API route) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function submitRouteRequest(query: RouteQuery, _load: LoadProfile): Promise<SubmitResult> {
   try {
     const res = await fetch('/api/route-request', {
@@ -46,7 +46,7 @@ async function submitRouteRequest(query: RouteQuery, _load: LoadProfile): Promis
   }
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function RouteIntelDashboard() {
   const [load, setLoad] = useState<LoadProfile>({ weight: '124,000', width: '14.5', height: '15.2', length: '95' });
@@ -82,7 +82,7 @@ export default function RouteIntelDashboard() {
   const gold = '#D4A844';
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white font-sans overflow-hidden">
+    <div className=" bg-[#020202] text-white font-sans overflow-hidden">
 
       {/* Background */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-0" />
@@ -190,7 +190,7 @@ export default function RouteIntelDashboard() {
                     href={`/corridors/${result.corridorSlug}`}
                     className="underline font-bold text-xs"
                   >
-                    View {result.corridorName ?? result.corridorSlug} Corridor →
+                    View {result.corridorName ?? result.corridorSlug} Corridor â†’
                   </a>
                 )}
               </div>
@@ -242,7 +242,7 @@ export default function RouteIntelDashboard() {
                   <div className="text-xs text-gray-400 font-mono mb-1">SELECTED CORRIDOR</div>
                   <div className="text-lg font-bold">
                     {query.origin && query.destination
-                      ? `${query.origin} → ${query.destination}`
+                      ? `${query.origin} â†’ ${query.destination}`
                       : 'Texas Triangle: Dallas to Houston'}
                   </div>
                 </div>
@@ -286,7 +286,11 @@ export default function RouteIntelDashboard() {
                 <div className="text-gray-200 font-bold mb-1 flex items-center justify-between">
                   Curfew Restrictions <Zap className="w-3 h-3 text-amber-500" />
                 </div>
-                <div className="text-sm font-mono text-gray-400">No travel within Houston city limits 6AM–9AM, 4PM–7PM.</div>
+                <div className="text-sm font-mono text-gray-400">No travel within Houston city limits 6AMâ€“9AM, 4PMâ€“7PM.</div>
+              </div>
+
+              <div className="mt-4">
+                <AdGridSponsorSlot regionName="Corridor Coverage" type="route_survey_driver" countryCode="US" />
               </div>
             </div>
           </div>

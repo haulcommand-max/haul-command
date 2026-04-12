@@ -120,7 +120,7 @@ export function GlobalOmniSearch() {
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto z-50">
-      <div className="relative flex items-center w-full h-12 rounded-full bg-slate-900 border border-slate-700 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 shadow-lg overflow-hidden transition-all duration-200">
+      <div className="relative flex items-center w-full h-12 rounded-full  border border-slate-700 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 shadow-lg overflow-hidden transition-all duration-200">
         <div className="pl-4 text-slate-400">
           <Search size={20} />
         </div>
@@ -146,7 +146,7 @@ export function GlobalOmniSearch() {
 
       {/* Predictive Dropdown */}
       {isOpen && predictions.length > 0 && (
-        <div className="absolute top-14 left-0 w-full bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md">
+        <div className="absolute top-14 left-0 w-full  border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md">
           <div className="flex flex-col py-2">
             {predictions.map((p) => {
               const Icon = IconMap[p.type] || Navigation;
@@ -170,7 +170,7 @@ export function GlobalOmniSearch() {
               );
             })}
           </div>
-          <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
+          <div className=" px-4 py-2 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
             <span>Powered by TypeSense Intelligence</span>
             <span>Press Enter to search all</span>
           </div>

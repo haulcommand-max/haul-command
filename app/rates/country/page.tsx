@@ -99,7 +99,7 @@ export default async function CountryRatePage({ params }: Props) {
   if (!data) notFound();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-2">

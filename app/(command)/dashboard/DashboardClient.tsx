@@ -19,7 +19,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
     const [activeTab, setActiveTab] = useState<"ops" | "swarm">("ops");
 
     return (
-        <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
+        <div className=" bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
             {/* Grid Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(241,169,27,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(241,169,27,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -34,7 +34,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         </div>
                         <div>
                             <h1 className="text-sm font-bold text-white uppercase tracking-[0.15em]">Command Tower</h1>
-                            <div className="text-[10px] text-[#444] uppercase tracking-[0.2em] font-semibold">Live Operations · All Corridors</div>
+                            <div className="text-[10px] text-[#444] uppercase tracking-[0.2em] font-semibold">Live Operations Â· All Corridors</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                                         : "text-[#666] hover:text-[#999]"
                                 }`}
                             >
-                                🐝 Swarm
+                                ðŸ Swarm
                             </button>
                         </div>
                         <div className="flex items-center gap-2 bg-emerald-500/8 border border-emerald-500/15 px-3 py-1.5 rounded-full">
@@ -74,9 +74,9 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
 
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {activeTab === "ops" ? (
-                    /* ── Operations Tab ── */
+                    /* â”€â”€ Operations Tab â”€â”€ */
                     <div className="space-y-6">
-                        {/* MarketPulse — KPI widget */}
+                        {/* MarketPulse â€” KPI widget */}
                         <MarketPulse
                             totalProviders={1247}
                             activeLoads={38}
@@ -88,7 +88,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <div className="lg:col-span-1 lg:order-2 space-y-4">
                                 <TodayCommandCenter data={null} />
-                                {/* FreemiumPressureWidget — upgrade prompts for free-tier operators */}
+                                {/* FreemiumPressureWidget â€” upgrade prompts for free-tier operators */}
                                 {/* userId from server session enables personalized pressure decisions */}
                                 <FreemiumPressureWidget
                                     placement="sidebar"
@@ -103,11 +103,11 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         </div>
                     </div>
                 ) : (
-                    /* ── Swarm Tab — live agent visibility ── */
+                    /* â”€â”€ Swarm Tab â€” live agent visibility â”€â”€ */
                     <div className="space-y-6">
                         <SwarmScoreboard />
                         <SwarmActivityFeed limit={50} />
-                        {/* Push Campaign Sender — admin ad tool */}
+                        {/* Push Campaign Sender â€” admin ad tool */}
                         <AdGridPushCampaignSender />
                     </div>
                 )}
