@@ -30,7 +30,7 @@ import { PwaRegistry } from '@/components/layout/PwaRegistry';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-transparent text-white antialiased`}>
+      <body className={`${inter.className} text-white antialiased`} style={{ background: '#0B0B0C' }}>
         <PwaRegistry />
         <GlobalNavOverlay />
         <DynamicBackgroundEngine />

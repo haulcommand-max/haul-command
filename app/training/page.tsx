@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ShieldCheck, Globe, Zap, ClipboardCheck, Landmark } from 'lucide-react';
 import { Metadata } from 'next';
 import { createClient } from '@/utils/supabase/server';
 import { HCBadge } from '@/components/training/HCBadge';
@@ -67,6 +68,9 @@ const FAQS = [
     a: 'You receive reminder emails 30 days and 7 days before expiry. Renewal costs less than initial certification. Your badge shows a renewal prompt to brokers if expired so you never lose work unexpectedly.',
   },
 ];
+
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export default async function TrainingHome() {
   // ---- FETCH FROM SUPABASE ----
@@ -211,16 +215,16 @@ export default async function TrainingHome() {
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 32, flexWrap: 'wrap' }}>
             {[
-              { icon: 'ðŸ›¡ï¸', text: 'Built on FMCSA + SC&RA Standards' },
-              { icon: 'ðŸŒ', text: `${countryCount || 120} countries` },
-              { icon: 'âš¡', text: `${catalog.length || 8} training programs` },
+              { icon: <ShieldCheck className="w-3.5 h-3.5" />, text: 'Built on FMCSA + SC&RA Standards' },
+              { icon: <Globe className="w-3.5 h-3.5" />, text: `${countryCount || 120} countries` },
+              { icon: <Zap className="w-3.5 h-3.5" />, text: `${catalog.length || 8} training programs` },
             ].map((b, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 6,
-                background: 'rgba(245,166,35,0.1)',
+                background: 'rgba(245,166,35,0.15)',
                 border: '1px solid rgba(245,166,35,0.25)',
-                borderRadius: 20, padding: '4px 12px',
-                fontSize: 11, fontWeight: 700, color: '#F5A623',
+                borderRadius: 20, padding: '6px 14px',
+                fontSize: 12, fontWeight: 700, color: '#F5A623',
                 letterSpacing: '0.04em', textTransform: 'uppercase',
                 backdropFilter: 'blur(8px)',
               }}>
@@ -426,13 +430,13 @@ export default async function TrainingHome() {
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20, maxWidth: 960, margin: '0 auto' }}>
           {[
-            { icon: 'ðŸ›¡ï¸', text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
-            { icon: 'ðŸ“‹', text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
-            { icon: 'ðŸŒ', text: `${countryCount || 120} countries`, sub: 'Global recognition' },
-            { icon: 'ðŸ›ï¸', text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
+            { icon: <ShieldCheck className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
+            { icon: <ClipboardCheck className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
+            { icon: <Globe className="w-8 h-8 text-[#F5A623] mx-auto" />, text: `${countryCount || 120} Countries Accepted`, sub: 'Global recognition' },
+            { icon: <Landmark className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
           ].map((item, i) => (
             <div key={i} style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 16, padding: '24px 20px', textAlign: 'center', backdropFilter: 'blur(8px)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
-              <div style={{ fontSize: 36, marginBottom: 16 }}>{item.icon}</div>
+              <div style={{ marginBottom: 16 }}>{item.icon}</div>
               <div style={{ fontSize: 16, fontWeight: 800, color: '#F5A623', lineHeight: 1.35, marginBottom: 8 }}>{item.text}</div>
               <div style={{ fontSize: 14, color: '#e2e8f0', fontWeight: 500 }}>{item.sub}</div>
             </div>

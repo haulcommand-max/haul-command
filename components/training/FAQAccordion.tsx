@@ -1,59 +1,80 @@
-import { CSSProperties } from 'react';
+'use client';
+
+import { useState } from 'react';
 
 export function FAQAccordion({ faqs }: { faqs: { q: string, a: string }[] }) {
-  // Using native HTML details/summary elements to ensure 
-  // SEO bots can crawl the answers without executing Javascript
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  if (!faqs || faqs.length === 0) return null;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      {faqs.map((faq, i) => (
-        <details
-          key={i}
-          className="faq-details"
-          style={{
-            background: 'rgba(17,17,24,0.7)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: 12,
-            overflow: 'hidden',
-          } as CSSProperties}
-        >
-          <summary
-            className="faq-summary"
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {faqs.map((faq, i) => {
+        const isOpen = openIndex === i;
+        return (
+          <div 
+            key={i} 
+            itemScope 
+            itemProp="mainEntity" 
+            itemType="https://schema.org/Question"
             style={{
-              padding: '18px 20px',
-              cursor: 'pointer',
-              fontWeight: 600,
-              fontSize: 16,
-              color: '#e8e8e8',
-              lineHeight: 1.4,
-              listStyle: 'none',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            } as CSSProperties}
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              transition: 'all 0.2s ease'
+            }}
           >
-            <span>{faq.q}</span>
-            <span className="faq-icon" style={{ color: '#F5A623', flexShrink: 0, fontWeight: 'bold' }}>↓</span>
-          </summary>
-          <div style={{ padding: '0 20px 20px', fontSize: 15, lineHeight: 1.7, color: '#e2e8f0' }}>
-            {faq.a}
+            <button
+              onClick={() => setOpenIndex(isOpen ? null : i)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '20px 24px',
+                background: 'transparent',
+                border: 'none',
+                color: '#fff',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+              aria-expanded={isOpen}
+            >
+              <h3 itemProp="name" style={{ fontSize: 16, fontWeight: 700, margin: 0, lineHeight: 1.4 }}>
+                {faq.q}
+              </h3>
+              <span style={{ 
+                color: '#F5A623', 
+                fontSize: 24, 
+                marginLeft: 16,
+                transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s',
+                display: 'inline-block',
+                lineHeight: 1
+              }}>
+                +
+              </span>
+            </button>
+            <div 
+              itemScope 
+              itemProp="acceptedAnswer" 
+              itemType="https://schema.org/Answer"
+              style={{
+                padding: isOpen ? '0 24px 24px 24px' : '0 24px',
+                maxHeight: isOpen ? 1000 : 0,
+                opacity: isOpen ? 1 : 0,
+                overflow: 'hidden',
+                transition: 'all 0.3s ease-in-out',
+              }}
+            >
+              <p itemProp="text" style={{ color: '#cbd5e1', fontSize: 15, lineHeight: 1.6, margin: 0 }}>
+                {faq.a}
+              </p>
+            </div>
           </div>
-        </details>
-      ))}
-      <style>{`
-        .faq-details > summary::-webkit-details-marker {
-          display: none;
-        }
-        .faq-details[open] .faq-icon {
-          transform: rotate(180deg);
-        }
-        .faq-details[open] {
-          border-color: rgba(245,166,35,0.2) !important;
-          background: #111118 !important;
-        }
-        .faq-details[open] summary {
-          color: #F5A623 !important;
-        }
-      `}</style>
+        );
+      })}
     </div>
   );
 }

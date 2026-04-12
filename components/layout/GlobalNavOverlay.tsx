@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export function GlobalNavOverlay() {
@@ -20,32 +21,18 @@ export function GlobalNavOverlay() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '10px 16px',
-        background: 'rgba(10, 10, 14, 0.85)',
-        border: '1px solid rgba(245, 166, 35, 0.3)',
-        borderRadius: '50px',
-        color: '#F5A623',
-        fontWeight: 700,
-        fontSize: 14,
-        letterSpacing: '0.05em',
-        textDecoration: 'none',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-        transition: 'all 0.2s ease-in-out',
+        transition: 'transform 0.2s ease-in-out',
         cursor: 'pointer'
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(245, 166, 35, 0.1)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 6px 16px rgba(245, 166, 35, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'rgba(10, 10, 14, 0.85)';
         e.currentTarget.style.transform = 'none';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.5)';
       }}
       >
-        <span style={{ marginRight: 8 }}>←</span> HAUL COMMAND
+        <Image src="/haul-command-logo.svg" alt="Haul Command" width={40} height={40} className="w-10 h-10 object-contain" onError={(e: any) => { e.currentTarget.src = '/icon.png'; }} /> 
+        <span style={{ marginLeft: 12, fontWeight: 800, fontSize: 18, letterSpacing: '0.05em', color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>HAUL COMMAND</span>
       </Link>
     </div>
   );
