@@ -50,3 +50,5 @@ export { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 
 // ── Composites ──
 export { FilterBar } from "./filter-bar";
+export { BreadcrumbRail } from "./breadcrumb-rail";
+export { TrustBadge, AvailableNowBadge } from "./trust-badge";
