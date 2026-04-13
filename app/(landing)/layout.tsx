@@ -9,11 +9,15 @@
  */
 
 
+import { GlobalCommandBar } from "@/components/layout/GlobalCommandBar";
+
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
     return (
-        <>
-
-            {children}
-        </>
+        <div className="min-h-screen flex flex-col bg-hc-bg">
+            <GlobalCommandBar />
+            <main className="flex-1 w-full flex flex-col">
+                {children}
+            </main>
+        </div>
     );
 }
