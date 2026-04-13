@@ -2,35 +2,26 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 // ══════════════════════════════════════════════════════════════
-// HAUL COMMAND — Input
-// Dark-surface text input with gold focus ring.
-// 16px minimum font size to prevent iOS zoom.
+// HAUL COMMAND — Textarea
+// Multi-line text input matching dark surface + gold focus.
 // ══════════════════════════════════════════════════════════════
 
-const Input = React.forwardRef<
-  HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement>
->(({ className, type, ...props }, ref) => {
+const Textarea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>(({ className, ...props }, ref) => {
   return (
-    <input
-      type={type}
+    <textarea
       className={cn(
-        // Layout
-        "flex h-12 w-full rounded-xl px-4 py-3",
-        // Colors — dark elevated surface
+        "flex min-h-[120px] w-full rounded-xl px-4 py-3",
         "bg-hc-elevated text-hc-text",
         "border border-hc-border",
-        // Typography — 16px prevents iOS auto-zoom
         "text-base font-medium",
         "placeholder:text-hc-subtle",
-        // Focus
         "focus-visible:outline-none focus-visible:ring-2",
         "focus-visible:ring-hc-gold-500/40 focus-visible:border-hc-gold-500/60",
-        // Transition
         "transition-all duration-200",
-        // File input reset
-        "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-hc-text",
-        // Disabled
+        "resize-y",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
@@ -39,6 +30,6 @@ const Input = React.forwardRef<
     />
   );
 });
-Input.displayName = "Input";
+Textarea.displayName = "Textarea";
 
-export { Input };
+export { Textarea };

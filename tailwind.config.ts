@@ -164,6 +164,15 @@ const config: Config = {
                     "0%": { backgroundPosition: "-200% 0" },
                     "100%": { backgroundPosition: "200% 0" },
                 },
+                // ── Radix Accordion animations ──
+                "accordion-down": {
+                    from: { height: "0" },
+                    to: { height: "var(--radix-accordion-content-height)" },
+                },
+                "accordion-up": {
+                    from: { height: "var(--radix-accordion-content-height)" },
+                    to: { height: "0" },
+                },
             },
             animation: {
                 "pulse-gold": "pulse-gold 2s infinite",
@@ -173,6 +182,8 @@ const config: Config = {
                 "number-pop": "number-pop 0.3s ease-out",
                 "glow-ring": "glow-ring 3s ease-in-out infinite",
                 "sweep": "sweep 2s linear infinite",
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
             },
         },
     },
