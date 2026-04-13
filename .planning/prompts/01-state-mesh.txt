@@ -1,0 +1,57 @@
+You are building a U.S. heavy-haul ecosystem directory for Haul Command.
+
+Your task is to collect OFFICIAL state-level sources for oversize/overweight movement and pilot/escort operations for these states:
+[INSERT STATES]
+
+Objective:
+Create a structured dataset of the official regulatory and permit surfaces that govern pilot car / escort work in each state.
+
+Priority sources only:
+1. Official state DOT / DMV / DPS / highway patrol / commerce / permit office domains
+2. Official state permitting portals
+3. Official state PDFs, manuals, route maps, permit attachments, escort requirement pages
+4. Official state certification / reciprocity / escort flagger pages where available
+
+Do not use marketing sites as primary sources in this pass.
+Do not guess.
+If a field cannot be confirmed, return "unknown".
+
+For each state, find:
+- state
+- official_permit_office_name
+- official_permit_office_url
+- official_permit_portal_url
+- official_escort_requirements_url
+- official_certification_or_training_url
+- official_route_map_or_attachment_url
+- responsible_agency_names
+- notes_on_which_agency_controls_escort_rules
+- notes_on_whether certification is mentioned
+- notes_on vehicle/equipment requirements
+- notes_on escort/flagger/traffic control references
+- last_verified_url_count
+
+Output as JSON array.
+Each row must include:
+- state
+- source_type
+- source_title
+- source_url
+- agency_name
+- evidence_snippet
+- confidence_score (0-100)
+- needs_manual_review (true/false)
+
+Rules:
+- Prefer official HTML pages over secondary summaries
+- Include PDF URLs if they appear authoritative and current
+- Preserve exact agency names
+- Extract short evidence snippets from the source
+- Never invent requirements
+- If the state uses more than one agency, record all of them
+- Flag any state where the regulatory surface appears split across DOT, public safety, or permit office functions
+
+Return:
+1. the JSON
+2. a short gap report listing states where official escort requirements were hard to find
+3. a short list of repeated patterns across states

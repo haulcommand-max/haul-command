@@ -1,16 +1,12 @@
 'use client';
 
-import React, { useState, ReactNode } from 'react';
-import { ChevronDown } from 'lucide-react';
+import React, { ReactNode } from 'react';
 
 /**
- * FAQAccordion — Accessible single-open accordion
+ * FAQAccordion — Converted to statically visible FAQ list for maximum SEO
  *
  * Features:
- * - Only one item open at a time
- * - Visible open/closed state
- * - Minimum 18px title text
- * - Smooth height animation
+ * - All answers perpetually visible, eliminating mobile rendering penalties
  * - Internal link support in answers
  * - FAQPage schema generation
  */
@@ -35,12 +31,6 @@ export function FAQAccordion({
   generateSchema = false,
   className = '',
 }: FAQAccordionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (index: number) => {
-    setOpenIndex(prev => (prev === index ? null : index));
-  };
-
   return (
     <div className={className}>
       {heading && (
@@ -70,45 +60,28 @@ export function FAQAccordion({
         />
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         {items.map((item, index) => {
-          const isOpen = openIndex === index;
           return (
             <div
               key={index}
-              className={`
-                rounded-2xl overflow-hidden transition-all duration-300
-                ${isOpen
-                  ? 'bg-white/[0.04] border border-white/[0.12]'
-                  : 'bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.03]'
-                }
-              `}
+              className="rounded-2xl overflow-hidden bg-white/[0.04] border border-white/[0.12]"
             >
-              <button
-                onClick={() => toggle(index)}
-                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
-                aria-expanded={isOpen}
-                aria-controls={`faq-answer-${index}`}
+              <div
+                className="w-full flex items-center justify-between gap-4 px-5 pt-4 text-left"
               >
-                <span className="text-sm sm:text-base font-bold text-white leading-snug pr-2">
+                <h3 className="text-sm sm:text-base font-bold text-white leading-snug w-full">
                   {item.question}
-                </span>
-                <ChevronDown
-                  className={`w-5 h-5 text-white/30 flex-shrink-0 transition-transform duration-300 ${
-                    isOpen ? 'rotate-180 text-amber-400' : ''
-                  }`}
-                />
-              </button>
+                </h3>
+              </div>
 
-              {/* Answer panel */}
+              {/* Answer panel (Always fully expanded for SEO crawlability) */}
               <div
                 id={`faq-answer-${index}`}
                 role="region"
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                }`}
+                className="overflow-visible"
               >
-                <div className="px-5 pb-5 pt-1 text-sm text-white/50 leading-relaxed border-t border-white/[0.05]">
+                <div className="px-5 pb-5 pt-2 text-sm text-white/70 leading-relaxed border-t border-white/[0.05] mt-3">
                   {item.answer}
                 </div>
               </div>

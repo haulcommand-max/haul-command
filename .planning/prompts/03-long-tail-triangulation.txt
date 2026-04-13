@@ -1,0 +1,67 @@
+You are building the long-tail U.S. pilot car directory for Haul Command.
+
+Your task is to find small escort companies, solo pilot car operators, regional escort specialists, and other hard-to-find public-facing service providers that may not be easy to capture from federal databases alone.
+
+Geographic scope:
+[INSERT STATE OR REGION]
+
+Search focus:
+- pilot car
+- escort vehicle
+- escort service
+- oversize escort
+- overdimensional escort
+- height pole car
+- route survey
+- escort flagger
+- wide load escort
+- superload escort
+
+Also look for adjacent roles:
+- permit service
+- steersman / tillerman
+- traffic control for oversize moves
+- utility / railroad coordination related to oversize movements
+
+Use public web sources only.
+Possible discovery surfaces:
+- company websites
+- public directory pages
+- contact pages
+- public social profile pages
+- public training/resource pages as lead sources only
+
+Validation rule:
+A record should not be considered strong unless at least one of these is true:
+- the company has a website/contact page clearly offering the service
+- the company’s public page clearly states the service and geography
+- the record can be triangulated across multiple public sources
+
+For each record, collect:
+- entity_name
+- normalized_name
+- entity_type
+- city
+- state
+- service_area
+- website
+- phone
+- email
+- public_source_urls
+- evidence_snippet
+- services_offered
+- confidence_score
+- needs_manual_review
+
+Rules:
+- Never guess city/state/service area
+- Never invent contact details
+- Merge duplicates
+- Mark weak records for review
+- Prefer direct evidence over directory mentions
+- If a training/resource site reveals a company name, treat it only as a lead until confirmed elsewhere
+
+Output:
+1. JSON array
+2. by-city coverage gaps
+3. top missing metros/corridors needing manual follow-up

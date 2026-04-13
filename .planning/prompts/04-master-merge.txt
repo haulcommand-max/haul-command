@@ -1,0 +1,79 @@
+You are the data quality lead for Haul Command.
+
+I will provide three JSON datasets:
+1. official_state_sources
+2. fmcsa_expansion_entities
+3. public_web_gapfill_entities
+
+Your job:
+Merge them into one deduplicated U.S. heavy-haul ecosystem directory.
+
+Goals:
+- maximize coverage
+- preserve source evidence
+- separate official regulatory surfaces from commercial entities
+- avoid hallucinations
+- assign confidence honestly
+
+Output schema:
+- entity_name
+- normalized_name
+- entity_type
+- city
+- state
+- service_area
+- website
+- phone
+- email
+- contact_name
+- official_source_urls
+- commercial_source_urls
+- FMCSA_source_urls
+- USDOT_number
+- MC_number
+- authority_status
+- services_offered
+- certifications_mentioned
+- evidence_snippets
+- confidence_score
+- needs_manual_review
+- duplicate_group_key
+- source_count
+- recommended_profile_slug
+- recommended_claim_priority
+- recommended_seo_page_type
+
+Confidence logic:
+- 95-100 = official source or FMCSA + company website + matching geography
+- 80-94 = company website + strong corroboration
+- 60-79 = plausible public record but incomplete
+- below 60 = weak lead only
+
+Claim priority logic:
+- highest priority if website exists, phone exists, service area is clear, and company is active
+- next priority if FMCSA-confirmed and heavy-haul relevant
+- lower priority if only weak public signals exist
+
+SEO page type options:
+- state_regulation_page
+- permit_office_page
+- company_profile
+- broker_profile
+- carrier_profile
+- service_category_page
+- city_service_page
+- corridor_page
+
+Rules:
+- never merge unlike entities just because names are similar
+- preserve all source URLs
+- return unknown instead of inventing missing data
+- flag rows needing review
+- create a short summary of the strongest uncovered gaps by state
+
+Return:
+1. merged JSON
+2. duplicate audit
+3. weak-record audit
+4. top 100 claim-priority targets
+5. states with the thinnest directory coverage

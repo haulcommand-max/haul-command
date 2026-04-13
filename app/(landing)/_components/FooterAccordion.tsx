@@ -38,10 +38,10 @@ const FOOTER_SECTIONS = [
         links: [
             { href: "/tools/escort-calculator", label: "Escort Calculator" },
             { href: "/escort-requirements", label: "Escort Requirements" },
-            { href: "/tools/compliance-card", label: "Compliance Card" },
-            { href: "/tools/regulation-alerts", label: "Regulation Alerts" },
-            { href: "/tools/discovery-map", label: "Discovery Map" },
-            { href: "/services/pilot-car", label: "Pilot Car Services" },
+            { href: "/tools/compliance-copilot", label: "Compliance Copilot" },
+            { href: "/tools/state-requirements", label: "Regulation Alerts" },
+            { href: "/tools/global-command-map", label: "Discovery Map" },
+            { href: "/roles/pilot-car-operator", label: "Pilot Car Services" },
         ],
     },
     {
@@ -66,127 +66,55 @@ const FOOTER_SECTIONS = [
 ];
 
 export function FooterAccordion() {
-    const [openSection, setOpenSection] = useState<string | null>(null);
-
-    const toggle = (title: string) => {
-        setOpenSection(prev => (prev === title ? null : title));
-    };
-
     return (
         <footer className="relative z-10 border-t border-white/[0.06]">
-            {/* Mobile-first footer styles */}
+            {/* Mobile/Desktop responsive footer styles */}
             <style>{`
-                /* â”€â”€ Mobile default: stacked accordion â”€â”€ */
                 .ft-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                }
+                .ft-title {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #C6923A;
+                    text-transform: uppercase;
+                    letter-spacing: 0.2em;
+                    margin-bottom: 16px;
+                }
+                .ft-links {
                     display: flex;
                     flex-direction: column;
-                    gap: 0;
+                    gap: 8px;
                 }
-                .ft-section {
-                    border-bottom: 1px solid rgba(255,255,255,0.04);
+                @media (min-width: 640px) {
+                    .ft-grid { grid-template-columns: repeat(2, 1fr); }
                 }
-                .ft-trigger {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-                    padding: 14px 0;
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    min-height: 48px;
-                }
-                .ft-trigger-icon {
-                    width: 16px;
-                    height: 16px;
-                    color: #5A6577;
-                    transition: transform 0.2s ease;
-                    flex-shrink: 0;
-                }
-                .ft-trigger-icon--open {
-                    transform: rotate(180deg);
-                }
-                .ft-body {
-                    max-height: 0;
-                    overflow: hidden;
-                    transition: max-height 0.25s ease;
-                }
-                .ft-body--open {
-                    max-height: 400px;
-                }
-                .ft-body-inner {
-                    padding-bottom: 16px;
-                }
-                /* Desktop title â€” hidden on mobile */
-                .ft-desktop-title {
-                    display: none;
-                }
-
-                /* â”€â”€ Desktop (â‰¥768px): 5-col grid, no accordion â”€â”€ */
                 @media (min-width: 768px) {
-                    .ft-grid {
-                        display: grid;
-                        grid-template-columns: repeat(5, 1fr);
-                        gap: 2rem;
-                    }
-                    .ft-section {
-                        border-bottom: none;
-                    }
-                    .ft-trigger {
-                        display: none;
-                    }
-                    .ft-body {
-                        max-height: none !important;
-                        overflow: visible;
-                    }
-                    .ft-desktop-title {
-                        display: block;
-                        margin-bottom: 16px;
-                    }
+                    .ft-grid { grid-template-columns: repeat(5, 1fr); gap: 2rem; }
                 }
             `}</style>
 
             <div className="hc-container py-8 md:py-16">
                 <div className="ft-grid">
-                    {FOOTER_SECTIONS.map((section) => {
-                        const isOpen = openSection === section.title;
-                        return (
-                            <div key={section.title} className="ft-section">
-                                {/* Mobile: clickable accordion trigger */}
-                                <button aria-label="Interactive Button"
-                                    className="ft-trigger"
-                                    aria-expanded={isOpen}
-                                    onClick={() => toggle(section.title)}
-                                >
-                                    <h4 className="text-[11px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
-                                        {section.title}
-                                    </h4>
-                                    <ChevronDown className={`ft-trigger-icon ${isOpen ? 'ft-trigger-icon--open' : ''}`} />
-                                </button>
-
-                                {/* Desktop: always-visible title */}
-                                <h4 className="ft-desktop-title text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em]">
-                                    {section.title}
-                                </h4>
-
-                                {/* Links body */}
-                                <div className={`ft-body ${isOpen ? 'ft-body--open' : ''}`}>
-                                    <div className="ft-body-inner space-y-2">
-                                        {section.links.map(l => (
-                                            <Link aria-label="Navigation Link"
-                                                key={l.href}
-                                                href={l.href}
-                                                className="block text-sm text-[#8fa3b8] hover:text-white transition-colors py-1"
-                                                style={{ minHeight: 36, display: 'flex', alignItems: 'center' }}
-                                            >
-                                                {l.label}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
+                    {FOOTER_SECTIONS.map((section) => (
+                        <div key={section.title} className="ft-section">
+                            <h4 className="ft-title">{section.title}</h4>
+                            <div className="ft-links">
+                                {section.links.map(l => (
+                                    <Link aria-label="Navigation Link"
+                                        key={l.href}
+                                        href={l.href}
+                                        className="block text-sm text-[#8fa3b8] hover:text-white transition-colors"
+                                        style={{ minHeight: 36, display: 'flex', alignItems: 'center' }}
+                                    >
+                                        {l.label}
+                                    </Link>
+                                ))}
                             </div>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </div>
             </div>
 

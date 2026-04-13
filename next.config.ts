@@ -156,6 +156,21 @@ const nextConfig: NextConfig = {
                 destination: '/glossary/:path*',
                 permanent: true,
             },
+            {
+                source: '/leaderboard',
+                destination: '/leaderboards',
+                permanent: true,
+            },
+            {
+                source: '/requirements',
+                destination: '/escort-requirements',
+                permanent: true,
+            },
+            {
+                source: '/privacy-policy',
+                destination: '/privacy',
+                permanent: true,
+            },
             ...US_STATE_REDIRECTS,
             ...COUNTRY_REDIRECTS,
             ...CORRIDOR_REDIRECTS,
