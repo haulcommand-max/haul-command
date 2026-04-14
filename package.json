@@ -153,7 +153,7 @@
         "tailwind-merge": "^3.5.0",
         "topojson-client": "^3.1.0",
         "typesense": "^3.0.5",
-        "user-agents": "^1.1.669",
+        "user-agents": "^2.1.30",
         "uuid": "^13.0.0",
         "web-push": "^3.6.7",
         "workbox-cacheable-response": "^7.4.0",
