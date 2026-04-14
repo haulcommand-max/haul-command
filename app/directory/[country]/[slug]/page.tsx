@@ -7,6 +7,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { Shield, MapPin, Star, ArrowRight, ChevronRight, Users, TrendingUp } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import { stateFullName, countryFullName } from '@/lib/geo/state-names';
 
 // ═══════════════════════════════════════════════════════════════
 // /directory/[country]/[slug] — City-level directory page
@@ -120,7 +121,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: 24 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr', gap: 24 }} className="md:!grid-cols-[1fr_320px]">
 
           {/* Operator grid */}
           <div>
@@ -163,7 +164,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                     </div>
 
                     <div style={{ fontSize: 11, color: '#64748b' }}>
-                      {[op.city, op.state_code].filter(Boolean).join(', ')}
+                      {[op.city, stateFullName(op.state_code)].filter(Boolean).join(', ')}
                     </div>
 
                     {op.equipment_types && (
