@@ -1,0 +1,78 @@
+name: SEO Health Check
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 6am UTC
+  workflow_dispatch:       # Manual trigger from GitHub Actions UI
+
+jobs:
+  check-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check critical pages (200 status)
+        run: |
+          PAGES=(
+            "https://www.haulcommand.com"
+            "https://www.haulcommand.com/training"
+            "https://www.haulcommand.com/directory"
+            "https://www.haulcommand.com/loads"
+            "https://www.haulcommand.com/permits"
+            "https://www.haulcommand.com/leaderboards"
+            "https://www.haulcommand.com/corridors"
+            "https://www.haulcommand.com/tools"
+            "https://www.haulcommand.com/about"
+            "https://www.haulcommand.com/blog"
+          )
+          FAILED=0
+          for url in "${PAGES[@]}"; do
+            STATUS=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 15 "$url")
+            if [ "$STATUS" != "200" ]; then
+              echo "::error::FAIL: $url returned HTTP $STATUS"
+              FAILED=$((FAILED + 1))
+            else
+              echo "OK ($STATUS): $url"
+            fi
+          done
+          if [ $FAILED -gt 0 ]; then
+            echo "::error::$FAILED critical pages returned non-200 status codes"
+            exit 1
+          fi
+          echo "All $((${#PAGES[@]})) critical pages returned 200"
+
+      - name: Check sitemap exists and has URLs
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 15 "https://www.haulcommand.com/sitemap.xml")
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::sitemap.xml returned HTTP $STATUS"
+            exit 1
+          fi
+          # Count URL entries in primary sitemap
+          COUNT=$(curl -sL --max-time 20 "https://www.haulcommand.com/sitemap.xml" | grep -c "<loc>" || true)
+          echo "sitemap.xml contains $COUNT URL entries"
+          if [ "$COUNT" -lt 10 ]; then
+            echo "::warning::Sitemap URL count is suspiciously low ($COUNT). Something may have broken the sitemap generation."
+          fi
+
+      - name: Check meta tags on homepage
+        run: |
+          HTML=$(curl -sL --max-time 15 "https://www.haulcommand.com")
+          # Check title exists
+          if ! echo "$HTML" | grep -q "<title>"; then
+            echo "::error::Homepage is missing <title> tag"
+            exit 1
+          fi
+          # Check meta description exists
+          if ! echo "$HTML" | grep -qi "meta.*name.*description\|meta.*property.*og:description"; then
+            echo "::warning::Homepage may be missing meta description"
+          fi
+          echo "Meta tag checks passed"
+
+      - name: Check robots.txt
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 10 "https://www.haulcommand.com/robots.txt")
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::robots.txt returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "robots.txt OK"

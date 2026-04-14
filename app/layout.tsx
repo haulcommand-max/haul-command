@@ -4,7 +4,9 @@ import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 import { Suspense } from 'react';
-import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { PwaRegistry } from '@/components/layout/PwaRegistry';
+import { PostHogProvider } from '@/components/analytics/PostHogProvider';
+import { GoogleTagManager } from '@next/third-parties/google';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
     template: '%s | Haul Command Operations',
     default: 'Haul Command | Autonomous Heavy Haul Operating System',
   },
-  description: 'The world\'s first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.',
+  description: "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
   keywords: ['heavy haul load board', 'pilot car directory', 'oversize load routing', 'logistics MSB settlement'],
   openGraph: {
     title: 'Haul Command Logistics OS',
@@ -25,21 +27,30 @@ export const metadata: Metadata = {
     type: 'website',
   },
   manifest: '/manifest.json',
+  // ── Google Search Console Ownership Verification ──
+  // Replace with token from: GSC > Settings > Ownership verification > HTML tag
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION_TOKEN ?? 'REPLACE_WITH_GSC_TOKEN',
+  },
 };
 
-import { PwaRegistry } from '@/components/layout/PwaRegistry';
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
     <html lang="en">
+      {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body className={`${inter.className} text-white antialiased`} style={{ background: '#0F1318' }}>
         <Suspense fallback={null}>
-          <GoogleAnalytics />
+          {/* PostHog — product analytics, session replay, A/B testing */}
+          <PostHogProvider>
+            <PwaRegistry />
+            <GlobalCommandBar />
+            <DynamicBackgroundEngine />
+            {children}
+          </PostHogProvider>
         </Suspense>
-        <PwaRegistry />
-        <GlobalCommandBar />
-        <DynamicBackgroundEngine />
-        {children}
       </body>
     </html>
   );

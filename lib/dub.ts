@@ -117,4 +117,36 @@ export const HaulLinks = {
             externalId: `sponsor-${sponsorId}`,
             utm: { source: 'adgrid', medium: 'sponsored', campaign: `adgrid_${sponsorId}` },
         }),
+
+    /** Create a tracked AdGrid campaign link with variant + zone attribution */
+    adGridLink: (campaignId: string, destinationUrl: string, zone: string, variant: string, country: string) =>
+        createLink({
+            url: destinationUrl,
+            tag: 'adgrid',
+            externalId: `adgrid-${campaignId}-${variant}`,
+            utm: { source: 'adgrid', medium: zone, campaign: campaignId, content: variant },
+        }),
 };
+
+// ── AdGrid analytics retrieval ──
+export async function getAdGridAnalytics(externalId: string) {
+    if (!DUB_API_KEY) return null;
+    try {
+        const res = await fetch(
+            `${DUB_API_URL}/links?workspaceId=${DUB_WORKSPACE}&externalId=${externalId}`,
+            { headers: { Authorization: `Bearer ${DUB_API_KEY}` } },
+        );
+        if (!res.ok) return null;
+        const link = await res.json();
+        if (!link?.id) return null;
+
+        const analyticsRes = await fetch(
+            `${DUB_API_URL}/analytics?workspaceId=${DUB_WORKSPACE}&linkId=${link.id}&groupBy=countries`,
+            { headers: { Authorization: `Bearer ${DUB_API_KEY}` } },
+        );
+        return analyticsRes.ok ? analyticsRes.json() : null;
+    } catch {
+        return null;
+    }
+}
+
