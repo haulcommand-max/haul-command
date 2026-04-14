@@ -59,9 +59,9 @@ export default function HomeClient({
             <section className="relative w-full min-h-[92vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden pt-20 pb-32 bg-hc-bg">
                 {/* Visual Backdrop */}
                 <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-                    <img 
-                        src="/images/homepage_hero_bg_1775877319950.png" 
-                        alt="Heavy Haul Command Center" 
+                    <img
+                        src="/images/homepage_hero_bg_1775877319950.png"
+                        alt="Heavy Haul Command Center"
                         className="w-full h-full object-cover object-center opacity-30 scale-105 select-none pointer-events-none"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-hc-bg/50 via-hc-bg/80 to-hc-bg z-10 pointer-events-none" />
@@ -70,72 +70,100 @@ export default function HomeClient({
 
                 <div className="relative z-20 max-w-6xl mx-auto flex flex-col items-center w-full">
                     {/* Eyebrow Pill */}
-                    <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="inline-flex mb-8">
-                        <span className="bg-hc-high/80 backdrop-blur-md text-hc-gold-400 border border-hc-gold-500/40 px-6 py-2.5 rounded-full text-sm font-bold tracking-[0.2em] uppercase shadow-[0_0_40px_rgba(198,146,58,0.2)]">
+                    <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="inline-flex mb-6 sm:mb-8">
+                        <span className="bg-hc-high/80 backdrop-blur-md text-hc-gold-400 border border-hc-gold-500/40 px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase shadow-[0_0_40px_rgba(198,146,58,0.2)]">
                             {liveCountries > 0 ? liveCountries : 120} Countries Checked In
                         </span>
                     </motion.div>
-                    
-                    {/* Massive Typography */}
-                    <motion.h1 initial="hidden" animate="visible" variants={fadeUp} custom={1} className="text-[52px] sm:text-[76px] md:text-[96px] lg:text-[120px] font-black tracking-tighter leading-[0.95] text-balance mb-8 text-hc-text drop-shadow-2xl">
-                        The Operating System <br className="hidden md:block" />
-                        for <span className="text-transparent bg-clip-text bg-gradient-to-b from-hc-gold-300 via-hc-gold-500 to-hc-gold-700">Heavy Haul</span>.
+
+                    {/* Hero Headline — mobile-safe clamped type */}
+                    <motion.h1
+                        initial="hidden" animate="visible" variants={fadeUp} custom={1}
+                        className="text-[clamp(2.25rem,10vw,7.5rem)] font-black tracking-tighter leading-[0.95] text-balance mb-6 sm:mb-8 text-hc-text drop-shadow-2xl"
+                    >
+                        The Operating System{' '}
+                        <br className="hidden sm:block" />
+                        for{' '}<span className="text-transparent bg-clip-text bg-gradient-to-b from-hc-gold-300 via-hc-gold-500 to-hc-gold-700">Heavy Haul</span>.
                     </motion.h1>
-                    
+
                     {/* Subtitle */}
-                    <motion.p initial="hidden" animate="visible" variants={fadeUp} custom={2} className="text-lg md:text-2xl text-hc-muted leading-relaxed max-w-3xl text-balance mb-14 font-medium">
-                        Discover verified pilot cars, post oversize loads, and execute complex freight routing with total transparency. 
-                        The global command center is live.
+                    <motion.p
+                        initial="hidden" animate="visible" variants={fadeUp} custom={2}
+                        className="text-base sm:text-lg md:text-2xl text-hc-muted leading-relaxed max-w-2xl text-balance mb-10 sm:mb-14 font-medium px-2"
+                    >
+                        Verified pilot cars, live loads, and oversize route intelligence.
+                        {' '}<span className="text-hc-text font-semibold">The command center is live.</span>
                     </motion.p>
 
-                    {/* CTAs */}
-                    <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={3} className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                        <Link href="/onboarding/start" className="group relative flex items-center justify-center px-12 py-6 rounded-[24px] bg-gradient-to-b from-hc-gold-400 to-hc-gold-500 text-black font-black text-xl uppercase tracking-widest transition-all shadow-gold-lg hover:shadow-gold-xl hover:scale-[1.02] w-full sm:w-auto overflow-hidden">
-                            <span className="relative z-10 flex items-center font-display">
-                                GET STARTED FREE <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1.5 transition-transform" />
+                    {/* CTAs — role-intent split, mobile stacked */}
+                    <motion.div
+                        initial="hidden" animate="visible" variants={fadeUp} custom={3}
+                        className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-6 w-full max-w-md sm:max-w-none"
+                    >
+                        {/* Primary — majority action */}
+                        <Link
+                            href="/onboarding/start"
+                            className="group relative flex items-center justify-center px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-[24px] bg-gradient-to-b from-hc-gold-400 to-hc-gold-500 text-black font-black text-base sm:text-xl uppercase tracking-widest transition-all shadow-[0_4px_24px_rgba(198,146,58,0.4)] hover:shadow-[0_8px_40px_rgba(198,146,58,0.6)] hover:scale-[1.02] w-full sm:w-auto overflow-hidden"
+                        >
+                            <span className="relative z-10 flex items-center gap-2 font-display">
+                                GET STARTED FREE <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </span>
                             <div className="absolute inset-0 bg-white/20 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                         </Link>
-                        <Link href="/directory" className="group flex items-center justify-center px-12 py-6 rounded-[24px] bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-bold text-xl uppercase tracking-widest transition-all w-full sm:w-auto">
-                            BROWSE NETWORK
+                        {/* Secondary */}
+                        <Link
+                            href="/directory"
+                            className="group flex items-center justify-center px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-[24px] bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-bold text-base sm:text-xl uppercase tracking-widest transition-all w-full sm:w-auto"
+                        >
+                            Browse Network
                         </Link>
+                    </motion.div>
+
+                    {/* Trust micro-strip below CTAs */}
+                    <motion.div
+                        initial="hidden" animate="visible" variants={fadeUp} custom={4}
+                        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-xs font-semibold text-hc-subtle uppercase tracking-widest"
+                    >
+                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-hc-success" /> Free to browse</span>
+                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-hc-success" /> No card required</span>
+                        <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5 text-hc-gold-500" /> 120 countries</span>
                     </motion.div>
                 </div>
             </section>
 
-            {/* 2. OVERLAPPING ROLE SELECTOR CARDS */}
-            <section className="relative z-30 -mt-24 px-4 mb-24 sm:mb-32">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+            {/* 2. ROLE SELECTOR CARDS */}
+            <section className="relative z-30 -mt-12 sm:-mt-24 px-4 mb-16 sm:mb-24">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 sm:gap-10">
                     {/* Broker Card */}
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} custom={1} variants={scaleIn}>
-                        <Link href="/onboarding/broker" className="group flex flex-col items-center text-center rounded-[40px] bg-hc-surface/90 backdrop-blur-xl border border-white/[0.08] hover:border-hc-success/40 p-12 sm:p-16 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-[0_40px_80px_rgba(34,197,94,0.15)] relative overflow-hidden h-full">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} custom={1} variants={scaleIn}>
+                        <Link href="/onboarding/broker" className="group flex flex-col items-center text-center rounded-[28px] sm:rounded-[40px] bg-hc-surface/90 backdrop-blur-xl border border-white/[0.08] hover:border-hc-success/40 p-8 sm:p-12 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-[0_40px_80px_rgba(34,197,94,0.15)] relative overflow-hidden h-full">
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.12)_0%,transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                            <div className="w-28 h-28 rounded-[32px] bg-gradient-to-br from-hc-success/20 to-hc-success/5 border border-hc-success/20 flex items-center justify-center mb-10 shadow-inner group-hover:scale-110 transition-transform duration-500 relative z-10">
-                                <Search className="w-12 h-12 text-hc-success" />
+                            <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[24px] sm:rounded-[32px] bg-gradient-to-br from-hc-success/20 to-hc-success/5 border border-hc-success/20 flex items-center justify-center mb-6 sm:mb-10 shadow-inner group-hover:scale-110 transition-transform duration-500 relative z-10">
+                                <Search className="w-9 h-9 sm:w-12 sm:h-12 text-hc-success" />
                             </div>
-                            <h2 className="text-4xl sm:text-5xl font-black mb-6 font-display tracking-tight text-hc-text relative z-10">I need an Escort</h2>
-                            <p className="text-hc-muted text-xl leading-relaxed mb-12 max-w-md mx-auto font-medium relative z-10">
-                                Post your route, check state requirements, and hire verified PEVOs instantly. Your freight, protected automatically.
+                            <h2 className="text-2xl sm:text-4xl font-black mb-3 sm:mb-6 font-display tracking-tight text-hc-text relative z-10">I Need an Escort</h2>
+                            <p className="text-hc-muted text-sm sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-md mx-auto font-medium relative z-10">
+                                Post your route, check permit requirements, and connect with verified operators instantly.
                             </p>
-                            <div className="mt-auto px-10 py-5 rounded-full bg-hc-success/10 text-hc-success font-bold text-lg uppercase tracking-widest flex items-center group-hover:bg-hc-success group-hover:text-black transition-colors relative z-10 border border-hc-success/20 group-hover:border-transparent">
-                                POST A LOAD <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" />
+                            <div className="mt-auto px-6 py-3 sm:px-10 sm:py-5 rounded-full bg-hc-success/10 text-hc-success font-bold text-sm sm:text-lg uppercase tracking-widest flex items-center group-hover:bg-hc-success group-hover:text-black transition-colors relative z-10 border border-hc-success/20 group-hover:border-transparent">
+                                POST A LOAD <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" />
                             </div>
                         </Link>
                     </motion.div>
 
                     {/* Operator Card */}
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} custom={2} variants={scaleIn}>
-                        <Link href="/onboarding/operator" className="group flex flex-col items-center text-center rounded-[40px] bg-hc-surface/90 backdrop-blur-xl border border-white/[0.08] hover:border-hc-gold-500/40 p-12 sm:p-16 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-[0_40px_80px_rgba(198,146,58,0.15)] relative overflow-hidden h-full">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} custom={2} variants={scaleIn}>
+                        <Link href="/onboarding/operator" className="group flex flex-col items-center text-center rounded-[28px] sm:rounded-[40px] bg-hc-surface/90 backdrop-blur-xl border border-white/[0.08] hover:border-hc-gold-500/40 p-8 sm:p-12 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-[0_40px_80px_rgba(198,146,58,0.15)] relative overflow-hidden h-full">
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(198,146,58,0.12)_0%,transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                            <div className="w-28 h-28 rounded-[32px] bg-gradient-to-br from-hc-gold-500/20 to-hc-gold-500/5 border border-hc-gold-500/20 flex items-center justify-center mb-10 shadow-inner group-hover:scale-110 transition-transform duration-500 relative z-10">
-                                <Shield className="w-12 h-12 text-hc-gold-500" />
+                            <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[24px] sm:rounded-[32px] bg-gradient-to-br from-hc-gold-500/20 to-hc-gold-500/5 border border-hc-gold-500/20 flex items-center justify-center mb-6 sm:mb-10 shadow-inner group-hover:scale-110 transition-transform duration-500 relative z-10">
+                                <Shield className="w-9 h-9 sm:w-12 sm:h-12 text-hc-gold-500" />
                             </div>
-                            <h2 className="text-4xl sm:text-5xl font-black mb-6 font-display tracking-tight text-hc-text relative z-10">I am an Escort</h2>
-                            <p className="text-hc-muted text-xl leading-relaxed mb-12 max-w-md mx-auto font-medium relative z-10">
-                                Get localized load alerts, claim your territory, and get paid via Escrow. The ultimate tool built entirely for the field.
+                            <h2 className="text-2xl sm:text-4xl font-black mb-3 sm:mb-6 font-display tracking-tight text-hc-text relative z-10">I Am an Escort</h2>
+                            <p className="text-hc-muted text-sm sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-md mx-auto font-medium relative z-10">
+                                Get load alerts for your territory, claim your presence, and get paid via Escrow.
                             </p>
-                            <div className="mt-auto px-10 py-5 rounded-full bg-hc-gold-500/10 text-hc-gold-500 font-bold text-lg uppercase tracking-widest flex items-center group-hover:bg-hc-gold-500 group-hover:text-black transition-colors relative z-10 border border-hc-gold-500/20 group-hover:border-transparent">
-                                CLAIM PROFILE <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" />
+                            <div className="mt-auto px-6 py-3 sm:px-10 sm:py-5 rounded-full bg-hc-gold-500/10 text-hc-gold-500 font-bold text-sm sm:text-lg uppercase tracking-widest flex items-center group-hover:bg-hc-gold-500 group-hover:text-black transition-colors relative z-10 border border-hc-gold-500/20 group-hover:border-transparent">
+                                CLAIM PROFILE <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-2 transition-transform" />
                             </div>
                         </Link>
                     </motion.div>
