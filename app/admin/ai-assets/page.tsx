@@ -3,7 +3,7 @@ import { HcAssetLibrary } from "@/components/admin/HcAssetLibrary";
 import Link from "next/link";
 
 export const metadata = {
-  title: "AI Asset Library "“ HAUL COMMAND Admin",
+  title: "AI Asset Library - HAUL COMMAND Admin",
 };
 
 export const dynamic = "force-dynamic";
@@ -66,7 +66,7 @@ export default async function AiAssetsPage() {
               textDecoration: "none",
             }}
           >
-            ðŸ”¬ Variant Review
+            ðŸ"¬ Variant Review
           </Link>
         </div>
       </div>

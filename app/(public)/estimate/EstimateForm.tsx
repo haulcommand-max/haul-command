@@ -189,7 +189,7 @@ export default function EstimateForm() {
                     textTransform: 'uppercase' as const, letterSpacing: '0.03em',
                     transition: 'all 0.2s',
                 }}>
-                    {loading ? 'Calculating"¦' : 'âš¡ Get Instant Estimate'}
+                    {loading ? 'Calculating...' : 'âš¡ Get Instant Estimate'}
                 </button>
 
                 {error && (

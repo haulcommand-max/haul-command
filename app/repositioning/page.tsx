@@ -39,9 +39,9 @@ function timeAgo(iso: string) {
 const SERVICE_LABEL: Record<string, string> = {
   pilot_car: 'ðŸš• Pilot Car',
   escort_truck: 'ðŸšš Escort Truck',
-  height_pole: 'âš ï¸ Height Pole',
-  wide_load: 'â†”ï¸ Wide Load',
-  oversize: 'ðŸ“ Oversize',
+  height_pole: '⚠️ï¸ Height Pole',
+  wide_load: 'â†"ï¸ Wide Load',
+  oversize: 'ðŸ" Oversize',
 }
 
 export default function RepositioningPage() {
@@ -191,7 +191,7 @@ export default function RepositioningPage() {
               </button>
             )}
             <Link href="/available-now" className="px-4 py-2.5 rounded-xl border border-[#1e3048] text-[#8a9ab0] text-sm font-semibold hover:text-white transition-colors">
-              Full Available Feed â†’
+              Full Available Feed →
             </Link>
           </div>
         </div>
@@ -294,7 +294,7 @@ export default function RepositioningPage() {
           <input
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Filter by location, service, operator"¦"
+            placeholder="Filter by location, service, operator..."
             className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-2.5 text-sm focus:border-amber-500/50 focus:outline-none"
           />
           <div className="text-xs text-[#566880] shrink-0">{filtered.length} broadcasting</div>
@@ -308,7 +308,7 @@ export default function RepositioningPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 rounded-2xl border border-[#1e3048] bg-[#0f1a24]">
-            <div className="text-4xl mb-3">ðŸ“¡</div>
+            <div className="text-4xl mb-3">ðŸ"¡</div>
             <p className="font-bold text-white mb-1">No repositioning broadcasts right now</p>
             <p className="text-sm text-[#566880] mb-4">Be the first — broadcast your position and get found by brokers looking for capacity.</p>
             <button
@@ -381,8 +381,8 @@ export default function RepositioningPage() {
           <div className="flex flex-wrap gap-2">
             {[
               { href: '/available-now', label: 'ðŸŸ¢ Available Now' },
-              { href: '/load-board', label: 'ðŸ“‹ Load Board' },
-              { href: '/directory', label: 'ðŸ” Operator Directory' },
+              { href: '/load-board', label: 'ðŸ"‹ Load Board' },
+              { href: '/directory', label: 'ðŸ" Operator Directory' },
               { href: '/tools/route-planner', label: 'ðŸ—ºï¸ Route Planner' },
               { href: '/corridors', label: 'ðŸ›£ï¸ Corridor Intelligence' },
             ].map(l => (

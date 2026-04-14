@@ -4,7 +4,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600 // Cache for 1 hour
 
-// â”€â”€â”€ METADATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- METADATA --------------------------------------------------------------
 export const metadata: Metadata = {
   title: 'Corridor Intelligence & Safety Library | Haul Command',
   description:
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
 }
 
-// â”€â”€â”€ PLATFORM CATEGORY & ARTICLE INVENTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- PLATFORM CATEGORY & ARTICLE INVENTORY ----------------------------------
 // Initial release architecture for the SEO logistics library.
 const CATEGORIES = [
   'All',
@@ -69,7 +69,7 @@ const ARTICLES = [
     title: 'How to Spot Fraudulent Pilot Car Qualifications',
     category: 'Interstate Reciprocity',
     readTime: '5 min read',
-    excerpt: 'Illegitimate PDF certs put brokers and fleets at immense risk. Learn how Haul Command's digital badge verification system completely eliminates fraudulent credentials from the dispatch cycle.',
+    excerpt: 'Illegitimate PDF certs put brokers and fleets at immense risk. Learn how Haul Command\'s digital badge verification system completely eliminates fraudulent credentials from the dispatch cycle.',
   },
   {
     slug: 'winter-driving-heavy-haul',
@@ -80,7 +80,7 @@ const ARTICLES = [
   },
 ]
 
-// â”€â”€â”€ STYLES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- STYLES ----------------------------------------------------------------
 const gold = '#D4A844'
 const s = {
   page: { minHeight: '100vh', background: '#07090d', color: '#e8e8e8' } as const,
@@ -96,7 +96,7 @@ const s = {
   }
 }
 
-// â”€â”€â”€ PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- PAGE -------------------------------------------------------------------
 export default function IntelligenceLibraryPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -117,7 +117,7 @@ export default function IntelligenceLibraryPage() {
       <JsonLd data={jsonLd} />
       <div style={s.page}>
 
-        {/* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* -- HERO ----------------------------------------------------- */}
         <section style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(2.5rem,6vw,5rem) 20px clamp(2rem,4vw,3.5rem)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 50% -10%, rgba(139,92,246,0.1), transparent 65%)', pointerEvents: 'none' }} />
           <div style={{ ...s.container, position: 'relative' }}>
@@ -132,13 +132,13 @@ export default function IntelligenceLibraryPage() {
             </h1>
 
             <p style={{ margin: '0 0 24px', fontSize: 16, color: '#9ca3af', lineHeight: 1.7, maxWidth: 600 }}>
-              The definitive repository for pilot car best practices, heavy haul compliance, and logistics operator intelligence. Built to master the world's most difficult routes.
+              The definitive repository for pilot car best practices, heavy haul compliance, and logistics operator intelligence. Built to master the world&apos;s most difficult routes.
             </p>
 
           </div>
         </section>
 
-        {/* â”€â”€ CATEGORY FILTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* -- CATEGORY FILTER ----------------------------------------- */}
         <section style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, background: 'rgba(7,9,13,0.9)', backdropFilter: 'blur(10px)', zIndex: 10 }}>
           <div style={{ ...s.container, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {CATEGORIES.map((cat, i) => (
@@ -149,7 +149,7 @@ export default function IntelligenceLibraryPage() {
           </div>
         </section>
 
-        {/* â”€â”€ ARTICLE GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* -- ARTICLE GRID -------------------------------------------- */}
         <section style={{ padding: 'clamp(2rem,4vw,4rem) 20px' }}>
           <div style={{ ...s.container, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
             {ARTICLES.map(article => (
@@ -176,7 +176,7 @@ export default function IntelligenceLibraryPage() {
 
                   {/* Read More */}
                   <div style={{ fontSize: 12, fontWeight: 700, color: '#a78bfa', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    Read Report <span style={{ fontSize: 16 }}>â†’</span>
+                    Read Report <span style={{ fontSize: 16 }}>→</span>
                   </div>
 
                 </article>
@@ -185,7 +185,7 @@ export default function IntelligenceLibraryPage() {
           </div>
         </section>
 
-        {/* â”€â”€ BOTTOM CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* -- BOTTOM CTA ---------------------------------------------- */}
         <section style={{ padding: '3rem 20px', textAlign: 'center', background: 'rgba(139,92,246,0.03)', borderTop: '1px solid rgba(139,92,246,0.1)' }}>
           <div style={{ ...s.container, maxWidth: 600 }}>
             <h2 style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 900, color: '#f3f4f6' }}>Stay Ahead of The Industry.</h2>

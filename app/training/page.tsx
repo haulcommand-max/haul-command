@@ -222,7 +222,7 @@ export default async function TrainingHome() {
         }}>
           <div style={{
             position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)',
-            width: 600, height: 300, borderRadius: '50%',
+            width: '100%', maxWidth: 600, height: 300, borderRadius: '50%',
             background: 'radial-gradient(ellipse, rgba(245,166,35,0.12) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />

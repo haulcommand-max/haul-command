@@ -59,7 +59,7 @@ export default function AdminAbusePage() {
                     </div>
                 ) : flags.length === 0 ? (
                     <div className="text-center py-20 text-gray-600">
-                        <p className="text-4xl mb-3">âœ“</p>
+                        <p className="text-4xl mb-3">✓</p>
                         <p>No open flags</p>
                     </div>
                 ) : (
@@ -83,7 +83,7 @@ export default function AdminAbusePage() {
                                         <p className="text-sm text-gray-300 truncate">{flag.notes ?? "No notes"}</p>
                                         <p className="text-xs text-gray-600 mt-1">
                                             {new Date(flag.created_at).toLocaleString()}
-                                            {flag.entity_id && <> · entity: {flag.entity_id.slice(0, 8)}"¦</>}
+                                            {flag.entity_id && <> · entity: {flag.entity_id.slice(0, 8)}...</>}
                                         </p>
                                     </div>
                                     <button aria-label="Interactive Button"
@@ -91,7 +91,7 @@ export default function AdminAbusePage() {
                                         disabled={resolving === flag.id}
                                         className="shrink-0 text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors disabled:opacity-60"
                                     >
-                                        {resolving === flag.id ? ""¦" : "Resolve"}
+                                        {resolving === flag.id ? "..." : "Resolve"}
                                     </button>
                                 </div>
                             </div>

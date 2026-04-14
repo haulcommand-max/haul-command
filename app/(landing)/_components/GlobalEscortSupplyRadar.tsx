@@ -970,7 +970,7 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: "10px", padding: "6px 12px",
                                     backdropFilter: "blur(12px)", textAlign: "center" as const,
                                 }}>
-                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? ""¦" : value}</div>
+                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? "..." : value}</div>
                                     <div style={{ fontSize: "8px", fontWeight: 700, color: "#8fa3b8", textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{label}</div>
                                 </div>
                             ))}
@@ -987,7 +987,7 @@ export function GlobalEscortSupplyRadar() {
                                 Live Route Signals
                             </div>
                             {signals.length > 0 ? signals.map((sig, i) => {
-                                const display = SIGNAL_TYPE_DISPLAY[sig.signal_type] || { label: sig.signal_type, color: "#8fa3b8", icon: "ðŸ“¡" };
+                                const display = SIGNAL_TYPE_DISPLAY[sig.signal_type] || { label: sig.signal_type, color: "#8fa3b8", icon: "📡" };
                                 const ago = Math.round((Date.now() - new Date(sig.created_at).getTime()) / 60000);
                                 const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
                                 return (

@@ -15,7 +15,7 @@
 import { useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Types -----------------------------------------------------
 interface Lead {
   company: string;
   phone: string;
@@ -36,7 +36,7 @@ interface PushResult {
   role: string;
 }
 
-// â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Constants -------------------------------------------------
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
@@ -93,7 +93,7 @@ Available Chase driver covering TX, OK, NM corridors - text only (214) 555-0192
 High Pole certified operator - Southeast US - available now - (678) 617-2090
 Steer certified - Midwest runs - (312) 555-7841 call or text`;
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Helpers ---------------------------------------------------
 function normPhone(raw: string | null): string | null {
   if (!raw) return null;
   const d = raw.replace(/\D/g, '');
@@ -125,7 +125,7 @@ const POS_COLOR: Record<string, string> = {
   Steer: '#4ade80', 'Route Survey': '#fb923c',
 };
 
-// â”€â”€ Supabase push â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Supabase push ---------------------------------------------
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function pushLead(supabase: any, lead: Lead, cc: string): Promise<PushResult> {
   const phone = normPhone(lead.phone);
@@ -215,7 +215,7 @@ async function pushLead(supabase: any, lead: Lead, cc: string): Promise<PushResu
   }
 }
 
-// â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Component -------------------------------------------------
 export default function LeadParserPage() {
   const [rawInput, setRawInput] = useState('');
   const [countryCode, setCountryCode] = useState('US');
@@ -232,7 +232,7 @@ export default function LeadParserPage() {
   const runPipeline = useCallback(async () => {
     if (!rawInput.trim()) return;
     setLoading(true);
-    setStatus({ state: 'on', text: 'AI extracting leads"¦' });
+    setStatus({ state: 'on', text: 'AI extracting leads...' });
     setLeads([]);
     setPushResults([]);
 
@@ -253,9 +253,9 @@ export default function LeadParserPage() {
 
       // Step 2: Push to Supabase
       if (supabase) {
-        setStatus({ state: 'on', text: `Saving ${parsed.length} leads"¦` });
+        setStatus({ state: 'on', text: `Saving ${parsed.length} leads...` });
         for (let i = 0; i < parsed.length; i++) {
-          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}"¦` });
+          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}...` });
           const result = await pushLead(supabase, parsed[i], countryCode);
           results[i] = result;
           setPushResults([...results]);
@@ -363,7 +363,7 @@ export default function LeadParserPage() {
           <textarea
             value={rawInput}
             onChange={e => setRawInput(e.target.value)}
-            placeholder={`Paste load board data here"¦\n\nBROKER examples (posting a job — NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability — CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
+            placeholder={`Paste load board data here...\n\nBROKER examples (posting a job — NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability — CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
             style={{ width: '100%', background: 'transparent', border: 'none', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, lineHeight: 1.6, padding: '14px 16px', resize: 'vertical', minHeight: 160, outline: 'none' }}
           />
         </div>
@@ -410,7 +410,7 @@ export default function LeadParserPage() {
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search company / city"¦"
+                placeholder="Search company / city..."
                 style={{ background: '#0d0f12', border: '1px solid #252c3f', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, padding: '5px 12px', width: 200, outline: 'none', marginLeft: 'auto' }}
               />
             </div>
@@ -461,7 +461,7 @@ export default function LeadParserPage() {
             {/* Push banner */}
             {anyPushed && (
               <div style={{ padding: '10px 16px', display: 'flex', gap: 20, alignItems: 'center', background: 'rgba(34,197,94,.05)', borderBottom: '1px solid rgba(34,197,94,.15)', flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 12, letterSpacing: 2, textTransform: 'uppercase', color: '#22c55e' }}>âœ“ Supabase Updated</span>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 12, letterSpacing: 2, textTransform: 'uppercase', color: '#22c55e' }}>✓ Supabase Updated</span>
                 <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}><strong style={{ color: '#3b82f6' }}>{newBrokers}</strong> new brokers</span>
                 <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}><strong style={{ color: '#22c55e' }}>{newOps}</strong> new operators</span>
                 <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}><strong style={{ color: '#f5a623' }}>{updated}</strong> known (no dupe)</span>
@@ -523,7 +523,7 @@ export default function LeadParserPage() {
                         <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#64748b' }}>{countryCode}</td>
                         <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, whiteSpace: 'nowrap' }}>
                           {!pr ? <span style={{ color: '#252c3f' }}>pending</span>
-                            : pr.brokerStatus === 'new' ? <span style={{ color: '#22c55e' }}>âœ“ new {pr.role}</span>
+                            : pr.brokerStatus === 'new' ? <span style={{ color: '#22c55e' }}>✓ new {pr.role}</span>
                             : pr.brokerStatus === 'updated' ? <span style={{ color: '#f5a623' }}>â†» known</span>
                             : pr.brokerStatus === 'no_phone' ? <span style={{ color: '#64748b' }}>no phone</span>
                             : <span style={{ color: '#ef4444' }}>error</span>
@@ -539,8 +539,8 @@ export default function LeadParserPage() {
             {/* Export row */}
             <div style={{ padding: '10px 16px', borderTop: '1px solid #252c3f', display: 'flex', gap: 8, alignItems: 'center', background: '#1c2030', flexWrap: 'wrap' }}>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Export:</span>
-              <button aria-label="Interactive Button" onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ“‹ Copy CSV</button>
-              <button aria-label="Interactive Button" onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ“ž Broker Phones</button>
+              <button aria-label="Interactive Button" onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ"‹ Copy CSV</button>
+              <button aria-label="Interactive Button" onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ"ž Broker Phones</button>
               <button aria-label="Interactive Button" onClick={() => copyPhones('operator')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸš— Operator Phones</button>
             </div>
           </div>
@@ -554,9 +554,9 @@ export default function LeadParserPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 1, background: '#252c3f' }}>
               {[
-                { title: 'ðŸ”“ Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2"“5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
-                { title: 'âœ… Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29"“49/mo.`, value: `$${phones * 39}/mo if all verify` },
-                { title: 'ðŸ“Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99"“299/mo per subscriber' },
+                { title: 'ðŸ"" Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2-5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
+                { title: 'âœ… Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29-49/mo.`, value: `$${phones * 39}/mo if all verify` },
+                { title: 'ðŸ"Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99-299/mo per subscriber' },
                 { title: 'âš¡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
                 { title: 'ðŸš— Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
                 { title: 'ðŸŒ Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: '120 countries, same system' },
@@ -575,7 +575,7 @@ export default function LeadParserPage() {
         {loading && leads.length === 0 && (
           <div style={{ textAlign: 'center', padding: '50px 20px', background: '#151820', border: '1px solid #252c3f' }}>
             <div style={{ width: 28, height: 28, border: '2px solid #252c3f', borderTopColor: '#f5a623', borderRadius: '50%', animation: 'spin .8s linear infinite', margin: '0 auto 12px' }} />
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying roles"¦</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying roles...</p>
             <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           </div>
         )}

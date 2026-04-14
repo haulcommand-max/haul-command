@@ -62,7 +62,7 @@ export function LiveActivityFeed({ maxItems = 8 }: { maxItems?: number }) {
     return (
       <div style={{
         background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: 16, padding: 20,
+        borderRadius: 16, padding: '12px 16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <Activity style={{ width: 14, height: 14, color: '#475569' }} />
@@ -90,7 +90,7 @@ export function LiveActivityFeed({ maxItems = 8 }: { maxItems?: number }) {
   return (
     <div style={{
       background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-      borderRadius: 16, padding: '16px 20px',
+      borderRadius: 16, padding: '12px 16px',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

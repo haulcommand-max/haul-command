@@ -102,7 +102,7 @@ export default function RateAdvisorPage() {
         </div>
 
         <button aria-label="Interactive Button" onClick={getAdvice} disabled={loading || !corridor.trim()} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #22c55e, #059669)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', transition: 'all .2s' }}>
-          {loading ? 'â³ Analyzing Rates"¦' : 'ðŸ’° Get Rate Intelligence'}
+          {loading ? 'â³ Analyzing Rates...' : 'ðŸ’° Get Rate Intelligence'}
         </button>
 
         {error && <div style={{ marginTop: 16, padding: 16, background: 'rgba(239,68,68,0.1)', borderLeft: '3px solid #ef4444', borderRadius: 8, color: '#fca5a5', fontSize: 13 }}>{error}</div>}

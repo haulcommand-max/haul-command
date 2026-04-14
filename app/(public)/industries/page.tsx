@@ -53,7 +53,7 @@ export default function IndustriesIndexPage() {
                                     {lt.name} Escort
                                 </h2>
                             </div>
-                            <p className="text-[12px] text-white/40 leading-relaxed flex-1">{lt.description.slice(0, 110)}"¦</p>
+                            <p className="text-[12px] text-white/40 leading-relaxed flex-1">{lt.description.slice(0, 110)}...</p>
                             <div className="flex flex-wrap gap-1">
                                 {lt.industries.map((ind) => (
                                     <span key={ind} className="text-[9px] text-white/25 border border-white/7 rounded px-1.5 py-0.5">

@@ -79,12 +79,12 @@ export default function VsOversizeIoPage() {
                     <td className="py-3 pr-4 text-[#d0dce8] font-semibold">{row.feature}</td>
                     <td className="py-3 px-4 text-center">
                       {row.hc
-                        ? <><span className="text-[#22c55e] font-bold">âœ”</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</>
+                        ? <><span className="text-[#22c55e] font-bold">âœ"</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</>
                         : <span className="text-[#3a5068]">-</span>}
                     </td>
                     <td className="py-3 px-4 text-center">
                       {row.comp
-                        ? <><span className="text-[#566880] font-bold">âœ”</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</>
+                        ? <><span className="text-[#566880] font-bold">âœ"</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</>
                         : <><span className="text-[#3a5068]">âœ•</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
                     </td>
                   </tr>
@@ -100,10 +100,10 @@ export default function VsOversizeIoPage() {
               {title:'Free tools, no login wall', body:'Every Haul Command tool — permit calculator, axle weight calculator, superload checker, frost law tracker — is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
               {title:'Global operator directory', body:'Haul Command indexes operators across 120 countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
               {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform — no marketplace.'},
-              {title:'Training and certification', body:'Haul Command's Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
+              {title:'Training and certification', body:'Haul Command\'s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
             ].map((item,i)=>(
               <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
-                <p className="text-xs font-bold text-[#22c55e] mb-1">âœ” {item.title}</p>
+                <p className="text-xs font-bold text-[#22c55e] mb-1">âœ" {item.title}</p>
                 <p className="text-xs text-[#8a9ab0] leading-relaxed">{item.body}</p>
               </div>
             ))}
@@ -114,16 +114,16 @@ export default function VsOversizeIoPage() {
             <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free — No Credit Card</h2>
             <p className="text-sm text-[#8a9ab0] mb-6">All tools. All public. No login required for core features.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator â†’</Link>
+              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
               <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
             </div>
           </div>
 
           {/* OTHER COMPARISONS */}
           <div className="flex flex-wrap gap-2">
-            <Link href="/vs/ods-north-america" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs ODS North America â†’</Link>
-            <Link href="/vs/wideloadshipping" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs WideLoadShipping â†’</Link>
-            <Link href="/vs/heavyhaulers" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs HeavyHaulers â†’</Link>
+            <Link href="/vs/ods-north-america" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs ODS North America →</Link>
+            <Link href="/vs/wideloadshipping" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs WideLoadShipping →</Link>
+            <Link href="/vs/heavyhaulers" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs HeavyHaulers →</Link>
           </div>
         </div>
       </div>

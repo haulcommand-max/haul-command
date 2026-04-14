@@ -51,7 +51,7 @@ export default function AdminVendorApplicationsPage() {
                 </div>
 
                 {loading ? (
-                    <div className="p-8 text-center text-gray-400 text-sm">Loading"¦</div>
+                    <div className="p-8 text-center text-gray-400 text-sm">Loading...</div>
                 ) : apps.length === 0 ? (
                     <div className="p-8 text-center text-gray-400 text-sm">No pending applications.</div>
                 ) : (

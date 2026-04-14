@@ -112,13 +112,13 @@ export default function AdminPlacementsNewPage() {
                     <div>
                         <label className="block text-sm font-medium text-neutral-300 mb-1">Region (State/Province)</label>
                         <input value={form.region1} onChange={e => set("region1", e.target.value)}
-                            placeholder="FL, GA, ON"¦" className={inp} />
+                            placeholder="FL, GA, ON..." className={inp} />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-neutral-300 mb-1">Corridor (optional)</label>
                         <input value={form.corridor_name} onChange={e => set("corridor_name", e.target.value)}
-                            placeholder="I-75, I-95, 401"¦" className={inp} />
+                            placeholder="I-75, I-95, 401..." className={inp} />
                     </div>
 
                     <div>
@@ -149,7 +149,7 @@ export default function AdminPlacementsNewPage() {
                 <div className="flex gap-3 pt-2">
                     <button aria-label="Interactive Button" type="submit" disabled={working}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
-                        {working ? "Creating"¦" : "Create Placement"}
+                        {working ? "Creating..." : "Create Placement"}
                     </button>
                     <button aria-label="Interactive Button" type="button" onClick={() => router.back()}
                         className="px-4 py-2.5 border border-white/20 rounded-lg text-sm text-neutral-300 hover:bg-[#1A1A1A] transition-colors">

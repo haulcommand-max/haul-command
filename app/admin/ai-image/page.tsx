@@ -5,7 +5,7 @@ import { HcGeneratePackShortcuts } from "@/components/admin/HcGeneratePackShortc
 import Link from "next/link";
 
 export const metadata = {
-  title: "AI Image Engine "“ HAUL COMMAND Admin",
+  title: "AI Image Engine - HAUL COMMAND Admin",
 };
 
 export default function AiImagePage() {
@@ -37,7 +37,7 @@ export default function AiImagePage() {
               textDecoration: "none",
             }}
           >
-            ðŸ“‚ Asset Library â†’
+            ðŸ"‚ Asset Library →
           </Link>
           <Link aria-label="Navigation Link"
             href="/admin/ai-review"
@@ -52,7 +52,7 @@ export default function AiImagePage() {
               textDecoration: "none",
             }}
           >
-            ðŸ”¬ Variant Review â†’
+            ðŸ"¬ Variant Review →
           </Link>
         </div>
       </div>

@@ -126,7 +126,7 @@ export default async function AdFraudDashboardPage() {
                             <tbody className="divide-y divide-slate-800">
                                 {(riskySessions || []).map((s: FraudSession) => (
                                     <tr key={s.session_id} className="hover:bg-slate-800/30">
-                                        <td className="px-6 py-3 font-mono text-xs text-slate-400">{s.session_id.slice(0, 12)}"¦</td>
+                                        <td className="px-6 py-3 font-mono text-xs text-slate-400">{s.session_id.slice(0, 12)}...</td>
                                         <td className="px-6 py-3">
                                             <span className={`px-2 py-0.5 text-xs font-bold rounded-full border ${riskColor(s.risk_score)}`}>
                                                 {(s.risk_score * 100).toFixed(0)}%

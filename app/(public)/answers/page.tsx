@@ -46,7 +46,7 @@ export default function AnswersIndexPage() {
                             <BookOpen className="w-4 h-4 text-amber-400/50 flex-shrink-0 mt-0.5" />
                             <div>
                                 <div className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors mb-1">{a.question}</div>
-                                <div className="text-[11px] text-white/35 leading-snug">{a.shortAnswer.slice(0, 90)}"¦</div>
+                                <div className="text-[11px] text-white/35 leading-snug">{a.shortAnswer.slice(0, 90)}...</div>
                             </div>
                         </Link>
                     ))}

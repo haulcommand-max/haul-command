@@ -58,7 +58,7 @@ function MapSkeleton() {
         <div className="w-full h-full flex items-center justify-center bg-gray-950">
             <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 rounded-full border-2 border-orange-500/60 border-t-transparent animate-spin" />
-                <p className="text-gray-600 text-sm font-medium tracking-wide">Initialising map"¦</p>
+                <p className="text-gray-600 text-sm font-medium tracking-wide">Initialising map...</p>
             </div>
         </div>
     );

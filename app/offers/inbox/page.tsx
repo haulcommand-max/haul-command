@@ -66,7 +66,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                             </span>
                         )}
                     </div>
-                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}"¦</div>
+                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}...</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: 28, fontWeight: 900, color: '#22c55e', letterSpacing: -1 }}>

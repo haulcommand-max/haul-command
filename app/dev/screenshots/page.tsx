@@ -33,7 +33,7 @@ export default function ScreenshotMocksPage() {
         },
         {
             title: "Get Matched in Minutes",
-            subtitle: "Push offers â†’ one-tap accept",
+            subtitle: "Push offers → one-tap accept",
             imageSrc: "/mock/match-screen.svg",
         },
         {

@@ -171,7 +171,7 @@ export default function NotificationPreferencesPage() {
             disabled={saving}
             className="w-full rounded-xl bg-amber-500 py-3 text-sm font-black text-white hover:bg-amber-400 disabled:opacity-50 transition-colors"
           >
-            {saved ? 'âœ… Saved!' : saving ? 'Saving"¦' : 'Save Preferences'}
+            {saved ? 'âœ… Saved!' : saving ? 'Saving...' : 'Save Preferences'}
           </button>
         </div>
       </div>

@@ -179,7 +179,7 @@ export default function ComplianceCopilotPage() {
     return (
         <div style={{ background: T.bg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-            {/* â”€â”€ Hero Header */}
+            {/* -- Hero Header */}
             <div style={{
                 background: `linear-gradient(180deg, rgba(245,185,66,0.06) 0%, transparent 100%)`,
                 borderBottom: `1px solid ${T.border}`,
@@ -231,7 +231,7 @@ export default function ComplianceCopilotPage() {
                 }}>
                     {['All 50 US States', '10 Canadian Provinces', 'Free — No Login Required', 'Answers in seconds'].map(t => (
                         <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <span style={{ color: T.green }}>âœ“</span> {t}
+                            <span style={{ color: T.green }}>✓</span> {t}
                         </span>
                     ))}
                 </div>
@@ -239,7 +239,7 @@ export default function ComplianceCopilotPage() {
 
             <div style={{ flex: 1, maxWidth: 800, width: '100%', margin: '0 auto', padding: '0 16px', display: 'flex', flexDirection: 'column' }}>
 
-                {/* â”€â”€ Example questions (shown when no messages) */}
+                {/* -- Example questions (shown when no messages) */}
                 {messages.length === 0 && (
                     <div style={{ padding: '32px 0' }}>
                         <p style={{ fontSize: 11, fontWeight: 800, color: T.subtle, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 14 }}>
@@ -275,7 +275,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* â”€â”€ Message thread */}
+                {/* -- Message thread */}
                 {messages.length > 0 && (
                     <div style={{ padding: '24px 0', display: 'flex', flexDirection: 'column', gap: 20 }}>
                         {messages.map((msg, i) => (
@@ -372,7 +372,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* â”€â”€ Error */}
+                {/* -- Error */}
                 {error && (
                     <div style={{
                         padding: '12px 16px', borderRadius: 10,
@@ -384,7 +384,7 @@ export default function ComplianceCopilotPage() {
                     </div>
                 )}
 
-                {/* â”€â”€ Input bar */}
+                {/* -- Input bar */}
                 <div style={{
                     position: 'sticky', bottom: 0,
                     background: T.bg,
@@ -429,7 +429,7 @@ export default function ComplianceCopilotPage() {
                                         handleSubmit();
                                     }
                                 }}
-                                placeholder="Ask a compliance question"¦ (e.g. 'When do I need two escort vehicles in Texas?')"
+                                placeholder="Ask a compliance question... (e.g. 'When do I need two escort vehicles in Texas?')"
                                 rows={3}
                                 maxLength={1000}
                                 style={{
@@ -486,7 +486,7 @@ export default function ComplianceCopilotPage() {
                 </div>
             </div>
 
-            {/* â”€â”€ Footer CTA */}
+            {/* -- Footer CTA */}
             <div style={{
                 borderTop: `1px solid ${T.border}`,
                 padding: '32px 24px',

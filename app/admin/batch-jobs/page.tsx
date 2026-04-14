@@ -270,7 +270,7 @@ export default function BatchJobsPage() {
                 {isRunning && (
                   <div className="mt-4 flex items-center gap-2">
                     <div className="animate-spin w-3 h-3 border-2 border-amber-500 border-t-transparent rounded-full" />
-                    <p className="text-xs text-gray-500">Running"¦</p>
+                    <p className="text-xs text-gray-500">Running...</p>
                   </div>
                 )}
               </div>

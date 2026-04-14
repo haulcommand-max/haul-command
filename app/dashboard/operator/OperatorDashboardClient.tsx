@@ -181,7 +181,7 @@ export function OperatorDashboardClient({
         countryCode={operatorProfile?.country_code ?? 'US'}
       />
 
-      {/* â”€â”€ Header â”€â”€ */}
+      {/* -- Header -- */}
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">
@@ -189,7 +189,7 @@ export function OperatorDashboardClient({
           </h1>
           <p className="text-slate-400 mt-1">
             {hasLinkedProfile
-              ? `${operatorProfile?.city ?? ''}${operatorProfile?.state ? `, ${operatorProfile.state}` : ''} · ${claimStatus === 'verified' ? 'âœ“ Verified' : 'Pending claim'}`
+              ? `${operatorProfile?.city ?? ''}${operatorProfile?.state ? `, ${operatorProfile.state}` : ''} · ${claimStatus === 'verified' ? '✓ Verified' : 'Pending claim'}`
               : "No profile linked yet — claim your listing to activate full features."}
           </p>
         </div>
@@ -200,17 +200,17 @@ export function OperatorDashboardClient({
                 ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20'
                 : 'text-amber-400 bg-amber-400/10 border-amber-400/20'
             }`}>
-              {claimStatus === 'verified' ? 'âœ“ Verified Operator' : `â³ ${claimStatus}`}
+              {claimStatus === 'verified' ? '✓ Verified Operator' : `â³ ${claimStatus}`}
             </span>
           ) : (
             <Link href="/claim" className="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
-              Claim Your Listing â†’
+              Claim Your Listing →
             </Link>
           )}
         </div>
       </div>
 
-      {/* â”€â”€ No Profile CTA â”€â”€ */}
+      {/* -- No Profile CTA -- */}
       {!hasLinkedProfile && (
         <Card>
           <div className="p-6 flex items-center gap-4">
@@ -223,13 +223,13 @@ export function OperatorDashboardClient({
               </p>
             </div>
             <Link href="/claim" className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
-              Claim Now â†’
+              Claim Now →
             </Link>
           </div>
         </Card>
       )}
 
-      {/* â”€â”€ Profile Completeness Bar â”€â”€ */}
+      {/* -- Profile Completeness Bar -- */}
       {hasLinkedProfile && profileCompleteness < 100 && (
         <Card>
           <div className="p-4 flex items-center gap-4">
@@ -254,7 +254,7 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* â”€â”€ Compliance Hub CTA â”€â”€ */}
+      {/* -- Compliance Hub CTA -- */}
       {hasLinkedProfile && (
         <Card>
           <div className="p-4 flex items-center justify-between gap-4 border border-[#22c55e]/20 bg-[#22c55e]/5 rounded-xl">
@@ -268,13 +268,13 @@ export function OperatorDashboardClient({
               </div>
             </div>
             <Link href="/dashboard/operator/forms" className="flex-shrink-0 px-4 py-2 bg-[#10b981] hover:bg-[#059669] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-colors whitespace-nowrap">
-              Manage Forms â†’
+              Manage Forms →
             </Link>
           </div>
         </Card>
       )}
 
-      {/* â”€â”€ KPI Row â”€â”€ */}
+      {/* -- KPI Row -- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <div className="p-4 flex flex-col gap-1">
@@ -310,7 +310,7 @@ export function OperatorDashboardClient({
         </Card>
       </div>
 
-      {/* â”€â”€ Availability â”€â”€ */}
+      {/* -- Availability -- */}
       {operatorId && (
         <AvailabilityToggle 
           operatorId={operatorId} 
@@ -318,8 +318,8 @@ export function OperatorDashboardClient({
         />
       )}
 
-      {/* â”€â”€ One-Tap Availability Broadcast â”€â”€ */}
-      {/* This directly writes to availability_broadcasts â†’ appears in /available-now broker feed */}
+      {/* -- One-Tap Availability Broadcast -- */}
+      {/* This directly writes to availability_broadcasts → appears in /available-now broker feed */}
       {operatorId && (
         <Card>
           <div className="p-4">
@@ -343,7 +343,7 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* â”€â”€ Tabs â”€â”€ */}
+      {/* -- Tabs -- */}
       <div className="flex flex-wrap gap-1  border border-slate-800 rounded-xl p-1 w-fit">
         {(['assignments', 'loads', 'earnings', 'report_card'] as const).map(tab => (
           <button
@@ -358,13 +358,13 @@ export function OperatorDashboardClient({
           >
             {tab === 'assignments' ? `Missions (${assignments.length})`
               : tab === 'loads' ? `Open Loads (${loads.length})`
-              : tab === 'report_card' ? 'ðŸ“Š Report Card'
+              : tab === 'report_card' ? 'ðŸ"Š Report Card'
               : 'Earnings'}
           </button>
         ))}
       </div>
 
-      {/* â”€â”€ Assignments Tab â”€â”€ */}
+      {/* -- Assignments Tab -- */}
       {activeTab === 'assignments' && (
         <Card>
           {assignments.length === 0 ? (
@@ -395,7 +395,7 @@ export function OperatorDashboardClient({
                     <TableCell>
                       <div className="flex items-center gap-2 text-sm">
                         <span className="text-slate-300">{assignment.origin}</span>
-                        <span className="text-slate-600">â†’</span>
+                        <span className="text-slate-600">→</span>
                         <span className="text-slate-300">{assignment.destination}</span>
                       </div>
                     </TableCell>
@@ -427,7 +427,7 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* â”€â”€ Open Loads Tab â”€â”€ */}
+      {/* -- Open Loads Tab -- */}
       {activeTab === 'loads' && (
         <>
           {/* Live Map */}
@@ -481,7 +481,7 @@ export function OperatorDashboardClient({
                       <TableCell>
                         <div className="flex items-center space-x-2">
                           <span className="font-medium text-slate-300">{l.origin_city}, {l.origin_state}</span>
-                          <span className="text-slate-600">â†’</span>
+                          <span className="text-slate-600">→</span>
                           <span className="font-medium text-slate-300">{l.destination_city}, {l.destination_state}</span>
                         </div>
                       </TableCell>
@@ -538,7 +538,7 @@ export function OperatorDashboardClient({
                   </div>
                   <div className="flex items-center space-x-3 text-sm mb-4 bg-black/20 p-3 rounded-lg border border-white/5">
                     <span className="font-medium text-slate-200">{l.origin_city}, {l.origin_state}</span>
-                    <span className="text-slate-600">â†’</span>
+                    <span className="text-slate-600">→</span>
                     <span className="font-medium text-slate-200">{l.destination_city}, {l.destination_state}</span>
                   </div>
                   {biddingOn === l.id && (
@@ -567,7 +567,7 @@ export function OperatorDashboardClient({
         </>
       )}
 
-      {/* â”€â”€ Report Card Tab â”€â”€ */}
+      {/* -- Report Card Tab -- */}
       {activeTab === 'report_card' && (
         <div className="space-y-4">
           {/* Public Report Card deep-link */}
@@ -596,7 +596,7 @@ export function OperatorDashboardClient({
 
           {!trustProfile ? (
             <div className="rounded-2xl border border-slate-800 /50 p-10 text-center">
-              <p className="text-2xl mb-2">ðŸ“Š</p>
+              <p className="text-2xl mb-2">ðŸ"Š</p>
               <p className="font-bold text-slate-300 mb-1">No report card yet</p>
               <p className="text-sm text-slate-500">Complete verified jobs to build your performance record.</p>
             </div>
@@ -640,7 +640,7 @@ export function OperatorDashboardClient({
                           ? 'bg-emerald-400/10 border-emerald-400/30 text-emerald-400'
                           : 'bg-slate-800 border-slate-700 text-slate-500'
                       }`}>
-                        {b.ok ? 'âœ“' : 'â—‹'} {b.label}
+                        {b.ok ? '✓' : 'â—‹'} {b.label}
                       </span>
                     ))}
                   </div>
@@ -703,7 +703,7 @@ export function OperatorDashboardClient({
         </div>
       )}
 
-      {/* â”€â”€ Earnings Tab â”€â”€ */}
+      {/* -- Earnings Tab -- */}
       {activeTab === 'earnings' && (
         <Card>
           {recentEarnings.length === 0 ? (

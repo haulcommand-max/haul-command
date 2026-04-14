@@ -155,7 +155,7 @@ export default async function DominationControlTower() {
                             ðŸŽ¯ National Opportunity Map — Top 15
                         </div>
                         {data.topOpps.length === 0
-                            ? <div style={{ color: '#4b5563', fontSize: 12 }}>Domination scores computing"¦</div>
+                            ? <div style={{ color: '#4b5563', fontSize: 12 }}>Domination scores computing...</div>
                             : data.topOpps.map((m: any, i: number) => (
                                 <div key={m.geo_key ?? i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                                     <div style={{ width: 22, fontSize: 10, fontWeight: 800, color: '#4b5563', textAlign: 'right', flexShrink: 0 }}>#{i + 1}</div>

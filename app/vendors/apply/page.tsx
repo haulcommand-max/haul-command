@@ -179,7 +179,7 @@ export default function VendorApplyPage() {
                             </select>
                         </Field>
                         <Field label="State / Province">
-                            <input value={form.region1} onChange={e => set("region1", e.target.value)} placeholder="FL, GA, ON"¦" className={input} />
+                            <input value={form.region1} onChange={e => set("region1", e.target.value)} placeholder="FL, GA, ON..." className={input} />
                         </Field>
                         <Field label="City *">
                             <input required value={form.city} onChange={e => set("city", e.target.value)} className={input} />
@@ -215,7 +215,7 @@ export default function VendorApplyPage() {
                 {/* — Services — */}
                 <Card title="Services">
                     <p className="text-sm text-gray-500 mb-3">
-                        We&apos;ll use this to show you in Emergency Nearby results.
+                        We'll use this to show you in Emergency Nearby results.
                     </p>
                     <div className="flex flex-wrap gap-2">
                         {SERVICE_OPTIONS.map(s => (
@@ -259,12 +259,12 @@ export default function VendorApplyPage() {
                         <input type="checkbox" required checked={form.terms} onChange={e => set("terms", e.target.checked)}
                             className="mt-0.5 h-4 w-4 rounded border-white/20" />
                         <span className="text-sm text-gray-600">
-                            I confirm the info is accurate and I&apos;m authorized to submit it.
+                            I confirm the info is accurate and I'm authorized to submit it.
                         </span>
                     </label>
                     <button aria-label="Interactive Button" type="submit" disabled={loading}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
-                        {loading ? "Submitting"¦" : "Submit Application"}
+                        {loading ? "Submitting..." : "Submit Application"}
                     </button>
                 </div>
 
@@ -274,7 +274,7 @@ export default function VendorApplyPage() {
     );
 }
 
-// â”€â”€â”€ Local components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Local components -----------------------------------
 const input = "w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {

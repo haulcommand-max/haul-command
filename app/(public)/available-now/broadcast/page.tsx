@@ -167,7 +167,7 @@ export default function BroadcastForm() {
 
           <button type="submit" disabled={loading}
             className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-white font-bold py-4 rounded-xl text-sm transition-colors">
-            {loading ? 'Broadcasting"¦' : 'â— Go Live Now — Broadcast Availability'}
+            {loading ? 'Broadcasting...' : 'â— Go Live Now — Broadcast Availability'}
           </button>
 
           <p className="text-[10px] text-[#3a5068] text-center">Your listing appears in the live feed and is visible to brokers searching for capacity in your area. You can remove it anytime.</p>

@@ -2,7 +2,7 @@ import { HcVariantGroupReviewServer } from "@/components/admin/HcVariantGroupRev
 import Link from "next/link";
 
 export const metadata = {
-  title: "Variant Review "“ HAUL COMMAND Admin",
+  title: "Variant Review - HAUL COMMAND Admin",
 };
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export default async function AiReviewPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#CBD5E1", letterSpacing: "0.05em", margin: 0 }}>
-            ðŸ”¬ VARIANT REVIEW
+            ðŸ"¬ VARIANT REVIEW
           </h1>
           <p style={{ fontSize: "12px", color: "#5a6f82", marginTop: "4px" }}>
             Compare A/B variants "¢ Pick winners "¢ Archive losers "¢ Rollback
@@ -49,7 +49,7 @@ export default async function AiReviewPage() {
               textDecoration: "none",
             }}
           >
-            ðŸ“‚ Asset Library
+            ðŸ"‚ Asset Library
           </Link>
         </div>
       </div>

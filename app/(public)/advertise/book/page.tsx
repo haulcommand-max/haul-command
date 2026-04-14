@@ -271,7 +271,7 @@ export default function AdGridBookPage() {
           {step<5
             ? <button type="button" onClick={()=>{if(validate())next()}} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-3 rounded-xl text-sm">Continue â†’</button>
             : <button type="button" onClick={submit} disabled={loading} className="flex-1 bg-[#d4950e] hover:bg-[#c4850e] disabled:opacity-50 text-white font-bold py-3 rounded-xl text-sm">
-                {loading?'Submitting"¦':'Submit Campaign â†’'}
+                {loading?'Submitting...':'Submit Campaign â†’'}
               </button>
           }
         </div>

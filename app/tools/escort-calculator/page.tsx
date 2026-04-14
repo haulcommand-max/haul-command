@@ -209,8 +209,8 @@ export default function EscortCalculator() {
             <h3 className="text-lg font-bold mb-4 text-white">Police Escorts & Premiums</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between"><span className="text-gray-400">State Police</span><span className="font-bold text-white">$31/hr + $0.044/mi</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Local/Municipal</span><span className="font-bold text-white">$50"“$100/hr</span></div>
-              <div className="flex justify-between mt-4 pt-4 border-t border-white/5"><span className="text-gray-400">Urban Coordination</span><span className="font-bold text-amber-500">+$100"“$300</span></div>
+              <div className="flex justify-between"><span className="text-gray-400">Local/Municipal</span><span className="font-bold text-white">$50-$100/hr</span></div>
+              <div className="flex justify-between mt-4 pt-4 border-t border-white/5"><span className="text-gray-400">Urban Coordination</span><span className="font-bold text-amber-500">+$100-$300</span></div>
               <div className="flex justify-between"><span className="text-gray-400">Weekend/Seasonal</span><span className="font-bold text-amber-500">+10-25%</span></div>
             </div>
           </div>
@@ -232,7 +232,7 @@ export default function EscortCalculator() {
         {/* AI Search Answer Block */}
         <StaticAnswerBlock
           question="How much does a pilot car cost per mile in 2026?"
-          answer="In 2026, pilot car (escort vehicle) costs range from $1.65 to $2.25 per mile for standard lead/chase escorts, depending on region. Southeast rates: $1.65"“$1.85/mi. Midwest: $1.75"“$1.95/mi. West Coast: $2.00"“$2.25/mi. Night moves add $0.25"“$0.50/mi. Short hauls under 150 miles typically have a minimum of $350"“$500."
+          answer="In 2026, pilot car (escort vehicle) costs range from $1.65 to $2.25 per mile for standard lead/chase escorts, depending on region. Southeast rates: $1.65-$1.85/mi. Midwest: $1.75-$1.95/mi. West Coast: $2.00-$2.25/mi. Night moves add $0.25-$0.50/mi. Short hauls under 150 miles typically have a minimum of $350-$500."
           confidence="verified_current"
           source="2026 Haul Command Rate Guide"
           ctaLabel="Get an Instant Quote"

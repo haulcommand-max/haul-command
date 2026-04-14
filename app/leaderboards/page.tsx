@@ -229,7 +229,7 @@ export default function LeaderboardsPage() {
               <h2 className="text-3xl font-bold text-white/90">
                 Global Rankings <span className="text-amber-400 text-xl font-normal">— Last {activePeriod} Days</span>
               </h2>
-              {loading && <span className="text-xs text-gray-500 animate-pulse">Loading"¦</span>}
+              {loading && <span className="text-xs text-gray-500 animate-pulse">Loading...</span>}
             </div>
 
             <div className="space-y-3">

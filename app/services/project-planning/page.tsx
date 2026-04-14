@@ -46,7 +46,7 @@ const FEATURES = [
   {
     icon: Globe,
     title: "Cross-Border Logistics",
-    desc: "U.S."“Canada, EU cross-border, or any international move — we handle customs escort requirements, documentation, and local compliance.",
+    desc: "U.S.-Canada, EU cross-border, or any international move — we handle customs escort requirements, documentation, and local compliance.",
   },
 ];
 
@@ -108,7 +108,7 @@ export default function ProjectPlanningPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Let Us Plan Your Next Move</h2>
         <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-          Our project planning team has coordinated 40,000+ specialized loads. Tell us what you're moving.
+          Our project planning team has coordinated 40,000+ specialized loads. Tell us what you&apos;re moving.
         </p>
         <Link
           href="/contact"

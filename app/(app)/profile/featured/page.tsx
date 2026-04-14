@@ -120,7 +120,7 @@ export default function ProfileFeaturedPage() {
                     disabled={submitting || !qualifies}
                     className="w-full py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 text-white font-black text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 >
-                    {submitting ? "Activating"¦" : `Activate Featured — $${dailyCap}/day`}
+                    {submitting ? "Activating..." : `Activate Featured — $${dailyCap}/day`}
                 </button>
 
                 <p className="text-gray-600 text-xs text-center">

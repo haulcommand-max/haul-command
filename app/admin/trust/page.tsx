@@ -5,7 +5,7 @@
 import Link from "next/link";
 
 export const metadata = {
-    title: "Trust Graph Engine "“ HAUL COMMAND Admin",
+    title: "Trust Graph Engine - HAUL COMMAND Admin",
 };
 
 export default function TrustDashboardPage() {
@@ -25,7 +25,7 @@ export default function TrustDashboardPage() {
             color: "#EF4444",
         },
         {
-            title: "ðŸ” Fraud Detection Scan",
+            title: "ðŸ" Fraud Detection Scan",
             desc: "Scan reviews for fraud signals. Auto-holds â‰¥0.85 probability. Shadowbans â‰¥0.65.",
             endpoint: "/api/admin/trust/fraud-scan",
             methods: "POST { target_id?, limit? }",
@@ -40,13 +40,13 @@ export default function TrustDashboardPage() {
         },
         {
             title: "ðŸ¤ Dual Confirmation",
-            desc: "Job completion state machine: posted â†’ assigned â†’ confirmed â†’ ledger_locked.",
+            desc: "Job completion state machine: posted → assigned → confirmed → ledger_locked.",
             endpoint: "/api/admin/trust/confirmations",
             methods: "POST { action: create|confirm|dispute, job_id, role? }",
             color: "#10B981",
         },
         {
-            title: "ðŸ“Š Trust Scores",
+            title: "ðŸ"Š Trust Scores",
             desc: "Public-facing trust score endpoint using 3-layer composite engine.",
             endpoint: "/api/v1/trust/score",
             methods: "GET { user_id }",
@@ -94,7 +94,7 @@ export default function TrustDashboardPage() {
                             padding: "6px 14px", fontSize: "11px", color: "#94A3B8", textDecoration: "none",
                         }}
                     >
-                        Ops Center â†’
+                        Ops Center →
                     </Link>
                 </div>
             </div>

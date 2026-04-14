@@ -185,7 +185,7 @@ export default function AlertsSettingsPage() {
                     disabled={saving}
                     className={`w-full py-3.5 rounded-xl font-bold text-white transition-all ${saved ? "bg-green-600" : "bg-orange-500 hover:bg-orange-400"} disabled:opacity-60`}
                 >
-                    {saving ? "Saving"¦" : saved ? "âœ“ Saved" : "Save Settings"}
+                    {saving ? "Saving..." : saved ? "✓ Saved" : "Save Settings"}
                 </button>
             </div>
         </div>

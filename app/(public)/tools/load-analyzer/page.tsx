@@ -98,9 +98,8 @@ export default function LoadAnalyzerPage() {
           ))}
         </div>
 
-        {/* Input */}
         {mode === 'paste' ? (
-          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Paste load posting here"¦&#10;&#10;Example: Load Alert!! FCI 9092527549 Atlanta GA to Los Angeles CA, 14'6&quot; wide x 16' tall transformer, $1.80/mi, need Chase + High Pole, Quick Pay available" rows={5} style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }} />
+          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Paste load posting here...&#10;&#10;Example: Load Alert!! FCI 9092527549 Atlanta GA to Los Angeles CA, 14'6&quot; wide x 16' tall transformer, $1.80/mi, need Chase + High Pole, Quick Pay available" rows={5} style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }} />
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
             <input value={origin} onChange={e => setOrigin(e.target.value)} placeholder="Origin (e.g. Houston, TX)" style={inputStyle} />
@@ -119,7 +118,7 @@ export default function LoadAnalyzerPage() {
         )}
 
         <button aria-label="Interactive Button" onClick={analyze} disabled={loading || (!description.trim() && !origin.trim())} style={{ width: '100%', padding: '14px 24px', background: loading ? '#333' : 'linear-gradient(135deg, #f5a623, #ef4444)', border: 'none', borderRadius: 12, color: '#000', fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', marginTop: 12, transition: 'all .2s' }}>
-          {loading ? 'â³ Analyzing"¦' : 'âš¡ Analyze This Load'}
+          {loading ? '⏳ Analyzing...' : '⚡ Analyze This Load'}
         </button>
 
         {error && <div style={{ marginTop: 16, padding: 16, background: 'rgba(239,68,68,0.1)', borderLeft: '3px solid #ef4444', borderRadius: 8, color: '#fca5a5', fontSize: 13 }}>{error}</div>}
