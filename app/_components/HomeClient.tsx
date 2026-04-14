@@ -6,7 +6,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Activity, Shield, Zap, Map as MapIcon, TrendingUp, Users, ChevronRight, Star, CheckCircle, ArrowRight, Truck, Clock, BarChart3, Navigation as NavIcon, Globe } from "lucide-react";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
-import { HCGlobalHeader } from "@/components/landing-system/navigation/HCGlobalHeader";
 import { HCFooterShell } from "@/components/landing-system/footer/HCFooterShell";
 
 // ===== ANIMATION VARIANTS =====
@@ -138,13 +137,13 @@ export default function HomeClient({
                 FIX: No more overlapping icons. No "ONLINE" pill.
                 No generic HC logo — uses real brand asset.
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-            <HCGlobalHeader />
+            
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 HERO — Maximum Impact Zone
                 FIX: Smart badge (no "0 escorts"), premium glow
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-            <section className="relative z-10 pt-28 pb-8">
+            <section className="relative z-10 pt-8 sm:pt-10 pb-8">
                 <div className="hc-container max-w-5xl text-center">
                     {/* Live badge — NEVER shows "0" */}
                     <motion.div

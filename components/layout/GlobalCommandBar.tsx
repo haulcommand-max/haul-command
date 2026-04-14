@@ -12,7 +12,6 @@ type CommandLink = {
   label: string;
   href: string;
   badge?: string;
-  priority?: number;
 };
 
 const COMMAND_LINKS: CommandLink[] = [
@@ -29,84 +28,63 @@ export function GlobalCommandBar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#D4A348]/20 bg-black/85 backdrop-blur-md supports-[backdrop-filter]:bg-black/70">
-      {/* ── Desktop & Main Mobile Shell ── */}
-      <div className="mx-auto flex min-h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:min-h-20 lg:px-8 xl:px-10">
-        
-        {/* Left cluster: Logo + Desktop Links */}
-        <div className="flex min-w-0 items-center gap-6 lg:gap-10">
-          <Link
-            href="/"
-            className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-100 focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
-          >
-            <Image
-              src={LOGO_SRC}
-              alt={ALT_TEXT}
-              width={220}
-              height={48}
-              priority
-              className="object-contain object-left max-h-[40px] sm:max-h-[44px] drop-shadow-md contrast-105 saturate-105"
-            />
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-[#D4A348]/20 bg-black/85 backdrop-blur-md">
+      {/* ── Single unified row — logo left, desktop nav center, actions right ── */}
+      <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:h-20 lg:px-8 xl:px-10">
 
-          {/* Inline desktop command nav */}
-          <nav className="hidden min-w-0 items-center gap-6 md:flex lg:gap-10 xl:gap-12" aria-label="Primary">
-            {COMMAND_LINKS.map((link) => {
-              const isActive = pathname?.startsWith(link.href) && link.href !== "/";
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`inline-flex h-12 items-center rounded-xl px-3 text-[14px] tracking-[0.03em] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50 relative ${
-                    isActive
-                      ? "font-bold text-[#D4A348] transition-colors"
-                      : "font-semibold text-white/70 hover:text-white transition-colors"
-                  }`}
-                >
-                  {link.label}
-                  {link.badge && (
-                    <span className="ml-2 rounded-md bg-[#D4A348]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#E3B55D]">
-                      {link.badge}
-                    </span>
-                  )}
-                  {isActive && (
-                    <span className="absolute inset-x-3 bottom-1.5 h-[2px] rounded-full bg-[#D4A348]" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+        {/* Left: Logo */}
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#D4A348]/50"
+        >
+          <Image
+            src={LOGO_SRC}
+            alt={ALT_TEXT}
+            width={180}
+            height={40}
+            priority
+            className="h-8 w-auto object-contain drop-shadow-md contrast-105 saturate-105 sm:h-9"
+          />
+        </Link>
 
-        {/* Right cluster: Sign In + Hamburger */}
+        {/* Center: Desktop-only nav — strictly hidden on mobile */}
+        <nav className="hidden lg:flex min-w-0 items-center gap-1 xl:gap-2" aria-label="Primary navigation">
+          {COMMAND_LINKS.map((link) => {
+            const isActive = pathname?.startsWith(link.href) && link.href !== "/";
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative inline-flex h-11 items-center rounded-xl px-3 text-[13px] tracking-[0.02em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A348]/50 xl:px-4 ${
+                  isActive
+                    ? "font-bold text-[#D4A348]"
+                    : "font-semibold text-white/70 hover:text-white"
+                }`}
+              >
+                {link.label}
+                {link.badge && (
+                  <span className="ml-1.5 rounded bg-[#D4A348]/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#E3B55D]">
+                    {link.badge}
+                  </span>
+                )}
+                {isActive && (
+                  <span className="absolute inset-x-3 bottom-1.5 h-[2px] rounded-full bg-[#D4A348]" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right: Account button + mobile hamburger (hamburger ONLY on < lg) */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <AccountButton />
-          
-          <div className="flex md:hidden">
+          {/* Mobile menu trigger — hidden on desktop */}
+          <div className="lg:hidden">
             <HCMobileMenu mode="app" />
           </div>
         </div>
       </div>
-
-      {/* ── Minimal Horizontal Swipe Rail (Mobile Only) ── */}
-      <div className="scrollbar-none flex gap-2 overflow-x-auto px-4 pb-3 pt-2 md:hidden">
-        {COMMAND_LINKS.map((link) => {
-          const isActive = pathname?.startsWith(link.href) && link.href !== "/";
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`inline-flex h-10 shrink-0 items-center rounded-full px-4 text-sm transition ${
-                isActive
-                  ? "border border-[#D4A348]/50 bg-[#D4A348]/10 text-[#E3B55D] font-semibold"
-                  : "border border-white/10 bg-white/[0.03] text-white/80 font-medium hover:border-[#D4A348]/40 hover:text-white"
-              }`}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
-      </div>
+      {/* NO horizontal pill rail — that caused the mobile overflow bug */}
     </header>
   );
 }

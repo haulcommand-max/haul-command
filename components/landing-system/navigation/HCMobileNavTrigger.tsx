@@ -1,14 +1,10 @@
+'use client';
 import React from 'react';
-import { Bars3Icon } from '@heroicons/react/24/outline';
-
-// Note: Given the context, this could also just trigger the existing HCMobileMenu logic.
+// HCMobileNavTrigger is intentionally a no-op stub.
+// The real mobile menu trigger is built into HCMobileMenu.
+// Do not use this component — the GlobalCommandBar and HCGlobalHeader
+// both use <HCMobileMenu /> directly which carries its own trigger button.
+// This file is kept to avoid breaking imports in other layouts.
 export function HCMobileNavTrigger() {
-  return (
-    <button 
-      className="lg:hidden p-2 -mr-2 rounded-md hover:bg-slate-800 transition-colors text-slate-300 hover:text-white"
-      aria-label="Open mobile menu"
-    >
-      <Bars3Icon className="w-6 h-6" />
-    </button>
-  );
+  return null;
 }
