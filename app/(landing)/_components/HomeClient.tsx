@@ -56,7 +56,7 @@ export default function HomeClient({
         <div className="bg-hc-bg text-hc-text font-[family-name:var(--font-body)] antialiased selection:bg-hc-gold-500 selection:text-white pb-0">
             
             {/* 1. ULTRA-POLISHED HERO SECTION */}
-            <section className="relative w-full min-h-[92vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden pt-28 pb-32 bg-hc-bg">
+            <section className="relative w-full min-h-[92vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden pt-20 pb-32 bg-hc-bg">
                 {/* Visual Backdrop */}
                 <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
                     <img 

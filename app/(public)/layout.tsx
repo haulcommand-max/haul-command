@@ -2,7 +2,6 @@ import React from 'react';
 import { HCGlobalHeader } from '@/components/landing-system/navigation/HCGlobalHeader';
 import { HCFooterShell } from '@/components/landing-system/footer/HCFooterShell';
 import { HCMobileMenu } from '@/components/landing-system/mobile-menu/HCMobileMenu';
-import { GlobalOmniSearch } from '@/components/ui/GlobalOmniSearch';
 import { MobileAppNav } from '@/components/mobile/MobileAppNav';
 import { BRAND_NAME_UPPER, LOGO_MARK_SRC, ALT_TEXT } from '@/lib/config/brand';
 import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetargeter';
@@ -66,10 +65,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                     <HCMobileMenu mode="public" />
                 </div>
 
-                {/* Mobile Search Bar */}
-                <div className="app-mobile-search lg:hidden px-4 py-2  border-b border-slate-800">
-                    <GlobalOmniSearch />
-                </div>
 
                 {/* Content area */}
                 <div className="m-shell-content flex-1 flex flex-col relative z-0">

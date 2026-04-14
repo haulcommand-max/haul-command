@@ -978,6 +978,168 @@ textarea {
   animation: glow-entrance 0.6s ease-out;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   MOBILE BOTTOM NAV — BEM TOKEN SYSTEM
+   Required by components/mobile/MobileAppNav.tsx
+   These classes were absent, causing completely unstyled HTML
+   with collapsed tabs, broken FAB, and overlapping labels.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --m-screen-pad: 16px;
+  --m-border-subtle: rgba(255, 255, 255, 0.06);
+  --m-nav-height: 56px;
+  --m-fab-size: 52px;
+  --m-tab-color: #566880;
+  --m-tab-active: #C6923A;
+  --m-nav-bg: rgba(6, 8, 12, 0.96);
+}
+
+/* Nav shell — fixed to bottom, full-width, safe area aware */
+.m-bottom-nav {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--m-nav-bg);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-top: 1px solid var(--m-border-subtle);
+  flex-direction: column;
+}
+
+/* Hidden on desktop — nav is mobile-only */
+@media (min-width: 1024px) {
+  .m-bottom-nav {
+    display: none;
+  }
+}
+
+/* Tab row */
+.m-bottom-nav__tabs {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  height: var(--m-nav-height);
+  width: 100%;
+}
+
+/* Individual tab */
+.m-bottom-nav__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 3px;
+  min-height: 44px;
+  color: var(--m-tab-color);
+  transition: color 0.15s ease;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent accidental browser zoom highlight */
+  position: relative;
+}
+
+.m-bottom-nav__tab:active {
+  transform: scale(0.94);
+}
+
+.m-bottom-nav__tab--active {
+  color: var(--m-tab-active);
+}
+
+/* Active gold underline indicator */
+.m-bottom-nav__tab--active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: var(--m-tab-active);
+  border-radius: 0 0 2px 2px;
+}
+
+/* Tab icon wrapper */
+.m-bottom-nav__tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* Tab label */
+.m-bottom-nav__tab-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Center FAB — post-load action */
+.m-bottom-nav__fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--m-fab-size);
+  height: var(--m-fab-size);
+  margin: auto;
+  margin-bottom: 4px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hc-gold-400) 0%, var(--hc-gold-600) 100%);
+  box-shadow: 0 4px 16px rgba(198, 146, 58, 0.40), 0 0 0 3px rgba(198, 146, 58, 0.15);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  position: relative;
+  top: -6px;
+  /* Lifts FAB above the nav bar */
+}
+
+.m-bottom-nav__fab:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 8px rgba(198, 146, 58, 0.30);
+}
+
+.m-bottom-nav__fab-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111214;
+}
+
+/* Unread badge dot on inbox tab */
+.m-bottom-nav__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hc-danger);
+  border: 1px solid var(--m-nav-bg);
+}
+
+/* Content padding compensator — prevents content scrolling behind the nav */
+.m-shell-content {
+  padding-bottom: calc(var(--m-nav-height) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+  .m-shell-content {
+    padding-bottom: 0;
+  }
+}
+
 /* ── Stronger Card Hover Lift ── */
 .hover-lift-strong {
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
