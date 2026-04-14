@@ -5,7 +5,7 @@ import { HCContentPageShell } from "@/components/content-system/shell/HCContentP
 
 export const dynamic = 'force-dynamic';
 
-export default async function TrainingCoursePage({ params }: { params: { slug: string } }) {
+export default async function TrainingCoursePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const formattedTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 

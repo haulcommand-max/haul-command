@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
-import { GlobalNavOverlay } from '@/components/layout/GlobalNavOverlay';
+import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 import { Suspense } from 'react';
-import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -34,10 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${inter.className} text-white antialiased`} style={{ background: '#0F1318' }}>
         <Suspense fallback={null}>
-          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
+          <GoogleAnalytics />
         </Suspense>
         <PwaRegistry />
-        <GlobalNavOverlay />
+        <GlobalCommandBar />
         <DynamicBackgroundEngine />
         {children}
       </body>

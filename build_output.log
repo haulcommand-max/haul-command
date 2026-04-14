@@ -1,0 +1,237 @@
+
+> haul-command-bots@1.0.0 build
+> node scripts/postinstall-patch.mjs && next build
+
+[postinstall-patch] Already patched: C:\Users\PC User\.gemini\antigravity\scratch\haul-command\node_modules\@supabase\postgrest-js\dist\index.mjs
+[postinstall-patch] Already patched: C:\Users\PC User\.gemini\antigravity\scratch\haul-command\node_modules\@supabase\postgrest-js\dist\index.cjs
+▲ Next.js 16.2.3 (Turbopack)
+- Environments: .env.production.local, .env.local
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 9 errors:
+./components/ui/Button.tsx:6:1
+Module not found: Can't resolve './button'
+  [90m4 |[0m [90m// now point to the unified component.[0m
+  [90m5 |[0m [90m// ══════════════════════════════════════════════════════════════[0m
+[31m[1m>[0m [90m6 |[0m [36mexport[0m { [33mButton[0m, buttonVariants } [36mfrom[0m [32m"./button"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mexport[0m [36mtype[0m { [33mButtonProps[0m } [36mfrom[0m [32m"./button"[0m;
+  [90m8 |[0m
+
+
+
+Import traces:
+  #1 [Server Component]:
+    ./components/ui/Button.tsx
+    ./app/upgrade/page.tsx
+
+  #2 [Client Component Browser]:
+    ./components/ui/Button.tsx [Client Component Browser]
+    ./app/partners/fuel/page.tsx [Client Component Browser]
+    ./app/partners/fuel/page.tsx [Server Component]
+
+  #3 [Client Component Browser]:
+    ./components/ui/Button.tsx [Client Component Browser]
+    ./app/partners/insurance/page.tsx [Client Component Browser]
+    ./app/partners/insurance/page.tsx [Server Component]
+
+  #4 [Client Component SSR]:
+    ./components/ui/Button.tsx [Client Component SSR]
+    ./app/partners/fuel/page.tsx [Client Component SSR]
+    ./app/partners/fuel/page.tsx [Server Component]
+
+  #5 [Client Component SSR]:
+    ./components/ui/Button.tsx [Client Component SSR]
+    ./app/partners/insurance/page.tsx [Client Component SSR]
+    ./app/partners/insurance/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/ui/hc-button.tsx:6:1
+Module not found: Can't resolve './button'
+  [90m4 |[0m [90m// now point to the unified component.[0m
+  [90m5 |[0m [90m// ══════════════════════════════════════════════════════════════[0m
+[31m[1m>[0m [90m6 |[0m [36mexport[0m { [33mButton[0m [36mas[0m [33mHCButton[0m, [33mButton[0m [36mas[0m [36mdefault[0m } [36mfrom[0m [32m"./button"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mexport[0m [36mtype[0m { [33mButtonProps[0m } [36mfrom[0m [32m"./button"[0m;
+  [90m8 |[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/ui/hc-button.tsx [Client Component Browser]
+    ./components/intelligence/NextBestAction.tsx [Client Component Browser]
+    ./components/intelligence/TodayCommandCenter.tsx [Client Component Browser]
+    ./app/app/page.tsx [Client Component Browser]
+    ./app/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/hc-button.tsx [Client Component SSR]
+    ./components/intelligence/NextBestAction.tsx [Client Component SSR]
+    ./components/intelligence/TodayCommandCenter.tsx [Client Component SSR]
+    ./app/app/page.tsx [Client Component SSR]
+    ./app/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/layout.tsx:5:1
+Module not found: Can't resolve '@/components/layout/GlobalNavOverlay'
+  [90m3 |[0m [36mimport[0m [32m'./globals.css'[0m;
+  [90m4 |[0m [36mimport[0m { [33mDynamicBackgroundEngine[0m } [36mfrom[0m [32m'@/components/ui/DynamicBackgroundEngine'[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m { [33mGlobalNavOverlay[0m } [36mfrom[0m [32m'@/components/layout/GlobalNavOverlay'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m { [33mSuspense[0m } [36mfrom[0m [32m'react'[0m;
+  [90m7 |[0m [36mimport[0m [33mGoogleAnalytics[0m [36mfrom[0m [32m'@/components/analytics/GoogleAnalytics'[0m;
+  [90m8 |[0m
+
+Import map: aliased to relative './components/layout/GlobalNavOverlay' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/CommandMap.tsx:19:9
+Module not found: Can't resolve 'maplibre-gl'
+  [90m17 |[0m
+  [90m18 |[0m         [90m// Dynamically import maplibre-gl so it only runs on client[0m
+[31m[1m>[0m [90m19 |[0m         [36mimport[0m([32m"maplibre-gl"[0m).then(({ [36mdefault[0m: maplibregl }) => {
+  [90m   |[0m         [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m20 |[0m             [36mconst[0m map = [36mnew[0m maplibregl.[33mMap[0m({
+  [90m21 |[0m                 container: elRef.current!,
+  [90m22 |[0m                 style: {
+
+
+
+Import trace:
+  Client Component Browser:
+    ./components/CommandMap.tsx [Client Component Browser]
+    ./app/dev/screenshots/page.tsx [Client Component Browser]
+    ./app/dev/screenshots/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/map/CommandMap.tsx:4:1
+Module not found: Can't resolve 'maplibre-gl'
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { useEffect, useRef, useCallback } [36mfrom[0m [32m"react"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m maplibregl [36mfrom[0m [32m"maplibre-gl"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [32m"maplibre-gl/dist/maplibre-gl.css"[0m;
+  [90m6 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
+  [90m7 |[0m
+
+
+
+Import trace:
+  Client Component Browser:
+    ./components/map/CommandMap.tsx [Client Component Browser]
+    ./app/(app)/map/page.tsx [Client Component Browser]
+    ./app/(app)/map/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/map/HeavyHaulMap.tsx:17:1
+Module not found: Can't resolve 'maplibre-gl'
+  [90m15 |[0m
+  [90m16 |[0m [36mimport[0m { useEffect, useRef, useState, useCallback } [36mfrom[0m [32m'react'[0m;
+[31m[1m>[0m [90m17 |[0m [36mimport[0m maplibregl [36mfrom[0m [32m'maplibre-gl'[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m18 |[0m [36mimport[0m [32m'maplibre-gl/dist/maplibre-gl.css'[0m;
+  [90m19 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m'@supabase/supabase-js'[0m;
+  [90m20 |[0m [36mimport[0m [36mtype[0m { [33mConvoyPosition[0m, [33mClearancePoint[0m, [33mRouteCheckpoint[0m } [36mfrom[0m [32m'@/lib/routes/types'[0m;
+
+
+
+Import trace:
+  Client Component Browser:
+    ./components/map/HeavyHaulMap.tsx [Client Component Browser]
+    ./app/dispatch/DispatchDashboard.tsx [Client Component Browser]
+    ./app/dispatch/DispatchDashboard.tsx [Server Component]
+    ./app/dispatch/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/map/CommandMap.tsx:5:1
+Module not found: Can't resolve 'maplibre-gl/dist/maplibre-gl.css'
+  [90m3 |[0m [36mimport[0m { useEffect, useRef, useCallback } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m maplibregl [36mfrom[0m [32m"maplibre-gl"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [32m"maplibre-gl/dist/maplibre-gl.css"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m"@supabase/supabase-js"[0m;
+  [90m7 |[0m
+  [90m8 |[0m [36minterface[0m [33mLiquidityCell[0m {
+
+
+
+Import trace:
+  Client Component Browser:
+    ./components/map/CommandMap.tsx [Client Component Browser]
+    ./app/(app)/map/page.tsx [Client Component Browser]
+    ./app/(app)/map/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/map/HeavyHaulMap.tsx:18:1
+Module not found: Can't resolve 'maplibre-gl/dist/maplibre-gl.css'
+  [90m16 |[0m [36mimport[0m { useEffect, useRef, useState, useCallback } [36mfrom[0m [32m'react'[0m;
+  [90m17 |[0m [36mimport[0m maplibregl [36mfrom[0m [32m'maplibre-gl'[0m;
+[31m[1m>[0m [90m18 |[0m [36mimport[0m [32m'maplibre-gl/dist/maplibre-gl.css'[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m19 |[0m [36mimport[0m { createClient } [36mfrom[0m [32m'@supabase/supabase-js'[0m;
+  [90m20 |[0m [36mimport[0m [36mtype[0m { [33mConvoyPosition[0m, [33mClearancePoint[0m, [33mRouteCheckpoint[0m } [36mfrom[0m [32m'@/lib/routes/types'[0m;
+  [90m21 |[0m
+
+
+
+Import trace:
+  Client Component Browser:
+    ./components/map/HeavyHaulMap.tsx [Client Component Browser]
+    ./app/dispatch/DispatchDashboard.tsx [Client Component Browser]
+    ./app/dispatch/DispatchDashboard.tsx [Server Component]
+    ./app/dispatch/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/api/push/register/route.ts:2:1
+Export createServerSupabaseClient doesn't exist in target module
+  [90m1 |[0m [36mimport[0m { [33mNextRequest[0m, [33mNextResponse[0m } [36mfrom[0m [32m"next/server"[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { createServerSupabaseClient } [36mfrom[0m [32m"@/lib/supabase/server"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m
+  [90m4 |[0m [90m// ══════════════════════════════════════════════════════════════[0m
+  [90m5 |[0m [90m// POST /api/push/register — Store FCM device token[0m
+
+The export createServerSupabaseClient was not found in module [project]/lib/supabase/server.ts [app-route] (ecmascript).
+Did you mean to import supabaseServer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+    at <unknown> (./components/ui/Button.tsx:6:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/ui/hc-button.tsx:6:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/layout.tsx:5:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/CommandMap.tsx:19:9)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/map/CommandMap.tsx:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/map/HeavyHaulMap.tsx:17:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/map/CommandMap.tsx:5:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/map/HeavyHaulMap.tsx:18:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/api/push/register/route.ts:2:1)

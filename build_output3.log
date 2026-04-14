@@ -1,0 +1,12 @@
+
+> haul-command-bots@1.0.0 build
+> node scripts/postinstall-patch.mjs && next build
+
+[postinstall-patch] Already patched: C:\Users\PC User\.gemini\antigravity\scratch\haul-command\node_modules\@supabase\postgrest-js\dist\index.mjs
+[postinstall-patch] Already patched: C:\Users\PC User\.gemini\antigravity\scratch\haul-command\node_modules\@supabase\postgrest-js\dist\index.cjs
+▲ Next.js 16.2.3 (Turbopack)
+- Environments: .env.production.local, .env.local
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
