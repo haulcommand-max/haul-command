@@ -6,6 +6,7 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
 import { HCAskStrip } from '@/components/hc-ask/HCAskStrip';
+import { stateFullName } from '@/lib/geo/state-names';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
 import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
@@ -95,7 +96,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                 </div>
                                 <div className="text-sm text-[#9CA3AF] space-y-2 mb-8 font-medium">
                                     <p><strong className="text-[#B0B8C4]">ISO Domain:</strong> {targetCountry}</p>
-                                    <p><strong className="text-[#B0B8C4]">Region:</strong> {p.state_inferred || 'Global'}</p>
+                                    <p><strong className="text-[#B0B8C4]">Region:</strong> {stateFullName(p.state_inferred, true)}</p>
                                     <p className="flex items-center gap-2">
                                       <strong className="text-[#B0B8C4]">Live Status:</strong> 
                                       <span className="text-white italic opacity-80 decoration-[rgba(255,255,255,0.2)] underline decoration-dashed underline-offset-4">Locked—App Only</span>

@@ -248,8 +248,8 @@ export default async function CityDirectoryPage({ params }: PageProps) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
                   { q: `How many pilot car operators serve ${cityName}?`, a: opCount > 0 ? `There are currently ${opCount} verified operators listed in the ${cityName} area.` : `We are actively growing our ${cityName} network. Claim your listing to be the first.` },
-                  { q: `How do I book an escort in ${cityName}?`, a: `Browse operators above, check their availability, and dispatch directly through the platform. Most requests are matched within 30 minutes.` },
-                  { q: `What does a pilot car cost in ${cityName}?`, a: `Rates vary by route and load type. Use our Escort Calculator for instant estimates based on your specific requirements.` },
+                  { q: `How do I book an escort in ${cityName}?`, a: opCount > 0 ? `Browse verified operators listed above, check their availability status, and dispatch directly through the platform.` : `Once operators are verified in ${cityName}, you'll be able to view availability and dispatch directly. Use our Escort Calculator for instant rate estimates in the meantime.` },
+                  { q: `What does a pilot car cost in ${cityName}?`, a: `Rates vary by route, load dimensions, and escort requirements. Use our Escort Calculator for instant estimates based on your specific haul.` },
                 ].map(faq => (
                   <div key={faq.q}>
                     <h4 style={{ fontSize: 12, fontWeight: 700, color: '#d1d5db', marginBottom: 4 }}>{faq.q}</h4>
