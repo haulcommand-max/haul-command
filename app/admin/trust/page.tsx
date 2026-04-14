@@ -25,8 +25,8 @@ export default function TrustDashboardPage() {
             color: "#EF4444",
         },
         {
-            title: "ðŸ" Fraud Detection Scan",
-            desc: "Scan reviews for fraud signals. Auto-holds â‰¥0.85 probability. Shadowbans â‰¥0.65.",
+            title: "🔍 Fraud Detection Scan",
+            desc: "Scan reviews for fraud signals. Auto-holds ≥0.85 probability. Shadowbans ≥0.65.",
             endpoint: "/api/admin/trust/fraud-scan",
             methods: "POST { target_id?, limit? }",
             color: "#F59E0B",
@@ -46,7 +46,7 @@ export default function TrustDashboardPage() {
             color: "#10B981",
         },
         {
-            title: "ðŸ"Š Trust Scores",
+            title: "📊 Trust Scores",
             desc: "Public-facing trust score endpoint using 3-layer composite engine.",
             endpoint: "/api/v1/trust/score",
             methods: "GET { user_id }",
@@ -75,7 +75,7 @@ export default function TrustDashboardPage() {
                     TRUST GRAPH ENGINE
                 </h1>
                 <p style={{ fontSize: "12px", color: "#5a6f82", marginTop: "4px" }}>
-                    7-Phase Trust Infrastructure "¢ Score "¢ Detect "¢ Confirm "¢ Vault "¢ Resolve
+                    7-Phase Trust Infrastructure • Score • Detect • Confirm • Vault • Resolve
                 </p>
                 <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
                     <Link aria-label="Navigation Link"

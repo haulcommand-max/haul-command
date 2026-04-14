@@ -48,7 +48,7 @@ export default function ScreenshotMocksPage() {
         },
         {
             title: "Join the Haul Command Network",
-            subtitle: "Drivers "¢ Brokers "¢ Dispatch",
+            subtitle: "Drivers • Brokers • Dispatch",
             children: mapSlot,
         },
     ];

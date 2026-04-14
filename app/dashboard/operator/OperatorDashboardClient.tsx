@@ -485,7 +485,7 @@ export function OperatorDashboardClient({
                           <span className="font-medium text-slate-300">{l.destination_city}, {l.destination_state}</span>
                         </div>
                       </TableCell>
-                      <TableCell>{l.equipment_type?.join(" "¢ ") ?? "High Pole / Chase"}</TableCell>
+                      <TableCell>{l.equipment_type?.join(" • ") ?? "High Pole / Chase"}</TableCell>
                       <TableCell>
                         {biddingOn === l.id ? (
                           <div className="flex space-x-2 items-center">

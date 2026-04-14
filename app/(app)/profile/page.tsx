@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * /profile Ã¢â‚¬" Operator Trust Report Card
+ * /profile "-" Operator Trust Report Card
  *
  * ROUTING NOTE: This file MUST live at app/profile/page.tsx (top-level),
  * NOT inside app/(public)/profile, to take priority over the
@@ -230,13 +230,13 @@ export default function ProfilePage() {
                         {/* Avatar */}
                         <div className="w-20 h-20 rounded-2xl flex-shrink-0 flex items-center justify-center font-black text-2xl text-white shadow-lg"
                             style={{ background: `linear-gradient(135deg, ${T.gold}, #C6923A)` }}>
-                            {loading ? "Ã¢â‚¬Â¦" : (profileData?.full_name?.[0] ?? "?")}
+                            {loading ? "..." : (profileData?.full_name?.[0] ?? "?")}
                         </div>
 
                         <div className="flex-1 min-w-0">
                             <div className="flex flex-wrap items-center gap-2 mb-1">
                                 <h1 className="text-2xl font-black text-white">
-                                    {loading ? "LoadingÃ¢â‚¬Â¦" : (profileData?.full_name ?? "Your Name")}
+                                    {loading ? "Loading..." : (profileData?.full_name ?? "Your Name")}
                                 </h1>
                                 {(profileData?.claimed || operatorData?.is_verified) && (
                                     <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider"
@@ -304,19 +304,19 @@ export default function ProfilePage() {
                 Ã¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢ÂÃ¢"¢Â */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                     <MetricCard icon={CheckCircle} label="Jobs Completed"
-                        value={jobsDone !== null ? jobsDone : "Ã¢â‚¬""}
+                        value={jobsDone !== null ? jobsDone : ""-""}
                         sub={jobsDone !== null ? "Verified jobs" : "No data yet"}
                         color={T.green} />
                     <MetricCard icon={Clock} label="Avg Response"
-                        value={avgResp !== null ? `${avgResp}m` : "Ã¢â‚¬""}
+                        value={avgResp !== null ? `${avgResp}m` : ""-""}
                         sub={avgResp !== null ? "to first contact" : "No data yet"}
                         color={T.gold} />
                     <MetricCard icon={TrendingUp} label="On-Time Rate"
-                        value={onTimeRate !== null ? `${Math.round(onTimeRate)}%` : "Ã¢â‚¬""}
+                        value={onTimeRate !== null ? `${Math.round(onTimeRate)}%` : ""-""}
                         sub={onTimeRate !== null ? "of dispatches" : "No data yet"}
                         color={T.blue} />
                     <MetricCard icon={Star} label="Avg Rating"
-                        value={avgRating !== null ? avgRating.toFixed(1) : "Ã¢â‚¬""}
+                        value={avgRating !== null ? avgRating.toFixed(1) : ""-""}
                         sub={avgRating !== null ? "out of 5.0" : "No reviews yet"}
                         color={T.gold} />
                 </div>
@@ -337,7 +337,7 @@ export default function ProfilePage() {
                                 </h2>
                             </div>
                             <Link aria-label="Navigation Link" href="/onboarding/start" className="text-[10px] font-bold uppercase tracking-wider transition-colors" style={{ color: T.gold }}>
-                                Edit Ã¢" '
+                                Edit →
                             </Link>
                         </div>
 
@@ -428,7 +428,7 @@ export default function ProfilePage() {
                     <p className="text-xs" style={{ color: T.textSubtle }}>
                         Trust scores update every 24 hours from job completion data and platform signals.
                         <Link aria-label="Navigation Link" href="/leaderboards" className="ml-1 font-bold hover:text-white transition-colors" style={{ color: T.gold }}>
-                            See how you rank Ã¢" '
+                            See how you rank →
                         </Link>
                     </p>
                 </div>

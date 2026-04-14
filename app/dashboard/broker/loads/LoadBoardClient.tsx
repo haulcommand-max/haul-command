@@ -427,7 +427,7 @@ export function LoadBoardClient({
                   <div className="flex flex-col">
                     <span>
                       {l.equipment_type?.length > 0
-                        ? l.equipment_type.join(" "¢ ")
+                        ? l.equipment_type.join(" • ")
                         : "Standard Escort"}
                     </span>
                     {l.status === "OPEN" && (
