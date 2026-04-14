@@ -15,9 +15,10 @@ export function CommandMap({ state, height = 520, className = "" }: Props) {
     useEffect(() => {
         if (!elRef.current || mapRef.current) return;
 
-        // Dynamically import maplibre-gl so it only runs on client
-        import("maplibre-gl").then(({ default: maplibregl }) => {
-            const map = new maplibregl.Map({
+          import("mapbox-gl").then(({ default: maplibregl }) => {
+              // Note: using mapboxgl with maplibregl variable name for minimally invasive refactor
+              maplibregl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+              const map = new maplibregl.Map({
                 container: elRef.current!,
                 style: {
                     version: 8,

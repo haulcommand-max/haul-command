@@ -14,8 +14,8 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { createClient } from '@supabase/supabase-js';
 import type { ConvoyPosition, ClearancePoint, RouteCheckpoint } from '@/lib/routes/types';
 
@@ -44,7 +44,7 @@ export default function HeavyHaulMap({
   showHud = true,
 }: HeavyHaulMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
   const [convoy, setConvoy] = useState<ConvoyPosition[]>([]);
   const [deviationAlert, setDeviationAlert] = useState<string | null>(null);
   const [clearanceAlert, setClearanceAlert] = useState<{ name: string; clearance_m: number; load_height_m: number } | null>(null);
@@ -54,7 +54,8 @@ export default function HeavyHaulMap({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+    const map = new mapboxgl.Map({
       container: containerRef.current,
       style: MAP_STYLE,
       center: initialCenter,
@@ -265,7 +266,7 @@ export default function HeavyHaulMap({
       });
 
       // ── Tooltips ──
-      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, maxWidth: '280px' });
+      const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false, maxWidth: '280px' });
 
       // Clearance tooltip
       map.on('mouseenter', 'clearance-markers', (e) => {
@@ -320,7 +321,7 @@ export default function HeavyHaulMap({
       });
       map.on('mouseleave', 'checkpoint-markers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
-      map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+      map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
     });
 
     return () => {
@@ -342,7 +343,7 @@ export default function HeavyHaulMap({
 
         // Set permit route
         if (data.permit_route?.route_geojson && showPermitRoute) {
-          const routeSrc = map.getSource('permit-route') as maplibregl.GeoJSONSource | undefined;
+          const routeSrc = map.getSource('permit-route') as mapboxgl.GeoJSONSource | undefined;
           if (routeSrc) {
             routeSrc.setData({
               type: 'FeatureCollection',
@@ -360,7 +361,7 @@ export default function HeavyHaulMap({
         setConvoy(convoyData);
         setStats(prev => ({ ...prev, convoySize: convoyData.length }));
 
-        const convoySrc = map.getSource('convoy') as maplibregl.GeoJSONSource | undefined;
+        const convoySrc = map.getSource('convoy') as mapboxgl.GeoJSONSource | undefined;
         if (convoySrc) {
           convoySrc.setData({
             type: 'FeatureCollection',
@@ -379,7 +380,7 @@ export default function HeavyHaulMap({
 
         // Set deviations
         const deviations = data.active_deviations ?? [];
-        const devSrc = map.getSource('deviations') as maplibregl.GeoJSONSource | undefined;
+        const devSrc = map.getSource('deviations') as mapboxgl.GeoJSONSource | undefined;
         if (devSrc) {
           devSrc.setData({
             type: 'FeatureCollection',
@@ -448,7 +449,7 @@ export default function HeavyHaulMap({
         .not('last_lng', 'is', null)
         .limit(300);
 
-      const fleetSrc = map.getSource('global-dispatch-fleet') as maplibregl.GeoJSONSource | undefined;
+      const fleetSrc = map.getSource('global-dispatch-fleet') as mapboxgl.GeoJSONSource | undefined;
       if (fleetSrc && data) {
         fleetSrc.setData({
           type: 'FeatureCollection',
@@ -501,7 +502,7 @@ export default function HeavyHaulMap({
       if (!res.ok) return;
       const data = await res.json();
 
-      const clearanceSrc = map.getSource('clearances') as maplibregl.GeoJSONSource | undefined;
+      const clearanceSrc = map.getSource('clearances') as mapboxgl.GeoJSONSource | undefined;
       if (clearanceSrc) {
         clearanceSrc.setData({
           type: 'FeatureCollection',

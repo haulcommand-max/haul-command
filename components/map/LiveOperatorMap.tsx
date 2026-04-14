@@ -8,8 +8,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { createClient } from '@supabase/supabase-js';
 
 const MAP_STYLE =
@@ -35,7 +35,7 @@ export default function LiveOperatorMap() {
   const [loading, setLoading] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
 
   const fetchPositions = useCallback(async () => {
     try {
@@ -56,7 +56,8 @@ export default function LiveOperatorMap() {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+    const map = new mapboxgl.Map({
       container: containerRef.current,
       style: MAP_STYLE,
       center: [-95.7, 37.0],
@@ -108,7 +109,7 @@ export default function LiveOperatorMap() {
         },
       });
 
-      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+      const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
       
       map.on('mouseenter', 'operator-dots', (e) => {
         map.getCanvas().style.cursor = 'pointer';
@@ -130,7 +131,7 @@ export default function LiveOperatorMap() {
         popup.remove();
       });
 
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
+      map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right');
 
       // Initialize Supabase Realtime
       const supabase = createClient(
@@ -196,7 +197,7 @@ export default function LiveOperatorMap() {
     const map = mapRef.current;
     if (!map) return;
     
-    const src = map.getSource('operators') as maplibregl.GeoJSONSource | undefined;
+    const src = map.getSource('operators') as mapboxgl.GeoJSONSource | undefined;
     if (src) {
       const now = Date.now();
       const features = filtered.map(pos => {

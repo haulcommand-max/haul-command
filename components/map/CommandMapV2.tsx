@@ -20,8 +20,8 @@
  */
 
 import { useEffect, useRef, useCallback, useState } from 'react';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { createClient } from '@supabase/supabase-js';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ export function CommandMapV2({
     initialZoom = 4.2,
 }: CommandMapV2Props) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const mapRef = useRef<maplibregl.Map | null>(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null);
     const timersRef = useRef<ReturnType<typeof setInterval>[]>([]);
 
     // HUD state
@@ -110,12 +110,12 @@ export function CommandMapV2({
 
     // ── Data Fetchers ──────────────────────────────────────────────────────────
 
-    const fetchLoads = useCallback(async (map: maplibregl.Map) => {
+    const fetchLoads = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch('/api/map/loads?limit=500');
             if (!res.ok) return;
             const fc = await res.json();
-            const src = map.getSource('loads') as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource('loads') as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
 
             // Count
@@ -124,12 +124,12 @@ export function CommandMapV2({
         } catch { }
     }, []);
 
-    const fetchEscorts = useCallback(async (map: maplibregl.Map) => {
+    const fetchEscorts = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch('/api/map/escorts');
             if (!res.ok) return;
             const fc = await res.json();
-            const src = map.getSource('escorts') as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource('escorts') as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
 
             const count = fc.features?.length ?? 0;
@@ -137,7 +137,7 @@ export function CommandMapV2({
         } catch { }
     }, []);
 
-    const fetchCorridors = useCallback(async (map: maplibregl.Map) => {
+    const fetchCorridors = useCallback(async (map: mapboxgl.Map) => {
         try {
             const [corrRes, liqRes] = await Promise.all([
                 fetch('/api/map/corridors'),
@@ -165,12 +165,12 @@ export function CommandMapV2({
                 })),
             };
 
-            const src = map.getSource('corridors') as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource('corridors') as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(enriched);
         } catch { }
     }, []);
 
-    const fetchHardFills = useCallback(async (map: maplibregl.Map) => {
+    const fetchHardFills = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch('/api/map/hard-fills');
             if (!res.ok) {
@@ -178,18 +178,18 @@ export function CommandMapV2({
                 return;
             }
             const fc = await res.json();
-            const src = map.getSource('hard-fills') as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource('hard-fills') as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
             setStats(prev => ({ ...prev, hardFillCount: fc.features?.length ?? 0 }));
         } catch { }
     }, []);
 
-    const fetchPoliceZones = useCallback(async (map: maplibregl.Map) => {
+    const fetchPoliceZones = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch('/api/map/police-zones');
             if (!res.ok) return;
             const fc = await res.json();
-            const src = map.getSource('police-zones') as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource('police-zones') as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
         } catch { }
     }, []);
@@ -199,7 +199,8 @@ export function CommandMapV2({
     useEffect(() => {
         if (!containerRef.current || mapRef.current) return;
 
-        const map = new maplibregl.Map({
+        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+        const map = new mapboxgl.Map({
             container: containerRef.current,
             style: style ?? MAP_STYLE,
             center: initialCenter,
@@ -404,7 +405,7 @@ export function CommandMapV2({
             });
 
             // ── Tooltips ──
-            const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+            const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
 
             map.on('mouseenter', 'load-pins', (e) => {
                 map.getCanvas().style.cursor = 'pointer';
@@ -430,7 +431,7 @@ export function CommandMapV2({
             });
             map.on('mouseleave', 'escort-dots', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
-            map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+            map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
             // ── Load initial data ──
             fetchLoads(map);
