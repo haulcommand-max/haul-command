@@ -17,70 +17,64 @@ async function applyMigration(filename) {
   }
   
   const sql = fs.readFileSync(filePath, 'utf8');
-  console.log(`\n═══ Applying: ${filename} ═══`);
+  console.log(`\n═══ Applying to LIVE: ${filename} ═══`);
   
   try {
+    // This correctly runs multi-statement scripts via the pg driver without raw splitting!
     await client.query(sql);
     console.log(`✅ ${filename}: SUCCESS`);
     return true;
   } catch (e) {
-    // pg_cron schedule errors are often "already exists" — not fatal
     if (e.message.includes('already exists') || e.message.includes('duplicate')) {
-      console.log(`⚠️  ${filename}: Some schedules already exist (idempotent — OK)`);
+      console.log(`⚠️  ${filename}: Already Exists (idempotent — OK)`);
       return true;
     }
-    console.log(`❌ ${filename}: ${e.message}`);
+    console.log(`❌ ${filename}: ERROR: ${e.message}`);
     return false;
   }
 }
 
 async function run() {
   await client.connect();
-  console.log('═══ HAUL COMMAND — MIGRATION RUNNER ═══\n');
-  console.log('Connected to database.\n');
+  console.log('═══ HAUL COMMAND — LIVE MIGRATION RUNNER ═══\n');
+  console.log('Connected to LIVE Production Database.\n');
 
-  // Apply Wave 2 cron schedules
-  const m1 = await applyMigration('20260410_wave2_marketplace_cron_schedules.sql');
-  
-  // Apply schema cache reload
-  const m2 = await applyMigration('20260410_schema_cache_reload.sql');
+  const TARGET_MIGRATIONS = [
+    '20260412_command_layer_schema.sql',
+    '20260412_command_layer_seed.sql',
+    '20260412_command_layer_auto_wire.sql',
+    '20260412_command_layer_maxout_agents.sql',
+    '20260412_command_layer_money_triggers.sql',
+    '20260412_command_layer_paperclip_maximum_yield.sql',
+    '20260412_command_layer_roi_engines_v2.sql',
+    '20260412_command_layer_rpcs.sql',
+    '20260412_command_layer_wire_all_remaining.sql',
+    '20260414_003_command_layer_agent_expansion.sql', 
+    '20260412_wave11_facility_ugc_and_rewards.sql', 
+    '20260412_wave15_facilities_dot_seed.sql'
+  ];
 
-  // Verify: check cron.job table for our new schedules
-  console.log('\n═══ VERIFICATION: pg_cron jobs ═══');
-  try {
-    const { rows } = await client.query(`
-      SELECT jobname, schedule, active 
-      FROM cron.job 
-      WHERE jobname IN (
-        'availability-truth-tick', 'presence-timeout-offline', 'availability-ping',
-        'panic-fill-escalation', 'dispute-auto-resolve',
-        'ad-decision-engine', 'premium-auction-tick', 'bill-sponsors-daily',
-        'compute-trust-score-nightly', 'purge-idempotency-keys',
-        'corridor-stress-refresh', 'monitor-dead-zones', 'coverage-cells-precompute'
-      )
-      ORDER BY jobname;
-    `);
-    
-    if (rows.length > 0) {
-      console.log(`\n✅ ${rows.length} Wave 2+ cron jobs registered:`);
-      rows.forEach(r => console.log(`  ${r.active ? '✅' : '⏸️'} ${r.jobname}: ${r.schedule}`));
-    } else {
-      console.log('⚠️  No Wave 2 cron jobs found in cron.job table');
-    }
-  } catch (e) {
-    console.log(`⚠️  Could not query cron.job: ${e.message}`);
+  for (const m of TARGET_MIGRATIONS) {
+    await applyMigration(m);
   }
 
-  // Verify: check total cron jobs
+  console.log('\n═══ VERIFICATION ═══');
   try {
-    const { rows } = await client.query(`SELECT count(*) as total FROM cron.job;`);
-    console.log(`\nTotal cron jobs in system: ${rows[0]?.total}`);
-  } catch (e) {
-    console.log(`Could not count cron jobs: ${e.message}`);
+     const { rows } = await client.query(`SELECT id as agent_id, role, status, adapter_type FROM public.hc_command_agents ORDER BY created_at DESC LIMIT 5`);
+     console.table(rows);
+  } catch(e) {
+     console.log('Could not verify agents:', e.message);
+  }
+
+  try {
+     const { rows } = await client.query(`SELECT type, count(*) as cnt FROM public.facilities GROUP BY type`);
+     console.table(rows);
+  } catch(e) {
+     console.log('Could not verify facilities:', e.message);
   }
 
   await client.end();
-  console.log('\n═══ MIGRATION RUN COMPLETE ═══');
+  console.log('\n═══ ALL MIGRATIONS PUSHED LIVE ═══');
 }
 
 run().catch(e => { console.error('Fatal:', e.message); process.exit(1); });

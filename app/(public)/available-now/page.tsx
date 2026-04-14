@@ -6,6 +6,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 
 // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // /available-now â€” LIVE ESCORT AVAILABILITY FEED
@@ -238,7 +239,7 @@ export default async function AvailableNowPage() {
 
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
 
-          {/* Ã¢â€â‚¬Ã¢â€â‚¬ Operator Cards Ã¢â€â‚¬Ã¢â€â‚¬ */}
+          {/* Ã¢â€ â‚¬Ã¢â€ â‚¬ Operator Cards Ã¢â€ â‚¬Ã¢â€ â‚¬ */}
           {totalAvailable > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: 48 }}>
               {broadcasts.map((b) => {
@@ -447,8 +448,15 @@ export default async function AvailableNowPage() {
           </section>
 
 
+          {/* Ad Sponsor Zone */}
+          <section style={{ marginBottom: 32 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 20 }}>Sponsors</h2>
+            <AdGridSlot zone="available_now_sponsor" />
+          </section>
+
           {/* Live Activity Feed */}
           <section style={{ marginBottom: 32 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 20 }}>Live Network Updates</h2>
             <LiveActivityFeed maxItems={6} />
           </section>
 

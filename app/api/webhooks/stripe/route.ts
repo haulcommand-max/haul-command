@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 /**
  * S1-03: Stripe Webhook deduplication + S1-04: Payout failure push path
@@ -49,6 +50,16 @@ export async function POST(req: Request) {
             data: { deep_link: 'haulcommand://dashboard/wallet/settings' },
           },
         }),
+      });
+    }
+
+    if (result.payment_success_user_id) {
+      await sendRoutedNotification(result.payment_success_user_id, {
+        type: 'payment_received',
+        urgency: 'high',
+        title: '💰 Payment Confirmed',
+        body: 'We have successfully received and processed your payment.',
+        url: '/dashboard/wallet#history'
       });
     }
 

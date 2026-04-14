@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
+import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
 import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
@@ -102,10 +103,17 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 </div>
             </HCContentSection>
 
-            {/* AdGrid Sponsor Zone — directory landing */}
+            {/* AdGrid Sponsor Zone & Activity Feed — directory landing */}
             <HCContentSection pad="section_balanced_pad">
-                <div className="max-w-7xl mx-auto">
-                  <AdGridSlot zone="directory_sponsor" />
+                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2">
+                    <h2 className="text-xl font-bold text-white mb-6">Directory Sponsors</h2>
+                    <AdGridSlot zone="directory_sponsor" />
+                  </div>
+                  <div className="lg:col-span-1">
+                    <h2 className="text-xl font-bold text-white mb-6">Live Network Pulse</h2>
+                    <LiveActivityFeed />
+                  </div>
                 </div>
             </HCContentSection>
         </HCContentPageShell>
