@@ -6,9 +6,9 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: 'Heavy Haul Roles â€” Pilot Car Operators, Brokers, Carriers & Dispatchers | Haul Command',
+    title: 'Heavy Haul Roles — Pilot Car Operators, Brokers, Carriers & Dispatchers | Haul Command',
     description:
-        'Find the right Haul Command tools for your role in the heavy haul industry. Pilot car operators, heavy haul brokers, oversize carriers, and dispatchers â€” every role has a dedicated hub.',
+        'Find the right Haul Command tools for your role in the heavy haul industry. Pilot car operators, heavy haul brokers, oversize carriers, and dispatchers — every role has a dedicated hub.',
     keywords: [
         'heavy haul roles', 'pilot car operator', 'heavy haul broker', 'oversize carrier',
         'heavy haul dispatcher', 'escort vehicle operator', 'find pilot car', 'heavy haul jobs',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.haulcommand.com/roles' },
     openGraph: {
         title: 'Heavy Haul Roles | Haul Command',
-        description: 'Every role in heavy haul logistics â€” pilot car operators, brokers, carriers, and dispatchers â€” has a dedicated hub on Haul Command.',
+        description: 'Every role in heavy haul logistics — pilot car operators, brokers, carriers, and dispatchers — has a dedicated hub on Haul Command.',
         url: 'https://www.haulcommand.com/roles',
         siteName: 'Haul Command',
         type: 'website',
@@ -30,7 +30,7 @@ const PAGE_SCHEMA = {
             '@type': 'WebPage',
             name: 'Heavy Haul Roles | Haul Command',
             url: 'https://www.haulcommand.com/roles',
-            description: 'Role hub for heavy haul logistics professionals â€” pilot car operators, brokers, carriers, dispatchers.',
+            description: 'Role hub for heavy haul logistics professionals — pilot car operators, brokers, carriers, dispatchers.',
             breadcrumb: {
                 '@type': 'BreadcrumbList',
                 itemListElement: [
@@ -50,17 +50,17 @@ const PAGE_SCHEMA = {
                 {
                     '@type': 'Question',
                     name: 'What is the difference between a pilot car operator and a heavy haul carrier?',
-                    acceptedAnswer: { '@type': 'Answer', text: 'A pilot car operator drives an escort vehicle that accompanies an oversize load for safety and compliance. A heavy haul carrier is the company operating the truck that actually transports the load. Both roles are required on most oversize moves â€” the carrier moves the freight, the pilot car escorts it.' },
+                    acceptedAnswer: { '@type': 'Answer', text: 'A pilot car operator drives an escort vehicle that accompanies an oversize load for safety and compliance. A heavy haul carrier is the company operating the truck that actually transports the load. Both roles are required on most oversize moves — the carrier moves the freight, the pilot car escorts it.' },
                 },
                 {
                     '@type': 'Question',
                     name: 'What does a heavy haul dispatcher do?',
-                    acceptedAnswer: { '@type': 'Answer', text: 'A heavy haul dispatcher coordinates the logistics of oversize load movements â€” arranging permits, booking pilot car escorts, confirming route surveys, and communicating with drivers and brokers. They are the operational hub that keeps every move compliant and on schedule.' },
+                    acceptedAnswer: { '@type': 'Answer', text: 'A heavy haul dispatcher coordinates the logistics of oversize load movements — arranging permits, booking pilot car escorts, confirming route surveys, and communicating with drivers and brokers. They are the operational hub that keeps every move compliant and on schedule.' },
                 },
                 {
                     '@type': 'Question',
                     name: 'How do I get listed as a pilot car operator on Haul Command?',
-                    acceptedAnswer: { '@type': 'Answer', text: 'Claim your free Haul Command listing at haulcommand.com/claim. Add your operating states, certifications, insurance details, and equipment. Brokers and carriers search the directory to find available escorts â€” a verified listing dramatically increases your visibility.' },
+                    acceptedAnswer: { '@type': 'Answer', text: 'Claim your free Haul Command listing at haulcommand.com/claim. Add your operating states, certifications, insurance details, and equipment. Brokers and carriers search the directory to find available escorts — a verified listing dramatically increases your visibility.' },
                 },
                 {
                     '@type': 'Question',
@@ -107,7 +107,7 @@ const ROLES = [
         title: 'Heavy Haul Carriers',
         subtitle: 'Flatbed, Lowboy & Oversize Operators',
         badges: ['Find Escorts', 'Post Loads', 'List Operation'],
-        desc: 'The carriers running the loads â€” flatbeds, lowboys, RGNs, and modular trailers. Find escorts for your move, post loads, or list your carrier company.',
+        desc: 'The carriers running the loads — flatbeds, lowboys, RGNs, and modular trailers. Find escorts for your move, post loads, or list your carrier company.',
         primaryCta: { label: 'ðŸ” Find Carriers', href: '/directory' },
         secondaryCta: { label: 'ðŸ“¦ Post a Load', href: '/loads' },
         color: '#8B5CF6',
@@ -141,7 +141,7 @@ export default function RolesHubPage() {
                 {/* Breadcrumb */}
                 <nav aria-label="Breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 20px 0', fontSize: 11, color: '#6b7280', display: 'flex', gap: 6, alignItems: 'center', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                     <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-                    <span>â€º</span>
+                    <span>"º</span>
                     <span style={{ color: gold }}>Roles</span>
                 </nav>
 
@@ -151,14 +151,14 @@ export default function RolesHubPage() {
                     <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(2.5rem,5vw,4rem) 20px 2.5rem', textAlign: 'center' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 14px', background: 'rgba(212,168,68,0.1)', border: '1px solid rgba(212,168,68,0.25)', borderRadius: 20, marginBottom: 18 }}>
                             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 6px #22C55E' }} />
-                            <span style={{ fontSize: 11, fontWeight: 700, color: gold, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Heavy Haul Logistics â€” All Roles</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: gold, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Heavy Haul Logistics — All Roles</span>
                         </div>
                         <h1 style={{ margin: '0 0 14px', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.035em', color: '#f9fafb' }}>
                             What's Your Role in<br />
                             <span style={{ color: gold }}>Heavy Haul?</span>
                         </h1>
                         <p style={{ margin: '0 auto 30px', fontSize: 16, color: '#9ca3af', lineHeight: 1.7, maxWidth: 600 }}>
-                            Every job in the oversize load ecosystem â€” escort operators, brokers, carriers, and dispatchers â€” has a dedicated hub on Haul Command. Pick your role to get started.
+                            Every job in the oversize load ecosystem — escort operators, brokers, carriers, and dispatchers — has a dedicated hub on Haul Command. Pick your role to get started.
                         </p>
                     </div>
                 </section>
@@ -216,7 +216,7 @@ export default function RolesHubPage() {
                     <h2 style={{ fontSize: 17, fontWeight: 800, color: '#f9fafb', margin: '0 0 14px' }}>Heavy Haul Role FAQ</h2>
                     {[
                         { q: 'What is a heavy haul broker?', a: 'A heavy haul broker is a logistics intermediary who arranges the transportation of oversize or overweight loads. They coordinate between shippers and carriers, and also arrange pilot car escorts and permitting. Brokers typically charge a commission or flat fee per load.' },
-                        { q: 'What is the difference between a pilot car and a heavy haul carrier?', a: 'A pilot car operator drives an escort vehicle that accompanies an oversize load for safety and compliance. A heavy haul carrier operates the truck that transports the load. Both are required on most oversize moves â€” the carrier moves the freight, the pilot car escorts it.' },
+                        { q: 'What is the difference between a pilot car and a heavy haul carrier?', a: 'A pilot car operator drives an escort vehicle that accompanies an oversize load for safety and compliance. A heavy haul carrier operates the truck that transports the load. Both are required on most oversize moves — the carrier moves the freight, the pilot car escorts it.' },
                         { q: 'How do I get listed as a pilot car operator on Haul Command?', a: 'Claim your free Haul Command listing at /claim. Add your operating states, certifications, insurance, and equipment. Brokers can then search the directory to find you by state and availability.' },
                         { q: 'How many pilot cars does a load need?', a: 'It depends on load dimensions and the states traveled through. Use the Haul Command escort vehicle calculator to get an instant estimate based on your load dimensions and route.' },
                         { q: 'Do heavy haul carriers need permits in every state?', a: 'Yes. Every state the load travels through requires a separate permit. Requirements vary by load width, height, length, and weight. Use the state escort requirements tool to look up the rules for each state on your route.' },

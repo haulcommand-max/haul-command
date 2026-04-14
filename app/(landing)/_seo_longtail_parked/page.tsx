@@ -16,7 +16,7 @@ import { COUNTRY_KEYWORD_SEEDS } from '@/lib/seo/global-keyword-matrix';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // LONG-TAIL PROGRAMMATIC SEO PAGE
-// [service]/[...slug] â€” handles all combinatorial routes:
+// [service]/[...slug] — handles all combinatorial routes:
 //   /pilot-car/us/florida
 //   /oversize-escort/wind-turbine/us/texas  
 //   /pilot-car/near-me/us
@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         equipment ? `for ${equipment.label}` : '',
         modifier?.nearMeBoosted ? modifier.label : '',
         `in ${geo}`,
-        modifier && !modifier.nearMeBoosted ? `â€” ${modifier.label}` : '',
+        modifier && !modifier.nearMeBoosted ? `— ${modifier.label}` : '',
     ].filter(Boolean).join(' ');
 
     return {
@@ -185,11 +185,11 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         {breadcrumbs.map((b, i) => (
                             <li key={b.href} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <Link aria-label="Navigation Link" href={b.href} style={{ color: T.accent, textDecoration: 'none', fontWeight: 500 }}>{b.label}</Link>
-                                {i < breadcrumbs.length - 1 && <span>â€º</span>}
+                                {i < breadcrumbs.length - 1 && <span>"º</span>}
                             </li>
                         ))}
                         <li style={{ fontWeight: 700, color: T.textPrimary }}>
-                            â€º {modifier ? modifier.label : equipment ? equipment.label : geo}
+                            "º {modifier ? modifier.label : equipment ? equipment.label : geo}
                         </li>
                     </ol>
                 </nav>
@@ -204,7 +204,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     {equipment && <span style={{ color: T.accent }}> for {equipment.label}</span>}
                     {modifier?.nearMeBoosted && <span style={{ color: T.green }}> {modifier.label}</span>}
                     {' '}in {geo}
-                    {modifier && !modifier.nearMeBoosted && <span style={{ color: T.gold }}> â€” {modifier.label}</span>}
+                    {modifier && !modifier.nearMeBoosted && <span style={{ color: T.gold }}> — {modifier.label}</span>}
                 </h1>
 
                 <p style={{ fontSize: 18, color: T.textBody, lineHeight: 1.7, marginBottom: 32, maxWidth: 720 }}>
@@ -261,7 +261,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                 {/* â”€â”€ Quick Reference Table (Snippet Target) */}
                 <section style={{ marginBottom: 40 }}>
                     <h2 style={{ fontSize: 24, fontWeight: 800, color: T.textPrimary, marginBottom: 16 }}>
-                        Escort Requirements Quick Reference â€” {geo}
+                        Escort Requirements Quick Reference — {geo}
                     </h2>
                     <div style={{
                         borderRadius: 12, overflow: 'hidden',

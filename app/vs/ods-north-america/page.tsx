@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs ODS North America â€” Full Comparison 2026 | Haul Command',
+  title: 'Haul Command vs ODS North America — Full Comparison 2026 | Haul Command',
   description: 'Haul Command vs ODS North America: Compare features, pricing, global coverage, and dispatch tools. See how Haul Command replaces the ODS model.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/ods-north-america' },
 }
@@ -40,7 +40,7 @@ export default function VsODSPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON Â· 2026</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs ODS North America</h1>
             <p className="text-sm text-[#8a9ab0] max-w-2xl">ODS North America built a dispatch and invoicing model on phone-based agent relationships. Haul Command replaces that model with a self-serve platform, instant payouts, verified trust, and global coverage.</p>
           </div>
@@ -92,9 +92,9 @@ export default function VsODSPage() {
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">From Agent Model to Platform Model</h2>
             {[
-              {title:'Self-serve replaces agent dependency', body:'ODS requires you to contact a human agent to book escorts. Haul Commandâ€™s load board, capacity feed, and instant booking let operators and brokers transact directly â€” 24/7, globally.'},
-              {title:'Instant payouts replace invoice delays', body:'ODS uses traditional invoice and check payment cycles. Haul Commandâ€™s HC Pay issues instant or next-day payouts via Stripe Connect to verified operators in 120 countries.'},
-              {title:'Trust scores replace word-of-mouth', body:'ODS has no public verification layer. Haul Commandâ€™s trust score, badge system, and report card make every operatorâ€™s reputation visible before a broker makes contact.'},
+              {title:'Self-serve replaces agent dependency', body:'ODS requires you to contact a human agent to book escorts. Haul Command's load board, capacity feed, and instant booking let operators and brokers transact directly — 24/7, globally.'},
+              {title:'Instant payouts replace invoice delays', body:'ODS uses traditional invoice and check payment cycles. Haul Command's HC Pay issues instant or next-day payouts via Stripe Connect to verified operators in 120 countries.'},
+              {title:'Trust scores replace word-of-mouth', body:'ODS has no public verification layer. Haul Command's trust score, badge system, and report card make every operator's reputation visible before a broker makes contact.'},
               {title:'120 countries replace North America', body:'ODS concentrates on US and Canada. Haul Command operates across 120 countries with country-specific regulation data, local certifications, and hyperlocal pages in every market.'},
             ].map((item,i)=>(
               <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
@@ -105,7 +105,7 @@ export default function VsODSPage() {
           </div>
 
           <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-8">
-            <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command â€” Free</h2>
+            <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command — Free</h2>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/find-capacity" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Find Capacity Now â†’</Link>
               <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>

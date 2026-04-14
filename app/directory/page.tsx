@@ -2,6 +2,8 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
 import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
@@ -68,7 +70,10 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                             
                             <div>
                                 <div className="flex justify-between items-start mb-4 gap-4">
-                                    <h3 className="text-[17px] font-bold uppercase tracking-tight text-[#F9FAFB] truncate">{p.company || p.name || 'Verified Operator'}</h3>
+                                    <div className="flex items-center gap-2 overflow-hidden">
+                                        <h3 className="text-[17px] font-bold uppercase tracking-tight text-[#F9FAFB] truncate">{p.company || p.name || 'Verified Operator'}</h3>
+                                        <FreshnessBadge lastSeenAt={p.last_seen_at || new Date().toISOString()} />
+                                    </div>
                                     <span className="bg-[#0A0B0D] border border-[rgba(198,146,58,0.3)] px-2.5 py-1 rounded-[6px] text-[11px] font-bold tracking-widest text-[#E0B05C] whitespace-nowrap">
                                         R: {p.confidence_score || 'N/A'}
                                     </span>
@@ -80,15 +85,27 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                 </div>
                             </div>
 
-                            <Link href={`/directory/${p.contact_id}`} className="bg-[#1A1C20] hover:bg-[#23262B] text-[#F3F4F6] font-bold uppercase tracking-widest text-[11px] py-3.5 rounded-[12px] text-center transition-all w-full border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)] shadow-sm">
-                                View Dossier
-                            </Link>
+                            <div className="flex gap-2">
+                              <Link href={`/directory/${p.contact_id}`} className="flex-1 bg-[#1A1C20] hover:bg-[#23262B] text-[#F3F4F6] font-bold uppercase tracking-widest text-[11px] py-3.5 rounded-[12px] text-center transition-all border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)] shadow-sm">
+                                  View Dossier
+                              </Link>
+                              <Link href={`/report-card/${p.contact_id}`} className="bg-[#1A1C20] hover:bg-[#23262B] text-[#C6923A] font-bold uppercase tracking-widest text-[11px] py-3.5 px-4 rounded-[12px] text-center transition-all border border-[rgba(198,146,58,0.15)] hover:border-[rgba(198,146,58,0.3)] shadow-sm">
+                                  Report
+                              </Link>
+                            </div>
                         </div>
                     )) : (
                         <div className="col-span-full p-16 border border-[rgba(255,255,255,0.08)] rounded-[24px] text-center bg-[#111214]">
                             <p className="text-[#9CA3AF] font-bold tracking-widest text-[13px] uppercase">No Operators Found in this Operations Sector.</p>
                         </div>
                     )}
+                </div>
+            </HCContentSection>
+
+            {/* AdGrid Sponsor Zone — directory landing */}
+            <HCContentSection pad="section_balanced_pad">
+                <div className="max-w-7xl mx-auto">
+                  <AdGridSlot zone="directory_sponsor" />
                 </div>
             </HCContentSection>
         </HCContentPageShell>

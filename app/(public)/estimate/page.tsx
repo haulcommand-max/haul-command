@@ -3,7 +3,7 @@ import EstimateForm from './EstimateForm';
 
 export const metadata: Metadata = {
     title: 'Instant Pilot Car Cost Estimate | Heavy Haul Quote in 30 Seconds',
-    description: 'Get an instant escort cost estimate for your oversize load. Enter dimensions and route â€” see pilot car pricing, escort requirements, permit costs, and operator availability in 30 seconds. Free. No login.',
+    description: 'Get an instant escort cost estimate for your oversize load. Enter dimensions and route — see pilot car pricing, escort requirements, permit costs, and operator availability in 30 seconds. Free. No login.',
     alternates: {
         canonical: 'https://www.haulcommand.com/estimate',
     },
@@ -41,7 +41,7 @@ const faqSchema = {
             name: 'How many escort vehicles do I need?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Escort requirements depend on load dimensions: loads wider than 14 feet (4.27m) typically need 2 escorts, loads wider than 12 feet (3.66m) or taller than 14.5 feet (4.42m) need at least 1 escort. Loads wider than 16 feet (4.88m) may also require police escorts. Requirements vary by state and country â€” this estimator calculates the exact needs for your route.',
+                text: 'Escort requirements depend on load dimensions: loads wider than 14 feet (4.27m) typically need 2 escorts, loads wider than 12 feet (3.66m) or taller than 14.5 feet (4.42m) need at least 1 escort. Loads wider than 16 feet (4.88m) may also require police escorts. Requirements vary by state and country — this estimator calculates the exact needs for your route.',
             },
         },
         {

@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // JURISDICTION MAP CONTROL SURFACE
-// Dark command-center aesthetic Â· Interactive SVG map
+// Dark command-center aesthetic · Interactive SVG map
 // Tap a state â†’ bottom drawer with operators, rules, support
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
@@ -173,7 +173,7 @@ function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
                 </div>
                 <div style={{textAlign: 'right',flexShrink: 0 }}>
                     <div style={{fontSize: 20,fontWeight: 900,color: T.gold,lineHeight: 1 }}>
-                        {op.rating > 0 ? op.rating.toFixed(1) : 'â€”'}
+                        {op.rating > 0 ? op.rating.toFixed(1) : '—'}
                     </div>
                     <div style={{fontSize: 9,color: T.textLabel,marginTop: 2 }}>RATING</div>
                 </div>
@@ -203,7 +203,7 @@ function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
                 )}
             </div>
             <div style={{marginTop: 8,fontSize: 11,color: T.textLabel }}>
-                âš¡ Avg Response: {op.response_time_sec_avg > 0 ? `${Math.round(op.response_time_sec_avg / 60)}min` : 'â€”'}
+                âš¡ Avg Response: {op.response_time_sec_avg > 0 ? `${Math.round(op.response_time_sec_avg / 60)}min` : '—'}
             </div>
         </div>
     );
@@ -399,7 +399,7 @@ export default function JurisdictionMapPage() {
                             {/* Hint text */}
                             <text x="480" y="580" textAnchor="middle" fill={T.textLabel} fontSize="11" opacity="0.4"
                                 fontFamily="'Inter', sans-serif" fontWeight="500">
-                                pinch to zoom â€¢ tap a state
+                                pinch to zoom "¢ tap a state
                             </text>
                         </svg>
                     ) : (
@@ -481,7 +481,7 @@ export default function JurisdictionMapPage() {
                             {drawerTab === 'operators' && (
                                 drawerData.operators.length > 0
                                     ? drawerData.operators.map(op => <OperatorCard key={op.operator_id} op={op} />)
-                                    : <EmptyTabState icon="ðŸ‘·" label="No operators listed yet" sublabel="Be the first â€” claim your profile in this jurisdiction" />
+                                    : <EmptyTabState icon="ðŸ‘·" label="No operators listed yet" sublabel="Be the first — claim your profile in this jurisdiction" />
                             )}
                             {drawerTab === 'rules' && (
                                 drawerData.rulepacks.length > 0

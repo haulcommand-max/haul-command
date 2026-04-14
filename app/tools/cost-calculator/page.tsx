@@ -19,7 +19,7 @@ export default function CostCalculatorPage() {
                         </a>
                     </div>
 
-                    {/* SEO Internal Links â€” passes equity to escort-calc, permit-checker, directory */}
+                    {/* SEO Internal Links — passes equity to escort-calc, permit-checker, directory */}
                     <div style={{ marginTop: '3rem', textAlign: 'left' }}>
                         <RelatedLinks
                             pageType="tool"

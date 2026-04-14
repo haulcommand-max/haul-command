@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin â€” AI Command Center | Haul Command',
+  title: 'Admin — AI Command Center | Haul Command',
   robots: { index: false, follow: false },
 };
 

@@ -34,7 +34,7 @@ const pricingSchema = {
             '@type': 'FAQPage',
             mainEntity: [
                 { '@type': 'Question', name: 'How much does Haul Command cost?', acceptedAnswer: { '@type': 'Answer', text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.' } },
-                { '@type': 'Question', name: 'Is there a free pilot car operator plan?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent â€” no credit card required to claim your profile.' } },
+                { '@type': 'Question', name: 'Is there a free pilot car operator plan?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent — no credit card required to claim your profile.' } },
                 { '@type': 'Question', name: 'What is included in the Haul Command Elite plan?', acceptedAnswer: { '@type': 'Answer', text: 'Elite ($79/month) includes a verified and certified badge, top listing placement, unlimited operating regions, priority lead matching, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.' } },
                 { '@type': 'Question', name: 'Can I cancel anytime?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Cancel anytime from your dashboard. Your subscription remains active until the end of your billing period. No cancellation fees, no questions asked.' } },
                 { '@type': 'Question', name: 'Do you offer annual pricing?', acceptedAnswer: { '@type': 'Answer', text: 'Annual plans include 2 months free (equivalent to 17% off). Contact billing@haulcommand.com or manage in your dashboard after subscribing.' } },
@@ -72,7 +72,7 @@ export default function PricingPage() {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
 
-            {/* ProofStrip â€” trust signals above the fold */}
+            {/* ProofStrip — trust signals above the fold */}
             <ProofStrip variant="bar" />
 
             <div className=" bg-[#0B0B0C] text-white">
@@ -144,7 +144,7 @@ export default function PricingPage() {
                                         ? 'bg-hc-gold-500 text-white hover:bg-hc-gold-400'
                                         : 'border border-white/20 text-white hover:bg-white/5'
                                         }`}>
-                                    {tier.price === 0 ? 'Claim Your Profile â€” Free' : `Start ${tier.name} Trial`}
+                                    {tier.price === 0 ? 'Claim Your Profile — Free' : `Start ${tier.name} Trial`}
                                 </Link>
                             </div>
                         ))}
@@ -238,7 +238,7 @@ export default function PricingPage() {
                             },
                             {
                                 q: 'Is there a free pilot car operator plan?',
-                                a: 'Yes. Free accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. Permanently free â€” no credit card required.',
+                                a: 'Yes. Free accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. Permanently free — no credit card required.',
                             },
                             {
                                 q: 'What is included in the Elite plan?',
@@ -277,7 +277,7 @@ export default function PricingPage() {
                     </div>
                 </section>
 
-                {/* â”€â”€ Internal link mesh â€” tool + glossary + directory â”€â”€ */}
+                {/* â”€â”€ Internal link mesh — tool + glossary + directory â”€â”€ */}
                 <section className="border-t border-white/5 py-10 text-center">
                     <div className="text-xs font-black uppercase tracking-widest text-white/25 mb-5">Helpful Resources</div>
                     <div className="flex flex-wrap justify-center gap-3">

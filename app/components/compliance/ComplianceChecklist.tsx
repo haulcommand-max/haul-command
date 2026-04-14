@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 // Extracted from heavy regulatory environments like France (Voiture Pilote) and US Superloads.
 
 const CHECKS = [
-  "Verify Amber Lights / Strobes active and visible 360Â°",
+  "Verify Amber Lights / Strobes active and visible 360°",
   "Oversize Load / Convoi Exceptionnel banners deployed securely",
   "High pole calibrated strictly 6 inches above max load height",
   "UHF/CB Radio communication established with driver",

@@ -181,7 +181,7 @@ export default function PricingPage() {
 
             {/* Bottom CTA */}
             <div style={{ textAlign: 'center', marginTop: '3rem', color: '#6B7280', fontSize: 13 }}>
-                <p>All plans include crypto payments (300+ currencies via NOWPayments) â€¢ 120 country coverage â€¢ Offline PWA</p>
+                <p>All plans include crypto payments (300+ currencies via NOWPayments) "¢ 120 country coverage "¢ Offline PWA</p>
                 <p style={{ marginTop: 4 }}>Questions? <a href="mailto:support@haulcommand.com" style={{ color: '#F59E0B', textDecoration: 'none' }}>support@haulcommand.com</a></p>
             </div>
         </div>

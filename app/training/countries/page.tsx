@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Training by Country â€” 120 Countries | Haul Command',
+  title: 'Pilot Car Training by Country — 120 Countries | Haul Command',
   description: 'Find pilot car and escort operator training for your country. State-aware, globally-ready certification pathways in 120 countries including USA, Canada, Australia, UK, UAE, and more.',
   alternates: { canonical: 'https://www.haulcommand.com/training/countries' },
 };
@@ -52,9 +52,9 @@ export default function CountriesIndexPage() {
         <nav aria-label="Breadcrumb" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '12px 0' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px', display: 'flex', gap: 6, fontSize: 11, color: '#6b7280', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-            <span>â€º</span>
+            <span>"º</span>
             <Link href="/training" style={{ color: '#6b7280', textDecoration: 'none' }}>Training</Link>
-            <span>â€º</span>
+            <span>"º</span>
             <span style={{ color: gold }}>All Countries</span>
           </div>
         </nav>
@@ -69,7 +69,7 @@ export default function CountriesIndexPage() {
               terminology, compliance notes, and relevant resources for operators in that market.
             </p>
             <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
-              ðŸŽ“ Start Training â€” Free
+              ðŸŽ“ Start Training — Free
             </Link>
           </div>
         </section>

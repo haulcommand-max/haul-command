@@ -5,7 +5,7 @@
  *
  * Real-time revenue overview across all monetization surfaces.
  * Shows: ad revenue, subscriptions, sponsorships, data products,
- * boosts, match fees â€” broken down by country and time period.
+ * boosts, match fees — broken down by country and time period.
  */
 
 import { useState, useEffect } from 'react';
@@ -68,7 +68,7 @@ export default function RevenueDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Revenue Dashboard</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All monetization surfaces â€¢ Real-time</p>
+                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All monetization surfaces "¢ Real-time</p>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['today', 'week', 'month'] as const).map(p => (
@@ -151,7 +151,7 @@ export default function RevenueDashboard() {
                                 padding: '14px', borderRadius: 12,
                                 background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)',
                             }}>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: '#fff' }}>{c.code} â€” {c.name}</div>
+                                <div style={{ fontSize: 12, fontWeight: 800, color: '#fff' }}>{c.code} — {c.name}</div>
                                 <div style={{ fontSize: 20, fontWeight: 900, color: '#F1A91B', marginTop: 4 }}>${c.revenue_usd.toFixed(2)}</div>
                                 <div style={{
                                     fontSize: 9, fontWeight: 700, marginTop: 4, padding: '2px 8px', borderRadius: 6, display: 'inline-block',

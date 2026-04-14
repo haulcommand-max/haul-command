@@ -180,7 +180,7 @@ export default function ControlTowerPage() {
                                         <div className="flex-1 min-w-0">
                                             <p className="text-sm font-medium truncate" style={{ color: T.textBody }}>{alert.message}</p>
                                             <p className="text-[10px] mt-0.5" style={{ color: T.textSubtle }}>
-                                                {alert.alert_type} Â· {new Date(alert.created_at).toLocaleString()}
+                                                {alert.alert_type} · {new Date(alert.created_at).toLocaleString()}
                                             </p>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ export default function ControlTowerPage() {
                             <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: T.textSubtle }}>Active Scarcity Zones</h2>
                             {scarcityRows.length === 0 && (
                                 <div className="rounded-xl px-4 py-3 text-sm" style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.textMuted }}>
-                                    No active shortages â€” market is balanced
+                                    No active shortages — market is balanced
                                 </div>
                             )}
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -205,7 +205,7 @@ export default function ControlTowerPage() {
                                                 <span className="text-sm font-bold" style={{ color: T.textBody }}>{row.geo_key}</span>
                                                 <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded" style={{ color: bandColor, background: `${bandColor}18` }}>{row.forecast_band}</span>
                                             </div>
-                                            <div className="text-[10px]" style={{ color: T.textMuted }}>{row.geo_type} Â· prob {Math.round(row.shortage_probability * 100)}%</div>
+                                            <div className="text-[10px]" style={{ color: T.textMuted }}>{row.geo_type} · prob {Math.round(row.shortage_probability * 100)}%</div>
                                             <div className="mt-2 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.05)" }}>
                                                 <div className="h-full rounded-full" style={{ width: `${row.future_shortage_score}%`, background: bandColor, transition: "width 0.6s" }} />
                                             </div>
@@ -219,7 +219,7 @@ export default function ControlTowerPage() {
                         <section>
                             <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: T.textSubtle }}>UX Clarity (lowest scoring pages)</h2>
                             {uxRows.length === 0 && (
-                                <div className="rounded-xl px-4 py-3 text-sm" style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.textMuted }}>No UX data yet â€” run clarity scorer</div>
+                                <div className="rounded-xl px-4 py-3 text-sm" style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.textMuted }}>No UX data yet — run clarity scorer</div>
                             )}
                             {uxRows.slice(0, 10).map(row => (
                                 <div key={row.page_url} className="rounded-xl px-4 py-3 flex items-center gap-3 mb-2" style={{ background: T.surface, border: `1px solid ${T.border}` }}>
@@ -243,7 +243,7 @@ export default function ControlTowerPage() {
                         <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: T.textSubtle }}>Corridor Pressure Forecast</h2>
                         {corridorRows.length === 0 && (
                             <div className="rounded-xl px-4 py-3 text-sm" style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.textMuted }}>
-                                No elevated corridors â€” all routes normal
+                                No elevated corridors — all routes normal
                             </div>
                         )}
                         {corridorRows.map(row => {
@@ -295,7 +295,7 @@ export default function ControlTowerPage() {
                                     <div className="flex-1 min-w-0">
                                         <p className="text-xs font-mono truncate" style={{ color: T.textBody }}>{row.id}</p>
                                         <p className="text-[10px] mt-0.5" style={{ color: T.textSubtle }}>
-                                            {row.candidate_count ?? 0} candidates Â· {new Date(row.created_at).toLocaleString()}
+                                            {row.candidate_count ?? 0} candidates · {new Date(row.created_at).toLocaleString()}
                                         </p>
                                     </div>
                                     <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded" style={{ color: statusColor, background: `${statusColor}18` }}>

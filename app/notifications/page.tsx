@@ -63,7 +63,7 @@ export default async function NotificationsPage() {
           <div className="rounded-2xl border border-white/8 bg-white/4 p-10 text-center">
             <div className="text-4xl">ðŸ””</div>
             <p className="mt-3 font-semibold text-white">No notifications yet</p>
-            <p className="mt-1 text-sm text-white/40">Weâ€™ll alert you when loads match, markets activate, or your profile needs attention.</p>
+            <p className="mt-1 text-sm text-white/40">We'll alert you when loads match, markets activate, or your profile needs attention.</p>
           </div>
         ) : (
           <div className="space-y-2">

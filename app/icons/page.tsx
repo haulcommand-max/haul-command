@@ -113,7 +113,7 @@ export default function IconPreviewPage() {
 
                 {/* All-variants strip */}
                 <div className={`mt-10 p-6 rounded-2xl border ${darkMode ? 'bg-white/[0.02] border-white/[0.06]' : 'bg-[#121212] border-white/10'}`}>
-                    <h3 className="text-sm font-black uppercase tracking-wider mb-4">All 8 Variants â€” Side by Side</h3>
+                    <h3 className="text-sm font-black uppercase tracking-wider mb-4">All 8 Variants — Side by Side</h3>
                     <div className="space-y-3 max-h-[600px] overflow-y-auto">
                         {filtered.slice(0, 30).map(icon => {
                             const Ic = icon.component;

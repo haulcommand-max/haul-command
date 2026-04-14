@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot'
 
 export const metadata: Metadata = {
-  title: 'Free Oversize Load Permit Cost Calculator â€” All 50 States | Haul Command',
+  title: 'Free Oversize Load Permit Cost Calculator — All 50 States | Haul Command',
   description: 'Calculate oversize load permit costs by state instantly. Enter origin, destination, dimensions and weight. Free, public, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/permit-cost-calculator' },
 }
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function PermitCostCalculatorPage() {
   const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Oversize Permit Cost Calculator', url:'https://www.haulcommand.com/tools/permit-cost-calculator', description:'Free oversize load permit cost calculator for all 50 US states. No login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
   const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
-    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10â€“$0.50 and per-ton-over fees. Use the calculator above for an accurate estimate for your specific route.'}},
+    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10"“$0.50 and per-ton-over fees. Use the calculator above for an accurate estimate for your specific route.'}},
     {"@type":'Question', name:'Do I need a permit for every state my load travels through?', acceptedAnswer:{"@type":'Answer', text:'Yes. You need a separate oversize load permit for each state your route passes through. Some states offer trip permits, annual permits, or multi-trip permits depending on load frequency.'}},
-    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued same-day to 3 business days. Superloads may require 5â€“10 business days. Some states offer online instant issuance for standard loads.'}},
+    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued same-day to 3 business days. Superloads may require 5"“10 business days. Some states offer online instant issuance for standard loads.'}},
   ]}
 
   return (
@@ -24,11 +24,11 @@ export default function PermitCostCalculatorPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL Â· NO LOGIN REQUIRED</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Oversize Load Permit Cost Calculator</h1>
-            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10â€“$0.50. A multi-state route may total $200â€“$600 in permit fees alone. Enter your load dimensions and route below for an instant estimate covering all states along your corridor.</p>
-            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route â€” including pilot car requirements, escort rules, and superload thresholds.</p>
-            <p className="text-xs text-[#22c55e]">Free Â· All 50 US States Â· No account needed</p>
+            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10"“$0.50. A multi-state route may total $200"“$600 in permit fees alone. Enter your load dimensions and route below for an instant estimate covering all states along your corridor.</p>
+            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route — including pilot car requirements, escort rules, and superload thresholds.</p>
+            <p className="text-xs text-[#22c55e]">Free · All 50 US States · No account needed</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -60,7 +60,7 @@ export default function PermitCostCalculatorPage() {
 
           {/* REFERENCE TABLE */}
           <div className="mb-10">
-            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Permit Cost Reference â€” Key States</h2>
+            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Permit Cost Reference — Key States</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-xs border-collapse">
                 <thead>
@@ -92,7 +92,7 @@ export default function PermitCostCalculatorPage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-[10px] text-[#3a5068] mt-3">Reference data. Rates verified Q1 2026 â€” confirm with state DOT before filing. Confidence: <span className="text-[#d4950e]">partially_verified</span>.</p>
+            <p className="text-[10px] text-[#3a5068] mt-3">Reference data. Rates verified Q1 2026 — confirm with state DOT before filing. Confidence: <span className="text-[#d4950e]">partially_verified</span>.</p>
           </div>
 
           {/* FAQ */}
@@ -100,9 +100,9 @@ export default function PermitCostCalculatorPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Oversize Permit FAQs</h2>
             <div className="space-y-3">
               {[
-                {q:'How much does an oversize load permit cost?',a:'Permit costs vary significantly by state. Base fees range from $15 in some states to $100+ in others. Most states also charge per-mile fees ($0.10â€“$0.50) and per-ton-over fees for overweight loads. A multi-state route from Texas to Ohio might total $200â€“$600 in permit fees alone, plus escort costs.'},
+                {q:'How much does an oversize load permit cost?',a:'Permit costs vary significantly by state. Base fees range from $15 in some states to $100+ in others. Most states also charge per-mile fees ($0.10"“$0.50) and per-ton-over fees for overweight loads. A multi-state route from Texas to Ohio might total $200"“$600 in permit fees alone, plus escort costs.'},
                 {q:'Do I need a permit for every state my load travels through?',a:'Yes. Each state your route passes through requires its own permit. Some states offer annual or multi-trip permits for operators with frequent corridor use.'},
-                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued same-day to 3 business days. Superloads requiring engineering review may take 5â€“10 business days. Several states now offer online instant issuance.'},
+                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued same-day to 3 business days. Superloads requiring engineering review may take 5"“10 business days. Several states now offer online instant issuance.'},
                 {q:'What dimensions trigger a pilot car requirement?',a:'Pilot car requirements vary by state. In most US states, loads exceeding 12&apos; wide require at least one escort. At 14&apos;+ wide, two escorts plus a high pole are typically required. Some states have lower thresholds.'},
                 {q:'Can I use an annual permit instead of trip permits?',a:'Some states offer annual or blanket permits for operators with recurring loads in specific corridors. These are cost-effective for carriers with regular routes.'},
               ].map((item,i)=>(
@@ -130,9 +130,9 @@ export default function PermitCostCalculatorPage() {
             </div>
           </div>
 
-          {/* VISIBLE LAST UPDATED â€” AI engines cross-validate schema against visible page content */}
+          {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
           <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
-            <p className="text-[10px] text-[#3a5068]">Permit data last updated: Q1 2026 Â· Verified against state DOT fee schedules Â· Confirm with issuing authority before filing</p>
+            <p className="text-[10px] text-[#3a5068]">Permit data last updated: Q1 2026 · Verified against state DOT fee schedules · Confirm with issuing authority before filing</p>
           </div>
         </div>
       </div>

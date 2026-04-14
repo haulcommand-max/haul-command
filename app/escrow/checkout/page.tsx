@@ -184,7 +184,7 @@ export default function EscrowCheckoutPage() {
                     disabled={submitting || !form.escort_id || form.subtotal_usd <= 0}
                     style={{ width: '100%', padding: '0.9rem', borderRadius: 10, border: 'none', background: submitting || !form.escort_id ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#f59e0b,#d97706)', color: submitting || !form.escort_id ? '#4b5563' : '#000', fontSize: 15, fontWeight: 700, cursor: submitting || !form.escort_id ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}
                 >
-                    {submitting ? 'â³ Processing...' : escrow?.escrow_required ? `ðŸ”’ Fund Escrow Â· $${depositAmt.toFixed(2)} deposit` : `ðŸ’³ Initiate Payment Â· $${form.subtotal_usd.toFixed(2)}`}
+                    {submitting ? 'â³ Processing...' : escrow?.escrow_required ? `ðŸ”’ Fund Escrow · $${depositAmt.toFixed(2)} deposit` : `ðŸ’³ Initiate Payment · $${form.subtotal_usd.toFixed(2)}`}
                 </button>
                 <p style={{ textAlign: 'center', fontSize: 11, color: '#4b5563', marginTop: '0.75rem' }}>Funds are secured via HC Escrow. Release triggers automatically when proof conditions are met.</p>
             </div>

@@ -1,0 +1,14 @@
+# GEMINI-07: Code Review Copilot for Sonnet
+
+sonnet_review_comments:
+  issues:
+    - component: "MarketClusterGrid.tsx"
+      comment: "Good cluster implementation, but skipped edge case checking for `localTools` array length. If empty, the `<Wrench>` block crashes or renders empty. Requires fallback."
+    - component: "SmartAutoLinker"
+      comment: "Regex safety protocol missing. If SmartAutoLinker is parsing raw operator bio text, it is vulnerable to ReDoS attacks (Catastrophic Backtracking) on overly long terms."
+    - feature: "IndexNow Formatting"
+      comment: "Watch out for batch submission limits. Search indexing edge cases indicate that over 10,000 URLs per payload will result in Bing truncating the push."
+    - component: "LiveAvailabilityPulse.tsx"
+      comment: "Ensure truth-first UI state correctly handles the scenario where NO operators are active. It currently returns `null`. A better truth-first pattern is returning an 'Information: 0 signals in last 24h, Request Standby' notification block."
+    - risk: "Cannibalization"
+      comment: "Duplication risk is extremely high if Sonnet drops state grids that share the exact H1 and P tags. Urge Sonnet to pass `region` props into the content mix generation to spin the paragraphs dynamically."

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 
 /**
- * /chat â€” AI Gateway (brand-upgraded)
+ * /chat — AI Gateway (brand-upgraded)
  * Mobile-first chat UI matching HC design language.
  */
 export default function AIChatPage() {
@@ -57,7 +57,7 @@ export default function AIChatPage() {
                 <span style={{ fontSize: 22 }}>ðŸ’¬</span>
                 <div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: '#f9fafb' }}>AI Gateway</div>
-                    <div style={{ fontSize: 11, color: '#6b7280' }}>Powered by GPT-4o â€¢ Secure server-side proxy</div>
+                    <div style={{ fontSize: 11, color: '#6b7280' }}>Powered by GPT-4o "¢ Secure server-side proxy</div>
                 </div>
                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'block' }} />
@@ -72,7 +72,7 @@ export default function AIChatPage() {
                         <span style={{ fontSize: 48 }}>ðŸ’¬</span>
                         <div style={{ fontSize: 18, fontWeight: 600 }}>Ask Haul Command</div>
                         <div style={{ fontSize: 13, color: '#6b7280', textAlign: 'center', maxWidth: 320 }}>
-                            Platform support, dispatch questions, permit regulations â€” ask anything.
+                            Platform support, dispatch questions, permit regulations — ask anything.
                         </div>
                     </div>
                 )}

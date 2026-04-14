@@ -60,7 +60,7 @@ export default async function CorridorIntersectionsIndex() {
                    </div>
                    <div>
                      <h3 className="font-bold text-white group-hover:text-indigo-400 transition-colors">{intersection.name}</h3>
-                     <p className="text-sm text-slate-500">{intersection.city}, {intersection.state} â€¢ Limit: {intersection.weight_limit || 'N/A'}</p>
+                     <p className="text-sm text-slate-500">{intersection.city}, {intersection.state} "¢ Limit: {intersection.weight_limit || 'N/A'}</p>
                    </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-600 group-hover:text-indigo-400 transition-colors" />

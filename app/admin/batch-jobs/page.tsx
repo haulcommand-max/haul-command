@@ -34,7 +34,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_analyze',
-    name: 'ðŸ”¥ Claim Sweep â€” Analyze (7,745 listings)',
+    name: 'ðŸ”¥ Claim Sweep — Analyze (7,745 listings)',
     description: 'Gemini writes email/SMS copy + Claude scores steal risk for every unclaimed listing. Run repeatedly until all analyzed.',
     endpoint: '/api/admin/claim-analysis',
     method: 'POST',
@@ -48,7 +48,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_preview',
-    name: 'ðŸ‘€ Claim Sweep â€” Preview Outreach (risk >= 7)',
+    name: 'ðŸ‘€ Claim Sweep — Preview Outreach (risk >= 7)',
     description: 'Dry-run: preview which high-risk unclaimed listings would receive outreach emails.',
     endpoint: '/api/admin/batch/claim-sweep',
     method: 'POST',
@@ -62,7 +62,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'claim_send',
-    name: 'ðŸ“§ Claim Sweep â€” SEND Outreach (risk >= 7)',
+    name: 'ðŸ“§ Claim Sweep — SEND Outreach (risk >= 7)',
     description: 'LIVE: Send personalized claim invite emails to high-risk unclaimed listings. Only sends to listings with email on file.',
     endpoint: '/api/admin/batch/claim-sweep',
     method: 'POST',
@@ -270,7 +270,7 @@ export default function BatchJobsPage() {
                 {isRunning && (
                   <div className="mt-4 flex items-center gap-2">
                     <div className="animate-spin w-3 h-3 border-2 border-amber-500 border-t-transparent rounded-full" />
-                    <p className="text-xs text-gray-500">Runningâ€¦</p>
+                    <p className="text-xs text-gray-500">Running"¦</p>
                   </div>
                 )}
               </div>
@@ -280,7 +280,7 @@ export default function BatchJobsPage() {
 
         <div className="mt-8 p-4 bg-white/3 border border-white/5 rounded-xl">
           <p className="text-xs text-gray-600">
-            ðŸ§  Claude THINK Â· ðŸ‘ï¸ Gemini SEE Â· âš™ï¸ OpenAI ACT &mdash; monitor spend at{' '}
+            ðŸ§  Claude THINK · ðŸ‘ï¸ Gemini SEE · âš™ï¸ OpenAI ACT &mdash; monitor spend at{' '}
             <a href="/admin/ai-costs" className="text-amber-400 hover:underline">/admin/ai-costs</a>.
             Run 20 in Supabase SQL editor:{' '}
             <code className="text-amber-300 text-xs">SELECT * FROM get_ai_cost_summary(7);</code>

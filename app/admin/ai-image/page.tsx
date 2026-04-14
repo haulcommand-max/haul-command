@@ -5,7 +5,7 @@ import { HcGeneratePackShortcuts } from "@/components/admin/HcGeneratePackShortc
 import Link from "next/link";
 
 export const metadata = {
-  title: "AI Image Engine â€“ HAUL COMMAND Admin",
+  title: "AI Image Engine "“ HAUL COMMAND Admin",
 };
 
 export default function AiImagePage() {
@@ -20,7 +20,7 @@ export default function AiImagePage() {
             AI IMAGE ENGINE
           </h1>
           <p style={{ fontSize: "12px", color: "#5a6f82", marginTop: "4px" }}>
-            Generate â€¢ Edit â€¢ Template â€¢ Pack â€¢ Review
+            Generate "¢ Edit "¢ Template "¢ Pack "¢ Review
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>

@@ -27,7 +27,7 @@ export default function DirectoryPage() {
                         rating: p.trust_score || 0, jobs: 0,
                         verified: p.is_verified || false,
                         sponsor: !!p.boost_tier,
-                        response: 'â€”',
+                        response: '—',
                     })));
                 }
             } catch { /* graceful */ }

@@ -6,7 +6,7 @@ import ToolsSidebar from "@/components/tools/ToolsSidebar";
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { DataTeaserStrip } from '@/components/data/DataTeaserStrip';
 
-// Free Tool #4 â€” State Requirements Cheatsheet
+// Free Tool #4 — State Requirements Cheatsheet
 const STATES = [
     { code: 'TX', name: 'Texas', cert: true, heightPole: true, insurance: '$500K', escort1: '12\'', escort2: '16\'', night: 'Restricted', notes: 'TX pilot car certification required' },
     { code: 'FL', name: 'Florida', cert: true, heightPole: true, insurance: '$300K', escort1: '12\'', escort2: '14.6\'', night: 'Restricted', notes: 'FDOT permit required for each move' },
@@ -99,12 +99,12 @@ export default function StateRequirementsCheatsheet() {
                     </div>
                     <aside className="space-y-4">
                         <ToolsSidebar currentPath="/tools/state-requirements" />
-                        {/* Regulations Sponsor â€” highest-intent compliance surface */}
+                        {/* Regulations Sponsor — highest-intent compliance surface */}
                         <AdGridSlot zone="regulations_sponsor" />
                     </aside>
                 </div>
 
-                {/* Data Teaser Strip â€” compliance + market data upsell */}
+                {/* Data Teaser Strip — compliance + market data upsell */}
                 <div style={{ marginTop: 32 }}>
                     <DataTeaserStrip />
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Partner Application â€” Band C Rank 4
+ * Partner Application — Band C Rank 4
  * 
  * Application page for infrastructure partners, installers, upfitters,
  * support service providers, etc.

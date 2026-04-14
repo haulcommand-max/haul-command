@@ -105,7 +105,7 @@ export default async function AdminAuditsPage({
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold">Profile Audit Dashboard</h1>
-            <p className="text-gray-500 text-sm mt-1">Latest audit per entity â€” worst first</p>
+            <p className="text-gray-500 text-sm mt-1">Latest audit per entity — worst first</p>
           </div>
           <Link
             href="/dashboard/admin"
@@ -164,7 +164,7 @@ export default async function AdminAuditsPage({
 
           {error && (
             <div className="p-8 text-center text-red-400">
-              Error loading audit data â€” run <code className="text-xs">npx supabase db push</code> to apply migrations.
+              Error loading audit data — run <code className="text-xs">npx supabase db push</code> to apply migrations.
             </div>
           )}
 
@@ -197,7 +197,7 @@ export default async function AdminAuditsPage({
               {/* Total score */}
               <div className="col-span-1 text-center">
                 <p className={`text-sm font-bold ${SCORE_COLOR(row.score_total)}`}>
-                  {row.score_total ?? 'â€”'}
+                  {row.score_total ?? '—'}
                 </p>
                 {SCORE_BAR(row.score_total)}
               </div>
@@ -205,7 +205,7 @@ export default async function AdminAuditsPage({
               {/* Component scores */}
               {[row.score_geo_truth, row.score_local_intent_packaging, row.score_proof_conversion, row.score_render_visibility, row.score_link_graph, row.score_freshness].map((s, i) => (
                 <div key={i} className="col-span-1 text-center">
-                  <p className={`text-xs font-medium ${SCORE_COLOR(s)}`}>{s ?? 'â€”'}</p>
+                  <p className={`text-xs font-medium ${SCORE_COLOR(s)}`}>{s ?? '—'}</p>
                 </div>
               ))}
 

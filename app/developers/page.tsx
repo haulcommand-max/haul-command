@@ -145,7 +145,7 @@ export default function DevelopersPage() {
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
                                 Programmatic access to 50,000+ verified operator profiles, corridor demand data,
                                 escort rate benchmarks, and coverage confidence scores across 120 countries.
-                                Sandbox keys are free â€” no credit card required.
+                                Sandbox keys are free — no credit card required.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <a href="#sandbox-form"
@@ -305,13 +305,13 @@ export default function DevelopersPage() {
                 <div className="border-t border-white/5 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-wrap gap-4 text-sm text-gray-500 justify-center">
                         <Link href="/developers/documentation" className="hover:text-white transition-colors">Documentation</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/data" className="hover:text-white transition-colors">Data Marketplace</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/pricing" className="hover:text-white transition-colors">All Pricing</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/claim" className="hover:text-white transition-colors">Claim Your Profile</Link>
                     </div>
                 </div>

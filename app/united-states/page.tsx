@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Pilot Car Services in the United States | Haul Command',
-    description: 'Find verified pilot car and escort vehicle operators across all 50 US states. Real-time availability, trust scores, and corridor intelligence â€” powered by Haul Command.',
+    description: 'Find verified pilot car and escort vehicle operators across all 50 US states. Real-time availability, trust scores, and corridor intelligence — powered by Haul Command.',
     openGraph: {
         title: 'Pilot Car Services in the United States | Haul Command',
         description: 'Verified escort vehicle operators in all 50 states. Click your state to search.',
@@ -40,7 +40,7 @@ export default function UnitedStatesPage() {
                     Pilot Car Services Across All 50 States
                 </h1>
                 <p style={{ fontSize: 16, color: 'var(--hc-muted, #aaa)', maxWidth: 640, margin: '0 auto 32px' }}>
-                    Haul Command is the only platform that verifies escort operators against real permit corridors, live GPS breadcrumbs, and 5-axis trust scores â€” coast to coast.
+                    Haul Command is the only platform that verifies escort operators against real permit corridors, live GPS breadcrumbs, and 5-axis trust scores — coast to coast.
                 </p>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                     <Link aria-label="Navigation Link" href="/directory/us" style={primaryBtn}>Browse Full Directory</Link>

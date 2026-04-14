@@ -47,7 +47,7 @@ export default async function EnterpriseDashboardPage() {
       <div className="border-b border-[#131c28] bg-[#0a0d14] px-4 lg:px-10 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">ENTERPRISE HQ Â· TRAINING & COMPLIANCE</p>
+            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">ENTERPRISE HQ · TRAINING & COMPLIANCE</p>
             <h1 className="text-xl font-black text-[#f0f2f5] mt-0.5 tracking-tight">{stats.fleetName}</h1>
           </div>
           <div className="flex gap-2">

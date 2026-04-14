@@ -1,0 +1,14 @@
+# GEMINI-04: Internal Link Candidates
+
+internal_link_candidate_pack:
+  glossary_terms:
+    - term: "High Pole"
+      targets: ["/roles/high-pole", "/tools/clearance", "/regulations/tx"]
+    - term: "Chase Car"
+      targets: ["/roles/chase", "/regulations/fl", "/directory/us"]
+    - term: "Route Survey"
+      targets: ["/tools/survey-reports", "/enterprise/data"]
+  
+  corridor_tie_ins:
+    - "Link Houston-to-Dallas corridor directly into 'Texas Intrastate Law' glossary."
+    - "Link I-10 cross-border routes to 'FMCSA Unified Carrier Registration'."

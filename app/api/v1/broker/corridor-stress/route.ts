@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic';
 /**
- * Phase 9 â€” Dynamic Surge & Pricing Brain
+ * Phase 9 — Dynamic Surge & Pricing Brain
  * GET /api/v1/broker/corridor-stress?corridor=I-10_TX_LA
  *
  * Returns the latest Corridor Stress Index and liquidity signals for
  * a given corridor. Powers broker search UI, heatmaps, and urgency pricing display.
  *
- * Public broker surface â€” no enterprise key required.
+ * Public broker surface — no enterprise key required.
  * Enterprise-grade shortage predictions live at /intel/surge/[corridor].
  */
 
@@ -25,10 +25,10 @@ interface CorridorStats {
 }
 
 /**
- * Layer 1 â€” Corridor Stress Index (0-100).
+ * Layer 1 — Corridor Stress Index (0-100).
  *
  * Computed from:
- *  - supply/demand ratio (inverse â€” high demand + low supply = high stress)
+ *  - supply/demand ratio (inverse — high demand + low supply = high stress)
  *  - fill time vs. historical baseline
  *  - recent failure rate
  *  - active broker urgency signals
@@ -37,7 +37,7 @@ function computeStressIndex(stats: CorridorStats): number {
     const supply = Math.max(stats.available_escort_count, 1);
     const demand = Math.max(stats.open_load_count, 0);
 
-    // Layer 2 â€” Liquidity imbalance (smoothed ratio)
+    // Layer 2 — Liquidity imbalance (smoothed ratio)
     const rawRatio = demand / supply;
     const imbalanceScore = Math.min(rawRatio / 3, 1); // normalize: ratio of 3 = near-max stress
 
@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
     if (snapshot && snapshot.computed_at) {
         const ageSeconds = (Date.now() - new Date(snapshot.computed_at).getTime()) / 1000;
         if (ageSeconds < 90) {
-            // Fresh enough â€” return cached
+            // Fresh enough — return cached
             const stress = snapshot.stress_index ?? computeStressIndex(snapshot);
             const classification = classifyStress(stress);
             return NextResponse.json({
@@ -110,7 +110,7 @@ export async function GET(req: NextRequest) {
         }
     }
 
-    // 3. Live computation â€” query corridor data directly
+    // 3. Live computation — query corridor data directly
     //    In prod: corridor_id maps to a geo polygon; here we use state codes as proxy.
     const [originState, destState] = corridor_id.split("_").slice(1, 3);
 

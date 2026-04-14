@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AV-Ready Escort Certification â€” Haul Command | Global Standard',
+  title: 'AV-Ready Escort Certification — Haul Command | Global Standard',
   description:
     'The only global certification for escort operators working alongside autonomous trucks. HC Certified, AV-Ready, and Elite tiers. Aurora, Kodiak, Waymo corridors. 120 countries.',
   keywords: [

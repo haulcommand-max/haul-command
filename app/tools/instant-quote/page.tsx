@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { generateInstantQuote, type QuoteRequest, type InstantQuote } from '@/lib/quotes/instant-quote-engine';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// INSTANT QUOTE TOOL â€” Public surface for the #1 commercial query:
+// INSTANT QUOTE TOOL — Public surface for the #1 commercial query:
 // "How much does a pilot car cost?"
 //
 // Targets: pilot car cost, escort vehicle quote, oversize load
@@ -141,9 +141,9 @@ export default function InstantQuotePage() {
         {/* Breadcrumb */}
         <nav style={{ fontSize: 11, color: T.muted, marginBottom: 24, display: 'flex', gap: 6 }}>
           <Link href="/" style={{ color: T.muted, textDecoration: 'none' }}>Home</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <Link href="/tools" style={{ color: T.muted, textDecoration: 'none' }}>Tools</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <span style={{ color: T.gold }}>Instant Quote</span>
         </nav>
 
@@ -238,9 +238,9 @@ export default function InstantQuotePage() {
             <div style={{ textAlign: 'center', padding: '20px 0', borderBottom: `1px solid ${T.border}`, marginBottom: 20 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>Estimated Total Cost</div>
               <div style={{ fontSize: 36, fontWeight: 900, color: T.gold }}>
-                {quote.pricing.currency === 'USD' ? '$' : ''}{quote.pricing.totalLow.toLocaleString()} â€” {quote.pricing.currency === 'USD' ? '$' : ''}{quote.pricing.totalHigh.toLocaleString()}
+                {quote.pricing.currency === 'USD' ? '$' : ''}{quote.pricing.totalLow.toLocaleString()} — {quote.pricing.currency === 'USD' ? '$' : ''}{quote.pricing.totalHigh.toLocaleString()}
               </div>
-              <div style={{ fontSize: 12, color: T.muted, marginTop: 4 }}>{quote.pricing.currency} Â· {quote.pricing.seasonalNote}</div>
+              <div style={{ fontSize: 12, color: T.muted, marginTop: 4 }}>{quote.pricing.currency} · {quote.pricing.seasonalNote}</div>
             </div>
 
             {/* Details Grid */}
@@ -280,7 +280,7 @@ export default function InstantQuotePage() {
               <div style={{ marginTop: 20, padding: 16, borderRadius: 12, background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.15)' }}>
                 <div style={{ fontSize: 10, fontWeight: 800, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>âš ï¸ Warnings</div>
                 {quote.warnings.map((w, i) => (
-                  <div key={i} style={{ fontSize: 12, color: T.textSecondary, marginBottom: 4 }}>â€¢ {w}</div>
+                  <div key={i} style={{ fontSize: 12, color: T.textSecondary, marginBottom: 4 }}>"¢ {w}</div>
                 ))}
               </div>
             )}

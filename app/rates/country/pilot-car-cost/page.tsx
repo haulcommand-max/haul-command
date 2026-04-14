@@ -95,7 +95,7 @@ export default async function StateRatePage({ params }: any) {
 
                 {[
                     { label: 'Local / Daily (< 50 mi)', data: rates.local_daily },
-                    { label: 'Regional (50â€“150 mi)', data: rates.regional },
+                    { label: 'Regional (50"“150 mi)', data: rates.regional },
                     { label: 'Long Haul (150+ mi)', data: rates.long_haul },
                 ].map(tier => (
                     <div key={tier.label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 14, padding: '1.25rem', marginBottom: 12 }}>

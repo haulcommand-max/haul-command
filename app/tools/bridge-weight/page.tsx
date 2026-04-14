@@ -17,7 +17,7 @@ export default function BridgeWeightPending() {
                     Bridge Weight Overlay
                 </h1>
                 <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: 'rgba(239,68,68,0.1)', color: '#ef4444', fontSize: 13, fontWeight: 700, marginBottom: 24, border: '1px solid rgba(239,68,68,0.2)' }}>
-                    COMING SOON â€” PREMIUM TOOL (T-36)
+                    COMING SOON — PREMIUM TOOL (T-36)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
                     Cross-references axle weight and spacing against NBI and DOT bridge load capacity ratings along your route.
@@ -31,7 +31,7 @@ export default function BridgeWeightPending() {
                 </Link>
             </div>
 
-            {/* SEO Internal Links â€” this page passes equity even while the tool is pending */}
+            {/* SEO Internal Links — this page passes equity even while the tool is pending */}
             <div style={{ maxWidth: 640, margin: '3rem auto 0' }}>
                 <RelatedLinks
                     pageType="tool"

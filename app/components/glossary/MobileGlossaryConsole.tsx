@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 // The Haul Command Mobile Glossary Console
-// 120-country glossary â€” real Supabase data, no mocks.
+// 120-country glossary — real Supabase data, no mocks.
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -183,7 +183,7 @@ export default function MobileGlossaryConsole({ initialCountry = 'Global' }) {
         </div>
       </div>
 
-      {/* 5. Definitions â€” Real data from Supabase */}
+      {/* 5. Definitions — Real data from Supabase */}
       <div className="p-4 space-y-4">
         {activeCountry !== 'Global' && (
           <h2 className="text-xs font-black uppercase text-hc-yellow-400 tracking-widest border-b border-hc-gray-800 pb-2 mb-4">

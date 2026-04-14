@@ -1,0 +1,11 @@
+# GEMINI-04: Compliance Copy Support
+
+compliance_copy_pack:
+  disclaimers:
+    - id: "unsourced_regulation"
+      copy: "Disclaimer: The following permit regulations for {jurisdiction} are aggregated from community network logs and historical corridor data. They are not guaranteed current. Always verify directly with the {state_dot} before dispatching an oversize load."
+  
+  bilingual_quebec:
+    - key: "pilot_car_req"
+      en: "Escort vehicle required for loads over 3.75m wide."
+      fr: "Véhicule d'escorte requis pour les charges de plus de 3,75 m de largeur."

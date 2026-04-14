@@ -85,7 +85,7 @@ export default function UpgradePage() {
             <h3 className="text-sm uppercase tracking-widest text-slate-500 font-bold mb-4">Why Operators Upgrade</h3>
             <blockquote className="border-l-2 border-hc-gold-500 pl-4 text-slate-300">
               "I upgraded just to see the direct broker contacts on two loads in Texas. Booked them both within an hour. The $49 paid for itself before lunch."
-              <footer className="mt-2 text-sm text-slate-500">â€” Mike T., Heavy Haul Specialist (Texas)</footer>
+              <footer className="mt-2 text-sm text-slate-500">— Mike T., Heavy Haul Specialist (Texas)</footer>
             </blockquote>
           </div>
           

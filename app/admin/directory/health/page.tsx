@@ -98,10 +98,10 @@ export default async function DirectoryHealthPage() {
                 }}>
                     <strong style={{ color: "#fca5a5" }}>ðŸš¨ CRITICAL ALERTS</strong>
                     {isOrphanAlert && <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
-                        {health.orphan_count} orphan provider(s) detected â€” entities in Supabase not in directory index
+                        {health.orphan_count} orphan provider(s) detected — entities in Supabase not in directory index
                     </p>}
                     {isCronAlert && <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
-                        Last pipeline run failed â€” check pipeline_runs table
+                        Last pipeline run failed — check pipeline_runs table
                     </p>}
                 </div>
             )}
@@ -234,7 +234,7 @@ export default async function DirectoryHealthPage() {
                                 <td style={{ padding: "0.5rem" }}>{r.entities_upserted}</td>
                                 <td style={{ padding: "0.5rem" }}>{r.orphans_fixed}</td>
                                 <td style={{ padding: "0.5rem", color: r.errors > 0 ? "#ef4444" : "#94a3b8" }}>
-                                    {r.errors}{r.error_sample ? ` â€” ${r.error_sample}` : ""}
+                                    {r.errors}{r.error_sample ? ` — ${r.error_sample}` : ""}
                                 </td>
                             </tr>
                         ))}

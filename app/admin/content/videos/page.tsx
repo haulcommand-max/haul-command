@@ -1,6 +1,6 @@
 'use client';
 /**
- * Admin Video Dashboard â€” /admin/content/videos
+ * Admin Video Dashboard — /admin/content/videos
  * Shows: Pending Approval | In Production | Published
  * Approve â†’ triggers translation + YouTube pipeline
  */
@@ -103,7 +103,7 @@ export default function VideoAdminPage() {
       <div style={{ background: '#0a0d16', borderBottom: '1px solid #1a223a', padding: '20px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>ðŸŽ¬ Video Dashboard</h1>
-          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>HeyGen pipeline Â· 10 languages Â· YouTube auto-publish</div>
+          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>HeyGen pipeline · 10 languages · YouTube auto-publish</div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button aria-label="Interactive Button" onClick={fetchJobs} style={{
@@ -139,7 +139,7 @@ export default function VideoAdminPage() {
           borderRadius: 12, padding: '12px 18px',
         }}>
           <div style={{ fontSize: 12, color: '#8fa3c0', marginBottom: 4 }}>Time investment</div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#00ff88' }}>~2 min/video Â· Everything else automated</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#00ff88' }}>~2 min/video · Everything else automated</div>
         </div>
       </div>
 
@@ -250,7 +250,7 @@ export default function VideoAdminPage() {
               <div>
                 <div style={{ fontWeight: 700, fontSize: 16 }}>{previewJob.blog_post?.title || previewJob.topic_slug}</div>
                 <div style={{ fontSize: 12, color: '#8fa3c0', marginTop: 4 }}>
-                  {LANG_FLAGS[previewJob.language]} {previewJob.language.toUpperCase()} Â· {previewJob.duration_secs ? `${Math.round(previewJob.duration_secs / 60)}m` : '?'}
+                  {LANG_FLAGS[previewJob.language]} {previewJob.language.toUpperCase()} · {previewJob.duration_secs ? `${Math.round(previewJob.duration_secs / 60)}m` : '?'}
                 </div>
               </div>
               <button aria-label="Interactive Button" onClick={() => setPreviewJob(null)} style={{ background: 'none', border: 'none', color: '#8fa3c0', fontSize: 20, cursor: 'pointer' }}>âœ•</button>

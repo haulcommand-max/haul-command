@@ -1,0 +1,31 @@
+app = 'hc-whisper-engine'
+primary_region = 'atl'
+
+[build]
+  image = 'onerahmet/openai-whisper-asr-webservice:latest'
+
+[compute]
+  size = "performance-1x"
+
+[env]
+  ASR_MODEL = "base"
+  ASR_ENGINE = "openai_whisper"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 9000
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20

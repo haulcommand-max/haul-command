@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Haul Command for Operations Teams â€” Escort Dispatch Platform | Haul Command',
+  title: 'Haul Command for Operations Teams — Escort Dispatch Platform | Haul Command',
   description: 'The escort dispatch platform built for AV companies, oilfield operations, wind energy projects, and large carriers. Post once, fill fast. Escrow-protected payments.',
 };
 

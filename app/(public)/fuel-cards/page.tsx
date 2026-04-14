@@ -21,7 +21,7 @@ export default function FuelCardsPage() {
       name: 'Mudflap',
       category: 'Discount Network',
       description: 'Instant fuel discounts at independent truck stops. No credit checks required, completely app-based.',
-      offerText: 'Save up to 40Â¢/gal',
+      offerText: 'Save up to 40¢/gal',
       link: '#'
     }
   ];

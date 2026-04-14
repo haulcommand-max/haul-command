@@ -48,12 +48,12 @@ function EscrowPaymentForm({
     setStatus("processing");
     setErrorMsg("");
 
-    // Confirm the PaymentIntent â€” but it was created with capture_method:'manual'
+    // Confirm the PaymentIntent — but it was created with capture_method:'manual'
     // so no charge fires yet; funds are only held (authorized).
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // No redirect â€” this is a manual-capture hold, not a full charge.
+        // No redirect — this is a manual-capture hold, not a full charge.
         return_url: `${window.location.origin}/dashboard/broker/loads?escrow=funded&load=${loadId}`,
       },
       redirect: "if_required",
@@ -71,7 +71,7 @@ function EscrowPaymentForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        ðŸ”’ Escrow Authorized â€” ${amount} held. Operator payout unlocks on delivery.
+        ðŸ”’ Escrow Authorized — ${amount} held. Operator payout unlocks on delivery.
       </div>
     );
   }
@@ -82,7 +82,7 @@ function EscrowPaymentForm({
         <div>
           <p className="text-white font-bold text-sm">Authorize Escrow Hold</p>
           <p className="text-slate-400 text-xs mt-0.5">
-            ${amount} will be held â€” not charged until delivery confirmed.
+            ${amount} will be held — not charged until delivery confirmed.
           </p>
         </div>
         <span className="text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-1 rounded">
@@ -90,7 +90,7 @@ function EscrowPaymentForm({
         </span>
       </div>
 
-      {/* Stripe Payment Element â€” renders card input, Apple Pay, etc. */}
+      {/* Stripe Payment Element — renders card input, Apple Pay, etc. */}
       <PaymentElement
         options={{
           layout: "tabs",
@@ -111,7 +111,7 @@ function EscrowPaymentForm({
           onClick={handleFundEscrow}
           className="flex-1"
         >
-          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Escrow â€” $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Escrow — $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -181,7 +181,7 @@ function CryptoEscrowForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        ðŸ”’ Crypto Escrow Authorized â€” ${amount} held in smart contract.
+        ðŸ”’ Crypto Escrow Authorized — ${amount} held in smart contract.
       </div>
     );
   }
@@ -246,7 +246,7 @@ function CryptoEscrowForm({
           onClick={handleFundEscrow}
           className="flex-1 bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-700 disabled:text-slate-400"
         >
-          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Crypto Escrow â€” $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ”’ Fund Crypto Escrow — $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -324,7 +324,7 @@ export function LoadBoardClient({
     }
   };
 
-  // Step 2: Stripe Elements confirmPayment succeeded â€” update local state
+  // Step 2: Stripe Elements confirmPayment succeeded — update local state
   const handleEscrowSuccess = useCallback((loadId: string) => {
     setLoads((prev) =>
       prev.map((l) => (l.id === loadId ? { ...l, status: "ESCROW_HELD" } : l))
@@ -348,7 +348,7 @@ export function LoadBoardClient({
         <Button aria-label="Interactive Button" variant="default">+ Post New Load</Button>
       </div>
 
-      {/* Stripe OR Crypto Escrow Panel â€” rendered above the table when active */}
+      {/* Stripe OR Crypto Escrow Panel — rendered above the table when active */}
       {activeEscrow && activeEscrow.method === "stripe" && (
         <Elements
           stripe={stripePromise}
@@ -427,7 +427,7 @@ export function LoadBoardClient({
                   <div className="flex flex-col">
                     <span>
                       {l.equipment_type?.length > 0
-                        ? l.equipment_type.join(" â€¢ ")
+                        ? l.equipment_type.join(" "¢ ")
                         : "Standard Escort"}
                     </span>
                     {l.status === "OPEN" && (

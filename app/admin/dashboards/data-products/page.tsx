@@ -51,7 +51,7 @@ export default function DataProductsDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Data Products</h1>
-                    <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Self-serve data monetization â€¢ {products.length} products â€¢ 120 countries</p>
+                    <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Self-serve data monetization "¢ {products.length} products "¢ 120 countries</p>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['catalog', 'revenue', 'pricing'] as const).map(tab => (
@@ -115,8 +115,8 @@ export default function DataProductsDashboard() {
                         return (
                             <div key={tier} style={{ marginBottom: 20 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                                    <span style={{ fontSize: 14, fontWeight: 900, color: meta.color }}>{meta.flag} Tier {tier} â€” {meta.label}</span>
-                                    <span style={{ fontSize: 10, color: '#888' }}>({countries.length} countries â€¢ {Math.round(multiplier * 100)}% base price)</span>
+                                    <span style={{ fontSize: 14, fontWeight: 900, color: meta.color }}>{meta.flag} Tier {tier} — {meta.label}</span>
+                                    <span style={{ fontSize: 10, color: '#888' }}>({countries.length} countries "¢ {Math.round(multiplier * 100)}% base price)</span>
                                 </div>
                                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                     {countries.map(c => <span key={c} style={{ padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600, background: `${meta.color}15`, color: meta.color, border: `1px solid ${meta.color}30` }}>{c}</span>)}

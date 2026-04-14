@@ -72,6 +72,15 @@ export async function POST(req: NextRequest) {
             }, { status: 400 });
         }
 
+        // Fail-fast: known product exists but price ID not configured in env
+        if (known && !known.priceId) {
+            console.error(`[CHECKOUT_BLOCKED] Empty Stripe price ID for product_key="${product_key}". Configure STRIPE_PRICE_* in environment.`);
+            return NextResponse.json(
+                { error: `Checkout temporarily unavailable for ${known.label}. Payment configuration pending.` },
+                { status: 503 }
+            );
+        }
+
         // Dynamic import — graceful if stripe not installed
         const StripeModule = await import('stripe').catch(() => null);
         if (!StripeModule || !process.env.STRIPE_SECRET_KEY) {

@@ -1,6 +1,6 @@
 /**
  * app/api/og/route.tsx
- * Haul Command â€” Dynamic OpenGraph Image Generator
+ * Haul Command — Dynamic OpenGraph Image Generator
  *
  * Generates branded OG images for:
  *   - Operators: /api/og?type=operator&name=John+Smith&city=Houston&score=94&role=Pilot+Car
@@ -169,7 +169,7 @@ export async function GET(req: NextRequest) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}>
           <div style={{ width: 40, height: 40, background: amber, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: '#000' }}>HC</div>
-          <span style={{ color: gray400, fontSize: 16 }}>Haul Command Â· Corridor Intelligence</span>
+          <span style={{ color: gray400, fontSize: 16 }}>Haul Command · Corridor Intelligence</span>
         </div>
 
         <div style={{ fontSize: 18, color: amber, fontWeight: 600, marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
@@ -216,7 +216,7 @@ export async function GET(req: NextRequest) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 48 }}>
           <div style={{ width: 40, height: 40, background: amber, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: '#000' }}>HC</div>
-          <span style={{ color: gray400, fontSize: 16 }}>Haul Command Â· Compliance Intelligence</span>
+          <span style={{ color: gray400, fontSize: 16 }}>Haul Command · Compliance Intelligence</span>
         </div>
 
         <div style={{ fontSize: 16, color: amber, fontWeight: 600, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>

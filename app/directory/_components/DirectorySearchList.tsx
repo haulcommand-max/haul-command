@@ -123,7 +123,7 @@ export function DirectorySearchList({
         <div className="flex items-center gap-2 px-3 py-2 bg-[#0b0f14] border border-white/10 rounded-lg">
           <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
           <span className="text-[11px] text-neutral-400 font-medium">
-            Filtered results â€” showing operators matching your certification requirements
+            Filtered results — showing operators matching your certification requirements
           </span>
           <span className="ml-auto text-[10px] font-bold text-[#C6923A]">
             {totalCount.toLocaleString()} match{totalCount !== 1 ? 'es' : ''}
@@ -238,6 +238,9 @@ export function DirectorySearchList({
                     <div className="flex flex-row md:flex-col gap-2 w-full mt-2 md:mt-0">
                       <Link href={`/directory/profile/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
                         View Dossier
+                      </Link>
+                      <Link href={`/report-card/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-[#C6923A] text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
+                        Report Card
                       </Link>
                       <Link href={`/loads/post?operator=${op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black shadow-[0_0_15px_rgba(198,146,58,0.4)] text-[11px] uppercase tracking-widest font-black rounded-xl transition-all">
                         Request Route

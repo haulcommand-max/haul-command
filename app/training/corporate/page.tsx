@@ -111,14 +111,14 @@ export default function CorporateTrainingPage() {
         <p style={{
           fontSize: 18, color: '#8a8a9a', maxWidth: 680, margin: '0 auto 32px', lineHeight: 1.65,
         }}>
-          Aurora, Kodiak, Uber Freight, Ryder, Hirschbach, Atlas Energy â€” if your operations require
+          Aurora, Kodiak, Uber Freight, Ryder, Hirschbach, Atlas Energy — if your operations require
           verified, trained escort operators, we can certify your preferred network and prioritize
           them on your corridors.
         </p>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
           {[
-            { val: '$5Kâ€“$25K', label: 'Per cohort' },
+            { val: '$5K"“$25K', label: 'Per cohort' },
             { val: '7 Modules', label: 'Full curriculum' },
             { val: '120 countries', label: 'Global recognition' },
             { val: '24h', label: 'Response time' },

@@ -18,7 +18,7 @@ export async function GET() {
     }
 
     const cells = (data ?? []).map((c: any) => {
-        // PLM = 1 + 0.35*(1-C) + 0.20*(1-R) â€” amplifies visual intensity, not data
+        // PLM = 1 + 0.35*(1-C) + 0.20*(1-R) — amplifies visual intensity, not data
         const C = Number(c.confidence ?? 0.6);
         const R = Number(c.recency_health ?? 0.8);
         const plm = 1 + 0.35 * (1 - C) + 0.2 * (1 - R);

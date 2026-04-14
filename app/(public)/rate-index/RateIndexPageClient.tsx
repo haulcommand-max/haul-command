@@ -101,12 +101,12 @@ export default function RateIndexPageClient() {
     }, [data]);
 
     const formatRate = (rate: number | null, currency: string = 'USD') => {
-        if (rate === null || rate === undefined) return 'â€”';
+        if (rate === null || rate === undefined) return '—';
         return `$${rate.toFixed(2)}`;
     };
 
     const formatPct = (pct: number | null) => {
-        if (pct === null || pct === undefined) return 'â€”';
+        if (pct === null || pct === undefined) return '—';
         const sign = pct > 0 ? '+' : '';
         return `${sign}${pct.toFixed(1)}%`;
     };
@@ -141,19 +141,19 @@ export default function RateIndexPageClient() {
                     <div className="flex flex-wrap gap-6 sm:gap-10">
                         <div>
                             <div className="text-2xl sm:text-3xl font-black text-white">
-                                {data?.live_corridors ?? 'â€”'}
+                                {data?.live_corridors ?? '—'}
                             </div>
                             <div className="text-sm text-slate-500 font-medium">Live Corridors</div>
                         </div>
                         <div>
                             <div className="text-2xl sm:text-3xl font-black text-white">
-                                {data?.baseline_countries ?? 'â€”'}
+                                {data?.baseline_countries ?? '—'}
                             </div>
                             <div className="text-sm text-slate-500 font-medium">Countries Covered</div>
                         </div>
                         <div>
                             <div className="text-2xl sm:text-3xl font-black text-white">
-                                {data?.total ?? 'â€”'}
+                                {data?.total ?? '—'}
                             </div>
                             <div className="text-sm text-slate-500 font-medium">Total Lanes</div>
                         </div>
@@ -457,7 +457,7 @@ export default function RateIndexPageClient() {
                                 '30-day trend charts with week-over-week deltas',
                                 'Rate change alerts via SMS and push',
                                 'API access for rate data integration',
-                                'Corridor Kings â€” top brokers per lane',
+                                'Corridor Kings — top brokers per lane',
                             ].map(f => (
                                 <div key={f} className="flex items-center gap-3">
                                     <div className="w-1.5 h-1.5 bg-amber-500 rounded-full shrink-0" />

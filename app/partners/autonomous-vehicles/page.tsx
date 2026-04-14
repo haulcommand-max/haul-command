@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Escort Dispatch for Autonomous Trucks â€” AV-Ready Operators | Haul Command',
+  title: 'Escort Dispatch for Autonomous Trucks — AV-Ready Operators | Haul Command',
   description: 'Haul Command connects autonomous vehicle operations teams with HC AV-Ready certified escort operators. Aurora, Kodiak, Waabi, Gatik corridor coverage. 47-min fill time.',
 };
 

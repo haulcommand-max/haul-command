@@ -1,6 +1,6 @@
 'use client';
 // =====================================================================
-// Haul Command â€” Command Layer Board Dashboard
+// Haul Command — Command Layer Board Dashboard
 // app/command/page.tsx
 //
 // The nerve center. Shows every agent, heartbeat, market mode, money flow,
@@ -153,7 +153,7 @@ function OverviewTab({ board }: { board: BoardData }) {
       <div style={styles.card}>
         <h3 style={styles.cardTitle}>âš ï¸ Pending Approvals</h3>
         {board.approvals.items.length === 0 ? (
-          <p style={styles.emptyState}>No pending approvals â€” all clear</p>
+          <p style={styles.emptyState}>No pending approvals — all clear</p>
         ) : (
           board.approvals.items.slice(0, 5).map((a: any) => (
             <div key={a.id} style={styles.approvalItem}>
@@ -216,10 +216,10 @@ function AgentsTab({ board }: { board: BoardData }) {
                 <td style={styles.td}>
                   <span style={{
                     color: a.health === 'healthy' ? '#10b981' : a.health === 'degraded' ? '#f59e0b' : '#ef4444',
-                  }}>{a.health || 'â€”'}</span>
+                  }}>{a.health || '—'}</span>
                 </td>
                 <td style={{ ...styles.td, fontSize: '12px' }}>
-                  {a.last_heartbeat ? new Date(a.last_heartbeat).toLocaleString() : 'â€”'}
+                  {a.last_heartbeat ? new Date(a.last_heartbeat).toLocaleString() : '—'}
                 </td>
               </tr>
             ))}
@@ -333,7 +333,7 @@ function MarketsTab({ board }: { board: BoardData }) {
       <div style={styles.card}>
         <h3 style={styles.cardTitle}>ðŸ”´ Coverage Gaps ({gaps?.total_unresolved ?? 0} unresolved)</h3>
         {!gaps?.items?.length ? (
-          <p style={styles.emptyState}>No unresolved coverage gaps â€” all markets covered</p>
+          <p style={styles.emptyState}>No unresolved coverage gaps — all markets covered</p>
         ) : (
           <div style={styles.tableWrap}>
             <table style={styles.table}>

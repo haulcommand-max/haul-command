@@ -6,7 +6,7 @@ import { TodayCommandCenter, type CommandData } from "@/components/intelligence/
 import Link from "next/link";
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /app â€” Today Panel (Mobile App Home)
+// /app — Today Panel (Mobile App Home)
 // Canonical mobile shell entrypoint. Loads instantly with
 // skeleton, then hydrates with live session + momentum data.
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -287,7 +287,7 @@ export default function AppHomePage() {
                 </div>
             </div>
 
-            {/* Today Command Center â€” above the fold */}
+            {/* Today Command Center — above the fold */}
             <TodayCommandCenter data={commandData} />
         </div>
     );

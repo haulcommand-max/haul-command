@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SERVICE TRIAD â€” Plan a Load / Find Escorts / Share Availability
+   SERVICE TRIAD — Plan a Load / Find Escorts / Share Availability
    â”€ Mirrors ODS's "Order a Pilot Car / Share Your Availability"
      dual CTA but adds a 3rd surface (Plan a Load) to capture
      more intent and create a self-serve loop.

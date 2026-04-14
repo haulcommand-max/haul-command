@@ -286,7 +286,7 @@ export default function RouteIntelDashboard() {
                 <div className="text-gray-200 font-bold mb-1 flex items-center justify-between">
                   Curfew Restrictions <Zap className="w-3 h-3 text-amber-500" />
                 </div>
-                <div className="text-sm font-mono text-gray-400">No travel within Houston city limits 6AMâ€“9AM, 4PMâ€“7PM.</div>
+                <div className="text-sm font-mono text-gray-400">No travel within Houston city limits 6AM"“9AM, 4PM"“7PM.</div>
               </div>
 
               <div className="mt-4">

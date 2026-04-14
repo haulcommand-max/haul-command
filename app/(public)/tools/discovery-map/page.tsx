@@ -51,7 +51,7 @@ export default function AvailabilityMapPage() {
                         {filtered.map(zone => (
                             <div key={zone.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 hover:border-[var(--color-accent)]/30 transition-all">
                                 <div className="flex items-center justify-between flex-wrap gap-3">
-                                    <div className="flex items-center gap-3 sm:gap-4"><span className="text-2xl sm:text-3xl">{ZONE_ICONS[zone.zone_type] || 'ðŸ“'}</span><div><h3 className="text-white font-black text-base sm:text-lg">{zone.zone_name}</h3><p className="text-gray-500 text-xs">{FLAG[zone.country_code] || ''} {zone.city} â€¢ {zone.zone_type.replace(/_/g, ' ')} â€¢ {zone.search_radius_miles}mi</p></div></div>
+                                    <div className="flex items-center gap-3 sm:gap-4"><span className="text-2xl sm:text-3xl">{ZONE_ICONS[zone.zone_type] || 'ðŸ“'}</span><div><h3 className="text-white font-black text-base sm:text-lg">{zone.zone_name}</h3><p className="text-gray-500 text-xs">{FLAG[zone.country_code] || ''} {zone.city} "¢ {zone.zone_type.replace(/_/g, ' ')} "¢ {zone.search_radius_miles}mi</p></div></div>
                                     <div className="text-right"><p className="text-[10px] text-gray-500 font-black uppercase">Demand</p><p className={`text-2xl font-black ${zone.heavy_haul_score >= 80 ? 'text-red-400' : zone.heavy_haul_score >= 60 ? 'text-[var(--color-accent)]' : 'text-gray-400'}`}>{zone.heavy_haul_score}</p></div>
                                 </div>
                                 {viewMode === 'broker' && <div className="mt-4 pt-4 border-t border-white/5 flex items-center gap-4"><a href={`/directory?lat=${zone.lat}&lng=${zone.lng}`} className="text-[var(--color-accent)] text-xs font-black hover:underline">ðŸ“ Find Escorts â†’</a><a href="/tools/escort-calculator" className="text-gray-400 text-xs font-bold hover:text-white">ðŸ§® Requirements</a></div>}
@@ -63,12 +63,12 @@ export default function AvailabilityMapPage() {
                         <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 sticky top-8">
                             <h3 className="text-white font-black text-lg mb-6">ðŸ­ Industrial Origins</h3>
                             <p className="text-gray-500 text-xs mb-4">Where oversize loads start. Position near these for maximum demand.</p>
-                            <div className="space-y-4">{filteredOrigins.slice(0, 10).map(o => (<div key={o.id} className="border-b border-white/5 pb-3"><p className="text-white font-bold text-sm">{o.name}</p><p className="text-gray-500 text-xs">{o.company} â€¢ {o.origin_type.replace(/_/g, ' ')}</p><p className="text-[var(--color-accent)] text-xs font-bold mt-1">~{o.avg_loads_per_month} loads/month</p></div>))}</div>
+                            <div className="space-y-4">{filteredOrigins.slice(0, 10).map(o => (<div key={o.id} className="border-b border-white/5 pb-3"><p className="text-white font-bold text-sm">{o.name}</p><p className="text-gray-500 text-xs">{o.company} "¢ {o.origin_type.replace(/_/g, ' ')}</p><p className="text-[var(--color-accent)] text-xs font-bold mt-1">~{o.avg_loads_per_month} loads/month</p></div>))}</div>
                         </div>
                         <div className="bg-gradient-to-b from-[var(--color-accent)]/10 to-transparent border border-[var(--color-accent)]/20 rounded-3xl p-6 sm:p-8">
                             <h3 className="text-white font-black text-lg mb-3">ðŸ“ Claim Your Territory</h3>
                             <p className="text-gray-400 text-sm mb-4">Be the first listed escort operator in your zone.</p>
-                            <a href="/claim" className="bg-[var(--color-accent)] text-white px-6 py-3 rounded-xl font-black text-sm block text-center hover:bg-[#121212] transition-all">CLAIM YOUR PROFILE â€” FREE</a>
+                            <a href="/claim" className="bg-[var(--color-accent)] text-white px-6 py-3 rounded-xl font-black text-sm block text-center hover:bg-[#121212] transition-all">CLAIM YOUR PROFILE — FREE</a>
                         </div>
                     </div>
                 </div>

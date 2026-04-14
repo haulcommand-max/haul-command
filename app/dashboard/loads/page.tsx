@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LEAD PARSER v3 â€” Role Inference + Global
+ * LEAD PARSER v3 — Role Inference + Global
  * 
  * Upgrades the old /dashboard/loads parser with:
  * - Broker vs Operator role inference
@@ -104,7 +104,7 @@ function normPhone(raw: string | null): string | null {
 
 function fmtPhone(raw: string): string {
   const d = normPhone(raw);
-  if (!d || d.length !== 10) return raw || 'â€”';
+  if (!d || d.length !== 10) return raw || '—';
   return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
 }
 
@@ -232,7 +232,7 @@ export default function LeadParserPage() {
   const runPipeline = useCallback(async () => {
     if (!rawInput.trim()) return;
     setLoading(true);
-    setStatus({ state: 'on', text: 'AI extracting leadsâ€¦' });
+    setStatus({ state: 'on', text: 'AI extracting leads"¦' });
     setLeads([]);
     setPushResults([]);
 
@@ -253,9 +253,9 @@ export default function LeadParserPage() {
 
       // Step 2: Push to Supabase
       if (supabase) {
-        setStatus({ state: 'on', text: `Saving ${parsed.length} leadsâ€¦` });
+        setStatus({ state: 'on', text: `Saving ${parsed.length} leads"¦` });
         for (let i = 0; i < parsed.length; i++) {
-          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}â€¦` });
+          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}"¦` });
           const result = await pushLead(supabase, parsed[i], countryCode);
           results[i] = result;
           setPushResults([...results]);
@@ -264,7 +264,7 @@ export default function LeadParserPage() {
         const newB = results.filter((r: PushResult) => r?.brokerStatus === 'new' && r?.role === 'broker').length;
         const newOps = results.filter((r: PushResult) => r?.brokerStatus === 'new' && r?.role === 'operator').length;
         const upd = results.filter((r: PushResult) => r?.brokerStatus === 'updated').length;
-        setStatus({ state: '', text: `Done â€” ${newB} new brokers, ${newOps} new operators, ${upd} updated` });
+        setStatus({ state: '', text: `Done — ${newB} new brokers, ${newOps} new operators, ${upd} updated` });
       } else {
         setStatus({ state: '', text: `Parsed ${parsed.length} leads (Supabase not configured)` });
       }
@@ -333,7 +333,7 @@ export default function LeadParserPage() {
           Haul<span style={{ color: '#e2e8f0' }}>Command</span>
         </div>
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, background: '#f5a623', color: '#000', padding: '3px 8px', fontWeight: 500, letterSpacing: 1, textTransform: 'uppercase' }}>
-          Lead Parser v3 â€” Role Inference + Global
+          Lead Parser v3 — Role Inference + Global
         </div>
         <div style={{ marginLeft: 'auto' }}>
           <select
@@ -351,19 +351,19 @@ export default function LeadParserPage() {
       <main style={{ maxWidth: 1500, margin: '0 auto', padding: '24px 28px' }}>
         {/* Section label */}
         <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: '#64748b', marginBottom: 8 }}>
-          {'// Paste load board data â€” role (broker vs operator) auto-detected'}
+          {'// Paste load board data — role (broker vs operator) auto-detected'}
         </div>
 
         {/* Input area */}
         <div style={{ background: '#151820', border: '1px solid #252c3f', borderLeft: '3px solid #f5a623', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid #252c3f', fontFamily: "'Barlow Condensed', sans-serif", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase', color: '#64748b' }}>
             <span>Raw Load Board Text</span>
-            <span style={{ fontSize: 10, color: '#64748b' }}>Load alerts, structured listings, mixed formats â€” all 120 countries</span>
+            <span style={{ fontSize: 10, color: '#64748b' }}>Load alerts, structured listings, mixed formats — all 120 countries</span>
           </div>
           <textarea
             value={rawInput}
             onChange={e => setRawInput(e.target.value)}
-            placeholder={`Paste load board data hereâ€¦\n\nBROKER examples (posting a job â€” NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability â€” CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
+            placeholder={`Paste load board data here"¦\n\nBROKER examples (posting a job — NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability — CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
             style={{ width: '100%', background: 'transparent', border: 'none', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, lineHeight: 1.6, padding: '14px 16px', resize: 'vertical', minHeight: 160, outline: 'none' }}
           />
         </div>
@@ -410,7 +410,7 @@ export default function LeadParserPage() {
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search company / cityâ€¦"
+                placeholder="Search company / city"¦"
                 style={{ background: '#0d0f12', border: '1px solid #252c3f', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, padding: '5px 12px', width: 200, outline: 'none', marginLeft: 'auto' }}
               />
             </div>
@@ -487,7 +487,7 @@ export default function LeadParserPage() {
                     return (
                       <tr key={i} style={{ borderBottom: '1px solid #252c3f' }}>
                         <td style={{ padding: '9px 12px' }}>
-                          <div style={{ fontWeight: 600, fontSize: 12, maxWidth: 170, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={l.company}>{l.company || 'â€”'}</div>
+                          <div style={{ fontWeight: 600, fontSize: 12, maxWidth: 170, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={l.company}>{l.company || '—'}</div>
                           {l.notes && <div style={{ fontSize: 9, color: '#64748b', marginTop: 1 }}>{l.notes}</div>}
                         </td>
                         <td style={{ padding: '9px 12px' }}><span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#3b82f6', whiteSpace: 'nowrap' }}>{fmtPhone(l.phone)}</span></td>
@@ -501,11 +501,11 @@ export default function LeadParserPage() {
                             {role === 'operator' ? 'ðŸš— Operator' : role === 'both' ? 'âš¡ Both' : 'ðŸ¢ Broker'}
                           </span>
                         </td>
-                        <td style={{ padding: '9px 12px', fontSize: 11, whiteSpace: 'nowrap' }}>{l.origin || 'â€”'}</td>
-                        <td style={{ padding: '9px 12px', fontSize: 11, whiteSpace: 'nowrap' }}>{l.destination || 'â€”'}</td>
+                        <td style={{ padding: '9px 12px', fontSize: 11, whiteSpace: 'nowrap' }}>{l.origin || '—'}</td>
+                        <td style={{ padding: '9px 12px', fontSize: 11, whiteSpace: 'nowrap' }}>{l.destination || '—'}</td>
                         <td style={{ padding: '9px 12px' }}>
                           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: l.rate === 'Contact for rate' ? '#64748b' : '#22c55e', whiteSpace: 'nowrap' }}>
-                            {l.rate || 'â€”'}
+                            {l.rate || '—'}
                           </span>
                           {l.quickPay && <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, padding: '2px 4px', background: 'rgba(34,197,94,.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,.2)', textTransform: 'uppercase', marginLeft: 4 }}>QP</span>}
                         </td>
@@ -519,7 +519,7 @@ export default function LeadParserPage() {
                             {l.jobType || '?'}
                           </span>
                         </td>
-                        <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#64748b' }}>{l.distance ? `${l.distance} mi` : 'â€”'}</td>
+                        <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#64748b' }}>{l.distance ? `${l.distance} mi` : '—'}</td>
                         <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#64748b' }}>{countryCode}</td>
                         <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, whiteSpace: 'nowrap' }}>
                           {!pr ? <span style={{ color: '#252c3f' }}>pending</span>
@@ -554,9 +554,9 @@ export default function LeadParserPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 1, background: '#252c3f' }}>
               {[
-                { title: 'ðŸ”“ Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2â€“5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
-                { title: 'âœ… Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29â€“49/mo.`, value: `$${phones * 39}/mo if all verify` },
-                { title: 'ðŸ“Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99â€“299/mo per subscriber' },
+                { title: 'ðŸ”“ Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2"“5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
+                { title: 'âœ… Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29"“49/mo.`, value: `$${phones * 39}/mo if all verify` },
+                { title: 'ðŸ“Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99"“299/mo per subscriber' },
                 { title: 'âš¡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
                 { title: 'ðŸš— Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
                 { title: 'ðŸŒ Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: '120 countries, same system' },
@@ -575,7 +575,7 @@ export default function LeadParserPage() {
         {loading && leads.length === 0 && (
           <div style={{ textAlign: 'center', padding: '50px 20px', background: '#151820', border: '1px solid #252c3f' }}>
             <div style={{ width: 28, height: 28, border: '2px solid #252c3f', borderTopColor: '#f5a623', borderRadius: '50%', animation: 'spin .8s linear infinite', margin: '0 auto 12px' }} />
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying rolesâ€¦</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying roles"¦</p>
             <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           </div>
         )}

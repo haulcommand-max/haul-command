@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Admin â€” Haul Command',
+  title: 'Admin — Haul Command',
   description: 'Haul Command internal operations dashboard.',
   robots: { index: false, follow: false },
 };
@@ -56,7 +56,7 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold">Haul Command Admin</h1>
           </div>
           <p className="text-gray-500 text-sm">
-            3-Brain AI Stack: ðŸ§  Claude THINK Â· ðŸ‘ï¸ Gemini SEE Â· âš™ï¸ OpenAI ACT
+            3-Brain AI Stack: ðŸ§  Claude THINK · ðŸ‘ï¸ Gemini SEE · âš™ï¸ OpenAI ACT
           </p>
         </div>
 

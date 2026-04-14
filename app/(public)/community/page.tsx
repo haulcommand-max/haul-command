@@ -47,7 +47,7 @@ export default function CommunityLandingPage() {
 
           <div className="bg-hc-success/10 backdrop-blur-md border border-hc-success/30 rounded-2xl p-8 hover:border-hc-success/50 transition-colors relative overflow-hidden">
              <div className="absolute top-0 right-0 p-8 opacity-10">
-                <span className="font-serif text-8xl text-hc-success">â€œ</span>
+                <span className="font-serif text-8xl text-hc-success">"</span>
              </div>
             <h3 className="text-2xl font-black text-hc-success mb-2 uppercase">Connect With Group</h3>
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">

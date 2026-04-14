@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// ADGRID â€” CAMPAIGN CREATION WIZARD
+// ADGRID — CAMPAIGN CREATION WIZARD
 // 3-step flow: Details â†’ Targeting â†’ Creatives
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
@@ -298,7 +298,7 @@ export default function CampaignCreatePage() {
                             Targeting
                         </h2>
                         <p style={{margin: '0 0 20px',fontSize: 12,color: T.textSecondary }}>
-                            Optional â€” leave empty to target all users. Narrow down to increase relevance.
+                            Optional — leave empty to target all users. Narrow down to increase relevance.
                         </p>
 
                         <div style={{marginBottom: 20 }}>
@@ -470,7 +470,7 @@ export default function CampaignCreatePage() {
                             disabled={!canAdvance || submitting}
                             style={{padding: '11px 24px',borderRadius: 10,background: `linear-gradient(135deg, ${T.green}, #059669)`,color: '#fff',fontSize: 13,fontWeight: 900,border: 'none',cursor: submitting ? 'wait' : 'pointer',textTransform: 'uppercase',letterSpacing: '0.05em',boxShadow: `0 3px 16px rgba(39,209,127,0.28)`,opacity: submitting ? 0.7 : 1}}
                         >
-                            {submitting ? 'Creatingâ€¦' : 'ðŸš€ Create Campaign'}
+                            {submitting ? 'Creating"¦' : 'ðŸš€ Create Campaign'}
                         </button>
                     )}
                 </div>

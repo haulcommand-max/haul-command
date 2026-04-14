@@ -125,10 +125,10 @@ export default async function RegulatoryDbPage({
                     Pilot Car Requirements by State & Province
                 </h1>
                 <p style={{ fontSize: 15, color: 'var(--hc-muted, #aaa)', maxWidth: 640, margin: '0 0 24px' }}>
-                    Official escort vehicle certification, equipment, and reciprocity rules â€” sourced from state DOTs and provincial transport ministries.
+                    Official escort vehicle certification, equipment, and reciprocity rules — sourced from state DOTs and provincial transport ministries.
                 </p>
 
-                {/* AI Answer Block â€” citation-ready for search engines */}
+                {/* AI Answer Block — citation-ready for search engines */}
                 <StaticAnswerBlock
                     question="What are the pilot car requirements for oversize loads in the United States and Canada?"
                     answer="Pilot car (escort vehicle) requirements vary by state and province. Most US states require at least one escort vehicle for loads exceeding 12-14 feet in width, with two escorts required above 16 feet. Certification requirements, insurance minimums, and equipment standards differ by jurisdiction."
@@ -210,10 +210,10 @@ export default async function RegulatoryDbPage({
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, fontSize: 11, color: 'var(--hc-muted, #aaa)' }}>
                                             {reg.single_escort_width_ft && (
-                                                <div><span style={{ color: '#f59e0b', fontWeight: 700 }}>{reg.single_escort_width_ft}â€²+</span> 1 escort</div>
+                                                <div><span style={{ color: '#f59e0b', fontWeight: 700 }}>{reg.single_escort_width_ft}"²+</span> 1 escort</div>
                                             )}
                                             {reg.double_escort_width_ft && (
-                                                <div><span style={{ color: '#ef4444', fontWeight: 700 }}>{reg.double_escort_width_ft}â€²+</span> 2 escorts</div>
+                                                <div><span style={{ color: '#ef4444', fontWeight: 700 }}>{reg.double_escort_width_ft}"²+</span> 2 escorts</div>
                                             )}
                                             <div>Night: <span style={{ color: reg.night_moves_allowed ? '#10b981' : '#ef4444', fontWeight: 700 }}>{reg.night_moves_allowed == null ? '?' : reg.night_moves_allowed ? 'OK' : 'No'}</span></div>
                                             <div>Cert: <span style={{ color: reg.certification_required ? '#f59e0b' : '#10b981', fontWeight: 700 }}>{reg.certification_required == null ? '?' : reg.certification_required ? 'Required' : 'No'}</span></div>
@@ -254,7 +254,7 @@ export default async function RegulatoryDbPage({
                 ))
             )}
 
-            {/* Snippet Injector â€” featured snippet capture */}
+            {/* Snippet Injector — featured snippet capture */}
             <SnippetInjector
                 blocks={['definition', 'faq', 'steps', 'regulation_summary']}
                 term="escort vehicle"

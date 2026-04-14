@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs HeavyHaulers.com â€” Full Comparison 2026 | Haul Command',
+  title: 'Haul Command vs HeavyHaulers.com — Full Comparison 2026 | Haul Command',
   description: 'Haul Command vs HeavyHaulers.com: Features, pricing, tools, operator trust, global coverage. See why operators and brokers choose Haul Command.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/heavyhaulers' },
 }
@@ -41,9 +41,9 @@ export default function VsHeavyHaulersPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON Â· 2026</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs HeavyHaulers.com</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">HeavyHaulers built a broker-side quoting model. Haul Command puts both sides on the same platform â€” with trust verification, self-serve tools, live availability, and global reach.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">HeavyHaulers built a broker-side quoting model. Haul Command puts both sides on the same platform — with trust verification, self-serve tools, live availability, and global reach.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -84,7 +84,7 @@ export default function VsHeavyHaulersPage() {
             </table>
           </div>
           <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-6">
-            <h2 className="text-base font-bold text-[#f0f2f5] mb-3">Join the Platform HeavyHaulers Canâ€™t Build</h2>
+            <h2 className="text-base font-bold text-[#f0f2f5] mb-3">Join the Platform HeavyHaulers Can't Build</h2>
             <p className="text-sm text-[#8a9ab0] mb-5">Self-serve. Real-time. 120 countries. Trust-verified.</p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/register" className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>

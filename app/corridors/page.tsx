@@ -6,7 +6,7 @@ import CorridorLeaderboard from '@/components/corridors/CorridorLeaderboard';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata = {
-  title: 'Heavy Haul Corridor Intelligence â€” Ranked Routes Worldwide | Haul Command',
+  title: 'Heavy Haul Corridor Intelligence — Ranked Routes Worldwide | Haul Command',
   description:
     'Browse the highest-value heavy haul corridors across 120 countries. Compare escort requirements, pricing, and permit rules by route.',
 };

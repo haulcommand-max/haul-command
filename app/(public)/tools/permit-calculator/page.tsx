@@ -26,7 +26,7 @@ interface StateResult {
     escortCostEstimate: { low: number; high: number };
 }
 
-// â”€â”€ Per-state rules (simplified â€” shows the logic model) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Per-state rules (simplified — shows the logic model) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const STATE_RULES: Record<string, {
     name: string;
@@ -42,13 +42,13 @@ const STATE_RULES: Record<string, {
     GA: { name: "Georgia", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (d) => d.widthFt >= 16 ? "Pre-move route notification required for loads >16ft wide." : "GDOT ePPermitting." },
     OH: { name: "Ohio", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (d) => d.widthFt >= 18 ? "State police escort required. Schedule with local district." : "ODOT permit required." },
     MS: { name: "Mississippi", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Weekend restrictions on Pearl River bridges." },
-    AL: { name: "Alabama", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ALDOT online permit. Holiday blackouts apply Octâ€“Jan." },
-    TN: { name: "Tennessee", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "TDOT permit. Spring weight restrictions Febâ€“Mar statewide." },
+    AL: { name: "Alabama", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ALDOT online permit. Holiday blackouts apply Oct"“Jan." },
+    TN: { name: "Tennessee", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "TDOT permit. Spring weight restrictions Feb"“Mar statewide." },
     KY: { name: "Kentucky", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Annual permits available for repeat routes." },
     OK: { name: "Oklahoma", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ODOT permit. Turnpike-specific rules. Event period blackouts Sep." },
     KS: { name: "Kansas", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Annual permits available. Night movement allowed in rural areas." },
     MO: { name: "Missouri", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "MoDOT portal. KC metro has additional peak hour restrictions." },
-    IA: { name: "Iowa", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Iowa DOT permit. Spring load restrictions Aprilâ€“May." },
+    IA: { name: "Iowa", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "Iowa DOT permit. Spring load restrictions April"“May." },
     MN: { name: "Minnesota", escortWidthFt: 14, policeWidthFt: 16, nightWidthFt: null, escortConfig: (w) => w >= 16 ? "2 Front + 2 Rear" : "1 Front + 1 Rear", notes: (_) => "MNDOT 5-day processing for wide loads. Twin Cities metro restricted." },
     CA: { name: "California", escortWidthFt: 14, policeWidthFt: 20, nightWidthFt: null, escortConfig: (w) => w >= 16 ? "1 Front + 1 Rear + Route Survey" : "1 Front", notes: (d) => d.widthFt >= 16 ? "Route survey required for loads >16ft wide. Caltrans permit." : "Caltrans permit required." },
     AZ: { name: "Arizona", escortWidthFt: 14, policeWidthFt: 18, nightWidthFt: null, escortConfig: (_) => "1 Front + 1 Rear", notes: (_) => "ADOT online portal. 24-48hr permit processing." },
@@ -181,7 +181,7 @@ export default function PermitCalculatorPage() {
                     </h1>
                     <p style={{fontSize: 16,color: T.muted,maxWidth: 640,margin: '0 auto' }}>
                         Calculate escort configurations, police triggers, night movement restrictions,
-                        and estimated costs for any multi-state route â€” instantly.
+                        and estimated costs for any multi-state route — instantly.
                     </p>
                 </div>
 
@@ -282,9 +282,9 @@ export default function PermitCalculatorPage() {
                         <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',gap: 12,marginBottom: 20 }}>
                             {[
                                 { label: 'Max Escorts', val: maxEscorts + (maxEscorts === 0 ? '' : ' units'), color: maxEscorts >= 3 ? T.red : maxEscorts >= 2 ? T.amber : T.green },
-                                { label: 'States w/ Police', val: policeStates.length > 0 ? policeStates.map(r => r.code).join(', ') : 'â€”', color: policeStates.length > 0 ? T.red : T.green },
-                                { label: 'Night Bans', val: nightBanStates.length > 0 ? nightBanStates.map(r => r.code).join(', ') : 'â€” None', color: nightBanStates.length > 0 ? T.amber : T.green },
-                                { label: 'Est. Total Cost', val: totalCost ? `$${totalCost.low.toLocaleString()} â€“ $${totalCost.high.toLocaleString()}` : 'â€”', color: T.gold },
+                                { label: 'States w/ Police', val: policeStates.length > 0 ? policeStates.map(r => r.code).join(', ') : '—', color: policeStates.length > 0 ? T.red : T.green },
+                                { label: 'Night Bans', val: nightBanStates.length > 0 ? nightBanStates.map(r => r.code).join(', ') : '— None', color: nightBanStates.length > 0 ? T.amber : T.green },
+                                { label: 'Est. Total Cost', val: totalCost ? `$${totalCost.low.toLocaleString()} "“ $${totalCost.high.toLocaleString()}` : '—', color: T.gold },
                             ].map(({ label, val, color }) => (
                                 <div key={label} style={{background: T.card,border: `1px solid ${T.border}`,borderRadius: 14,padding: '14px 16px' }}>
                                     <div style={{fontSize: 9,fontWeight: 800,textTransform: 'uppercase',letterSpacing: '0.12em',color: T.muted,marginBottom: 6 }}>{label}</div>
@@ -312,7 +312,7 @@ export default function PermitCalculatorPage() {
                                                 <span style={{fontSize: 12,color: T.muted }}><strong style={{color: T.text }}>Escorts:</strong> {r.escortsRequired}</span>
                                                 {r.escortCostEstimate.low > 0 && (
                                                     <span style={{fontSize: 12,color: T.muted }}>
-                                                        Â· <strong style={{color: T.gold }}>${r.escortCostEstimate.low.toLocaleString()}â€“${r.escortCostEstimate.high.toLocaleString()}</strong> est.
+                                                        · <strong style={{color: T.gold }}>${r.escortCostEstimate.low.toLocaleString()}"“${r.escortCostEstimate.high.toLocaleString()}</strong> est.
                                                     </span>
                                                 )}
                                             </div>
@@ -336,7 +336,7 @@ export default function PermitCalculatorPage() {
                         <div style={{marginTop: 24,padding: 24,borderRadius: 20,background: 'rgba(245,185,66,0.06)',border: '1px solid rgba(245,185,66,0.2)',display: 'flex',flexDirection: 'column',gap: 12 }}>
                             <div style={{fontSize: 16,fontWeight: 900,color: T.gold }}>Need these escorts right now?</div>
                             <p style={{margin: 0,fontSize: 13,color: T.muted,lineHeight: 1.6 }}>
-                                Post to the Haul Command network â€” 847 certified escort operators across{' '}
+                                Post to the Haul Command network — 847 certified escort operators across{' '}
                                 {results.map(r => r.state).join(', ')} and beyond. Average fill time: <strong style={{color: T.text }}>8 minutes</strong> for active loads.
                             </p>
                             <div style={{display: 'flex',gap: 10,flexWrap: 'wrap' }}>
@@ -353,7 +353,7 @@ export default function PermitCalculatorPage() {
                         <div style={{marginTop: 16,padding: '10px 14px',borderRadius: 10,background: 'rgba(255,255,255,0.02)',border: `1px solid ${T.border}` }}>
                             <p style={{margin: 0,fontSize: 11,color: T.muted,lineHeight: 1.6 }}>
                                 <Info size={11} style={{display: 'inline',marginRight: 4 }} />
-                                Estimates are for planning purposes only. Requirements change frequently â€” always confirm with each state DOT before move.
+                                Estimates are for planning purposes only. Requirements change frequently — always confirm with each state DOT before move.
                                 Cost estimates assume {tier} tier operators and do not include permit fees, fuel surcharges, or police overtime rates.
                             </p>
                         </div>

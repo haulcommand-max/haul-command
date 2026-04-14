@@ -162,7 +162,7 @@ export function GlossarySearch({ terms }: { terms: { slug: string; term: string;
           ))}
           <div className="px-5 py-2.5 bg-white/[0.02] text-center">
             <span className="text-[10px] text-white/30 uppercase tracking-widest font-bold">
-              {results.length} results Â· Press Enter for full search
+              {results.length} results · Press Enter for full search
             </span>
           </div>
         </div>

@@ -214,7 +214,7 @@ export default function IftaCalculatorPage() {
                 <Fuel className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2 leading-tight">
-                Save 40Â¢/gal on diesel across the US.
+                Save 40¢/gal on diesel across the US.
               </h3>
               <p className="text-sm text-slate-300 mb-6 drop-shadow-sm">
                 Tired of massive IFTA bills? Connect your Haul Command account with the leading heavy-haul fuel card and get exclusive discounts.

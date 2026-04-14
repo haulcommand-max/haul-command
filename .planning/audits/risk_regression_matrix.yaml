@@ -1,0 +1,15 @@
+# GEMINI-03: Fraud and Risk Regression Matrix
+# Focus: Payments, Disputes, Escrow
+
+risk_regression_matrix:
+  payment_flows:
+    - test: "Verify Stripe Checkout Session ID idempotency lock prevents double billing"
+    - test: "Assert intent monetization failure securely rolls back claim_profile status"
+  
+  dispute_flows:
+    - test: "Verify escrow release hold mechanism triggered when 'GPS proof missing' dispute raised"
+    - test: "Confirm admin resolution UI can override dispute without triggering webhook deduplication anomalies"
+
+  kyc_locks:
+    - test: "Verify unverified operators cannot claim a High Pole route"
+    - test: "Assert LocalTruthProfile renders Unverified Entity mark until KYC pass"

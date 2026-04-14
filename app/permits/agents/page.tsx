@@ -20,7 +20,7 @@ export default async function PermitAgentsPage() {
 
         {(!agents || agents.length === 0) ? (
           <div style={{ textAlign: 'center', padding: 60, background: 'rgba(255,255,255,0.03)', borderRadius: 16 }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>ðŸ§‘â€ðŸ’¼</div>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>ðŸ§‘"ðŸ’¼</div>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Agent directory launching soon</h2>
             <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: 400, margin: '0 auto' }}>Permit professionals are being onboarded. Check back shortly or apply to be listed.</p>
           </div>
@@ -34,7 +34,7 @@ export default async function PermitAgentsPage() {
                     {a.verified && <span style={{ padding: '2px 8px', borderRadius: 6, background: 'rgba(0,255,136,0.12)', color: '#00ff88', fontSize: 11, fontWeight: 600 }}>VERIFIED</span>}
                   </div>
                   <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
-                    {(a.states_covered || []).join(', ')} Â· {a.avg_turnaround_hours}h avg turnaround Â· {a.completed_permits_count} permits completed
+                    {(a.states_covered || []).join(', ')} · {a.avg_turnaround_hours}h avg turnaround · {a.completed_permits_count} permits completed
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>

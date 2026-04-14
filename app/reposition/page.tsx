@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { Navigation, MapPin, Clock, ArrowRight, ChevronRight, Truck, Shield, Calendar } from 'lucide-react';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /reposition â€” REPOSITIONING FEED
+// /reposition — REPOSITIONING FEED
 // "I'm finishing a job in Dallas, heading to Houston, available along the way"
-// Deadhead reduction surface â€” the #2 competitor function.
+// Deadhead reduction surface — the #2 competitor function.
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Repositioning â€” Reduce Deadhead Miles | Haul Command',
+  title: 'Pilot Car Repositioning — Reduce Deadhead Miles | Haul Command',
   description:
     'Escort operators posting their repositioning routes. Find available pilot cars heading your direction. Reduce deadhead miles and save on escort costs.',
   keywords: [

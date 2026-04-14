@@ -216,7 +216,7 @@ export default function SponsorPage() {
                         }}
                     >
                         {[
-                            { value: proofData.operators > 0 ? proofData.operators.toLocaleString() : '6,949', label: 'operators visible â€” sponsor yours' },
+                            { value: proofData.operators > 0 ? proofData.operators.toLocaleString() : '6,949', label: 'operators visible — sponsor yours' },
                             { value: proofData.corridors > 0 ? `${proofData.corridors} corridors` : 'City + corridor', label: proofData.surgeActive > 0 ? `${proofData.surgeActive} surge active now` : 'pressure tracked live' },
                             { value: 'Limited', label: 'founding slots remaining' },
                         ].map((item) => (

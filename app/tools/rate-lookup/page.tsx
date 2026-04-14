@@ -157,7 +157,7 @@ export default function RateLookupPage() {
                                         background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000',
                                         fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none',
                                     }}>
-                                        Post a Load â€” Free â†’
+                                        Post a Load — Free â†’
                                     </a>
                                 </div>
                             </div>

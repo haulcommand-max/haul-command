@@ -20,7 +20,7 @@ import {
 } from '@/lib/monetization/sponsor-pricing';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /advertise â€” SELF-SERVE SPONSOR STOREFRONT
+// /advertise — SELF-SERVE SPONSOR STOREFRONT
 //
 // Monetization surfaces:
 //   - Territory sponsorship (50 US states, tiered pricing)
@@ -158,7 +158,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
                 </div>
                 {annual && (
                     <div style={{ fontSize: 11, color: T.green, marginTop: 4 }}>
-                        ${annual}/mo billed annually Â· Save {Math.round((1 - annual / monthly) * 100)}%
+                        ${annual}/mo billed annually · Save {Math.round((1 - annual / monthly) * 100)}%
                     </div>
                 )}
             </div>
@@ -231,7 +231,7 @@ export default function AdvertisePage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebPage",
-                "name": "Advertise on Haul Command â€” Sponsor Territory, Corridor, or Port",
+                "name": "Advertise on Haul Command — Sponsor Territory, Corridor, or Port",
                 "url": "https://haulcommand.com/advertise",
                 "description": "Sponsor a territory, corridor, or port on the #1 heavy haul logistics platform. Tiered pricing from $149/mo. 50 US states, 12 corridors, 10 ports, 120 countries.",
             }) }} />
@@ -249,7 +249,7 @@ export default function AdvertisePage() {
                         borderRadius: 999, padding: '6px 16px', fontSize: 10, fontWeight: 800,
                         textTransform: 'uppercase', letterSpacing: '0.12em', color: T.gold, marginBottom: 24,
                     }}>
-                        ðŸ’° Revenue Opportunity Â· Limited Slots
+                        ðŸ’° Revenue Opportunity · Limited Slots
                     </div>
                     <h1 style={{
                         fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, lineHeight: 1.08,
@@ -386,7 +386,7 @@ export default function AdvertisePage() {
                                         'Priority support + analytics dashboard',
                                         s.tier === 'mega' ? 'Exclusive: max 2 sponsors per state' : 'Limited slots available',
                                     ]}
-                                    cta={`Own ${s.code} â€” $${s.priceMonthly}/mo`}
+                                    cta={`Own ${s.code} — $${s.priceMonthly}/mo`}
                                 />
                             ))}
                         </div>
@@ -411,7 +411,7 @@ export default function AdvertisePage() {
                                     'Priority listing for all operators in this corridor',
                                     'Corridor activity alerts + analytics',
                                 ]}
-                                cta={`Own ${c.slug.toUpperCase()} â€” $${c.priceMonthly}/mo`}
+                                cta={`Own ${c.slug.toUpperCase()} — $${c.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
@@ -432,10 +432,10 @@ export default function AdvertisePage() {
                                 features={[
                                     'Premium placement on port-adjacent pages',
                                     'Featured in port logistics intelligence',
-                                    `Max ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''} â€” exclusivity`,
+                                    `Max ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''} — exclusivity`,
                                     'Port activity alerts + demand data',
                                 ]}
-                                cta={`Claim Port â€” $${p.priceMonthly}/mo`}
+                                cta={`Claim Port — $${p.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
@@ -482,7 +482,7 @@ export default function AdvertisePage() {
                                             `Max ${pricing.maxSlots} sponsor slot${pricing.maxSlots > 1 ? 's' : ''}`,
                                             'Featured in country intelligence reports',
                                         ]}
-                                        cta={`Own ${c.code} â€” $${pricing.priceMonthly}/mo`}
+                                        cta={`Own ${c.code} — $${pricing.priceMonthly}/mo`}
                                     />
                                 );
                             })}

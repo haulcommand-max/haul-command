@@ -121,7 +121,7 @@ export default function ReferralPage() {
                                     padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.03)',
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <span>{statusEmoji[ev.status] ?? 'Â·'}</span>
+                                        <span>{statusEmoji[ev.status] ?? '·'}</span>
                                         <div>
                                             <div style={{ fontSize: 12, color: '#d1d5db', fontWeight: 600 }}>{ev.referred_role} referral</div>
                                             <div style={{ fontSize: 10, color: '#4b5563' }}>{new Date(ev.created_at).toLocaleDateString()}</div>

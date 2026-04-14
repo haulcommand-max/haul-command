@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs Oversize.io â€” Full Comparison 2026 | Haul Command',
+  title: 'Haul Command vs Oversize.io — Full Comparison 2026 | Haul Command',
   description: 'Haul Command vs Oversize.io: Side-by-side comparison of features, pricing, tools access, global coverage, and operator directory. See why Haul Command wins.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/oversize-io' },
 }
@@ -42,9 +42,9 @@ export default function VsOversizeIoPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON Â· 2026</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs Oversize.io</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">A transparent feature-by-feature comparison. We built Haul Command to replace every tool Oversize.io locks behind a paywall â€” and add what they never built.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">A transparent feature-by-feature comparison. We built Haul Command to replace every tool Oversize.io locks behind a paywall — and add what they never built.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -97,10 +97,10 @@ export default function VsOversizeIoPage() {
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Why Heavy Haul Professionals Are Switching to Haul Command</h2>
             {[
-              {title:'Free tools, no login wall', body:'Every Haul Command tool â€” permit calculator, axle weight calculator, superload checker, frost law tracker â€” is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
+              {title:'Free tools, no login wall', body:'Every Haul Command tool — permit calculator, axle weight calculator, superload checker, frost law tracker — is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
               {title:'Global operator directory', body:'Haul Command indexes operators across 120 countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
-              {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform â€” no marketplace.'},
-              {title:'Training and certification', body:'Haul Commandâ€™s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
+              {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform — no marketplace.'},
+              {title:'Training and certification', body:'Haul Command's Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
             ].map((item,i)=>(
               <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
                 <p className="text-xs font-bold text-[#22c55e] mb-1">âœ” {item.title}</p>
@@ -111,7 +111,7 @@ export default function VsOversizeIoPage() {
 
           {/* CTA */}
           <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-8">
-            <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free â€” No Credit Card</h2>
+            <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free — No Credit Card</h2>
             <p className="text-sm text-[#8a9ab0] mb-6">All tools. All public. No login required for core features.</p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator â†’</Link>

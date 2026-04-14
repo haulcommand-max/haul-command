@@ -1,5 +1,5 @@
 // app/(command)/dashboard/page.tsx
-// Server Component â€” fetches real userId from Supabase auth then renders DashboardClient
+// Server Component — fetches real userId from Supabase auth then renders DashboardClient
 // This is the canonical Next.js App Router pattern for injecting server-side identity
 // into a "use client" component without any client-side auth round-trip.
 
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'; // dashboard is auth-gated, never cache
 export default async function CommandDashboardPage() {
     const supabase = await createClient();
 
-    // Fetch authenticated user â€” server-side, zero client exposure
+    // Fetch authenticated user — server-side, zero client exposure
     const { data: { user } } = await supabase.auth.getUser();
 
     // Resolve operator role from profile

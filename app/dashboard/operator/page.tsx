@@ -25,7 +25,7 @@ export default async function OperatorDashboardPage() {
 
   const hasLinkedProfile = !!operatorProfile;
 
-  // â”€â”€ Trust profile â€” period stats (Report Card) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â”€â”€ Trust profile — period stats (Report Card) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Columns added by migration 029 (20260405_029_leaderboard_periods...)
   const { data: trustProfile } = await supabase
     .from("hc_trust_profiles")

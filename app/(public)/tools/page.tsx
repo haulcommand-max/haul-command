@@ -223,7 +223,7 @@ export default function ToolsIndexPage() {
                                 fontSize: 11, fontWeight: 800, textTransform: 'uppercase' as const,
                                 letterSpacing: '0.1em', color: '#C6923A', marginBottom: 24,
                             }}>
-                                ðŸ”§ Free Tools Â· No Login Required
+                                ðŸ”§ Free Tools · No Login Required
                             </div>
                             <h1 style={{
                                 fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1,
@@ -389,12 +389,12 @@ export default function ToolsIndexPage() {
                 question="What free tools does Haul Command offer for heavy haul logistics?"
                 answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 120 countries."
                 confidence="verified_current"
-                ctaLabel="Try Route IQ â€” Free"
+                ctaLabel="Try Route IQ — Free"
                 ctaUrl="/tools/route-iq"
               />
             </section>
 
-            {/* â”€â”€ AdGrid â€” Tools Page Bottom â”€â”€ */}
+            {/* â”€â”€ AdGrid — Tools Page Bottom â”€â”€ */}
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <AdGridSlot zone="tools_bottom" />
             </div>

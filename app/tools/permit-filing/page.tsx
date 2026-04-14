@@ -78,7 +78,7 @@ export default function PermitFilingPage() {
       <div style={{background: 'linear-gradient(135deg, #07090f, #0d1422)',borderBottom: '1px solid #1a1a22',padding: '48px 24px 40px' }}>
         <div style={{maxWidth: 800,margin: '0 auto',textAlign: 'center' }}>
           <div style={{display: 'inline-block',padding: '5px 14px',borderRadius: 16,background: 'rgba(245,166,35,0.1)',border: '1px solid rgba(245,166,35,0.25)',color: '#F5A623',fontSize: 11,fontWeight: 700,marginBottom: 20,letterSpacing: '0.1em' }}>
-            ðŸ“‹ NEW â€” AUTOMATED PERMIT FILING
+            ðŸ“‹ NEW — AUTOMATED PERMIT FILING
           </div>
           <h1 style={{fontSize: 'clamp(26px, 4vw, 40px)',fontWeight: 900,margin: '0 0 16px',lineHeight: 1.1 }}>
             File Your Oversize Permits in Minutes
@@ -104,7 +104,7 @@ export default function PermitFilingPage() {
                   const selected = selectedStates.includes(s.code);
                   return (
                     <button aria-label="Interactive Button" data-tool-interact key={s.code} onClick={() => toggleState(s.code)} style={{padding: '10px 12px',borderRadius: 8,fontSize: 13,fontWeight: 600,cursor: 'pointer',transition: 'all 0.15s',background: selected ? 'rgba(245,166,35,0.15)' : '#0c0c10',border: `1px solid ${selected ? '#F5A623' : '#2a2a3a'}`,color: selected ? '#F5A623' : '#8a8aa0'}}>
-                      {s.code} â€” {s.name.split(' ')[0]}
+                      {s.code} — {s.name.split(' ')[0]}
                     </button>
                   );
                 })}
@@ -202,8 +202,8 @@ export default function PermitFilingPage() {
             </div>
 
             <div style={{background: 'rgba(34,197,94,0.08)',border: '1px solid rgba(34,197,94,0.2)',borderRadius: 10,padding: 14,marginBottom: 24,fontSize: 13 }}>
-              âœ“ Estimated filing time: <strong style={{color: '#22c55e' }}>{quote.estimated_processing_days} business day{quote.estimated_processing_days !== 1 ? 's' : ''}</strong> Â·
-              Permit delivered to your email Â· Stored in your dashboard
+              âœ“ Estimated filing time: <strong style={{color: '#22c55e' }}>{quote.estimated_processing_days} business day{quote.estimated_processing_days !== 1 ? 's' : ''}</strong> ·
+              Permit delivered to your email · Stored in your dashboard
             </div>
 
             <div style={{display: 'flex',gap: 12 }}>

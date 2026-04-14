@@ -9,7 +9,7 @@ export function AdGridSponsorSlot({ regionName, type, countryCode }: { regionNam
       <div className="flex flex-col h-full justify-center text-center">
         <h3 className="font-bold text-lg text-amber-400 mb-2 mt-4">Own the top spot in {regionName}</h3>
         <p className="text-sm text-gray-400 mb-4 px-2">
-          Brokers are actively searching for a verified {type} in {regionName}. Capture 100% of the intent for this corridor by sponsoring this position.
+          Brokers are actively searching for a verified {type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} in {regionName}. Capture 100% of the intent for this corridor by sponsoring this position.
         </p>
         <div className="text-center mt-2">
           <TrackedLink

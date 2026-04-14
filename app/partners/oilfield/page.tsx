@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Oilfield Escort Operators â€” Permian Basin, Eagle Ford, Bakken | Haul Command',
+  title: 'Oilfield Escort Operators — Permian Basin, Eagle Ford, Bakken | Haul Command',
   description: 'Verified escort operators for oilfield equipment moves in the Permian Basin, Eagle Ford, Bakken, and oil patch regions across 120 countries. Post a rig move in 90 seconds.',
 };
 

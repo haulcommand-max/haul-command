@@ -35,7 +35,7 @@ export default function GettingStartedPage() {
                     <Step number={4} title="Read Confidence Metadata">
                         <p className="mb-4">Every response includes a <code className="text-blue-400">_confidence</code> object with machine-readable trust signals:</p>
                         <Pre>{`{
-  "confidence_score": 0.82,     // 0â€“1 float
+  "confidence_score": 0.82,     // 0"“1 float
   "confidence_band": "high",    // verified | high | medium | low
   "data_freshness_seconds": 1847,
   "geo_precision_level": "corridor",

@@ -9,7 +9,7 @@ import {
 
 /* â”€â”€â”€ Result types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-/** Unified search result â€” maps from hc_search_all RPC output */
+/** Unified search result — maps from hc_search_all RPC output */
 interface SearchResult {
     entity_type: string;
     entity_id: string;
@@ -94,7 +94,7 @@ export default function SearchPage() {
     const [searchMs, setSearchMs] = useState(0);
     const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    /* â”€â”€â”€ Search function â€” calls /api/search/all (backed by hc_search_all RPC) â”€â”€â”€ */
+    /* â”€â”€â”€ Search function — calls /api/search/all (backed by hc_search_all RPC) â”€â”€â”€ */
     const doSearch = useCallback(async (searchQuery: string) => {
         setLoading(true);
         const start = performance.now();
@@ -330,7 +330,7 @@ export default function SearchPage() {
 
             {/* Results */}
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px', display: 'flex', gap: 24, flexWrap: 'wrap' as const }}>
-                {/* Sidebar Facets â€” hidden on mobile via media query in layout */}
+                {/* Sidebar Facets — hidden on mobile via media query in layout */}
                 <div className="search-sidebar" style={{ width: 220, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
                     <style>{`.search-sidebar { display: none !important; } @media(min-width:768px) { .search-sidebar { display: flex !important; } }`}</style>
                     {/* Type breakdown */}
@@ -446,7 +446,7 @@ export default function SearchPage() {
                                         }}>
                                             {isOperator ? (
                                                 <span style={{ fontWeight: 800, fontSize: 18, color: getScoreColor(r.trust_score || 0) }}>
-                                                    {r.trust_score || 'â€”'}
+                                                    {r.trust_score || '—'}
                                                 </span>
                                             ) : (
                                                 <span>{entityDisplay.icon}</span>
@@ -480,7 +480,7 @@ export default function SearchPage() {
                                             {/* Location + subtitle */}
                                             <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
                                                 {r.city && r.region ? `${r.city}, ${r.region}` : r.region || r.city || ''}
-                                                {r.country_code && ` Â· ${r.country_code}`}
+                                                {r.country_code && ` · ${r.country_code}`}
                                             </div>
 
                                             {r.subtitle && (

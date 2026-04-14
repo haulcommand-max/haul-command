@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-// Lightweight markdown renderer â€” no external dependency needed
+// Lightweight markdown renderer — no external dependency needed
 function MarkdownBlock({ content, T }: { content: string; T: Record<string, string> }) {
     const lines = content.split('\n');
     const elements: React.ReactNode[] = [];
@@ -48,7 +48,7 @@ function MarkdownBlock({ content, T }: { content: string; T: Record<string, stri
 }
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// COMPLIANCE COPILOT â€” Jurisdiction-Aware Regulation Q&A
+// COMPLIANCE COPILOT — Jurisdiction-Aware Regulation Q&A
 // The #1 free tool on the site. Drives SEO from every state.
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
@@ -220,7 +220,7 @@ export default function ComplianceCopilotPage() {
                     lineHeight: 1.6,
                 }}>
                     Ask any question about oversize load escort regulations, height pole requirements,
-                    night travel bans, permit thresholds â€” any state, any jurisdiction.
+                    night travel bans, permit thresholds — any state, any jurisdiction.
                 </p>
 
                 {/* Trust bar */}
@@ -229,7 +229,7 @@ export default function ComplianceCopilotPage() {
                     justifyContent: 'center',
                     fontSize: 12, color: T.subtle, fontWeight: 600,
                 }}>
-                    {['All 50 US States', '10 Canadian Provinces', 'Free â€” No Login Required', 'Answers in seconds'].map(t => (
+                    {['All 50 US States', '10 Canadian Provinces', 'Free — No Login Required', 'Answers in seconds'].map(t => (
                         <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                             <span style={{ color: T.green }}>âœ“</span> {t}
                         </span>
@@ -313,7 +313,7 @@ export default function ComplianceCopilotPage() {
                                         }}>
                                             <span style={{ color: T.gold }}>âš–</span>
                                             Compliance Copilot
-                                            {msg.cached && <span style={{ color: T.green, marginLeft: 4 }}>Â· Cached</span>}
+                                            {msg.cached && <span style={{ color: T.green, marginLeft: 4 }}>· Cached</span>}
                                         </div>
 
                                         {msg.loading ? (
@@ -429,7 +429,7 @@ export default function ComplianceCopilotPage() {
                                         handleSubmit();
                                     }
                                 }}
-                                placeholder="Ask a compliance questionâ€¦ (e.g. 'When do I need two escort vehicles in Texas?')"
+                                placeholder="Ask a compliance question"¦ (e.g. 'When do I need two escort vehicles in Texas?')"
                                 rows={3}
                                 maxLength={1000}
                                 style={{
@@ -476,7 +476,7 @@ export default function ComplianceCopilotPage() {
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <p style={{ fontSize: 11, color: T.subtle, margin: 0 }}>
-                                Press Enter to send Â· Shift+Enter for new line
+                                Press Enter to send · Shift+Enter for new line
                             </p>
                             <p style={{ fontSize: 11, color: T.subtle, margin: 0 }}>
                                 {question.length}/1000

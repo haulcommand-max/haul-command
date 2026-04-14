@@ -164,7 +164,7 @@ export default function EnterpriseTrainingHub() {
       <section className="py-24 border-t border-white/10 bg-black text-center">
         <div className="max-w-2xl mx-auto px-6">
           <p className="text-sm font-mono text-neutral-500">
-            Powered by HC Content OS Â· Data Architecture: 
+            Powered by HC Content OS · Data Architecture: 
             <span className="text-[#FF3333]"> training_team_accounts</span> â†’ 
             <span className="text-[#FF3333]"> training_team_enrollments</span>.
             {/* The hooks for these buttons will trigger the Stripe /checkout/sessions endpoints we built */}

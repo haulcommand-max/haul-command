@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SERVICES INDEX â€” Complete service stack
+   SERVICES INDEX — Complete service stack
    â”€ Absorbs every ODS service offering, then adds 6 more
      that ODS doesn't have. Each service page is a 
      self-serve product surface with SEO + lead-gen + schema.
@@ -63,7 +63,7 @@ const SERVICES = [
   {
     slug: 'consolidated-invoicing',
     title: 'Consolidated Invoicing',
-    description: 'One invoice per project. Multi-escort, multi-state, multi-day â€” all consolidated.',
+    description: 'One invoice per project. Multi-escort, multi-state, multi-day — all consolidated.',
     longDescription: 'Stop managing 15 different escort invoices for one load. Our consolidated invoicing system creates a single, clean billing document per project.',
     features: ['Single invoice per project', 'Multi-state consolidation', 'QuickBooks/SAP export', 'Net-30/15/instant terms', 'Automatic documentation'],
     icon: Receipt,
@@ -72,7 +72,7 @@ const SERVICES = [
   {
     slug: 'fleet-backup',
     title: 'Fleet Backup & Rescue',
-    description: '24/7 emergency escort dispatch. No-shows, cancellations, breakdowns â€” resolved in under 15 minutes.',
+    description: '24/7 emergency escort dispatch. No-shows, cancellations, breakdowns — resolved in under 15 minutes.',
     longDescription: 'Our rescue dispatch layer activates in under 15 minutes when escorts no-show, cancel, or break down. 6,900+ operator network, 120 countries.',
     features: ['< 15 min response SLA', '24/7/365 availability', 'Surge dispatch', 'Asset-based fleet backup', 'Mid-route replacement'],
     icon: Siren,
@@ -117,7 +117,7 @@ const SERVICES = [
   {
     slug: 'permit-filing',
     title: 'Permit Filing & Acquisition',
-    description: 'Multi-state oversize load permit acquisition â€” single and annual permits across all 50 states.',
+    description: 'Multi-state oversize load permit acquisition — single and annual permits across all 50 states.',
     longDescription: 'Stop calling each state DOT individually. Haul Command automates multi-state permit filing, tracks processing times, and notifies you when permits are approved.',
     features: ['Single-trip permits', 'Annual/blanket permits', 'Multi-state coordination', 'Processing time tracking', 'Permit document vault'],
     icon: FileCheck,
@@ -135,7 +135,7 @@ const SERVICES = [
   {
     slug: 'marketplace',
     title: 'Equipment Marketplace',
-    description: 'Buy, sell, and rent escort equipment â€” signs, lights, flags, height poles, and vehicles.',
+    description: 'Buy, sell, and rent escort equipment — signs, lights, flags, height poles, and vehicles.',
     longDescription: 'The first marketplace purpose-built for the escort industry. New and used equipment from verified sellers with buyer protection and escrow payments.',
     features: ['Pilot car equipment', 'Signs & banners', 'Lights & safety gear', 'Height poles', 'Used escort vehicles'],
     icon: ShoppingCart,
@@ -150,17 +150,17 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(198,146,58,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 leading-tight">
-            Professional Escort Services â€”{' '}
+            Professional Escort Services —{' '}
             <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
               120 Countries
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-2">
             The world's most complete escort service stack. From pilot cars to autonomous vehicle escorts, 
-            consolidated invoicing to fleet backup â€” everything in one platform.
+            consolidated invoicing to fleet backup — everything in one platform.
           </p>
           <p className="text-sm text-gray-500 max-w-xl mx-auto">
-            Find the right operator for every load type. Self-serve or full-service â€” your choice.
+            Find the right operator for every load type. Self-serve or full-service — your choice.
           </p>
         </div>
       </section>
@@ -224,7 +224,7 @@ export default function ServicesPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Need an Escort Operator?</h2>
         <p className="text-gray-400 mb-6">
-          Post your load on the Haul Command load board and receive responses from verified operators in minutes â€” or get a quote for managed, end-to-end logistics.
+          Post your load on the Haul Command load board and receive responses from verified operators in minutes — or get a quote for managed, end-to-end logistics.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
           <Link

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   FOOTER ACCORDION â€” Mobile-First
+   FOOTER ACCORDION — Mobile-First
    Mobile: stacked accordion sections, tap to expand.
    Desktop (â‰¥768px): 4-column grid, all sections visible.
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
@@ -146,9 +146,9 @@ export function FooterAccordion() {
                     </div>
                     <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
                         <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                        <span className="opacity-50 text-[10px]">â€¢</span>
+                        <span className="opacity-50 text-[10px]">"¢</span>
                         <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                        <span className="opacity-50 text-[10px]">â€¢</span>
+                        <span className="opacity-50 text-[10px]">"¢</span>
                         <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ export default function CRCRecorderPending() {
                     CRC Black Box Recorder
                 </h1>
                 <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: 'rgba(129,140,248,0.1)', color: '#818cf8', fontSize: 13, fontWeight: 700, marginBottom: 24, border: '1px solid rgba(129,140,248,0.2)' }}>
-                    COMING SOON â€” PREMIUM TOOL (T-35)
+                    COMING SOON — PREMIUM TOOL (T-35)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
                     Voice recording and transcription for critical operational commands (Command-Response-Confirm) with legal chain of custody.

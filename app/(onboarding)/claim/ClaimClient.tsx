@@ -7,7 +7,7 @@ import { BackButton } from "../components/BackButton";
 import { Lock, Phone, Loader2, Shield, Clock, CheckCircle } from "lucide-react";
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ClaimClient â€” Premium Claim Flow (Mobile-First)
+   ClaimClient — Premium Claim Flow (Mobile-First)
    P1: Upgraded from acceptable to premium trust surface.
    - Stronger hierarchy with HC gold accent
    - Trust signals (verified badge, time-to-complete)

@@ -36,7 +36,7 @@ export default function RouteCheckPage() {
       <div style={{ padding: '24px', maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ fontSize: 11, fontWeight: 800, color: '#F1A91B', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>ðŸ—ºï¸ FREE ROUTE INTELLIGENCE TOOL</div>
         <h1 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 900, margin: '0 0 8px' }}>Check Your Route Before You Run</h1>
-        <p style={{ color: '#94a3b8', fontSize: 14, margin: '0 0 24px', maxWidth: 600 }}>Enter load dimensions and route. See every low bridge, weight restriction, and checkpoint. Free â€” no login.</p>
+        <p style={{ color: '#94a3b8', fontSize: 14, margin: '0 0 24px', maxWidth: 600 }}>Enter load dimensions and route. See every low bridge, weight restriction, and checkpoint. Free — no login.</p>
       </div>
 
       {step === 'form' && (

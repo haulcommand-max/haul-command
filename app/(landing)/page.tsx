@@ -5,7 +5,7 @@ import { getGlobalStats } from "@/lib/server/global-stats";
 import HomeClient from "./_components/HomeClient";
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// HOMEPAGE â€” Server Component
+// HOMEPAGE — Server Component
 // Route: / (via (landing) route group)
 // Fetches all data server-side, passes props to client.
 // Resolves country for hero pack server-side (edge geo).
@@ -44,7 +44,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Haul Command â€” Pilot Car & Escort Vehicle Directory | Heavy Haul Escorts',
+        alt: 'Haul Command — Pilot Car & Escort Vehicle Directory | Heavy Haul Escorts',
       },
     ],
     locale: 'en_US',
@@ -62,7 +62,7 @@ export const metadata = {
   },
 };
 
-export const dynamic = 'force-dynamic'; // SSR-only â€” uses geo headers + live DB queries
+export const dynamic = 'force-dynamic'; // SSR-only — uses geo headers + live DB queries
 
 export default async function LandingPage() {
     const countryCode = await getCountryFromHeaders();
@@ -91,13 +91,13 @@ export default async function LandingPage() {
     return (
         <main>
             <h1 className="sr-only">
-                Haul Command â€” The #1 Global Pilot Car Directory, Oversize Load Board, and Heavy Haul Operating System
+                Haul Command — The #1 Global Pilot Car Directory, Oversize Load Board, and Heavy Haul Operating System
             </h1>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                   "@context": "https://schema.org",
                   "@type": "WebPage",
-                  "name": "Haul Command â€” The Operating System for Heavy Haul",
+                  "name": "Haul Command — The Operating System for Heavy Haul",
                   "url": "https://haulcommand.com",
                   "description": "Haul Command is the global operating system and #1 pilot car directory for the heavy haul, oversize load, and specialized freight transportation industries. Our routing platform provides real-time route surveys, DOT permit compliance, height pole escort verification, and an active oversize load board to match freight brokers with certified PEVO professionals across 120 countries.",
                   "breadcrumb": {
@@ -142,9 +142,9 @@ export default async function LandingPage() {
                   "description": "Pilot car operator certification and escort vehicle training covering all 50 US states and 120 countries.",
                   "url": "https://www.haulcommand.com/training",
                   "itemListElement": [
-                    { "@type": "Course", "position": 1, "name": "Pilot Car Operator Certification Prep â€” Florida (FDOT)", "url": "https://www.haulcommand.com/training/region/united-states/florida", "description": "Prepare for Florida's 8-hour FDOT escort vehicle operator certification. Covers 6 hours instruction and 2-hour exam requirements.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
-                    { "@type": "Course", "position": 2, "name": "Pilot Car Operator Training â€” Texas", "url": "https://www.haulcommand.com/training/region/united-states/texas", "description": "Texas escort vehicle operator training covering TxDOT oversize load escort requirements and certification preparation.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
-                    { "@type": "Course", "position": 3, "name": "Global Pilot Car Training Hub â€” 120 Countries", "url": "https://www.haulcommand.com/training", "description": "Jurisdiction-specific escort vehicle operator training for all 50 US states and 120 countries.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } }
+                    { "@type": "Course", "position": 1, "name": "Pilot Car Operator Certification Prep — Florida (FDOT)", "url": "https://www.haulcommand.com/training/region/united-states/florida", "description": "Prepare for Florida's 8-hour FDOT escort vehicle operator certification. Covers 6 hours instruction and 2-hour exam requirements.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
+                    { "@type": "Course", "position": 2, "name": "Pilot Car Operator Training — Texas", "url": "https://www.haulcommand.com/training/region/united-states/texas", "description": "Texas escort vehicle operator training covering TxDOT oversize load escort requirements and certification preparation.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
+                    { "@type": "Course", "position": 3, "name": "Global Pilot Car Training Hub — 120 Countries", "url": "https://www.haulcommand.com/training", "description": "Jurisdiction-specific escort vehicle operator training for all 50 US states and 120 countries.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } }
                   ]
                 })
             }} />

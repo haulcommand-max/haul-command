@@ -412,7 +412,7 @@ export default function AdGridDashboard() {
               </h1>
             </div>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>
-              {activeCnt} active campaign{activeCnt !== 1 ? 's' : ''} Â· Reach 1.5M+ logistics operators
+              {activeCnt} active campaign{activeCnt !== 1 ? 's' : ''} · Reach 1.5M+ logistics operators
             </p>
           </div>
           <button

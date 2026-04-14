@@ -1,5 +1,5 @@
 /**
- * ClaimStatusBanner â€” Auth-aware claim progress banner.
+ * ClaimStatusBanner — Auth-aware claim progress banner.
  *
  * P0: Shows the authenticated user's real claim status with a progress bar
  * and contextual next-action CTA. Only renders for authenticated users.
@@ -66,7 +66,7 @@ const STATE_CONFIG: Record<string, {
     borderColor: 'rgba(139,92,246,0.2)',
     nextHref: '/settings/profile',
     nextLabel: 'Continue Profile',
-    description: 'Keep building â€” reach 50% for search visibility.',
+    description: 'Keep building — reach 50% for search visibility.',
   },
   profile_50: {
     label: 'Search Visible',
@@ -155,7 +155,7 @@ export default function ClaimStatusBanner({ claimState, profileCompletion, opera
                 <span style={{
                   fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)',
                 }}>
-                  â€” {operatorName}
+                  — {operatorName}
                 </span>
               )}
             </div>

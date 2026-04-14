@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 /**
- * (public) Layout â€” Unified app shell for public-facing pages.
+ * (public) Layout — Unified app shell for public-facing pages.
  * Mobile: same MobileAppNav as (app) layout.
  * Desktop: Global Header.
  */

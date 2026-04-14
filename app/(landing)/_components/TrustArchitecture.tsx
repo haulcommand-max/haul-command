@@ -27,7 +27,7 @@ const stagger = { visible: { transition: { staggerChildren: 0.06 } } };
 
 const TRUST_METRICS = [
   { icon: Shield, label: "Insurance Verified", value: "COI on File", color: "#22c55e" },
-  { icon: Award, label: "Certifications", value: "CEVO â€¢ CSE â€¢ State", color: "#F59E0B" },
+  { icon: Award, label: "Certifications", value: "CEVO "¢ CSE "¢ State", color: "#F59E0B" },
   { icon: Clock, label: "Avg Response", value: "< 4 min", color: "#3b82f6" },
   { icon: Star, label: "Completion Rate", value: "97.3%", color: "#a855f7" },
   { icon: BarChart3, label: "Trust Score", value: "Calculated Live", color: "#C6923A" },
@@ -65,7 +65,7 @@ export function TrustArchitecture() {
           </h2>
           <p className="text-sm sm:text-base text-[#8fa3b8] max-w-2xl mx-auto leading-relaxed">
             Every operator on Haul Command has a live trust report card. Insurance verified. Certifications confirmed. 
-            Performance measured. No guesswork â€” just data.
+            Performance measured. No guesswork — just data.
           </p>
         </motion.div>
 

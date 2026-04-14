@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 /**
- * Phase 8 â€” Exposure Allocation Engine
+ * Phase 8 — Exposure Allocation Engine
  * POST /api/v1/broker/exposure
  *
  * Accepts a search context (corridor, load type, time) and returns an
@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic';
  *              + (ColdStartBoost * W4) + (PaidBoost * W5)
  *
  * Hard guardrails are applied AFTER initial scoring:
- *   1. Min-trust gate  â€” suppress below threshold
- *   2. Diversity cap   â€” max N same operator per session
+ *   1. Min-trust gate  — suppress below threshold
+ *   2. Diversity cap   — max N same operator per session
  *   3. Soft randomization within score band (Â±5 pts)
  */
 
@@ -72,14 +72,14 @@ const DEFAULT_WEIGHTS = {
 // â”€â”€ Factor computation helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
- * Factor 1 â€” Trust Score (already 0-100, normalize to 0-1).
+ * Factor 1 — Trust Score (already 0-100, normalize to 0-1).
  */
 function computeTrustFactor(trust_score: number): number {
     return Math.min(trust_score, 100) / 100;
 }
 
 /**
- * Factor 2 â€” Context Fit (0-1).
+ * Factor 2 — Context Fit (0-1).
  * Weighted sub-factors: corridor proximity, state match, equipment, availability.
  */
 function computeContextFit(op: OperatorCandidate, ctx: SearchContext): number {
@@ -117,7 +117,7 @@ function computeContextFit(op: OperatorCandidate, ctx: SearchContext): number {
 }
 
 /**
- * Factor 3 â€” Activity Freshness (0-1, exponential decay).
+ * Factor 3 — Activity Freshness (0-1, exponential decay).
  */
 function computeFreshness(op: OperatorCandidate): number {
     const now = Date.now();
@@ -135,7 +135,7 @@ function computeFreshness(op: OperatorCandidate): number {
         score += 0.35 * Math.exp(-daysAgo / 14); // half-life = 14 days
     }
 
-    // Response time quality (up to 0.20) â€” faster is better
+    // Response time quality (up to 0.20) — faster is better
     if (op.avg_response_min !== null) {
         const respScore = Math.max(0, 1 - op.avg_response_min / 120); // 0 pts at 2h+
         score += 0.20 * respScore;
@@ -145,7 +145,7 @@ function computeFreshness(op: OperatorCandidate): number {
 }
 
 /**
- * Factor 4 â€” Cold Start Boost (0-1, capped and decaying).
+ * Factor 4 — Cold Start Boost (0-1, capped and decaying).
  * Only applies if operator has fewer than 10 completed escorts.
  */
 function computeColdStartBoost(op: OperatorCandidate, trust_score: number): number {
@@ -158,7 +158,7 @@ function computeColdStartBoost(op: OperatorCandidate, trust_score: number): numb
 }
 
 /**
- * Factor 5 â€” Paid Boost (0-1, sandboxed â€” requires min trust + context match).
+ * Factor 5 — Paid Boost (0-1, sandboxed — requires min trust + context match).
  */
 function computePaidBoost(
     op: OperatorCandidate,

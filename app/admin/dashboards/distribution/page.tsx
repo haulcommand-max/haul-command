@@ -50,7 +50,7 @@ export default function DistributionDashboard() {
     return (
         <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', marginBottom: 4 }}>Distribution Performance</h1>
-            <p style={{ fontSize: 12, color: '#888', marginBottom: 24 }}>Social distribution engine â€¢ Posts â€¢ Funnel attribution</p>
+            <p style={{ fontSize: 12, color: '#888', marginBottom: 24 }}>Social distribution engine "¢ Posts "¢ Funnel attribution</p>
 
             {/* Stats */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginBottom: 24 }}>

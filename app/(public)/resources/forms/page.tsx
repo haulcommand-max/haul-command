@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { FileText, Download, ChevronRight, ArrowRight, Shield, BookOpen, Truck, Star } from 'lucide-react';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /resources/forms â€” FORMS HUB
+// /resources/forms — FORMS HUB
 // Absorbs the forms-bundle competitor's entire catalog.
 // Free starter templates + paid autofill/vault/branding upgrade path.
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Forms & Templates â€” Free Downloads | Haul Command',
+  title: 'Pilot Car Forms & Templates — Free Downloads | Haul Command',
   description:
     'Free downloadable forms, checklists, and templates for pilot car operators, heavy haul carriers, and freight brokers. Pre-trip inspection, bill of lading, service agreement, and route packet templates.',
   keywords: [
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://haulcommand.com/resources/forms' },
   openGraph: {
-    title: 'Pilot Car Forms & Templates â€” Free Downloads | Haul Command',
+    title: 'Pilot Car Forms & Templates — Free Downloads | Haul Command',
     description: 'The industry\'s most complete collection of pilot car, escort vehicle, and heavy haul forms. Free starter templates.',
     url: 'https://haulcommand.com/resources/forms',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
@@ -61,7 +61,7 @@ const FORMS: FormItem[] = [
   {
     slug: 'heavy-haul-readiness-checklist',
     title: 'Heavy Haul Readiness Checklist',
-    description: 'Everything you need verified before accepting an oversize load assignment â€” permits, equipment, route, escorts.',
+    description: 'Everything you need verified before accepting an oversize load assignment — permits, equipment, route, escorts.',
     category: 'Checklists',
     tier: 'free',
     format: 'PDF',
@@ -238,7 +238,7 @@ export default function FormsHubPage() {
               <span style={{ color: '#3b82f6' }}>Compliance Templates</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 560 }}>
-              {freeCount} free templates to get started. Pre-trip checklists, service agreements, route packets, and compliance bundles â€” used by 3,000+ operators.
+              {freeCount} free templates to get started. Pre-trip checklists, service agreements, route packets, and compliance bundles — used by 3,000+ operators.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -303,7 +303,7 @@ export default function FormsHubPage() {
               </div>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Pro Templates</h2>
-                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Pro ($29/mo) â€” autofill, vault storage, and reminders</p>
+                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Pro ($29/mo) — autofill, vault storage, and reminders</p>
               </div>
             </div>
 
@@ -322,7 +322,7 @@ export default function FormsHubPage() {
               </div>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#f9fafb' }}>Elite Templates</h2>
-                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Elite ($79/mo) â€” branded, audit-ready, fleet-grade</p>
+                <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Included with Elite ($79/mo) — branded, audit-ready, fleet-grade</p>
               </div>
             </div>
 
@@ -347,7 +347,7 @@ export default function FormsHubPage() {
               Get All {freeCount} Free Templates
             </h2>
             <p style={{ margin: '0 0 24px', fontSize: 14, color: '#94a3b8', maxWidth: 450, marginLeft: 'auto', marginRight: 'auto' }}>
-              Pre-trip checklist, bill of lading, daily log, and startup guide â€” in one download. Used by 3,000+ operators.
+              Pre-trip checklist, bill of lading, daily log, and startup guide — in one download. Used by 3,000+ operators.
             </p>
             <form
               action="/api/leads/resource-download"

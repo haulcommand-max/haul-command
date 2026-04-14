@@ -100,7 +100,7 @@ export default function EarningsDashboardPage() {
         </button>
       </div>
 
-      {/* QuickPay Dashboard Card â€” above hero metrics */}
+      {/* QuickPay Dashboard Card — above hero metrics */}
       {isClaimed && availableDollars > 0 && (
         <div className="px-4 pt-4">
           <QuickPayDashboardCard

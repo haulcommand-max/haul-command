@@ -166,7 +166,7 @@ export default async function BlogHub() {
         />
       </div>
 
-      {/* Featured + Trending Section â€” Mapbox-style generous spacing */}
+      {/* Featured + Trending Section — Mapbox-style generous spacing */}
       <HCContentSection className="mb-24">
         <HCContentContainer>
         {featuredArticle ? (
@@ -210,7 +210,7 @@ export default async function BlogHub() {
         </HCContentContainer>
       </HCContentSection>
 
-      {/* Filter / Search Bar â€” cleaner with more breathing room */}
+      {/* Filter / Search Bar — cleaner with more breathing room */}
       <div className="sticky top-[64px] z-30 bg-[#0B0B0C]/90 backdrop-blur-xl border-y border-[rgba(255,255,255,0.06)] py-5 mb-24">
         <HCContentContainer>
             <div className="flex flex-col md:flex-row gap-6 justify-between items-center">
@@ -233,7 +233,7 @@ export default async function BlogHub() {
         </HCContentContainer>
       </div>
 
-      {/* Latest Publications â€” Mapbox-style 3-column grid with generous gap */}
+      {/* Latest Publications — Mapbox-style 3-column grid with generous gap */}
       <HCContentSection id="latest" className="mb-32">
         <HCContentContainer>
             <div className="flex items-center gap-3 mb-10">
@@ -262,7 +262,7 @@ export default async function BlogHub() {
         </HCContentContainer>
       </HCContentSection>
 
-      {/* Explore Systems â€” Mapbox-style resource grid with icons */}
+      {/* Explore Systems — Mapbox-style resource grid with icons */}
       <HCContentSection className="bg-[#0E0F11] py-24 border-t border-[rgba(255,255,255,0.04)]">
          <HCContentContainer>
             <div className="text-center mb-20">

@@ -95,7 +95,7 @@ export default function AICommandCenter() {
                 <div style={{ padding: '20px 16px 12px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.2em', color: '#F59E0B', marginBottom: 4 }}>HAUL COMMAND</div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB' }}>AI Command Center</div>
-                    <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>12 agents â€¢ GPT-4o</div>
+                    <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>12 agents "¢ GPT-4o</div>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
                     {AGENTS.map(agent => (
@@ -132,7 +132,7 @@ export default function AICommandCenter() {
                     <span style={{ fontSize: 24 }}>{activeAgent.icon}</span>
                     <div>
                         <div style={{ fontSize: 15, fontWeight: 700, color: '#F9FAFB' }}>{activeAgent.name}</div>
-                        <div style={{ fontSize: 12, color: '#6B7280' }}>{activeAgent.desc} â€¢ Powered by GPT-4o</div>
+                        <div style={{ fontSize: 12, color: '#6B7280' }}>{activeAgent.desc} "¢ Powered by GPT-4o</div>
                     </div>
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', display: 'inline-block' }} />
@@ -149,15 +149,15 @@ export default function AICommandCenter() {
                             <div style={{ fontSize: 13, color: '#6B7280', maxWidth: 400, textAlign: 'center' }}>
                                 {activeAgent.id === 'dispatch_brain' && 'Paste a load description and I\'ll extract dimensions, route, escort requirements, and estimated rate.'}
                                 {activeAgent.id === 'regulation_rag' && 'Ask any question about state-specific escort and permit regulations. I\'ll cite the rules.'}
-                                {activeAgent.id === 'support_bot' && 'Ask me anything about HAUL COMMAND â€” features, billing, profile setup, or troubleshooting.'}
-                                {activeAgent.id === 'route_survey' && 'Give me origin, destination, and load dimensions â€” I\'ll generate a professional route survey.'}
+                                {activeAgent.id === 'support_bot' && 'Ask me anything about HAUL COMMAND — features, billing, profile setup, or troubleshooting.'}
+                                {activeAgent.id === 'route_survey' && 'Give me origin, destination, and load dimensions — I\'ll generate a professional route survey.'}
                                 {activeAgent.id === 'contract_gen' && 'Provide job details and I\'ll draft a professional escort service agreement.'}
                                 {activeAgent.id === 'invoice_gen' && 'Give me the completed job information and I\'ll generate a branded invoice.'}
                                 {activeAgent.id === 'load_enhancer' && 'Paste a rough load description and I\'ll transform it into a professional, parseable posting.'}
                                 {activeAgent.id === 'onboarding_copilot' && 'Share your profile details and I\'ll suggest optimizations to get more bookings.'}
                                 {activeAgent.id === 'review_analyzer' && 'Paste reviews and I\'ll analyze sentiment, trends, and actionable insights.'}
-                                {activeAgent.id === 'ad_copy_gen' && 'Tell me the corridor and audience â€” I\'ll generate 5 ad variants.'}
-                                {activeAgent.id === 'content_factory' && 'Tell me the page type and location â€” I\'ll write unique SEO content.'}
+                                {activeAgent.id === 'ad_copy_gen' && 'Tell me the corridor and audience — I\'ll generate 5 ad variants.'}
+                                {activeAgent.id === 'content_factory' && 'Tell me the page type and location — I\'ll write unique SEO content.'}
                                 {activeAgent.id === 'anomaly_detector' && 'Paste daily metrics data and I\'ll flag anomalies and recommend actions.'}
                             </div>
                         </div>

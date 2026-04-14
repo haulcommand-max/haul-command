@@ -51,7 +51,7 @@ const categories = [
         emoji: 'â›½',
         description: 'Fuel card programs and maintenance networks for escort vehicle operators.',
         items: [
-            { name: 'WEX Fleet Card', desc: '5Â¢/gal savings at 95% of US stations', badge: 'Top Choice' },
+            { name: 'WEX Fleet Card', desc: '5¢/gal savings at 95% of US stations', badge: 'Top Choice' },
             { name: 'Tire Network', desc: 'Priority roadside service, 24/7', badge: 'Partnership' },
             { name: 'Maintenance Tracker', desc: 'Log vehicle maintenance, get reminders', badge: 'Free' },
         ],
@@ -72,7 +72,7 @@ export default function MarketplacePage() {
                         Everything You Need to Run
                     </h1>
                     <p style={{ margin: '8px 0 0', fontSize: 15, color: '#6b7280' }}>
-                        Insurance, training, equipment, and fuel â€” curated for escort operators.
+                        Insurance, training, equipment, and fuel — curated for escort operators.
                     </p>
                 </motion.div>
 

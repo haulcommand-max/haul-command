@@ -28,7 +28,7 @@ function CommandBar({ onCommand }: { onCommand: (cmd: string) => void }) {
     <div className="flex gap-2 w-full">
       <input
         className="flex-1 bg-[#0f1117] border border-[#2a2d3a] rounded-lg px-4 py-2 text-sm text-white font-mono placeholder:text-gray-600 focus:outline-none focus:border-[#6d72f6]"
-        placeholder="/lock corridor I-10 Â· /trap scraper Â· /price corridor US-287"
+        placeholder="/lock corridor I-10 · /trap scraper · /price corridor US-287"
         value={value}
         onChange={e => setValue(e.target.value)}
         onKeyDown={e => {
@@ -69,7 +69,7 @@ function HotelBookingCard({ corridor }: { corridor: string }) {
         ))}
       </div>
       <button aria-label="Interactive Button" className="w-full bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold py-2 rounded-lg transition-colors">
-        BOOK CURFEW LAYOVER Â· GET 12% COMMISSION
+        BOOK CURFEW LAYOVER · GET 12% COMMISSION
       </button>
     </div>
   );
@@ -77,10 +77,10 @@ function HotelBookingCard({ corridor }: { corridor: string }) {
 
 function ClassifiedsFeedCard() {
   const listings = [
-    { type: 'Equipment', title: '2022 Pilot Car â€” 85k mi', price: '$24,500', location: 'Dallas, TX' },
-    { type: 'Job', title: 'Escort Driver Needed â€” I-10 TX', price: '$1,800/wk', location: 'El Paso, TX' },
-    { type: 'Equipment', title: 'Height Pole Kit â€” Full Set', price: '$3,200', location: 'Phoenix, AZ' },
-    { type: 'Job', title: 'Flaggers Needed â€” CO State DOT', price: '$28/hr', location: 'Denver, CO' },
+    { type: 'Equipment', title: '2022 Pilot Car — 85k mi', price: '$24,500', location: 'Dallas, TX' },
+    { type: 'Job', title: 'Escort Driver Needed — I-10 TX', price: '$1,800/wk', location: 'El Paso, TX' },
+    { type: 'Equipment', title: 'Height Pole Kit — Full Set', price: '$3,200', location: 'Phoenix, AZ' },
+    { type: 'Job', title: 'Flaggers Needed — CO State DOT', price: '$28/hr', location: 'Denver, CO' },
   ];
 
   return (
@@ -146,14 +146,14 @@ function RecruiterCard() {
             </div>
             <div className="flex-1">
               <p className="text-white text-xs font-semibold">{op.name}</p>
-              <p className="text-gray-400 text-xs">{op.states} Â· {op.rate}</p>
+              <p className="text-gray-400 text-xs">{op.states} · {op.rate}</p>
             </div>
             <span className={`text-xs px-2 py-0.5 rounded-full ${op.badge === 'Verified' ? 'bg-green-500/20 text-green-400' : op.badge === 'Premium' ? 'bg-amber-500/20 text-amber-400' : 'bg-blue-500/20 text-blue-400'}`}>{op.badge}</span>
           </div>
         ))}
       </div>
       <button aria-label="Interactive Button" className="w-full border border-[#6d72f6] text-[#6d72f6] text-xs py-2 rounded-lg hover:bg-[#6d72f6]/10 transition-colors">
-        SPONSOR YOUR PROFILE Â· $299/month
+        SPONSOR YOUR PROFILE · $299/month
       </button>
     </div>
   );
@@ -275,7 +275,7 @@ export default function CommandDashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-black tracking-tight">âš¡ HAUL COMMAND</h1>
-            <p className="text-gray-400 text-sm mt-0.5">Unified Command Center Â· Anti-Gravity Intelligence Stack</p>
+            <p className="text-gray-400 text-sm mt-0.5">Unified Command Center · Anti-Gravity Intelligence Stack</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

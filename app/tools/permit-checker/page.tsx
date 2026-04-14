@@ -47,10 +47,10 @@ export default function PermitCheckerPage() {
             let score = 0;
             const warnings: string[] = [];
             score += Math.min(30, j * 6);
-            if (form.height_in > 162) { score += Math.min(25, (form.height_in - 162) / 6); warnings.push('Height exceeds 13\'6" â€” escorts required in most states'); }
-            if (form.width_in > 102) { score += 10; warnings.push('Width exceeds 8\'6" â€” escort required'); }
-            if (form.width_in > 144) { score += 10; warnings.push('Width exceeds 12\' â€” dual escorts likely required'); }
-            if (form.weight_lbs > 80000) { score += Math.min(15, (form.weight_lbs - 80000) / 10000); warnings.push('Weight exceeds 80,000 lbs â€” overweight permits needed'); }
+            if (form.height_in > 162) { score += Math.min(25, (form.height_in - 162) / 6); warnings.push('Height exceeds 13\'6" — escorts required in most states'); }
+            if (form.width_in > 102) { score += 10; warnings.push('Width exceeds 8\'6" — escort required'); }
+            if (form.width_in > 144) { score += 10; warnings.push('Width exceeds 12\' — dual escorts likely required'); }
+            if (form.weight_lbs > 80000) { score += Math.min(15, (form.weight_lbs - 80000) / 10000); warnings.push('Weight exceeds 80,000 lbs — overweight permits needed'); }
             score = Math.min(100, Math.max(0, score));
 
             const risk_band = score < 30 ? 'low_complexity' : score < 55 ? 'moderate' : score < 75 ? 'complex' : 'high_risk';
@@ -88,7 +88,7 @@ export default function PermitCheckerPage() {
                     </div>
                     <h1 style={{ margin: 0, fontSize: 36, fontWeight: 900, color: '#f9fafb', letterSpacing: -1, lineHeight: 1.1 }}>Permit Complexity Checker</h1>
                     <p style={{ margin: '12px auto 0', maxWidth: 500, fontSize: 15, color: '#6b7280', lineHeight: 1.6 }}>
-                        Estimate escort requirements, permit complexity, and costs for your oversize load â€” instantly, for free.
+                        Estimate escort requirements, permit complexity, and costs for your oversize load — instantly, for free.
                     </p>
                 </div>
 
@@ -183,7 +183,7 @@ export default function PermitCheckerPage() {
                                         <div style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>âš  Route Warnings</div>
                                         {result.warnings.map((w: string, i: number) => (
                                             <div key={i} style={{ fontSize: 13, color: '#d1d5db', padding: '0.3rem 0', display: 'flex', gap: 8 }}>
-                                                <span style={{ color: '#f59e0b' }}>â€¢</span> {w}
+                                                <span style={{ color: '#f59e0b' }}>"¢</span> {w}
                                             </div>
                                         ))}
                                     </div>
@@ -193,7 +193,7 @@ export default function PermitCheckerPage() {
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Need Escorts for This Route?</h3>
                                     <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load on Haul Command and get matched with verified escorts in minutes.</p>
                                     <a href="/onboarding/start?role=broker" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
-                                        Post a Load â€” Free â†’
+                                        Post a Load — Free â†’
                                     </a>
                                 </div>
 
@@ -219,7 +219,7 @@ export default function PermitCheckerPage() {
                 {/* Data teaser strip */}
                 <DataTeaserStrip geo="US" />
 
-                {/* SEO Internal Links â€” pushes equity to escort-calculator, cost-calc, directory */}
+                {/* SEO Internal Links — pushes equity to escort-calculator, cost-calc, directory */}
                 <RelatedLinks
                     pageType="tool"
                     context={{ toolSlug: 'permit-checker' }}

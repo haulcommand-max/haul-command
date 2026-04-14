@@ -34,7 +34,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         </div>
                         <div>
                             <h1 className="text-sm font-bold text-white uppercase tracking-[0.15em]">Command Tower</h1>
-                            <div className="text-[10px] text-[#444] uppercase tracking-[0.2em] font-semibold">Live Operations Â· All Corridors</div>
+                            <div className="text-[10px] text-[#444] uppercase tracking-[0.2em] font-semibold">Live Operations · All Corridors</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -76,7 +76,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                 {activeTab === "ops" ? (
                     /* â”€â”€ Operations Tab â”€â”€ */
                     <div className="space-y-6">
-                        {/* MarketPulse â€” KPI widget */}
+                        {/* MarketPulse — KPI widget */}
                         <MarketPulse
                             totalProviders={1247}
                             activeLoads={38}
@@ -88,7 +88,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <div className="lg:col-span-1 lg:order-2 space-y-4">
                                 <TodayCommandCenter data={null} />
-                                {/* FreemiumPressureWidget â€” upgrade prompts for free-tier operators */}
+                                {/* FreemiumPressureWidget — upgrade prompts for free-tier operators */}
                                 {/* userId from server session enables personalized pressure decisions */}
                                 <FreemiumPressureWidget
                                     placement="sidebar"
@@ -103,11 +103,11 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         </div>
                     </div>
                 ) : (
-                    /* â”€â”€ Swarm Tab â€” live agent visibility â”€â”€ */
+                    /* â”€â”€ Swarm Tab — live agent visibility â”€â”€ */
                     <div className="space-y-6">
                         <SwarmScoreboard />
                         <SwarmActivityFeed limit={50} />
-                        {/* Push Campaign Sender â€” admin ad tool */}
+                        {/* Push Campaign Sender — admin ad tool */}
                         <AdGridPushCampaignSender />
                     </div>
                 )}

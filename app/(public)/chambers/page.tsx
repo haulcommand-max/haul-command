@@ -5,7 +5,7 @@ import { NativeAdCard } from '@/components/ads/NativeAdCardLazy';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Chambers of Commerce Directory â€” US & Canada | Haul Command',
+    title: 'Chambers of Commerce Directory — US & Canada | Haul Command',
     description: 'Browse Chambers of Commerce across all US states and Canadian provinces. Connect with your local business community for pilot car and heavy haul support.',
 };
 
@@ -61,7 +61,7 @@ export default async function ChambersLandingPage() {
                         Chambers of Commerce Directory
                     </h1>
                     <p className="text-xl text-slate-400">
-                        US & Canada â€” Your link to local business networks, regulations, and pilot car support.
+                        US & Canada — Your link to local business networks, regulations, and pilot car support.
                     </p>
                 </div>
 
@@ -86,7 +86,7 @@ export default async function ChambersLandingPage() {
                     </div>
                 </section>
 
-                {/* Native Ad â€” between US and Canada */}
+                {/* Native Ad — between US and Canada */}
                 <NativeAdCard
                     surface="chambers_mid"
                     placementId="chambers-us-ca-break"

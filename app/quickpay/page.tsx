@@ -127,7 +127,7 @@ export default function QuickPayPage() {
         </div>
 
         <div className="text-center mt-8">
-          <p className="text-[10px] text-[#5A6577]">QuickPay is only available for jobs with pre-funded escrow. Zero risk â€” funds are already held.</p>
+          <p className="text-[10px] text-[#5A6577]">QuickPay is only available for jobs with pre-funded escrow. Zero risk — funds are already held.</p>
         </div>
       </main>
     </div>

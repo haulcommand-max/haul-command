@@ -54,7 +54,7 @@ export default function HeavyHaulFuelPartnerPage() {
               <ul className="space-y-4">
                  <li className="flex items-start gap-3">
                    <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
-                   <span className="text-slate-300">Save an average of <strong className="text-white">40Â¢ per gallon on diesel</strong> across 14,000 national stops.</span>
+                   <span className="text-slate-300">Save an average of <strong className="text-white">40¢ per gallon on diesel</strong> across 14,000 national stops.</span>
                  </li>
                  <li className="flex items-start gap-3">
                    <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />

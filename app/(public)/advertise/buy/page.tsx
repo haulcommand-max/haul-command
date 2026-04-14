@@ -1,5 +1,5 @@
 /**
- * /advertise/buy â€” Self-Serve Ad Campaign Launcher
+ * /advertise/buy — Self-Serve Ad Campaign Launcher
  *
  * This page converts DirectorySponsorCard CTAs into actual campaign setup.
  * Supports CPC campaigns, corridor sponsorships, and territory takeovers.
@@ -30,11 +30,11 @@ const CAMPAIGN_TYPES = [
         color: '#3b82f6',
         features: [
             'Geo-target by state, corridor, or nationwide',
-            'Industry-only traffic â€” no consumer clicks',
+            'Industry-only traffic — no consumer clicks',
             'Appear in directory results, tool pages, corridor feeds',
             'Real-time dashboard with click, impression, and CTR metrics',
             'Pause or adjust budget any time',
-            'Average CPC: $0.75â€“$2.50 depending on market',
+            'Average CPC: $0.75"“$2.50 depending on market',
         ],
         bestFor: 'Equipment vendors, insurance providers, training programs',
         cta: 'Launch CPC Campaign',
@@ -61,7 +61,7 @@ const CAMPAIGN_TYPES = [
         id: 'territory',
         icon: 'ðŸ—ºï¸',
         name: 'Territory Takeover',
-        price: '$149â€“$499/mo',
+        price: '$149"“$499/mo',
         period: 'Varies by state tier',
         color: '#22c55e',
         features: [

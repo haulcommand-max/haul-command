@@ -7,11 +7,11 @@ export const metadata: Metadata = {
 
 export default function AutonomousPartnerPage() {
   const partners = [
-    { name: 'Aurora Innovation', corridor: 'I-45 Dallasâ€“Houston', status: 'Active' },
+    { name: 'Aurora Innovation', corridor: 'I-45 Dallas"“Houston', status: 'Active' },
     { name: 'Kodiak Robotics', corridor: 'I-10 Texas Corridor', status: 'Active' },
     { name: 'Waymo Via', corridor: 'I-20 Southwest', status: 'Expanding' },
     { name: 'Plus', corridor: 'Multi-State', status: 'Active' },
-    { name: 'TuSimple', corridor: 'I-10 AZâ€“TX', status: 'Planning' },
+    { name: 'TuSimple', corridor: 'I-10 AZ"“TX', status: 'Planning' },
   ];
 
   return (

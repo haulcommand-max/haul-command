@@ -90,7 +90,7 @@ export default function AdminAdsPage() {
       <div style={{ background: '#0a0d16', borderBottom: '1px solid #1a223a', padding: '20px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>ðŸ“£ Ad Revenue Dashboard</h1>
-          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>Haul Command AdGrid OS Â· Self-serve + internal campaigns</div>
+          <div style={{ fontSize: 13, color: '#8fa3c0', marginTop: 4 }}>Haul Command AdGrid OS · Self-serve + internal campaigns</div>
         </div>
         <Link aria-label="Navigation Link" href="/advertise/dashboard" style={{
           background: 'linear-gradient(90deg, #f5c842, #ff9500)', color: '#07090f',
@@ -171,7 +171,7 @@ export default function AdminAdsPage() {
               {campaigns.filter(c => c.status === 'pending_review').map(c => (
                 <div key={c.id} style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                   <div style={{ fontWeight: 600, fontSize: 14, color: '#f0f4f8' }}>{c.company_name}</div>
-                  <div style={{ fontSize: 12, color: '#8fa3c0' }}>{c.name} Â· ${c.plan_monthly_fee}/mo</div>
+                  <div style={{ fontSize: 12, color: '#8fa3c0' }}>{c.name} · ${c.plan_monthly_fee}/mo</div>
                   <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                     <button aria-label="Interactive Button" onClick={() => updateStatus(c.id, 'active')} style={{
                       background: 'rgba(0,255,136,0.15)', border: '1px solid rgba(0,255,136,0.3)',
@@ -270,10 +270,10 @@ export default function AdminAdsPage() {
             <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 24 }}>
               <h3 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 16px' }}>Best Advertiser Targets</h3>
               {[
-                { type: 'Fuel Card Providers', why: 'Every operator needs fuel. 7,700+ targets.', value: '$59â€“$149/mo', examples: 'EFS, Comdata, WEX, Mudflap' },
-                { type: 'Commercial Insurance', why: 'Unverified operators = hot insurance leads.', value: '$59â€“$149/mo', examples: 'Progressive Commercial, Canal Insurance' },
-                { type: 'Equipment Dealers', why: 'New operators need light bars, flags, signs.', value: '$19â€“$59/mo', examples: 'Truckers Supply, Amazon Business' },
-                { type: 'Hotel Chains', why: 'Multi-day corridor operators need lodging.', value: '$19â€“$59/mo', examples: 'Choice Hotels, Super 8, Motel 6' },
+                { type: 'Fuel Card Providers', why: 'Every operator needs fuel. 7,700+ targets.', value: '$59"“$149/mo', examples: 'EFS, Comdata, WEX, Mudflap' },
+                { type: 'Commercial Insurance', why: 'Unverified operators = hot insurance leads.', value: '$59"“$149/mo', examples: 'Progressive Commercial, Canal Insurance' },
+                { type: 'Equipment Dealers', why: 'New operators need light bars, flags, signs.', value: '$19"“$59/mo', examples: 'Truckers Supply, Amazon Business' },
+                { type: 'Hotel Chains', why: 'Multi-day corridor operators need lodging.', value: '$19"“$59/mo', examples: 'Choice Hotels, Super 8, Motel 6' },
                 { type: 'AV Technology Companies', why: 'AV-ready certified operators = AV partners.', value: '$149/mo exclusive', examples: 'Aurora, Kodiak, Waabi' },
               ].map(tgt => (
                 <div key={tgt.type} style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>

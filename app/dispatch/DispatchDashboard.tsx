@@ -89,7 +89,7 @@ export default function DispatchDashboard({ stats }: Props) {
           <Activity className="w-5 h-5 text-red-500 animate-pulse" />
           <h1 className="text-xl font-bold tracking-widest text-gray-200 uppercase">Live Dispatch Control</h1>
           <div className="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-xs font-mono text-red-400">
-            {hasLiveData ? 'LIVE' : 'CONNECTING'} Â· v_dispatch_ready_supply
+            {hasLiveData ? 'LIVE' : 'CONNECTING'} · v_dispatch_ready_supply
           </div>
         </div>
         <div className="flex gap-4">
@@ -193,7 +193,7 @@ export default function DispatchDashboard({ stats }: Props) {
           </div>
 
 
-          {/* Live Supply HUD â€” wired to v_dispatch_ready_supply_internal */}
+          {/* Live Supply HUD — wired to v_dispatch_ready_supply_internal */}
           <div className="absolute top-6 left-6 right-6 flex justify-between items-start pointer-events-none">
             <div className="bg-black/80 backdrop-blur border border-white/5 p-4 rounded-xl flex gap-6 shadow-2xl pointer-events-auto">
               <div>
@@ -232,7 +232,7 @@ export default function DispatchDashboard({ stats }: Props) {
             </div>
 
             <div className="bg-black/60 backdrop-blur rounded-full px-4 py-2 text-xs font-mono text-gray-400 border border-white/5 flex items-center gap-2 pointer-events-auto cursor-help">
-              <Shield className="w-3 h-3" /> Avg Trust: {stats.avg_trust_score || 'â€”'}
+              <Shield className="w-3 h-3" /> Avg Trust: {stats.avg_trust_score || '—'}
             </div>
           </div>
 
@@ -305,7 +305,7 @@ export default function DispatchDashboard({ stats }: Props) {
               <span>v_dispatch_ready_supply_internal</span>
             </div>
             <div className="text-[10px] text-gray-600 mt-1">
-              {Object.keys(stats.by_country).length} countries Â· {Object.keys(stats.by_role).length} roles
+              {Object.keys(stats.by_country).length} countries · {Object.keys(stats.by_role).length} roles
             </div>
           </div>
 

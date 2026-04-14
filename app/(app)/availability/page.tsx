@@ -198,7 +198,7 @@ export default function AvailabilityPage() {
                                         exit={{ opacity: 0, x: -20 }}
                                     >
                                         <h2 className="text-xl font-bold mb-1">Who are you?</h2>
-                                        <p className="text-sm text-gray-500 mb-6">Basic contact info â€” takes 30 seconds.</p>
+                                        <p className="text-sm text-gray-500 mb-6">Basic contact info — takes 30 seconds.</p>
 
                                         <div className="space-y-4">
                                             <div>

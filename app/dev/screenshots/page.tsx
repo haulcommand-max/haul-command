@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { ScreenshotOverlay } from "@/components/ScreenshotOverlay";
 
 
-// CommandMap uses browser APIs â€” must be dynamically imported (no SSR)
+// CommandMap uses browser APIs — must be dynamically imported (no SSR)
 const CommandMap = dynamic(() => import("@/components/CommandMap").then(m => m.CommandMap), {
     ssr: false,
     loading: () => <div style={{ height: 900, background: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -13,7 +13,7 @@ const CommandMap = dynamic(() => import("@/components/CommandMap").then(m => m.C
 });
 
 
-// DEV ONLY â€” generates exportable App Store screenshot mocks
+// DEV ONLY — generates exportable App Store screenshot mocks
 // Visit /dev/screenshots to preview
 // Use browser screenshot tool or puppeteer to export as 1290Ã—2796 PNG
 
@@ -48,7 +48,7 @@ export default function ScreenshotMocksPage() {
         },
         {
             title: "Join the Haul Command Network",
-            subtitle: "Drivers â€¢ Brokers â€¢ Dispatch",
+            subtitle: "Drivers "¢ Brokers "¢ Dispatch",
             children: mapSlot,
         },
     ];
@@ -56,7 +56,7 @@ export default function ScreenshotMocksPage() {
     return (
         <main style={{ maxWidth: 420, margin: "0 auto", padding: 24, display: "grid", gap: 24, background: "#070707", minHeight: "100vh" }}>
             <div style={{ color: "#555", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
-                DEV ONLY Â· App Store Screenshot Mocks
+                DEV ONLY · App Store Screenshot Mocks
             </div>
             {screenshots.map((s, i) => (
                 <div key={i}>

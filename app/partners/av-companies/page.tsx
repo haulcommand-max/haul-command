@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'AV Company Partnerships â€” Haul Command',
+  title: 'AV Company Partnerships — Haul Command',
   description:
     'Partner with Haul Command to connect your autonomous trucking operations with AV-Ready certified escort operators. White-label, preferred provider, and data partnership models.',
   keywords: [
@@ -25,7 +25,7 @@ const PITCH_PAGES = [
   {
     num: '01',
     headline: 'Your trucks are autonomous. Your escorts shouldn\'t be random.',
-    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command has them â€” verified, AV-Ready certified, on your corridors.',
+    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command has them — verified, AV-Ready certified, on your corridors.',
     accent: '#ff9500',
   },
   {
@@ -46,11 +46,11 @@ const PITCH_PAGES = [
     headline: 'The Haul Command solution',
     body: null,
     bullets: [
-      'AV-Ready Certified operator network â€” trained on your truck\'s specific protocols',
+      'AV-Ready Certified operator network — trained on your truck\'s specific protocols',
       'Pre-vetted operators on your specific corridors, available within 47 minutes',
       'Single API call or dashboard to dispatch a certified escort',
-      'Escrow-protected payment â€” automatic on job completion, no disputes',
-      'Real-time tracking â€” your ops team sees the escort live alongside your truck',
+      'Escrow-protected payment — automatic on job completion, no disputes',
+      'Real-time tracking — your ops team sees the escort live alongside your truck',
     ],
     accent: '#00ff88',
   },
@@ -184,7 +184,7 @@ export default function AVPartnersPage() {
             {[
               {
                 letter: 'A', title: 'White-Label Integration',
-                desc: '"[YourBrand] Escort Connect" â€” powered by Haul Command. Your branding. Your logistics partners. We handle dispatch, verification, and payment.',
+                desc: '"[YourBrand] Escort Connect" — powered by Haul Command. Your branding. Your logistics partners. We handle dispatch, verification, and payment.',
                 price: 'Flat API fee + revenue share', accent: '#f5c842',
               },
               {

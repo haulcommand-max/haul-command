@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   /brokers â€” Broker Entry & Conversion Surface
+   /brokers — Broker Entry & Conversion Surface
    Converts demand-side attention into load postings and registrations.
    Mobile-first. Real data proof bars. No fluff.
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
@@ -249,7 +249,7 @@ export default function BrokersPage() {
                   <div style={{ fontSize: 15, fontWeight: 800, color: '#f5f7fb' }}>{c.label}</div>
                   <div style={{ marginTop: 4, display: 'flex', gap: 8, alignItems: 'center' }}>
                     <DemandBadge level={c.demand} />
-                    <span style={{ fontSize: 11, color: '#8f97a7' }}>{c.loads} loads/mo Â· ${c.rate.toLocaleString()} avg</span>
+                    <span style={{ fontSize: 11, color: '#8f97a7' }}>{c.loads} loads/mo · ${c.rate.toLocaleString()} avg</span>
                   </div>
                 </div>
                 <Link aria-label="Navigation Link" href="/map" style={{

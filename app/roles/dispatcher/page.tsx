@@ -6,7 +6,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Dispatchers â€” Dispatch Tools, Load Board & Escort Coordination | Haul Command',
+  title: 'Heavy Haul Dispatchers — Dispatch Tools, Load Board & Escort Coordination | Haul Command',
   description:
     'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and connect with verified operators across 120 countries. Real-time load board, dispatch map, and corridor intelligence.',
   keywords: [
@@ -76,9 +76,9 @@ export default function DispatcherPage() {
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 20px 0', fontSize: 11, color: '#6b7280', display: 'flex', gap: 6, alignItems: 'center', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <span style={{ color: gold }}>Dispatchers</span>
         </nav>
 
@@ -131,7 +131,7 @@ export default function DispatcherPage() {
           {[
             { q: 'What does a heavy haul dispatcher do?', a: 'A heavy haul dispatcher coordinates the movement of oversize or overweight loads by arranging permits, booking escort vehicles, planning routes, and communicating with drivers and brokers throughout each move.' },
             { q: 'How do I find a pilot car for my load?', a: 'Search the Haul Command directory by state and availability, or post your load on the load board. Certified escort operators can respond directly with availability and rates.' },
-            { q: 'How many pilot cars does my load need?', a: 'Use the Haul Command escort vehicle calculator â€” input your load dimensions and route states to get an instant requirement estimate. Requirements vary by state.' },
+            { q: 'How many pilot cars does my load need?', a: 'Use the Haul Command escort vehicle calculator — input your load dimensions and route states to get an instant requirement estimate. Requirements vary by state.' },
             { q: 'What permits are required for oversize loads?', a: 'Every state has different thresholds and escort requirements. Use the escort requirements tool to look up rules for any US state. For cross-state moves, permits are required in each jurisdiction.' },
           ].map(({ q, a }) => (
             <details key={q} style={{ marginBottom: 10, borderRadius: 12, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>

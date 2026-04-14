@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Consolidated Invoicing for Heavy Haul & Oversize Loads | Haul Command',
-  description: 'One invoice per project. Multi-escort, multi-state, multi-day heavy haul moves â€” all consolidated into a single billing document. Streamline your escort billing with Haul Command.',
+  description: 'One invoice per project. Multi-escort, multi-state, multi-day heavy haul moves — all consolidated into a single billing document. Streamline your escort billing with Haul Command.',
   keywords: ['consolidated invoicing', 'heavy haul billing', 'escort invoicing', 'pilot car billing', 'oversize load billing', 'multi-escort invoice'],
   openGraph: {
     title: 'Consolidated Invoicing for Heavy Haul & Oversize Loads | Haul Command',
@@ -70,7 +70,7 @@ export default function ConsolidatedInvoicingPage() {
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-            One project. One invoice. Multi-escort, multi-state, multi-day â€” all consolidated. 
+            One project. One invoice. Multi-escort, multi-state, multi-day — all consolidated. 
             Stop managing 15 different escort invoices for a single load.
           </p>
           <div className="flex flex-wrap justify-center gap-3">

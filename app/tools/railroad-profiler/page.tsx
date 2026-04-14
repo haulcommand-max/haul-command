@@ -15,7 +15,7 @@ export default function RailroadProfilerPending() {
                     Railroad Grade Crossing Profiler
                 </h1>
                 <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: 'rgba(16,185,129,0.1)', color: '#10b981', fontSize: 13, fontWeight: 700, marginBottom: 24, border: '1px solid rgba(16,185,129,0.2)' }}>
-                    COMING SOON â€” PREMIUM TOOL (T-34)
+                    COMING SOON — PREMIUM TOOL (T-34)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
                     Cross-references load ground clearance against DOT crossing hump profiles and grade data to prevent high-center accidents.

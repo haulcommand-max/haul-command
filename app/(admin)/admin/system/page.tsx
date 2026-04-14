@@ -1,6 +1,6 @@
 /**
  * GET /admin/system
- * Admin system health dashboard â€” cron jobs, edge functions, data pulse, revenue zones.
+ * Admin system health dashboard — cron jobs, edge functions, data pulse, revenue zones.
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'System Health | Haul Command Admin',
-    description: 'Internal system health dashboard â€” cron jobs, edge functions, RLS status.',
+    description: 'Internal system health dashboard — cron jobs, edge functions, RLS status.',
     robots: { index: false, follow: false },
 };
 
@@ -24,7 +24,7 @@ interface CronJob {
     command: string;
 }
 
-// Safe query helper â€” accepts any thenable or value-returning fn (avoids .catch() on PostgrestFilterBuilder)
+// Safe query helper — accepts any thenable or value-returning fn (avoids .catch() on PostgrestFilterBuilder)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function safeQuery(fn: () => unknown, fallback: any): Promise<any> {
     try { return await Promise.resolve(fn()); } catch { return fallback; }
@@ -191,13 +191,13 @@ export default async function SystemHealthPage() {
                 <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
                     <div>
                         <div style={badge}>âš¡ System Health</div>
-                        <h1 style={{ margin: '8px 0 4px', fontSize: 26, fontWeight: 900, color: '#f9fafb' }}>Haul Command â€” System Monitor</h1>
-                        <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Rendered: {new Date(now).toLocaleString()} Â· force-dynamic</p>
+                        <h1 style={{ margin: '8px 0 4px', fontSize: 26, fontWeight: 900, color: '#f9fafb' }}>Haul Command — System Monitor</h1>
+                        <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>Rendered: {new Date(now).toLocaleString()} · force-dynamic</p>
                     </div>
                     <Link aria-label="Navigation Link" href="/admin" style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, color: '#9ca3af', textDecoration: 'none' }}>â† Admin</Link>
                 </div>
 
-                {/* Stripe Mode Banner â€” MOVE 1 */}
+                {/* Stripe Mode Banner — MOVE 1 */}
                 {(() => {
                     const stripeKey = process.env.STRIPE_SECRET_KEY || '';
                     const isTest = stripeKey.startsWith('sk_test_');
@@ -214,7 +214,7 @@ export default async function SystemHealthPage() {
                             <span style={{ fontSize: 24 }}>{isLive ? 'ðŸ’³' : 'ðŸš¨'}</span>
                             <div>
                                 <div style={{ fontWeight: 900, fontSize: 14, color: isLive ? '#34d399' : '#f87171', letterSpacing: '0.02em' }}>
-                                    {isLive ? 'âœ… STRIPE LIVE MODE â€” Real Payments Active' : notSet ? 'âŒ STRIPE NOT CONFIGURED â€” No Payments Possible' : 'ðŸš¨ STRIPE TEST MODE â€” NO REAL PAYMENTS BEING COLLECTED'}
+                                    {isLive ? 'âœ… STRIPE LIVE MODE — Real Payments Active' : notSet ? 'âŒ STRIPE NOT CONFIGURED — No Payments Possible' : 'ðŸš¨ STRIPE TEST MODE — NO REAL PAYMENTS BEING COLLECTED'}
                                 </div>
                                 <div style={{ fontSize: 11, color: isLive ? '#6ee7b7' : '#fca5a5', marginTop: 3 }}>
                                     {isLive ? 'Subscriptions, escrow, boosts, and training enrollments are processing real charges.' : notSet ? 'Add STRIPE_SECRET_KEY (sk_live_...) to .env.local and Vercel.' : 'All 12 revenue features are active but collecting $0. Switch to sk_live_ keys in .env.local and Vercel environment variables NOW.'}
@@ -229,7 +229,7 @@ export default async function SystemHealthPage() {
                     <span style={{ fontSize: 18 }}>{pgCronEnabled ? 'âœ…' : 'ðŸ”´'}</span>
                     <div>
                         <div style={{ fontWeight: 800, fontSize: 13, color: pgCronEnabled ? '#34d399' : '#f87171' }}>
-                            pg_cron: {pgCronEnabled ? `ENABLED â€” ${data.cron.jobs.length} jobs registered` : 'NOT ENABLED â€” autonomous loops blocked'}
+                            pg_cron: {pgCronEnabled ? `ENABLED — ${data.cron.jobs.length} jobs registered` : 'NOT ENABLED — autonomous loops blocked'}
                         </div>
                         {!pgCronEnabled && (
                             <div style={{ fontSize: 11, color: '#ef4444', marginTop: 3 }}>
@@ -241,14 +241,14 @@ export default async function SystemHealthPage() {
 
                 {/* â”€â”€ INTEGRATION HEALTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 <section style={{ marginBottom: 28 }}>
-                    <h2 style={sectionHeader}>Integration Health â€” {data.configuredCount}/{data.totalCount} Configured</h2>
+                    <h2 style={sectionHeader}>Integration Health — {data.configuredCount}/{data.totalCount} Configured</h2>
                     <div style={{
                         padding: '14px 18px', borderRadius: 12, marginBottom: 12,
                         background: data.configuredCount >= 10 ? 'rgba(16,185,129,0.08)' : data.configuredCount >= 5 ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)',
                         border: `1px solid ${data.configuredCount >= 10 ? 'rgba(16,185,129,0.25)' : data.configuredCount >= 5 ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)'}`,
                     }}>
                         <div style={{ fontSize: 13, fontWeight: 700, color: data.configuredCount >= 10 ? '#34d399' : data.configuredCount >= 5 ? '#fbbf24' : '#f87171' }}>
-                            {data.configuredCount >= 12 ? 'âœ… Platform fully operational' : data.configuredCount >= 8 ? 'âš ï¸ Core services running â€” optional integrations missing' : 'ðŸ”´ Multiple services missing â€” check below'}
+                            {data.configuredCount >= 12 ? 'âœ… Platform fully operational' : data.configuredCount >= 8 ? 'âš ï¸ Core services running — optional integrations missing' : 'ðŸ”´ Multiple services missing — check below'}
                         </div>
                     </div>
                     <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, overflow: 'hidden' }}>
@@ -295,7 +295,7 @@ export default async function SystemHealthPage() {
                         {criticalTables.map(t => (
                             <div key={t.name} style={card}>
                                 <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>{t.label}</div>
-                                <div style={{ fontSize: 26, fontWeight: 900, color: (t.count ?? 0) > 0 ? '#34d399' : '#f87171' }}>{t.count?.toLocaleString() ?? 'â€”'}</div>
+                                <div style={{ fontSize: 26, fontWeight: 900, color: (t.count ?? 0) > 0 ? '#34d399' : '#f87171' }}>{t.count?.toLocaleString() ?? '—'}</div>
                                 {t.note && <div style={{ fontSize: 10, color: '#4b5563', marginTop: 2 }}>{t.note}</div>}
                             </div>
                         ))}
@@ -320,12 +320,12 @@ export default async function SystemHealthPage() {
                 {/* Critical Supply Gaps */}
                 {data.uzr.topGaps.length > 0 && (
                     <section style={{ marginBottom: 28 }}>
-                        <h2 style={sectionHeader}>âš ï¸ Underserved Zone Radar â€” Top Gaps</h2>
+                        <h2 style={sectionHeader}>âš ï¸ Underserved Zone Radar — Top Gaps</h2>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                             {data.uzr.topGaps.map((g) => (
                                 <div key={g.region_code} style={{ padding: '6px 14px', borderRadius: 8, background: 'rgba(239,68,68,0.08)', border: `1px solid ${GAP_COLOR[g.gap_type] ?? 'rgba(239,68,68,0.25)'}20` }}>
                                     <span style={{ fontSize: 12, fontWeight: 700, color: GAP_COLOR[g.gap_type] ?? '#f87171' }}>{g.region_code}</span>
-                                    <span style={{ fontSize: 10, color: '#6b7280', marginLeft: 8 }}>{g.gap_type.replace('_', ' ')} Â· {g.severity_score}</span>
+                                    <span style={{ fontSize: 10, color: '#6b7280', marginLeft: 8 }}>{g.gap_type.replace('_', ' ')} · {g.severity_score}</span>
                                 </div>
                             ))}
                         </div>
@@ -343,7 +343,7 @@ export default async function SystemHealthPage() {
                                 <div key={expected.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '11px 16px', gap: 12, borderBottom: i < CRON_JOBS_EXPECTED.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
                                     <div>
                                         <div style={{ fontSize: 12, fontWeight: 700, color: '#e5e7eb', fontFamily: 'monospace' }}>{expected.name}</div>
-                                        <div style={{ fontSize: 10, color: '#6b7280' }}>{expected.cadence}{cronJob ? ` Â· ${cronJob.schedule}` : ''}</div>
+                                        <div style={{ fontSize: 10, color: '#6b7280' }}>{expected.cadence}{cronJob ? ` · ${cronJob.schedule}` : ''}</div>
                                     </div>
                                     <span style={{ padding: '2px 10px', borderRadius: 6, fontSize: 10, fontWeight: 800, background: registered ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)', color: registered ? '#34d399' : '#f87171', border: `1px solid ${registered ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)'}` }}>
                                         {registered ? (cronJob?.active ? 'Active' : 'Paused') : 'Not Registered'}
@@ -369,7 +369,7 @@ export default async function SystemHealthPage() {
                     <h2 style={sectionHeader}>RLS Status</h2>
                     <div style={{ padding: '12px 16px', background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 10, fontSize: 12, color: '#6ee7b7' }}>
                         âœ… Hardened on 18 sensitive tables (gate_event_log, arr_reposition_plays, terminal_risk_profile, market_pressure_snapshots, supply_actions + 13 more).
-                        Remaining 28 lower-priority tables â€” audit via Supabase Security Advisor.
+                        Remaining 28 lower-priority tables — audit via Supabase Security Advisor.
                     </div>
                 </section>
 

@@ -44,7 +44,7 @@ export default function IntelPage() {
             </article>
           ))}
 
-          {/* Paywall gate â€” after 3rd card, before remaining feed */}
+          {/* Paywall gate — after 3rd card, before remaining feed */}
           <div style={{ margin: '8px 0' }}>
             <PaywallGateBanner
               surfaceName="Intelligence Feed"

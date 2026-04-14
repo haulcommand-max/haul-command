@@ -28,7 +28,7 @@ export default function StartPage() {
                     How do you use Haul Command?
                 </h1>
                 <p className="text-brand-muted text-sm">
-                    This personalizes your experience â€” loads, tools, and alerts.
+                    This personalizes your experience — loads, tools, and alerts.
                 </p>
             </div>
 
@@ -79,7 +79,7 @@ export default function StartPage() {
                     onClick={() => router.push(`/directory?role=${role}`)}
                     className="mt-6 text-center text-sm text-brand-muted hover:text-brand-gold transition-colors"
                 >
-                    Skip equipment â€” take me to the directory â†’
+                    Skip equipment — take me to the directory â†’
                 </button>
             )}
         </div>

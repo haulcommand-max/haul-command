@@ -28,7 +28,7 @@ export function ConsolidatedInvoicingFastPay() {
     <section className="relative z-10 py-10 sm:py-16">
       <div className="hc-container max-w-5xl">
         <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-          {/* Consolidated Invoicing â€” Carrier Side */}
+          {/* Consolidated Invoicing — Carrier Side */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true }}
             variants={fadeUp}
@@ -50,7 +50,7 @@ export function ConsolidatedInvoicingFastPay() {
               </div>
 
               <p className="text-[#8fa3b8] text-xs sm:text-sm leading-relaxed mb-5">
-                One invoice per project. Multi-escort, multi-state, multi-day moves â€” 
+                One invoice per project. Multi-escort, multi-state, multi-day moves — 
                 all consolidated into a single, clean billing document. No more managing 
                 15 different escort invoices for one load.
               </p>
@@ -78,7 +78,7 @@ export function ConsolidatedInvoicingFastPay() {
             </div>
           </motion.div>
 
-          {/* Fast Pay â€” Operator Side */}
+          {/* Fast Pay — Operator Side */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true }}
             custom={1} variants={fadeUp}
@@ -101,15 +101,15 @@ export function ConsolidatedInvoicingFastPay() {
 
               <p className="text-[#8fa3b8] text-xs sm:text-sm leading-relaxed mb-5">
                 Complete the job, confirm delivery, get paid. Same day payout to your bank account, 
-                or instant payout through Stripe. No invoicing required â€” the platform handles everything.
+                or instant payout through Stripe. No invoicing required — the platform handles everything.
               </p>
 
               <div className="space-y-2 mb-5">
                 {[
                   "Same-day direct deposit standard on all jobs",
                   "Instant payout option (funds in minutes, not days)",
-                  "Escrow-protected â€” your money is never at risk",
-                  "No paperwork, no invoicing â€” automatic settlement",
+                  "Escrow-protected — your money is never at risk",
+                  "No paperwork, no invoicing — automatic settlement",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2 text-xs text-[#b0bac9]">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />

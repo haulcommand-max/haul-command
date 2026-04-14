@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Infrastructure Index â€” Band C Rank 2
+ * Infrastructure Index — Band C Rank 2
  * 
  * Heavy haul support infrastructure directory.
  * Categories: staging yards, secure parking, escort meetup zones,

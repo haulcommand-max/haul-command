@@ -15,7 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { verifyIpnSignature } from '@/lib/hc-pay/nowpayments';
 import { writeLedgerEntry, getOrCreateWallet, recordRevenue } from '@/lib/hc-pay/ledger';
-import { trySendNotification } from '@/lib/notifications/fcm';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 export const runtime = 'nodejs';
 
@@ -125,19 +125,18 @@ export async function POST(req: NextRequest) {
             referenceId: payment.reference_id,
         });
 
-        // FCM push to operator
-        trySendNotification({
-            userId: payment.payee_user_id,
-            type: 'quickpay_deposit',
+        // FCM push via channel router
+        sendRoutedNotification(payment.payee_user_id, {
+            type: 'payment_received',
+            urgency: 'high',
             title: `$${netToOperator.toFixed(2)} received via ${payment.pay_currency}`,
             body: `Payment credited to your HC Pay wallet. Tap to view balance.`,
             data: {
-                type: 'payment_received',
                 referenceType: payment.reference_type ?? '',
                 referenceId: payment.reference_id ?? '',
-                screen: '/wallet',
             },
-        }).then(()=>{});
+            url: '/wallet',
+        }).catch(()=>{});
 
         console.log(
             `[HC Pay IPN] Credited $${netToOperator} to ${payment.payee_user_id} ` +

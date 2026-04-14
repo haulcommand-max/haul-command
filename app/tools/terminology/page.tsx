@@ -15,7 +15,7 @@ export default function TerminologyPending() {
                     Dynamic Terminology Switcher
                 </h1>
                 <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: 'rgba(241,169,27,0.1)', color: '#f1a91b', fontSize: 13, fontWeight: 700, marginBottom: 24, border: '1px solid rgba(241,169,27,0.2)' }}>
-                    COMING SOON â€” PREMIUM TOOL (T-37)
+                    COMING SOON — PREMIUM TOOL (T-37)
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
                     Region-aware localization converting industry terms instantly based on active jurisdiction (e.g., Pilot Car vs Abnormal Load Escort).

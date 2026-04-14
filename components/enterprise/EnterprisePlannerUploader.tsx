@@ -118,7 +118,7 @@ export default function EnterprisePlannerUploader() {
                   </div>
                   <div>
                     <h3 className="text-white font-bold">{file.name}</h3>
-                    <p className="text-[#566880] text-xs">{(file.size / 1024).toFixed(1)} KB Â· Ready for ingestion</p>
+                    <p className="text-[#566880] text-xs">{(file.size / 1024).toFixed(1)} KB · Ready for ingestion</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

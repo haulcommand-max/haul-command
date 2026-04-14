@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { calculateRange, PricingBenchmark } from "@/lib/pricing";
 
 /**
- * /quote â€” Smart Quote Calculator (brand-upgraded)
+ * /quote — Smart Quote Calculator (brand-upgraded)
  * Mobile-first design matching HC design language.
  */
 export default function QuoteWizard() {
@@ -126,7 +126,7 @@ export default function QuoteWizard() {
                     }}>
                         <div style={{ fontSize: 11, fontWeight: 800, color: S.gold, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Recommended Range</div>
                         <div style={{ fontSize: 32, fontWeight: 900, color: S.text, marginTop: 6 }}>
-                            ${quote.min.toFixed(0)} â€” ${quote.max.toFixed(0)}
+                            ${quote.min.toFixed(0)} — ${quote.max.toFixed(0)}
                         </div>
                         <div style={{ fontSize: 12, color: S.muted, marginTop: 4 }}>Based on market data for {form.miles} miles</div>
 
@@ -137,7 +137,7 @@ export default function QuoteWizard() {
                                     padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
                                 }}>
                                     <span style={{ color: '#d1d5db' }}>{l.label}</span>
-                                    <span style={{ color: S.gold, fontWeight: 700 }}>${l.min.toFixed(0)}â€“${l.max.toFixed(0)}</span>
+                                    <span style={{ color: S.gold, fontWeight: 700 }}>${l.min.toFixed(0)}"“${l.max.toFixed(0)}</span>
                                 </div>
                             ))}
                         </div>

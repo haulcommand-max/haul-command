@@ -11,10 +11,10 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// TRUCKER SERVICES DIRECTORY â€” Powered by public.places + place_type_metadata
+// TRUCKER SERVICES DIRECTORY — Powered by public.places + place_type_metadata
 // Absorbs TruckStopsAndServices.com's entire category taxonomy
 // All data routes through the Claimable Places Engine
-// No duplication â€” single source of truth in Supabase
+// No duplication — single source of truth in Supabase
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const ICON_MAP: Record<string, any> = {
@@ -68,14 +68,14 @@ async function getCategories(): Promise<CategoryMeta[]> {
 }
 
 function getFallbackCategories(): CategoryMeta[] {
-  // Hardcoded fallback if Supabase is unreachable â€” matches migration seed exactly
+  // Hardcoded fallback if Supabase is unreachable — matches migration seed exactly
   return [
     { place_type: 'pilot_car_company', display_name: 'Pilot Car Companies', description: 'Certified escort vehicle operators with verified insurance and equipment.', icon_name: 'Car', slug: 'pilot-car-companies', category_group: 'core_escort', sort_order: 1 },
     { place_type: 'truck_stop', display_name: 'Truck Stops', description: 'Full-service truck stops with fuel, showers, parking, and amenities.', icon_name: 'MapPin', slug: 'truck-stops', category_group: 'stops_parking', sort_order: 10 },
     { place_type: 'tow_rotator', display_name: 'Towing & Wrecker Service', description: 'Heavy-duty towing, rotator service, and wrecker dispatch.', icon_name: 'Truck', slug: 'towing', category_group: 'towing_emergency', sort_order: 12 },
     { place_type: 'rest_area', display_name: 'Rest Areas', description: 'Highway rest areas and turnouts with amenities and parking capacity.', icon_name: 'MapPin', slug: 'rest-areas', category_group: 'stops_parking', sort_order: 15 },
     { place_type: 'repair_shop', display_name: 'Truck & Trailer Repair', description: 'Full-service repair shops for commercial trucks and trailers.', icon_name: 'Wrench', slug: 'truck-trailer-repair', category_group: 'repair_maintenance', sort_order: 20 },
-    { place_type: 'mobile_truck_repair', display_name: 'Mobile Truck / Trailer Repair', description: 'Roadside repair services â€” mobile mechanics for breakdowns.', icon_name: 'Wrench', slug: 'mobile-repair', category_group: 'repair_maintenance', sort_order: 21 },
+    { place_type: 'mobile_truck_repair', display_name: 'Mobile Truck / Trailer Repair', description: 'Roadside repair services — mobile mechanics for breakdowns.', icon_name: 'Wrench', slug: 'mobile-repair', category_group: 'repair_maintenance', sort_order: 21 },
     { place_type: 'garages_shops', display_name: 'Garages / Shops', description: 'General auto and truck repair garages.', icon_name: 'Wrench', slug: 'garages', category_group: 'repair_maintenance', sort_order: 22 },
     { place_type: 'tire_shop', display_name: 'Tire Repair & Sales', description: 'Commercial tire sales, repair, retreading, and 24/7 roadside service.', icon_name: 'Gauge', slug: 'tire-repair', category_group: 'repair_maintenance', sort_order: 25 },
     { place_type: 'body_shop', display_name: 'Body Shop', description: 'Collision repair, paint, and body work for commercial vehicles.', icon_name: 'HardHat', slug: 'body-shop', category_group: 'repair_maintenance', sort_order: 26 },
@@ -89,11 +89,11 @@ function getFallbackCategories(): CategoryMeta[] {
     { place_type: 'cat_scale', display_name: 'CAT Scale Locations', description: 'Certified truck scale locations for weight verification.', icon_name: 'Scale', slug: 'cat-scales', category_group: 'scales_compliance', sort_order: 36 },
     { place_type: 'oil_lube', display_name: 'Oil & Lube', description: 'Quick oil change, lubrication, and preventive maintenance.', icon_name: 'Fuel', slug: 'oil-lube', category_group: 'tires_fuel', sort_order: 40 },
     { place_type: 'mobile_fueling', display_name: 'Mobile Fueling', description: 'On-site fuel delivery for fleet yards and staging areas.', icon_name: 'Fuel', slug: 'fuel-delivery', category_group: 'tires_fuel', sort_order: 42 },
-    { place_type: 'oil_delivery', display_name: 'Oil Supplies â€” Delivery', description: 'Bulk oil, lubricant, and fluid delivery services.', icon_name: 'Package', slug: 'oil-delivery', category_group: 'tires_fuel', sort_order: 43 },
+    { place_type: 'oil_delivery', display_name: 'Oil Supplies — Delivery', description: 'Bulk oil, lubricant, and fluid delivery services.', icon_name: 'Package', slug: 'oil-delivery', category_group: 'tires_fuel', sort_order: 43 },
     { place_type: 'spill_response', display_name: 'Spill Response', description: 'Hazmat spill cleanup and OSHA-compliant containment.', icon_name: 'AlertTriangle', slug: 'spill-response', category_group: 'towing_emergency', sort_order: 50 },
     { place_type: 'environmental_cleanup', display_name: 'Environmental Clean Up', description: 'Soil remediation, fuel spill cleanup, environmental compliance.', icon_name: 'AlertTriangle', slug: 'environmental-cleanup', category_group: 'towing_emergency', sort_order: 51 },
     { place_type: 'lock_out_service', display_name: 'Lock Out Services', description: '24/7 locksmith and lockout services for commercial trucks.', icon_name: 'Phone', slug: 'lockout', category_group: 'towing_emergency', sort_order: 52 },
-    { place_type: 'truck_wash', display_name: 'Truck Wash', description: 'Commercial truck wash â€” automated, touchless, full-service.', icon_name: 'Truck', slug: 'truck-wash', category_group: 'wash_clean', sort_order: 55 },
+    { place_type: 'truck_wash', display_name: 'Truck Wash', description: 'Commercial truck wash — automated, touchless, full-service.', icon_name: 'Truck', slug: 'truck-wash', category_group: 'wash_clean', sort_order: 55 },
     { place_type: 'trailer_wash', display_name: 'Trailer Wash', description: 'Interior and exterior trailer wash for flatbeds, vans, specialty.', icon_name: 'Truck', slug: 'trailer-wash', category_group: 'wash_clean', sort_order: 56 },
     { place_type: 'washout', display_name: 'Trailer / Tanker Wash Out', description: 'Food-grade and chemical tanker cleaning, FDA/DOT compliant.', icon_name: 'Truck', slug: 'tanker-washout', category_group: 'wash_clean', sort_order: 60 },
     { place_type: 'chrome_shop', display_name: 'Chrome Shops', description: 'Chrome accessories, bumpers, stacks, and custom truck upgrades.', icon_name: 'ShoppingCart', slug: 'chrome-shops', category_group: 'parts_supplies', sort_order: 70 },
@@ -164,7 +164,7 @@ export default async function TruckerServicesPage() {
                 <span style={{ color: gold }}>Directory</span>
               </h1>
               <p style={{ margin: 0, fontSize: 15, color: muted, lineHeight: 1.7, maxWidth: 540 }}>
-                Find repair shops, truck stops, towing, scales, parts, and every service a heavy haul operation needs â€” powered by the world&apos;s largest oversize load logistics platform.
+                Find repair shops, truck stops, towing, scales, parts, and every service a heavy haul operation needs — powered by the world&apos;s largest oversize load logistics platform.
               </p>
             </div>
 
@@ -280,7 +280,7 @@ export default async function TruckerServicesPage() {
           </div>
         </div>
 
-        {/* â”€â”€ AdGrid â€” Trucker Services Mid â”€â”€ */}
+        {/* â”€â”€ AdGrid — Trucker Services Mid â”€â”€ */}
         <div style={{ marginTop: 24, marginBottom: 24 }}>
           <AdGridSlot zone="trucker_services_mid" />
         </div>
@@ -316,7 +316,7 @@ export default async function TruckerServicesPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Snippet Injector â€” featured snippet capture â”€â”€ */}
+      {/* â”€â”€ Snippet Injector — featured snippet capture â”€â”€ */}
       <SnippetInjector
         blocks={['definition', 'faq']}
         term="trucker services"

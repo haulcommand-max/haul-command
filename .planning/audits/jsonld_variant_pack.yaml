@@ -1,0 +1,29 @@
+# GEMINI-04: JSON-LD Drafts
+
+jsonld_variant_pack:
+  Course:
+    "@context": "https://schema.org"
+    "@type": "Course"
+    "name": "Heavy Haul Route Survey Certification"
+    "description": "Master bridge clearance mapping, high-pole operations, and route documentation."
+    "provider": 
+      "@type": "Organization"
+      "name": "Haul Command Academy"
+  
+  VideoObject:
+    "@context": "https://schema.org"
+    "@type": "VideoObject"
+    "name": "Installing High Pole Mounts Safely"
+    "uploadDate": "2026-04-12"
+    "contentUrl": "https://www.haulcommand.com/videos/high-pole-install.mp4"
+    "thumbnailUrl": "https://www.haulcommand.com/thumbnails/high-pole.jpg"
+
+  FAQPage:
+    "@context": "https://schema.org"
+    "@type": "FAQPage"
+    "mainEntity": 
+      - "@type": "Question"
+        "name": "Do I need a CDL to operate an escort vehicle?"
+        "acceptedAnswer":
+          "@type": "Answer"
+          "text": "No, a standard driver's license is required, though individual states require specific Pilot/Escort certification."

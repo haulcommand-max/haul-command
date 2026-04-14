@@ -240,7 +240,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
                       {topCorridor.name} â€” {100 - topCorridor.supplyPct}% shortage
                     </div>
                     <div style={{ fontSize: 'var(--m-font-body-sm)', color: 'var(--m-text-secondary)', marginTop: 2 }}>
-                      Demand score {topCorridor.demandScore} Â· {topCorridor.operatorCount} operators on corridor
+                      Demand score {topCorridor.demandScore} · {topCorridor.operatorCount} operators on corridor
                     </div>
                   </div>
                   <ChevronRight />
@@ -315,7 +315,7 @@ function EscortHome({ signals }: { signals: HomeSignals }) {
                       {c.name}
                     </div>
                     <div style={{ fontSize: 'var(--m-font-caption)', color: 'var(--m-text-muted)' }}>
-                      {c.operatorCount} operators Â· Demand {c.demandScore}
+                      {c.operatorCount} operators · Demand {c.demandScore}
                     </div>
                   </div>
                   <MobileChip label={c.supplyPct < 35 ? 'Shortage' : 'Tight'} variant={c.supplyPct < 35 ? 'warning' : 'gold'} />
@@ -543,7 +543,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
                 â­ Featured Partner
               </div>
               <div style={{ fontSize: 'var(--m-font-caption)', color: 'var(--m-text-muted)', marginTop: 2 }}>
-                Priority listing + search boost Â· $99/mo
+                Priority listing + search boost · $99/mo
               </div>
             </div>
             <ChevronRight />
@@ -588,7 +588,7 @@ function SupportPartnerHome({ signals }: { signals: HomeSignals }) {
                       ðŸ›  {c.name}
                     </div>
                     <div style={{ fontSize: 'var(--m-font-caption)', color: 'var(--m-text-muted)', marginTop: 2 }}>
-                      {c.operatorCount} operators Â· {100 - c.supplyPct}% need more coverage
+                      {c.operatorCount} operators · {100 - c.supplyPct}% need more coverage
                     </div>
                   </div>
                   <ChevronRight />
@@ -722,7 +722,7 @@ function ObserverHome({ signals }: { signals: HomeSignals }) {
                       {c.name}
                     </div>
                     <div style={{ fontSize: 'var(--m-font-caption)', color: 'var(--m-text-muted)', marginTop: 2 }}>
-                      Supply {c.supplyPct}% Â· Demand {c.demandScore} Â· {c.operatorCount} operators
+                      Supply {c.supplyPct}% · Demand {c.demandScore} · {c.operatorCount} operators
                     </div>
                   </div>
                   <div style={{ width: 48, height: 8, borderRadius: 999, background: 'rgba(255,255,255,0.06)', overflow: 'hidden', flexShrink: 0 }}>
@@ -1062,7 +1062,7 @@ function LiveActivityProof({ signals }: { signals: HomeSignals }) {
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--m-text-primary)' }}>ðŸ›£ {c.name}</div>
                 <div style={{ fontSize: 11, color: 'var(--m-text-muted)', marginTop: 2 }}>
-                  {c.operatorCount} operators Â· Demand {c.demandScore}
+                  {c.operatorCount} operators · Demand {c.demandScore}
                 </div>
               </div>
               <MobileChip

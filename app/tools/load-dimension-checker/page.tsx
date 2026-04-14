@@ -21,16 +21,16 @@ const STATE_OVERRIDES = [
 ]
 
 const ESCORT_MATRIX = [
-  { trigger:'Width 10â€“12 ft', requirement:'1 escort vehicle (front or rear per state)', states:'Most US states' },
-  { trigger:'Width 12â€“14 ft', requirement:'1 front escort + 1 rear escort vehicle',       states:'Most US states' },
-  { trigger:'Width 14â€“16 ft', requirement:'2 escorts + high pole operator (some states)',  states:'AZ, TX, CA, WA, OR, NV' },
+  { trigger:'Width 10"“12 ft', requirement:'1 escort vehicle (front or rear per state)', states:'Most US states' },
+  { trigger:'Width 12"“14 ft', requirement:'1 front escort + 1 rear escort vehicle',       states:'Most US states' },
+  { trigger:'Width 14"“16 ft', requirement:'2 escorts + high pole operator (some states)',  states:'AZ, TX, CA, WA, OR, NV' },
   { trigger:'Width 16+ ft',   requirement:'2 escorts + high pole + police escort',         states:'Most US states (superload)' },
-  { trigger:'Height 14â€“15 ft',requirement:'High pole operator required',                   states:'AZ, TX, NM, CA' },
+  { trigger:'Height 14"“15 ft',requirement:'High pole operator required',                   states:'AZ, TX, NM, CA' },
   { trigger:'Height 15+ ft',  requirement:'High pole + police escort (many states)',        states:'Most US states' },
   { trigger:'Length 100+ ft', requirement:'Rear steer / steerman operator',               states:'CA, AZ, TX, OR, NV, WA' },
 ]
 
-const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Load Dimension Checker â€” Is My Load Oversize?', url:'https://www.haulcommand.com/tools/load-dimension-checker', description:'Check if your load is oversize and what permits and escorts are required. Free, no login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
+const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Load Dimension Checker — Is My Load Oversize?', url:'https://www.haulcommand.com/tools/load-dimension-checker', description:'Check if your load is oversize and what permits and escorts are required. Free, no login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
 const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
   {"@type":'Question', name:'What makes a load oversize in the US?', acceptedAnswer:{"@type":'Answer', text:'In the US, a load is considered oversize if it exceeds any of these federal limits: width over 8 feet 6 inches (8.5 ft), height over 13 feet 6 inches (13.5 ft), length over 53 feet (standard trailer), or weight over 80,000 lbs gross vehicle weight. Exceeding any of these dimensions requires an oversize load permit in every state the load travels through.'}},
   {"@type":'Question', name:'When is a pilot car required?', acceptedAnswer:{"@type":'Answer', text:'A pilot car (escort vehicle) is required when a load exceeds state-specific width, height, or length thresholds. In most US states, loads exceeding 12 feet wide require at least one pilot car. At 14+ feet wide, two pilot cars are typically required. At 16+ feet wide, police escorts are additionally required in most states.'}},
@@ -45,7 +45,7 @@ export default function LoadDimensionCheckerPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL Â· NO LOGIN REQUIRED</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Is My Load Oversize?</h1>
             <p className="text-sm text-[#8a9ab0] max-w-2xl">Enter your load dimensions and weight to instantly find out if permits are required, what pilot car or escort rules apply, and what states have different thresholds.</p>
           </div>
@@ -69,7 +69,7 @@ export default function LoadDimensionCheckerPage() {
 
           {/* FEDERAL LIMITS QUICK REFERENCE */}
           <div className="mb-8">
-            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Federal Legal Load Limits â€” Quick Reference</h2>
+            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Federal Legal Load Limits — Quick Reference</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label:'Max Width',  val:"8'6\"",  over:'> 8.5 ft', color:'#ef4444' },
@@ -124,7 +124,7 @@ export default function LoadDimensionCheckerPage() {
                 {q:'What makes a load oversize in the US?', a:'A load is oversize if it exceeds any of: width over 8.5 ft, height over 13.5 ft, length over 53 ft (standard trailer), or weight over 80,000 lbs GVW. Exceeding any of these requires an oversize permit in every state traveled through.'},
                 {q:'When is a pilot car required?', a:'A pilot car is required when a load exceeds state-specific width, height, or length thresholds. In most US states, loads over 12 ft wide require at least one pilot car. At 14+ ft wide, two are typically required. At 16+ ft wide, police escorts are additionally required in most states.'},
                 {q:'What is the maximum legal width without a permit?', a:'8 feet 6 inches (8.5 ft) on most US highways. Some states allow slightly different legal widths on certain road classes, but any load exceeding 8.5 ft requires an oversize permit in virtually all states.'},
-                {q:'Is length or weight more important for determining if a load is oversize?', a:'Both matter independently. A load can be legal in weight but oversize in width, or legal in dimensions but overweight. You need a permit if you exceed any single threshold â€” they are not averaged or combined.'},
+                {q:'Is length or weight more important for determining if a load is oversize?', a:'Both matter independently. A load can be legal in weight but oversize in width, or legal in dimensions but overweight. You need a permit if you exceed any single threshold — they are not averaged or combined.'},
               ].map((item,i)=>(
                 <details key={i} className="border border-[#131c28] rounded-xl p-4">
                   <summary className="text-sm font-semibold text-[#d0dce8] cursor-pointer list-none flex justify-between">{item.q}<span className="text-[#566880] ml-3">+</span></summary>

@@ -124,6 +124,23 @@ const nextConfig: NextConfig = {
         ];
 
         return [
+            // §34 Command-OS — /hq is the canonical board-grade URL
+            {
+                source: '/hq',
+                destination: '/dashboard/command',
+                permanent: false,
+            },
+            {
+                source: '/hq/:path*',
+                destination: '/dashboard/command',
+                permanent: false,
+            },
+            // Canonical homepage — /home is a mobile app route, not an SEO surface
+            {
+                source: '/home',
+                destination: '/',
+                permanent: true,
+            },
             // Legacy URL patterns → canonical
             {
                 source: "/operators/:path*",

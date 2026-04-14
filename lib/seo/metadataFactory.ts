@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 export interface SeoConfig {
     title: string;
@@ -14,20 +15,13 @@ const DOMAIN = 'https://www.haulcommand.com';
 /**
  * HC-W1-03 Canonical URL / Slug / Hreflang Discipline
  * Generates strict canonical and hreflang tags for any Next.js 15 page.
+ * Now wired to the full 120-country hreflang engine (lib/seo/hreflang.ts).
  */
 export function generatePageMetadata(config: SeoConfig): Metadata {
     const canonicalUrl = `${DOMAIN}${config.canonicalPath}`;
     
-    // Build the hreflang map for 120-country rollout compatibility
-    const country = (config.countryCode || 'us').toLowerCase();
-    const hreflang = {
-        'en-US': country === 'us' ? canonicalUrl : `${DOMAIN}/directory/us`,
-        'en-AU': country === 'au' ? canonicalUrl : `${DOMAIN}/directory/au`,
-        'en-CA': country === 'ca' ? canonicalUrl : `${DOMAIN}/directory/ca`,
-        'en-ZA': country === 'za' ? canonicalUrl : `${DOMAIN}/directory/za`,
-        'en-GB': country === 'gb' ? canonicalUrl : `${DOMAIN}/directory/gb`,
-        'x-default': canonicalUrl
-    };
+    // Wire the full 120-country hreflang engine
+    const hreflang = getGlobalHreflangTags(config.canonicalPath);
 
     return {
         title: `${config.title} | ${DEFAULT_SITE_NAME}`,

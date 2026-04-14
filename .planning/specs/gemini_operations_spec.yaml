@@ -1,0 +1,54 @@
+model: "Gemini 3.1 Pro High"
+mission: "Act as the large-context scanner, clustering engine, QA copilot, documentation generator, template generator, and parallel research worker for the backlog while Opus decides architecture and Sonnet does the main wiring."
+
+start_order: 3
+starts_parallel_with:
+  - "Claude Opus 4.6"
+supports_after:
+  - "Claude Sonnet 4.6"
+
+hard_limits:
+  - "Do not own irreversible money-path architecture"
+  - "Do not own security-critical migration design"
+  - "Do not own final Stripe, KYC, or dispute logic"
+  - "Do not independently decide deletions"
+  - "Do not replace Opus as canonical decision-maker"
+  - "Do not replace Sonnet as main wiring engine"
+
+gemini_jobs:
+  - id: "GEMINI-01"
+    name: "Repo-wide TODO/FIXME/HACK master audit"
+  - id: "GEMINI-02"
+    name: "Edge function trigger and ownership matrix"
+  - id: "GEMINI-03"
+    name: "Regression and acceptance-test pack generation"
+  - id: "GEMINI-04"
+    name: "Content, schema, and internal-link expansion support"
+  - id: "GEMINI-05"
+    name: "Training and jurisdiction research support"
+  - id: "GEMINI-06"
+    name: "Market and competitor absorption support"
+  - id: "GEMINI-07"
+    name: "Code review copilot for Sonnet drops"
+
+best_use_cases:
+  - "Huge file-by-file synthesis"
+  - "Variant generation"
+  - "Research pack generation"
+  - "Test case generation"
+  - "Copy/disclaimer generation"
+  - "Large-cluster overlap detection"
+  - "Documentation and handoff support"
+
+not_primary_owner_of:
+  - "Stripe idempotency enforcement"
+  - "GPS proof engine contract"
+  - "Dispute auto-resolution final logic"
+  - "KYC step-up lock path"
+  - "LiveKit billing/event completion final wiring"
+  - "Canonical schema migration order"
+  - "Final Fly boot sequence decisions"
+
+handoff_targets:
+  - "Claude Opus 4.6 for decision review"
+  - "Claude Sonnet 4.6 for implementation consumption"

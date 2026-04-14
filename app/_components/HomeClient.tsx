@@ -41,7 +41,7 @@ function AnimatedNumber({ value, suffix = "" }: { value: number | null; suffix?:
         }, step);
         return () => clearInterval(timer);
     }, [value]);
-    if (value === null) return <span className="text-[#3A4553]">â€”</span>;
+    if (value === null) return <span className="text-[#3A4553]">—</span>;
     return <span>{display.toLocaleString()}{suffix}</span>;
 }
 
@@ -49,27 +49,27 @@ function AnimatedNumber({ value, suffix = "" }: { value: number | null; suffix?:
 const FEATURES = [
     {
         icon: TrendingUp, title: "Stage Probability",
-        desc: "Our engine predicts the likelihood an escort will accept your load â€” using real historical behavior, not guesswork. Updated every 4 hours.",
+        desc: "Our engine predicts the likelihood an escort will accept your load — using real historical behavior, not guesswork. Updated every 4 hours.",
         color: "#F1A91B",
     },
     {
         icon: Shield, title: "Instant Trust",
-        desc: "Built from real lane performance data. Every operator card shows response time, acceptance rate, and incident history â€” per corridor, not averaged.",
+        desc: "Built from real lane performance data. Every operator card shows response time, acceptance rate, and incident history — per corridor, not averaged.",
         color: "#22c55e",
     },
     {
         icon: Zap, title: "One-Tap Accept",
-        desc: "Fast confirmation keeps loads moving. Escorts go from push notification to accepted in under two taps â€” with haptic confirmation so nothing gets missed.",
+        desc: "Fast confirmation keeps loads moving. Escorts go from push notification to accepted in under two taps — with haptic confirmation so nothing gets missed.",
         color: "#3b82f6",
     },
     {
         icon: Map, title: "Territory Intelligence",
-        desc: "Claim corridors and counties. See shortage zones and hard-fill alerts before your competitors do â€” and act before the window closes.",
+        desc: "Claim corridors and counties. See shortage zones and hard-fill alerts before your competitors do — and act before the window closes.",
         color: "#a855f7",
     },
     {
         icon: Activity, title: "Hard-Fill Alerts",
-        desc: "When a load starts timing out, broker fix options appear automatically â€” raise the rate, widen the window, expand the radius â€” before it goes stale.",
+        desc: "When a load starts timing out, broker fix options appear automatically — raise the rate, widen the window, expand the radius — before it goes stale.",
         color: "#ef4444",
     },
     {
@@ -85,13 +85,13 @@ const HOW_IT_WORKS = [
         steps: [
             "Post load with dimensions, route & rate",
             "Intelligence engine scores fill probability in real time",
-            "Matched escorts accept in one tap â€” you see it instantly",
+            "Matched escorts accept in one tap — you see it instantly",
         ],
     },
     {
         role: "For Escorts", color: "#22c55e", icon: Navigation,
         steps: [
-            "Toggle available â€” your presence goes live on the map",
+            "Toggle available — your presence goes live on the map",
             "Receive push offers filtered to your capabilities and territory",
             "Accept in one tap. Status auto-sets to busy. Done.",
         ],
@@ -116,7 +116,7 @@ export default function HomeClient({
     const openLoads = marketPulse.open_loads_now;
     const medianFillMin = marketPulse.median_fill_time_min_7d ? Math.round(marketPulse.median_fill_time_min_7d) : 0;
 
-    // FIX: Smart hero badge â€” never show "0 Escorts Available"
+    // FIX: Smart hero badge — never show "0 Escorts Available"
     const heroBadgeText = escortsAvailable > 0
         ? `${escortsAvailable} Escorts Available Now`
         : "Real-Time Matching Active";
@@ -127,26 +127,26 @@ export default function HomeClient({
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.012)_1px,transparent_1px)] bg-[size:60px_60px]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(198,146,58,0.08),transparent_70%)]" />
-                {/* Amber sweep glow â€” heavy haul night highway feel */}
+                {/* Amber sweep glow — heavy haul night highway feel */}
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_30%_-10%,rgba(198,146,58,0.06),transparent_60%)] animate-[amberSweep_8s_ease-in-out_infinite_alternate]" />
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_70%_-10%,rgba(245,158,11,0.04),transparent_60%)] animate-[amberSweep_12s_ease-in-out_infinite_alternate-reverse]" />
             </div>
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                NAVIGATION â€” Clean 3-part layout
+                NAVIGATION — Clean 3-part layout
                 Brand | Nav Links | CTA
                 FIX: No more overlapping icons. No "ONLINE" pill.
-                No generic HC logo â€” uses real brand asset.
+                No generic HC logo — uses real brand asset.
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <HCGlobalHeader />
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                HERO â€” Maximum Impact Zone
+                HERO — Maximum Impact Zone
                 FIX: Smart badge (no "0 escorts"), premium glow
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 pt-28 pb-8">
                 <div className="hc-container max-w-5xl text-center">
-                    {/* Live badge â€” NEVER shows "0" */}
+                    {/* Live badge — NEVER shows "0" */}
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ export default function HomeClient({
                         </span>
                     </motion.div>
 
-                    {/* Headline â€” sharper, more specific */}
+                    {/* Headline — sharper, more specific */}
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -185,17 +185,17 @@ export default function HomeClient({
                     >
                         Match oversize loads with verified escorts in minutes.
                         Stage-based fill probability. One-tap accept.
-                        Built for the corridor â€” not the general freight crowd.
+                        Built for the corridor — not the general freight crowd.
                     </motion.p>
 
-                    {/* Dual CTA â€” FIX: Clear visual hierarchy */}
+                    {/* Dual CTA — FIX: Clear visual hierarchy */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.5 }}
                         className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
                     >
-                        {/* PRIMARY: Escort â€” dominant */}
+                        {/* PRIMARY: Escort — dominant */}
                         <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=escort"
                             className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-white font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
@@ -209,7 +209,7 @@ export default function HomeClient({
                             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
 
-                        {/* SECONDARY: Broker â€” outline */}
+                        {/* SECONDARY: Broker — outline */}
                         <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=broker"
                             className="group flex items-center justify-center gap-2.5 px-10 py-4 bg-transparent border-2 border-white/10 hover:border-[#C6923A]/40 text-white font-bold text-sm rounded-2xl transition-all hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(198,146,58,0.1)]"
@@ -220,7 +220,7 @@ export default function HomeClient({
                         </Link>
                     </motion.div>
 
-                    {/* Trust signal â€” pulled above fold */}
+                    {/* Trust signal — pulled above fold */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -244,7 +244,7 @@ export default function HomeClient({
             </section>
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                MARKET PULSE â€” FIX: Hierarchical metrics
+                MARKET PULSE — FIX: Hierarchical metrics
                 Primary stat dominant, secondary smaller
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 py-16">
@@ -320,7 +320,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* â”€â”€ Liquidity Trust Strip â€” LIVE COUNTS, GLOBAL SCOPE â”€â”€ */}
+            {/* â”€â”€ Liquidity Trust Strip — LIVE COUNTS, GLOBAL SCOPE â”€â”€ */}
             <section className="relative z-10 pb-8">
                 <div className="hc-container max-w-3xl">
                     <div className="liquidity-strip flex-wrap">
@@ -341,7 +341,7 @@ export default function HomeClient({
             </section>
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                HOT CORRIDORS â€” LIVE FROM SUPABASE
+                HOT CORRIDORS — LIVE FROM SUPABASE
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {topCorridors.length > 0 && (
                 <section className="relative z-10 py-20">
@@ -359,7 +359,7 @@ export default function HomeClient({
                                     <div className="flex items-start justify-between mb-3">
                                         <h3 className="font-bold text-white text-sm">{corridor.name}</h3>
                                         <span className="text-[10px] font-bold text-[#C6923A] bg-[#C6923A]/10 px-2 py-0.5 rounded-full">
-                                            {corridor.heat_score > 0 ? `${Math.round(corridor.heat_score)}Â°` : "NEW"}
+                                            {corridor.heat_score > 0 ? `${Math.round(corridor.heat_score)}°` : "NEW"}
                                         </span>
                                     </div>
                                     <div className="flex gap-4 text-[11px] text-[#8fa3b8]">
@@ -379,7 +379,7 @@ export default function HomeClient({
             )}
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                DIRECTORY PREVIEW â€” LIVE FROM SUPABASE
+                DIRECTORY PREVIEW — LIVE FROM SUPABASE
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {topListings.length > 0 && (
                 <section className="relative z-10 py-20">
@@ -421,7 +421,7 @@ export default function HomeClient({
             )}
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                HOW IT WORKS â€” FIX: Visual differentiation
+                HOW IT WORKS — FIX: Visual differentiation
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 py-24">
                 <div className="hc-container max-w-5xl">
@@ -496,7 +496,7 @@ export default function HomeClient({
             </section>
 
             {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                BOTTOM CTA â€” FIX: More breathing room, no cramping
+                BOTTOM CTA — FIX: More breathing room, no cramping
             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 pt-24 pb-32">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="max-w-2xl mx-auto text-center px-4">

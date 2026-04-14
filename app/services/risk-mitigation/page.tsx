@@ -31,7 +31,7 @@ const RISK_LAYERS = [
   {
     icon: Scale,
     title: "Compliance Automation",
-    desc: "Escort count requirements, permit needs, equipment mandates â€” auto-checked for every state on the route. Never get fined for a compliance gap again.",
+    desc: "Escort count requirements, permit needs, equipment mandates — auto-checked for every state on the route. Never get fined for a compliance gap again.",
   },
   {
     icon: Eye,

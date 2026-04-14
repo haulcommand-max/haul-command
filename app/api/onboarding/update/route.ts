@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
     if (perr || !profile) return NextResponse.json({ error: "profile not found" }, { status: 404 });
 
-    // Allowlist guard â€” silently drop unauthorized keys
+    // Allowlist guard — silently drop unauthorized keys
     const clean: Record<string, any> = {};
     for (const [k, v] of Object.entries(patch)) {
         if (ALLOWED_KEYS.has(k)) clean[k] = v;

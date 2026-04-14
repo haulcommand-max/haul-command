@@ -69,7 +69,7 @@ const ARTICLES = [
     title: 'How to Spot Fraudulent Pilot Car Qualifications',
     category: 'Interstate Reciprocity',
     readTime: '5 min read',
-    excerpt: 'Illegitimate PDF certs put brokers and fleets at immense risk. Learn how Haul Commandâ€™s digital badge verification system completely eliminates fraudulent credentials from the dispatch cycle.',
+    excerpt: 'Illegitimate PDF certs put brokers and fleets at immense risk. Learn how Haul Command's digital badge verification system completely eliminates fraudulent credentials from the dispatch cycle.',
   },
   {
     slug: 'winter-driving-heavy-haul',

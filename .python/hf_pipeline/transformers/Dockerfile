@@ -1,0 +1,5 @@
+FROM python:3.10-slim
+WORKDIR /app
+RUN pip install --no-cache-dir fastapi uvicorn sentence-transformers pydantic
+COPY . .
+CMD ["python", "-c", "import os; from fastapi import FastAPI; from sentence_transformers import SentenceTransformer; app = FastAPI(); model = SentenceTransformer(os.getenv('MODEL_NAME')); @app.post('/embed')\ndef embed(data: dict): return {'embeddings': model.encode(data['texts']).tolist()}; import uvicorn; uvicorn.run(app, host='0.0.0.0', port=8000)"]

@@ -6,7 +6,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Heavy Haul Carriers â€” Find Flatbed, Lowboy & Oversize Operators | Haul Command',
+  title: 'Heavy Haul Carriers — Find Flatbed, Lowboy & Oversize Operators | Haul Command',
   description:
     'Connect with verified heavy haul carriers, flatbed operators, and lowboy specialists across the US and 120 countries. Find equipment for your oversize move, post loads, and manage permits in one platform.',
   keywords: [
@@ -58,7 +58,7 @@ const ACTIONS = [
   { href: '/loads', icon: 'ðŸ“¦', label: 'Post a Load', desc: 'List your oversize move and receive quotes from qualified carriers', cta: 'Post a Load â†’', primary: false },
   { href: '/escort-requirements', icon: 'âš–ï¸', label: 'Permit & Escort Rules', desc: 'State-by-state oversize permit thresholds and escort requirements', cta: 'Check Requirements â†’', primary: false },
   { href: '/tools/escort-calculator', icon: 'ðŸ§®', label: 'Escort Calculator', desc: 'Calculate how many pilot cars your load requires by state', cta: 'Calculate â†’', primary: false },
-  { href: '/claim', icon: 'ðŸš›', label: 'List Your Operation', desc: 'Add your carrier company to the Haul Command directory â€” free', cta: 'Get Listed Free â†’', primary: false },
+  { href: '/claim', icon: 'ðŸš›', label: 'List Your Operation', desc: 'Add your carrier company to the Haul Command directory — free', cta: 'Get Listed Free â†’', primary: false },
   { href: '/available-now', icon: 'ðŸŸ¢', label: 'Available Right Now', desc: 'Carriers and escort operators broadcasting live availability', cta: 'See Who\'s Available â†’', primary: false },
 ];
 
@@ -76,9 +76,9 @@ export default function HeavyHaulCarrierPage() {
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 20px 0', fontSize: 11, color: '#6b7280', display: 'flex', gap: 6, alignItems: 'center', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <Link href="/directory" style={{ color: '#6b7280', textDecoration: 'none' }}>Directory</Link>
-          <span>â€º</span>
+          <span>"º</span>
           <span style={{ color: gold }}>Heavy Haul Carriers</span>
         </nav>
 

@@ -66,7 +66,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                             </span>
                         )}
                     </div>
-                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}â€¦</div>
+                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}"¦</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: 28, fontWeight: 900, color: '#22c55e', letterSpacing: -1 }}>
@@ -145,7 +145,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                     padding: '11px 0', borderRadius: 8, background: '#052e16',
                     color: '#22c55e', textAlign: 'center', fontWeight: 700, fontSize: 14
                 }}>
-                    âœ… Reserved â€” waiting for broker confirmation
+                    âœ… Reserved — waiting for broker confirmation
                 </div>
             )}
 
@@ -256,7 +256,7 @@ export default function DriverOfferInboxPage() {
                 {acceptedOffers.length > 0 && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 12, fontWeight: 700, color: '#22c55e', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                            âœ… Soft Reserved â€” Awaiting Broker Confirmation
+                            âœ… Soft Reserved — Awaiting Broker Confirmation
                         </div>
                         {acceptedOffers.map(o => (
                             <OfferCard key={o.id} offer={o} onAccept={handleAccept} onDecline={handleDecline} accepting={accepting} />
@@ -281,7 +281,7 @@ export default function DriverOfferInboxPage() {
                         <div style={{ fontSize: 14, color: '#475569' }}>
                             {availability === 'unavailable'
                                 ? 'Set your status to Available to start receiving offers'
-                                : 'You\'re visible â€” offers will appear here in real time'}
+                                : 'You\'re visible — offers will appear here in real time'}
                         </div>
                     </div>
                 ) : null}
@@ -297,7 +297,7 @@ export default function DriverOfferInboxPage() {
                         <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>ðŸ“„ Compliance Wallet</div>
                         <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>Manage documents, certs &amp; renewals</div>
                     </div>
-                    <div style={{ fontSize: 18, color: '#475569' }}>â€º</div>
+                    <div style={{ fontSize: 18, color: '#475569' }}>"º</div>
                 </a>
             </div>
         </div>

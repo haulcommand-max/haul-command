@@ -59,7 +59,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 </div>
                 <div>
                   <p className="text-sm font-bold text-[#f0f2f5]">{operator.company_name}</p>
-                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} Â· {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
+                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} · {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
                 </div>
                 <div className="ml-auto">
                   {operator.is_claimed

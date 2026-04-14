@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
 
-// Free Tool #3 â€” Route Complexity Calculator
+// Free Tool #3 — Route Complexity Calculator
 const US_STATES = ['AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 
 function calcComplexity(states: string[], loadWidth: number, loadHeight: number, loadWeight: number, hasUrban: boolean, hasNight: boolean) {
@@ -17,11 +17,11 @@ function calcComplexity(states: string[], loadWidth: number, loadHeight: number,
     else if (loadWidth >= 14) { score += 20; factors.push('Wide load (14\'+ wide, double escort likely)'); }
     else if (loadWidth >= 12) { score += 10; factors.push('Oversize width (12\'+ wide)'); }
     // Height
-    if (loadHeight >= 16) { score += 25; factors.push('Extreme height â€” utility crew likely'); }
-    else if (loadHeight >= 14) { score += 15; factors.push('High load â€” height pole critical'); }
+    if (loadHeight >= 16) { score += 25; factors.push('Extreme height — utility crew likely'); }
+    else if (loadHeight >= 14) { score += 15; factors.push('High load — height pole critical'); }
     // Weight
-    if (loadWeight >= 200000) { score += 20; factors.push('Superload weight â€” bridge analysis required'); }
-    else if (loadWeight >= 100000) { score += 10; factors.push('Heavy load â€” route restrictions likely'); }
+    if (loadWeight >= 200000) { score += 20; factors.push('Superload weight — bridge analysis required'); }
+    else if (loadWeight >= 100000) { score += 10; factors.push('Heavy load — route restrictions likely'); }
     // Modifiers
     if (hasUrban) { score += 10; factors.push('Urban segments increase complexity'); }
     if (hasNight) { score += 5; factors.push('Night moves may be restricted'); }

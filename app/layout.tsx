@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalNavOverlay } from '@/components/layout/GlobalNavOverlay';
+import { Suspense } from 'react';
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,6 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} text-white antialiased`} style={{ background: '#0F1318' }}>
+        <Suspense fallback={null}>
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
+        </Suspense>
         <PwaRegistry />
         <GlobalNavOverlay />
         <DynamicBackgroundEngine />

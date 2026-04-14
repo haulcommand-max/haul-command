@@ -35,7 +35,7 @@ export default function RegulationAlertsPage() {
                             <div className="space-y-4">
                                 <input type="email" placeholder="your@email.com" required className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[var(--color-accent)] outline-none" value={email} onChange={e => setEmail(e.target.value)} />
                                 <div><p className="text-gray-500 text-[10px] font-black uppercase mb-3">Select jurisdictions (or leave blank for all)</p><div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">{JURISDICTIONS.map(j => (<button aria-label="Interactive Button" key={j} onClick={() => toggleJ(j)} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${subJurisdictions.includes(j) ? 'bg-[var(--color-accent)] text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>{j}</button>))}</div></div>
-                                <button aria-label="Interactive Button" onClick={handleSubscribe} disabled={!email} className="w-full bg-[var(--color-accent)] text-white py-4 rounded-xl font-black text-sm hover:bg-[#121212] transition-all disabled:opacity-50">SUBSCRIBE â€” FREE</button>
+                                <button aria-label="Interactive Button" onClick={handleSubscribe} disabled={!email} className="w-full bg-[var(--color-accent)] text-white py-4 rounded-xl font-black text-sm hover:bg-[#121212] transition-all disabled:opacity-50">SUBSCRIBE — FREE</button>
                             </div>
                             <div className="mt-6 pt-6 border-t border-white/5 space-y-3">
                                 <p className="text-gray-500 text-[10px] font-black uppercase">What you&apos;ll get:</p>
@@ -61,7 +61,7 @@ export default function RegulationAlertsPage() {
                     ) : (
                         <div className="space-y-4">{alerts.map(a => (
                             <div key={a.id} className="bg-white/5 border border-white/10 rounded-xl p-6">
-                                <div className="flex items-center gap-3 mb-2"><span className="text-xl">{alertTypeIcon[a.alert_type] || 'ðŸ“¢'}</span><div><p className="text-white font-black text-sm">{a.title}</p><p className="text-gray-500 text-[10px]">{a.jurisdiction_code} â€¢ {a.alert_type.replace(/_/g, ' ')}</p></div></div>
+                                <div className="flex items-center gap-3 mb-2"><span className="text-xl">{alertTypeIcon[a.alert_type] || 'ðŸ“¢'}</span><div><p className="text-white font-black text-sm">{a.title}</p><p className="text-gray-500 text-[10px]">{a.jurisdiction_code} "¢ {a.alert_type.replace(/_/g, ' ')}</p></div></div>
                                 <p className="text-gray-400 text-sm mt-2">{a.description}</p>
                                 {a.old_value && a.new_value && <div className="flex gap-4 mt-3"><span className="bg-red-500/10 text-red-400 px-2 py-1 rounded text-xs">Was: {a.old_value}</span><span className="bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs">Now: {a.new_value}</span></div>}
                             </div>

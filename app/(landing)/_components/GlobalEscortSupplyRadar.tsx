@@ -18,7 +18,7 @@ import {
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GLOBAL ESCORT SUPPLY RADAR + STATE LIQUIDITY SCORE SYSTEM
-// LIVE DATA â€” powered by hc_rm_radar_geo + hc_csn_signals
+// LIVE DATA — powered by hc_rm_radar_geo + hc_csn_signals
 // âš ï¸ DEMO_MODE_BLOCKED: hardcoded data MUST NOT ship in production
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
@@ -96,7 +96,7 @@ function trendArrow(trend: "up" | "down" | "stable") {
     }
 }
 
-// â”€â”€ Map positions (projection-only â€” NOT data, just where dots go on the map) â”€â”€
+// â”€â”€ Map positions (projection-only — NOT data, just where dots go on the map) â”€â”€
 const COUNTRY_POSITIONS: Record<string, { cx: number; cy: number }> = {
     US: { cx: 22, cy: 42 }, CA: { cx: 22, cy: 28 }, MX: { cx: 18, cy: 50 },
     AU: { cx: 82, cy: 72 }, GB: { cx: 47, cy: 28 }, NZ: { cx: 90, cy: 80 },
@@ -311,7 +311,7 @@ export function GlobalEscortSupplyRadar() {
     }, []);
 
 
-    // â”€â”€ Build country nodes â€” static seed + live DB override â”€â”€
+    // â”€â”€ Build country nodes — static seed + live DB override â”€â”€
 
     const COUNTRY_NODES: CountryNode[] = useMemo(() => {
         // Build a map from live DB data
@@ -886,7 +886,7 @@ export function GlobalEscortSupplyRadar() {
                             </div>
                         )}
 
-                        {/* â”€â”€ Floating legend â€” collapsed on mobile â”€â”€ */}
+                        {/* â”€â”€ Floating legend — collapsed on mobile â”€â”€ */}
                         <div className="hidden sm:flex" style={{
                             position: "absolute", bottom: 16, right: 16,
                             background: "rgba(12,15,24,0.88)",
@@ -957,11 +957,11 @@ export function GlobalEscortSupplyRadar() {
                             </span>
                         </div>
 
-                        {/* â”€â”€ Stats overlay (top right) â€” LIVE from DB â”€â”€ */}
+                        {/* â”€â”€ Stats overlay (top right) — LIVE from DB â”€â”€ */}
                         <div className="hidden sm:flex" style={{ position: "absolute", top: 16, right: 16, gap: "8px", zIndex: 20 }}>
                             {[
-                                { icon: Globe, value: `${stats?.total_countries ?? "â€”"}`, label: "Countries", color: "#3b82f6" },
-                                { icon: Radio, value: `${stats?.active_markets ?? "â€”"}`, label: "Active Markets", color: "#22c55e" },
+                                { icon: Globe, value: `${stats?.total_countries ?? "—"}`, label: "Countries", color: "#3b82f6" },
+                                { icon: Radio, value: `${stats?.active_markets ?? "—"}`, label: "Active Markets", color: "#22c55e" },
                                 { icon: TrendingUp, value: `${(stats?.total_surfaces ?? 0).toLocaleString()}`, label: "Surfaces", color: "#C6923A" },
                             ].map(({ icon: Icon, value, label, color }) => (
                                 <div key={label} style={{
@@ -970,13 +970,13 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: "10px", padding: "6px 12px",
                                     backdropFilter: "blur(12px)", textAlign: "center" as const,
                                 }}>
-                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? "â€¦" : value}</div>
+                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? ""¦" : value}</div>
                                     <div style={{ fontSize: "8px", fontWeight: 700, color: "#8fa3b8", textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{label}</div>
                                 </div>
                             ))}
                         </div>
 
-                        {/* â”€â”€ Live Route Intelligence Feed â€” LIVE from CSN â”€â”€ */}
+                        {/* â”€â”€ Live Route Intelligence Feed — LIVE from CSN â”€â”€ */}
                         <div className="hidden sm:flex" style={{
                             position: "absolute", top: 60, left: 16,
                             width: "240px",

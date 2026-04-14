@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { REGULATIONS } from '@/lib/regulations/global-regulations-db';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car & Escort Vehicle Near Me â€” 120 Countries | Haul Command',
+  title: 'Pilot Car & Escort Vehicle Near Me — 120 Countries | Haul Command',
   description: 'Find verified pilot car operators and escort vehicles near you across 120 countries. Search by location, certifications, equipment, and real-time availability.',
   keywords: [
     'pilot car near me',
@@ -70,7 +70,7 @@ export default function NearMeIndex() {
             lineHeight: 1.65,
           }}
         >
-          Search verified pilot car operators across 120 countries. GPS-dispatched, insured, certified â€” the world&apos;s largest oversize load escort directory.
+          Search verified pilot car operators across 120 countries. GPS-dispatched, insured, certified — the world&apos;s largest oversize load escort directory.
         </p>
         <Link
           href="/directory"
@@ -104,7 +104,7 @@ export default function NearMeIndex() {
               borderBottom: '1px solid rgba(255,255,255,0.06)',
               paddingBottom: '0.5rem',
             }}>
-              {TIER_LABELS[tier] || `Tier ${tier}`} â€” {countries.length} Countries
+              {TIER_LABELS[tier] || `Tier ${tier}`} — {countries.length} Countries
             </h2>
             <div style={{
               display: 'grid',
@@ -138,7 +138,7 @@ export default function NearMeIndex() {
         );
       })}
 
-      {/* Structured Data â€” BreadcrumbList */}
+      {/* Structured Data — BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

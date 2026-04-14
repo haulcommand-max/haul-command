@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * /market â€” Market Intelligence Hub
+ * /market — Market Intelligence Hub
  * 
  * Grid of all 50 US states + DC with live market mode indicators.
  * Each card shows state name, mode badge, and key stats.
@@ -70,7 +70,7 @@ export default function MarketIndexPage() {
                     </h1>
                     <p style={{ maxWidth: 720, margin: 0, color: 'rgba(255,255,255,0.45)', fontSize: 16, lineHeight: 1.65 }}>
                         Every state has its own escort regulations, operator density, and load activity.
-                        Tap a market to see live truth â€” active loads, verified operators, and your next move.
+                        Tap a market to see live truth — active loads, verified operators, and your next move.
                     </p>
                 </div>
 

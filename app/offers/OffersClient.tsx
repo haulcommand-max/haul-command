@@ -278,10 +278,10 @@ function OfferCard({
       {/* Load details */}
       {lr && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-          <Detail label="Region" value={lr.admin1_code || 'â€”'} />
+          <Detail label="Region" value={lr.admin1_code || '—'} />
           <Detail label="Escorts Needed" value={String(lr.required_escort_count)} />
           <Detail label="Load Type" value={lr.load_type_tags?.join(', ') || 'General'} />
-          <Detail label="Pickup" value={lr.pickup_time_window?.start ? new Date(lr.pickup_time_window.start).toLocaleDateString() : 'â€”'} />
+          <Detail label="Pickup" value={lr.pickup_time_window?.start ? new Date(lr.pickup_time_window.start).toLocaleDateString() : '—'} />
           {lr.dimensions?.width && <Detail label="Width" value={`${lr.dimensions.width}m`} />}
           {lr.dimensions?.height && <Detail label="Height" value={`${lr.dimensions.height}m`} />}
           {lr.special_requirements?.length > 0 && (

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /operator â€” Operator Dashboard
+ * /operator — Operator Dashboard
  * 
  * Three modules:
  *   1. Availability Toggle (online/offline)
@@ -257,7 +257,7 @@ export default function OperatorDashboard() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
                         { label: "Trust Score", value: dash.trust_score, icon: Shield, color: "#F1A91B" },
-                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}â˜…` : "â€”", icon: Star, color: "#FBBF24" },
+                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}â˜…` : "—", icon: Star, color: "#FBBF24" },
                         { label: "Jobs Done", value: dash.jobs_completed, icon: Award, color: "#10B981" },
                         { label: "Offers", value: dash.offers_pending, icon: Activity, color: "#8B5CF6" },
                     ].map((stat, i) => (
@@ -337,7 +337,7 @@ export default function OperatorDashboard() {
                 {/* â”€â”€ MODULE 3.5: Invite & Growth â”€â”€ */}
                 <InviteCard />
 
-                {/* Milestone celebration â€” triggers once per session */}
+                {/* Milestone celebration — triggers once per session */}
                 {dash.jobs_completed > 0 && !sessionStorage?.getItem('hc_milestone_dismiss') && (
                     <MilestoneCelebration
                         type={dash.jobs_completed >= 100 ? '100_jobs' : dash.jobs_completed >= 50 ? '50_jobs' : dash.jobs_completed >= 10 ? '10_jobs' : 'first_job'}

@@ -80,7 +80,7 @@ export default function OpsAdminPage() {
                         âš™ï¸ Ops Events
                     </h1>
                     <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', margin: '4px 0 0' }}>
-                        {events.length} events Â· {unackCount > 0 && (
+                        {events.length} events · {unackCount > 0 && (
                             <span style={{ color: '#ef4444', fontWeight: 600 }}>
                                 {unackCount} unacknowledged critical
                             </span>

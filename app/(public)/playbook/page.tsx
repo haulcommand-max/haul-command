@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * MarketPlaybook â€” Band D Rank 7
+ * MarketPlaybook — Band D Rank 7
  * Market readiness dashboard + gap-to-dominance checklists.
  */
 

@@ -1,11 +1,11 @@
 /**
  * Admin Trust Dashboard  
- * /admin/trust â€” Trust Graph Engine control center
+ * /admin/trust — Trust Graph Engine control center
  */
 import Link from "next/link";
 
 export const metadata = {
-    title: "Trust Graph Engine â€“ HAUL COMMAND Admin",
+    title: "Trust Graph Engine "“ HAUL COMMAND Admin",
 };
 
 export default function TrustDashboardPage() {
@@ -75,7 +75,7 @@ export default function TrustDashboardPage() {
                     TRUST GRAPH ENGINE
                 </h1>
                 <p style={{ fontSize: "12px", color: "#5a6f82", marginTop: "4px" }}>
-                    7-Phase Trust Infrastructure â€¢ Score â€¢ Detect â€¢ Confirm â€¢ Vault â€¢ Resolve
+                    7-Phase Trust Infrastructure "¢ Score "¢ Detect "¢ Confirm "¢ Vault "¢ Resolve
                 </p>
                 <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
                     <Link aria-label="Navigation Link"

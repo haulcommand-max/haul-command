@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ChevronRight, ArrowRight, AlertTriangle, Link2, MapPin, Shield, Truck, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Tire Chain Laws by State (2026) â€” Requirements & Regulations | Haul Command',
+    title: 'Tire Chain Laws by State (2026) — Requirements & Regulations | Haul Command',
     description: 'Complete tire chain law guide for all US states. Requirements, dates, equipment specs, exemptions, and penalties for oversize loads, commercial vehicles, and escort operators.',
     keywords: [
         'tire chain laws', 'tire chain laws by state', 'chain requirements', 'tire chain regulations',
@@ -30,31 +30,31 @@ const FAQ_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
-        { '@type': 'Question', name: 'What states require tire chains?', acceptedAnswer: { '@type': 'Answer', text: 'States with chain laws include California, Colorado, Oregon, Washington, Nevada, Idaho, Montana, Wyoming, Utah, Vermont, New Hampshire, and others. Requirements vary â€” some mandate chains on specific mountain passes while others have statewide chain zones activated during winter weather events.' } },
+        { '@type': 'Question', name: 'What states require tire chains?', acceptedAnswer: { '@type': 'Answer', text: 'States with chain laws include California, Colorado, Oregon, Washington, Nevada, Idaho, Montana, Wyoming, Utah, Vermont, New Hampshire, and others. Requirements vary — some mandate chains on specific mountain passes while others have statewide chain zones activated during winter weather events.' } },
         { '@type': 'Question', name: 'Do pilot cars need tire chains?', acceptedAnswer: { '@type': 'Answer', text: 'In most chain control states, pilot/escort vehicles must comply with chain requirements when chain controls are in effect. However, some states exempt 4WD/AWD vehicles with snow tires from chain requirements during R1 (lower-level) chain controls. During R2/R3 chain controls, chains are typically required on all vehicles regardless of drive type.' } },
-        { '@type': 'Question', name: 'What are the penalties for not having chains?', acceptedAnswer: { '@type': 'Answer', text: 'Penalties vary by state. California can fine up to $1,000 and hold the driver liable for any resulting road closure delays. Oregon fines range from $165â€“$440. If a vehicle without chains causes an accident or road closure, the driver may also face civil liability for resulting damages and delays to other motorists.' } },
-        { '@type': 'Question', name: 'What is the difference between R1, R2, and R3 chain controls?', acceptedAnswer: { '@type': 'Answer', text: 'R1: Chains or snow tires required on all vehicles except 4WD/AWD. R2: Chains required on all vehicles except 4WD/AWD with snow tires. R3: Chains required on ALL vehicles, no exceptions. Not all states use this tiered system â€” some simply have chain zones that activate during winter weather.' } },
+        { '@type': 'Question', name: 'What are the penalties for not having chains?', acceptedAnswer: { '@type': 'Answer', text: 'Penalties vary by state. California can fine up to $1,000 and hold the driver liable for any resulting road closure delays. Oregon fines range from $165"“$440. If a vehicle without chains causes an accident or road closure, the driver may also face civil liability for resulting damages and delays to other motorists.' } },
+        { '@type': 'Question', name: 'What is the difference between R1, R2, and R3 chain controls?', acceptedAnswer: { '@type': 'Answer', text: 'R1: Chains or snow tires required on all vehicles except 4WD/AWD. R2: Chains required on all vehicles except 4WD/AWD with snow tires. R3: Chains required on ALL vehicles, no exceptions. Not all states use this tiered system — some simply have chain zones that activate during winter weather.' } },
     ],
 };
 
 const CHAIN_LAW_STATES = [
-    { state: 'California', requirement: 'Chain controls (R1/R2/R3) on mountain passes', season: 'Nov â€“ Apr', escorts: 'Must comply when controls active', severity: 'high' },
-    { state: 'Colorado', requirement: 'Traction Law + chain law on I-70 corridor', season: 'Sep 1 â€“ May 31', escorts: 'Must comply; 4WD may exempt in lower controls', severity: 'high' },
-    { state: 'Oregon', requirement: 'Statewide chain advisory zones', season: 'Nov 1 â€“ Apr 1', escorts: 'Must carry chains; studded tires allowed Novâ€“Apr', severity: 'high' },
-    { state: 'Washington', requirement: 'Chain controls on mountain passes', season: 'Nov â€“ Mar', escorts: '4WD/AWD with snow tires OK in most zones', severity: 'high' },
-    { state: 'Nevada', requirement: 'Chain controls on select highways', season: 'Oct â€“ May', escorts: 'Must comply when controls activated', severity: 'medium' },
-    { state: 'Idaho', requirement: 'Chain-up areas on I-90, US-95, SH-21', season: 'Nov â€“ Apr', escorts: '4WD/AWD with snow tires typically exempt', severity: 'medium' },
-    { state: 'Montana', requirement: 'Chain requirements on select passes', season: 'Oct â€“ May', escorts: 'Must carry chains in mountain zones', severity: 'medium' },
-    { state: 'Wyoming', requirement: 'Closures + chain requirements on I-80, I-25', season: 'Oct â€“ May', escorts: 'Must comply; frequent closures in winter', severity: 'high' },
-    { state: 'Utah', requirement: 'Chain restrictions on specific canyons', season: 'Nov â€“ Apr', escorts: '4WD/AWD with M+S tires may be exempt', severity: 'medium' },
-    { state: 'Vermont', requirement: 'Studded tires/chains allowed; no mandate', season: 'Oct â€“ Apr (studs)', escorts: 'Chains recommended for mountain routes', severity: 'low' },
-    { state: 'New Hampshire', requirement: 'No chain law but chains/studs permitted', season: 'Oct â€“ May (studs)', escorts: 'Carry chains for northern mountain routes', severity: 'low' },
-    { state: 'Maine', requirement: 'Studded tires allowed; chains permitted', season: 'Oct â€“ May (studs)', escorts: 'Recommended for escort operations', severity: 'low' },
+    { state: 'California', requirement: 'Chain controls (R1/R2/R3) on mountain passes', season: 'Nov "“ Apr', escorts: 'Must comply when controls active', severity: 'high' },
+    { state: 'Colorado', requirement: 'Traction Law + chain law on I-70 corridor', season: 'Sep 1 "“ May 31', escorts: 'Must comply; 4WD may exempt in lower controls', severity: 'high' },
+    { state: 'Oregon', requirement: 'Statewide chain advisory zones', season: 'Nov 1 "“ Apr 1', escorts: 'Must carry chains; studded tires allowed Nov"“Apr', severity: 'high' },
+    { state: 'Washington', requirement: 'Chain controls on mountain passes', season: 'Nov "“ Mar', escorts: '4WD/AWD with snow tires OK in most zones', severity: 'high' },
+    { state: 'Nevada', requirement: 'Chain controls on select highways', season: 'Oct "“ May', escorts: 'Must comply when controls activated', severity: 'medium' },
+    { state: 'Idaho', requirement: 'Chain-up areas on I-90, US-95, SH-21', season: 'Nov "“ Apr', escorts: '4WD/AWD with snow tires typically exempt', severity: 'medium' },
+    { state: 'Montana', requirement: 'Chain requirements on select passes', season: 'Oct "“ May', escorts: 'Must carry chains in mountain zones', severity: 'medium' },
+    { state: 'Wyoming', requirement: 'Closures + chain requirements on I-80, I-25', season: 'Oct "“ May', escorts: 'Must comply; frequent closures in winter', severity: 'high' },
+    { state: 'Utah', requirement: 'Chain restrictions on specific canyons', season: 'Nov "“ Apr', escorts: '4WD/AWD with M+S tires may be exempt', severity: 'medium' },
+    { state: 'Vermont', requirement: 'Studded tires/chains allowed; no mandate', season: 'Oct "“ Apr (studs)', escorts: 'Chains recommended for mountain routes', severity: 'low' },
+    { state: 'New Hampshire', requirement: 'No chain law but chains/studs permitted', season: 'Oct "“ May (studs)', escorts: 'Carry chains for northern mountain routes', severity: 'low' },
+    { state: 'Maine', requirement: 'Studded tires allowed; chains permitted', season: 'Oct "“ May (studs)', escorts: 'Recommended for escort operations', severity: 'low' },
     { state: 'Minnesota', requirement: 'No chain law; chains/studs allowed', season: 'N/A', escorts: 'Chains not required but recommended', severity: 'low' },
     { state: 'Michigan', requirement: 'No chain law in most areas; studs prohibited', season: 'N/A', escorts: 'Snow tires recommended; no chains needed', severity: 'low' },
-    { state: 'Pennsylvania', requirement: 'Chain/traction device requirement in snow emergencies', season: 'Nov â€“ Apr', escorts: 'Must comply when emergency declared', severity: 'medium' },
-    { state: 'New Mexico', requirement: 'Chain controls on select mountain passes', season: 'Nov â€“ Mar', escorts: 'Must comply when controls active', severity: 'low' },
-    { state: 'Arizona', requirement: 'Chain controls on I-40, I-17 in snow', season: 'Nov â€“ Mar', escorts: 'Must comply when controls activated', severity: 'low' },
+    { state: 'Pennsylvania', requirement: 'Chain/traction device requirement in snow emergencies', season: 'Nov "“ Apr', escorts: 'Must comply when emergency declared', severity: 'medium' },
+    { state: 'New Mexico', requirement: 'Chain controls on select mountain passes', season: 'Nov "“ Mar', escorts: 'Must comply when controls active', severity: 'low' },
+    { state: 'Arizona', requirement: 'Chain controls on I-40, I-17 in snow', season: 'Nov "“ Mar', escorts: 'Must comply when controls activated', severity: 'low' },
 ];
 
 const severityColor = (s: string) => s === 'high' ? '#ef4444' : s === 'medium' ? '#f59e0b' : '#10b981';
@@ -82,7 +82,7 @@ export default function TireChainLawsPage() {
                     <header style={{ marginBottom: '2.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 20, marginBottom: 16 }}>
                             <Link2 style={{ width: 12, height: 12, color: '#f59e0b' }} />
-                            <span style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1 }}>Compliance Reference Â· 17 States</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1 }}>Compliance Reference · 17 States</span>
                         </div>
                         <h1 style={{ margin: '0 0 1rem', fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.025em', lineHeight: 1.15 }}>
                             Tire Chain Laws by State
@@ -92,7 +92,7 @@ export default function TireChainLawsPage() {
                         </p>
                         <div style={{ display: 'flex', gap: 16, marginTop: 16, flexWrap: 'wrap' }}>
                             <span style={{ fontSize: 12, color: '#6b7280' }}>ðŸ“… Updated March 2026</span>
-                            <span style={{ fontSize: 12, color: '#6b7280' }}>ðŸ· Compliance Â· Safety Â· Winter Operations</span>
+                            <span style={{ fontSize: 12, color: '#6b7280' }}>ðŸ· Compliance · Safety · Winter Operations</span>
                         </div>
                     </header>
 
@@ -103,7 +103,7 @@ export default function TireChainLawsPage() {
                             {[
                                 { level: 'R1', desc: 'Chains or snow tires required except 4WD/AWD', color: '#10b981' },
                                 { level: 'R2', desc: 'Chains required except 4WD/AWD with snow tires', color: '#f59e0b' },
-                                { level: 'R3', desc: 'Chains required on ALL vehicles â€” no exceptions', color: '#ef4444' },
+                                { level: 'R3', desc: 'Chains required on ALL vehicles — no exceptions', color: '#ef4444' },
                             ].map(r => (
                                 <div key={r.level} style={{ background: `${r.color}08`, border: `1px solid ${r.color}25`, borderRadius: 10, padding: '1rem' }}>
                                     <div style={{ fontSize: 20, fontWeight: 900, color: r.color, fontFamily: "'JetBrains Mono', monospace", marginBottom: 4 }}>{r.level}</div>
@@ -153,10 +153,10 @@ export default function TireChainLawsPage() {
                         <div style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 14, padding: '1.5rem' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
                                 {[
-                                    { title: 'Class S Chains', desc: 'Most common for light trucks/SUVs. SAE Class S clearance fits most escort vehicles without fender modification.', price: '$60â€“$150/set' },
-                                    { title: 'Cable Chains', desc: 'Lighter, easier to install. Acceptable in most states for non-commercial vehicles. Good for pilot car operators.', price: '$40â€“$100/set' },
-                                    { title: 'AutoSock / Fabric Chains', desc: 'Accepted in some states as alternative to chains during R1 controls. Check state approval before relying on these.', price: '$80â€“$120/set' },
-                                    { title: 'Snow Tires (M+S rated)', desc: 'Mud and snow rated tires may exempt you from chains during R1/lower controls in many states. 3PMSF symbol preferred.', price: '$120â€“$250/tire' },
+                                    { title: 'Class S Chains', desc: 'Most common for light trucks/SUVs. SAE Class S clearance fits most escort vehicles without fender modification.', price: '$60"“$150/set' },
+                                    { title: 'Cable Chains', desc: 'Lighter, easier to install. Acceptable in most states for non-commercial vehicles. Good for pilot car operators.', price: '$40"“$100/set' },
+                                    { title: 'AutoSock / Fabric Chains', desc: 'Accepted in some states as alternative to chains during R1 controls. Check state approval before relying on these.', price: '$80"“$120/set' },
+                                    { title: 'Snow Tires (M+S rated)', desc: 'Mud and snow rated tires may exempt you from chains during R1/lower controls in many states. 3PMSF symbol preferred.', price: '$120"“$250/tire' },
                                 ].map(eq => (
                                     <div key={eq.title} style={{ background: 'rgba(255,255,255,0.015)', borderRadius: 10, padding: '1rem' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
@@ -199,7 +199,7 @@ export default function TireChainLawsPage() {
                         <div>
                             <h3 style={{ margin: '0 0 8px', fontSize: '1.15rem', fontWeight: 900, color: '#f9fafb' }}>Plan Your Route with Confidence</h3>
                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#9ca3af', maxWidth: 460 }}>
-                                Use Haul Command&apos;s route planning tools to check chain requirements, frost laws, and escort requirements for your entire corridor â€” before you dispatch.
+                                Use Haul Command&apos;s route planning tools to check chain requirements, frost laws, and escort requirements for your entire corridor — before you dispatch.
                             </p>
                         </div>
                         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>

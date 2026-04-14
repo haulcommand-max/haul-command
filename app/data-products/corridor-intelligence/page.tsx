@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 
 export const metadata = {
-  title: 'Corridor Intelligence Data Product â€” Rate Benchmarks & Permit Maps | Haul Command',
+  title: 'Corridor Intelligence Data Product — Rate Benchmarks & Permit Maps | Haul Command',
   description:
     'Unlock escort rate benchmarks, permit requirement maps, and demand signals across 300+ heavy haul corridors worldwide. Enterprise API and export available.',
 };
@@ -17,7 +17,7 @@ const TIERS = [
     cadence: '/ mo',
     description: 'Single-corridor deep dive for operators and brokers.',
     features: [
-      '1 corridor â€” full rate benchmark (min/median/max)',
+      '1 corridor — full rate benchmark (min/median/max)',
       'Permit requirement summary',
       'Credential types required',
       'Freshness & confidence state',
@@ -34,7 +34,7 @@ const TIERS = [
     cadence: '/ mo',
     description: 'Multi-corridor coverage for active carriers, brokers, and dispatchers.',
     features: [
-      'Up to 25 corridors â€” full rate benchmarks',
+      'Up to 25 corridors — full rate benchmarks',
       'Cross-border permit maps',
       'Demand signal previews',
       'Credential requirement exports',
@@ -131,10 +131,10 @@ export default async function CorridorIntelligencePage() {
         </div>
       </section>
 
-      {/* Paywall teaser â€” blurred pricing table */}
+      {/* Paywall teaser — blurred pricing table */}
       <section className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Sample: Port of Jebel Ali to Dubai â€” Rate Benchmark</h2>
+          <h2 className="text-lg font-bold text-white">Sample: Port of Jebel Ali to Dubai — Rate Benchmark</h2>
           <span className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-400">Preview</span>
         </div>
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/4">
@@ -153,7 +153,7 @@ export default async function CorridorIntelligencePage() {
             >
               <span className="text-white/70">{row.label}</span>
               <span className="text-right font-mono font-semibold text-white">
-                {i < 2 ? 'â€”' : row.value}
+                {i < 2 ? '—' : row.value}
               </span>
             </div>
           ))}

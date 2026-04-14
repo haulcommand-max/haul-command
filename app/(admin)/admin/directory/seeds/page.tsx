@@ -64,7 +64,7 @@ export default function DirectorySeedsPage() {
         });
         const data = await res.json();
         const r = data.result;
-        setProcessResult(`âœ… Imported: ${r?.imported ?? 0} Â· Duplicates: ${r?.duplicate ?? 0} Â· Failed: ${r?.failed ?? 0}`);
+        setProcessResult(`âœ… Imported: ${r?.imported ?? 0} · Duplicates: ${r?.duplicate ?? 0} · Failed: ${r?.failed ?? 0}`);
         setProcessing(false);
         fetchEntries(statusFilter);
         fetchStats();
@@ -76,7 +76,7 @@ export default function DirectorySeedsPage() {
         setImportResult(null);
         const lines = pasteInput.trim().split('\n').filter(l => l.trim());
         const rowEntries = lines.map(line => {
-            const m = line.match(/^(.+?)\s*[-â€“|,]\s*(.+?),\s*([A-Z]{2})$/i);
+            const m = line.match(/^(.+?)\s*[-"“|,]\s*(.+?),\s*([A-Z]{2})$/i);
             if (m) return { company_name: m[1].trim(), city: m[2].trim(), state_abbr: m[3].toUpperCase() };
             return { company_name: line.trim() };
         }).filter(e => e.company_name.length > 2);
@@ -158,19 +158,19 @@ export default function DirectorySeedsPage() {
                         ) : entries.map(e => (
                             <tr key={e.id} className="border-t border-slate-700/50 hover:bg-slate-800/30">
                                 <td className="px-4 py-3 text-white font-medium">{e.company_name}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.city ?? 'â€”'}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.state_abbr ?? 'â€”'}</td>
-                                <td className="px-4 py-3 text-slate-400">{e.phone ?? 'â€”'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.city ?? '—'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.state_abbr ?? '—'}</td>
+                                <td className="px-4 py-3 text-slate-400">{e.phone ?? '—'}</td>
                                 <td className="px-4 py-3">
                                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${STATUS_COLORS[e.status] ?? ''}`}>{e.status}</span>
                                 </td>
-                                <td className="px-4 py-3 text-slate-500 text-xs">{e.notes ?? 'â€”'}</td>
+                                <td className="px-4 py-3 text-slate-500 text-xs">{e.notes ?? '—'}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            {total > 0 && <p className="text-slate-500 text-sm">{total} total entries Â· showing {entries.length}</p>}
+            {total > 0 && <p className="text-slate-500 text-sm">{total} total entries · showing {entries.length}</p>}
         </div>
     );
 }

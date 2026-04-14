@@ -154,7 +154,7 @@ export default function HowItWorksPage() {
                                         <div className="text-white font-bold">Lone Star Pilot Cars</div>
                                         <div className="text-xs text-gray-400 flex items-center gap-2">
                                             <span>ETA: 14 mins</span>
-                                            <span>â€¢</span>
+                                            <span>"¢</span>
                                             <span className="text-amber-500">Trust: 96%</span>
                                         </div>
                                     </div>

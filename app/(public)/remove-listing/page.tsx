@@ -18,7 +18,7 @@ export default function RemoveListingPage() {
     const options: { value: RequestType; label: string; desc: string; icon: string }[] = [
         { value: "remove", label: "Remove Listing", desc: "Completely remove this listing from the directory.", icon: "ðŸ—‘ï¸" },
         { value: "correct", label: "Correct Information", desc: "Fix inaccurate information on an existing listing.", icon: "âœï¸" },
-        { value: "claim", label: "Claim Listing", desc: "This is my business â€” I want to manage it.", icon: "ðŸ´" },
+        { value: "claim", label: "Claim Listing", desc: "This is my business — I want to manage it.", icon: "ðŸ´" },
         { value: "hide_contact", label: "Hide Contact Info", desc: "Keep listing but remove phone, email, and address.", icon: "ðŸ”’" },
     ];
 
@@ -218,7 +218,7 @@ export default function RemoveListingPage() {
                             textTransform: "uppercase", letterSpacing: "0.12em",
                             color: "#64748b", marginBottom: 8,
                         }}>
-                            Phone (optional â€” for verification)
+                            Phone (optional — for verification)
                         </label>
                         <input
                             type="tel"

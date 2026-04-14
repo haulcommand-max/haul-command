@@ -1,0 +1,17 @@
+# GEMINI-05: Training Jurisdiction Seeds
+
+training_jurisdiction_seed_pack:
+  countries:
+    US:
+      states:
+        "TX": "Texas Pilot Car P/EVO Certification required. Mutual recognition limited."
+        "FL": "Florida Law Enforcement Escort Training Program. Reciprocity highly restricted."
+        "WA": "Washington State specific flagger training and PEVO class."
+    CA:
+      provinces:
+        "ON": "Ontario Certified Escort Protocol (O. Reg. 313/01)."
+        "QC": "SAAQ regulations for special permits and escorts."
+    AU:
+      territories:
+        "NSW": "TfNSW Pilot and Escort Driver Accreditation Level 1/2."
+        "QLD": "TMR Pilot Vehicle Driver Accreditation."

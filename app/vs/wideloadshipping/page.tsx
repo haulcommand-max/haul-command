@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs WideLoadShipping.com â€” Full Comparison 2026 | Haul Command',
+  title: 'Haul Command vs WideLoadShipping.com — Full Comparison 2026 | Haul Command',
   description: 'Haul Command vs WideLoadShipping.com: Compare features, tools, operator directory, booking, and global coverage. See which platform wins for heavy haul.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/wideloadshipping' },
 }
@@ -41,9 +41,9 @@ export default function VsWideLoadShippingPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON Â· 2026</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs WideLoadShipping</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">WideLoadShipping built a basic directory and quote-request model. Haul Command built a live marketplace, trust system, tools suite, and global operator OS. Hereâ€™s the comparison.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">WideLoadShipping built a basic directory and quote-request model. Haul Command built a live marketplace, trust system, tools suite, and global operator OS. Here's the comparison.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">

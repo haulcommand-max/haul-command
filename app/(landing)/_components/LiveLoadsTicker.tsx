@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Truck, ArrowRight, ChevronRight, Clock } from "lucide-react";
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   LIVE LOADS TICKER â€” Stock-marketâ€“style scrolling load feed
+   LIVE LOADS TICKER — Stock-market"“style scrolling load feed
    Creates constant-activity feel. Falls back to demo data
    when live data is sparse.
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */

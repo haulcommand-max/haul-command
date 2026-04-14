@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { PartnerInquiryForm } from '@/components/partners/PartnerInquiryForm';
 
 export const metadata: Metadata = {
-  title: 'Wind Energy Transport Escorts â€” Blade, Tower & Nacelle | Haul Command',
+  title: 'Wind Energy Transport Escorts — Blade, Tower & Nacelle | Haul Command',
   description: 'Specialized escort operators for wind turbine blade, tower, and nacelle transportation. Multi-state coordination, 200+ ft blade escorts, renewable energy corridors.',
 };
 

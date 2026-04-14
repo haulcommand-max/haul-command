@@ -103,7 +103,7 @@ export default function AdminRevenuePage() {
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Revenue Dashboard</h1>
           <p style={{ color: '#5a5a6a', fontSize: 12, margin: '4px 0 0' }}>
-            As of {new Date(data.as_of).toLocaleString()} â€” current month
+            As of {new Date(data.as_of).toLocaleString()} — current month
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
@@ -127,9 +127,9 @@ export default function AdminRevenuePage() {
 
         {/* Revenue breakdown */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 32 }}>
-          <MetricCard label="Permit Filing" value={`$${data.permit_filing.revenue_usd}`} sub={`${data.permit_filing.filed_count} filed Â· ${data.permit_filing.pending_count} pending`} color="#22c55e" href="/admin/permits" />
-          <MetricCard label="Insurance Referrals" value={`$${data.insurance.estimated_revenue_usd}`} sub={`${data.insurance.clicks} clicks Â· ${data.insurance.conversions} conversions (${data.insurance.conversion_rate_pct}%)`} color="#3b82f6" />
-          <MetricCard label="Certifications" value={`$${data.certifications.estimated_revenue_usd}`} sub={Object.entries(data.certifications.by_tier).map(([k,v]) => `${v} ${k}`).join(' Â· ')} color="#a855f7" href="/admin/certifications" />
+          <MetricCard label="Permit Filing" value={`$${data.permit_filing.revenue_usd}`} sub={`${data.permit_filing.filed_count} filed · ${data.permit_filing.pending_count} pending`} color="#22c55e" href="/admin/permits" />
+          <MetricCard label="Insurance Referrals" value={`$${data.insurance.estimated_revenue_usd}`} sub={`${data.insurance.clicks} clicks · ${data.insurance.conversions} conversions (${data.insurance.conversion_rate_pct}%)`} color="#3b82f6" />
+          <MetricCard label="Certifications" value={`$${data.certifications.estimated_revenue_usd}`} sub={Object.entries(data.certifications.by_tier).map(([k,v]) => `${v} ${k}`).join(' · ')} color="#a855f7" href="/admin/certifications" />
           <MetricCard label="Sponsors" value={`$${data.sponsors.monthly_revenue_usd}`} sub={`${data.sponsors.active_count} active sponsors this month`} color="#F5A623" />
         </div>
 

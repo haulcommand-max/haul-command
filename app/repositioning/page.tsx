@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { MapPin, Clock, Zap, ArrowRight, Truck, Radio } from 'lucide-react'
 
 /**
- * /repositioning â€” Operator backhaul / reposition broadcast page
+ * /repositioning — Operator backhaul / reposition broadcast page
  *
  * Competitive kill surface vs. Facebook groups / WhatsApp chains.
  * Operators returning empty can broadcast their position and get matched.
@@ -294,7 +294,7 @@ export default function RepositioningPage() {
           <input
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Filter by location, service, operatorâ€¦"
+            placeholder="Filter by location, service, operator"¦"
             className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-2.5 text-sm focus:border-amber-500/50 focus:outline-none"
           />
           <div className="text-xs text-[#566880] shrink-0">{filtered.length} broadcasting</div>
@@ -310,7 +310,7 @@ export default function RepositioningPage() {
           <div className="text-center py-16 rounded-2xl border border-[#1e3048] bg-[#0f1a24]">
             <div className="text-4xl mb-3">ðŸ“¡</div>
             <p className="font-bold text-white mb-1">No repositioning broadcasts right now</p>
-            <p className="text-sm text-[#566880] mb-4">Be the first â€” broadcast your position and get found by brokers looking for capacity.</p>
+            <p className="text-sm text-[#566880] mb-4">Be the first — broadcast your position and get found by brokers looking for capacity.</p>
             <button
               onClick={() => setShowForm(true)}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/15 text-amber-400 text-sm font-bold border border-amber-500/25 hover:bg-amber-500/25 transition-colors"
@@ -358,7 +358,7 @@ export default function RepositioningPage() {
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {timeAgo(op.updated_at)}
-                        {op.available_until && ` Â· avail until ${new Date(op.available_until).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                        {op.available_until && ` · avail until ${new Date(op.available_until).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                       </span>
                     </div>
                   </div>

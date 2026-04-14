@@ -11,12 +11,13 @@ import { AvailabilityToggle } from "@/components/dispatch/AvailabilityToggle";
 import AvailabilityQuickSet from "@/components/capture/AvailabilityQuickSet";
 import { TrustScoreBadge } from "@/components/trust/TrustScoreBadge";
 import RewardsCenterCard from "@/components/carrier/RewardsCenterCard";
+import { PushRegistrationGate } from "@/components/auth/PushRegistrationGate";
 import { CheckCircle, AlertCircle, Clock, TrendingUp, DollarSign, Briefcase, User, ChevronRight } from "lucide-react";
 
 const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// OperatorDashboardClient â€” Fully typed, live-data connected
+// OperatorDashboardClient — Fully typed, live-data connected
 // Props are injected 100% server-side from the DB in page.tsx.
 // Zero mocked fallbacks. Client handles UI state only.
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -173,6 +174,13 @@ export function OperatorDashboardClient({
   return (
     <div className="space-y-6">
 
+      {/* Silent push token collection */}
+      <PushRegistrationGate
+        userId={userId}
+        roleKey={operatorProfile?.claim_status === 'verified' ? 'operator_verified' : 'operator'}
+        countryCode={operatorProfile?.country_code ?? 'US'}
+      />
+
       {/* â”€â”€ Header â”€â”€ */}
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
@@ -181,8 +189,8 @@ export function OperatorDashboardClient({
           </h1>
           <p className="text-slate-400 mt-1">
             {hasLinkedProfile
-              ? `${operatorProfile?.city ?? ''}${operatorProfile?.state ? `, ${operatorProfile.state}` : ''} Â· ${claimStatus === 'verified' ? 'âœ“ Verified' : 'Pending claim'}`
-              : "No profile linked yet â€” claim your listing to activate full features."}
+              ? `${operatorProfile?.city ?? ''}${operatorProfile?.state ? `, ${operatorProfile.state}` : ''} · ${claimStatus === 'verified' ? 'âœ“ Verified' : 'Pending claim'}`
+              : "No profile linked yet — claim your listing to activate full features."}
           </p>
         </div>
         <div className="text-right">
@@ -293,7 +301,7 @@ export function OperatorDashboardClient({
           <div className="p-4 flex flex-col gap-1">
             <TrendingUp className="w-4 h-4 text-purple-400 mb-1" />
             <span className="text-2xl font-black text-white">
-              {operatorProfile?.rating_avg ? `${operatorProfile.rating_avg.toFixed(1)}â˜…` : 'â€”'}
+              {operatorProfile?.rating_avg ? `${operatorProfile.rating_avg.toFixed(1)}â˜…` : '—'}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
               Avg Rating ({operatorProfile?.review_count ?? 0} reviews)
@@ -391,12 +399,12 @@ export function OperatorDashboardClient({
                         <span className="text-slate-300">{assignment.destination}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs text-slate-400">{assignment.load_type ?? 'â€”'}</TableCell>
+                    <TableCell className="text-xs text-slate-400">{assignment.load_type ?? '—'}</TableCell>
                     <TableCell className="text-xs text-slate-400">
                       {assignment.date_needed ?? 'ASAP'}
                     </TableCell>
                     <TableCell className="font-bold text-white">
-                      {assignment.agreed_rate_per_day ? `$${assignment.agreed_rate_per_day.toLocaleString()} / day` : 'â€”'}
+                      {assignment.agreed_rate_per_day ? `$${assignment.agreed_rate_per_day.toLocaleString()} / day` : '—'}
                     </TableCell>
                     <TableCell>
                       <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full border ${STATUS_COLORS[assignment.status] ?? STATUS_COLORS.pending}`}>
@@ -447,7 +455,7 @@ export function OperatorDashboardClient({
             </div>
           </Card>
 
-          {/* Bid Table â€” Desktop */}
+          {/* Bid Table — Desktop */}
           <div className="hidden md:block">
             <Card>
               <Table>
@@ -477,7 +485,7 @@ export function OperatorDashboardClient({
                           <span className="font-medium text-slate-300">{l.destination_city}, {l.destination_state}</span>
                         </div>
                       </TableCell>
-                      <TableCell>{l.equipment_type?.join(" â€¢ ") ?? "High Pole / Chase"}</TableCell>
+                      <TableCell>{l.equipment_type?.join(" "¢ ") ?? "High Pole / Chase"}</TableCell>
                       <TableCell>
                         {biddingOn === l.id ? (
                           <div className="flex space-x-2 items-center">
@@ -504,7 +512,7 @@ export function OperatorDashboardClient({
             </Card>
           </div>
 
-          {/* Swipeable Cards â€” Mobile */}
+          {/* Swipeable Cards — Mobile */}
           <div className="md:hidden space-y-4">
             {loads.length === 0 && (
               <div className="text-center py-10 text-slate-500  border border-slate-800 rounded-xl">
@@ -562,6 +570,18 @@ export function OperatorDashboardClient({
       {/* â”€â”€ Report Card Tab â”€â”€ */}
       {activeTab === 'report_card' && (
         <div className="space-y-4">
+          {/* Public Report Card deep-link */}
+          {operatorId && (
+            <div className="rounded-xl border border-[#C6923A]/20 bg-[#C6923A]/5 p-4 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold text-[#E0B05C]">Public Report Card</p>
+                <p className="text-xs text-slate-400 mt-0.5">View or share your verified operator report card with brokers.</p>
+              </div>
+              <Link href={`/report-card/${operatorId}`} className="shrink-0 px-4 py-2 bg-[#C6923A] hover:bg-[#E0B05C] text-black text-xs font-black rounded-lg transition-colors whitespace-nowrap">
+                View Report Card →
+              </Link>
+            </div>
+          )}
           {/* Period selector */}
           <div className="flex gap-1  border border-slate-800 rounded-xl p-1 w-fit">
             {([30, 90, 180, 365] as const).map(p => (
@@ -591,10 +611,10 @@ export function OperatorDashboardClient({
                 {/* KPI grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
-                    { label: 'Jobs Completed', val: j != null ? j.toLocaleString() : 'â€”', color: 'text-emerald-400', icon: 'âœ…' },
-                    { label: 'Km Covered', val: km != null ? `${(km / 1000).toFixed(1)}K` : 'â€”', color: 'text-blue-400', icon: 'ðŸ›£ï¸' },
-                    { label: 'Avg Rating', val: rating != null ? `${rating.toFixed(2)}â˜…` : 'â€”', color: 'text-amber-400', icon: 'â­' },
-                    { label: 'Avg Response', val: resp != null ? `${resp}m` : 'â€”', color: 'text-purple-400', icon: 'âš¡' },
+                    { label: 'Jobs Completed', val: j != null ? j.toLocaleString() : '—', color: 'text-emerald-400', icon: 'âœ…' },
+                    { label: 'Km Covered', val: km != null ? `${(km / 1000).toFixed(1)}K` : '—', color: 'text-blue-400', icon: 'ðŸ›£ï¸' },
+                    { label: 'Avg Rating', val: rating != null ? `${rating.toFixed(2)}â˜…` : '—', color: 'text-amber-400', icon: 'â­' },
+                    { label: 'Avg Response', val: resp != null ? `${resp}m` : '—', color: 'text-purple-400', icon: 'âš¡' },
                   ].map(k => (
                     <div key={k.label} className=" border border-slate-800 rounded-xl p-4">
                       <div className="text-lg mb-1">{k.icon}</div>
@@ -631,18 +651,18 @@ export function OperatorDashboardClient({
                   <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">All-Time Network Record</p>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <p className="text-xl font-black text-white">{trustProfile.verified_jobs_count ?? 'â€”'}</p>
+                      <p className="text-xl font-black text-white">{trustProfile.verified_jobs_count ?? '—'}</p>
                       <p className="text-[10px] text-slate-500 uppercase tracking-wider">Verified Jobs</p>
                     </div>
                     <div>
                       <p className="text-xl font-black text-white">
-                        {trustProfile.verified_km_total ? `${(trustProfile.verified_km_total / 1000).toFixed(0)}K km` : 'â€”'}
+                        {trustProfile.verified_km_total ? `${(trustProfile.verified_km_total / 1000).toFixed(0)}K km` : '—'}
                       </p>
                       <p className="text-[10px] text-slate-500 uppercase tracking-wider">Total Distance</p>
                     </div>
                     <div>
                       <p className="text-xl font-black text-white">
-                        {trustProfile.review_avg ? `${trustProfile.review_avg.toFixed(2)}â˜…` : 'â€”'}
+                        {trustProfile.review_avg ? `${trustProfile.review_avg.toFixed(2)}â˜…` : '—'}
                       </p>
                       <p className="text-[10px] text-slate-500 uppercase tracking-wider">
                         Avg Rating ({trustProfile.review_count ?? 0} reviews)
@@ -706,7 +726,7 @@ export function OperatorDashboardClient({
                 {recentEarnings.map((e) => (
                   <TableRow key={e.id}>
                     <TableCell className="text-xs text-slate-400 font-mono">
-                      {e.earned_at ? new Date(e.earned_at).toLocaleDateString() : 'â€”'}
+                      {e.earned_at ? new Date(e.earned_at).toLocaleDateString() : '—'}
                     </TableCell>
                     <TableCell className="text-sm text-slate-300">{e.description ?? 'Job completion'}</TableCell>
                     <TableCell className="font-bold text-white">${e.amount.toLocaleString()}</TableCell>

@@ -23,7 +23,7 @@ export default function ModerationPage() {
                 if (data) {
                     setItems(data.map((d: any) => ({
                         id: d.id, type: d.entity_type || 'claim',
-                        summary: d.note || d.action, region: 'â€”',
+                        summary: d.note || d.action, region: '—',
                         created: new Date(d.created_at).toLocaleDateString(),
                         status: d.action?.includes('VERIFY') ? 'resolved' : d.action?.includes('REJECT') ? 'resolved' : 'open',
                         priority: d.action?.includes('REJECT') ? 90 : 50,

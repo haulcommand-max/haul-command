@@ -44,7 +44,7 @@ const TIERS = [
     color: '#f5c842',
     colorBg: 'rgba(245,200,66,0.08)',
     colorBorder: 'rgba(245,200,66,0.35)',
-    badge: 'GOLD Â· AV-READY',
+    badge: 'GOLD · AV-READY',
     price: '$149/year',
     priceAlt: '$99 renewal',
     priceColor: '#f5c842',
@@ -60,10 +60,10 @@ const TIERS = [
       'Priority placement in AV corridor operator pools',
       'Direct referral to AV logistics partners (Aurora, Kodiak, etc.)',
       '"AV-Ready" filter visibility in broker search',
-      'Higher rate eligibility â€” AV jobs pay premium',
+      'Higher rate eligibility — AV jobs pay premium',
       'Gold HC shield + "AV-READY" bar on profile',
     ],
-    cta: 'Enroll â€” $149/yr',
+    cta: 'Enroll — $149/yr',
     ctaHref: '/training/av-certification/enroll?tier=2',
     highlight: true,
   },
@@ -77,7 +77,7 @@ const TIERS = [
     color: '#a78bfa',
     colorBg: 'rgba(167,139,250,0.08)',
     colorBorder: 'rgba(167,139,250,0.35)',
-    badge: 'PLATINUM Â· ELITE',
+    badge: 'PLATINUM · ELITE',
     price: '$299/year',
     priceAlt: '$199 renewal',
     priceColor: '#a78bfa',
@@ -100,13 +100,13 @@ const TIERS = [
       'Listed on Haul Command partner portal for AV companies',
       'Platinum HC shield + "ELITE" bar on profile',
     ],
-    cta: 'Enroll â€” $299/yr',
+    cta: 'Enroll — $299/yr',
     ctaHref: '/training/av-certification/enroll?tier=3',
   },
 ];
 
 const AV_COMPANIES = [
-  { name: 'Aurora Innovation', corridor: 'I-45 Dallasâ€“Houston', flag: 'ðŸ‡ºðŸ‡¸' },
+  { name: 'Aurora Innovation', corridor: 'I-45 Dallas"“Houston', flag: 'ðŸ‡ºðŸ‡¸' },
   { name: 'Kodiak Robotics', corridor: 'Permian Basin US-287', flag: 'ðŸ‡ºðŸ‡¸' },
   { name: 'Waabi', corridor: 'Texas highways + Canada', flag: 'ðŸ‡ºðŸ‡¸ðŸ‡¨ðŸ‡¦' },
   { name: 'Waymo', corridor: 'Austin TX, Phoenix AZ', flag: 'ðŸ‡ºðŸ‡¸' },
@@ -120,12 +120,12 @@ const AV_COMPANIES = [
 
 const MODULES = [
   { num: 1, title: 'Platform Fundamentals', dur: '30 min', tier: 'T1', desc: 'How Haul Command works, escrow, profile optimization, and communication protocols.' },
-  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 120 countries â€” width/height thresholds, permit types, curfews, cross-border protocols.' },
+  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 120 countries — width/height thresholds, permit types, curfews, cross-border protocols.' },
   { num: 3, title: 'Load Type Mastery', dur: '60 min', tier: 'T1', desc: 'Every load type: wind, oilfield, mining, construction, aerospace, military, manufactured homes, and more.' },
   { num: 4, title: 'AV Proximity Protocols', dur: '90 min', tier: 'T2', desc: 'How AVs differ from human drivers, LiDAR/radar blind zones, company-specific protocols (Aurora, Kodiak, Waymo), 5 country modules.' },
   { num: 5, title: 'Oilfield Specialist', dur: '75 min', tier: 'T2', desc: 'US oilfield regulations (TxDMV Subchapter D), international oilfield (Aramco, ADNOC, Pilbara), all oilfield load types.' },
   { num: 6, title: 'Superloads & Extreme Moves', dur: '60 min', tier: 'T2', desc: 'Route surveys, police escort coordination, bridge engineering, NASA/SpaceX moves, DOD/SDDC protocols.' },
-  { num: 7, title: 'International Operations', dur: '45 min', tier: 'T3', desc: 'USâ€“Mexico/Canada border handoffs, EU cross-border (ESTA), GCC protocols, Australia state-to-state, currency + insurance.' },
+  { num: 7, title: 'International Operations', dur: '45 min', tier: 'T3', desc: 'US"“Mexico/Canada border handoffs, EU cross-border (ESTA), GCC protocols, Australia state-to-state, currency + insurance.' },
 ];
 
 const TIER_COLORS: Record<string, string> = { T1: '#c0c0c0', T2: '#f5c842', T3: '#a78bfa' };
@@ -160,7 +160,7 @@ export default function AVCertificationPage() {
             color: '#f5c842', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em',
             marginBottom: 24,
           }}>
-            ðŸŒ GLOBAL STANDARD Â· 120 countries
+            ðŸŒ GLOBAL STANDARD · 120 countries
           </div>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 900, margin: '0 0 16px',
@@ -198,7 +198,7 @@ export default function AVCertificationPage() {
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
               }}>
-                Get AV-Ready Certified â€” $149/yr
+                Get AV-Ready Certified — $149/yr
               </button>
             </Link>
             <Link href="#why">
@@ -225,7 +225,7 @@ export default function AVCertificationPage() {
           </h2>
           <p style={{ color: '#b0bcd0', lineHeight: 1.8, margin: '0 0 20px', fontSize: 15 }}>
             No global certification standard exists for escort operators working near autonomous vehicles.
-            AV companies are deploying fast â€” and their logistics partners (Uber Freight, Hirschbach, J.B. Hunt,
+            AV companies are deploying fast — and their logistics partners (Uber Freight, Hirschbach, J.B. Hunt,
             Werner, Ryder, FedEx, Atlas Energy) need verified escorts who understand how AVs behave.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
@@ -233,7 +233,7 @@ export default function AVCertificationPage() {
               { icon: 'ðŸ“¡', title: 'No CB Radio', body: 'AVs do not respond to Channel 19. Standard escort communication doesn\'t apply.' },
               { icon: 'ðŸ”­', title: 'Sensor Blind Zones', body: 'LiDAR, radar, and camera arcs create specific zones to avoid around AV trucks.' },
               { icon: 'ðŸ›‘', title: 'Emergency Stops', body: 'AVs may stop with zero warning signal. Minimum following distances are different.' },
-              { icon: 'ðŸ”„', title: 'Merge Behavior', body: 'AVs merge earlier and wider than human drivers â€” your positioning changes entirely.' },
+              { icon: 'ðŸ”„', title: 'Merge Behavior', body: 'AVs merge earlier and wider than human drivers — your positioning changes entirely.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
@@ -375,7 +375,7 @@ export default function AVCertificationPage() {
       <div style={{ background: '#0a0d16', borderTop: '1px solid #1a223a', borderBottom: '1px solid #1a223a', padding: '64px 24px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8, textAlign: 'center' }}>
-            7 Training Modules â€” Built for Operators, Not Bureaucrats
+            7 Training Modules — Built for Operators, Not Bureaucrats
           </h2>
           <p style={{ color: '#8fa3c0', textAlign: 'center', marginBottom: 40, fontSize: 15 }}>
             Each module is practical, specific, and timed. No fluff. Just what you need to pass the job.
@@ -433,7 +433,7 @@ export default function AVCertificationPage() {
           </h2>
           <p style={{ color: '#8fa3c0', fontSize: 15, maxWidth: 580, margin: '0 auto 24px', lineHeight: 1.7 }}>
             AV companies and logistics partners can purchase bulk certifications for their preferred escort networks.
-            Cohort pricing from <strong style={{ color: '#f5c842' }}>$5,000â€“$25,000</strong>.
+            Cohort pricing from <strong style={{ color: '#f5c842' }}>$5,000"“$25,000</strong>.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 32 }}>
             {['Aurora Innovation', 'Kodiak Robotics', 'Uber Freight', 'Hirschbach', 'Ryder', 'FedEx Freight', 'Rio Tinto', 'BHP', 'Fortescue'].map(co => (
@@ -467,8 +467,8 @@ export default function AVCertificationPage() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
             {[
-              { label: 'Standard escort rate (avg)', val: '$2.50â€“$4/mile', color: '#8fa3c0' },
-              { label: 'AV corridor rate (premium)', val: '$4â€“$7/mile', color: '#00ff88' },
+              { label: 'Standard escort rate (avg)', val: '$2.50"“$4/mile', color: '#8fa3c0' },
+              { label: 'AV corridor rate (premium)', val: '$4"“$7/mile', color: '#00ff88' },
               { label: 'Certification cost (annual)', val: '$149/year', color: '#f5c842' },
               { label: 'Break-even at +$2/mile premium', val: '~75 miles extra/year', color: '#f5c842' },
             ].map(item => (

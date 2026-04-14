@@ -5,7 +5,7 @@ import { getTerritoryPrice, type USMarketTier, US_STATE_MARKET_TIER, US_MARKET_T
 
 export const metadata: Metadata = {
     title: 'Territory Sponsor Availability | Haul Command',
-    description: 'Check availability for exclusive territory sponsorships on Haul Command. Own a US state or country â€” your business appears first in all directory, near-me, and corridor searches.',
+    description: 'Check availability for exclusive territory sponsorships on Haul Command. Own a US state or country — your business appears first in all directory, near-me, and corridor searches.',
     alternates: { canonical: 'https://www.haulcommand.com/advertise/territory' },
 };
 
@@ -65,7 +65,7 @@ const FALLBACK_US_TERRITORIES: SponsorInventoryRow[] = [
     { id: '5', sponsor_type: 'territory', geo_key: 'OH', geo_label: 'Ohio',              geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=OH', description: 'Industrial heartland.', active: true },
     { id: '6', sponsor_type: 'territory', geo_key: 'PA', geo_label: 'Pennsylvania',      geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=PA', description: 'Northeast corridor anchor.', active: true },
     { id: '7', sponsor_type: 'territory', geo_key: 'IL', geo_label: 'Illinois',          geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=IL', description: 'Chicago logistics hub.', active: true },
-    { id: '8', sponsor_type: 'territory', geo_key: 'GA', geo_label: 'Georgia',           geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=GA', description: 'Port of Savannah â€” 4th busiest US port.', active: true },
+    { id: '8', sponsor_type: 'territory', geo_key: 'GA', geo_label: 'Georgia',           geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 39900, discovery_url: '/directory?state=GA', description: 'Port of Savannah — 4th busiest US port.', active: true },
     // MID ($299/mo)
     { id: '9', sponsor_type: 'territory', geo_key: 'NC', geo_label: 'North Carolina',    geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 29900, discovery_url: '/directory?state=NC', description: 'Growing wind energy market.', active: true },
     { id: '10', sponsor_type: 'territory', geo_key: 'WA', geo_label: 'Washington',       geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 29900, discovery_url: '/directory?state=WA', description: 'Port of Seattle/Tacoma + wind corridor.', active: true },
@@ -101,7 +101,7 @@ export default async function TerritoryAvailabilityPage() {
             globalRows = (data as SponsorInventoryRow[]).filter(r => r.geo_type === 'country');
         }
     } catch {
-        // Supabase not configured or migration not applied â€” fallback data is fine
+        // Supabase not configured or migration not applied — fallback data is fine
     }
 
     const availableCount = [...usRows, ...globalRows].filter(r => getSlotStatus(r) === 'available').length;
@@ -174,7 +174,7 @@ export default async function TerritoryAvailabilityPage() {
             {/* â”€â”€ US Territory Grid â”€â”€ */}
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                 <h2 className="text-xl font-bold text-white mb-1">United States</h2>
-                <p className="text-sm text-gray-400 mb-6">High-priority heavy haul states. Full US roster available â€” contact us if your state isn't listed.</p>
+                <p className="text-sm text-gray-400 mb-6">High-priority heavy haul states. Full US roster available — contact us if your state isn't listed.</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {usRows.map(row => {
@@ -239,7 +239,7 @@ export default async function TerritoryAvailabilityPage() {
                                         const pricing = getTerritoryPrice(row.geo_key);
                                         return (
                                             <span className="text-[10px] text-green-400/70">
-                                                ${pricing.priceAnnualMonthly}/mo with annual billing â€” save {pricing.savingsPercent}%
+                                                ${pricing.priceAnnualMonthly}/mo with annual billing — save {pricing.savingsPercent}%
                                             </span>
                                         );
                                     })()}
@@ -271,7 +271,7 @@ export default async function TerritoryAvailabilityPage() {
                     <Link href="/advertise/enterprise" className="text-hc-gold-400 hover:text-hc-gold-300 underline transition-colors">
                         Contact our team
                     </Link>{' '}
-                    â€” all 50 US states are available.
+                    — all 50 US states are available.
                 </p>
             </section>
 
@@ -349,7 +349,7 @@ export default async function TerritoryAvailabilityPage() {
                         {
                             icon: 'ðŸŽ¯',
                             title: 'Zero competition on your pages',
-                            body: 'You\'re the only sponsor shown in your territory. Every broker searching for an escort in your state sees your business first â€” always.',
+                            body: 'You\'re the only sponsor shown in your territory. Every broker searching for an escort in your state sees your business first — always.',
                         },
                         {
                             icon: 'ðŸ“ˆ',

@@ -55,7 +55,7 @@ export default function ContactPage() {
                     How Can We Help?
                 </h1>
                 <p style={{ fontSize: 15, color: '#6b7280', maxWidth: 520, margin: '0 auto' }}>
-                    Whether you're an operator, broker, or shipper â€” our team is here. Most inquiries are answered within 4 business hours.
+                    Whether you're an operator, broker, or shipper — our team is here. Most inquiries are answered within 4 business hours.
                 </p>
             </section>
 

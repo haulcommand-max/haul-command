@@ -93,7 +93,7 @@ export default function CertificationsDashboard() {
 
   const share = (cert: Certification) => {
     const url = `${window.location.origin}/training/verify/${cert.id}`;
-    const text = `I just earned my ${TIER_NAMES[cert.certification_tier]} Certification from Haul Command â€” the only global training program for escort operators working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors. #HaulCommand #PilotCar #HeavyHaul ${url}`;
+    const text = `I just earned my ${TIER_NAMES[cert.certification_tier]} Certification from Haul Command — the only global training program for escort operators working in heavy haul, wind energy, oilfield, and autonomous vehicle corridors. #HaulCommand #PilotCar #HeavyHaul ${url}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(() => {
         setShareMsg('Copied to clipboard!');
@@ -271,7 +271,7 @@ export default function CertificationsDashboard() {
               background: 'linear-gradient(135deg, #F5A623, #e08820)',
               color: '#000', fontWeight: 800, textDecoration: 'none', fontSize: 14,
             }}>
-              ðŸŽ“ Start Module 1 â€” Free
+              ðŸŽ“ Start Module 1 — Free
             </Link>
           </div>
         )}
@@ -315,7 +315,7 @@ export default function CertificationsDashboard() {
                     minWidth: 80, textAlign: 'right',
                   }}>
                     {status.replace('_', ' ')}
-                    {m.progress?.score !== null && m.progress?.score !== undefined && ` â€” ${m.progress.score}%`}
+                    {m.progress?.score !== null && m.progress?.score !== undefined && ` — ${m.progress.score}%`}
                   </div>
 
                   <Link aria-label="Navigation Link" href={`/training/${m.slug}`} style={{

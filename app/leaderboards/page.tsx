@@ -83,7 +83,7 @@ export default function LeaderboardsPage() {
           setLeaders(data as LeaderEntry[]);
           setIsLive(true);
         } else if (!cancelled) {
-          // Graceful fallback â€” filter mock by period tag
+          // Graceful fallback — filter mock by period tag
           setLeaders(FALLBACK.map(l => ({ ...l, window_days: activePeriod })));
           setIsLive(false);
         }
@@ -110,7 +110,7 @@ export default function LeaderboardsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
         '@graph': [
-          { '@type': 'WebPage', name: 'Heavy Haul Operator Leaderboards | Haul Command', url: 'https://www.haulcommand.com/leaderboards', description: 'Rankings of top-performing heavy haul and pilot car operators â€” 30, 90, 180, and 365-day windows. Ranked by verified escort runs, broker trust score, and response time.' },
+          { '@type': 'WebPage', name: 'Heavy Haul Operator Leaderboards | Haul Command', url: 'https://www.haulcommand.com/leaderboards', description: 'Rankings of top-performing heavy haul and pilot car operators — 30, 90, 180, and 365-day windows. Ranked by verified escort runs, broker trust score, and response time.' },
           { '@type': 'BreadcrumbList', itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
             { '@type': 'ListItem', position: 2, name: 'Leaderboards', item: 'https://www.haulcommand.com/leaderboards' },
@@ -130,8 +130,8 @@ export default function LeaderboardsPage() {
             Elite heavy haul operators ranked by verified completions, broker trust, and response time.
           </p>
           {isLive
-            ? <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />Live data Â· refreshed nightly</span>
-            : <span className="inline-flex items-center gap-1.5 text-xs text-amber-500/70 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-amber-500/70" />Preview rankings â€” live data activates as operators earn verified completions</span>
+            ? <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />Live data · refreshed nightly</span>
+            : <span className="inline-flex items-center gap-1.5 text-xs text-amber-500/70 font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-amber-500/70" />Preview rankings — live data activates as operators earn verified completions</span>
           }
         </motion.div>
       </section>
@@ -227,9 +227,9 @@ export default function LeaderboardsPage() {
           <section className="max-w-7xl mx-auto px-6 pb-32 z-10 relative">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-white/90">
-                Global Rankings <span className="text-amber-400 text-xl font-normal">â€” Last {activePeriod} Days</span>
+                Global Rankings <span className="text-amber-400 text-xl font-normal">— Last {activePeriod} Days</span>
               </h2>
-              {loading && <span className="text-xs text-gray-500 animate-pulse">Loadingâ€¦</span>}
+              {loading && <span className="text-xs text-gray-500 animate-pulse">Loading"¦</span>}
             </div>
 
             <div className="space-y-3">
@@ -269,12 +269,12 @@ export default function LeaderboardsPage() {
                         <StatCell label="Km" val={(leader.km_total / 1000).toFixed(1) + 'K'} icon={<MapPin className="w-3 h-3 text-blue-400" />} />
                         <StatCell
                           label="Response"
-                          val={leader.avg_response_min != null ? `${leader.avg_response_min}m` : 'â€”'}
+                          val={leader.avg_response_min != null ? `${leader.avg_response_min}m` : '—'}
                           icon={<Clock className="w-3 h-3 text-amber-400" />}
                         />
                         <StatCell
                           label="Rating"
-                          val={leader.avg_rating != null ? `${leader.avg_rating.toFixed(2)}â˜…` : 'â€”'}
+                          val={leader.avg_rating != null ? `${leader.avg_rating.toFixed(2)}â˜…` : '—'}
                           icon={<Star className="w-3 h-3 text-amber-500 fill-amber-500/50" />}
                         />
                       </div>

@@ -39,7 +39,7 @@ export default function CreateLoadPage() {
 
     async function computeMilesServerSide(): Promise<number | null> {
         // Best practice: RPC that computes miles once and caches it.
-        // Youâ€™ll implement compute_miles_and_cache() in backend later (HERE/Google optional).
+        // You'll implement compute_miles_and_cache() in backend later (HERE/Google optional).
         // For now, return what broker typed or null.
         return miles;
     }

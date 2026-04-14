@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 // =========================================================
-// Vendor Apply Form â€” /vendors/apply
+// Vendor Apply Form — /vendors/apply
 // Writes: vendor_applications (status = 'pending')
 // =========================================================
 
@@ -20,11 +20,11 @@ const SERVICE_OPTIONS = [
 ] as const;
 
 const PLAN_TIERS = [
-    { value: "free", label: "Free â€” Listed in directory + limited in-app surfacing", price: "$0" },
-    { value: "verified", label: "Verified â€” Badge + better surfacing", price: "$29/mo" },
-    { value: "priority", label: "Priority â€” Boosted emergency + route placement", price: "$99/mo" },
-    { value: "command_partner", label: "Command Partner â€” Top eligible placement", price: "$299/mo" },
-    { value: "corridor_dominator", label: "Corridor Dominator â€” Corridor exclusivity", price: "$999/mo" },
+    { value: "free", label: "Free — Listed in directory + limited in-app surfacing", price: "$0" },
+    { value: "verified", label: "Verified — Badge + better surfacing", price: "$29/mo" },
+    { value: "priority", label: "Priority — Boosted emergency + route placement", price: "$99/mo" },
+    { value: "command_partner", label: "Command Partner — Top eligible placement", price: "$299/mo" },
+    { value: "corridor_dominator", label: "Corridor Dominator — Corridor exclusivity", price: "$999/mo" },
 ] as const;
 
 export default function VendorApplyPage() {
@@ -128,7 +128,7 @@ export default function VendorApplyPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-                {/* â€” Company â€” */}
+                {/* — Company — */}
                 <Card title="Company">
                     <Grid2>
                         <Field label="Company name *">
@@ -151,7 +151,7 @@ export default function VendorApplyPage() {
                     </Grid2>
                 </Card>
 
-                {/* â€” Primary Contact â€” */}
+                {/* — Primary Contact — */}
                 <Card title="Primary Contact">
                     <Grid2>
                         <Field label="Contact name *">
@@ -169,7 +169,7 @@ export default function VendorApplyPage() {
                     </Grid2>
                 </Card>
 
-                {/* â€” Location & Coverage â€” */}
+                {/* — Location & Coverage — */}
                 <Card title="Location & Coverage">
                     <Grid2>
                         <Field label="Country *">
@@ -179,7 +179,7 @@ export default function VendorApplyPage() {
                             </select>
                         </Field>
                         <Field label="State / Province">
-                            <input value={form.region1} onChange={e => set("region1", e.target.value)} placeholder="FL, GA, ONâ€¦" className={input} />
+                            <input value={form.region1} onChange={e => set("region1", e.target.value)} placeholder="FL, GA, ON"¦" className={input} />
                         </Field>
                         <Field label="City *">
                             <input required value={form.city} onChange={e => set("city", e.target.value)} className={input} />
@@ -212,7 +212,7 @@ export default function VendorApplyPage() {
                     </Grid2>
                 </Card>
 
-                {/* â€” Services â€” */}
+                {/* — Services — */}
                 <Card title="Services">
                     <p className="text-sm text-gray-500 mb-3">
                         We&apos;ll use this to show you in Emergency Nearby results.
@@ -231,7 +231,7 @@ export default function VendorApplyPage() {
                     </div>
                 </Card>
 
-                {/* â€” Plan â€” */}
+                {/* — Plan — */}
                 <Card title="Plan (optional)">
                     <div className="space-y-2">
                         {PLAN_TIERS.map(tier => (
@@ -253,7 +253,7 @@ export default function VendorApplyPage() {
                     </div>
                 </Card>
 
-                {/* â€” Submit â€” */}
+                {/* — Submit — */}
                 <div className="border-t pt-6 flex items-center justify-between gap-4">
                     <label className="flex items-start gap-2 cursor-pointer">
                         <input type="checkbox" required checked={form.terms} onChange={e => set("terms", e.target.checked)}
@@ -264,7 +264,7 @@ export default function VendorApplyPage() {
                     </label>
                     <button aria-label="Interactive Button" type="submit" disabled={loading}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg font-medium transition-colors whitespace-nowrap">
-                        {loading ? "Submittingâ€¦" : "Submit Application"}
+                        {loading ? "Submitting"¦" : "Submit Application"}
                     </button>
                 </div>
 

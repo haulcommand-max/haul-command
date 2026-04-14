@@ -6,7 +6,7 @@ import { ProofStrip } from '@/components/ui/ProofStrip';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
-    title: "Find Verified Escorts Fast â€” Without the Guesswork | Haul Command",
+    title: "Find Verified Escorts Fast — Without the Guesswork | Haul Command",
     description: "Real coverage visibility, compliance tracked, faster backfill. Built for brokers who can't afford delays on oversize load escorts. Find verified pilot car operators in any US state.",
     keywords: ['heavy haul broker','find pilot car for load','oversize load broker','escort vehicle for load','pilot car availability'],
     alternates: { canonical: 'https://www.haulcommand.com/broker' },
@@ -43,7 +43,7 @@ const BROKER_SCHEMA = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'WebPage', name: 'Find Verified Escorts Fast | Haul Command Broker Hub', url: 'https://www.haulcommand.com/broker', description: 'The broker hub for finding verified pilot car operators and posting escort loads.', breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },{ '@type': 'ListItem', position: 2, name: 'Broker Hub', item: 'https://www.haulcommand.com/broker' }] } },
     { '@type': 'FAQPage', mainEntity: [
         { '@type': 'Question', name: 'How do I find a verified pilot car operator for my load?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for verified pilot car operators by state. You can also post your load on the load board and receive quotes from certified escorts in your area.' } },
-        { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement â€” include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
+        { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement — include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
         { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3Ã— more contact requests from brokers.' } },
     ]},
 ] };
@@ -52,10 +52,10 @@ export default async function BrokerLandingPage() {
     const stats = await getBrokerStats();
 
     const brokerHooks = [
-        { icon: "ðŸ‘ï¸", text: "See who's actually available â€” not just listed" },
-        { icon: "ðŸ›¡ï¸", text: "Avoid no-show escorts â€” compliance verified before dispatch" },
-        { icon: "ðŸ“‹", text: "Keep compliance organized â€” certs and insurance on file" },
-        { icon: "âš¡", text: "Backfill faster on tight loads â€” live coverage density map" },
+        { icon: "ðŸ‘ï¸", text: "See who's actually available — not just listed" },
+        { icon: "ðŸ›¡ï¸", text: "Avoid no-show escorts — compliance verified before dispatch" },
+        { icon: "ðŸ“‹", text: "Keep compliance organized — certs and insurance on file" },
+        { icon: "âš¡", text: "Backfill faster on tight loads — live coverage density map" },
     ];
 
     const trustStack = [
@@ -93,12 +93,12 @@ export default async function BrokerLandingPage() {
                     </div>
 
                     <h1 className="text-5xl lg:text-6xl font-extrabold text-white mb-5 leading-tight tracking-tight">
-                        Find Verified Escorts Fast â€”{" "}
+                        Find Verified Escorts Fast —{" "}
                         <span className="text-amber-400">Without the Guesswork</span>
                     </h1>
 
                     <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
-                        Real coverage visibility Â· Compliance tracked Â· Faster backfill
+                        Real coverage visibility · Compliance tracked · Faster backfill
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">

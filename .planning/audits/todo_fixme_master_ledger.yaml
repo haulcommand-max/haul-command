@@ -1,0 +1,55 @@
+# GEMINI-01: Repo-wide TODO/FIXME/HACK Master Ledger
+# Execution Context: Gemini 3.1 Pro High Parallel Audit
+# Date: 2026-04-12
+# Scope: app/, lib/, components/, supabase/functions/, deploy/, fly/, scripts/ (Excluding node_modules)
+
+metadata:
+  total_blockers_found: 7
+  critical_count: 5
+  deferred_count: 2
+
+launch_critical:
+  - file: "supabase/functions/compliance-reminders-run/index.ts"
+    line: 61
+    marker: "TODO"
+    context: "// TODO: wire to FCM via notification_events:"
+    impact: "Compliance reminders will not push to operator mobile clients without FCM wiring. Core operational failure."
+
+money_critical:
+  - file: "lib/workflows/claimSniper.ts"
+    line: 225
+    marker: "TODO"
+    context: "status: 'TODO',"
+    impact: "Unresolved status mapping in the claim sniper workflow. This directly impacts automated footprint claims and network extraction density."
+  
+  - file: "lib/funnel/control-loop.ts"
+    line: 234
+    marker: "TODO"
+    context: "// TODO: Get from finance config"
+    impact: "Control loop logic relies on hardcoded finance heuristics rather than the global finance config. Breaks variable pricing / margin scaling."
+
+  - file: "lib/funnel/control-loop.ts"
+    line: 252
+    marker: "TODO"
+    context: "activation_cost_trend: 'stable_14d', // TODO: compute from historical data"
+    impact: "Fakes the activation cost trend. Will lead to improper AdGrid sponsor pricing floors."
+
+  - file: "lib/funnel/control-loop.ts"
+    line: 256
+    marker: "TODO"
+    context: "cls_momentum: 0.5, // TODO: compute from snapshot trend"
+    impact: "Hardcoded conversion momentum metric impacts pipeline analytics."
+
+seo_critical:
+  - file: "lib/workflows/compoundedWorkflows.ts"
+    line: 64
+    marker: "TODO"
+    context: "const marketValue = 60; // TODO: join to dom_scorecards"
+    impact: "Market value stub limits the dynamic capability of SEO templates (like /rates or /corridors) to reflect true marketplace heat."
+
+deferred:
+  - file: "app/api/developers/sandbox-key/route.ts"
+    line: 61
+    marker: "TODO"
+    context: "// TODO: Trigger Supabase Edge Function or Resend to deliver key by email"
+    impact: "Developer API sandbox keys must be manually retrieved from database/UI instead of delivered cleanly via email. Deferred for Day 1."

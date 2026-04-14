@@ -12,7 +12,7 @@ const EscortBrokerInviteModal = dynamic(
 );
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   Post-Claim Success â€” V2: Upsell Ladder
+   Post-Claim Success — V2: Upsell Ladder
    Claim â†’ Invite Brokers â†’ Upgrade Path (Featured / Sponsor / Verified)
    Per Operating Brief: "no claim completion without a paid next step"
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
@@ -124,7 +124,7 @@ function ProfileApprovedInner() {
                                         Featured Operator
                                     </div>
                                     <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
-                                        2Ã— ranking boost + gold badge Â· $29/mo
+                                        2Ã— ranking boost + gold badge · $29/mo
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@ function ProfileApprovedInner() {
                                         Sponsor Your Territory
                                     </div>
                                     <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
-                                        Own your city-level visibility Â· from $149/mo
+                                        Own your city-level visibility · from $149/mo
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@ function ProfileApprovedInner() {
                                         Boost Your Profile
                                     </div>
                                     <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
-                                        7-day visibility surge Â· from $29
+                                        7-day visibility surge · from $29
                                     </div>
                                 </div>
                             </div>

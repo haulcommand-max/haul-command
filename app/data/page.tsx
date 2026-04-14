@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
 import BuyButton from '@/components/data/BuyButton';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
@@ -37,7 +38,7 @@ const faqSchema = {
             name: 'How accurate is Haul Command market data?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command data is sourced directly from platform activity â€” live operator availability, real escort requests, verified claim data, and search demand signals. Rates and benchmarks are updated daily for US corridors and weekly for global markets.',
+                text: 'Haul Command data is sourced directly from platform activity — live operator availability, real escort requests, verified claim data, and search demand signals. Rates and benchmarks are updated daily for US corridors and weekly for global markets.',
             },
         },
         {
@@ -90,8 +91,11 @@ export default function DataMarketplacePage() {
                         style={{ backgroundImage: 'radial-gradient(ellipse at 30% 0%, #3b82f680 0%, transparent 70%)' }} />
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 relative z-10">
                         <div className="max-w-2xl">
-                            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400 mb-6">
-                                Intelligence Marketplace
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+                                    Intelligence Marketplace
+                                </div>
+                                <FreshnessBadge lastSeenAt={new Date().toISOString()} />
                             </div>
                             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-[1.1]">
                                 Heavy Haul Market{' '}
@@ -101,7 +105,7 @@ export default function DataMarketplacePage() {
                             </h1>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
                                 Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 120 countries.
-                                Powered by real platform activity â€” not surveys, not estimates.
+                                Powered by real platform activity — not surveys, not estimates.
                             </p>
                             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
                                 <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Real platform data</span>
@@ -236,7 +240,7 @@ export default function DataMarketplacePage() {
                             },
                             {
                                 q: 'How accurate is Haul Command market data?',
-                                a: 'Data is sourced from real platform activity â€” live operator availability, verified escort requests, claim events, and search demand signals. Rates and benchmarks are updated daily for US corridors, weekly for global markets.',
+                                a: 'Data is sourced from real platform activity — live operator availability, verified escort requests, claim events, and search demand signals. Rates and benchmarks are updated daily for US corridors, weekly for global markets.',
                             },
                             {
                                 q: 'Can I get data via API?',
@@ -259,13 +263,13 @@ export default function DataMarketplacePage() {
                 <div className="border-t border-white/5 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-wrap gap-4 text-sm text-gray-500 justify-center">
                         <Link href="/developers" className="hover:text-white transition-colors">Developer API</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/corridors" className="hover:text-white transition-colors">Corridor Intelligence</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/directory" className="hover:text-white transition-colors">Operator Directory</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link>
-                        <span>Â·</span>
+                        <span>·</span>
                         <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
                     </div>
                 </div>

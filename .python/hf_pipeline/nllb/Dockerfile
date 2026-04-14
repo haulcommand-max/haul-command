@@ -1,0 +1,5 @@
+FROM python:3.10-slim
+WORKDIR /app
+RUN pip install --no-cache-dir fastapi uvicorn transformers pydantic torch
+COPY . .
+CMD ["python", "-c", "import os; from fastapi import FastAPI; from transformers import pipeline; app = FastAPI(); translator = pipeline('translation', model=os.getenv('MODEL_NAME')); @app.post('/translate')\ndef translate(data: dict): return {'translations': translator(data['texts'])}; import uvicorn; uvicorn.run(app, host='0.0.0.0', port=8001)"]

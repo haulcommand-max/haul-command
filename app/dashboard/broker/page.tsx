@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Broker Command Center | Haul Command',
-  description: 'Find capacity, post loads, verify operators, and manage your heavy haul assignments â€” all from one dashboard.',
+  description: 'Find capacity, post loads, verify operators, and manage your heavy haul assignments — all from one dashboard.',
   robots: 'noindex',
 }
 
@@ -93,7 +93,7 @@ export default async function BrokerDashboardPage() {
       <div className="border-b border-[#131c28] bg-[#0a0d14] px-4 lg:px-10 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">HAUL COMMAND Â· BROKER HQ</p>
+            <p className="text-[10px] text-[#566880] font-bold tracking-widest uppercase">HAUL COMMAND · BROKER HQ</p>
             <h1 className="text-xl font-black text-[#f0f2f5] mt-0.5 tracking-tight">Command Center</h1>
           </div>
           <div className="flex gap-2">
@@ -167,7 +167,7 @@ export default async function BrokerDashboardPage() {
                       </p>
                       <p className="text-[10px] text-[#566880] mt-0.5 truncate">
                         {a.origin_label && a.destination_label ? `${a.origin_label} â†’ ${a.destination_label}` : 'Route pending'}
-                        {a.pickup_eta ? ` Â· ETA ${new Date(a.pickup_eta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}
+                        {a.pickup_eta ? ` · ETA ${new Date(a.pickup_eta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}
                       </p>
                     </div>
                     <Badge status={a.status} />
@@ -203,7 +203,7 @@ export default async function BrokerDashboardPage() {
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold text-white truncate">{op.name}</p>
                     <p className="text-[10px] text-[#8a9ab0] mt-0.5 truncate flex items-center gap-1.5">
-                      <span className="text-amber-500">ðŸ“</span> {op.loc} Â· {op.trust}% Trust Score
+                      <span className="text-amber-500">ðŸ“</span> {op.loc} · {op.trust}% Trust Score
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
@@ -233,7 +233,7 @@ export default async function BrokerDashboardPage() {
           <p className="text-xs font-bold text-[#3b82f6] mb-3">ðŸ“Š Market Intelligence</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Avg Response Time', val: '8 min', note: 'Network avg Â· last 30d' },
+              { label: 'Avg Response Time', val: '8 min', note: 'Network avg · last 30d' },
               { label: 'Coverage', val: '120 countries', note: 'Global operator network' },
               { label: 'Verified Operators', val: '14,000+', note: 'Trust-scored profiles' },
               { label: 'Avg Completion Rate', val: '97.2%', note: 'Platform-wide metric' },
