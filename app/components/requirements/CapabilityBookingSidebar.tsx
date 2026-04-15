@@ -29,7 +29,7 @@ export default function CapabilityBookingSidebar({
     'DE': [
       { id: 'lead', name: 'BF3 Begleitfahrzeug', icon: 'ðŸš—' },
       { id: 'police', name: 'BF4 (Polizeiersatz)', icon: 'ðŸš“' },
-      { id: 'route_survey', name: 'StreckenprÃ¼fung', icon: 'ðŸ“' }
+      { id: 'route_survey', name: 'Streckenprüfung', icon: 'ðŸ“' }
     ]
   };
 

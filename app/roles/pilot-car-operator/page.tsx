@@ -180,8 +180,8 @@ export default async function PilotCarOperatorPage() {
                 <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px 2rem' }}>
                     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', padding: '20px 24px', borderRadius: 16, background: 'rgba(212,168,68,0.05)', border: '1px solid rgba(212,168,68,0.15)' }}>
                         <div style={{ flex: 1, minWidth: 240 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: gold, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>ðŸ… Get Your Verified Badge</div>
-                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '0 0 14px', lineHeight: 1.5 }}>Verified operators receive 3Ã— more broker contact requests. Upload certs, insurance, and PEVO card — get badged and rise in search results.</p>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: gold, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>ðŸ … Get Your Verified Badge</div>
+                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '0 0 14px', lineHeight: 1.5 }}>Verified operators receive 3× more broker contact requests. Upload certs, insurance, and PEVO card — get badged and rise in search results.</p>
                             <div style={{ display: 'flex', gap: 8 }}>
                                 <Link href="/claim" style={{ padding: '10px 20px', borderRadius: 10, background: gold, color: '#000', fontSize: 13, fontWeight: 800, textDecoration: 'none' }}>Claim Free Listing</Link>
                                 <Link href="/pricing" style={{ padding: '10px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#e5e7eb', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>See Pro Plans</Link>

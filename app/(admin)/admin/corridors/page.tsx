@@ -150,7 +150,7 @@ export default function AdminCorridorsPage() {
                                             <div className="text-[9px] text-slate-500 uppercase tracking-wide">Loads 24h</div>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-sm font-bold text-slate-300">{pressureRatio}Ã—</div>
+                                            <div className="text-sm font-bold text-slate-300">{pressureRatio}×</div>
                                             <div className="text-[9px] text-slate-500 uppercase tracking-wide">Pressure</div>
                                         </div>
                                         <div className="text-center">

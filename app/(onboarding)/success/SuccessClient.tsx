@@ -124,7 +124,7 @@ function ProfileApprovedInner() {
                                         Featured Operator
                                     </div>
                                     <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>
-                                        2Ã— ranking boost + gold badge · $29/mo
+                                        2× ranking boost + gold badge · $29/mo
                                     </div>
                                 </div>
                             </div>

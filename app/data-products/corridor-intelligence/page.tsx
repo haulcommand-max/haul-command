@@ -71,7 +71,7 @@ const SAMPLE_CORRIDORS = [
   { name: 'Port Houston to Dallas', country: 'US', type: 'Port Connector', score: 91 },
   { name: 'Trans-Canada TCH Ontario', country: 'CA', type: 'National Spine', score: 88 },
   { name: 'Riyadh to NEOM Megaproject', country: 'SA', type: 'Industrial', score: 87 },
-  { name: 'Port Santos to SÃ£o Paulo', country: 'BR', type: 'Port Connector', score: 84 },
+  { name: 'Port Santos to São Paulo', country: 'BR', type: 'Port Connector', score: 84 },
   { name: 'Atacama Santiago to Calama', country: 'CL', type: 'Mining', score: 83 },
   { name: 'Singapore to Johor Bahru XBRD', country: 'SG', type: 'Cross-Border', score: 82 },
   { name: 'Durban to Johannesburg N3', country: 'ZA', type: 'National Spine', score: 80 },

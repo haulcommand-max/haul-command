@@ -76,7 +76,7 @@ export default function AxleWeightCalculatorPage() {
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-10">
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-3">The Federal Bridge Formula</h2>
             <div className="bg-[#07090d] rounded-xl p-4 mb-4 font-mono text-sm text-[#22c55e] text-center">
-              W = 500 Ã— (LN Ã· (Nâˆ’1) + 12N + 36)
+              W = 500 × (LN ÷ (N−1) + 12N + 36)
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
               <div className="bg-[#07090d] rounded-xl p-3"><span className="text-[#d4950e] font-bold">W</span> = Maximum weight in lbs that can be carried by the axle group</div>
@@ -118,7 +118,7 @@ export default function AxleWeightCalculatorPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Axle Weight FAQs</h2>
             <div className="space-y-3">
               {[
-                {q:'What is the federal bridge formula?', a:'The federal bridge formula limits the weight any set of axles can carry based on the spacing between them. W = 500 Ã— (LN Ã· (Nâˆ’1) + 12N + 36). Where W = max weight (lbs), L = distance between outer axles (ft), N = number of axles. It protects bridges from overloading.'},
+                {q:'What is the federal bridge formula?', a:'The federal bridge formula limits the weight any set of axles can carry based on the spacing between them. W = 500 × (LN ÷ (N−1) + 12N + 36). Where W = max weight (lbs), L = distance between outer axles (ft), N = number of axles. It protects bridges from overloading.'},
                 {q:'What is the maximum legal weight for a 5-axle semi?', a:'The federal cap is 80,000 lbs gross. Single axle: 20,000 lbs. Tandem axle: 34,000 lbs. Many states match federal limits. Michigan and Washington allow higher weights on specific routes with permits.'},
                 {q:'What happens if I exceed axle weight limits?', a:'Overweight loads require permits in every state you travel through. Without a permit, you risk fines of $100"“$5,000+ per violation, load rejection at weigh stations, and potential bridge damage liability.'},
                 {q:'Do pilot cars have their own weight requirements?', a:'Pilot cars and escort vehicles must comply with standard highway vehicle weight limits. They are not exempt from axle weight regulations and must have valid registration.'},
@@ -133,7 +133,7 @@ export default function AxleWeightCalculatorPage() {
 
           <div className="flex flex-wrap gap-3">
             {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/superload-calculator','Superload Calculator'],['/tools/load-dimension-checker','Load Dimension Checker'],['/tools/frost-law-tracker','Frost Law Tracker']].map(([href,label])=>(
-              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e]">{label} â†’</Link>
+              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e]">{label} →</Link>
             ))}
           </div>
         </div>

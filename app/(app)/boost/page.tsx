@@ -5,22 +5,22 @@ import { useState } from 'react';
 const TIERS = [
     {
         id: 'spotlight', name: 'Spotlight', price: '$9.99', period: '/week',
-        multiplier: '1.5Ã—', color: '#06b6d4', grad: 'linear-gradient(135deg,#06b6d4,#3b82f6)',
-        icon: 'â—', features: ['Highlighted in search', '1.5Ã— ranking boost', 'Spotlight badge', '7-day duration'],
+        multiplier: '1.5×', color: '#06b6d4', grad: 'linear-gradient(135deg,#06b6d4,#3b82f6)',
+        icon: 'â—', features: ['Highlighted in search', '1.5× ranking boost', 'Spotlight badge', '7-day duration'],
         best: 'Testing the waters',
     },
     {
         id: 'featured', name: 'Featured', price: '$29', period: '/month',
-        multiplier: '2Ã—', color: '#f59e0b', grad: 'linear-gradient(135deg,#f59e0b,#ef4444)',
+        multiplier: '2×', color: '#f59e0b', grad: 'linear-gradient(135deg,#f59e0b,#ef4444)',
         icon: 'â˜…', popular: true,
-        features: ['Top placement', '2Ã— ranking boost', 'Featured badge', 'Priority in shortlists', '30-day duration'],
+        features: ['Top placement', '2× ranking boost', 'Featured badge', 'Priority in shortlists', '30-day duration'],
         best: 'Serious operators',
     },
     {
         id: 'premium', name: 'Premium', price: '$79', period: '/month',
-        multiplier: '3Ã—', color: '#8b5cf6', grad: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+        multiplier: '3×', color: '#8b5cf6', grad: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
         icon: 'âš¡',
-        features: ['Guaranteed top-3', '3Ã— ranking boost', 'Premium badge everywhere', 'Priority dispatch', 'Corridor features', 'Performance report', '30-day duration'],
+        features: ['Guaranteed top-3', '3× ranking boost', 'Premium badge everywhere', 'Priority dispatch', 'Corridor features', 'Performance report', '30-day duration'],
         best: 'Dominate your territory',
     },
 ];
@@ -53,7 +53,7 @@ export default function BoostPage() {
 
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 20px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, marginBottom: 48 }}>
-                    {[{ v: '3.2Ã—', l: 'more views', c: '#00ff88' }, { v: '67%', l: 'more contacts', c: '#f59e0b' }, { v: '5.4Ã—', l: 'faster match', c: '#818cf8' }].map(s => (
+                    {[{ v: '3.2×', l: 'more views', c: '#00ff88' }, { v: '67%', l: 'more contacts', c: '#f59e0b' }, { v: '5.4×', l: 'faster match', c: '#818cf8' }].map(s => (
                         <div key={s.l} style={{ textAlign: 'center', padding: '20px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: 14, border: '1px solid rgba(255,255,255,0.06)' }}>
                             <div style={{ fontSize: 32, fontWeight: 800, color: s.c }}>{s.v}</div>
                             <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>{s.l}</div>

@@ -15,7 +15,7 @@ const CommandMap = dynamic(() => import("@/components/CommandMap").then(m => m.C
 
 // DEV ONLY — generates exportable App Store screenshot mocks
 // Visit /dev/screenshots to preview
-// Use browser screenshot tool or puppeteer to export as 1290Ã—2796 PNG
+// Use browser screenshot tool or puppeteer to export as 1290×2796 PNG
 
 export default function ScreenshotMocksPage() {
     const mapSlot = <CommandMap height={900} />;

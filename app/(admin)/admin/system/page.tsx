@@ -281,7 +281,7 @@ export default async function SystemHealthPage() {
                                 <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 1fr 60px', padding: '10px 14px', gap: 12, borderBottom: i < data.recentErrors.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
                                     <div style={{ fontSize: 11, color: '#6b7280', fontFamily: 'monospace' }}>{err.route}</div>
                                     <div style={{ fontSize: 11, color: '#f87171', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{err.message}</div>
-                                    <div style={{ fontSize: 10, color: '#4b5563', textAlign: 'right' }}>Ã—{err.count ?? 1}</div>
+                                    <div style={{ fontSize: 10, color: '#4b5563', textAlign: 'right' }}>×{err.count ?? 1}</div>
                                 </div>
                             ))}
                         </div>

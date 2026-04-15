@@ -34,7 +34,7 @@ export default function RequirementCalculator({ jurisdictionCode }: { jurisdicti
     if (jurisdictionCode.toUpperCase() === 'BW') {
       if (widthMeters >= 3.00) rules.push('BF3 Begleitfahrzeug Required');
       if (widthMeters >= 4.00) rules.push('BF4 (Polizeiersatz) Required');
-      if (heightMeters >= 4.00) warnings.push('StreckenprÃ¼fung (Route Survey) Recommended');
+      if (heightMeters >= 4.00) warnings.push('Streckenprüfung (Route Survey) Recommended');
     }
 
     setResults({ required: rules.length ? rules : ['No Escort Required'], warnings });

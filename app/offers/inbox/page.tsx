@@ -94,7 +94,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                     )}
                     {offer.loads.load_height && (
                         <div style={{ marginTop: 4, color: '#475569' }}>
-                            ðŸ“ {offer.loads.load_height}ft H Ã— {offer.loads.load_width}ft W
+                            ðŸ“ {offer.loads.load_height}ft H × {offer.loads.load_width}ft W
                         </div>
                     )}
                 </div>
