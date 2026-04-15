@@ -155,7 +155,7 @@ export default function RepositioningPage() {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         name: 'Repositioning & Backhaul Board | Haul Command',
-        description: 'Find and broadcast repositioning / backhaul capacity for heavy haul escorts. Real-time operator reposition feed across 120 countries.',
+        description: 'Find and broadcast repositioning / backhaul capacity for heavy haul escorts. Real-time operator reposition feed across 50+ countries.',
         url: 'https://www.haulcommand.com/repositioning',
       })}} />
 

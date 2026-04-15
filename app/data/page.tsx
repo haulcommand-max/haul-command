@@ -7,7 +7,7 @@ import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
-    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports. Powered by real platform data across 120 countries. Self-serve purchase from $9.',
+    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports. Powered by real platform data across 50+ countries. Self-serve purchase from $9.',
     alternates: {
         canonical: 'https://www.haulcommand.com/data',
     },
@@ -30,7 +30,7 @@ const faqSchema = {
             name: 'What data does Haul Command sell?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All data is sourced from real platform activity across 120 countries.',
+                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All data is sourced from real platform activity across 50+ countries.',
             },
         },
         {
@@ -104,12 +104,12 @@ export default function DataMarketplacePage() {
                                 </span>
                             </h1>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 120 countries.
+                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 50+ countries.
                                 Powered by real platform activity — not surveys, not estimates.
                             </p>
                             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
                                 <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Real platform data</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> 120 countries</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> 50+ countries</span>
                                 <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Updated daily</span>
                                 <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Self-serve from $9</span>
                             </div>
@@ -236,7 +236,7 @@ export default function DataMarketplacePage() {
                         {[
                             {
                                 q: 'What data does Haul Command sell?',
-                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All sourced from real platform activity across 120 countries.',
+                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All sourced from real platform activity across 50+ countries.',
                             },
                             {
                                 q: 'How accurate is Haul Command market data?',

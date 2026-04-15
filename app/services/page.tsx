@@ -152,7 +152,7 @@ export default function ServicesPage() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 leading-tight">
             Professional Escort Services —{' '}
             <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              120 Countries
+              50+ Countries
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-2">

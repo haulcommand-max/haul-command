@@ -22,7 +22,7 @@ export default async function LiveDispatchPage() {
         <PaywallGateBanner
           surfaceName="Dispatch Control"
           tier="Business"
-          description="Unlock unlimited dispatch operations, supply chain analytics, and priority operator matching across 120 countries."
+          description="Unlock unlimited dispatch operations, supply chain analytics, and priority operator matching across 50+ countries."
         />
       </div>
       <DispatchDashboard stats={stats} />

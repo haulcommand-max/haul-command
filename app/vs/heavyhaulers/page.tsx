@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const COMPARISON = [
-  { feature:'Operator directory',        hc:true,  hc_note:'120 countries, trust-verified',      comp:true,  comp_note:'US-focused broker network' },
+  { feature:'Operator directory',        hc:true,  hc_note:'50+ countries, trust-verified',      comp:true,  comp_note:'US-focused broker network' },
   { feature:'Self-serve booking',        hc:true,  hc_note:'Operator posts, broker accepts',     comp:false, comp_note:'HH agent-mediated quote' },
   { feature:'Real-time availability',    hc:true,  hc_note:'Live broadcast feed',                comp:false, comp_note:'Not available' },
   { feature:'Permit cost tools',         hc:true,  hc_note:'Free, all 50 states',               comp:false, comp_note:'Not available (HH books permits)' },
@@ -20,12 +20,12 @@ const COMPARISON = [
   { feature:'Push notifications',        hc:true,  hc_note:'Load match, availability alerts',    comp:false, comp_note:'Email only' },
   { feature:'Instant payouts',           hc:true,  hc_note:'Stripe Connect, next-day',           comp:false, comp_note:'Check/ACH, delayed' },
   { feature:'Standing orders',           hc:true,  hc_note:'Pre-funded recurring escrow jobs',   comp:false, comp_note:'Not available' },
-  { feature:'Global coverage',           hc:true,  hc_note:'120 countries',                      comp:false, comp_note:'US primary' },
+  { feature:'Global coverage',           hc:true,  hc_note:'50+ countries',                      comp:false, comp_note:'US primary' },
   { feature:'Mobile app',                hc:true,  hc_note:'iOS + Android',                      comp:true,  comp_note:'iOS + Android' },
   { feature:'Load board',                hc:true,  hc_note:'Self-serve two-sided marketplace',   comp:true,  comp_note:'HH-curated only' },
   { feature:'AdGrid advertising',        hc:true,  hc_note:'Self-serve, 8 precision zones',      comp:false, comp_note:'Not available' },
   { feature:'Free public tools',         hc:true,  hc_note:'No login for core tools',            comp:false, comp_note:'Login/quote required' },
-  { feature:'Compliance data',           hc:true,  hc_note:'All 50 states + 120 countries',      comp:true,  comp_note:'US only, partial' },
+  { feature:'Compliance data',           hc:true,  hc_note:'All 50 states + 50+ countries',      comp:true,  comp_note:'US only, partial' },
 ]
 
 const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Haul Command vs HeavyHaulers.com', url:'https://www.haulcommand.com/vs/heavyhaulers' }
@@ -85,7 +85,7 @@ export default function VsHeavyHaulersPage() {
           </div>
           <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-6">
             <h2 className="text-base font-bold text-[#f0f2f5] mb-3">Join the Platform HeavyHaulers Can't Build</h2>
-            <p className="text-sm text-[#8a9ab0] mb-5">Self-serve. Real-time. 120 countries. Trust-verified.</p>
+            <p className="text-sm text-[#8a9ab0] mb-5">Self-serve. Real-time. 50+ countries. Trust-verified.</p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/register" className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
               <Link href="/available-now/broadcast" className="border border-[#1e3048] text-[#8a9ab0] hover:border-[#22c55e] px-5 py-2.5 rounded-xl text-sm">Broadcast Availability</Link>

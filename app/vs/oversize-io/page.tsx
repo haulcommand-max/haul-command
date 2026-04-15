@@ -15,7 +15,7 @@ const COMPARISON = [
   { feature:'Frost law tracker',          hc:true,  hc_note:'Free, push alerts',      comp:false, comp_note:'Not available' },
   { feature:'Load dimension checker',     hc:true,  hc_note:'Free',                   comp:false, comp_note:'Not available' },
   { feature:'Route planner',              hc:true,  hc_note:'Free',                   comp:true,  comp_note:'Paid tier only' },
-  { feature:'Operator directory',         hc:true,  hc_note:'120 countries, verified',comp:false, comp_note:'US only, unverified' },
+  { feature:'Operator directory',         hc:true,  hc_note:'50+ countries, verified',comp:false, comp_note:'US only, unverified' },
   { feature:'Real-time availability',     hc:true,  hc_note:'Live broadcasted feed',  comp:false, comp_note:'Not available' },
   { feature:'Find capacity',              hc:true,  hc_note:'Live broker search',     comp:false, comp_note:'Not available' },
   { feature:'Load board',                 hc:true,  hc_note:'Two-sided marketplace',  comp:false, comp_note:'Not available' },
@@ -23,7 +23,7 @@ const COMPARISON = [
   { feature:'Training & certification',   hc:true,  hc_note:'6-tier, 50+ courses',    comp:false, comp_note:'Not available' },
   { feature:'Trust score / verification', hc:true,  hc_note:'Visible on all profiles',comp:false, comp_note:'Not available' },
   { feature:'Push notifications',         hc:true,  hc_note:'Load match, claims, alerts',comp:false,comp_note:'Not available' },
-  { feature:'Global coverage',            hc:true,  hc_note:'120 countries',          comp:false, comp_note:'US only' },
+  { feature:'Global coverage',            hc:true,  hc_note:'50+ countries',          comp:false, comp_note:'US only' },
   { feature:'Mobile app',                 hc:true,  hc_note:'iOS + Android',          comp:true,  comp_note:'iOS + Android' },
   { feature:'AdGrid / advertising',       hc:true,  hc_note:'Self-serve, 8 zones',    comp:false, comp_note:'Not available' },
   { feature:'Free tier',                  hc:true,  hc_note:'Most tools free, no wall',comp:false,comp_note:'Login wall on most tools' },
@@ -98,7 +98,7 @@ export default function VsOversizeIoPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Why Heavy Haul Professionals Are Switching to Haul Command</h2>
             {[
               {title:'Free tools, no login wall', body:'Every Haul Command tool — permit calculator, axle weight calculator, superload checker, frost law tracker — is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
-              {title:'Global operator directory', body:'Haul Command indexes operators across 120 countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
+              {title:'Global operator directory', body:'Haul Command indexes operators across 50+ countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
               {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform — no marketplace.'},
               {title:'Training and certification', body:'Haul Command\'s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
             ].map((item,i)=>(

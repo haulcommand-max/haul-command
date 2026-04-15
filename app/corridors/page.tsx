@@ -8,7 +8,7 @@ import RelatedLinks from '@/components/seo/RelatedLinks';
 export const metadata = {
   title: 'Heavy Haul Corridor Intelligence — Ranked Routes Worldwide | Haul Command',
   description:
-    'Browse the highest-value heavy haul corridors across 120 countries. Compare escort requirements, pricing, and permit rules by route.',
+    'Browse the highest-value heavy haul corridors across 50+ countries. Compare escort requirements, pricing, and permit rules by route.',
 };
 
 const FILTER_TYPES = [
@@ -63,7 +63,7 @@ export default async function CorridorsIndexPage({
           </h1>
           <p className="mt-4 text-lg text-white/60">
             Ranked escort routes, permit requirements, and pricing intelligence
-            across {totalCorridors.toLocaleString()}+ corridors in 120 countries.
+            across {totalCorridors.toLocaleString()}+ corridors in 50+ countries.
           </p>
 
           {/* KPI strip */}

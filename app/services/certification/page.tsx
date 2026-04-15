@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'CEVO, CSE & Pilot Car Certification Programs | Haul Command',
-  description: 'Get certified as a professional pilot car operator. CEVO, CSE, state-specific certifications, and Haul Command verified badges. Training programs across 120 countries.',
+  description: 'Get certified as a professional pilot car operator. CEVO, CSE, state-specific certifications, and Haul Command verified badges. Training programs across 50+ countries.',
   keywords: ['CEVO certification', 'CSE certification', 'pilot car certification', 'escort vehicle training', 'pilot car training program', 'CEVO pilot car'],
   openGraph: {
     title: 'CEVO, CSE & Pilot Car Certification Programs | Haul Command',

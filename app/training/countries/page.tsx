@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Training by Country — 120 Countries | Haul Command',
-  description: 'Find pilot car and escort operator training for your country. State-aware, globally-ready certification pathways in 120 countries including USA, Canada, Australia, UK, UAE, and more.',
+  title: 'Pilot Car Training by Country — 50+ Countries | Haul Command',
+  description: 'Find pilot car and escort operator training for your country. State-aware, globally-ready certification pathways in 50+ countries including USA, Canada, Australia, UK, UAE, and more.',
   alternates: { canonical: 'https://www.haulcommand.com/training/countries' },
 };
 
@@ -65,7 +65,7 @@ export default function CountriesIndexPage() {
               Pilot Car Training by Country
             </h1>
             <p style={{ margin: '0 0 24px', fontSize: 15, color: '#9ca3af', lineHeight: 1.7, maxWidth: 620 }}>
-              Haul Command Training is available in 120 countries. Each country page includes localized requirements,
+              Haul Command Training is available in 50+ countries. Each country page includes localized requirements,
               terminology, compliance notes, and relevant resources for operators in that market.
             </p>
             <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>

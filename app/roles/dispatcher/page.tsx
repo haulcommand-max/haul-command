@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Heavy Haul Dispatchers — Dispatch Tools, Load Board & Escort Coordination | Haul Command',
   description:
-    'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and connect with verified operators across 120 countries. Real-time load board, dispatch map, and corridor intelligence.',
+    'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and connect with verified operators across 50+ countries. Real-time load board, dispatch map, and corridor intelligence.',
   keywords: [
     'heavy haul dispatcher', 'oversize load dispatch', 'pilot car dispatch',
     'escort vehicle coordinator', 'oversize load coordinator', 'heavy haul load board',

@@ -112,7 +112,7 @@ export default async function CorridorIntelligencePage() {
           <p className="mt-4 text-lg text-white/60">
             The only data product covering escort rates, permit requirements, demand
             signals, and credential maps across {totalCorridors.toLocaleString()}+
-            heavy haul corridors in 120 countries.
+            heavy haul corridors in 50+ countries.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
@@ -192,7 +192,7 @@ export default async function CorridorIntelligencePage() {
             ))}
           </div>
           <p className="mt-4 text-center text-sm text-white/40">
-            + {(totalCorridors - SAMPLE_CORRIDORS.length).toLocaleString()} more corridors across 120 countries
+            + {(totalCorridors - SAMPLE_CORRIDORS.length).toLocaleString()} more corridors across 50+ countries
           </p>
         </div>
       </section>

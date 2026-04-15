@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Risk & Liability Mitigation for Oversize Transport | Haul Command',
-  description: 'Minimize risk on every heavy haul move. Insurance verification, route risk scoring, compliance automation, and real-time GPS oversight across 120 countries.',
+  description: 'Minimize risk on every heavy haul move. Insurance verification, route risk scoring, compliance automation, and real-time GPS oversight across 50+ countries.',
   keywords: ['risk mitigation heavy haul', 'liability oversize load', 'escort insurance', 'pilot car liability', 'heavy haul compliance', 'transport risk management'],
   openGraph: {
     title: 'Risk & Liability Mitigation for Oversize Transport | Haul Command',
@@ -118,7 +118,7 @@ export default function RiskMitigationPage() {
           "@type": "Service",
           "name": "Risk & Liability Mitigation for Oversize Transport",
           "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
-          "description": "Insurance verification, route risk scoring, compliance automation, and GPS oversight for heavy haul transport across 120 countries.",
+          "description": "Insurance verification, route risk scoring, compliance automation, and GPS oversight for heavy haul transport across 50+ countries.",
           "areaServed": { "@type": "Place", "name": "Worldwide" },
           "serviceType": "Risk Mitigation",
         }),

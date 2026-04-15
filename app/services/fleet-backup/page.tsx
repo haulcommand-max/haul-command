@@ -7,11 +7,11 @@ import {
 
 export const metadata: Metadata = {
   title: 'Fleet Backup & Emergency Escort Dispatch | Haul Command',
-  description: '24/7 emergency escort dispatch. Escort no-shows, last-minute cancellations, route changes — our rescue layer activates in under 15 minutes across 120 countries.',
+  description: '24/7 emergency escort dispatch. Escort no-shows, last-minute cancellations, route changes — our rescue layer activates in under 15 minutes across 50+ countries.',
   keywords: ['emergency escort', 'fleet backup', 'urgent pilot car', 'escort no show', 'emergency dispatch', 'last minute escort', 'rescue escort'],
   openGraph: {
     title: 'Fleet Backup & Emergency Escort Dispatch | Haul Command',
-    description: '24/7 emergency escort dispatch with under 15 minute response time across 120 countries.',
+    description: '24/7 emergency escort dispatch with under 15 minute response time across 50+ countries.',
     url: 'https://haulcommand.com/services/fleet-backup',
   },
   alternates: { canonical: 'https://haulcommand.com/services/fleet-backup' },
@@ -74,7 +74,7 @@ export default function FleetBackupPage() {
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
             When escorts no-show, cancel, or break down — our rescue dispatch layer activates in under 
-            15 minutes. 6,900+ operators. 120 countries. No move left stranded.
+            15 minutes. 6,900+ operators. 50+ countries. No move left stranded.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

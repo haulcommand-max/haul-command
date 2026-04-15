@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Project Planning for Heavy Haul & Oversize Loads | Haul Command',
-  description: 'End-to-end project planning for complex heavy haul moves. Multi-escort coordination, permit sequencing, route engineering, and staging logistics across 120 countries.',
+  description: 'End-to-end project planning for complex heavy haul moves. Multi-escort coordination, permit sequencing, route engineering, and staging logistics across 50+ countries.',
   keywords: ['heavy haul project planning', 'oversize load planning', 'transport project management', 'escort coordination', 'heavy haul logistics'],
   openGraph: {
     title: 'Project Planning for Heavy Haul & Oversize Loads | Haul Command',

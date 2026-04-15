@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const COMPARISON = [
-  { feature:'Operator directory',          hc:true,  hc_note:'120 countries, verified trust scores', comp:true,  comp_note:'US-focused, unverified listings' },
+  { feature:'Operator directory',          hc:true,  hc_note:'50+ countries, verified trust scores', comp:true,  comp_note:'US-focused, unverified listings' },
   { feature:'Free permit tools',           hc:true,  hc_note:'No login, full access',               comp:false, comp_note:'Basic info only' },
   { feature:'Superload calculator',        hc:true,  hc_note:'10-state thresholds, free',           comp:false, comp_note:'Not available' },
   { feature:'Frost law tracker',           hc:true,  hc_note:'Live push alerts',                    comp:false, comp_note:'Not available' },
@@ -23,9 +23,9 @@ const COMPARISON = [
   { feature:'Mobile app',                  hc:true,  hc_note:'iOS + Android',                       comp:false, comp_note:'Mobile web only' },
   { feature:'Stripe Connect payouts',      hc:true,  hc_note:'Instant/next-day to operators',       comp:false, comp_note:'Not available' },
   { feature:'AdGrid advertising',          hc:true,  hc_note:'Self-serve, 8 zones',                 comp:false, comp_note:'Not available' },
-  { feature:'Global coverage',             hc:true,  hc_note:'120 countries',                       comp:false, comp_note:'Primarily US' },
-  { feature:'State regulation pages',      hc:true,  hc_note:'All 50 states + 120 countries',       comp:false, comp_note:'Basic info, US only' },
-  { feature:'SEO-optimised glossary',      hc:true,  hc_note:'500+ terms across 120 countries',     comp:false, comp_note:'Not available' },
+  { feature:'Global coverage',             hc:true,  hc_note:'50+ countries',                       comp:false, comp_note:'Primarily US' },
+  { feature:'State regulation pages',      hc:true,  hc_note:'All 50 states + 50+ countries',       comp:false, comp_note:'Basic info, US only' },
+  { feature:'SEO-optimised glossary',      hc:true,  hc_note:'500+ terms across 50+ countries',     comp:false, comp_note:'Not available' },
   { feature:'Free to access',              hc:true,  hc_note:'Most features free, no email gate',   comp:false, comp_note:'Lead capture required for quotes' },
 ]
 
