@@ -115,7 +115,7 @@ export default function InstantQuotePage() {
         "url": "https://haulcommand.com/tools/instant-quote",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description": "Get instant pilot car and escort vehicle pricing. Enter load dimensions, route, and urgency for competitive rate quotes across 120 countries.",
+        "description": "Get instant pilot car and escort vehicle pricing. Enter load dimensions, route, and urgency for competitive rate quotes across 50+ countries.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "breadcrumb": {
           "@type": "BreadcrumbList",
@@ -156,7 +156,7 @@ export default function InstantQuotePage() {
             How Much Does a <span style={{ color: T.gold }}>Pilot Car</span> Cost?
           </h1>
           <p style={{ margin: '12px auto 0', fontSize: 14, color: T.muted, maxWidth: 520, lineHeight: 1.6 }}>
-            Get an instant escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for real-time market rates across 120 countries.
+            Get an instant escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for real-time market rates across 50+ countries.
           </p>
         </header>
 

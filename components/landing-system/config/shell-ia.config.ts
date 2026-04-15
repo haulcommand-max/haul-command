@@ -24,7 +24,7 @@ export const SHELL_IA_CONFIG = {
       destinations: [
         { label: "Top Markets", href: "/directory/us" },
         { label: "Featured Corridors", href: "/corridors" },
-        { label: "Port Hubs", href: "/ports" },
+        { label: "Port & Metro Hubs", href: "/directory" },
         { label: "Pilot Car Rates", href: "/rates" }
       ]
     },
@@ -32,7 +32,7 @@ export const SHELL_IA_CONFIG = {
       label: "Trust & Growth",
       destinations: [
         { label: "Claim Listing", href: "/claim" },
-        { label: "Report Cards", href: "/trust" },
+        { label: "Trust Scores", href: "/pricing" },
         { label: "Advertise", href: "/advertise" },
         { label: "Data Marketplace", href: "/data" }
       ]

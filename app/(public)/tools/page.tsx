@@ -9,7 +9,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Compliance Tools & Route Calculators | Haul Command',
-    description: 'Free heavy haul calculators and intelligence tools: escort cost estimator, permit calculator, route compliance checker, official source finder, regulation change log, and more. Built for operators across 120 countries.',
+    description: 'Free heavy haul calculators and intelligence tools: escort cost estimator, permit calculator, route compliance checker, official source finder, regulation change log, and more. Built for operators across 50+ countries.',
     alternates: {
         canonical: 'https://www.haulcommand.com/tools',
     },
@@ -52,7 +52,7 @@ const faqSchema = {
             name: 'What free tools does Haul Command offer?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command provides 15 free tools for heavy haul logistics including Route IQ, Rate Advisor, Escort Calculator, Permit Calculator, Official Source Finder, Certification Map, Permit Authority Directory, Regulation Change Log, Country Source Library, Forms & Document Hub, Backhaul Locator, Load Type Library, Permit SLA Tracker, Corridor Pricing, and Certification Timelines. All tools cover 120 countries with no login required.',
+                text: 'Haul Command provides 15 free tools for heavy haul logistics including Route IQ, Rate Advisor, Escort Calculator, Permit Calculator, Official Source Finder, Certification Map, Permit Authority Directory, Regulation Change Log, Country Source Library, Forms & Document Hub, Backhaul Locator, Load Type Library, Permit SLA Tracker, Corridor Pricing, and Certification Timelines. All tools cover 50+ countries with no login required.',
             },
         },
         {
@@ -92,7 +92,7 @@ const TOOLS = [
         icon: 'ðŸ§®',
         color: '#C6923A',
         tagline: 'Escort Cost Estimator',
-        description: 'Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using live benchmarks across 120 countries.',
+        description: 'Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using live benchmarks across 50+ countries.',
     },
     {
         name: 'Permit Calculator',
@@ -116,7 +116,7 @@ const TOOLS = [
         slug: '/tools/certification-map',
         icon: 'ðŸ—ºï¸',
         color: '#8b5cf6',
-        tagline: '120-Country Credential Index',
+        tagline: 'Global Credential Index',
         description: 'Look up certification reciprocity, local credential requirements, and training authority paths per jurisdiction.',
     },
     {
@@ -125,7 +125,7 @@ const TOOLS = [
         icon: 'ðŸ›ï¸',
         color: '#ec4899',
         tagline: 'Direct Routing Agency Portal Links',
-        description: 'A global 120-country directory of direct routing permit portals, contact phone numbers, and operational hours.',
+        description: 'A global global directory of direct routing permit portals, contact phone numbers, and operational hours.',
     },
     {
         name: 'Regulation Change Log',
@@ -140,7 +140,7 @@ const TOOLS = [
         slug: '/tools/source-library',
         icon: 'ðŸ“š',
         color: '#06b6d4',
-        tagline: '120-Country Regulatory Source Map',
+        tagline: 'Global Regulatory Source Map',
         description: 'A dedicated library of authoritative rule books and threshold guides per country, mapped into actionable steps.',
     },
     {
@@ -239,14 +239,14 @@ export default function ToolsIndexPage() {
                             </h1>
                             <p style={{ fontSize: 17, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 24 }}>
                                 Route compliance, cost estimation, permit calculation, market intelligence,
-                                and regulation monitoring. Free. For brokers, carriers, and escorts across 120 countries.
+                                and regulation monitoring. Free. For brokers, carriers, and escorts across 50+ countries.
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 13, color: '#6B7280' }}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <span style={{ color: '#22c55e' }}>â—</span> 15 free tools
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>â—</span> 120 countries
+                                    <span style={{ color: '#22c55e' }}>â—</span> 50+ countries
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <span style={{ color: '#22c55e' }}>â—</span> No sign-up needed
@@ -357,7 +357,7 @@ export default function ToolsIndexPage() {
                         </h2>
                         <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 24, lineHeight: 1.6 }}>
                             Enterprise buyers can access Haul Command data via API, bulk exports,
-                            and white-glove intelligence reports across all 120 countries.
+                            and white-glove intelligence reports across all 50+ countries.
                         </p>
                         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                             <Link href="/data" style={{
@@ -387,7 +387,7 @@ export default function ToolsIndexPage() {
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <StaticAnswerBlock
                 question="What free tools does Haul Command offer for heavy haul logistics?"
-                answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 120 countries."
+                answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 50+ countries."
                 confidence="verified_current"
                 ctaLabel="Try Route IQ — Free"
                 ctaUrl="/tools/route-iq"

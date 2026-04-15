@@ -101,7 +101,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
                 { label: 'Pilot Car Directory', href: '/directory', badge: null },
                 { label: 'Load Board', href: '/loads', badge: 'LIVE' },
                 { label: 'Available Now', href: '/available-now', badge: null },
-                { label: 'Map View', href: '/map', badge: null },
+                { label: 'Map View', href: '/map/live', badge: null },
               ].map(item => {
                 const isActive = pathname?.startsWith(item.href) && item.href !== '/';
                 return (

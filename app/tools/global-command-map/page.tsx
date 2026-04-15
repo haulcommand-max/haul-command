@@ -15,7 +15,7 @@ const TARGET_COUNTRIES = [
   // ... representing the major logistics hubs
 ];
 
-// Mocking some live 120-country intelligence data
+// Mocking some live global intelligence data
 const markers = [
   { markerOffset: -15, name: "Houston Hub (TX)", coordinates: [-95.3698, 29.7604], status: "Critical Shortage", count: 42 },
   { markerOffset: -15, name: "Alberta Superload Corridor", coordinates: [-113.4909, 53.5444], status: "Active", count: 18 },
@@ -57,7 +57,7 @@ export default function GlobalCommandMap() {
           </div>
           <div className="flex gap-4">
             <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 px-5 text-right">
-              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Active 120-Country Fleet</div>
+              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Active Global Fleet</div>
               <div className="text-2xl font-black text-amber-500 tabular-nums">
                 {activeUsers.toLocaleString()}
               </div>
@@ -85,7 +85,7 @@ export default function GlobalCommandMap() {
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => {
-                  // If it's one of the 120 countries we support, light it up
+                  // If it's one of the 50+ countries we support, light it up
                   const isTarget = TARGET_COUNTRIES.includes(geo.properties.name);
                   
                   return (
