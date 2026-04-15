@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -14,7 +14,7 @@ import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 export const metadata: Metadata = {
   title: 'State Escort Requirements for Oversize Loads | Haul Command',
   description:
-    'Check pilot car and escort vehicle requirements for all 50 US states. Width, height, length, and weight thresholds that trigger escort requirements — updated in real time.',
+    'Check pilot car and escort vehicle requirements for all 50 US states. Width, height, length, and weight thresholds that trigger escort requirements â€” updated in real time.',
   keywords: [
     'state escort requirements',
     'oversize load escort requirements by state',
@@ -91,7 +91,7 @@ export default async function EscortRequirementsIndex() {
                     { "@type": "Question", "name": "What are escort vehicle requirements for oversize loads?", "acceptedAnswer": { "@type": "Answer", "text": `Escort vehicle (pilot car) requirements vary by jurisdiction. Loads exceeding specific width, height, length, or weight thresholds require one or more escort vehicles. Haul Command covers ${totalJ} jurisdictions across ${countryOrder.length} countries with ${totalR} specific rules.` }},
                     { "@type": "Question", "name": "How many pilot cars do I need for an oversize load?", "acceptedAnswer": { "@type": "Answer", "text": "The number of escort vehicles required depends on load dimensions, route characteristics, and local regulations. Most US states require at least one pilot car for loads exceeding 12-14 feet wide, with two required above 16 feet. Superloads often need police escorts as well." }},
                     { "@type": "Question", "name": "What equipment does a pilot car need?", "acceptedAnswer": { "@type": "Answer", "text": "Standard pilot car equipment includes an 'OVERSIZE LOAD' sign (minimum 5'x10\" with 8\" black letters on yellow), amber rotating/strobe lights, height pole (for lead vehicles), two-way radio or CB radio, flags, and safety equipment." }},
-                    { "@type": "Question", "name": "Do pilot car drivers need certification?", "acceptedAnswer": { "@type": "Answer", "text": "Many US states require pilot car operators to hold a valid certification. Requirements vary — some states accept other states' certifications (reciprocity), while others require their own specific certification program." }},
+                    { "@type": "Question", "name": "Do pilot car drivers need certification?", "acceptedAnswer": { "@type": "Answer", "text": "Many US states require pilot car operators to hold a valid certification. Requirements vary â€” some states accept other states' certifications (reciprocity), while others require their own specific certification program." }},
                     { "@type": "Question", "name": "What triggers the need for an escort vehicle?", "acceptedAnswer": { "@type": "Answer", "text": "Escort vehicles are triggered by load dimensions exceeding legal limits. Common triggers include: width over 10-12 feet, height over 14-15 feet, length over 75-100 feet, or weight requiring a superload permit." }},
                 ]
             }) }} />
@@ -136,10 +136,10 @@ export default async function EscortRequirementsIndex() {
             <div className="mt-20 bg-gradient-to-r from-[var(--color-accent)]/10 to-transparent border border-[var(--color-accent)]/20 rounded-3xl p-8 sm:p-10 text-center">
                 <h2 className="text-white font-black text-3xl italic mb-4">Know Before You Roll</h2>
                 <p className="text-gray-400 max-w-2xl mx-auto mb-6">Stop reading 50 different pages. Enter your load once, see every escort requirement on your entire route.</p>
-                <Link aria-label="Navigation Link" href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-[#121212] text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-[var(--color-accent)] transition-all">ROUTE CALCULATOR — FREE</Link>
+                <Link aria-label="Navigation Link" href="/tools/escort-calculator" className="inline-flex items-center gap-2 bg-[#121212] text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-[var(--color-accent)] transition-all">ROUTE CALCULATOR â€” FREE</Link>
             </div>
 
-            {/* SEO Internal Links — flows equity to tools, directory, glossary, corridors */}
+            {/* SEO Internal Links â€” flows equity to tools, directory, glossary, corridors */}
             <RelatedLinks
               pageType="regulation"
               heading="Related escort resources and tools"
@@ -150,17 +150,17 @@ export default async function EscortRequirementsIndex() {
               heading="What Would You Like to Do Next?"
               moves={[
                 { href: '/directory', icon: 'ðŸ”', title: 'Find Verified Escorts', desc: 'Operators ready for dispatch', primary: true, color: '#D4A844' },
-                { href: '/claim', icon: 'âœ“', title: 'Claim Your Listing', desc: 'List your escort services', primary: true, color: '#22C55E' },
+                { href: '/claim', icon: 'âœ”', title: 'Claim Your Listing', desc: 'List your escort services', primary: true, color: '#22C55E' },
                 { href: '/tools/escort-calculator', icon: 'ðŸ§®', title: 'Route Calculator', desc: 'Enter route, get requirements' },
-                { href: '/regulations', icon: 'ðŸŒ', title: 'Global Regulations', desc: '120 country escort rules' },
+                { href: '/regulations', icon: 'ðŸŒ', title: 'Global Regulations', desc: '120 country escort rules' },
                 { href: '/glossary/pilot-car', icon: 'ðŸ“–', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
                 { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Now', desc: 'Operators broadcasting live' },
               ]}
             />
 
-            {/* VISIBLE LAST UPDATED — AI cross-validation */}
+            {/* VISIBLE LAST UPDATED â€” AI cross-validation */}
             <div className="mt-8 pt-4 border-t border-white/5 text-center">
-              <p className="text-[10px] text-gray-600">Data last updated: April 2026 · Verified against official state DOT and transport authority sources · {totalJ} jurisdictions · {totalR} rules</p>
+              <p className="text-[10px] text-gray-600">Data last updated: April 2026 Â· Verified against official state DOT and transport authority sources Â· {totalJ} jurisdictions Â· {totalR} rules</p>
             </div>
         </main>
         </RouteCalcMobileGate>
