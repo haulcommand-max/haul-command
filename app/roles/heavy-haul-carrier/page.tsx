@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Heavy Haul Carriers — Find Flatbed, Lowboy & Oversize Operators | Haul Command',
   description:
-    'Connect with verified heavy haul carriers, flatbed operators, and lowboy specialists across the US and 120 countries. Find equipment for your oversize move, post loads, and manage permits in one platform.',
+    'Connect with verified heavy haul carriers, flatbed operators, and lowboy specialists across the US. Find equipment for your oversize move, post loads, and manage permits in one platform.',
   keywords: [
     'heavy haul carrier', 'oversize load carrier', 'flatbed carrier near me',
     'lowboy transport', 'heavy haul trucking company', 'wide load carrier',
@@ -103,10 +103,10 @@ export default function HeavyHaulCarrierPage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, minWidth: 220 }}>
                 {[
-                  { val: '14,000+', label: 'Listed Operators', color: gold },
-                  { val: '2,400+', label: 'Verified', color: '#22C55E' },
+                  { val: 'Growing', label: 'Listed Operators', color: gold },
+                  { val: 'Growing', label: 'Verified', color: '#22C55E' },
                   { val: '50', label: 'States', color: '#3B82F6' },
-                  { val: '120', label: 'Countries', color: '#8B5CF6' },
+                  { val: '2 Active', label: 'Countries', color: '#8B5CF6' },
                 ].map(s => (
                   <div key={s.label} style={{ padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
                     <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.val}</div>

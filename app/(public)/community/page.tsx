@@ -62,15 +62,15 @@ export default function CommunityLandingPage() {
         <div className="pt-12 border-t border-hc-border/50 max-w-3xl mx-auto">
             <div className="grid grid-cols-3 gap-6 text-center">
                 <div>
-                    <div className="text-3xl font-black text-white mb-1">12K+</div>
+                    <div className="text-3xl font-black text-white mb-1">Growing</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Directory Listings</div>
                 </div>
                 <div>
-                    <div className="text-3xl font-black text-white mb-1">2,400+</div>
+                    <div className="text-3xl font-black text-white mb-1">Growing</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Claimed Profiles</div>
                 </div>
                 <div>
-                    <div className="text-3xl font-black text-hc-success mb-1">98%</div>
+                    <div className="text-3xl font-black text-hc-success mb-1">—</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Verification Rate</div>
                 </div>
             </div>

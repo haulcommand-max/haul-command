@@ -41,48 +41,9 @@ async function getArticles() {
     .order('published_at', { ascending: false });
 
   if (error || !articles || articles.length === 0) {
-    return [
-      {
-        slug: "texas-superload-strategy-2026",
-        title: "Texas Superload Blueprint: Navigating I-10 and I-35 Escort Thresholds in 2026",
-        deck: "Analyzing the newly adopted TxDMV routing procedures and how they impact civilian police escort availability and total load economics across the Texas Triangle.",
-        article_type: "Corridor Intel",
-        thumbnail: "/images/blog_hero_bg.png",
-        read_time: "5 min",
-        country_code: "US",
-        published_at: "Apr 07, 2026",
-      },
-      {
-        slug: "escort-reciprocity-guide",
-        title: "Cross-Border Escort Reciprocity: The Pilot Car Certification Matrix",
-        deck: "A comprehensive map of which states accept out-of-state pilot car certifications, focusing on the critical Washington-Oregon-California corridor.",
-        article_type: "Regulation Monitor",
-        thumbnail: "/images/training_hero_bg.png",
-        read_time: "8 min",
-        country_code: "US",
-        published_at: "Apr 06, 2026",
-      },
-      {
-        slug: "q3-rate-report-escorts",
-        title: "Q3 2026 Escort Rate Analytics: Surge Pricing on Wind Energy Routes",
-        deck: "Real-time pricing data from the Haul Command Terminal showing a 22% rate surge for high-pole escorts on key midwestern wind energy supply chains.",
-        article_type: "Market Data",
-        thumbnail: "/images/blog_hero_bg.png",
-        read_time: "6 min",
-        country_code: "US",
-        published_at: "Apr 05, 2026",
-      },
-      {
-         slug: "emergency-escort-retention",
-         title: "Dispatch Psychology: Retaining Top Escort Vendors in Heat States",
-         deck: "When standard loads pivot, high-tier escort operators evaporate. How top brokers use Haul Command Trust Scores to lock in verified capacity.",
-         article_type: "Strategic Ops",
-         thumbnail: "/images/training_hero_bg.png",
-         read_time: "4 min",
-         country_code: "US",
-         published_at: "Apr 04, 2026",
-      }
-    ];
+    // No articles in DB — return empty array. Let UI show an honest empty state.
+    // Do NOT fabricate articles with fake titles and dates.
+    return [];
   }
 
   return articles.map((article: any, index: number) => ({
@@ -162,7 +123,7 @@ export default async function BlogHub() {
         <TrustStrip
           confidenceLevel="verified_current"
           lastVerifiedAt={new Date().toISOString().split('T')[0]}
-          metrics={{ verifiedCount: 5214, activeLoads: 312 }}
+          metrics={{}}
         />
       </div>
 

@@ -20,11 +20,10 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 .app-main { flex: 1; min-height: 100dvh; display: flex; flex-direction: column; margin-left: 0; }
                 .app-mobile-header { display: flex; position: sticky; top: 0; z-index: 40; align-items: center; justify-content: space-between; }
                 .app-desktop-header { display: none; }
-                .app-desktop-footer { display: none; }
+                .app-desktop-footer { display: block; }
                 @media (min-width: 1024px) {
                     .app-mobile-header { display: none; }
                     .app-desktop-header { display: block; position: sticky; top: 0; z-index: 40; }
-                    .app-desktop-footer { display: block; }
                 }
             `}</style>
             

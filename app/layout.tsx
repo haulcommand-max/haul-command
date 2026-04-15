@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   // ── Google Search Console Ownership Verification ──
   // Replace with token from: GSC > Settings > Ownership verification > HTML tag
-  verification: {
-    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION_TOKEN ?? 'REPLACE_WITH_GSC_TOKEN',
-  },
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION_TOKEN
+    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION_TOKEN }
+    : undefined,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

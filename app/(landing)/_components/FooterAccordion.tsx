@@ -141,14 +141,14 @@ export function FooterAccordion() {
                 <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
                         <span className="text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                            Â© 2026 Haul Command. The Operating System for Heavy Haul.
+                            © 2026 Haul Command. The Operating System for Heavy Haul.
                         </span>
                     </div>
                     <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
                         <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                        <span className="opacity-50 text-[10px]">"¢</span>
+                        <span className="opacity-50 text-[10px]">·</span>
                         <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                        <span className="opacity-50 text-[10px]">"¢</span>
+                        <span className="opacity-50 text-[10px]">·</span>
                         <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
                     </div>
                 </div>

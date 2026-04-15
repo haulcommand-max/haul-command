@@ -26,7 +26,7 @@ export function HCGlobalHeader({
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         
         <div className="flex items-center gap-6 xl:gap-8">
-          <Link href={mode === 'app' ? "/dashboard" : "/home"} className="flex items-center gap-2 group">
+          <Link href={mode === 'app' ? "/dashboard" : "/"} className="flex items-center gap-2 group">
             <Image
               src={LOGO_MARK_SRC}
               alt={ALT_TEXT}

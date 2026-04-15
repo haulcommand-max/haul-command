@@ -23,16 +23,19 @@ export interface GlobalStats {
 }
 
 // Safe fallback when DB is unavailable
+// IMPORTANT: Do NOT inflate these numbers.
+// Showing fake stats ("1.5M operators") destroys trust with industry professionals.
+// Let the UI handle zero-state gracefully instead.
 const FALLBACK: GlobalStats = {
-    totalCountries: 120,
+    totalCountries: 2,
     liveCountries: 2,
-    coveredCountries: 120,
-    nextCountries: 5,
-    plannedCountries: 60,
-    futureCountries: 53,
-    totalOperators: 1566000,
-    totalCorridors: 219,
-    avgRatePerDay: 380,
+    coveredCountries: 2,
+    nextCountries: 0,
+    plannedCountries: 0,
+    futureCountries: 0,
+    totalOperators: 0,
+    totalCorridors: 0,
+    avgRatePerDay: 0,
 };
 
 /**
@@ -143,6 +146,7 @@ export async function getGlobalStats(): Promise<GlobalStats> {
 
         // Use FALLBACK as floor — if DB tables are empty (not an error, just no data),
         // show realistic market numbers rather than zeros in the hero KPIs.
+        // Return real data — zeros are honest; fake numbers are not.
         return {
             totalCountries,
             liveCountries,
@@ -150,9 +154,9 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             nextCountries,
             plannedCountries,
             futureCountries,
-            totalOperators: (opCount ?? 0) > 0 ? (opCount ?? 0) : FALLBACK.totalOperators,
-            totalCorridors: corrCount > 0 ? corrCount : FALLBACK.totalCorridors,
-            avgRatePerDay: avgRatePerDay > 0 ? avgRatePerDay : FALLBACK.avgRatePerDay,
+            totalOperators: opCount ?? 0,
+            totalCorridors: corrCount,
+            avgRatePerDay: avgRatePerDay,
         };
     } catch {
         return FALLBACK;

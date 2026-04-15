@@ -11,7 +11,7 @@ import { PolicyEnforcedLinks } from '@/components/training/PolicyEnforcedLinks';
 
 export const metadata: Metadata = {
   title: 'Haul Command | Global Pilot Car Certification & Escort Training',
-  description: 'The only global training protocol for heavy haul, autonomous vehicle escorting, and wind energy pilot cars. Exceeds 12 US state standards. 120-country valid.',
+  description: 'The only global training protocol for heavy haul, autonomous vehicle escorting, and wind energy pilot cars. Exceeds 12 US state standards.',
   openGraph: {
     title: 'Haul Command | Double Platinum Pilot Car Certification',
     description: 'The ultimate operating system training for escorts. Get matched in minutes. Build your broker-ready compliance packet.',
@@ -61,7 +61,7 @@ const FAQS = [
   },
   {
     q: 'Does the HC AV-Ready certification really cover autonomous trucks?',
-    a: 'Yes. The AV Integration Specialist program is the only escort operator training in existence specifically covering how to work alongside Aurora, Kodiak, Waabi, and other AV freight systems. It covers V2X communication protocols, sensor field awareness, emergency procedures, and country-specific AV regulations across all 120 countries.',
+    a: 'Yes. The AV Integration Specialist program is the only escort operator training in existence specifically covering how to work alongside Aurora, Kodiak, Waabi, and other AV freight systems. It covers V2X communication protocols, sensor field awareness, emergency procedures, and jurisdiction-specific AV regulations.',
   },
   {
     q: 'What happens when my certification expires?',
@@ -230,7 +230,7 @@ export default async function TrainingHome() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 32, flexWrap: 'wrap' }}>
             {[
               { icon: <ShieldCheck className="w-3.5 h-3.5" />, text: 'Built on FMCSA + SC&RA Standards' },
-              { icon: <Globe className="w-3.5 h-3.5" />, text: `${countryCount || 120} countries` },
+              { icon: <Globe className="w-3.5 h-3.5" />, text: `${countryCount || 'US'} coverage` },
               { icon: <Zap className="w-3.5 h-3.5" />, text: `${catalog.length || 8} training programs` },
             ].map((b, i) => (
               <div key={i} style={{
@@ -408,7 +408,7 @@ export default async function TrainingHome() {
           {[
             { icon: <ShieldCheck className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'FMCSA Best Practices Aligned', sub: 'Federal standard' },
             { icon: <ClipboardCheck className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'SC&RA Guidelines Compliant', sub: 'Industry standard' },
-            { icon: <Globe className="w-8 h-8 text-[#F5A623] mx-auto" />, text: `${countryCount || 120} Countries Accepted`, sub: 'Global recognition' },
+            { icon: <Globe className="w-8 h-8 text-[#F5A623] mx-auto" />, text: `${countryCount || 'US'} Coverage`, sub: 'Growing network' },
             { icon: <Landmark className="w-8 h-8 text-[#F5A623] mx-auto" />, text: 'Exceeds 12 State Standards', sub: 'WA, AZ, CO, FL, GA + more' },
           ].map((item, i) => (
             <div key={i} style={{ background: 'rgba(17,17,24,0.9)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 16, padding: '24px 20px', textAlign: 'center', backdropFilter: 'blur(8px)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>

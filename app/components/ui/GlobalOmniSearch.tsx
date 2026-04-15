@@ -92,7 +92,7 @@ export function GlobalOmniSearch() {
     }
     
     if ("escrot".includes(lowerInput) || "escort".includes(lowerInput) || "pilot".includes(lowerInput)) {
-      results.push({ id: "dir-escort", type: "entity", label: "Escort Drivers & Pilot Cars", subtitle: "2,400+ Available Now", url: "/directory/escorts", confidence: 0.95 });
+      results.push({ id: "dir-escort", type: "entity", label: "Escort Drivers & Pilot Cars", subtitle: "Browse available operators", url: "/directory/escorts", confidence: 0.95 });
     }
 
     if ("buckt".includes(lowerInput) || "bucket".includes(lowerInput) || "wire".includes(lowerInput) || "line".includes(lowerInput)) {

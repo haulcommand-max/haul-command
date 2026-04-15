@@ -2,6 +2,8 @@ import { getMarketPulse, getDirectoryListings, getCorridors } from "@/lib/server
 import { getCountryFromHeaders } from "@/lib/geo/getCountryFromRequest";
 import { resolveHeroPack } from "@/components/hero/heroPacks";
 import { getGlobalStats } from "@/lib/server/global-stats";
+import { collectNextMoveSignals } from "@/lib/server/collect-next-move-signals";
+import { createClient } from "@/lib/supabase/server";
 import HomeClient from "./_components/HomeClient";
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -14,7 +16,7 @@ import HomeClient from "./_components/HomeClient";
 export const metadata = {
   title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
   description:
-    'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the heavy haul load board, check state escort requirements, and claim your free listing.',
+    'Find verified pilot car operators and escort vehicles for oversize loads across the US. Browse the heavy haul load board, check state escort requirements, and claim your free listing.',
   keywords: [
     'pilot car',
     'escort vehicle',
@@ -68,30 +70,46 @@ export default async function LandingPage() {
     const countryCode = await getCountryFromHeaders();
     const heroPack = resolveHeroPack(countryCode);
 
+    // Detect state from Vercel geo header (auto-populated on Edge Network)
+    const { headers } = await import('next/headers');
+    const headersList = await headers();
+    const detectedState = headersList.get('x-vercel-ip-country-region') ?? null;
+
+    // Authenticated user id (anonymous if not logged in)
+    let userId: string | null = null;
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        userId = user?.id ?? null;
+    } catch {}
+
     let marketPulse: Awaited<ReturnType<typeof getMarketPulse>>;
     let directoryResult: Awaited<ReturnType<typeof getDirectoryListings>>;
     let corridors: Awaited<ReturnType<typeof getCorridors>>;
     let globalStats: Awaited<ReturnType<typeof getGlobalStats>>;
+    let nextMoveSignals: Awaited<ReturnType<typeof collectNextMoveSignals>>;
 
     try {
-        [marketPulse, directoryResult, corridors, globalStats] = await Promise.all([
+        [marketPulse, directoryResult, corridors, globalStats, nextMoveSignals] = await Promise.all([
             getMarketPulse(),
             getDirectoryListings({ limit: 8 }),
             getCorridors(),
             getGlobalStats(),
+            collectNextMoveSignals({ userId, detectedState }),
         ]);
     } catch (e) {
         console.error('Homepage data fetch failed:', e);
         marketPulse = { escorts_online_now: 0, escorts_available_now: 0, open_loads_now: 0, median_fill_time_min_7d: null, fill_rate_7d: null };
         directoryResult = { listings: [], total: 0 };
         corridors = [];
-        globalStats = { totalCountries: 120, liveCountries: 2, coveredCountries: 120, nextCountries: 5, plannedCountries: 60, futureCountries: 53, totalOperators: 1566000, totalCorridors: 219, avgRatePerDay: 380 };
+        globalStats = { totalCountries: 2, liveCountries: 2, coveredCountries: 2, nextCountries: 0, plannedCountries: 0, futureCountries: 0, totalOperators: 0, totalCorridors: 0, avgRatePerDay: 0 };
+        nextMoveSignals = {};
     }
 
     return (
         <main>
-            <h1 className="sr-only">
-                Haul Command — The #1 Global Pilot Car Directory, Oversize Load Board, and Heavy Haul Operating System
+            <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-6 px-4">
+                The #1 Global <span className="text-[#D4A348]">Pilot Car Directory</span> &amp; Heavy Haul Operating System
             </h1>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
@@ -161,6 +179,7 @@ export default async function LandingPage() {
                 totalOperators={globalStats.totalOperators}
                 totalCorridors={globalStats.totalCorridors}
                 avgRatePerDay={globalStats.avgRatePerDay}
+                nextMoveSignals={nextMoveSignals}
             />
         </main>
     );

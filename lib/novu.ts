@@ -165,3 +165,73 @@ export async function notifyHoldRequest(operatorId: string, load: {
     },
   });
 }
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Generic event system — NOVU_EVENT_NAMES, emitNotification, emitBatch
+// Used by cron/notifications, novu/trigger, recovery/scan routes
+// ══════════════════════════════════════════════════════════════════════════════
+
+/** Canonical event name registry */
+export const NOVU_EVENT_NAMES = {
+  DISPATCH_ASSIGNED: 'dispatch-assigned',
+  TRAINING_REMINDER: 'training-reminder',
+  QUICKPAY_AVAILABLE: 'quickpay-available',
+  COMPLIANCE_DEADLINE: 'compliance-deadline',
+  HOLD_REQUEST: 'hold-request',
+  BOOST_EXPIRING: 'boost-expiring',
+  SPONSORSHIP_EXPIRING: 'sponsorship-expiring',
+  CREDENTIAL_EXPIRING: 'credential-expiring',
+  TRAINING_RENEWAL_DUE: 'training-renewal-due',
+  LEAD_CREDIT_LOW: 'lead-credit-low',
+} as const;
+
+export type NovuEventName = (typeof NOVU_EVENT_NAMES)[keyof typeof NOVU_EVENT_NAMES] | string;
+
+export type NovuPayload = Record<string, unknown>;
+
+export interface EmitOptions {
+  subscriberId: string;
+  email?: string;
+  phone?: string;
+  actorId?: string;
+  tenant?: string;
+}
+
+/** Emit a single notification event */
+export async function emitNotification(
+  eventName: NovuEventName,
+  payload: NovuPayload,
+  options: EmitOptions,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const result = await novuPost('events/trigger', {
+      name: eventName,
+      to: {
+        subscriberId: options.subscriberId,
+        ...(options.email ? { email: options.email } : {}),
+        ...(options.phone ? { phone: options.phone } : {}),
+      },
+      payload,
+      ...(options.actorId ? { actor: { subscriberId: options.actorId } } : {}),
+      ...(options.tenant ? { tenant: { identifier: options.tenant } } : {}),
+    });
+    return { ok: !!result };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[novu] emitNotification failed:', msg);
+    return { ok: false, error: msg };
+  }
+}
+
+/** Emit a batch of notification events sequentially */
+export async function emitBatch(
+  events: Array<{ eventName: NovuEventName; payload: NovuPayload; options: EmitOptions }>,
+): Promise<Array<{ ok: boolean; error?: string }>> {
+  const results: Array<{ ok: boolean; error?: string }> = [];
+  for (const evt of events) {
+    const r = await emitNotification(evt.eventName, evt.payload, evt.options);
+    results.push(r);
+  }
+  return results;
+}
+

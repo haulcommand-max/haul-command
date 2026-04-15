@@ -10,7 +10,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
     title: 'Pilot Car Operator Hub — Find Jobs, Get Listed & Get Verified | Haul Command',
     description:
-        'The complete resource for pilot car and escort vehicle operators. Find escort jobs, claim your free listing, get verified, check state requirements, and dominate your corridor. 14,000+ operators across 120 countries.',
+        'The complete resource for pilot car and escort vehicle operators. Find escort jobs, claim your free listing, get verified, check state requirements, and dominate your corridor.',
     keywords: [
         'pilot car operator', 'escort vehicle operator', 'pilot car jobs',
         'pilot car near me', 'become a pilot car operator', 'pilot car certification',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.haulcommand.com/roles/pilot-car-operator' },
     openGraph: {
         title: 'Pilot Car Operator Hub | Haul Command',
-        description: 'Find escort jobs, claim your free listing, get verified, and grow your pilot car business. 14,000+ operators across 120 countries.',
+        description: 'Find escort jobs, claim your free listing, get verified, and grow your pilot car business.',
         url: 'https://www.haulcommand.com/roles/pilot-car-operator',
         siteName: 'Haul Command',
         type: 'website',
@@ -81,8 +81,8 @@ async function getStats(): Promise<{ operatorCount: number; verifiedCount: numbe
 
 export default async function PilotCarOperatorPage() {
     const { operatorCount, verifiedCount } = await getStats();
-    const displayCount = operatorCount > 100 ? operatorCount.toLocaleString() : '14,000+';
-    const displayVerified = verifiedCount > 10 ? verifiedCount.toLocaleString() : '2,400+';
+    const displayCount = operatorCount > 100 ? operatorCount.toLocaleString() : 'Growing';
+    const displayVerified = verifiedCount > 10 ? verifiedCount.toLocaleString() : 'Growing';
     const gold = '#D4A844';
 
     const OPERATOR_NEXT_MOVES = [
@@ -142,7 +142,7 @@ export default async function PilotCarOperatorPage() {
                                     { val: displayCount, label: 'Listed Operators', color: gold },
                                     { val: displayVerified, label: 'Verified', color: '#22C55E' },
                                     { val: '50', label: 'States Covered', color: '#3B82F6' },
-                                    { val: '120', label: 'Countries', color: '#8B5CF6' },
+                                    { val: '2 Active', label: 'Countries', color: '#8B5CF6' },
                                 ].map(s => (
                                     <div key={s.label} style={{ padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
                                         <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.val}</div>

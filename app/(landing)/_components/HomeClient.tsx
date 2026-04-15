@@ -18,6 +18,8 @@ import { FooterAccordion } from "./FooterAccordion";
 import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
 import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
 import { TrustArchitecture } from "./TrustArchitecture";
+import { NextMovesRail } from "@/components/next-moves/NextMovesRail";
+import type { UserSignals } from "@/lib/next-moves-engine";
 
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
@@ -122,11 +124,13 @@ export interface HomeClientProps {
     totalOperators: number;
     totalCorridors: number;
     avgRatePerDay?: number;
+    /** Server-collected signals for Next Moves Engine */
+    nextMoveSignals?: Partial<UserSignals>;
 }
 
 export default function HomeClient({
     directoryCount, totalCountries, liveCountries,
-    totalOperators, avgRatePerDay = 380,
+    totalOperators, avgRatePerDay = 380, nextMoveSignals,
 }: HomeClientProps) {
     return (
         <div className="bg-hc-bg text-hc-text font-[family-name:var(--font-body)] antialiased selection:bg-hc-gold-500 selection:text-white pb-0">
@@ -153,7 +157,7 @@ export default function HomeClient({
                     <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="inline-flex mb-5">
                         <span className="flex items-center gap-2 bg-hc-high/90 backdrop-blur-md text-hc-gold-400 border border-hc-gold-500/30 px-4 py-1.5 rounded-full text-xs font-bold tracking-[0.18em] uppercase">
                             <span className="w-1.5 h-1.5 rounded-full bg-hc-gold-500 animate-pulse" />
-                            {liveCountries > 0 ? liveCountries : 120} Countries · {totalOperators > 0 ? totalOperators.toLocaleString() : "2,400+"} Operators
+                            {liveCountries > 0 ? liveCountries : 2} Countries · {totalOperators > 0 ? totalOperators.toLocaleString() : "Growing"} Operators
                         </span>
                     </motion.div>
 
@@ -206,7 +210,7 @@ export default function HomeClient({
                     >
                         <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-hc-success" /> Free to browse</span>
                         <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-hc-success" /> No card required</span>
-                        <span className="flex items-center gap-1.5"><Globe className="w-3 h-3 text-hc-gold-500" /> 120+ countries</span>
+                        <span className="flex items-center gap-1.5"><Globe className="w-3 h-3 text-hc-gold-500" /> US coverage</span>
                     </motion.div>
                 </div>
             </section>
@@ -328,9 +332,9 @@ export default function HomeClient({
                 <div className="max-w-4xl mx-auto px-4 py-8 sm:py-10">
                     <div className="grid grid-cols-3 gap-4 sm:gap-8">
                         {[
-                            { value: totalOperators > 0 ? `${totalOperators.toLocaleString()}+` : "2,400+", label: "Verified Operators", color: "#C6923A" },
-                            { value: liveCountries > 0 ? `${liveCountries}` : "120", label: "Countries Active", color: "#22C55E" },
-                            { value: avgRatePerDay ? `$${avgRatePerDay}` : "$380", label: "Avg Day Rate", color: "#3B82F6" },
+                            { value: totalOperators > 0 ? `${totalOperators.toLocaleString()}+` : "Growing", label: "Verified Operators", color: "#C6923A" },
+                            { value: liveCountries > 0 ? `${liveCountries}` : "2", label: "Countries Active", color: "#22C55E" },
+                            { value: avgRatePerDay > 0 ? `$${avgRatePerDay}` : "—", label: "Avg Day Rate", color: "#3B82F6" },
                         ].map((stat) => (
                             <div key={stat.label} className="text-center">
                                 <div className="text-xl sm:text-3xl lg:text-4xl font-black tracking-tight mb-1" style={{ color: stat.color }}>
@@ -440,7 +444,7 @@ export default function HomeClient({
                         </div>
                         <h2 className="text-2xl sm:text-4xl lg:text-6xl font-black font-display tracking-tight text-hc-text">Global Supply Radar</h2>
                         <p className="text-sm sm:text-lg text-hc-muted mt-3 max-w-2xl mx-auto font-medium leading-relaxed">
-                            Escort deployments, load density, and operator movements across 120+ jurisdictions.
+                            Escort deployments, load density, and operator movements across multiple jurisdictions.
                         </p>
                     </div>
                     <div className="w-full rounded-[24px] sm:rounded-[40px] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(198,146,58,0.10)] bg-[#111214] p-3 sm:p-8 relative">

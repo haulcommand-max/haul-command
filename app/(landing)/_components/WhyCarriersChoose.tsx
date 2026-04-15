@@ -27,8 +27,8 @@ const stagger = { visible: { transition: { staggerChildren: 0.06 } } };
 const CARRIER_BENEFITS = [
   {
     icon: Globe,
-    title: "120-Country Coverage",
-    desc: "Not just North America. Find verified escorts in any country where heavy haul runs.",
+    title: "North American Coverage",
+    desc: "Find verified escorts across all 50 US states and expanding into Canada. Coverage growing every week.",
     accent: "#3b82f6",
   },
   {
