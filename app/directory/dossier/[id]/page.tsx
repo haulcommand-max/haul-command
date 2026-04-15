@@ -17,12 +17,18 @@ export default async function DossierPage({ params }: { params: { id: string } }
         { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
     );
 
-    // Fetch operator by ID to prevent crash and show graceful fallback if not found
-    const { data: operator } = await supabase
-        .from('v_directory_publishable')
-        .select('*')
-        .eq('contact_id', id)
-        .single();
+    // Fetch operator by ID — defensive try/catch to prevent System Fault crash  
+    let operator: any = null;
+    try {
+        const { data } = await supabase
+            .from('v_directory_publishable')
+            .select('*')
+            .eq('contact_id', id)
+            .single();
+        operator = data;
+    } catch (e) {
+        console.warn('[dossier] Query failed for id:', id, e);
+    }
 
     if (!operator) {
         return (

@@ -34,10 +34,35 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function CityDirectoryPage({ params }: PageProps) {
   const { country, slug } = await params;
-  const cityName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const countryUpper = country.toUpperCase();
 
   const supabase = createClient();
+
+  // ── OPERATOR-FIRST RESOLUTION ─────────────────────────────────
+  // P0 FIX: Check if this slug matches an operator before treating
+  // it as a city name. Without this, URLs like
+  // /directory/ak/lopez-contracting-nc-pilot-driver render as
+  // "Pilot Car Services in Lopez Contracting Nc Pilot Driver"
+  // with 0 operators — destroying trust.
+  // ──────────────────────────────────────────────────────────────
+  try {
+    const { data: operatorMatch } = await supabase
+      .from('hc_global_operators')
+      .select('id, slug')
+      .eq('slug', slug)
+      .limit(1)
+      .maybeSingle();
+
+    if (operatorMatch) {
+      // Redirect to the proper dossier page
+      const { redirect } = await import('next/navigation');
+      redirect(`/directory/dossier/${operatorMatch.id}`);
+    }
+  } catch (e) {
+    // Slug doesn't match an operator — fall through to city behavior
+  }
+
+  const cityName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   // Fetch operators in this city
   const { data: operators, count: totalCount } = await supabase
