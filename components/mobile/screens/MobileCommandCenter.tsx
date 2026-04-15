@@ -856,7 +856,7 @@ function SponsoredIntelligenceCell({ variant = 'default', topCorridor }: {
     : {
         label: 'Sponsored Insight',
         headline: 'Coverage gap: escort shortage growing on I-10 Gulf Coast',
-        body: 'Operators listing on this corridor see 3Ã— more job requests. Claim your profile to get noticed by brokers.',
+        body: 'Operators listing on this corridor see 3x more job requests. Claim your profile to get noticed by brokers.',
         ctaText: 'Claim Your Profile',
         ctaHref: '/claim',
         accentColor: 'var(--hc-gold-400, #D4A844)',

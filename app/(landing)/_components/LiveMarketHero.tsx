@@ -272,7 +272,7 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ROLE ROUTER — 3Ã—2 grid on mobile, 6-col on desktop */}
+                {/* ROLE ROUTER — 3x2 grid on mobile, 6-col on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
