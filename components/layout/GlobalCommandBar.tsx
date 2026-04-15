@@ -75,12 +75,12 @@ export function GlobalCommandBar() {
           })}
         </nav>
 
-        {/* Right: Account button + mobile hamburger (hamburger ONLY on < lg) */}
+        {/* Right: Account actions + mobile hamburger (single canonical instance) */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <AccountButton />
-          {/* Mobile menu trigger — hidden on desktop */}
+          {/* Mobile menu — ONLY renders on <lg, sole instance across the app */}
           <div className="lg:hidden">
-            <HCMobileMenu mode="app" />
+            <HCMobileMenu mode="public" />
           </div>
         </div>
       </div>
