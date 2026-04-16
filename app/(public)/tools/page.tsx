@@ -6,8 +6,7 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SponsorCard } from '@/components/monetization/SponsorCard';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
-import Link from 'next/link';
-import { Shield, MapPin, Zap, Award, Globe, TrendingUp } from 'lucide-react';
+import { Shield, MapPin, Award, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Compliance Tools & Route Calculators | Haul Command',
