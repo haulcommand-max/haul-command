@@ -2,8 +2,7 @@
   "crons": [
     {
       "path": "/api/notifications/drain-jobs",
-      "schedule": "*/2 * * * *",
-      "_comment": "P0: Drain hc_notif_jobs queue — runs every 2 min (Vercel minimum). DB Webhook on hc_notif_jobs INSERT provides sub-second latency for real-time events."
+      "schedule": "*/2 * * * *"
     },
     {
       "path": "/api/cron/claim-sniper",
