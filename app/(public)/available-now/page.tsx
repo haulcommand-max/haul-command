@@ -561,7 +561,7 @@ export default async function AvailableNowPage() {
           </div>
         </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }` }} />
+      <style dangerouslySetInnerHTML={{ __html: `@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }` }}></style>
     </>
   );
 }
