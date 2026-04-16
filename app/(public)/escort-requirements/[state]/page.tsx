@@ -5,6 +5,7 @@ import { ChevronRight, Shield, Scale, ArrowRight, MapPin, AlertTriangle, CheckCi
 import { HCContentPageShell, HCContentContainer, HCContentSection } from '@/components/content-system/shell/HCContentPageShell';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { stateFullName } from '@/lib/geo/state-names';
 
 // ═══════════════════════════════════════════════════════════════
@@ -175,6 +176,10 @@ export default async function StateRequirementPage({ params }: PageProps) {
       </div>
 
       <HCContentSection>
+        {/* Top AdGrid Slot */}
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '16px 1.5rem 0' }}>
+          <AdGridSlot zone={`escort_state_${state}_top`} />
+        </div>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem' }}>
 
           {data ? (
@@ -341,6 +346,24 @@ export default async function StateRequirementPage({ params }: PageProps) {
 
       <HCContentSection>
         <HCContentContainer>
+
+          {/* Claim CTA */}
+          <div style={{ background: 'linear-gradient(135deg, rgba(198,146,58,0.08), rgba(198,146,58,0.02))', border: '1px solid rgba(198,146,58,0.2)', borderRadius: 16, padding: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 32 }}>
+            <div>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', margin: '0 0 4px' }}>Are you a {fullName} escort operator?</h3>
+              <p style={{ fontSize: 12, color: '#94a3b8', margin: 0 }}>Get found by brokers who need escorts in {fullName} right now. Free to claim your profile.</p>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <Link href="/claim" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 10, background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>Claim Listing — Free</Link>
+              <Link href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 10, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d1d5db', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>Sponsor This Page</Link>
+            </div>
+          </div>
+
+          {/* AdGrid mid */}
+          <div style={{ marginBottom: 32 }}>
+            <AdGridSlot zone={`escort_state_${state}_mid`} />
+          </div>
+
           <NoDeadEndBlock
             heading={`${fullName} Escort Resources`}
             moves={[
@@ -350,6 +373,8 @@ export default async function StateRequirementPage({ params }: PageProps) {
               { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Operators ready' },
               { href: '/training', icon: '🎓', title: 'Get Certified', desc: 'Certification programs' },
               { href: '/regulations/us', icon: '📋', title: 'US Regulations', desc: 'Federal overview' },
+              { href: '/corridors', icon: '🛣️', title: 'Corridor Intel', desc: `${fullName} route demand` },
+              { href: '/advertise', icon: '📣', title: 'Sponsor', desc: 'Reach operators here' },
             ]}
           />
         </HCContentContainer>

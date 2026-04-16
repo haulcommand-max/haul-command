@@ -222,7 +222,7 @@ export async function runClaimSniper(options: {
         title: `Claim Sniper: ${candidate.display_name} (${candidate.country_code})`,
         body: packetText,
         dueAt: new Date(Date.now() + 3 * 86_400_000).toISOString(),
-        status: 'TODO',
+        status: 'IN_PROGRESS',
       },
     };
 

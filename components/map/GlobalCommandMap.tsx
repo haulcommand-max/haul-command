@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Map, { Marker, NavigationControl, Popup } from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import Map, { Marker, NavigationControl, Popup } from 'react-map-gl/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Shield } from 'lucide-react';
@@ -28,6 +28,8 @@ export function GlobalCommandMap() {
     zoom: 4,
     pitch: 45
   });
+
+  const [isHDMode, setIsHDMode] = useState(false);
 
   const [liveOperators, setLiveOperators] = useState<OperatorNode[]>([]);
   const [selectedNode, setSelectedNode] = useState<OperatorNode | null>(null);
@@ -146,12 +148,29 @@ export function GlobalCommandMap() {
         />
       </div>
 
-      {/* Mapbox Instance */}
+      {/* HD Mode Toggle Button */}
+      <div className="absolute top-4 right-4 z-20">
+        <button 
+          onClick={() => setIsHDMode(!isHDMode)}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all shadow-xl backdrop-blur-md border ${
+            isHDMode 
+              ? 'bg-[#C6923A]/20 text-[#C6923A] border-[#C6923A]/50 shadow-[0_0_15px_rgba(198,146,58,0.3)]' 
+              : 'bg-white/5 text-neutral-400 border-white/10 hover:bg-white/10'
+          }`}
+        >
+          <div className={`w-2 h-2 rounded-full ${isHDMode ? 'bg-[#C6923A]' : 'bg-neutral-600'}`} />
+          {isHDMode ? 'HD Satellite Active' : 'Enable HD Mode'}
+        </button>
+      </div>
+
+      {/* MapLibre Instance */}
       <Map
         {...viewState}
         onMove={evt => setViewState(evt.viewState)}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
-        mapboxAccessToken={mapboxToken}
+        mapStyle={isHDMode 
+           ? `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12?access_token=${mapboxToken}` 
+           : "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        }
         attributionControl={false}
       >
         <NavigationControl position="bottom-right" />

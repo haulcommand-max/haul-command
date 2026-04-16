@@ -58,9 +58,32 @@ export async function POST(request: Request) {
             metadata: { company, use_case, sandbox_key: sandboxKey },
         }).maybeSingle();
 
-        // TODO: Trigger Supabase Edge Function or Resend to deliver key by email
-        // For now the key is stored and retrievable from dashboard.
-        // Example: await fetch(process.env.RESEND_WEBHOOK_URL, { method: 'POST', body: JSON.stringify({ to: email, key: sandboxKey }) })
+        // Deliver the API key instantly via Resend so developers can start building immediately
+        if (process.env.RESEND_API_KEY) {
+            await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: 'Haul Command API <api@haulcommand.com>',
+                    to: [email],
+                    subject: 'Your Haul Command OS Sandbox Key',
+                    html: `
+                        <div style="font-family: monospace; padding: 20px;">
+                          <h2>Welcome to Haul Command API</h2>
+                          <p>Your developer sandbox key has been successfully generated:</p>
+                          <pre style="background:#111;color:#22c55e;padding:16px;border-radius:4px;font-size:16px;">${sandboxKey}</pre>
+                          <p>Pass this as a Bearer token in the Authorization header to authenticate requests against our endpoints.</p>
+                          <p><em>Note: This key is scoped purely for sandbox testing limits. Ensure it remains secure against your Git repos.</em></p>
+                        </div>
+                    `
+                })
+            }).catch(e => console.error('[sandbox-key] Final RESEND hook failure:', e));
+        } else {
+             console.warn('[sandbox-key] RESEND_API_KEY entirely missing — unable to dispatch key via email.');
+        }
 
         return NextResponse.json({ ok: true });
     } catch (err) {

@@ -231,8 +231,9 @@ export async function runDailyControlLoop(): Promise<ControlLoopResult> {
         opportunity_score: c.cls_score / 100, // Normalize CLS to 0-1 for allocation
     }));
 
-    // TODO: Get from finance config
-    const dailyMarketingCap = 1000;
+    // Fetch from finance config (system_config)
+    const { data: financeConfig } = await supabase.from('system_config').select('value').eq('key', 'daily_marketing_cap').maybeSingle();
+    const dailyMarketingCap = financeConfig && typeof financeConfig.value === 'number' ? financeConfig.value : 1000;
     const budgetAllocations = softmaxAllocate(opportunityScores, dailyMarketingCap);
 
     // ── STEP 5: Make ads decisions ──
@@ -242,6 +243,29 @@ export async function runDailyControlLoop(): Promise<ControlLoopResult> {
     for (const result of corridorResults) {
         const vapiKpis = await computeVapiKpis(result.country_iso2, result.corridor_id, 14);
 
+        // Compute cls_momentum from previous snapshot
+        const { data: snaps } = await getSupabaseAdmin().from('corridor_snapshots')
+            .select('cls_score')
+            .eq('corridor_id', result.corridor_id)
+            .order('created_at', { ascending: false })
+            .limit(2);
+        const cls_momentum = (snaps?.length === 2 && snaps[1].cls_score > 0) 
+            ? ((snaps[0].cls_score - snaps[1].cls_score) / snaps[1].cls_score) 
+            : 0;
+
+        // Compute activation_cost_trend
+        const { data: costSnaps } = await getSupabaseAdmin().from('corridor_snapshots')
+            .select('activation_cost')
+            .eq('corridor_id', result.corridor_id)
+            .order('created_at', { ascending: false })
+            .limit(2);
+        
+        let costTrend = 'stable_14d';
+        if (costSnaps?.length === 2 && costSnaps[0].activation_cost != null && costSnaps[1].activation_cost != null) {
+            if (costSnaps[0].activation_cost > costSnaps[1].activation_cost) costTrend = 'increasing';
+            else if (costSnaps[0].activation_cost < costSnaps[1].activation_cost) costTrend = 'decreasing';
+        }
+
         const input: AdsDecisionInput = {
             corridor_id: result.corridor_id,
             country_iso2: result.country_iso2,
@@ -249,11 +273,11 @@ export async function runDailyControlLoop(): Promise<ControlLoopResult> {
             load_participation_pct: result.rates.load_participation_pct,
             match_rate_pct: result.rates.match_rate_pct,
             vapi_engagement_pct: vapiKpis.engagement_rate_pct,
-            activation_cost_trend: 'stable_14d', // TODO: compute from historical data
+            activation_cost_trend: costTrend,
             daily_marketing_cap: budgetAllocations.get(result.corridor_id) || 0,
             demand_pressure: result.rates.match_rate_pct < 50 ? 0.8 : 0.4,
             revenue_potential: result.cls_score / 100,
-            cls_momentum: 0.5, // TODO: compute from snapshot trend
+            cls_momentum: cls_momentum,
         };
 
         const adsDecision = makeAdsDecision(input);

@@ -65,7 +65,11 @@ export async function POST(req: NextRequest) {
 
         const systemInstruction = `Outbound sales sequence for ${programType}. ${personaInstruction} The prospect is located in region: ${countryCode}. ${psychologicalDirectives}`;
 
-        const res = await fetch(`https://your-project.livekit.cloud/twirp/livekit.SIP/CreateSIPParticipant`, {
+        const livekitUrl = process.env.NEXT_PUBLIC_LIVEKIT_WS_URL 
+            ? process.env.NEXT_PUBLIC_LIVEKIT_WS_URL.replace('wss://', 'https://') 
+            : 'https://haulcommand.livekit.cloud';
+
+        const res = await fetch(`${livekitUrl}/twirp/livekit.SIP/CreateSIPParticipant`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiKey}`,

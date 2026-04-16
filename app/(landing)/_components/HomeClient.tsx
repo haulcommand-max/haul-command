@@ -561,6 +561,13 @@ export default function HomeClient({
                 SECTION 12 — FOOTER
                 ═══════════════════════════════════════════════════════ */}
             <FooterAccordion />
+            
+            {/* Sticky Homepage CTA (Mobile Only) */}
+            <div className="fixed bottom-0 left-0 w-full p-4 bg-gradient-to-t from-hc-bg via-hc-bg/90 to-transparent z-[900] safe-area-bottom md:hidden pointer-events-none">
+                <Link href="/loads/post" className="flex items-center justify-center w-full py-4 rounded-xl bg-gradient-to-r from-hc-gold-500 to-hc-gold-400 text-black font-black uppercase tracking-widest text-sm shadow-[0_4px_20px_rgba(198,146,58,0.4)] pointer-events-auto hover:bg-hc-gold-400 transition-all active:scale-[0.98]">
+                    Post a Load — Free
+                </Link>
+            </div>
         </div>
     );
 }

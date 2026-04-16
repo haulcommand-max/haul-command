@@ -61,7 +61,8 @@ export async function runListingRescue(options: {
 
   for (const listing of weak ?? []) {
     const recoverability = 100 - listing.listing_score;
-    const marketValue = 60; // TODO: join to dom_scorecards
+    const { data: scorecard } = await svc().from('dom_scorecards').select('market_value').eq('entity_id', listing.entity_id).single();
+    const marketValue = scorecard?.market_value ?? 60;
     const trafficPotential = 55;
     const claimProbability = listing.listing_score > 40 ? 70 : 45;
 

@@ -4,6 +4,11 @@ import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { InstantAIVerificationCard } from '@/components/support/InstantAIVerificationCard'
+import { 
+  ArrowTrendingUpIcon, CheckBadgeIcon, ShieldCheckIcon, 
+  ChatBubbleLeftRightIcon, BriefcaseIcon, AcademicCapIcon,
+  EyeIcon, HandRaisedIcon, ArrowPathIcon
+} from '@heroicons/react/24/outline'
 
 export const metadata: Metadata = {
   title: 'Claim Your Profile | Haul Command',
@@ -13,10 +18,9 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function ClaimPage({ searchParams }: { searchParams: { hcid?: string } }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Resolve operator if hcid passed
   let operator: any = null
   if (searchParams.hcid) {
     const { data } = await supabase
@@ -29,26 +33,22 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
 
   const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Claim Your Haul Command Profile', description:'Verify your identity and claim your listing on Haul Command.' }
 
-  // A/B Split Test: 'Claim Your Profile' vs 'Get Verified'
-  const isGetVerifiedVariation = Math.random() > 0.5;
-  const headingText = isGetVerifiedVariation ? 'Get Verified' : 'Claim Your Profile';
-
   return (
     <>
       <JsonLd data={schema}/>
-      <div className=" bg-[#07090d] text-[#f0f2f5]">
-        <div className="px-4 lg:px-10 py-12 max-w-2xl mx-auto">
+      <div className=" bg-[#07090d] text-[#f0f2f5] min-h-screen">
+        <div className="px-4 lg:px-10 py-12 max-w-2xl mx-auto pb-32">
 
           {/* HEADER */}
           <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">HAUL COMMAND DIRECTORY</p>
-          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-3">{headingText}</h1>
-          <p className="text-sm text-[#8a9ab0] mb-8 leading-relaxed">
-            Your company may already be listed. Claiming takes 2 minutes and immediately boosts your trust score, ranking, and broker visibility.
+          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-white mb-3">Claim Your Profile</h1>
+          <p className="text-sm text-[#8a9ab0] mb-6 leading-relaxed">
+            Your company is already mapped in our network. Claiming takes 60 seconds and immediately boosts your ranking and load board access.
           </p>
 
           {/* OPERATOR PREVIEW */}
           {operator && (
-            <div className={`border rounded-2xl p-5 mb-8 ${
+            <div className={`border rounded-2xl p-5 mb-8 shadow-xl ${
               operator.is_claimed
                 ? 'border-[#22c55e40] bg-[#0d2000]'
                 : 'border-[#d4950e40] bg-[#1a1200]'
@@ -63,89 +63,117 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 </div>
                 <div className="ml-auto">
                   {operator.is_claimed
-                    ? <span className="text-[10px] text-[#22c55e] bg-[#0d2000] border border-[#22c55e40] px-2 py-0.5 rounded">CLAIMED</span>
-                    : <span className="text-[10px] text-[#d4950e] bg-[#2a1f08] border border-[#d4950e40] px-2 py-0.5 rounded">UNCLAIMED</span>
+                    ? <span className="text-[10px] text-[#22c55e] bg-[#0d2000] border border-[#22c55e40] px-2 py-0.5 rounded font-black tracking-widest">CLAIMED</span>
+                    : <span className="flex items-center gap-1.5 text-[10px] text-[#d4950e] bg-[#2a1f08] border border-[#d4950e40] px-2 py-0.5 rounded font-black tracking-widest animate-pulse">UNCLAIMED</span>
                   }
                 </div>
               </div>
-              {operator.is_claimed && (
-                <p className="text-xs text-[#22c55e] mt-4">âœ” This profile has already been claimed. If you believe this is your company, <Link href="/support" className="underline">contact support</Link>.</p>
+              {operator.is_claimed ? (
+                <p className="text-xs text-[#22c55e] mt-4 font-semibold">✔ This profile has already been claimed. <Link href="/support" className="underline hover:text-white">Contact support</Link> if this is yours.</p>
+              ) : (
+                <div className="mt-5 grid grid-cols-3 gap-2 border-t border-[#d4950e20] pt-4">
+                   <div className="text-center">
+                     <div className="text-lg font-black text-white flex items-center justify-center gap-1"><EyeIcon className="w-4 h-4 text-[#d4950e]"/> ~14</div>
+                     <div className="text-[9px] text-[#8a9ab0] uppercase tracking-wider">Searches / Mo</div>
+                   </div>
+                   <div className="text-center border-l border-[#d4950e20]">
+                     <div className="text-lg font-black text-white flex items-center justify-center gap-1"><HandRaisedIcon className="w-4 h-4 text-red-400"/> 3</div>
+                     <div className="text-[9px] text-[#8a9ab0] uppercase tracking-wider">Missed Loads</div>
+                   </div>
+                   <div className="text-center border-l border-[#d4950e20]">
+                     <div className="text-lg font-black text-white flex items-center justify-center gap-1"><ArrowPathIcon className="w-4 h-4 text-emerald-400"/> Live</div>
+                     <div className="text-[9px] text-[#8a9ab0] uppercase tracking-wider">Market Tier</div>
+                   </div>
+                </div>
               )}
             </div>
           )}
 
-          {/* BENEFITS */}
-          <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
-            <p className="text-xs text-[#566880] font-semibold tracking-wider mb-4">WHAT YOU GET WHEN YOU CLAIM</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {[
-                { icon:'â¬†ï¸', label:'Higher directory rank', desc:'Claimed profiles rank above unclaimed listings.' },
-                { icon:'âœ”ï¸', label:'Verified badge', desc:'Green verified checkmark visible to every broker who views your profile.' },
-                { icon:'ðŸ“ˆ', label:'Trust score boost', desc:'Claiming adds +20 to your HC Trust Score immediately.' },
-                { icon:'ðŸ””', label:'Broker enquiries', desc:'Brokers can message you directly through the platform.' },
-                { icon:'ðŸ’¼', label:'Load board access', desc:'Receive push notifications for matching loads near you.' },
-                { icon:'ðŸ…', label:'Certification display', desc:'Show your HC certifications and training badges on your profile.' },
-              ].map(b=>(
-                <div key={b.label} className="flex gap-3">
-                  <span className="text-base">{b.icon}</span>
+          {/* PRESSURE & BENEFITS */}
+          <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8 shadow-xl">
+            <p className="text-[10px] text-[#8a9ab0] font-black tracking-[0.15em] mb-4">WHAT YOU UNLOCK</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+                <div className="flex gap-3">
+                  <ArrowTrendingUpIcon className="w-6 h-6 text-[#d4950e] flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-[#d0dce8]">{b.label}</p>
-                    <p className="text-[11px] text-[#566880] leading-relaxed">{b.desc}</p>
+                    <p className="text-xs font-bold text-white mb-0.5">Higher ranking</p>
+                    <p className="text-[11px] text-[#8a9ab0] leading-relaxed">Claimed profiles instantly rank above unclaimed competitors.</p>
                   </div>
                 </div>
-              ))}
+                <div className="flex gap-3">
+                  <CheckBadgeIcon className="w-6 h-6 text-emerald-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold text-white mb-0.5">Verified Badge</p>
+                    <p className="text-[11px] text-[#8a9ab0] leading-relaxed">Shows brokers you are active and verified across 50 states.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <BriefcaseIcon className="w-6 h-6 text-blue-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold text-white mb-0.5">Load Board Access</p>
+                    <p className="text-[11px] text-[#8a9ab0] leading-relaxed">Get direct load alerts pushed to your phone when you match.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <ChatBubbleLeftRightIcon className="w-6 h-6 text-purple-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold text-white mb-0.5">Direct Messaging</p>
+                    <p className="text-[11px] text-[#8a9ab0] leading-relaxed">Brokers can securely dispatch and message you directly.</p>
+                  </div>
+                </div>
             </div>
           </div>
 
-          {/* CLAIM CTA */}
+          {/* CLAIM CTA FORM */}
           {(!operator || !operator.is_claimed) && (
             <div className="flex flex-col gap-3">
               {!user ? (
                 <>
                   <Link href={`/sign-up?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
-                    className="bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-4 rounded-xl text-sm text-center transition-colors">
-                    Create Account &amp; Claim Your Profile
+                    className="relative group bg-gradient-to-r from-[#d4950e] to-[#c4850e] text-white font-black uppercase tracking-widest py-4 rounded-xl text-sm text-center transition-all shadow-[0_0_20px_rgba(212,149,14,0.3)] hover:shadow-[0_0_30px_rgba(212,149,14,0.5)] overflow-hidden">
+                    <span className="relative z-10">Claim My Profile — Free</span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
                   </Link>
                   <Link href={`/sign-in?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
-                    className="border border-[#1e3048] text-[#8a9ab0] hover:border-[#d4950e] py-4 rounded-xl text-sm text-center transition-colors">
-                    Sign In to Claim
+                    className="border border-[#1e3048] text-[#8a9ab0] font-bold hover:text-white hover:bg-white/5 py-4 rounded-xl text-sm text-center transition-all">
+                    I Already Have an Account
                   </Link>
                 </>
               ) : (
-                <form action="/api/claim/submit" method="POST">
+                <form action="/api/claim/submit" method="POST" className="bg-[#0f1a24] border border-[#1e3048] p-6 rounded-2xl">
+                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest border-b border-white/[0.05] pb-3">Final Verification Step</h3>
                   {searchParams.hcid && <input type="hidden" name="hcid" value={searchParams.hcid}/>}
                   <input type="hidden" name="user_id" value={user.id}/>
 
                   <InstantAIVerificationCard hcid={searchParams.hcid} companyName={operator?.company_name} />
 
                   <div className="mb-4">
-                    <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">YOUR COMPANY NAME <span className="text-red-400">*</span></label>
+                    <label className="block text-[10px] text-[#8a9ab0] mb-1.5 font-bold tracking-widest uppercase">Company Name <span className="text-red-400">*</span></label>
                     <input name="company_name" defaultValue={operator?.company_name??''} required
-                      className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none" placeholder="Exact legal company name"/>
+                      className="w-full bg-[#07090d] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-white placeholder-[#3a5068] focus:border-[#d4950e] focus:ring-1 focus:ring-[#d4950e] outline-none transition-all" placeholder="Exact legal company name"/>
                   </div>
-                  <div className="mb-4">
-                    <label className="block text-xs text-[#566880] mb-1.5 font-semibold tracking-wider">BUSINESS PHONE <span className="text-red-400">*</span></label>
+                  <div className="mb-6">
+                    <label className="block text-[10px] text-[#8a9ab0] mb-1.5 font-bold tracking-widest uppercase">Business Mobile <span className="text-red-400">*</span></label>
                     <input name="phone" type="tel" required
-                      className="w-full bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none" placeholder="+1 (555) 000-0000"/>
+                      className="w-full bg-[#07090d] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-white placeholder-[#3a5068] focus:border-[#d4950e] focus:ring-1 focus:ring-[#d4950e] outline-none transition-all" placeholder="+1 (555) 000-0000"/>
                   </div>
-                  <button type="submit" className="w-full bg-[#d4950e] hover:bg-[#c4850e] text-white font-bold py-4 rounded-xl text-sm transition-colors">
-                    Submit Claim &rarr;
+                  <button type="submit" className="w-full bg-[#d4950e] hover:bg-[#c4850e] text-white font-black tracking-widest uppercase py-4 rounded-xl text-sm transition-all shadow-[0_4px_14px_rgba(212,149,14,0.4)] hover:shadow-[0_6px_20px_rgba(212,149,14,0.6)] hover:scale-[1.01]">
+                    Submit Verification
                   </button>
+                  <p className="text-[9px] text-[#566880] text-center mt-4">By claiming, you agree to our verification protocols and TOS. Voice/SMS verification may occur automatically via AI dispatch.</p>
                 </form>
               )}
-              <p className="text-[10px] text-[#3a5068] text-center">Claims are reviewed within 24 hours. We may request a copy of your business documentation.</p>
             </div>
           )}
 
           {/* SEARCH YOUR LISTING */}
           {!searchParams.hcid && (
-            <div className="mt-8 border-t border-[#131c28] pt-8">
-              <p className="text-xs text-[#566880] mb-3">Search for your existing listing first:</p>
+            <div className="mt-8 pt-8 border-t border-[#1e3048]">
+              <p className="text-[10px] font-black tracking-[0.1em] uppercase text-[#8a9ab0] mb-3">Search Database Connection</p>
               <form action="/claim" method="GET" className="flex gap-2">
-                <input name="hcid" placeholder="Enter your HC ID (e.g. HC-TX-00123)" className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#d4950e] focus:outline-none"/>
-                <button type="submit" className="bg-[#1e3048] hover:bg-[#2a4060] text-[#8ab0d0] font-semibold px-4 py-3 rounded-xl text-sm">Search</button>
+                <input name="hcid" placeholder="Enter HC ID (e.g. HC-TX-123)" className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-white placeholder-[#3a5068] focus:border-[#d4950e] outline-none transition-all"/>
+                <button type="submit" className="bg-[#1e3048] hover:bg-[#2a4060] text-white font-bold px-5 py-3 rounded-xl text-sm transition-colors">Search</button>
               </form>
-              <p className="text-[10px] text-[#3a5068] mt-2">Don&apos;t have an HC ID? <Link href="/directory" className="text-[#d4950e] hover:underline">Browse the directory</Link> to find your listing.</p>
             </div>
           )}
         </div>

@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import { PwaRegistry } from '@/components/layout/PwaRegistry';
 import { PostHogProvider } from '@/components/analytics/PostHogProvider';
 import { GoogleTagManager } from '@next/third-parties/google';
+import { SignalGridProvider } from '@/components/telematics/SignalGridProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -45,10 +46,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
-            <PwaRegistry />
-            <GlobalCommandBar />
-            <DynamicBackgroundEngine />
-            {children}
+            <SignalGridProvider>
+              <PwaRegistry />
+              <GlobalCommandBar />
+              <DynamicBackgroundEngine />
+              {children}
+            </SignalGridProvider>
           </PostHogProvider>
         </Suspense>
       </body>

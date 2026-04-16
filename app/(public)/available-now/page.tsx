@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight } from 'lucide-react';
+import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight, Zap, Globe, TrendingUp, Award } from 'lucide-react';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
@@ -226,8 +226,32 @@ export default async function AvailableNowPage() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+        {/* ── TOP SPONSOR ── */}
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 1.5rem 0' }}>
+          <AdGridSlot zone="available_now_top" />
+        </div>
 
+        {/* ── CATEGORY ACTION BAR ── */}
+        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 1.5rem 0' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { label: 'Post Urgent Load', href: '/loads/post', icon: '📋', accent: true },
+              { label: 'Claim Your Profile', href: '/claim', icon: '✓' },
+              { label: 'Escort Requirements', href: '/escort-requirements', icon: '⚖️' },
+              { label: 'Rate Benchmarks', href: '/tools/rate-advisor', icon: '💰' },
+              { label: 'Find by State', href: '/market', icon: '🗺️' },
+              { label: 'Sponsor This Page', href: '/advertise', icon: '📣', sponsor: true },
+            ].map(item => (
+              <a key={item.label} href={item.href} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 20, background: (item as any).accent ? 'linear-gradient(135deg, #22c55e, #16a34a)' : (item as any).sponsor ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.05)', border: (item as any).sponsor ? '1px dashed rgba(198,146,58,0.3)' : (item as any).accent ? 'none' : '1px solid rgba(255,255,255,0.08)', color: (item as any).accent ? '#000' : (item as any).sponsor ? '#C6923A' : '#d1d5db', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                <span>{item.icon}</span> {item.label}
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 270px', gap: 32, alignItems: 'start' }}>
+          <div>
           {/* Operator Cards */}
           {totalAvailable > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: 48 }}>
@@ -471,8 +495,71 @@ export default async function AvailableNowPage() {
             ]}
           />
 
+          </div>
+
+          {/* ── RIGHT SIDEBAR ── */}
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: 14, position: 'sticky', top: 80 }}>
+
+            {/* Post a Load — primary broker CTA */}
+            <div style={{ background: 'linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.03))', border: '1px solid rgba(34,197,94,0.22)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Zap style={{ width: 14, height: 14, color: '#22c55e' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Post Urgent Load</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Match with available escorts right now. No phone tag, no groups.</p>
+              <a href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
+                Post Load Now
+              </a>
+            </div>
+
+            {/* Claim Listing */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Shield style={{ width: 14, height: 14, color: '#C6923A' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Escort Operators</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Claim your listing and broadcast availability here. Free forever.</p>
+              <a href="/claim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                Claim Listing — Free
+              </a>
+            </div>
+
+            {/* Escort Requirements */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Globe style={{ width: 14, height: 14, color: '#60a5fa' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Escort Rules</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Know what your load requires before dispatching. State-by-state rules.</p>
+              <a href="/escort-requirements" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(96,165,250,0.08)', border: '1px solid rgba(96,165,250,0.2)', color: '#60a5fa', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                View Requirements →
+              </a>
+            </div>
+
+            {/* Rate Benchmark */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <TrendingUp style={{ width: 14, height: 14, color: '#34d399' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#34d399', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Rate Benchmarks</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Real-time escort cost benchmarks by state and corridor.</p>
+              <a href="/tools/rate-advisor" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(52,211,153,0.07)', border: '1px solid rgba(52,211,153,0.18)', color: '#34d399', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                View Rates →
+              </a>
+            </div>
+
+            {/* Sponsor */}
+            <div style={{ background: 'rgba(198,146,58,0.04)', border: '1px dashed rgba(198,146,58,0.18)', borderRadius: 16, padding: 16, textAlign: 'center' as const }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', textTransform: 'uppercase' as const, letterSpacing: '0.08em', margin: '0 0 5px' }}>Sponsor This Page</p>
+              <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Reach brokers and carriers actively searching for escorts.</p>
+              <a href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 8, background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 11, fontWeight: 800, textDecoration: 'none' }}>
+                View Packages →
+              </a>
+            </div>
+
+          </aside>
+          </div>
         </div>
-      </div>
 
       <style>{`@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }`}</style>
     </>
