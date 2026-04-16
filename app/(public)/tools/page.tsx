@@ -262,143 +262,144 @@ export default function ToolsIndexPage() {
 
                 {/* â”€â”€ Tool Grid â”€â”€ */}
                 <section style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px' }}>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-                        gap: 20,
-                    }}>
-                        {TOOLS.map(tool => (
-                            <Link
-                                key={tool.slug}
-                                href={tool.slug}
-                                style={{
-                                    display: 'flex', flexDirection: 'column', gap: 16,
-                                    padding: 28, borderRadius: 16,
-                                    background: '#111114',
-                                    border: '1px solid rgba(255,255,255,0.06)',
-                                    textDecoration: 'none', color: 'inherit',
-                                    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                                    position: 'relative', overflow: 'hidden',
-                                }}
-                                className="ag-tool-card"
-                            >
-                                {/* Gradient accent */}
-                                <div style={{
-                                    position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                                    background: `linear-gradient(90deg, ${tool.color}, transparent)`,
-                                    opacity: 0.6,
-                                }} />
-
-                                {/* Header */}
-                                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 40, alignItems: 'start' }}>
+                        {/* Tool Grid */}
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                            gap: 20,
+                        }}>
+                            {TOOLS.map(tool => (
+                                <Link
+                                    key={tool.slug}
+                                    href={tool.slug}
+                                    style={{
+                                        display: 'flex', flexDirection: 'column', gap: 16,
+                                        padding: 28, borderRadius: 16,
+                                        background: '#111114',
+                                        border: '1px solid rgba(255,255,255,0.06)',
+                                        textDecoration: 'none', color: 'inherit',
+                                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        position: 'relative', overflow: 'hidden',
+                                    }}
+                                    className="ag-tool-card"
+                                >
+                                    {/* Gradient accent */}
                                     <div style={{
-                                        fontSize: 28, width: 52, height: 52,
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        borderRadius: 14,
-                                        background: `${tool.color}10`,
-                                        border: `1px solid ${tool.color}25`,
-                                    }}>
-                                        {tool.icon}
-                                    </div>
-                                    {tool.badge && (
-                                        <span style={{
-                                            fontSize: 9, fontWeight: 800, padding: '4px 10px',
-                                            borderRadius: 999, textTransform: 'uppercase' as const,
-                                            letterSpacing: '0.08em',
-                                            background: `${tool.color}15`,
-                                            border: `1px solid ${tool.color}30`,
-                                            color: tool.color,
+                                        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+                                        background: `linear-gradient(90deg, ${tool.color}, transparent)`,
+                                        opacity: 0.6,
+                                    }} />
+
+                                    {/* Header */}
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                        <div style={{
+                                            fontSize: 28, width: 52, height: 52,
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            borderRadius: 14,
+                                            background: `${tool.color}10`,
+                                            border: `1px solid ${tool.color}25`,
                                         }}>
-                                            {tool.badge}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Content */}
-                                <div>
-                                    <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#F9FAFB' }}>
-                                        {tool.name}
-                                    </h2>
-                                    <div style={{ fontSize: 11, fontWeight: 700, color: tool.color, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 8 }}>
-                                        {tool.tagline}
+                                            {tool.icon}
+                                        </div>
+                                        {tool.badge && (
+                                            <span style={{
+                                                fontSize: 9, fontWeight: 800, padding: '4px 10px',
+                                                borderRadius: 999, textTransform: 'uppercase' as const,
+                                                letterSpacing: '0.08em',
+                                                background: `${tool.color}15`,
+                                                border: `1px solid ${tool.color}30`,
+                                                color: tool.color,
+                                            }}>
+                                                {tool.badge}
+                                            </span>
+                                        )}
                                     </div>
-                                    <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.55 }}>
-                                        {tool.description}
-                                    </p>
-                                </div>
 
-                                {/* CTA */}
-                                <div style={{
-                                    marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 6,
-                                    fontSize: 12, fontWeight: 700, color: tool.color,
-                                }}>
-                                    Open Tool â†’
-                                </div>
+                                    {/* Content */}
+                                    <div>
+                                        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#F9FAFB' }}>
+                                            {tool.name}
+                                        </h2>
+                                        <div style={{ fontSize: 11, fontWeight: 700, color: tool.color, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 8 }}>
+                                            {tool.tagline}
+                                        </div>
+                                        <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.55 }}>
+                                            {tool.description}
+                                        </p>
+                                    </div>
+
+                                    {/* CTA */}
+                                    <div style={{
+                                        marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 6,
+                                        fontSize: 12, fontWeight: 700, color: tool.color,
+                                    }}>
+                                        Open Tool →
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+
+                        {/* ── SIDEBAR ── */}
+                        <aside style={{ display: 'flex', flexDirection: 'column', gap: 14, position: 'sticky', top: 80 }}>
+                          <div style={{ background: 'linear-gradient(135deg, rgba(198,146,58,0.1), rgba(198,146,58,0.03))', border: '1px solid rgba(198,146,58,0.22)', borderRadius: 16, padding: 18 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                              <MapPin style={{ width: 14, height: 14, color: '#C6923A' }} />
+                              <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Find Escorts</span>
+                            </div>
+                            <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Use these tools then find verified escorts for your route.</p>
+                            <Link href="/directory" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
+                              Search Directory
                             </Link>
-                        ))}
+                            <Link href="/available-now" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '7px 0', borderRadius: 10, width: '100%', marginTop: 8, background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.18)', color: '#22c55e', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                              🟢 Available Now
+                            </Link>
+                          </div>
+
+                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                              <Shield style={{ width: 14, height: 14, color: '#22c55e' }} />
+                              <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Claim Listing</span>
+                            </div>
+                            <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>List your operation in the Haul Command directory. Free forever for operators.</p>
+                            <Link href="/claim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.22)', color: '#22c55e', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                              Claim Listing — Free
+                            </Link>
+                          </div>
+
+                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                              <Award style={{ width: 14, height: 14, color: '#a78bfa' }} />
+                              <span style={{ fontSize: 11, fontWeight: 800, color: '#a78bfa', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Get Certified</span>
+                            </div>
+                            <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>HC Academy — certification recognized across 30+ states. Included badge.</p>
+                            <Link href="/training" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', color: '#a78bfa', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                              View Certifications →
+                            </Link>
+                          </div>
+
+                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                              <Globe style={{ width: 14, height: 14, color: '#38bdf8' }} />
+                              <span style={{ fontSize: 11, fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Data Products</span>
+                            </div>
+                            <p style={{ fontSize: 12, color: '#475569', margin: '0 0 12px', lineHeight: 1.5 }}>Export bulk intelligence. API, CSV, enterprise plans.</p>
+                            <Link href="/data-products" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(56,189,248,0.07)', border: '1px solid rgba(56,189,248,0.15)', color: '#38bdf8', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                              View Data Products →
+                            </Link>
+                          </div>
+
+                          <div style={{ background: 'rgba(198,146,58,0.04)', border: '1px dashed rgba(198,146,58,0.18)', borderRadius: 16, padding: 16, textAlign: 'center' as const }}>
+                            <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', textTransform: 'uppercase' as const, letterSpacing: '0.08em', margin: '0 0 5px' }}>Sponsor Tools</p>
+                            <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Reach operators and brokers using free tools daily.</p>
+                            <Link href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 8, background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 11, fontWeight: 800, textDecoration: 'none' }}>
+                              View Packages →
+                            </Link>
+                          </div>
+                        </aside>
                     </div>
-
-                    {/* ── SIDEBAR ── */}
-                    <aside style={{ display: 'flex', flexDirection: 'column', gap: 14, position: 'sticky', top: 80 }}>
-
-                      <div style={{ background: 'linear-gradient(135deg, rgba(198,146,58,0.1), rgba(198,146,58,0.03))', border: '1px solid rgba(198,146,58,0.22)', borderRadius: 16, padding: 18 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                          <MapPin style={{ width: 14, height: 14, color: '#C6923A' }} />
-                          <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Find Escorts</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Use these tools then find verified escorts for your route.</p>
-                        <Link href="/directory" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
-                          Search Directory
-                        </Link>
-                        <Link href="/available-now" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '7px 0', borderRadius: 10, width: '100%', marginTop: 8, background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.18)', color: '#22c55e', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                          🟢 Available Now
-                        </Link>
-                      </div>
-
-                      <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                          <Shield style={{ width: 14, height: 14, color: '#22c55e' }} />
-                          <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Claim Listing</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>List your operation in the Haul Command directory. Free forever for operators.</p>
-                        <Link href="/claim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.22)', color: '#22c55e', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
-                          Claim Listing — Free
-                        </Link>
-                      </div>
-
-                      <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                          <Award style={{ width: 14, height: 14, color: '#a78bfa' }} />
-                          <span style={{ fontSize: 11, fontWeight: 800, color: '#a78bfa', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Get Certified</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>HC Academy — certification recognized across 30+ states. Included badge.</p>
-                        <Link href="/training" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', color: '#a78bfa', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
-                          View Certifications →
-                        </Link>
-                      </div>
-
-                      <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                          <Globe style={{ width: 14, height: 14, color: '#38bdf8' }} />
-                          <span style={{ fontSize: 11, fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Data Products</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: '#475569', margin: '0 0 12px', lineHeight: 1.5 }}>Export bulk intelligence. API, CSV, enterprise plans.</p>
-                        <Link href="/data-products" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(56,189,248,0.07)', border: '1px solid rgba(56,189,248,0.15)', color: '#38bdf8', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
-                          View Data Products →
-                        </Link>
-                      </div>
-
-                      <div style={{ background: 'rgba(198,146,58,0.04)', border: '1px dashed rgba(198,146,58,0.18)', borderRadius: 16, padding: 16, textAlign: 'center' as const }}>
-                        <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', textTransform: 'uppercase' as const, letterSpacing: '0.08em', margin: '0 0 5px' }}>Sponsor Tools</p>
-                        <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Reach operators and brokers using free tools daily.</p>
-                        <Link href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 8, background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 11, fontWeight: 800, textDecoration: 'none' }}>
-                          View Packages →
-                        </Link>
-                      </div>
-
-                    </aside>
-                  </div>
                 </section>
+
 
                 {/* â”€â”€ Tool Sponsor Slot â”€â”€ */}
                 <div style={{ marginTop: 32 }}>
