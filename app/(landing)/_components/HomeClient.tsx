@@ -115,75 +115,63 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 HERO — Highway Photo + Search Bar
                 ═══════════════════════════════════════ */}
-            <section className="relative w-full overflow-hidden">
-                {/* Background image */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src="/images/homepage_hero_bg_1775877319950.png"
-                        alt=""
-                        aria-hidden="true"
-                        className="w-full h-full object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-                </div>
-
+            <section className="relative w-full overflow-hidden bg-white border-b border-gray-200">
                 <div className="relative z-10 max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center">
                     <motion.h1
                         initial="hidden" animate="visible" variants={fadeUp} custom={0}
-                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight mb-4"
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-4"
                     >
-                        Find <span className="text-[#F1A91B]">Verified</span> Escort Vehicles{" "}
+                        Find <span className="text-[#C6923A]">Verified</span> Escort Vehicles{" "}
                         <br className="hidden sm:block" />
                         & Pilot Cars Near You
                     </motion.h1>
                     <motion.p
                         initial="hidden" animate="visible" variants={fadeUp} custom={1}
-                        className="text-sm sm:text-base text-white/80 mb-8 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base text-gray-500 mb-8 max-w-2xl mx-auto"
                     >
                         The #1 heavy haul pilot car directory. Search by state, city, or service— find available escorts in minutes for your oversize load.
                     </motion.p>
 
-                    {/* Search Bar */}
+                    {/* Search Bar - YP style with thick border */}
                     <motion.div
                         initial="hidden" animate="visible" variants={fadeUp} custom={2}
-                        className="flex flex-col sm:flex-row items-stretch gap-2 max-w-2xl mx-auto bg-white rounded-xl p-2 shadow-2xl"
+                        className="flex flex-col sm:flex-row items-stretch gap-0 max-w-3xl mx-auto bg-white rounded-md shadow-xl border-4 border-[#F1A91B]"
                     >
-                        <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                            <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                            <input
-                                type="text"
-                                placeholder="City, State, or ZIP Code"
-                                className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
-                            />
-                        </div>
-                        <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                            <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                            <select className="w-full bg-transparent text-sm text-gray-500 focus:outline-none appearance-none cursor-pointer">
-                                <option value="">Service Type</option>
+                        <div className="flex-1 flex items-center gap-2 bg-white px-4 py-4 border-b sm:border-b-0 sm:border-r border-gray-200">
+                            <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                            <select className="w-full bg-transparent text-sm md:text-base text-gray-700 font-medium focus:outline-none appearance-none cursor-pointer">
+                                <option value="">What are you looking for?</option>
                                 <option value="escort-vehicle">Escort Vehicle</option>
                                 <option value="pilot-car">Pilot Car</option>
                                 <option value="height-pole">Height Pole</option>
                                 <option value="route-survey">Route Survey</option>
                             </select>
                         </div>
+                        <div className="flex-1 flex items-center gap-2 bg-white px-4 py-4">
+                            <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                            <input
+                                type="text"
+                                placeholder="City, State, or ZIP Code"
+                                className="w-full bg-transparent text-sm md:text-base text-gray-900 placeholder-gray-400 font-medium focus:outline-none"
+                            />
+                        </div>
                         <Link
                             href="/directory"
-                            className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm px-6 py-3 rounded-lg transition-colors shadow-lg"
+                            className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-black text-lg px-12 py-4 transition-colors"
                         >
-                            <Search className="w-4 h-4" />
                             Find
                         </Link>
                     </motion.div>
                 </div>
 
                 {/* Trust strip */}
-                <div className="relative z-10 bg-[#F1A91B]/95 backdrop-blur-md">
-                    <div className="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-bold text-white">
-                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> {displayCompanies}+ Companies</span>
-                        <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> US & Canada Coverage</span>
-                        <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> FMCSA Verified Listings</span>
-                        <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> Free to List & Browse</span>
-                        <span className="hidden sm:flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> Real-Time Availability</span>
+                <div className="relative z-10 bg-gray-50 border-t border-gray-200">
+                    <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-bold text-gray-500">
+                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-[#C6923A]" /> {displayCompanies}+ Companies</span>
+                        <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5 text-[#C6923A]" /> US & Canada Coverage</span>
+                        <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-[#C6923A]" /> FMCSA Verified Listings</span>
+                        <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-[#C6923A]" /> Free to List & Browse</span>
+                        <span className="hidden sm:flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 text-[#C6923A]" /> Real-Time Availability</span>
                     </div>
                 </div>
             </section>
