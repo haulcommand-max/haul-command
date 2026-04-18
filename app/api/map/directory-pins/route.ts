@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 
+
 /**
  * GET /api/map/directory-pins
  * Returns GeoJSON FeatureCollection from directory_listings for the map view.
@@ -41,6 +42,18 @@ export async function GET(req: NextRequest) {
     if (country) query = query.ilike('country_code', country);
     if (region) query = query.ilike('region_code', region);
     if (claimed === 'true') query = query.neq('claim_status', 'unclaimed');
+
+    // Bbox filter: ?bbox=minLng,minLat,maxLng,maxLat — used by dispatch view
+    const bboxParam = searchParams.get('bbox');
+    if (bboxParam) {
+        const parts = bboxParam.split(',').map(Number);
+        if (parts.length === 4 && parts.every(n => !isNaN(n))) {
+            const [minLng, minLat, maxLng, maxLat] = parts;
+            query = query
+                .gte('latitude', minLat).lte('latitude', maxLat)
+                .gte('longitude', minLng).lte('longitude', maxLng);
+        }
+    }
 
     // Category filter (entity_type-based)
     if (category && category !== 'all' && CATEGORY_MAP[category]) {
@@ -81,8 +94,20 @@ export async function GET(req: NextRequest) {
         });
     }
 
+    // Derive trust_band from rank_score + claim_status (mirrors TrustScoreBadge tiers)
+    function getTrustBand(rankScore: number, claimStatus: string): string {
+        if (claimStatus === 'unclaimed') return 'unclaimed';
+        if (rankScore >= 85) return 'elite';
+        if (rankScore >= 65) return 'strong';
+        if (rankScore >= 45) return 'watch';
+        return 'low';
+    }
+
     const features = filtered.map((r: any) => {
         const meta = r.metadata || {};
+        const rankScore = r.rank_score ?? 0;
+        const isClaimed = r.claim_status !== 'unclaimed';
+        const isVerified = r.claim_status === 'verified' || meta.is_verified === true;
         return {
             type: 'Feature',
             geometry: {
@@ -98,11 +123,15 @@ export async function GET(req: NextRequest) {
                 state: r.region_code,
                 country: r.country_code,
                 claim_status: r.claim_status,
-                rank_score: r.rank_score ?? 0,
+                rank_score: rankScore,
                 completeness: r.profile_completeness ?? 0,
-                // Extracted from metadata where available
+                // Trust-aware fields for CommandMapV2 pin rendering
+                trust_band: getTrustBand(rankScore, r.claim_status),
+                is_claimed: isClaimed,
+                is_verified: isVerified,
+                sponsor_eligible: rankScore >= 45 && isClaimed,
+                // Metadata fields
                 phone: meta.phone || null,
-                verified: r.claim_status === 'claimed' || r.claim_status === 'verified',
                 has_high_pole: meta.has_high_pole || meta.high_pole || false,
                 twic: meta.twic || meta.twic_on_file || false,
                 rating: meta.rating || meta.rating_score || 0,
