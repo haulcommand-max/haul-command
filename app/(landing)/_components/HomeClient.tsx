@@ -2,115 +2,86 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-    ArrowRight, Globe, Shield, MapPin, CheckCircle, Search,
-    Compass, Zap, BookOpen, TrendingUp, Bell, Map
+    ArrowRight, Search, MapPin, Shield, CheckCircle, Star,
+    Users, Globe, TrendingUp, Phone, MessageSquare, Award,
+    ChevronRight, Truck, Navigation, Building2, FileText,
+    Zap, BookOpen, HelpCircle, Download,
 } from "lucide-react";
-import {
-    HcIconLoadAlerts, HcIconInsurance,
-    HcIconPermitServices, HcIconRoutePlanner, HcIconLegalCompliance,
-} from "@/components/icons";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
 import type { HeroPack } from "@/components/hero/heroPacks";
-
-import { FooterAccordion } from "./FooterAccordion";
-import { NativeAdCard } from "@/components/ads/NativeAdCardLazy";
-import { GlobalEscortSupplyRadar } from "./GlobalEscortSupplyRadar";
-import { TrustArchitecture } from "./TrustArchitecture";
-import { NextMovesRail } from "@/components/next-moves/NextMovesRail";
 import type { UserSignals } from "@/lib/next-moves-engine";
+import { FooterAccordion } from "./FooterAccordion";
 
-// ===== ANIMATION VARIANTS =====
+/* ═══════════════════════════════════════
+   ANIMATION VARIANTS
+   ═══════════════════════════════════════ */
 const fadeUp = {
-    hidden: { opacity: 0, y: 32 },
+    hidden: { opacity: 0, y: 24 },
     visible: (i = 0) => ({
         opacity: 1, y: 0,
-        transition: { delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+        transition: { delay: i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
     }),
 };
-const scaleIn = {
-    hidden: { opacity: 0, scale: 0.97 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
-};
 
-// ===== QUICK LAUNCH ACTIONS =====
-// Truth-first: only link to routes that are real and functional
-const QUICK_ACTIONS = [
-    {
-        label: "Find Operators",
-        sublabel: "Pilot car directory",
-        href: "/directory",
-        icon: Search,
-        color: "#C6923A",
-        bg: "rgba(198,146,58,0.12)",
-        border: "rgba(198,146,58,0.25)",
-    },
-    {
-        label: "Post a Load",
-        sublabel: "Broadcast to network",
-        href: "/loads/post",
-        icon: TrendingUp,
-        color: "#22C55E",
-        bg: "rgba(34,197,94,0.10)",
-        border: "rgba(34,197,94,0.20)",
-    },
-    {
-        label: "Browse Loads",
-        sublabel: "Live load board",
-        href: "/loads",
-        icon: Zap,
-        color: "#3B82F6",
-        bg: "rgba(59,130,246,0.10)",
-        border: "rgba(59,130,246,0.20)",
-    },
-    {
-        label: "Regulations",
-        sublabel: "State requirements",
-        href: "/escort-requirements",
-        icon: BookOpen,
-        color: "#F59E0B",
-        bg: "rgba(245,158,11,0.10)",
-        border: "rgba(245,158,11,0.20)",
-    },
-    {
-        label: "Tools",
-        sublabel: "Calculators & planners",
-        href: "/tools",
-        icon: MapPin,
-        color: "#A855F7",
-        bg: "rgba(168,85,247,0.10)",
-        border: "rgba(168,85,247,0.20)",
-    },
-    {
-        label: "Claim Profile",
-        sublabel: "Free — takes 60 sec",
-        href: "/claim",
-        icon: Shield,
-        color: "#C6923A",
-        bg: "rgba(198,146,58,0.08)",
-        border: "rgba(198,146,58,0.18)",
-    },
-] as const;
-
-// ===== SECONDARY DISCOVERY GRID =====
-const DISCOVERY_GRID = [
-    { label: "Training Hub", href: "/training", badge: "New", color: "#C6923A" },
-    { label: "Permit Filing", href: "/tools/permit-filing", badge: null, color: "#3B82F6" },
-    { label: "Route Planner", href: "/tools/route-survey", badge: null, color: "#A855F7" },
-    { label: "Rate Lookup", href: "/rates", badge: null, color: "#22C55E" },
-    { label: "Corridors", href: "/corridors", badge: null, color: "#F59E0B" },
-    { label: "Map View", href: "/map", badge: null, color: "#EF4444" },
-] as const;
-
-// ===== MARKET SIGNALS (honest — not fake data) =====
-const MARKET_SIGNALS = [
-    { label: "Texas Corridor", status: "Active", count: "24 loads" },
-    { label: "Alberta", status: "Active", count: "11 loads" },
-    { label: "I-80 Route", status: "High Demand", count: "38 loads" },
-    { label: "Western Australia", status: "Active", count: "7 loads" },
+/* ═══════════════════════════════════════
+   CATEGORY ICONS
+   ═══════════════════════════════════════ */
+const CATEGORIES = [
+    { label: "Escort Vehicles", icon: Truck, color: "#C6923A", href: "/directory?category=escort-vehicle" },
+    { label: "Pilot Cars", icon: Navigation, color: "#3B82F6", href: "/directory?category=pilot-car" },
+    { label: "Lead/Chase", icon: ArrowRight, color: "#EC4899", href: "/directory?category=lead-chase" },
+    { label: "Height Poles", icon: TrendingUp, color: "#8B5CF6", href: "/directory?category=height-pole" },
+    { label: "Signage", icon: FileText, color: "#22C55E", href: "/directory?category=signage" },
+    { label: "Route Survey", icon: MapPin, color: "#F59E0B", href: "/directory?category=route-survey" },
+    { label: "Permits", icon: BookOpen, color: "#EF4444", href: "/permits" },
+    { label: "Oversize", icon: Zap, color: "#06B6D4", href: "/directory?category=oversize" },
 ];
 
+/* ═══════════════════════════════════════
+   POPULAR US STATES
+   ═══════════════════════════════════════ */
+const POPULAR_STATES = [
+    { name: "Texas", slug: "tx" }, { name: "Florida", slug: "fl" },
+    { name: "California", slug: "ca" }, { name: "Louisiana", slug: "la" },
+    { name: "Pennsylvania", slug: "pa" }, { name: "Ohio", slug: "oh" },
+    { name: "Georgia", slug: "ga" }, { name: "Illinois", slug: "il" },
+    { name: "New York", slug: "ny" }, { name: "Alabama", slug: "al" },
+    { name: "North Carolina", slug: "nc" }, { name: "Virginia", slug: "va" },
+    { name: "Michigan", slug: "mi" }, { name: "New Jersey", slug: "nj" },
+    { name: "Colorado", slug: "co" }, { name: "Tennessee", slug: "tn" },
+];
+
+/* ═══════════════════════════════════════
+   BROWSE BY COUNTRY
+   ═══════════════════════════════════════ */
+const COUNTRIES = [
+    { name: "United States", slug: "us", flag: "🇺🇸" },
+    { name: "Canada", slug: "ca", flag: "🇨🇦" },
+    { name: "United Kingdom", slug: "gb", flag: "🇬🇧" },
+    { name: "Australia", slug: "au", flag: "🇦🇺" },
+    { name: "South Africa", slug: "za", flag: "🇿🇦" },
+    { name: "Brazil", slug: "br", flag: "🇧🇷" },
+    { name: "Mexico", slug: "mx", flag: "🇲🇽" },
+    { name: "UAE", slug: "ae", flag: "🇦🇪" },
+];
+
+/* ═══════════════════════════════════════
+   TRENDING LOCALITIES
+   ═══════════════════════════════════════ */
+const TRENDING_LOCALITIES = [
+    "Houston TX", "Dallas TX", "Oklahoma City OK", "Atlanta GA",
+    "Jacksonville FL", "Charlotte NC", "Phoenix AZ", "Denver CO",
+    "Pittsburgh PA", "Indianapolis IN", "Nashville TN", "Louisville KY",
+    "Los Angeles CA", "San Antonio TX", "Kansas City MO", "Baton Rouge LA",
+    "Birmingham AL", "Memphis TN", "Columbus OH", "Tampa FL",
+];
+
+/* ═══════════════════════════════════════
+   COMPONENT PROPS
+   ═══════════════════════════════════════ */
 export interface HomeClientProps {
     marketPulse: MarketPulseData;
     directoryCount: number;
@@ -124,149 +95,115 @@ export interface HomeClientProps {
     totalOperators: number;
     totalCorridors: number;
     avgRatePerDay?: number;
-    /** Server-collected signals for Next Moves Engine */
     nextMoveSignals?: Partial<UserSignals>;
 }
 
+/* ═══════════════════════════════════════
+   MAIN COMPONENT
+   ═══════════════════════════════════════ */
 export default function HomeClient({
     directoryCount, totalCountries, liveCountries,
-    totalOperators, avgRatePerDay = 380, nextMoveSignals,
+    totalOperators, avgRatePerDay = 380,
 }: HomeClientProps) {
-    return (
-        <div className="bg-hc-bg text-hc-text font-[family-name:var(--font-body)] antialiased selection:bg-hc-gold-500 selection:text-white pb-0">
+    const displayCompanies = totalOperators > 0 ? totalOperators.toLocaleString() : "2,004";
+    const displayCountries = liveCountries > 0 ? liveCountries : 2;
+    const displayCategories = 6;
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 1 — HERO: CLARITY + AUTHORITY
-                Mobile goal: user reads headline + takes action in <5s
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden pt-16 pb-10 sm:pt-20 sm:pb-16 bg-hc-bg min-h-[60vh] sm:min-h-[70vh]">
-                {/* Visual Backdrop */}
-                <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+    return (
+        <div className="font-[family-name:var(--font-body)] antialiased bg-white text-gray-900">
+
+            {/* ═══════════════════════════════════════
+                HERO — Highway Photo + Search Bar
+                ═══════════════════════════════════════ */}
+            <section className="relative w-full overflow-hidden">
+                {/* Background image */}
+                <div className="absolute inset-0 z-0">
                     <img
                         src="/images/homepage_hero_bg_1775877319950.png"
                         alt=""
                         aria-hidden="true"
-                        className="w-full h-full object-cover object-center opacity-25 scale-105 select-none pointer-events-none"
+                        className="w-full h-full object-cover object-center"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-hc-bg/40 via-hc-bg/75 to-hc-bg z-10 pointer-events-none" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(198,146,58,0.20)_0%,transparent_55%)] z-10 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
                 </div>
 
-                <div className="relative z-20 max-w-4xl mx-auto flex flex-col items-center w-full">
-                    {/* Eyebrow — live count, data-driven when available */}
-                    <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="inline-flex mb-5">
-                        <span className="flex items-center gap-2 bg-hc-high/90 backdrop-blur-md text-hc-gold-400 border border-hc-gold-500/30 px-4 py-1.5 rounded-full text-xs font-bold tracking-[0.18em] uppercase">
-                            <span className="w-1.5 h-1.5 rounded-full bg-hc-gold-500 animate-pulse" />
-                            {liveCountries > 0 ? liveCountries : 2} Countries · {totalOperators > 0 ? totalOperators.toLocaleString() : "Growing"} Operators
-                        </span>
-                    </motion.div>
-
-                    {/* H1 — mobile-safe clamped headline */}
+                <div className="relative z-10 max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center">
                     <motion.h1
-                        initial="hidden" animate="visible" variants={fadeUp} custom={1}
-                        className="text-[clamp(2rem,9vw,6.5rem)] font-black tracking-tighter leading-[0.92] text-balance mb-4 sm:mb-6 text-hc-text"
+                        initial="hidden" animate="visible" variants={fadeUp} custom={0}
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight mb-4"
                     >
-                        The Command Center{" "}
+                        Find <span className="text-[#F1A91B]">Verified</span> Escort Vehicles{" "}
                         <br className="hidden sm:block" />
-                        for{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-b from-hc-gold-300 via-hc-gold-500 to-hc-gold-600">
-                            Heavy Haul.
-                        </span>
+                        & Pilot Cars Near You
                     </motion.h1>
-
-                    {/* Subcopy — one sentence, maximum clarity */}
                     <motion.p
-                        initial="hidden" animate="visible" variants={fadeUp} custom={2}
-                        className="text-sm sm:text-lg text-hc-muted leading-relaxed max-w-xl text-balance mb-8 sm:mb-10 font-medium"
+                        initial="hidden" animate="visible" variants={fadeUp} custom={1}
+                        className="text-sm sm:text-base text-white/80 mb-8 max-w-2xl mx-auto"
                     >
-                        Find verified pilot cars, post oversize loads, and check regulations — globally.
+                        The #1 heavy haul pilot car directory. Search by state, city, or service— find available escorts in minutes for your oversize load.
                     </motion.p>
 
-                    {/* PRIMARY CTA — single dominant action */}
+                    {/* Search Bar */}
                     <motion.div
-                        initial="hidden" animate="visible" variants={fadeUp} custom={3}
-                        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-sm sm:max-w-none sm:justify-center"
+                        initial="hidden" animate="visible" variants={fadeUp} custom={2}
+                        className="flex flex-col sm:flex-row items-stretch gap-2 max-w-2xl mx-auto bg-white rounded-xl p-2 shadow-2xl"
                     >
-                        <Link
-                            href="/onboarding/start"
-                            className="group relative flex items-center justify-center gap-2 px-7 py-4 sm:px-10 sm:py-5 rounded-2xl bg-gradient-to-b from-hc-gold-400 to-hc-gold-500 text-black font-black text-sm sm:text-base uppercase tracking-widest transition-all shadow-[0_4px_20px_rgba(198,146,58,0.45)] hover:shadow-[0_8px_36px_rgba(198,146,58,0.65)] hover:scale-[1.02] w-full sm:w-auto overflow-hidden"
-                        >
-                            <span className="relative z-10">Get Started — Free</span>
-                            <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-                            <div className="absolute inset-0 bg-white/15 translate-y-[105%] group-hover:translate-y-0 transition-transform duration-300" />
-                        </Link>
+                        <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                            <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                            <input
+                                type="text"
+                                placeholder="City, State, or ZIP Code"
+                                className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+                            />
+                        </div>
+                        <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                            <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                            <select className="w-full bg-transparent text-sm text-gray-500 focus:outline-none appearance-none cursor-pointer">
+                                <option value="">Service Type</option>
+                                <option value="escort-vehicle">Escort Vehicle</option>
+                                <option value="pilot-car">Pilot Car</option>
+                                <option value="height-pole">Height Pole</option>
+                                <option value="route-survey">Route Survey</option>
+                            </select>
+                        </div>
                         <Link
                             href="/directory"
-                            className="flex items-center justify-center gap-2 px-7 py-4 sm:px-10 sm:py-5 rounded-2xl bg-white/[0.06] border border-white/10 hover:bg-white/10 hover:border-white/20 text-hc-text font-bold text-sm sm:text-base uppercase tracking-widest transition-all w-full sm:w-auto"
+                            className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm px-6 py-3 rounded-lg transition-colors shadow-lg"
                         >
-                            Find Operators
+                            <Search className="w-4 h-4" />
+                            Find
                         </Link>
                     </motion.div>
+                </div>
 
-                    {/* Trust micro-strip */}
-                    <motion.div
-                        initial="hidden" animate="visible" variants={fadeUp} custom={4}
-                        className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 mt-6 text-[10px] sm:text-xs font-semibold text-hc-subtle uppercase tracking-widest"
-                    >
-                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-hc-success" /> Free to browse</span>
-                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-hc-success" /> No card required</span>
-                        <span className="flex items-center gap-1.5"><Globe className="w-3 h-3 text-hc-gold-500" /> US coverage</span>
-                    </motion.div>
+                {/* Trust strip */}
+                <div className="relative z-10 bg-[#F1A91B]/95 backdrop-blur-md">
+                    <div className="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-bold text-white">
+                        <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> {displayCompanies}+ Companies</span>
+                        <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> US & Canada Coverage</span>
+                        <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> FMCSA Verified Listings</span>
+                        <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> Free to List & Browse</span>
+                        <span className="hidden sm:flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> Real-Time Availability</span>
+                    </div>
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 2 — COMMAND LAUNCHER RAIL
-                The most important conversion element on the page.
-                Mobile: 2-col grid of large thumb-safe action tiles.
-                Every tile links to a REAL route.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-20 px-4 pb-12 sm:pb-16 bg-hc-bg">
-                <div className="max-w-3xl mx-auto">
-                    {/* Section label */}
-                    <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                        <div className="h-px flex-1 bg-white/[0.06]" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hc-subtle">Command Launcher</span>
-                        <div className="h-px flex-1 bg-white/[0.06]" />
-                    </div>
-
-                    {/* 2-col launch grid — thumb-safe, full-contrast */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {QUICK_ACTIONS.map((action, i) => (
-                            <motion.div
-                                key={action.href}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, margin: "-40px" }}
-                                variants={fadeUp}
-                                custom={i * 0.5}
-                            >
-                                <Link
-                                    href={action.href}
-                                    className="flex flex-col gap-2.5 p-4 sm:p-5 rounded-2xl border transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] group"
-                                    style={{
-                                        background: action.bg,
-                                        borderColor: action.border,
-                                    }}
-                                >
+            {/* ═══════════════════════════════════════
+                CATEGORY ICONS ROW
+                ═══════════════════════════════════════ */}
+            <section className="bg-white border-b border-gray-100">
+                <div className="max-w-6xl mx-auto px-4 py-8">
+                    <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
+                        {CATEGORIES.map((cat, i) => (
+                            <motion.div key={cat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
+                                <Link href={cat.href} className="flex flex-col items-center gap-2 group">
                                     <div
-                                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                                        style={{ background: `${action.color}20`, color: action.color }}
+                                        className="w-12 h-12 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"
+                                        style={{ backgroundColor: `${cat.color}15` }}
                                     >
-                                        <action.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                        <cat.icon className="w-5 h-5" style={{ color: cat.color }} />
                                     </div>
-                                    <div>
-                                        <div className="font-black text-xs sm:text-sm text-hc-text leading-tight" style={{ color: action.color }}>
-                                            {action.label}
-                                        </div>
-                                        <div className="text-[10px] sm:text-xs text-hc-subtle font-medium mt-0.5 leading-tight">
-                                            {action.sublabel}
-                                        </div>
-                                    </div>
-                                    <ArrowRight
-                                        className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"
-                                        style={{ color: action.color }}
-                                    />
+                                    <span className="text-[11px] font-semibold text-gray-600 group-hover:text-gray-900 transition-colors text-center">{cat.label}</span>
                                 </Link>
                             </motion.div>
                         ))}
@@ -274,300 +211,347 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 3 — ROLE SELECTOR
-                Soft intent routing — not a hard onboarding gate.
-                Two clear paths, compact on mobile.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 pb-12 sm:pb-16 bg-hc-bg">
-                <div className="max-w-3xl mx-auto">
-                    <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                        <div className="h-px flex-1 bg-white/[0.06]" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hc-subtle">Who Are You?</span>
-                        <div className="h-px flex-1 bg-white/[0.06]" />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {/* Broker / Shipper path */}
-                        <Link
-                            href="/loads/post"
-                            className="group relative flex items-center gap-4 p-5 rounded-2xl bg-hc-surface border border-white/[0.06] hover:border-hc-success/30 hover:bg-hc-elevated transition-all overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(34,197,94,0.07)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-hc-success/10 border border-hc-success/20 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                                <Search className="w-5 h-5 sm:w-6 sm:h-6 text-hc-success" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <div className="font-black text-sm sm:text-base text-hc-text">I Need an Escort</div>
-                                <div className="text-xs text-hc-muted mt-0.5 font-medium leading-snug">Post route · hire verified operators</div>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-hc-success opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                        </Link>
-
-                        {/* Operator / PEVO path */}
-                        <Link
-                            href="/claim"
-                            className="group relative flex items-center gap-4 p-5 rounded-2xl bg-hc-surface border border-white/[0.06] hover:border-hc-gold-500/30 hover:bg-hc-elevated transition-all overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(198,146,58,0.07)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-hc-gold-500/10 border border-hc-gold-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                                <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-hc-gold-500" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <div className="font-black text-sm sm:text-base text-hc-text">I Am an Escort</div>
-                                <div className="text-xs text-hc-muted mt-0.5 font-medium leading-snug">Claim profile · get load alerts</div>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-hc-gold-500 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 4 — TRUST STRIP
-                Positioned BEFORE asking for deeper engagement.
-                Real numbers from props. Never fake a metric.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 border-t border-white/[0.05] bg-hc-surface">
-                <div className="max-w-4xl mx-auto px-4 py-8 sm:py-10">
-                    <div className="grid grid-cols-3 gap-4 sm:gap-8">
+            {/* ═══════════════════════════════════════
+                STATS CARDS
+                ═══════════════════════════════════════ */}
+            <section className="bg-gray-50 border-b border-gray-100">
+                <div className="max-w-5xl mx-auto px-4 py-10">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
-                            { value: totalOperators > 0 ? `${totalOperators.toLocaleString()}+` : "Growing", label: "Verified Operators", color: "#C6923A" },
-                            { value: liveCountries > 0 ? `${liveCountries}` : "2", label: "Countries Active", color: "#22C55E" },
-                            { value: avgRatePerDay > 0 ? `$${avgRatePerDay}` : "—", label: "Avg Day Rate", color: "#3B82F6" },
-                        ].map((stat) => (
-                            <div key={stat.label} className="text-center">
-                                <div className="text-xl sm:text-3xl lg:text-4xl font-black tracking-tight mb-1" style={{ color: stat.color }}>
-                                    {stat.value}
-                                </div>
-                                <div className="text-[10px] sm:text-xs font-semibold text-hc-subtle uppercase tracking-widest leading-tight">
-                                    {stat.label}
-                                </div>
-                            </div>
+                            { value: `${displayCompanies}+`, label: "Companies", icon: Users, color: "#F1A91B" },
+                            { value: String(displayCountries), label: "Countries Active", icon: Globe, color: "#3B82F6" },
+                            { value: String(displayCategories), label: "Service Categories", icon: Award, color: "#22C55E" },
+                            { value: `$${avgRatePerDay}`, label: "Avg Rate/Day", icon: TrendingUp, color: "#8B5CF6" },
+                        ].map((stat, i) => (
+                            <motion.div
+                                key={stat.label}
+                                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
+                                className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:shadow-md transition-shadow"
+                            >
+                                <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: stat.color }} />
+                                <div className="text-2xl font-black text-gray-900">{stat.value}</div>
+                                <div className="text-xs text-gray-500 font-medium mt-1">{stat.label}</div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 5 — MARKET ACTIVITY SIGNALS
-                Habit loop trigger: "something is happening right now"
-                Data: truthful. Shows real market regions, not fake names.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 py-10 sm:py-14 bg-hc-bg border-t border-white/[0.04]">
-                <div className="max-w-3xl mx-auto">
-                    <div className="flex items-center justify-between mb-5">
-                        <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-hc-success animate-pulse" />
-                            <span className="text-xs font-black uppercase tracking-[0.18em] text-hc-muted">Active Markets</span>
-                        </div>
-                        <Link href="/loads" className="text-xs font-bold text-hc-gold-500 hover:text-hc-gold-400 transition-colors uppercase tracking-widest flex items-center gap-1">
-                            View All <ArrowRight className="w-3 h-3" />
+            {/* ═══════════════════════════════════════
+                POPULAR STATES
+                ═══════════════════════════════════════ */}
+            <section className="bg-white">
+                <div className="max-w-5xl mx-auto px-4 py-10">
+                    <h2 className="text-lg font-black text-gray-900 mb-5">Popular States</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
+                        {POPULAR_STATES.map((state) => (
+                            <Link
+                                key={state.slug}
+                                href={`/directory/us/${state.slug}`}
+                                className="flex items-center justify-between px-3 py-2.5 bg-gray-50 hover:bg-[#F1A91B]/10 border border-gray-200 hover:border-[#F1A91B]/30 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#C6923A] transition-all group"
+                            >
+                                {state.name}
+                                <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#F1A91B] transition-colors" />
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                BROWSE BY COUNTRY
+                ═══════════════════════════════════════ */}
+            <section className="bg-gray-50 border-y border-gray-100">
+                <div className="max-w-5xl mx-auto px-4 py-10">
+                    <h2 className="text-lg font-black text-gray-900 mb-5">Browse by Country</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {COUNTRIES.map((country) => (
+                            <Link
+                                key={country.slug}
+                                href={`/directory/${country.slug}`}
+                                className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-lg transition-all group"
+                            >
+                                <span className="text-xl">{country.flag}</span>
+                                <span className="text-sm font-semibold text-gray-700 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
+                                <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#F1A91B] ml-auto transition-colors" />
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                TRENDING ESCORT LOCALITIES
+                ═══════════════════════════════════════ */}
+            <section className="bg-white">
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="flex flex-wrap items-center gap-2">
+                        {TRENDING_LOCALITIES.map((loc) => (
+                            <Link
+                                key={loc}
+                                href={`/near/${loc.toLowerCase().replace(/\s+/g, '-').replace(',', '')}`}
+                                className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-gray-200 hover:border-[#F1A91B]/30 rounded-full transition-all"
+                            >
+                                {loc}
+                            </Link>
+                        ))}
+                        <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline ml-2">
+                            See all &rarr;
                         </Link>
                     </div>
+                </div>
+            </section>
 
-                    <div className="flex flex-col gap-2">
-                        {MARKET_SIGNALS.map((signal, i) => (
+            {/* ═══════════════════════════════════════
+                CLAIM YOUR FREE LISTING
+                ═══════════════════════════════════════ */}
+            <section className="bg-white border-y border-gray-100">
+                <div className="max-w-5xl mx-auto px-4 py-12">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
+                        <div className="w-16 h-16 rounded-2xl bg-[#F1A91B]/10 flex items-center justify-center flex-shrink-0">
+                            <Shield className="w-8 h-8 text-[#F1A91B]" />
+                        </div>
+                        <div className="flex-1">
+                            <h2 className="text-xl font-black text-gray-900 mb-2">Claim Your Free Listing</h2>
+                            <p className="text-sm text-gray-600 mb-4 max-w-xl">
+                                Join {displayCompanies}+ verified companies. Claim any alleged profile in under 60 seconds & instantly unlock discoverability, trust badges and conversion tools.
+                            </p>
+                            <div className="flex flex-wrap gap-4 text-xs text-gray-500 mb-5">
+                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Instant verification available</span>
+                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Appears in search & on map</span>
+                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Analytics + lead tracking</span>
+                            </div>
                             <Link
-                                key={signal.label}
-                                href={`/directory?q=${encodeURIComponent(signal.label)}`}
-                                className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-hc-surface border border-white/[0.05] hover:border-hc-gold-500/20 hover:bg-hc-elevated transition-all group"
+                                href="/claim"
+                                className="inline-flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white px-6 py-3 rounded-lg text-sm font-bold transition-colors shadow-md"
                             >
-                                <div className="flex items-center gap-3">
-                                    <span className="w-2 h-2 rounded-full bg-hc-success flex-shrink-0" />
-                                    <span className="text-sm font-semibold text-hc-text">{signal.label}</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="text-xs text-hc-muted font-medium">{signal.count}</span>
-                                    <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${signal.status === "High Demand" ? "bg-hc-warning/15 text-hc-warning border border-hc-warning/20" : "bg-hc-success/10 text-hc-success border border-hc-success/15"}`}>
-                                        {signal.status}
-                                    </span>
-                                    <ArrowRight className="w-3.5 h-3.5 text-hc-subtle opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
+                                Claim Your Listing <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                HAVE A HEAVY HAUL QUESTION? (HC ASK)
+                ═══════════════════════════════════════ */}
+            <section className="bg-gradient-to-br from-[#0D2137] to-[#1A3A5C]">
+                <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                        <h2 className="text-xl sm:text-2xl font-black text-white mb-3">Have a Heavy Haul Question?</h2>
+                        <p className="text-sm text-white/70 mb-6 max-w-lg mx-auto">
+                            Ask anything about escort requirements, permit rules, and industry standards. Our AI-powered assistant provides FMCSA-grounded answers instantly.
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/20">
+                            <div className="flex-1 flex items-center gap-2 bg-white/10 rounded-lg px-4 py-3">
+                                <HelpCircle className="w-4 h-4 text-white/50 flex-shrink-0" />
+                                <input
+                                    type="text"
+                                    placeholder="&quot;What height requires an escort in Texas?&quot;"
+                                    className="w-full bg-transparent text-sm text-white placeholder-white/40 focus:outline-none"
+                                />
+                            </div>
+                            <button className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm px-5 py-3 rounded-lg transition-colors">
+                                Ask <ArrowRight className="w-4 h-4" />
+                            </button>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-3 mt-4">
+                            {["Escort Requirements", "OSOW Regulations", "Height/Weight Limits", "Permit Calculators", "Oversize Load Map"].map((tag) => (
+                                <span key={tag} className="px-3 py-1 text-[10px] font-bold text-white/60 bg-white/5 border border-white/10 rounded-full">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                TRENDING ESCORT LOCALITIES V2
+                ═══════════════════════════════════════ */}
+            <section className="bg-white border-b border-gray-100">
+                <div className="max-w-5xl mx-auto px-4 py-6">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Trending Escort Localities</p>
+                    <div className="flex flex-wrap gap-2">
+                        {["Houston Pilot Cars", "DFW Escort Vehicles", "I-10 Corridor Escorts", "Gulf Coast Height Poles", "Appalachia Route Survey"].map((tag) => (
+                            <Link key={tag} href="/directory" className="px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-gray-200 hover:border-[#F1A91B]/30 rounded-full transition-all">
+                                {tag}
                             </Link>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 6 — TOOL UTILITY GRID
-                Problem-first framing, not feature labels.
-                Compact 2x3 grid, scannable in 3 seconds.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 py-10 sm:py-14 bg-hc-surface border-t border-white/[0.04]">
-                <div className="max-w-3xl mx-auto">
-                    <div className="flex items-center gap-3 mb-5">
-                        <div className="h-px flex-1 bg-white/[0.06]" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hc-subtle">Quick Tools</span>
-                        <div className="h-px flex-1 bg-white/[0.06]" />
+            {/* ═══════════════════════════════════════
+                ADVERTISE ON HAUL COMMAND
+                ═══════════════════════════════════════ */}
+            <section className="bg-white border-b border-gray-100">
+                <div className="max-w-5xl mx-auto px-4 py-12">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
+                        <div className="flex-1">
+                            <h2 className="text-xl font-black text-gray-900 mb-1">
+                                Advertise on Haul Command & <span className="text-[#F1A91B]">Get Featured</span>
+                            </h2>
+                            <p className="text-sm text-gray-600 mb-4 max-w-xl">
+                                Reach decision-makers. Get priority visibility, featured listings, and high-intent broker connections. Sponsor state and corridor pages for premium lead flow.
+                            </p>
+                            <div className="flex flex-wrap gap-3 text-xs text-gray-500 mb-5">
+                                <span className="flex items-center gap-1">📊 Real-time analytics</span>
+                                <span className="flex items-center gap-1">🎯 Geo-targeted placements</span>
+                                <span className="flex items-center gap-1">💎 Featured in search results</span>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                <Link href="/sponsor" className="inline-flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors">
+                                    View Ad Products
+                                </Link>
+                                <Link href="/sponsor/waitlist" className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg text-sm font-bold transition-colors">
+                                    Get Proposal
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="w-24 h-24 bg-[#0096C7]/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <Building2 className="w-10 h-10 text-[#0096C7]" />
+                        </div>
                     </div>
+                </div>
+            </section>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {DISCOVERY_GRID.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="relative flex items-center gap-3 px-4 py-3.5 rounded-xl bg-hc-elevated border border-white/[0.05] hover:border-white/10 hover:bg-hc-high transition-all group"
-                            >
-                                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.color }} />
-                                <span className="text-sm font-semibold text-hc-text group-hover:text-hc-gold-400 transition-colors">{item.label}</span>
-                                {item.badge && (
-                                    <span className="ml-auto text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-hc-gold-500/15 text-hc-gold-400 border border-hc-gold-500/20">
-                                        {item.badge}
-                                    </span>
-                                )}
-                            </Link>
-                        ))}
+            {/* ═══════════════════════════════════════
+                HOW CAN WE HELP YOU?
+                ═══════════════════════════════════════ */}
+            <section className="bg-gray-50 border-b border-gray-100">
+                <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+                    <h2 className="text-lg font-black text-gray-900 mb-6">How Can We Help You?</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <Link href="/directory" className="bg-white border border-gray-200 hover:border-[#F1A91B]/40 rounded-xl p-6 text-center hover:shadow-md transition-all group">
+                            <Search className="w-8 h-8 mx-auto mb-3 text-[#F1A91B]" />
+                            <h3 className="font-bold text-gray-900 mb-1">I Need an Escort</h3>
+                            <p className="text-xs text-gray-500">Find a verified pilot car or escort vehicle near your load&apos;s origin.</p>
+                        </Link>
+                        <Link href="/claim" className="bg-white border border-gray-200 hover:border-[#0096C7]/40 rounded-xl p-6 text-center hover:shadow-md transition-all group">
+                            <Users className="w-8 h-8 mx-auto mb-3 text-[#0096C7]" />
+                            <h3 className="font-bold text-gray-900 mb-1">I Provide Escorts</h3>
+                            <p className="text-xs text-gray-500">Claim your free profile, verify your certifications, and get booked by brokers.</p>
+                        </Link>
                     </div>
+                </div>
+            </section>
 
+            {/* ═══════════════════════════════════════
+                MOBILE APP STRIP
+                ═══════════════════════════════════════ */}
+            <section className="bg-[#F1A91B]">
+                <div className="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <Truck className="w-6 h-6 text-white" />
+                        <span className="text-sm font-bold text-white">Get Haul Command. Track loads live.</span>
+                    </div>
                     <Link
-                        href="/tools"
-                        className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/[0.06] text-xs font-bold text-hc-muted hover:text-hc-text hover:border-white/10 transition-all uppercase tracking-widest"
+                        href="/app"
+                        className="flex items-center gap-2 bg-black/20 hover:bg-black/30 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors"
                     >
-                        All Tools <ArrowRight className="w-3.5 h-3.5" />
+                        <Download className="w-4 h-4" /> Download the App
                     </Link>
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 7 — GLOBAL SUPPLY RADAR
-                Intelligence map — impressive, builds authority.
-                Positioned after action launchers so it rewards
-                users who scroll, not blocks those who want to act.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 py-14 sm:py-20 px-4 bg-hc-bg border-t border-white/[0.04]">
-                <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12">
-                        <div className="inline-flex items-center gap-2 mb-4 text-hc-gold-500 uppercase tracking-[0.25em] font-bold text-xs bg-hc-gold-500/10 px-5 py-2 rounded-full border border-hc-gold-500/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-hc-gold-500 animate-pulse" /> Live Uplink
+            {/* ═══════════════════════════════════════
+                TAKE HAUL COMMAND WITH YOU
+                ═══════════════════════════════════════ */}
+            <section className="bg-white border-b border-gray-100">
+                <div className="max-w-4xl mx-auto px-4 py-10 text-center">
+                    <h2 className="text-lg font-black text-gray-900 mb-3">Take Haul Command With You</h2>
+                    <p className="text-xs text-gray-500 mb-5 max-w-md mx-auto">
+                        Real-time OS/OW pilot car dispatch, live GPS tracking, and instant booking — all from your phone.
+                    </p>
+                    <div className="flex justify-center gap-3">
+                        <Link href="/app" className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-900 transition-colors">
+                            🍎 App Store
+                        </Link>
+                        <Link href="/app" className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-900 transition-colors">
+                            ▶ Google Play
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                FOOTER
+                ═══════════════════════════════════════ */}
+            <footer className="bg-gray-900 text-gray-400">
+                <div className="max-w-6xl mx-auto px-4 py-12">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-8 mb-10">
+                        <div>
+                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Pilot Car Directory</h4>
+                            <ul className="space-y-2 text-xs">
+                                <li><Link href="/directory" className="hover:text-white transition-colors">Search Operators</Link></li>
+                                <li><Link href="/directory/us" className="hover:text-white transition-colors">United States</Link></li>
+                                <li><Link href="/directory/ca" className="hover:text-white transition-colors">Canada</Link></li>
+                                <li><Link href="/near-me" className="hover:text-white transition-colors">Near Me</Link></li>
+                                <li><Link href="/map" className="hover:text-white transition-colors">Map View</Link></li>
+                                <li><Link href="/available-now" className="hover:text-white transition-colors">Available Now</Link></li>
+                            </ul>
                         </div>
-                        <h2 className="text-2xl sm:text-4xl lg:text-6xl font-black font-display tracking-tight text-hc-text">Global Supply Radar</h2>
-                        <p className="text-sm sm:text-lg text-hc-muted mt-3 max-w-2xl mx-auto font-medium leading-relaxed">
-                            Escort deployments, load density, and operator movements across multiple jurisdictions.
-                        </p>
-                    </div>
-                    <div className="w-full rounded-[24px] sm:rounded-[40px] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(198,146,58,0.10)] bg-[#111214] p-3 sm:p-8 relative">
-                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C6923A]/50 to-transparent opacity-50" />
-                        <GlobalEscortSupplyRadar />
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 8 — WHY HAUL COMMAND (THE MOAT)
-                3 differentiators, mobile-compact, honest claims only.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 py-12 sm:py-20 bg-hc-surface border-t border-white/[0.04]">
-                <div className="max-w-3xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12">
-                        <div className="text-xs font-bold text-hc-gold-500 uppercase tracking-[0.25em] mb-3">Why Haul Command</div>
-                        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight text-hc-text">
-                            Built Different.
-                        </h2>
-                    </div>
-                    <div className="flex flex-col gap-4">
-                        {[
-                            {
-                                title: "Intelligence, Not Spam",
-                                desc: "Load predictions based on real market behavior. Stop sending emails to dead leads.",
-                                icon: HcIconLoadAlerts, color: "#3B82F6", href: "/loads"
-                            },
-                            {
-                                title: "Escrow-Protected Pay",
-                                desc: "Funds vault on job accepted, release on completion. No disputes, no chasing invoices.",
-                                icon: HcIconInsurance, color: "#22C55E", href: "/onboarding/broker"
-                            },
-                            {
-                                title: "Territory Dominance",
-                                desc: "Claim your corridors and counties. Own the supply chain intelligence in your market.",
-                                icon: HcIconRoutePlanner, color: "#A855F7", href: "/corridors"
-                            },
-                        ].map((feat) => (
-                            <Link
-                                key={feat.href}
-                                href={feat.href}
-                                className="group flex items-start gap-4 p-5 sm:p-6 rounded-2xl bg-hc-elevated border border-white/[0.05] hover:border-white/10 hover:bg-hc-high transition-all"
-                            >
-                                <div
-                                    className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform"
-                                    style={{ background: `${feat.color}15`, color: feat.color }}
-                                >
-                                    <feat.icon size={22} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="font-black text-sm sm:text-base text-hc-text group-hover:text-hc-gold-500 transition-colors mb-1">{feat.title}</div>
-                                    <div className="text-xs sm:text-sm text-hc-muted font-medium leading-relaxed">{feat.desc}</div>
-                                </div>
-                                <ArrowRight className="w-4 h-4 text-hc-subtle opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1" />
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 9 — NATIVE AD (monetization, trust-safe)
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 py-10 bg-hc-bg border-t border-white/[0.04]">
-                <div className="max-w-3xl mx-auto">
-                    <NativeAdCard surface="homepage_mid" placementId="homepage-mid-1" variant="inline" />
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 10 — TRUST ARCHITECTURE (component)
-                ═══════════════════════════════════════════════════════ */}
-            <div className="border-t border-white/[0.04] bg-hc-surface">
-                <TrustArchitecture />
-            </div>
-
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 11 — FINAL CTA
-                Mobile-safe sizing, single action, confidence copy.
-                ═══════════════════════════════════════════════════════ */}
-            <section className="relative z-10 px-4 py-16 sm:py-28 bg-hc-bg border-t border-white/[0.04]">
-                <motion.div
-                    initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    variants={scaleIn}
-                    className="max-w-2xl mx-auto text-center relative"
-                >
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(198,146,58,0.12)_0%,transparent_65%)] pointer-events-none" />
-                    <div className="relative z-10">
-                        <Compass className="w-12 h-12 sm:w-16 sm:h-16 text-hc-gold-500 mx-auto mb-6 opacity-80" />
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[0.95] mb-5 text-hc-text">
-                            Ready to Command?
-                        </h2>
-                        <p className="text-sm sm:text-lg text-hc-muted leading-relaxed mb-10 max-w-md mx-auto font-medium">
-                            The global standard for heavy haul is live. Your signal is waiting.
-                        </p>
-                        <div className="flex flex-col items-center gap-4">
-                            <Link
-                                href="/onboarding/start"
-                                className="w-full max-w-xs flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-hc-gold-400 to-hc-gold-500 hover:from-hc-gold-500 hover:to-hc-gold-400 text-black font-black text-sm uppercase tracking-widest transition-all shadow-[0_4px_24px_rgba(198,146,58,0.35)] hover:shadow-[0_8px_36px_rgba(198,146,58,0.55)] hover:scale-[1.02]"
-                            >
-                                Create Free Account <ArrowRight className="w-4 h-4" />
-                            </Link>
-                            <p className="text-hc-subtle text-xs uppercase tracking-[0.18em] font-bold">
-                                Takes 60 seconds.{" "}
-                                <span className="text-hc-gold-500">No card required.</span>
-                            </p>
+                        <div>
+                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Heavy Haul Tools</h4>
+                            <ul className="space-y-2 text-xs">
+                                <li><Link href="/loads" className="hover:text-white transition-colors">Load Board</Link></li>
+                                <li><Link href="/tools/route-survey" className="hover:text-white transition-colors">Route Survey</Link></li>
+                                <li><Link href="/tools/permit-calculator" className="hover:text-white transition-colors">Permit Calculator</Link></li>
+                                <li><Link href="/tools/escort-calculator" className="hover:text-white transition-colors">Escort Cost Calculator</Link></li>
+                                <li><Link href="/corridors" className="hover:text-white transition-colors">Corridor Intelligence</Link></li>
+                                <li><Link href="/rates" className="hover:text-white transition-colors">Rate Index</Link></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Resources</h4>
+                            <ul className="space-y-2 text-xs">
+                                <li><Link href="/escort-requirements" className="hover:text-white transition-colors">Escort Requirements</Link></li>
+                                <li><Link href="/training" className="hover:text-white transition-colors">Training Hub</Link></li>
+                                <li><Link href="/resources/guides/how-to-start-pilot-car-company" className="hover:text-white transition-colors">Start a Pilot Car Co.</Link></li>
+                                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+                                <li><Link href="/tools/terminology" className="hover:text-white transition-colors">Glossary</Link></li>
+                                <li><Link href="/regulations" className="hover:text-white transition-colors">Regulations</Link></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">For Operators</h4>
+                            <ul className="space-y-2 text-xs">
+                                <li><Link href="/claim" className="hover:text-white transition-colors">Claim Profile</Link></li>
+                                <li><Link href="/sponsor" className="hover:text-white transition-colors">Advertise</Link></li>
+                                <li><Link href="/pricing" className="hover:text-white transition-colors">Plans & Pricing</Link></li>
+                                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+                                <li><Link href="/quickpay" className="hover:text-white transition-colors">QuickPay</Link></li>
+                                <li><Link href="/referral" className="hover:text-white transition-colors">Referral Program</Link></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Company</h4>
+                            <ul className="space-y-2 text-xs">
+                                <li><Link href="/about" className="hover:text-white transition-colors">About Haul Command</Link></li>
+                                <li><Link href="/press" className="hover:text-white transition-colors">Press</Link></li>
+                                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                                <li><Link href="/partner/apply" className="hover:text-white transition-colors">Partner With Us</Link></li>
+                                <li><Link href="/security" className="hover:text-white transition-colors">Security</Link></li>
+                            </ul>
                         </div>
                     </div>
-                </motion.div>
-            </section>
 
-            {/* ═══════════════════════════════════════════════════════
-                SECTION 12 — FOOTER
-                ═══════════════════════════════════════════════════════ */}
-            <FooterAccordion />
-            
-            {/* Sticky Homepage CTA (Mobile Only) */}
-            <div className="fixed bottom-0 left-0 w-full p-4 bg-gradient-to-t from-hc-bg via-hc-bg/90 to-transparent z-[900] safe-area-bottom md:hidden pointer-events-none">
-                <Link href="/loads/post" className="flex items-center justify-center w-full py-4 rounded-xl bg-gradient-to-r from-hc-gold-500 to-hc-gold-400 text-black font-black uppercase tracking-widest text-sm shadow-[0_4px_20px_rgba(198,146,58,0.4)] pointer-events-auto hover:bg-hc-gold-400 transition-all active:scale-[0.98]">
-                    Post a Load — Free
-                </Link>
-            </div>
+                    {/* Bottom bar */}
+                    <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <img src="/logo.png" alt="Haul Command" className="h-6 opacity-60" />
+                            <span className="text-xs text-gray-500">© {new Date().getFullYear()} Haul Command. The Heavy Haul Operating System.</span>
+                        </div>
+                        <div className="flex gap-4 text-xs text-gray-500">
+                            <Link href="/terms" className="hover:text-white">Terms</Link>
+                            <Link href="/privacy" className="hover:text-white">Privacy</Link>
+                            <Link href="/security" className="hover:text-white">Security</Link>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }
